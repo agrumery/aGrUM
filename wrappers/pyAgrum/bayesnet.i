@@ -54,6 +54,10 @@
       return q;
     };
 
+    PyObject *nodes() {
+      return ids();
+    }
+
     PyObject *arcs() {
       PyObject* q=PyList_New(0);
 
@@ -77,7 +81,7 @@
     return q;
   };
 
-    PyObject *children(const NodeId id) const {
+  PyObject *children(const NodeId id) const {
     PyObject* q=PyList_New(0);
 
     const gum::NodeSet& p=self->dag().children(id);
@@ -88,121 +92,144 @@
     return q;
   };
 
-    bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
-    {
-        std::stringstream stream;
-        std::vector<PythonLoadListener> py_listener;
-
-        try {
-            gum::BIFReader<GUM_SCALAR> reader(self,name);
-            int l_size=__fillLoadListeners(py_listener,l);
-            for(int i=0 ; i<l_size ; i++) {
-                GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
-            }
-
-            if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings(stream);
-                reader.showErrorCounts(stream);
-            } else {
-                return true;
-            }
-        } catch (gum::IOError& e) {
-          throw(e);
-        }
-
-        GUM_ERROR(gum::IOError,stream.str());
-        return false;
-    }
-
-    void saveBIF(std::string name) {
-        gum::BIFWriter<GUM_SCALAR> writer;
-        writer.write( name, *self );
-    }
-
-    bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
-    {
-      std::vector<PythonLoadListener> py_listener;
+  std::string loadBIF(std::string name, PyObject *l=(PyObject*)0)
+  {
       std::stringstream stream;
+      std::vector<PythonLoadListener> py_listener;
 
-        try {
-            gum::DSLReader<GUM_SCALAR> reader(self,name);
-            int l_size=__fillLoadListeners(py_listener,l);
-            for(int i=0 ; i<l_size ; i++) {
-                GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
-            }
+      try {
+          gum::BIFReader<GUM_SCALAR> reader(self,name);
+          int l_size=__fillLoadListeners(py_listener,l);
+          for(int i=0 ; i<l_size ; i++) {
+              GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
+          }
 
-            if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings(stream);
-                reader.showErrorCounts(stream);
-                return false;
-            } else {
-                return true;
-            }
-        } catch (gum::IOError& e) {throw (e);}
+          auto nbErr=reader.proceed();
+          reader.showElegantErrorsAndWarnings(stream);
+          if (nbErr>0) {
+              reader.showErrorCounts(stream);
+              GUM_ERROR(gum::FatalError,stream.str());
+          } else {
+              return stream.str();
+          }
+      } catch (gum::IOError& e) {
+        throw(e);
+      }
+      return "";
+  };
 
-        GUM_ERROR(gum::IOError,stream.str());
-        return false;
-    }
+  void saveBIF(std::string name) {
+      gum::BIFWriter<GUM_SCALAR> writer;
+      writer.write( name, *self );
+  };
 
-    void saveDSL(std::string name) {
-        gum::DSLWriter<GUM_SCALAR> writer;
-        writer.write( name, *self );
-    }
+  std::string loadDSL(std::string name, PyObject *l=(PyObject*)0)
+  {
+      std::stringstream stream;
+      std::vector<PythonLoadListener> py_listener;
 
-    bool loadNET(std::string name, PyObject *l=(PyObject*)0)
-    {
-        std::vector<PythonLoadListener> py_listener;
-        std::stringstream stream;
-  
-        try {
-            gum::NetReader<GUM_SCALAR> reader(self,name);
-            int l_size=__fillLoadListeners(py_listener,l);
-            for(int i=0 ; i<l_size ; i++) {
-                GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
-            }
+      try {
+          gum::DSLReader<GUM_SCALAR> reader(self,name);
+          int l_size=__fillLoadListeners(py_listener,l);
+          for(int i=0 ; i<l_size ; i++) {
+              GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
+          }
 
-            if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings(stream);
-                reader.showErrorCounts(stream);
-                return false;
-            } else {
-                return true;
-            }
-        } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+          auto nbErr=reader.proceed();
+          reader.showElegantErrorsAndWarnings(stream);
+          if (nbErr>0) {
+              reader.showErrorCounts(stream);
+              GUM_ERROR(gum::FatalError,stream.str());
+          } else {
+              return stream.str();
+          }
+      } catch (gum::IOError& e) {
+        throw(e);
+      }
+      return "";
+  };
 
-        GUM_ERROR(gum::IOError,stream.str());
-        return false;
-    }
+  void saveDSL(std::string name) {
+      gum::DSLWriter<GUM_SCALAR> writer;
+      writer.write( name, *self );
+  };
 
-   void saveNET(std::string name) {
-        gum::NetWriter<GUM_SCALAR> writer;
-        writer.write( name, *self );
-    }
+  std::string loadNET(std::string name, PyObject *l=(PyObject*)0)
+  {
+      std::stringstream stream;
+      std::vector<PythonLoadListener> py_listener;
 
-   bool loadBIFXML(std::string name, PyObject *l=(PyObject*)0)
-    {
-        try {
-            gum::BIFXMLBNReader<GUM_SCALAR> reader(self,name);
-            /* nothing as listener for now for BIFXML ... */
-            /*
-            int l_size=__fillLoadListeners(py_listener,l);
-            for(int i=0 ; i<l_size ; i++) {
-                GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
-            }
-            */
+      try {
+          gum::NetReader<GUM_SCALAR> reader(self,name);
+          int l_size=__fillLoadListeners(py_listener,l);
+          for(int i=0 ; i<l_size ; i++) {
+              GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
+          }
 
-            int isOK= reader.proceed(); // for BIFXML, proceed() returns 0 or 1
-            return (isOK==0);
-        } catch (gum::IOError& e) {
-            throw(e);
-        }
+          auto nbErr=reader.proceed();
+          reader.showElegantErrorsAndWarnings(stream);
+          if (nbErr>0) {
+              reader.showErrorCounts(stream);
+              GUM_ERROR(gum::FatalError,stream.str());
+          } else {
+              return stream.str();
+          }
+      } catch (gum::IOError& e) {
+        throw(e);
+      }
+      return "";
+  };
 
-        return false;
-   }
+  void saveNET(std::string name) {
+      gum::NetWriter<GUM_SCALAR> writer;
+      writer.write( name, *self );
+  };
 
-    void saveBIFXML(std::string name) {
-        gum::BIFXMLBNWriter<GUM_SCALAR> writer;
-        writer.write( name, *self );
-    }
+  std::string loadPRM(std::string name, std::string system="",std::string classpath="",PyObject *l=(PyObject*)0)
+  {
+      std::stringstream stream;
+      std::vector<PythonLoadListener> py_listener;
+
+      try {
+          gum::O3prmBNReader<GUM_SCALAR> reader(self,name,system,classpath);
+          
+          auto nbErr=reader.proceed();
+          reader.showElegantErrorsAndWarnings(stream);
+          if (nbErr>0) {
+              reader.showErrorCounts(stream);
+              GUM_ERROR(gum::FatalError,stream.str());
+          } else {
+              return stream.str();
+          }
+      } catch (gum::IOError& e) {
+        throw(e);
+      }
+      return "";
+  };
+
+  std::string loadBIFXML(std::string name, PyObject *l=(PyObject*)0)
+  {
+      std::stringstream stream;
+      std::vector<PythonLoadListener> py_listener;
+
+      try {
+          gum::BIFXMLBNReader<GUM_SCALAR> reader(self,name);
+
+          int isOK=reader.proceed();// for BIFXML, proceed() returns 0 or 1
+          if (isOK==0) {
+              GUM_ERROR(gum::FatalError,"Errors found");
+          } else {
+              return "";
+          }
+      } catch (gum::IOError& e) {
+        throw(e);
+      }
+      return "";
+  };
+
+  void saveBIFXML(std::string name) {
+      gum::BIFXMLBNWriter<GUM_SCALAR> writer;
+      writer.write( name, *self );
+  };
 }
 

@@ -31,42 +31,43 @@ namespace gum {
 
     /// default constructor
     DBTransformIdentity::DBTransformIdentity() {
-      GUM_CONSTRUCTOR(DBTransformIdentity);
+      GUM_CONSTRUCTOR( DBTransformIdentity );
     }
 
     /// copy constructor
-    DBTransformIdentity::DBTransformIdentity(const DBTransformIdentity &from)
-        : DBTransform(from) {
-      GUM_CONS_CPY(DBTransformIdentity);
+    DBTransformIdentity::DBTransformIdentity( const DBTransformIdentity& from )
+        : DBTransform( from ) {
+      GUM_CONS_CPY( DBTransformIdentity );
     }
 
     /// move constructor
-    DBTransformIdentity::DBTransformIdentity(DBTransformIdentity &&from)
-        : DBTransform(from) {
-      GUM_CONS_MOV(DBTransformIdentity);
+    DBTransformIdentity::DBTransformIdentity( DBTransformIdentity&& from )
+        : DBTransform( from ) {
+      GUM_CONS_MOV( DBTransformIdentity );
     }
 
     /// destructor
     DBTransformIdentity::~DBTransformIdentity() {
-      GUM_DESTRUCTOR(DBTransformIdentity);
+      GUM_DESTRUCTOR( DBTransformIdentity );
     }
 
     /// copy operator
-    DBTransformIdentity &DBTransformIdentity::
-    operator=(const DBTransformIdentity &from) {
-      DBTransform::operator=(from);
+    DBTransformIdentity& DBTransformIdentity::
+    operator=( const DBTransformIdentity& from ) {
+      DBTransform::operator=( from );
       return *this;
     }
 
     /// move operator
-    DBTransformIdentity &DBTransformIdentity::operator=(DBTransformIdentity &&from) {
-      DBTransform::operator=(std::move(from));
+    DBTransformIdentity& DBTransformIdentity::
+    operator=( DBTransformIdentity&& from ) {
+      DBTransform::operator=( std::move( from ) );
       return *this;
     }
 
     /// transforms a vector of DBrows
-    bool DBTransformIdentity::transform(std::vector<DBRow> &db,
-                                        std::vector<std::string> miss) const {
+    bool DBTransformIdentity::transform( std::vector<DBRow>& db,
+                                         std::vector<std::string> miss ) const {
       return true;
     }
 

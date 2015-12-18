@@ -26,16 +26,13 @@
 #ifndef GUM_OPERATORS_4_MULTI_DIM_H
 #define GUM_OPERATORS_4_MULTI_DIM_H
 
-
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/core/timer.h>
 
-
 namespace gum {
-
 
   /// a specialized function for summing two multiDimArrays
   /** The function produces a tensorial addition of t1 and t2, that is, if t1 and
@@ -47,26 +44,22 @@ namespace gum {
    * @warning In practice, do not use this function but rather operator+ on
    * multiDimDecorators. This operator will take care to select this function
    * if it is appropriate for your addition. */
-  template<typename T>
-  MultiDimArray<T>*
-  add2MultiDimArrays ( const MultiDimArray<T>* t1,
-                       const MultiDimArray<T>* t2 );
+  template <typename T>
+  MultiDimArray<T> *add2MultiDimArrays(const MultiDimArray<T> *t1,
+                                       const MultiDimArray<T> *t2);
 
-  template<typename T>
-  MultiDimImplementation<T>*
-  add2MultiDimArrays ( const MultiDimImplementation<T>* t1,
-                       const MultiDimImplementation<T>* t2 );
+  template <typename T>
+  MultiDimImplementation<T> *add2MultiDimArrays(const MultiDimImplementation<T> *t1,
+                                                const MultiDimImplementation<T> *t2);
 
-  template<typename T>
-  MultiDimArray<T*>*
-  add2MultiDimArrays4Pointers ( const MultiDimArray<T*>* t1,
-                                const MultiDimArray<T*>* t2 );
+  template <typename T>
+  MultiDimArray<T *> *add2MultiDimArrays4Pointers(const MultiDimArray<T *> *t1,
+                                                  const MultiDimArray<T *> *t2);
 
-  template<typename T>
-  MultiDimImplementation<T*>*
-  add2MultiDimArrays4Pointers ( const MultiDimImplementation<T*>* t1,
-                                const MultiDimImplementation<T*>* t2 );
-
+  template <typename T>
+  MultiDimImplementation<T *> *
+  add2MultiDimArrays4Pointers(const MultiDimImplementation<T *> *t1,
+                              const MultiDimImplementation<T *> *t2);
 
 
   template<typename T>
@@ -90,26 +83,23 @@ namespace gum {
    * @warning In practice, do not use this function but rather operator- on
    * multiDimDecorators. This operator will take care to select this function
    * if it is appropriate for your subtraction. */
-  template<typename T>
-  MultiDimArray<T>*
-  subtract2MultiDimArrays ( const MultiDimArray<T>* t1,
-                            const MultiDimArray<T>* t2 );
+  template <typename T>
+  MultiDimArray<T> *subtract2MultiDimArrays(const MultiDimArray<T> *t1,
+                                            const MultiDimArray<T> *t2);
 
-  template<typename T>
-  MultiDimImplementation<T>*
-  subtract2MultiDimArrays ( const MultiDimImplementation<T>* t1,
-                            const MultiDimImplementation<T>* t2 );
+  template <typename T>
+  MultiDimImplementation<T> *
+  subtract2MultiDimArrays(const MultiDimImplementation<T> *t1,
+                          const MultiDimImplementation<T> *t2);
 
-  template<typename T>
-  MultiDimArray<T*>*
-  subtract2MultiDimArrays4Pointers ( const MultiDimArray<T*>* t1,
-                                     const MultiDimArray<T*>* t2 );
+  template <typename T>
+  MultiDimArray<T *> *subtract2MultiDimArrays4Pointers(const MultiDimArray<T *> *t1,
+                                                       const MultiDimArray<T *> *t2);
 
-  template<typename T>
-  MultiDimImplementation<T*>*
-  subtract2MultiDimArrays4Pointers ( const MultiDimImplementation<T*>* t1,
-                                     const MultiDimImplementation<T*>* t2 );
-
+  template <typename T>
+  MultiDimImplementation<T *> *
+  subtract2MultiDimArrays4Pointers(const MultiDimImplementation<T *> *t1,
+                                   const MultiDimImplementation<T *> *t2);
 
 
   template<typename T>
@@ -133,26 +123,23 @@ namespace gum {
    * @warning In practice, do not use this function but rather operator* on
    * multiDimDecorators. This operator will take care to select this function
    * if it is appropriate for your multiplication. */
-  template<typename T>
-  MultiDimArray<T>*
-  multiply2MultiDimArrays ( const MultiDimArray<T>* t1,
-                            const MultiDimArray<T>* t2 );
+  template <typename T>
+  MultiDimArray<T> *multiply2MultiDimArrays(const MultiDimArray<T> *t1,
+                                            const MultiDimArray<T> *t2);
 
-  template<typename T>
-  MultiDimImplementation<T>*
-  multiply2MultiDimArrays ( const MultiDimImplementation<T>* t1,
-                            const MultiDimImplementation<T>* t2 );
+  template <typename T>
+  MultiDimImplementation<T> *
+  multiply2MultiDimArrays(const MultiDimImplementation<T> *t1,
+                          const MultiDimImplementation<T> *t2);
 
-  template<typename T>
-  MultiDimArray<T*>*
-  multiply2MultiDimArrays4Pointers ( const MultiDimArray<T*>* t1,
-                                     const MultiDimArray<T*>* t2 );
+  template <typename T>
+  MultiDimArray<T *> *multiply2MultiDimArrays4Pointers(const MultiDimArray<T *> *t1,
+                                                       const MultiDimArray<T *> *t2);
 
-  template<typename T>
-  MultiDimImplementation<T*>*
-  multiply2MultiDimArrays4Pointers ( const MultiDimImplementation<T*>* t1,
-                                     const MultiDimImplementation<T*>* t2 );
-
+  template <typename T>
+  MultiDimImplementation<T *> *
+  multiply2MultiDimArrays4Pointers(const MultiDimImplementation<T *> *t1,
+                                   const MultiDimImplementation<T *> *t2);
 
 
   template<typename T>
@@ -176,27 +163,23 @@ namespace gum {
    * @warning In practice, do not use this function but rather operator/ on
    * multiDimDecorators. This operator will take care to select this function
    * if it is appropriate for your division. */
-  template<typename T>
-  MultiDimArray<T>*
-  divide2MultiDimArrays ( const MultiDimArray<T>* t1,
-                          const MultiDimArray<T>* t2 );
+  template <typename T>
+  MultiDimArray<T> *divide2MultiDimArrays(const MultiDimArray<T> *t1,
+                                          const MultiDimArray<T> *t2);
 
-  template<typename T>
-  MultiDimImplementation<T>*
-  divide2MultiDimArrays ( const MultiDimImplementation<T>* t1,
-                          const MultiDimImplementation<T>* t2 );
+  template <typename T>
+  MultiDimImplementation<T> *
+  divide2MultiDimArrays(const MultiDimImplementation<T> *t1,
+                        const MultiDimImplementation<T> *t2);
 
-  template<typename T>
-  MultiDimArray<T*>*
-  divide2MultiDimArrays4Pointers ( const MultiDimArray<T*>* t1,
-                                   const MultiDimArray<T*>* t2 );
+  template <typename T>
+  MultiDimArray<T *> *divide2MultiDimArrays4Pointers(const MultiDimArray<T *> *t1,
+                                                     const MultiDimArray<T *> *t2);
 
-  template<typename T>
-  MultiDimImplementation<T*>*
-  divide2MultiDimArrays4Pointers ( const MultiDimImplementation<T*>* t1,
-                                   const MultiDimImplementation<T*>* t2 );
-
-
+  template <typename T>
+  MultiDimImplementation<T *> *
+  divide2MultiDimArrays4Pointers(const MultiDimImplementation<T *> *t1,
+                                 const MultiDimImplementation<T *> *t2);
 
   template<typename T>
   MultiDimFunctionGraph<T>*
@@ -255,71 +238,58 @@ namespace gum {
   // the operators that should be used to select appropriately the functions
   // to combine multiDimDecorators
 
-
   /// the function to be used to add two MultiDimImplementations
-  template<typename T>
-  MultiDimImplementation<T>*
-  operator+ ( const MultiDimImplementation<T>&, const MultiDimImplementation<T>& );
+  template <typename T>
+  MultiDimImplementation<T> *operator+(const MultiDimImplementation<T> &,
+                                       const MultiDimImplementation<T> &);
 
   /// the function to be used to add two MultiDimDecorators
-  template<typename T>
-  MultiDimImplementation<T>*
-  operator+ ( const MultiDimDecorator<T>&, const MultiDimDecorator<T>& );
-
+  template <typename T>
+  MultiDimImplementation<T> *operator+(const MultiDimDecorator<T> &,
+                                       const MultiDimDecorator<T> &);
 
   /// the function to be used to subtract two MultiDimImplementations
-  template<typename T>
-  MultiDimImplementation<T>*
-  operator- ( const MultiDimImplementation<T>&, const MultiDimImplementation<T>& );
+  template <typename T>
+  MultiDimImplementation<T> *operator-(const MultiDimImplementation<T> &,
+                                       const MultiDimImplementation<T> &);
 
   /// the function to be used to subtract two MultiDimDecorators
-  template<typename T>
-  MultiDimImplementation<T>*
-  operator- ( const MultiDimDecorator<T>&, const MultiDimDecorator<T>& );
-
+  template <typename T>
+  MultiDimImplementation<T> *operator-(const MultiDimDecorator<T> &,
+                                       const MultiDimDecorator<T> &);
 
   /// the function to be used to multiply two MultiDimImplementations
-  template<typename T>
-  MultiDimImplementation<T>*
-  operator* ( const MultiDimImplementation<T>&, const MultiDimImplementation<T>& );
+  template <typename T>
+  MultiDimImplementation<T> *operator*(const MultiDimImplementation<T> &,
+                                       const MultiDimImplementation<T> &);
 
   /// the function to be used to multiply two MultiDimDecorators
-  template<typename T>
-  MultiDimImplementation<T>*
-  operator* ( const MultiDimDecorator<T>&, const MultiDimDecorator<T>& );
-
+  template <typename T>
+  MultiDimImplementation<T> *operator*(const MultiDimDecorator<T> &,
+                                       const MultiDimDecorator<T> &);
 
   /// the function to be used to divide two MultiDimImplementations
-  template<typename T>
-  MultiDimImplementation<T>*
-  operator/ ( const MultiDimImplementation<T>&, const MultiDimImplementation<T>& );
+  template <typename T>
+  MultiDimImplementation<T> *operator/(const MultiDimImplementation<T> &,
+                                       const MultiDimImplementation<T> &);
 
   /// the function to be used to divide two MultiDimDecorators
-  template<typename T>
-  MultiDimImplementation<T>*
-  operator/ ( const MultiDimDecorator<T>&, const MultiDimDecorator<T>& );
-
-
-
-
+  template <typename T>
+  MultiDimImplementation<T> *operator/(const MultiDimDecorator<T> &,
+                                       const MultiDimDecorator<T> &);
 
   //
   // DO NOT FORGET TO REGISTER YOUR BINARY FUNCTIONS AT THE END OF FILE
   // operators4MultiDim.tcc
   //
 
-
-
   /** @brief the function used to register all the operators on
    * multidimImplementations over non-pointers types */
-  template<typename GUM_SCALAR>
-  void operators4MultiDimInit();
+  template <typename GUM_SCALAR> void operators4MultiDimInit();
 
   /** @brief the function used to register all the operators on
    * multidimImplementations over pointers types */
-  template<typename GUM_SCALAR>
-  void pointerOperators4MultiDimInit();
-
+  template <typename GUM_SCALAR> void pointerOperators4MultiDimInit();
 
   /// a class used to register operators over non-pointers types
   /** This class is of course completely redundant with function
@@ -331,9 +301,8 @@ namespace gum {
    * operators4MultiDimInit, we allow this partial specialization. This is
    * most effective to produce different codes for pointer types and non-pointer
    * types. */
-  template<typename GUM_SCALAR>
-  struct Operators4MultiDimInitialize {
-    void init() { operators4MultiDimInit<GUM_SCALAR> (); };
+  template <typename GUM_SCALAR> struct Operators4MultiDimInitialize {
+    void init() { operators4MultiDimInit<GUM_SCALAR>(); };
   };
 
   /// a class used to register operators over pointers types
@@ -346,23 +315,13 @@ namespace gum {
    * by creating a class the primary purpose of which is to run function
    * operators4MultiDimInit or pointerOperators4MultiDimInit, we allow this
    * partial specialization to obtain. */
-  template<typename GUM_SCALAR>
-  struct Operators4MultiDimInitialize<GUM_SCALAR*> {
-    void init() { pointerOperators4MultiDimInit<GUM_SCALAR> (); };
+  template <typename GUM_SCALAR> struct Operators4MultiDimInitialize<GUM_SCALAR *> {
+    void init() { pointerOperators4MultiDimInit<GUM_SCALAR>(); };
   };
 
-
 } /* namespace gum */
-
-
 
 // always include the templatized implementations
 #include <agrum/multidim/operators/operators4MultiDim.tcc>
 
-
 #endif /* GUM_OPERATORS_4_MULTI_DIM_H */
-
-
-
-
-

@@ -26,6 +26,7 @@ Samples generation w.r.t to a probability distribution
 represented by a Bayesian network.
 """
 
+from __future__ import print_function
 import sys,os,csv,random
 
 from .utils.progress_bar import ProgressBar
@@ -85,16 +86,16 @@ class CSVGenerator:
         if not n in self._probas:
           self._probas[n]={}
         current=self._probas[n]
-        
+
         for k in par:
           val_k=self._sample[k]
           if not val_k in current:
             current[val_k]={}
           current=current[val_k]
-          
+
         if not 'p' in current:
           current['p']=list(bn.cpt(node_id)[dict([(p,self._sample[p]) for p in par])])
-          
+
         return current['p']
 
     def newSample(self,bn,seq):

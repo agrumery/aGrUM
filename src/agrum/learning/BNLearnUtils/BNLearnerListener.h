@@ -16,9 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/** @file
+/**
+ * @file
  * @brief A listener that allows BNLearner to be used as a proxy for its inner
- *algorithms
+ * algorithms
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
@@ -26,36 +27,38 @@
 #define BNLEARNERLISTENER_H
 
 #include <agrum/config.h>
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
-
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
   namespace learning {
     class genericBNLearner;
 
     /** @class BNLearnerListener
-     * @brief A class that redirects gum_signal from algorithms to the listeners of
+     * @brief A class that redirects gum_signal from algorithms to the listeners
+     *of
      *BNLearn
      *
      * @ingroup learning_group
      */
     class BNLearnerListener : public ApproximationSchemeListener {
       public:
-      BNLearnerListener(genericBNLearner *bnl, ApproximationScheme &sch);
+      BNLearnerListener( genericBNLearner* bnl, ApproximationScheme& sch );
       virtual ~BNLearnerListener();
 
-      virtual void whenProgress(const void *src, Size pourcent, double error,
-                                double time) final;
-      virtual void whenStop(const void *src, std::string message) final;
+      virtual void whenProgress( const void* src,
+                                 Size pourcent,
+                                 double error,
+                                 double time ) final;
+      virtual void whenStop( const void* src, std::string message ) final;
 
       private:
-      BNLearnerListener(const BNLearnerListener &other);
-      BNLearnerListener &operator=(const BNLearnerListener &other);
+      BNLearnerListener( const BNLearnerListener& other );
+      BNLearnerListener& operator=( const BNLearnerListener& other );
 
-      genericBNLearner *__bnlearner;
+      genericBNLearner* __bnlearner;
     };
-  } // namespace learning
-} // namespace gum
+  }  // namespace learning
+}  // namespace gum
 
-#endif // BNLEARNERLISTENER_H
+#endif  // BNLEARNERLISTENER_H

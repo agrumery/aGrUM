@@ -32,9 +32,10 @@
 
 namespace gum {
 
-  /** @class SimpleCPTGenerator
+  /** @class SimpleCPTGenerator simpleCPTGenerator.h
+   * <agrum/BN/generator/simpleCPTGenerator.h>
    * @brief Class for generating Conditional Probability Tables.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This class implements a CPTGenerator CPT generation algorithm.
    */
@@ -65,7 +66,8 @@ namespace gum {
      * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
-    virtual void generateCPT(const Idx &varId, const Potential<GUM_SCALAR> &cpt);
+    virtual void generateCPT( const Idx& varId,
+                              const Potential<GUM_SCALAR>& cpt );
   };
 
   extern template class SimpleCPTGenerator<float>;

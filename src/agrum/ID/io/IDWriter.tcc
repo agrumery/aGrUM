@@ -31,17 +31,19 @@ namespace gum {
   /*
    * Default constructor.
    */
-  template <typename GUM_SCALAR> INLINE IDWriter<GUM_SCALAR>::IDWriter() {
-    GUM_CONSTRUCTOR(IDWriter);
+  template <typename GUM_SCALAR>
+  INLINE IDWriter<GUM_SCALAR>::IDWriter() {
+    GUM_CONSTRUCTOR( IDWriter );
   }
 
   /*
    * Default destructor.
    */
-  template <typename GUM_SCALAR> INLINE IDWriter<GUM_SCALAR>::~IDWriter() {
-    GUM_DESTRUCTOR(IDWriter);
+  template <typename GUM_SCALAR>
+  INLINE IDWriter<GUM_SCALAR>::~IDWriter() {
+    GUM_DESTRUCTOR( IDWriter );
   }
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

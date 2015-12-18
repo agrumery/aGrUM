@@ -50,17 +50,17 @@ namespace gum {
 
     /// default constructor
     /** @warning table and del_vars are passed by copy */
-    ScheduleProject(const ScheduleMultiDim<GUM_SCALAR> &table,
-                    const Set<const DiscreteVariable *> &del_vars,
-                    MultiDimImplementation<GUM_SCALAR> *(*project)(
-                        const MultiDimImplementation<GUM_SCALAR> &,
-                        const Set<const DiscreteVariable *> &));
+    ScheduleProject( const ScheduleMultiDim<GUM_SCALAR>& table,
+                     const Set<const DiscreteVariable*>& del_vars,
+                     MultiDimImplementation<GUM_SCALAR>* ( *project )(
+                         const MultiDimImplementation<GUM_SCALAR>&,
+                         const Set<const DiscreteVariable*>& ) );
 
     /// copy constructor
-    ScheduleProject(const ScheduleProject<GUM_SCALAR> &);
+    ScheduleProject( const ScheduleProject<GUM_SCALAR>& );
 
     /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleProject<GUM_SCALAR> *newFactory() const;
+    virtual ScheduleProject<GUM_SCALAR>* newFactory() const;
 
     /// destructor
     virtual ~ScheduleProject();
@@ -73,17 +73,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleProject<GUM_SCALAR> &operator=(const ScheduleProject<GUM_SCALAR> &);
+    ScheduleProject<GUM_SCALAR>&
+    operator=( const ScheduleProject<GUM_SCALAR>& );
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator==(const ScheduleOperation<GUM_SCALAR> &) const;
+    bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator!=(const ScheduleOperation<GUM_SCALAR> &) const;
+    bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// @}
 
@@ -105,18 +106,21 @@ namespace gum {
      * of the tables involved in the operation.
      * @return a pair of memory consumption: the first one is the maximum
      * amount of memory used during the operation and the second one is the
-     * amount of memory still used at the end of the function ( the memory used by
+     * amount of memory still used at the end of the function ( the memory used
+     * by
      * the resulting table ) */
     std::pair<long, long> memoryUsage() const;
 
-    /// returns the scheduleMultidim resulting from the execution of the operation
-    const ScheduleMultiDim<GUM_SCALAR> &result() const;
+    /// returns the scheduleMultidim resulting from the execution of the
+    /// operation
+    const ScheduleMultiDim<GUM_SCALAR>& result() const;
 
     /// returns the set of multidims passed in argument to the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR> *> &multiDimArgs() const;
+    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR> *> &multiDimResults() const;
+    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+    multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -128,21 +132,21 @@ namespace gum {
     ScheduleMultiDim<GUM_SCALAR> __table;
 
     // the set of variables that should be removed from the table
-    Set<const DiscreteVariable *> __del_vars;
+    Set<const DiscreteVariable*> __del_vars;
 
     /// the result of the operation
-    ScheduleMultiDim<GUM_SCALAR> *__result;
+    ScheduleMultiDim<GUM_SCALAR>* __result;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR> *> *__args;
+    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __args;
 
     /// the set of ScheduleMultidims resulting from the operation
-    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR> *> *__results;
+    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __results;
 
     /// the projection operator
-    MultiDimImplementation<GUM_SCALAR> *(*__project)(
-        const MultiDimImplementation<GUM_SCALAR> &,
-        const Set<const DiscreteVariable *> &);
+    MultiDimImplementation<GUM_SCALAR>* ( *__project )(
+        const MultiDimImplementation<GUM_SCALAR>&,
+        const Set<const DiscreteVariable*>& );
   };
 
 } /* namespace gum */

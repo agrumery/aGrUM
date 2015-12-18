@@ -31,37 +31,37 @@ namespace gum {
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>::AprioriNoApriori() {
-      setWeight(0);
-      GUM_CONSTRUCTOR(AprioriNoApriori);
+      setWeight( 0 );
+      GUM_CONSTRUCTOR( AprioriNoApriori );
     }
 
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>::AprioriNoApriori(
-        const AprioriNoApriori<IdSetAlloc, CountAlloc> &from)
-        : Apriori<IdSetAlloc, CountAlloc>(from) {
-      GUM_CONS_CPY(AprioriNoApriori);
+        const AprioriNoApriori<IdSetAlloc, CountAlloc>& from )
+        : Apriori<IdSetAlloc, CountAlloc>( from ) {
+      GUM_CONS_CPY( AprioriNoApriori );
     }
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>::AprioriNoApriori(
-        AprioriNoApriori<IdSetAlloc, CountAlloc> &&from)
-        : Apriori<IdSetAlloc, CountAlloc>(std::move(from)) {
-      GUM_CONS_MOV(AprioriNoApriori);
+        AprioriNoApriori<IdSetAlloc, CountAlloc>&& from )
+        : Apriori<IdSetAlloc, CountAlloc>( std::move( from ) ) {
+      GUM_CONS_MOV( AprioriNoApriori );
     }
 
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE AprioriNoApriori<IdSetAlloc, CountAlloc> *
+    INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>*
     AprioriNoApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
-      return new AprioriNoApriori<IdSetAlloc, CountAlloc>(*this);
+      return new AprioriNoApriori<IdSetAlloc, CountAlloc>( *this );
     }
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>::~AprioriNoApriori() {
-      GUM_DESTRUCTOR(AprioriNoApriori);
+      GUM_DESTRUCTOR( AprioriNoApriori );
     }
 
     /// include the apriori into a given set of counts
@@ -70,18 +70,18 @@ namespace gum {
 
     /// sets the weight of the a priori
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void AprioriNoApriori<IdSetAlloc, CountAlloc>::setWeight(float) {}
+    INLINE void AprioriNoApriori<IdSetAlloc, CountAlloc>::setWeight( float ) {}
 
     /// indicates whether an apriori is of a certain type
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE bool
-    AprioriNoApriori<IdSetAlloc, CountAlloc>::isOfType(const std::string &type) {
-      return AprioriNoAprioriType::isOfType(type);
+    INLINE bool AprioriNoApriori<IdSetAlloc, CountAlloc>::isOfType(
+        const std::string& type ) {
+      return AprioriNoAprioriType::isOfType( type );
     }
 
     /// returns the type of the apriori
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::string &
+    INLINE const std::string&
     AprioriNoApriori<IdSetAlloc, CountAlloc>::getType() const noexcept {
       return AprioriNoAprioriType::type;
     }

@@ -47,7 +47,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       learner.useGreedyHillClimbing()
       bn=learner.learnBN()
 
-      ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'))
+      ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'),verbose=False)
 
       f=gum.BruteForceKL(bn,ref)
       res=f.compute()
@@ -71,7 +71,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
       bn=learner.learnBN()
 
-      ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'))
+      ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'),verbose=False)
 
       f=gum.BruteForceKL(bn,ref)
       res=f.compute()
@@ -79,7 +79,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
 
     def testParameterLearning(self):
-      bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'))
+      bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'),verbose=False)
 
       learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'),bn)
       learner.useScoreLog2Likelihood()
@@ -89,7 +89,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       for i in range(bn.size()):
         self.assertEquals(str(bn2.variable(i)),str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
 
-      bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'))
+      bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'),verbose=False)
       # there is a beurk modality in asia3-faulty.csv
       with self.assertRaises(gum.UnknownLabelInDatabase):
         learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3-faulty.csv'),bn)

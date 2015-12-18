@@ -17,20 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <ctime>
+/**
+ * @file
+ * @brief Contains usefull methods for random stuff.
+ *
+ * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
+ */
 
+// to ease IDE parser
+#include <agrum/core/utils_random.h>
 namespace gum {
 
   INLINE
-  double randomProba() { return ((double)rand()) / ((double)RAND_MAX); }
+  double randomProba() { return ( (double)rand() ) / ( (double)RAND_MAX ); }
 
   INLINE
-  void initRandom(unsigned int init) {
-    if (init) {
-      srand(init);
-      randomGeneratorSeed(init);
+  void initRandom( unsigned int init ) {
+    if ( init ) {
+      srand( init );
+      randomGeneratorSeed( init );
     } else {
-      srand(randomGeneratorSeed());
+      srand( randomGeneratorSeed() );
     }
   }
 

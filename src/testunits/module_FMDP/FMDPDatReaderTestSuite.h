@@ -67,42 +67,49 @@ namespace gum_tests {
       }
 
     public:
+    void testConstuctor() {
+      std::string file = GET_PATH_STR("FMDP/coffee/coffee.dat");
 
 
-      void testConstuctor() {
-        std::string file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
+      gum::FMDPDatReader<float> *reader = 0;
 
-        gum::FMDP<float> fmdp;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          reader = new gum::FMDPDatReader<float>(&fmdp, file, &ddf));
 
-        gum::FMDPDatReader<float>* reader = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
+    }
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( reader = new gum::FMDPDatReader<float> ( &fmdp, file ) );
+    void testRead_file1() {
+      std::string file = GET_PATH_STR("FMDP/factory/factoryB.dat");
 
         TS_GUM_ASSERT_THROWS_NOTHING ( delete reader );
 
-      }
+      gum::FMDPDatReader<float> reader(&fmdp, file, &ddf);
 
-      void test_Coffee() {
-        file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
-        run ();
-      }
+      reader.trace(false);
 
       void test_FactoryS() {
         file = GET_PATH_STR ( "FMDP/factory/tiny-factory.dat" );
         run ();
       }
 
-      void est_Maze() {
-        file = GET_PATH_STR ( "FMDP/labyrinth/maze.dat" );
-        run ();
-      }
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      reader.showElegantErrorsAndWarnings();
+    }
 
       void est_MazeB() {
         file = GET_PATH_STR ( "FMDP/labyrinth/mazeb.dat" );
         run ();
       }
 
+    private:
+    float abs(float d) {
+      if (d < 0)
+        return (d * (float)-1);
 
       void test_Factory() {
         file = GET_PATH_STR ( "FMDP/factory/factory.dat" );

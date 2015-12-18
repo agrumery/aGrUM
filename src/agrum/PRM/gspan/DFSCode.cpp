@@ -28,19 +28,18 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/PRM/gspan/DFSCode.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 namespace gum {
   namespace prm {
     namespace gspan {
 
-      std::ostream &operator<<(std::ostream &out, const DFSCode &code) {
+      std::ostream& operator<<( std::ostream& out, const DFSCode& code ) {
         out << "[ ";
         bool first = true;
 
-        for (const auto item : code.codes) {
-          if (!first)
-            out << ", ";
+        for ( const auto item : code.codes ) {
+          if ( !first ) out << ", ";
           out << *item;
           first = false;
         }

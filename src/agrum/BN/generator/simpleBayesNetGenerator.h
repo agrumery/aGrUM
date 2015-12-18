@@ -20,7 +20,8 @@
 /** @file
  * @brief Class for generating bayesian netwroks.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo
+ *MAESANO
  */
 #ifndef GUM_SIMPLE_BAYES_NET_GENERATOR_H
 #define GUM_SIMPLE_BAYES_NET_GENERATOR_H
@@ -37,15 +38,16 @@
 namespace gum {
 
   /**
-   * @class IBayesNetGenerator simpleBayesNetGenerator.h
+   * @class SimpleBayesNetGenerator simpleBayesNetGenerator.h
    *<agrum/BN/generator/simpleBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This class randomly generates a bayesian network given three parameters:
    * the number of nodes and the max number of arcs and the number of maximum
    *modality for each nodes.
-   * @warning  Be Careful when entering the parameters, high Values may cause the
+   * @warning  Be Careful when entering the parameters, high Values may cause
+   *the
    *density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    */
@@ -66,7 +68,9 @@ namespace gum {
     * @param maxArcs The number of maximum arcs imposed on the generator.
     * @param maxModality Each DRV has from 2 to maxModality modalities
     */
-    SimpleBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality = 2);
+    SimpleBayesNetGenerator( Size nbrNodes,
+                             Size maxArcs,
+                             Size maxModality = 2 );
 
     /**
      * Destructor.
@@ -83,7 +87,7 @@ namespace gum {
      * @param bayesNet Bayesian Network to be completed after initialisation
      * @return null but modify inputed Bayesian Network
      */
-    void generateBN(BayesNet<GUM_SCALAR> &bayesNet);
+    void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
 
     /// @}
   }; /* class SimpleBayesNetGenerator */

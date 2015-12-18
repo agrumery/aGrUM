@@ -33,9 +33,11 @@
 namespace gum {
 
   /**
-   * @brief Complexity allows to characterize the awaited difficulty for an algorithm
+   * @brief Complexity allows to characterize the awaited difficulty for an
+   * algorithm
    * given a specific instance
-   * Therefore this is not a theoretical characterization but rather a pragmatic rate
+   * Therefore this is not a theoretical characterization but rather a pragmatic
+   * rate
    * of that very instance.
    */
   enum class Complexity : char { Heavy, Difficult, Correct };
@@ -47,40 +49,47 @@ namespace gum {
   *
   * KL is not virtual because it may be instantiated but protected methods throw
   *gum::OperationNotAllow : we do not know here how the computation is done.
-  * Since this computation may be very difficult, KL.Complexity() give an estimation
-  *( KL_Complexity::Heavy,KL_Complexity::Difficult,KL_Complexity::Correct ) of the
+  * Since this computation may be very difficult, KL.Complexity() give an
+  *estimation
+  *( KL_Complexity::Heavy,KL_Complexity::Difficult,KL_Complexity::Correct ) of
+  *the
   *needed time.
   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
   *computations are made once. The second is for free :)
   *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL
+  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
+  *case, KL
   *keeps working but trace this error (errorPQ() and errorQP())?
   */
-  template <typename GUM_SCALAR> class KL {
+  template <typename GUM_SCALAR>
+  class KL {
 // difficulty is chosen w.r.t the log10DomainSize of the BN
-#define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT double(12.0)
-#define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double(7.0)
+#define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT double( 12.0 )
+#define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double( 7.0 )
     public:
     /** constructor must give 2 BNs
-     * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or
+     * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize
+     * or
      * compatible node sets.
      */
-    KL(const IBayesNet<GUM_SCALAR> &P, const IBayesNet<GUM_SCALAR> &Q);
+    KL( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
 
     /** copy constructor
      */
-    KL(const KL<GUM_SCALAR> &kl);
+    KL( const KL<GUM_SCALAR>& kl );
 
     /** destructor */
     ~KL();
 
     /**
-     * return KL::Complexity::Heavy,KL::Complexity::Difficult,KL::Complexity::Correct
+     * return
+     * KL::Complexity::Heavy,KL::Complexity::Difficult,KL::Complexity::Correct
      * depending on the BNs __p and __q
      */
     Complexity difficulty() const;
 
-    /// @name Accessors to results. The first call do the computations. The others do
+    /// @name Accessors to results. The first call do the computations. The
+    /// others do
     /// not.
     /// @{
 
@@ -105,20 +114,20 @@ namespace gum {
     double bhattacharya();
 
     /// @return p
-    const IBayesNet<GUM_SCALAR> &p(void) const;
+    const IBayesNet<GUM_SCALAR>& p( void ) const;
 
     /// @return q
-    const IBayesNet<GUM_SCALAR> &q(void) const;
+    const IBayesNet<GUM_SCALAR>& q( void ) const;
     /// @}
 
     protected:
     // should be pure virtual but using KL directly is a way to delay the choice
     // between different computation scheme (@see BruteForceKL)
-    virtual void _computeKL(void);
+    virtual void _computeKL( void );
     void _process();
 
-    const IBayesNet<GUM_SCALAR> &_p;
-    const IBayesNet<GUM_SCALAR> &_q;
+    const IBayesNet<GUM_SCALAR>& _p;
+    const IBayesNet<GUM_SCALAR>& _q;
 
     GUM_SCALAR _klPQ;
     GUM_SCALAR _klQP;
@@ -136,8 +145,8 @@ namespace gum {
 
   extern template class KL<float>;
   extern template class KL<double>;
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/BN/algorithms/divergence/KL.tcc>
 
-#endif // GUM_KL_H
+#endif  // GUM_KL_H

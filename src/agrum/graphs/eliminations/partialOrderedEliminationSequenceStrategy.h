@@ -21,7 +21,8 @@
  * @brief Base class for all elimination sequence algorithm that impose a given
  * partial ordering on the nodes elimination sequence, that is, the set of all
  * the nodes is divided into several subsets. Within each subset, any ordering
- * can be chosen. But all the nodes of the first subset must be eliminated before
+ * can be chosen. But all the nodes of the first subset must be eliminated
+ *before
  * the nodes of the second, which must be eliminated before those of the third
  * subset, and so on.
  *
@@ -38,10 +39,12 @@
 namespace gum {
 
   /** @class PartialOrderedEliminationSequenceStrategy
-   * @brief Base class for all elimination sequence algorithm that impose a given
+   * @brief Base class for all elimination sequence algorithm that impose a
+   *given
    * partial ordering on the nodes elimination sequence, that is, the set of all
    * the nodes is divided into several subsets. Within each subset, any ordering
-   * can be chosen. But all the nodes of the first subset must be eliminated before
+   * can be chosen. But all the nodes of the first subset must be eliminated
+   *before
    * the nodes of the second, which must be eliminated before those of the third
    * subset, and so on.
    *
@@ -59,11 +62,12 @@ namespace gum {
     /// destructor
     virtual ~PartialOrderedEliminationSequenceStrategy();
 
-    /** @brief creates a new elimination sequence of the same type as the current
+    /** @brief creates a new elimination sequence of the same type as the
+     * current
      * object, but this sequence contains only an empty graph
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
-    virtual PartialOrderedEliminationSequenceStrategy *newFactory() const = 0;
+    virtual PartialOrderedEliminationSequenceStrategy* newFactory() const = 0;
 
     /// @}
 
@@ -73,15 +77,17 @@ namespace gum {
     /// @{
 
     /// sets a new graph to be triangulated
-    /** The elimination sequence algorithms reinitializes its data to start a new
+    /** The elimination sequence algorithms reinitializes its data to start a
+     * new
      * triangulation with graph Graph
      * @param graph the new graph to be triangulated
      * @param dom the modalities of the nodes (i.e., their domain sizes)
      * @param subsets the list of the subsets constituting the partial ordering
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph(UndiGraph *graph, const NodeProperty<Size> *dom,
-                          const List<NodeSet> *subsets) = 0;
+    virtual void setGraph( UndiGraph* graph,
+                           const NodeProperty<Size>* dom,
+                           const List<NodeSet>* subsets ) = 0;
 
     /// @}
 
@@ -96,7 +102,7 @@ namespace gum {
 
     /// copy constructor
     PartialOrderedEliminationSequenceStrategy(
-        const PartialOrderedEliminationSequenceStrategy &);
+        const PartialOrderedEliminationSequenceStrategy& );
 
     /// @}
   };

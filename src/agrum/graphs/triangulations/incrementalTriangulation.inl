@@ -29,16 +29,21 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===            CLASS FOR COMPUTING INCREMENTAL TRIANGULATIONS           === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===            CLASS FOR COMPUTING INCREMENTAL TRIANGULATIONS           ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
 
   /// returns a junction tree corresponding to the current graph
 
   INLINE
-  const CliqueGraph &IncrementalTriangulation::junctionTree() {
+  const CliqueGraph& IncrementalTriangulation::junctionTree() {
     updateTriangulation();
     return __junction_tree;
   }
@@ -46,21 +51,23 @@ namespace gum {
   /// returns the junction tree of the maximal prime subgraphs
 
   INLINE
-  const CliqueGraph &IncrementalTriangulation::maxPrimeSubgraphTree() {
+  const CliqueGraph& IncrementalTriangulation::maxPrimeSubgraphTree() {
     updateTriangulation();
     return __T_mpd;
   }
 
   /// returns the triangulation algorithm (useful for fine tuning it)
 
-  INLINE const UnconstrainedTriangulation &
+  INLINE const UnconstrainedTriangulation&
   IncrementalTriangulation::triangulationAlgo() const {
     return *__triangulation;
   }
 
   /// returns the current graph (that which is incrementally triangulated)
 
-  INLINE const UndiGraph &IncrementalTriangulation::graph() const { return __graph; }
+  INLINE const UndiGraph& IncrementalTriangulation::graph() const {
+    return __graph;
+  }
 
 } /* namespace gum */
 

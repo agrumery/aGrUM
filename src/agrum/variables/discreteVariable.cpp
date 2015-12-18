@@ -28,31 +28,29 @@
 
 namespace gum {
 
+  const std::string DiscreteVariable::toStringWithDescription() const {
+    std::stringstream s;
+    s << description();
+    s << domain();
+
+    return s.str();
+  }
+
   const std::string DiscreteVariable::toString() const {
     std::stringstream s;
-    s << name() << "<";
-
-    if (domainSize() > 0) {
-      s << label(0);
-
-      for (Idx i = 1; i < domainSize(); ++i) {
-        s << ",";
-        s << label(i);
-      }
-    }
-
-    s << ">";
+    s << name();
+    s << domain();
 
     return s.str();
   }
 
   /// for friendly displaying the content of the variable
 
-  std::ostream &operator<<(std::ostream &s, const DiscreteVariable &DRV) {
+  std::ostream& operator<<( std::ostream& s, const DiscreteVariable& DRV ) {
     s << DRV.toString();
     return s;
   }
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

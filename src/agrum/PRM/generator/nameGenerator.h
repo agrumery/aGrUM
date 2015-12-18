@@ -37,10 +37,12 @@ namespace gum {
 
     /**
      * @class NameGenerator PRMGenerator.h <agrum/PRM/generator/PRMGenerator.h>
-     * @brief This is a name generator for classes, types, systems, instances and
+     * @brief This is a name generator for classes, types, systems, instances
+     *and
      *        class elements.
      *
-     * The generation simply use an unsigned int starting at 1 and increasing for
+     * The generation simply use an unsigned int starting at 1 and increasing
+     *for
      * each new name. Different numbers are used for each different type of
      * PRMObject.
      */
@@ -54,11 +56,11 @@ namespace gum {
       /// Default constructor.
       NameGenerator();
       /// Copy constructor.
-      NameGenerator(const NameGenerator &source);
+      NameGenerator( const NameGenerator& source );
       /// Destructor.
       virtual ~NameGenerator();
       /// Affectation operator
-      NameGenerator &operator=(const NameGenerator &source);
+      NameGenerator& operator=( const NameGenerator& source );
 
       /// @}
       // ========================================================================
@@ -67,7 +69,7 @@ namespace gum {
       /// @{
 
       /// Returns the next name w.r.t. the given Type.
-      std::string nextName(PRMObject::PRMType type);
+      std::string nextName( PRMObject::PRMType type );
 
       /// @}
       private:

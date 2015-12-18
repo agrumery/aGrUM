@@ -22,24 +22,23 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-package classes;
-
 type t_state extends boolean
-OK: true,
-    NOK: false;
+  OK: true,
+  NOK: false;
 
 type t_ink extends t_state
-NotEmpty: OK,
-          Empty:    NOK;
+  NotEmpty: OK,
+  Empty:    NOK;
 
 type t_paper extends t_state
-Ready:    OK,
-          Jammed:   NOK,
-          Empty:    NOK;
+  Ready:    OK,
+  Jammed:   NOK,
+  Empty:    NOK;
 
 type t_degraded extends t_state
-OK: OK,
-    Dysfunctional: NOK,
-    Degraded: NOK;
+  OK: OK,
+  Dysfunctional: NOK,
+  Degraded: NOK;
 
+type mycount 0, 1, 2, 3, 4, 5;
 

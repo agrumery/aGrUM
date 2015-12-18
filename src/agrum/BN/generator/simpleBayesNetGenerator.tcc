@@ -31,11 +31,12 @@ namespace gum {
 
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR, template <class> class ICPTGenerator>
-  INLINE SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::SimpleBayesNetGenerator(
-      Size nbrNodes, Size maxArcs, Size maxModality)
-      : IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>(nbrNodes, maxArcs,
-                                                      maxModality) {
-    GUM_CONSTRUCTOR(SimpleBayesNetGenerator);
+  INLINE
+  SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::SimpleBayesNetGenerator(
+      Size nbrNodes, Size maxArcs, Size maxModality )
+      : IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>(
+            nbrNodes, maxArcs, maxModality ) {
+    GUM_CONSTRUCTOR( SimpleBayesNetGenerator );
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -54,7 +55,7 @@ namespace gum {
   template <typename GUM_SCALAR, template <class> class ICPTGenerator>
   INLINE SimpleBayesNetGenerator<GUM_SCALAR,
                                  ICPTGenerator>::~SimpleBayesNetGenerator() {
-    GUM_DESTRUCTOR(SimpleBayesNetGenerator);
+    GUM_DESTRUCTOR( SimpleBayesNetGenerator );
   }
 
   // Generates a bayesian network using floats.
@@ -64,40 +65,46 @@ namespace gum {
 
   template <typename GUM_SCALAR, template <class> class ICPTGenerator>
   void SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::generateBN(
-      BayesNet<GUM_SCALAR> &bayesNet) {
+      BayesNet<GUM_SCALAR>& bayesNet ) {
     IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = bayesNet;
     HashTable<Size, NodeId> map;
     std::stringstream strBuff;
     int nb_mod;
 
-    for (Size i = 0; i < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes;
-         ++i) {
+    for ( Size i = 0;
+          i < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes;
+          ++i ) {
       strBuff << "n" << i;
-      nb_mod = (IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxModality == 2)
-                   ? 2
-                   : 2 +
-                         rand() % (IBayesNetGenerator<GUM_SCALAR,
-                                                      ICPTGenerator>::_maxModality -
-                                   1);
-      map.insert(i, IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.add(
-                        LabelizedVariable(strBuff.str(), "", nb_mod)));
-      strBuff.str("");
+      nb_mod =
+          ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxModality == 2 )
+              ? 2
+              : 2 +
+                    rand() % ( IBayesNetGenerator<GUM_SCALAR,
+                                                  ICPTGenerator>::_maxModality -
+                               1 );
+      map.insert( i,
+                  IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.add(
+                      LabelizedVariable( strBuff.str(), "", nb_mod ) ) );
+      strBuff.str( "" );
     }
 
     // We add arcs
     float density =
-        (float)(IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxArcs * 2) /
-        (float)(IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes *
-                (IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes - 1));
+        (float)( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxArcs * 2 ) /
+        (float)( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes *
+                 ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes -
+                   1 ) );
     float p = density * (float)RAND_MAX;
 
-    for (Size i = 0; i < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes;
-         ++i)
-      for (Size j = i + 1;
-           j < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes; ++j)
-        if (((float)rand()) < p)
-          IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc(map[i],
-                                                                          map[j]);
+    for ( Size i = 0;
+          i < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes;
+          ++i )
+      for ( Size j = i + 1;
+            j < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes;
+            ++j )
+        if ( ( (float)rand() ) < p )
+          IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc(
+              map[i], map[j] );
 
     IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::fillCPT();
 

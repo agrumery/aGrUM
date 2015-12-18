@@ -20,7 +20,8 @@
 /** @file
  * @brief Interface-like class for generating Conditional Probability Tables.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo
+ *MAESANO
  */
 #ifndef GUM_I_CPT_GENERATOR_H
 #define GUM_I_CPT_GENERATOR_H
@@ -29,14 +30,15 @@
 #include <agrum/multidim/potential.h>
 
 namespace gum {
-  /** @class ICPTGenerator *
+  /** @class ICPTGenerator ICPTGenerator.h <agrum/BN/generator/ICPTGenerator.h>
    * @brief Abstract class for generating Conditional Probability Tables.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.
    */
-  template <typename GUM_SCALAR> class ICPTGenerator {
+  template <typename GUM_SCALAR>
+  class ICPTGenerator {
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -62,7 +64,8 @@ namespace gum {
      * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
-    virtual void generateCPT(const Idx &varId, const Potential<GUM_SCALAR> &cpt) = 0;
+    virtual void generateCPT( const Idx& varId,
+                              const Potential<GUM_SCALAR>& cpt ) = 0;
     /// @}
   };
 

@@ -1,230 +1,103 @@
-/***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+#define GUM_TRACE_ON
 
-// ==============================================================================
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <cstdarg>
-#include <future>
-// ==============================================================================
-//#include <agrum/agrum.h>
-// ==============================================================================
-#include<agrum/core/smallobjectallocator/smallObjectAllocator.h>
-// ==============================================================================
-#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
-#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
-// ==============================================================================
-#include <agrum/variables/labelizedVariable.h>
-// ==============================================================================
-#include <run/functionGraphBinarizer.h>
-#include <run/globalFunctionGraphMinimizer.h>
-// ==============================================================================
+#include <sstream>
 
-#define xstrfy(s) strfy(s)
-#define strfy(x) #x
-#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/run/ressources/" #x
+#include <agrum/config.h>
+#include <agrum/core/exceptions.h>
+#include <agrum/BN/BayesNet.h>
+#include <agrum/learning/database/CSVParser.h>
+#include <agrum/learning/BNLearner.h>
 
+#define xstrfy( s ) strfy( s )
+#define strfy( x ) #x
 
+#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/" x
+#define GET_PATH_XSTR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/" xstrfy(x)
 
+// namespace gum {
+//
+//     /**
+//      * learnParameters
+//      */
+//     BayesNet<GUM_SCALAR> learnParameters(std::string filename,const
+//     BayesNet<GUM_SCALAR>& source,GUM_SCALAR smooth;
+// }// gum
 
-// *****************************************************************************************************
-/// Génération aléatoire d'une liste de 10 variables
-// *****************************************************************************************************
-gum::Sequence< const gum::DiscreteVariable* >* generateRandomVarList ( gum::Idx maxNbVarInDiagram, gum::Idx maxVarDomainSize ) {
+gum::BayesNet<double> buildBN() {
+  gum::BayesNet<double> bn;
+#define createBoolVar(s)                                                            \
+  gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
+  auto s = createBoolVar("smoking?");
+  auto l = createBoolVar("lung_cancer?");
+  auto b = createBoolVar("bronchitis?");
+  auto v = createBoolVar("visit_to_Asia?");
+  auto t = createBoolVar("tuberculosis?");
+  auto o = createBoolVar("tuberculos_or_cancer?");
+  auto d = createBoolVar("dyspnoea?");
+#undef createBoolVar
 
-  gum::Sequence< const gum::DiscreteVariable* >* ret = new gum::Sequence< const gum::DiscreteVariable* >();
+  bn.add(s);
+  bn.add(l);
+  bn.add(b);
+  bn.add(v);
+  bn.add(t);
+  bn.add(o);
+  bn.add(d);
 
-  for ( gum::Idx j = 0; j < maxNbVarInDiagram; j++ ) {
-    std::stringstream varName;
-    varName << "var" << j;
-    ret->insert ( new gum::LabelizedVariable ( varName.str(), "", 2 + rand() % maxVarDomainSize ) );
+  // uncorrect name is : will it be correctly handled ?f
+  // auto p = createBoolVar("ZORBLOBO");
+  // bn.add(p);
+
+  return bn;
+}
+
+std::vector<std::string> loadNames(std::string filename) {
+  std::ifstream in(filename, std::ifstream::in);
+
+  if ((in.rdstate() & std::ifstream::failbit) != 0) {
+    GUM_ERROR(gum::IOError, "File " << filename << " not found");
   }
 
-  return ret;
+  gum::learning::CSVParser parser(in);
+  parser.next();
+
+  return parser.current();
 }
 
-void shuffleVarList ( gum::Sequence< const gum::DiscreteVariable* >* varList ) {
-  for ( gum::Idx j = 0; j < 10; j++ )
-    varList->swap ( rand() % ( varList->size() ), rand() % ( varList->size() ) );
-}
+gum::BayesNet<double> learnParameters(std::string filename,
+                                      const gum::BayesNet<double> &src,
+                                      double smoothing = 1.0) {
+  auto names = loadNames(GET_PATH_STR("asia.csv"));
 
+  gum::NodeProperty<gum::Sequence<std::string>> modals;
 
+  for (gum::Idx col = 0; col < names.size(); col++) {
+    try {
+      gum::NodeId graphId = src.idFromName(names[col]);
 
-// *****************************************************************************************************
-/// Génération aléatoire de diagramme de décision
-// *****************************************************************************************************
-gum::MultiDimFunctionGraph<double>* generateRandomFunctionGraph ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
+      modals.insert(col, gum::Sequence<std::string>());
 
-  gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList);
-
-  return gene.generate();
-}
-
-
-std::string test( gum::Idx maxNbVar, gum::Idx maxNbModa ){
-
-  // ---------------------------------------------------------------------------------------------------
-  // Generating var list
-  // ---------------------------------------------------------------------------------------------------
-  gum::Sequence< const gum::DiscreteVariable* >* varList = generateRandomVarList ( maxNbVar, maxNbModa );
-
-  std::stringstream stats;
-  gum::MultiDimFunctionGraph<double>* res;
-
-  // ---------------------------------------------------------------------------------------------------
-  // Generating first diagram
-  // ---------------------------------------------------------------------------------------------------
-  shuffleVarList(varList);
-  gum::MultiDimFunctionGraph<double>* a1 = generateRandomFunctionGraph ( varList );
-
-  // ---------------------------------------------------------------------------------------------------
-  // Generating second diagram
-  // ---------------------------------------------------------------------------------------------------
-  shuffleVarList(varList);
-  gum::MultiDimFunctionGraph<double>* a2 = generateRandomFunctionGraph ( varList );
-
-  // ---------------------------------------------------------------------------------------------------
-  // Minimisation des diagrammes
-  // ---------------------------------------------------------------------------------------------------
-  a1->manager()->minimizeSize();
-  a2->manager()->minimizeSize();
-
-
-  // ---------------------------------------------------------------------------------------------------
-  // Operation with no global order
-  // ---------------------------------------------------------------------------------------------------
-  gum::MultiDimFunctionGraphOperator<double, std::plus> opeSC(a1, a2);
-  res = opeSC.compute();
-  delete res;
-  stats << a1->realSize() << ";" << a2->realSize() << ";" << opeSC.nbVarRetro() << ";" << opeSC.sizeVarRetroDomain() << ";" << opeSC.nbCall()<< ";";
-
-//  std::cout << stats.str() << std::endl;
-
-
-  // ---------------------------------------------------------------------------------------------------
-  // Operation with global order
-  // ---------------------------------------------------------------------------------------------------
-  gum::GlobalFunctionGraphMinimizer gm;
-  gm.loadFunctionGraphs(a1,a2);
-  gm.minimize();
-
-  gum::MultiDimFunctionGraphOperator<double, std::plus> opeAC(a1, a2);
-  res = opeAC.compute();
-  delete res;
-  stats << a1->realSize() << ";" << a2->realSize() << ";" << opeAC.nbVarRetro() << ";" << opeAC.sizeVarRetroDomain() << ";" << opeAC.nbCall()<< ";";
-
-//  std::cout << stats.str() << std::endl;
-
-
-
-  // ---------------------------------------------------------------------------------------------------
-  // Binarisation
-  // ---------------------------------------------------------------------------------------------------
-  gum::FunctionGraphBinarizer fgb;
-
-  fgb.loadFunctionGraph(a1);
-  gum::MultiDimFunctionGraph<double>* a3 = fgb.binarize();
-  a3->manager()->minimizeSize();
-
-  fgb.loadFunctionGraph(a2);
-  gum::MultiDimFunctionGraph<double>* a4 = fgb.binarize();
-  a4->manager()->minimizeSize();
-
-  // ---------------------------------------------------------------------------------------------------
-  // Operation with no global order and binary variables
-  // ---------------------------------------------------------------------------------------------------
-  gum::MultiDimFunctionGraphOperator<double, std::plus> opeBSC(a3, a4);
-  res = opeBSC.compute();
-  delete res;
-  stats << a3->realSize() << ";" << a4->realSize() << ";" << opeBSC.nbVarRetro() << ";" << opeBSC.sizeVarRetroDomain() << ";" << opeBSC.nbCall()<< ";";
-
-//  std::cout << stats.str() << std::endl;
-
-
-  // ---------------------------------------------------------------------------------------------------
-  // Operation with global order
-  // ---------------------------------------------------------------------------------------------------
-  gm.loadFunctionGraphs(a3,a4);
-  gm.minimize();
-
-  gum::MultiDimFunctionGraphOperator<double, std::plus> opeBAC(a3, a4);
-  res = opeBAC.compute();
-  delete res;
-  stats << a3->realSize() << ";" << a4->realSize() << ";" << opeBAC.nbVarRetro() << ";" << opeBAC.sizeVarRetroDomain() << ";" << opeBAC.nbCall()<< ";";
-
-//  std::cout << stats.str() << std::endl;
-
-  delete a4;
-  delete a3;
-  delete a2;
-  delete a1;
-
-  for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = varList->beginSafe(); varIter != varList->endSafe(); ++varIter){
-    delete *varIter;
-  }
-  delete varList;
-
-  return stats.str();
-
-}
-
-
-// *******************************************************************************
-// The main function
-// *******************************************************************************
-int main ( int argc, char* argv[] ) {
-
-  srand(time(NULL));
-  for( gum::Idx maxNbVar = 10; maxNbVar < 16; maxNbVar += 5 ){
-    for( gum::Idx maxNbModa = 7; maxNbModa < 9; maxNbModa ++ ){
-
-      // ======================================================================================
-      // Ouverture des fichiers de traces
-      // ======================================================================================
-      std::ofstream traceFile;
-      std::stringstream traceFileName;
-      traceFileName << GET_PATH_STR ( TRACE/operations ) << "." << maxNbVar << "." << maxNbModa << ".csv";
-      traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
-      if ( !traceFile ) {
-        return EXIT_FAILURE;
-      }
-
-      for( gum::Idx i = 0; i  < 1000;){
-
-        std::cout << "Iteration n°" << i << " - MaxNbVar : " << maxNbVar << " - " << maxNbModa << std::endl;
-
-
-        std::future<std::string> fut = std::async(std::launch::async,test, maxNbVar, maxNbModa);
-        bool done = fut.wait_for(std::chrono::seconds(60)) == std::future_status::ready;
-
-        if(done){
-          std::string ret = fut.get(); // test(maxNbVar, maxNbModa);
-          std::cout << ret << std::endl;
-          traceFile << ret << std::endl;
-          i++;
-        }
-      }
-
-      traceFile.close();
+      for (gum::Size i = 0; i < src.variable(graphId).domainSize(); ++i)
+        modals[col].insert(src.variable(graphId).label(i));
+    } catch (const gum::NotFound &e) {
+      // no problem : a colonne which is not in the BN...
     }
   }
-  return EXIT_SUCCESS;
+
+  gum::learning::BNLearner learner(filename, modals);
+
+  learner.useScoreLog2Likelihood();
+  learner.useAprioriSmoothing();
+  return learner.learnParameters<double>(src);
+}
+
+int main(int argc, char *argv[]) {
+  try {
+    auto bn = buildBN();
+    auto bn2 = learnParameters(GET_PATH_STR("asia3.csv"), bn, 1.0);
+  } catch (const gum::Exception &e) {
+    GUM_SHOWERROR(e);
+  }
 }

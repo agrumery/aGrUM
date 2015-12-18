@@ -18,13 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The base class for preprocessing a database: convert a vector of DBRows
+ * @brief The base class for preprocessing a database: convert a vector of
+ *DBRows
  * into another vector of DBRows
  *
  * The idea of DBTransform is the following: upon initialization, a tabular
  * database first creates its vector of DBRows (for instance by reading a CSV
  * file). The DBCells of the database are filled automatically from the read
- * strings but these fillings may not always be the most appropriate (for instance,
+ * strings but these fillings may not always be the most appropriate (for
+ *instance,
  * for ensuring that all the DBCells of a given column of the database have the
  * same type). Therefore, prior to learning from the database, the latter should
  * execute a preprocessing step which update as needed its DBRows. This is
@@ -54,7 +56,8 @@ namespace gum {
      * DBRows into another vector of DBRows
      *
      * The idea of DBTransform is the following: upon initialization, a tabular
-     * database first creates its vector of DBRows (for instance by reading a CSV
+     * database first creates its vector of DBRows (for instance by reading a
+     *CSV
      * file). The DBCells of the database are filled automatically from the read
      * strings but these fillings may not always be the most appropriate (for
      * instance, for ensuring that all the DBCells of a given column of the
@@ -74,10 +77,10 @@ namespace gum {
       DBTransform();
 
       /// copy constructor
-      DBTransform(const DBTransform &);
+      DBTransform( const DBTransform& );
 
       /// move constructor
-      DBTransform(DBTransform &&);
+      DBTransform( DBTransform&& );
 
       /// destructor
       virtual ~DBTransform();
@@ -91,10 +94,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransform &operator=(const DBTransform &);
+      DBTransform& operator=( const DBTransform& );
 
       /// move operator
-      DBTransform &operator=(DBTransform &&);
+      DBTransform& operator=( DBTransform&& );
 
       /// @}
 
@@ -106,8 +109,8 @@ namespace gum {
 
       /// transforms a vector of DBrows
       /** @return true if the transformation could be performed successfully. */
-      virtual bool transform(std::vector<DBRow> &db,
-                             std::vector<std::string> miss) const = 0;
+      virtual bool transform( std::vector<DBRow>& db,
+                              std::vector<std::string> miss ) const = 0;
 
       /// @}
     };

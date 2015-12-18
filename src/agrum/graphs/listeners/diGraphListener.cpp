@@ -27,34 +27,41 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/listeners/diGraphListener.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 namespace gum {
 
-  DiGraphListener::DiGraphListener(const DiGraphListener &d) {
-    GUM_CONS_CPY(DiGraphListener);
-    GUM_ERROR(OperationNotAllowed, "No copy constructor for DiGraphListener");
+  DiGraphListener::DiGraphListener( const DiGraphListener& d ) {
+    GUM_CONS_CPY( DiGraphListener );
+    GUM_ERROR( OperationNotAllowed, "No copy constructor for DiGraphListener" );
   }
 
-  DiGraphListener &DiGraphListener::operator=(const DiGraphListener &d) {
-    GUM_OP_CPY(DiGraphListener);
-    GUM_ERROR(OperationNotAllowed, "No copy operator for DiGraphListener");
+  DiGraphListener& DiGraphListener::operator=( const DiGraphListener& d ) {
+    GUM_OP_CPY( DiGraphListener );
+    GUM_ERROR( OperationNotAllowed, "No copy operator for DiGraphListener" );
   }
 
-  DiGraphListener::DiGraphListener(const DiGraph *g) {
-    if (!g) {
-      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to");
+  DiGraphListener::DiGraphListener( const DiGraph* g ) {
+    if ( !g ) {
+      GUM_ERROR( OperationNotAllowed,
+                 "A graph listener need a graph to listen to" );
     }
 
-    GUM_CONSTRUCTOR(DiGraphListener);
-    _graph = const_cast<DiGraph *>(g);
+    GUM_CONSTRUCTOR( DiGraphListener );
+    _graph = const_cast<DiGraph*>( g );
 
-    GUM_CONNECT((*_graph), onNodeAdded, (*this), DiGraphListener::whenNodeAdded);
-    GUM_CONNECT((*_graph), onNodeDeleted, (*this), DiGraphListener::whenNodeDeleted);
-    GUM_CONNECT((*_graph), onArcAdded, (*this), DiGraphListener::whenArcAdded);
-    GUM_CONNECT((*_graph), onArcDeleted, (*this), DiGraphListener::whenArcDeleted);
+    GUM_CONNECT(
+        ( *_graph ), onNodeAdded, ( *this ), DiGraphListener::whenNodeAdded );
+    GUM_CONNECT( ( *_graph ),
+                 onNodeDeleted,
+                 ( *this ),
+                 DiGraphListener::whenNodeDeleted );
+    GUM_CONNECT(
+        ( *_graph ), onArcAdded, ( *this ), DiGraphListener::whenArcAdded );
+    GUM_CONNECT(
+        ( *_graph ), onArcDeleted, ( *this ), DiGraphListener::whenArcDeleted );
   }
 
-  DiGraphListener::~DiGraphListener() { GUM_DESTRUCTOR(DiGraphListener); }
+  DiGraphListener::~DiGraphListener() { GUM_DESTRUCTOR( DiGraphListener ); }
 
-} // namespace gum
+}  // namespace gum

@@ -40,7 +40,8 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR> class PRMFactory;
+    template <typename GUM_SCALAR>
+    class PRMFactory;
 
     /**
      * @class Type
@@ -53,7 +54,8 @@ namespace gum {
      * Since MultiDim use pointers to handle DiscreteVariables, it is necessary
      * to create a new instance of a type for each Attribute.
      */
-    template <typename GUM_SCALAR> class Type : public PRMObject {
+    template <typename GUM_SCALAR>
+    class Type : public PRMObject {
 
       public:
       // ==========================================================================
@@ -70,11 +72,11 @@ namespace gum {
       /// @{
 
       /// Returns a pointer on type boolean.
-      static Type *boolean() {
-        LabelizedVariable var("boolean", "Boolean variable", 0);
-        var.addLabel("false");
-        var.addLabel("true");
-        return new Type(var);
+      static Type* boolean() {
+        LabelizedVariable var( "boolean", "Boolean variable", 0 );
+        var.addLabel( "false" );
+        var.addLabel( "true" );
+        return new Type( var );
       }
 
       /// @}
@@ -87,21 +89,22 @@ namespace gum {
        * Default Constructor.
        * A copy is made of var.
        */
-      Type(const DiscreteVariable &var);
+      Type( const DiscreteVariable& var );
 
       /**
        * Sub type constructor.
        * A copy is made of var.
        * @throw OperationNotAllowed Raised if label_map is invalid.
        */
-      Type(Type &super_type, const std::vector<Idx> &label_map,
-           const DiscreteVariable &var);
+      Type( Type& super_type,
+            const std::vector<Idx>& label_map,
+            const DiscreteVariable& var );
 
       /**
        * Copy constructor.
        * The DiscreteVariable is copied.
        */
-      Type(const Type &from);
+      Type( const Type& from );
 
       /**
        * Destructor.
@@ -115,10 +118,10 @@ namespace gum {
       /// @{
 
       /// Return a reference on the DiscreteVariable contained in this.
-      DiscreteVariable &variable();
+      DiscreteVariable& variable();
 
       /// Return a reference on the DiscreteVariable contained in this.
-      const DiscreteVariable &variable() const;
+      const DiscreteVariable& variable() const;
 
       /// @}
       // ==========================================================================
@@ -127,29 +130,34 @@ namespace gum {
       /// @{
 
       /**
-       * Dereference on the DiscreteVariable contained in this.
+       * Indirection on the DiscreteVariable contained in this.
        */
-      DiscreteVariable &operator*();
+      DiscreteVariable& operator*();
 
       /**
-       * Constant dereference on the DiscreteVariable contained in this.
+       * Constant indirection on the DiscreteVariable contained in this.
        */
-      const DiscreteVariable &operator*() const;
+      const DiscreteVariable& operator*() const;
 
       /**
        * Dereference the DiscreteVariable contained in this.
        */
-      DiscreteVariable *operator->() const;
+      DiscreteVariable* operator->();
+
+      /**
+       * Constant dereference the DiscreteVariable contained in this.
+       */
+      DiscreteVariable const* operator->() const;
 
       /**
        * Equality operator.
        */
-      bool operator==(const PRMObject &from) const;
+      bool operator==( const PRMObject& from ) const;
 
       /**
        * Difference operator.
        */
-      bool operator!=(const PRMObject &from) const;
+      bool operator!=( const PRMObject& from ) const;
 
       /// @}
       // ==========================================================================
@@ -165,7 +173,7 @@ namespace gum {
       /**
        * Returns the name of this object.
        */
-      const std::string &name() const;
+      const std::string& name() const;
 
       /**
        * Returns true if this type is a sub-type.
@@ -174,25 +182,27 @@ namespace gum {
 
       /**
        * Returns true if this is a subtype of super.
+       * Note that two types that are equal are also subtypes,
+       * if a == b then a.isSubTypeOf(b) == b.isSubTypeOf(a) == true.
        */
-      bool isSubTypeOf(const Type &super) const;
+      bool isSubTypeOf( const Type& super ) const;
 
       /**
        * Returns true if this is a super type of t.
        */
-      bool isSuperTypeOf(const Type &t) const;
+      bool isSuperTypeOf( const Type& t ) const;
 
       /**
        * Returns the super type of this type.
        * @throw NotFound Raised if this type has no super type.
        */
-      Type &super();
+      Type& super();
 
       /**
        * Returns the super type of this type.
        * @throw NotFound Raised if this type has no super type.
        */
-      const Type &super() const;
+      const Type& super() const;
 
       /**
        * @brief Changes the Type of this Type super.
@@ -209,14 +219,14 @@ namespace gum {
        * @throw OperationNotAllowed If this Type has no super.
        * @throw TypeError If t is not equal to this Type super.
        */
-      void setSuper(Type &t);
+      void setSuper( Type& t );
 
       /**
        * Returns the vector in which the i-th element is the Idx of the super
        * type's label for the i-th label of this.
        * @throw NotFound Raised if this type has no super type.
        */
-      const std::vector<Idx> &label_map() const;
+      const std::vector<Idx>& label_map() const;
 
       /// @}
       // ==========================================================================
@@ -229,7 +239,7 @@ namespace gum {
       /**
        * Copy operator. Not implemented.
        */
-      Type &operator=(const Type &from);
+      Type& operator=( const Type& from );
 
       /// @}
       // ==========================================================================
@@ -241,14 +251,14 @@ namespace gum {
       bool __isValid() const;
 
       /// The discrete variable
-      DiscreteVariable *__var;
+      DiscreteVariable* __var;
 
       /// The super type of this, if any.
-      Type *__super;
+      Type* __super;
 
       /// A vector in which the i-th element is the Idx of the super
       /// type's label for the i-th label of this.
-      std::vector<Idx> *__label_map;
+      std::vector<Idx>* __label_map;
 
       /// @}
     };

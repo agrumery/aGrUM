@@ -17,34 +17,47 @@
 *   Free Software Foundation, Inc.,                                       *
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
-#define GUM_TRACE_ON
-#include <agrum/config.h>
+/**
+ * @file
+ * @brief Class used to compute response times for benchmark purposes.
+ *
+ * @author Pierre-Henri WUILLEMIN & Jean-Philippe Dubus
+ */
 
 #include <agrum/core/timer.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/timer.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 namespace gum {
 
   Timer::Timer() {
-    GUM_CONSTRUCTOR(Timer);
+    GUM_CONSTRUCTOR( Timer );
     reset();
   }
 
-  Timer::Timer(const Timer &from)
-      : _start(from._start), _pause(from._pause), _sleeping(from._sleeping) {
-    GUM_CONS_CPY(Timer);
+  Timer::Timer( const Timer& from )
+      : _start( from._start )
+      , _pause( from._pause )
+      , _sleeping( from._sleeping ) {
+    GUM_CONS_CPY( Timer );
   }
 
-  Timer::~Timer() { GUM_DESTRUCTOR(Timer); }
+  Timer::~Timer() { GUM_DESTRUCTOR( Timer ); }
 
-  Timer &Timer::operator=(const Timer &from) {
-    GUM_OP_CPY(Timer);
+  Timer& Timer::operator=( const Timer& from ) {
+    GUM_OP_CPY( Timer );
     _start = from._start;
     _pause = from._pause;
     _sleeping = from._sleeping;
     return *this;
   }
+
+  long Timer::get_clock() {
+    struct timeval tv;
+    gettimeofday( &tv, nullptr );
+    return ( tv.tv_sec * 1000000 ) + tv.tv_usec;
+  }
+
 } /* namespace gum */

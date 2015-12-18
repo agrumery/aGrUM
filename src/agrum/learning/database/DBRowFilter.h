@@ -46,7 +46,8 @@ namespace gum {
      * interact with it to read DBRows, a set of cell translators that will
      * transform the DBRows into FilteredRows, and a set of generators that will
      * transform the filtered rows into new sets of filtered rows (see
-     * FilteredRowGenerator for more details about generators). An example of the
+     * FilteredRowGenerator for more details about generators). An example of
+     *the
      * construction of a row filter can be as follows (using helper function
      * make_DB_row_filter that produces a DBRowFilter):
      * @code
@@ -71,18 +72,19 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowFilter(const DBHandler &handler, const TranslatorSet &translator_set,
-                  const GeneratorSet &generator_set,
-                  unsigned long initialization_range =
-                      std::numeric_limits<unsigned long>::max()) noexcept;
+      DBRowFilter( const DBHandler& handler,
+                   const TranslatorSet& translator_set,
+                   const GeneratorSet& generator_set,
+                   unsigned long initialization_range =
+                       std::numeric_limits<unsigned long>::max() ) noexcept;
 
       /// copy constructor
-      DBRowFilter(const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet> &
-                      filter) noexcept;
+      DBRowFilter( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
+                       filter ) noexcept;
 
       /// move constructor
-      DBRowFilter(
-          DBRowFilter<DBHandler, TranslatorSet, GeneratorSet> &&filter) noexcept;
+      DBRowFilter( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&&
+                       filter ) noexcept;
 
       /// destructor
       virtual ~DBRowFilter() noexcept;
@@ -96,12 +98,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowFilter<DBHandler, TranslatorSet, GeneratorSet> &
-      operator=(const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet> &);
+      DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
+      operator=( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& );
 
       /// move operator
-      DBRowFilter<DBHandler, TranslatorSet, GeneratorSet> &
-      operator=(DBRowFilter<DBHandler, TranslatorSet, GeneratorSet> &&);
+      DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
+      operator=( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& );
 
       /// @}
 
@@ -111,7 +113,8 @@ namespace gum {
 
       /// @{
 
-      /// returns true if there are still rows that can be output by the RowFilter
+      /// returns true if there are still rows that can be output by the
+      /// RowFilter
       /** The usual way of calling this method is to encapsulate it into a while
        * loop whose stopping condition is when the handler has no more rows.
        * This loop shall be inside a try-catch statement that enables to
@@ -161,29 +164,29 @@ namespace gum {
        * catch ( NotFound& ) { // stop, there are no more rows to process }
        * @encode
        */
-      FilteredRow &row();
+      FilteredRow& row();
 
       /// resets the filter
       virtual void reset();
 
       /// returns the handler used by the filter
-      DBHandler &handler() noexcept;
+      DBHandler& handler() noexcept;
 
       /** @brief returns the number of modalities of the variables, as stored
        * into the cell filters */
       std::vector<unsigned int> modalities() const;
 
       /// returns the names of the variables
-      const std::vector<std::string> &variableNames() const noexcept;
+      const std::vector<std::string>& variableNames() const noexcept;
 
       /// returns the number of variables
       unsigned int nbVariables() const noexcept;
 
       /// returns the translator set that is actually used
-      const TranslatorSet &translatorSet() const noexcept;
+      const TranslatorSet& translatorSet() const noexcept;
 
       /// returns the generator set that is actually used
-      const GeneratorSet &generatorSet() const noexcept;
+      const GeneratorSet& generatorSet() const noexcept;
 
       /// @}
 
@@ -201,7 +204,7 @@ namespace gum {
       /** @param db_range the number of rows to parse in the database to
        * initialize the cell filters. If db_range is larger than the size of the
        * database, then the whole database is parsed. */
-      void __initCellFilters(unsigned long db_range);
+      void __initCellFilters( unsigned long db_range );
     };
 
     /// a helper used to easily create a DBRowFilter
@@ -223,20 +226,29 @@ namespace gum {
      * @endcode
      */
     template <typename Database, typename TranslatorSet, typename GeneratorSet>
-    constexpr DBRowFilter<typename Database::Handler, TranslatorSet, GeneratorSet>
-    make_DB_row_filter(const Database &database, const TranslatorSet &translator_set,
-                       const GeneratorSet &generator_set,
-                       unsigned long initialization_range =
-                           std::numeric_limits<unsigned long>::max()) {
-      return DBRowFilter<typename Database::Handler, TranslatorSet, GeneratorSet>(
-          database.handler(), translator_set, generator_set, initialization_range);
+    constexpr DBRowFilter<typename Database::Handler,
+                          TranslatorSet,
+                          GeneratorSet>
+    make_DB_row_filter( const Database& database,
+                        const TranslatorSet& translator_set,
+                        const GeneratorSet& generator_set,
+                        unsigned long initialization_range =
+                            std::numeric_limits<unsigned long>::max() ) {
+      return DBRowFilter<typename Database::Handler,
+                         TranslatorSet,
+                         GeneratorSet>( database.handler(),
+                                        translator_set,
+                                        generator_set,
+                                        initialization_range );
     }
 
   } /* namespace learning */
 
 } /* namespace gum */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 // always include the template implementation
 #include <agrum/learning/database/DBRowFilter.tcc>
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif /* GUM_LEARNING_DB_ROW_FILTER_H */

@@ -20,7 +20,8 @@
 /** @file
  * @brief exists aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #include <sstream>
 // to ease parser in IDEs
@@ -32,27 +33,31 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE Or<GUM_SCALAR>::Or()
         : MultiDimAggregator<GUM_SCALAR>() {
-      GUM_CONSTRUCTOR(Or)
+      GUM_CONSTRUCTOR( Or )
     }
 
     template <typename GUM_SCALAR>
-    INLINE Or<GUM_SCALAR>::Or(const Or<GUM_SCALAR> &from)
-        : MultiDimAggregator<GUM_SCALAR>(from) {
-      GUM_CONS_CPY(Or);
+    INLINE Or<GUM_SCALAR>::Or( const Or<GUM_SCALAR>& from )
+        : MultiDimAggregator<GUM_SCALAR>( from ) {
+      GUM_CONS_CPY( Or );
     }
 
-    template <typename GUM_SCALAR> INLINE Or<GUM_SCALAR>::~Or() {
-      GUM_DESTRUCTOR(Or);
+    template <typename GUM_SCALAR>
+    INLINE Or<GUM_SCALAR>::~Or() {
+      GUM_DESTRUCTOR( Or );
     }
 
-    template <typename GUM_SCALAR> INLINE Idx Or<GUM_SCALAR>::_neutralElt() const {
+    template <typename GUM_SCALAR>
+    INLINE Idx Or<GUM_SCALAR>::_neutralElt() const {
       return (Idx)0;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Or<GUM_SCALAR>::_folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                                       bool &stop_iteration) const {
-      if (i1 != 1) {
+    INLINE Idx Or<GUM_SCALAR>::_fold( const DiscreteVariable& v,
+                                        Idx i1,
+                                        Idx i2,
+                                        bool& stop_iteration ) const {
+      if ( i1 != 1 ) {
         return (Idx)0;
       } else {
         stop_iteration = true;
@@ -61,14 +66,14 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::string Or<GUM_SCALAR>::aggregatorName(void) const {
-      return std::string("or");
+    INLINE std::string Or<GUM_SCALAR>::aggregatorName( void ) const {
+      return std::string( "or" );
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR> *Or<GUM_SCALAR>::newFactory() const {
+    INLINE MultiDimContainer<GUM_SCALAR>* Or<GUM_SCALAR>::newFactory() const {
       return new Or<GUM_SCALAR>();
     }
 
-  } // namespace aggregator
-} // namespace gum
+  }  // namespace aggregator
+}  // namespace gum

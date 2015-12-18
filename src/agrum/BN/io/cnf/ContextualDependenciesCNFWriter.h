@@ -38,14 +38,15 @@
 #include <agrum/BN/io/cnf/CNFWriter.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/config.h>
-#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/approximations/approximationPolicy.h>
 
 namespace gum {
 
   /**
-   * @class BNWriter
+   * @class ContextualDependenciesCNFWriter ContextualDependenciesCNFWriter.h
+   * <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
+   * @ingroup bn_io
    * @brief Writes a IBayesNet in the BN format.
-   * @ingroup bn_group
    *
    * This class servers to write the content of a Bayesian Network in
    * the BN format. See
@@ -55,7 +56,6 @@ namespace gum {
    */
   template <typename GUM_SCALAR,
             template <class> class IApproximationPolicy = ExactPolicy>
-
   class ContextualDependenciesCNFWriter
       : public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
     public:
@@ -83,7 +83,7 @@ namespace gum {
      * @param bn The Bayesian Network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::ostream &output, const IBayesNet<GUM_SCALAR> &bn);
+    virtual void write( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn );
 
     /**
      * Writes a Bayesian Network in the referenced file using the BN format.
@@ -93,7 +93,7 @@ namespace gum {
      * @param bn The Bayesian Network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR> &bn);
+    virtual void write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
   };
 
   extern template class ContextualDependenciesCNFWriter<float>;
@@ -101,4 +101,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.tcc>
-#endif // GUM_NET_WRITER_H
+#endif  // GUM_NET_WRITER_H

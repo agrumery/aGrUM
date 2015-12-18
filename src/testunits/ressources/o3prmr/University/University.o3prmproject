@@ -1,0 +1,9 @@
+<!DOCTYPE test>
+<o3prmproject name="University">
+ <project name="University">
+  <package name="fr">
+   <file name="base.o3prm"/>
+   <request name="request.o3prmr"/>
+  </package>
+ </project>
+</o3prmproject>

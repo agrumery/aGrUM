@@ -24,15 +24,16 @@
 namespace gum {
 
   INLINE MultiDimAdressable::MultiDimAdressable() {
-    GUM_CONSTRUCTOR(MultiDimAdressable);
+    GUM_CONSTRUCTOR( MultiDimAdressable );
   }
 
-  INLINE MultiDimAdressable::MultiDimAdressable(const MultiDimAdressable &from) {
-    GUM_CONS_CPY(MultiDimAdressable);
+  INLINE
+  MultiDimAdressable::MultiDimAdressable( const MultiDimAdressable& from ) {
+    GUM_CONS_CPY( MultiDimAdressable );
   }
 
   INLINE MultiDimAdressable::~MultiDimAdressable() {
-    GUM_DESTRUCTOR(MultiDimAdressable);
+    GUM_DESTRUCTOR( MultiDimAdressable );
   }
 
 } /* namespace gum */

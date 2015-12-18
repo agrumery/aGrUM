@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A filtered row generator that returns exactly the rows it gets in input
+ * @brief A filtered row generator that returns exactly the rows it gets in
+ *input
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -29,7 +30,7 @@ namespace gum {
   namespace learning {
 
     /// generates new lines from those the generator gets in input
-    INLINE FilteredRow &RowGeneratorIdentity::generate() {
+    INLINE FilteredRow& RowGeneratorIdentity::generate() {
       decreaseRemainingRows();
       return *_input_row;
     }

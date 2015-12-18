@@ -1,58 +1,60 @@
 #since some IDEs need a Makefile
 #here is a simple wrapper to act embedded in Makefile
 #
-CLANGFORMAT=clang-format-3.5
+ACT=./act --no-fun
 
-ACT=./act --no-fun 
-JOBS=7
+JOBS=2
 
+last:
+	$(ACT)
+	
 library:
-	$(ACT) agrum release -p linux -j $(JOBS)
+	$(ACT) lib release aGrUM -j $(JOBS)
+
+librarydebug:
+	$(ACT) lib debug aGrUM -j $(JOBS)
 
 install:
-	$(ACT) release install -p linux -j $(JOBS)
+	$(ACT) install release aGrUM -j $(JOBS)
 
-debug:
-	$(ACT) agrum debug -p linux -j $(JOBS)
+installdebug:
+	$(ACT) install debug aGrUM -j $(JOBS)
 
 test:
-	$(ACT) test release -p linux -j $(JOBS)
+	$(ACT) test release -j $(JOBS)
 
 testdebug:
-	$(ACT) test debug  -p linux -j $(JOBS)
+	$(ACT) test debug -j $(JOBS)
 
 testall:
-	$(ACT) test release -t all -p linux -j $(JOBS)
+	$(ACT) test release -t all -m all -j $(JOBS)
 
 testalldebug:
-	$(ACT) test debug -t all -p linux -j $(JOBS)
+	$(ACT) test debug -t all -m all -j $(JOBS)
 
 run:
-	$(ACT) run release -p linux -j $(JOBS)
+	$(ACT) run release -j $(JOBS)
 
 rundebug:
-	$(ACT) run debug -p linux -j $(JOBS)
-
-windows:
-	$(ACT) agrum release -p windows -j $(JOBS)
+	$(ACT) run debug -j $(JOBS)
 
 pyAgrum:
-	$(ACT) wrapper pyAgrum -p linux -j $(JOBS)
-
+	$(ACT) wrapper pyAgrum -j $(JOBS)
 
 clean:
 	$(ACT) clean
 
-last:
-	$(ACT)
+doc:
+	$(ACT) doc release aGrUM
+	cat build/src/warning.txt
 
-linuxreleasedoc:
-	$(ACT) release doc -p linux
-	cat build/linux/release/warning.txt
+docdebug:
+	$(ACT) doc debug aGrUM
+	cat build/src/warning.txt
 
 clang-format:
-	for i in `find src -name "*.h"` ; do $(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.cpp"` ; do $(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.tcc"` ; do $(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.inl"` ; do $(CLANGFORMAT) -i $$i; done
+	$(ACT) autoindent
 
+gource:
+	#gource --key  -s 0.05  -1200x800 --highlight-users --dir-colour AAAAAA --hide filenames,mouse -o - | ffmpeg -y -r 20 -f image2pipe -vcodec ppm -i - -vcodec libvpx -b 20000K agrum.webm
+	gource --key -s 0.05 -1400x800 --logo ./src/docs/mini_agrum2.png --title "aGrUM Dev" --auto-skip-seconds 1 --multi-sampling  --highlight-users --dir-colour AAAAAA --max-files 0 --hide mouse,filenames --stop-at-end --output-framerate 25 --background-colour 000000 --colour-images --font-size 15 -o - | ffmpeg -y -r 25 -f image2pipe -vcodec ppm -i - -vcodec libvpx -b:20000 agrum.webm

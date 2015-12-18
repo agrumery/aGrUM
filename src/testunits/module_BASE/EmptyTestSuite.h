@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/graphs/graphElements.h>
 
@@ -26,6 +26,6 @@ namespace gum_tests {
 
   class EmptyTestSuite : public CxxTest::TestSuite {
     public:
-    void test1() { TS_ASSERT(true); }
+    void test1() { TS_ASSERT( true ); }
   };
 }

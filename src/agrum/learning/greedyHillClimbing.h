@@ -17,13 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief The greedy hill learning algorithm (for directed graphs)
  *
- * The GreedyHillClimbing class implements a greedy search in which the only the
- * graph changes that increase the global score are applied. Those that increase
- * it the more are applied first. The algorithm stops when no single change can
- * increase the score anymore.
+ * The GreedyHillClimbing class implements a greedy search in which the only
+ * the graph changes that increase the global score are applied. Those that
+ * increase it the more are applied first. The algorithm stops when no single
+ * change can increase the score anymore.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -35,19 +36,20 @@
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class GreedyHillClimbing
+    /**
+     * @class GreedyHillClimbing
      * @brief The greedy hill climbing learning algorithm (for directed graphs)
      *
-     * The GreedyHillClimbing class implements a greedy search in which the only
-     * the graph changes that increase the global score are applied. Those that
-     * increase it the more are applied first. The algorithm stops when no single
-     * change can increase the score anymore.
+     * The GreedyHillClimbing class implements a greedy search in which the
+     * only the graph changes that increase the global score are applied. Those
+     * that increase it the more are applied first. The algorithm stops when no
+     * single change can increase the score anymore.
      * @ingroup learning_group
      */
     class GreedyHillClimbing : public ApproximationScheme {
@@ -61,10 +63,10 @@ namespace gum {
       GreedyHillClimbing();
 
       /// copy constructor
-      GreedyHillClimbing(const GreedyHillClimbing &from);
+      GreedyHillClimbing( const GreedyHillClimbing& from );
 
       /// move constructor
-      GreedyHillClimbing(GreedyHillClimbing &&from);
+      GreedyHillClimbing( GreedyHillClimbing&& from );
 
       /// destructor
       ~GreedyHillClimbing();
@@ -77,10 +79,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GreedyHillClimbing &operator=(const GreedyHillClimbing &from);
+      GreedyHillClimbing& operator=( const GreedyHillClimbing& from );
 
       /// move operator
-      GreedyHillClimbing &operator=(GreedyHillClimbing &&from);
+      GreedyHillClimbing& operator=( GreedyHillClimbing&& from );
 
       /// @}
 
@@ -90,31 +92,42 @@ namespace gum {
       /// @{
 
       /// returns the approximation policy of the learning algorithm
-      ApproximationScheme &approximationScheme();
+      ApproximationScheme& approximationScheme();
 
       /// learns the structure of a Bayes net
-      /** @param A selector class that computes the best changes that can be
-       * applied and that enables the user to get them very easily. Typically,
-       * the selector is a GraphChangesSelector4DiGraph<SCORE, STRUCT_CONSTRAINT,
-       * GRAPH_CHANGES_GENERATOR>.
+      /** @param selector A selector class that computes the best changes that
+       * can be applied and that enables the user to get them very easily.
+       * Typically, the selector is a GraphChangesSelector4DiGraph<SCORE,
+       * STRUCT_CONSTRAINT, GRAPH_CHANGES_GENERATOR>.
        * @param modal the domain sizes of the random variables observed in the
        * database
-       * @param N the max number of changes that decrease the score that we
-       * allow to apply
        * @param initial_dag the DAG we start from for our learning */
       template <typename GRAPH_CHANGES_SELECTOR>
-      DAG learnStructure(GRAPH_CHANGES_SELECTOR &selector,
-                         const std::vector<unsigned int> &modal,
-                         DAG initial_dag = DAG());
+      DAG learnStructure( GRAPH_CHANGES_SELECTOR& selector,
+                          const std::vector<unsigned int>& modal,
+                          DAG initial_dag = DAG() );
 
       /// learns the structure and the parameters of a BN
-      template <typename GUM_SCALAR = float, typename GRAPH_CHANGES_SELECTOR,
-                typename PARAM_ESTIMATOR, typename CELL_TRANSLATORS>
-      BayesNet<GUM_SCALAR>
-      learnBN(GRAPH_CHANGES_SELECTOR &selector, PARAM_ESTIMATOR &estimator,
-              const std::vector<std::string> &names,
-              const std::vector<unsigned int> &modal,
-              const CELL_TRANSLATORS &translator, DAG initial_dag = DAG());
+      /** @param selector A selector class that computes the best changes that
+       * can be applied and that enables the user to get them very easily.
+       * Typically, the selector is a GraphChangesSelector4DiGraph<SCORE,
+       * STRUCT_CONSTRAINT, GRAPH_CHANGES_GENERATOR>.
+       * @param estimator A estimator.
+       * @param names The variables names.
+       * @param modal the domain sizes of the random variables observed in the
+       * database
+       * @param translator The cell translator to use.
+       * @param initial_dag the DAG we start from for our learning */
+      template <typename GUM_SCALAR = float,
+                typename GRAPH_CHANGES_SELECTOR,
+                typename PARAM_ESTIMATOR,
+                typename CELL_TRANSLATORS>
+      BayesNet<GUM_SCALAR> learnBN( GRAPH_CHANGES_SELECTOR& selector,
+                                    PARAM_ESTIMATOR& estimator,
+                                    const std::vector<std::string>& names,
+                                    const std::vector<unsigned int>& modal,
+                                    const CELL_TRANSLATORS& translator,
+                                    DAG initial_dag = DAG() );
 
       /// @}
     };

@@ -35,9 +35,12 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                          BN CREATOR CLASS                         === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                          BN CREATOR CLASS                         ===
+     */
+    /* =========================================================================
+     */
     /** @class DAG2BNLearner
      * @brief A class that, given a structure and a parameter estimator returns
      * a full Bayes net
@@ -54,10 +57,10 @@ namespace gum {
       DAG2BNLearner();
 
       /// copy constructor
-      DAG2BNLearner(const DAG2BNLearner &from);
+      DAG2BNLearner( const DAG2BNLearner& from );
 
       /// move constructor
-      DAG2BNLearner(DAG2BNLearner &&from);
+      DAG2BNLearner( DAG2BNLearner&& from );
 
       /// destructor
       ~DAG2BNLearner();
@@ -70,13 +73,15 @@ namespace gum {
       /// @{
 
       /// create a BN
-      template <typename GUM_SCALAR = float, typename PARAM_ESTIMATOR,
+      template <typename GUM_SCALAR = float,
+                typename PARAM_ESTIMATOR,
                 typename CELL_TRANSLATORS>
-      static BayesNet<GUM_SCALAR> createBN(PARAM_ESTIMATOR &estimator,
-                                           const DAG &dag,
-                                           const std::vector<std::string> &names,
-                                           const std::vector<unsigned int> &modal,
-                                           const CELL_TRANSLATORS &translator);
+      static BayesNet<GUM_SCALAR>
+      createBN( PARAM_ESTIMATOR& estimator,
+                const DAG& dag,
+                const std::vector<std::string>& names,
+                const std::vector<unsigned int>& modal,
+                const CELL_TRANSLATORS& translator );
 
       /// @}
 
@@ -85,8 +90,9 @@ namespace gum {
       /** The variables of both potential should be the same, only their
        * order differs */
       template <typename GUM_SCALAR = float>
-      static void __probaVarReordering(gum::Potential<GUM_SCALAR> &pot,
-                                       const gum::Potential<float> &other_pot);
+      static void
+      __probaVarReordering( gum::Potential<GUM_SCALAR>& pot,
+                            const gum::Potential<float>& other_pot );
     };
 
   } /* namespace learning */

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
@@ -30,55 +30,54 @@ namespace gum_tests {
     void testBasicRead() {
       gum::prm::o3prm::O3prmReader<double> reader;
       int res;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          res = reader.readFile(GET_PATH_STR("o3prm/inference.o3prm")));
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.readFile( GET_RESSOURCES_PATH(
+                                        "o3prm/inference.o3prm" ) ) );
 
-      if (res != 0)
-        reader.showElegantErrors();
+      if ( res != 0 ) reader.showElegantErrors();
 
-      TS_ASSERT_EQUALS(res, 0);
+      TS_ASSERT_EQUALS( res, 0 );
 
-      gum::prm::PRM<double> *prm = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
-      TS_ASSERT(prm != nullptr);
+      gum::prm::PRM<double>* prm = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
+      TS_ASSERT( prm != nullptr );
 
-      delete (prm);
+      delete ( prm );
     }
 
-    void /*test*/ Regression1() { // error when attribute defined with interface as
-                                  // type
+    void /*test*/ Regression1() {  // error when attribute defined with
+                                   // interface as
+                                   // type
       gum::prm::o3prm::O3prmReader<double> reader;
       int res;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          res = reader.readFile(GET_PATH_STR("o3prm/withinterfaces.o3prm")));
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.readFile( GET_RESSOURCES_PATH(
+                                        "o3prm/withinterfaces.o3prm" ) ) );
 
-      if (res != 0)
-        reader.showElegantErrors();
+      if ( res != 0 ) reader.showElegantErrors();
 
-      TS_ASSERT_EQUALS(res, 0);
+      TS_ASSERT_EQUALS( res, 0 );
 
-      gum::prm::PRM<double> *prm = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
-      TS_ASSERT(prm != nullptr);
-      delete (prm);
+      gum::prm::PRM<double>* prm = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
+      TS_ASSERT( prm != nullptr );
+      delete ( prm );
     }
 
     void testRegression2() {
       gum::prm::o3prm::O3prmReader<double> reader;
       int res;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          res = reader.readFile(GET_PATH_STR("o3prm/foo2.o3prm")));
+          res = reader.readFile( GET_RESSOURCES_PATH( "o3prm/foo2.o3prm" ) ) );
 
       // if ( res!=0 ) reader.showElegantErrors();
 
-      TS_ASSERT_EQUALS(res, 0);
+      TS_ASSERT_EQUALS( res, 0 );
 
-      gum::prm::PRM<double> *prm = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
-      TS_ASSERT(prm != nullptr);
+      gum::prm::PRM<double>* prm = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
+      TS_ASSERT( prm != nullptr );
 
-      delete (prm);
+      delete ( prm );
     }
   };
 
-} // namespace gum_tests
+}  // namespace gum_tests

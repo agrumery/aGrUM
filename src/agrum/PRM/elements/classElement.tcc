@@ -30,19 +30,21 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    ClassElement<GUM_SCALAR>::ClassElement(const std::string &name)
-        : PRMObject(name) {
-      GUM_CONSTRUCTOR(ClassElement);
+    ClassElement<GUM_SCALAR>::ClassElement( const std::string& name )
+        : PRMObject( name ) {
+      GUM_CONSTRUCTOR( ClassElement );
     }
 
     template <typename GUM_SCALAR>
-    ClassElement<GUM_SCALAR>::ClassElement(const ClassElement &source)
-        : PRMObject(source.name()), __id(source.id()) {
-      GUM_CONS_CPY(ClassElement);
+    ClassElement<GUM_SCALAR>::ClassElement( const ClassElement& source )
+        : PRMObject( source.name() )
+        , __id( source.id() ) {
+      GUM_CONS_CPY( ClassElement );
     }
 
-    template <typename GUM_SCALAR> ClassElement<GUM_SCALAR>::~ClassElement() {
-      GUM_DESTRUCTOR(ClassElement);
+    template <typename GUM_SCALAR>
+    ClassElement<GUM_SCALAR>::~ClassElement() {
+      GUM_DESTRUCTOR( ClassElement );
     }
 
     template <typename GUM_SCALAR>
@@ -56,22 +58,23 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void ClassElement<GUM_SCALAR>::setId(NodeId id) {
+    INLINE void ClassElement<GUM_SCALAR>::setId( NodeId id ) {
       __id = id;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const std::string &ClassElement<GUM_SCALAR>::safeName() const {
+    INLINE const std::string& ClassElement<GUM_SCALAR>::safeName() const {
       return _safeName;
     }
 
     template <typename GUM_SCALAR>
     INLINE std::string
-    ClassElement<GUM_SCALAR>::cast(const Type<GUM_SCALAR> &t) const {
-      if (type().isSubTypeOf(t)) {
-        return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() + name();
+    ClassElement<GUM_SCALAR>::cast( const Type<GUM_SCALAR>& t ) const {
+      if ( type().isSubTypeOf( t ) ) {
+        return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() +
+               name();
       } else {
-        GUM_ERROR(OperationNotAllowed, "illegal cast");
+        GUM_ERROR( OperationNotAllowed, "illegal cast" );
       }
     }
 

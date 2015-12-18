@@ -1,0 +1,29 @@
+import fr.lip6.University.persons;
+import fr.lip6.University.course;
+
+type note extends gradation
+	A: high,
+    B: medium;
+    C: low;
+
+class Registration {
+    Course course;
+    Student student;
+    note grade dependson course.difficulty, student.intelligence {
+        YES, high : 0.50, 0.40, 0.10;
+        YES, low : 0.10, 0.50, 0.40;
+        NO, high : 0.80, 0.10, 0.10;
+        NO, low : 0.30, 0.60, 0.10;
+    };
+    gradation satisfaction dependson course.instructor.teachingAbility, grade {
+        high, high : 0.80, 0.15, 0.05;
+        high, medium : 0.70, 0.20, 0.10;
+        high, low : 0.50, 0.20, 0.30;
+        medium, high : 0.70, 0.25, 0.10;
+        medium, medium : 0.60, 0.20, 0.20;
+        medium, low : 0.40, 0.30, 0.30;
+        low, high : 0.60, 0.20, 0.20;
+        low, medium : 0.50, 0.25, 0.25;
+        low, low : 0.30, 0.30, 0.40;
+    };
+}

@@ -23,83 +23,92 @@
 namespace gum {
   namespace prm {
 
+    MultiDimImplementation<std::string>* copyMultiDim(
+        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+        const MultiDimImplementation<std::string>& source ) {
+      const MultiDimImplementation<std::string>* impl = &source;
+      MultiDimImplementation<std::string>* p = 0;
+
+      try {
+        if ( dynamic_cast<const MultiDimReadOnly<std::string>*>( impl ) ) {
+          if ( dynamic_cast<const aggregator::MultiDimAggregator<std::string>*>(
+                   impl ) ) {
+            p = static_cast<MultiDimImplementation<std::string>*>(
+                impl->newFactory() );
+
+            for ( MultiDimInterface::iterator iter = impl->begin();
+                  iter != impl->end();
+                  ++iter )
+              p->add( *( bij.second( *iter ) ) );
+          } else {
+            GUM_ERROR( FatalError,
+                       "encountered an unexpected MultiDim implementation" );
+          }
+        } else {
+          if ( dynamic_cast<const MultiDimArray<std::string>*>( impl ) ) {
+            p = new MultiDimBijArray<std::string>(
+                bij, static_cast<const MultiDimArray<std::string>&>( *impl ) );
+          } else if ( dynamic_cast<const MultiDimBijArray<std::string>*>(
+                          impl ) ) {
+            p = new MultiDimBijArray<std::string>(
+                bij,
+                static_cast<const MultiDimBijArray<std::string>&>( *impl ) );
+          } else if ( dynamic_cast<const MultiDimSparse<std::string>*>(
+                          impl ) ) {
+            GUM_ERROR( FatalError,
+                       "There is no MultiDimSparse in PRMs, normally..." );
+          } else {
+            // Just need to make the copy using the bijection but we only use
+            // multidim array
+            GUM_ERROR( FatalError,
+                       "encountered an unexpected MultiDim implementation" );
+          }
+        }
+
+        return p;
+      } catch ( Exception& e ) {
+        if ( p ) delete p;
+
+        throw;
+      }
+    }
+
     // Decompose a string in a vector of strings using "." as separators.
-    void decomposePath(const std::string &path, std::vector<std::string> &v) {
+    void decomposePath( const std::string& path, std::vector<std::string>& v ) {
       size_t prev = 0;
       size_t length = 0;
-      size_t idx_1 = path.find(".");
-      size_t idx_2 = path.find(PRMObject::LEFT_CAST());
+      size_t idx_1 = path.find( "." );
+      size_t idx_2 = path.find( PRMObject::LEFT_CAST() );
 
-      if (idx_2 == std::string::npos) {
+      if ( idx_2 == std::string::npos ) {
         // ignore safe names
         size_t idx = idx_1;
 
-        while (idx != std::string::npos) {
+        while ( idx != std::string::npos ) {
           length = idx - prev;
-          v.push_back(path.substr(prev, length));
+          v.push_back( path.substr( prev, length ) );
           prev = idx + 1;
-          idx = path.find(".", prev);
+          idx = path.find( ".", prev );
         }
       } else {
         size_t tmp = 0;
 
-        while (idx_1 != std::string::npos) {
-          if (idx_1 < idx_2) {
+        while ( idx_1 != std::string::npos ) {
+          if ( idx_1 < idx_2 ) {
             length = idx_1 - prev;
-            v.push_back(path.substr(prev, length));
+            v.push_back( path.substr( prev, length ) );
             prev = idx_1 + 1;
-            idx_1 = path.find(".", prev);
-          } else if (idx_2 < idx_1) {
-            tmp = path.find(PRMObject::RIGHT_CAST(), idx_2);
-            idx_1 = path.find(".", tmp);
-            idx_2 = path.find(PRMObject::LEFT_CAST(), tmp);
+            idx_1 = path.find( ".", prev );
+          } else if ( idx_2 < idx_1 ) {
+            tmp = path.find( PRMObject::RIGHT_CAST(), idx_2 );
+            idx_1 = path.find( ".", tmp );
+            idx_2 = path.find( PRMObject::LEFT_CAST(), tmp );
           }
         }
       }
 
-      v.push_back(path.substr(prev, std::string::npos));
+      v.push_back( path.substr( prev, std::string::npos ) );
     }
-
-    // void
-    // eliminateNode(const DiscreteVariable* var,
-    //               Set<Potential<GUM_SCALAR>*>& pool,
-    //               Set<Potential<GUM_SCALAR>*>& trash)
-    // {
-    //   MultiDimBucket<GUM_SCALAR>* bucket = new MultiDimBucket<GUM_SCALAR>();
-    //   Set< Potential<GUM_SCALAR>* > toRemove;
-    //   for (SetIterator<Potential<GUM_SCALAR>*> iter = pool.begin();
-    //        iter != pool.end(); ++iter )
-    //   {
-    //     if ((*iter)->contains(*var)) {
-    //       bucket->add(**iter);
-    //       toRemove.insert(*iter);
-    //     }
-    //   }
-    //   if (toRemove.empty()) {
-    //     delete bucket;
-    //   } else {
-    //     for (SetIterator<Potential<GUM_SCALAR>*> iter = toRemove.begin();
-    //          iter != toRemove.end(); ++iter)
-    //       pool.erase( *iter );
-    //     for (Set<const DiscreteVariable*>::iterator jter =
-    //          bucket->allVariables().begin(); jter != bucket->allVariables().end();
-    //          ++jter )
-    //     {
-    //       try {
-    //         if ((*jter) != var) bucket->add( **jter );
-    //       } catch (NotFound&) {
-    //         // This can happen if since some DiscreteVariable are not represented
-    //         // as nodes in the undigraph (parents of input nodes)
-    //         bucket->add(**jter);
-    //       }
-    //     }
-    //     Potential<GUM_SCALAR>* bucket_pot = new Potential<GUM_SCALAR>( bucket );
-    //     trash.insert( bucket_pot );
-    //     pool.insert( bucket_pot );
-    //   }
-    //   if (bucket->domainSize() > INT_MAX)
-    //     GUM_TRACE_VAR(bucket->domainSize());
-    // }
 
   } /* namespace prm */
 }

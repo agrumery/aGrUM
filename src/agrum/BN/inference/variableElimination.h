@@ -37,7 +37,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class VEWithBB;
+  template <typename GUM_SCALAR>
+  class VEWithBB;
   /**
    * @class VariableElimination variableElimination.h
    *<agrum/BN/inference/variableElimination.h>
@@ -48,7 +49,7 @@ namespace gum {
    * when the makeInference() or marginal() method is called, so you can
    * give an other order without any unnecessary computation.
    *
-   * @ingroup bn_group
+   * @ingroup bn_inference
    *
    */
   template <typename GUM_SCALAR>
@@ -63,11 +64,12 @@ namespace gum {
     /**
      * Default constructor.
      */
-    VariableElimination(const IBayesNet<GUM_SCALAR> &bn);
+    VariableElimination( const IBayesNet<GUM_SCALAR>& bn );
 
-    VariableElimination(const VariableElimination<GUM_SCALAR> &source) = delete;
-    VariableElimination &
-    operator=(const VariableElimination<GUM_SCALAR> &source) = delete;
+    VariableElimination( const VariableElimination<GUM_SCALAR>& source ) =
+        delete;
+    VariableElimination&
+    operator=( const VariableElimination<GUM_SCALAR>& source ) = delete;
 
     /**
      * Destructor.
@@ -86,7 +88,8 @@ namespace gum {
      * This method only computes the elimination order if needed, and proceed to
      * some basic initialization.
      *
-     * If the current elimination order is smaller than the number of nodes in the
+     * If the current elimination order is smaller than the number of nodes in
+     *the
      * IBayesNet, then this method will eliminate all nodes present in the
      *elimination
      * order. Thus computing a joint probability over a set of variables.
@@ -101,12 +104,13 @@ namespace gum {
      * If an evidence already exists over one of the variable in pot_list, then
      * it is replaced by the new evidence in pot_list.
      */
-    virtual void insertEvidence(const List<const Potential<GUM_SCALAR> *> &pot_list);
+    virtual void
+    insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
     /**
      * Remove a given evidence from the graph.
      */
-    virtual void eraseEvidence(const Potential<GUM_SCALAR> *e);
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
 
     /**
      * Remove all evidence from the graph.
@@ -124,27 +128,29 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the elimination order has not been
      *        computed yet.
      */
-    const std::vector<NodeId> &eliminationOrder() const;
+    const std::vector<NodeId>& eliminationOrder() const;
 
     /**
      * @brief Getter on the elimination order used.
      *
      * This method checks that all nodes present in the BN are in elim.
      */
-    void setEliminiationOrder(const std::vector<NodeId> &elim);
+    void setEliminiationOrder( const std::vector<NodeId>& elim );
 
     /**
-     * @brief Eliminate nodes in elim_order using pool as initial potential pool.
+     * @brief Eliminate nodes in elim_order using pool as initial potential
+     * pool.
      * potentials.
-     * @param elim_order An elimination order, which must be a subset of nodes in
+     * @param elim_order An elimination order, which must be a subset of nodes
+     * in
      *                   the class IBayesNet.
      * @param pool Set of Potential used as initial pool for the elimination.
      *             Results are stored in it also.
      * @param trash The Set of Potential to delete after use of those in pool.
      */
-    void eliminateNodes(const std::vector<NodeId> &elim_order,
-                        Set<Potential<GUM_SCALAR> *> &pool,
-                        Set<Potential<GUM_SCALAR> *> &trash);
+    void eliminateNodes( const std::vector<NodeId>& elim_order,
+                         Set<Potential<GUM_SCALAR>*>& pool,
+                         Set<Potential<GUM_SCALAR>*>& trash );
 
     /// @}
 
@@ -156,20 +162,20 @@ namespace gum {
      * @param marginal the potential to fill
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR> &marginal);
+    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& marginal );
 
     private:
     /// Mapping between nodes and their evidences.
-    NodeProperty<const Potential<GUM_SCALAR> *> __evidences;
+    NodeProperty<const Potential<GUM_SCALAR>*> __evidences;
 
     /// The elimination order used by this algorithm.
     std::vector<NodeId> __eliminationOrder;
 
     /// The initial pool of potentials.
-    Set<Potential<GUM_SCALAR> *> __pool;
+    Set<Potential<GUM_SCALAR>*> __pool;
 
     /// Garbage collector over the buckets created during inference
-    Set<Potential<GUM_SCALAR> *> __trash;
+    Set<Potential<GUM_SCALAR>*> __trash;
 
     /// Compute the elimination order if __eliminationOrder is empty.
     void __computeEliminationOrder();
@@ -180,8 +186,9 @@ namespace gum {
     /// Fills the bucket with all the potentials in pool containing id and
     /// insert it in pool as a Potential after removing all the potentials
     /// already in it. If you don't understand, read the code...
-    void __eliminateNode(NodeId id, Set<Potential<GUM_SCALAR> *> &pool,
-                         Set<Potential<GUM_SCALAR> *> &trash);
+    void __eliminateNode( NodeId id,
+                          Set<Potential<GUM_SCALAR>*>& pool,
+                          Set<Potential<GUM_SCALAR>*>& trash );
   };
 
   extern template class VariableElimination<float>;

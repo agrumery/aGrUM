@@ -27,11 +27,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author   Ryan Mulder
 @date   04/11/2006
 
-@version  0.04a by edam@waxworlds.org: based Exception based on std::exception; added
+@version  0.04a by edam@waxworlds.org: based Exception based on std::exception;
+added
 stream
           << and >> support; added Document::Parse(); bug fix; improved THROW()
 macro.
-@version  0.04 Added NodeImp class. Also made all the classes inherit from NodeImp.
+@version  0.04 Added NodeImp class. Also made all the classes inherit from
+NodeImp.
 @version  0.03 Added Declaration class
 @version  0.02 Added Element class
 @version  0.01 Added Exception class, Document class
@@ -74,11 +76,11 @@ namespace ticpp {
     /**
     Construct an exception with a message
     */
-    Exception(const std::string &details);
+    Exception( const std::string& details );
     ~Exception() throw();
 
     /// Override std::exception::what() to return m_details
-    const char *what() const throw();
+    const char* what() const throw();
 
     std::string m_details; /**< Exception Details */
   };
@@ -87,14 +89,14 @@ namespace ticpp {
 This allows you to stream your exceptions in.
 It will take care of the conversion and throwing the exception.
 */
-#define TICPPTHROW(message)                                                         \
-  {                                                                                 \
-    std::ostringstream full_message;                                                \
-    std::string file(__FILE__);                                                     \
-    file = file.substr(file.find_last_of("\\/") + 1);                               \
-    full_message << message << " <" << file << "@" << __LINE__ << ">";              \
-    full_message << BuildDetailedErrorString();                                     \
-    throw Exception(full_message.str());                                            \
+#define TICPPTHROW( message )                                          \
+  {                                                                    \
+    std::ostringstream full_message;                                   \
+    std::string file( __FILE__ );                                      \
+    file = file.substr( file.find_last_of( "\\/" ) + 1 );              \
+    full_message << message << " <" << file << "@" << __LINE__ << ">"; \
+    full_message << BuildDetailedErrorString();                        \
+    throw Exception( full_message.str() );                             \
   }
 
   // Forward Declarations for Visitor, and others.
@@ -112,47 +114,49 @@ It will take care of the conversion and throwing the exception.
     // Overload the TiXmlVisitor functions, wrap objects, call ticpp::Visitor
     // functions
     /// @internal
-    virtual bool VisitEnter(const TiXmlDocument &doc);
+    virtual bool VisitEnter( const TiXmlDocument& doc );
     /// @internal
-    virtual bool VisitExit(const TiXmlDocument &doc);
+    virtual bool VisitExit( const TiXmlDocument& doc );
     /// @internal
-    virtual bool VisitEnter(const TiXmlElement &element,
-                            const TiXmlAttribute *firstAttribute);
+    virtual bool VisitEnter( const TiXmlElement& element,
+                             const TiXmlAttribute* firstAttribute );
     /// @internal
-    virtual bool VisitExit(const TiXmlElement &element);
+    virtual bool VisitExit( const TiXmlElement& element );
     /// @internal
-    virtual bool Visit(const TiXmlDeclaration &declaration);
+    virtual bool Visit( const TiXmlDeclaration& declaration );
     /// @internal
-    virtual bool Visit(const TiXmlStylesheetReference &stylesheet);
+    virtual bool Visit( const TiXmlStylesheetReference& stylesheet );
     /// @internal
-    virtual bool Visit(const TiXmlText &text);
+    virtual bool Visit( const TiXmlText& text );
     /// @internal
-    virtual bool Visit(const TiXmlComment &comment);
+    virtual bool Visit( const TiXmlComment& comment );
     /// @internal
-    virtual bool Visit(const TiXmlUnknown & /*unknown*/);
+    virtual bool Visit( const TiXmlUnknown& /*unknown*/ );
 
     public:
     /// Visit a document.
-    virtual bool VisitEnter(const Document & /*doc*/) { return true; }
+    virtual bool VisitEnter( const Document& /*doc*/ ) { return true; }
     /// Visit a document.
-    virtual bool VisitExit(const Document & /*doc*/) { return true; }
+    virtual bool VisitExit( const Document& /*doc*/ ) { return true; }
 
     /// Visit an element.
-    virtual bool VisitEnter(const Element & /*element*/,
-                            const Attribute * /*firstAttribute*/) {
+    virtual bool VisitEnter( const Element& /*element*/,
+                             const Attribute* /*firstAttribute*/ ) {
       return true;
     }
     /// Visit an element.
-    virtual bool VisitExit(const Element & /*element*/) { return true; }
+    virtual bool VisitExit( const Element& /*element*/ ) { return true; }
 
     /// Visit a declaration
-    virtual bool Visit(const Declaration & /*declaration*/) { return true; }
+    virtual bool Visit( const Declaration& /*declaration*/ ) { return true; }
     /// Visit a stylesheet reference
-    virtual bool Visit(const StylesheetReference & /*stylesheet*/) { return true; }
+    virtual bool Visit( const StylesheetReference& /*stylesheet*/ ) {
+      return true;
+    }
     /// Visit a text node
-    virtual bool Visit(const Text & /*text*/) { return true; }
+    virtual bool Visit( const Text& /*text*/ ) { return true; }
     /// Visit a comment node
-    virtual bool Visit(const Comment & /*comment*/) { return true; }
+    virtual bool Visit( const Comment& /*comment*/ ) { return true; }
   };
 
   /** Wrapper around TiXmlBase */
@@ -163,18 +167,19 @@ It will take care of the conversion and throwing the exception.
     @param value The value to be converted
     @throws Exception When value cannot be converted to a std::string
     */
-    template <class T> std::string ToString(const T &value) const {
+    template <class T>
+    std::string ToString( const T& value ) const {
       std::stringstream convert;
       convert << value;
 
-      if (convert.fail()) {
-        TICPPTHROW("Could not convert value to text");
+      if ( convert.fail() ) {
+        TICPPTHROW( "Could not convert value to text" );
       }
 
       return convert.str();
     }
 
-    std::string ToString(const std::string &value) const { return value; }
+    std::string ToString( const std::string& value ) const { return value; }
 
     /**
     Converts a std::string to any class with a proper overload of the >> opertor
@@ -182,19 +187,22 @@ It will take care of the conversion and throwing the exception.
     @param out  [OUT] The container for the returned value
     @throws Exception When temp cannot be converted to the target type
     */
-    template <class T> void FromString(const std::string &temp, T *out) const {
-      std::istringstream val(temp);
+    template <class T>
+    void FromString( const std::string& temp, T* out ) const {
+      std::istringstream val( temp );
       val >> *out;
 
-      if (val.fail()) {
-        TICPPTHROW("Could not convert \"" << temp << "\" to target type");
+      if ( val.fail() ) {
+        TICPPTHROW( "Could not convert \"" << temp << "\" to target type" );
       }
     }
 
     /**
     Specialization for std::string
     */
-    void FromString(const std::string &temp, std::string *out) const { *out = temp; }
+    void FromString( const std::string& temp, std::string* out ) const {
+      *out = temp;
+    }
 
     /**
     Return the position, in the original source file, of this node or attribute.
@@ -209,19 +217,21 @@ It will take care of the conversion and throwing the exception.
     int Column() const { return GetBasePointer()->Column(); }
 
     /**
-    Compare internal TiXml pointers to determine is both are wrappers around the same
+    Compare internal TiXml pointers to determine is both are wrappers around the
+    same
     node
     */
-    bool operator==(const Base &rhs) const {
-      return (GetBasePointer() == rhs.GetBasePointer());
+    bool operator==( const Base& rhs ) const {
+      return ( GetBasePointer() == rhs.GetBasePointer() );
     }
 
     /**
-    Compare internal TiXml pointers to determine is both are wrappers around the same
+    Compare internal TiXml pointers to determine is both are wrappers around the
+    same
     node
     */
-    bool operator!=(const Base &rhs) const {
-      return (GetBasePointer() != rhs.GetBasePointer());
+    bool operator!=( const Base& rhs ) const {
+      return ( GetBasePointer() != rhs.GetBasePointer() );
     }
 
     /**
@@ -230,16 +240,16 @@ It will take care of the conversion and throwing the exception.
     std::string BuildDetailedErrorString() const {
       std::ostringstream full_message;
 #ifndef TICPP_NO_RTTI
-      TiXmlNode *node = dynamic_cast<TiXmlNode *>(GetBasePointer());
+      TiXmlNode* node = dynamic_cast<TiXmlNode*>( GetBasePointer() );
 
-      if (node != 0) {
-        TiXmlDocument *doc = node->GetDocument();
+      if ( node != 0 ) {
+        TiXmlDocument* doc = node->GetDocument();
 
-        if (doc != 0) {
-          if (doc->Error()) {
+        if ( doc != 0 ) {
+          if ( doc->Error() ) {
             full_message << "\nDescription: " << doc->ErrorDesc() << "\nFile: "
-                         << (strlen(doc->Value()) > 0 ? doc->Value()
-                                                      : "<unnamed-file>")
+                         << ( strlen( doc->Value() ) > 0 ? doc->Value()
+                                                         : "<unnamed-file>" )
                          << "\nLine: " << doc->ErrorRow()
                          << "\nColumn: " << doc->ErrorCol();
           }
@@ -256,22 +266,24 @@ It will take care of the conversion and throwing the exception.
     virtual ~Base() {}
 
     protected:
-    mutable TiCppRCImp *m_impRC; /**< Holds status of internal TiXmlPointer - use
-                                    this to determine if object has been deleted
-                                    already */
+    mutable TiCppRCImp*
+        m_impRC; /**< Holds status of internal TiXmlPointer - use
+                    this to determine if object has been deleted
+                    already */
 
     /**
     @internal
-    Updates the pointer to the reference counter to point at the counter in the new
+    Updates the pointer to the reference counter to point at the counter in the
+    new
     node.
 
     @param node TiXmlBase containing the new reference counter
     */
-    void SetImpRC(TiXmlBase *nodeBase) { m_impRC = nodeBase->m_tiRC; }
+    void SetImpRC( TiXmlBase* nodeBase ) { m_impRC = nodeBase->m_tiRC; }
 
     void ValidatePointer() const {
-      if (m_impRC->IsNull()) {
-        TICPPTHROW("Internal TiXml Pointer is nullptr");
+      if ( m_impRC->IsNull() ) {
+        TICPPTHROW( "Internal TiXml Pointer is nullptr" );
       }
     }
 
@@ -279,7 +291,7 @@ It will take care of the conversion and throwing the exception.
     @internal
     Get internal TiXmlBase*
     */
-    virtual TiXmlBase *GetBasePointer() const = 0;
+    virtual TiXmlBase* GetBasePointer() const = 0;
   };
 
   /**
@@ -287,8 +299,8 @@ It will take care of the conversion and throwing the exception.
   */
   class Attribute : public Base {
     private:
-    TiXmlAttribute *m_tiXmlPointer;
-    TiXmlBase *GetBasePointer() const {
+    TiXmlAttribute* m_tiXmlPointer;
+    TiXmlBase* GetBasePointer() const {
       ValidatePointer();
       return m_tiXmlPointer;
     }
@@ -305,7 +317,7 @@ It will take care of the conversion and throwing the exception.
     @param name The name of the attribute
     @param value The value of the attribute
     */
-    Attribute(const std::string &name, const std::string &value);
+    Attribute( const std::string& name, const std::string& value );
 
     /**
     @internal
@@ -313,18 +325,20 @@ It will take care of the conversion and throwing the exception.
 
     @param attribute The internal pointer
     */
-    Attribute(TiXmlAttribute *attribute);
+    Attribute( TiXmlAttribute* attribute );
 
     /**
     Get the value of this attribute
-    Uses Base::FromString to convert TiXmlAttribute::ValueStr from a std::string,
+    Uses Base::FromString to convert TiXmlAttribute::ValueStr from a
+    std::string,
     and puts it in the passed pointer.
 
     @param value [OUT] A pointer to fill with the value
     */
-    template <class T> void GetValue(T *value) const {
+    template <class T>
+    void GetValue( T* value ) const {
       ValidatePointer();
-      FromString(m_tiXmlPointer->ValueStr(), value);
+      FromString( m_tiXmlPointer->ValueStr(), value );
     }
 
     /**
@@ -342,9 +356,10 @@ It will take care of the conversion and throwing the exception.
 
     @param value The value to set
     */
-    template <class T> void SetValue(const T &value) {
+    template <class T>
+    void SetValue( const T& value ) {
       ValidatePointer();
-      m_tiXmlPointer->SetValue(ToString(value));
+      m_tiXmlPointer->SetValue( ToString( value ) );
     }
 
     /**
@@ -354,9 +369,10 @@ It will take care of the conversion and throwing the exception.
 
     @param name [OUT] A pointer to fill with the name
     */
-    template <class T> void GetName(T *name) const {
+    template <class T>
+    void GetName( T* name ) const {
       ValidatePointer();
-      FromString(m_tiXmlPointer->Name(), name);
+      FromString( m_tiXmlPointer->Name(), name );
     }
 
     /**
@@ -374,22 +390,23 @@ It will take care of the conversion and throwing the exception.
 
     @param name The name to set
     */
-    template <class T> void SetName(const T &name) {
+    template <class T>
+    void SetName( const T& name ) {
       ValidatePointer();
-      m_tiXmlPointer->SetName(ToString(name));
+      m_tiXmlPointer->SetName( ToString( name ) );
     }
 
     /**
     @internal
     Updates the reference count for the old and new pointers.
     */
-    void operator=(const Attribute &copy);
+    void operator=( const Attribute& copy );
 
     /**
     @internal
     Updates the reference count for the old and new pointers.
     */
-    Attribute(const Attribute &copy);
+    Attribute( const Attribute& copy );
 
     /*
     Decrements reference count.
@@ -399,12 +416,12 @@ It will take care of the conversion and throwing the exception.
     /**
     Get the next sibling attribute in the DOM.
     */
-    Attribute *Next(bool throwIfNoAttribute = true) const;
+    Attribute* Next( bool throwIfNoAttribute = true ) const;
 
     /**
     Get the previous sibling attribute in the DOM.
     */
-    Attribute *Previous(bool throwIfNoAttribute = true) const;
+    Attribute* Previous( bool throwIfNoAttribute = true ) const;
 
     /**
     @internal
@@ -413,7 +430,7 @@ It will take care of the conversion and throwing the exception.
     @param next [OUT] The pointer to the next valid attribute
     @return true if there is a next attribute, false if not
     */
-    void IterateNext(const std::string &, Attribute **next) const;
+    void IterateNext( const std::string&, Attribute** next ) const;
 
     /**
     @internal
@@ -422,12 +439,12 @@ It will take care of the conversion and throwing the exception.
     @param previous [OUT] The pointer to the previous valid attribute
     @return true if there is a previous attribute, false if not
     */
-    void IteratePrevious(const std::string &, Attribute **previous) const;
+    void IteratePrevious( const std::string&, Attribute** previous ) const;
 
     /**
     All TinyXml classes can print themselves to a filestream.
     */
-    virtual void Print(FILE *file, int depth) const;
+    virtual void Print( FILE* file, int depth ) const;
 
     private:
     /**
@@ -437,7 +454,7 @@ It will take care of the conversion and throwing the exception.
 
     @param newPointer TiXmlAttribute* to set.
     */
-    void SetTiXmlPointer(TiXmlAttribute *newPointer);
+    void SetTiXmlPointer( TiXmlAttribute* newPointer );
   };
 
   /**
@@ -452,8 +469,9 @@ It will take care of the conversion and throwing the exception.
 
     @param value [OUT] A pointer to fill with the value
     */
-    template <class T> void GetValue(T *value) const {
-      FromString(GetTiXmlPointer()->ValueStr(), value);
+    template <class T>
+    void GetValue( T* value ) const {
+      FromString( GetTiXmlPointer()->ValueStr(), value );
     }
 
     /**
@@ -471,8 +489,9 @@ It will take care of the conversion and throwing the exception.
 
     @param value The value to set
     */
-    template <class T> void SetValue(const T &value) {
-      GetTiXmlPointer()->SetValue(ToString(value));
+    template <class T>
+    void SetValue( const T& value ) {
+      GetTiXmlPointer()->SetValue( ToString( value ) );
     }
 
     /**
@@ -487,23 +506,26 @@ It will take care of the conversion and throwing the exception.
 
     @param throwIfNoParent [DEF] If true, throws when Parent = nullptr.
     @return The parent of this node, nullptr if there is no Parent.
-    @throws Exception When throwIfNoParent is true, and TiXmlNode::Parent returns
+    @throws Exception When throwIfNoParent is true, and TiXmlNode::Parent
+    returns
     Null.
     */
-    Node *Parent(bool throwIfNoParent = true) const;
+    Node* Parent( bool throwIfNoParent = true ) const;
 
     /**
     The first child of this node.
 
-    @param throwIfNoChildren [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren [DEF] If true, will throw an exception if there are
+    no
     children.
-    @return Pointer to child, Null if no children and 'throwIfNoChildren' is false.
+    @return Pointer to child, Null if no children and 'throwIfNoChildren' is
+    false.
     @throws Exception When throwIfNoChildren is true, and TiXmlNode::FirstChild
     returns Null.
 
     @see TiXmlNode::FirstChild
     */
-    Node *FirstChild(bool throwIfNoChildren = true) const;
+    Node* FirstChild( bool throwIfNoChildren = true ) const;
 
     /**
     @internal
@@ -511,37 +533,42 @@ It will take care of the conversion and throwing the exception.
 
     @overload
     @param value        Value to match.
-    @param throwIfNoChildren  [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren  [DEF] If true, will throw an exception if there
+    are no
     children.
 
     @see FirstChild( bool throwIfNoChildren = true )
     */
-    Node *FirstChild(const char *value, bool throwIfNoChildren = true) const;
+    Node* FirstChild( const char* value, bool throwIfNoChildren = true ) const;
 
     /**
     The first child of this node with the matching @a value.
 
     @overload
     @param value        Value to match.
-    @param throwIfNoChildren  [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren  [DEF] If true, will throw an exception if there
+    are no
     children.
 
     @see FirstChild( const char* value, bool throwIfNoChildren = true )
     */
-    Node *FirstChild(const std::string &value, bool throwIfNoChildren = true) const;
+    Node* FirstChild( const std::string& value,
+                      bool throwIfNoChildren = true ) const;
 
     /**
     The last child of this node.
 
-    @param throwIfNoChildren [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren [DEF] If true, will throw an exception if there are
+    no
     children.
-    @return Pointer to child, Null if no children and 'throwIfNoChildren' is false.
+    @return Pointer to child, Null if no children and 'throwIfNoChildren' is
+    false.
     @throws Exception When throwIfNoChildren is true, and TiXmlNode::LastChild
     returns Null.
 
     @see TiXmlNode::LastChild
     */
-    Node *LastChild(bool throwIfNoChildren = true) const;
+    Node* LastChild( bool throwIfNoChildren = true ) const;
 
     /**
     @internal
@@ -549,24 +576,27 @@ It will take care of the conversion and throwing the exception.
 
     @overload
     @param value        Value to match.
-    @param throwIfNoChildren  [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren  [DEF] If true, will throw an exception if there
+    are no
     children.
 
     @see LastChild( bool throwIfNoChildren = true )
     */
-    Node *LastChild(const char *value, bool throwIfNoChildren = true) const;
+    Node* LastChild( const char* value, bool throwIfNoChildren = true ) const;
 
     /**
     The last child of this node with the matching @a value.
 
     @overload
     @param value        Value to match.
-    @param throwIfNoChildren  [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren  [DEF] If true, will throw an exception if there
+    are no
     children.
 
     @see LastChild( const char* value, bool throwIfNoChildren = true )
     */
-    Node *LastChild(const std::string &value, bool throwIfNoChildren = true) const;
+    Node* LastChild( const std::string& value,
+                     bool throwIfNoChildren = true ) const;
 
     /**
     An alternate way to walk the children of a node.
@@ -575,30 +605,32 @@ It will take care of the conversion and throwing the exception.
     @param previous The previous Node* that was returned from IterateChildren.
     @return nullptr When there are no more children.
     */
-    Node *IterateChildren(Node *previous) const;
+    Node* IterateChildren( Node* previous ) const;
 
     /**
-    This flavor of IterateChildren searches for children with a particular @a value.
+    This flavor of IterateChildren searches for children with a particular @a
+    value.
     Simple wrapper for TiXmlNode::IterateChildren.
 
     @param value  The value you want to search for.
     @param previous The previous Node* that was returned from IterateChildren.
     @return nullptr When there are no more children.
     */
-    Node *IterateChildren(const std::string &value, Node *previous) const;
+    Node* IterateChildren( const std::string& value, Node* previous ) const;
 
     /**
     Adds a child past the LastChild.
     Throws if you try to insert a document.
 
-    @note This takes a copy of @a addThis so it is not as efficiant as LinkEndChild.
+    @note This takes a copy of @a addThis so it is not as efficiant as
+    LinkEndChild.
     @param addThis Node to insert.
     @throws Exception When TiXmlNode::InsertEndChild returns Null
 
     @see LinkEndChild
     @see TiXmlNode::InsertEndChild
     */
-    Node *InsertEndChild(Node &addThis);
+    Node* InsertEndChild( Node& addThis );
 
     /**
     Adds a child past the LastChild.
@@ -610,7 +642,7 @@ It will take care of the conversion and throwing the exception.
     @see InsertEndChild
     @see TiXmlNode::LinkEndChild
     */
-    Node *LinkEndChild(Node *childNode);
+    Node* LinkEndChild( Node* childNode );
 
     /**
     Adds a child before the specified child.
@@ -623,7 +655,7 @@ It will take care of the conversion and throwing the exception.
     @see InsertAfterChild
     @see TiXmlNode::InsertBeforeChild
     */
-    Node *InsertBeforeChild(Node *beforeThis, Node &addThis);
+    Node* InsertBeforeChild( Node* beforeThis, Node& addThis );
 
     /**
     Adds a child after the specified child.
@@ -636,7 +668,7 @@ It will take care of the conversion and throwing the exception.
     @see InsertBeforeChild
     @see TiXmlNode::InsertAfterChild
     */
-    Node *InsertAfterChild(Node *afterThis, Node &addThis);
+    Node* InsertAfterChild( Node* afterThis, Node& addThis );
 
     /**
     Replace a child of this node.
@@ -648,7 +680,7 @@ It will take care of the conversion and throwing the exception.
 
     @see TiXmlNode::ReplaceChild
     */
-    Node *ReplaceChild(Node *replaceThis, Node &withThis);
+    Node* ReplaceChild( Node* replaceThis, Node& withThis );
 
     /**
     Delete a child of this node.
@@ -658,32 +690,35 @@ It will take care of the conversion and throwing the exception.
 
     @see TiXmlNode::RemoveChild
     */
-    void RemoveChild(Node *removeThis);
+    void RemoveChild( Node* removeThis );
 
     /**
     Navigate to a sibling node.
     Wrapper around TiXmlNode::PreviousSibling.
 
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     siblings.
-    @return Pointer to sibling, Null if no siblings and 'throwIfNoSiblings' is false.
+    @return Pointer to sibling, Null if no siblings and 'throwIfNoSiblings' is
+    false.
     @throws Exception When TiXmlNode::PreviousSibling returns Null and
     'throwIfNoSiblings' is true.
     */
-    Node *PreviousSibling(bool throwIfNoSiblings = true) const;
+    Node* PreviousSibling( bool throwIfNoSiblings = true ) const;
 
     /**
     Navigate to a sibling node with the given @a value.
 
     @overload
     @param value The value of the node to look for.
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     siblings.
 
     @see PreviousSibling( bool throwIfNoSiblings )
     */
-    Node *PreviousSibling(const std::string &value,
-                          bool throwIfNoSiblings = true) const;
+    Node* PreviousSibling( const std::string& value,
+                           bool throwIfNoSiblings = true ) const;
 
     /**
     @internal
@@ -691,36 +726,42 @@ It will take care of the conversion and throwing the exception.
 
     @overload
     @param value The value of the node to look for.
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     siblings.
 
     @see PreviousSibling( const std::string& value, bool throwIfNoSiblings )
     */
-    Node *PreviousSibling(const char *value, bool throwIfNoSiblings = true) const;
+    Node* PreviousSibling( const char* value,
+                           bool throwIfNoSiblings = true ) const;
 
     /**
     Navigate to a sibling node.
     Wrapper around TiXmlNode::NextSibling.
 
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     siblings.
-    @return Pointer to sibling, Null if no siblings and 'throwIfNoSiblings' is false.
+    @return Pointer to sibling, Null if no siblings and 'throwIfNoSiblings' is
+    false.
     @throws Exception When TiXmlNode::NextSibling returns Null and
     'throwIfNoSiblings' is true.
     */
-    Node *NextSibling(bool throwIfNoSiblings = true) const;
+    Node* NextSibling( bool throwIfNoSiblings = true ) const;
 
     /**
     Navigate to a sibling node with the given @a value.
 
     @overload
     @param value The value of the node to look for.
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     siblings.
 
     @see NextSibling( bool throwIfNoSiblings )
     */
-    Node *NextSibling(const std::string &value, bool throwIfNoSiblings = true) const;
+    Node* NextSibling( const std::string& value,
+                       bool throwIfNoSiblings = true ) const;
 
     /**
     @internal
@@ -728,12 +769,13 @@ It will take care of the conversion and throwing the exception.
 
     @overload
     @param value The value of the node to look for.
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     siblings.
 
     @see NextSibling( const std::string& value, bool throwIfNoSiblings )
     */
-    Node *NextSibling(const char *value, bool throwIfNoSiblings = true) const;
+    Node* NextSibling( const char* value, bool throwIfNoSiblings = true ) const;
 
     /**
     @internal
@@ -742,21 +784,22 @@ It will take care of the conversion and throwing the exception.
     @param value The value of nodes to iterate through
     @param next [OUT] The pointer to the first valid node
     */
-    template <class T> void IterateFirst(const std::string &value, T **first) const {
+    template <class T>
+    void IterateFirst( const std::string& value, T** first ) const {
       *first = 0;
 
-      for (Node *child = FirstChild(value, false); child;
-           child = child->NextSibling(value, false)) {
-        *first = dynamic_cast<T *>(child);
+      for ( Node* child = FirstChild( value, false ); child;
+            child = child->NextSibling( value, false ) ) {
+        *first = dynamic_cast<T*>( child );
 
-        if (0 != *first) {
+        if ( 0 != *first ) {
           return;
         }
       }
     }
 
-    virtual void IterateFirst(const std::string &, Attribute **) const {
-      TICPPTHROW("Attributes can only be iterated with Elements.")
+    virtual void IterateFirst( const std::string&, Attribute** ) const {
+      TICPPTHROW( "Attributes can only be iterated with Elements." )
     }
 
     /**
@@ -766,13 +809,14 @@ It will take care of the conversion and throwing the exception.
     @param value The value of nodes to iterate through
     @param next [OUT] The pointer to the next valid node
     */
-    template <class T> void IterateNext(const std::string &value, T **next) const {
-      Node *sibling = NextSibling(value, false);
-      *next = dynamic_cast<T *>(sibling);
+    template <class T>
+    void IterateNext( const std::string& value, T** next ) const {
+      Node* sibling = NextSibling( value, false );
+      *next = dynamic_cast<T*>( sibling );
 
-      while ((0 != sibling) && (0 == *next)) {
-        sibling = sibling->NextSibling(value, false);
-        *next = dynamic_cast<T *>(sibling);
+      while ( ( 0 != sibling ) && ( 0 == *next ) ) {
+        sibling = sibling->NextSibling( value, false );
+        *next = dynamic_cast<T*>( sibling );
       }
     }
 
@@ -784,13 +828,13 @@ It will take care of the conversion and throwing the exception.
     @param previous [OUT] The pointer to the previous valid node
     */
     template <class T>
-    void IteratePrevious(const std::string &value, T **previous) const {
-      Node *sibling = PreviousSibling(value, false);
-      *previous = dynamic_cast<T *>(sibling);
+    void IteratePrevious( const std::string& value, T** previous ) const {
+      Node* sibling = PreviousSibling( value, false );
+      *previous = dynamic_cast<T*>( sibling );
 
-      while ((0 != sibling) && (0 == *previous)) {
-        sibling = sibling->PreviousSibling(value, false);
-        *previous = dynamic_cast<T *>(sibling);
+      while ( ( 0 != sibling ) && ( 0 == *previous ) ) {
+        sibling = sibling->PreviousSibling( value, false );
+        *previous = dynamic_cast<T*>( sibling );
       }
     }
 
@@ -798,25 +842,28 @@ It will take care of the conversion and throwing the exception.
     Navigate to a sibling element.
     Wrapper around TiXmlNode::NextSibling.
 
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     sibling element.
-    @return Pointer to sibling, Null if no siblings and 'throwIfNoSiblings' is false.
+    @return Pointer to sibling, Null if no siblings and 'throwIfNoSiblings' is
+    false.
     @throws Exception When TiXmlNode::NextSibling returns Null and
     'throwIfNoSiblings' is true.
     */
-    Element *NextSiblingElement(bool throwIfNoSiblings = true) const;
+    Element* NextSiblingElement( bool throwIfNoSiblings = true ) const;
 
     /**
     Navigate to a sibling element with the given @a value.
 
     @overload
     @param value The value of the element to look for.
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     sibling elements.
     @see NextSiblingElement( bool throwIfNoSiblings )
     */
-    Element *NextSiblingElement(const std::string &value,
-                                bool throwIfNoSiblings = true) const;
+    Element* NextSiblingElement( const std::string& value,
+                                 bool throwIfNoSiblings = true ) const;
 
     /**
     @internal
@@ -824,27 +871,30 @@ It will take care of the conversion and throwing the exception.
 
     @overload
     @param value The value of the element to look for.
-    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are no
+    @param throwIfNoSiblings [DEF] If true, will throw an exception if there are
+    no
     sibling elements.
 
     @see NextSiblingElement( const std::string& value, bool throwIfNoSiblings )
     */
-    Element *NextSiblingElement(const char *value,
-                                bool throwIfNoSiblings = true) const;
+    Element* NextSiblingElement( const char* value,
+                                 bool throwIfNoSiblings = true ) const;
 
     /**
     The first child element of this node.
 
-    @param throwIfNoChildren [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren [DEF] If true, will throw an exception if there are
+    no
     element children.
-    @return Pointer to child, Null if no element children and 'throwIfNoChildren' is
+    @return Pointer to child, Null if no element children and
+    'throwIfNoChildren' is
     false.
     @throws Exception When throwIfNoChildren is true, and
     TiXmlNode::FirstChildElement returns Null.
 
     @see TiXmlNode::FirstChildElement
     */
-    Element *FirstChildElement(bool throwIfNoChildren = true) const;
+    Element* FirstChildElement( bool throwIfNoChildren = true ) const;
 
     /**
     @internal
@@ -852,26 +902,28 @@ It will take care of the conversion and throwing the exception.
 
     @overload
     @param value Value to match.
-    @param throwIfNoChildren [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren [DEF] If true, will throw an exception if there are
+    no
     element children.
 
     @see FirstChildElement( bool throwIfNoChildren = true )
     */
-    Element *FirstChildElement(const char *value,
-                               bool throwIfNoChildren = true) const;
+    Element* FirstChildElement( const char* value,
+                                bool throwIfNoChildren = true ) const;
 
     /**
     The first child element of this node with the matching @a value.
 
     @overload
     @param value Value to match.
-    @param throwIfNoChildren [DEF] If true, will throw an exception if there are no
+    @param throwIfNoChildren [DEF] If true, will throw an exception if there are
+    no
     element children.
 
     @see FirstChildElement( const char* value, bool throwIfNoChildren = true )
     */
-    Element *FirstChildElement(const std::string &value,
-                               bool throwIfNoChildren = true) const;
+    Element* FirstChildElement( const std::string& value,
+                                bool throwIfNoChildren = true ) const;
 
     /**
     Query the type (as TiXmlNode::NodeType ) of this node.
@@ -881,14 +933,16 @@ It will take care of the conversion and throwing the exception.
     /**
     Return a pointer to the Document this node lives in.
 
-    @param throwIfNoDocument [DEF] If true, will throw an exception if this node is
+    @param throwIfNoDocument [DEF] If true, will throw an exception if this node
+    is
     not linked under a Document.
-    @return A pointer to the Document this node lives in, nullptr if not linked under
+    @return A pointer to the Document this node lives in, nullptr if not linked
+    under
     a Document, and 'throwIfNoDocument' is false.
     @throws Exception When this node is not linked under a Document and
     'throwIfNoDocument' is true.
     */
-    Document *GetDocument(bool throwIfNoDocument = true) const;
+    Document* GetDocument( bool throwIfNoDocument = true ) const;
 
     /**
     Check if this node has no children.
@@ -899,25 +953,31 @@ It will take care of the conversion and throwing the exception.
 
 #ifndef TICPP_NO_RTTI
     /**
-    Pointer conversion ( NOT OBJECT CONVERSION ) - replaces TiXmlNode::ToElement,
+    Pointer conversion ( NOT OBJECT CONVERSION ) - replaces
+    TiXmlNode::ToElement,
     TiXmlNode::ToDocument, TiXmlNode::ToComment, etc.
 
     @throws Exception When the target is not an object of class T
-    @warning Some ancient compilers do not support explicit specification of member
+    @warning Some ancient compilers do not support explicit specification of
+    member
     template arguments, which this depends on ( e.g. VC6 ).
     */
-    template <class T> T *To() const {
-      T *pointer = dynamic_cast<T *>(this);
+    template <class T>
+    T* To() const {
+      T* pointer = dynamic_cast<T*>( this );
 
-      if (0 == pointer) {
-        std::string thisType = typeid(this).name();
-        std::string targetType = typeid(T).name();
-        std::string thatType = typeid(*this).name();
-        TICPPTHROW("The " << thisType.substr(6) << " could not be casted to a "
-                          << targetType.substr(6)
-                          << " *, because the target object is not a "
-                          << targetType.substr(6) << ". (It is a "
-                          << thatType.substr(6) << ")");
+      if ( 0 == pointer ) {
+        std::string thisType = typeid( this ).name();
+        std::string targetType = typeid( T ).name();
+        std::string thatType = typeid( *this ).name();
+        TICPPTHROW( "The " << thisType.substr( 6 )
+                           << " could not be casted to a "
+                           << targetType.substr( 6 )
+                           << " *, because the target object is not a "
+                           << targetType.substr( 6 )
+                           << ". (It is a "
+                           << thatType.substr( 6 )
+                           << ")" );
       }
 
       return pointer;
@@ -929,42 +989,42 @@ It will take care of the conversion and throwing the exception.
 
     @throws Exception When this node is not a Document.
     */
-    Document *ToDocument() const;
+    Document* ToDocument() const;
 
     /**
     Pointer conversion - replaces TiXmlNode::ToElement.
 
     @throws Exception When this node is not a Element.
     */
-    Element *ToElement() const;
+    Element* ToElement() const;
 
     /**
     Pointer conversion - replaces TiXmlNode::ToComment.
 
     @throws Exception When this node is not a Comment.
     */
-    Comment *ToComment() const;
+    Comment* ToComment() const;
 
     /**
     Pointer conversion - replaces TiXmlNode::ToText.
 
     @throws Exception When this node is not a Text.
     */
-    Text *ToText() const;
+    Text* ToText() const;
 
     /**
     Pointer conversion - replaces TiXmlNode::ToDeclaration.
 
     @throws Exception When this node is not a Declaration.
     */
-    Declaration *ToDeclaration() const;
+    Declaration* ToDeclaration() const;
 
     /**
     Pointer conversion - replaces TiXmlNode::ToStylesheetReference.
 
     @throws Exception When this node is not a StylesheetReference.
     */
-    StylesheetReference *ToStylesheetReference() const;
+    StylesheetReference* ToStylesheetReference() const;
 
     /**
     Create an exact duplicate of this node and return it.
@@ -985,18 +1045,18 @@ It will take care of the conversion and throwing the exception.
     @endcode
     @return Pointer the duplicate node.
     */
-    std::auto_ptr<Node> Clone() const;
+    std::unique_ptr<Node> Clone() const;
 
     /**
     Accept a hierchical visit the nodes in the TinyXML DOM.
     @return The boolean returned by the visitor.
     */
-    bool Accept(TiXmlVisitor *visitor) const;
+    bool Accept( TiXmlVisitor* visitor ) const;
 
     /**
     Stream input operator.
     */
-    friend std::istream &operator>>(std::istream &in, Node &base) {
+    friend std::istream& operator>>( std::istream& in, Node& base ) {
       in >> *base.GetTiXmlPointer();
       return in;
     }
@@ -1004,7 +1064,7 @@ It will take care of the conversion and throwing the exception.
     /**
     Stream output operator.
     */
-    friend std::ostream &operator<<(std::ostream &out, const Node &base) {
+    friend std::ostream& operator<<( std::ostream& out, const Node& base ) {
       out << *base.GetTiXmlPointer();
       return out;
     }
@@ -1014,16 +1074,17 @@ It will take care of the conversion and throwing the exception.
     @internal
     Allows NodeImp to use Node*'s.
     */
-    virtual TiXmlNode *GetTiXmlPointer() const = 0;
+    virtual TiXmlNode* GetTiXmlPointer() const = 0;
 
-    TiXmlBase *GetBasePointer() const { return GetTiXmlPointer(); }
+    TiXmlBase* GetBasePointer() const { return GetTiXmlPointer(); }
 
     /**
     @internal
     Constructs the correct child of Node, based on the Type of the TiXmlNode*.
     */
-    Node *NodeFactory(TiXmlNode *tiXmlNode, bool throwIfNull = true,
-                      bool rememberSpawnedWrapper = true) const;
+    Node* NodeFactory( TiXmlNode* tiXmlNode,
+                       bool throwIfNull = true,
+                       bool rememberSpawnedWrapper = true ) const;
   };
 
   /** Iterator for conveniently stepping through Nodes and Attributes.
@@ -1053,9 +1114,10 @@ It will take care of the conversion and throwing the exception.
   attribute++ )
   @endcode
   */
-  template <class T = Node> class Iterator {
+  template <class T = Node>
+  class Iterator {
     private:
-    T *m_p;              /**< Internal Pointer */
+    T* m_p;              /**< Internal Pointer */
     std::string m_value; /**< Value for NextSibling  calls */
 
     public:
@@ -1068,9 +1130,9 @@ It will take care of the conversion and throwing the exception.
     for ( child = child.begin( parent ); child != child.end(); child++ )
     @endcode
     */
-    T *begin(const Node *parent) const {
-      T *pointer;
-      parent->IterateFirst(m_value, &pointer);
+    T* begin( const Node* parent ) const {
+      T* pointer;
+      parent->IterateFirst( m_value, &pointer );
       return pointer;
     }
 
@@ -1082,7 +1144,7 @@ It will take care of the conversion and throwing the exception.
     for ( child = child.begin( parent ); child != child.end(); child++ )
     @endcode
     */
-    T *end() const { return 0; }
+    T* end() const { return 0; }
 
     /** Constructor.
     @param value If not empty, this iterator will only visit nodes with matching
@@ -1093,70 +1155,80 @@ It will take care of the conversion and throwing the exception.
     for ( child = child.begin( parent ); child != child.end(); child++ )
     @endcode
     */
-    Iterator(const std::string &value = "") : m_p(0), m_value(value) {}
+    Iterator( const std::string& value = "" )
+        : m_p( 0 )
+        , m_value( value ) {}
 
     /// Constructor
-    Iterator(T *node, const std::string &value = "") : m_p(node), m_value(value) {}
+    Iterator( T* node, const std::string& value = "" )
+        : m_p( node )
+        , m_value( value ) {}
 
     /// Constructor
-    Iterator(const Iterator &it) : m_p(it.m_p), m_value(it.m_value) {}
+    Iterator( const Iterator& it )
+        : m_p( it.m_p )
+        , m_value( it.m_value ) {}
 
     /**
     Gets internal pointer.
     @return The internal pointer.
     */
-    T *Get() const { return m_p; }
+    T* Get() const { return m_p; }
 
     /** Sets internal pointer */
-    Iterator &operator=(const Iterator &it) {
+    Iterator& operator=( const Iterator& it ) {
       m_p = it.m_p;
       m_value = it.m_value;
       return *this;
     }
 
     /** Sets internal pointer */
-    Iterator &operator=(T *p) {
+    Iterator& operator=( T* p ) {
       m_p = p;
       return *this;
     }
 
-    /** Sets internal pointer to the Next Sibling, or Iterator::END, if there are no
+    /** Sets internal pointer to the Next Sibling, or Iterator::END, if there
+     * are no
      * more siblings */
-    Iterator &operator++() {
-      m_p->IterateNext(m_value, &m_p);
+    Iterator& operator++() {
+      m_p->IterateNext( m_value, &m_p );
       return *this;
     }
 
-    /** Sets internal pointer to the Next Sibling, or Iterator::END, if there are no
+    /** Sets internal pointer to the Next Sibling, or Iterator::END, if there
+     * are no
      * more siblings */
-    Iterator operator++(int) {
-      Iterator tmp(*this);
-      ++(*this);
+    Iterator operator++( int ) {
+      Iterator tmp( *this );
+      ++( *this );
       return tmp;
     }
 
-    /** Sets internal pointer to the Previous Sibling, or Iterator::END, if there are
+    /** Sets internal pointer to the Previous Sibling, or Iterator::END, if
+     * there are
      * no prior siblings */
-    Iterator &operator--() {
-      m_p->IteratePrevious(m_value, &m_p);
+    Iterator& operator--() {
+      m_p->IteratePrevious( m_value, &m_p );
       return *this;
     }
 
-    /** Sets internal pointer to the Previous Sibling, or Iterator::END, if there are
+    /** Sets internal pointer to the Previous Sibling, or Iterator::END, if
+     * there are
      * no prior siblings */
-    Iterator operator--(int) {
-      Iterator tmp(*this);
-      --(*this);
+    Iterator operator--( int ) {
+      Iterator tmp( *this );
+      --( *this );
       return tmp;
     }
 
     /** Compares internal pointer */
-    bool operator!=(const T *p) const {
-      if (m_p == p) {
+    bool operator!=( const T* p ) const {
+      if ( m_p == p ) {
         return false;
       }
 
-      if (0 == m_p || 0 == p) {
+      if ( 0 == m_p || 0 == p ) {
         return true;
       }
 
@@ -1164,15 +1236,15 @@ It will take care of the conversion and throwing the exception.
     }
 
     /** Compares internal pointer */
-    bool operator!=(const Iterator &it) const { return operator!=(it.m_p); }
+    bool operator!=( const Iterator& it ) const { return operator!=( it.m_p ); }
 
     /** Compares internal pointer* */
-    bool operator==(T *p) const {
-      if (m_p == p) {
+    bool operator==( T* p ) const {
+      if ( m_p == p ) {
         return true;
       }
 
-      if (0 == m_p || 0 == p) {
+      if ( 0 == m_p || 0 == p ) {
         return false;
       }
 
@@ -1180,19 +1252,20 @@ It will take care of the conversion and throwing the exception.
     }
 
     /** Compares internal pointer */
-    bool operator==(const Iterator &it) const { return operator==(it.m_p); }
+    bool operator==( const Iterator& it ) const { return operator==( it.m_p ); }
 
     /** So Iterator behaves like a STL iterator */
-    T *operator->() const { return m_p; }
+    T* operator->() const { return m_p; }
 
     /** So Iterator behaves like a STL iterator */
-    T &operator*() const { return *m_p; }
+    T& operator*() const { return *m_p; }
   };
 
   /** Implementation of Node wrapper */
-  template <class T> class NodeImp : public Node {
+  template <class T>
+  class NodeImp : public Node {
     protected:
-    T *m_tiXmlPointer; /**< Internal pointer to the TiXml Class which is being
+    T* m_tiXmlPointer; /**< Internal pointer to the TiXml Class which is being
                           wrapped */
 
     /**
@@ -1201,7 +1274,7 @@ It will take care of the conversion and throwing the exception.
 
     @returns The internal TiXmlNode*.
     */
-    TiXmlNode *GetTiXmlPointer() const {
+    TiXmlNode* GetTiXmlPointer() const {
       ValidatePointer();
       return m_tiXmlPointer;
     }
@@ -1213,41 +1286,42 @@ It will take care of the conversion and throwing the exception.
 
     @param newPointer TiXmlNode* to set.
     */
-    void SetTiXmlPointer(T *newPointer) {
+    void SetTiXmlPointer( T* newPointer ) {
       m_tiXmlPointer = newPointer;
-      SetImpRC(newPointer);
+      SetImpRC( newPointer );
     }
 
     /**
     @internal
     Constructor used by child classes.
     */
-    NodeImp(T *tiXmlPointer) {
+    NodeImp( T* tiXmlPointer ) {
       // Check for nullptr pointers
-      if (0 == tiXmlPointer) {
+      if ( 0 == tiXmlPointer ) {
 #ifdef TICPP_NO_RTTI
-        TICPPTHROW("Can not create TinyXML objext");
+        TICPPTHROW( "Can not create TinyXML objext" );
 #else
-        TICPPTHROW("Can not create a " << typeid(T).name());
+        TICPPTHROW( "Can not create a " << typeid( T ).name() );
 #endif
       }
 
-      SetTiXmlPointer(tiXmlPointer);
+      SetTiXmlPointer( tiXmlPointer );
       m_impRC->IncRef();
     }
 
     /**
     @internal
     Updates the reference count for the old and new pointers.
-    In addition, the spawnedWrappers must be cleared out before a new TiXml object is
+    In addition, the spawnedWrappers must be cleared out before a new TiXml
+    object is
     loaded in.
     */
-    virtual void operator=(const NodeImp<T> &copy) {
+    virtual void operator=( const NodeImp<T>& copy ) {
       // Dropping the reference to the old object
       this->m_impRC->DecRef();
 
       // Pointing to the new Object
-      SetTiXmlPointer(copy.m_tiXmlPointer);
+      SetTiXmlPointer( copy.m_tiXmlPointer );
 
       // The internal tixml pointer changed in the above line
       this->m_impRC->IncRef();
@@ -1256,12 +1330,14 @@ It will take care of the conversion and throwing the exception.
     /**
     @internal
     Updates the reference count for the old and new pointers.
-    In addition, the spawnedWrappers must be cleared out before a new TiXml object is
+    In addition, the spawnedWrappers must be cleared out before a new TiXml
+    object is
     loaded in
     */
-    NodeImp(const NodeImp<T> &copy) : Node(copy) {
+    NodeImp( const NodeImp<T>& copy )
+        : Node( copy ) {
       // Pointing to the new Object
-      SetTiXmlPointer(copy.m_tiXmlPointer);
+      SetTiXmlPointer( copy.m_tiXmlPointer );
 
       // The internal tixml pointer changed in the above line
       this->m_impRC->IncRef();
@@ -1286,12 +1362,12 @@ It will take care of the conversion and throwing the exception.
     /**
     Constructor.
     */
-    Comment(TiXmlComment *comment);
+    Comment( TiXmlComment* comment );
 
     /**
     Constructor.
     */
-    Comment(const std::string &comment);
+    Comment( const std::string& comment );
   };
 
   /** Wrapper around TiXmlText */
@@ -1306,13 +1382,13 @@ It will take care of the conversion and throwing the exception.
     Constructor.
     @overload
     */
-    Text(TiXmlText *text);
+    Text( TiXmlText* text );
 
     /**
     Constructor.
     @overload
     */
-    Text(const std::string &value);
+    Text( const std::string& value );
 
     /**
     Streams value into a string and creates a Text with it.
@@ -1324,8 +1400,8 @@ It will take care of the conversion and throwing the exception.
     @see TiXmlText
         */
     template <class T>
-    Text(const T &value)
-        : NodeImp<TiXmlText>(new TiXmlText(ToString(value))) {
+    Text( const T& value )
+        : NodeImp<TiXmlText>( new TiXmlText( ToString( value ) ) ) {
       m_impRC->InitRef();
     }
   };
@@ -1342,36 +1418,40 @@ It will take care of the conversion and throwing the exception.
     /**
     Constructor.
     */
-    Document(TiXmlDocument *document);
+    Document( TiXmlDocument* document );
 
     /**
     Constructor.
     */
-    Document(const char *documentName);
+    Document( const char* documentName );
 
     /**
      * Constructor.
-     * Create a document with a name. The name of the document is also the filename
+     * Create a document with a name. The name of the document is also the
+     * filename
      * of the xml.
      * @param documentName Name to set in the Document.
-     * @note LoadFile() needs to be called to actually load the data from the file
+     * @note LoadFile() needs to be called to actually load the data from the
+     * file
      * specified by documentName
      *     SaveFile() needs to be called to save data to file specified by
      * documentName.
      */
-    Document(const std::string &documentName);
+    Document( const std::string& documentName );
 
     /**
-    Load a file using the current document value. Throws if load is unsuccessful.
+    Load a file using the current document value. Throws if load is
+    unsuccessful.
 
     @param encoding Sets the documents encoding.
     @see TiXmlEncoding
     @throws Exception
     */
-    void LoadFile(TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
+    void LoadFile( TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
 
     /**
-    Save a file using the current document value. Throws if it can't save the file.
+    Save a file using the current document value. Throws if it can't save the
+    file.
 
     @throws Exception
     */
@@ -1385,14 +1465,14 @@ It will take care of the conversion and throwing the exception.
     @see TiXmlEncoding
     @throws Exception
     */
-    void LoadFile(const std::string &filename,
-                  TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
+    void LoadFile( const std::string& filename,
+                   TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
 
     /**
     @copydoc Document::LoadFile( const std::string&, TiXmlEncoding )
     */
-    void LoadFile(const char *filename,
-                  TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
+    void LoadFile( const char* filename,
+                   TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
 
     /**
     Save a file using the given filename. Throws if it can't save the file.
@@ -1400,7 +1480,7 @@ It will take care of the conversion and throwing the exception.
     @param filename File to save.
     @throws Exception
     */
-    void SaveFile(const std::string &filename) const;
+    void SaveFile( const std::string& filename ) const;
 
     /**
     Parse the given xml data.
@@ -1410,8 +1490,9 @@ It will take care of the conversion and throwing the exception.
     @param encoding Sets the documents encoding.
     @throws Exception
     */
-    void Parse(const std::string &xml, bool throwIfParseError = true,
-               TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
+    void Parse( const std::string& xml,
+                bool throwIfParseError = true,
+                TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
   };
 
   /** Wrapper around TiXmlElement */
@@ -1426,18 +1507,18 @@ It will take care of the conversion and throwing the exception.
     Default Constructor. Initializes all the variables.
     @param value The value of the element.
     */
-    Element(const std::string &value);
+    Element( const std::string& value );
 
     /**
     Default Constructor. Initializes all the variables.
     @param value The value of the element.
     */
-    Element(const char *value);
+    Element( const char* value );
 
     /**
     Constructor.
     */
-    Element(TiXmlElement *element);
+    Element( TiXmlElement* element );
 
     /**
     Constructor that allows you to set the element text
@@ -1445,29 +1526,33 @@ It will take care of the conversion and throwing the exception.
     @param text The text to set.
     */
     template <class T>
-    Element(const std::string &value, const T &text)
-        : NodeImp<TiXmlElement>(new TiXmlElement(value)) {
+    Element( const std::string& value, const T& text )
+        : NodeImp<TiXmlElement>( new TiXmlElement( value ) ) {
       m_impRC->InitRef();
-      SetText(text);
+      SetText( text );
     }
 
     /**
     Access the first attribute in this element.
 
-    @param throwIfNoAttributes [DEF] If true, throws when there are no attributes
-    @return The first attribute, nullptr if there are none and @a throwIfNoAttributes
+    @param throwIfNoAttributes [DEF] If true, throws when there are no
+    attributes
+    @return The first attribute, nullptr if there are none and @a
+    throwIfNoAttributes
     is true
     */
-    Attribute *FirstAttribute(bool throwIfNoAttributes = true) const;
+    Attribute* FirstAttribute( bool throwIfNoAttributes = true ) const;
 
     /**
     Access the last attribute in this element.
 
-    @param throwIfNoAttributes [DEF] If true, throws when there are no attributes
-    @return The last attribute, nullptr if there are none and @a throwIfNoAttributes
+    @param throwIfNoAttributes [DEF] If true, throws when there are no
+    attributes
+    @return The last attribute, nullptr if there are none and @a
+    throwIfNoAttributes
     is true
     */
-    Attribute *LastAttribute(bool throwIfNoAttributes = true) const;
+    Attribute* LastAttribute( bool throwIfNoAttributes = true ) const;
 
     /**
     @internal
@@ -1476,14 +1561,14 @@ It will take care of the conversion and throwing the exception.
     @param value The value of nodes to iterate through
     @param next [OUT] The pointer to the first valid node
     */
-    void IterateFirst(const std::string &, Attribute **first) const {
+    void IterateFirst( const std::string&, Attribute** first ) const {
       *first = 0;
 
-      for (Attribute *child = FirstAttribute(false); child;
-           child = child->Next(false)) {
-        *first = dynamic_cast<Attribute *>(child);
+      for ( Attribute* child = FirstAttribute( false ); child;
+            child = child->Next( false ) ) {
+        *first = dynamic_cast<Attribute*>( child );
 
-        if (0 != *first) {
+        if ( 0 != *first ) {
           return;
         }
       }
@@ -1492,20 +1577,23 @@ It will take care of the conversion and throwing the exception.
     /**
     Sets an attribute of name to a given value.
     The attribute will be created if it does not exist, or changed if it does.
-    Uses ToString to convert the @a value to a string, so there is no need to use any
+    Uses ToString to convert the @a value to a string, so there is no need to
+    use any
     other SetAttribute methods.
 
     @see GetAttribute
     */
-    template <class T> void SetAttribute(const std::string &name, const T &value) {
+    template <class T>
+    void SetAttribute( const std::string& name, const T& value ) {
       ValidatePointer();
-      m_tiXmlPointer->SetAttribute(name, ToString(value));
+      m_tiXmlPointer->SetAttribute( name, ToString( value ) );
     }
 
     /**
     Gets the text of an Element.
 
-    @param throwIfNotFound  [DEF] If true, will throw an exception if there is no
+    @param throwIfNotFound  [DEF] If true, will throw an exception if there is
+    no
     text in this element
     @note This only works if the Text is the FirstChild node
     @throws Exception When there is no text and throwIfNotFound is true
@@ -1515,13 +1603,13 @@ It will take care of the conversion and throwing the exception.
     @see GetTextOrDefault( T* value, const DefaultT& defaultValue )
     @see TiXmlElement::GetText
     */
-    std::string GetText(bool throwIfNotFound = true) const {
+    std::string GetText( bool throwIfNotFound = true ) const {
       // Get the element's text value as a std::string
       std::string temp;
 
-      if (!GetTextImp(&temp)) {
-        if (throwIfNotFound) {
-          TICPPTHROW("Text does not exists in the current element");
+      if ( !GetTextImp( &temp ) ) {
+        if ( throwIfNotFound ) {
+          TICPPTHROW( "Text does not exists in the current element" );
         }
       }
 
@@ -1529,7 +1617,8 @@ It will take care of the conversion and throwing the exception.
     }
 
     /**
-    Gets the text of an Element, if it doesn't exist it will return the defaultValue.
+    Gets the text of an Element, if it doesn't exist it will return the
+    defaultValue.
 
     @param defaultValue     What to put in 'value' if there is no text in this
     element
@@ -1540,11 +1629,11 @@ It will take care of the conversion and throwing the exception.
     @see GetTextOrDefault( T* value, const DefaultT& defaultValue )
     @see TiXmlElement::GetText
     */
-    std::string GetTextOrDefault(const std::string &defaultValue) const {
+    std::string GetTextOrDefault( const std::string& defaultValue ) const {
       // Get the element's text value as a std::string
       std::string temp;
 
-      if (!GetTextImp(&temp)) {
+      if ( !GetTextImp( &temp ) ) {
         return defaultValue;
       }
 
@@ -1559,7 +1648,8 @@ It will take care of the conversion and throwing the exception.
     @param value    [OUT] The container for the returned value
     @param defaultValue     What to put in 'value' if there is no text in this
     element
-    @note This is different than GetText() in that it will covert the text to what
+    @note This is different than GetText() in that it will covert the text to
+    what
     ever type you want.
     @note This only works if the Text is the FirstChild node
 
@@ -1569,18 +1659,18 @@ It will take care of the conversion and throwing the exception.
     @see TiXmlElement::GetText
     */
     template <class T, class DefaultT>
-    void GetTextOrDefault(T *value, const DefaultT &defaultValue) const {
+    void GetTextOrDefault( T* value, const DefaultT& defaultValue ) const {
       // Get the element's text value as a std::string
       std::string temp;
 
-      if (!GetTextImp(&temp)) {
+      if ( !GetTextImp( &temp ) ) {
         // The text value does not exist - set value to the default
         *value = defaultValue;
         return;
       }
 
       // Stream the value from the string to T
-      FromString(temp, value);
+      FromString( temp, value );
     }
 
     /**
@@ -1588,9 +1678,11 @@ It will take care of the conversion and throwing the exception.
     Uses FromString to convert the string to the type of choice.
 
     @param value      [OUT] The container for the returned value
-    @param throwIfNotFound  [DEF] If true, will throw an exception if there is no
+    @param throwIfNotFound  [DEF] If true, will throw an exception if there is
+    no
     text in this element
-    @note This is different than GetText() in that it will covert the text to what
+    @note This is different than GetText() in that it will covert the text to
+    what
     ever type you want
     @note This only works if the Text is the FirstChild node
     @throws Exception When there is no text and throwIfNotFound is true
@@ -1600,20 +1692,21 @@ It will take care of the conversion and throwing the exception.
     @see GetTextOrDefault( T* value, const DefaultT& defaultValue )
     @see TiXmlElement::GetText
     */
-    template <class T> void GetText(T *value, bool throwIfNotFound = true) const {
+    template <class T>
+    void GetText( T* value, bool throwIfNotFound = true ) const {
       // Get the element's text value as a std::string
       std::string temp;
 
-      if (!GetTextImp(&temp)) {
-        if (throwIfNotFound) {
-          TICPPTHROW("Text does not exists in the current element");
+      if ( !GetTextImp( &temp ) ) {
+        if ( throwIfNotFound ) {
+          TICPPTHROW( "Text does not exists in the current element" );
         } else {
           return;
         }
       }
 
       // Stream the value from the string to T
-      FromString(temp, value);
+      FromString( temp, value );
     }
 
     /**
@@ -1623,25 +1716,27 @@ It will take care of the conversion and throwing the exception.
 
     @param value The text to set.
     */
-    template <class T> void SetText(const T &value) {
+    template <class T>
+    void SetText( const T& value ) {
       ValidatePointer();
-      std::string temp = ToString(value);
+      std::string temp = ToString( value );
 
-      if (m_tiXmlPointer->NoChildren()) {
-        m_tiXmlPointer->LinkEndChild(new TiXmlText(temp));
+      if ( m_tiXmlPointer->NoChildren() ) {
+        m_tiXmlPointer->LinkEndChild( new TiXmlText( temp ) );
       } else {
-        if (0 == m_tiXmlPointer->GetText()) {
-          m_tiXmlPointer->InsertBeforeChild(m_tiXmlPointer->FirstChild(),
-                                            TiXmlText(temp));
+        if ( 0 == m_tiXmlPointer->GetText() ) {
+          m_tiXmlPointer->InsertBeforeChild( m_tiXmlPointer->FirstChild(),
+                                             TiXmlText( temp ) );
         } else {
           // There already is text, so change it
-          m_tiXmlPointer->FirstChild()->SetValue(temp);
+          m_tiXmlPointer->FirstChild()->SetValue( temp );
         }
       }
     }
 
     /**
-    Gets an attribute of @a name from an element, if it doesn't exist it will return
+    Gets an attribute of @a name from an element, if it doesn't exist it will
+    return
     the defaultValue.
     Uses FromString to convert the string to the type of choice.
 
@@ -1654,23 +1749,25 @@ It will take care of the conversion and throwing the exception.
     @see GetAttribute
     */
     template <class T, class DefaulT>
-    void GetAttributeOrDefault(const std::string &name, T *value,
-                               const DefaulT &defaultValue) const {
+    void GetAttributeOrDefault( const std::string& name,
+                                T* value,
+                                const DefaulT& defaultValue ) const {
       // Get the attribute's value as a std::string
       std::string temp;
 
-      if (!GetAttributeImp(name, &temp)) {
+      if ( !GetAttributeImp( name, &temp ) ) {
         // The attribute does not exist - set value to the default
         *value = defaultValue;
         return;
       }
 
       // Stream the value from the string to T
-      FromString(temp, value);
+      FromString( temp, value );
     }
 
     /**
-    Gets an attribute of @a name from an element, if it doesn't exist it will return
+    Gets an attribute of @a name from an element, if it doesn't exist it will
+    return
     the defaultValue.
 
     @param name     The name of the attribute you are querying.
@@ -1679,34 +1776,37 @@ It will take care of the conversion and throwing the exception.
 
     @see GetAttribute
     */
-    std::string GetAttributeOrDefault(const std::string &name,
-                                      const std::string &defaultValue) const;
+    std::string GetAttributeOrDefault( const std::string& name,
+                                       const std::string& defaultValue ) const;
 
     /**
     Returns an attribute of @a name from an element.
     Uses FromString to convert the string to the type of choice.
 
     @param name       The name of the attribute you are querying.
-    @param throwIfNotFound  [DEF] If true, will throw an exception if the attribute
+    @param throwIfNotFound  [DEF] If true, will throw an exception if the
+    attribute
     doesn't exist
-    @throws Exception When the attribute doesn't exist and throwIfNotFound is true
+    @throws Exception When the attribute doesn't exist and throwIfNotFound is
+    true
     @see GetAttributeOrDefault
     */
     template <class T>
-    T GetAttribute(const std::string &name, bool throwIfNotFound = true) const {
+    T GetAttribute( const std::string& name,
+                    bool throwIfNotFound = true ) const {
       // Get the attribute's value as a std::string
       std::string temp;
       T value;
 
-      if (!GetAttributeImp(name, &temp)) {
-        if (throwIfNotFound) {
-          const std::string error(std::string("Attribute '") + name +
-                                  std::string("' does not exist"));
-          TICPPTHROW(error);
+      if ( !GetAttributeImp( name, &temp ) ) {
+        if ( throwIfNotFound ) {
+          const std::string error( std::string( "Attribute '" ) + name +
+                                   std::string( "' does not exist" ) );
+          TICPPTHROW( error );
         }
       } else {
         // Stream the value from the string to T
-        FromString(temp, &value);
+        FromString( temp, &value );
       }
 
       return value;
@@ -1718,30 +1818,33 @@ It will take care of the conversion and throwing the exception.
 
     @param name       The name of the attribute you are querying.
     @param value      [OUT] The container for the returned value
-    @param throwIfNotFound  [DEF] If true, will throw an exception if the attribute
+    @param throwIfNotFound  [DEF] If true, will throw an exception if the
+    attribute
     doesn't exist
-    @throws Exception When the attribute doesn't exist and throwIfNotFound is true
+    @throws Exception When the attribute doesn't exist and throwIfNotFound is
+    true
 
     @see GetAttributeOrDefault
     */
     template <class T>
-    void GetAttribute(const std::string &name, T *value,
-                      bool throwIfNotFound = true) const {
+    void GetAttribute( const std::string& name,
+                       T* value,
+                       bool throwIfNotFound = true ) const {
       // Get the attribute's value as a std::string
       std::string temp;
 
-      if (!GetAttributeImp(name, &temp)) {
-        if (throwIfNotFound) {
-          const std::string error(std::string("Attribute '") + name +
-                                  std::string("' does not exist"));
-          TICPPTHROW(error);
+      if ( !GetAttributeImp( name, &temp ) ) {
+        if ( throwIfNotFound ) {
+          const std::string error( std::string( "Attribute '" ) + name +
+                                   std::string( "' does not exist" ) );
+          TICPPTHROW( error );
         } else {
           return;
         }
       }
 
       // Stream the value from the string to T
-      FromString(temp, value);
+      FromString( temp, value );
     }
 
     /**
@@ -1753,7 +1856,7 @@ It will take care of the conversion and throwing the exception.
 
     @see GetAttributeOrDefault
     */
-    std::string GetAttribute(const std::string &name) const;
+    std::string GetAttribute( const std::string& name ) const;
 
     /**
     Returns true, if attribute exists
@@ -1761,28 +1864,29 @@ It will take care of the conversion and throwing the exception.
     @param name The name of the attribute you are checking.
     @return Existence of attribute
     */
-    bool HasAttribute(const std::string &name) const;
+    bool HasAttribute( const std::string& name ) const;
 
     /**
     Removes attribute from element.
 
     @param name The name of the attribute to remove.
     */
-    void RemoveAttribute(const std::string &name);
+    void RemoveAttribute( const std::string& name );
 
     private:
     /**
     @internal
-    Implimentation of the GetAttribute and GetAttributeOrDefault template methods.
+    Implimentation of the GetAttribute and GetAttributeOrDefault template
+    methods.
     */
-    bool GetAttributeImp(const std::string &name, std::string *value) const;
+    bool GetAttributeImp( const std::string& name, std::string* value ) const;
 
     /**
     @internal
     Implimentation of the GetText, GetTextOrDefault, GetTextValue, and
     GetTextValueOrDefault template methods.
     */
-    bool GetTextImp(std::string *value) const;
+    bool GetTextImp( std::string* value ) const;
   };
 
   /** Wrapper around TiXmlDeclaration */
@@ -1796,13 +1900,14 @@ It will take care of the conversion and throwing the exception.
     /**
     Constructor.
     */
-    Declaration(TiXmlDeclaration *declaration);
+    Declaration( TiXmlDeclaration* declaration );
 
     /**
     Constructor.
     */
-    Declaration(const std::string &version, const std::string &encoding,
-                const std::string &standalone);
+    Declaration( const std::string& version,
+                 const std::string& encoding,
+                 const std::string& standalone );
 
     /**
     Version. Will return an empty string if none was found.
@@ -1831,12 +1936,12 @@ It will take care of the conversion and throwing the exception.
     /**
     Constructor.
     */
-    StylesheetReference(TiXmlStylesheetReference *stylesheetReference);
+    StylesheetReference( TiXmlStylesheetReference* stylesheetReference );
 
     /**
     Constructor.
     */
-    StylesheetReference(const std::string &type, const std::string &href);
+    StylesheetReference( const std::string& type, const std::string& href );
 
     /**
     Type. Will return an empty string if none was found.
@@ -1850,6 +1955,6 @@ It will take care of the conversion and throwing the exception.
   };
 }
 
-#endif // TICPP_INCLUDED
+#endif  // TICPP_INCLUDED
 
-#endif // TIXML_USE_TICPP
+#endif  // TIXML_USE_TICPP

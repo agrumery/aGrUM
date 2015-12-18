@@ -37,13 +37,13 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ===                              WRITTERS                                === */
-  /* ============================================================================ */
+  /* =========================================================================*/
+  /* ===                              WRITTERS === */
+  /* =========================================================================*/
   /**
-   * @class BNWriter
+   * @class BNWriter BNWriter.h <agrum/BN/io/BNWriter.h>
    * @brief Pure virtual class for writting a BN to a file.
-   * @ingroup bn_group
+   * @ingroup bn_io
    *
    * Every class used to write the content of a Bayesian Network in a stream, or
    * a file must be a subclass of BNWriter.
@@ -69,7 +69,8 @@ namespace gum {
      * @param bn The Bayesian Network writed in output.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream &output, const IBayesNet<GUM_SCALAR> &bn) = 0;
+    virtual void write( std::ostream& output,
+                        const IBayesNet<GUM_SCALAR>& bn ) = 0;
 
     /**
      * Writes a Bayesian Network in the file referenced by filePath.
@@ -80,7 +81,8 @@ namespace gum {
      * @param bn The Bayesian Network writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR> &bn) = 0;
+    virtual void write( std::string filePath,
+                        const IBayesNet<GUM_SCALAR>& bn ) = 0;
   };
 
   extern template class BNWriter<float>;
@@ -89,4 +91,4 @@ namespace gum {
 
 #include <agrum/BN/io/BNWriter.tcc>
 
-#endif // GUM_BN_WRITER_H
+#endif  // GUM_BN_WRITER_H

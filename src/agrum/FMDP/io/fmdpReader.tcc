@@ -24,7 +24,6 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
 
 
@@ -40,7 +39,6 @@ namespace gum {
   FMDPReader<GUM_SCALAR>::~FMDPReader() {
     GUM_DESTRUCTOR ( FMDPReader );
   }
-
 
 } /* namespace gum */
 

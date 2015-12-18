@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief a class for sampling w.r.t. Dirichlet distributions
+/**
+ * @file
+ * @brief A class for sampling w.r.t. Dirichlet distributions.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -29,115 +30,158 @@
 #include <vector>
 
 #include <agrum/config.h>
+#include <agrum/core/utils_random.h>
 
 namespace gum {
 
-  /* ========================================================================= */
-  /* ===                          DIRICHLET CLASS                          === */
-  /* ========================================================================= */
-  /** @class Dirichlet
-   * @brief a class for sampling w.r.t. Dirichlet distributions
+  // =========================================================================
+  // ===                          DIRICHLET CLASS                          ===
+  // =========================================================================
+
+  /**
+   * @class Dirichlet Dirichlet.h <agrum/core/math/Dirichlet.h>
+   * @brief A class for sampling w.r.t. Dirichlet distributions.
    * @ingroup math_group
    */
   class Dirichlet {
     public:
-    /// the parameter type
+    /// The parameter type.
     using param_type = std::vector<float>;
 
-    /// the type for the samples generated
+    /// The type for the samples generated.
     using result_type = std::vector<float>;
 
-    // ##########################################################################
+    // ==========================================================================
     /// @name Constructors / Destructors
-    // ##########################################################################
+    // ==========================================================================
     /// @{
 
-    /// default constructor
-    Dirichlet(const param_type &params, unsigned int seed = 0);
+    /**
+     * @brief Default constructor.
+     * @param params The distribution parameters.
+     * @param seed The distribution seed.
+     */
+    Dirichlet( const param_type& params, unsigned int seed = 0 );
 
-    /// copy constructor
-    Dirichlet(const Dirichlet &from);
+    /**
+     * @brief Copy constructor.
+     * @param from The distribution to copy.
+     */
+    Dirichlet( const Dirichlet& from );
 
-    /// move constructor
-    Dirichlet(Dirichlet &&from);
+    /**
+     * @brief Move constructor.
+     * @param from The distribution to move.
+     */
+    Dirichlet( Dirichlet&& from );
 
-    /// destructor
+    /**
+     * @brief Class destructor.
+     */
     ~Dirichlet();
 
     /// @}
-
-    // ##########################################################################
+    // ==========================================================================
     /// @name Operators
-    // ##########################################################################
+    // ==========================================================================
     /// @{
 
-    /// copy operator
-    Dirichlet &operator=(const Dirichlet &from);
+    /**
+     * @brief Copy operator.
+     * @param from The distribution to copy.
+     * @return Returns this gum::Dirichlet distribution.
+     */
+    Dirichlet& operator=( const Dirichlet& from );
 
-    /// move operator
-    Dirichlet &operator=(Dirichlet &&from);
+    /**
+     * @brief Move operator.
+     * @param from The distribution to move.
+     * @return Returns this gum::Dirichlet distribution.
+     */
+    Dirichlet& operator=( Dirichlet&& from );
 
-    /// returns a sample from the Dirichlet distribution
+    /**
+     * @brief Returns a sample from the Dirichlet distribution.
+     * @return Returns a sample from the Dirichlet distribution.
+     */
     result_type operator()();
 
-    /// returns a sample from the Dirichlet distribution
-    /** @param parm An object representing the distribution's parameters,
-     * obtained by a call to member function param. */
-    result_type operator()(const param_type &parm);
+    /**
+     * @brief Returns a sample from the Dirichlet distribution.
+     * @param p An object representing the distribution's parameters,
+     * obtained by a call to gum::Dirichlet::param(const param_type&).
+     */
+    result_type operator()( const param_type& p );
 
-    /// returns a sample from the Dirichlet distribution
-    /** @param generator A uniform random number generator object, used as the
+    /**
+     * @brief Returns a sample from the Dirichlet distribution.
+     *
+     * @param generator A uniform random number generator object, used as the
      * source of randomness. URNG shall be a uniform random number generator
      * type, such as one of the standard generator classes.
-     * @param parm An object representing the distribution's parameters,
-     * obtained by a call to member function param. */
+     * @param p An object representing the distribution's parameters,
+     * obtained by a call to gum::Dirichlet::param(const param_type&).
+     */
     template <class URNG>
-    result_type operator()(URNG &generator, const param_type &parm);
+    result_type operator()( URNG& generator, const param_type& p );
 
     /// @}
-
-    // ##########################################################################
+    // ==========================================================================
     /// @name Accessors / Modifiers
-    // ##########################################################################
+    // ==========================================================================
     /// @{
 
-    /// returns the parameters of the distribution
-    const param_type &param() const noexcept;
+    /**
+     * @brief Returns the parameters of the distribution.
+     * @return Returns the parameters of the distribution.
+     */
+    const param_type& param() const noexcept;
 
-    /// sets the parameters of the distribution
-    /** @param parm An object representing the distribution's parameters,
-     * obtained by a call to member function param. */
-    void param(const param_type &parm);
+    /**
+     * @brief Sets the parameters of the distribution.
+     * @param p An object representing the distribution's parameters, obtained
+     * by a call to member function param.
+     */
+    void param( const param_type& p );
 
-    /** @brief Returns the greatest lower bound of the range of values returned
-     * by operator() */
+    /**
+     * @brief Returns the greatest lower bound of the range of values returned
+     * by gum::Dirichlet::operator()().
+     * @return Returns the greatest lower bound of the range of values returned
+     * by gum::Dirichlet::operator()().
+     */
     float min() const noexcept;
 
-    /** @brief Returns the lowest higher bound of the range of values returned
-     * by operator() */
+    /**
+     * @brief Returns the lowest higher bound of the range of values returned
+     * by gum::Dirichlet::operator()().
+     * @return Returns the lowest higher bound of the range of values returned
+     * by gum::Dirichlet::operator()().
+     */
     float max() const noexcept;
 
     /// @}
 
     private:
-    /// the random engine used by the unform random distribution
+    /// The random engine used by the unform random distribution.
     std::default_random_engine __generator;
 
-    /// the gamma distribution used to compute the Dirichlet unnormalized samples
+    /// The gamma distribution used to compute the Dirichlet unnormalized
+    /// samples.
     std::gamma_distribution<float> __gamma;
 
-    /// the parameters of the distribution
+    /// The parameters of the distribution.
     param_type __params;
   };
 
 } /* namespace gum */
 
-/// include the inlined functions if necessary
+// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/core/math/Dirichlet.inl>
 #endif /* GUM_NO_INLINE */
 
-/// always include templates
+// always include templates
 #include <agrum/core/math/Dirichlet.tcc>
 
 #endif /* GUM_LEARNING_DIRICHLET_H */

@@ -30,7 +30,5 @@
 namespace gum {
   namespace prm {
     template class Attribute<double>;
-    template class FuncAttribute<double>;
-
   } /* namespace prm */
 } /* namespace gum */

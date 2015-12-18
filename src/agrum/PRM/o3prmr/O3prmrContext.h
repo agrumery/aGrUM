@@ -56,8 +56,10 @@ namespace gum {
           SetGndEngine
         };
 
-        O3prmrCommand(int line) : line(line) {}
-        O3prmrCommand(const O3prmrCommand &c) : line(c.line) {}
+        O3prmrCommand( int line )
+            : line( line ) {}
+        O3prmrCommand( const O3prmrCommand& c )
+            : line( c.line ) {}
         virtual ~O3prmrCommand() {}
 
         virtual RequestType type() const = 0;
@@ -67,27 +69,36 @@ namespace gum {
       ///
       class ImportCommand {
         public:
-        ImportCommand(int line, const std::string &value, const std::string &alias)
-            : line(line), value(value), alias(alias) {}
-        ImportCommand(const ImportCommand &c)
-            : line(c.line), value(c.value), alias(c.alias) {}
+        ImportCommand( int line,
+                       const std::string& value,
+                       const std::string& alias )
+            : line( line )
+            , value( value )
+            , alias( alias ) {}
+        ImportCommand( const ImportCommand& c )
+            : line( c.line )
+            , value( c.value )
+            , alias( c.alias ) {}
 
         int line;
         std::string value;
         std::string alias;
 
         std::string toString() const {
-          return "import " + value + (alias.empty() ? "" : "as " + alias) + ";";
+          return "import " + value + ( alias.empty() ? "" : "as " + alias ) +
+                 ";";
         }
       };
 
       ///
       class SetEngineCommand : public O3prmrCommand {
         public:
-        SetEngineCommand(int line, const std::string &value)
-            : O3prmrCommand(line), value(value) {}
-        SetEngineCommand(const SetEngineCommand &c)
-            : O3prmrCommand(c), value(c.value) {}
+        SetEngineCommand( int line, const std::string& value )
+            : O3prmrCommand( line )
+            , value( value ) {}
+        SetEngineCommand( const SetEngineCommand& c )
+            : O3prmrCommand( c )
+            , value( c.value ) {}
 
         std::string value;
 
@@ -98,10 +109,12 @@ namespace gum {
       ///
       class SetGndEngineCommand : public O3prmrCommand {
         public:
-        SetGndEngineCommand(int line, const std::string &value)
-            : O3prmrCommand(line), value(value) {}
-        SetGndEngineCommand(const SetGndEngineCommand &c)
-            : O3prmrCommand(c), value(c.value) {}
+        SetGndEngineCommand( int line, const std::string& value )
+            : O3prmrCommand( line )
+            , value( value ) {}
+        SetGndEngineCommand( const SetGndEngineCommand& c )
+            : O3prmrCommand( c )
+            , value( c.value ) {}
 
         std::string value;
 
@@ -110,51 +123,68 @@ namespace gum {
       };
 
       ///
-      template <typename GUM_SCALAR> class ObserveCommand : public O3prmrCommand {
+      template <typename GUM_SCALAR>
+      class ObserveCommand : public O3prmrCommand {
         public:
-        ObserveCommand(int line, const std::string &leftValue,
-                       const std::string &rightValue)
-            : O3prmrCommand(line), leftValue(leftValue), rightValue(rightValue),
-              system(0) {}
-        ObserveCommand(const ObserveCommand &c)
-            : O3prmrCommand(c), leftValue(c.leftValue), rightValue(c.rightValue),
-              system(c.system), chain(c.chain) {}
+        ObserveCommand( int line,
+                        const std::string& leftValue,
+                        const std::string& rightValue )
+            : O3prmrCommand( line )
+            , leftValue( leftValue )
+            , rightValue( rightValue )
+            , system( 0 ) {}
+        ObserveCommand( const ObserveCommand& c )
+            : O3prmrCommand( c )
+            , leftValue( c.leftValue )
+            , rightValue( c.rightValue )
+            , system( c.system )
+            , chain( c.chain ) {}
 
         std::string leftValue;
         std::string rightValue;
-        const System<GUM_SCALAR> *system;
+        const System<GUM_SCALAR>* system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
         Potential<GUM_SCALAR> potentiel;
 
         RequestType type() const { return RequestType::Observe; }
-        std::string toString() const { return leftValue + " = " + rightValue + ";"; }
+        std::string toString() const {
+          return leftValue + " = " + rightValue + ";";
+        }
       };
 
       ///
-      template <typename GUM_SCALAR> class UnobserveCommand : public O3prmrCommand {
+      template <typename GUM_SCALAR>
+      class UnobserveCommand : public O3prmrCommand {
         public:
         std::string value;
-        const System<GUM_SCALAR> *system;
+        const System<GUM_SCALAR>* system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
 
-        UnobserveCommand(int line, const std::string &value)
-            : O3prmrCommand(line), value(value), system(0) {}
-        UnobserveCommand(const UnobserveCommand &c)
-            : O3prmrCommand(c), value(c.value), system(c.system), chain(c.chain) {}
+        UnobserveCommand( int line, const std::string& value )
+            : O3prmrCommand( line )
+            , value( value )
+            , system( 0 ) {}
+        UnobserveCommand( const UnobserveCommand& c )
+            : O3prmrCommand( c )
+            , value( c.value )
+            , system( c.system )
+            , chain( c.chain ) {}
 
         RequestType type() const { return RequestType::Unobserve; }
         std::string toString() const { return "unobserve " + value + ";"; }
       };
 
       ///
-      template <typename GUM_SCALAR> class QueryCommand : public O3prmrCommand {
+      template <typename GUM_SCALAR>
+      class QueryCommand : public O3prmrCommand {
         public:
-        QueryCommand(int line, const std::string &value) : O3prmrCommand(line) {
+        QueryCommand( int line, const std::string& value )
+            : O3prmrCommand( line ) {
           this->value = value;
         }
 
         std::string value;
-        const System<GUM_SCALAR> *system;
+        const System<GUM_SCALAR>* system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
 
         RequestType type() const { return RequestType::Query; }
@@ -165,76 +195,80 @@ namespace gum {
        * This class contains a o3prmr session.
        * It have a name and a sequence of commands.
        * */
-      template <typename GUM_SCALAR> class O3prmrSession {
+      template <typename GUM_SCALAR>
+      class O3prmrSession {
         /// The session name;
         std::string m_name;
         /// A sequence of commands.
-        std::vector<O3prmrCommand *> m_commands;
-        std::map<const System<GUM_SCALAR> *, PRMInference<GUM_SCALAR> *>
+        std::vector<O3prmrCommand*> m_commands;
+        std::map<const System<GUM_SCALAR>*, PRMInference<GUM_SCALAR>*>
             m_infEngineMap;
 
         public:
-        O3prmrSession(const std::string &name = std::string());
-        O3prmrSession(const O3prmrSession &s);
+        O3prmrSession( const std::string& name = std::string() );
+        O3prmrSession( const O3prmrSession& s );
         virtual ~O3prmrSession();
 
         std::string name() const;
 
-        std::vector<O3prmrCommand *> commands() const;
-        void addObserve(int line, const std::string &leftValue,
-                        const std::string &rightValue);
-        void addUnobserve(int line, const std::string &value);
-        void addQuery(int line, const std::string &value);
-        void addSetEngine(int line, const std::string &value);
-        void addSetGndEngine(int line, const std::string &value);
-        void addCommand(const O3prmrCommand *command);
+        std::vector<O3prmrCommand*> commands() const;
+        void addObserve( int line,
+                         const std::string& leftValue,
+                         const std::string& rightValue );
+        void addUnobserve( int line, const std::string& value );
+        void addQuery( int line, const std::string& value );
+        void addSetEngine( int line, const std::string& value );
+        void addSetGndEngine( int line, const std::string& value );
+        void addCommand( const O3prmrCommand* command );
 
         virtual std::string toString() const;
-        O3prmrSession &operator+=(const O3prmrSession &c);
+        O3prmrSession& operator+=( const O3prmrSession& c );
 
         private:
-        void addCommand(O3prmrCommand *command);
+        void addCommand( O3prmrCommand* command );
       };
 
       /**
-        Represent a o3prmr context, with an import, and some sequencials commands.
+        Represent a o3prmr context, with an import, and some sequencials
+        commands.
        */
-      template <typename GUM_SCALAR> class O3prmrContext {
+      template <typename GUM_SCALAR>
+      class O3prmrContext {
         std::string m_filename;
         std::string m_package;
-        std::vector<O3prmrSession<GUM_SCALAR> *> m_sessions;
-        std::vector<ImportCommand *> m_imports;
-        ImportCommand *m_mainImport;
+        std::vector<O3prmrSession<GUM_SCALAR>*> m_sessions;
+        std::vector<ImportCommand*> m_imports;
+        ImportCommand* m_mainImport;
 
         public:
-        O3prmrContext(const std::string &filename = std::string());
-        O3prmrContext(const O3prmrContext &s);
+        O3prmrContext( const std::string& filename = std::string() );
+        O3prmrContext( const O3prmrContext& s );
         virtual ~O3prmrContext();
 
-        const ImportCommand *mainImport() const { return m_mainImport; }
+        const ImportCommand* mainImport() const { return m_mainImport; }
 
         std::string filename() const;
 
         std::string package() const;
-        void setPackage(const std::string &package);
+        void setPackage( const std::string& package );
 
-        std::string aliasToImport(const std::string &alias);
-        std::vector<ImportCommand *> imports() const;
-        void addImport(int line, const std::string &import,
-                       const std::string &alias);
-        void addImport(int line, const std::string &import, bool ismain);
-        void addImport(const ImportCommand &i) {
-          m_imports.push_back(new ImportCommand(i.line, i.value, i.alias));
+        std::string aliasToImport( const std::string& alias );
+        std::vector<ImportCommand*> imports() const;
+        void addImport( int line,
+                        const std::string& import,
+                        const std::string& alias );
+        void addImport( int line, const std::string& import, bool ismain );
+        void addImport( const ImportCommand& i ) {
+          m_imports.push_back( new ImportCommand( i.line, i.value, i.alias ) );
 
-          if (i.alias == "default")
-            m_mainImport = m_imports.back();
+          if ( i.alias == "default" ) m_mainImport = m_imports.back();
         }
 
-        std::vector<O3prmrSession<GUM_SCALAR> *> sessions() const;
-        void addSession(const O3prmrSession<GUM_SCALAR> &session);
+        std::vector<O3prmrSession<GUM_SCALAR>*> sessions() const;
+        void addSession( const O3prmrSession<GUM_SCALAR>& session );
 
         virtual std::string toString() const;
-        O3prmrContext &operator+=(const O3prmrContext &c);
+        O3prmrContext& operator+=( const O3prmrContext& c );
       };
 
       extern template class ObserveCommand<double>;
@@ -242,10 +276,10 @@ namespace gum {
       extern template class QueryCommand<double>;
       extern template class O3prmrSession<double>;
       extern template class O3prmrContext<double>;
-    } // namespace o3prmr
-  }   // namespace prm
-} // namespace gum
+    }  // namespace o3prmr
+  }    // namespace prm
+}  // namespace gum
 
 #include <agrum/PRM/o3prmr/O3prmrContext.tcc>
 
-#endif // SKOORSYNTAXTREE_H
+#endif  // SKOORSYNTAXTREE_H

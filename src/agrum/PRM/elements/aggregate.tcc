@@ -24,49 +24,72 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/PRM/elements/aggregate.h>
+#include <agrum/PRM/elements/scalarAttribute.h>
 #include <agrum/PRM/elements/type.h>
+
+#include <agrum/multidim/aggregators/min.h>
+#include <agrum/multidim/aggregators/max.h>
+#include <agrum/multidim/aggregators/exists.h>
+#include <agrum/multidim/aggregators/forall.h>
+#include <agrum/multidim/aggregators/count.h>
+#include <agrum/multidim/aggregators/or.h>
+#include <agrum/multidim/aggregators/and.h>
+#include <agrum/multidim/aggregators/amplitude.h>
+#include <agrum/multidim/aggregators/median.h>
 
 namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR>::Aggregate(const std::string &name, AggregateType aggType,
-                                     const Type<GUM_SCALAR> &rvType)
-        : ClassElement<GUM_SCALAR>(name), __agg_type(aggType),
-          __type(new Type<GUM_SCALAR>(rvType)),
-          __label(rvType.variable().domainSize() + 1) {
-      GUM_CONSTRUCTOR(Aggregate);
-      this->_safeName =
-          PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+    Aggregate<GUM_SCALAR>::Aggregate( const std::string& name,
+                                      AggregateType aggType,
+                                      const Type<GUM_SCALAR>& rvType )
+        : ClassElement<GUM_SCALAR>( name )
+        , __agg_type( aggType )
+        , __type( new Type<GUM_SCALAR>( rvType ) )
+        , __label( nullptr ) {
+      GUM_CONSTRUCTOR( Aggregate );
+      this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
+                        PRMObject::RIGHT_CAST() + name;
     }
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR>::Aggregate(const std::string &name, AggregateType aggType,
-                                     const Type<GUM_SCALAR> &rvType, Idx label)
-        : ClassElement<GUM_SCALAR>(name), __agg_type(aggType),
-          __type(new Type<GUM_SCALAR>(rvType)), __label(label) {
-      GUM_CONSTRUCTOR(Aggregate);
-      this->_safeName =
-          PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+    Aggregate<GUM_SCALAR>::Aggregate( const std::string& name,
+                                      AggregateType aggType,
+                                      const Type<GUM_SCALAR>& rvType,
+                                      Idx label )
+        : ClassElement<GUM_SCALAR>( name )
+        , __agg_type( aggType )
+        , __type( new Type<GUM_SCALAR>( rvType ) )
+        , __label( new Idx(label) ) {
+      GUM_CONSTRUCTOR( Aggregate );
+      this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
+                        PRMObject::RIGHT_CAST() + name;
     }
 
-    template <typename GUM_SCALAR> Aggregate<GUM_SCALAR>::~Aggregate() {
-      GUM_DESTRUCTOR(Aggregate);
+    template <typename GUM_SCALAR>
+    Aggregate<GUM_SCALAR>::~Aggregate() {
+      GUM_DESTRUCTOR( Aggregate );
       delete __type;
+      if (__label)
+        delete __label;
     }
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR>::Aggregate(const Aggregate<GUM_SCALAR> &source)
-        : ClassElement<GUM_SCALAR>(source), __agg_type(source.__agg_type),
-          __type(new Type<GUM_SCALAR>(source.type())), __label(source.__label) {
-      GUM_CONS_CPY(Aggregate);
-      GUM_ERROR(FatalError, "illegal call to gum::Aggregate copy constructor.");
+    Aggregate<GUM_SCALAR>::Aggregate( const Aggregate<GUM_SCALAR>& source )
+        : ClassElement<GUM_SCALAR>( source )
+        , __agg_type( source.__agg_type )
+        , __type( new Type<GUM_SCALAR>( source.type() ) )
+        , __label( source.__label ) {
+      GUM_CONS_CPY( Aggregate );
+      GUM_ERROR( FatalError,
+                 "illegal call to gum::Aggregate copy constructor." );
     }
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR> &Aggregate<GUM_SCALAR>::
-    operator=(const Aggregate<GUM_SCALAR> &source) {
-      GUM_ERROR(FatalError, "illegal call to gum::Aggregate copy operator.");
+    Aggregate<GUM_SCALAR>& Aggregate<GUM_SCALAR>::
+    operator=( const Aggregate<GUM_SCALAR>& source ) {
+      GUM_ERROR( FatalError, "illegal call to gum::Aggregate copy operator." );
     }
 
     template <typename GUM_SCALAR>
@@ -81,85 +104,97 @@ namespace gum {
       return __agg_type;
     }
 
-    template <typename GUM_SCALAR> INLINE Idx Aggregate<GUM_SCALAR>::label() const {
-      return __label;
+    template <typename GUM_SCALAR>
+    INLINE Idx Aggregate<GUM_SCALAR>::label() const {
+      if (__label) return *__label;
+      GUM_ERROR( OperationNotAllowed, "no label defined for this aggregate" );
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR> &Aggregate<GUM_SCALAR>::type() {
+    INLINE Type<GUM_SCALAR>& Aggregate<GUM_SCALAR>::type() {
       return *__type;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR> &Aggregate<GUM_SCALAR>::type() const {
+    INLINE const Type<GUM_SCALAR>& Aggregate<GUM_SCALAR>::type() const {
       return *__type;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Potential<GUM_SCALAR> &Aggregate<GUM_SCALAR>::cpf() {
-      GUM_ERROR(OperationNotAllowed, "This is an aggregate.");
+    INLINE Potential<GUM_SCALAR>& Aggregate<GUM_SCALAR>::cpf() {
+      GUM_ERROR( OperationNotAllowed, "This is an aggregate." );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Potential<GUM_SCALAR> &Aggregate<GUM_SCALAR>::cpf() const {
-      GUM_ERROR(OperationNotAllowed, "This is an aggregate.");
+    INLINE const Potential<GUM_SCALAR>& Aggregate<GUM_SCALAR>::cpf() const {
+      GUM_ERROR( OperationNotAllowed, "This is an aggregate." );
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimImplementation<GUM_SCALAR> *
+    INLINE MultiDimImplementation<GUM_SCALAR>*
     Aggregate<GUM_SCALAR>::buildImpl() const {
-      MultiDimImplementation<GUM_SCALAR> *impl = 0;
-
-      switch (agg_type()) {
+      switch ( agg_type() ) {
         case AggregateType::MIN:
-          impl = new aggregator::Min<GUM_SCALAR>();
-          break;
-
+          return new aggregator::Min<GUM_SCALAR>();
         case AggregateType::MAX:
-          impl = new aggregator::Max<GUM_SCALAR>();
-          break;
-
-        // case AggregateType::COUNT:
-        //  if (__label < __type.variable().domainSize()) {
-        //    impl = new aggregator::Count<GUM_SCALAR>(__label);
-        //  } else {
-        //    std::string msg = "This aggregator of type agg_count isn't initialized
-        //    "
-        //      "properly.";
-        //    GUM_ERROR(FatalError, msg);
-        //  }
-        //  break;
-        case AggregateType::EXISTS:
-          impl = new aggregator::Exists<GUM_SCALAR>(__label);
-          break;
-
-        case AggregateType::FORALL:
-          impl = new aggregator::Forall<GUM_SCALAR>(__label);
-          break;
-
-        case AggregateType::COUNT:
-        case AggregateType::MEAN:
+          return new aggregator::Max<GUM_SCALAR>();
         case AggregateType::OR:
+          return new aggregator::Or<GUM_SCALAR>();
         case AggregateType::AND:
-          GUM_ERROR(OperationNotAllowed, "Aggregator not implemented yet.");
-          break;
-
+          return new aggregator::And<GUM_SCALAR>();
+        case AggregateType::AMPLITUDE:
+          return new aggregator::Amplitude<GUM_SCALAR>();
+        case AggregateType::MEDIAN:
+          return new aggregator::Median<GUM_SCALAR>();
+        case AggregateType::EXISTS:
+          return new aggregator::Exists<GUM_SCALAR>( label() );
+        case AggregateType::FORALL:
+          return new aggregator::Forall<GUM_SCALAR>( label() );
+        case AggregateType::COUNT:
+          return new aggregator::Count<GUM_SCALAR>( label() );
         default:
-          GUM_ERROR(OperationNotAllowed, "Unknown aggregator.");
+          GUM_ERROR( OperationNotAllowed, "Unknown aggregator." );
       }
-
-      return impl;
+      return nullptr;
     }
 
     // See gum::ClassElement<GUM_SCALAR>::_addParent().
     template <typename GUM_SCALAR>
     INLINE void
-    Aggregate<GUM_SCALAR>::addParent(const ClassElement<GUM_SCALAR> &elt) {}
+    Aggregate<GUM_SCALAR>::addParent( const ClassElement<GUM_SCALAR>& elt ) {}
 
     // See gum::ClassElement<GUM_SCALAR>::_addChild().
     template <typename GUM_SCALAR>
     INLINE void
-    Aggregate<GUM_SCALAR>::addChild(const ClassElement<GUM_SCALAR> &elt) {}
+    Aggregate<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {}
+
+    template <typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>*
+    Aggregate<GUM_SCALAR>::getCastDescendant() const {
+      ScalarAttribute<GUM_SCALAR>* cast = 0;
+
+      try {
+        cast = new ScalarAttribute<GUM_SCALAR>( this->name(), type().super() );
+      } catch ( NotFound& ) {
+        GUM_ERROR( OperationNotAllowed,
+                   "this Aggregate can not have cast descendant" );
+      }
+
+      cast->addParent( *this );
+      const DiscreteVariable& my_var = type().variable();
+      DiscreteVariable& cast_var = cast->type().variable();
+      Instantiation inst( cast->cpf() );
+
+      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+        if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
+          cast->cpf().set( inst, 1 );
+        } else {
+          cast->cpf().set( inst, 0 );
+        }
+      }
+
+      return cast;
+    }
 
   } /* namespace prm */
 } /* namespace gum */

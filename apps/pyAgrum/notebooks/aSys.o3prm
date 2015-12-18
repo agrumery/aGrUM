@@ -1,0 +1,47 @@
+type Val un,deux;
+
+interface IActor {
+    Val Productivity;
+    Val Capacity;
+
+    Val Cost;
+}
+
+class Actor0 implements IActor{
+   Val Productivity {[0.5,0.5]};
+   Val Capacity { [ 0.7,0.3]};
+   Val Cost dependson Productivity, Capacity {[
+       0.2,0.3,0.6,0.9,
+       0.8,0.7,0.4,0.1
+   ]};
+}
+
+
+class Actor implements IActor{
+    IActor[] IA;
+
+    Val Capacity { [ 0.2,0.8]};
+
+    boolean Agg_Productivity = exists (IA.Productivity,un);
+
+    Val Productivity dependson Agg_Productivity {[
+     0.9,0.1,
+     0.1,0.9
+    ]};
+
+   Val Cost dependson Productivity, Capacity {[
+       0.2,0.3,0.6,0.9,
+       0.8,0.7,0.4,0.1
+   ]};
+}
+
+system aSys {
+    Actor0 A0;
+    Actor0 A1;
+
+    Actor A2;
+
+    A2.IA+=A0;
+    A2.IA+=A1;
+}
+

@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Class used to compute response times for benchmark purposes
+/**
+ * @file
+ * @brief Class used to compute response times for benchmark purposes.
  *
  * @author Pierre-Henri WUILLEMIN & Jean-Philippe Dubus
  */
@@ -26,37 +27,41 @@
 #define GUM_TIMER_H
 
 #include <ctime>
+#include <sys/time.h>
 
 #include <agrum/config.h>
 
 namespace gum {
 
-  /** @class Timer
-   *  @brief Class used to compute response times for benchmark purposes
+  /**
+   * @class Timer timer.h <agrum/core/timer.h>
+   * @brief Class used to compute response times for benchmark purposes
+   * @ingroup basicstruct_group
    *
-   *  This class represents a classic timer, it starts in the constructor,
-   *  you can reset it with method reset() and you can get the delta time
-   *  with the method step().
-   *  This class uses double for representing time data, all the values are in
-   *  seconds, and the precision is about 0.001 s
+   * This class represents a classic timer, it starts in the constructor, you
+   * can reset it with method reset() and you can get the delta time with the
+   * method step().
+   *
+   * This class uses double for representing time data, all the values are in
+   * seconds, and the precision is about 0.001 s
    */
-
   class Timer {
     public:
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
     /**
-     * Default constructor (launching the timer)
+     * @brief Default constructor (launching the timer).
      */
     Timer();
 
     /**
-     * Copy constructor
+     * @brief Copy constructor.
+     * @param timer The gum::Timer to copy.
      */
-    Timer(const Timer &);
+    Timer( const Timer& timer );
 
     /**
      * Destructor
@@ -64,62 +69,66 @@ namespace gum {
     ~Timer();
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Operators
-    // ############################################################################
+    // ============================================================================
     /// @{
 
     /**
-     * copy operator
+     * @brief Copy operator.
+     * @param timer The gum::Timer to copy.
      */
-    Timer &operator=(const Timer &);
+    Timer& operator=( const Timer& timer );
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Timer manipulation
-    // ############################################################################
+    // ============================================================================
     /// @{
 
     /**
-     * Reset the timer
+     * @brief Reset the timer.
      */
     void reset();
     /**
-     * Pause the timer and return the delta (@see step() )
+     * @brief Pause the timer and return the delta (@see gum::Timer::step() ).
+     * @brief Returns the delta (@see gum::Timer::step() ).
      */
     double pause();
     /**
-     * Resume the timer and return the delta (@see step() )
+     * @brief Resume the timer and return the delta (@see gum::Timer::step() ).
+     * @brief Returns the delta (@see gum::Timer::step() ).
      */
     double resume();
 
     /**
-     * Returns the delta time between now and the last reset() call
-     * (or the constructor)
+     * @brief Returns the delta time between now and the last reset() call (or
+     * the constructor).
      *
-     * @return delta time in seconds (accuracy : 0.001 ms)
+     * @return Returns the delta time in seconds (accuracy : 0.001 ms).
      */
     double step() const;
 
     /// @}
 
     protected:
-    /// time of the last call to reset() or the constructor
+    /// Time of the last call to reset() or the constructor.
     long _start;
 
-    /// time of the last call to pause()
+    /// Time of the last call to pause().
     long _pause;
 
-    /// false if running
+    /// False if running.
     bool _sleeping;
+
+    private:
+    static long get_clock();
   };
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/timer.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
-#endif // GUM_TIMER_H
+#endif  // GUM_TIMER_H

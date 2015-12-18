@@ -1,0 +1,98 @@
+type hl extends boolean
+  HIGH : true,
+  LOW : false;
+
+type hml HIGH, MEDIUM, LOW ;
+
+type ABC A, B, C ;
+
+interface IProfessor {
+  hml teachingAbility;
+  hml popularity;
+}
+
+interface IRegistration {
+  ABC grade;
+  hl satisfaction;
+}
+
+interface IStudent {    
+  ABC avgGrade;
+  hl intelligence;
+  hml ranking;
+}
+
+interface ICourse {
+  IProfessor prof;
+  hl difficulty;
+  hl avgsatisfaction;
+  hml rating;
+}
+
+class Registration implements IRegistration {
+  ICourse course;
+  IStudent student;
+  ABC grade dependson course.difficulty, student.intelligence {
+    HIGH, HIGH : 0.5, 0.4, 0.1;
+    HIGH, LOW  : 0.1, 0.5, 0.4;
+    LOW, HIGH  : 0.8, 0.1, 0.1;
+    LOW, LOW   : 0.3, 0.6, 0.1;
+  };
+  hl satisfaction dependson grade, course.prof.teachingAbility {
+    A, HIGH   : 0.80, 0.20;
+    A, MEDIUM : 0.60, 0.40;
+    A, LOW    : 0.30, 0.70;
+    B, HIGH   : 0.30, 0.70;
+    B, MEDIUM : 0.80, 0.20;
+    B, LOW    : 0.60, 0.40;
+    C, HIGH   : 0.20, 0.80;
+    C, MEDIUM : 0.50, 0.50;
+    C, LOW    : 0.80, 0.20;
+  };
+}
+
+class Professor implements IProfessor {
+  hml teachingAbility { [0.30, 0.50, 0.20] };
+  hml popularity dependson teachingAbility {
+    HIGH   : 0.60, 0.30, 0.10;
+    MEDIUM : 0.30, 0.60, 0.10;
+    LOW    : 0.10, 0.30, 0.60;
+  };
+}
+
+class Student implements IStudent {
+  IRegistration[] registrations;
+  ABC avgGrade = max (registrations.grade, ABC);
+  hl intelligence {[0.40, 0.60]};
+  hml ranking dependson avgGrade {
+    A : 0.70, 0.20, 0.10;
+    B : 0.40, 0.40, 0.20;
+    C : 0.10, 0.30, 0.60;
+  };
+}
+
+class Course implements ICourse {
+  IRegistration[] registrations;
+  IProfessor prof;
+  hl avgsatisfaction = max (registrations.satisfaction, hl);
+  hml rating dependson avgsatisfaction {
+    HIGH : 0.70, 0.20, 0.10;
+    LOW  : 0.20, 0.70, 0.10;        
+  };
+  hl difficulty { [0.50, 0.50] };
+}
+
+system Work {
+  Professor p1;
+  Course c1;
+  Registration r1;
+  Student s1;
+
+  c1.prof = p1;
+  c1.registrations += r1;
+
+  r1.course = c1;
+  r1.student = s1;
+
+  s1.registrations += r1;
+}

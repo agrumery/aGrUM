@@ -1,9 +1,10 @@
 *.pyc
+*.kate-swp
 .kdev4
 CMakeCache.txt
 CMakeFiles
 build
-.options.mak.py
+.options.act2.py.db
 aGrUM-dev.kdev
 *.kdev4
 src/testunits/.kdev_include_paths
@@ -15,7 +16,6 @@ qtcreator-build
 
 # generated files by testunits
 src/testunits/testList.all
-src/testunits/ressources/BNBIFXMLIO_RO_file.txt
 src/testunits/ressources/BNBIFXMLIO_file.txt
 src/testunits/ressources/ContextualDependenciesCNFWriter_RO_TestFile.cnf
 src/testunits/ressources/ContextualDependenciesCNFWriter_RO_TestFile.cnf.var
@@ -76,3 +76,4 @@ apps/pyAgrum/samples/actuel.png
 apps/pyAgrum/samples/alarm.csv
 apps/pyAgrum/samples/alarm.dsl
 apps/pyAgrum/samples/roc_alarm.dsl-alarm.csv-KINKEDTUBE-TRUE.png
+.idea/

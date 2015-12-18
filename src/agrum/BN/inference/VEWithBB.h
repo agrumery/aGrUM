@@ -42,23 +42,23 @@ namespace gum {
    * @brief Implementation of the state of the art Value Elimination algorithm
    *        using the BayesBall algorithm to prune the IBayesNet.
    *
-   * @ingroup bn_group
+   * @ingroup bn_inference
    *
    */
   template <typename GUM_SCALAR>
   class VEWithBB : public BayesNetInference<GUM_SCALAR> {
     public:
     /// @name Constructor & destructor
-
     /// @{
 
     /**
      * Default constructor.
      */
-    VEWithBB(const IBayesNet<GUM_SCALAR> &bn);
+    VEWithBB( const IBayesNet<GUM_SCALAR>& bn );
 
-    VEWithBB(const VEWithBB<GUM_SCALAR> &source) = delete;
-    VEWithBB<GUM_SCALAR> &operator=(const VEWithBB<GUM_SCALAR> &source) = delete;
+    VEWithBB( const VEWithBB<GUM_SCALAR>& source ) = delete;
+    VEWithBB<GUM_SCALAR>&
+    operator=( const VEWithBB<GUM_SCALAR>& source ) = delete;
 
     /**
      * Destructor.
@@ -77,7 +77,8 @@ namespace gum {
      * This method only computes the elimination order if needed, and proceed to
      * some basic initialization.
      *
-     * If the current elimination order is smaller than the number of nodes in the
+     * If the current elimination order is smaller than the number of nodes in
+     *the
      * IBayesNet, then this method will eliminate all nodes present in the
      *elimination
      * order. Thus computing a joint probability over a set of variables.
@@ -92,12 +93,13 @@ namespace gum {
      * If an evidence already exists over one of the variable in pot_list, then
      * it is replaced by the new evidence in pot_list.
      */
-    virtual void insertEvidence(const List<const Potential<GUM_SCALAR> *> &pot_list);
+    virtual void
+    insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
     /**
      * Remove a given evidence from the graph.
      */
-    virtual void eraseEvidence(const Potential<GUM_SCALAR> *e);
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
 
     /**
      * Remove all evidence from the graph.
@@ -113,16 +115,16 @@ namespace gum {
      * @param posterior the potential to fill
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR> &posterior);
+    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& posterior );
 
     private:
     /// Mapping between nodes and their evidences.
-    NodeProperty<const Potential<GUM_SCALAR> *> __hardEvidence;
+    NodeProperty<const Potential<GUM_SCALAR>*> __hardEvidence;
 
     /// The VariableElimination algorithm as the inference engine
     VariableElimination<GUM_SCALAR> __ve;
 
-    void __fillRequisiteNode(NodeId id, Set<NodeId> &requisite_nodes);
+    void __fillRequisiteNode( NodeId id, Set<NodeId>& requisite_nodes );
   };
   extern template class VEWithBB<float>;
   extern template class VEWithBB<double>;

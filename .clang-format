@@ -1,14 +1,41 @@
-# We'll use defaults from the LLVM style, but with 4 columns indentation.
+#
+# aGrUM clang-format specification (version clang-format-3.6)
+# Pierre-Henri Wuillemin - summer 2015
+#
 BasedOnStyle: LLVM
+
+Standard: Cpp11
+ColumnLimit: 80
+
+MaxEmptyLinesToKeep: 2
+
 IndentWidth: 2
 UseTab: Never
+
 AccessModifierOffset: 0
-Standard: Cpp11
-Cpp11BracedListStyle: true
 IndentCaseLabels: true
 NamespaceIndentation: All
-SpacesInParentheses: false
+
+SpacesBeforeTrailingComments: 2
+
+Cpp11BracedListStyle: true
 BreakBeforeBraces: Attach
-AlwaysBreakTemplateDeclarations: false
-ColumnLimit: 85
-PointerAlignment: Right
+Cpp11BracedListStyle: true
+SpacesInParentheses: true
+
+AlwaysBreakTemplateDeclarations: true
+BreakBeforeBinaryOperators: NonAssignment
+BreakConstructorInitializersBeforeComma: true
+BreakBeforeBinaryOperators: false
+
+PointerAlignment: Left
+AlignAfterOpenBracket: true
+AlignEscapedNewlinesLeft: true
+AlignTrailingComments: true
+
+BinPackArguments: false
+BinPackParameters: false
+
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false

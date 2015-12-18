@@ -1,5 +1,5 @@
 # -*- encoding: UTF-8 -*-
-import pyAgrum as gum 
+import pyAgrum as gum
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
@@ -136,19 +136,17 @@ class TestFeatures(BayesNetTestCase):
         self.fillTopo(bn, idList)
         topoOrder = bn.topologicalOrder()
         self.assertEqual(len(topoOrder), 5)
-        
-    def testChangeLabel(self):      
+
+    def testChangeLabel(self):
         bn = gum.BayesNet()
+
         res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
-        
+
         self.assertEqual(str(bn.variable(0)),"HISTORY<TRUE,FALSE>")
         bn.variable(0).toLabelizedVar().changeLabel(0,"toto")
         self.assertEqual(str(bn.variable(0)),"HISTORY<toto,FALSE>")
 
-
-
-
-class TestBIF(BayesNetTestCase):
+class TestLoadBN(BayesNetTestCase):
 
     def listen(self, percent):
         if not percent>100:
@@ -168,12 +166,10 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
-																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
-																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),[0.04, 0.96],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testSimpleBIFLoadWithoutListener(self):
         self.bufferlisten = ""
@@ -182,12 +178,10 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
-																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
-																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),[0.04, 0.96],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testListBIFLoad(self):
         self.bufferlisten = ""
@@ -196,12 +190,10 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), [self.listen, self.ecoute])
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
-																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
-																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),[0.04, 0.96],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testTupleBIFLoad(self):
         self.bufferlisten = ""
@@ -210,12 +202,10 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), (self.ecoute, self.listen))
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
-																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
-																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),[0.04, 0.96],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testSimpleNETLoad(self):
         self.bufferlisten = ""
@@ -224,7 +214,7 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/test1.net'), self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
     def testSimpleDSLLoad(self):
         self.bufferlisten = ""
@@ -233,12 +223,10 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
-																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
-																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),[0.04, 0.96],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testSimpleDSLLoadWithoutListener(self):
         self.bufferlisten = ""
@@ -247,12 +235,10 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'))
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
-																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
-																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),[0.04, 0.96],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testListDSLLoad(self):
         self.bufferlisten = ""
@@ -261,12 +247,10 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), [self.listen, self.ecoute])
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
-																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
-																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),[0.04, 0.96],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
 
     def testTupleDSLLoad(self):
@@ -276,12 +260,14 @@ class TestBIF(BayesNetTestCase):
         res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), (self.ecoute, self.listen))
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
-        self.assertTrue(res)
+        self.assertTrue(res=="")
 
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
-																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
-																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),[0.04, 0.96],places=4)
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
+
+    def testO3PRMLoad(self):
+        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/o3prm/Asia.o3prm'),[],verbose=False) # verbose=False : don't want to see the warnings
+        self.assertEqual(bn.size(),8)
 
 
 ts = unittest.TestSuite()
@@ -293,12 +279,13 @@ ts.addTest(TestInsertions('testEraseArcs'))
 ts.addTest(TestFeatures('testMoralGraph'))
 ts.addTest(TestFeatures('testTopologicalOrder'))
 ts.addTest(TestFeatures('testChangeLabel'))
-ts.addTest(TestBIF('testSimpleBIFLoad'))
-ts.addTest(TestBIF('testSimpleBIFLoadWithoutListener'))
-ts.addTest(TestBIF('testListBIFLoad'))
-ts.addTest(TestBIF('testTupleBIFLoad'))
-ts.addTest(TestBIF('testSimpleDSLLoad'))
-ts.addTest(TestBIF('testSimpleDSLLoadWithoutListener'))
-ts.addTest(TestBIF('testListDSLLoad'))
-ts.addTest(TestBIF('testTupleDSLLoad'))
-ts.addTest(TestBIF('testTupleDSLLoad'))
+ts.addTest(TestLoadBN('testSimpleBIFLoad'))
+ts.addTest(TestLoadBN('testSimpleBIFLoadWithoutListener'))
+ts.addTest(TestLoadBN('testListBIFLoad'))
+ts.addTest(TestLoadBN('testTupleBIFLoad'))
+ts.addTest(TestLoadBN('testSimpleDSLLoad'))
+ts.addTest(TestLoadBN('testSimpleDSLLoadWithoutListener'))
+ts.addTest(TestLoadBN('testListDSLLoad'))
+ts.addTest(TestLoadBN('testTupleDSLLoad'))
+ts.addTest(TestLoadBN('testTupleDSLLoad'))
+ts.addTest(TestLoadBN('testO3PRMLoad'))

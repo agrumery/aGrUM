@@ -37,10 +37,10 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class MultipleInferenceEngine MultipleInferenceEngine.h
-     * <agrum/CN/MultipleInferenceEngine.h>
-     * @brief Class template representing a CredalNet inference engine using one or
-     * more IBayesNet inference engines such as LazyPropagation. Extends
+     * @class MultipleInferenceEngine
+     * @headerfile <agrum/CN/multipleInferenceEngine.h>
+     * @brief Class template representing a CredalNet inference engine using
+     * one or more IBayesNet inference engines such as LazyPropagation. Extends
      * InferenceEngine< GUM_SCALAR >. Used for outer multi-threading such as
      * CNMonteCarloSampling.
      * @ingroup cn_group
@@ -66,8 +66,9 @@ namespace gum {
       typedef std::vector<__credalSet> __credalSets;
       typedef std::vector<std::vector<__cluster>> __clusters;
 
-      typedef typename std::vector<HashTable<std::string, std::vector<GUM_SCALAR>>>
-          __modals;
+      typedef
+          typename std::vector<HashTable<std::string, std::vector<GUM_SCALAR>>>
+              __modals;
 
       /**
        * @brief Ask for redundancy elimination of a node credal set of a calling
@@ -78,12 +79,14 @@ namespace gum {
        * @param id A constant reference to the node id whose credal set is to be
        *checked for redundancy.
        * @param vertex The vertex to add to the credal set.
-       * @param elimRedund \c true if redundancy elimination is to be performed, \c
+       * @param elimRedund \c true if redundancy elimination is to be performed,
+       *\c
        *false otherwise and by default.
        */
-      inline void __updateThreadCredalSets(const NodeId &id,
-                                           const std::vector<GUM_SCALAR> &vertex,
-                                           const bool &elimRedund);
+      inline void
+      __updateThreadCredalSets( const NodeId& id,
+                                const std::vector<GUM_SCALAR>& vertex,
+                                const bool& elimRedund );
 
       protected:
       /** Threads lower marginals, one per thread. */
@@ -104,16 +107,17 @@ namespace gum {
       __clusters _l_clusters;
 
       /** Threads IBayesNet. */
-      typename std::vector<__bnet *> _workingSet;
+      typename std::vector<__bnet*> _workingSet;
       /** Threads evidence. */
-      typename std::vector<List<const Potential<GUM_SCALAR> *> *> _workingSetE;
+      typename std::vector<List<const Potential<GUM_SCALAR>*>*> _workingSetE;
 
       /** Threads BNInferenceEngine. */
-      typename std::vector<BNInferenceEngine *> _l_inferenceEngine;
+      typename std::vector<BNInferenceEngine*> _l_inferenceEngine;
       /** Threads optimal IBayesNet. */
-      std::vector<VarMod2BNsMap<GUM_SCALAR> *> _l_optimalNet;
+      std::vector<VarMod2BNsMap<GUM_SCALAR>*> _l_optimalNet;
       /** Fusion of threads optimal IBayesNet. */
-      // OptBN< GUM_SCALAR > _threadFusion; // we should use this OptBN if omp is
+      // OptBN< GUM_SCALAR > _threadFusion; // we should use this OptBN if omp
+      // is
       // disabled (avoid creating 2 objects when only one is necessary)
       // it should also avoid calling thread fusion operations
 
@@ -126,11 +130,13 @@ namespace gum {
        * @param num_threads The number of threads.
        * @param __storeVertices \c True if vertices should be stored, \c False
        *otherwise.
-       * @param __storeBNOpt \c True if optimal IBayesNet should be stored, \c false
+       * @param __storeBNOpt \c True if optimal IBayesNet should be stored, \c
+       *false
        *otherwise.
        */
-      void _initThreadsData(const unsigned int &num_threads,
-                            const bool __storeVertices, const bool __storeBNOpt);
+      void _initThreadsData( const unsigned int& num_threads,
+                             const bool __storeVertices,
+                             const bool __storeBNOpt );
 
       /// @}
 
@@ -143,13 +149,14 @@ namespace gum {
        *
        * @param id The id of the node to be updated.
        * @param vertex The vertex.
-       * @param elimRedund \c true if redundancy elimination is to be performed, \c
+       * @param elimRedund \c true if redundancy elimination is to be performed,
+       *\c
        *false otherwise and by default.
        * @return \c True if the IBayesNet is kept (for now), \c False otherwise.
        */
-      inline bool _updateThread(const NodeId &id,
-                                const std::vector<GUM_SCALAR> &vertex,
-                                const bool &elimRedund = false);
+      inline bool _updateThread( const NodeId& id,
+                                 const std::vector<GUM_SCALAR>& vertex,
+                                 const bool& elimRedund = false );
 
       /**
        * @brief Fusion of threads marginals.
@@ -164,8 +171,10 @@ namespace gum {
       inline const GUM_SCALAR _computeEpsilon();
 
       /**
-       * Update old marginals (from current marginals). Call this once to initialize
-       * old marginals (after burn-in for example) and then use _computeEpsilon which
+       * Update old marginals (from current marginals). Call this once to
+       * initialize
+       * old marginals (after burn-in for example) and then use _computeEpsilon
+       * which
        * does the same job but compute epsilon too.
        */
       void _updateOldMarginals();
@@ -180,7 +189,7 @@ namespace gum {
       /** Fusion of threads expectations. */
       void _expFusion();
       /** @deprecated Fusion of threads vertices. */
-      void _verticesFusion(); // called ?? not done yet
+      void _verticesFusion();  // called ?? not done yet
 
       /// @}
 
@@ -192,7 +201,7 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used.
        */
-      MultipleInferenceEngine(const CredalNet<GUM_SCALAR> &credalNet);
+      MultipleInferenceEngine( const CredalNet<GUM_SCALAR>& credalNet );
 
       /** Destructor. */
       virtual ~MultipleInferenceEngine();
@@ -202,8 +211,10 @@ namespace gum {
       /// @name Post-inference methods
       /// @{
       /**
-       * Erase all inference related data to perform another one. You need to insert
-       * evidence again if needed but modalities are kept. You can insert new ones by
+       * Erase all inference related data to perform another one. You need to
+       * insert
+       * evidence again if needed but modalities are kept. You can insert new
+       * ones by
        * using the appropriate method which will delete the old ones.
        */
       virtual void eraseAllEvidence();
@@ -220,7 +231,7 @@ namespace gum {
                                                   gum::LazyPropagation<double>>;
     extern template class MultipleInferenceEngine<float,
                                                   gum::LazyPropagation<float>>;
-  } // end of namespace
+  }  // end of namespace
 }
 
 #include <agrum/CN/multipleInferenceEngine.tcc>

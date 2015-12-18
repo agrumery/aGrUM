@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief an operator used by scheduled inferences to store tables into separators
+ * @brief an operator used by scheduled inferences to store tables into
+ *separators
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -49,17 +50,17 @@ namespace gum {
 
     /// default constructor
     ScheduleSeparatorStoreMultiDim(
-        const ScheduleMultiDim<GUM_SCALAR> &table,
-        ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR> *>> &
+        const ScheduleMultiDim<GUM_SCALAR>& table,
+        ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*>>&
             separator_tables,
-        Arc separator);
+        Arc separator );
 
     /// copy constructor
     ScheduleSeparatorStoreMultiDim(
-        const ScheduleSeparatorStoreMultiDim<GUM_SCALAR> &);
+        const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& );
 
     /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleSeparatorStoreMultiDim<GUM_SCALAR> *newFactory() const;
+    virtual ScheduleSeparatorStoreMultiDim<GUM_SCALAR>* newFactory() const;
 
     /// destructor
     virtual ~ScheduleSeparatorStoreMultiDim();
@@ -72,18 +73,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleSeparatorStoreMultiDim<GUM_SCALAR> &
-    operator=(const ScheduleSeparatorStoreMultiDim<GUM_SCALAR> &);
+    ScheduleSeparatorStoreMultiDim<GUM_SCALAR>&
+    operator=( const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& );
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator==(const ScheduleOperation<GUM_SCALAR> &) const;
+    bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator!=(const ScheduleOperation<GUM_SCALAR> &) const;
+    bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// @}
 
@@ -105,15 +106,17 @@ namespace gum {
      * of the tables involved in the operation.
      * @return a pair of memory consumption: the first one is the maximum
      * amount of memory used during the operation and the second one is the
-     * amount of memory still used at the end of the function ( the memory used by
+     * amount of memory still used at the end of the function ( the memory used
+     * by
      * the resulting table ) */
     std::pair<long, long> memoryUsage() const;
 
     /// returns the set of multidims passed in argument to the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR> *> &multiDimArgs() const;
+    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR> *> &multiDimResults() const;
+    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+    multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -125,13 +128,13 @@ namespace gum {
     ScheduleMultiDim<GUM_SCALAR> __table;
 
     // a mapping assigning to each clique a set of tables
-    ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR> *>> *__tableSet;
+    ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*>>* __tableSet;
 
     // the separator into which the table will be stored
     Arc __separator;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR> *> *__args;
+    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __args;
   };
 
 } /* namespace gum */

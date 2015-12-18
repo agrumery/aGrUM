@@ -21,7 +21,8 @@
  * @file
  * @brief Headers of the gum::MultiDimWithOffset class.
  *
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ *<{prenom.nom}_at_lip6.fr>
  */
 
 #ifndef GUM_MULTI_DIM_WITH_OFFSET_H
@@ -34,14 +35,15 @@
 #include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                    GUM_MULTI_DIM_WITH_OFFSET                         === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================*/
+  /* =========================================================================*/
+  /* ===                    GUM_MULTI_DIM_WITH_OFFSET === */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /**
    * @class MultiDimWithOffset
-   * @brief Abstract class for Multidimensional matrix stored as an array in memory
+   * @brief Abstract class for Multidimensional matrix stored as an array in
+   *memory
    *        and with an offset associated with each slave instantiation.
    *
    * @ingroup multidim_group
@@ -59,7 +61,7 @@ namespace gum {
      * is associated to it.
      * @param from The multidimensional matrix we copy into this.
      */
-    MultiDimWithOffset(const MultiDimWithOffset<GUM_SCALAR> &from);
+    MultiDimWithOffset( const MultiDimWithOffset<GUM_SCALAR>& from );
 
     /**
      * @brief Destrucor.
@@ -81,8 +83,8 @@ namespace gum {
      *
      * @param from The multidimensional matrix we copy into this.
      */
-    MultiDimWithOffset<GUM_SCALAR> &
-    operator=(const MultiDimWithOffset<GUM_SCALAR> &from);
+    MultiDimWithOffset<GUM_SCALAR>&
+    operator=( const MultiDimWithOffset<GUM_SCALAR>& from );
 
     /// @}
 
@@ -99,7 +101,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<GUM_SCALAR> *newFactory() const = 0;
+    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -112,24 +114,24 @@ namespace gum {
      *
      * See also gum::MultiDimInterface::add().
      */
-    virtual void add(const DiscreteVariable &v);
+    virtual void add( const DiscreteVariable& v );
 
     /**
      * Removes a dimension, needed for updating the offsets & gaps
      *
      * See also gum::MultiDimInterface::erase().
      */
-    virtual void erase(const DiscreteVariable &v);
+    virtual void erase( const DiscreteVariable& v );
 
     /**
      * Fill the table with the scalar value d.
      *
      * @param d A scalar which is used to fill the multidimensional table.
      */
-    virtual void fill(const GUM_SCALAR &d) const = 0;
+    virtual void fill( const GUM_SCALAR& d ) const = 0;
 
     /// Returns string representating of internal data about i in this.
-    virtual const std::string toString(const Instantiation *i) const;
+    virtual const std::string toString( const Instantiation* i ) const;
 
     /// @}
 
@@ -140,30 +142,31 @@ namespace gum {
     /// @{
 
     /// See gum::MultiDimAdressable::changeNotification().
-    virtual void changeNotification(Instantiation &i,
-                                    const DiscreteVariable *const var,
-                                    const Idx &oldval, const Idx &newval);
+    virtual void changeNotification( Instantiation& i,
+                                     const DiscreteVariable* const var,
+                                     const Idx& oldval,
+                                     const Idx& newval );
 
     /// See gum::MultiDimAdressable::setChangeNotification().
-    virtual void setChangeNotification(Instantiation &i);
+    virtual void setChangeNotification( Instantiation& i );
 
     /// See gum::MultiDimAdressable::setFirstNotification().
-    virtual void setFirstNotification(Instantiation &i);
+    virtual void setFirstNotification( Instantiation& i );
 
     /// See gum::MultiDimAdressable::setLastNotification().
-    virtual void setLastNotification(Instantiation &i);
+    virtual void setLastNotification( Instantiation& i );
 
     /// See gum::MultiDimAdressable::setChangeNotification().
-    void setIncNotification(Instantiation &i);
+    void setIncNotification( Instantiation& i );
 
     /// See gum::MultiDimAdressable::setDecNotification().
-    void setDecNotification(Instantiation &i);
+    void setDecNotification( Instantiation& i );
 
     /// See gum::MultiDimAdressable::registerSlave().
-    virtual bool registerSlave(Instantiation &i);
+    virtual bool registerSlave( Instantiation& i );
 
     /// See gum::MultiDimAdressable::unregisterSlave().
-    virtual bool unregisterSlave(Instantiation &i);
+    virtual bool unregisterSlave( Instantiation& i );
 
     /// @}
 
@@ -182,7 +185,7 @@ namespace gum {
      * for instance : M<<a<<b<<c; with i=b:1|c:2|d:1 then M.toOffset(i) give the
      * offset of a:0|b:1|c:2.
      */
-    Size toOffset(const Instantiation &i) const;
+    Size toOffset( const Instantiation& i ) const;
 
     /**
      * @brief Set the Instantiation to the values corresponding to the offset
@@ -196,7 +199,7 @@ namespace gum {
      * @param offset The offset used to compute the value of i.
      * @return Returns a reference over i.
      */
-    Instantiation &fromOffset(Instantiation &i, Size offset) const;
+    Instantiation& fromOffset( Instantiation& i, Size offset ) const;
 
     ///@}
 
@@ -214,20 +217,21 @@ namespace gum {
      * @param i An instantiation for which the offset is computed.
      * @return The offset of i.
      */
-    Size _getOffs(const Instantiation &i) const;
+    Size _getOffs( const Instantiation& i ) const;
 
     /**
      * @brief The gaps between consecutive values of a given variable.
      *
      * For each variable, we keep track of the interval between two consecutive
      * values of the variable in vector values. Thus, shifting from one value to
-     * the next one is equivalent to incrementing/decrementing by gaps the current
+     * the next one is equivalent to incrementing/decrementing by gaps the
+     *current
      * offset w.r.t. vector values.
      */
-    HashTable<const DiscreteVariable *, Size> _gaps;
+    HashTable<const DiscreteVariable*, Size> _gaps;
 
     /// The position in the array of each slave Instantiation.
-    HashTable<const Instantiation *, Size> _offsets;
+    HashTable<const Instantiation*, Size> _offsets;
 
     /** @brief For a given index of a value in the vector values, this method
      *         computes the corresponding instantiation.
@@ -240,10 +244,10 @@ namespace gum {
      *               result or the exact set)
      * @param indice The index in the vector values
      */
-    void _computeInstantiationValue(Instantiation &result, Size indice) const;
+    void _computeInstantiationValue( Instantiation& result, Size indice ) const;
 
     /// data access operator
-    virtual GUM_SCALAR &_get(const Instantiation &i) const = 0;
+    virtual GUM_SCALAR& _get( const Instantiation& i ) const = 0;
   };
 } /* namespace gum */
 

@@ -25,8 +25,8 @@ from @PYAGRUM_MODULE@ import InfluenceDiagram
 
 def about():
   print("pyAgrum version {0}".format('@PYAGRUM_VERSION@'))
-  print("(c) Pierre-Henri Wuillemin and others")
-  print("    UPMC 2014")
+  print("(c) Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti")
+  print("    UPMC 2015")
   print("""
     This is free software; see the source code for copying conditions.
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
@@ -37,9 +37,9 @@ def availableBNExts():
     """
     return the list of suffix for supported BN file formats.
     """
-    return "bif|dsl|net|bifxml"
+    return "bif|dsl|net|bifxml|o3prm"
 
-def loadBN(s,listeners=None):
+def loadBN(s,listeners=None,verbose=True,**opts):
     """
     returns a BN from a file using one of the availableBNExts() suffixes.
     """
@@ -47,18 +47,20 @@ def loadBN(s,listeners=None):
 
     extension=s.split('.')[-1].upper()
     if extension=="BIF":
-        res=bn.loadBIF(s,listeners)
+        warns=bn.loadBIF(s,listeners)
     elif extension=="BIFXML":
-        res=bn.loadBIFXML(s,listeners)
+        warns=bn.loadBIFXML(s,listeners)
     elif extension=="DSL":
-        res=bn.loadDSL(s,listeners)
+        warns=bn.loadDSL(s,listeners)
     elif extension=="NET":
-        res=bn.loadNET(s,listeners)
+        warns=bn.loadNET(s,listeners)
+    elif extension=="O3PRM":
+        warns=bn.loadPRM(s,opts.get('system',''),opts.get('classpath',''),listeners)
     else:
         raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
-    if not res:
-      raise Exception("Error(s) in "+s)
+    if verbose:
+      print(warns)
 
     bn.setProperty("name",s)
     return bn
@@ -99,19 +101,3 @@ def loadID(s):
   diag.setProperty("name",s)
   return diag
 
-
-# OBSOLETE FUNCTIONS FOR 0.9.1
-def DiscretizedVar(*args):
-  from .pyAgrum import DiscretizedVariable
-  print("** Notification pyAgrum : <DiscretizedVar> obsolete. Please use <DiscretizedVariable> now.")
-  return DiscretizedVariable(*args)
-
-def LabelizedVar(*args):
-  from .pyAgrum import LabelizedVariable
-  print("** Notification pyAgrum : <LabelizedVar> obsolete. Please use <LabelizedVariable> now.")
-  return LabelizedVariable(*args)
-
-def RangeVar(*args):
-  from .pyAgrum import RangeVariable
-  print("** Notification pyAgrum : <RangeVar> obsolet. Please use <RangeVariable> now.")
-  return RangeVariable(*args)

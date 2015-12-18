@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/config.h>
 
@@ -29,31 +29,39 @@ namespace gum_tests {
     public:
     void testRandomSeed() {
 
-      TS_ASSERT((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10));
+      TS_ASSERT( ( GUM_RANDOMSEED == 0 ) || ( GUM_RANDOMSEED == 10 ) );
 
-      if (GUM_RANDOMSEED == 0) {
-        TS_ASSERT(!matchedRandomValues());
-      } else { // GUM_RANDOMSEED==10
-        TS_ASSERT(matchedRandomValues());
+      if ( GUM_RANDOMSEED == 0 ) {
+        TS_ASSERT( !matchedRandomValues() );
+      } else {  // GUM_RANDOMSEED==10
+        TS_ASSERT( matchedRandomValues() );
       }
     }
 
     private:
-#define DELTA_DIFFERS(a, b) ((a) < (b)) ? ((b) - (a) > 1e-6) : ((a) - (b) > 1e-6)
-    bool matchedRandomValues(void) {
-      gum::initRandom(GUM_RANDOMSEED);
+#define DELTA_DIFFERS( a, b ) \
+  ( ( a ) < ( b ) ) ? ( ( b ) - ( a ) > 1e-6 ) : ( ( a ) - ( b ) > 1e-6 )
+    bool matchedRandomValues( void ) {
+      gum::initRandom( GUM_RANDOMSEED );
 
-      std::vector<double> v1 = gum::randomDistribution<double>(10);
-      std::vector<double> ref1{0.134374,  0.145089, 0.120114, 0.0426642, 0.193954,
-                               0.0435726, 0.138849, 0.100258, 0.0060166, 0.0751083};
+      std::vector<double> v1 = gum::randomDistribution<double>( 10 );
+      std::vector<double> ref1{0.134374,
+                               0.145089,
+                               0.120114,
+                               0.0426642,
+                               0.193954,
+                               0.0435726,
+                               0.138849,
+                               0.100258,
+                               0.0060166,
+                               0.0751083};
 
-      for (int i = 0; i < 10; i++) {
-        if (DELTA_DIFFERS(v1[i], ref1[i]))
-          return false;
+      for ( int i = 0; i < 10; i++ ) {
+        if ( DELTA_DIFFERS( v1[i], ref1[i] ) ) return false;
       }
 
       // just to be  sure
-      std::vector<double> v2 = gum::randomDistribution<double>(30);
+      std::vector<double> v2 = gum::randomDistribution<double>( 30 );
       std::vector<double> ref2{
           0.00436645, 0.00596141, 0.0696046, 0.0696949, 0.062272,    0.00378217,
           0.0191677,  0.00657988, 0.0627761, 0.0400881, 0.047281,    0.069936,
@@ -66,9 +74,8 @@ namespace gum_tests {
           0.0236426,  0.0382025,  0.0396622, 0.0639614, 0.010478,    0.00444403,
           0.00550434, 0.0686738,  0.0175179, 0.0471658, 0.0274975,   0.0193232};
 
-      for (int i = 0; i < 30; i++) {
-        if (DELTA_DIFFERS(v2[i], ref2[i]))
-          return false;
+      for ( int i = 0; i < 30; i++ ) {
+        if ( DELTA_DIFFERS( v2[i], ref2[i] ) ) return false;
       }
 
       return true;

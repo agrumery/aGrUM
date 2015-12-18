@@ -34,7 +34,8 @@ namespace gum {
    * @ingroup id_group
    *
    * This abstract class is an implementation of the strategy pattern to
-   * help changing UT generation policies for the InfluenceDiagramGenerator class.
+   * help changing UT generation policies for the InfluenceDiagramGenerator
+   *class.
    */
   class UTGenerator {
     public:
@@ -62,14 +63,16 @@ namespace gum {
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT(const Idx &varId, const UtilityTable<float> &ut) = 0;
+    virtual void generateUT( const Idx& varId,
+                             const UtilityTable<float>& ut ) = 0;
 
     /**
      * Generates a UT using doubles.
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT(const Idx &varId, const UtilityTable<double> &ut) = 0;
+    virtual void generateUT( const Idx& varId,
+                             const UtilityTable<double>& ut ) = 0;
     /// @}
   };
 

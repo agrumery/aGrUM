@@ -17,7 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief Contains usefull methods to work with files and directories.
  *
  * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
@@ -26,52 +27,103 @@
 #ifndef GUM_DIR_UTILS_H
 #define GUM_DIR_UTILS_H
 
-#include <string>
-#include <vector>
 #include <cstdio>
 #include <cstdlib>
-#include <iostream>
 #include <dirent.h>
+#include <iostream>
+#include <string>
 #include <unistd.h>
+#include <vector>
 
 #include <agrum/config.h>
 
 namespace gum {
 
+  /**
+   * @class Directory utils_dir.h <agrum/core/utils_dir.h>
+   * @brief Cross-platform directory utility.
+   * @ingroup utilities_group
+   */
   class Directory {
 
     public:
-    //! Return true if \a directory is a valid directory, false otherwise.
-    static bool isDir(const std::string &directory);
+    /**
+     * &brief Return true if \a directory is a valid directory, false
+     * otherwise.
+     * @param path The path to test.
+     * &return Return true if \a directory is a valid directory, false
+     * otherwise.
+     */
+    static bool isDir( const std::string& path );
 
-    //! Contructor
+    /**
+     * @brief Contructor.
+     */
     Directory();
-    //! Contructor
-    Directory(const std::string &directory);
-    //! Contructor
-    Directory(const Directory &dir);
-    //! Destructor
+
+    /**
+     * @brief Contructor.
+     * @param directory The path to the directory.
+     */
+    Directory( const std::string& directory );
+
+    /**
+     * @brief Copy contructor.
+     * @param dir The gum::Directory to copy.
+     */
+    Directory( const Directory& dir );
+
+    /**
+     * @brief Destructor.
+     */
     ~Directory();
 
-    //! Return true if directory has been opened, false otherwise.
+    /**
+     * @brief Returns true if directory has been opened, false otherwise.
+     * @return Returns true if directory has been opened, false otherwise.
+     */
     bool isValid() const;
-    //! Return directory content.
+
+    /**
+     * @brief Return directory content.
+     * @return Return directory content.
+     */
     std::vector<std::string> entries() const;
-    //! Return directory parent.
+
+    /**
+     * @brief Returns directory parent.
+     * @return Returns directory parent.
+     */
     Directory parent() const;
-    //! Return directory path.
+
+    /**
+     * @brief Returns directory path.
+     * @return Returns directory path.
+     */
     std::string path() const;
-    //! Return directory absolute path.
+
+    /**
+     * @brief Returns directory absolute path.
+     * @return Returns directory absolute path.
+     */
     std::string absolutePath() const;
 
-    Directory &operator=(const Directory &d);
+    /**
+     * @brief Copy operator.
+     * @param d The gum::Directory to copy.
+     * @return Returns this gum::Directory.
+     */
+    Directory& operator=( const Directory& d );
 
     private:
+    /// The directory path.
     std::string m_dirName;
-    mutable DIR *m_dirPtr;
 
-  }; // END CLASS DIRECTORY
+    /// A pointer towards the Directory stream
+    mutable DIR* m_dirPtr;
 
-} // END NAMESPACE GUM
+  };  // END CLASS DIRECTORY
 
-#endif // GUM_DIR_UTILS_H
+}  // END NAMESPACE GUM
+
+#endif  // GUM_DIR_UTILS_H

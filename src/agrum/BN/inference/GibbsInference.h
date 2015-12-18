@@ -27,14 +27,15 @@
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
 
   /**
-   * @class GibbsInference GibbsInference.h <agrum/BN/inference/GibbsInference.h>
+   * @class GibbsInference GibbsInference.h
+   *<agrum/BN/inference/GibbsInference.h>
    * @brief class for making Gibbs sampling inference in bayesian networks.
-   * @ingroup bn_group
+   * @ingroup bn_inference
    *
    */
   template <typename GUM_SCALAR>
@@ -47,7 +48,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    GibbsInference(const IBayesNet<GUM_SCALAR> &BN);
+    GibbsInference( const IBayesNet<GUM_SCALAR>& BN );
 
     /**
      * Destructor.
@@ -64,12 +65,13 @@ namespace gum {
      * @warning if an evidence already w.r.t. a given node and a new
      * evidence w.r.t. this node is inserted, the old evidence is removed.
      */
-    virtual void insertEvidence(const List<const Potential<GUM_SCALAR> *> &pot_list);
+    virtual void
+    insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
     /**
      * Remove a given evidence from the graph.
      */
-    virtual void eraseEvidence(const Potential<GUM_SCALAR> *e);
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
 
     /**
      * Remove all evidence from the graph.
@@ -95,19 +97,19 @@ namespace gum {
      * @param posterior the potential to fill
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR> &posterior);
+    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& posterior );
 
     private:
     /// inference flag
     bool __inference_is_required;
 
     /// the actual number of sampling for each modality by node
-    NodeProperty<Potential<GUM_SCALAR> *> __sampling_nbr;
+    NodeProperty<Potential<GUM_SCALAR>*> __sampling_nbr;
 
     void __unsetRequiredInference();
     void __initStats();
     void __updateStats_without_err();
-    double __updateStats_with_err(Size nbr);
+    double __updateStats_with_err( Size nbr );
   };
 
   extern template class GibbsInference<float>;

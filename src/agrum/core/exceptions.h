@@ -24,7 +24,8 @@
  */
 #ifndef GUM_EXCEPTIONS_H
 #define GUM_EXCEPTIONS_H
-// WARNING : Do not include this file directlty : instead include <agrum/config.h>
+// WARNING : Do not include this file directlty : instead include
+// <agrum/config.h>
 
 #include <iostream>
 #include <iomanip>
@@ -33,49 +34,54 @@
 #include <agrum/core/types.h>
 
 #ifdef NDEBUG
-#define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
-#define GUM_ERROR(type, msg)                                                        \
-  {                                                                                 \
-    std::ostringstream __error__str;                                                \
-    __error__str << msg;                                                            \
-    throw(type(__error__str.str()));                                                \
+#define GUM_ERROR_IN_EXPR( type, msg ) throw( type( msg ) )
+#define GUM_ERROR( type, msg )           \
+  {                                      \
+    std::ostringstream __error__str;     \
+    __error__str << msg;                 \
+    throw( type( __error__str.str() ) ); \
   }
-#define GUM_SHOWERROR(e)                                                            \
-  {                                                                                 \
-    std::cerr << __FILE__ << ":" << __LINE__ << ": " << (e).errorType() << " - "    \
-              << (e).errorContent() << std::endl;                                   \
+#define GUM_SHOWERROR( e )                                                \
+  {                                                                       \
+    std::cerr << __FILE__ << ":" << __LINE__ << ": " << ( e ).errorType() \
+              << " - " << ( e ).errorContent() << std::endl;              \
   }
 #else
-#define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
-#define GUM_ERROR(type, msg)                                                        \
-  {                                                                                 \
-    std::ostringstream __error__str;                                                \
-    __error__str << msg;                                                            \
-    throw(type(                                                                     \
-        gum::__createMsg(__FILE__, __FUNCTION__, __LINE__, __error__str.str())));   \
+#define GUM_ERROR_IN_EXPR( type, msg ) throw( type( msg ) )
+#define GUM_ERROR( type, msg )                                      \
+  {                                                                 \
+    std::ostringstream __error__str;                                \
+    __error__str << msg;                                            \
+    throw( type( gum::__createMsg(                                  \
+        __FILE__, __FUNCTION__, __LINE__, __error__str.str() ) ) ); \
   }
-#define GUM_SHOWERROR(e)                                                            \
-  {                                                                                 \
-    std::cerr << __FILE__ << ":" << __LINE__ << ": " << (e).errorType() << " - "    \
-              << (e).errorContent() << std::endl;                                   \
-    std::cerr << (e).errorCallStack() << std::endl;                                 \
+#define GUM_SHOWERROR( e )                                                \
+  {                                                                       \
+    std::cerr << __FILE__ << ":" << __LINE__ << ": " << ( e ).errorType() \
+              << " - " << ( e ).errorContent() << std::endl;              \
+    std::cerr << ( e ).errorCallStack() << std::endl;                     \
   }
-#endif // NDEBUG
+#endif  // NDEBUG
 
-#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                       \
-  class TYPE : public SUPERCLASS {                                                  \
-    public:                                                                         \
-    TYPE(std::string aMsg, std::string aType = MSG) : SUPERCLASS(aMsg, aType){};    \
+#define GUM_MAKE_ERROR( TYPE, SUPERCLASS, MSG )       \
+  class TYPE : public SUPERCLASS {                    \
+    public:                                           \
+    TYPE( std::string aMsg, std::string aType = MSG ) \
+        : SUPERCLASS( aMsg, aType ){};                \
   };
 
-namespace gum {
-  const std::string __createMsg(const std::string &filename,
-                                const std::string &function, const int line,
-                                const std::string &msg);
-  /**
-   * base class for all aGrUM's exceptions
-   */
+#define GUM_SYNTAX_ERROR( msg, line, column )                      \
+  {                                                                \
+    std::ostringstream __error__str;                               \
+    __error__str << msg;                                           \
+    throw( gum::SyntaxError( __error__str.str(), line, column ) ); \
+  }
 
+namespace gum {
+
+  /**
+   * @brief Base class for all aGrUM's exceptions.
+   */
   class Exception {
 
     protected:
@@ -84,150 +90,465 @@ namespace gum {
     std::string _callstack;
 
     public:
-    /** @name constructors & destructors
-     * @{
-     **/
-    Exception(const std::string aMsg = "",
-              const std::string aType = "Generic error");
+    // ====================================================================
+    /// @name Class constructors & destructors
+    // ====================================================================
+    /// @{
+    Exception( const std::string aMsg = "",
+               const std::string aType = "Generic error" );
 
     ~Exception() {}
 
     /// @}
+
     /**
-     * @return return the message content
+     * @brief Returns the message content.
+     * @return Returns the message content.
      */
     const std::string errorContent() const { return _type + " : " + _msg; }
 
+    /**
+     * @brief Returns the error type.
+     * @return Returns the error type.
+     */
     const std::string errorType() const { return _type; }
 
+    /**
+     * @brief Returns the error call stack.
+     * @return Returns the error call stack.
+     */
     const std::string errorCallStack() const { return _callstack; }
   };
 
-  /// Exception : there is a problem with an ID
-  GUM_MAKE_ERROR(IdError, Exception, "potential problem with an ID")
-  /// Exception : erreur (inconnue ?) fatale
-  GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
-  /// Exception : iterator does not point to any valid value
-  GUM_MAKE_ERROR(UndefinedIteratorValue, Exception, "Iterator's value is undefined")
-  /// Exception : iterator does not point to any valid key
-  GUM_MAKE_ERROR(UndefinedIteratorKey, Exception, "Iterator's key is undefined")
-  /// Exception : a pointer or a reference on a nullptr (0) object
-  GUM_MAKE_ERROR(NullElement, Exception, "Null Element")
-  /// Exception : a looked-for element could not be found
-  GUM_MAKE_ERROR(UndefinedElement, Exception, "could not find the so-called element")
-  /// Exception : problem with the size of a HashTable
-  GUM_MAKE_ERROR(HashSize, Exception, "size not admissible in a HashTable")
-  /// Exception : problem with size
-  GUM_MAKE_ERROR(SizeError, Exception, "incorrect size")
-  /// Exception: an empty set is found, where it should not be
-  GUM_MAKE_ERROR(EmptySet, Exception,
-                 "an empty set has been found where it should not be")
 
-  /// Exception: the number of arguments passed to a function is not what was
-  /// expected
-  GUM_MAKE_ERROR(InvalidArgumentsNumber, Exception,
-                 "the number of arguments passed differs from what was expected")
-  /// Exception: at least one argument passed to a function is not what was expected
-  GUM_MAKE_ERROR(InvalidArgument, Exception,
-                 "at least one argument passed differs from what was expected")
+  /**
+   * @class gum::IdError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : there is a problem with an ID
+   */
+  class IdError;
 
-  /// Exception : input/output problem
-  GUM_MAKE_ERROR(IOError, Exception, "an input/output error occurred")
-  /// Exception : a I/O format was not found
-  GUM_MAKE_ERROR(FormatNotFound, IOError, "could not find the specified format")
+  /**
+   * @class gum::FatalError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : erreur (inconnue ?) fatale
+   */
+  class FatalError;
 
-  /// Exception : operation not allowed
-  GUM_MAKE_ERROR(OperationNotAllowed, Exception, "this operation is not allowed")
-  /// Exception : the element we looked for cannot be found
-  GUM_MAKE_ERROR(NotFound, Exception, "could not find this object")
+  /**
+   * @class gum::UndefinedIteratorValue agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : iterator does not point to any valid value
+   */
+  class UndefinedIteratorValue;
+
+
+  /**
+   * @class gum::UndefinedIteratorKey agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : iterator does not point to any valid key
+   */
+  class UndefinedIteratorKey;
+
+  /**
+   * @class gum::NullElement agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : a pointer or a reference on a nullptr (0) object
+   */
+  class NullElement;
+
+  /**
+   * @class gum::UndefinedElement agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : a looked-for element could not be found
+   */
+  class UndefinedElement;
+
+  /**
+   * @class gum::HashSize agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : problem with the size of a HashTable
+   */
+  class HashSize;
+
+  /**
+   * @class gum::SizeError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : problem with size
+   */
+  class SizeError;
+
+  /**
+   * @class gum::EmptySet agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception: an empty set is found, where it should not be
+   */
+  class EmptySet;
+
+  /**
+   * @class gum::InvalidArgumentsNumber agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception: the number of arguments passed to a function is not what was
+   * expected
+   */
+  class InvalidArgumentsNumber;
+
+  /**
+   * @class gum::InvalidArgument agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception: at least one argument passed to a function is not what was
+   * expected
+   */
+  class InvalidArgument;
+
+  /**
+   * @class gum::IOError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : input/output problem
+   */
+  class IOError;
+
+
+  /**
+   * @class gum::FormatNotFound agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : a I/O format was not found
+   */
+  class FormatNotFound;
+
+  /**
+   * @class gum::OperationNotAllowed agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : operation not allowed
+   */
+  class OperationNotAllowed;
+
+  /**
+   * @class gum::NotFound agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : the element we looked for cannot be found
+   */
+  class NotFound;
+
+  /**
+   * @class gum::ReferenceError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception base for reference errro
+   */
+  class ReferenceError;
+
+  /**
+   * @class gum::OutOfBounds agrum/core/exceptions.h
+   * @extends gum::ReferenceError
+   * Exception : out of bound
+   */
+  class OutOfBounds;
+
+  /**
+   * @class gum::OutOfLowerBound agrum/core/exceptions.h
+   * @extends OutOfBounds
+   * Exception : out of lower bound
+   */
+  class OutOfLowerBound;
+
+  /**
+   * @class gum::OutOfUpperBound agrum/core/exceptions.h
+   * @extends OutOfBounds
+   * Exception : out of upper bound
+   */
+  class OutOfUpperBound;
+
+  /**
+   * @class gum::DuplicateElement agrum/core/exceptions.h
+   * @extends gum::ReferenceError
+   * Exception : a similar element already exists
+   */
+  class DuplicateElement;
+
+  /**
+   * @class gum::DuplicateLabel agrum/core/exceptions.h
+   * @extends gum::ReferenceError
+   * Exception : a similar label already exists
+   */
+  class DuplicateLabel;
+
   ///////////////////////////////////
-  /// Exception base for reference errro
-  GUM_MAKE_ERROR(ReferenceError, Exception, "Reference error")
-  /// Exception : out of bound
-  GUM_MAKE_ERROR(OutOfBounds, ReferenceError, "Out of bound")
-  /// Exception : out of lower bound
-  GUM_MAKE_ERROR(OutOfLowerBound, OutOfBounds, "Out of lower bound")
-  /// Exception : out of upper bound
-  GUM_MAKE_ERROR(OutOfUpperBound, OutOfBounds, "Out of upper bound")
-  /// Exception : a similar element already exists
-  GUM_MAKE_ERROR(DuplicateElement, ReferenceError,
-                 "A similar element already exists")
-  /// Exception : a similar label already exists
-  GUM_MAKE_ERROR(DuplicateLabel, ReferenceError, "A similar label already exists")
-  ///////////////////////////////////
-  /// Exception base for graph error
-  GUM_MAKE_ERROR(GraphError, Exception, "Graph error")
-  /// Exception : no neighbour to a given node was found
-  GUM_MAKE_ERROR(NoNeighbour, GraphError,
-                 "No neighbour can be found to the given node")
-  /// Exception : no parent for a given node was found
-  GUM_MAKE_ERROR(NoParent, GraphError, "No parent can be found w.r.t the given node")
-  /// Exception : no child for a given node was found
-  GUM_MAKE_ERROR(NoChild, GraphError, "No child can be found w.r.t the given node")
-  /// Exception : there is something wrong with an edge
-  GUM_MAKE_ERROR(InvalidEdge, GraphError, "the edge is not correct")
-  /// Exception : there is something wrong with an arc
-  GUM_MAKE_ERROR(InvalidArc, GraphError, "the arc is not correct")
-  /// Exception : node does not exist
-  GUM_MAKE_ERROR(InvalidNode, GraphError, "the node does not exist")
-  /// Exception : the binary search tree is empty
-  GUM_MAKE_ERROR(EmptyBSTree, GraphError, "the binary search tree is empty")
-  /// Exception : default in label
-  GUM_MAKE_ERROR(DefaultInLabel, GraphError, "Error on label")
-  /// Exception : existence of a directed cycle in a graph
-  GUM_MAKE_ERROR(InvalidDirectedCycle, GraphError,
-                 "the graph contains a directed cycle")
+  /**
+   * @class gum::GraphError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception base for graph error
+   */
+  class GraphError;
+
+  /**
+   * @class gum::NoNeighbour agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : no neighbour to a given node was found
+   */
+  class NoNeighbour;
+
+  /**
+   * @class gum::NoParent agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : no parent for a given node was found
+   */
+  class NoParent;
+
+  /**
+   * @class gum::NoChild agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : no child for a given node was found
+   */
+  class NoChild;
+
+  /**
+   * @class gum::InvalidEdge agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : there is something wrong with an edge
+   */
+  class InvalidEdge;
+
+  /**
+   * @class gum::InvalidArc agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : there is something wrong with an arc
+   */
+  class InvalidArc;
+
+  /**
+   * @class gum::InvalidNode agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : node does not exist
+   */
+  class InvalidNode;
+
+  /**
+   * @class gum::EmptyBSTree agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : the binary search tree is empty
+   */
+  class EmptyBSTree;
+
+  /**
+   * @class gum::DefaultInLabel agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : default in label
+   */
+  class DefaultInLabel;
+
+  /**
+   * @class gum::InvalidDirectedCycle agrum/core/exceptions.h
+   * @extends gum::GraphError
+   * Exception : existence of a directed cycle in a graph
+   */
+  class InvalidDirectedCycle;
+
 
   ///////////////////////////////////
-  /// Exception base for CPT error
-  GUM_MAKE_ERROR(CPTError, Exception, "CPT error")
-  /// Exception : no neighbour to a given node was found
-  GUM_MAKE_ERROR(CPTNoSumTo1, CPTError, "CPT does not sum to 1")
+  /**
+   * @class gum::CPTError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception base for CPT error
+   */
+  class CPTError;
 
-  /// Exception base for factory error
-  GUM_MAKE_ERROR(FactoryError, Exception, "factory error")
-  GUM_MAKE_ERROR(FactoryInvalidState, FactoryError, "invalid state error")
-  GUM_MAKE_ERROR(WrongType, FactoryError, "wrong type for this operation")
-  GUM_MAKE_ERROR(WrongClassElement, FactoryError,
-                 "wrong ClassElement for this operation")
-  GUM_MAKE_ERROR(TypeError, FactoryError, "wrong subtype or subclass")
+  /**
+   * @class gum::CPTNoSumTo1 agrum/core/exceptions.h
+   * @extends gum::CPTError
+   * Exception : no neighbour to a given node was found
+   */
+  class CPTNoSumTo1;
 
-  ///////////////////////////////////
-  /// Exceptions for learning
-  GUM_MAKE_ERROR(LearningError, Exception, "factory error")
-  GUM_MAKE_ERROR(IncompatibleScoreApriori, LearningError,
-                 "The score already "
-                 "contains a different 'implicit' apriori")
-  GUM_MAKE_ERROR(PossiblyIncompatibleScoreApriori, LearningError,
-                 "Due to its weight, the apriori is currently compatible with the "
-                 "score but if you change the weight, it will become incompatible")
-  GUM_MAKE_ERROR(MissingVariableInDatabase, LearningError,
-                 "A name of variable is not found in the database")
-  GUM_MAKE_ERROR(UnknownLabelInDatabase, LearningError,
-                 "An unknown label is found in the database")
+  /**
+   * @class gum::FactoryError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception base for factory error
+   */
+  class FactoryError;
 
-  /// special exception for syntax errors in files
+  /**
+   * @class gum::FactoryInvalidState agrum/core/exceptions.h
+   * @extends gum::FactoryError
+   * Exception : invalid state error
+   */
+  class FactoryInvalidState;
+
+  /**
+   * @class gum::WrongType agrum/core/exceptions.h
+   * @extends gum::FactoryError
+   * Exception : wrong type for this operation
+   */
+  class WrongType;
+
+  /**
+   * @class gum::WrongClassElement agrum/core/exceptions.h
+   * @extends gum::FactoryError
+   * Exception: wrong ClassElement for this operation
+   */
+  class WrongClassElement;
+
+  /**
+   * @class gum::TypeError agrum/core/exceptions.h
+   * @extends gum::FactoryError
+   * Exception : wrong subtype or subclass
+   */
+  class TypeError;
+
+  /**
+   * @class gum::LearningError agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exceptions for learning
+   */
+  class LearningError;
+
+  /**
+   * @class gum::IncompatibleScoreApriori agrum/core/exceptions.h
+   * @extends gum::LearningError
+   * Error: The score already contains a different 'implicit' apriori.
+   */
+  class IncompatibleScoreApriori;
+
+  /**
+   * @class gum::PossiblyIncompatibleScoreApriori agrum/core/exceptions.h
+   * @extends gum::LearningError
+   * Error: Due to its weight, the apriori is currently compatible with the
+   *        score but if you change the weight, it will become incompatible"
+   */
+  class PossiblyIncompatibleScoreApriori;
+
+  /**
+   * @class gum::MissingVariableInDatabase agrum/core/exceptions.h
+   * @extends gum::LearningError
+   * Error: A name of variable is not found in the database.
+   */
+  class MissingVariableInDatabase;
+
+  /**
+   * @class gum::UnknownLabelInDatabase agrum/core/exceptions.h
+   * @extends gum::LearningError
+   * Error: An unknown label is found in the database
+   */
+  class UnknownLabelInDatabase;
+
+  /**
+   * @class gum::SyntaxError exceptions.h <agrum/core/exceptions.h>
+   * @extends gum::IOError
+   * Special exception for syntax errors in files.
+   */
+  class SyntaxError;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  const std::string __createMsg( const std::string& filename,
+                                 const std::string& function,
+                                 const int line,
+                                 const std::string& msg );
+  GUM_MAKE_ERROR( IdError, Exception, "potential problem with an ID" )
+  GUM_MAKE_ERROR( FatalError, Exception, "Fatal error" )
+  GUM_MAKE_ERROR( UndefinedIteratorValue,
+                  Exception,
+                  "Iterator's value is undefined" )
+  GUM_MAKE_ERROR( UndefinedIteratorKey,
+                  Exception,
+                  "Iterator's key is undefined" )
+  GUM_MAKE_ERROR( NullElement, Exception, "Null Element" )
+  GUM_MAKE_ERROR( UndefinedElement,
+                  Exception,
+                  "could not find the so-called element" )
+  GUM_MAKE_ERROR( HashSize, Exception, "size not admissible in a HashTable" )
+  GUM_MAKE_ERROR( SizeError, Exception, "incorrect size" )
+  GUM_MAKE_ERROR( EmptySet,
+                  Exception,
+                  "an empty set has been found where it should not be" )
+  GUM_MAKE_ERROR(
+      InvalidArgumentsNumber,
+      Exception,
+      "the number of arguments passed differs from what was expected" )
+  GUM_MAKE_ERROR(
+      InvalidArgument,
+      Exception,
+      "at least one argument passed differs from what was expected" )
+  GUM_MAKE_ERROR( IOError, Exception, "an input/output error occurred" )
+  GUM_MAKE_ERROR( FormatNotFound,
+                  IOError,
+                  "could not find the specified format" )
+  GUM_MAKE_ERROR( OperationNotAllowed,
+                  Exception,
+                  "this operation is not allowed" )
+  GUM_MAKE_ERROR( NotFound, Exception, "could not find this object" )
+  GUM_MAKE_ERROR( ReferenceError, Exception, "Reference error" )
+  GUM_MAKE_ERROR( OutOfBounds, ReferenceError, "Out of bound" )
+  GUM_MAKE_ERROR( OutOfLowerBound, OutOfBounds, "Out of lower bound" )
+  GUM_MAKE_ERROR( OutOfUpperBound, OutOfBounds, "Out of upper bound" )
+  GUM_MAKE_ERROR( DuplicateElement,
+                  ReferenceError,
+                  "A similar element already exists" )
+  GUM_MAKE_ERROR( DuplicateLabel,
+                  ReferenceError,
+                  "A similar label already exists" )
+  GUM_MAKE_ERROR( GraphError, Exception, "Graph error" )
+  GUM_MAKE_ERROR( NoNeighbour,
+                  GraphError,
+                  "No neighbour can be found to the given node" )
+  GUM_MAKE_ERROR( NoParent,
+                  GraphError,
+                  "No parent can be found w.r.t the given node" )
+  GUM_MAKE_ERROR( NoChild,
+                  GraphError,
+                  "No child can be found w.r.t the given node" )
+  GUM_MAKE_ERROR( InvalidEdge, GraphError, "the edge is not correct" )
+  GUM_MAKE_ERROR( InvalidArc, GraphError, "the arc is not correct" )
+  GUM_MAKE_ERROR( InvalidNode, GraphError, "the node does not exist" )
+  GUM_MAKE_ERROR( EmptyBSTree, GraphError, "the binary search tree is empty" )
+  GUM_MAKE_ERROR( DefaultInLabel, GraphError, "Error on label" )
+  GUM_MAKE_ERROR( InvalidDirectedCycle,
+                  GraphError,
+                  "the graph contains a directed cycle" )
+  GUM_MAKE_ERROR( CPTError, Exception, "CPT error" )
+  GUM_MAKE_ERROR( CPTNoSumTo1, CPTError, "CPT does not sum to 1" )
+  GUM_MAKE_ERROR( FactoryError, Exception, "factory error" )
+  GUM_MAKE_ERROR( FactoryInvalidState, FactoryError, "invalid state error" )
+  GUM_MAKE_ERROR( WrongType, FactoryError, "wrong type for this operation" )
+  GUM_MAKE_ERROR( WrongClassElement,
+                  FactoryError,
+                  "wrong ClassElement for this operation" )
+  GUM_MAKE_ERROR( TypeError, FactoryError, "wrong subtype or subclass" )
+  GUM_MAKE_ERROR( LearningError, Exception, "factory error" )
+  GUM_MAKE_ERROR( IncompatibleScoreApriori,
+                  LearningError,
+                  "The score already "
+                  "contains a different 'implicit' apriori" )
+  GUM_MAKE_ERROR(
+      PossiblyIncompatibleScoreApriori,
+      LearningError,
+      "Due to its weight, the apriori is currently compatible with the "
+      "score but if you change the weight, it will become incompatible" )
+  GUM_MAKE_ERROR( MissingVariableInDatabase,
+                  LearningError,
+                  "A name of variable is not found in the database" )
+  GUM_MAKE_ERROR( UnknownLabelInDatabase,
+                  LearningError,
+                  "An unknown label is found in the database" )
+
   class SyntaxError : public IOError {
     protected:
     Size _noLine;
     Size _noCol;
 
     public:
-    SyntaxError(const std::string &aMsg, Size nol, Size noc,
-                std::string aType = "Syntax Error")
-        : IOError(aMsg, aType), _noLine(nol), _noCol(noc){
+    SyntaxError( const std::string& aMsg,
+                 Size nol,
+                 Size noc,
+                 std::string aType = "Syntax Error" )
+        : IOError( aMsg, aType )
+        , _noLine( nol )
+        , _noCol( noc ){
 
-                                              };
+          };
 
     Size col() const { return _noCol; };
     Size line() const { return _noLine; };
   };
-#define GUM_SYNTAX_ERROR(msg, line, column)                                         \
-  {                                                                                 \
-    std::ostringstream __error__str;                                                \
-    __error__str << msg;                                                            \
-    throw(gum::SyntaxError(__error__str.str(), line, column));                      \
-  }
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 } /* namespace gum */
 
 #endif /* GUM_EXCEPTIONS_H */

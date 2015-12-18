@@ -24,109 +24,111 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
-#ifndef __GUM_RATIONAL__H__
-#define __GUM_RATIONAL__H__
+#ifndef GUM_RATIONAL_H
+#define GUM_RATIONAL_H
 
+#include <cmath>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
-#include <iomanip>
-#include <cmath>
+#include <vector>
 
 namespace gum {
 
   /**
-   * @class Rational Rational.h <agrum/core/Rational.h>
-   * @brief Class template used to approximate decimal numbers by rationals
+   * @class Rational rational.h <agrum/core/math/rational.h>
+   * @brief Class template used to approximate decimal numbers by rationals.
+   * @ingroup math_group
    *
-   * @tparam GUM_SCALAR The floating type ( float, double, long double ... ) of the
-   *number.
-   * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
+   * @tparam GUM_SCALAR The floating type ( float, double, long double ... ) of
+   * the number.
    */
-  template <typename GUM_SCALAR> class Rational {
+  template <typename GUM_SCALAR>
+  class Rational {
     public:
-    /**
-     * Test the algorithms iters times with random doubles.
-     *
-     * From this, only farey should be used with doubles in [0,1].
-     *
-     * @param iters Number of tests of each type ( numbers lower than 1 and greater
-     *than 1 ).
-     */
-    static void testRationalAlgorithms(const unsigned int &iters = 10);
-
+    // ========================================================================
     /// @name Real approximation by rational
+    // ========================================================================
     /// @{
 
     /**
-     * Find the rational close enough to a given ( decimal ) number in [-1,1] and
-     *whose denominator is not higher than a given integer number.
+     * @brief Find the rational close enough to a given ( decimal ) number in
+     * [-1,1] and whose denominator is not higher than a given integer number.
      *
-     * Because of the double constraint on precision and size of the denominator,
-     *there is no guarantee on the precision of the approximation if \c den_max is
-     *low and \c zero is high. Prefer the use of continued fractions.
-     *
-     * @param numerator The numerator of the rational.
-     * @param denominator The denominator of the rational.
-     * @param number The constant number we want to approximate using rationals.
-     * @param den_max The constant highest authorized denominator. 1000000 by
-     *default.
-     * @param zero The positive value below which a number is considered zero. 1e-6
-     *by default.
-     */
-    static void farey(long int &numerator, long int &denominator,
-                      const GUM_SCALAR &number, const long int &den_max = 1000000,
-                      const double &zero = 1e-6);
-
-    /**
-     * Find the first best rational approximation ( the one with the smallest
-     *denminator such that no other rational with smaller denominator is a better
-     *approx ) within precision zero to a given ( decimal ) number ( ANY number ).
-     *
-     * It gives the same answer than farey assuming \c zero is the same and den_max
-     *is infinite. Use this functions because you are sure to get an approx within \c
-     *zero of \c number.
-     *
-     * We look at the semi-convergents left of the last admissible convergent, if
-     *any. They may be within the same precision and have a smaller denominator.
-     *
-     * @param numerator The numerator of the rational.
-     * @param denominator The denominator of the rational.
-     * @param number The constant number we want to approximate using rationals.
-     * @param zero The positive value below which a number is considered zero. 1e-6
-     *by default.
-     */
-    static void continuedFracFirst(long int &numerator, long int &denominator,
-                                   const GUM_SCALAR &number,
-                                   const double &zero = 1e-6);
-
-    /**
-     * Find the best rational approximation -- not the first -- to a given ( decimal
-     *) number ( ANY number ) and whose denominator is not higher than a given
-     *integer number.
-     *
-     * In this case, we look for semi-convergents at the right of the last admissible
-     *convergent, if any. They are better approximations, but have higher
-     *denominators.
+     * Because of the double constraint on precision and size of the
+     * denominator, there is no guarantee on the precision of the approximation
+     * if \c den_max is low and \c zero is high. Prefer the use of continued
+     * fractions.
      *
      * @param numerator The numerator of the rational.
      * @param denominator The denominator of the rational.
      * @param number The constant number we want to approximate using rationals.
      * @param den_max The constant highest authorized denominator. 1000000 by
-     *default.
+     * default.
+     * @param zero The positive value below which a number is considered zero.
+     * 1e-6 by default.
      */
-    static void continuedFracBest(long int &numerator, long int &denominator,
-                                  const GUM_SCALAR &number,
-                                  const long int &den_max = 1000000);
+    static void farey( long int& numerator,
+                       long int& denominator,
+                       const GUM_SCALAR& number,
+                       const long int& den_max = 1000000,
+                       const double& zero = 1e-6 );
+
+    /**
+     * @brief Find the first best rational approximation.
+     *
+     * The one with the smallest denominator such that no other rational with
+     * smaller denominator is a better approx,  within precision zero to a
+     * given ( decimal ) number ( ANY number).
+     *
+     * It gives the same answer than farey assuming \c zero is the same and
+     * den_max is infinite. Use this functions because you are sure to get an
+     * approx within \c zero of \c number.
+     *
+     * We look at the semi-convergents left of the last admissible convergent,
+     * if any. They may be within the same precision and have a smaller
+     * denominator.
+     *
+     * @param numerator The numerator of the rational.
+     * @param denominator The denominator of the rational.
+     * @param number The constant number we want to approximate using rationals.
+     * @param zero The positive value below which a number is considered zero.
+     * 1e-6 by default.
+     */
+    static void continuedFracFirst( long int& numerator,
+                                    long int& denominator,
+                                    const GUM_SCALAR& number,
+                                    const double& zero = 1e-6 );
+
+    /**
+     * @brief Find the best rational approximation.
+     *
+     * Not the first, to a given ( decimal) number ( ANY number ) and whose
+     * denominator is not higher than a given integer number.
+     *
+     * In this case, we look for semi-convergents at the right of the last
+     * admissible convergent, if any. They are better approximations, but have
+     * higher denominators.
+     *
+     * @param numerator The numerator of the rational.
+     * @param denominator The denominator of the rational.
+     * @param number The constant number we want to approximate using rationals.
+     * @param den_max The constant highest authorized denominator. 1000000 by
+     * default.
+     */
+    static void continuedFracBest( long int& numerator,
+                                   long int& denominator,
+                                   const GUM_SCALAR& number,
+                                   const long int& den_max = 1000000 );
 
     /// @}
-
-    private:
   };
 
-} // end of gum namespace
+}  // end of gum namespace
 
+// Always include template implementation in header file
 #include <agrum/core/math/rational.tcc>
 
-#endif
+#endif  // GUM_RATIONAL_H

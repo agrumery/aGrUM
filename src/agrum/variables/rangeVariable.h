@@ -55,8 +55,10 @@ namespace gum {
 
     /// @{
     /// Default constructor
-    RangeVariable(const std::string &aName, const std::string &aDesc, Idx minVal = 0,
-                  Idx maxVal = 1);
+    RangeVariable( const std::string& aName,
+                   const std::string& aDesc,
+                   Idx minVal = 0,
+                   Idx maxVal = 1 );
 
     /** Copy Constructor.
      *
@@ -64,14 +66,14 @@ namespace gum {
      *
      * @param aDRV the variable we copy
      */
-    RangeVariable(const RangeVariable &aDRV);
+    RangeVariable( const RangeVariable& aDRV );
 
     /// destructor
     virtual ~RangeVariable();
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-    virtual DiscreteVariable *clone() const;
+    virtual DiscreteVariable* clone() const;
 
     /// @}
 
@@ -83,7 +85,7 @@ namespace gum {
 
     /// returns the type of variable
 
-    virtual VarType varType(void) const;
+    virtual VarType varType( void ) const;
 
     ///
     /**
@@ -91,10 +93,10 @@ namespace gum {
      * @param indice the index of the label we wish to return
      * @throw OutOfBound
      */
-    virtual const std::string label(Idx indice) const;
+    virtual const std::string label( Idx indice ) const;
 
     /// get a numerical representation of he indice-the value.
-    virtual double numerical(Idx indice) const;
+    virtual double numerical( Idx indice ) const;
 
     /**
      * Returns the lower bound.
@@ -104,7 +106,7 @@ namespace gum {
     /**
      * Set a new value for the lower bound.
      */
-    void setMinVal(Idx minVal);
+    void setMinVal( Idx minVal );
 
     /**
      * Returns the upper bound.
@@ -114,19 +116,19 @@ namespace gum {
     /**
      * Set a new value of the upper bound.
      */
-    void setMaxVal(Idx maxVal);
+    void setMaxVal( Idx maxVal );
 
     /**
      * Returns true if the param belongs to the variable's interval.
      */
-    bool belongs(Idx indice) const;
+    bool belongs( Idx indice ) const;
 
     /**
      * @return the modality index from the label
      * @throw NotFound
      */
-    virtual Idx operator[](const std::string &) const;
-    virtual Idx index(const std::string &) const;
+    virtual Idx operator[]( const std::string& ) const;
+    virtual Idx index( const std::string& ) const;
 
     /// @}
 
@@ -136,11 +138,11 @@ namespace gum {
      * Copy operator
      * @param aRV to be copied
      * @return a ref to *this */
-    RangeVariable &operator=(const RangeVariable &aRV);
+    RangeVariable& operator=( const RangeVariable& aRV );
 
     /// @}
 
-    virtual const std::string toString() const;
+    virtual const std::string domain() const;
 
     private:
     /// @name Private Members.

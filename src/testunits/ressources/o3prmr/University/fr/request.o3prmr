@@ -1,0 +1,7 @@
+import fr.base;
+
+request MyRequest
+{
+	engine SVE;
+	? fr.base.Work.s1.ranking;
+}

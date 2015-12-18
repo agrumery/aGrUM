@@ -25,7 +25,7 @@ import pyAgrum as gum
 
 def pyAgrum_header(year,author="Pierre-Henri Wuillemin/LIP6/UPMC"):
     print(os.path.basename(sys.argv[0])+" (c) "+str(year)+" -- "+author+" --")
-    print("powered by pyAgrum/aGrUM "+gum.GUM_VERSION)
+    print("powered by pyAgrum/aGrUM "+gum.__version__)
     print()
 
 if __name__=="__main__":

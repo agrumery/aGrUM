@@ -32,14 +32,15 @@
 #include <agrum/BN/BayesNet.h>
 
 namespace gum {
-  /** @class ICPTDisturber *
+  /** @class ICPTDisturber ICPTDisturber.h <agrum/BN/generator/ICPTDisturber.h>
    * @brief Abstract class for Modifying Conditional Probability Tables.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.
    */
-  template <typename GUM_SCALAR> class ICPTDisturber {
+  template <typename GUM_SCALAR>
+  class ICPTDisturber {
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -67,10 +68,11 @@ namespace gum {
      * @param cptCopy copy of the CPT before changing size
      * @param marg of the inference before changing size
      */
-    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj,
-                                 BayesNet<GUM_SCALAR> &bayesNet,
-                                 Potential<GUM_SCALAR> &cptCopy,
-                                 Potential<GUM_SCALAR> &marg) = 0;
+    virtual void disturbReducCPT( NodeId varIdi,
+                                  NodeId varIdj,
+                                  BayesNet<GUM_SCALAR>& bayesNet,
+                                  Potential<GUM_SCALAR>& cptCopy,
+                                  Potential<GUM_SCALAR>& marg ) = 0;
 
     /**
      * Generates a CPT using floats.
@@ -80,10 +82,11 @@ namespace gum {
      * @param cptCopy copy of the CPT before changing size
      * @param variation degree of variation from the initial probability
      */
-    virtual void disturbAugmCPT(NodeId varIdi, NodeId varIdj,
-                                BayesNet<GUM_SCALAR> &bayesNet,
-                                Potential<GUM_SCALAR> &cptCopy,
-                                GUM_SCALAR variation) = 0;
+    virtual void disturbAugmCPT( NodeId varIdi,
+                                 NodeId varIdj,
+                                 BayesNet<GUM_SCALAR>& bayesNet,
+                                 Potential<GUM_SCALAR>& cptCopy,
+                                 GUM_SCALAR variation ) = 0;
   };
 
   extern template class ICPTDisturber<float>;
@@ -92,4 +95,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/generator/ICPTDisturber.tcc>
-#endif // GUM_I_CPT_DISTURBER_H
+#endif  // GUM_I_CPT_DISTURBER_H

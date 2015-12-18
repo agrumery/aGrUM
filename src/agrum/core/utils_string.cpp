@@ -17,34 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief utilities for manipulating strings
+/**
+ * @file
+ * @brief Utilities for manipulating strings.
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
-#include <cstdlib>
 
 #include <agrum/core/utils_string.h>
-
-#ifndef HAVE_MKSTEMP // mainly windows
-#warning "No mkstemp"
-#include <io.h>
-#endif
 
 namespace gum {
 
   std::string getUniqueFileName() {
 #ifdef HAVE_MKSTEMP
     char _tmpFileName[] = "fileXXXXXX";
-    int fd = mkstemp(_tmpFileName);
-    close(fd);
-#else // mainly Windows
+    int fd = mkstemp( _tmpFileName );
+    close( fd );
+#else  // mainly Windows
     char _tmpFileName[] = "fileXXXXXX";
-    _mktemp_s(_tmpFileName, strlen(_tmpFileName));
+    _mktemp_s( _tmpFileName, strlen( _tmpFileName ) );
 #endif
 
-    return std::string(_tmpFileName);
+    return std::string( _tmpFileName );
   }
 
 } /* namespace gum */
+
+#ifdef GUM_NO_INLINE
+#include <agrum/core/utils_string.inl>
+#endif // GUM_NO_INLINE
+

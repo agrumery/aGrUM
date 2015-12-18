@@ -37,59 +37,66 @@ namespace gum {
 
     /// default constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList()
-        : _TabuList__changes(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
+        : _TabuList__changes(
+              GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE ) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
-      for (unsigned int i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
-           ++i) {
-        _TabuList__changes.insert(ArcAddition(std::numeric_limits<NodeId>::max() - i,
-                                              std::numeric_limits<NodeId>::max()),
-                                  i);
+      for ( unsigned int i = 0;
+            i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
+            ++i ) {
+        _TabuList__changes.insert(
+            ArcAddition( std::numeric_limits<NodeId>::max() - i,
+                         std::numeric_limits<NodeId>::max() ),
+            i );
       }
 
-      GUM_CONSTRUCTOR(StructuralConstraintTabuList);
+      GUM_CONSTRUCTOR( StructuralConstraintTabuList );
     }
 
     /// constructor starting with a given graph
-    StructuralConstraintTabuList::StructuralConstraintTabuList(const DiGraph &graph)
-        : _TabuList__changes(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
+    StructuralConstraintTabuList::StructuralConstraintTabuList(
+        const DiGraph& graph )
+        : _TabuList__changes(
+              GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE ) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
-      for (unsigned int i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
-           ++i) {
-        _TabuList__changes.insert(ArcAddition(std::numeric_limits<NodeId>::max() - i,
-                                              std::numeric_limits<NodeId>::max()),
-                                  i);
+      for ( unsigned int i = 0;
+            i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
+            ++i ) {
+        _TabuList__changes.insert(
+            ArcAddition( std::numeric_limits<NodeId>::max() - i,
+                         std::numeric_limits<NodeId>::max() ),
+            i );
       }
 
-      GUM_CONSTRUCTOR(StructuralConstraintTabuList);
+      GUM_CONSTRUCTOR( StructuralConstraintTabuList );
     }
 
     /// copy constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-        const StructuralConstraintTabuList &from)
-        : _TabuList__changes(from._TabuList__changes),
-          _TabuList__offset(from._TabuList__offset) {
-      GUM_CONS_CPY(StructuralConstraintTabuList);
+        const StructuralConstraintTabuList& from )
+        : _TabuList__changes( from._TabuList__changes )
+        , _TabuList__offset( from._TabuList__offset ) {
+      GUM_CONS_CPY( StructuralConstraintTabuList );
     }
 
     /// move constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-        StructuralConstraintTabuList &&from)
-        : _TabuList__changes(std::move(from._TabuList__changes)),
-          _TabuList__offset(std::move(from._TabuList__offset)) {
-      GUM_CONS_MOV(StructuralConstraintTabuList);
+        StructuralConstraintTabuList&& from )
+        : _TabuList__changes( std::move( from._TabuList__changes ) )
+        , _TabuList__offset( std::move( from._TabuList__offset ) ) {
+      GUM_CONS_MOV( StructuralConstraintTabuList );
     }
 
     /// destructor
     StructuralConstraintTabuList::~StructuralConstraintTabuList() {
-      GUM_DESTRUCTOR(StructuralConstraintTabuList);
+      GUM_DESTRUCTOR( StructuralConstraintTabuList );
     }
 
     /// copy operator
-    StructuralConstraintTabuList &StructuralConstraintTabuList::
-    operator=(const StructuralConstraintTabuList &from) {
-      if (this != &from) {
+    StructuralConstraintTabuList& StructuralConstraintTabuList::
+    operator=( const StructuralConstraintTabuList& from ) {
+      if ( this != &from ) {
         _TabuList__changes = from._TabuList__changes;
         _TabuList__offset = from._TabuList__offset;
       }
@@ -97,11 +104,11 @@ namespace gum {
     }
 
     /// move operator
-    StructuralConstraintTabuList &StructuralConstraintTabuList::
-    operator=(StructuralConstraintTabuList &&from) {
-      if (this != &from) {
-        _TabuList__changes = std::move(from._TabuList__changes);
-        _TabuList__offset = std::move(from._TabuList__offset);
+    StructuralConstraintTabuList& StructuralConstraintTabuList::
+    operator=( StructuralConstraintTabuList&& from ) {
+      if ( this != &from ) {
+        _TabuList__changes = std::move( from._TabuList__changes );
+        _TabuList__offset = std::move( from._TabuList__offset );
       }
       return *this;
     }

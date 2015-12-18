@@ -1,0 +1,15 @@
+
+import aggregates;
+
+request MyRequest {
+
+  engine SVE;
+  ?	aggregates.aSys.some_classes[0].color;
+  ?	aggregates.aSys.some_classes[1].color;
+  ? aggregates.aSys.happy.happy;
+  aggregates.aSys.some_classes[0].color = yellow;
+  ?	aggregates.aSys.some_classes[0].color;
+  ?	aggregates.aSys.some_classes[1].color;
+  ? aggregates.aSys.happy.happy;
+}
+

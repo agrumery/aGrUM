@@ -42,9 +42,12 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                          SCORE K2 CLASS                           === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                          SCORE K2 CLASS                           ===
+     */
+    /* =========================================================================
+     */
     /** @class ScoreK2
      * @ingroup learning_group
      * @brief The class for computing K2 scores (actually their log2 value)
@@ -53,17 +56,22 @@ namespace gum {
      * log in base 2 of the K2 score
      *
      * @warning As BDeu already includes an implicit 1-smoothing apriori on all
-     * the cells of contingency tables, the apriori passed to the score should be
+     * the cells of contingency tables, the apriori passed to the score should
+     *be
      * a NoApriori. But aGrUM will let you use another (certainly incompatible)
      * apriori with the score. In this case, this apriori will be included in
-     * addition to the implicit 1-smoothing apriori in a BD fashion, i.e., we will
+     * addition to the implicit 1-smoothing apriori in a BD fashion, i.e., we
+     *will
      * ressort to the Bayesian Dirichlet (BD) formula to include the sum of the
      * two aprioris into the score.
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores you need in one pass. To do so, use
-     * the appropriate addNodeSet methods. These will compute everything you need.
-     * Use methods score to retrieve the scores computed. See the Score class for
+     * should consider computing all the scores you need in one pass. To do so,
+     *use
+     * the appropriate addNodeSet methods. These will compute everything you
+     *need.
+     * Use methods score to retrieve the scores computed. See the Score class
+     *for
      * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
@@ -78,27 +86,33 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
-       * @param apriori the apriori we add to the score. As BDeu already includes
-       * an implicit 1-smoothing apriori on all the cells of contingency
-       * tables, the apriori passed in argument should be a NoApriori. But aGrUM
-       * will let you use another (certainly incompatible) apriori with the score.
-       * In this case, this apriori will be included in addition to the implicit
-       * BDeu apriori in a BD fashion, i.e., we will ressort to the Bayesian
-       * Dirichlet (BD) formula to include the sum of the two aprioris into the
-       * score. */
+       * @param apriori the apriori we add to the score. As BDeu already
+       * includes an implicit 1-smoothing apriori on all the cells of
+       * contingency tables, the apriori passed in argument should be a
+       * NoApriori. But aGrUM will let you use another (certainly incompatible)
+       * apriori with the score.  In this case, this apriori will be included
+       * in addition to the implicit BDeu apriori in a BD fashion, i.e., we
+       * will ressort to the Bayesian Dirichlet (BD) formula to include the sum
+       * of the two aprioris into the score.
+       * @param min_range The minimal range.
+       * @param max_range The maximal range.
+       */
       template <typename RowFilter>
-      ScoreK2(const RowFilter &filter,
-              const std::vector<unsigned int> &var_modalities,
-              Apriori<IdSetAlloc, CountAlloc> &apriori);
+      ScoreK2(
+          const RowFilter& filter,
+          const std::vector<unsigned int>& var_modalities,
+          Apriori<IdSetAlloc, CountAlloc>& apriori,
+          unsigned long min_range = 0,
+          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
 
       /// copy constructor
-      ScoreK2(const ScoreK2<IdSetAlloc, CountAlloc> &);
+      ScoreK2( const ScoreK2<IdSetAlloc, CountAlloc>& );
 
       /// move constructor
-      ScoreK2(ScoreK2<IdSetAlloc, CountAlloc> &&);
+      ScoreK2( ScoreK2<IdSetAlloc, CountAlloc>&& );
 
       /// virtual copy factory
-      virtual ScoreK2<IdSetAlloc, CountAlloc> *copyFactory() const;
+      virtual ScoreK2<IdSetAlloc, CountAlloc>* copyFactory() const;
 
       /// destructor
       virtual ~ScoreK2();
@@ -111,17 +125,20 @@ namespace gum {
       /// @{
 
       /// returns the log2(K2 score) corresponding to a given nodeset
-      float score(unsigned int nodeset_index);
+      float score( unsigned int nodeset_index );
 
-      /// indicates whether the apriori is compatible (meaningful) with the score
+      /// indicates whether the apriori is compatible (meaningful) with the
+      /// score
       /** When using the K2 score, you should use a NoApriori: actually,
        * K2 already implicitly includes a 1-smoothing apriori.
        * @returns true if the apriori is compatible with the score.
        * @throws IncompatibleScoreApriori is raised if the apriori is known to
        * be incompatible with the score. Such a case arises because the score
        * already implicitly contains an apriori which should not be combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you to
-       * use this apriori with the score, but you should be warned that the result
+       * with the apriori passed in argument. aGrUM will nevertheless allow you
+       * to
+       * use this apriori with the score, but you should be warned that the
+       * result
        * of learning will most probably be meaningless.
        * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
        * apriori is incompatible with the score but, with its current weight, it
@@ -134,15 +151,18 @@ namespace gum {
        * account). */
       virtual bool isAprioriCompatible() const final;
 
-      /// indicates whether the apriori is compatible (meaningful) with the score
+      /// indicates whether the apriori is compatible (meaningful) with the
+      /// score
       /** When using the K2 score, you should use a NoApriori: actually,
        * K2 already implicitly includes a 1-smoothing apriori.
        * @returns true if the apriori is compatible with the score.
        * @throws IncompatibleScoreApriori is raised if the apriori is known to
        * be incompatible with the score. Such a case arises because the score
        * already implicitly contains an apriori which should not be combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you to
-       * use this apriori with the score, but you should be warned that the result
+       * with the apriori passed in argument. aGrUM will nevertheless allow you
+       * to
+       * use this apriori with the score, but you should be warned that the
+       * result
        * of learning will most probably be meaningless.
        * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
        * apriori is incompatible with the score but, with its current weight, it
@@ -153,18 +173,21 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      static bool isAprioriCompatible(const std::string &apriori_type,
-                                      float weight = 1.0f);
+      static bool isAprioriCompatible( const std::string& apriori_type,
+                                       float weight = 1.0f );
 
-      /// indicates whether the apriori is compatible (meaningful) with the score
+      /// indicates whether the apriori is compatible (meaningful) with the
+      /// score
       /** When using the K2 score, you should use a NoApriori: actually,
        * K2 already implicitly includes a 1-smoothing apriori.
        * @returns true if the apriori is compatible with the score.
        * @throws IncompatibleScoreApriori is raised if the apriori is known to
        * be incompatible with the score. Such a case arises because the score
        * already implicitly contains an apriori which should not be combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you to
-       * use this apriori with the score, but you should be warned that the result
+       * with the apriori passed in argument. aGrUM will nevertheless allow you
+       * to
+       * use this apriori with the score, but you should be warned that the
+       * result
        * of learning will most probably be meaningless.
        * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
        * apriori is incompatible with the score but, with its current weight, it
@@ -176,20 +199,25 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible(const Apriori<IdSetAlloc, CountAlloc> &apriori);
+      isAprioriCompatible( const Apriori<IdSetAlloc, CountAlloc>& apriori );
 
       /// returns the internal apriori of the score
-      /** Some scores include an apriori. For instance, the K2 score is a BD score
+      /** Some scores include an apriori. For instance, the K2 score is a BD
+       * score
        * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
        * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
-       * the domain size of the target variable and q_i is the domain size of the
-       * Cartesian product of its parents. The goal of the score's internal apriori
+       * the domain size of the target variable and q_i is the domain size of
+       * the
+       * Cartesian product of its parents. The goal of the score's internal
+       * apriori
        * classes is to enable to account for these aprioris outside the score,
-       * e.g., when performing parameter estimation. It is important to note that,
-       * to be meaningfull a structure + parameter learning requires that the same
+       * e.g., when performing parameter estimation. It is important to note
+       * that,
+       * to be meaningfull a structure + parameter learning requires that the
+       * same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
       internalApriori() const noexcept final;
 
       /// @}

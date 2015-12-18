@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A generic class to instantiate a subset of variables of a MultiDim table
+ * @brief A generic class to instantiate a subset of variables of a MultiDim
+ *table
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -47,7 +48,7 @@ namespace gum {
 
     /// copy constructor
     MultiDimPartialInstantiation(
-        const MultiDimPartialInstantiation<GUM_SCALAR, TABLE> &);
+        const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& );
 
     /// destructor
     virtual ~MultiDimPartialInstantiation();
@@ -55,7 +56,7 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh MultiDimPartialInstantiation for the same kind of
      * table and data*/
-    virtual MultiDimPartialInstantiation<GUM_SCALAR, TABLE> *newFactory() const;
+    virtual MultiDimPartialInstantiation<GUM_SCALAR, TABLE>* newFactory() const;
 
     /// @}
 
@@ -65,8 +66,8 @@ namespace gum {
     /// @{
 
     /// copy operator
-    MultiDimPartialInstantiation<GUM_SCALAR, TABLE> &
-    operator=(const MultiDimPartialInstantiation<GUM_SCALAR, TABLE> &);
+    MultiDimPartialInstantiation<GUM_SCALAR, TABLE>&
+    operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& );
 
     /// @}
 
@@ -78,15 +79,18 @@ namespace gum {
     /** @brief creates and returns the partial instantiation of the table over a
      * subset of its vars
      *
-     * @return a new freshly created TABLE which is the result of the instantiation
+     * @return a new freshly created TABLE which is the result of the
+     *instantiation
      * of a subset of the variables of the TABLE passed in argument
      * @warning If inst_vars is precisely equal to the variables of table, the
      * result is an empty table. */
-    TABLE<GUM_SCALAR> *
-    instantiate(const TABLE<GUM_SCALAR> &table,
-                const HashTable<const DiscreteVariable *, Idx> &inst_vars);
-    void instantiate(TABLE<GUM_SCALAR> &container, const TABLE<GUM_SCALAR> &table,
-                     const HashTable<const DiscreteVariable *, Idx> &inst_vars);
+    TABLE<GUM_SCALAR>*
+    instantiate( const TABLE<GUM_SCALAR>& table,
+                 const HashTable<const DiscreteVariable*, Idx>& inst_vars );
+    void
+    instantiate( TABLE<GUM_SCALAR>& container,
+                 const TABLE<GUM_SCALAR>& table,
+                 const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
     /// @}
 

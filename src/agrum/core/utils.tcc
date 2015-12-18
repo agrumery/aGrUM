@@ -17,22 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Template implementation for utilities for aGrUM.
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#include <vector>
-#include <numeric>
+// to help IDE parser
+#include <agrum/core/utils.h>
 
 namespace std {
 
-  template <typename T> ostream &operator<<(ostream &stream, const vector<T> &val) {
+  template <typename T>
+  ostream& operator<<( ostream& stream, const vector<T>& val ) {
     bool deja = false;
     stream << "[";
 
-    for (typename vector<T>::const_iterator iter = val.begin(); iter != val.end();
-         ++iter, deja = true) {
-      if (deja)
-        stream << " , ";
+    for ( typename vector<T>::const_iterator iter = val.begin();
+          iter != val.end();
+          ++iter, deja = true ) {
+      if ( deja ) stream << " , ";
 
       stream << *iter;
     }
@@ -43,11 +48,9 @@ namespace std {
   }
 
   template <typename T1, typename T2>
-  ostream &operator<<(ostream &stream, const pair<T1, T2> &val) {
+  ostream& operator<<( ostream& stream, const pair<T1, T2>& val ) {
     stream << "(" << val.first << "," << val.second << ")";
     return stream;
   }
 
 } /* namespace std */
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS

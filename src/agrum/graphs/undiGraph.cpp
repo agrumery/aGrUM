@@ -27,45 +27,49 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/undiGraph.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 #include <cstdio>
 #include <iostream>
 #include "graphElements.h"
 
 namespace gum {
 
-  UndiGraph::UndiGraph(Size nodes_size, bool nodes_resize_policy, Size edges_size,
-                       bool edges_resize_policy)
-      : NodeGraphPart(nodes_size, nodes_resize_policy),
-        EdgeGraphPart(edges_size, edges_resize_policy) {
-    GUM_CONSTRUCTOR(UndiGraph);
+  UndiGraph::UndiGraph( Size nodes_size,
+                        bool nodes_resize_policy,
+                        Size edges_size,
+                        bool edges_resize_policy )
+      : NodeGraphPart( nodes_size, nodes_resize_policy )
+      , EdgeGraphPart( edges_size, edges_resize_policy ) {
+    GUM_CONSTRUCTOR( UndiGraph );
   }
 
-  UndiGraph::UndiGraph(const UndiGraph &g) : NodeGraphPart(g), EdgeGraphPart(g) {
-    GUM_CONS_CPY(UndiGraph);
+  UndiGraph::UndiGraph( const UndiGraph& g )
+      : NodeGraphPart( g )
+      , EdgeGraphPart( g ) {
+    GUM_CONS_CPY( UndiGraph );
   }
 
-  UndiGraph::~UndiGraph() { GUM_DESTRUCTOR(UndiGraph); }
+  UndiGraph::~UndiGraph() { GUM_DESTRUCTOR( UndiGraph ); }
 
   bool UndiGraph::hasUndirectedCycle() const {
     List<std::pair<NodeId, NodeId>> open_nodes;
-    NodeProperty<bool> examined_nodes = nodesProperty(false);
+    NodeProperty<bool> examined_nodes = nodesProperty( false );
     std::pair<NodeId, NodeId> thePair;
     NodeId current, from_current;
 
-    for (const auto node : nodes()) {
+    for ( const auto node : nodes() ) {
       // check if the node has already been examined (if this is not the case,
       // this means that we are on a new connected component)
-      if (!examined_nodes[node]) {
+      if ( !examined_nodes[node] ) {
         // indicates that we are examining a new node
         examined_nodes[node] = true;
 
         // check recursively all the nodes of node's connected component
         thePair.first = node;
         thePair.second = node;
-        open_nodes.insert(thePair);
+        open_nodes.insert( thePair );
 
-        while (!open_nodes.empty()) {
+        while ( !open_nodes.empty() ) {
           // get a node to propagate
           thePair = open_nodes.front();
           open_nodes.popFront();
@@ -74,17 +78,17 @@ namespace gum {
           from_current = thePair.second;
 
           // check the neighbours
-          for (const auto new_node : neighbours(current))
+          for ( const auto new_node : neighbours( current ) )
 
             // avoid to check the node we are coming from
-            if (new_node != from_current) {
-              if (examined_nodes[new_node])
+            if ( new_node != from_current ) {
+              if ( examined_nodes[new_node] )
                 return true;
               else {
                 examined_nodes[new_node] = true;
                 thePair.first = new_node;
                 thePair.second = current;
-                open_nodes.insert(thePair);
+                open_nodes.insert( thePair );
               }
             }
         }
@@ -107,44 +111,46 @@ namespace gum {
     std::stringstream edgeStream;
     List<NodeId> treatedNodes;
     output << "digraph \""
-           << "no_name\" {" << std::endl << "edge [dir=none]" << std::endl;
+           << "no_name\" {" << std::endl
+           << "edge [dir=none]" << std::endl;
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for (const auto node : nodes()) {
+    for ( const auto node : nodes() ) {
       nodeStream << tab << node << ";";
 
-      if (neighbours(node).size() > 0)
-        for (const auto nei : neighbours(node))
-          if (!treatedNodes.exists(nei))
+      if ( neighbours( node ).size() > 0 )
+        for ( const auto nei : neighbours( node ) )
+          if ( !treatedNodes.exists( nei ) )
             edgeStream << tab << node << " -> " << nei << ";" << std::endl;
 
-      treatedNodes.insert(node);
+      treatedNodes.insert( node );
     }
 
-    output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}"
-           << std::endl;
+    output << nodeStream.str() << std::endl
+           << edgeStream.str() << std::endl
+           << "}" << std::endl;
 
     return output.str();
   }
 
   /// returns the partial graph formed by the nodes given in parameter
-  UndiGraph UndiGraph::partialUndiGraph(NodeSet nodesSet) {
+  UndiGraph UndiGraph::partialUndiGraph( NodeSet nodesSet ) {
     UndiGraph partialGraph;
 
-    for (const auto node : nodesSet) {
-      partialGraph.addNode(node);
+    for ( const auto node : nodesSet ) {
+      partialGraph.addNode( node );
 
-      for (const auto nei : neighbours(node))
-        if (nodesSet.contains(nei) && partialGraph.existsNode(nei))
-          partialGraph.addEdge(node, nei);
+      for ( const auto nei : neighbours( node ) )
+        if ( nodesSet.contains( nei ) && partialGraph.existsNode( nei ) )
+          partialGraph.addEdge( node, nei );
     }
 
     return partialGraph;
   }
 
   /// for friendly displaying the content of undirected graphs
-  std::ostream &operator<<(std::ostream &stream, const UndiGraph &g) {
+  std::ostream& operator<<( std::ostream& stream, const UndiGraph& g ) {
     stream << g.toString();
     return stream;
   }

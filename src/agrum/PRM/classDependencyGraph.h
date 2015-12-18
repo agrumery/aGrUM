@@ -33,19 +33,20 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class ClassDependencyGraph<GUM_SCALAR> ClassDependencyGraph<GUM_SCALAR>.h
-     *<agrum/PRM/ClassDependencyGraph<GUM_SCALAR>.h>
+     * @class ClassDependencyGraph
+     * @headerfile classDependencyGraph.h <agrum/PRM/classDependencyGraph.h>
      * @brief This class represent the dependencies of all classes in a
      *PRM<GUM_SCALAR>.
      *
      * A Class Dependency Graph does listen to changes in it's PRM<GUM_SCALAR>.
      */
-    template <typename GUM_SCALAR> class ClassDependencyGraph {
+    template <typename GUM_SCALAR>
+    class ClassDependencyGraph {
 
       public:
       /// Association between a class element and it's holding class.
-      typedef std::pair<const ClassElementContainer<GUM_SCALAR> *,
-                        const ClassElement<GUM_SCALAR> *> EltPair;
+      typedef std::pair<const ClassElementContainer<GUM_SCALAR>*,
+                        const ClassElement<GUM_SCALAR>*> EltPair;
 
       // ========================================================================
       /// @name Constructors and Destructor.
@@ -55,10 +56,10 @@ namespace gum {
       /// Default constructor.
       /// @param prm The PRM<GUM_SCALAR> for which this
       /// ClassDependencyGraph<GUM_SCALAR> is constructed.
-      ClassDependencyGraph(const PRM<GUM_SCALAR> &prm);
+      ClassDependencyGraph( const PRM<GUM_SCALAR>& prm );
 
       /// Copy constructor.
-      ClassDependencyGraph(const ClassDependencyGraph<GUM_SCALAR> &source);
+      ClassDependencyGraph( const ClassDependencyGraph<GUM_SCALAR>& source );
 
       /// Destructor.
       ~ClassDependencyGraph();
@@ -71,58 +72,67 @@ namespace gum {
 
       /// Returns a constant reference over the graph of the DAG representing
       /// the ClassDependencyGraph<GUM_SCALAR>.
-      const DAG &dag() const;
+      const DAG& dag() const;
 
-      /// Returns a constant reference over the element assiociated with the node
+      /// Returns a constant reference over the element assiociated with the
+      /// node
       /// id in the ClassDependencyGraph<GUM_SCALAR>.
       /// @throw NotFound Raised if no nodes matches id.
-      const EltPair &get(NodeId id) const;
+      const EltPair& get( NodeId id ) const;
 
-      /// @brief Returns the NodeId assign to the given ClassElement<GUM_SCALAR> of a
+      /// @brief Returns the NodeId assign to the given ClassElement<GUM_SCALAR>
+      /// of a
       ///        given Class.
-      /// Is is necessary to give both Class and ClassElement<GUM_SCALAR> because
-      /// inherited ClassElement<GUM_SCALAR> are shared in the inheritance hierarchy.
-      NodeId get(const ClassElementContainer<GUM_SCALAR> &c,
-                 const ClassElement<GUM_SCALAR> &elt) const;
+      /// Is is necessary to give both Class and ClassElement<GUM_SCALAR>
+      /// because
+      /// inherited ClassElement<GUM_SCALAR> are shared in the inheritance
+      /// hierarchy.
+      NodeId get( const ClassElementContainer<GUM_SCALAR>& c,
+                  const ClassElement<GUM_SCALAR>& elt ) const;
 
-      /// Returns a mapping between the ClassDependencyGraph<GUM_SCALAR>'s nodes and
+      /// Returns a mapping between the ClassDependencyGraph<GUM_SCALAR>'s nodes
+      /// and
       /// their
       /// modalities.
-      const NodeProperty<unsigned int> &modalities() const;
+      const NodeProperty<unsigned int>& modalities() const;
 
       /// @}
       private:
       /// Build the class dependency graph.
-      void __buildGraph(const PRM<GUM_SCALAR> &prm);
+      void __buildGraph( const PRM<GUM_SCALAR>& prm );
 
       /// Add nodes in __graph while updating consequently all the mappings.
-      void __addNode(const ClassElementContainer<GUM_SCALAR> *c,
-                     const ClassElement<GUM_SCALAR> &elt);
+      void __addNode( const ClassElementContainer<GUM_SCALAR>* c,
+                      const ClassElement<GUM_SCALAR>& elt );
 
       /// Add arcs in __graph.
-      void __addArcs(const ClassElementContainer<GUM_SCALAR> &c, NodeId node,
-                     HashTable<const ClassElement<GUM_SCALAR> *, NodeId> &map);
+      void __addArcs( const ClassElementContainer<GUM_SCALAR>& c,
+                      NodeId node,
+                      HashTable<const ClassElement<GUM_SCALAR>*, NodeId>& map );
 
       /// The graph itself.
       DAG __graph;
 
-      /// The modalities map for each node in the ClassDependencyGraph<GUM_SCALAR>.
+      /// The modalities map for each node in the
+      /// ClassDependencyGraph<GUM_SCALAR>.
       /// This
       /// is useful when using a Triangulation class over a
       /// ClassDependencyGraph<GUM_SCALAR>.
       NodeProperty<unsigned int> __modalitites;
 
-      /// Mapping between the nodes in __graph with the ClassElement<GUM_SCALAR> in
+      /// Mapping between the nodes in __graph with the ClassElement<GUM_SCALAR>
+      /// in
       /// the
       /// PRM<GUM_SCALAR>.
-      NodeProperty<EltPair *> __elt_map;
+      NodeProperty<EltPair*> __elt_map;
 
       /// Code shortcut.
-      typedef HashTable<const ClassElementContainer<GUM_SCALAR> *,
-                        HashTable<const ClassElement<GUM_SCALAR> *, NodeId> *>
+      typedef HashTable<const ClassElementContainer<GUM_SCALAR>*,
+                        HashTable<const ClassElement<GUM_SCALAR>*, NodeId>*>
           NodeMap;
 
-      /// Map each Class to a HashTable mapping the Class's ClassElements to their
+      /// Map each Class to a HashTable mapping the Class's ClassElements to
+      /// their
       /// assigned NodeId in __graph.
       NodeMap __node_map;
     };

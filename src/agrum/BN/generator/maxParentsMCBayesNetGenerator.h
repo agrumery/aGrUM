@@ -49,13 +49,16 @@ namespace gum {
    * @class MaxParentsMCBayesNetGenerator maxParentsMCBayesNetGenerator.h
    *<agrum/BN/generator/SimpleMCayesNetGenerator.h>
    * @brief Class for generating bayesian networks with Markov chains.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
-   * This class is inherited from MCBayesNetGenerator and is an example of Markov
+   * This class is inherited from MCBayesNetGenerator and is an example of
+   *Markov
    *Chain Bayesian Network Generator that can be implemented.
-   * Here a constraint is added which is the maximum number of parents that a node
+   * Here a constraint is added which is the maximum number of parents that a
+   *node
    *can have.
-   * To create our own MCBayesNetGenerator with a specific constraint you must:\n
+   * To create our own MCBayesNetGenerator with a specific constraint you
+   *must:\n
    * 1) Create the class
    *XXXXXXMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>.\n
    * 2) Add a variable specific to the constraint (here _maxParents). \n
@@ -64,10 +67,12 @@ namespace gum {
    * MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::__checkConditions()
    *to verify the default constraint.\n
    * 4) Define the getters and setters of the constraint variable.\n
-   * 5) And verify in the constructor that the constraint is not in contradiction
+   * 5) And verify in the constructor that the constraint is not in
+   *contradiction
    *with the generator here maxParent must be >= 1.\n
    *
-   * @warning  Be Careful when entering the parameters, high Values may cause the
+   * @warning  Be Careful when entering the parameters, high Values may cause
+   *the
    *density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods. \n
    * */
@@ -86,40 +91,55 @@ namespace gum {
     /**
     * Constructor.
     * Use by default the SimpleCPTGenerator for generating the BNs CPT
-    * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table
+    * and the SimpleCPTDisturber to tweak the CPT when the dimension of the
+    * table
     * changes.
     * @param nbrNodes The number of nodes in the generated BN.
     * @param maxArcs The maximum number of Arcs.
     * @param maxModality Each DRV has from 2 to maxModality modalities
-    * @param maxParents The number of maximum parents for each node imposed on the
+    * @param maxParents The number of maximum parents for each node imposed on
+    * the
     * generator
     * @param iteration The number of iterations wanted to repeat the algorithm
-    * @param p probability for the change of the state (see \ref probability_p_q "use
+    * @param p probability for the change of the state (see \ref probability_p_q
+    * "use
     * of p and q" )
-    * @param q probability for the change of the state (see \ref probability_p_q "use
+    * @param q probability for the change of the state (see \ref probability_p_q
+    * "use
     * of p and q" )
     */
-    MaxParentsMCBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality = 2,
-                                  Size maxParents = 1, Idx iteration = 5000,
-                                  Idx p = 30, Idx q = 40);
+    MaxParentsMCBayesNetGenerator( Size nbrNodes,
+                                   Size maxArcs,
+                                   Size maxModality = 2,
+                                   Size maxParents = 1,
+                                   Idx iteration = 5000,
+                                   Idx p = 30,
+                                   Idx q = 40 );
 
     /**
     * Constructor.
     * Use by default the SimpleCPTGenerator for generating the BNs CPT
-    * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table
+    * and the SimpleCPTDisturber to tweak the CPT when the dimension of the
+    * table
     * changes.
     * @param bayesNet the IBayesNet used as reference to fill the parameters
     * nbrNodes, maxArcs and maxModality
-    * @param maxParents The number of maximum parents for each node imposed on the
+    * @param maxParents The number of maximum parents for each node imposed on
+    * the
     * generator
     * @param iteration The number of iterations wanted to repeat the algorithm
-    * @param p probability for the change of the state (see \ref probability_p_q "use
+    * @param p probability for the change of the state (see \ref probability_p_q
+    * "use
     * of p and q" )
-    * @param q probability for the change of the state (see \ref probability_p_q "use
+    * @param q probability for the change of the state (see \ref probability_p_q
+    * "use
     * of p and q" )
     */
-    MaxParentsMCBayesNetGenerator(BayesNet<GUM_SCALAR> bayesNet, Size maxParents = 2,
-                                  Idx iteration = 5000, Idx p = 30, Idx q = 40);
+    MaxParentsMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet,
+                                   Size maxParents = 2,
+                                   Idx iteration = 5000,
+                                   Idx p = 30,
+                                   Idx q = 40 );
 
     /**
      * Destructor.
@@ -135,7 +155,8 @@ namespace gum {
     ///@name Getters
 
     /**
-    * Return a constant reference to the number of maximum parents imposed on the
+    * Return a constant reference to the number of maximum parents imposed on
+    * the
     * Markov Chain BayesNetGenerator.
     */
     Size maxParents() const;
@@ -145,7 +166,7 @@ namespace gum {
     * Modifies the value of the number of maximum parents imposed on the
     * BayesNetGenerator
     */
-    void setMaxParents(Size maxParents);
+    void setMaxParents( Size maxParents );
     /// @}
 
     protected:
@@ -165,4 +186,4 @@ namespace gum {
 } /*namespace gum*/
 
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.tcc>
-#endif // MCBAYESNETGENERATOR
+#endif  // MCBAYESNETGENERATOR

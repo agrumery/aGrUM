@@ -20,6 +20,8 @@
 #IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
+
+from __future__ import print_function
 import sys,os
 
 from .utils.pyAgrum_header import pyAgrum_header
@@ -43,6 +45,8 @@ def max_length(v):
   return m
 
 def pretty_cpt(cpt):
+  res=[]
+
   size=(1+2+DECIMAL_LENGTH)*cpt.variable(0).domainSize()-1
 
   width={}
@@ -52,12 +56,12 @@ def pretty_cpt(cpt):
     total_width+=width[j]+1
   total_width-=1
 
-  print(' '*total_width+'|-'+'-'*size+'-|')
+  res.append(' '*total_width+'|-'+'-'*size+'-|')
 
   line='-'*total_width+'|'
   line+="{0:^{1}}".format(cpt.variable(0).name()[0:size+2],size+2)
   line+='|'
-  print(line)
+  res.append(line)
 
   line=''
   for j in range(1,cpt.nbrDim()):
@@ -68,8 +72,8 @@ def pretty_cpt(cpt):
   for j in range(cpt.variable(0).domainSize()):
     line+=("{0:^{1}}"+BLANK).format(cpt.variable(0).label(j)[0:DECIMAL_LENGTH+2],DECIMAL_LENGTH+2)
   line+='|'
-  print(line)
-  print(('-'*total_width)+'|'+'-'*(2+size)+'|')
+  res.append(line)
+  res.append(('-'*total_width)+'|'+'-'*(2+size)+'|')
 
   i=gum.Instantiation(cpt)
   i.setFirst()
@@ -84,9 +88,10 @@ def pretty_cpt(cpt):
         line+=NUMBER_FORMAT.format(cpt.get(i))+' '
         i.inc()
       line+='|'
-      print(line)
+      res.append(line)
 
-  print(('-'*total_width)+'|'+'-'*(2+size)+'|')
+  res.append(('-'*total_width)+'|'+'-'*(2+size)+'|')
+  return "\n".join(res)
 
 def pretty_bn(aBN):
   if isinstance(aBN,str):

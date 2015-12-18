@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief class for storing trees (as data structures, not graphs)
+/**
+ * @file
+ * @brief Class for storing trees (as data structures, not graphs).
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -28,122 +29,172 @@
 #include <iostream>
 
 #include <agrum/config.h>
-
 #include <agrum/core/hashTable.h>
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                NODES FOR GENERIC TREE (DATA) STRUCTURE               === */
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /** @class IndexedTree
+  // =========================================================================
+  // ===                NODES FOR GENERIC TREE (DATA) STRUCTURE === */
+  // =========================================================================
+
+  /**
+   * @class IndexedTree indexedTree.h <agrum/core/indexedTree.h>
    * @brief The class for storing the nodes of the Arborescence
    * @ingroup basicstruct_group
+   *
+   * @tparam Key The tree's keys type.
+   * @tparam Data The tree's values type.
    */
-  /* ============================================================================ */
-
-  template <typename Key, typename Data> class IndexedTree {
+  template <typename Key, typename Data>
+  class IndexedTree {
     public:
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// creates a tree with one node without data
+    /**
+     * @brief Creates a tree with one node with or without data.
+     *
+     * If data equals the nullptr, then tree is created with one node without
+     * data.
+     *
+     * @param data Adds data as the root of the tree.
+     */
+    IndexedTree( Data* data = nullptr );
 
-    IndexedTree(Data *data = 0);
-
-    /// creates a tree with one node (with or without data)
-    /** the parameters are inserted directly into the tree, i.e., no copy is
+    /**
+     * @brief Creates a tree with one node (with or without data).
+     *
+     * The parameters are inserted directly into the tree, i.e., no copy is
      * performed. For copies of key and data to occur, use the constructor
-     * with const& parameters. */
+     * with const& parameters.
+     *
+     * If data equals the nullptr, then tree is created with one node without
+     * data.
+     *
+     * @param theKey The data's key.
+     * @param data The data added to the tree.
+     */
+    IndexedTree( const Key& theKey, Data* data = nullptr );
 
-    IndexedTree(const Key &theKey, Data *data = 0);
+    /**
+     * @brief Creates a tree with one node with data.
+     *
+     * The key and data are copied into the tree. If you do not want any copy,
+     * use the constructor with the pointers parameters.
+     *
+     * @param theKey The data's key.
+     * @param data The data added to the tree.
+     */
+    IndexedTree( const Key& theKey, const Data& data );
 
-    /// creates a tree with one node with data
-    /** the key and data are copied into the tree. If you do not want any copy,
-     * use the constructor with the pointers parameters. */
+    /**
+     * @brief Copy constructor.
+     * @param from The gum::IndexedTree to copy.
+     */
+    IndexedTree( const IndexedTree<Key, Data>& from );
 
-    IndexedTree(const Key &theKey, const Data &data);
+    /**
+     * @brief Copy operator.
+     * @param from The gum::IndexedTree to copy.
+     * @return Returns this gum::IndexedTree.
+     */
+    IndexedTree<Key, Data>& operator=( const IndexedTree<Key, Data>& from );
 
-    /// copy constructor
-
-    IndexedTree(const IndexedTree<Key, Data> &from);
-
-    /// copy operator
-
-    IndexedTree<Key, Data> &operator=(const IndexedTree<Key, Data> &from);
-
-    /// destructor
-
+    /**
+     * @brief Class destructor.
+     */
     ~IndexedTree();
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// adds a new node into the tree
-    /** @throw DuplicateElement exception is thrown if a node with an identical
-     * index has already been entered into the tree. If, in this case, you would like
-     * the value of the to be updated, use function setNode instead. */
+    /**
+     * @brief Adds a new node into the tree.
+     *
+     * @param index The node's index.
+     * @param data The node's data.
+     * @throw DuplicateElement exception is thrown if a node with an identical
+     * index has already been entered into the tree. If, in this case, you
+     * would like the value of the to be updated, use function setNode instead.
+     */
+    void insertNode( const std::vector<Key>& index, const Data* data );
 
-    void insertNode(const std::vector<Key> &index, const Data *data);
+    /**
+     * @brief Adds a new node into the tree.
+     *
+     * @param index The node's index.
+     * @param data The node's data.
+     * @throw DuplicateElement exception is thrown if a node with an identical
+     * index has already been entered into the tree. If, in this case, you
+     * would like the value of the to be updated, use function setNode instead.
+     */
+    void insertNode( const std::vector<Key>& index, const Data& data );
 
-    /// adds a new node into the tree
-    /** @throw DuplicateElement exception is thrown if a node with an identical
-     * index has already been entered into the tree. If, in this case, you would like
-     * the value of the to be updated, use function setNode instead. */
+    /**
+     * @brief Updates the value of a node (or adds it if it does not already
+     * exist).
+     *
+     * @param index The node's index.
+     * @param data The node's data.
+     */
+    void setNode( const std::vector<Key>& index, Data* data );
 
-    void insertNode(const std::vector<Key> &index, const Data &data);
+    /**
+     * @brief Updates the value of a node (or adds it if it does not already
+     * exist).
+     *
+     * @param index The node's index.
+     * @param data The node's data.
+     */
+    void setNode( const std::vector<Key>& index, const Data& data );
 
-    /// updates the value of a node (or adds it if it does not already exist)
+    /**
+     * @brief Returns the value of a given node of the tree.
+     *
+     * @param index The node's index.
+     * @return Returns the data at index.
+     * @throw NotFound exception is thrown if the so-called value
+     * cannot be found in the tree.
+     */
+    Data& getData( const std::vector<Key>& index ) const;
 
-    void setNode(const std::vector<Key> &index, Data *data);
-
-    /// updates the value of a node (or adds it if it does not already exist)
-
-    void setNode(const std::vector<Key> &index, const Data &data);
-
-    /// returns the value of a given node of the tree
-    /** @throw NotFound exception is thrown if the so-called value
-     * cannot be found in the tree. */
-
-    Data &getData(const std::vector<Key> &index) const;
-
-    /// returns a given node of the tree
-    /** @throw NotFound exception is thrown if the node we look for cannot
-     * be found in the tree. */
-
-    IndexedTree<Key, Data> &getNode(const std::vector<Key> &index);
+    /**
+     * @brief Returns a given node of the tree.
+     * @param index The node's index.
+     * @return Returns a given node of the tree.
+     * @throw NotFound exception is thrown if the node we look for cannot
+     * be found in the tree.
+     */
+    IndexedTree<Key, Data>& getNode( const std::vector<Key>& index ) const;
 
     /// @}
 
     private:
-    /// the key of the current node
+    /// The key of the current node.
     Key key;
 
-    /// the data stored into the node
-    Data *data;
+    /// The data stored into the node.
+    Data* data;
 
-    /// the parent of the node
-    IndexedTree<Key, Data> *parent;
+    /// The parent of the node.
+    IndexedTree<Key, Data>* parent;
 
-    /// the list of children nodes of the current node
-    HashTable<Key, IndexedTree<Key, Data> *> children;
+    /// The list of children nodes of the current node.
+    HashTable<Key, IndexedTree<Key, Data>*> children;
   };
 
-  /// necessary for the hashtable operator <<
+  /// Necessary for the hashtable operator <<
   template <typename Key, typename Data>
-  std::ostream &operator<<(std::ostream &, const IndexedTree<Key, Data> &);
+  std::ostream& operator<<( std::ostream&, const IndexedTree<Key, Data>& );
 
 } /* namespace gum */
 
-/// always include the templated implementations
+// always include the templated implementations
 #include <agrum/core/indexedTree.tcc>
 
 #endif /* GUM_INDEXED_TREE_H */

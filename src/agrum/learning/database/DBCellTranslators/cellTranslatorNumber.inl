@@ -30,70 +30,75 @@ namespace gum {
 
     /// copy constructor
     INLINE
-    CellTranslatorNumber::CellTranslatorNumber(const CellTranslatorNumber &from)
-        : DBCellTranslator<1, 1>(from), __max_value(from.__max_value),
-          __values(from.__values), __check_database(from.__check_database) {
-      if (from.__user_values != nullptr) {
-        __user_values = new Sequence<float>(*from.__user_values);
+    CellTranslatorNumber::CellTranslatorNumber(
+        const CellTranslatorNumber& from )
+        : DBCellTranslator<1, 1>( from )
+        , __max_value( from.__max_value )
+        , __values( from.__values )
+        , __check_database( from.__check_database ) {
+      if ( from.__user_values != nullptr ) {
+        __user_values = new Sequence<float>( *from.__user_values );
       }
     }
 
     /// move constructor
-    INLINE CellTranslatorNumber::CellTranslatorNumber(CellTranslatorNumber &&from)
-        : DBCellTranslator<1, 1>(std::move(from)),
-          __max_value(std::move(from.__max_value)),
-          __values(std::move(from.__values)),
-          __check_database(std::move(from.__check_database)) {
-      if (from.__user_values != nullptr) {
-        __user_values = new Sequence<float>(std::move(*from.__user_values));
+    INLINE
+    CellTranslatorNumber::CellTranslatorNumber( CellTranslatorNumber&& from )
+        : DBCellTranslator<1, 1>( std::move( from ) )
+        , __max_value( std::move( from.__max_value ) )
+        , __values( std::move( from.__values ) )
+        , __check_database( std::move( from.__check_database ) ) {
+      if ( from.__user_values != nullptr ) {
+        __user_values = new Sequence<float>( std::move( *from.__user_values ) );
       }
     }
 
     /// virtual copy constructor
-    INLINE CellTranslatorNumber *CellTranslatorNumber::copyFactory() {
-      return new CellTranslatorNumber(*this);
+    INLINE CellTranslatorNumber* CellTranslatorNumber::copyFactory() {
+      return new CellTranslatorNumber( *this );
     }
 
     /// destructor
     INLINE CellTranslatorNumber::~CellTranslatorNumber() {
-      if (__user_values != nullptr) {
+      if ( __user_values != nullptr ) {
         delete __user_values;
       }
     }
 
     /// copy operator
-    INLINE CellTranslatorNumber &CellTranslatorNumber::
-    operator=(const CellTranslatorNumber &from) {
-      if (this != &from) {
-        DBCellTranslator<1, 1>::operator=(from);
+    INLINE CellTranslatorNumber& CellTranslatorNumber::
+    operator=( const CellTranslatorNumber& from ) {
+      if ( this != &from ) {
+        DBCellTranslator<1, 1>::operator=( from );
         __max_value = from.__max_value;
         __values = from.__values;
         __check_database = from.__check_database;
-        if (__user_values) {
+        if ( __user_values ) {
           delete __user_values;
           __user_values = nullptr;
         }
-        if (from.__user_values != nullptr) {
-          __user_values = new Sequence<float>(*from.__user_values);
+        if ( from.__user_values != nullptr ) {
+          __user_values = new Sequence<float>( *from.__user_values );
         }
       }
       return *this;
     }
 
     /// move operator
-    INLINE CellTranslatorNumber &CellTranslatorNumber::
-    operator=(CellTranslatorNumber &&from) {
-      if (this != &from) {
-        DBCellTranslator<1, 1>::operator=(std::move(from));
-        __max_value = std::move(from.__max_value);
-        __values = std::move(from.__values);
+    INLINE CellTranslatorNumber& CellTranslatorNumber::
+    operator=( CellTranslatorNumber&& from ) {
+      if ( this != &from ) {
+        DBCellTranslator<1, 1>::operator=( std::move( from ) );
+        __max_value = std::move( from.__max_value );
+        __values = std::move( from.__values );
         __check_database = from.__check_database;
-        if (__user_values) {
+        if ( __user_values ) {
           delete __user_values;
           __user_values = nullptr;
         }
-        if (from.__user_values != nullptr) {
-          __user_values = new Sequence<float>(std::move(*from.__user_values));
+        if ( from.__user_values != nullptr ) {
+          __user_values =
+              new Sequence<float>( std::move( *from.__user_values ) );
         }
       }
       return *this;
@@ -101,23 +106,23 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorNumber::translate() {
-      out(0) = __values.second(in(0).getFloat());
+      out( 0 ) = __values.second( in( 0 ).getFloat() );
     }
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorNumber::initialize() {
-      const float nb = in(0).getFloat();
-      if (!__values.existsFirst(nb)) {
-        __values.insert(nb, __max_value);
+      const float nb = in( 0 ).getFloat();
+      if ( !__values.existsFirst( nb ) ) {
+        __values.insert( nb, __max_value );
         ++__max_value;
       }
     }
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void
-    CellTranslatorNumber::modalities(std::vector<unsigned int> &modal) const
+    CellTranslatorNumber::modalities( std::vector<unsigned int>& modal ) const
         noexcept {
-      modal.push_back(__values.size());
+      modal.push_back( __values.size() );
     }
 
     /// returns whether the translator needs a DB parsing to initialize itself
@@ -127,18 +132,18 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorNumber::translateBack(unsigned int col,
-                                        unsigned int translated_val) const {
+    CellTranslatorNumber::translateBack( unsigned int col,
+                                         unsigned int translated_val ) const {
       std::stringstream str;
-      str << __values.first(translated_val);
+      str << __values.first( translated_val );
       return str.str();
     }
 
     /// returns the name of the variable(s) the translator has processed
     INLINE void CellTranslatorNumber::variableNames(
-        const std::vector<std::string> &db_var,
-        std::vector<std::string> &output_vars) const {
-      output_vars.push_back(db_var[_input_cols[0]]);
+        const std::vector<std::string>& db_var,
+        std::vector<std::string>& output_vars ) const {
+      output_vars.push_back( db_var[_input_cols[0]] );
     }
 
   } /* namespace learning */

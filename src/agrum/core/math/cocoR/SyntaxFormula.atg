@@ -1,0 +1,103 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+// =============================================================================
+//                               HEADERS
+// =============================================================================
+
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+#include <list>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
+
+#include <agrum/core/utils_dir.h>
+#include <agrum/core/math/formula.h>
+
+// =============================================================================
+//                             PARSER
+// =============================================================================
+
+COMPILER EVAL
+
+private:
+  gum::Formula* __formula;
+
+public:
+  void formula( gum::Formula* f ) {
+    __formula = f;
+  }
+
+  gum::Formula& formula() { 
+    return *__formula; 
+  }
+
+  const gum::Formula& formula() const {
+    return *__formula; 
+  }
+
+// =============================================================================
+//                              SCANNER RULES
+// =============================================================================
+
+//________________________
+CHARACTERS
+letter = 'A'..'Z' + 'a'..'z'+ '_' .
+digit  = '0'..'9'.
+eol    = '\n'.
+
+//________________________
+TOKENS
+integer     =  digit {digit}.
+float       =  digit {digit} '.' digit {digit}. 
+operator    = '+'|'-'|'*'|'/'|'^'|'<'|'>'.
+eol         = '\n'.
+ident       = letter {letter | digit | '_' | '.'}.
+
+//________________________
+IGNORE '\r' + eol + '\t'
+
+$checkEOF=false // disable the end of file check
+
+// =============================================================================
+//                              PARSER RULES
+// =============================================================================
+
+PRODUCTIONS
+
+//________________________
+EVAL =  
+  (expression { expression }) (. __formula->finalize(); .)
+  .                           
+
+expression =
+    integer    (. __formula->push_number((double)coco_atoi(t->val)); .)
+    | float    (. __formula->push_number((double)coco_atof(t->val)); .)
+    | operator (. __formula->push_operator(narrow(t->val)[0]); .)
+    | '('      (. __formula->push_leftParenthesis(); .)
+    | ')'      (. __formula->push_rightParenthesis(); .)
+    | ident    (. __formula->push_identifier(narrow(t->val)); .)
+    | ','      (. __formula->push_comma(); .)
+  .
+
+END EVAL.

@@ -20,7 +20,8 @@
 /** @file
  * @brief count aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_COUNT_AGGREGATOR_H
 #define GUM_COUNT_AGGREGATOR_H
@@ -30,38 +31,35 @@
 namespace gum {
 
   namespace aggregator {
-
-    /* ============================================================================
-     */
-    /* ============================================================================
-     */
+    /* =========================================================================*/
+    /* =========================================================================*/
     /* ===                     GUM_MAX_AGGREGATOR                     === */
-    /* ============================================================================
-     */
-    /* ============================================================================
-     */
+    /* =========================================================================*/
+    /* =========================================================================*/
+
     /** @class Count
     * @brief count aggregator
     * @ingroup multidim_group
     *
     * @see MultiDimAggregator for more details of implementations
     *
-    * Note that a <tt>Count(i)</tt> aggregator with a binary aggregator variable is
+    * Note that a <tt>Count(i)</tt> aggregator with a binary aggregator variable
+    *is
     *the \f$ \exists i \f$ aggregator.
-    * If the aggregator variable is n-ary variable, <tt>Count(i)</tt> can serve as
+    * If the aggregator variable is n-ary variable, <tt>Count(i)</tt> can serve
+    *as
     *the \f$ \exists \f$ at least \f$ n\ times\ i \f$ aggregator.
     */
-    /* ============================================================================
-     */
+    /* =========================================================================*/
 
     template <typename GUM_SCALAR>
     class Count : public MultiDimAggregator<GUM_SCALAR> {
       public:
-      Count(Idx value);
-      Count(const Count<GUM_SCALAR> &from);
+      Count( Idx value );
+      Count( const Count<GUM_SCALAR>& from );
       virtual ~Count();
 
-      virtual std::string aggregatorName(void) const;
+      virtual std::string aggregatorName( void ) const;
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -76,12 +74,14 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
       protected:
-      virtual Idx _neutralElt(void) const;
-      virtual Idx _folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                          bool &stop_iteration) const;
+      virtual Idx _neutralElt( void ) const;
+      virtual Idx _fold( const DiscreteVariable& v,
+                           Idx i1,
+                           Idx i2,
+                           bool& stop_iteration ) const;
 
       private:
       Idx __value;
@@ -89,9 +89,9 @@ namespace gum {
 
     extern template class Count<float>;
     extern template class Count<double>;
-  } // aggregator
-} // gum
+  }  // aggregator
+}  // gum
 
 #include <agrum/multidim/aggregators/count.tcc>
 
-#endif // GUM_COUNT_AGGREGATOR_H
+#endif  // GUM_COUNT_AGGREGATOR_H

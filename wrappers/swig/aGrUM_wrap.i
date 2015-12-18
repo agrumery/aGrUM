@@ -69,9 +69,10 @@
 #include <agrum/BN/io/net/netWriter.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
+#include <agrum/PRM/o3prm/O3prmBNReader.h>
 
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -155,7 +156,7 @@ ADD_NODEGRAPHPART_API(gum::MixedGraph)
 ADD_EDGEGRAPHPART_API(gum::UndiGraph)
 ADD_EDGEGRAPHPART_API(gum::MixedGraph)
 
-%define ADD_ARCGRAPHPART_API(classname) 
+%define ADD_ARCGRAPHPART_API(classname)
 %extend classname {
   using gum::ArcGraphPart::eraseArc;
   using gum::ArcGraphPart::existsArc;
@@ -170,42 +171,41 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
 
 
 
-%define ADD_APPROXIMATIONSCHEME_API(classname)
+%define ADD_APPROXIMATIONSCHEME_API(parent,classname)
 %extend classname {
-  using gum::ApproximationScheme::setVerbosity;
-  using gum::ApproximationScheme::setEpsilon;
-  using gum::ApproximationScheme::setMinEpsilonRate;
-  using gum::ApproximationScheme::setMaxIter;
-  using gum::ApproximationScheme::setMaxTime;
-  using gum::ApproximationScheme::setPeriodSize;
-  using gum::ApproximationScheme::setBurnIn;
+  using parent::setVerbosity;
+  using parent::setEpsilon;
+  using parent::setMinEpsilonRate;
+  using parent::setMaxIter;
+  using parent::setMaxTime;
+  using parent::setPeriodSize;
+  using parent::setBurnIn;
 
-  using gum::ApproximationScheme::verbosity;
-  using gum::ApproximationScheme::epsilon;
-  using gum::ApproximationScheme::minEpsilonRate;
-  using gum::ApproximationScheme::maxIter;
-  using gum::ApproximationScheme::maxTime;
-  using gum::ApproximationScheme::periodSize;
-  using gum::ApproximationScheme::burnIn;
+  using parent::verbosity;
+  using parent::epsilon;
+  using parent::minEpsilonRate;
+  using parent::maxIter;
+  using parent::maxTime;
+  using parent::periodSize;
+  using parent::burnIn;
 
-  using gum::ApproximationScheme::nbrIterations;
-  using gum::ApproximationScheme::currentTime;
+  using parent::nbrIterations;
+  using parent::currentTime;
 
-  using gum::ApproximationScheme::messageApproximationScheme;
-  using gum::ApproximationScheme::history;
+  using parent::messageApproximationScheme;
+  using parent::history;
 }
-%enddef  
-ADD_APPROXIMATIONSCHEME_API(gum::GibbsInference<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::GibbsKL<double>)
-ADD_APPROXIMATIONSCHEME_API(%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
-ADD_APPROXIMATIONSCHEME_API(gum::credal::CNLoopyPropagation<double>)
+%enddef
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsInference<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
 
-%extend gum::learning::BNLearner {
-  using gum::IApproximationSchemeConfiguration::messageApproximationScheme;
-
-  using gum::IApproximationScheme::setMaxTime;
-  using gum::IApproximationScheme::maxTime;
-  using gum::IApproximationScheme::currentTime;
+%extend gum::learning::BNLearner<double> {
+  using gum::learning::genericBNLearner::setMaxTime;
+  using gum::learning::genericBNLearner::maxTime;
+  using gum::learning::genericBNLearner::currentTime;
 
   using gum::learning::genericBNLearner::learnDAG;
   using gum::learning::genericBNLearner::names;
@@ -227,14 +227,13 @@ ADD_APPROXIMATIONSCHEME_API(gum::credal::CNLoopyPropagation<double>)
   using gum::learning::genericBNLearner::useK2;
   using gum::learning::genericBNLearner::setMaxIndegree;
   using gum::learning::genericBNLearner::setSliceOrder;
-  using gum::learning::genericBNLearner::addForbiddenAr;
+  using gum::learning::genericBNLearner::addForbiddenArc;
   using gum::learning::genericBNLearner::eraseForbiddenArc;
   using gum::learning::genericBNLearner::addMandatoryArc;
   using gum::learning::genericBNLearner::addMandatoryArc;
   using gum::learning::genericBNLearner::eraseMandatoryArc;
-
-  /*using gum::learning::genericBNLearner::setInitialDAG;*/
 }
+
 
 %include "forUsing.i"
 
@@ -265,7 +264,7 @@ namespace std {
 %exceptionclass gum::IOError;
 %exceptionclass std::exception;
 
-
+%rename Exception GumException;
 
 /* WRAPPED HEADERS (pyAgrum API) */
 %import <agrum/config.h>
@@ -319,8 +318,8 @@ namespace std {
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>
 
-%import <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
-%import <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+%import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
+%import <agrum/core/approximations/approximationScheme.h>
 
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>

@@ -49,23 +49,24 @@ namespace gum {
       DBRow();
 
       /// constructor with a given size for the row
-      DBRow(unsigned int size, const DBCell &default_cell = DBCell(),
-            float weight = 1.0f);
+      DBRow( unsigned int size,
+             const DBCell& default_cell = DBCell(),
+             float weight = 1.0f );
 
       /// initializer list constructor
-      DBRow(std::initializer_list<DBCell> &list);
+      DBRow( std::initializer_list<DBCell>& list );
 
       /// initializer from a vector of cells
-      DBRow(const std::vector<DBCell> &cells, float weight = 1.0f);
+      DBRow( const std::vector<DBCell>& cells, float weight = 1.0f );
 
       /// initializer from a vector of cells
-      DBRow(std::vector<DBCell> &&cells, float weight = 1.0f);
+      DBRow( std::vector<DBCell>&& cells, float weight = 1.0f );
 
       /// copy operator
-      DBRow(const DBRow &from);
+      DBRow( const DBRow& from );
 
       /// move operator
-      DBRow(DBRow &&from);
+      DBRow( DBRow&& from );
 
       /// destructor
       ~DBRow();
@@ -79,16 +80,16 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRow &operator=(const DBRow &from);
+      DBRow& operator=( const DBRow& from );
 
       /// move operator
-      DBRow &operator=(DBRow &&from);
+      DBRow& operator=( DBRow&& from );
 
       /// returns the ith DBCell of the row
-      DBCell &operator[](unsigned int i);
+      DBCell& operator[]( unsigned int i );
 
       /// returns the ith DBCell of the row
-      const DBCell &operator[](unsigned int i) const;
+      const DBCell& operator[]( unsigned int i ) const;
 
       /// @}
 
@@ -99,31 +100,31 @@ namespace gum {
       /// @{
 
       /// returns the current row
-      const std::vector<DBCell> &row() const noexcept;
+      const std::vector<DBCell>& row() const noexcept;
 
       /// returns the current row
-      std::vector<DBCell> &row() noexcept;
+      std::vector<DBCell>& row() noexcept;
 
       /// returns the weight
-      const float &weight() const noexcept;
+      const float& weight() const noexcept;
 
       /// returns the weight
-      float &weight() noexcept;
+      float& weight() noexcept;
 
       /// sets a new row
-      void setRow(const std::vector<DBCell> &new_row);
+      void setRow( const std::vector<DBCell>& new_row );
 
       /// sets a new row
-      void setRow(std::vector<DBCell> &&new_row);
+      void setRow( std::vector<DBCell>&& new_row );
 
       /// sets a new weight
-      void setWeight(float new_weight);
+      void setWeight( float new_weight );
 
       /// returns the size of the row
       unsigned int size() const noexcept;
 
       /// resize a given row
-      void resize(unsigned int new_size);
+      void resize( unsigned int new_size );
 
       /// @}
 

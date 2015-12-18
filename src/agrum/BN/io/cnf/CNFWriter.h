@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -39,15 +38,14 @@
 #include <agrum/BN/io/BNWriter.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/config.h>
-#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
-#include <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
+#include <agrum/core/approximations/approximationPolicy.h>
 
 namespace gum {
 
   /**
-   * @class BNWriter
+   * @class CNFWriter CNFWriter.h <agrum/BN/io/cnf/CNFWriter.h>
+   * @ingroup bn_io
    * @brief Writes a IBayesNet in the BN format.
-   * @ingroup bn_group
    *
    * This class servers to write the content of a Bayesian Network in
    * the BN format. See
@@ -84,7 +82,8 @@ namespace gum {
      * @param bn The Bayesian Network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::ostream &output, const IBayesNet<GUM_SCALAR> &bn) = 0;
+    virtual void write( std::ostream& output,
+                        const IBayesNet<GUM_SCALAR>& bn ) = 0;
 
     /**
      * Writes a Bayesian Network in the referenced file using the BN format.
@@ -94,10 +93,11 @@ namespace gum {
      * @param bn The Bayesian Network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR> &bn) = 0;
+    virtual void write( std::string filePath,
+                        const IBayesNet<GUM_SCALAR>& bn ) = 0;
 
-    inline GUM_SCALAR fromExact(const GUM_SCALAR &value) const {
-      return IApproximationPolicy<GUM_SCALAR>::fromExact(value);
+    inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
+      return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
     }
   };
 
@@ -106,4 +106,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/CNFWriter.tcc>
-#endif // GUM_NET_WRITER_H
+#endif  // GUM_NET_WRITER_H

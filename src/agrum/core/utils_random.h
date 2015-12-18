@@ -17,36 +17,65 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Contains usefull methods for random stuff.
+ *
+ * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
+ */
+
 #ifndef GUM_UTILS_RANDOM_H
 #define GUM_UTILS_RANDOM_H
 
+#include <chrono>
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
+#include <numeric>
 #include <utility>
 #include <vector>
-#include <cstdlib>
-#include <chrono>
 
 namespace gum {
 
-  /// returns a random number between 0 and 1 included (i.e. a proba)
+  /// @ingroup utilities_group
+  /// @{
+
+  /**
+   * @brief Returns a random number between 0 and 1 included (i.e. a proba).
+   * @return Returns a random number between 0 and 1 included (i.e. a proba).
+   */
   double randomProba();
 
-  /// return a random discrete distribution
-  /// @param n is the number of modalities for the ditribution
-  template <typename GUM_SCALAR> std::vector<GUM_SCALAR> randomDistribution(Size n);
+  /**
+   * @brief Return a random discrete distribution.
+   * @param n The number of modalities for the ditribution.
+   * @return Return a random discrete distribution.
+   * @tparam GUM_SCALAR The type used for representing probabilities.
+   */
+  template <typename GUM_SCALAR>
+  std::vector<GUM_SCALAR> randomDistribution( Size n );
 
-  /// initialize random generator seed
-  void initRandom(unsigned int init = 0);
+  /**
+   * @brief Initialize random generator seed.
+   * @param init The seed.
+   */
+  void initRandom( unsigned int init = 0 );
 
-  /// returns the aGrUM's seed used by the std::generators
-  unsigned int &randomGeneratorSeed(unsigned int seed = 0);
+  /**
+   * @brief Returns the aGrUM's seed used by the std::generators.
+   * @param seed The seed.
+   * @return Returns the aGrUM's seed used by the std::generators.
+   */
+  unsigned int& randomGeneratorSeed( unsigned int seed = 0 );
 
+  /// @}
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/utils_random.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
+// always include the template implementations
 #include <agrum/core/utils_random.tcc>
 
 #endif /* GUM_UTILS_RANDOM_H */

@@ -46,15 +46,17 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     /// the general type for the columns
-    template <int Idx, int... NextIdx> struct Col;
+    template <int Idx, int... NextIdx>
+    struct Col;
 
     /// the specialized type for the specification of 1 column
-    template <int Idx> struct Col<Idx> {
+    template <int Idx>
+    struct Col<Idx> {
       /// the number of columns specified by this class
       static constexpr unsigned int size = 1;
 
       /// saves the column into an array
-      static void toArray(unsigned int array[]) noexcept { *array = Idx; }
+      static void toArray( unsigned int array[] ) noexcept { *array = Idx; }
 
       /// to display the content of the column
       std::string toString() const noexcept {
@@ -66,28 +68,38 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-    /** @class Col
-     * @brief A generic class to specify columns in a database
-     * @ingroup learning_group
-     *
-     * Learning algorithms use row filters to read the content of tabular databases
-     * (like CSVs or MySQL databases). These row filters use translators and
-     * generators. The former translate the "generic" content of the columns of
-     * the database into integer-encoded contents. To specify on which columns
-     * each translator will work, you should use class Col. For instance, if you
-     * wish to express that a translator should be applied on columns 1, 7, 4 in
-     * order to produce one translated column, you just need to indicate that it
-     * will be applied on Col<1,7,4>. Col<>s can have an arbitrary number of
-     * column numbers in argument.
-     */
-    template <int Idx, int... NextIdx> struct Col : public Col<NextIdx...> {
+/** @class Col
+ * @brief A generic class to specify columns in a database
+ * @ingroup learning_group
+ *
+ * Learning algorithms use row filters to read the content of tabular
+ *databases
+ * (like CSVs or MySQL databases). These row filters use translators and
+ * generators. The former translate the "generic" content of the columns of
+ * the database into integer-encoded contents. To specify on which columns
+ * each translator will work, you should use class Col. For instance, if you
+ * wish to express that a translator should be applied on columns 1, 7, 4 in
+ * order to produce one translated column, you just need to indicate that it
+ * will be applied on Col<1,7,4>. Col<>s can have an arbitrary number of
+ * column numbers in argument.
+ */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // The REAL definition of class gum::learning::Col
+    template <int Idx, int... NextIdx>
+    struct Col : public Col<NextIdx...> {
+#else
+    // The FAKE definition of class gum::learning::Col as Doxygen does not like
+    // recursive inheritance
+    template <int Idx, int... NextIdx>
+    struct Col {
+#endif
       /// the number of columns specified by this class
-      static constexpr unsigned int size = 1 + sizeof...(NextIdx);
+      static constexpr unsigned int size = 1 + sizeof...( NextIdx );
 
       /// saves the columns into an array of integers
-      static void toArray(unsigned int array[]) noexcept {
+      static void toArray( unsigned int array[] ) noexcept {
         *array = Idx;
-        Col<NextIdx...>::toArray(array + 1);
+        Col<NextIdx...>::toArray( array + 1 );
       }
 
       /// to display the content of the columns
@@ -105,7 +117,8 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     /// the generic concatenation of columns
-    template <typename, typename> struct ConcatCols;
+    template <typename, typename>
+    struct ConcatCols;
 
     /// The class used to concatenate two Cols
     template <int Idx1, int Idx2, int... NextIdx2>
@@ -114,10 +127,12 @@ namespace gum {
     };
 
     /// the generic class for adding two Cols
-    template <typename Col1, typename Col2> struct AddCols;
+    template <typename Col1, typename Col2>
+    struct AddCols;
 
     /// the specialized addition of two columns
-    template <int Idx1, int Idx2> struct AddCols<Col<Idx1>, Col<Idx2>> {
+    template <int Idx1, int Idx2>
+    struct AddCols<Col<Idx1>, Col<Idx2>> {
       using type = Col<Idx1 + Idx2>;
     };
 
@@ -131,8 +146,8 @@ namespace gum {
      * AddCols takes as template parameters two Cols<> of the same size and adds
      * pointwise their values. For instance, AddCols<Col<1,3>,Cols<2,4>> will
      * produce a new Col<3,7>, since 3 = 1 + 2 and 7 = 3 + 4. The result of the
-     * addition is available through a "type" typedef, i.e., trhough
-     * AddCols<Col<1,3>,Cols<2,4>>::type
+     * addition is available through a "type" typedef, i.e., through
+     * AddCols::type
      */
     template <int Idx1, int Idx2, int... NextIdx1, int... NextIdx2>
     struct AddCols<Col<Idx1, NextIdx1...>, Col<Idx2, NextIdx2...>> {
@@ -148,10 +163,14 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     // make a default increment for a given Col
-    template <typename> struct Make_Default_Incr;
+    template <typename>
+    struct Make_Default_Incr;
 
     // the specialization of Make_Default_Incr for 1 column
-    template <int Idx> struct Make_Default_Incr<Col<Idx>> { using type = Col<1>; };
+    template <int Idx>
+    struct Make_Default_Incr<Col<Idx>> {
+      using type = Col<1>;
+    };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
@@ -163,13 +182,14 @@ namespace gum {
      * result from an addition by 1 to each of its columns. For instance,
      * Make_Default_Incr< Col<1,8,2> > will produce a Col<2,9,3>. The result is
      * accessible through a "type" typedef, i.e., through
-     * Make_Default_Incr< Col<1,8,2> >::type.
+     * Make_Default_Incr::type.
      */
     template <int Idx, int... NextIdx>
     struct Make_Default_Incr<Col<Idx, NextIdx...>>
         : public Make_Default_Incr<Col<NextIdx...>> {
       using NextDefaultIncr = Make_Default_Incr<Col<NextIdx...>>;
-      using type = typename ConcatCols<Col<1>, typename NextDefaultIncr::type>::type;
+      using type =
+          typename ConcatCols<Col<1>, typename NextDefaultIncr::type>::type;
     };
 
     /** @class Incr
@@ -179,7 +199,8 @@ namespace gum {
      * To specify that you want to increment Col<2,3,4> by <1,6,3>, just create
      * an Incr<1,6,3>.
      */
-    template <int Idx, int... NextIdx> using Incr = Col<Idx, NextIdx...>;
+    template <int Idx, int... NextIdx>
+    using Incr = Col<Idx, NextIdx...>;
 
   } /* namespace learning */
 

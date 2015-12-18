@@ -43,7 +43,7 @@ class TiCppRC {
   friend class ticpp::Base;
 
   private:
-  TiCppRCImp *m_tiRC; /**< Pointer to reference counter */
+  TiCppRCImp* m_tiRC; /**< Pointer to reference counter */
 
   public:
   /**
@@ -59,7 +59,7 @@ class TiCppRC {
   */
   virtual ~TiCppRC();
 
-  std::vector<ticpp::Base *>
+  std::vector<ticpp::Base*>
       m_spawnedWrappers; /**< Remember all wrappers that we've
                             created with 'new' - ( e.g.
                             NodeFactory, FirstChildElement, etc.
@@ -75,16 +75,17 @@ class TiCppRCImp {
   private:
   int m_count; /**< Holds reference count to me, and to the node I point to */
 
-  TiCppRC *m_tiCppRC; /**< Holds pointer to an object inheriting TiCppRC */
+  TiCppRC* m_tiCppRC; /**< Holds pointer to an object inheriting TiCppRC */
 
   public:
   /**
   Initializes m_tiCppRC pointer, and set reference count to 1
   */
-  TiCppRCImp(TiCppRC *tiCppRC);
+  TiCppRCImp( TiCppRC* tiCppRC );
 
   /**
-  Allows the TiCppRC object to set the pointer to itself ( m_tiCppRc ) to nullptr
+  Allows the TiCppRC object to set the pointer to itself ( m_tiCppRc ) to
+  nullptr
   when the TiCppRC object is deleted
   */
   void Nullify();
@@ -106,10 +107,11 @@ class TiCppRCImp {
   void InitRef();
 
   /**
-  Get internal pointer to the TiCppRC object - not reference counted, use at your own
+  Get internal pointer to the TiCppRC object - not reference counted, use at
+  your own
   risk
   */
-  TiCppRC *Get();
+  TiCppRC* Get();
 
   /**
   Returns state of internal pointer - will be null if the object was deleted
@@ -117,6 +119,6 @@ class TiCppRCImp {
   bool IsNull();
 };
 
-#endif // TICPP_INCLUDED
+#endif  // TICPP_INCLUDED
 
-#endif // TIXML_USE_TICPP
+#endif  // TIXML_USE_TICPP

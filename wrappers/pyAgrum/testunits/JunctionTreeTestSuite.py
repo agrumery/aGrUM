@@ -1,5 +1,5 @@
 # -*- encoding: UTF-8 -*-
-import pyAgrum as gum 
+import pyAgrum as gum
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
@@ -30,11 +30,11 @@ class JunctionTreeTestCase(pyAgrumTestCase):
         self.bn.cpt(self.w)[0,1,:] = [0.1, 0.9]
         self.bn.cpt(self.w)[1,0,:] = [0.1, 0.9]
         self.bn.cpt(self.w)[1,1,:] = [0.01, 0.99]
-        
+
         self.ie = gum.LazyPropagation(self.bn)
         self.jt=self.ie.junctionTree()
 
-class TopologyFeature(JunctionTreeTestCase):
+class TopologyFeatureTestCase(JunctionTreeTestCase):
 
     def testSimple(self):
         self.assertEqual(len(self.jt.ids()),2)
@@ -48,6 +48,45 @@ class TopologyFeature(JunctionTreeTestCase):
     def testUnorientedGraph(self):
       self.assertEqual(self.jt.neighbours(0),{1})
       self.assertEqual(self.jt.neighbours(1),{0})
-      
+
+class JTGeneratorTestCase(pyAgrumTestCase):
+
+  def testSimpleGraph(self):
+    g=gum.UndiGraph();
+    g.addNode()
+    g.addNode()
+    g.addEdge(0,1)
+
+    jtg=gum.JTGenerator()
+    jt=jtg.junctionTree(g)
+
+    self.assertEqual(jt.size(),1)
+    self.assertEqual(jt.clique(0),{0,1})
+
+    jtg=gum.JTGenerator()
+    bjt=jtg.binaryJoinTree(g)
+
+    self.assertEqual(bjt.size(),1)
+    self.assertEqual(bjt.clique(0),{0,1})
+
+  def testSimpleBN(self):
+    bn=gum.BayesNet();
+    c, r = [bn.add(gum.LabelizedVariable(name, name, 2)) for name in 'c r'.split()]
+    bn.addArc(c,r)
+
+    jtg=gum.JTGenerator()
+    jt=jtg.junctionTree(bn)
+
+    self.assertEqual(jt.size(),1)
+    self.assertEqual(jt.clique(0),{0,1})
+
+    jtg=gum.JTGenerator()
+    bjt=jtg.binaryJoinTree(bn)
+
+    self.assertEqual(bjt.size(),1)
+    self.assertEqual(bjt.clique(0),{0,1})
+
 ts = unittest.TestSuite()
-ts.addTest(TopologyFeature('testSimple'))
+ts.addTest(TopologyFeatureTestCase('testSimple'))
+ts.addTest(JTGeneratorTestCase('testSimpleGraph'))
+ts.addTest(JTGeneratorTestCase('testSimpleBN'))

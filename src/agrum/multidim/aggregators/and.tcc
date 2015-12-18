@@ -20,7 +20,8 @@
 /** @file
  * @brief exists aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #include <sstream>
 // to ease parser in IDEs
@@ -32,27 +33,31 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE And<GUM_SCALAR>::And()
         : MultiDimAggregator<GUM_SCALAR>() {
-      GUM_CONSTRUCTOR(And)
+      GUM_CONSTRUCTOR( And )
     }
 
     template <typename GUM_SCALAR>
-    INLINE And<GUM_SCALAR>::And(const And<GUM_SCALAR> &from)
-        : MultiDimAggregator<GUM_SCALAR>(from) {
-      GUM_CONS_CPY(And);
+    INLINE And<GUM_SCALAR>::And( const And<GUM_SCALAR>& from )
+        : MultiDimAggregator<GUM_SCALAR>( from ) {
+      GUM_CONS_CPY( And );
     }
 
-    template <typename GUM_SCALAR> INLINE And<GUM_SCALAR>::~And() {
-      GUM_DESTRUCTOR(And);
+    template <typename GUM_SCALAR>
+    INLINE And<GUM_SCALAR>::~And() {
+      GUM_DESTRUCTOR( And );
     }
 
-    template <typename GUM_SCALAR> INLINE Idx And<GUM_SCALAR>::_neutralElt() const {
+    template <typename GUM_SCALAR>
+    INLINE Idx And<GUM_SCALAR>::_neutralElt() const {
       return (Idx)1;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx And<GUM_SCALAR>::_folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                                        bool &stop_iteration) const {
-      if (i1 == 1) {
+    INLINE Idx And<GUM_SCALAR>::_fold( const DiscreteVariable& v,
+                                         Idx i1,
+                                         Idx i2,
+                                         bool& stop_iteration ) const {
+      if ( i1 == 1 ) {
         return (Idx)1;
       } else {
         stop_iteration = true;
@@ -61,14 +66,14 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::string And<GUM_SCALAR>::aggregatorName(void) const {
-      return std::string("and");
+    INLINE std::string And<GUM_SCALAR>::aggregatorName( void ) const {
+      return std::string( "and" );
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR> *And<GUM_SCALAR>::newFactory() const {
+    INLINE MultiDimContainer<GUM_SCALAR>* And<GUM_SCALAR>::newFactory() const {
       return new And<GUM_SCALAR>();
     }
 
-  } // namespace aggregator
-} // namespace gum
+  }  // namespace aggregator
+}  // namespace gum

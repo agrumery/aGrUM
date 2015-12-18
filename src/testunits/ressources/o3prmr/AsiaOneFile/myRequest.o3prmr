@@ -1,0 +1,10 @@
+import Asia;
+
+request MyRequest {
+    engine SVE;
+    ? Asia.Asia.asia.lungCancer;
+
+    Asia.Asia.asia.positiveXRay = true;
+    
+    ? Asia.Asia.asia.lungCancer;
+}
