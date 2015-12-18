@@ -11,6 +11,7 @@ set (CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(Options.agrum)
 include(Modules.agrum)
+include(Nanodbc.agrum)
 
 include(Config.agrum)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in" "${AGRUM_BINARY_DIR}/agrum/config.h")
