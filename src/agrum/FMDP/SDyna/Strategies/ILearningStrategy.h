@@ -25,7 +25,6 @@
  */
 
 
-
 // =========================================================================
 #ifndef GUM_SDYNA_LEARNING_STRATEGY_H
 #define GUM_SDYNA_LEARNING_STRATEGY_H
@@ -44,95 +43,92 @@
 namespace gum {
 
   /**
-   * @class ILearningStrategy ILearningStrategy.h <agrum/FMDP/SDyna/ILearningStrategy.h>
+   * @class ILearningStrategy ILearningStrategy.h
+   * <agrum/FMDP/SDyna/ILearningStrategy.h>
    * @brief Interface for manipulating FMDP learner
    * @ingroup fmdp_group
    *
    */
   class ILearningStrategy {
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
-    public :
-
-        // ==========================================================================
-        /// Destructor (virtual and empty since it's an interface)
-        // ==========================================================================
-        virtual ~ILearningStrategy(){}
-
-      /// @}
-
-      // ###################################################################
-      /// @name Initialization
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Constructor & destructor.
+    // ###################################################################
+    /// @{
     public:
+    // ==========================================================================
+    /// Destructor (virtual and empty since it's an interface)
+    // ==========================================================================
+    virtual ~ILearningStrategy() {}
 
-        // ==========================================================================
-        /// Initializes the learner
-        // ==========================================================================
-        virtual void initialize( FMDP<double>* fmdp ) = 0;
+    /// @}
 
-      /// @}
+    // ###################################################################
+    /// @name Initialization
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    /// Initializes the learner
+    // ==========================================================================
+    virtual void initialize( FMDP<double>* fmdp ) = 0;
 
-
-      // ###################################################################
-      /// @name Incremental methods
-      // ###################################################################
-      /// @{
-    public :
-
-        // ==========================================================================
-        /**
-         * Gives to the learner a new transition
-         * @param actionId : the action on which the transition was made
-         * @param obs : the observed transition
-         * @return true if learning this transition implies structural changes
-         * (can trigger a new planning)
-         */
-        // ==========================================================================
-        virtual bool addObservation( Idx actionId, const Observation* obs ) = 0;
+    /// @}
 
 
-        // ==========================================================================
-        /**
-         * Starts an update of datastructure in the associated FMDP
-         */
-        // ==========================================================================
-        virtual void updateFMDP() = 0;
+    // ###################################################################
+    /// @name Incremental methods
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    /**
+     * Gives to the learner a new transition
+     * @param actionId : the action on which the transition was made
+     * @param obs : the observed transition
+     * @return true if learning this transition implies structural changes
+     * (can trigger a new planning)
+     */
+    // ==========================================================================
+    virtual bool addObservation( Idx actionId, const Observation* obs ) = 0;
 
-      /// @}
+
+    // ==========================================================================
+    /**
+     * Starts an update of datastructure in the associated FMDP
+     */
+    // ==========================================================================
+    virtual void updateFMDP() = 0;
+
+    /// @}
 
 
-      // ###################################################################
-      /// @name Miscelleanous methods
-      // ###################################################################
-      /// @{
-    public :
+    // ###################################################################
+    /// @name Miscelleanous methods
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    /**
+     * @brief learnerSize
+     * @return
+     */
+    // ==========================================================================
+    virtual Size size() = 0;
 
-        // ==========================================================================
-        /**
-         * @brief learnerSize
-         * @return
-         */
-        // ==========================================================================
-        virtual Size size() = 0;
+    // ==========================================================================
+    /**
+     * @brief Required for RMax
+     * @return
+     */
+    // ==========================================================================
+    virtual const IVisitableGraphLearner*
+    varLearner( Idx actionId, const DiscreteVariable* var ) const = 0;
 
-        // ==========================================================================
-        /**
-         * @brief Required for RMax
-         * @return
-         */
-        // ==========================================================================
-        virtual const IVisitableGraphLearner* varLearner(Idx actionId, const DiscreteVariable* var) const = 0;
+    virtual double rMax() const = 0;
+    virtual double modaMax() const = 0;
 
-        virtual double rMax() const = 0;
-        virtual double modaMax() const = 0;
-
-      /// @}
+    /// @}
   };
-
 }
-#endif // GUM_SDYNA_LEARNING_STRATEGY_H
+#endif  // GUM_SDYNA_LEARNING_STRATEGY_H

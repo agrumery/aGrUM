@@ -33,11 +33,11 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 <<<<<<< HEAD
-#if !defined(gum_MDPDAT_COCO_PARSER_H__)
+#if !defined( gum_MDPDAT_COCO_PARSER_H__ )
 =======
 #if !defined( gum_MDPDAT_COCO_PARSER_H__ )
 >>>>>>> master
-#define gum_MDPDAT_COCO_PARSER_H__
+    #define gum_MDPDAT_COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
 // =====================================================================
@@ -45,14 +45,17 @@ Coco/R itself) does not fall under the GNU General Public License.
 // =====================================================================
 #undef TRY
 <<<<<<< HEAD
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
+    #define TRY( inst ) try {
+  inst;
+} catch ( gum::Exception& e ) {
+  SemErr( e.errorType() );
+}
 =======
-#define TRY( inst )                \
-  try {                            \
-    inst;                          \
-  } catch ( gum::Exception & e ) { \
-    SemErr( e.errorType() );       \
-  }
+    #define TRY( inst ) try {
+  inst;
+} catch ( gum::Exception& e ) {
+  SemErr( e.errorType() );
+}
 >>>>>>> master
 
 #include <iostream>
@@ -62,127 +65,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 <<<<<<< HEAD
-namespace MDPDAT {
-
-
-
-class Parser {
-  private:
-    	enum {
-		_EOF=0,
-		_operand=1,
-		_ident=2,
-		_integer=3,
-		_number=4,
-		_string=5,
-		_largestring=6,
-		_lpar=7
-	};
-	int maxT;
-
-    Token* dummyToken;
-    int errDist;
-    int minErrDist;
-
-    void SynErr( int n );
-    void Get();
-    void Expect( int n );
-    bool StartOf( int s );
-    void ExpectWeak( int n, int follow );
-    bool WeakSeparator( int n, int syFol, int repFol );
-
-    ErrorsContainer  __errors;
-
-  public:
-    Scanner* scanner;
-
-    Token* t;     // last recognized token
-    Token* la;      // lookahead token
-
-    gum::AbstractFMDPFactory* __factory;
-                
-                /// for each transition diagram, we need to know the associated variable
-                std::string __currentFunctionGraphVar;
-                
-                /// for building the diagram, we need to keep track of var parents
-                std::vector< gum::NodeId > __parentNode;
-                
-                /// and current modality
-                std::vector< gum::Idx > __parentModality;
-                
-
-        // *************************************************************************************
-        // Getters and Setters on those attributes
-        // *************************************************************************************
-        
-                /// Sets the main factory
-                void setFactory( gum::AbstractFMDPFactory* f ) {
-                        __factory = f;
-                }
-
-                gum::AbstractFMDPFactory& factory(void) {
-                  if (__factory) 
-                        return *__factory;
-                  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
-                }
-                
-                bool IsFollowedByIdent() {
-                        Token* next = scanner->Peek();
-                        return la->kind == _lpar && next->kind == _ident;
-                }
-
-                void SemErr(std::string s) {
-                  SemErr(widen(s).c_str());
-                }
-
-                void Warning(std::string s) {
-                  Warning(widen("Warning : "+s).c_str());
-                }
-
-
-
-// ===================================================================================================
-// CHARACTERS DEFINITION
-// ===================================================================================================
-
-    Parser( Scanner* scanner );
-    ~Parser();
-    void SemErr( const wchar_t* msg );
-    void SynErr( const std::wstring& filename,int line, int col, int n );
-    void Warning( const wchar_t* msg );
-    const ErrorsContainer& errors() const;
-
-    	void MDPDAT();
-	void VARIABLES_DECLARATION();
-	void ACTION();
-	void REWARD_DECISION_GRAPH();
-	void DISCOUNT();
-	void TOLERANCE();
-	void VARIABLE();
-	void IDENT(std::string& name);
-	void MODALITY_LIST();
-	void IDENT_OR_INTEGER(std::string& name);
-	void STRING(std::string& str);
-	void FLOAT(float& val);
-	void TRANSITION_DECISION_GRAPH();
-	void COST_DECISION_GRAPH();
-	void SUB_TRANSITION_DECISION_GRAPH();
-	void TRANSITION_LEAF();
-	void SUB_DECISION_GRAPH();
-	void LEAF();
-	void OPERAND(std::string& op);
-
-    void Parse();
-
-}; // end Parser
-
-} // namespace
-} // namespace
-
-
-#endif // !defined(COCO_PARSER_H__)
-
-=======
   namespace MDPDAT {
 
 
@@ -222,7 +104,7 @@ class Parser {
       gum::AbstractFMDPFactory* __factory;
 
       /// for each transition diagram, we need to know the associated variable
-      std::string __currentDecisionDiagramVar;
+      std::string __currentFunctionGraphVar;
 
       /// for building the diagram, we need to keep track of var parents
       std::vector<gum::NodeId> __parentNode;
@@ -270,7 +152,7 @@ class Parser {
       void MDPDAT();
       void VARIABLES_DECLARATION();
       void ACTION();
-      void REWARD_DECISION_DIAGRAM();
+      void REWARD_DECISION_GRAPH();
       void DISCOUNT();
       void TOLERANCE();
       void VARIABLE();
@@ -279,11 +161,11 @@ class Parser {
       void IDENT_OR_INTEGER( std::string& name );
       void STRING( std::string& str );
       void FLOAT( float& val );
-      void TRANSITION_DECISION_DIAGRAM();
-      void COST_DECISION_DIAGRAM();
-      void SUB_TRANSITION_DECISION_DIAGRAM();
+      void TRANSITION_DECISION_GRAPH();
+      void COST_DECISION_GRAPH();
+      void SUB_TRANSITION_DECISION_GRAPH();
       void TRANSITION_LEAF();
-      void SUB_DECISION_DIAGRAM();
+      void SUB_DECISION_GRAPH();
       void LEAF();
       void OPERAND( std::string& op );
 
@@ -292,6 +174,121 @@ class Parser {
     };  // end Parser
 
   }  // namespace
+}  // namespace
+
+
+#endif  // !defined(COCO_PARSER_H__)
+
+=======
+namespace MDPDAT {
+
+
+  class Parser {
+    private:
+    enum {
+      _EOF = 0,
+      _operand = 1,
+      _ident = 2,
+      _integer = 3,
+      _number = 4,
+      _string = 5,
+      _largestring = 6,
+      _lpar = 7
+    };
+    int maxT;
+
+    Token* dummyToken;
+    int errDist;
+    int minErrDist;
+
+    void SynErr( int n );
+    void Get();
+    void Expect( int n );
+    bool StartOf( int s );
+    void ExpectWeak( int n, int follow );
+    bool WeakSeparator( int n, int syFol, int repFol );
+
+    ErrorsContainer __errors;
+
+    public:
+    Scanner* scanner;
+
+    Token* t;   // last recognized token
+    Token* la;  // lookahead token
+
+    gum::AbstractFMDPFactory* __factory;
+
+    /// for each transition diagram, we need to know the associated variable
+    std::string __currentDecisionDiagramVar;
+
+    /// for building the diagram, we need to keep track of var parents
+    std::vector<gum::NodeId> __parentNode;
+
+    /// and current modality
+    std::vector<gum::Idx> __parentModality;
+
+
+    // *************************************************************************************
+    // Getters and Setters on those attributes
+    // *************************************************************************************
+
+    /// Sets the main factory
+    void setFactory( gum::AbstractFMDPFactory* f ) { __factory = f; }
+
+    gum::AbstractFMDPFactory& factory( void ) {
+      if ( __factory ) return *__factory;
+      GUM_ERROR( gum::OperationNotAllowed,
+                 "Please set a factory for scanning BIF file..." );
+    }
+
+    bool IsFollowedByIdent() {
+      Token* next = scanner->Peek();
+      return la->kind == _lpar && next->kind == _ident;
+    }
+
+    void SemErr( std::string s ) { SemErr( widen( s ).c_str() ); }
+
+    void Warning( std::string s ) {
+      Warning( widen( "Warning : " + s ).c_str() );
+    }
+
+
+    // ===================================================================================================
+    // CHARACTERS DEFINITION
+    // ===================================================================================================
+
+    Parser( Scanner* scanner );
+    ~Parser();
+    void SemErr( const wchar_t* msg );
+    void SynErr( const std::wstring& filename, int line, int col, int n );
+    void Warning( const wchar_t* msg );
+    const ErrorsContainer& errors() const;
+
+    void MDPDAT();
+    void VARIABLES_DECLARATION();
+    void ACTION();
+    void REWARD_DECISION_DIAGRAM();
+    void DISCOUNT();
+    void TOLERANCE();
+    void VARIABLE();
+    void IDENT( std::string& name );
+    void MODALITY_LIST();
+    void IDENT_OR_INTEGER( std::string& name );
+    void STRING( std::string& str );
+    void FLOAT( float& val );
+    void TRANSITION_DECISION_DIAGRAM();
+    void COST_DECISION_DIAGRAM();
+    void SUB_TRANSITION_DECISION_DIAGRAM();
+    void TRANSITION_LEAF();
+    void SUB_DECISION_DIAGRAM();
+    void LEAF();
+    void OPERAND( std::string& op );
+
+    void Parse();
+
+  };  // end Parser
+
+}  // namespace
 }  // namespace
 
 

@@ -47,81 +47,90 @@ namespace gum {
   class LeafPair {
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    /// Default constructor
+    // ###################################################################
+    LeafPair( AbstractLeaf* l1, AbstractLeaf* l2 )
+        : __l1( l1 )
+        , __l2( l2 ) {
+      GUM_CONSTRUCTOR( LeafPair )
+    }
 
-        // ###################################################################
-        /// Default constructor
-        // ###################################################################
-        LeafPair ( AbstractLeaf* l1, AbstractLeaf* l2 ) : __l1(l1), __l2(l2) {
-          GUM_CONSTRUCTOR(LeafPair)
-        }
+    // ###################################################################
+    /// Default destructor
+    // ###################################################################
+    ~LeafPair() { GUM_DESTRUCTOR( LeafPair ) }
 
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        ~LeafPair(){
-          GUM_DESTRUCTOR(LeafPair)
-        }
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( LeafPair ) );
+    }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(LeafPair));}
+    /// @}
 
-      /// @}
+    // ==========================================================================
+    /// @name Likelyhood Methods
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Likelyhood Methods
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    /// Updates GStatistic
+    // ###################################################################
+    void updateLikelyhood();
 
-        // ###################################################################
-        /// Updates GStatistic
-        // ###################################################################
-        void updateLikelyhood();
+    // ###################################################################
+    /// Updates GStatistic
+    // ###################################################################
+    double likelyhood();
 
-        // ###################################################################
-        /// Updates GStatistic
-        // ###################################################################
-        double likelyhood();
+    /// @}
 
-      /// @}
+    // ###################################################################
+    ///
+    // ###################################################################
+    AbstractLeaf* firstLeaf() { return __l1; }
+    AbstractLeaf* secondLeaf() { return __l2; }
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        AbstractLeaf* firstLeaf( ){ return __l1; }
-        AbstractLeaf* secondLeaf( ){ return __l2; }
+    // ###################################################################
+    /// Returns true if pair has leaf in it
+    // ###################################################################
+    bool contains( NodeId testedId ) {
+      return __l1->contains( testedId ) || __l2->contains( testedId );
+    }
 
-        // ###################################################################
-        /// Returns true if pair has leaf in it
-        // ###################################################################
-        bool contains( NodeId testedId ){ return __l1->contains(testedId) || __l2->contains(testedId); }
+    // ###################################################################
+    /// Returns a leaf matching data and having given id as id
+    // ###################################################################
+    AbstractLeaf* convert2Leaf( NodeId leafId ) const {
+      return new ComposedLeaf( leafId, __l1, __l2 );
+    }
 
-        // ###################################################################
-        /// Returns a leaf matching data and having given id as id
-        // ###################################################################
-        AbstractLeaf* convert2Leaf( NodeId leafId ) const { return new ComposedLeaf(leafId, __l1, __l2); }
+    AbstractLeaf* otherLeaf( AbstractLeaf* l ) const {
+      return l == __l1 ? __l2 : __l1;
+    }
 
-        AbstractLeaf* otherLeaf( AbstractLeaf* l ) const { return l==__l1?__l2:__l1; }
+    std::string toString();
 
-        std::string toString();
+    private:
+    AbstractLeaf* __l1;
+    AbstractLeaf* __l2;
 
-      private :
-        AbstractLeaf* __l1;
-        AbstractLeaf* __l2;
-
-        double __likelyhood1;
-        double __likelyhood2;
+    double __likelyhood1;
+    double __likelyhood2;
   };
 
 
 } /* namespace gum */
 
 
-#endif // GUM_LEAF_PAIR_H
+#endif  // GUM_LEAF_PAIR_H

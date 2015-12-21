@@ -39,7 +39,8 @@
 namespace gum {
 
   /**
-   * @class AbstractLeaf abstractLeaf.h <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
+   * @class AbstractLeaf abstractLeaf.h
+   * <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
    * @brief Abstract Class implementing a Leaf
    * @ingroup fmdp_group
    *
@@ -49,57 +50,61 @@ namespace gum {
   class AbstractLeaf {
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    /// Default constructor
+    // ###################################################################
+    AbstractLeaf( NodeId leafId )
+        : __leafId( leafId ) {
+      GUM_CONSTRUCTOR( AbstractLeaf )
+    }
 
-        // ###################################################################
-        /// Default constructor
-        // ###################################################################
-        AbstractLeaf ( NodeId leafId ) : __leafId(leafId) {
-          GUM_CONSTRUCTOR(AbstractLeaf)
-        }
+    // ###################################################################
+    /// Default destructor
+    // ###################################################################
+    virtual ~AbstractLeaf() { GUM_DESTRUCTOR( AbstractLeaf ) }
 
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        virtual ~AbstractLeaf(){
-          GUM_DESTRUCTOR(AbstractLeaf)
-        }
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( AbstractLeaf ) );
+    }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(AbstractLeaf));}
+    /// @}
 
-      /// @}
+    // ###################################################################
+    /// Gaves the leaf effectif for given modality
+    // ###################################################################
+    virtual double effectif( Idx ) const = 0;
+    virtual double total() const = 0;
 
-        // ###################################################################
-        /// Gaves the leaf effectif for given modality
-        // ###################################################################
-        virtual double effectif(Idx) const = 0;
-        virtual double total() const = 0;
+    // ###################################################################
+    /// Returns true if abstractleaf has leaf in it
+    // ###################################################################
+    virtual bool contains( NodeId testedId ) const {
+      return __leafId == testedId;
+    }
 
-        // ###################################################################
-        /// Returns true if abstractleaf has leaf in it
-        // ###################################################################
-        virtual bool contains( NodeId testedId ) const { return __leafId == testedId; }
+    NodeId id() { return __leafId; }
 
-        NodeId id(){ return __leafId; }
+    virtual Idx nbModa() const = 0;
 
-        virtual Idx nbModa() const = 0;
+    virtual std::string toString() = 0;
 
-        virtual std::string toString() = 0;
-
-      private :
-        NodeId __leafId;
+    private:
+    NodeId __leafId;
   };
 
 
 } /* namespace gum */
 
 
-#endif // GUM_ABSTRACT_LEAF_H
+#endif  // GUM_ABSTRACT_LEAF_H

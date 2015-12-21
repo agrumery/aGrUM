@@ -42,27 +42,35 @@
 
 namespace gum {
 
-  struct Parent{
+  struct Parent {
     NodeId parentId;
     Idx modality;
 
-    Parent(NodeId pi, Idx m):parentId(pi), modality(m){}
-    Parent( const Parent& src ):parentId(src.parentId), modality(src.modality){}
+    Parent( NodeId pi, Idx m )
+        : parentId( pi )
+        , modality( m ) {}
+    Parent( const Parent& src )
+        : parentId( src.parentId )
+        , modality( src.modality ) {}
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s);}
-    void operator delete(void* p) { SmallObjectAllocator::instance().deallocate(p, sizeof(Parent));}
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( Parent ) );
+    }
 
-    bool operator == ( const Parent& comp ) const {
-      if( comp.parentId == this->parentId && comp.modality == this->modality )
+    bool operator==( const Parent& comp ) const {
+      if ( comp.parentId == this->parentId && comp.modality == this->modality )
         return true;
       return false;
     }
-    bool operator != ( const Parent& comp ) const {return !(comp == *this);}
+    bool operator!=( const Parent& comp ) const { return !( comp == *this ); }
 
-    Parent& operator = ( const Parent& src ){
+    Parent& operator=( const Parent& src ) {
       this->parentId = src.parentId;
       this->modality = src.modality;
       return *this;
@@ -70,7 +78,8 @@ namespace gum {
   };
 
   /**
-   * @class InternalNode InternalNode.h <agrum/multidim/FunctionGraphUtilities/internalNode.h>
+   * @class InternalNode InternalNode.h
+   * <agrum/multidim/FunctionGraphUtilities/internalNode.h>
    *
    * @brief Structure used to represent a node internal structure
    *
@@ -99,118 +108,122 @@ namespace gum {
 
     LinkedList<Parent> __nodeParents;
 
-    public :
+    public:
+    // #############################################################################################
+    /// Constructors and Destructors
+    // #############################################################################################
+    /// @{
 
-      // #############################################################################################
-      /// Constructors and Destructors
-      // #############################################################################################
-      /// @{
+    // ============================================================================
+    /// Default Constructor
+    /// Creates an empty node with no variable attached.
+    // ============================================================================
+    InternalNode();
 
-        // ============================================================================
-        /// Default Constructor
-        /// Creates an empty node with no variable attached.
-        // ============================================================================
-        InternalNode();
+    // ============================================================================
+    /// Constructor
+    /// Creates a node and attached the specified variable.
+    /// Initializes the sons.
+    // ============================================================================
+    InternalNode( const DiscreteVariable* v );
 
-        // ============================================================================
-        /// Constructor
-        /// Creates a node and attached the specified variable.
-        /// Initializes the sons.
-        // ============================================================================
-        InternalNode(const DiscreteVariable* v);
+    // ============================================================================
+    /// Constructor
+    /// Creates a node and attached the specified variable.
+    /// Also attached the given on map (and will handle it by itself especially
+    /// deallocate it)
+    ///
+    /// @warning You'd better known what you're doing if you're using this one.
+    /// sons must have the size of domainSize of v or the program will fail!
+    // ============================================================================
+    InternalNode( const DiscreteVariable* v, NodeId* sons );
 
-        // ============================================================================
-        /// Constructor
-        /// Creates a node and attached the specified variable.
-        /// Also attached the given on map (and will handle it by itself especially deallocate it)
-        ///
-        /// @warning You'd better known what you're doing if you're using this one.
-        /// sons must have the size of domainSize of v or the program will fail!
-        // ============================================================================
-        InternalNode(const DiscreteVariable* v, NodeId* sons);
+    // ============================================================================
+    /// Destructors
+    // ============================================================================
+    ~InternalNode();
 
-        // ============================================================================
-        /// Destructors
-        // ============================================================================
-        ~InternalNode();
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( InternalNode ) );
+    }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(InternalNode));}
+    /// @}
 
-      /// @}
+    // #############################################################################################
+    /// Node handlers
+    // #############################################################################################
+    /// @{
 
-      // #############################################################################################
-      /// Node handlers
-      // #############################################################################################
-      /// @{
+    // ============================================================================
+    /// Allows you to respecify the node, changing its attached variable as well
+    /// as its son map
+    ///
+    /// @warning You'd better known what you're doing if you're using this one.
+    /// sons must have the size of domainSize of v or the program will fail!
+    // ============================================================================
+    void setNode( const DiscreteVariable* v, NodeId* sons );
 
-        // ============================================================================
-        /// Allows you to respecify the node, changing its attached variable as well as its son map
-        ///
-        /// @warning You'd better known what you're doing if you're using this one.
-        /// sons must have the size of domainSize of v or the program will fail!
-        // ============================================================================
-        void setNode(const DiscreteVariable* v, NodeId* sons);
+    /// @}
 
-      /// @}
+    // #############################################################################################
+    /// Var handlers
+    // #############################################################################################
+    /// @{
 
-      // #############################################################################################
-      /// Var handlers
-      // #############################################################################################
-      /// @{
+    void setNodeVar( const DiscreteVariable* v );
 
-        void setNodeVar(const DiscreteVariable* v);
+    void _setNodeVar( const DiscreteVariable* v );
 
-        void _setNodeVar(const DiscreteVariable* v);
+    const DiscreteVariable* nodeVar() const { return __nodeVar; }
 
-        const DiscreteVariable* nodeVar() const { return __nodeVar;}
+    /// @}
 
-      /// @}
+    // #############################################################################################
+    /// Sons handlers
+    // #############################################################################################
+    /// @{
 
-      // #############################################################################################
-      /// Sons handlers
-      // #############################################################################################
-      /// @{
+    void setSon( Idx modality, NodeId son ) { __nodeSons[modality] = son; }
 
-        void setSon(Idx modality, NodeId son){__nodeSons[modality] = son;}
-
-        NodeId son(Idx modality) const {return __nodeSons[modality];}
+    NodeId son( Idx modality ) const { return __nodeSons[modality]; }
 
 
-        Idx nbSons() const {return __nodeVar->domainSize();}
+    Idx nbSons() const { return __nodeVar->domainSize(); }
 
-      /// @}
+    /// @}
 
-      // #############################################################################################
-      /// Parent handlers
-      // #############################################################################################
-      /// @{
+    // #############################################################################################
+    /// Parent handlers
+    // #############################################################################################
+    /// @{
 
-        void addParent( NodeId parent, Idx modality);
+    void addParent( NodeId parent, Idx modality );
 
-        void removeParent( NodeId parent, Idx modality);
+    void removeParent( NodeId parent, Idx modality );
 
-        Link<Parent>* parents() {return __nodeParents.list();}
+    Link<Parent>* parents() { return __nodeParents.list(); }
 
-        const Link<Parent>* parents() const {return __nodeParents.list();}
+    const Link<Parent>* parents() const { return __nodeParents.list(); }
 
-      /// @}
+    /// @}
 
-      // ============================================================================
-      /// Allocates a table of nodeid of the size given in parameter
-      // ============================================================================
-      static NodeId* allocateNodeSons(const DiscreteVariable* v);
+    // ============================================================================
+    /// Allocates a table of nodeid of the size given in parameter
+    // ============================================================================
+    static NodeId* allocateNodeSons( const DiscreteVariable* v );
 
-      // ============================================================================
-      /// Deallocates a NodeSons table
-      // ============================================================================
-      static void deallocateNodeSons(const DiscreteVariable* v, NodeId* s);
-
+    // ============================================================================
+    /// Deallocates a NodeSons table
+    // ============================================================================
+    static void deallocateNodeSons( const DiscreteVariable* v, NodeId* s );
   };
 
-} // End of namespace gum
+}  // End of namespace gum
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H */

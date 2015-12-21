@@ -34,62 +34,69 @@
 
 namespace gum {
 
-    // ===========================================================================
-    // Constructors, Destructors.
-    // ===========================================================================
+  // ===========================================================================
+  // Constructors, Destructors.
+  // ===========================================================================
 
-      /*
-       * Default constructor.
-       */
-      FMDPSimulator::FMDPSimulator(const FMDP<double>* fmdp): AbstractSimulator(), __fmdp(const_cast<FMDP<double>*>(fmdp)), __loaded(false){
-          GUM_CONSTRUCTOR(FMDPSimulator)
+  /*
+   * Default constructor.
+   */
+  FMDPSimulator::FMDPSimulator( const FMDP<double>* fmdp )
+      : AbstractSimulator()
+      , __fmdp( const_cast<FMDP<double>*>( fmdp ) )
+      , __loaded( false ) {
+    GUM_CONSTRUCTOR( FMDPSimulator )
+  }
+
+  FMDPSimulator::FMDPSimulator( const std::string& ressource )
+      : AbstractSimulator()
+      , __loaded( true ) {
+    GUM_CONSTRUCTOR( FMDPSimulator )
+
+    __fmdp = new FMDP<double>( true );
+    FMDPDatReader<double> reader( __fmdp, ressource );
+    reader.trace( false );
+    reader.proceed();
+  }
+
+  /*
+   * Default destructor.
+   */
+  FMDPSimulator::~FMDPSimulator() {
+    GUM_DESTRUCTOR( FMDPSimulator )
+    if ( __loaded ) delete __fmdp;
+  }
+
+
+  // ===========================================================================
+  //
+  // ===========================================================================
+
+  void FMDPSimulator::perform( Idx actionId ) {
+
+    Instantiation newState;
+    for ( auto varIter = this->beginVariables();
+          varIter != this->endVariables();
+          ++varIter ) {
+
+      newState.add( **varIter );
+      Instantiation transit( _currentState );
+      transit.add( *( this->primeVar( *varIter ) ) );
+
+      double proba = (double)std::rand() / (double)RAND_MAX;
+      double cdd = 0.0;
+      for ( transit.setFirstOut( _currentState ); !transit.end();
+            transit.incOut( _currentState ) ) {
+        cdd += this->_transitionProbability( *varIter, transit, actionId );
+        if ( proba <= cdd ) {
+          newState.chgVal( **varIter,
+                           transit.val( *( this->primeVar( *varIter ) ) ) );
+          break;
+        }
       }
-
-      FMDPSimulator::FMDPSimulator(const std::string& ressource): AbstractSimulator(), __loaded(true){
-        GUM_CONSTRUCTOR(FMDPSimulator)
-
-        __fmdp = new FMDP<double>(true);
-        FMDPDatReader<double> reader ( __fmdp, ressource );
-        reader.trace ( false );
-        reader.proceed( );
-      }
-
-      /*
-       * Default destructor.
-       */
-      FMDPSimulator::~FMDPSimulator(){
-        GUM_DESTRUCTOR(FMDPSimulator)
-        if(__loaded)
-          delete __fmdp;
-      }
+    }
+    _currentState = newState;
+  }
 
 
-    // ===========================================================================
-    //
-    // ===========================================================================
-
-      void FMDPSimulator::perform( Idx actionId ){
-
-          Instantiation newState;
-          for( auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter ){
-
-              newState.add(**varIter);
-              Instantiation transit(_currentState);
-              transit.add(*(this->primeVar(*varIter)));
-
-              double proba = (double)std::rand( ) / (double)RAND_MAX;
-              double cdd = 0.0;
-              for(transit.setFirstOut(_currentState);!transit.end();transit.incOut(_currentState)){
-                  cdd += this->_transitionProbability(*varIter, transit, actionId);
-                  if(proba <= cdd) {
-                      newState.chgVal(**varIter, transit.val(*(this->primeVar(*varIter))));
-                      break;
-                  }
-              }
-
-          }
-          _currentState = newState;
-      }
-
-
-} // End of namespace gum
+}  // End of namespace gum

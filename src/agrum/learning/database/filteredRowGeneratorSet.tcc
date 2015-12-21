@@ -71,8 +71,9 @@ namespace gum {
     /// copy operator
     template <typename Generator, typename... OtherGenerators>
     INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::operator=(
-        const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from ) {
+        FilteredRowGeneratorSet<Generator, OtherGenerators...>::
+        operator=( const FilteredRowGeneratorSet<Generator, OtherGenerators...>&
+                       from ) {
       if ( this != &from ) {
         NextGenerators::operator=( from );
         __first_generator = from.__first_generator;
@@ -83,8 +84,9 @@ namespace gum {
     /// move operator
     template <typename Generator, typename... OtherGenerators>
     INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-    operator=( FilteredRowGeneratorSet<Generator, OtherGenerators...>&& from ) {
+        FilteredRowGeneratorSet<Generator, OtherGenerators...>::
+        operator=(
+            FilteredRowGeneratorSet<Generator, OtherGenerators...>&& from ) {
       if ( this != &from ) {
         NextGenerators::operator=( std::move( from ) );
         __first_generator = std::move( from.__first_generator );

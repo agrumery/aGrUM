@@ -209,7 +209,7 @@ namespace gum_tests {
 
     void testGroundBNAfterDelete() {
       // Arrange
-      System *sys = new System( "asia" );
+      System* sys = new System( "asia" );
       auto inst = new Instance( "asia", *__asia );
       sys->add( inst );
       sys->instantiate();
@@ -221,12 +221,12 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( bn->size(), (gum::Size)8 );
       TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
-      for (auto node: bn->dag()) {
-        const gum::Potential<double> * cpt = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt(node)) );
-        gum::Instantiation inst(*cpt);
-        for (inst.begin(); not inst.end(); inst.inc()) {
-          TS_GUM_ASSERT_THROWS_NOTHING( cpt->get(inst) );
+      for ( auto node : bn->dag() ) {
+        const gum::Potential<double>* cpt = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( node ) ) );
+        gum::Instantiation inst( *cpt );
+        for ( inst.begin(); not inst.end(); inst.inc() ) {
+          TS_GUM_ASSERT_THROWS_NOTHING( cpt->get( inst ) );
         }
       }
       delete bn;

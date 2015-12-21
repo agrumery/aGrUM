@@ -88,7 +88,8 @@ namespace gum {
     /**
      * @brief Add a new var to the sequence of vars.
      * @param v The new var.
-     * @throw DuplicateElement Raised when v is already in the MultiDimDecorator.
+     * @throw DuplicateElement Raised when v is already in the
+     * MultiDimDecorator.
      */
     virtual void add( const DiscreteVariable& v );
 

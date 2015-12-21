@@ -35,38 +35,40 @@
 
 namespace gum {
 
-/**
- * @class Regress regress.h <agrum/multidim/patterns/regress.h>
- * @brief Class used to perform Function Graph Operations in the FMDP Framework
- * @ingroup multidim_group
- *
- */
+  /**
+   * @class Regress regress.h <agrum/multidim/patterns/regress.h>
+   * @brief Class used to perform Function Graph Operations in the FMDP
+   * Framework
+   * @ingroup multidim_group
+   *
+   */
 
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy >
-  class Regress
-  {
+            template <typename> class TerminalNodePolicy =
+                ExactTerminalNodePolicy>
+  class Regress {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      Regress( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vfunction,
-               const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* probDist,
-               const Set<const DiscreteVariable*>* primedVars,
-               const DiscreteVariable* targetVar,
-               const GUM_SCALAR neutral );
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    Regress(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vfunction,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* probDist,
+        const Set<const DiscreteVariable*>* primedVars,
+        const DiscreteVariable* targetVar,
+        const GUM_SCALAR neutral );
 
-      // ============================================================================
-      /// Default destructor.
-      // ============================================================================
-      ~Regress();
+    // ============================================================================
+    /// Default destructor.
+    // ============================================================================
+    ~Regress();
 
     /// @}
 
@@ -75,103 +77,110 @@ namespace gum {
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Computes and builds the Function Graph that is the result of the operation
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
+    // ============================================================================
+    /// Computes and builds the Function Graph that is the result of the
+    /// operation
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
 
     /// @}
 
 
-    private :
-      // ============================================================================
-      /// Computes an order for the final Decision graph that will minimize the number
-      /// of re exploration
-      // ============================================================================
-      void __establishVarOrder();
+    private:
+    // ============================================================================
+    /// Computes an order for the final Decision graph that will minimize the
+    /// number
+    /// of re exploration
+    // ============================================================================
+    void __establishVarOrder();
 
-      // ============================================================================
-      /// Heuristic methods to decide which of two retrograde variables should come first
-      // ============================================================================
-      Idx __distance( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *,
-                      const DiscreteVariable*,
-                      const DiscreteVariable* );
+    // ============================================================================
+    /// Heuristic methods to decide which of two retrograde variables should
+    /// come first
+    // ============================================================================
+    Idx
+    __distance( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*,
+                const DiscreteVariable*,
+                const DiscreteVariable* );
 
-      // ============================================================================
-      /// Establish for each node in both function graph if it has retrograde variables
-      /// beneath it
-      // ============================================================================
-      void __findRetrogradeVariables( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
-                                      HashTable<NodeId, short int*>& dgInstNeed );
+    // ============================================================================
+    /// Establish for each node in both function graph if it has retrograde
+    /// variables
+    /// beneath it
+    // ============================================================================
+    void __findRetrogradeVariables(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
+        HashTable<NodeId, short int*>& dgInstNeed );
 
-      // ============================================================================
-      /// The main recursion function
-      // ============================================================================
-      NodeId __compute( O4DGContext & currentSituation, Idx lastInstVarPos );
+    // ============================================================================
+    /// The main recursion function
+    // ============================================================================
+    NodeId __compute( O4DGContext& currentSituation, Idx lastInstVarPos );
 
 
+    // ============================================================================
+    /// One of the two function graphs used for the operation
+    // ============================================================================
+    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
 
-      // ============================================================================
-      /// One of the two function graphs used for the operation
-      // ============================================================================
-      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
+    // ============================================================================
+    /// The other one
+    // ============================================================================
+    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
 
-      // ============================================================================
-      /// The other one
-      // ============================================================================
-      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
+    // ============================================================================
+    /// The resulting function graph
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
-      // ============================================================================
-      /// The resulting function graph
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+    // ============================================================================
+    /// The set of variables we want to keep at the end
+    // ============================================================================
+    const Set<const DiscreteVariable*>* __primedVars;
 
-      // ============================================================================
-      /// The set of variables we want to keep at the end
-      // ============================================================================
-      const Set<const DiscreteVariable*>* __primedVars;
+    // ============================================================================
+    /// The variable we work on to eleminate
+    // ============================================================================
+    const DiscreteVariable* __targetVar;
 
-      // ============================================================================
-      /// The variable we work on to eleminate
-      // ============================================================================
-      const DiscreteVariable* __targetVar;
+    // ============================================================================
+    /// The function to be performed on the leaves
+    // ============================================================================
+    const GUM_SCALAR __neutral;
 
-      // ============================================================================
-      /// The function to be performed on the leaves
-      // ============================================================================
-      const GUM_SCALAR __neutral;
+    // ============================================================================
+    /// The total number of variable implied in the operation
+    // ============================================================================
+    Idx __nbVar;
 
-      // ============================================================================
-      /// The total number of variable implied in the operation
-      // ============================================================================
-      Idx __nbVar;
+    // ============================================================================
+    /// The functions to be performed on the leaves
+    // ============================================================================
+    const COMBINEOPERATOR<GUM_SCALAR> __combine;
+    const PROJECTOPERATOR<GUM_SCALAR> __project;
 
-      // ============================================================================
-      /// The functions to be performed on the leaves
-      // ============================================================================
-      const COMBINEOPERATOR<GUM_SCALAR> __combine;
-      const PROJECTOPERATOR<GUM_SCALAR> __project;
+    // ============================================================================
+    /// The hashtable used to know if two pair of nodes have already been
+    /// visited
+    // ============================================================================
+    HashTable<double, NodeId> __explorationTable;
 
-      // ============================================================================
-      /// The hashtable used to know if two pair of nodes have already been visited
-      // ============================================================================
-      HashTable<double, NodeId> __explorationTable;
+    // ============================================================================
+    /// Table uses to know if a given node of given function graph has
+    /// retrograde
+    /// variables
+    // ============================================================================
+    HashTable<NodeId, short int*> __DG1InstantiationNeeded;
+    HashTable<NodeId, short int*> __DG2InstantiationNeeded;
 
-      // ============================================================================
-      /// Table uses to know if a given node of given function graph has retrograde
-      /// variables
-      // ============================================================================
-      HashTable<NodeId, short int*> __DG1InstantiationNeeded;
-      HashTable<NodeId, short int*> __DG2InstantiationNeeded;
-
-      // ============================================================================
-      /// Just a computationnal trick
-      // ============================================================================
-      short int* __default;
+    // ============================================================================
+    /// Just a computationnal trick
+    // ============================================================================
+    short int* __default;
   };
 
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/regress.tcc>
 
-#endif // GUM_REGRESS_H
+#endif  // GUM_REGRESS_H

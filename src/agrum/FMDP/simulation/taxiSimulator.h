@@ -38,11 +38,36 @@
 namespace gum {
 
 
-
-  enum TaxiSimulationLandmark : Idx { HOME = 0, WORK = 1, THEATER = 2, CLUB = 3, TAXI = 4 };
-  enum TaxiSimulationLandmarkX : Idx { HOMEX = 0, WORKX = 0, THEATERX = 3, CLUBX = 4, STATIONX = 2 };
-  enum TaxiSimulationLandmarkY : Idx { HOMEY = 0, WORKY = 4, THEATERY = 0, CLUBY = 4, STATIONY = 1 };
-  enum TaxiSimulationAction : Idx { GoNorth = 1, GoEast = 2, GoSouth = 3, GoWest = 4, PickUp  = 5, PutDown = 6, FillUp = 7 };
+  enum TaxiSimulationLandmark : Idx {
+    HOME = 0,
+    WORK = 1,
+    THEATER = 2,
+    CLUB = 3,
+    TAXI = 4
+  };
+  enum TaxiSimulationLandmarkX : Idx {
+    HOMEX = 0,
+    WORKX = 0,
+    THEATERX = 3,
+    CLUBX = 4,
+    STATIONX = 2
+  };
+  enum TaxiSimulationLandmarkY : Idx {
+    HOMEY = 0,
+    WORKY = 4,
+    THEATERY = 0,
+    CLUBY = 4,
+    STATIONY = 1
+  };
+  enum TaxiSimulationAction : Idx {
+    GoNorth = 1,
+    GoEast = 2,
+    GoSouth = 3,
+    GoWest = 4,
+    PickUp = 5,
+    PutDown = 6,
+    FillUp = 7
+  };
   /**
    * @class Taxi taxi.h <agrum/FMDP/simulation/taxi.h>
    * @brief A class to simulate the Taxi problem
@@ -53,22 +78,21 @@ namespace gum {
    */
   class TaxiSimulator : public AbstractSimulator {
 
-  public:
-
+    public:
     // ===========================================================================
     /// @name Constructors, Destructors.
     // ===========================================================================
     /// @{
 
-      /**
-       * Default constructor.
-       */
-      TaxiSimulator();
+    /**
+     * Default constructor.
+     */
+    TaxiSimulator();
 
-      /**
-       * Default destructor.
-       */
-      ~TaxiSimulator();
+    /**
+     * Default destructor.
+     */
+    ~TaxiSimulator();
 
     /// @}
 
@@ -77,13 +101,12 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-  protected :
-      /// Choses a random state as the first test for a run
-      Instantiation _randomState();
+    protected:
+    /// Choses a random state as the first test for a run
+    Instantiation _randomState();
 
-  public :
-
-      bool hasReachEnd();
+    public:
+    bool hasReachEnd();
 
     /// @}
 
@@ -92,11 +115,17 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-      const DiscreteVariable* primeVar(const DiscreteVariable* mainVar){ return __primeMap.second(mainVar); }
+    const DiscreteVariable* primeVar( const DiscreteVariable* mainVar ) {
+      return __primeMap.second( mainVar );
+    }
 
-      /// Iteration over the variables of the simulated probleme
-      SequenceIteratorSafe< const DiscreteVariable* > beginVariables(){return __taxiVars.beginSafe();}
-      SequenceIteratorSafe< const DiscreteVariable* > endVariables(){return __taxiVars.endSafe();}
+    /// Iteration over the variables of the simulated probleme
+    SequenceIteratorSafe<const DiscreteVariable*> beginVariables() {
+      return __taxiVars.beginSafe();
+    }
+    SequenceIteratorSafe<const DiscreteVariable*> endVariables() {
+      return __taxiVars.endSafe();
+    }
 
     /// @}
 
@@ -105,24 +134,27 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-      const std::string& actionName(Idx actionId){return *__actionMap[actionId];}
+    const std::string& actionName( Idx actionId ) {
+      return *__actionMap[actionId];
+    }
 
-      /// Iteration over the variables of the simulated probleme
-      SequenceIteratorSafe< Idx > beginActions() {return __taxiActions.beginSafe();}
-      SequenceIteratorSafe< Idx > endActions() {return __taxiActions.endSafe();}
+    /// Iteration over the variables of the simulated probleme
+    SequenceIteratorSafe<Idx> beginActions() {
+      return __taxiActions.beginSafe();
+    }
+    SequenceIteratorSafe<Idx> endActions() { return __taxiActions.endSafe(); }
 
 
-      void perform( Idx );
+    void perform( Idx );
 
-  private :
-
-      void __performGoNorth();
-      void __performGoEast();
-      void __performGoSouth();
-      void __performGoWest();
-      void __performPickUp();
-      void __performPutDown();
-      void __performFillUp();
+    private:
+    void __performGoNorth();
+    void __performGoEast();
+    void __performGoSouth();
+    void __performGoWest();
+    void __performPickUp();
+    void __performPutDown();
+    void __performFillUp();
 
     /// @}
 
@@ -130,17 +162,17 @@ namespace gum {
     /// @name Rewards
     // ===========================================================================
     /// @{
-  public:
-      double reward();
+    public:
+    double reward();
 
-  private :
-      void __evalReward();
-      bool __isAtDestination( TaxiSimulationLandmark passDest,
-                              TaxiSimulationLandmarkX xCurPos,
-                              TaxiSimulationLandmarkY yCurPos );
-      bool __isAtMeetPoint( TaxiSimulationLandmark passpos,
+    private:
+    void __evalReward();
+    bool __isAtDestination( TaxiSimulationLandmark passDest,
                             TaxiSimulationLandmarkX xCurPos,
                             TaxiSimulationLandmarkY yCurPos );
+    bool __isAtMeetPoint( TaxiSimulationLandmark passpos,
+                          TaxiSimulationLandmarkX xCurPos,
+                          TaxiSimulationLandmarkY yCurPos );
 
     /// @}
 
@@ -155,16 +187,15 @@ namespace gum {
 
     /// Actions
     Sequence<Idx> __taxiActions;
-    HashTable<Idx, std::string*> __actionMap;//__actionMap.insert ( actionId, new std::string ( action ) );
+    HashTable<Idx, std::string*> __actionMap;  //__actionMap.insert ( actionId,
+    // new std::string ( action ) );
     TaxiSimulationAction __lastAction;
 
     /// Reward
     double __reward;
-};
+  };
 
 } /* namespace gum */
 
 
-
-#endif // GUM_TAXI_SIMULATOR_H
-
+#endif  // GUM_TAXI_SIMULATOR_H

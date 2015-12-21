@@ -43,64 +43,66 @@ namespace gum {
    *
    * @ingroup multidim_group
    */
-  template<typename T>
+  template <typename T>
   class Link {
 
-    public :
+    public:
+    // #############################################################################################
+    /// Constructors and Destructors
+    // #############################################################################################
+    /// @{
 
-      // #############################################################################################
-      /// Constructors and Destructors
-      // #############################################################################################
-      /// @{
+    // ============================================================================
+    /// Constructor
+    // ============================================================================
+    Link( const T& elem );
 
-        // ============================================================================
-        /// Constructor
-        // ============================================================================
-        Link(const T& elem);
+    // ============================================================================
+    /// Constructor that insert link before the given link
+    // ============================================================================
+    Link( const T& elem, Link<T>* nextLink );
 
-        // ============================================================================
-        /// Constructor that insert link before the given link
-        // ============================================================================
-        Link(const T& elem, Link<T> *nextLink );
+    // ============================================================================
+    /// Destructor
+    // ============================================================================
+    ~Link();
 
-        // ============================================================================
-        /// Destructor
-        // ============================================================================
-        ~Link();
+    // ============================================================================
+    /// Operator new overload to use the SmallObjectAllocator
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
 
-        // ============================================================================
-        /// Operator new overload to use the SmallObjectAllocator
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+    // ============================================================================
+    /// Operator delete overload to use the SmallObjectAllocator
+    // ============================================================================
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( Link<T> ) );
+    }
 
-        // ============================================================================
-        /// Operator delete overload to use the SmallObjectAllocator
-        // ============================================================================
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(Link<T>));}
+    /// @}
 
-      /// @}
+    // #############################################################################################
+    /// Misceleanous methods
+    // #############################################################################################
+    /// @{
 
-      // #############################################################################################
-      /// Misceleanous methods
-      // #############################################################################################
-      /// @{
+    const T& element() const { return __element; }
+    T& element() { return __element; }
 
-        const T& element() const { return __element; }
-        T& element() { return __element; }
+    const Link<T>* nextLink() const { return __nextLink; }
+    void setNextLink( Link<T>* newLink ) { __nextLink = newLink; }
+    Link<T>* nextLink() { return __nextLink; }
 
-        const Link<T>* nextLink() const { return __nextLink; }
-        void setNextLink( Link<T>* newLink ) { __nextLink = newLink; }
-        Link<T>* nextLink() { return __nextLink; }
+    /// @}
 
-      /// @}
+    private:
+    /// The element embedded in this link
+    T __element;
 
-    private :
-
-      /// The element embedded in this link
-      T __element;
-
-      /// The next link in the list
-      Link<T>* __nextLink;
+    /// The next link in the list
+    Link<T>* __nextLink;
   };
 
   /**
@@ -110,61 +112,63 @@ namespace gum {
    *
    * @ingroup multidim_group
    */
-  template<typename T>
+  template <typename T>
   class LinkedList {
 
-    public :
+    public:
+    // #############################################################################################
+    /// Constructors and Destructors
+    // #############################################################################################
+    /// @{
 
-      // #############################################################################################
-      /// Constructors and Destructors
-      // #############################################################################################
-      /// @{
+    // ============================================================================
+    /// Constructor
+    // ============================================================================
+    LinkedList();
 
-        // ============================================================================
-        /// Constructor
-        // ============================================================================
-        LinkedList();
+    // ============================================================================
+    /// Destructor
+    // ============================================================================
+    ~LinkedList();
 
-        // ============================================================================
-        /// Destructor
-        // ============================================================================
-        ~LinkedList();
+    // ============================================================================
+    /// Operator new overload to use the SmallObjectAllocator
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
 
-        // ============================================================================
-        /// Operator new overload to use the SmallObjectAllocator
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+    // ============================================================================
+    /// Operator delete overload to use the SmallObjectAllocator
+    // ============================================================================
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( LinkedList<T> ) );
+    }
 
-        // ============================================================================
-        /// Operator delete overload to use the SmallObjectAllocator
-        // ============================================================================
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(LinkedList<T>));}
+    /// @}
 
-      /// @}
+    // #############################################################################################
+    /// Misceleanous methods
+    // #############################################################################################
+    /// @{
 
-      // #############################################################################################
-      /// Misceleanous methods
-      // #############################################################################################
-      /// @{
+    const Link<T>* list() const { return __firstLink; }
+    Link<T>* list() { return __firstLink; }
 
-        const Link<T>* list() const { return __firstLink; }
-        Link<T>* list() { return __firstLink; }
+    void clear();
 
-        void clear();
+    void addLink( const T& elem );
 
-        void addLink( const T& elem );
+    void searchAndRemoveLink( const T& elem );
 
-        void searchAndRemoveLink( const T& elem );
+    /// @}
 
-      /// @}
-
-    private :
-
-      /// The first link of our list
-      Link<T>* __firstLink;
+    private:
+    /// The first link of our list
+    Link<T>* __firstLink;
   };
 
-} // End of namespace gum
+}  // End of namespace gum
 
 #include <agrum/multidim/FunctionGraphUtilities/link.tcc>
 

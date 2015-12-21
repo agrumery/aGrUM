@@ -16,4 +16,3 @@
   } )
 
 #endif  // AGRUM_TEST_SUITE_H
-  

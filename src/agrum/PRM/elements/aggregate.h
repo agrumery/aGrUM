@@ -85,23 +85,23 @@ namespace gum {
        * @throw Raise NotFound exception if no matches is found.
        */
       static AggregateType str2enum( const std::string& str ) {
-        if ( toLower(str) == "min" ) {
+        if ( toLower( str ) == "min" ) {
           return AggregateType::MIN;
-        } else if ( toLower(str) == "max" ) {
+        } else if ( toLower( str ) == "max" ) {
           return AggregateType::MAX;
-        } else if ( toLower(str) == "count" ) {
+        } else if ( toLower( str ) == "count" ) {
           return AggregateType::COUNT;
-        } else if ( toLower(str) == "exists" ) {
+        } else if ( toLower( str ) == "exists" ) {
           return AggregateType::EXISTS;
-        } else if ( toLower(str) == "or" ) {
+        } else if ( toLower( str ) == "or" ) {
           return AggregateType::OR;
-        } else if ( toLower(str) == "and" ) {
+        } else if ( toLower( str ) == "and" ) {
           return AggregateType::AND;
-        } else if ( toLower(str) == "forall" ) {
+        } else if ( toLower( str ) == "forall" ) {
           return AggregateType::FORALL;
-        } else if ( toLower(str) == "amplitude" ) {
+        } else if ( toLower( str ) == "amplitude" ) {
           return AggregateType::AMPLITUDE;
-        } else if ( toLower(str) == "median" ) {
+        } else if ( toLower( str ) == "median" ) {
           return AggregateType::MEDIAN;
         } else {
           std::string msg = "Unknown aggregate: ";
@@ -229,7 +229,7 @@ namespace gum {
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
-      Idx *__label;
+      Idx* __label;
 
       /// @}
     };

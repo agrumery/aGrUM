@@ -39,96 +39,104 @@ namespace gum {
 
 
   /**
-   * @class StatesCounter statesCounter.h <agrum/FMDP/simulation/statesCounter.h>
-   * @brief Provides the necessary to check whether or not states have been already visited.
+   * @class StatesCounter statesCounter.h
+   * <agrum/FMDP/simulation/statesCounter.h>
+   * @brief Provides the necessary to check whether or not states have been
+   * already visited.
    * @ingroup fmdp_group
    */
   class StatesCounter : public IVisitableGraphLearner {
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
+    /**
+     * Default constructor
+     */
+    StatesCounter();
 
-       /**
-        * Default constructor
-        */
-        StatesCounter (  );
+    /**
+     * Default destructor
+     */
+    ~StatesCounter();
 
-       /**
-        * Default destructor
-        */
-        ~StatesCounter ();
+    /// @}
 
-      /// @}
+    // ==========================================================================
+    /// @name Miscelleanous methods
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Miscelleanous methods
-      // ==========================================================================
-      /// @{
+    void incState( const Instantiation& );
 
-        void incState( const Instantiation& );
+    void reset( const Instantiation& );
 
-        void reset( const Instantiation& );
+    const MultiDimFunctionGraph<int>* counter();
 
-        const MultiDimFunctionGraph<int>* counter();
-
-      /// @}
-
+    /// @}
 
 
-      // ###################################################################
-      /// @name Visit Methods
-      // ###################################################################
-      /// @{
-    public :
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        NodeId root() const { return __counter->root(); }
+    // ###################################################################
+    /// @name Visit Methods
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    NodeId root() const { return __counter->root(); }
 
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        bool isTerminal(NodeId ni) const { return __counter->isTerminalNode(ni); }
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    bool isTerminal( NodeId ni ) const {
+      return __counter->isTerminalNode( ni );
+    }
 
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        const DiscreteVariable* nodeVar(NodeId ni) const { return __counter->node(ni)->nodeVar(); }
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    const DiscreteVariable* nodeVar( NodeId ni ) const {
+      return __counter->node( ni )->nodeVar();
+    }
 
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        NodeId nodeSon(NodeId ni, Idx modality) const { return __counter->node(ni)->son(modality); }
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    NodeId nodeSon( NodeId ni, Idx modality ) const {
+      return __counter->node( ni )->son( modality );
+    }
 
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        Idx nodeNbObservation(NodeId ni) const { return __counter->nodeValue(ni); }
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    Idx nodeNbObservation( NodeId ni ) const {
+      return __counter->nodeValue( ni );
+    }
 
-        void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
-        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __counter->variablesSequence().beginSafe();
-                varIter != __counter->variablesSequence().endSafe(); ++varIter)
-          ret->add(**varIter);
-      }
+    void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
+      for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+                __counter->variablesSequence().beginSafe();
+            varIter != __counter->variablesSequence().endSafe();
+            ++varIter )
+        ret->add( **varIter );
+    }
 
 
     /// @}
 
-  private:
+    private:
+    void __incState( const Instantiation&, NodeId, Idx, Idx );
 
-      void __incState(const Instantiation&, NodeId, Idx, Idx );
+    MultiDimFunctionGraph<int>* __counter;
 
-      MultiDimFunctionGraph<int>* __counter;
-
-      Set<Instantiation*> __visitedStates;
+    Set<Instantiation*> __visitedStates;
   };
 } /* namespace gum */
 
-#endif // GUM_STATES_COUNTER_H
+#endif  // GUM_STATES_COUNTER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-

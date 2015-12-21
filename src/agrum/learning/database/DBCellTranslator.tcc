@@ -78,8 +78,8 @@ namespace gum {
     /// copy operator
     template <int Nb_inputs, int Nb_outputs>
     INLINE DBCellTranslator<Nb_inputs, Nb_outputs>&
-    DBCellTranslator<Nb_inputs, Nb_outputs>::
-    operator=( const DBCellTranslator<Nb_inputs, Nb_outputs>& translator ) {
+        DBCellTranslator<Nb_inputs, Nb_outputs>::
+        operator=( const DBCellTranslator<Nb_inputs, Nb_outputs>& translator ) {
       if ( this != &translator ) {
         _input_row = translator._input_row;
         _output_row = translator._output_row;
@@ -96,8 +96,8 @@ namespace gum {
     /// move operator
     template <int Nb_inputs, int Nb_outputs>
     INLINE DBCellTranslator<Nb_inputs, Nb_outputs>&
-    DBCellTranslator<Nb_inputs, Nb_outputs>::
-    operator=( DBCellTranslator<Nb_inputs, Nb_outputs>&& translator ) {
+        DBCellTranslator<Nb_inputs, Nb_outputs>::
+        operator=( DBCellTranslator<Nb_inputs, Nb_outputs>&& translator ) {
       if ( this != &translator ) {
         _input_row = translator._input_row;
         _output_row = translator._output_row;

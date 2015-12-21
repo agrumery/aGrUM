@@ -133,8 +133,8 @@ namespace gum {
 
   template <typename Val, class Cmp, class Node>
   INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-  BinSearchTreeIterator<Val, Cmp, Node>::
-  operator=( const BinSearchTreeIterator<Val, Cmp, Node>& from ) {
+      BinSearchTreeIterator<Val, Cmp, Node>::
+      operator=( const BinSearchTreeIterator<Val, Cmp, Node>& from ) {
     // avoid self assignment
     if ( this != &from ) {
       GUM_OP_CPY( BinSearchTreeIterator );
@@ -226,7 +226,8 @@ namespace gum {
 
   template <typename Val, class Cmp, class Node>
   INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-      BinSearchTreeIterator<Val, Cmp, Node>::operator++() {
+      BinSearchTreeIterator<Val, Cmp, Node>::
+      operator++() {
     // if there is a current node, use it to compute the next node, else use
     // directly _next_node (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operator++)
@@ -245,7 +246,8 @@ namespace gum {
 
   template <typename Val, class Cmp, class Node>
   INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-      BinSearchTreeIterator<Val, Cmp, Node>::operator--() {
+      BinSearchTreeIterator<Val, Cmp, Node>::
+      operator--() {
     // if there is a current node, use it to compute the preceding node, else
     // use
     // directly _prev_node (this case obtains when the iterator was pointing

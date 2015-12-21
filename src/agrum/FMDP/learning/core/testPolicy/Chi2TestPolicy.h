@@ -36,96 +36,114 @@
 namespace gum {
 
   /**
-   * @class Chi2TestPolicy Chi2TestPolicy.h <agrum/multidim/core/testPolicy/Chi2TestPolicy.h>
+   * @class Chi2TestPolicy Chi2TestPolicy.h
+   * <agrum/multidim/core/testPolicy/Chi2TestPolicy.h>
    *
-   * @brief Chi2TestPolicy implements a test policy that follows the Chi2 statistic
+   * @brief Chi2TestPolicy implements a test policy that follows the Chi2
+   * statistic
    *
    * @ingroup fmdp_group
    */
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class Chi2TestPolicy : public ITestPolicy<GUM_SCALAR> {
 
     public:
+    Chi2TestPolicy()
+        : ITestPolicy<GUM_SCALAR>()
+        , __conTab()
+        , __chi2Score( 0 ) {
+      GUM_CONSTRUCTOR( Chi2TestPolicy )
+    }
 
-      Chi2TestPolicy( ) : ITestPolicy<GUM_SCALAR>(), __conTab(), __chi2Score(0){ GUM_CONSTRUCTOR(Chi2TestPolicy) }
+    virtual ~Chi2TestPolicy() { GUM_DESTRUCTOR( Chi2TestPolicy ) }
 
-      virtual ~Chi2TestPolicy(){ GUM_DESTRUCTOR(Chi2TestPolicy) }
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p,
+                                                   sizeof( Chi2TestPolicy ) );
+    }
 
-      // ============================================================================
-      /// Allocators and Deallocators redefinition
-      // ============================================================================
-      void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-      void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(Chi2TestPolicy));}
+    // ############################################################################
+    /// @name Observation insertion
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Observation insertion
-      // ############################################################################
-      /// @{
+    // ============================================================================
+    /// Comptabilizes the new observation
+    // ============================================================================
+    void addObservation( Idx attr, GUM_SCALAR value );
 
-        // ============================================================================
-        /// Comptabilizes the new observation
-        // ============================================================================
-        void addObservation( Idx attr, GUM_SCALAR value ) ;
-
-      /// @}
-
-
-      // ############################################################################
-      /// @name Test relevance
-      // ############################################################################
-      /// @{
-
-        // ============================================================================
-        /// Returns true if enough observation were made so that the test can be relevant
-        // ============================================================================
-        bool isTestRelevant() const { return ( this->nbObservation() > 20 && this->nbObservation() > __conTab.attrASize() * 5 ); }
-
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Test result
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Test relevance
+    // ############################################################################
+    /// @{
 
-        // ============================================================================
-        /// Recomputes the statistic from the beginning
-        // ============================================================================
-        void computeScore() const ;
+    // ============================================================================
+    /// Returns true if enough observation were made so that the test can be
+    /// relevant
+    // ============================================================================
+    bool isTestRelevant() const {
+      return ( this->nbObservation() > 20 &&
+               this->nbObservation() > __conTab.attrASize() * 5 );
+    }
 
-        // ============================================================================
-        /// Returns the performance of current variable according to the test
-        // ============================================================================
-        double score() const ;
+    /// @}
 
-        // ============================================================================
-        /// Returns a second criterion to severe ties
-        // ============================================================================
-        virtual double secondaryscore() const ;
 
-      /// @}
+    // ############################################################################
+    /// @name Test result
+    // ############################################################################
+    /// @{
 
-        const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const { return __conTab; }
+    // ============================================================================
+    /// Recomputes the statistic from the beginning
+    // ============================================================================
+    void computeScore() const;
 
-        void add(const Chi2TestPolicy<GUM_SCALAR>& src);
+    // ============================================================================
+    /// Returns the performance of current variable according to the test
+    // ============================================================================
+    double score() const;
 
-        std::string toString() const { std::stringstream ss;
-                                ss << ITestPolicy<GUM_SCALAR>::toString()
-                                   << "\t\t\tContingency Table : " <<std::endl
-                                   << __conTab.toString() << std::endl
-                                   << "\t\t\tGStat : " << this->score() << std::endl
-                                   << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
-                                return ss.str();}
+    // ============================================================================
+    /// Returns a second criterion to severe ties
+    // ============================================================================
+    virtual double secondaryscore() const;
 
-    private :
+    /// @}
 
-      /// The contingency table used to keeps records of all observation
-      ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
+    const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const {
+      return __conTab;
+    }
 
-      mutable double __chi2Score;
+    void add( const Chi2TestPolicy<GUM_SCALAR>& src );
+
+    std::string toString() const {
+      std::stringstream ss;
+      ss << ITestPolicy<GUM_SCALAR>::toString()
+         << "\t\t\tContingency Table : " << std::endl
+         << __conTab.toString() << std::endl
+         << "\t\t\tGStat : " << this->score() << std::endl
+         << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
+      return ss.str();
+    }
+
+    private:
+    /// The contingency table used to keeps records of all observation
+    ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
+
+    mutable double __chi2Score;
   };
 
-} // End of namespace gum
+}  // End of namespace gum
 
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.tcc>
 

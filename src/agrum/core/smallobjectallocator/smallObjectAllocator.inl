@@ -39,95 +39,103 @@ namespace gum {
   // @name Constructors / Destructors
   // ############################################################################
 
-    // ============================================================================
-    /*
-     * Constructor.
-     * @param chunkSize is the size of a chunk in bytes.
-     * @param maxObjectSize is the max size of object to be considered small
-     * Greater object than maxObjectSize will be forwarded to op new.
-     */
-    // ============================================================================
-    INLINE SmallObjectAllocator::SmallObjectAllocator() :
-        __chunkSize(GUM_DEFAULT_CHUNK_SIZE), __maxObjectSize(GUM_DEFAULT_MAX_OBJECT_SIZE){
-      __pool.setKeyUniquenessPolicy(false);
-//      GUM_CONSTRUCTOR(SmallObjectAllocator);
-      nbAllocation = 0;
-      nbDeallocation = 0;
-    }
+  // ============================================================================
+  /*
+   * Constructor.
+   * @param chunkSize is the size of a chunk in bytes.
+   * @param maxObjectSize is the max size of object to be considered small
+   * Greater object than maxObjectSize will be forwarded to op new.
+   */
+  // ============================================================================
+  INLINE SmallObjectAllocator::SmallObjectAllocator()
+      : __chunkSize( GUM_DEFAULT_CHUNK_SIZE )
+      , __maxObjectSize( GUM_DEFAULT_MAX_OBJECT_SIZE ) {
+    __pool.setKeyUniquenessPolicy( false );
+    //      GUM_CONSTRUCTOR(SmallObjectAllocator);
+    nbAllocation = 0;
+    nbDeallocation = 0;
+  }
 
-    // ============================================================================
-    // Destructor.
-    // ============================================================================
-    INLINE SmallObjectAllocator::~SmallObjectAllocator(){
-//      GUM_DESTRUCTOR(SmallObjectAllocator)
+  // ============================================================================
+  // Destructor.
+  // ============================================================================
+  INLINE SmallObjectAllocator::~SmallObjectAllocator() {
+    //      GUM_DESTRUCTOR(SmallObjectAllocator)
 
-    GUM_TRACE( "SMALL OBJECT ALLOCATOR STATS : Nb Alloc = " << nbAllocation << " - Nb dealloc = " << nbDeallocation << std::endl )
+    GUM_TRACE( "SMALL OBJECT ALLOCATOR STATS : Nb Alloc = "
+               << nbAllocation
+               << " - Nb dealloc = "
+               << nbDeallocation
+               << std::endl )
 
-      for(__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
-        delete pit.val();
-    }
+    for ( __Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit )
+      delete pit.val();
+  }
 
-    INLINE SmallObjectAllocator& SmallObjectAllocator::instance( ){
-      static SmallObjectAllocator soa;
-      return soa;
-    }
+  INLINE SmallObjectAllocator& SmallObjectAllocator::instance() {
+    static SmallObjectAllocator soa;
+    return soa;
+  }
 
   // ############################################################################
   // @name Allocator / Deallocator
   // ############################################################################
 
-    // ============================================================================
-    // Allocates an object
-    // ============================================================================
-    INLINE void* SmallObjectAllocator::allocate(const std::size_t& objectSize){
+  // ============================================================================
+  // Allocates an object
+  // ============================================================================
+  INLINE void* SmallObjectAllocator::allocate( const std::size_t& objectSize ) {
 
-      assert(objectSize > 0 && "Small Object Allocator called for an object of size equals to 0");
+    assert( objectSize > 0 &&
+            "Small Object Allocator called for an object of size equals to 0" );
 
-      // If objectSize is greater than maxObjectSize, normal new is called
-      if( objectSize > __maxObjectSize )
-          return new unsigned char[objectSize];
+    // If objectSize is greater than maxObjectSize, normal new is called
+    if ( objectSize > __maxObjectSize ) return new unsigned char[objectSize];
 
-      void* ret;
-      #pragma omp critical(soa)
-      {
-        //
-        if(!__pool.exists(objectSize)){
-          // Calcul du nombre de block par chunk pour des objets de cette taille
-          std::size_t numBlocks = __chunkSize / objectSize;
-          if( numBlocks > UCHAR_MAX )
-            numBlocks = UCHAR_MAX;
-          FixedAllocator* newFa = new FixedAllocator(objectSize, numBlocks);
-          __pool.set(objectSize, newFa);
-        }
-        nbAllocation++;
-
-        ret = __pool[objectSize]->allocate();
+    void* ret;
+#pragma omp critical( soa )
+    {
+      //
+      if ( !__pool.exists( objectSize ) ) {
+        // Calcul du nombre de block par chunk pour des objets de cette taille
+        std::size_t numBlocks = __chunkSize / objectSize;
+        if ( numBlocks > UCHAR_MAX ) numBlocks = UCHAR_MAX;
+        FixedAllocator* newFa = new FixedAllocator( objectSize, numBlocks );
+        __pool.set( objectSize, newFa );
       }
-      return ret;
+      nbAllocation++;
+
+      ret = __pool[objectSize]->allocate();
+    }
+    return ret;
+  }
+
+  // ============================================================================
+  // Deallocates an object
+  // @param pDeallocatedObject is the object to be deallocated
+  // @param objectSize is the size of that object (useful for faster
+  // deallocation)
+  // ============================================================================
+  INLINE void
+  SmallObjectAllocator::deallocate( void* pDeallocatedObject,
+                                    const std::size_t& objectSize ) {
+
+    assert( objectSize > 0 &&
+            "Small Object Allocator called for an object of size equals to 0" );
+
+    // If objectSize is greater than maxObjectSize, normal new is called
+    if ( objectSize > __maxObjectSize ) {
+      delete[](unsigned char*)pDeallocatedObject;
+      return;
     }
 
-    // ============================================================================
-    // Deallocates an object
-    // @param pDeallocatedObject is the object to be deallocated
-    // @param objectSize is the size of that object (useful for faster deallocation)
-    // ============================================================================
-    INLINE void SmallObjectAllocator::deallocate(void* pDeallocatedObject, const std::size_t &objectSize){
+#pragma omp critical( soa )
+    {
 
-      assert(objectSize > 0 && "Small Object Allocator called for an object of size equals to 0");
-
-      // If objectSize is greater than maxObjectSize, normal new is called
-      if( objectSize > __maxObjectSize ){
-          delete[] (unsigned char*)pDeallocatedObject;
-          return;
-      }
-
-      #pragma omp critical(soa)
-      {
-
-  //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
-        __pool[objectSize]->deallocate(pDeallocatedObject);
-        nbDeallocation++;
-      }
+      //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
+      __pool[objectSize]->deallocate( pDeallocatedObject );
+      nbDeallocation++;
     }
+  }
 
-} // namespace gum
+}  // namespace gum

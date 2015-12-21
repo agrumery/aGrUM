@@ -29,8 +29,4 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =============================================================================
 
-namespace gum {
-
-} // end of namespace gum
-
-
+namespace gum {}  // end of namespace gum

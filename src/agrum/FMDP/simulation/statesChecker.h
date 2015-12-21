@@ -37,60 +37,61 @@ namespace gum {
 
 
   /**
-   * @class StatesChecker statesChecker.h <agrum/FMDP/simulation/statesChecker.h>
-   * @brief Provides the necessary to check whether or not states have been already visited.
+   * @class StatesChecker statesChecker.h
+   * <agrum/FMDP/simulation/statesChecker.h>
+   * @brief Provides the necessary to check whether or not states have been
+   * already visited.
    * @ingroup fmdp_group
    */
   class StatesChecker {
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
+    /**
+     * Default constructor
+     */
+    StatesChecker();
 
-       /**
-        * Default constructor
-        */
-        StatesChecker (  );
+    /**
+     * Default destructor
+     */
+    ~StatesChecker();
 
-       /**
-        * Default destructor
-        */
-        ~StatesChecker ();
+    /// @}
 
-      /// @}
+    // ==========================================================================
+    /// @name Miscelleanous methods
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Miscelleanous methods
-      // ==========================================================================
-      /// @{
+    bool checkState( const Instantiation& state ) {
+      return __checker->get( state );
+    }
 
-        bool checkState( const Instantiation& state ){ return __checker->get( state );}
+    void addState( const Instantiation& );
 
-        void addState( const Instantiation& );
+    Idx nbVisitedStates() { return __nbVisitedStates; }
 
-        Idx nbVisitedStates(){ return __nbVisitedStates; }
+    void reset( const Instantiation& );
 
-        void reset( const Instantiation& );
+    /// @}
 
-      /// @}
+    private:
+    void __insertState( const Instantiation&, NodeId, Idx );
 
-  private:
+    Idx __nbVisitedStates;
 
-      void __insertState(const Instantiation&, NodeId, Idx);
+    MultiDimFunctionGraph<bool>* __checker;
+    NodeId __checkerTrueId, __checkerFalseId;
 
-      Idx __nbVisitedStates;
-
-      MultiDimFunctionGraph<bool>* __checker;
-      NodeId __checkerTrueId, __checkerFalseId;
-
-      Set<Instantiation*> __visitedStates;
+    Set<Instantiation*> __visitedStates;
   };
 } /* namespace gum */
 
-#endif // GUM_STATES_CHECKER_H
+#endif  // GUM_STATES_CHECKER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-

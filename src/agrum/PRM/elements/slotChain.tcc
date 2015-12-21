@@ -231,8 +231,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Attribute<GUM_SCALAR>* SlotChain<GUM_SCALAR>::getCastDescendant() const {
-      GUM_ERROR(OperationNotAllowed, "This is a slotchain");
+    INLINE Attribute<GUM_SCALAR>*
+    SlotChain<GUM_SCALAR>::getCastDescendant() const {
+      GUM_ERROR( OperationNotAllowed, "This is a slotchain" );
     }
 
   } /* namespace prm */

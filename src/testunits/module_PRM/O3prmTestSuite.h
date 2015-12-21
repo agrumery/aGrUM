@@ -1619,7 +1619,7 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
 
         auto prm = reader.prm();
-        for (auto c: prm->classes()) {
+        for ( auto c : prm->classes() ) {
           try {
             for ( auto i : c->implements() ) {
               for ( auto r : i->referenceSlots() ) {
@@ -1637,9 +1637,9 @@ namespace gum_tests {
               }
             }
           } catch ( gum::NotFound& e ) {
-              // No Interface
-            }
+            // No Interface
           }
+        }
 
         delete prm;
       } catch ( gum::Exception& e ) {
@@ -1671,14 +1671,13 @@ namespace gum_tests {
           try {
             for ( auto i : c->implements() ) {
 
-              for (auto a: i->attributes()) {
+              for ( auto a : i->attributes() ) {
                 TS_ASSERT( c->exists( a->name() ) );
                 TS_ASSERT( c->exists( a->safeName() ) );
                 TS_ASSERT( c->exists( a->id() ) );
                 TS_ASSERT_EQUALS( a->safeName(), c->get( a->id() ).safeName() );
                 TS_ASSERT_EQUALS( a->id(), c->get( a->id() ).id() );
               }
-
             }
           } catch ( gum::NotFound& e ) {
             // No interface

@@ -132,8 +132,8 @@ namespace gum {
       }
 
       // Add refering instances
-      for (auto i: *set) {
-        __addReferingInstance(sc, i);
+      for ( auto i : *set ) {
+        __addReferingInstance( sc, i );
       }
 
       // If sc is not multiple so it can be added as a parent of an attribute
@@ -266,7 +266,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Instance<GUM_SCALAR>& /**/
-        Instance<GUM_SCALAR>::operator=( const Class<GUM_SCALAR>& from ) {
+        Instance<GUM_SCALAR>::
+        operator=( const Class<GUM_SCALAR>& from ) {
       GUM_ERROR( FatalError, "do not copy Instance" );
     }
 
@@ -457,14 +458,16 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE typename Instance<GUM_SCALAR>::RefIterator&
-    Instance<GUM_SCALAR>::RefIterator::operator=( const RefIterator& from ) {
+        Instance<GUM_SCALAR>::RefIterator::
+        operator=( const RefIterator& from ) {
       __iter = from.__iter;
       return *this;
     }
 
     template <typename GUM_SCALAR>
     INLINE typename Instance<GUM_SCALAR>::RefIterator&
-        Instance<GUM_SCALAR>::RefIterator::operator++() {
+        Instance<GUM_SCALAR>::RefIterator::
+        operator++() {
       ++__iter;
       return *this;
     }
@@ -521,15 +524,16 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE typename Instance<GUM_SCALAR>::RefConstIterator&
-    Instance<GUM_SCALAR>::RefConstIterator::
-    operator=( const RefConstIterator& from ) {
+        Instance<GUM_SCALAR>::RefConstIterator::
+        operator=( const RefConstIterator& from ) {
       __iter = from.__iter;
       return *this;
     }
 
     template <typename GUM_SCALAR>
     INLINE typename Instance<GUM_SCALAR>::RefConstIterator&
-        Instance<GUM_SCALAR>::RefConstIterator::operator++() {
+        Instance<GUM_SCALAR>::RefConstIterator::
+        operator++() {
       ++__iter;
       return *this;
     }

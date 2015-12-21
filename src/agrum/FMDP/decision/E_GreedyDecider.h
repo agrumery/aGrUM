@@ -25,7 +25,6 @@
  */
 
 
-
 // =========================================================================
 #ifndef GUM_E_GREEDY_DECIDER_H
 #define GUM_E_GREEDY_DECIDER_H
@@ -44,61 +43,59 @@
 namespace gum {
 
   /**
-   * @class E_GreedyDecider E_GreedyDecider.h <agrum/FMDP/SDyna/E_GreedyDecider.h>
-   * @brief Class to make decision following an \epsilon-greedy compromise between exploration and exploitation
+   * @class E_GreedyDecider E_GreedyDecider.h
+   * <agrum/FMDP/SDyna/E_GreedyDecider.h>
+   * @brief Class to make decision following an \epsilon-greedy compromise
+   * between exploration and exploitation
    * @ingroup fmdp_group
    *
    */
   class E_GreedyDecider : public IDecisionStrategy {
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
-    public :
-
-        // ==========================================================================
-        /// Constructor
-        // ==========================================================================
-        E_GreedyDecider(  );
-
-        // ==========================================================================
-        /// Destructor
-        // ==========================================================================
-        ~E_GreedyDecider();
-
-      /// @}
-
-      // ###################################################################
-      /// @name Initialization
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Constructor & destructor.
+    // ###################################################################
+    /// @{
     public:
+    // ==========================================================================
+    /// Constructor
+    // ==========================================================================
+    E_GreedyDecider();
 
-        // ==========================================================================
-        /// Initializes the learner
-        // ==========================================================================
-        void initialize( const FMDP<double>* fmdp );
+    // ==========================================================================
+    /// Destructor
+    // ==========================================================================
+    ~E_GreedyDecider();
 
-      /// @}
+    /// @}
 
-
-      // ###################################################################
-      /// @name Incremental methods
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Initialization
+    // ###################################################################
+    /// @{
     public:
-        void checkState( const Instantiation& newState, Idx actionId );
+    // ==========================================================================
+    /// Initializes the learner
+    // ==========================================================================
+    void initialize( const FMDP<double>* fmdp );
 
-        ActionSet stateOptimalPolicy( const Instantiation& curState );
+    /// @}
 
-      /// @}
 
-    private :
+    // ###################################################################
+    /// @name Incremental methods
+    // ###################################################################
+    /// @{
+    public:
+    void checkState( const Instantiation& newState, Idx actionId );
 
-        StatesChecker __statecpt;
-        double __sss;
+    ActionSet stateOptimalPolicy( const Instantiation& curState );
+
+    /// @}
+
+    private:
+    StatesChecker __statecpt;
+    double __sss;
   };
-
 }
-#endif // GUM_E_GREEDY_DECIDER_H
+#endif  // GUM_E_GREEDY_DECIDER_H

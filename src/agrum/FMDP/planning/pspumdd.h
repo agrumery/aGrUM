@@ -34,7 +34,8 @@
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
+#include
+<agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/planning/spumdd.h>
@@ -48,57 +49,59 @@ namespace gum {
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
-   * Perform a SPUDD planning on given in parameter factored markov decision process
+   * Perform a SPUDD planning on given in parameter factored markov decision
+   * process
    * Uses OpenMP to fully exploit modern processor capacity
    *
    */
-  template<typename GUM_SCALAR>
+  template <typename GUM_SCALAR>
   class PMDDOperatorStrategy : public MDDOperatorStrategy<GUM_SCALAR> {
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
+    /**
+     * Default constructor
+     */
+    PMDDOperatorStrategy( FMDP<GUM_SCALAR>* fmdp,
+                          GUM_SCALAR epsilon = 0.00001 );
 
-       /**
-        * Default constructor
-        */
-        PMDDOperatorStrategy ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+    /**
+     * Default destructor
+     */
+    ~PMDDOperatorStrategy();
 
-       /**
-        * Default destructor
-        */
-        ~PMDDOperatorStrategy();
+    /// @}
 
-      /// @}
+    // ==========================================================================
+    /// @name Planning Methods
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Planning Methods
-      // ==========================================================================
-      /// @{
+    /**
+     * Initializes data structure needed for making the planning
+     * @warning No calling this methods before starting the first makePlaninng
+     * will surely and definitely result in a crash
+     */
+    void initialize();
 
-        /**
-         * Initializes data structure needed for making the planning
-         * @warning No calling this methods before starting the first makePlaninng
-         * will surely and definitely result in a crash
-         */
-        void initialize();
-
-      /// @}
+    /// @}
 
 
-  protected:
+    protected:
+    /// Performs a single step of value iteration
+    MultiDimFunctionGraph<GUM_SCALAR>* _valueIteration();
 
-        /// Performs a single step of value iteration
-        MultiDimFunctionGraph< GUM_SCALAR >* _valueIteration();
+    MultiDimFunctionGraph<GUM_SCALAR>*
+    _evalQaction( const MultiDimFunctionGraph<GUM_SCALAR>*, Idx );
 
-        MultiDimFunctionGraph<GUM_SCALAR>* _evalQaction( const MultiDimFunctionGraph<GUM_SCALAR>*, Idx );
-
-  private :
-      /// A map to ensure all FMDP actions are correctly iterrated over during value iteration
-      Bijection<Idx,Idx> __actionCpt2actionId;
+    private:
+    /// A map to ensure all FMDP actions are correctly iterrated over during
+    /// value iteration
+    Bijection<Idx, Idx> __actionCpt2actionId;
   };
 
   extern template class PMDDOperatorStrategy<float>;
@@ -108,7 +111,6 @@ namespace gum {
 
 #include <agrum/FMDP/planning/pspumdd.tcc>
 
-#endif // GUM_PMDDOperatorStrategy_H
+#endif  // GUM_PMDDOperatorStrategy_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-

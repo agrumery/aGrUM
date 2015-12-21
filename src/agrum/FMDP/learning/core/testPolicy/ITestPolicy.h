@@ -36,125 +36,142 @@
 namespace gum {
 
   /**
-   * @class ITestPolicy ITestPolicy.h <agrum/multidim/core/testPolicies/ITestPolicy.h>
+   * @class ITestPolicy ITestPolicy.h
+   * <agrum/multidim/core/testPolicies/ITestPolicy.h>
    *
    * @brief Interface specifying the methods to be implemented by any TestPolicy
    *
    * @ingroup fmdp_group
    */
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class ITestPolicy {
 
     public:
+    // ############################################################################
+    /// @name Constructor/Destructor
+    // ############################################################################
+    /// @{
+
+    // ============================================================================
+    ///
+    // ============================================================================
+    ITestPolicy()
+        : __isModified( false )
+        , __nbObs( 0 ) {
+      GUM_CONSTRUCTOR( ITestPolicy )
+    }
+
+    // ============================================================================
+    ///
+    // ============================================================================
+    virtual ~ITestPolicy() { GUM_DESTRUCTOR( ITestPolicy ) }
+
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( ITestPolicy ) );
+    }
+
+    /// @}
 
 
-      // ############################################################################
-      /// @name Constructor/Destructor
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Observation methods
+    // ############################################################################
+    /// @{
 
-        // ============================================================================
-        ///
-        // ============================================================================
-        ITestPolicy() : __isModified(false), __nbObs(0){ GUM_CONSTRUCTOR(ITestPolicy) }
+    // ============================================================================
+    /// Comptabilizes the new observation
+    // ============================================================================
+    virtual void addObservation( Idx attr, GUM_SCALAR value ) {
+      __isModified = true;
+      __nbObs++;
+    }
 
-        // ============================================================================
-        ///
-        // ============================================================================
-        virtual ~ITestPolicy(){ GUM_DESTRUCTOR(ITestPolicy) }
+    // ============================================================================
+    /// Comptabilizes the new observation
+    // ============================================================================
+    Idx nbObservation() const { return __nbObs; }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(ITestPolicy));}
-
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Observation methods
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Test methods
+    // ############################################################################
+    /// @{
 
-        // ============================================================================
-        /// Comptabilizes the new observation
-        // ============================================================================
-        virtual void addObservation( Idx attr, GUM_SCALAR value ){ __isModified = true; __nbObs++; }
+    // ============================================================================
+    /// Returns true if enough observation were added so that the test can be
+    /// relevant
+    // ============================================================================
+    virtual bool isTestRelevant() const = 0;
 
-        // ============================================================================
-        /// Comptabilizes the new observation
-        // ============================================================================
-        Idx nbObservation() const { return __nbObs; }
+    // ============================================================================
+    /// Recomputes the statistic from the beginning
+    // ============================================================================
+    virtual void computeScore() const { __isModified = false; }
 
-      /// @}
+    // ============================================================================
+    /// Returns the performance of current variable according to the test
+    // ============================================================================
+    virtual double score() const = 0;
 
+    // ============================================================================
+    /// Returns a second criterion to severe ties
+    // ============================================================================
+    virtual double secondaryscore() const = 0;
 
-      // ############################################################################
-      /// @name Test methods
-      // ############################################################################
-      /// @{
-
-        // ============================================================================
-        /// Returns true if enough observation were added so that the test can be relevant
-        // ============================================================================
-        virtual bool isTestRelevant() const = 0;
-
-        // ============================================================================
-        /// Recomputes the statistic from the beginning
-        // ============================================================================
-        virtual void computeScore() const { __isModified = false; }
-
-        // ============================================================================
-        /// Returns the performance of current variable according to the test
-        // ============================================================================
-        virtual double score() const = 0;
-
-        // ============================================================================
-        /// Returns a second criterion to severe ties
-        // ============================================================================
-        virtual double secondaryscore() const = 0;
-
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Fusion Methods
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Fusion Methods
+    // ############################################################################
+    /// @{
 
-        // ============================================================================
-        ///
-        // ============================================================================
-        void add( const ITestPolicy<GUM_SCALAR>& src){ __isModified = true; __nbObs += src.nbObservation(); }
+    // ============================================================================
+    ///
+    // ============================================================================
+    void add( const ITestPolicy<GUM_SCALAR>& src ) {
+      __isModified = true;
+      __nbObs += src.nbObservation();
+    }
 
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Miscelleanous Methods
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Miscelleanous Methods
+    // ############################################################################
+    /// @{
 
-        // ============================================================================
-        ///
-        // ============================================================================
-        std::string toString() const { std::stringstream ss; ss << "\t\t\tNb Obs : " <<__nbObs << std::endl; return ss.str(); }
+    // ============================================================================
+    ///
+    // ============================================================================
+    std::string toString() const {
+      std::stringstream ss;
+      ss << "\t\t\tNb Obs : " << __nbObs << std::endl;
+      return ss.str();
+    }
 
-      /// @}
+    /// @}
 
-    protected :
-      bool _isModified() const { return __isModified; }
+    protected:
+    bool _isModified() const { return __isModified; }
 
-    private :
+    private:
+    ///  Booleans indicating if we have to re eval test
+    mutable bool __isModified;
 
-      ///  Booleans indicating if we have to re eval test
-      mutable bool __isModified;
-
-      ///
-      Idx __nbObs;
+    ///
+    Idx __nbObs;
   };
 
-} // End of namespace gum
+}  // End of namespace gum
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H */

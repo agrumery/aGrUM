@@ -61,7 +61,7 @@ namespace gum {
         : ClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new Type<GUM_SCALAR>( rvType ) )
-        , __label( new Idx(label) ) {
+        , __label( new Idx( label ) ) {
       GUM_CONSTRUCTOR( Aggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
@@ -71,8 +71,7 @@ namespace gum {
     Aggregate<GUM_SCALAR>::~Aggregate() {
       GUM_DESTRUCTOR( Aggregate );
       delete __type;
-      if (__label)
-        delete __label;
+      if ( __label ) delete __label;
     }
 
     template <typename GUM_SCALAR>
@@ -106,7 +105,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Aggregate<GUM_SCALAR>::label() const {
-      if (__label) return *__label;
+      if ( __label ) return *__label;
       GUM_ERROR( OperationNotAllowed, "no label defined for this aggregate" );
     }
 
@@ -169,8 +168,7 @@ namespace gum {
     Aggregate<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>*
-    Aggregate<GUM_SCALAR>::getCastDescendant() const {
+    Attribute<GUM_SCALAR>* Aggregate<GUM_SCALAR>::getCastDescendant() const {
       ScalarAttribute<GUM_SCALAR>* cast = 0;
 
       try {

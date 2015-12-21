@@ -35,34 +35,36 @@
 
 namespace gum {
 
-/**
- * @class MultiDimFunctionGraphOperator multiDimFunctionGraphOperator.h <agrum/multidim/patterns/multiDimFunctionGraphOperator.h>
- * @brief Class used to perform Function Graph Operations
- * @ingroup multidim_group
- *
- */
+  /**
+   * @class MultiDimFunctionGraphOperator multiDimFunctionGraphOperator.h
+   * <agrum/multidim/patterns/multiDimFunctionGraphOperator.h>
+   * @brief Class used to perform Function Graph Operations
+   * @ingroup multidim_group
+   *
+   */
 
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy >
-  class MultiDimFunctionGraphOperator
-  {
+            template <typename> class TerminalNodePolicy =
+                ExactTerminalNodePolicy>
+  class MultiDimFunctionGraphOperator {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      MultiDimFunctionGraphOperator( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG1,
-                                     const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG2 );
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    MultiDimFunctionGraphOperator(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG1,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG2 );
 
-      // ============================================================================
-      /// Default destructor.
-      // ============================================================================
-      ~MultiDimFunctionGraphOperator();
+    // ============================================================================
+    /// Default destructor.
+    // ============================================================================
+    ~MultiDimFunctionGraphOperator();
 
     /// @}
 
@@ -71,109 +73,118 @@ namespace gum {
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Computes and builds the Function Graph that is the result of the operation
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
+    // ============================================================================
+    /// Computes and builds the Function Graph that is the result of the
+    /// operation
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
 
     /// @}
 
     public:
-      Idx nbCall(){ return __nbCall; }
+    Idx nbCall() { return __nbCall; }
+
     private:
-      Idx __nbCall;
+    Idx __nbCall;
 
     public:
-      Idx nbVarRetro(){ return __nbVarRetro; }
+    Idx nbVarRetro() { return __nbVarRetro; }
+
     private:
-      Idx __nbVarRetro;
+    Idx __nbVarRetro;
 
     public:
-      Idx sizeVarRetroDomain(){ return __sizeVarRetro; }
+    Idx sizeVarRetroDomain() { return __sizeVarRetro; }
+
     private:
-      Idx __sizeVarRetro;
+    Idx __sizeVarRetro;
 
 
-    private :
-      // ============================================================================
-      /// Computes an order for the final Decision graph that will minimize the number
-      /// of re exploration
-      // ============================================================================
-      void __establishVarOrder();
+    private:
+    // ============================================================================
+    /// Computes an order for the final Decision graph that will minimize the
+    /// number
+    /// of re exploration
+    // ============================================================================
+    void __establishVarOrder();
 
-      // ============================================================================
-      /// Heuristic methods to decide which of two retrograde variables should come first
-      // ============================================================================
-      Idx __distance(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *,
-                     const DiscreteVariable*,
-                     const DiscreteVariable*);
+    // ============================================================================
+    /// Heuristic methods to decide which of two retrograde variables should
+    /// come first
+    // ============================================================================
+    Idx
+    __distance( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*,
+                const DiscreteVariable*,
+                const DiscreteVariable* );
 
-      // ============================================================================
-      /// Establish for each node in both function graph if it has retrograde variables
-      /// beneath it
-      // ============================================================================
-      void __findRetrogradeVariables( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
-                                      HashTable<NodeId, short int*>& dgInstNeed);
+    // ============================================================================
+    /// Establish for each node in both function graph if it has retrograde
+    /// variables
+    /// beneath it
+    // ============================================================================
+    void __findRetrogradeVariables(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
+        HashTable<NodeId, short int*>& dgInstNeed );
 
-      // ============================================================================
-      /// The main recursion function
-      // ============================================================================
-      NodeId __compute(O4DGContext & currentSituation, Idx lastInstVarPos);
+    // ============================================================================
+    /// The main recursion function
+    // ============================================================================
+    NodeId __compute( O4DGContext& currentSituation, Idx lastInstVarPos );
 
 
+    // ============================================================================
+    /// One of the two function graphs used for the operation
+    // ============================================================================
+    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
 
+    // ============================================================================
+    /// The other one
+    // ============================================================================
+    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
 
+    // ============================================================================
+    /// The resulting function graph
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
-      // ============================================================================
-      /// One of the two function graphs used for the operation
-      // ============================================================================
-      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
+    // ============================================================================
+    /// The total number of variable implied in the operation
+    // ============================================================================
+    Idx __nbVar;
 
-      // ============================================================================
-      /// The other one
-      // ============================================================================
-      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
+    // ============================================================================
+    /// The function to be performed on the leaves
+    // ============================================================================
+    const FUNCTOR<GUM_SCALAR> __function;
 
-      // ============================================================================
-      /// The resulting function graph
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+    // ============================================================================
+    /// The hashtable used to know if two pair of nodes have already been
+    /// visited
+    // ============================================================================
+    HashTable<double, NodeId> __explorationTable;
 
-      // ============================================================================
-      /// The total number of variable implied in the operation
-      // ============================================================================
-      Idx __nbVar;
+    // ============================================================================
+    /// Table uses to know if a given node of first function graph has
+    /// retrograde
+    /// vrariables
+    // ============================================================================
+    HashTable<NodeId, short int*> __DG1InstantiationNeeded;
 
-      // ============================================================================
-      /// The function to be performed on the leaves
-      // ============================================================================
-      const FUNCTOR<GUM_SCALAR> __function;
+    // ============================================================================
+    /// Table uses to know if a given node of second function graph has
+    /// retrograde
+    /// vrariables
+    // ============================================================================
+    HashTable<NodeId, short int*> __DG2InstantiationNeeded;
 
-      // ============================================================================
-      /// The hashtable used to know if two pair of nodes have already been visited
-      // ============================================================================
-      HashTable<double, NodeId> __explorationTable;
-
-      // ============================================================================
-      /// Table uses to know if a given node of first function graph has retrograde
-      /// vrariables
-      // ============================================================================
-      HashTable<NodeId, short int*> __DG1InstantiationNeeded;
-
-      // ============================================================================
-      /// Table uses to know if a given node of second function graph has retrograde
-      /// vrariables
-      // ============================================================================
-      HashTable<NodeId, short int*> __DG2InstantiationNeeded;
-
-      // ============================================================================
-      /// Just a comptuationnal trick
-      // ============================================================================
-      short int* __default;
+    // ============================================================================
+    /// Just a comptuationnal trick
+    // ============================================================================
+    short int* __default;
   };
 
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.tcc>
 
-#endif // GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H
+#endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H

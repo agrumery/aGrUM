@@ -38,11 +38,36 @@
 namespace gum {
 
 
-
-  enum FactorySimulationLandmark : Idx { HOME = 0, WORK = 1, THEATER = 2, CLUB = 3, Factory = 4 };
-  enum FactorySimulationLandmarkX : Idx { HOMEX = 0, WORKX = 0, THEATERX = 3, CLUBX = 4, STATIONX = 2 };
-  enum FactorySimulationLandmarkY : Idx { HOMEY = 0, WORKY = 4, THEATERY = 0, CLUBY = 4, STATIONY = 1 };
-  enum FactorySimulationAction : Idx { GoNorth = 0, GoEast = 1, GoSouth = 2, GoWest = 3, PickUp  = 4, PutDown = 5, FillUp = 6 };
+  enum FactorySimulationLandmark : Idx {
+    HOME = 0,
+    WORK = 1,
+    THEATER = 2,
+    CLUB = 3,
+    Factory = 4
+  };
+  enum FactorySimulationLandmarkX : Idx {
+    HOMEX = 0,
+    WORKX = 0,
+    THEATERX = 3,
+    CLUBX = 4,
+    STATIONX = 2
+  };
+  enum FactorySimulationLandmarkY : Idx {
+    HOMEY = 0,
+    WORKY = 4,
+    THEATERY = 0,
+    CLUBY = 4,
+    STATIONY = 1
+  };
+  enum FactorySimulationAction : Idx {
+    GoNorth = 0,
+    GoEast = 1,
+    GoSouth = 2,
+    GoWest = 3,
+    PickUp = 4,
+    PutDown = 5,
+    FillUp = 6
+  };
   /**
    * @class Factory Factory.h <agrum/FMDP/simulation/Factory.h>
    * @brief A class to simulate the Factory problem
@@ -53,22 +78,21 @@ namespace gum {
    */
   class FactorySimulator : public AbstractSimulator {
 
-  public:
-
+    public:
     // ===========================================================================
     /// @name Constructors, Destructors.
     // ===========================================================================
     /// @{
 
-      /**
-       * Default constructor.
-       */
-      FactorySimulator();
+    /**
+     * Default constructor.
+     */
+    FactorySimulator();
 
-      /**
-       * Default destructor.
-       */
-      ~FactorySimulator();
+    /**
+     * Default destructor.
+     */
+    ~FactorySimulator();
 
     /// @}
 
@@ -77,16 +101,15 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-  protected :
-      /// Choses a random state as the first test for a run
-      Instantiation _randomState();
+    protected:
+    /// Choses a random state as the first test for a run
+    Instantiation _randomState();
 
-  public :
-
-      bool hasReachEnd();
-      ///
-      double reward();
-      void perform( Idx );
+    public:
+    bool hasReachEnd();
+    ///
+    double reward();
+    void perform( Idx );
 
     /// @}
 
@@ -95,11 +118,17 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-      const DiscreteVariable* primeVar(const DiscreteVariable* mainVar){ return __primeMap.second(mainVar); }
+    const DiscreteVariable* primeVar( const DiscreteVariable* mainVar ) {
+      return __primeMap.second( mainVar );
+    }
 
-      /// Iteration over the variables of the simulated probleme
-      SequenceIteratorSafe< const DiscreteVariable* > beginVariables(){return __FactoryVars.beginSafe();}
-      SequenceIteratorSafe< const DiscreteVariable* > endVariables(){return __FactoryVars.endSafe();}
+    /// Iteration over the variables of the simulated probleme
+    SequenceIteratorSafe<const DiscreteVariable*> beginVariables() {
+      return __FactoryVars.beginSafe();
+    }
+    SequenceIteratorSafe<const DiscreteVariable*> endVariables() {
+      return __FactoryVars.endSafe();
+    }
 
     /// @}
 
@@ -108,18 +137,23 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-      const std::string& actionName(Idx actionId){return *__actionMap[actionId];}
+    const std::string& actionName( Idx actionId ) {
+      return *__actionMap[actionId];
+    }
 
-      /// Iteration over the variables of the simulated probleme
-      SequenceIteratorSafe< Idx > beginActions() {return __FactoryActions.beginSafe();}
-      SequenceIteratorSafe< Idx > endActions() {return __FactoryActions.endSafe();}
+    /// Iteration over the variables of the simulated probleme
+    SequenceIteratorSafe<Idx> beginActions() {
+      return __FactoryActions.beginSafe();
+    }
+    SequenceIteratorSafe<Idx> endActions() {
+      return __FactoryActions.endSafe();
+    }
 
 
     /// @}
 
 
-  private :
-
+    private:
     void __goNorth();
     void __goEast();
     void __goSouth();
@@ -139,13 +173,12 @@ namespace gum {
 
     /// Actions
     Sequence<Idx> __FactoryActions;
-    HashTable<Idx, std::string*> __actionMap;//__actionMap.insert ( actionId, new std::string ( action ) );
+    HashTable<Idx, std::string*> __actionMap;  //__actionMap.insert ( actionId,
+    // new std::string ( action ) );
     FactorySimulationAction __lastAction;
-};
+  };
 
 } /* namespace gum */
 
 
-
-#endif // GUM_FACTORY_SIMULATOR_H
-
+#endif  // GUM_FACTORY_SIMULATOR_H

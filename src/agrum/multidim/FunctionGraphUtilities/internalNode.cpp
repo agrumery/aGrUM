@@ -28,93 +28,92 @@
 // =======================================================================================
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =======================================================================================
-#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
-#define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
+#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
+#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 // =======================================================================================
 
 namespace gum {
 
-// ############################################################################
-// Internal Nodes methods
-// ############################################################################
-    // ============================================================================
-    // Constructors
-    // ============================================================================
-    InternalNode::InternalNode(){
-      GUM_CONSTRUCTOR(InternalNode)
-      __nodeVar = nullptr;
-    }
+  // ############################################################################
+  // Internal Nodes methods
+  // ############################################################################
+  // ============================================================================
+  // Constructors
+  // ============================================================================
+  InternalNode::InternalNode() {
+    GUM_CONSTRUCTOR( InternalNode )
+    __nodeVar = nullptr;
+  }
 
-    InternalNode::InternalNode(const DiscreteVariable* v){
-      GUM_CONSTRUCTOR(InternalNode)
-      _setNodeVar(v);
-    }
+  InternalNode::InternalNode( const DiscreteVariable* v ) {
+    GUM_CONSTRUCTOR( InternalNode )
+    _setNodeVar( v );
+  }
 
-    InternalNode::InternalNode(const DiscreteVariable* v, NodeId* sons){
-      GUM_CONSTRUCTOR(InternalNode)
-      __nodeVar = v;
-      __nodeSons = sons;
-    }
+  InternalNode::InternalNode( const DiscreteVariable* v, NodeId* sons ) {
+    GUM_CONSTRUCTOR( InternalNode )
+    __nodeVar = v;
+    __nodeSons = sons;
+  }
 
-    // ============================================================================
-    // Destructors
-    // ============================================================================
-    InternalNode::~InternalNode(){
-      GUM_DESTRUCTOR(InternalNode)
-      if( __nodeVar != nullptr )
-        deallocateNodeSons(__nodeVar, __nodeSons);
-    }
+  // ============================================================================
+  // Destructors
+  // ============================================================================
+  InternalNode::~InternalNode() {
+    GUM_DESTRUCTOR( InternalNode )
+    if ( __nodeVar != nullptr ) deallocateNodeSons( __nodeVar, __nodeSons );
+  }
 
-    // ============================================================================
-    // Allocates a table of nodeid of the size given in parameter
-    // ============================================================================
-    NodeId* InternalNode::allocateNodeSons( const DiscreteVariable* v ){
-      NodeId* sons = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*v->domainSize() ) );
-      for( gum::Idx i = 0; i < v->domainSize(); ++i)
-        sons[i] = 0;
-      return sons;
-    }
+  // ============================================================================
+  // Allocates a table of nodeid of the size given in parameter
+  // ============================================================================
+  NodeId* InternalNode::allocateNodeSons( const DiscreteVariable* v ) {
+    NodeId* sons =
+        static_cast<NodeId*>( ALLOCATE( sizeof( NodeId ) * v->domainSize() ) );
+    for ( gum::Idx i = 0; i < v->domainSize(); ++i )
+      sons[i] = 0;
+    return sons;
+  }
 
-    // ============================================================================
-    // Deallocates a NodeSons table
-    // ============================================================================
-    void InternalNode::deallocateNodeSons(const DiscreteVariable* v, NodeId* s){
-        DEALLOCATE(s, sizeof(NodeId)*v->domainSize());
-    }
+  // ============================================================================
+  // Deallocates a NodeSons table
+  // ============================================================================
+  void InternalNode::deallocateNodeSons( const DiscreteVariable* v,
+                                         NodeId* s ) {
+    DEALLOCATE( s, sizeof( NodeId ) * v->domainSize() );
+  }
 
-    // ============================================================================
-    // Node handlers
-    // ============================================================================
-    void InternalNode::setNode(const DiscreteVariable* v, NodeId* sons){
-        if( __nodeVar != nullptr )
-            deallocateNodeSons(__nodeVar, __nodeSons);
-        __nodeVar = v;
-        __nodeSons = sons;
-    }
+  // ============================================================================
+  // Node handlers
+  // ============================================================================
+  void InternalNode::setNode( const DiscreteVariable* v, NodeId* sons ) {
+    if ( __nodeVar != nullptr ) deallocateNodeSons( __nodeVar, __nodeSons );
+    __nodeVar = v;
+    __nodeSons = sons;
+  }
 
-    // ============================================================================
-    // Var handlers
-    // ============================================================================
-    void InternalNode::setNodeVar(const DiscreteVariable* v){
-        if( __nodeVar != nullptr )
-            deallocateNodeSons(__nodeVar, __nodeSons);
-        _setNodeVar(v);
-    }
+  // ============================================================================
+  // Var handlers
+  // ============================================================================
+  void InternalNode::setNodeVar( const DiscreteVariable* v ) {
+    if ( __nodeVar != nullptr ) deallocateNodeSons( __nodeVar, __nodeSons );
+    _setNodeVar( v );
+  }
 
-    void InternalNode::_setNodeVar(const DiscreteVariable* v){
-        __nodeVar = v;
-        __nodeSons = allocateNodeSons( v );
-    }
+  void InternalNode::_setNodeVar( const DiscreteVariable* v ) {
+    __nodeVar = v;
+    __nodeSons = allocateNodeSons( v );
+  }
 
-    // ============================================================================
-    // Parent handlers
-    // ============================================================================
-    void InternalNode::addParent( NodeId parent, Idx modality ){
-      __nodeParents.addLink( Parent(parent, modality) );
-    }
+  // ============================================================================
+  // Parent handlers
+  // ============================================================================
+  void InternalNode::addParent( NodeId parent, Idx modality ) {
+    __nodeParents.addLink( Parent( parent, modality ) );
+  }
 
-    void InternalNode::removeParent( NodeId parent, Idx modality ){
-      __nodeParents.searchAndRemoveLink( Parent(parent, modality) );
-    }
+  void InternalNode::removeParent( NodeId parent, Idx modality ) {
+    __nodeParents.searchAndRemoveLink( Parent( parent, modality ) );
+  }
 
-} // namespace gum
+}  // namespace gum

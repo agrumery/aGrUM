@@ -35,46 +35,50 @@
 
 namespace gum {
   /**
-   * @class MultiDimFunctionGraphGenerator multiDimFunctionGraphGenerator.h <agrum/multidim/multiDimFunctionGraphGenerator.h>
+   * @class MultiDimFunctionGraphGenerator multiDimFunctionGraphGenerator.h
+   * <agrum/multidim/multiDimFunctionGraphGenerator.h>
    *
-   * @brief Class implementing a function graph generator with template type :double
+   * @brief Class implementing a function graph generator with template type
+   * :double
    *
    * @ingroup multidim_group
    */
   class MultiDimFunctionGraphGenerator {
 
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      MultiDimFunctionGraphGenerator(Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable *>& varSeq);
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    MultiDimFunctionGraphGenerator(
+        Idx maxVar,
+        Idx minVar,
+        const Sequence<const DiscreteVariable*>& varSeq );
 
-      // ============================================================================
-      /// destructor.
-      // ============================================================================
-      ~MultiDimFunctionGraphGenerator();
+    // ============================================================================
+    /// destructor.
+    // ============================================================================
+    ~MultiDimFunctionGraphGenerator();
 
     /// @}
 
-      MultiDimFunctionGraph<double>* generate();
-
+    MultiDimFunctionGraph<double>* generate();
 
 
     private:
+    bool __createLeaf( NodeId currentNodeId,
+                       HashTable<NodeId, Idx>& node2MinVar );
+    Idx __generateVarPos( Idx offset, Idx span );
 
-      bool __createLeaf(NodeId currentNodeId , HashTable<NodeId, Idx> &node2MinVar);
-      Idx __generateVarPos(Idx offset, Idx span);
 
-
-      Idx __minNbVarInDiagram;
-      Idx __maxNbVarInDiagram;
-      const Sequence<const DiscreteVariable*> __varSeq;
-      Idx __nbTotalVar;
-      static Idx __genSeed;
+    Idx __minNbVarInDiagram;
+    Idx __maxNbVarInDiagram;
+    const Sequence<const DiscreteVariable*> __varSeq;
+    Idx __nbTotalVar;
+    static Idx __genSeed;
   };
 } /* end of namespace */
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H */

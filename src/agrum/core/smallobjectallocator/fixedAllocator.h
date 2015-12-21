@@ -52,142 +52,146 @@ namespace gum {
    * @ingroup core
    */
 
-  class FixedAllocator
-  {
-      /**
-       * @struct Chunk fixedAllocator.h <agrum/core/fixedAllocator.h>
-       *
-       * @brief Allocates objects of one given size. Has a fixed limit of allocation
-       *
-       * Each object of type Chunk contains and manages a chunk of memory containing a
-       * amount of blocks. At construction time, you configure the block size and the
-       * number of blocks.
-       * A Chunk contains logic that allows you to allocate and deallocate memory blocks
-       * from that chunk of memory. When there are no more blocks available in the chunk,
-       * the allocation function returns zero.
-       *
-       * @ingroup core
-       */
-      struct __Chunk {
+  class FixedAllocator {
+    /**
+     * @struct Chunk fixedAllocator.h <agrum/core/fixedAllocator.h>
+     *
+     * @brief Allocates objects of one given size. Has a fixed limit of
+     * allocation
+     *
+     * Each object of type Chunk contains and manages a chunk of memory
+     * containing a
+     * amount of blocks. At construction time, you configure the block size and
+     * the
+     * number of blocks.
+     * A Chunk contains logic that allows you to allocate and deallocate memory
+     * blocks
+     * from that chunk of memory. When there are no more blocks available in the
+     * chunk,
+     * the allocation function returns zero.
+     *
+     * @ingroup core
+     */
+    struct __Chunk {
 
-        // ============================================================================
-        /// Initializes a Chunk object
-        // ============================================================================
-        void __init(const std::size_t& blockSize, const unsigned char& numBlocks);
+      // ============================================================================
+      /// Initializes a Chunk object
+      // ============================================================================
+      void __init( const std::size_t& blockSize,
+                   const unsigned char& numBlocks );
 
-        // ============================================================================
-        /// Allocates a block of memory
-        // ============================================================================
-        void* __allocate(const std::size_t& blockSize);
+      // ============================================================================
+      /// Allocates a block of memory
+      // ============================================================================
+      void* __allocate( const std::size_t& blockSize );
 
-        // ============================================================================
-        /// Deallocates a block of memory
-        // ============================================================================
-        void __deallocate(void* p, const std::size_t& blockSize);
+      // ============================================================================
+      /// Deallocates a block of memory
+      // ============================================================================
+      void __deallocate( void* p, const std::size_t& blockSize );
 
-        // ============================================================================
-        /// Releases the allocated memory
-        // ============================================================================
-        void __release();
+      // ============================================================================
+      /// Releases the allocated memory
+      // ============================================================================
+      void __release();
 
-        // ============================================================================
-        /// Pointer to the managed memory itself
-        // ============================================================================
-        unsigned char* __pData;
+      // ============================================================================
+      /// Pointer to the managed memory itself
+      // ============================================================================
+      unsigned char* __pData;
 
-        // ============================================================================
-        /// Holds the index of the first block available in this chunck
-        // ============================================================================
-        unsigned char __firstAvailableBlock;
+      // ============================================================================
+      /// Holds the index of the first block available in this chunck
+      // ============================================================================
+      unsigned char __firstAvailableBlock;
 
-        // ============================================================================
-        /// Number of blocks available in this chunck
-        // ============================================================================
-        unsigned char __blocksAvailable;
-      };
+      // ============================================================================
+      /// Number of blocks available in this chunck
+      // ============================================================================
+      unsigned char __blocksAvailable;
+    };
 
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-        // ============================================================================
-        /**
-         * Constructor.
-         * @param blockSize is the size of an allocated block.
-         * @param numBlock is the number of block allocated per chunk
-         * numBlock * blockSize is the size that a chunk allocates directly
-         * when it is created
-         */
-        // ============================================================================
-        FixedAllocator(const std::size_t & blockSize, const unsigned char & numBlocks = UCHAR_MAX);
+    // ============================================================================
+    /**
+     * Constructor.
+     * @param blockSize is the size of an allocated block.
+     * @param numBlock is the number of block allocated per chunk
+     * numBlock * blockSize is the size that a chunk allocates directly
+     * when it is created
+     */
+    // ============================================================================
+    FixedAllocator( const std::size_t& blockSize,
+                    const unsigned char& numBlocks = UCHAR_MAX );
 
-        // ============================================================================
-        /// Destructor.
-        // ============================================================================
-        ~FixedAllocator();
+    // ============================================================================
+    /// Destructor.
+    // ============================================================================
+    ~FixedAllocator();
 
-      /// @}
+    /// @}
 
-      // ############################################################################
-      /// @name Allocator / Deallocator
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Allocator / Deallocator
+    // ############################################################################
+    /// @{
 
-        // ============================================================================
-        /// Allocates a block
-        // ============================================================================
-        void* allocate();
+    // ============================================================================
+    /// Allocates a block
+    // ============================================================================
+    void* allocate();
 
-        // ============================================================================
-        /// Deallocates a block
-        // ============================================================================
-        void deallocate(void* pDeallocatedBlock);
+    // ============================================================================
+    /// Deallocates a block
+    // ============================================================================
+    void deallocate( void* pDeallocatedBlock );
 
-      /// @}
+    /// @}
 
-      // ============================================================================
-      /// Returns the size of block allocated by this FixedAllocator
-      // ============================================================================
-        const size_t& objectSize(){ return __blockSize;}
+    // ============================================================================
+    /// Returns the size of block allocated by this FixedAllocator
+    // ============================================================================
+    const size_t& objectSize() { return __blockSize; }
 
-    private :
+    private:
+    // ============================================================================
+    /// Size of a memory block allocated
+    // ============================================================================
+    std::size_t __blockSize;
 
-      // ============================================================================
-      /// Size of a memory block allocated
-      // ============================================================================
-      std::size_t __blockSize;
+    // ============================================================================
+    /// The maximum number of blocks a chunk can allocate
+    // ============================================================================
+    unsigned char __numBlocks;
 
-      // ============================================================================
-      /// The maximum number of blocks a chunk can allocate
-      // ============================================================================
-      unsigned char __numBlocks;
+    // ============================================================================
+    /// Vector of __Chunk objects
+    // ============================================================================
+    typedef std::vector<__Chunk> __Chunks;
+    __Chunks __chunks;
 
-      // ============================================================================
-      /// Vector of __Chunk objects
-      // ============================================================================
-      typedef std::vector<__Chunk> __Chunks;
-      __Chunks __chunks;
+    // ============================================================================
+    /// Last Chunk used for an allocation
+    // ============================================================================
+    __Chunks::iterator __allocChunk;
 
-      // ============================================================================
-      /// Last Chunk used for an allocation
-      // ============================================================================
-      __Chunks::iterator __allocChunk;
+    // ============================================================================
+    /// Last Chunk used for a deallocation
+    // ============================================================================
+    __Chunks::iterator __deallocChunk;
 
-      // ============================================================================
-      /// Last Chunk used for a deallocation
-      // ============================================================================
-      __Chunks::iterator __deallocChunk;
-
-      std::mutex __allocMutex;
-
+    std::mutex __allocMutex;
   };
 
-} //namespace gum
+}  // namespace gum
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/smallobjectallocator/fixedAllocator.inl>
 #endif
 
-#endif // FIXEDALLOCATOR_H
+#endif  // FIXEDALLOCATOR_H

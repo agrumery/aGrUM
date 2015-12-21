@@ -34,37 +34,40 @@
 
 namespace gum {
 
-/**
- * @class TreeRegress treeRegress.h <agrum/multidim/patterns/treeRegress.h>
- * @brief Class used to perform Decision Tree Regression in the FMDP Framework
- * @ingroup multidim_group
- *
- *
- *
- */
+  /**
+   * @class TreeRegress treeRegress.h <agrum/multidim/patterns/treeRegress.h>
+   * @brief Class used to perform Decision Tree Regression in the FMDP Framework
+   * @ingroup multidim_group
+   *
+   *
+   *
+   */
 
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy >
-  class TreeRegress
-  {
+            template <typename> class TerminalNodePolicy =
+                ExactTerminalNodePolicy>
+  class TreeRegress {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      TreeRegress(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* qAction,
-                  const Bijection<const DiscreteVariable*, const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *> pxi );
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    TreeRegress(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* qAction,
+        const Bijection<
+            const DiscreteVariable*,
+            const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*> pxi );
 
-      // ============================================================================
-      /// Default destructor.
-      // ============================================================================
-      ~TreeRegress();
+    // ============================================================================
+    /// Default destructor.
+    // ============================================================================
+    ~TreeRegress();
 
     /// @}
 
@@ -73,32 +76,34 @@ namespace gum {
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Computes and builds the Function Graph that is the result of the operation
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
+    // ============================================================================
+    /// Computes and builds the Function Graph that is the result of the
+    /// operation
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
 
     /// @}
 
 
-    private :
+    private:
+    // ============================================================================
+    /// The whatever 1
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
+    __xPloreVFunc( NodeId currentNodeId );
 
-      // ============================================================================
-      /// The whatever 1
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __xPloreVFunc(
-                    NodeId currentNodeId );
-
-      // ============================================================================
-      /// The function graphs used for the operation
-      // ============================================================================
-      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
-      const Bijection<const DiscreteVariable*, const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*> __pxi;
-      HashTable<const DiscreteVariable*, Idx> __context;
+    // ============================================================================
+    /// The function graphs used for the operation
+    // ============================================================================
+    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
+    const Bijection<
+        const DiscreteVariable*,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*> __pxi;
+    HashTable<const DiscreteVariable*, Idx> __context;
   };
 
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.tcc>
 
-#endif // GUM_REGRESS_H
+#endif  // GUM_REGRESS_H

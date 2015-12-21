@@ -43,151 +43,174 @@
 namespace gum {
 
   /**
-   * @class NodeDatabase NodeDatabase.h <agrum/FMDP/learning/FunctionGraph/nodeDatabase.h>
+   * @class NodeDatabase NodeDatabase.h
+   * <agrum/FMDP/learning/FunctionGraph/nodeDatabase.h>
    * @brief
    * @ingroup fmdp_group
    *
    */
 
 
-  template<TESTNAME AttributeSelection, bool isScalar>
+  template <TESTNAME AttributeSelection, bool isScalar>
   class NodeDatabase {
 
-    typedef typename ValueSelect<isScalar, double, long unsigned int>::type ValueType;
+    typedef typename ValueSelect<isScalar, double, long unsigned int>::type
+        ValueType;
 
-    template < typename GUM_SCALAR >
-    using TestPolicy = typename TestSelect<AttributeSelection, GTestPolicy<GUM_SCALAR>,
-                                                               Chi2TestPolicy<GUM_SCALAR>,
-                                                               LeastSquareTestPolicy<GUM_SCALAR> >::type ;
-
-    public:
-
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
-
-        // ###################################################################
-        /// Default constructor
-        // ###################################################################
-        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable* = nullptr);
-
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        ~NodeDatabase();
-
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(NodeDatabase));}
-
-      /// @}
-
-      // ==========================================================================
-      /// @name Observation handling methods
-      // ==========================================================================
-      /// @{
-
-        // ###################################################################
-        /** Updates database with new observation
-         *
-         * Calls either @fn __addObservation( const Observation*, Int2Type<true>)
-         * or @fn __addObservation( const Observation*, Int2Type<false>)
-         * depending on if we're learning reward function or transition probability
-         **/
-        // ###################################################################
-        void addObservation( const Observation* );
-
-    private:
-        void __addObservation( const Observation*, Int2Type<true>);
-        void __addObservation( const Observation*, Int2Type<false>);
+    template <typename GUM_SCALAR>
+    using TestPolicy =
+        typename TestSelect<AttributeSelection,
+                            GTestPolicy<GUM_SCALAR>,
+                            Chi2TestPolicy<GUM_SCALAR>,
+                            LeastSquareTestPolicy<GUM_SCALAR>>::type;
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-        // ###################################################################
-        /// Nb observation taken into account by this instance
-        // ###################################################################
-        INLINE Idx nbObservation() const { return __nbObservation; }
+    // ###################################################################
+    /// Default constructor
+    // ###################################################################
+    NodeDatabase( const Set<const DiscreteVariable*>*,
+                  const DiscreteVariable* = nullptr );
 
-      /// @}
+    // ###################################################################
+    /// Default destructor
+    // ###################################################################
+    ~NodeDatabase();
 
-      // ==========================================================================
-      /// @name Variable Test Methods
-      // ==========================================================================
-      /// @{
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( NodeDatabase ) );
+    }
 
-        // ###################################################################
-        /// Indicates wether or not, node has sufficient observation so that
-        /// any statistic is relevant
-        // ###################################################################
-        INLINE bool isTestRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isTestRelevant(); }
+    /// @}
 
-        // ###################################################################
-        /// Returns the performance of given variables according to selection
-        /// criterion
-        // ###################################################################
-        INLINE double testValue( const DiscreteVariable* var ) const { return __attrTable[var]->score(); }
+    // ==========================================================================
+    /// @name Observation handling methods
+    // ==========================================================================
+    /// @{
 
-        // ###################################################################
-        /// Returns the performance of given variables according to selection
-        /// secondary criterion (to break ties)
-        // ###################################################################
-        INLINE double testOtherCriterion( const DiscreteVariable* var ) const { return __attrTable[var]->secondaryscore(); }
+    // ###################################################################
+    /** Updates database with new observation
+     *
+     * Calls either @fn __addObservation( const Observation*, Int2Type<true>)
+     * or @fn __addObservation( const Observation*, Int2Type<false>)
+     * depending on if we're learning reward function or transition probability
+     **/
+    // ###################################################################
+    void addObservation( const Observation* );
 
-      /// @}
-
-      // ==========================================================================
-      /// @name Aggregation Methods
-      // ==========================================================================
-      /// @{
-
-        // ###################################################################
-        /// Merges given NodeDatabase informations into current nDB.
-        // ###################################################################
-        NodeDatabase<AttributeSelection, isScalar>& operator+= ( const NodeDatabase<AttributeSelection, isScalar>& src );
-
-        // ###################################################################
-        /// Returns a reference to nDB test policy for given variable
-        /// (so that test policy information can be merged too)
-        // ###################################################################
-        const TestPolicy<ValueType>* testPolicy( const DiscreteVariable* var ) const { return __attrTable[var]; }
-
-        // ###################################################################
-        /// Iterators on value count to recopy correctly its content
-        // ###################################################################
-        const HashTableConstIteratorSafe<ValueType,Idx> cbeginValues() const { return __valueCount.cbeginSafe(); }
-        const HashTableConstIteratorSafe<ValueType,Idx> cendValues() const { return __valueCount.cendSafe(); }
-
-      /// @}
-
-        // ###################################################################
-        ///
-        // ###################################################################
-
-        Idx effectif(Idx moda) const { return __valueCount.exists(moda)?__valueCount[moda]:0; }
-
-        Idx valueDomain() const { return __valueDomain(Int2Type<isScalar>()); }
     private:
-        Idx __valueDomain( Int2Type<true> ) const { return __valueCount.size(); }
-        Idx __valueDomain( Int2Type<false> ) const {return __value->domainSize(); }
+    void __addObservation( const Observation*, Int2Type<true> );
+    void __addObservation( const Observation*, Int2Type<false> );
 
-        std::string toString() const;
+    public:
+    // ###################################################################
+    /// Nb observation taken into account by this instance
+    // ###################################################################
+    INLINE Idx nbObservation() const { return __nbObservation; }
 
-    private :
+    /// @}
 
-      /// Table giving for every variables its instantiation
-      HashTable<const DiscreteVariable*, TestPolicy<ValueType>*> __attrTable;
+    // ==========================================================================
+    /// @name Variable Test Methods
+    // ==========================================================================
+    /// @{
 
-      /// So does this reference on the value observed
-      const DiscreteVariable* __value;
+    // ###################################################################
+    /// Indicates wether or not, node has sufficient observation so that
+    /// any statistic is relevant
+    // ###################################################################
+    INLINE bool isTestRelevant( const DiscreteVariable* var ) const {
+      return __attrTable[var]->isTestRelevant();
+    }
 
-      ///
-      Idx __nbObservation;
+    // ###################################################################
+    /// Returns the performance of given variables according to selection
+    /// criterion
+    // ###################################################################
+    INLINE double testValue( const DiscreteVariable* var ) const {
+      return __attrTable[var]->score();
+    }
 
-      ///
-      HashTable<ValueType,Idx> __valueCount;
+    // ###################################################################
+    /// Returns the performance of given variables according to selection
+    /// secondary criterion (to break ties)
+    // ###################################################################
+    INLINE double testOtherCriterion( const DiscreteVariable* var ) const {
+      return __attrTable[var]->secondaryscore();
+    }
+
+    /// @}
+
+    // ==========================================================================
+    /// @name Aggregation Methods
+    // ==========================================================================
+    /// @{
+
+    // ###################################################################
+    /// Merges given NodeDatabase informations into current nDB.
+    // ###################################################################
+    NodeDatabase<AttributeSelection, isScalar>&
+    operator+=( const NodeDatabase<AttributeSelection, isScalar>& src );
+
+    // ###################################################################
+    /// Returns a reference to nDB test policy for given variable
+    /// (so that test policy information can be merged too)
+    // ###################################################################
+    const TestPolicy<ValueType>*
+    testPolicy( const DiscreteVariable* var ) const {
+      return __attrTable[var];
+    }
+
+    // ###################################################################
+    /// Iterators on value count to recopy correctly its content
+    // ###################################################################
+    const HashTableConstIteratorSafe<ValueType, Idx> cbeginValues() const {
+      return __valueCount.cbeginSafe();
+    }
+    const HashTableConstIteratorSafe<ValueType, Idx> cendValues() const {
+      return __valueCount.cendSafe();
+    }
+
+    /// @}
+
+    // ###################################################################
+    ///
+    // ###################################################################
+
+    Idx effectif( Idx moda ) const {
+      return __valueCount.exists( moda ) ? __valueCount[moda] : 0;
+    }
+
+    Idx valueDomain() const { return __valueDomain( Int2Type<isScalar>() ); }
+
+    private:
+    Idx __valueDomain( Int2Type<true> ) const { return __valueCount.size(); }
+    Idx __valueDomain( Int2Type<false> ) const { return __value->domainSize(); }
+
+    std::string toString() const;
+
+    private:
+    /// Table giving for every variables its instantiation
+    HashTable<const DiscreteVariable*, TestPolicy<ValueType>*> __attrTable;
+
+    /// So does this reference on the value observed
+    const DiscreteVariable* __value;
+
+    ///
+    Idx __nbObservation;
+
+    ///
+    HashTable<ValueType, Idx> __valueCount;
   };
 
 
@@ -195,5 +218,4 @@ namespace gum {
 
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.tcc>
 
-#endif // GUM_NODE_DATABASE_H
-
+#endif  // GUM_NODE_DATABASE_H

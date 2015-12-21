@@ -25,7 +25,6 @@
  */
 
 
-
 // =========================================================================
 #ifndef GUM_STATISTICAL_LAZY_DECIDER_H
 #define GUM_STATISTICAL_LAZY_DECIDER_H
@@ -37,8 +36,10 @@
 namespace gum {
 
   /**
-   * @class StatisticalLazyDecider StatisticalLazyDecider.h <agrum/FMDP/SDyna/StatisticalLazyDecider.h>
-   * @brief Class to make decision following an \epsilon-greedy compromise between exploration and exploitation
+   * @class StatisticalLazyDecider StatisticalLazyDecider.h
+   * <agrum/FMDP/SDyna/StatisticalLazyDecider.h>
+   * @brief Class to make decision following an \epsilon-greedy compromise
+   * between exploration and exploitation
    * @ingroup fmdp_group
    *
    * Does nothing more for decison making
@@ -47,46 +48,44 @@ namespace gum {
    */
   class StatisticalLazyDecider : public IDecisionStrategy {
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
-    public :
-
-        // ==========================================================================
-        /// Constructor
-        // ==========================================================================
-        StatisticalLazyDecider(  ) : __counter(), __initialized(false) {
-          GUM_CONSTRUCTOR(StatisticalLazyDecider)
-        }
-
-        // ==========================================================================
-        /// Destructor
-        // ==========================================================================
-        ~StatisticalLazyDecider(){
-          GUM_DESTRUCTOR(StatisticalLazyDecider)
-        }
-
-      /// @}
-
-
-      // ###################################################################
-      /// @name Incremental methods
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Constructor & destructor.
+    // ###################################################################
+    /// @{
     public:
-        void checkState( const Instantiation& newState ){
-          if( !__initialized ){
-            __counter.reset(newState);
-            __initialized = true;
-          } else
-            __counter.incState(newState);
-        }
+    // ==========================================================================
+    /// Constructor
+    // ==========================================================================
+    StatisticalLazyDecider()
+        : __counter()
+        , __initialized( false ) {
+      GUM_CONSTRUCTOR( StatisticalLazyDecider )
+    }
 
-    private :
-        StatesCounter __counter;
-        bool __initialized;
+    // ==========================================================================
+    /// Destructor
+    // ==========================================================================
+    ~StatisticalLazyDecider() { GUM_DESTRUCTOR( StatisticalLazyDecider ) }
+
+    /// @}
+
+
+    // ###################################################################
+    /// @name Incremental methods
+    // ###################################################################
+    /// @{
+    public:
+    void checkState( const Instantiation& newState ) {
+      if ( !__initialized ) {
+        __counter.reset( newState );
+        __initialized = true;
+      } else
+        __counter.incState( newState );
+    }
+
+    private:
+    StatesCounter __counter;
+    bool __initialized;
   };
-
 }
-#endif // GUM_STATISTICAL_LAZY_DECIDER_H
+#endif  // GUM_STATISTICAL_LAZY_DECIDER_H

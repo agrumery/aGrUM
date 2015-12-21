@@ -51,8 +51,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE ClassElementContainer<GUM_SCALAR>&
-    ClassElementContainer<GUM_SCALAR>::
-    operator=( const ClassElementContainer<GUM_SCALAR>& source ) {
+        ClassElementContainer<GUM_SCALAR>::
+        operator=( const ClassElementContainer<GUM_SCALAR>& source ) {
       GUM_ERROR( FatalError,
                  "illegal call to ClassElementContainer copy operator" );
     }

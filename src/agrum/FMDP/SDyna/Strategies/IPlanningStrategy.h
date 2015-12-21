@@ -25,7 +25,6 @@
  */
 
 
-
 // =========================================================================
 #ifndef GUM_SDYNA_PLANNING_STRATEGY_H
 #define GUM_SDYNA_PLANNING_STRATEGY_H
@@ -40,85 +39,84 @@
 namespace gum {
 
   /**
-   * @class IPlanningStrategy IPlanningStrategy.h <agrum/FMDP/SDyna/IPlanningStrategy.h>
+   * @class IPlanningStrategy IPlanningStrategy.h
+   * <agrum/FMDP/SDyna/IPlanningStrategy.h>
    * @brief Interface for manipulating FMDP planer
    * @ingroup fmdp_group
    *
    */
-  template<typename GUM_SCALAR>
+  template <typename GUM_SCALAR>
   class IPlanningStrategy {
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
-    public :
-
-        // ==========================================================================
-        /// Destructor (virtual and empty since it's an interface)
-        // ==========================================================================
-        virtual ~IPlanningStrategy(){}
-
-      /// @}
-
-      // ###################################################################
-      /// @name Initialization
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Constructor & destructor.
+    // ###################################################################
+    /// @{
     public:
+    // ==========================================================================
+    /// Destructor (virtual and empty since it's an interface)
+    // ==========================================================================
+    virtual ~IPlanningStrategy() {}
 
-        // ==========================================================================
-        /// Initializes the learner
-        // ==========================================================================
-        virtual void initialize(FMDP<GUM_SCALAR>* fmdp) = 0;
+    /// @}
 
-      /// @}
+    // ###################################################################
+    /// @name Initialization
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    /// Initializes the learner
+    // ==========================================================================
+    virtual void initialize( FMDP<GUM_SCALAR>* fmdp ) = 0;
 
-
-      // ###################################################################
-      /// @name Incremental methods
-      // ###################################################################
-      /// @{
-    public :
-        // ==========================================================================
-        /**
-         * Starts a new planning
-         * @param Idx : the maximal number of value iteration performed in this planning
-         */
-        // ==========================================================================
-        virtual void makePlanning(Idx) = 0;
-
-        // ==========================================================================
-        /// Returns optimalPolicy computed so far current size
-        // ==========================================================================
-        virtual const MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>* optimalPolicy( ) = 0;
-
-      /// @}
+    /// @}
 
 
-      // ###################################################################
-      /// @name Miscelleanous methods
-      // ###################################################################
-      /// @{
-    public :
+    // ###################################################################
+    /// @name Incremental methods
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    /**
+     * Starts a new planning
+     * @param Idx : the maximal number of value iteration performed in this
+     * planning
+     */
+    // ==========================================================================
+    virtual void makePlanning( Idx ) = 0;
 
-        // ==========================================================================
-        /// Returns vFunction computed so far current size
-        // ==========================================================================
-        virtual Size vFunctionSize() = 0;
+    // ==========================================================================
+    /// Returns optimalPolicy computed so far current size
+    // ==========================================================================
+    virtual const MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>*
+    optimalPolicy() = 0;
 
-        // ==========================================================================
-        /// Returns optimalPolicy computed so far current size
-        // ==========================================================================
-        virtual Size optimalPolicySize() = 0;
+    /// @}
 
-        // ==========================================================================
-        /// Returns a string describing the optimal policy in a dot format
-        // ==========================================================================
-        virtual std::string optimalPolicy2String() = 0;
 
-      /// @}
+    // ###################################################################
+    /// @name Miscelleanous methods
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    /// Returns vFunction computed so far current size
+    // ==========================================================================
+    virtual Size vFunctionSize() = 0;
+
+    // ==========================================================================
+    /// Returns optimalPolicy computed so far current size
+    // ==========================================================================
+    virtual Size optimalPolicySize() = 0;
+
+    // ==========================================================================
+    /// Returns a string describing the optimal policy in a dot format
+    // ==========================================================================
+    virtual std::string optimalPolicy2String() = 0;
+
+    /// @}
   };
-
 }
-#endif // GUM_SDYNA_LEARNING_STRATEGY_H
+#endif  // GUM_SDYNA_LEARNING_STRATEGY_H

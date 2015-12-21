@@ -23,70 +23,77 @@
 
 namespace gum {
 
-  StatesChecker::StatesChecker() : __nbVisitedStates(0),
-                                   __checker(MultiDimFunctionGraph<bool>::getTreeInstance()),
-                                   __checkerTrueId(0),
-                                   __checkerFalseId(0){
-    GUM_CONSTRUCTOR(StatesChecker)
+  StatesChecker::StatesChecker()
+      : __nbVisitedStates( 0 )
+      , __checker( MultiDimFunctionGraph<bool>::getTreeInstance() )
+      , __checkerTrueId( 0 )
+      , __checkerFalseId( 0 ) {
+    GUM_CONSTRUCTOR( StatesChecker )
   }
 
-  StatesChecker::~StatesChecker(){
+  StatesChecker::~StatesChecker() {
     delete __checker;
-    GUM_DESTRUCTOR(StatesChecker)
+    GUM_DESTRUCTOR( StatesChecker )
   }
 
-  void StatesChecker::reset(const Instantiation & initialState){
+  void StatesChecker::reset( const Instantiation& initialState ) {
 
     __checker->clear();
-    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = initialState.variablesSequence().beginSafe();
-         varIter != initialState.variablesSequence().endSafe(); ++varIter )
-      __checker->add(**varIter);
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+              initialState.variablesSequence().beginSafe();
+          varIter != initialState.variablesSequence().endSafe();
+          ++varIter )
+      __checker->add( **varIter );
 
     __nbVisitedStates = 1;
-    __checkerFalseId = __checker->manager()->addTerminalNode(false);
-    __checkerTrueId = __checker->manager()->addTerminalNode(true);
+    __checkerFalseId = __checker->manager()->addTerminalNode( false );
+    __checkerTrueId = __checker->manager()->addTerminalNode( true );
 
     __insertState( initialState, 0, 0 );
-
   }
 
-  void StatesChecker::addState(const Instantiation & state){
+  void StatesChecker::addState( const Instantiation& state ) {
 
     __nbVisitedStates++;
 
-      NodeId parId = __checker->root();
-      Idx parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
-      while( __checker->node( parId )->son( parModa ) != __checkerFalseId ){
-        parId = __checker->node( parId )->son( parModa );
-        parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
-      }
-      __insertState( state, parId, parModa );
+    NodeId parId = __checker->root();
+    Idx parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
+    while ( __checker->node( parId )->son( parModa ) != __checkerFalseId ) {
+      parId = __checker->node( parId )->son( parModa );
+      parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
+    }
+    __insertState( state, parId, parModa );
   }
 
-  void StatesChecker::__insertState(const Instantiation& state, NodeId parentId, Idx parentModa){
+  void StatesChecker::__insertState( const Instantiation& state,
+                                     NodeId parentId,
+                                     Idx parentModa ) {
 
 
     Idx varIter = 0;
-    if( parentId )
-      varIter = state.variablesSequence().pos( __checker->node(parentId)->nodeVar() ) + 1;
+    if ( parentId )
+      varIter = state.variablesSequence().pos(
+                    __checker->node( parentId )->nodeVar() ) +
+                1;
 
 
-    for( ; varIter < state.variablesSequence().size(); ++varIter ){
+    for ( ; varIter < state.variablesSequence().size(); ++varIter ) {
 
-      const DiscreteVariable* curVar = state.variablesSequence().atPos(varIter);
-      NodeId varId = __checker->manager()->addInternalNode(curVar);
-      if(parentId)
-        __checker->manager()->setSon(parentId, parentModa, varId);
+      const DiscreteVariable* curVar =
+          state.variablesSequence().atPos( varIter );
+      NodeId varId = __checker->manager()->addInternalNode( curVar );
+      if ( parentId )
+        __checker->manager()->setSon( parentId, parentModa, varId );
       else
-        __checker->manager()->setRootNode(varId);
-      for ( Idx moda = 0; moda < curVar->domainSize(); ++moda ){
-        if( moda == state.valFromPtr(curVar) )
+        __checker->manager()->setRootNode( varId );
+      for ( Idx moda = 0; moda < curVar->domainSize(); ++moda ) {
+        if ( moda == state.valFromPtr( curVar ) )
           parentModa = moda;
         else
-          __checker->manager()->setSon(varId, moda, __checkerFalseId);
+          __checker->manager()->setSon( varId, moda, __checkerFalseId );
       }
       parentId = varId;
     }
-    __checker->manager()->setSon(parentId, parentModa, __checkerTrueId);
+    __checker->manager()->setSon( parentId, parentModa, __checkerTrueId );
   }
-} // End of namespace gum
+}  // End of namespace gum

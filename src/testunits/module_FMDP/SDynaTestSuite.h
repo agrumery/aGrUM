@@ -35,121 +35,127 @@
 
 namespace gum_tests {
 
-  class SDynaTestSuite: public CxxTest::TestSuite {
+  class SDynaTestSuite : public CxxTest::TestSuite {
 
-    private :
+    private:
+    void run( gum::AbstractSimulator& sim ) {
 
-      void run ( gum::AbstractSimulator& sim ) {
+      // *********************************************************************************************
+      // Initialisation de l'instance de SDyna
+      // *********************************************************************************************
+      gum::SDYNA* sdyna = nullptr;
+      //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
+      //        gum::SDYNA::spitiInstance() );
+      //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
+      //        gum::SDYNA::spimddiInstance() );
+      TS_GUM_ASSERT_THROWS_NOTHING( sdyna = gum::SDYNA::RMaxMDDInstance() );
+      //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
+      //        gum::SDYNA::RMaxTreeInstance() );
 
-        // *********************************************************************************************
-        // Initialisation de l'instance de SDyna
-        // *********************************************************************************************
-        gum::SDYNA* sdyna = nullptr;
-//        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spitiInstance() );
-//        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spimddiInstance() );
-        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::RMaxMDDInstance() );
-//        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::RMaxTreeInstance() );
-
-        std::cout << "Instantiate"<< std::endl;
-        // Enregistrement des actions possibles auprès de SDyna
-        for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
-          sdyna->addAction( *actionIter, sim.actionName(*actionIter));
-        }
-        std::cout << "Actions added"<< std::endl;
-
-        // Enregistrement des variables caractérisant les états auprès de SDyna
-        for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
-          sdyna->addVariable(*varIter);
-        }
-        std::cout << "Var added"<< std::endl;
-
-        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
-        std::cout << "Initiale state chosen"<< std::endl;
-        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->initialize(sim.currentState()) );
-        std::cout << "Initialized"<< std::endl;
-
-
-        gum::Idx nbObs = 0;
-        for( gum::Idx nbRun = 0; nbRun < 100; ++nbRun ){
-
-          sim.setInitialStateRandomly();
-          TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->setCurrentState(sim.currentState()) );
-          gum::Idx nbDec = 0;
-
-          while(!sim.hasReachEnd() && nbDec < 125){
-
-            nbObs++;
-
-            // Normal Iteration Part
-            gum::Idx actionChosenId = 0;
-            TS_GUM_ASSERT_THROWS_NOTHING ( actionChosenId = sdyna->takeAction(); )
-            TS_GUM_ASSERT_THROWS_NOTHING ( sim.perform( actionChosenId ) );
-            std::cout << "NbRun : " << nbRun << " - NbDec : " << nbDec << " - Nbobs : " << nbObs << std::endl;
-            nbDec++;
-
-//            TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->feedback(sim.currentState(), sim.reward());)
-            try {
-              sdyna->feedback(sim.currentState(), sim.reward());
-            } catch(gum::Exception ex){
-              std::cout << ex.errorType() << std::endl << ex.errorContent() << std::endl << ex.errorCallStack() << std::endl;
-              exit(-42);
-            }
-
-          }
-          TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
-        }
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete sdyna );
-
+      std::cout << "Instantiate" << std::endl;
+      // Enregistrement des actions possibles auprès de SDyna
+      for ( auto actionIter = sim.beginActions();
+            actionIter != sim.endActions();
+            ++actionIter ) {
+        sdyna->addAction( *actionIter, sim.actionName( *actionIter ) );
       }
+      std::cout << "Actions added" << std::endl;
+
+      // Enregistrement des variables caractérisant les états auprès de SDyna
+      for ( auto varIter = sim.beginVariables(); varIter != sim.endVariables();
+            ++varIter ) {
+        sdyna->addVariable( *varIter );
+      }
+      std::cout << "Var added" << std::endl;
+
+      TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
+      std::cout << "Initiale state chosen" << std::endl;
+      TS_GUM_ASSERT_THROWS_NOTHING( sdyna->initialize( sim.currentState() ) );
+      std::cout << "Initialized" << std::endl;
+
+
+      gum::Idx nbObs = 0;
+      for ( gum::Idx nbRun = 0; nbRun < 100; ++nbRun ) {
+
+        sim.setInitialStateRandomly();
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            sdyna->setCurrentState( sim.currentState() ) );
+        gum::Idx nbDec = 0;
+
+        while ( !sim.hasReachEnd() && nbDec < 125 ) {
+
+          nbObs++;
+
+          // Normal Iteration Part
+          gum::Idx actionChosenId = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( actionChosenId = sdyna->takeAction(); )
+          TS_GUM_ASSERT_THROWS_NOTHING( sim.perform( actionChosenId ) );
+          std::cout << "NbRun : " << nbRun << " - NbDec : " << nbDec
+                    << " - Nbobs : " << nbObs << std::endl;
+          nbDec++;
+
+          //            TS_GUM_ASSERT_THROWS_NOTHING (
+          //            sdyna->feedback(sim.currentState(), sim.reward());)
+          try {
+            sdyna->feedback( sim.currentState(), sim.reward() );
+          } catch ( gum::Exception ex ) {
+            std::cout << ex.errorType() << std::endl
+                      << ex.errorContent() << std::endl
+                      << ex.errorCallStack() << std::endl;
+            exit( -42 );
+          }
+        }
+        TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
+      }
+      TS_GUM_ASSERT_THROWS_NOTHING( delete sdyna );
+    }
 
     public:
+    // *******************************************************************************
+    // Run the tests on a Coffee FMDP
+    // *******************************************************************************
+    void test_Coffee() {
+
+      // **************************************************************
+      // Chargement du fmdp servant de base
+      gum::FMDPSimulator sim( GET_PATH_STR( "FMDP/coffee/coffee.dat" ) );
 
 
+      // **************************************************************
+      // Définition des états finaux
+      gum::Instantiation theEnd;
+      for ( gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter =
+                sim.beginVariables();
+            varIter != sim.endVariables();
+            ++varIter )
+        if ( ( *varIter )->name().compare( "huc" ) ) {
+          theEnd.add( **varIter );
+          theEnd.chgVal( **varIter, ( *varIter )->index( "yes" ) );
+          break;
+        }
+      TS_GUM_ASSERT_THROWS_NOTHING( sim.setEndState( theEnd ) );
 
 
-      // *******************************************************************************
-      // Run the tests on a Coffee FMDP
-      // *******************************************************************************
-      void test_Coffee(){
-
-        // **************************************************************
-        // Chargement du fmdp servant de base
-        gum::FMDPSimulator sim(GET_PATH_STR ( "FMDP/coffee/coffee.dat" ));
+      // **************************************************************
+      // Lancement
+      run( sim );
+    }
 
 
-        // **************************************************************
-        // Définition des états finaux
-        gum::Instantiation theEnd;
-        for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter)
-          if( (*varIter)->name().compare("huc")){
-            theEnd.add(**varIter);
-            theEnd.chgVal(**varIter, (*varIter)->index("yes"));
-            break;
-          }
-        TS_GUM_ASSERT_THROWS_NOTHING (sim.setEndState(theEnd));
+    // *******************************************************************************
+    // Run the tests on a Taxi instance
+    // *******************************************************************************
+    void est_Taxi() {
+
+      // **************************************************************
+      // Chargement du simulateur
+      gum::TaxiSimulator sim;
 
 
-        // **************************************************************
-        // Lancement
-        run ( sim );
-      }
-
-
-      // *******************************************************************************
-      // Run the tests on a Taxi instance
-      // *******************************************************************************
-      void est_Taxi(){
-
-        // **************************************************************
-        // Chargement du simulateur
-        gum::TaxiSimulator sim;
-
-
-        // **************************************************************
-        // Lancement
-        run ( sim );
-      }
-
+      // **************************************************************
+      // Lancement
+      run( sim );
+    }
   };
 }
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

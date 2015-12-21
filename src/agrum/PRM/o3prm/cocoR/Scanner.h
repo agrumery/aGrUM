@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_prm_o3prm_COCO_SCANNER_H__)
+#if !defined( gum_prm_o3prm_COCO_SCANNER_H__ )
 #define gum_prm_o3prm_COCO_SCANNER_H__
 
 #include <limits.h>
@@ -47,234 +47,259 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/core/errorsContainer.h>
 
 namespace gum {
-namespace prm {
-namespace o3prm {
+  namespace prm {
+    namespace o3prm {
 
 
-class Token {
-  public:
-    int kind;     // token kind
-    int pos;      // token position in bytes in the source text (starting at 0)
-    int charPos;  // token position in characters in the source text (starting at 0)
-    int col;      // token column (starting at 1)
-    int line;     // token line (starting at 1)
-    wchar_t* val; // token value
-    Token* next;  // ML 2005-03-11 Peek tokens are kept in linked list
+      class Token {
+        public:
+        int kind;  // token kind
+        int pos;   // token position in bytes in the source text (starting at 0)
+        int charPos;   // token position in characters in the source text
+                       // (starting at 0)
+        int col;       // token column (starting at 1)
+        int line;      // token line (starting at 1)
+        wchar_t* val;  // token value
+        Token* next;   // ML 2005-03-11 Peek tokens are kept in linked list
 
-    Token();
-    ~Token();
-};
+        Token();
+        ~Token();
+      };
 
-class Buffer {
-// This Buffer supports the following cases:
-// 1) seekable stream (file)
-//    a) whole stream in buffer
-//    b) part of stream in buffer
-// 2) non seekable stream (network, console)
-  private:
-    unsigned char* buf; // input buffer
-    int bufCapacity;    // capacity of buf
-    int bufStart;       // position of first byte in buffer relative to input stream
-    int bufLen;         // length of buffer
-    int fileLen;        // length of input stream (may change if the stream is no file)
-    int bufPos;         // current position in buffer
-    FILE* stream;       // input stream (seekable)
-    bool isUserStream;  // was the stream opened by the user?
+      class Buffer {
+        // This Buffer supports the following cases:
+        // 1) seekable stream (file)
+        //    a) whole stream in buffer
+        //    b) part of stream in buffer
+        // 2) non seekable stream (network, console)
+        private:
+        unsigned char* buf;  // input buffer
+        int bufCapacity;     // capacity of buf
+        int bufStart;  // position of first byte in buffer relative to input
+                       // stream
+        int bufLen;    // length of buffer
+        int fileLen;   // length of input stream (may change if the stream is no
+                       // file)
+        int bufPos;    // current position in buffer
+        FILE* stream;  // input stream (seekable)
+        bool isUserStream;  // was the stream opened by the user?
 
-    int ReadNextStreamChunk();
-    bool CanSeek();     // true if stream can be seeked otherwise false
+        int ReadNextStreamChunk();
+        bool CanSeek();  // true if stream can be seeked otherwise false
 
-  public:
-    int GetPercent( void );
+        public:
+        int GetPercent( void );
 
-    static const int EoF = COCO_WCHAR_MAX + 1;
+        static const int EoF = COCO_WCHAR_MAX + 1;
 
-    Buffer( FILE* s, bool isUserStream );
-    Buffer( const unsigned char* buf, int len );
-    Buffer( Buffer* b );
-    virtual ~Buffer();
+        Buffer( FILE* s, bool isUserStream );
+        Buffer( const unsigned char* buf, int len );
+        Buffer( Buffer* b );
+        virtual ~Buffer();
 
-    virtual void Close();
-    virtual int Read();
-    virtual int Peek();
-    virtual wchar_t* GetString( int beg, int end );
-    virtual int GetPos();
-    virtual void SetPos( int value );
-};
+        virtual void Close();
+        virtual int Read();
+        virtual int Peek();
+        virtual wchar_t* GetString( int beg, int end );
+        virtual int GetPos();
+        virtual void SetPos( int value );
+      };
 
-class UTF8Buffer : public Buffer {
-  public:
-    UTF8Buffer( Buffer* b ) : Buffer( b ) {};
-    virtual int Read();
-};
+      class UTF8Buffer : public Buffer {
+        public:
+        UTF8Buffer( Buffer* b )
+            : Buffer( b ){};
+        virtual int Read();
+      };
 
-//-----------------------------------------------------------------------------------
-// StartStates  -- maps characters to start states of tokens
-//-----------------------------------------------------------------------------------
-class StartStates {
-  private:
-    class Elem {
-      public:
-        int key, val;
-        Elem* next;
-        Elem( int key, int val ) { this->key = key; this->val = val; next = NULL; }
-    };
+      //-----------------------------------------------------------------------------------
+      // StartStates  -- maps characters to start states of tokens
+      //-----------------------------------------------------------------------------------
+      class StartStates {
+        private:
+        class Elem {
+          public:
+          int key, val;
+          Elem* next;
+          Elem( int key, int val ) {
+            this->key = key;
+            this->val = val;
+            next = NULL;
+          }
+        };
 
-    Elem** tab;
+        Elem** tab;
 
-  public:
-    StartStates() { tab = new Elem*[128]; memset( tab, 0, 128 * sizeof( Elem* ) ); }
-    virtual ~StartStates() {
-      for ( int i = 0; i < 128; ++i ) {
-        Elem* e = tab[i];
-
-        while ( e != NULL ) {
-          Elem* next = e->next;
-          delete e;
-          e = next;
+        public:
+        StartStates() {
+          tab = new Elem*[128];
+          memset( tab, 0, 128 * sizeof( Elem* ) );
         }
-      }
+        virtual ~StartStates() {
+          for ( int i = 0; i < 128; ++i ) {
+            Elem* e = tab[i];
 
-      delete [] tab;
-    }
+            while ( e != NULL ) {
+              Elem* next = e->next;
+              delete e;
+              e = next;
+            }
+          }
 
-    void set( int key, int val ) {
-      Elem* e = new Elem( key, val );
-      int k = ( ( unsigned int ) key ) % 128;
-      e->next = tab[k]; tab[k] = e;
-    }
-
-    int state( int key ) {
-      Elem* e = tab[( ( unsigned int ) key ) % 128];
-
-      while ( e != NULL && e->key != key ) e = e->next;
-
-      return e == NULL ? 0 : e->val;
-    }
-};
-
-//-------------------------------------------------------------------------------------------
-// KeywordMap  -- maps strings to integers (identifiers to keyword kinds)
-//-------------------------------------------------------------------------------------------
-class KeywordMap {
-  private:
-    class Elem {
-      public:
-        wchar_t* key;
-        int val;
-        Elem* next;
-        Elem( const wchar_t* key, int val ) { this->key = coco_string_create( key ); this->val = val; next = NULL; }
-        virtual ~Elem() { coco_string_delete( key ); }
-    };
-
-    Elem** tab;
-
-  public:
-    KeywordMap() { tab = new Elem*[128]; memset( tab, 0, 128 * sizeof( Elem* ) ); }
-    virtual ~KeywordMap() {
-      for ( int i = 0; i < 128; ++i ) {
-        Elem* e = tab[i];
-
-        while ( e != NULL ) {
-          Elem* next = e->next;
-          delete e;
-          e = next;
+          delete[] tab;
         }
-      }
 
-      delete [] tab;
-    }
+        void set( int key, int val ) {
+          Elem* e = new Elem( key, val );
+          int k = ( (unsigned int)key ) % 128;
+          e->next = tab[k];
+          tab[k] = e;
+        }
 
-    void set( const wchar_t* key, int val ) {
-      Elem* e = new Elem( key, val );
-      int k = coco_string_hash( key ) % 128;
-      e->next = tab[k]; tab[k] = e;
-    }
+        int state( int key ) {
+          Elem* e = tab[( (unsigned int)key ) % 128];
 
-    int get( const wchar_t* key, int defaultVal ) {
-      Elem* e = tab[coco_string_hash( key ) % 128];
+          while ( e != NULL && e->key != key )
+            e = e->next;
 
-      while ( e != NULL && !coco_string_equal( e->key, key ) ) e = e->next;
+          return e == NULL ? 0 : e->val;
+        }
+      };
 
-      return e == NULL ? defaultVal : e->val;
-    }
-};
+      //-------------------------------------------------------------------------------------------
+      // KeywordMap  -- maps strings to integers (identifiers to keyword kinds)
+      //-------------------------------------------------------------------------------------------
+      class KeywordMap {
+        private:
+        class Elem {
+          public:
+          wchar_t* key;
+          int val;
+          Elem* next;
+          Elem( const wchar_t* key, int val ) {
+            this->key = coco_string_create( key );
+            this->val = val;
+            next = NULL;
+          }
+          virtual ~Elem() { coco_string_delete( key ); }
+        };
 
-class Scanner {
-  private:
-    void* firstHeap;
-    void* heap;
-    void* heapTop;
-    void** heapEnd;
+        Elem** tab;
 
-    std::wstring __filenamne;
-    bool __trace;
+        public:
+        KeywordMap() {
+          tab = new Elem*[128];
+          memset( tab, 0, 128 * sizeof( Elem* ) );
+        }
+        virtual ~KeywordMap() {
+          for ( int i = 0; i < 128; ++i ) {
+            Elem* e = tab[i];
 
-    unsigned char EOL;
-    int eofSym;
-    int noSym;
-    int maxT;
-    // int charSetSize; // not used
-    StartStates start;
-    KeywordMap keywords;
-    int percent;
+            while ( e != NULL ) {
+              Elem* next = e->next;
+              delete e;
+              e = next;
+            }
+          }
 
-    Token* t;         // current token
-    wchar_t* tval;    // text of current token
-    int tvalLength;   // length of text of current token
-    int tlen;         // length of current token
+          delete[] tab;
+        }
 
-    Token* tokens;    // list of tokens already peeked (first token is a dummy)
-    Token* pt;        // current peek token
+        void set( const wchar_t* key, int val ) {
+          Elem* e = new Elem( key, val );
+          int k = coco_string_hash( key ) % 128;
+          e->next = tab[k];
+          tab[k] = e;
+        }
 
-    int ch;           // current input character
-    
-    int pos;          // byte position of current character
-    int charPos;      // position by unicode characters starting with 0
-    int line;         // line number of current character
-    int col;          // column number of current character
-    int oldEols;      // EOLs that appeared in a comment;
+        int get( const wchar_t* key, int defaultVal ) {
+          Elem* e = tab[coco_string_hash( key ) % 128];
 
-    void CreateHeapBlock();
-    Token* CreateToken();
-    void AppendVal( Token* t );
-    void SetScannerBehindT();
+          while ( e != NULL && !coco_string_equal( e->key, key ) )
+            e = e->next;
 
-    void Init();
-    void NextCh();
-    void AddCh();
-    	bool Comment0();
-	bool Comment1();
+          return e == NULL ? defaultVal : e->val;
+        }
+      };
 
-    Token* NextToken();
+      class Scanner {
+        private:
+        void* firstHeap;
+        void* heap;
+        void* heapTop;
+        void** heapEnd;
 
-  public:
-    Signaler1<int> onLoad;
+        std::wstring __filenamne;
+        bool __trace;
 
-    Buffer* buffer;   // scanner buffer
+        unsigned char EOL;
+        int eofSym;
+        int noSym;
+        int maxT;
+        // int charSetSize; // not used
+        StartStates start;
+        KeywordMap keywords;
+        int percent;
 
-    Scanner( const unsigned char* buf, int len, std::string filename="anonymous buffer", bool trace=false );
-    Scanner( const char* fileName,bool trace=false );
-    Scanner( const wchar_t* fileName,bool trace=false );
-    Scanner( FILE* s,bool trace=false );
-    ~Scanner();
+        Token* t;        // current token
+        wchar_t* tval;   // text of current token
+        int tvalLength;  // length of text of current token
+        int tlen;        // length of current token
 
-    void setTrace( bool b ) { __trace=b;}
+        Token*
+            tokens;  // list of tokens already peeked (first token is a dummy)
+        Token* pt;   // current peek token
 
-    void Load( const wchar_t* fileName );
-    Token* Scan();
-    Token* Peek();
-    void ResetPeek();
+        int ch;  // current input character
 
-    const std::wstring& filename() const {return __filenamne;}
-    Buffer* getBuffer() {return buffer;}
+        int pos;      // byte position of current character
+        int charPos;  // position by unicode characters starting with 0
+        int line;     // line number of current character
+        int col;      // column number of current character
+        int oldEols;  // EOLs that appeared in a comment;
 
-}; // end Scanner
+        void CreateHeapBlock();
+        Token* CreateToken();
+        void AppendVal( Token* t );
+        void SetScannerBehindT();
 
-} // namespace
-} // namespace
-} // namespace
+        void Init();
+        void NextCh();
+        void AddCh();
+        bool Comment0();
+        bool Comment1();
+
+        Token* NextToken();
+
+        public:
+        Signaler1<int> onLoad;
+
+        Buffer* buffer;  // scanner buffer
+
+        Scanner( const unsigned char* buf,
+                 int len,
+                 std::string filename = "anonymous buffer",
+                 bool trace = false );
+        Scanner( const char* fileName, bool trace = false );
+        Scanner( const wchar_t* fileName, bool trace = false );
+        Scanner( FILE* s, bool trace = false );
+        ~Scanner();
+
+        void setTrace( bool b ) { __trace = b; }
+
+        void Load( const wchar_t* fileName );
+        Token* Scan();
+        Token* Peek();
+        void ResetPeek();
+
+        const std::wstring& filename() const { return __filenamne; }
+        Buffer* getBuffer() { return buffer; }
+
+      };  // end Scanner
+
+    }  // namespace
+  }    // namespace
+}  // namespace
 
 
-#endif // !defined(COCO_SCANNER_H__)
-
+#endif  // !defined(COCO_SCANNER_H__)

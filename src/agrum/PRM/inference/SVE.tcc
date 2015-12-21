@@ -116,7 +116,7 @@ namespace gum {
       for ( const auto trash : __lifted_trash )
         delete trash;
 
-      for (auto set: __delayedVariables) 
+      for ( auto set : __delayedVariables )
         delete set.second;
     }
 

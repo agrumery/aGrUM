@@ -38,119 +38,132 @@ namespace gum {
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
-   * Perform a TreeOperatorStrategy planning on given in parameter factored markov decision process
+   * Perform a TreeOperatorStrategy planning on given in parameter factored
+   * markov decision process
    *
    */
-  template<typename GUM_SCALAR>
+  template <typename GUM_SCALAR>
   class TreeOperatorStrategy : public IOperatorStrategy<GUM_SCALAR> {
 
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
-  public:
+    // ###################################################################
+    /// @name Constructor & destructor.
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    /// Default constructor
+    // ==========================================================================
+    TreeOperatorStrategy();
 
-        // ==========================================================================
-        /// Default constructor
-        // ==========================================================================
-        TreeOperatorStrategy (  );
+    // ==========================================================================
+    /// Default destructor
+    // ==========================================================================
+    ~TreeOperatorStrategy();
 
-        // ==========================================================================
-        /// Default destructor
-        // ==========================================================================
-        ~TreeOperatorStrategy();
-
-      /// @}
-
+    /// @}
 
 
-      // ###################################################################
-      /// @name
-      // ###################################################################
-      /// @{
-  public:
+    // ###################################################################
+    /// @name
+    // ###################################################################
+    /// @{
+    public:
+    MultiDimFunctionGraph<GUM_SCALAR, ExactTerminalNodePolicy>*
+    getFunctionInstance() {
+      return MultiDimFunctionGraph<GUM_SCALAR>::getTreeInstance();
+    }
+    MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
+    getArgMaxFunctionInstance() {
+      return MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>,
+                                   SetTerminalNodePolicy>::getTreeInstance();
+    }
+    MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>*
+    getAggregatorInstance() {
+      return MultiDimFunctionGraph<ActionSet,
+                                   SetTerminalNodePolicy>::getTreeInstance();
+    }
 
-        MultiDimFunctionGraph<GUM_SCALAR, ExactTerminalNodePolicy>* getFunctionInstance()
-                { return MultiDimFunctionGraph<GUM_SCALAR>::getTreeInstance(); }
-        MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* getArgMaxFunctionInstance()
-                { return MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>::getTreeInstance(); }
-        MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>* getAggregatorInstance()
-                { return MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>::getTreeInstance(); }
+    /// @}
 
-      /// @}
+    // ###################################################################
+    /// @name Graph Function Operations Methods
+    // ###################################################################
+    /// @{
 
-      // ###################################################################
-      /// @name Graph Function Operations Methods
-      // ###################################################################
-      /// @{
+    protected:
+    // ==========================================================================
+    /// Performs a multiplication/projection on given qAction
+    /// @param qAction : the computed Q(s,a)
+    /// @param pxip : the transition probabilities for the xip variable
+    /// @param xip : the variable we eliminate on the projection
+    /// @warning given qAction is deleted, return the new one
+    // ==========================================================================
+    MultiDimFunctionGraph<GUM_SCALAR>*
+    regress( const MultiDimFunctionGraph<GUM_SCALAR>* Vold,
+             Idx actionId,
+             const FMDP<GUM_SCALAR>* fmdp,
+             const Set<const DiscreteVariable*>& elVarSeq );
 
-  protected:
+    // ==========================================================================
+    /// @warning given vFunction and qAction are deleted, returns the new one
+    // ==========================================================================
+    virtual MultiDimFunctionGraph<GUM_SCALAR>*
+    maximize( const MultiDimFunctionGraph<GUM_SCALAR>* f1,
+              const MultiDimFunctionGraph<GUM_SCALAR>* f2,
+              Idx del = 3 );
 
-        // ==========================================================================
-        /// Performs a multiplication/projection on given qAction
-        /// @param qAction : the computed Q(s,a)
-        /// @param pxip : the transition probabilities for the xip variable
-        /// @param xip : the variable we eliminate on the projection
-        /// @warning given qAction is deleted, return the new one
-        // ==========================================================================
-        MultiDimFunctionGraph<GUM_SCALAR>* regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
-                                                    Idx actionId,
-                                                    const FMDP< GUM_SCALAR >* fmdp,
-                                                    const Set<const DiscreteVariable*>& elVarSeq);
+    // ==========================================================================
+    /// @warning Minimze the two given functions
+    // ==========================================================================
+    virtual MultiDimFunctionGraph<GUM_SCALAR>*
+    minimize( const MultiDimFunctionGraph<GUM_SCALAR>* f1,
+              const MultiDimFunctionGraph<GUM_SCALAR>* f2,
+              Idx del = 3 );
 
-        // ==========================================================================
-        /// @warning given vFunction and qAction are deleted, returns the new one
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* maximize(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                                                              Idx del = 3);
+    // ==========================================================================
+    /// @warning given f1 and f2 are deleted, returns the new one
+    // ==========================================================================
+    virtual MultiDimFunctionGraph<GUM_SCALAR>*
+    multiply( const MultiDimFunctionGraph<GUM_SCALAR>* f1,
+              const MultiDimFunctionGraph<GUM_SCALAR>* f2,
+              Idx del = 3 );
 
-        // ==========================================================================
-        /// @warning Minimze the two given functions
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* minimize(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                                                              Idx del = 3);
+    // ==========================================================================
+    /// @warning given vFunction and qAction are deleted, returns the new one
+    // ==========================================================================
+    virtual MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>,
+                                  SetTerminalNodePolicy>*
+    argmaximize( const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>,
+                                             SetTerminalNodePolicy>* f1,
+                 const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>,
+                                             SetTerminalNodePolicy>* f2,
+                 Idx del = 3 );
 
-        // ==========================================================================
-        /// @warning given f1 and f2 are deleted, returns the new one
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* multiply(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                                                              Idx del = 3);
+    // ==========================================================================
+    /// @warning given function is deleted, returns the new one
+    // ==========================================================================
+    virtual MultiDimFunctionGraph<GUM_SCALAR>*
+    add( const MultiDimFunctionGraph<GUM_SCALAR>* f1,
+         const MultiDimFunctionGraph<GUM_SCALAR>* f2,
+         Idx del = 1 );
 
-        // ==========================================================================
-        /// @warning given vFunction and qAction are deleted, returns the new one
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argmaximize(
-                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* f1,
-                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* f2,
-                            Idx del = 3);
-
-        // ==========================================================================
-        /// @warning given function is deleted, returns the new one
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* add( const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                                                        const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                                                        Idx del = 1);
-
-        // ==========================================================================
-        /// @warning this time, nothing is deleted
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* subtract(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                                                            const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                                                            Idx del = 0);
+    // ==========================================================================
+    /// @warning this time, nothing is deleted
+    // ==========================================================================
+    virtual MultiDimFunctionGraph<GUM_SCALAR>*
+    subtract( const MultiDimFunctionGraph<GUM_SCALAR>* f1,
+              const MultiDimFunctionGraph<GUM_SCALAR>* f2,
+              Idx del = 0 );
 
 
-      /// @}
+    /// @}
   };
 } /* namespace gum */
 
 
 #include <agrum/FMDP/planning/treeOperatorStrategy.tcc>
 
-#endif // GUM_TreeOperatorStrategy_H
+#endif  // GUM_TreeOperatorStrategy_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-

@@ -72,9 +72,9 @@ namespace gum {
       protected:
       virtual Idx _neutralElt( void ) const;
       virtual Idx _fold( const DiscreteVariable& v,
-                           Idx i1,
-                           Idx i2,
-                           bool& stop_iteration ) const;
+                         Idx i1,
+                         Idx i2,
+                         bool& stop_iteration ) const;
     };
 
     extern template class Min<float>;

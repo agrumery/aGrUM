@@ -49,103 +49,118 @@ namespace gum {
   class Observation {
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    /// Default constructor
+    // ###################################################################
+    Observation() { GUM_CONSTRUCTOR( Observation ) }
 
-        // ###################################################################
-        /// Default constructor
-        // ###################################################################
-        Observation () {GUM_CONSTRUCTOR(Observation)}
+    // ###################################################################
+    /// Default destructor
+    // ###################################################################
+    ~Observation() { GUM_DESTRUCTOR( Observation ) }
 
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        ~Observation() {GUM_DESTRUCTOR(Observation)}
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( Observation ) );
+    }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(Observation));}
+    /// @}
 
-      /// @}
+    // ==========================================================================
+    /// @name Observation Handlers
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Observation Handlers
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    /**
+     * Returns the modality assumed by the given variable in this observation
+     *
+     * @throws NotFound if variable is not in this observation
+     */
+    // ###################################################################
+    INLINE Idx modality( const DiscreteVariable* var ) const {
+      return __varInst[var];
+    }
+    INLINE Idx rModality( const DiscreteVariable* var ) const {
+      return __rInst[var];
+    }
 
-        // ###################################################################
-        /**
-         * Returns the modality assumed by the given variable in this observation
-         *
-         * @throws NotFound if variable is not in this observation
-         */
-        // ###################################################################
-        INLINE Idx modality( const DiscreteVariable* var ) const { return __varInst[var]; }
-        INLINE Idx rModality( const DiscreteVariable* var ) const { return __rInst[var]; }
+    // ###################################################################
+    /**
+     * Sets the modality assumed by the given variable in this observation
+     *
+     * @throws DuplicateElement if a value has already be assigned to
+     * this variable
+     */
+    // ###################################################################
+    INLINE void setModality( const DiscreteVariable* var, Idx modality ) {
+      __varInst.insert( var, modality );
+    }
+    INLINE void setRModality( const DiscreteVariable* var, Idx modality ) {
+      __rInst.insert( var, modality );
+    }
 
-        // ###################################################################
-        /**
-         * Sets the modality assumed by the given variable in this observation
-         *
-         * @throws DuplicateElement if a value has already be assigned to
-         * this variable
-         */
-        // ###################################################################
-        INLINE void setModality( const DiscreteVariable* var, Idx modality ) { __varInst.insert(var, modality); }
-        INLINE void setRModality( const DiscreteVariable* var, Idx modality ) { __rInst.insert(var, modality); }
+    // ###################################################################
+    // Returns the reward obtained during this observation
+    // ###################################################################
+    double reward() const { return __reward; }
 
-        // ###################################################################
-        // Returns the reward obtained during this observation
-        // ###################################################################
-        double reward( ) const { return __reward; }
+    // ###################################################################
+    // Sets the reward obtained during this observation
+    // ###################################################################
+    void setReward( double reward ) { __reward = reward; }
 
-        // ###################################################################
-        // Sets the reward obtained during this observation
-        // ###################################################################
-        void setReward( double reward ) { __reward = reward; }
+    /// @}
+    ///
+    std::string toString() const;
 
-      /// @}
-      ///
-      std::string toString() const;
+    // ==========================================================================
+    /// @name Iterators on Variables
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Iterators on Variables
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    /// Returns an const safe iterator on the beginning of the list of
+    /// variables in this observation
+    // ###################################################################
+    HashTableConstIteratorSafe<const DiscreteVariable*, Idx>
+    cbeginVariablesSafe() const {
+      return __varInst.cbeginSafe();
+    }
 
-        // ###################################################################
-        /// Returns an const safe iterator on the beginning of the list of
-        /// variables in this observation
-        // ###################################################################
-        HashTableConstIteratorSafe<const DiscreteVariable*, Idx> cbeginVariablesSafe() const { return __varInst.cbeginSafe(); }
+    // ###################################################################
+    /// Returns an const safe iterator on the end of the list of
+    /// variables in this observation
+    // ###################################################################
+    HashTableConstIteratorSafe<const DiscreteVariable*, Idx>
+    cendVariablesSafe() const {
+      return __varInst.cendSafe();
+    }
 
-        // ###################################################################
-        /// Returns an const safe iterator on the end of the list of
-        /// variables in this observation
-        // ###################################################################
-        HashTableConstIteratorSafe<const DiscreteVariable*, Idx> cendVariablesSafe() const { return __varInst.cendSafe(); }
+    /// @}
 
-      /// @}
+    private:
+    /// Table giving for every variables its instantiation
+    HashTable<const DiscreteVariable*, Idx> __varInst;
+    HashTable<const DiscreteVariable*, Idx> __rInst;
 
-    private :
-
-      /// Table giving for every variables its instantiation
-      HashTable<const DiscreteVariable*, Idx> __varInst;
-      HashTable<const DiscreteVariable*, Idx> __rInst;
-
-      /// The reward associated to this transition
-      double __reward;
+    /// The reward associated to this transition
+    double __reward;
   };
 
 } /* namespace gum */
 
 
-#endif // GUM_OBSERVATION_H
+#endif  // GUM_OBSERVATION_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-

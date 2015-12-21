@@ -126,8 +126,8 @@ namespace gum {
   // copy operator
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::
-  operator=( const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& from ) {
+      MultiPriorityQueue<Val, Priority, Cmp, Alloc>::
+      operator=( const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& from ) {
     // for debugging purposes
     GUM_OP_CPY( MultiPriorityQueue );
 
@@ -163,8 +163,9 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   template <typename OtherAlloc>
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::
-  operator=( const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>& from ) {
+      MultiPriorityQueue<Val, Priority, Cmp, Alloc>::
+      operator=(
+          const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>& from ) {
     // for debugging purposes
     GUM_OP_CPY( MultiPriorityQueue );
 
@@ -203,8 +204,8 @@ namespace gum {
   // move operator
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::
-  operator=( MultiPriorityQueue<Val, Priority, Cmp, Alloc>&& from ) {
+      MultiPriorityQueue<Val, Priority, Cmp, Alloc>::
+      operator=( MultiPriorityQueue<Val, Priority, Cmp, Alloc>&& from ) {
     // avoid self assignment
     if ( this != &from ) {
       // for debugging purposes

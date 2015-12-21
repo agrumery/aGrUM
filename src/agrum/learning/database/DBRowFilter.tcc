@@ -76,8 +76,9 @@ namespace gum {
     /// copy operator
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::operator=(
-        const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter ) {
+        DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
+        operator=( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
+                       filter ) {
       if ( this != &filter ) {
         __handler = filter.__handler;
         __translator_set = filter.__translator_set;
@@ -89,8 +90,9 @@ namespace gum {
     /// move operator
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
-    operator=( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& filter ) {
+        DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
+        operator=(
+            DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& filter ) {
       if ( this != &filter ) {
         __handler = std::move( filter.__handler );
         __translator_set = std::move( filter.__translator_set );

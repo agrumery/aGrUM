@@ -34,7 +34,8 @@
 
 namespace gum {
   /**
-   * @class AbstractSimulator abstractSimulator.h <agrum/FMDP/simulation/abstractSimulator.h>
+   * @class AbstractSimulator abstractSimulator.h
+   * <agrum/FMDP/simulation/abstractSimulator.h>
    * @brief A class to simulate a reinforcement learning problem.
    * @ingroup fmdp_group
    *
@@ -44,89 +45,91 @@ namespace gum {
   class AbstractSimulator {
 
     public:
+    // ===========================================================================
+    /// @name Constructors, Destructors.
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name Constructors, Destructors.
-      // ===========================================================================
-      /// @{
+    /**
+     * Default constructor.
+     */
+    AbstractSimulator();
 
-        /**
-         * Default constructor.
-         */
-        AbstractSimulator();
+    /**
+     * Default destructor.
+     */
+    virtual ~AbstractSimulator();
 
-        /**
-         * Default destructor.
-         */
-        virtual ~AbstractSimulator();
+    /// @}
 
-      /// @}
+    // ===========================================================================
+    /// @name
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name
-      // ===========================================================================
-      /// @{
+    /// Sets the intial statefrom which we begun the simulation
+    INLINE void setInitialState( const Instantiation& initialState ) {
+      _currentState = initialState;
+    }
+    void setInitialStateRandomly();
 
-        /// Sets the intial statefrom which we begun the simulation
-        INLINE void setInitialState( const Instantiation& initialState ) { _currentState = initialState; }
-        void setInitialStateRandomly( );
+    protected:
+    /// Choses a random state as the first test for a run
+    virtual Instantiation _randomState();
 
-  protected:
-        /// Choses a random state as the first test for a run
-        virtual Instantiation _randomState();
+    public:
+    /// Sets the final states upon which a run is over
+    INLINE void setEndState( const Instantiation& endState ) {
+      _endState = endState;
+    }
 
-  public :
-        /// Sets the final states upon which a run is over
-        INLINE void setEndState( const Instantiation& endState ) { _endState = endState; }
+    /// Tests if end state has been reached
+    virtual bool hasReachEnd();
 
-        /// Tests if end state has been reached
-        virtual bool hasReachEnd();
+    ///
+    INLINE const Instantiation& currentState() { return _currentState; }
 
-        ///
-        INLINE const Instantiation& currentState() { return _currentState; }
+    ///
+    virtual double reward() = 0;
 
-        ///
-        virtual double reward() = 0;
+    ///
+    virtual void perform( Idx ) = 0;
 
-        ///
-        virtual void perform( Idx ) = 0;
+    /// @}
 
-      /// @}
+    // ===========================================================================
+    /// @name Variables
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name Variables
-      // ===========================================================================
-      /// @{
+    virtual const DiscreteVariable*
+    primeVar( const DiscreteVariable* mainVar ) = 0;
 
-        virtual const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) = 0;
+    /// Iteration over the variables of the simulated probleme
+    virtual SequenceIteratorSafe<const DiscreteVariable*> beginVariables() = 0;
+    virtual SequenceIteratorSafe<const DiscreteVariable*> endVariables() = 0;
 
-        /// Iteration over the variables of the simulated probleme
-        virtual SequenceIteratorSafe< const DiscreteVariable* > beginVariables() = 0;
-        virtual SequenceIteratorSafe< const DiscreteVariable* > endVariables() = 0;
+    /// @}
 
-      /// @}
+    // ===========================================================================
+    /// @name Actions
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name Actions
-      // ===========================================================================
-      /// @{
+    virtual const std::string& actionName( Idx ) = 0;
 
-        virtual const std::string& actionName(Idx) = 0;
-
-        /// Iteration over the variables of the simulated probleme
-        virtual SequenceIteratorSafe< Idx > beginActions() = 0;
-        virtual SequenceIteratorSafe< Idx > endActions() = 0;
+    /// Iteration over the variables of the simulated probleme
+    virtual SequenceIteratorSafe<Idx> beginActions() = 0;
+    virtual SequenceIteratorSafe<Idx> endActions() = 0;
 
 
-      /// @}
+    /// @}
 
-      /// Tha state in which the system currently is
-      Instantiation _currentState, _endState;
+    /// Tha state in which the system currently is
+    Instantiation _currentState, _endState;
   };
 
 } /* namespace gum */
 
 
-
-#endif // GUM__ABSTRACT_SIMULATOR_H
-
+#endif  // GUM__ABSTRACT_SIMULATOR_H

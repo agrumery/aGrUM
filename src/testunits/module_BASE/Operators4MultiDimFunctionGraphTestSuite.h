@@ -1,22 +1,22 @@
 
 /********************************************************************************
-* Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES           *
-* {prenom.nom}_at_lip6.fr                                                       *
+* Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES *
+* {prenom.nom}_at_lip6.fr *
 *                                                                               *
-* This program is free software; you can redistribute it and/or modify          *
-* it under the terms of the GNU General Public License as published by          *
-* the Free Software Foundation; either version 2 of the License, or             *
-* (at your option) any later version.                                           *
+* This program is free software; you can redistribute it and/or modify *
+* it under the terms of the GNU General Public License as published by *
+* the Free Software Foundation; either version 2 of the License, or *
+* (at your option) any later version. *
 *                                                                               *
-* This program is distributed in the hope that it will be useful,               *
-* but WITHOUT ANY WARRANTY; without even the implied warranty of                *
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                  *
-* GNU General Public License for more details.                                  *
+* This program is distributed in the hope that it will be useful, *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the *
+* GNU General Public License for more details. *
 *                                                                               *
-* You should have received a copy of the GNU General Public License             *
-* along with this program; if not, write to the                                 *
-* Free Software Foundation, Inc.,                                               *
-* 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                      *
+* You should have received a copy of the GNU General Public License *
+* along with this program; if not, write to the *
+* Free Software Foundation, Inc., *
+* 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. *
 *********************************************************************************/
 
 // ============================================================================
@@ -41,603 +41,673 @@
 
 namespace gum_tests {
 
-  class Operators4MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
+  class Operators4MultiDimFunctionGraphTestSuite : public CxxTest::TestSuite {
 
-    private :
+    private:
+    /// Defines the maximal number of modalities for a var (which is choose
+    /// randomly).
+    /// The domain size will be of 2 + rand()%maxVarDomainSize.
+    static const gum::Idx maxVarDomainSize = 5;
 
-      /// Defines the maximal number of modalities for a var (which is choose randomly).
-      /// The domain size will be of 2 + rand()%maxVarDomainSize.
-      static const gum::Idx maxVarDomainSize = 5;
+    /// Defines the minimal and maximal number of var in a diagram.
+    static const gum::Size minNbVarInDiagram = 6, maxNbVarInDiagram = 10;
 
-      /// Defines the minimal and maximal number of var in a diagram.
-      static const gum::Size minNbVarInDiagram = 6, maxNbVarInDiagram = 10;
+    /// Defines how many different operations we perform (from 2 to 5 )
+    static const gum::Idx nbOperation = 4;
 
-      /// Defines how many different operations we perform (from 2 to 5 )
-      static const gum::Idx nbOperation = 4;
-
-      /// Defines the number of iteration on randomly generated diagram we perform
-      static const gum::Idx nbIter = 100;
+    /// Defines the number of iteration on randomly generated diagram we perform
+    static const gum::Idx nbIter = 100;
 
 
-      // *****************************************************************************************************
-      /// Génération fixe d'une liste de variable
-      // *****************************************************************************************************
-      gum::Sequence< const gum::DiscreteVariable* >* __generateFixVarList() {
+    // *****************************************************************************************************
+    /// Génération fixe d'une liste de variable
+    // *****************************************************************************************************
+    gum::Sequence<const gum::DiscreteVariable*>* __generateFixVarList() {
 
-        gum::Sequence< const gum::DiscreteVariable* >* ret = new gum::Sequence< const gum::DiscreteVariable* >();
-        ret->insert ( new gum::LabelizedVariable ( "A", "", 2 ) );
-        ret->insert ( new gum::LabelizedVariable ( "B", "", 2 ) );
-        ret->insert ( new gum::LabelizedVariable ( "C", "", 2 ) );
+      gum::Sequence<const gum::DiscreteVariable*>* ret =
+          new gum::Sequence<const gum::DiscreteVariable*>();
+      ret->insert( new gum::LabelizedVariable( "A", "", 2 ) );
+      ret->insert( new gum::LabelizedVariable( "B", "", 2 ) );
+      ret->insert( new gum::LabelizedVariable( "C", "", 2 ) );
 
-        return ret;
+      return ret;
+    }
+
+
+    // *****************************************************************************************************
+    /// Génération aléatoire d'une liste de 10 variables
+    // *****************************************************************************************************
+    gum::Sequence<const gum::DiscreteVariable*>*
+    __generateRandomVarList( gum::Idx i ) {
+
+      gum::Sequence<const gum::DiscreteVariable*>* ret =
+          new gum::Sequence<const gum::DiscreteVariable*>();
+
+      for ( gum::Idx j = 0; j < maxNbVarInDiagram; j++ ) {
+        std::stringstream varName;
+        varName << "var" << j;
+        ret->insert( new gum::LabelizedVariable(
+            varName.str(), "", 2 + rand() % maxVarDomainSize ) );
       }
 
-
-      // *****************************************************************************************************
-      /// Génération aléatoire d'une liste de 10 variables
-      // *****************************************************************************************************
-      gum::Sequence< const gum::DiscreteVariable* >* __generateRandomVarList ( gum::Idx i ) {
-
-        gum::Sequence< const gum::DiscreteVariable* >* ret = new gum::Sequence< const gum::DiscreteVariable* >();
-
-        for ( gum::Idx j = 0; j < maxNbVarInDiagram; j++ ) {
-          std::stringstream varName;
-          varName << "var" << j;
-          ret->insert ( new gum::LabelizedVariable ( varName.str(), "", 2 + rand() % maxVarDomainSize ) );
-        }
-
-        return ret;
-      }
+      return ret;
+    }
 
 
-      // *****************************************************************************************************
-      /// Brassage aléatoire d'une liste de 10 variables
-      // *****************************************************************************************************
-      void __shuffleVarList ( gum::Sequence< const gum::DiscreteVariable* >* varList, gum::Idx i ) {
-        for ( gum::Idx j = 0; j < 10; j++ )
-          varList->swap ( rand() % ( varList->size() ), rand() % ( varList->size() ) );
-      }
+    // *****************************************************************************************************
+    /// Brassage aléatoire d'une liste de 10 variables
+    // *****************************************************************************************************
+    void __shuffleVarList( gum::Sequence<const gum::DiscreteVariable*>* varList,
+                           gum::Idx i ) {
+      for ( gum::Idx j = 0; j < 10; j++ )
+        varList->swap( rand() % ( varList->size() ),
+                       rand() % ( varList->size() ) );
+    }
 
 
-      // *****************************************************************************************************
-      /// Génération fixe de diagramme de décision
-      // *****************************************************************************************************
-      gum::MultiDimFunctionGraph<double>* __generateFunctionGraph1 ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
+    // *****************************************************************************************************
+    /// Génération fixe de diagramme de décision
+    // *****************************************************************************************************
+    gum::MultiDimFunctionGraph<double>* __generateFunctionGraph1(
+        const gum::Sequence<const gum::DiscreteVariable*>* varList ) {
 
-        gum::MultiDimFunctionGraph<double>* generatedFunctionGraph = gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph<double>* generatedFunctionGraph =
+          gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-        for ( gum::SequenceIterator< const gum::DiscreteVariable* > varIter = varList->begin();
-           varIter != varList->end(); ++varIter )
-          generatedFunctionGraph->add(**varIter);
+      for ( gum::SequenceIterator<const gum::DiscreteVariable*> varIter =
+                varList->begin();
+            varIter != varList->end();
+            ++varIter )
+        generatedFunctionGraph->add( **varIter );
 
-        gum::NodeId a = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 0 ) );
-        gum::NodeId b = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 1 ) );
-        gum::NodeId c = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 2 ) );
+      gum::NodeId a = generatedFunctionGraph->manager()->addInternalNode(
+          varList->atPos( 0 ) );
+      gum::NodeId b = generatedFunctionGraph->manager()->addInternalNode(
+          varList->atPos( 1 ) );
+      gum::NodeId c = generatedFunctionGraph->manager()->addInternalNode(
+          varList->atPos( 2 ) );
 
-        gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode ( 6 );
-        gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode ( 2 );
-        gum::NodeId g = generatedFunctionGraph->manager()->addTerminalNode ( 3 );
+      gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode( 6 );
+      gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode( 2 );
+      gum::NodeId g = generatedFunctionGraph->manager()->addTerminalNode( 3 );
 
-        generatedFunctionGraph->manager()->setSon( a, 0, b );
-        generatedFunctionGraph->manager()->setSon( a, 1, c );
+      generatedFunctionGraph->manager()->setSon( a, 0, b );
+      generatedFunctionGraph->manager()->setSon( a, 1, c );
 
-        generatedFunctionGraph->manager()->setSon( b, 0, d );
-        generatedFunctionGraph->manager()->setSon( b, 1, c );
+      generatedFunctionGraph->manager()->setSon( b, 0, d );
+      generatedFunctionGraph->manager()->setSon( b, 1, c );
 
-        generatedFunctionGraph->manager()->setSon( c, 0, e );
-        generatedFunctionGraph->manager()->setSon( c, 1, g );
+      generatedFunctionGraph->manager()->setSon( c, 0, e );
+      generatedFunctionGraph->manager()->setSon( c, 1, g );
 
-        generatedFunctionGraph->manager()->setRootNode(a);
+      generatedFunctionGraph->manager()->setRootNode( a );
 
-        return generatedFunctionGraph;
-      }
-
-
-      // *****************************************************************************************************
-      /// Génération fixe de diagramme de décision
-      // *****************************************************************************************************
-      gum::MultiDimFunctionGraph<double>* __generateFunctionGraph2 ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
-
-        gum::MultiDimFunctionGraph<double>* generatedFunctionGraph = gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
-
-        for ( gum::SequenceIterator< const gum::DiscreteVariable* > varIter = varList->begin();
-           varIter != varList->end(); ++varIter )
-          generatedFunctionGraph->add(**varIter);
-
-        gum::NodeId a = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 0 ) );
-        gum::NodeId c = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 2 ) );
-
-        gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode ( 4 );
-        gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode ( 5 );
-        gum::NodeId g = generatedFunctionGraph->manager()->addTerminalNode ( 1 );
-
-        generatedFunctionGraph->manager()->setSon( a, 0, d );
-        generatedFunctionGraph->manager()->setSon( a, 1, c );
-
-        generatedFunctionGraph->manager()->setSon( c, 0, e );
-        generatedFunctionGraph->manager()->setSon( c, 1, g );
-
-        generatedFunctionGraph->manager()->setRootNode(a);
-
-        return generatedFunctionGraph;
-
-      }
+      return generatedFunctionGraph;
+    }
 
 
-      // *****************************************************************************************************
-      /// Génération aléatoire de diagramme de décision
-      // *****************************************************************************************************
-      gum::MultiDimFunctionGraph<double>* __generateRandomFunctionGraph ( const gum::Sequence< const gum::DiscreteVariable* >* varList,
-                                                                          double lowLimit = -100,
-                                                                          double highLimit = 100 ) {
+    // *****************************************************************************************************
+    /// Génération fixe de diagramme de décision
+    // *****************************************************************************************************
+    gum::MultiDimFunctionGraph<double>* __generateFunctionGraph2(
+        const gum::Sequence<const gum::DiscreteVariable*>* varList ) {
 
-        srand( time(NULL) );
-        gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList);
+      gum::MultiDimFunctionGraph<double>* generatedFunctionGraph =
+          gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-        return gene.generate();
-      }
+      for ( gum::SequenceIterator<const gum::DiscreteVariable*> varIter =
+                varList->begin();
+            varIter != varList->end();
+            ++varIter )
+        generatedFunctionGraph->add( **varIter );
+
+      gum::NodeId a = generatedFunctionGraph->manager()->addInternalNode(
+          varList->atPos( 0 ) );
+      gum::NodeId c = generatedFunctionGraph->manager()->addInternalNode(
+          varList->atPos( 2 ) );
+
+      gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode( 4 );
+      gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode( 5 );
+      gum::NodeId g = generatedFunctionGraph->manager()->addTerminalNode( 1 );
+
+      generatedFunctionGraph->manager()->setSon( a, 0, d );
+      generatedFunctionGraph->manager()->setSon( a, 1, c );
+
+      generatedFunctionGraph->manager()->setSon( c, 0, e );
+      generatedFunctionGraph->manager()->setSon( c, 1, g );
+
+      generatedFunctionGraph->manager()->setRootNode( a );
+
+      return generatedFunctionGraph;
+    }
 
 
-      // *****************************************************************************************************
-      /// Sauvegarde des diagrammes générant une erreur dans un fichier log
-      // *****************************************************************************************************
-      void __saveDiagrams ( gum::MultiDimFunctionGraph<double>* a1,
-                            gum::MultiDimFunctionGraph<double>* a2,
-                            gum::MultiDimFunctionGraph<double>* a3 ) {
+    // *****************************************************************************************************
+    /// Génération aléatoire de diagramme de décision
+    // *****************************************************************************************************
+    gum::MultiDimFunctionGraph<double>* __generateRandomFunctionGraph(
+        const gum::Sequence<const gum::DiscreteVariable*>* varList,
+        double lowLimit = -100,
+        double highLimit = 100 ) {
 
-        std::string dotfile = GET_PATH_STR ( "FunctionGraphError.log" );
-        std::ofstream output ( dotfile.c_str(), std::ios::out );
+      srand( time( NULL ) );
+      gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList );
 
-        if ( ! output.good() )
-          GUM_ERROR ( gum::IOError, "Stream states flags are not all unset." );
+      return gene.generate();
+    }
 
+
+    // *****************************************************************************************************
+    /// Sauvegarde des diagrammes générant une erreur dans un fichier log
+    // *****************************************************************************************************
+    void __saveDiagrams( gum::MultiDimFunctionGraph<double>* a1,
+                         gum::MultiDimFunctionGraph<double>* a2,
+                         gum::MultiDimFunctionGraph<double>* a3 ) {
+
+      std::string dotfile = GET_PATH_STR( "FunctionGraphError.log" );
+      std::ofstream output( dotfile.c_str(), std::ios::out );
+
+      if ( !output.good() )
+        GUM_ERROR( gum::IOError, "Stream states flags are not all unset." );
+
+      output << std::endl;
+
+      for ( gum::SequenceIterator<const gum::DiscreteVariable*> ite =
+                a1->variablesSequence().begin();
+            ite != a1->variablesSequence().end();
+            ++ite )
+        output << ( *ite )->toString() << " - ";
+
+      output << std::endl;
+
+      output << a1->toDot();
+
+      output << std::endl;
+
+      for ( gum::SequenceIterator<const gum::DiscreteVariable*> ite =
+                a2->variablesSequence().begin();
+            ite != a2->variablesSequence().end();
+            ++ite )
+        output << ( *ite )->toString() << " - ";
+
+      output << std::endl;
+
+      output << a2->toDot();
+
+      if ( a3 != nullptr ) {
         output << std::endl;
 
-        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a1->variablesSequence().begin();
-           ite != a1->variablesSequence().end(); ++ite )
+        for ( gum::SequenceIterator<const gum::DiscreteVariable*> ite =
+                  a3->variablesSequence().begin();
+              ite != a3->variablesSequence().end();
+              ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;
 
-        output << a1->toDot();
-
-        output << std::endl;
-
-        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a2->variablesSequence().begin();
-           ite != a2->variablesSequence().end(); ++ite )
-          output << ( *ite )->toString() << " - ";
-
-        output << std::endl;
-
-        output << a2->toDot();
-
-        if ( a3 != nullptr ) {
-          output << std::endl;
-
-          for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a3->variablesSequence().begin();
-             ite != a3->variablesSequence().end(); ++ite )
-            output << ( *ite )->toString() << " - ";
-
-          output << std::endl;
-
-          output << a3->toDot();
-        }
-
-        output.flush();
-
-        output.close();
-
-        if ( output.fail() )
-          GUM_ERROR ( gum::IOError, "Writting in the ostream failed." );
+        output << a3->toDot();
       }
 
+      output.flush();
 
-      // *****************************************************************************************************
-      /// Evals given in parameter operation. Returned boolean parameter indicates if all went well or not
-      // *****************************************************************************************************
-      bool __evalOperation ( gum::Idx operationId,
-                             gum::MultiDimFunctionGraph<double>* a1,
-                             gum::MultiDimFunctionGraph<double>* a2,
-                             double& tempsCalcul,
-                             double& tempsEval,
-                             double delta = 0.01 ) {
+      output.close();
 
-        bool hasNoError = true;
-        gum::MultiDimFunctionGraph<double>* a3 = nullptr;
+      if ( output.fail() )
+        GUM_ERROR( gum::IOError, "Writting in the ostream failed." );
+    }
 
-        gum::Timer timy;
-        timy.reset();
 
-        // ###################################################
-        // Generation du diagramme résultat
+    // *****************************************************************************************************
+    /// Evals given in parameter operation. Returned boolean parameter indicates
+    /// if all went well or not
+    // *****************************************************************************************************
+    bool __evalOperation( gum::Idx operationId,
+                          gum::MultiDimFunctionGraph<double>* a1,
+                          gum::MultiDimFunctionGraph<double>* a2,
+                          double& tempsCalcul,
+                          double& tempsEval,
+                          double delta = 0.01 ) {
 
-        switch ( operationId ) {
-          case 1 :  // Test addition
-                TS_GUM_ASSERT_THROWS_NOTHING ( a3 = add2MultiDimFunctionGraphs ( a1 , a2 ) );
-                break;
+      bool hasNoError = true;
+      gum::MultiDimFunctionGraph<double>* a3 = nullptr;
 
-          case 2 :  // Test Substraction
-                TS_GUM_ASSERT_THROWS_NOTHING ( a3 = subtract2MultiDimFunctionGraphs ( a1 , a2 ) );
-                break;
+      gum::Timer timy;
+      timy.reset();
 
-          case 3 :  // Test Multiplication
-          TS_GUM_ASSERT_THROWS_NOTHING ( a3 = multiply2MultiDimFunctionGraphs ( a1 , a2 ) );
+      // ###################################################
+      // Generation du diagramme résultat
+
+      switch ( operationId ) {
+        case 1:  // Test addition
+          TS_GUM_ASSERT_THROWS_NOTHING(
+              a3 = add2MultiDimFunctionGraphs( a1, a2 ) );
           break;
 
-          case 4 :  // Test Maximum
-                TS_GUM_ASSERT_THROWS_NOTHING ( a3 = maximize2MultiDimFunctionGraphs ( a1 , a2 ) );
-                break;
+        case 2:  // Test Substraction
+          TS_GUM_ASSERT_THROWS_NOTHING(
+              a3 = subtract2MultiDimFunctionGraphs( a1, a2 ) );
+          break;
 
-          default :  // Should not happen
-                GUM_ERROR ( gum::OperationNotAllowed, "HEU ....." );
-        }
+        case 3:  // Test Multiplication
+          TS_GUM_ASSERT_THROWS_NOTHING(
+              a3 = multiply2MultiDimFunctionGraphs( a1, a2 ) );
+          break;
 
-        // ###################################################
+        case 4:  // Test Maximum
+          TS_GUM_ASSERT_THROWS_NOTHING(
+              a3 = maximize2MultiDimFunctionGraphs( a1, a2 ) );
+          break;
 
-        tempsCalcul += timy.step();
+        default:  // Should not happen
+          GUM_ERROR( gum::OperationNotAllowed, "HEU ....." );
+      }
 
-  //      std::cout << a3->toDot() << std::endl;
+      // ###################################################
 
-        timy.reset();
+      tempsCalcul += timy.step();
 
-        // ###################################################
-        if ( a3 != nullptr ) {
-        gum::Instantiation inst ( a3 );
+      //      std::cout << a3->toDot() << std::endl;
 
-        for ( inst.setFirst(); ! inst.end() && hasNoError; ++inst ) {
+      timy.reset();
+
+      // ###################################################
+      if ( a3 != nullptr ) {
+        gum::Instantiation inst( a3 );
+
+        for ( inst.setFirst(); !inst.end() && hasNoError; ++inst ) {
 
           switch ( operationId ) {
-            case 1 :  // Test addition
-                  TS_ASSERT_DELTA ( a3->get ( inst ), a1->get ( inst ) + a2->get ( inst ), delta );
-                  if ( a3->get ( inst ) != a1->get ( inst ) + a2->get ( inst ) )
-                    hasNoError = false;
-                  break;
+            case 1:  // Test addition
+              TS_ASSERT_DELTA(
+                  a3->get( inst ), a1->get( inst ) + a2->get( inst ), delta );
+              if ( a3->get( inst ) != a1->get( inst ) + a2->get( inst ) )
+                hasNoError = false;
+              break;
 
-            case 2 :  // Test Substraction
-                  TS_ASSERT_DELTA ( a3->get ( inst ), a1->get ( inst ) - a2->get ( inst ), delta );
+            case 2:  // Test Substraction
+              TS_ASSERT_DELTA(
+                  a3->get( inst ), a1->get( inst ) - a2->get( inst ), delta );
 
-                  if ( a3->get ( inst ) != a1->get ( inst ) - a2->get ( inst ) )
-                    hasNoError = false;
+              if ( a3->get( inst ) != a1->get( inst ) - a2->get( inst ) )
+                hasNoError = false;
 
-                  break;
+              break;
 
-            case 3 :  // Test Multiplication
-                  TS_ASSERT_DELTA ( a3->get ( inst ), a1->get ( inst ) * a2->get ( inst ), delta );
+            case 3:  // Test Multiplication
+              TS_ASSERT_DELTA(
+                  a3->get( inst ), a1->get( inst ) * a2->get( inst ), delta );
 
-                  if ( a3->get ( inst ) != a1->get ( inst ) * a2->get ( inst ) )
-                    hasNoError = false;
+              if ( a3->get( inst ) != a1->get( inst ) * a2->get( inst ) )
+                hasNoError = false;
 
-                  break;
+              break;
 
-            case 4 :  // Test Maximum
-                  TS_ASSERT_DELTA ( a3->get(inst), a1->get(inst)>a2->get(inst)?a1->get(inst):a2->get(inst), delta );
+            case 4:  // Test Maximum
+              TS_ASSERT_DELTA( a3->get( inst ),
+                               a1->get( inst ) > a2->get( inst )
+                                   ? a1->get( inst )
+                                   : a2->get( inst ),
+                               delta );
 
-                  if ( a3->get (inst) != ( a1->get(inst)>a2->get(inst)?a1->get(inst):a2->get(inst) ) )
-                    hasNoError = false;
+              if ( a3->get( inst ) != ( a1->get( inst ) > a2->get( inst )
+                                            ? a1->get( inst )
+                                            : a2->get( inst ) ) )
+                hasNoError = false;
 
-                  break;
+              break;
 
-            default :  // Should not happen
-                  GUM_ERROR ( gum::OperationNotAllowed, "HEU ....." );
+            default:  // Should not happen
+              GUM_ERROR( gum::OperationNotAllowed, "HEU ....." );
           }
         }
 
-        if ( !hasNoError )
-          __saveDiagrams ( a1, a2, a3 );
-          delete a3;
-        } else {
-          __saveDiagrams ( a1, a2, a3 );
-          hasNoError = false;
-        }
-
-        tempsEval += timy.step();
-
-        return hasNoError;
-
+        if ( !hasNoError ) __saveDiagrams( a1, a2, a3 );
+        delete a3;
+      } else {
+        __saveDiagrams( a1, a2, a3 );
+        hasNoError = false;
       }
 
-    public :
+      tempsEval += timy.step();
 
-      // *****************************************************************************************************
-      /// Test sur les fonctions avec valeurs exactes
-      // *****************************************************************************************************
-      void test_Operators_Functions_on_MultiDimFunctionGraphs() {
+      return hasNoError;
+    }
 
-        gum::Timer time;
-        double tempsGene = 0;
-        double tempsCalcul = 0;
-        double tempsEval = 0;
+    public:
+    // *****************************************************************************************************
+    /// Test sur les fonctions avec valeurs exactes
+    // *****************************************************************************************************
+    void test_Operators_Functions_on_MultiDimFunctionGraphs() {
+
+      gum::Timer time;
+      double tempsGene = 0;
+      double tempsCalcul = 0;
+      double tempsEval = 0;
 
 
-        // First we try with a predefine structure
-        {
-          time.reset();
+      // First we try with a predefine structure
+      {
+        time.reset();
 
-          gum::Sequence< const gum::DiscreteVariable* >* varList = __generateFixVarList();
+        gum::Sequence<const gum::DiscreteVariable*>* varList =
+            __generateFixVarList();
 
-          gum::MultiDimFunctionGraph<double>* a1 = nullptr;
-          TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateFunctionGraph1 ( varList ) );
+        gum::MultiDimFunctionGraph<double>* a1 = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( a1 =
+                                          __generateFunctionGraph1( varList ) );
 
-          gum::MultiDimFunctionGraph<double>* a2 = nullptr;
-          TS_GUM_ASSERT_THROWS_NOTHING ( a2 = __generateFunctionGraph2 ( varList ) );
+        gum::MultiDimFunctionGraph<double>* a2 = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( a2 =
+                                          __generateFunctionGraph2( varList ) );
 
-//          std::cout << a1->toDot() << std::endl;
+        //          std::cout << a1->toDot() << std::endl;
 
-//          std::cout << a2->toDot() << std::endl;
+        //          std::cout << a2->toDot() << std::endl;
 
-          tempsGene += time.step();
+        tempsGene += time.step();
 
-          bool evalRes = true;
+        bool evalRes = true;
 
-          for ( gum::Idx opId = 1; opId < nbOperation && evalRes; opId++ )
-            evalRes = __evalOperation ( opId, a1, a2, tempsCalcul, tempsEval );
+        for ( gum::Idx opId = 1; opId < nbOperation && evalRes; opId++ )
+          evalRes = __evalOperation( opId, a1, a2, tempsCalcul, tempsEval );
 
-          delete a1;
-          delete a2;
+        delete a1;
+        delete a2;
 
-          for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
-            delete *ite;
-          delete varList;
+        for ( gum::SequenceIterator<const gum::DiscreteVariable*> ite =
+                  varList->begin();
+              ite != varList->end();
+              ++ite )
+          delete *ite;
+        delete varList;
 
-          if ( !evalRes ) {
-            std::cout << "An error has occured! Aborting test." <<std::endl;
-            return;
-          }
-
-          std::cout << ".";
-
-          std::fflush ( stdout );
+        if ( !evalRes ) {
+          std::cout << "An error has occured! Aborting test." << std::endl;
+          return;
         }
 
+        std::cout << ".";
 
-        // Then we try with random structure
-//        gum::Idx i = 5;
-        for ( gum::Idx i = 0; i < 1; i++ ) {
+        std::fflush( stdout );
+      }
 
-          time.reset();
 
-          gum::Sequence< const gum::DiscreteVariable* >* varList = __generateRandomVarList ( i + 1 );
-          __shuffleVarList ( varList, i + 2 );
+      // Then we try with random structure
+      //        gum::Idx i = 5;
+      for ( gum::Idx i = 0; i < 1; i++ ) {
 
-//          std::cout << std::endl << " gum::Sequence variable : ";
-//          for( gum::SequenceIterator< const gum::DiscreteVariable* > iter = varList->begin(); iter != varList->end(); ++iter )
-//            std::cout << (*iter)->toString() << " | ";
-//          std::cout << std::endl;
+        time.reset();
 
-          gum::MultiDimFunctionGraph<double>* a1 = nullptr;
-          TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateRandomFunctionGraph ( varList, i + 3 ) );
-//          std::cout << a1->toDot() << std::endl;
+        gum::Sequence<const gum::DiscreteVariable*>* varList =
+            __generateRandomVarList( i + 1 );
+        __shuffleVarList( varList, i + 2 );
 
-          __shuffleVarList ( varList, i + 4 );
+        //          std::cout << std::endl << " gum::Sequence variable : ";
+        //          for( gum::SequenceIterator< const gum::DiscreteVariable* >
+        //          iter = varList->begin(); iter != varList->end(); ++iter )
+        //            std::cout << (*iter)->toString() << " | ";
+        //          std::cout << std::endl;
 
-//          std::cout << std::endl << " gum::Sequence variable : ";
-//          for( gum::SequenceIterator< const gum::DiscreteVariable* > iter = varList->begin(); iter != varList->end(); ++iter )
-//          std::cout << (*iter)->toString() << " | ";
-//          std::cout << std::endl;
+        gum::MultiDimFunctionGraph<double>* a1 = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            a1 = __generateRandomFunctionGraph( varList, i + 3 ) );
+        //          std::cout << a1->toDot() << std::endl;
 
-          gum::MultiDimFunctionGraph<double>* a2 = nullptr;
-          TS_GUM_ASSERT_THROWS_NOTHING ( a2 = __generateRandomFunctionGraph ( varList, i + 5 ) );
-//          std::cout << a2->toDot();
+        __shuffleVarList( varList, i + 4 );
 
-          tempsGene += time.step();
+        //          std::cout << std::endl << " gum::Sequence variable : ";
+        //          for( gum::SequenceIterator< const gum::DiscreteVariable* >
+        //          iter = varList->begin(); iter != varList->end(); ++iter )
+        //          std::cout << (*iter)->toString() << " | ";
+        //          std::cout << std::endl;
 
-          bool evalRes = true;
+        gum::MultiDimFunctionGraph<double>* a2 = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            a2 = __generateRandomFunctionGraph( varList, i + 5 ) );
+        //          std::cout << a2->toDot();
 
-//          gum::Idx j = 1;
-          for ( gum::Idx nbOp = 1; nbOp < nbOperation && evalRes; nbOp++ )
-            TS_GUM_ASSERT_THROWS_NOTHING ( evalRes = __evalOperation ( nbOp, a1, a2, tempsCalcul, tempsEval ) );
+        tempsGene += time.step();
 
-          delete a1;
-          delete a2;
+        bool evalRes = true;
 
-          for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
-            delete *ite;
-          delete varList;
+        //          gum::Idx j = 1;
+        for ( gum::Idx nbOp = 1; nbOp < nbOperation && evalRes; nbOp++ )
+          TS_GUM_ASSERT_THROWS_NOTHING(
+              evalRes =
+                  __evalOperation( nbOp, a1, a2, tempsCalcul, tempsEval ) );
 
-          if ( !evalRes ) {
-            std::cout << "An error has occured! Aborting test." << std::endl;
-            break;
-          }
+        delete a1;
+        delete a2;
 
-          test_waiting ( i );
+        for ( gum::SequenceIterator<const gum::DiscreteVariable*> ite =
+                  varList->begin();
+              ite != varList->end();
+              ++ite )
+          delete *ite;
+        delete varList;
+
+        if ( !evalRes ) {
+          std::cout << "An error has occured! Aborting test." << std::endl;
+          break;
         }
 
-        end_test_waiting();
-        std::cout << std::endl << "Temps Génération : " << tempsGene << "s - Temps Calcul : " << tempsCalcul << "s - Temps Evaluation " << tempsEval << "s " << std::endl;
+        test_waiting( i );
       }
 
-      // *****************************************************************************************************
-      /// For debug purpose only, the aim of this function is to reproduce specific diagrams
-      /// in order to find out where the hell the matter is
-      // *****************************************************************************************************
-      void est_Reproducteur() {
+      end_test_waiting();
+      std::cout << std::endl
+                << "Temps Génération : " << tempsGene
+                << "s - Temps Calcul : " << tempsCalcul
+                << "s - Temps Evaluation " << tempsEval << "s " << std::endl;
+    }
 
-//        gum::LabelizedVariable* v0 = new gum::LabelizedVariable( "v0", "", 2 );
-//        gum::LabelizedVariable* v1 = new gum::LabelizedVariable( "v1", "", 2 );
-//        gum::LabelizedVariable* v2 = new gum::LabelizedVariable( "v2", "", 2 );
-//        gum::LabelizedVariable* v3 = new gum::LabelizedVariable( "v3", "", 3 );
-//        gum::LabelizedVariable* v4 = new gum::LabelizedVariable( "4", "", 2 );
-//        gum::LabelizedVariable* v5 = new gum::LabelizedVariable( "5", "", 3 );
-//        gum::LabelizedVariable* v6 = new gum::LabelizedVariable( "6", "", 2 );
-//        gum::LabelizedVariable* v7 = new gum::LabelizedVariable( "7", "", 2 );
-//        gum::LabelizedVariable* v8 = new gum::LabelizedVariable( "8", "", 3 );
-//        gum::LabelizedVariable* v9 = new gum::LabelizedVariable( "9", "", 2 );
+    // *****************************************************************************************************
+    /// For debug purpose only, the aim of this function is to reproduce
+    /// specific diagrams
+    /// in order to find out where the hell the matter is
+    // *****************************************************************************************************
+    void est_Reproducteur() {
 
-//        gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12, n13, n14;//, n15;, n16, n17, n18, n19, n20, n21, n22, n23, n24, n25, n26;
+      //        gum::LabelizedVariable* v0 = new gum::LabelizedVariable( "v0",
+      //        "", 2 );
+      //        gum::LabelizedVariable* v1 = new gum::LabelizedVariable( "v1",
+      //        "", 2 );
+      //        gum::LabelizedVariable* v2 = new gum::LabelizedVariable( "v2",
+      //        "", 2 );
+      //        gum::LabelizedVariable* v3 = new gum::LabelizedVariable( "v3",
+      //        "", 3 );
+      //        gum::LabelizedVariable* v4 = new gum::LabelizedVariable( "4",
+      //        "", 2 );
+      //        gum::LabelizedVariable* v5 = new gum::LabelizedVariable( "5",
+      //        "", 3 );
+      //        gum::LabelizedVariable* v6 = new gum::LabelizedVariable( "6",
+      //        "", 2 );
+      //        gum::LabelizedVariable* v7 = new gum::LabelizedVariable( "7",
+      //        "", 2 );
+      //        gum::LabelizedVariable* v8 = new gum::LabelizedVariable( "8",
+      //        "", 3 );
+      //        gum::LabelizedVariable* v9 = new gum::LabelizedVariable( "9",
+      //        "", 2 );
+
+      //        gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10,
+      //        n11, n12, n13, n14;//, n15;, n16, n17, n18, n19, n20, n21, n22,
+      //        n23, n24, n25, n26;
 
 
-//        gum::MultiDimFunctionGraph<double>* dg1 = gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
+      //        gum::MultiDimFunctionGraph<double>* dg1 =
+      //        gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-//        dg1->add(*v3);
-//        dg1->add(*v1);
-//        dg1->add(*v0);
-//        dg1->add(*v2);
+      //        dg1->add(*v3);
+      //        dg1->add(*v1);
+      //        dg1->add(*v0);
+      //        dg1->add(*v2);
 
-//        n01 = dg1->manager()->addInternalNode( v3 );
-//        n02 = dg1->manager()->addInternalNode( v0 );
-//        n03 = dg1->manager()->addInternalNode( v1 );
-//        n04 = dg1->manager()->addInternalNode( v1 );
-//        n05 = dg1->manager()->addInternalNode( v2 );
-//        n06 = dg1->manager()->addInternalNode( v2 );
-//        n07 = dg1->manager()->addInternalNode( v0 );
-//        n08 = dg1->manager()->addTerminalNode( 19.0836 );
-//        n09 = dg1->manager()->addTerminalNode( 88.4791 );
-//        n10 = dg1->manager()->addTerminalNode( 16.2301 );
-//        n11 = dg1->manager()->addTerminalNode( 30.7077 );
-//        n12 = dg1->manager()->addInternalNode( v2 );
-//        n13 = dg1->manager()->addTerminalNode( 90.9853 );
-//        n14 = dg1->manager()->addTerminalNode( 28.7184 );
-//        n15 = dg1->manager()->addTerminalNode( 16.5207 );
-//        n16 = dg1->manager()->addTerminalNode( 55.5485 );
-//        n17 = dg1->manager()->addTerminalNode( 8.60651 );
-//        n18 = dg1->manager()->addTerminalNode( 81.2182 );
-//        n19 = dg1->manager()->addTerminalNode( 84.3831 );
-//        n20 = dg1->manager()->addTerminalNode( 6.12946 );
-//        n21 = dg1->manager()->addTerminalNode( 83.9071 );
-//        n22 = dg1->manager()->addTerminalNode( 7.85962 );
-//        n23 = dg1->manager()->addTerminalNode( 19.54 );
-//        n24 = dg1->manager()->addTerminalNode( 82.67 );
-//        n25 = dg1->manager()->addTerminalNode( 46.54 );
-//        n26 = dg1->manager()->addTerminalNode( 92.74 );
+      //        n01 = dg1->manager()->addInternalNode( v3 );
+      //        n02 = dg1->manager()->addInternalNode( v0 );
+      //        n03 = dg1->manager()->addInternalNode( v1 );
+      //        n04 = dg1->manager()->addInternalNode( v1 );
+      //        n05 = dg1->manager()->addInternalNode( v2 );
+      //        n06 = dg1->manager()->addInternalNode( v2 );
+      //        n07 = dg1->manager()->addInternalNode( v0 );
+      //        n08 = dg1->manager()->addTerminalNode( 19.0836 );
+      //        n09 = dg1->manager()->addTerminalNode( 88.4791 );
+      //        n10 = dg1->manager()->addTerminalNode( 16.2301 );
+      //        n11 = dg1->manager()->addTerminalNode( 30.7077 );
+      //        n12 = dg1->manager()->addInternalNode( v2 );
+      //        n13 = dg1->manager()->addTerminalNode( 90.9853 );
+      //        n14 = dg1->manager()->addTerminalNode( 28.7184 );
+      //        n15 = dg1->manager()->addTerminalNode( 16.5207 );
+      //        n16 = dg1->manager()->addTerminalNode( 55.5485 );
+      //        n17 = dg1->manager()->addTerminalNode( 8.60651 );
+      //        n18 = dg1->manager()->addTerminalNode( 81.2182 );
+      //        n19 = dg1->manager()->addTerminalNode( 84.3831 );
+      //        n20 = dg1->manager()->addTerminalNode( 6.12946 );
+      //        n21 = dg1->manager()->addTerminalNode( 83.9071 );
+      //        n22 = dg1->manager()->addTerminalNode( 7.85962 );
+      //        n23 = dg1->manager()->addTerminalNode( 19.54 );
+      //        n24 = dg1->manager()->addTerminalNode( 82.67 );
+      //        n25 = dg1->manager()->addTerminalNode( 46.54 );
+      //        n26 = dg1->manager()->addTerminalNode( 92.74 );
 
-//        dg1->manager()->setSon( n01, 0, n02 );
-//        dg1->manager()->setSon( n01, 1, n03 );
-//        dg1->manager()->setSon( n01, 2, n04 );
+      //        dg1->manager()->setSon( n01, 0, n02 );
+      //        dg1->manager()->setSon( n01, 1, n03 );
+      //        dg1->manager()->setSon( n01, 2, n04 );
 
-//        dg1->manager()->setSon( n02, 0, n05 );
-//        dg1->manager()->setSon( n02, 1, n06 );
-//        dg1->manager()->setSon( n02, 2, n07 );
+      //        dg1->manager()->setSon( n02, 0, n05 );
+      //        dg1->manager()->setSon( n02, 1, n06 );
+      //        dg1->manager()->setSon( n02, 2, n07 );
 
-//        dg1->manager()->setSon( n03, 0, n05 );
-//        dg1->manager()->setSon( n03, 1, n06 );
+      //        dg1->manager()->setSon( n03, 0, n05 );
+      //        dg1->manager()->setSon( n03, 1, n06 );
 
-//        dg1->manager()->setSon( n04, 0, n07 );
-//        dg1->manager()->setSon( n04, 1, n05 );
+      //        dg1->manager()->setSon( n04, 0, n07 );
+      //        dg1->manager()->setSon( n04, 1, n05 );
 
-//        dg1->manager()->setSon( n05, 0, n10 );
-//        dg1->manager()->setSon( n05, 1, n11 );
-//        dg1->manager()->setSon( n05, 2, n16 );
+      //        dg1->manager()->setSon( n05, 0, n10 );
+      //        dg1->manager()->setSon( n05, 1, n11 );
+      //        dg1->manager()->setSon( n05, 2, n16 );
 
-//        dg1->manager()->setSon( n06, 0, n08 );
-//        dg1->manager()->setSon( n06, 1, n09 );
-//        dg1->manager()->setSon( n06, 2, n11 );
+      //        dg1->manager()->setSon( n06, 0, n08 );
+      //        dg1->manager()->setSon( n06, 1, n09 );
+      //        dg1->manager()->setSon( n06, 2, n11 );
 
-//        dg1->manager()->setSon( n07, 0, n05 );
-//        dg1->manager()->setSon( n07, 1, n12 );
+      //        dg1->manager()->setSon( n07, 0, n05 );
+      //        dg1->manager()->setSon( n07, 1, n12 );
 
-//        dg1->manager()->setSon( n08, 0, n14 );
-//        dg1->manager()->setSon( n08, 1, n15 );
-//        dg1->manager()->setSon( n08, 2, n05 );
+      //        dg1->manager()->setSon( n08, 0, n14 );
+      //        dg1->manager()->setSon( n08, 1, n15 );
+      //        dg1->manager()->setSon( n08, 2, n05 );
 
-//        dg1->manager()->setSon( n09, 0, n10 );
-//        dg1->manager()->setSon( n09, 1, n11 );
+      //        dg1->manager()->setSon( n09, 0, n10 );
+      //        dg1->manager()->setSon( n09, 1, n11 );
 
-//        dg1->manager()->setSon( n12, 0, n13 );
-//        dg1->manager()->setSon( n12, 1, n14 );
-//        dg1->manager()->setSon( n12, 2, n19 );
+      //        dg1->manager()->setSon( n12, 0, n13 );
+      //        dg1->manager()->setSon( n12, 1, n14 );
+      //        dg1->manager()->setSon( n12, 2, n19 );
 
-//        dg1->manager()->setSon( n13, 0, n20 );
-//        dg1->manager()->setSon( n13, 1, n21 );
-//        dg1->manager()->setSon( n13, 2, n22 );
+      //        dg1->manager()->setSon( n13, 0, n20 );
+      //        dg1->manager()->setSon( n13, 1, n21 );
+      //        dg1->manager()->setSon( n13, 2, n22 );
 
-//        dg1->manager()->setRootNode( n01 );
+      //        dg1->manager()->setRootNode( n01 );
 
-//        gum::MultiDimFunctionGraph<double>* dg2 = gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
+      //        gum::MultiDimFunctionGraph<double>* dg2 =
+      //        gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-//        dg2->add(*v0);
-//        dg2->add(*v3);
-//        dg2->add(*v2);
-//        dg2->add(*v1);
+      //        dg2->add(*v0);
+      //        dg2->add(*v3);
+      //        dg2->add(*v2);
+      //        dg2->add(*v1);
 
-//        n01 = dg2->manager()->addInternalNode( v0 );
-//        n02 = dg2->manager()->addInternalNode( v1 );
-//        n03 = dg2->manager()->addInternalNode( v3 );
-//        n04 = dg2->manager()->addTerminalNode( 27.0957 );
-//        n05 = dg2->manager()->addTerminalNode( 8.01978 );
-//        n06 = dg2->manager()->addInternalNode( v2 );
-//        n07 = dg2->manager()->addInternalNode( v1 );
-//        n08 = dg2->manager()->addInternalNode( v1 );
-//        n09 = dg2->manager()->addTerminalNode( 16.2307 );
-//        n10 = dg2->manager()->addTerminalNode( 30.7077 );
-//        n11 = dg2->manager()->addTerminalNode( 26.1679 );
-//        n12 = dg2->manager()->addTerminalNode( 84.2562 );
-//        n13 = dg2->manager()->addTerminalNode( 94.3744 );
-//        n14 = dg2->manager()->addTerminalNode( 0.666253 );
-//        n15 = dg2->manager()->addTerminalNode( 16.5207 );
-//        n16 = dg2->manager()->addTerminalNode( 55.5485 );
-//        n17 = dg2->manager()->addTerminalNode( 8.60651 );
-//        n18 = dg2->manager()->addTerminalNode( 81.2182 );
-//        n19 = dg2->manager()->addTerminalNode( 84.3831 );
-//        n20 = dg2->manager()->addTerminalNode( 6.12946 );
-//        n21 = dg2->manager()->addTerminalNode( 83.9071 );
-//        n22 = dg2->manager()->addTerminalNode( 7.85962 );
-//        n23 = dg2->manager()->addTerminalNode( 19.54 );
-//        n24 = dg2->manager()->addTerminalNode( 82.67 );
-//        n25 = dg2->manager()->addTerminalNode( 46.54 );
-//        n26 = dg2->manager()->addTerminalNode( 92.74 );
+      //        n01 = dg2->manager()->addInternalNode( v0 );
+      //        n02 = dg2->manager()->addInternalNode( v1 );
+      //        n03 = dg2->manager()->addInternalNode( v3 );
+      //        n04 = dg2->manager()->addTerminalNode( 27.0957 );
+      //        n05 = dg2->manager()->addTerminalNode( 8.01978 );
+      //        n06 = dg2->manager()->addInternalNode( v2 );
+      //        n07 = dg2->manager()->addInternalNode( v1 );
+      //        n08 = dg2->manager()->addInternalNode( v1 );
+      //        n09 = dg2->manager()->addTerminalNode( 16.2307 );
+      //        n10 = dg2->manager()->addTerminalNode( 30.7077 );
+      //        n11 = dg2->manager()->addTerminalNode( 26.1679 );
+      //        n12 = dg2->manager()->addTerminalNode( 84.2562 );
+      //        n13 = dg2->manager()->addTerminalNode( 94.3744 );
+      //        n14 = dg2->manager()->addTerminalNode( 0.666253 );
+      //        n15 = dg2->manager()->addTerminalNode( 16.5207 );
+      //        n16 = dg2->manager()->addTerminalNode( 55.5485 );
+      //        n17 = dg2->manager()->addTerminalNode( 8.60651 );
+      //        n18 = dg2->manager()->addTerminalNode( 81.2182 );
+      //        n19 = dg2->manager()->addTerminalNode( 84.3831 );
+      //        n20 = dg2->manager()->addTerminalNode( 6.12946 );
+      //        n21 = dg2->manager()->addTerminalNode( 83.9071 );
+      //        n22 = dg2->manager()->addTerminalNode( 7.85962 );
+      //        n23 = dg2->manager()->addTerminalNode( 19.54 );
+      //        n24 = dg2->manager()->addTerminalNode( 82.67 );
+      //        n25 = dg2->manager()->addTerminalNode( 46.54 );
+      //        n26 = dg2->manager()->addTerminalNode( 92.74 );
 
-//        dg2->manager()->setSon( n01, 0, n02 );
-//        dg2->manager()->setSon( n01, 1, n03 );
-//        dg2->manager()->setSon( n01, 2, n04 );
+      //        dg2->manager()->setSon( n01, 0, n02 );
+      //        dg2->manager()->setSon( n01, 1, n03 );
+      //        dg2->manager()->setSon( n01, 2, n04 );
 
-//        dg2->manager()->setSon( n02, 0, n04 );
-//        dg2->manager()->setSon( n02, 1, n05 );
-//        dg2->manager()->setSon( n02, 2, n07 );
+      //        dg2->manager()->setSon( n02, 0, n04 );
+      //        dg2->manager()->setSon( n02, 1, n05 );
+      //        dg2->manager()->setSon( n02, 2, n07 );
 
-//        dg2->manager()->setSon( n03, 0, n02 );
-//        dg2->manager()->setSon( n03, 1, n06 );
-//        dg2->manager()->setSon( n03, 2, n02 );
+      //        dg2->manager()->setSon( n03, 0, n02 );
+      //        dg2->manager()->setSon( n03, 1, n06 );
+      //        dg2->manager()->setSon( n03, 2, n02 );
 
-//        dg2->manager()->setSon( n04, 0, n06 );
-//        dg2->manager()->setSon( n04, 1, n05 );
+      //        dg2->manager()->setSon( n04, 0, n06 );
+      //        dg2->manager()->setSon( n04, 1, n05 );
 
-//        dg2->manager()->setSon( n05, 0, n08 );
-//        dg2->manager()->setSon( n05, 1, n09 );
-//        dg2->manager()->setSon( n05, 2, n16 );
+      //        dg2->manager()->setSon( n05, 0, n08 );
+      //        dg2->manager()->setSon( n05, 1, n09 );
+      //        dg2->manager()->setSon( n05, 2, n16 );
 
-//        dg2->manager()->setSon( n06, 0, n07 );
-//        dg2->manager()->setSon( n06, 1, n08 );
-//        dg2->manager()->setSon( n06, 2, n11 );
+      //        dg2->manager()->setSon( n06, 0, n07 );
+      //        dg2->manager()->setSon( n06, 1, n08 );
+      //        dg2->manager()->setSon( n06, 2, n11 );
 
-//        dg2->manager()->setSon( n07, 0, n09 );
-//        dg2->manager()->setSon( n07, 1, n10 );
+      //        dg2->manager()->setSon( n07, 0, n09 );
+      //        dg2->manager()->setSon( n07, 1, n10 );
 
-//        dg2->manager()->setSon( n08, 0, n11 );
-//        dg2->manager()->setSon( n08, 1, n12 );
-//        dg2->manager()->setSon( n08, 2, n05 );
+      //        dg2->manager()->setSon( n08, 0, n11 );
+      //        dg2->manager()->setSon( n08, 1, n12 );
+      //        dg2->manager()->setSon( n08, 2, n05 );
 
-//        dg2->manager()->setSon( n09, 0, n12 );
-//        dg2->manager()->setSon( n09, 1, n13 );
+      //        dg2->manager()->setSon( n09, 0, n12 );
+      //        dg2->manager()->setSon( n09, 1, n13 );
 
-//        dg2->manager()->setSon( n12, 0, n17 );
-//        dg2->manager()->setSon( n12, 1, n18 );
-//        dg2->manager()->setSon( n12, 2, n19 );
+      //        dg2->manager()->setSon( n12, 0, n17 );
+      //        dg2->manager()->setSon( n12, 1, n18 );
+      //        dg2->manager()->setSon( n12, 2, n19 );
 
-//        dg2->manager()->setSon( n13, 0, n20 );
-//        dg2->manager()->setSon( n13, 1, n21 );
-//        dg2->manager()->setSon( n13, 2, n22 );
+      //        dg2->manager()->setSon( n13, 0, n20 );
+      //        dg2->manager()->setSon( n13, 1, n21 );
+      //        dg2->manager()->setSon( n13, 2, n22 );
 
-//        dg2->manager()->setRootNode( n01 );
+      //        dg2->manager()->setRootNode( n01 );
 
-//        std::cout << std::endl << dg1->toDot()<< std::endl;
-//        std::cout << std::endl << dg2->toDot()<< std::endl;
-//        double foo = 0.0, bar = 0.0;
-//        TS_GUM_ASSERT_THROWS_NOTHING( __evalOperation( 1, dg1, dg2,foo,bar,0.0 ) );
+      //        std::cout << std::endl << dg1->toDot()<< std::endl;
+      //        std::cout << std::endl << dg2->toDot()<< std::endl;
+      //        double foo = 0.0, bar = 0.0;
+      //        TS_GUM_ASSERT_THROWS_NOTHING( __evalOperation( 1, dg1,
+      //        dg2,foo,bar,0.0 ) );
 
-//        delete dg1;
-//        delete dg2;
+      //        delete dg1;
+      //        delete dg2;
 
-//        delete v0;
-//        delete v1;
-//        delete v2;
-//        delete v3;
-//        delete v4;
-//        delete v5;
-//        delete v6;
-//        delete v7;
-//        delete v8;
-//        delete v9;
-      }
-
+      //        delete v0;
+      //        delete v1;
+      //        delete v2;
+      //        delete v3;
+      //        delete v4;
+      //        delete v5;
+      //        delete v6;
+      //        delete v7;
+      //        delete v8;
+      //        delete v9;
+    }
   };
 } /* end of gum_test */

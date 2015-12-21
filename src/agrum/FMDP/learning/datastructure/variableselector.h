@@ -37,7 +37,8 @@
 namespace gum {
 
   /**
-   * @class VariableSelector variableselector.h <agrum/FMDP/planning/FunctionGraph/variableselector.h>
+   * @class VariableSelector variableselector.h
+   * <agrum/FMDP/planning/FunctionGraph/variableselector.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -45,24 +46,22 @@ namespace gum {
    *
    */
 
-  class VariableSelector
-  {
+  class VariableSelector {
     public:
-
     // ==========================================================================
     /// @name Constructor & destructor.
     // ==========================================================================
     /// @{
 
-      // ###################################################################
-      /// Default constructor
-      // ###################################################################
-      VariableSelector(Set<const DiscreteVariable*>& startingSet);
+    // ###################################################################
+    /// Default constructor
+    // ###################################################################
+    VariableSelector( Set<const DiscreteVariable*>& startingSet );
 
-      // ###################################################################
-      /// Default destructor
-      // ###################################################################
-      ~VariableSelector();
+    // ###################################################################
+    /// Default destructor
+    // ###################################################################
+    ~VariableSelector();
 
     /// @}
 
@@ -71,47 +70,51 @@ namespace gum {
     // ==========================================================================
     /// @{
 
-      // ###################################################################
-      ///
-      // ###################################################################
-      void updateScore( const DiscreteVariable* var, double score, double secondaryscore );
-      void downdateScore( const DiscreteVariable* var, double score, double secondaryscore );
+    // ###################################################################
+    ///
+    // ###################################################################
+    void updateScore( const DiscreteVariable* var,
+                      double score,
+                      double secondaryscore );
+    void downdateScore( const DiscreteVariable* var,
+                        double score,
+                        double secondaryscore );
 
 
-      // ###################################################################
-      /// Select the most relevant variable
-      // ###################################################################
-      const DiscreteVariable* select();
+    // ###################################################################
+    /// Select the most relevant variable
+    // ###################################################################
+    const DiscreteVariable* select();
 
-      bool isEmpty(){ return __remainingVars.empty(); }
+    bool isEmpty() { return __remainingVars.empty(); }
 
-      void begin(){ __rvi = __remainingVars.beginSafe(); }
-      bool hasNext(){ return __rvi != __remainingVars.endSafe(); }
-      void next(){++__rvi;}
-      const DiscreteVariable* current(){ return *__rvi;}
+    void begin() { __rvi = __remainingVars.beginSafe(); }
+    bool hasNext() { return __rvi != __remainingVars.endSafe(); }
+    void next() { ++__rvi; }
+    const DiscreteVariable* current() { return *__rvi; }
 
-    private :
+    private:
+    void __addVar( const DiscreteVariable* var );
+    void __removeVar( const DiscreteVariable* var );
 
-      void __addVar( const DiscreteVariable* var );
-      void __removeVar( const DiscreteVariable* var );
+    /// The set of remaining vars to select among
+    Set<const DiscreteVariable*> __remainingVars;
+    SetIteratorSafe<const DiscreteVariable*> __rvi;
 
-      /// The set of remaining vars to select among
-      Set<const DiscreteVariable*> __remainingVars;
-      SetIteratorSafe<const DiscreteVariable*> __rvi;
+    /// Heap keeping best score on top for immediate access
+    PriorityQueue<double, double, std::greater<double>> __remainingScores;
 
-      /// Heap keeping best score on top for immediate access
-      PriorityQueue<double, double, std::greater<double>> __remainingScores;
+    /// HashTable associating to each score the set of variable having that
+    /// score
+    HashTable<double, Set<const DiscreteVariable*>*> __remainingVarsByScore;
 
-      /// HashTable associating to each score the set of variable having that score
-      HashTable<double, Set<const DiscreteVariable*>*> __remainingVarsByScore;
+    /// HashTable associating to each variable its score
+    HashTable<const DiscreteVariable*, double> __remainingVarsScore;
 
-      /// HashTable associating to each variable its score
-      HashTable<const DiscreteVariable*, double> __remainingVarsScore;
-
-      /// HashTable associating to each variable its 2nd score
-      HashTable<const DiscreteVariable*, double> __remainingVarsOtherScore;
+    /// HashTable associating to each variable its 2nd score
+    HashTable<const DiscreteVariable*, double> __remainingVarsOtherScore;
   };
 
-} // End of GUM Namespace
+}  // End of GUM Namespace
 
-#endif // GUM_VARIABLE_SELECTOR_H
+#endif  // GUM_VARIABLE_SELECTOR_H

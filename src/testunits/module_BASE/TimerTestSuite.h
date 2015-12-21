@@ -56,9 +56,9 @@ namespace gum_tests {
 
     void testTrivial() {
       bool test_pass = false;
-      // The test randomly fails for reasons, it have to fails three times in 
+      // The test randomly fails for reasons, it have to fails three times in
       // a row to be considered trully as failed
-      for ( int i = 0; (i < 3) and not test_pass; ++i ) {
+      for ( int i = 0; ( i < 3 ) and not test_pass; ++i ) {
         gum::Timer t;
         gum::Timer tt;
         int w = 0;
@@ -82,11 +82,11 @@ namespace gum_tests {
         end_test_waiting();
 
         // TS_ASSERT_DELTA( t6 - t5, 3.0, 1e-3 );
-        test_pass = std::abs(std::abs(t6 - t5) - 3.0) <= 1e-3;
+        test_pass = std::abs( std::abs( t6 - t5 ) - 3.0 ) <= 1e-3;
         // TS_ASSERT_DELTA( t4 - t1, 2.0, 1e-3 );
-        test_pass = test_pass and std::abs(std::abs(t4 - t1) - 2.0) <= 1e-3;
+        test_pass = test_pass and std::abs( std::abs( t4 - t1 ) - 2.0 ) <= 1e-3;
         // TS_ASSERT_DELTA( t3 - t2, 0.0, 1e-3 );
-        test_pass = test_pass and std::abs(std::abs(t3 - t2) - 0.0) <= 1e-3;
+        test_pass = test_pass and std::abs( std::abs( t3 - t2 ) - 0.0 ) <= 1e-3;
       }
       GUM_ASSERT( test_pass );
     }

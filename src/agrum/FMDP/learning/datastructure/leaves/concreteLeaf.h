@@ -42,77 +42,93 @@
 namespace gum {
 
   /**
-   * @class ConcreteLeaf concreteLeaf.h <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>
+   * @class ConcreteLeaf concreteLeaf.h
+   * <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>
    * @brief A concrete leaf
    * @ingroup fmdp_group
    *
    */
 
 
-  template<TESTNAME AttributeSelection, bool isScalar>
+  template <TESTNAME AttributeSelection, bool isScalar>
   class ConcreteLeaf : public AbstractLeaf {
 
-    typedef typename ValueSelect<isScalar, double, long unsigned int>::type ValueType;
+    typedef typename ValueSelect<isScalar, double, long unsigned int>::type
+        ValueType;
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    /// Default constructor
+    // ###################################################################
+    ConcreteLeaf( NodeId leafId,
+                  NodeDatabase<AttributeSelection, isScalar>* n1,
+                  const Sequence<ValueType>* valueDomain )
+        : AbstractLeaf( leafId )
+        , __n1( n1 )
+        , __valueDomain( valueDomain ) {
+      GUM_CONSTRUCTOR( ConcreteLeaf )
+    }
 
-        // ###################################################################
-        /// Default constructor
-        // ###################################################################
-        ConcreteLeaf ( NodeId leafId, NodeDatabase<AttributeSelection, isScalar>* n1, const Sequence<ValueType>* valueDomain )
-          : AbstractLeaf(leafId),
-            __n1(n1),
-            __valueDomain(valueDomain) {
-          GUM_CONSTRUCTOR(ConcreteLeaf)
-        }
+    // ###################################################################
+    /// Default destructor
+    // ###################################################################
+    ~ConcreteLeaf() { GUM_DESTRUCTOR( ConcreteLeaf ) }
 
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        ~ConcreteLeaf(){
-          GUM_DESTRUCTOR(ConcreteLeaf)
-        }
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( ConcreteLeaf ) );
+    }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(ConcreteLeaf));}
+    /// @}
 
-      /// @}
+    // ###################################################################
+    /// Gaves the leaf effectif for given modality
+    // ###################################################################
+    virtual double effectif( Idx moda ) const {
+      return __effectif( moda, Int2Type<isScalar>() );
+    }
 
-        // ###################################################################
-        /// Gaves the leaf effectif for given modality
-        // ###################################################################
-        virtual double effectif(Idx moda) const { return __effectif(moda, Int2Type<isScalar>() ); }
-    private :
-        double __effectif(Idx moda, Int2Type<true> ) const { return __n1->effectif(__valueDomain->atPos(moda)); }
-        double __effectif(Idx moda, Int2Type<false> ) const { return __n1->effectif(moda); }
+    private:
+    double __effectif( Idx moda, Int2Type<true> ) const {
+      return __n1->effectif( __valueDomain->atPos( moda ) );
+    }
+    double __effectif( Idx moda, Int2Type<false> ) const {
+      return __n1->effectif( moda );
+    }
 
-    public :
-        virtual double total() const { return __n1->nbObservation(); }
+    public:
+    virtual double total() const { return __n1->nbObservation(); }
 
-        Idx nbModa() const { return __nbModa(Int2Type<isScalar>()); }
-    private :
-        Idx __nbModa(Int2Type<true> ) const { return __valueDomain->size(); }
-        Idx __nbModa(Int2Type<false> ) const { return __n1->valueDomain(); }
+    Idx nbModa() const { return __nbModa( Int2Type<isScalar>() ); }
 
-    public :
-        std::string toString(){ std::stringstream ss; ss << "{ Id : " << this->id() << "}"; return ss.str(); }
+    private:
+    Idx __nbModa( Int2Type<true> ) const { return __valueDomain->size(); }
+    Idx __nbModa( Int2Type<false> ) const { return __n1->valueDomain(); }
 
-      private :
+    public:
+    std::string toString() {
+      std::stringstream ss;
+      ss << "{ Id : " << this->id() << "}";
+      return ss.str();
+    }
 
-        NodeDatabase<AttributeSelection, isScalar>* __n1;
-        const Sequence<ValueType>* __valueDomain;
+    private:
+    NodeDatabase<AttributeSelection, isScalar>* __n1;
+    const Sequence<ValueType>* __valueDomain;
   };
 
 
 } /* namespace gum */
 
 
-#endif // GUM_CONCRETE_LEAF_H
+#endif  // GUM_CONCRETE_LEAF_H

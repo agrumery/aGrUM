@@ -639,9 +639,7 @@ namespace gum {
 
           // Creating and adding the Aggregate<GUM_SCALAR>
           agg = new Aggregate<GUM_SCALAR>(
-              name,
-              Aggregate<GUM_SCALAR>::str2enum( agg_type ),
-              *output_type);
+              name, Aggregate<GUM_SCALAR>::str2enum( agg_type ), *output_type );
 
           break;
         }

@@ -34,140 +34,142 @@
 #include <agrum/FMDP/planning/structuredPlaner.h>
 // =========================================================================
 
-namespace gum {  
+namespace gum {
 
   /**
-   * @class AbstractRMaxPlaner AbstractRMaxPlaner.h <agrum/FMDP/planning/AbstractRMaxPlaner.h>
+   * @class AbstractRMaxPlaner AbstractRMaxPlaner.h
+   * <agrum/FMDP/planning/AbstractRMaxPlaner.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
-   * Perform a RMax planning on given in parameter factored markov decision process
+   * Perform a RMax planning on given in parameter factored markov decision
+   * process
    *
    */
   class AbstractRMaxPlaner : public StructuredPlaner<double> {
 
 
-      // ###################################################################
-      /// @name
-      // ###################################################################
-      /// @{
-    public :
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        static AbstractRMaxPlaner* ReducedAndOrderedInstance(
-                        const ILearningStrategy* learner,
-                        double discountFactor = 0.9,
-                        double epsilon = 0.00001)
-              { return new AbstractRMaxPlaner( new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner); }
+    // ###################################################################
+    /// @name
+    // ###################################################################
+    /// @{
+    public:
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    static AbstractRMaxPlaner*
+    ReducedAndOrderedInstance( const ILearningStrategy* learner,
+                               double discountFactor = 0.9,
+                               double epsilon = 0.00001 ) {
+      return new AbstractRMaxPlaner(
+          new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner );
+    }
 
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        static AbstractRMaxPlaner* TreeInstance(
-                        const ILearningStrategy* learner,
-                        double discountFactor = 0.9,
-                        double epsilon = 0.00001)
-              { return new AbstractRMaxPlaner( new TreeOperatorStrategy<double>(), discountFactor, epsilon, learner); }
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    static AbstractRMaxPlaner* TreeInstance( const ILearningStrategy* learner,
+                                             double discountFactor = 0.9,
+                                             double epsilon = 0.00001 ) {
+      return new AbstractRMaxPlaner( new TreeOperatorStrategy<double>(),
+                                     discountFactor,
+                                     epsilon,
+                                     learner );
+    }
 
-      /// @}
+    /// @}
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Constructor & destructor.
+    // ###################################################################
+    /// @{
     private:
-        // ==========================================================================
-        /// Default constructor
-        // ==========================================================================
-        AbstractRMaxPlaner( IOperatorStrategy<double>* opi,
-                            double discountFactor,
-                            double epsilon,
-                            const ILearningStrategy* learner);
+    // ==========================================================================
+    /// Default constructor
+    // ==========================================================================
+    AbstractRMaxPlaner( IOperatorStrategy<double>* opi,
+                        double discountFactor,
+                        double epsilon,
+                        const ILearningStrategy* learner );
 
-        // ==========================================================================
-        /// Default destructor
-        // ==========================================================================
+    // ==========================================================================
+    /// Default destructor
+    // ==========================================================================
     public:
-        ~AbstractRMaxPlaner();
+    ~AbstractRMaxPlaner();
 
-      /// @}
+    /// @}
 
 
-
-      // ###################################################################
-      /// @name Planning Methods
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Planning Methods
+    // ###################################################################
+    /// @{
 
     public:
+    // ==========================================================================
+    /**
+     * Performs a value iteration
+     *
+     * @param nbStep : enables you to specify how many value iterations you wish
+     * to do.
+     * makePlanning will then stop whether when optimal value function is reach
+     * or when nbStep have been performed
+     */
+    // ==========================================================================
+    void makePlanning( Idx nbStep = 1000000 );
+
+    /// @}
 
 
-        // ==========================================================================
-        /**
-         * Performs a value iteration
-         *
-         * @param nbStep : enables you to specify how many value iterations you wish to do.
-         * makePlanning will then stop whether when optimal value function is reach or when nbStep have been performed
-         */
-        // ==========================================================================
-        void makePlanning(Idx nbStep = 1000000);
-
-      /// @}
-
-
-
-      // ###################################################################
-      /// @name Value Iteration Methods
-      // ###################################################################
-      /// @{
-
-    protected:        
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        virtual void _initVFunction();
-
-        // ==========================================================================
-        /// Performs a single step of value iteration
-        // ==========================================================================
-        virtual MultiDimFunctionGraph< double >* _valueIteration();
-
-      /// @}
-
-
-
-      // ###################################################################
-      /// @name Optimal policy extraction methods
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Value Iteration Methods
+    // ###################################################################
+    /// @{
 
     protected:
-        // ==========================================================================
-        /// Perform the required tasks to extract an optimal policy
-        // ==========================================================================
-        virtual void _evalPolicy ();
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    virtual void _initVFunction();
 
-      /// @}
+    // ==========================================================================
+    /// Performs a single step of value iteration
+    // ==========================================================================
+    virtual MultiDimFunctionGraph<double>* _valueIteration();
 
-    private :
-      void __makeRMaxFunctionGraphs();
+    /// @}
 
-      std::pair<NodeId,NodeId> __visitLearner( const IVisitableGraphLearner*,
-                                               NodeId currentNodeId,
-                                               MultiDimFunctionGraph<double>*,
-                                               MultiDimFunctionGraph<double>* );
-      void __clearTables();
 
-    private :
+    // ###################################################################
+    /// @name Optimal policy extraction methods
+    // ###################################################################
+    /// @{
 
-      ///
-      HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsRMaxTable;
-      HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsBoolTable;
-      const ILearningStrategy* __fmdpLearner;
-      double __rThreshold;
-      double __rmax;
+    protected:
+    // ==========================================================================
+    /// Perform the required tasks to extract an optimal policy
+    // ==========================================================================
+    virtual void _evalPolicy();
 
+    /// @}
+
+    private:
+    void __makeRMaxFunctionGraphs();
+
+    std::pair<NodeId, NodeId> __visitLearner( const IVisitableGraphLearner*,
+                                              NodeId currentNodeId,
+                                              MultiDimFunctionGraph<double>*,
+                                              MultiDimFunctionGraph<double>* );
+    void __clearTables();
+
+    private:
+    ///
+    HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsRMaxTable;
+    HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsBoolTable;
+    const ILearningStrategy* __fmdpLearner;
+    double __rThreshold;
+    double __rmax;
   };
 
 } /* namespace gum */
@@ -175,7 +177,6 @@ namespace gum {
 
 #include <agrum/FMDP/planning/abstractRMaxPlaner.tcc>
 
-#endif // GUM_ABSTRACT_RMAX_PLANER_H
+#endif  // GUM_ABSTRACT_RMAX_PLANER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-

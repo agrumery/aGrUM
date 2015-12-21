@@ -34,35 +34,37 @@
 
 namespace gum {
 
-/**
- * @class MultiDimFunctionGraphProjector multiDimFunctionGraphProjector.h <agrum/multidim/patterns/multiDimFunctionGraphProjector.h>
- * @brief Class used to perform Function Graph projections
- * @ingroup multidim_group
- *
- */
+  /**
+   * @class MultiDimFunctionGraphProjector multiDimFunctionGraphProjector.h
+   * <agrum/multidim/patterns/multiDimFunctionGraphProjector.h>
+   * @brief Class used to perform Function Graph projections
+   * @ingroup multidim_group
+   *
+   */
 
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
-  class MultiDimFunctionGraphProjector
-  {
+            template <typename> class TerminalNodePolicy =
+                ExactTerminalNodePolicy>
+  class MultiDimFunctionGraphProjector {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      MultiDimFunctionGraphProjector( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* src,
-                                      const Set<const DiscreteVariable*>& delVars,
-                                      const GUM_SCALAR neutral );
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    MultiDimFunctionGraphProjector(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* src,
+        const Set<const DiscreteVariable*>& delVars,
+        const GUM_SCALAR neutral );
 
-      // ============================================================================
-      /// Default destructor.
-      // ============================================================================
-      ~MultiDimFunctionGraphProjector();
+    // ============================================================================
+    /// Default destructor.
+    // ============================================================================
+    ~MultiDimFunctionGraphProjector();
 
     /// @}
 
@@ -71,48 +73,49 @@ namespace gum {
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Computes and builds the Function Graph that is the result of the Projection
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* project();
+    // ============================================================================
+    /// Computes and builds the Function Graph that is the result of the
+    /// Projection
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* project();
 
-//      void __maker(Set<const DiscreteVariable*> remainingVar, Sequence<const DiscreteVariable*> seq, std::string tab);
-//      MultiDimFunctionGraph<GUM_SCALAR>* __project(Sequence<const DiscreteVariable*> seq);
+    //      void __maker(Set<const DiscreteVariable*> remainingVar,
+    //      Sequence<const DiscreteVariable*> seq, std::string tab);
+    //      MultiDimFunctionGraph<GUM_SCALAR>* __project(Sequence<const
+    //      DiscreteVariable*> seq);
 
     /// @}
 
 
-    private :
+    private:
+    // ============================================================================
+    /// One of the two function graphs used for the Projection
+    // ============================================================================
+    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __src;
 
-      // ============================================================================
-      /// One of the two function graphs used for the Projection
-      // ============================================================================
-      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __src;
+    // ============================================================================
+    /// The list of variables on which the projection is performed
+    // ============================================================================
+    const Set<const DiscreteVariable*>& __delVars;
 
-      // ============================================================================
-      /// The list of variables on which the projection is performed
-      // ============================================================================
-      const Set<const DiscreteVariable*>& __delVars;
+    // ============================================================================
+    /// The resulting function graph
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
-      // ============================================================================
-      /// The resulting function graph
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+    // ============================================================================
+    /// The function to be performed on the leaves
+    // ============================================================================
+    const FUNCTOR<GUM_SCALAR> __function;
 
-      // ============================================================================
-      /// The function to be performed on the leaves
-      // ============================================================================
-      const FUNCTOR<GUM_SCALAR> __function;
-
-      // ============================================================================
-      /// The function to be performed on the leaves
-      // ============================================================================
-      const GUM_SCALAR __neutral;
-
+    // ============================================================================
+    /// The function to be performed on the leaves
+    // ============================================================================
+    const GUM_SCALAR __neutral;
   };
 
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.tcc>
 
-#endif // GUM_MULTI_DIM_FUNCTION_GRAPH_PROJECTOR_H
+#endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_PROJECTOR_H

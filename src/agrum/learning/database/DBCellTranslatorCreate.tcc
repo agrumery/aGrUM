@@ -251,8 +251,8 @@ namespace gum {
               int nb_times,
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>&
-    Create<Translator, Cols, nb_times, ColsIncr>::
-    operator=( const Create<Translator, Cols, nb_times, ColsIncr>& from ) {
+        Create<Translator, Cols, nb_times, ColsIncr>::
+        operator=( const Create<Translator, Cols, nb_times, ColsIncr>& from ) {
       if ( this != &from ) {
         CurrentTranslator::operator=( from );
         NextTranslators::operator=( from );
@@ -266,8 +266,8 @@ namespace gum {
               int nb_times,
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>&
-    Create<Translator, Cols, nb_times, ColsIncr>::
-    operator=( Create<Translator, Cols, nb_times, ColsIncr>&& from ) {
+        Create<Translator, Cols, nb_times, ColsIncr>::
+        operator=( Create<Translator, Cols, nb_times, ColsIncr>&& from ) {
       if ( this != &from ) {
         CurrentTranslator::operator=( std::move( from ) );
         NextTranslators::operator=( std::move( from ) );

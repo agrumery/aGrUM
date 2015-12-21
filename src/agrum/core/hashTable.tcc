@@ -252,7 +252,8 @@ namespace gum {
 
   template <typename Key, typename Val, typename Alloc>
   INLINE const typename HashTableList<Key, Val, Alloc>::mapped_type&
-      HashTableList<Key, Val, Alloc>::operator[]( const Key& key ) const {
+      HashTableList<Key, Val, Alloc>::
+      operator[]( const Key& key ) const {
     for ( Bucket* ptr = __deb_list; ptr != nullptr; ptr = ptr->next )
       if ( ptr->key() == key ) return ptr->val();
 
@@ -262,7 +263,8 @@ namespace gum {
 
   template <typename Key, typename Val, typename Alloc>
   INLINE typename HashTableList<Key, Val, Alloc>::mapped_type&
-      HashTableList<Key, Val, Alloc>::operator[]( const Key& key ) {
+      HashTableList<Key, Val, Alloc>::
+      operator[]( const Key& key ) {
     for ( Bucket* ptr = __deb_list; ptr != nullptr; ptr = ptr->next )
       if ( ptr->key() == key ) return ptr->val();
 
@@ -1557,8 +1559,8 @@ namespace gum {
 
   template <typename Key, typename Val>
   INLINE HashTableConstIteratorSafe<Key, Val>&
-  HashTableConstIteratorSafe<Key, Val>::
-  operator=( HashTableConstIteratorSafe<Key, Val>&& from ) noexcept {
+      HashTableConstIteratorSafe<Key, Val>::
+      operator=( HashTableConstIteratorSafe<Key, Val>&& from ) noexcept {
     // here, no need to avoid self assignment: this would slow down normal
     // assignments and, in any case, this would not result in an iterator in
     // an incoherent state
@@ -1739,7 +1741,7 @@ namespace gum {
 
   template <typename Key, typename Val>
   INLINE HashTableConstIteratorSafe<Key, Val>
-  HashTableConstIteratorSafe<Key, Val>::operator+( unsigned int nb ) const {
+      HashTableConstIteratorSafe<Key, Val>::operator+( unsigned int nb ) const {
     return HashTableConstIteratorSafe<Key, Val>{* this} += nb;
   }
 
@@ -1759,7 +1761,8 @@ namespace gum {
 
   template <typename Key, typename Val>
   INLINE const typename HashTableConstIteratorSafe<Key, Val>::value_type&
-      HashTableConstIteratorSafe<Key, Val>::operator*() const {
+      HashTableConstIteratorSafe<Key, Val>::
+      operator*() const {
     if ( __bucket )
       return __bucket->elt();
     else {
@@ -1896,14 +1899,16 @@ namespace gum {
 
   template <typename Key, typename Val>
   INLINE typename HashTableIteratorSafe<Key, Val>::value_type&
-      HashTableIteratorSafe<Key, Val>::operator*() {
+      HashTableIteratorSafe<Key, Val>::
+      operator*() {
     return const_cast<Val&>(
         HashTableConstIteratorSafe<Key, Val>::operator*() );
   }
 
   template <typename Key, typename Val>
   INLINE const typename HashTableIteratorSafe<Key, Val>::value_type&
-      HashTableIteratorSafe<Key, Val>::operator*() const {
+      HashTableIteratorSafe<Key, Val>::
+      operator*() const {
     return HashTableConstIteratorSafe<Key, Val>::operator*();
   }
 
@@ -2189,7 +2194,8 @@ namespace gum {
 
   template <typename Key, typename Val>
   INLINE const typename HashTableConstIterator<Key, Val>::value_type&
-      HashTableConstIterator<Key, Val>::operator*() const {
+      HashTableConstIterator<Key, Val>::
+      operator*() const {
     if ( __bucket )
       return __bucket->elt();
     else {
@@ -2313,14 +2319,16 @@ namespace gum {
 
   template <typename Key, typename Val>
   INLINE typename HashTableIterator<Key, Val>::value_type&
-      HashTableIterator<Key, Val>::operator*() {
+      HashTableIterator<Key, Val>::
+      operator*() {
     return const_cast<value_type&>(
         HashTableConstIterator<Key, Val>::operator*() );
   }
 
   template <typename Key, typename Val>
   INLINE const typename HashTableIterator<Key, Val>::value_type&
-      HashTableIterator<Key, Val>::operator*() const {
+      HashTableIterator<Key, Val>::
+      operator*() const {
     return HashTableConstIterator<Key, Val>::operator*();
   }
 

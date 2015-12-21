@@ -36,7 +36,8 @@
 namespace gum {
 
   /**
-   * @class ChiSquare ChiSquare.h <agrum/FMDP/learning/FunctionGraph/chiSquare.h>
+   * @class ChiSquare ChiSquare.h
+   * <agrum/FMDP/learning/FunctionGraph/chiSquare.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -45,56 +46,56 @@ namespace gum {
   class ChiSquare {
 
     public:
-
-      static double probaChi2 ( double x, unsigned long df );
+    static double probaChi2( double x, unsigned long df );
 
     private:
+    // =================================================================================
+    /// Required constant to compute the cdf
+    // =================================================================================
+    /// @{
 
-      // =================================================================================
-      /// Required constant to compute the cdf
-      // =================================================================================
-      /// @{
+    /// maximum meaningful z value
+    static constexpr double __Z_MAX = 6.0;
 
-        /// maximum meaningful z value
-        static constexpr double __Z_MAX        = 6.0;
+    /// accuracy of critchi approximation
+    static constexpr double __CHI_EPSILON = 0.000001;
 
-        /// accuracy of critchi approximation
-        static constexpr double __CHI_EPSILON  = 0.000001;
+    /// maximum chi square value
+    static constexpr double __CHI_MAX = 99999.0;
 
-        /// maximum chi square value
-        static constexpr double __CHI_MAX      = 99999.0;
+    /// log (sqrt (pi))
+    static constexpr double __LOG_SQRT_PI = 0.5723649429247000870717135;
 
-        /// log (sqrt (pi))
-        static constexpr double __LOG_SQRT_PI  = 0.5723649429247000870717135;
+    /// 1 / sqrt (pi)
+    static constexpr double __I_SQRT_PI = 0.5641895835477562869480795;
 
-        /// 1 / sqrt (pi)
-        static constexpr double __I_SQRT_PI    = 0.5641895835477562869480795;
+    /// max value to represent exp (x)
+    static constexpr double __BIGX = 20.0;
 
-        /// max value to represent exp (x)
-        static constexpr double __BIGX         = 20.0;
-
-      /// @}
+    /// @}
 
 
-      // =================================================================================
-      /// Required constant to compute the cdf
-      // =================================================================================
-      /// @{
+    // =================================================================================
+    /// Required constant to compute the cdf
+    // =================================================================================
+    /// @{
 
-        static double __exp( double x ) { return (((x) < -__BIGX) ? 0.0 : exp (x)) ; }
+    static double __exp( double x ) {
+      return ( ( ( x ) < -__BIGX ) ? 0.0 : exp( x ) );
+    }
 
-        static double __probaZValue( double z );
-      /// @}
+    static double __probaZValue( double z );
+    /// @}
   };
 
 } /* namespace gum */
 
-#endif // GUM_CHI_SQUARE_H
+#endif  // GUM_CHI_SQUARE_H
 
 
-//static HashTable<std::pair<double, unsigned long>, double> __chi2Cache;
-//static HashTable<double, double> __ZCache;
-//static Idx nbZ;
-//static Idx nbChi;
-//static Idx nbZt;
-//static Idx nbChit;
+// static HashTable<std::pair<double, unsigned long>, double> __chi2Cache;
+// static HashTable<double, double> __ZCache;
+// static Idx nbZ;
+// static Idx nbChi;
+// static Idx nbZt;
+// static Idx nbChit;

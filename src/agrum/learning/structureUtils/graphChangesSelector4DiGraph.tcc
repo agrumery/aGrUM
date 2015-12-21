@@ -121,13 +121,13 @@ namespace gum {
     GraphChangesSelector4DiGraph<SCORE,
                                  STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>&
-    GraphChangesSelector4DiGraph<SCORE,
-                                 STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR>::
-    operator=(
-        const GraphChangesSelector4DiGraph<SCORE,
-                                           STRUCTURAL_CONSTRAINT,
-                                           GRAPH_CHANGES_GENERATOR>& from ) {
+        GraphChangesSelector4DiGraph<SCORE,
+                                     STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR>::
+        operator=( const GraphChangesSelector4DiGraph<SCORE,
+                                                      STRUCTURAL_CONSTRAINT,
+                                                      GRAPH_CHANGES_GENERATOR>&
+                       from ) {
       if ( this != &from ) {
         __score = from.__score;
         __constraint = from.__constraint;
@@ -153,12 +153,13 @@ namespace gum {
     GraphChangesSelector4DiGraph<SCORE,
                                  STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>&
-    GraphChangesSelector4DiGraph<SCORE,
-                                 STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR>::
-    operator=( GraphChangesSelector4DiGraph<SCORE,
-                                            STRUCTURAL_CONSTRAINT,
-                                            GRAPH_CHANGES_GENERATOR>&& from ) {
+        GraphChangesSelector4DiGraph<SCORE,
+                                     STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR>::
+        operator=(
+            GraphChangesSelector4DiGraph<SCORE,
+                                         STRUCTURAL_CONSTRAINT,
+                                         GRAPH_CHANGES_GENERATOR>&& from ) {
       if ( this != &from ) {
         __score = std::move( from.__score );
         __constraint = std::move( from.__constraint );

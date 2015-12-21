@@ -37,53 +37,58 @@ namespace gum {
   // Constructors, Destructors.
   // ===========================================================================
 
-    /*
-     * Default constructor.
-     */
-    AbstractSimulator::AbstractSimulator(){
-      GUM_CONSTRUCTOR(AbstractSimulator)
-    }
+  /*
+   * Default constructor.
+   */
+  AbstractSimulator::AbstractSimulator() {
+    GUM_CONSTRUCTOR( AbstractSimulator )
+  }
 
-    /*
-     * Default destructor.
-     */
-    AbstractSimulator::~AbstractSimulator(){
-      GUM_DESTRUCTOR(AbstractSimulator)
-    }
+  /*
+   * Default destructor.
+   */
+  AbstractSimulator::~AbstractSimulator() {
+    GUM_DESTRUCTOR( AbstractSimulator )
+  }
 
 
   // ===========================================================================
   //
   // ===========================================================================
 
-    void AbstractSimulator::setInitialStateRandomly(){
-      bool hre = true;
-      while(hre){
-        _currentState = _randomState();
-        hre = hasReachEnd();
-      }
+  void AbstractSimulator::setInitialStateRandomly() {
+    bool hre = true;
+    while ( hre ) {
+      _currentState = _randomState();
+      hre = hasReachEnd();
     }
+  }
 
-    Instantiation AbstractSimulator::_randomState() {
-      Instantiation retState;
-      for(auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter){
-        retState.add(**varIter);
-        retState.chgVal(*varIter,  (Idx)(((double)std::rand( ) / (double)RAND_MAX) * (double)(*varIter)->domainSize()));
-      }
-      return retState;
+  Instantiation AbstractSimulator::_randomState() {
+    Instantiation retState;
+    for ( auto varIter = this->beginVariables();
+          varIter != this->endVariables();
+          ++varIter ) {
+      retState.add( **varIter );
+      retState.chgVal( *varIter,
+                       ( Idx )( ( (double)std::rand() / (double)RAND_MAX ) *
+                                (double)( *varIter )->domainSize() ) );
     }
+    return retState;
+  }
 
-    ///
-    bool AbstractSimulator::hasReachEnd(){
+  ///
+  bool AbstractSimulator::hasReachEnd() {
 
-      if( _endState.empty() )
+    if ( _endState.empty() ) return false;
+
+    for ( auto varIter = _endState.variablesSequence().beginSafe();
+          varIter != _endState.variablesSequence().endSafe();
+          ++varIter )
+      if ( _endState.val( **varIter ) != _currentState.val( **varIter ) )
         return false;
-
-      for(auto varIter = _endState.variablesSequence().beginSafe(); varIter != _endState.variablesSequence().endSafe(); ++varIter)
-        if(_endState.val(**varIter) != _currentState.val(**varIter))
-          return false;
-      return true;
-    }
+    return true;
+  }
 
 
-} // End of namespace gum
+}  // End of namespace gum

@@ -97,16 +97,16 @@ namespace gum {
              const Set<Interface<GUM_SCALAR>*>& set );
 
       /// Copy constructor.
-      Class( const Class<GUM_SCALAR>& source ) =delete;
+      Class( const Class<GUM_SCALAR>& source ) = delete;
 
       /// Move constructor.
-      Class( const Class<GUM_SCALAR>&& source ) =delete;
+      Class( const Class<GUM_SCALAR>&& source ) = delete;
 
       /// Copy operator. Don't use it.
-      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& source ) =delete;
+      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& source ) = delete;
 
       /// Move operator. Don't use it.
-      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>&& source ) =delete;
+      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>&& source ) = delete;
 
       /// Destructor.
       virtual ~Class();
@@ -291,7 +291,6 @@ namespace gum {
       void _updateDescendants( const ClassElement<GUM_SCALAR>& elt );
 
       private:
-
       /// Proceed with the copy of c in this.
       // void __copyClass<GUM_SCALAR>(const Class<GUM_SCALAR>& c);
 

@@ -66,12 +66,12 @@ namespace gum {
       for ( const auto impl : *__implements ) {
         impl->__addImplementation( this );
         // Reserve reference id in DAG
-        for (auto ref: impl->referenceSlots()) {
-          __dag.addNode(ref->id());
+        for ( auto ref : impl->referenceSlots() ) {
+          __dag.addNode( ref->id() );
         }
         // Reserve attribute id in DAG
-        for (auto attr: impl->attributes()) {
-          __dag.addNode(attr->id());
+        for ( auto attr : impl->attributes() ) {
+          __dag.addNode( attr->id() );
         }
       }
     }
@@ -99,14 +99,14 @@ namespace gum {
 
       for ( const auto impl : *__implements ) {
         impl->__addImplementation( this );
-        if (not super.isSubTypeOf(*impl)) {
+        if ( not super.isSubTypeOf( *impl ) ) {
           // Reserve reference id in DAG
-          for (auto ref: impl->referenceSlots()) {
-            __dag.addNode(ref->id());
+          for ( auto ref : impl->referenceSlots() ) {
+            __dag.addNode( ref->id() );
           }
           // Reserve attribute id in DAG
-          for (auto attr: impl->attributes()) {
-            __dag.addNode(attr->id());
+          for ( auto attr : impl->attributes() ) {
+            __dag.addNode( attr->id() );
           }
         }
       }
@@ -128,16 +128,16 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::__inheritClass( const Class<GUM_SCALAR>& c ) {
       // Adding implemented interfaces of c, if any
-      if (c.__implements) {
-        if (not __implements) {
+      if ( c.__implements ) {
+        if ( not __implements ) {
           __implements = new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) );
         } else {
-          for (auto i : *(c.__implements)) {
-            __implements->insert(i);
+          for ( auto i : *( c.__implements ) ) {
+            __implements->insert( i );
           }
         }
       }
- 
+
       // Copying attributes, the bijection's firsts are attributes in this and
       // its
       // seconds are attributes
@@ -363,9 +363,10 @@ namespace gum {
           __attributes.insert( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
           __addCastDescendants( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
 
-          // Update attribute or cast descendant id to respect implemented interface
+          // Update attribute or cast descendant id to respect implemented
+          // interface
           try {
-            for (auto i: implements()) {
+            for ( auto i : implements() ) {
               if ( i->exists( elt->name() ) ) {
                 if ( not ClassElement<GUM_SCALAR>::isAttribute(
                          i->get( elt->name() ) ) ) {
@@ -373,7 +374,7 @@ namespace gum {
                              "Class does not respect it's interface" );
                 }
                 auto attr = static_cast<Attribute<GUM_SCALAR>*>( elt );
-                auto &i_attr = static_cast<Attribute<GUM_SCALAR>&>(
+                auto& i_attr = static_cast<Attribute<GUM_SCALAR>&>(
                     i->get( attr->name() ) );
                 if ( not attr->type().isSubTypeOf( i_attr.type() ) ) {
                   GUM_ERROR(
@@ -392,20 +393,20 @@ namespace gum {
                 // Node must be reserved by constructor
                 GUM_ASSERT( __dag.existsNode( i_attr.id() ) );
                 // Removing unused node and changin to propoer node
-                if (attr->id() != i_attr.id()) {
+                if ( attr->id() != i_attr.id() ) {
                   // Update cast descendants
-                  for (auto child: __dag.children( attr->id() )) {
+                  for ( auto child : __dag.children( attr->id() ) ) {
                     __dag.addArc( i_attr.id(), child );
                   }
                   __dag.eraseNode( attr->id() );
                 }
                 __nodeIdMap.erase( attr->id() );
                 attr->setId( i_attr.id() );
-                GUM_ASSERT(attr->id() == i_attr.id());
+                GUM_ASSERT( attr->id() == i_attr.id() );
                 __nodeIdMap.insert( attr->id(), attr );
               }
             }
-          } catch (NotFound &e) {
+          } catch ( NotFound& e ) {
             // No interface
           }
           __addIOInterfaceFlags( elt );
@@ -416,14 +417,14 @@ namespace gum {
           __aggregates.insert( static_cast<Aggregate<GUM_SCALAR>*>( elt ) );
           __addCastDescendants( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
           try {
-            for (auto i: implements()) {
+            for ( auto i : implements() ) {
               if ( i->exists( elt->name() ) ) {
                 if ( not ClassElement<GUM_SCALAR>::isAttribute(
                          i->get( elt->name() ) ) ) {
                   GUM_ERROR( OperationNotAllowed,
                              "Class does not respect it's interface" );
                 }
-                auto &i_attr = static_cast<Attribute<GUM_SCALAR>&>(
+                auto& i_attr = static_cast<Attribute<GUM_SCALAR>&>(
                     i->get( elt->name() ) );
                 if ( not elt->type().isSubTypeOf( i_attr.type() ) ) {
                   GUM_ERROR(
@@ -437,7 +438,7 @@ namespace gum {
                 // Node must be reserved by constructor
                 GUM_ASSERT( __dag.existsNode( i_attr.id() ) );
                 // Removing unused node and changin to propoer node
-                if (elt->id() != i_attr.id()) {
+                if ( elt->id() != i_attr.id() ) {
                   __dag.eraseNode( elt->id() );
                 }
                 __nodeIdMap.erase( elt->id() );
@@ -445,7 +446,7 @@ namespace gum {
                 __nodeIdMap.insert( elt->id(), elt );
               }
             }
-          } catch (NotFound &e) {
+          } catch ( NotFound& e ) {
             // No interface
           }
           __addIOInterfaceFlags( elt );
@@ -458,30 +459,31 @@ namespace gum {
           __referenceSlots.insert( ref );
           // Updating ref's id if ref implements an interface
           try {
-            for (auto i: implements()) {
-              if (i->exists(ref->name())) {
-                auto &i_elt = i->get(ref->name());
-                if (i_elt.elt_type() != ref->elt_type()) {
-                  GUM_ERROR(OperationNotAllowed, "Class does not respect it's interface");
+            for ( auto i : implements() ) {
+              if ( i->exists( ref->name() ) ) {
+                auto& i_elt = i->get( ref->name() );
+                if ( i_elt.elt_type() != ref->elt_type() ) {
+                  GUM_ERROR( OperationNotAllowed,
+                             "Class does not respect it's interface" );
                 }
-                auto &i_ref = static_cast<ReferenceSlot<GUM_SCALAR>&>(i_elt);
-                if (not ref->slotType().isSubTypeOf( i_ref.slotType() )) {
+                auto& i_ref = static_cast<ReferenceSlot<GUM_SCALAR>&>( i_elt );
+                if ( not ref->slotType().isSubTypeOf( i_ref.slotType() ) ) {
                   GUM_ERROR(
                       OperationNotAllowed,
                       "ReferenceSlot type does not respect class interface" );
                 }
                 // Node must be reserved by constructor
-                GUM_ASSERT(__dag.exists(i_ref.id()));
+                GUM_ASSERT( __dag.exists( i_ref.id() ) );
                 // Removing unused node and changin to propoer node
-                if (ref->id() != i_ref.id()) {
-                  __dag.eraseNode(ref->id());
+                if ( ref->id() != i_ref.id() ) {
+                  __dag.eraseNode( ref->id() );
                 }
-                __nodeIdMap.erase(ref->id());
-                ref->setId(i_ref.id());
-                __nodeIdMap.insert(ref->id(), ref);
+                __nodeIdMap.erase( ref->id() );
+                ref->setId( i_ref.id() );
+                __nodeIdMap.insert( ref->id(), ref );
               }
             }
-          } catch (NotFound &e) {
+          } catch ( NotFound& e ) {
             // No interface to check
           }
           break;

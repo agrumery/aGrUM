@@ -32,109 +32,110 @@
 
 namespace gum_tests {
 
-  class StructuredPlanerTestSuite: public CxxTest::TestSuite {
+  class StructuredPlanerTestSuite : public CxxTest::TestSuite {
 
-    private :
-      std::string file;
+    private:
+    std::string file;
 
-      void run ( const std::string showSaveFile ) {
+    void run( const std::string showSaveFile ) {
 
-        gum::FMDP<double> fmdp(true);
-        //gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
-        gum::StructuredPlaner<double>* planer = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( planer = gum::StructuredPlaner<double>::spumddInstance(0.9,0.01) );
+      gum::FMDP<double> fmdp( true );
+      // gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high,
+      // indeed we just want ot check that the algorithm works fine.
+      gum::StructuredPlaner<double>* planer = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          planer = gum::StructuredPlaner<double>::spumddInstance( 0.9, 0.01 ) );
 
-        gum::FMDPDatReader<double> reader ( &fmdp, file );
-        TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( reader.proceed( ) );
+      gum::FMDPDatReader<double> reader( &fmdp, file );
+      TS_GUM_ASSERT_THROWS_NOTHING( reader.trace( false ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( planer->initialize(&fmdp) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( planer->makePlanning(10000) );
+      TS_GUM_ASSERT_THROWS_NOTHING( planer->initialize( &fmdp ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( planer->makePlanning( 10000 ) );
 
-        std::cout << fmdp.size() << "\t" << planer->vFunction()->realSize() << "\t" << planer->optimalPolicy()->realSize() << std::endl;
-        std::cout << planer->optimalPolicy2String() << std::endl;
+      std::cout << fmdp.size() << "\t" << planer->vFunction()->realSize()
+                << "\t" << planer->optimalPolicy()->realSize() << std::endl;
+      std::cout << planer->optimalPolicy2String() << std::endl;
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete planer );
-      }
+      TS_GUM_ASSERT_THROWS_NOTHING( delete planer );
+    }
 
     public:
+    void test_Coffee() {
+      file = GET_PATH_STR( "FMDP/coffee/coffee.dat" );
+      run( "Coffee" );
+    }
 
-      void test_Coffee() {
-        file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
-        run ( "Coffee" );
-      }
+    void test_FactoryS() {
+      file = GET_PATH_STR( "FMDP/factory/tiny-factory.dat" );
+      run( "TinyFactory" );
+    }
 
-      void test_FactoryS() {
-        file = GET_PATH_STR ( "FMDP/factory/tiny-factory.dat" );
-        run ( "TinyFactory" );
-      }
-
-      void est_Maze() {
-        file = GET_PATH_STR ( "FMDP/labyrinth/maze.dat" );
-        run ( "maze" );
-      }
-
-
-      void est_MazeB() {
-        file = GET_PATH_STR ( "FMDP/labyrinth/mazeb.dat" );
-        run ( "mazeb" );
-      }
+    void est_Maze() {
+      file = GET_PATH_STR( "FMDP/labyrinth/maze.dat" );
+      run( "maze" );
+    }
 
 
-      void est_Factory() {
-        file = GET_PATH_STR ( "FMDP/factory/factory.dat" );
-        run ( "Factory" );
-      }
-
-      void est_FactoryB() {
-        file = GET_PATH_STR ( "FMDP/factory/factoryB.dat" );
-        run ( "FactoryB" );
-      }
+    void est_MazeB() {
+      file = GET_PATH_STR( "FMDP/labyrinth/mazeb.dat" );
+      run( "mazeb" );
+    }
 
 
-      void est_Factory0() {
-        file = GET_PATH_STR ( "FMDP/factory/factory0.dat" );
-        run ( "Factory0" );
-      }
+    void est_Factory() {
+      file = GET_PATH_STR( "FMDP/factory/factory.dat" );
+      run( "Factory" );
+    }
 
-      void est_Factory0B() {
-        file = GET_PATH_STR ( "FMDP/factory/factory0B.dat" );
-        run ( "Factory0B" );
-      }
-
-
-      void est_Factory1() {
-        file = GET_PATH_STR ( "FMDP/factory/factory1.dat" );
-        run ( "Factory1" );
-      }
-
-      void est_Factory1B() {
-        file = GET_PATH_STR ( "FMDP/factory/factory1B.dat" );
-        run ( "Factory1B" );
-      }
+    void est_FactoryB() {
+      file = GET_PATH_STR( "FMDP/factory/factoryB.dat" );
+      run( "FactoryB" );
+    }
 
 
-      void est_Factory2() {
-        file = GET_PATH_STR ( "FMDP/factory/factory2.dat" );
-        run ( "Factory2" );
-      }
+    void est_Factory0() {
+      file = GET_PATH_STR( "FMDP/factory/factory0.dat" );
+      run( "Factory0" );
+    }
 
-      void est_Factory2B() {
-        file = GET_PATH_STR ( "FMDP/factory/factory2B.dat" );
-        run ( "Factory2B" );
-      }
+    void est_Factory0B() {
+      file = GET_PATH_STR( "FMDP/factory/factory0B.dat" );
+      run( "Factory0B" );
+    }
 
 
-      void est_Factory3() {
-        file = GET_PATH_STR ( "FMDP/factory/factory3.dat" );
-        run ( "Factory3" );
-      }
+    void est_Factory1() {
+      file = GET_PATH_STR( "FMDP/factory/factory1.dat" );
+      run( "Factory1" );
+    }
 
-      void est_Factory3B() {
-        file = GET_PATH_STR ( "FMDP/factory/factory3B.dat" );
-        run ( "Factory3B" );
-      }
+    void est_Factory1B() {
+      file = GET_PATH_STR( "FMDP/factory/factory1B.dat" );
+      run( "Factory1B" );
+    }
 
+
+    void est_Factory2() {
+      file = GET_PATH_STR( "FMDP/factory/factory2.dat" );
+      run( "Factory2" );
+    }
+
+    void est_Factory2B() {
+      file = GET_PATH_STR( "FMDP/factory/factory2B.dat" );
+      run( "Factory2B" );
+    }
+
+
+    void est_Factory3() {
+      file = GET_PATH_STR( "FMDP/factory/factory3.dat" );
+      run( "Factory3" );
+    }
+
+    void est_Factory3B() {
+      file = GET_PATH_STR( "FMDP/factory/factory3B.dat" );
+      run( "Factory3B" );
+    }
   };
 }
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

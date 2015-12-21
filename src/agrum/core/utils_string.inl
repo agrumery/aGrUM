@@ -31,9 +31,9 @@
 namespace gum {
 
   INLINE
-  std::string toLower(std::string str) {
-    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-    return std::move(str);
+  std::string toLower( std::string str ) {
+    std::transform( str.begin(), str.end(), str.begin(), ::tolower );
+    return std::move( str );
   }
 
 } /* namespace gum */

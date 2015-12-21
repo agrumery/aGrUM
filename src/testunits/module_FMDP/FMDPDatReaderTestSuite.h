@@ -36,134 +36,131 @@
 
 namespace gum_tests {
 
-  class FMDPDatReaderTestSuite: public CxxTest::TestSuite {
+  class FMDPDatReaderTestSuite : public CxxTest::TestSuite {
 
-    private :
+    private:
+    std::string file;
 
-      std::string file;
+    void run() {
 
-      void run( ) {
+      gum::FMDP<float> fmdp( true );
+      gum::FMDPDatReader<float> reader( &fmdp, file );
 
-        gum::FMDP<float> fmdp(true);
-        gum::FMDPDatReader<float> reader ( &fmdp, file ) ;
+      reader.trace( false );
+      int nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
-        reader.trace ( false );
-        int nbrErr = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING ( nbrErr = reader.proceed() );
-
-        TS_ASSERT ( nbrErr == 0 );
-        TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
-        TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 );
-        reader.showElegantErrorsAndWarnings();
+      TS_ASSERT( nbrErr == 0 );
+      TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+      reader.showElegantErrorsAndWarnings();
 
 
-        std::ofstream __traceAlgoSaveFile;
-        __traceAlgoSaveFile.open ( GET_PATH_STR ( "test.dot" ), std::ios::out | std::ios::trunc );
-        if ( !__traceAlgoSaveFile )  return;
-        TS_GUM_ASSERT_THROWS_NOTHING ( __traceAlgoSaveFile << fmdp.show() );
-//        std::cout << fmdp.show();
-        __traceAlgoSaveFile.close();
-
-      }
+      std::ofstream __traceAlgoSaveFile;
+      __traceAlgoSaveFile.open( GET_PATH_STR( "test.dot" ),
+                                std::ios::out | std::ios::trunc );
+      if ( !__traceAlgoSaveFile ) return;
+      TS_GUM_ASSERT_THROWS_NOTHING( __traceAlgoSaveFile << fmdp.show() );
+      //        std::cout << fmdp.show();
+      __traceAlgoSaveFile.close();
+    }
 
     public:
     void testConstuctor() {
-      std::string file = GET_PATH_STR("FMDP/coffee/coffee.dat");
+      std::string file = GET_PATH_STR( "FMDP/coffee/coffee.dat" );
 
 
-      gum::FMDPDatReader<float> *reader = 0;
+      gum::FMDPDatReader<float>* reader = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-          reader = new gum::FMDPDatReader<float>(&fmdp, file, &ddf));
+          reader = new gum::FMDPDatReader<float>( &fmdp, file, &ddf ) );
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
+      TS_GUM_ASSERT_THROWS_NOTHING( delete reader );
     }
 
     void testRead_file1() {
-      std::string file = GET_PATH_STR("FMDP/factory/factoryB.dat");
+      std::string file = GET_PATH_STR( "FMDP/factory/factoryB.dat" );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete reader );
+      TS_GUM_ASSERT_THROWS_NOTHING( delete reader );
 
-      gum::FMDPDatReader<float> reader(&fmdp, file, &ddf);
+      gum::FMDPDatReader<float> reader( &fmdp, file, &ddf );
 
-      reader.trace(false);
+      reader.trace( false );
 
       void test_FactoryS() {
-        file = GET_PATH_STR ( "FMDP/factory/tiny-factory.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/tiny-factory.dat" );
+        run();
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
-      TS_ASSERT(nbrErr == 0);
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
+      TS_ASSERT( nbrErr == 0 );
+      TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
       reader.showElegantErrorsAndWarnings();
     }
 
-      void est_MazeB() {
-        file = GET_PATH_STR ( "FMDP/labyrinth/mazeb.dat" );
-        run ();
-      }
+    void est_MazeB() {
+      file = GET_PATH_STR( "FMDP/labyrinth/mazeb.dat" );
+      run();
+    }
 
     private:
-    float abs(float d) {
-      if (d < 0)
-        return (d * (float)-1);
+    float abs( float d ) {
+      if ( d < 0 ) return ( d * (float)-1 );
 
       void test_Factory() {
-        file = GET_PATH_STR ( "FMDP/factory/factory.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory.dat" );
+        run();
       }
 
       void test_FactoryB() {
-        file = GET_PATH_STR ( "FMDP/factory/factoryB.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factoryB.dat" );
+        run();
       }
 
 
       void test_Factory0() {
-        file = GET_PATH_STR ( "FMDP/factory/factory0.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory0.dat" );
+        run();
       }
 
       void test_Factory0B() {
-        file = GET_PATH_STR ( "FMDP/factory/factory0B.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory0B.dat" );
+        run();
       }
 
 
       void test_Factory1() {
-        file = GET_PATH_STR ( "FMDP/factory/factory1.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory1.dat" );
+        run();
       }
 
       void test_Factory1B() {
-        file = GET_PATH_STR ( "FMDP/factory/factory1B.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory1B.dat" );
+        run();
       }
 
 
       void test_Factory2() {
-        file = GET_PATH_STR ( "FMDP/factory/factory2.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory2.dat" );
+        run();
       }
 
       void test_Factory2B() {
-        file = GET_PATH_STR ( "FMDP/factory/factory2B.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory2B.dat" );
+        run();
       }
 
 
       void test_Factory3() {
-        file = GET_PATH_STR ( "FMDP/factory/factory3.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory3.dat" );
+        run();
       }
 
       void test_Factory3B() {
-        file = GET_PATH_STR ( "FMDP/factory/factory3B.dat" );
-        run ();
+        file = GET_PATH_STR( "FMDP/factory/factory3B.dat" );
+        run();
       }
-
-  };
+    };
 }

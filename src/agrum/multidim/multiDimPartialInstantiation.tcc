@@ -64,8 +64,8 @@ namespace gum {
   /// copy operator
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimPartialInstantiation<GUM_SCALAR, TABLE>&
-  MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::
-  operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& from ) {
+      MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::
+      operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& from ) {
     return *this;
   }
 

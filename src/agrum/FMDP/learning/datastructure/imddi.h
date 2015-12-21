@@ -50,133 +50,135 @@ namespace gum {
    *
    */
 
-  template <TESTNAME AttributeSelection, bool isScalar = false >
-  class IMDDI : public IncrementalGraphLearner<AttributeSelection, isScalar>{
+  template <TESTNAME AttributeSelection, bool isScalar = false>
+  class IMDDI : public IncrementalGraphLearner<AttributeSelection, isScalar> {
 
     public:
+    // ###################################################################
+    /// @name Constructor & destructor.
+    // ###################################################################
+    /// @{
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
+    // ==========================================================================
+    /// Variable Learner constructor
+    // ==========================================================================
+    IMDDI( MultiDimFunctionGraph<double>* target,
+           double attributeSelectionThreshold,
+           double pairSelectionThreshold,
+           Set<const DiscreteVariable*> attributeListe,
+           const DiscreteVariable* learnedValue );
 
-        // ==========================================================================
-        /// Variable Learner constructor
-        // ==========================================================================
-        IMDDI ( MultiDimFunctionGraph<double>* target,
-                double attributeSelectionThreshold,
-                double pairSelectionThreshold,
-                Set<const DiscreteVariable*> attributeListe,
-                const DiscreteVariable* learnedValue ) ;
+    // ==========================================================================
+    /// Reward Learner constructor
+    // ==========================================================================
+    IMDDI( MultiDimFunctionGraph<double>* target,
+           double attributeSelectionThreshold,
+           double pairSelectionThreshold,
+           Set<const DiscreteVariable*> attributeListe );
 
-        // ==========================================================================
-        /// Reward Learner constructor
-        // ==========================================================================
-        IMDDI ( MultiDimFunctionGraph<double>* target,
-                double attributeSelectionThreshold,
-                double pairSelectionThreshold,
-                Set<const DiscreteVariable*> attributeListe );
+    // ==========================================================================
+    /// Default destructor
+    // ==========================================================================
+    ~IMDDI();
 
-        // ==========================================================================
-        /// Default destructor
-        // ==========================================================================
-        ~IMDDI();
+    /// @}
 
-      /// @}
+    // ###################################################################
+    /// @name Incrementals methods
+    // ###################################################################
+    /// @{
 
-      // ###################################################################
-      /// @name Incrementals methods
-      // ###################################################################
-      /// @{
+    // ==========================================================================
+    /// Adds a new observation to the structure
+    // ==========================================================================
+    void addObservation( const Observation* );
 
-        // ==========================================================================
-        /// Adds a new observation to the structure
-        // ==========================================================================
-        void addObservation ( const Observation* );
-
-    protected :
-      void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId );
+    protected:
+    void _updateNodeWithObservation( const Observation* newObs,
+                                     NodeId currentNodeId );
 
     public:
-        // ==========================================================================
-        /// Updates the tree after a new observation has been added
-        // ==========================================================================
-        void updateGraph();
+    // ==========================================================================
+    /// Updates the tree after a new observation has been added
+    // ==========================================================================
+    void updateGraph();
 
-    protected :
-        NodeId _insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                                const DiscreteVariable* boundVar,
-                                Set<const Observation*>* sonsMap );
+    protected:
+    NodeId _insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
+                            const DiscreteVariable* boundVar,
+                            Set<const Observation*>* sonsMap );
 
-        void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
+    void _chgNodeBoundVar( NodeId chgedNodeId,
+                           const DiscreteVariable* desiredVar );
 
-        void _removeNode( NodeId removedNodeId );
+    void _removeNode( NodeId removedNodeId );
 
-    private :
+    private:
+    void __addLeaf( NodeId );
+    void __removeLeaf( NodeId );
 
+    /// @}
 
-        void __addLeaf( NodeId );
-        void __removeLeaf( NodeId );
+    private:
+    // ###################################################################
+    /// @name Updating private methods
+    // ###################################################################
+    /// @{
 
-      /// @}
+    // ==========================================================================
+    /// Computes the score of the given variables for the given node
+    // ==========================================================================
+    void __updateScore( const DiscreteVariable*, NodeId, VariableSelector& vs );
+    void
+    __downdateScore( const DiscreteVariable*, NodeId, VariableSelector& vs );
 
-  private :
-
-      // ###################################################################
-      /// @name Updating private methods
-      // ###################################################################
-      /// @{
-
-        // ==========================================================================
-        /// Computes the score of the given variables for the given node
-        // ==========================================================================
-        void __updateScore(const DiscreteVariable*, NodeId , VariableSelector& vs);
-        void __downdateScore(const DiscreteVariable*, NodeId , VariableSelector& vs);
-
-        // ==========================================================================
-        /// For each node in the given set, this methods checks whether or not
-        /// we should installed the given variable as a test.
-        /// If so, the node is updated
-        // ==========================================================================
-        void __updateNodeSet(Set<NodeId>&, const DiscreteVariable*,
-                              VariableSelector & );
+    // ==========================================================================
+    /// For each node in the given set, this methods checks whether or not
+    /// we should installed the given variable as a test.
+    /// If so, the node is updated
+    // ==========================================================================
+    void
+    __updateNodeSet( Set<NodeId>&, const DiscreteVariable*, VariableSelector& );
 
 
-  public :
-        // ==========================================================================
-        ///
-        // ==========================================================================
-        void updateFunctionGraph();
-  private :
-        void __rebuildFunctionGraph();
-        NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<true> );
-        NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<false> );
+    public:
+    // ==========================================================================
+    ///
+    // ==========================================================================
+    void updateFunctionGraph();
 
-      /// @}
-      ///
-  public  :
-      void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
-        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varOrder.beginSafe();
-                varIter != __varOrder.endSafe(); ++varIter)
-          ret->add(**varIter);
-      }
+    private:
+    void __rebuildFunctionGraph();
+    NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<true> );
+    NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<false> );
 
-  private :
+    /// @}
+    ///
+    public:
+    void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
+      for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+                __varOrder.beginSafe();
+            varIter != __varOrder.endSafe();
+            ++varIter )
+        ret->add( **varIter );
+    }
 
-      Sequence<const DiscreteVariable*> __varOrder;
+    private:
+    Sequence<const DiscreteVariable*> __varOrder;
 
-      LeafAggregator __lg;
+    LeafAggregator __lg;
 
-      HashTable<NodeId, AbstractLeaf*> __leafMap;
+    HashTable<NodeId, AbstractLeaf*> __leafMap;
 
-      /// The total number of observation added to this tree
-      Idx __nbTotalObservation;
+    /// The total number of observation added to this tree
+    Idx __nbTotalObservation;
 
-      /// The threshold above which we consider variables to be dependant
-      double __attributeSelectionThreshold;
+    /// The threshold above which we consider variables to be dependant
+    double __attributeSelectionThreshold;
 
-      /// The threshold above which two leaves does not share the same probability distribution
-      // double __pairSelectionThreshold;
+    /// The threshold above which two leaves does not share the same probability
+    /// distribution
+    // double __pairSelectionThreshold;
   };
 
 
@@ -184,7 +186,6 @@ namespace gum {
 
 #include <agrum/FMDP/learning/datastructure/imddi.tcc>
 
-#endif // GUM_IMDDI_H
+#endif  // GUM_IMDDI_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-

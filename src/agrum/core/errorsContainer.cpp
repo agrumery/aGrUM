@@ -116,8 +116,7 @@ namespace gum {
 
     std::ostringstream s;
 
-    s << toString() << std::endl
-      << code << std::endl;
+    s << toString() << std::endl << code << std::endl;
 
     if ( column > 0 ) s << std::string( column - 1, ' ' ) << "^";
 

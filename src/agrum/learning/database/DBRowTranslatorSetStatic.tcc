@@ -77,11 +77,11 @@ namespace gum {
     /// copy operator
     template <int Idx, typename Translator, typename... OtherTranslators>
     INLINE BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...>&
-    BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...>::
-    operator=(
-        const BasicDBRowTranslatorSetStatic<Idx,
-                                            Translator,
-                                            OtherTranslators...>& from ) {
+        BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...>::
+        operator=(
+            const BasicDBRowTranslatorSetStatic<Idx,
+                                                Translator,
+                                                OtherTranslators...>& from ) {
       if ( this != &from ) {
         NextTranslators::operator=( from );
         __translator = from.__translator;
@@ -93,10 +93,10 @@ namespace gum {
     /// move operator
     template <int Idx, typename Translator, typename... OtherTranslators>
     INLINE BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...>&
-    BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...>::
-    operator=(
-        BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...>&&
-            from ) {
+        BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...>::
+        operator=( BasicDBRowTranslatorSetStatic<Idx,
+                                                 Translator,
+                                                 OtherTranslators...>&& from ) {
       if ( this != &from ) {
         NextTranslators::operator=( std::move( from ) );
         __translator = std::move( from.__translator );
@@ -271,8 +271,8 @@ namespace gum {
     /// copy operator
     template <typename... Translators>
     INLINE DBRowTranslatorSetStatic<Translators...>&
-    DBRowTranslatorSetStatic<Translators...>::
-    operator=( const DBRowTranslatorSetStatic<Translators...>& from ) {
+        DBRowTranslatorSetStatic<Translators...>::
+        operator=( const DBRowTranslatorSetStatic<Translators...>& from ) {
       if ( this != &from ) {
         TranslatorSetStatic::operator=( from );
         __output_row.row().resize( TranslatorSetStatic::output_size );
@@ -284,8 +284,8 @@ namespace gum {
     /// move operator
     template <typename... Translators>
     INLINE DBRowTranslatorSetStatic<Translators...>&
-    DBRowTranslatorSetStatic<Translators...>::
-    operator=( DBRowTranslatorSetStatic<Translators...>&& from ) {
+        DBRowTranslatorSetStatic<Translators...>::
+        operator=( DBRowTranslatorSetStatic<Translators...>&& from ) {
       if ( this != &from ) {
         TranslatorSetStatic::operator=( std::move( from ) );
         __output_row = std::move( from.__output_row );

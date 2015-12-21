@@ -154,7 +154,7 @@ namespace gum {
        * @brief Change the name of the PRM Object.
        * @warning Don't do this unless you know wath you are doing !
        */
-      void name(const std::string& name);
+      void name( const std::string& name );
 
       /**
        * Returns the type of this object.

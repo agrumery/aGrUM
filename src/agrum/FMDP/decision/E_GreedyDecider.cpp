@@ -37,96 +37,95 @@ namespace gum {
   /// @name Constructor & destructor.
   // ==========================================================================
 
-    // ###################################################################
-    /**
-     * Constructor
-     */
-    // ###################################################################
-    E_GreedyDecider::E_GreedyDecider () {
+  // ###################################################################
+  /**
+   * Constructor
+   */
+  // ###################################################################
+  E_GreedyDecider::E_GreedyDecider() {
 
-      GUM_CONSTRUCTOR(E_GreedyDecider)
+    GUM_CONSTRUCTOR( E_GreedyDecider )
 
-      __sss = 1.0;
-    }
+    __sss = 1.0;
+  }
 
 
-    // ###################################################################
-    /**
-     *
-     */
-    // ###################################################################
-    E_GreedyDecider::~E_GreedyDecider (){
-
-      GUM_DESTRUCTOR(E_GreedyDecider)
-    }
-
+  // ###################################################################
+  /**
+   *
+   */
+  // ###################################################################
+  E_GreedyDecider::~E_GreedyDecider() { GUM_DESTRUCTOR( E_GreedyDecider ) }
 
 
   // ==========================================================================
   /// @name Initialization
   // ==========================================================================
 
-    // ###################################################################
-    /**
-     *
-     */
-    // ###################################################################
-    void E_GreedyDecider::initialize( const FMDP<double>* fmdp ){
-      IDecisionStrategy::initialize(fmdp);
-      for( auto varIter = fmdp->beginVariables(); varIter != fmdp->endVariables(); ++varIter )
-        __sss *= (double) (*varIter)->domainSize();
-    }
-
+  // ###################################################################
+  /**
+   *
+   */
+  // ###################################################################
+  void E_GreedyDecider::initialize( const FMDP<double>* fmdp ) {
+    IDecisionStrategy::initialize( fmdp );
+    for ( auto varIter = fmdp->beginVariables();
+          varIter != fmdp->endVariables();
+          ++varIter )
+      __sss *= (double)( *varIter )->domainSize();
+  }
 
 
   // ==========================================================================
   /// @name Incremental methods
   // ==========================================================================
 
-    // ###################################################################
-    /**
-     * Performs a feedback on the last transition.
-     * In extenso, learn from the transition.
-     * @param reachedState : the state reached after the transition
-     */
-    // ###################################################################
-    void E_GreedyDecider::checkState(const Instantiation & reachedState, Idx actionId ){
-      if( __statecpt.nbVisitedStates() == 0 )
-        __statecpt.reset(reachedState);
-      else
-        if( !__statecpt.checkState(reachedState) )
-            __statecpt.addState(reachedState);
+  // ###################################################################
+  /**
+   * Performs a feedback on the last transition.
+   * In extenso, learn from the transition.
+   * @param reachedState : the state reached after the transition
+   */
+  // ###################################################################
+  void E_GreedyDecider::checkState( const Instantiation& reachedState,
+                                    Idx actionId ) {
+    if ( __statecpt.nbVisitedStates() == 0 )
+      __statecpt.reset( reachedState );
+    else if ( !__statecpt.checkState( reachedState ) )
+      __statecpt.addState( reachedState );
+  }
+
+  // ###################################################################
+  /**
+   * @param the state in which we currently are
+   * @return a set containing every optimal actions on that state
+   */
+  // ###################################################################
+  ActionSet
+  E_GreedyDecider::stateOptimalPolicy( const Instantiation& curState ) {
+
+    double explo = (double)std::rand() / (double)RAND_MAX;
+    double temp = std::pow(
+        ( __sss - (double)__statecpt.nbVisitedStates() ) / __sss, 3.0 );
+    double exploThreshold = temp < 0.1 ? 0.1 : temp;
+
+    //      std::cout << exploThreshold << std::endl;
+
+    ActionSet optimalSet = IDecisionStrategy::stateOptimalPolicy( curState );
+    if ( explo > exploThreshold ) {
+      //        std::cout << "Exploit : " << optimalSet << std::endl;
+      return optimalSet;
     }
 
-    // ###################################################################
-    /**
-     * @param the state in which we currently are
-     * @return a set containing every optimal actions on that state
-     */
-    // ###################################################################
-    ActionSet E_GreedyDecider::stateOptimalPolicy(const Instantiation& curState){
-
-      double explo = (double)std::rand( ) / (double)RAND_MAX;
-      double temp = std::pow( (__sss - (double) __statecpt.nbVisitedStates() ) / __sss, 3.0);
-      double exploThreshold = temp < 0.1 ? 0.1 : temp;
-
-//      std::cout << exploThreshold << std::endl;
-
-      ActionSet optimalSet = IDecisionStrategy::stateOptimalPolicy(curState);
-      if( explo > exploThreshold ) {
-//        std::cout << "Exploit : " << optimalSet << std::endl;
-        return optimalSet;
-      }
-
-      if( _allActions.size() > optimalSet.size()){
-        ActionSet ret(_allActions);
-        ret -= optimalSet;
-//        std::cout << "Explore : " << ret << std::endl;
-        return ret;
-      }
-
-//      std::cout << "Explore : " << _allActions << std::endl;
-      return _allActions;
+    if ( _allActions.size() > optimalSet.size() ) {
+      ActionSet ret( _allActions );
+      ret -= optimalSet;
+      //        std::cout << "Explore : " << ret << std::endl;
+      return ret;
     }
 
-} // End of namespace gum
+    //      std::cout << "Explore : " << _allActions << std::endl;
+    return _allActions;
+  }
+
+}  // End of namespace gum

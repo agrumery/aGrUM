@@ -73,8 +73,9 @@ namespace gum {
     /// copy operator
     template <typename STRUCT_CONSTRAINT>
     GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::operator=(
-        const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from ) {
+        GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::
+        operator=(
+            const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from ) {
       if ( this != &from ) {
         _constraint = from._constraint;
         _target_nodes = from._target_nodes;
@@ -88,8 +89,9 @@ namespace gum {
     /// move operator
     template <typename STRUCT_CONSTRAINT>
     GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::
-    operator=( GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from ) {
+        GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::
+        operator=(
+            GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from ) {
       if ( this != &from ) {
         _constraint = std::move( from._constraint );
         _target_nodes = std::move( from._target_nodes );

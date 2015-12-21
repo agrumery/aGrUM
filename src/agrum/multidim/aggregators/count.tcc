@@ -56,9 +56,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Count<GUM_SCALAR>::_fold( const DiscreteVariable& v,
-                                           Idx i1,
-                                           Idx i2,
-                                           bool& stop_iteration ) const {
+                                         Idx i1,
+                                         Idx i2,
+                                         bool& stop_iteration ) const {
       return ( i1 == __value ) ? 1 + i2 : i2;
     }
 

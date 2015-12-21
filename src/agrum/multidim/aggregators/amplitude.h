@@ -33,7 +33,8 @@ namespace gum {
   namespace aggregator {
     /* =========================================================================*/
     /* =========================================================================*/
-    /* ===                     GUM_AMPLITUDE_AGGREGATOR                     === */
+    /* ===                     GUM_AMPLITUDE_AGGREGATOR                     ===
+     */
     /* =========================================================================*/
     /* =========================================================================*/
 
@@ -43,7 +44,8 @@ namespace gum {
     *
     * @see MultiDimAggregator for more details of implementations
     *
-    * Amplitude may be truncated since the amplitude has not the same type as its parents.
+    * Amplitude may be truncated since the amplitude has not the same type as
+    * its parents.
     */
     /* =========================================================================*/
 

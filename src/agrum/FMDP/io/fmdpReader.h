@@ -40,38 +40,44 @@
 
 
 namespace gum {
-  /* ============================================================================ */
-  /* ===                               READERS                                === */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ===                               READERS === */
+  /* ============================================================================
+   */
   /**
    * @class FMDPReader
    * @brief Pure virtual class for reading a FMDP from a file.
    * @ingroup fmdp_group
-   * Every class used to read the content of a Factored Markov Decision Process from a stream,
+   * Every class used to read the content of a Factored Markov Decision Process
+   * from a stream,
    * or a file must be a subclass of FMDPReader.
    */
-  template<typename GUM_SCALAR>
+  template <typename GUM_SCALAR>
   class FMDPReader {
     public:
-      /**
-       * Constructor
-       * A reader is defined for reading a defined file. Hence the 2 args of the constructor.
-       * Note that the FMDP has to be built outside the reader. There is no delegation to create/destroy
-       * the FMDP from inside the reader.
-       */
-      FMDPReader ( FMDP<GUM_SCALAR>* fmdp, const std::string& filename );
+    /**
+     * Constructor
+     * A reader is defined for reading a defined file. Hence the 2 args of the
+     * constructor.
+     * Note that the FMDP has to be built outside the reader. There is no
+     * delegation to create/destroy
+     * the FMDP from inside the reader.
+     */
+    FMDPReader( FMDP<GUM_SCALAR>* fmdp, const std::string& filename );
 
-      /**
-       * Default destructor.
-       */
-      virtual ~FMDPReader();
+    /**
+     * Default destructor.
+     */
+    virtual ~FMDPReader();
 
-      /**
-       * Reads a Factored Markov Decision Process from the file referenced by filePath into`
-       * parameter fmdp.
-       * @return Returns the number of error during the parsing (0 if none).
-       */
-      virtual int proceed() = 0;
+    /**
+     * Reads a Factored Markov Decision Process from the file referenced by
+     * filePath into`
+     * parameter fmdp.
+     * @return Returns the number of error during the parsing (0 if none).
+     */
+    virtual int proceed() = 0;
   };
 
   extern template class FMDPReader<float>;
@@ -82,4 +88,4 @@ namespace gum {
 
 #include <agrum/FMDP/io/fmdpReader.tcc>
 
-#endif // GUM_FMDP_READER_H
+#endif  // GUM_FMDP_READER_H

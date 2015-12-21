@@ -7,74 +7,98 @@ namespace gum {
   // *****************************************************************************************************
   /// Binarisation d'un graphe de fonction
   // *****************************************************************************************************
-  template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy>
-  void GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::loadFunctionGraphs(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *fg1,
-                                                                                        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *fg2){
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  void GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::
+      loadFunctionGraphs(
+          const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* fg1,
+          const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* fg2 ) {
     __varList.clear();
     __dependancyMap.clear();
     __dependancyGraph.clear();
-    __fg1 = const_cast< MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *>(fg1);
-    __fg2 = const_cast< MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *>(fg2);
+    __fg1 = const_cast<MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*>(
+        fg1 );
+    __fg2 = const_cast<MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*>(
+        fg2 );
   }
-
 
 
   // *****************************************************************************************************
   /// Binarisation d'un graphe de fonction
   // *****************************************************************************************************
-  template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy>
-  void GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::minimize(){
-//    std::cout << "NEW MINIMISE" << std::endl;
-//    std::cout << "==============================================================" << std::endl;
-//    std::cout << "                           EXTRACT                            " << std::endl;
-//    std::cout << "==============================================================" << std::endl;
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  void
+  GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::minimize() {
+    //    std::cout << "NEW MINIMISE" << std::endl;
+    //    std::cout <<
+    //    "==============================================================" <<
+    //    std::endl;
+    //    std::cout << "                           EXTRACT " << std::endl;
+    //    std::cout <<
+    //    "==============================================================" <<
+    //    std::endl;
     __extractVarList();
-//    std::cout << "==============================================================" << std::endl;
-//    std::cout << "                           ORDER                              " << std::endl;
-//    std::cout << "==============================================================" /*<< __fg1->toDot() << __fg2->toDot()*/ << std::endl;
-//    std::cout << __fg1->root() << std::endl;
+    //    std::cout <<
+    //    "==============================================================" <<
+    //    std::endl;
+    //    std::cout << "                           ORDER " << std::endl;
+    //    std::cout <<
+    //    "==============================================================" /*<<
+    //    __fg1->toDot() << __fg2->toDot()*/ << std::endl;
+    //    std::cout << __fg1->root() << std::endl;
     __orderSimillary();
-//    std::cout << __fg1->root() << std::endl;
-//    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter )
-//      std::cout << (*varIter)->name()  << "    ";
-//    std::cout << std::endl;
-//    std::cout << "==============================================================" << std::endl;
-//    std::cout << "                           MINIMIZE                           " << std::endl;
-//    std::cout << "==============================================================" /*<< __fg1->toDot() << __fg2->toDot()*/ << std::endl;
-//    std::cout << __fg1->root() << std::endl;
+    //    std::cout << __fg1->root() << std::endl;
+    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+    //    __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter )
+    //      std::cout << (*varIter)->name()  << "    ";
+    //    std::cout << std::endl;
+    //    std::cout <<
+    //    "==============================================================" <<
+    //    std::endl;
+    //    std::cout << "                           MINIMIZE " << std::endl;
+    //    std::cout <<
+    //    "==============================================================" /*<<
+    //    __fg1->toDot() << __fg2->toDot()*/ << std::endl;
+    //    std::cout << __fg1->root() << std::endl;
     __minimizeGlobally();
-//    std::cout << __fg1->root() << std::endl;
-//    std::cout << "==============================================================" /*<< __fg1->toDot() << __fg2->toDot()*/ << std::endl;
+    //    std::cout << __fg1->root() << std::endl;
+    //    std::cout <<
+    //    "==============================================================" /*<<
+    //    __fg1->toDot() << __fg2->toDot()*/ << std::endl;
   }
-
 
 
   // *****************************************************************************************************
   /// Binarisation d'un graphe de fonction
   // *****************************************************************************************************
-  template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy>
-  void GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::__extractVarList(){
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  void GlobalFunctionGraphMinimizer<GUM_SCALAR,
+                                    TerminalNodePolicy>::__extractVarList() {
 
     const DiscreteVariable* parent = nullptr;
-    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __fg1->variablesSequence().beginSafe(); varIter != __fg1->variablesSequence().endSafe(); ++varIter){
-      __varList.insert(*varIter);
-      __dependancyMap.insert(__dependancyGraph.addNode(), *varIter);
-      if(parent != nullptr)
-        __dependancyGraph.addArc(__dependancyMap.first(parent), __dependancyMap.first(*varIter));
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+              __fg1->variablesSequence().beginSafe();
+          varIter != __fg1->variablesSequence().endSafe();
+          ++varIter ) {
+      __varList.insert( *varIter );
+      __dependancyMap.insert( __dependancyGraph.addNode(), *varIter );
+      if ( parent != nullptr )
+        __dependancyGraph.addArc( __dependancyMap.first( parent ),
+                                  __dependancyMap.first( *varIter ) );
       parent = *varIter;
     }
 
     parent = nullptr;
-    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __fg2->variablesSequence().beginSafe(); varIter != __fg2->variablesSequence().endSafe(); ++varIter){
-      if(!__varList.exists(*varIter)){
-        __varList.insert(*varIter);
-        __dependancyMap.insert(__dependancyGraph.addNode(), *varIter);
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+              __fg2->variablesSequence().beginSafe();
+          varIter != __fg2->variablesSequence().endSafe();
+          ++varIter ) {
+      if ( !__varList.exists( *varIter ) ) {
+        __varList.insert( *varIter );
+        __dependancyMap.insert( __dependancyGraph.addNode(), *varIter );
       }
-      if(parent != nullptr)
-        __dependancyGraph.addArc(__dependancyMap.first(parent), __dependancyMap.first(*varIter));
+      if ( parent != nullptr )
+        __dependancyGraph.addArc( __dependancyMap.first( parent ),
+                                  __dependancyMap.first( *varIter ) );
       parent = *varIter;
     }
   }
@@ -82,29 +106,34 @@ namespace gum {
   // *****************************************************************************************************
   /// Binarisation de plusieurs graphes de fonction
   // *****************************************************************************************************
-  template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy>
-  void GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::__orderSimillary(){
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  void GlobalFunctionGraphMinimizer<GUM_SCALAR,
+                                    TerminalNodePolicy>::__orderSimillary() {
 
-    Sequence<const DiscreteVariable*> source, puits;
-    while(!__varList.empty()){
+    Sequence<const DiscreteVariable *> source, puits;
+    while ( !__varList.empty() ) {
 
       // Retrait des noeuds sources et puits
       bool modified = true;
-      while(modified){
+      while ( modified ) {
         modified = false;
-        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter)  {
-          if(__dependancyGraph.parents(__dependancyMap.first(*varIter)).empty()){
-            source.insert(*varIter);
-            __dependancyGraph.eraseNode(__dependancyMap.first(*varIter));
-            __varList.erase(*varIter);
+        for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+                  __varList.beginSafe();
+              varIter != __varList.endSafe();
+              ++varIter ) {
+          if ( __dependancyGraph.parents( __dependancyMap.first( *varIter ) )
+                   .empty() ) {
+            source.insert( *varIter );
+            __dependancyGraph.eraseNode( __dependancyMap.first( *varIter ) );
+            __varList.erase( *varIter );
             modified = true;
             continue;
-          } else
-          if(__dependancyGraph.children(__dependancyMap.first(*varIter)).empty()){
-            puits.insert(*varIter);
-            __dependancyGraph.eraseNode(__dependancyMap.first(*varIter));
-            __varList.erase(*varIter);
+          } else if ( __dependancyGraph.children(
+                                           __dependancyMap.first( *varIter ) )
+                          .empty() ) {
+            puits.insert( *varIter );
+            __dependancyGraph.eraseNode( __dependancyMap.first( *varIter ) );
+            __varList.erase( *varIter );
             modified = true;
             continue;
           }
@@ -114,198 +143,273 @@ namespace gum {
       // Selection de la meilleure variable à retirer du graphe
       const DiscreteVariable* bestVar = nullptr;
       Idx bestVarDegree = 0;
-      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter)  {
-        Idx varDegree = __dependancyGraph.parents(__dependancyMap.first(*varIter)).size() + __dependancyGraph.children(__dependancyMap.first(*varIter)).size();
-        if(varDegree > bestVarDegree){
+      for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+                __varList.beginSafe();
+            varIter != __varList.endSafe();
+            ++varIter ) {
+        Idx varDegree =
+            __dependancyGraph.parents( __dependancyMap.first( *varIter ) )
+                .size() +
+            __dependancyGraph.children( __dependancyMap.first( *varIter ) )
+                .size();
+        if ( varDegree > bestVarDegree ) {
           bestVarDegree = varDegree;
           bestVar = *varIter;
         }
       }
 
-      //Retrait de cette best var
-      if( bestVar != nullptr ){
-        source.insert(bestVar);
-        __dependancyGraph.eraseNode(__dependancyMap.first(bestVar));
-        __varList.erase(bestVar);
+      // Retrait de cette best var
+      if ( bestVar != nullptr ) {
+        source.insert( bestVar );
+        __dependancyGraph.eraseNode( __dependancyMap.first( bestVar ) );
+        __varList.erase( bestVar );
       }
     }
 
 
-    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = source.beginSafe(); varIter != source.endSafe(); ++varIter) __varList.insert(*varIter);
-    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = puits.rbeginSafe(); varIter != puits.rendSafe(); --varIter) __varList.insert(*varIter);
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+              source.beginSafe();
+          varIter != source.endSafe();
+          ++varIter )
+      __varList.insert( *varIter );
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+              puits.rbeginSafe();
+          varIter != puits.rendSafe();
+          --varIter )
+      __varList.insert( *varIter );
 
-//    std::cout << "before reo" << std::endl;
-//    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __fg1->variablesSequence().beginSafe(); varIter != __fg1->variablesSequence().endSafe(); ++varIter )
-//      std::cout << (*varIter)->name()  << "    ";
-//    std::cout << std::endl;
-//    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __fg2->variablesSequence().beginSafe(); varIter != __fg2->variablesSequence().endSafe(); ++varIter )
-//      std::cout << (*varIter)->name()  << "    ";
-//    std::cout << std::endl;
+    //    std::cout << "before reo" << std::endl;
+    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+    //    __fg1->variablesSequence().beginSafe(); varIter !=
+    //    __fg1->variablesSequence().endSafe(); ++varIter )
+    //      std::cout << (*varIter)->name()  << "    ";
+    //    std::cout << std::endl;
+    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+    //    __fg2->variablesSequence().beginSafe(); varIter !=
+    //    __fg2->variablesSequence().endSafe(); ++varIter )
+    //      std::cout << (*varIter)->name()  << "    ";
+    //    std::cout << std::endl;
 
-    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter) {
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+              __varList.beginSafe();
+          varIter != __varList.endSafe();
+          ++varIter ) {
 
-      if( !__fg1->variablesSequence().exists(*varIter))
-        __fg1->add(**varIter);
+      if ( !__fg1->variablesSequence().exists( *varIter ) )
+        __fg1->add( **varIter );
 
-      if( !__fg2->variablesSequence().exists(*varIter))
-        __fg2->add(**varIter);
+      if ( !__fg2->variablesSequence().exists( *varIter ) )
+        __fg2->add( **varIter );
 
-      __fg1->manager()->moveTo(*varIter, __varList.pos(*varIter));
-      __fg2->manager()->moveTo(*varIter, __varList.pos(*varIter));
+      __fg1->manager()->moveTo( *varIter, __varList.pos( *varIter ) );
+      __fg2->manager()->moveTo( *varIter, __varList.pos( *varIter ) );
     }
-//    __fg1->manager()->reduce();
-//    __fg2->manager()->reduce();
+    //    __fg1->manager()->reduce();
+    //    __fg2->manager()->reduce();
 
 
-
-//    std::cout << "after reo" << std::endl;
-//    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __fg1->variablesSequence().beginSafe(); varIter != __fg1->variablesSequence().endSafe(); ++varIter )
-//      std::cout << (*varIter)->name()  << "    ";
-//    std::cout << std::endl;
-//    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __fg2->variablesSequence().beginSafe(); varIter != __fg2->variablesSequence().endSafe(); ++varIter )
-//      std::cout << (*varIter)->name()  << "    ";
-//    std::cout << std::endl;
+    //    std::cout << "after reo" << std::endl;
+    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+    //    __fg1->variablesSequence().beginSafe(); varIter !=
+    //    __fg1->variablesSequence().endSafe(); ++varIter )
+    //      std::cout << (*varIter)->name()  << "    ";
+    //    std::cout << std::endl;
+    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+    //    __fg2->variablesSequence().beginSafe(); varIter !=
+    //    __fg2->variablesSequence().endSafe(); ++varIter )
+    //      std::cout << (*varIter)->name()  << "    ";
+    //    std::cout << std::endl;
   }
-
 
 
   // *****************************************************************************************************
   /// Binarisation d'un graphe de fonction
   // *****************************************************************************************************
-  template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy>
-  void GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::__minimizeGlobally( ){
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  void GlobalFunctionGraphMinimizer<GUM_SCALAR,
+                                    TerminalNodePolicy>::__minimizeGlobally() {
 
     // Classement des variables par taille de niveau
     Sequence<const DiscreteVariable*> siftingSeq;
     HashTable<const DiscreteVariable*, Idx> varLvlSize;
-    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter ){
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+              __varList.beginSafe();
+          varIter != __varList.endSafe();
+          ++varIter ) {
 
       Idx nbElem = 0;
 
-      const Link<NodeId>* curElem = __fg1->varNodeListe(*varIter)->list();
-      for(;curElem != nullptr; nbElem++, curElem = curElem->nextLink());
-      curElem = __fg2->varNodeListe(*varIter)->list();
-      for(;curElem != nullptr; nbElem++, curElem = curElem->nextLink());
+      const Link<NodeId>* curElem = __fg1->varNodeListe( *varIter )->list();
+      for ( ; curElem != nullptr; nbElem++, curElem = curElem->nextLink() )
+        ;
+      curElem = __fg2->varNodeListe( *varIter )->list();
+      for ( ; curElem != nullptr; nbElem++, curElem = curElem->nextLink() )
+        ;
 
-      varLvlSize.insert(*varIter, nbElem);
-      siftingSeq.insert(*varIter);
-      Idx pos = siftingSeq.pos(*varIter);
-      while( pos > 0 && varLvlSize[siftingSeq.atPos(pos - 1)] > nbElem ){
-        siftingSeq.swap(pos - 1, pos);
+      varLvlSize.insert( *varIter, nbElem );
+      siftingSeq.insert( *varIter );
+      Idx pos = siftingSeq.pos( *varIter );
+      while ( pos > 0 && varLvlSize[siftingSeq.atPos( pos - 1 )] > nbElem ) {
+        siftingSeq.swap( pos - 1, pos );
         pos--;
       }
-
     }
-//    std::cout << "**********************  BEGIN  ***************************" << __fg1->toDot() << std::endl;
+    //    std::cout << "**********************  BEGIN
+    //    ***************************" << __fg1->toDot() << std::endl;
 
     // Sifting var par var
-    for( SequenceIteratorSafe<const DiscreteVariable*> sifIter = siftingSeq.beginSafe(); sifIter != siftingSeq.endSafe(); ++sifIter ){
+    for ( SequenceIteratorSafe<const DiscreteVariable*> sifIter =
+              siftingSeq.beginSafe();
+          sifIter != siftingSeq.endSafe();
+          ++sifIter ) {
 
-//      std::cout << "========================================================================" << std::endl;
-//      std::cout << "                           " << (*sifIter)->name() << "                              " << std::endl;
-//      std::cout << "========================================================================" << std::endl;
-//      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter )
-//        std::cout << (*varIter)->name()  << "    ";
-//      std::cout << __fg1->toDot() << std::endl;
+      //      std::cout <<
+      //      "========================================================================"
+      //      << std::endl;
+      //      std::cout << "                           " << (*sifIter)->name()
+      //      << "                              " << std::endl;
+      //      std::cout <<
+      //      "========================================================================"
+      //      << std::endl;
+      //      for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
+      //      __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter )
+      //        std::cout << (*varIter)->name()  << "    ";
+      //      std::cout << __fg1->toDot() << std::endl;
 
       bool goOn = true;
 
       // Initialisation nouveau Sifting
-      Idx currentPos = __varList.pos(*sifIter);
-      Idx bestSize = __fg1->realSize() +__fg2->realSize();
+      Idx currentPos = __varList.pos( *sifIter );
+      Idx bestSize = __fg1->realSize() + __fg2->realSize();
       Idx bestPos = currentPos;
       Idx initPos = currentPos;
 
-//      std::cout << currentPos << std::endl;
+      //      std::cout << currentPos << std::endl;
 
       // Sifting vers level supérieur
-      while( currentPos > 0 && goOn ){
+      while ( currentPos > 0 && goOn ) {
 
         // First ensure that swap won't potentially overgrow MDD size
         Idx nbElemPar1 = 0;
-        const Link<NodeId>* curElem = __fg1->varNodeListe(__fg1->variablesSequence().atPos(currentPos - 1))->list();
-        for(;curElem != nullptr; nbElemPar1++, curElem = curElem->nextLink());
+        const Link<NodeId>* curElem =
+            __fg1->varNodeListe(
+                     __fg1->variablesSequence().atPos( currentPos - 1 ) )
+                ->list();
+        for ( ; curElem != nullptr;
+              nbElemPar1++, curElem = curElem->nextLink() )
+          ;
         Idx nbElemCur1 = 0;
-        curElem = __fg1->varNodeListe(*sifIter)->list();
-        for(;curElem != nullptr; nbElemCur1++, curElem = curElem->nextLink());
+        curElem = __fg1->varNodeListe( *sifIter )->list();
+        for ( ; curElem != nullptr;
+              nbElemCur1++, curElem = curElem->nextLink() )
+          ;
 
         Idx nbElemPar2 = 0;
-        curElem = __fg2->varNodeListe(__fg2->variablesSequence().atPos(currentPos - 1))->list();
-        for(;curElem != nullptr; nbElemPar2++, curElem = curElem->nextLink());
+        curElem = __fg2->varNodeListe(
+                           __fg2->variablesSequence().atPos( currentPos - 1 ) )
+                      ->list();
+        for ( ; curElem != nullptr;
+              nbElemPar2++, curElem = curElem->nextLink() )
+          ;
         Idx nbElemCur2 = 0;
-        curElem = __fg2->varNodeListe(*sifIter)->list();
-        for(;curElem != nullptr; nbElemCur2++, curElem = curElem->nextLink());
+        curElem = __fg2->varNodeListe( *sifIter )->list();
+        for ( ; curElem != nullptr;
+              nbElemCur2++, curElem = curElem->nextLink() )
+          ;
 
-        if(__fg1->realSize() + ( nbElemCur1 + nbElemPar1 )*(*sifIter)->domainSize() > 100000 ||
-           __fg2->realSize() + ( nbElemCur2 + nbElemPar2 )*(*sifIter)->domainSize() > 100000)
+        if ( __fg1->realSize() +
+                     ( nbElemCur1 + nbElemPar1 ) * ( *sifIter )->domainSize() >
+                 100000 ||
+             __fg2->realSize() +
+                     ( nbElemCur2 + nbElemPar2 ) * ( *sifIter )->domainSize() >
+                 100000 )
           break;
 
         // Do the SWAP if it's ok
-        //std::cout << "------------- DG1 --------------" << std::endl;
-        __fg1->manager()->moveTo(*sifIter, currentPos - 1);
-//        __fg1->manager()->reduce();
-        //std::cout << "------------- DG2 --------------" << std::endl;
-        __fg2->manager()->moveTo(*sifIter, currentPos - 1);
-//        __fg2->manager()->reduce();
-        //std::cout << "------------- Fin --------------" << std::endl;
+        // std::cout << "------------- DG1 --------------" << std::endl;
+        __fg1->manager()->moveTo( *sifIter, currentPos - 1 );
+        //        __fg1->manager()->reduce();
+        // std::cout << "------------- DG2 --------------" << std::endl;
+        __fg2->manager()->moveTo( *sifIter, currentPos - 1 );
+        //        __fg2->manager()->reduce();
+        // std::cout << "------------- Fin --------------" << std::endl;
         currentPos--;
-        if( __fg1->realSize() + __fg2->realSize() < bestSize ){
+        if ( __fg1->realSize() + __fg2->realSize() < bestSize ) {
           bestPos = currentPos;
           bestSize = __fg1->realSize() + __fg2->realSize();
         }
-        //std::cout << "**********************  " << currentPos - 1 << "  ***************************" << __fg1->toDot() << std::endl;
+        // std::cout << "**********************  " << currentPos - 1 << "
+        // ***************************" << __fg1->toDot() << std::endl;
       }
-      //std::cout << "**********************  INTER  ***************************" << (*sifIter)->name() << __fg1->toDot() << std::endl;
+      // std::cout << "**********************  INTER
+      // ***************************" << (*sifIter)->name() << __fg1->toDot() <<
+      // std::endl;
 
-      __fg1->manager()->moveTo(*sifIter, initPos);
-      __fg2->manager()->moveTo(*sifIter, initPos);
+      __fg1->manager()->moveTo( *sifIter, initPos );
+      __fg2->manager()->moveTo( *sifIter, initPos );
       goOn = true;
 
       // Sifting vers level inférieur
-      while( currentPos < siftingSeq.size() - 1 && goOn  ){
+      while ( currentPos < siftingSeq.size() - 1 && goOn ) {
 
         // First ensure that swap won't potentially overgrow MDD size
         Idx nbElemPar1 = 0;
-        const Link<NodeId>* curElem = __fg1->varNodeListe(__fg1->variablesSequence().atPos(currentPos + 1))->list();
-        for(;curElem != nullptr; nbElemPar1++, curElem = curElem->nextLink());
+        const Link<NodeId>* curElem =
+            __fg1->varNodeListe(
+                     __fg1->variablesSequence().atPos( currentPos + 1 ) )
+                ->list();
+        for ( ; curElem != nullptr;
+              nbElemPar1++, curElem = curElem->nextLink() )
+          ;
         Idx nbElemCur1 = 0;
-        curElem = __fg1->varNodeListe(*sifIter)->list();
-        for(;curElem != nullptr; nbElemCur1++, curElem = curElem->nextLink());
+        curElem = __fg1->varNodeListe( *sifIter )->list();
+        for ( ; curElem != nullptr;
+              nbElemCur1++, curElem = curElem->nextLink() )
+          ;
 
         Idx nbElemPar2 = 0;
-        curElem = __fg2->varNodeListe(__fg2->variablesSequence().atPos(currentPos + 1))->list();
-        for(;curElem != nullptr; nbElemPar2++, curElem = curElem->nextLink());
+        curElem = __fg2->varNodeListe(
+                           __fg2->variablesSequence().atPos( currentPos + 1 ) )
+                      ->list();
+        for ( ; curElem != nullptr;
+              nbElemPar2++, curElem = curElem->nextLink() )
+          ;
         Idx nbElemCur2 = 0;
-        curElem = __fg2->varNodeListe(*sifIter)->list();
-        for(;curElem != nullptr; nbElemCur2++, curElem = curElem->nextLink());
+        curElem = __fg2->varNodeListe( *sifIter )->list();
+        for ( ; curElem != nullptr;
+              nbElemCur2++, curElem = curElem->nextLink() )
+          ;
 
-        if(__fg1->realSize() + ( nbElemCur1 + nbElemPar1 )*(*sifIter)->domainSize() > 100000 ||
-           __fg2->realSize() + ( nbElemCur2 + nbElemPar2 )*(*sifIter)->domainSize() > 100000)
+        if ( __fg1->realSize() +
+                     ( nbElemCur1 + nbElemPar1 ) * ( *sifIter )->domainSize() >
+                 100000 ||
+             __fg2->realSize() +
+                     ( nbElemCur2 + nbElemPar2 ) * ( *sifIter )->domainSize() >
+                 100000 )
           break;
 
 
         // Do the SWAP if it's ok
-        //std::cout << "------------- DG1 --------------" << std::endl;
-        __fg1->manager()->moveTo(*sifIter, currentPos + 1);
-//        __fg1->manager()->reduce();
-        //std::cout << "------------- DG2 --------------" << std::endl;
-        __fg2->manager()->moveTo(*sifIter, currentPos + 1);
-//        __fg2->manager()->reduce();
-        //std::cout << "------------- Fin --------------" << std::endl;
+        // std::cout << "------------- DG1 --------------" << std::endl;
+        __fg1->manager()->moveTo( *sifIter, currentPos + 1 );
+        //        __fg1->manager()->reduce();
+        // std::cout << "------------- DG2 --------------" << std::endl;
+        __fg2->manager()->moveTo( *sifIter, currentPos + 1 );
+        //        __fg2->manager()->reduce();
+        // std::cout << "------------- Fin --------------" << std::endl;
         currentPos++;
-        if( __fg1->realSize() + __fg2->realSize() < bestSize ){
+        if ( __fg1->realSize() + __fg2->realSize() < bestSize ) {
           bestPos = currentPos;
           bestSize = __fg1->realSize() + __fg2->realSize();
         }
-        //std::cout << "**********************  " << currentPos + 1 << "  ***************************" << __fg1->toDot() << std::endl;
+        // std::cout << "**********************  " << currentPos + 1 << "
+        // ***************************" << __fg1->toDot() << std::endl;
       }
-      //std::cout << "**********************  END  ***************************"  << (*sifIter)->name() << __fg1->toDot() << std::endl;
+      // std::cout << "**********************  END  ***************************"
+      // << (*sifIter)->name() << __fg1->toDot() << std::endl;
 
-      __fg1->manager()->moveTo(*sifIter, bestPos);
-      __fg2->manager()->moveTo(*sifIter, bestPos);
+      __fg1->manager()->moveTo( *sifIter, bestPos );
+      __fg2->manager()->moveTo( *sifIter, bestPos );
     }
-
   }
-
 }

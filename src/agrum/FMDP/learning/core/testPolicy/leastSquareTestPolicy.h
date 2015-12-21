@@ -37,93 +37,101 @@
 namespace gum {
 
   /**
-   * @class LeastSquareTestPolicy leastSquareTestPolicy.h <agrum/multidim/core/testPolicy/leastSquareTestPolicy.h>
+   * @class LeastSquareTestPolicy leastSquareTestPolicy.h
+   * <agrum/multidim/core/testPolicy/leastSquareTestPolicy.h>
    *
-   * @brief LeastSquareTestPolicy implements a test policy that follows the Least Square statistic
+   * @brief LeastSquareTestPolicy implements a test policy that follows the
+   * Least Square statistic
    *
    * @ingroup fmdp_group
    */
-  template<typename GUM_SCALAR>
+  template <typename GUM_SCALAR>
   class LeastSquareTestPolicy : public ITestPolicy<GUM_SCALAR> {
 
     public:
+    LeastSquareTestPolicy()
+        : ITestPolicy<GUM_SCALAR>()
+        , __sumO( 0.0 )
+        , __score( 0 ) {
+      GUM_CONSTRUCTOR( LeastSquareTestPolicy )
+    }
 
-      LeastSquareTestPolicy( ) : ITestPolicy<GUM_SCALAR>(), __sumO(0.0), __score(0){ GUM_CONSTRUCTOR(LeastSquareTestPolicy) }
+    virtual ~LeastSquareTestPolicy();
 
-      virtual ~LeastSquareTestPolicy();
+    // ############################################################################
+    /// @name Observation insertion
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Observation insertion
-      // ############################################################################
-      /// @{
+    //      HashTable<Idx,Idx> __nbObsTable;
+    //      HashTable<Idx,LinkedList<double>*> __obsTable;
 
-//      HashTable<Idx,Idx> __nbObsTable;
-//      HashTable<Idx,LinkedList<double>*> __obsTable;
+    // ============================================================================
+    /// Comptabilizes the new observation
+    // ============================================================================
+    void addObservation( Idx attr, GUM_SCALAR value );
 
-        // ============================================================================
-        /// Comptabilizes the new observation
-        // ============================================================================
-        void addObservation( Idx attr, GUM_SCALAR value );
-
-      /// @}
-
-
-      // ############################################################################
-      /// @name Test relevance
-      // ############################################################################
-      /// @{
-
-        // ============================================================================
-        /// Returns true if enough observation were made so that the test can be relevant
-        // ============================================================================
-        bool isTestRelevant(){ return ( this->nbObservation() > 20 ); }
-
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Test result
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Test relevance
+    // ############################################################################
+    /// @{
 
-        // ============================================================================
-        /// Returns the performance of current variable according to the test
-        // ============================================================================
-        void computeScore();
+    // ============================================================================
+    /// Returns true if enough observation were made so that the test can be
+    /// relevant
+    // ============================================================================
+    bool isTestRelevant() { return ( this->nbObservation() > 20 ); }
 
-        // ============================================================================
-        /// Returns the performance of current variable according to the test
-        // ============================================================================
-        double score();
+    /// @}
 
-        // ============================================================================
-        /// Returns a second criterion to severe ties
-        // ============================================================================
-        virtual double secondaryscore();
 
-      /// @}
+    // ############################################################################
+    /// @name Test result
+    // ############################################################################
+    /// @{
 
-      void add(const LeastSquareTestPolicy<GUM_SCALAR>& src);
+    // ============================================================================
+    /// Returns the performance of current variable according to the test
+    // ============================================================================
+    void computeScore();
 
-      double sumValue() const { return __sumO; }
+    // ============================================================================
+    /// Returns the performance of current variable according to the test
+    // ============================================================================
+    double score();
 
-      const HashTable<Idx,Idx>& nbObsTable() const { return __nbObsTable; }
-      const HashTable<Idx, double> sumAttrTable() const {return __sumAttrTable; }
-      const HashTable<Idx,LinkedList<double>*> obsTable() const { return __obsTable; }
+    // ============================================================================
+    /// Returns a second criterion to severe ties
+    // ============================================================================
+    virtual double secondaryscore();
 
-    private :
+    /// @}
 
-      ///
-      double __sumO;
+    void add( const LeastSquareTestPolicy<GUM_SCALAR>& src );
 
-      HashTable<Idx,Idx> __nbObsTable;
-      HashTable<Idx, double> __sumAttrTable;
-      HashTable<Idx,LinkedList<double>*> __obsTable;
+    double sumValue() const { return __sumO; }
 
-      double __score;
+    const HashTable<Idx, Idx>& nbObsTable() const { return __nbObsTable; }
+    const HashTable<Idx, double> sumAttrTable() const { return __sumAttrTable; }
+    const HashTable<Idx, LinkedList<double>*> obsTable() const {
+      return __obsTable;
+    }
+
+    private:
+    ///
+    double __sumO;
+
+    HashTable<Idx, Idx> __nbObsTable;
+    HashTable<Idx, double> __sumAttrTable;
+    HashTable<Idx, LinkedList<double>*> __obsTable;
+
+    double __score;
   };
 
-} // End of namespace gum
+}  // End of namespace gum
 
 #include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.tcc>
 

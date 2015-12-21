@@ -25,7 +25,6 @@
  */
 
 
-
 // =========================================================================
 #ifndef GUM_SDYNA_DECISION_STRATEGY_H
 #define GUM_SDYNA_DECISION_STRATEGY_H
@@ -40,67 +39,73 @@
 namespace gum {
 
   /**
-   * @class IDecisionStrategy IDecisionStrategy.h <agrum/FMDP/SDyna/IDecisionStrategy.h>
+   * @class IDecisionStrategy IDecisionStrategy.h
+   * <agrum/FMDP/SDyna/IDecisionStrategy.h>
    * @brief Interface for manipulating decision center
    * @ingroup fmdp_group
    *
    */
   class IDecisionStrategy {
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
-    public :
-
-        // ==========================================================================
-        /// Destructor (virtual and empty since it's an interface)
-        // ==========================================================================
-        virtual ~IDecisionStrategy(){}
-
-      /// @}
-
-      // ###################################################################
-      /// @name Initialization
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Constructor & destructor.
+    // ###################################################################
+    /// @{
     public:
+    // ==========================================================================
+    /// Destructor (virtual and empty since it's an interface)
+    // ==========================================================================
+    virtual ~IDecisionStrategy() {}
 
-        // ==========================================================================
-        /// Initializes the learner
-        // ==========================================================================
-        virtual void initialize( const FMDP<double>* fmdp ){
-          _optPol = nullptr;
-          if(_allActions.size() == 0)
-            for( auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter )
-              _allActions += *actionIter;
-        }
-      /// @}
+    /// @}
 
-
-      // ###################################################################
-      /// @name Incremental methods
-      // ###################################################################
-      /// @{
+    // ###################################################################
+    /// @name Initialization
+    // ###################################################################
+    /// @{
     public:
-        virtual void checkState( const Instantiation& newState, Idx actionId ) = 0;
+    // ==========================================================================
+    /// Initializes the learner
+    // ==========================================================================
+    virtual void initialize( const FMDP<double>* fmdp ) {
+      _optPol = nullptr;
+      if ( _allActions.size() == 0 )
+        for ( auto actionIter = fmdp->beginActions();
+              actionIter != fmdp->endActions();
+              ++actionIter )
+          _allActions += *actionIter;
+    }
+    /// @}
 
-        void setOptimalStrategy( const MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>* optPol) {
-              _optPol = const_cast<MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>*>(optPol); }
 
-        virtual ActionSet stateOptimalPolicy( const Instantiation& curState ) {
-          return (_optPol&&_optPol->realSize()!=0)?_optPol->get(curState):_allActions; }
+    // ###################################################################
+    /// @name Incremental methods
+    // ###################################################################
+    /// @{
+    public:
+    virtual void checkState( const Instantiation& newState, Idx actionId ) = 0;
 
-    protected :
+    void setOptimalStrategy(
+        const MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>*
+            optPol ) {
+      _optPol =
+          const_cast<MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>*>(
+              optPol );
+    }
 
-        ///
-        const  MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>* _optPol;
+    virtual ActionSet stateOptimalPolicy( const Instantiation& curState ) {
+      return ( _optPol && _optPol->realSize() != 0 ) ? _optPol->get( curState )
+                                                     : _allActions;
+    }
 
-        ///
-        ActionSet _allActions;
+    protected:
+    ///
+    const MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>* _optPol;
 
-      /// @}
+    ///
+    ActionSet _allActions;
+
+    /// @}
   };
-
 }
-#endif // GUM_SDYNA_DECISION_STRATEGY_H
+#endif  // GUM_SDYNA_DECISION_STRATEGY_H

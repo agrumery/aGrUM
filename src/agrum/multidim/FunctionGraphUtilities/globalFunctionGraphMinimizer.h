@@ -36,35 +36,36 @@
 namespace gum {
 
   template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
-  class GlobalFunctionGraphMinimizer
-  {
+            template <typename> class TerminalNodePolicy =
+                ExactTerminalNodePolicy>
+  class GlobalFunctionGraphMinimizer {
     public:
-      GlobalFunctionGraphMinimizer( ) {
-        GUM_CONSTRUCTOR(GlobalFunctionGraphMinimizer)
-      }
-      ~GlobalFunctionGraphMinimizer() {
-        GUM_DESTRUCTOR(GlobalFunctionGraphMinimizer)
-      }
+    GlobalFunctionGraphMinimizer() {
+      GUM_CONSTRUCTOR( GlobalFunctionGraphMinimizer )
+    }
+    ~GlobalFunctionGraphMinimizer() {
+      GUM_DESTRUCTOR( GlobalFunctionGraphMinimizer )
+    }
 
-      void loadFunctionGraphs(const MultiDimFunctionGraph<GUM_SCALAR,TerminalNodePolicy >* fg1, const MultiDimFunctionGraph<GUM_SCALAR,TerminalNodePolicy>* fg2);
-      void minimize();
+    void loadFunctionGraphs(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* fg1,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* fg2 );
+    void minimize();
 
     private:
+    void __extractVarList();
+    void __orderSimillary();
+    void __minimizeGlobally();
 
-      void __extractVarList();
-      void __orderSimillary();
-      void __minimizeGlobally();
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __fg1;
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __fg2;
 
-      MultiDimFunctionGraph<GUM_SCALAR,TerminalNodePolicy>* __fg1;
-      MultiDimFunctionGraph<GUM_SCALAR,TerminalNodePolicy>* __fg2;
-
-      Sequence<const DiscreteVariable*> __varList;
-      Bijection<NodeId,const DiscreteVariable*> __dependancyMap;
-      DiGraph __dependancyGraph;
-    };
+    Sequence<const DiscreteVariable*> __varList;
+    Bijection<NodeId, const DiscreteVariable*> __dependancyMap;
+    DiGraph __dependancyGraph;
+  };
 }
 
 #include <agrum/multidim/FunctionGraphUtilities/globalFunctionGraphMinimizer.tcc>
 
-#endif // GUM_GLOBAL_FUNCTION_GRAPH_MINIMIZER_H
+#endif  // GUM_GLOBAL_FUNCTION_GRAPH_MINIMIZER_H

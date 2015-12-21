@@ -46,5 +46,4 @@ namespace gum {
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/utils_string.inl>
-#endif // GUM_NO_INLINE
-
+#endif  // GUM_NO_INLINE

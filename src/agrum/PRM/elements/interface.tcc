@@ -316,10 +316,10 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Interface<GUM_SCALAR>::_updateDescendants(
         const ClassElement<GUM_SCALAR>& elt ) {
-      //for ( const auto ext : __extensions )
+      // for ( const auto ext : __extensions )
       //  if ( !ext->isOutputNode( elt ) ) ext->setOutputNode( elt, true );
 
-      //for ( const auto impl : __implementations ) {
+      // for ( const auto impl : __implementations ) {
       //  // Because of cyclic dependencies we must use a reinterpret cast.
       //  ClassElementContainer<GUM_SCALAR>* c =
       //      reinterpret_cast<ClassElementContainer<GUM_SCALAR>*>( impl );

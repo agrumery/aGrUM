@@ -46,7 +46,8 @@
 namespace gum {
 
   /**
-   * @class LeafAggregator leafAggregator.h <agrum/FMDP/learning/FunctionGraph/leafAggregator.h>
+   * @class LeafAggregator leafAggregator.h
+   * <agrum/FMDP/learning/FunctionGraph/leafAggregator.h>
    * @brief Gather together leaves with similar distributions
    * @ingroup fmdp_group
    *
@@ -56,99 +57,95 @@ namespace gum {
   class LeafAggregator {
 
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor.
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Constructor & destructor.
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    /// Default constructor
+    // ###################################################################
+    LeafAggregator( NodeGraphPart* idSource, double similarityThreshold );
 
-        // ###################################################################
-        /// Default constructor
-        // ###################################################################
-        LeafAggregator ( NodeGraphPart* idSource, double similarityThreshold );
+    // ###################################################################
+    /// Default destructor
+    // ###################################################################
+    ~LeafAggregator();
 
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        ~LeafAggregator();
+    /// @}
 
-      /// @}
+    // ==========================================================================
+    /// @name Leaf Handling methods
+    // ==========================================================================
+    /// @{
 
-      // ==========================================================================
-      /// @name Leaf Handling methods
-      // ==========================================================================
-      /// @{
+    // ###################################################################
+    ///
+    // ###################################################################
+    void addLeaf( AbstractLeaf* );
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void addLeaf( AbstractLeaf* );
+    // ###################################################################
+    ///
+    // ###################################################################
+    bool updateLeaf( AbstractLeaf* );
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        bool updateLeaf( AbstractLeaf* );
+    // ###################################################################
+    ///
+    // ###################################################################
+    void removeLeaf( AbstractLeaf* );
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void removeLeaf( AbstractLeaf* );
+    /// @}
 
-      /// @}
+    // ==========================================================================
+    /// @name
+    // ==========================================================================
+    /// @{
 
-        // ==========================================================================
-        /// @name
-        // ==========================================================================
-        /// @{
+    // ###################################################################
+    ///
+    // ###################################################################
+    void begin();
 
-          // ###################################################################
-          ///
-          // ###################################################################
-          void begin();
+    // ###################################################################
+    ///
+    // ###################################################################
+    bool hasNext();
 
-          // ###################################################################
-          ///
-          // ###################################################################
-          bool hasNext();
+    // ###################################################################
+    ///
+    // ###################################################################
+    double next();
 
-          // ###################################################################
-          ///
-          // ###################################################################
-          double next();
+    /// @}
 
-        /// @}
+    void update();
 
-        void update(  );
+    bool needsUpdate() { return __needsUpdate; }
 
-        bool needsUpdate(){ return __needsUpdate; }
+    HashTable<NodeId, AbstractLeaf*> leavesMap();
 
-        HashTable<NodeId,AbstractLeaf*> leavesMap();
+    std::string toString();
 
-        std::string toString();
+    private:
+    void __removeContext( Idx );
+    void __addInitialPair( LeafPair* );
+    void __updateInitialPair( LeafPair* );
+    void __removeInitialPair( LeafPair* );
 
-    private :
+    Sequence<FusionContext<false>*> __fusionSeq;
 
+    FusionContext<true>* __initialContext;
 
-        void __removeContext( Idx );
-        void __addInitialPair( LeafPair* ) ;
-        void __updateInitialPair( LeafPair* ) ;
-        void __removeInitialPair( LeafPair* ) ;
+    HashTable<AbstractLeaf*, Set<LeafPair*>*> __leaf2Pair;
 
-        Sequence<FusionContext<false>*> __fusionSeq;
+    NodeGraphPart* __leavesCpt;
 
-        FusionContext<true>* __initialContext;
-
-        HashTable<AbstractLeaf*, Set<LeafPair*>* > __leaf2Pair;
-
-        NodeGraphPart* __leavesCpt;
-
-        double __similarityThreshold;
-        bool __needsUpdate;
+    double __similarityThreshold;
+    bool __needsUpdate;
   };
 
 
 } /* namespace gum */
 
 
-#endif // GUM_LEAF_AGGREGATOR_H
-
+#endif  // GUM_LEAF_AGGREGATOR_H

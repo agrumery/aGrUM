@@ -34,7 +34,8 @@
 
 namespace gum {
   /**
-   * @class FMDPSimulator FMDPSimulator.h <agrum/FMDP/simulation/FMDPSimulator.h>
+   * @class FMDPSimulator FMDPSimulator.h
+   * <agrum/FMDP/simulation/FMDPSimulator.h>
    * @brief A class to simulate a Factored Markov Decision Process.
    * @ingroup fmdp_group
    *
@@ -44,79 +45,88 @@ namespace gum {
   class FMDPSimulator : public AbstractSimulator {
 
     public:
+    // ===========================================================================
+    /// @name Constructors, Destructors.
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name Constructors, Destructors.
-      // ===========================================================================
-      /// @{
+    /**
+     * Default constructor.
+     */
+    FMDPSimulator( const FMDP<double>* fmdp );
+    FMDPSimulator( const std::string& resource );
 
-        /**
-         * Default constructor.
-         */
-        FMDPSimulator(const FMDP<double>* fmdp);
-        FMDPSimulator(const std::string& resource);
+    /**
+     * Default destructor.
+     */
+    ~FMDPSimulator();
 
-        /**
-         * Default destructor.
-         */
-        ~FMDPSimulator();
+    /// @}
 
-      /// @}
+    // ===========================================================================
+    /// @name
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name
-      // ===========================================================================
-      /// @{
+    ///
+    double reward() { return __fmdp->reward()->get( this->_currentState ); }
 
-        ///
-        double reward() {return __fmdp->reward()->get(this->_currentState);}
+    void perform( Idx );
 
-        void perform(Idx);
+    /// @}
 
-      /// @}
+    // ===========================================================================
+    /// @name
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name
-      // ===========================================================================
-      /// @{
+    const DiscreteVariable* primeVar( const DiscreteVariable* mainVar ) {
+      return __fmdp->main2prime( mainVar );
+    }
 
-        const DiscreteVariable* primeVar(const DiscreteVariable* mainVar){ return __fmdp->main2prime(mainVar); }
+    /// Iteration over the variables of the simulated probleme
+    SequenceIteratorSafe<const DiscreteVariable*> beginVariables() {
+      return __fmdp->beginVariables();
+    }
+    SequenceIteratorSafe<const DiscreteVariable*> endVariables() {
+      return __fmdp->endVariables();
+    }
 
-        /// Iteration over the variables of the simulated probleme
-        SequenceIteratorSafe< const DiscreteVariable* > beginVariables(){ return __fmdp->beginVariables(); }
-        SequenceIteratorSafe< const DiscreteVariable* > endVariables(){ return __fmdp->endVariables(); }
+    /// @}
 
-      /// @}
+    // ===========================================================================
+    /// @name
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name
-      // ===========================================================================
-      /// @{
+    virtual const std::string& actionName( Idx actionId ) {
+      return __fmdp->actionName( actionId );
+    }
 
-        virtual const std::string&  actionName(Idx actionId){ return __fmdp->actionName(actionId); }
+    /// Iteration over the variables of the simulated probleme
+    SequenceIteratorSafe<Idx> beginActions() { return __fmdp->beginActions(); }
+    SequenceIteratorSafe<Idx> endActions() { return __fmdp->endActions(); }
+    /// @}
 
-        /// Iteration over the variables of the simulated probleme
-        SequenceIteratorSafe< Idx > beginActions(){ return __fmdp->beginActions(); }
-        SequenceIteratorSafe< Idx > endActions(){ return __fmdp->endActions(); }
-      /// @}
+    protected:
+    virtual double _transitionProbability( const DiscreteVariable* var,
+                                           const Instantiation& transit,
+                                           Idx actionId ) {
+      return reinterpret_cast<const MultiDimFunctionGraph<double>*>(
+                 __fmdp->transition( actionId, var ) )
+          ->get( transit );
+    }
 
-    protected :
+    private:
+    /// The Factored Markov Decision Process that describes how the system
+    /// evolves
+    FMDP<double>* __fmdp;
 
-        virtual double _transitionProbability(const DiscreteVariable* var, const Instantiation& transit, Idx actionId)
-            { return reinterpret_cast<const MultiDimFunctionGraph<double>*>( __fmdp->transition(actionId, var) )->get(transit); }
-
-    private :
-
-      /// The Factored Markov Decision Process that describes how the system evolves
-      FMDP<double>* __fmdp;
-
-      /// Just to know if it should be deleted in the end
-      const bool __loaded;
+    /// Just to know if it should be deleted in the end
+    const bool __loaded;
   };
 
 } /* namespace gum */
 
 
-
-#endif // GUM_FMDP_SIMULATOR_H
-
+#endif  // GUM_FMDP_SIMULATOR_H

@@ -52,13 +52,13 @@ namespace gum {
    * @brief Return the lowercase version of str.
    * @return Return the lowercase version of str.
    */
-  std::string toLower(std::string str);
+  std::string toLower( std::string str );
 
   /// @}
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/utils_string.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 #endif /* GUM_UTILS_STRING_H */

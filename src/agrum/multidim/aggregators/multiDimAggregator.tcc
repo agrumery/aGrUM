@@ -54,8 +54,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Idx
-    MultiDimAggregator<GUM_SCALAR>::_buildValue( const Instantiation& i ) const {
+    Idx MultiDimAggregator<GUM_SCALAR>::_buildValue(
+        const Instantiation& i ) const {
       // is i equal to f(f(f(f...(j_,,neutral_elt))))
       Idx current = _neutralElt();
 
@@ -63,13 +63,13 @@ namespace gum {
 
       for ( Idx j = 1; j < this->nbrDim(); j++ ) {
         current = _fold( this->variable( j ),
-                           i.val( this->variable( j ) ),
-                           current,
-                           stop_iteration );
+                         i.val( this->variable( j ) ),
+                         current,
+                         stop_iteration );
 
         if ( stop_iteration ) break;
       }
-      
+
       return current;
     }
 

@@ -35,128 +35,144 @@
 
 namespace gum {
 
-//  template <typename GUM_SCALAR>
-//  using ConTab = ContingencyTable<Idx, GUM_SCALAR>;
+  //  template <typename GUM_SCALAR>
+  //  using ConTab = ContingencyTable<Idx, GUM_SCALAR>;
 
   /**
-   * @class GTestPolicy GTestPolicy.h <agrum/multidim/core/testPolicies/GTestPolicy.h>
+   * @class GTestPolicy GTestPolicy.h
+   * <agrum/multidim/core/testPolicies/GTestPolicy.h>
    *
    * @brief G implements a test policy that follows the G statistic
    *
    * @ingroup fmdp_group
    */
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class GTestPolicy : public ITestPolicy<GUM_SCALAR> {
 
     public:
+    // ############################################################################
+    /// @name Constructor/Destrcutor
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Constructor/Destrcutor
-      // ############################################################################
-      /// @{
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    GTestPolicy()
+        : ITestPolicy<GUM_SCALAR>()
+        , __conTab()
+        , __GStat( 0 ) {
+      GUM_CONSTRUCTOR( GTestPolicy )
+    }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        GTestPolicy( ) : ITestPolicy<GUM_SCALAR>(), __conTab(), __GStat(0) { GUM_CONSTRUCTOR(GTestPolicy) }
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    virtual ~GTestPolicy() { GUM_DESTRUCTOR( GTestPolicy ) }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        virtual ~GTestPolicy(){ GUM_DESTRUCTOR(GTestPolicy) }
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( GTestPolicy ) );
+    }
 
-        // ============================================================================
-        /// Allocators and Deallocators redefinition
-        // ============================================================================
-        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(GTestPolicy));}
+    /// @}
 
-      /// @}
+    // ############################################################################
+    /// @name Observation insertion
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Observation insertion
-      // ############################################################################
-      /// @{
+    // ============================================================================
+    /// Comptabilizes the new observation
+    // ============================================================================
+    void addObservation( Idx iattr, GUM_SCALAR ivalue );
 
-        // ============================================================================
-        /// Comptabilizes the new observation
-        // ============================================================================
-        void addObservation( Idx iattr, GUM_SCALAR ivalue );
-
-      /// @}
-
-
-      // ############################################################################
-      /// @name Test methods
-      // ############################################################################
-      /// @{
-
-        // ============================================================================
-        /// Returns true if enough observation were made so that the test can be relevant
-        // ============================================================================
-        bool isTestRelevant() const { return ( this->nbObservation() > 20 && this->nbObservation() > __conTab.attrASize() * 5 ); }
-
-        // ============================================================================
-        /// Computes the GStat of current variable according to the test
-        // ============================================================================
-        void computeScore() const ;
-
-        // ============================================================================
-        /// Returns the performance of current variable according to the test
-        // ============================================================================
-        double score() const;
-
-        // ============================================================================
-        /// Returns a second criterion to severe ties
-        // ============================================================================
-        double secondaryscore() const;
+    /// @}
 
 
-      /// @}
+    // ############################################################################
+    /// @name Test methods
+    // ############################################################################
+    /// @{
+
+    // ============================================================================
+    /// Returns true if enough observation were made so that the test can be
+    /// relevant
+    // ============================================================================
+    bool isTestRelevant() const {
+      return ( this->nbObservation() > 20 &&
+               this->nbObservation() > __conTab.attrASize() * 5 );
+    }
+
+    // ============================================================================
+    /// Computes the GStat of current variable according to the test
+    // ============================================================================
+    void computeScore() const;
+
+    // ============================================================================
+    /// Returns the performance of current variable according to the test
+    // ============================================================================
+    double score() const;
+
+    // ============================================================================
+    /// Returns a second criterion to severe ties
+    // ============================================================================
+    double secondaryscore() const;
 
 
-      // ############################################################################
-      /// @name Fusion Methods
-      // ############################################################################
-      /// @{
-
-        // ============================================================================
-        /// Returns the performance of current variable according to the test
-        // ============================================================================
-        void add(const GTestPolicy<GUM_SCALAR>& src);
-
-        // ============================================================================
-        ///
-        // ============================================================================
-        const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const { return __conTab; }
+    /// @}
 
 
-      /// @}
+    // ############################################################################
+    /// @name Fusion Methods
+    // ############################################################################
+    /// @{
+
+    // ============================================================================
+    /// Returns the performance of current variable according to the test
+    // ============================================================================
+    void add( const GTestPolicy<GUM_SCALAR>& src );
+
+    // ============================================================================
+    ///
+    // ============================================================================
+    const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const {
+      return __conTab;
+    }
 
 
-      // ############################################################################
-      /// @name Miscelleanous Methods
-      // ############################################################################
-      /// @{
+    /// @}
 
-        std::string toString() const { std::stringstream ss;
-                                ss << ITestPolicy<GUM_SCALAR>::toString()
-                                   << "\t\t\tContingency Table : " <<std::endl
-                                   << __conTab.toString() << std::endl
-                                   << "\t\t\tGStat : " << __GStat << std::endl
-                                   << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
-                                return ss.str();}
 
-      /// @}
+    // ############################################################################
+    /// @name Miscelleanous Methods
+    // ############################################################################
+    /// @{
 
-    private :
+    std::string toString() const {
+      std::stringstream ss;
+      ss << ITestPolicy<GUM_SCALAR>::toString()
+         << "\t\t\tContingency Table : " << std::endl
+         << __conTab.toString() << std::endl
+         << "\t\t\tGStat : " << __GStat << std::endl
+         << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
+      return ss.str();
+    }
 
-      /// The contingency table used to keeps records of all observation
-      ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
-      mutable double __GStat;
+    /// @}
+
+    private:
+    /// The contingency table used to keeps records of all observation
+    ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
+    mutable double __GStat;
   };
 
-} // End of namespace gum
+}  // End of namespace gum
 
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.tcc>
 

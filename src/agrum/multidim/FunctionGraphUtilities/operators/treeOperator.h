@@ -34,43 +34,45 @@
 
 namespace gum {
 
-/**
- * @class TreeOperator treeOperator.h <agrum/multidim/patterns/treeOperator.h>
- * @brief Class used to perform Decision Tree Operation in the FMDP Framework
- * @ingroup multidim_group
- *
- *
- *
- */
+  /**
+   * @class TreeOperator treeOperator.h <agrum/multidim/patterns/treeOperator.h>
+   * @brief Class used to perform Decision Tree Operation in the FMDP Framework
+   * @ingroup multidim_group
+   *
+   *
+   *
+   */
 
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy >
-  class TreeOperator
-  {
+            template <typename> class TerminalNodePolicy =
+                ExactTerminalNodePolicy>
+  class TreeOperator {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      TreeOperator( const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
-                    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2 );
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    TreeOperator(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt1,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt2 );
 
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      TreeOperator(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
-                    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2,
-                    const HashTable<const DiscreteVariable*, Idx> givenContext );
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    TreeOperator(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt1,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt2,
+        const HashTable<const DiscreteVariable*, Idx> givenContext );
 
-      // ============================================================================
-      /// Default destructor.
-      // ============================================================================
-      ~TreeOperator();
+    // ============================================================================
+    /// Default destructor.
+    // ============================================================================
+    ~TreeOperator();
 
     /// @}
 
@@ -79,50 +81,50 @@ namespace gum {
     // ############################################################################
     /// @{
 
-      // ============================================================================
-      /// Computes and builds the Function Graph that is the result of the operation
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
+    // ============================================================================
+    /// Computes and builds the Function Graph that is the result of the
+    /// operation
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
 
     /// @}
 
 
-    private :
+    private:
+    // ============================================================================
+    /// The main recursion function
+    // ============================================================================
+    NodeId __xPloreDT1( NodeId currentNodeId );
 
-      // ============================================================================
-      /// The main recursion function
-      // ============================================================================
-      NodeId __xPloreDT1( NodeId currentNodeId );
+    // ============================================================================
+    /// The main recursion function
+    // ============================================================================
+    NodeId __xPloreDT2( NodeId currentNodeId );
 
-      // ============================================================================
-      /// The main recursion function
-      // ============================================================================
-      NodeId __xPloreDT2( NodeId currentNodeId );
+    NodeId __checkRedundancy( const DiscreteVariable*, NodeId* );
 
-      NodeId __checkRedundancy( const DiscreteVariable*, NodeId*) ;
+    // ============================================================================
+    /// The two function graphs used for the operation
+    // ============================================================================
+    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt1;
+    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt2;
 
-      // ============================================================================
-      /// The two function graphs used for the operation
-      // ============================================================================
-      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt1;
-      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt2;
+    // ============================================================================
+    /// The resulting function graph
+    // ============================================================================
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
-      // ============================================================================
-      /// The resulting function graph
-      // ============================================================================
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+    // ============================================================================
+    /// The function to be performed on the leaves
+    // ============================================================================
+    const COMBINEOPERATOR<GUM_SCALAR> __combine;
 
-      // ============================================================================
-      /// The function to be performed on the leaves
-      // ============================================================================
-      const COMBINEOPERATOR<GUM_SCALAR> __combine;
-
-      HashTable<const DiscreteVariable*, Idx> __context;
-      NodeId __curDT1Leaf;
+    HashTable<const DiscreteVariable*, Idx> __context;
+    NodeId __curDT1Leaf;
   };
 
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.tcc>
 
-#endif // GUM_OPERATOR_H
+#endif  // GUM_OPERATOR_H

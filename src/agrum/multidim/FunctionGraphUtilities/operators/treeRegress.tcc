@@ -30,116 +30,140 @@
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
 // =======================================================================================
 
-#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
-#define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
+#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
+#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 namespace gum {
 
-    /* ***************************************************************************************************************************** */
-    /* CONSTRUCTOR                                                                                                                   */
-    /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR,
-              template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
-              template <typename> class TerminalNodePolicy>
-    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::TreeRegress(
-              const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* qAction,
-              const Bijection<const DiscreteVariable*, const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *> pxi ) : __vFunc( qAction ),
-                                                                                                                              __pxi(pxi) {
-      GUM_CONSTRUCTOR(TreeRegress);
-    }
+  /* *****************************************************************************************************************************
+   */
+  /* CONSTRUCTOR */
+  /* *****************************************************************************************************************************
+   */
+  template <typename GUM_SCALAR,
+            template <typename> class COMBINEOPERATOR,
+            template <typename> class PROJECTOPERATOR,
+            template <typename> class TerminalNodePolicy>
+  TreeRegress<GUM_SCALAR,
+              COMBINEOPERATOR,
+              PROJECTOPERATOR,
+              TerminalNodePolicy>::
+      TreeRegress(
+          const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* qAction,
+          const Bijection<
+              const DiscreteVariable*,
+              const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*>
+              pxi )
+      : __vFunc( qAction )
+      , __pxi( pxi ) {
+    GUM_CONSTRUCTOR( TreeRegress );
+  }
 
 
+  /* *****************************************************************************************************************************
+   */
+  /* DESTRUCTOR */
+  /* *****************************************************************************************************************************
+   */
+  template <typename GUM_SCALAR,
+            template <typename> class COMBINEOPERATOR,
+            template <typename> class PROJECTOPERATOR,
+            template <typename> class TerminalNodePolicy>
+  TreeRegress<GUM_SCALAR,
+              COMBINEOPERATOR,
+              PROJECTOPERATOR,
+              TerminalNodePolicy>::~TreeRegress() {
 
-    /* ***************************************************************************************************************************** */
-    /* DESTRUCTOR                                                                                                                   */
-    /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR,
-              template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
-              template <typename> class TerminalNodePolicy>
-    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::~TreeRegress( ){
-
-      GUM_DESTRUCTOR(TreeRegress);
-
-    }
-
-
-
-    /* ***************************************************************************************************************************** */
-    /* Compute                                                                                                                       */
-    /*                                                                                                                               */
-    /* This function is the main function. To be call every time an operation between the two given Function Graphs is required      */
-    /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR,
-              template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
-              template <typename> class TerminalNodePolicy>
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *
-    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::compute(){
-
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* ret;
-      if(__vFunc->isTerminalNode(__vFunc->root())){
-        ret = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::getTreeInstance();
-        ret->copy(*__vFunc);
-      } else
-        ret = __xPloreVFunc(__vFunc->root());
-      return ret;
-    }
+    GUM_DESTRUCTOR( TreeRegress );
+  }
 
 
+  /* *****************************************************************************************************************************
+   */
+  /* Compute */
+  /*                                                                                                                               */
+  /* This function is the main function. To be call every time an operation
+   * between the two given Function Graphs is required      */
+  /* *****************************************************************************************************************************
+   */
+  template <typename GUM_SCALAR,
+            template <typename> class COMBINEOPERATOR,
+            template <typename> class PROJECTOPERATOR,
+            template <typename> class TerminalNodePolicy>
+  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
+  TreeRegress<GUM_SCALAR,
+              COMBINEOPERATOR,
+              PROJECTOPERATOR,
+              TerminalNodePolicy>::compute() {
 
-    template <typename GUM_SCALAR,
-              template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
-              template <typename> class TerminalNodePolicy>
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
-    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__xPloreVFunc( NodeId currentNodeId ){
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* ret;
+    if ( __vFunc->isTerminalNode( __vFunc->root() ) ) {
+      ret = MultiDimFunctionGraph<GUM_SCALAR,
+                                  TerminalNodePolicy>::getTreeInstance();
+      ret->copy( *__vFunc );
+    } else
+      ret = __xPloreVFunc( __vFunc->root() );
+    return ret;
+  }
 
-      const InternalNode* currentNode = __vFunc->node(currentNodeId);
 
-      std::vector<MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*> varbucket;
+  template <typename GUM_SCALAR,
+            template <typename> class COMBINEOPERATOR,
+            template <typename> class PROJECTOPERATOR,
+            template <typename> class TerminalNodePolicy>
+  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
+  TreeRegress<GUM_SCALAR,
+              COMBINEOPERATOR,
+              PROJECTOPERATOR,
+              TerminalNodePolicy>::__xPloreVFunc( NodeId currentNodeId ) {
 
-      for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda ){
+    const InternalNode* currentNode = __vFunc->node( currentNodeId );
 
-        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vpxi = nullptr;
-        __context.insert(currentNode->nodeVar(), moda);
-        if( __vFunc->isTerminalNode(currentNode->son(moda)) ){
+    std::vector<MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*>
+        varbucket;
 
-          GUM_SCALAR value = __vFunc->nodeValue(currentNode->son(moda));
-          if(value) {
-            vpxi = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::getTreeInstance();
-            vpxi->manager()->setRootNode( vpxi->manager()->addTerminalNode(value) );
-          }
-        } else {
-          vpxi = __xPloreVFunc( currentNode->son(moda) );
+    for ( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda ) {
+
+      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vpxi = nullptr;
+      __context.insert( currentNode->nodeVar(), moda );
+      if ( __vFunc->isTerminalNode( currentNode->son( moda ) ) ) {
+
+        GUM_SCALAR value = __vFunc->nodeValue( currentNode->son( moda ) );
+        if ( value ) {
+          vpxi = MultiDimFunctionGraph<GUM_SCALAR,
+                                       TerminalNodePolicy>::getTreeInstance();
+          vpxi->manager()->setRootNode(
+              vpxi->manager()->addTerminalNode( value ) );
         }
-
-        if(vpxi != nullptr){
-          TreeOperator< GUM_SCALAR, COMBINEOPERATOR > combinope( vpxi, __pxi.second(currentNode->nodeVar()), __context );
-          varbucket.push_back( combinope.compute() );
-        }
-        delete vpxi;
-        __context.erase(currentNode->nodeVar());
+      } else {
+        vpxi = __xPloreVFunc( currentNode->son( moda ) );
       }
 
-      if( varbucket.empty() )
-        return nullptr;
+      if ( vpxi != nullptr ) {
+        TreeOperator<GUM_SCALAR, COMBINEOPERATOR> combinope(
+            vpxi, __pxi.second( currentNode->nodeVar() ), __context );
+        varbucket.push_back( combinope.compute() );
+      }
+      delete vpxi;
+      __context.erase( currentNode->nodeVar() );
+    }
 
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vp = varbucket.back();
+    if ( varbucket.empty() ) return nullptr;
+
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vp =
+        varbucket.back();
+    varbucket.pop_back();
+    while ( !varbucket.empty() ) {
+      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* temp = vp;
+      TreeOperator<GUM_SCALAR, PROJECTOPERATOR> projope( vp, varbucket.back() );
+      vp = projope.compute();
+      delete temp;
+      temp = varbucket.back();
       varbucket.pop_back();
-      while(!varbucket.empty()){
-         MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* temp = vp;
-         TreeOperator< GUM_SCALAR, PROJECTOPERATOR > projope( vp, varbucket.back() );
-         vp = projope.compute();
-         delete temp;
-         temp = varbucket.back();
-         varbucket.pop_back();
-         delete temp;
-      }
-
-      return vp;
+      delete temp;
     }
 
-} // namespace gum
+    return vp;
+  }
 
+}  // namespace gum

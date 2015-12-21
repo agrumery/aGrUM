@@ -172,8 +172,8 @@ namespace gum {
     std::stringstream str;
     std::string tab = "   ";  // poor tabulation
     str << std::endl
-        << "network \"" << bn.propertyWithDefault( "name", "unnamedBN" ) << "\" {"
-        << std::endl;
+        << "network \"" << bn.propertyWithDefault( "name", "unnamedBN" )
+        << "\" {" << std::endl;
     str << tab << "property"
         << " software aGrUM" << GUM_VERSION << ";" << std::endl;
     str << "}" << std::endl;

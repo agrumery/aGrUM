@@ -38,12 +38,14 @@
 
 namespace gum {
   /**
-   * @class SmallObjectAllocator smallObjectAllocator.h <agrum/core/smallObjectAllocator.h>
+   * @class SmallObjectAllocator smallObjectAllocator.h
+   * <agrum/core/smallObjectAllocator.h>
    *
    * @brief Allocates objects of any size
    *
    * SmallObjectAllocator does so by aggregating several FixedAllocator objects.
-   * When SmallObjectAllocator receives an allocation request, it either forwards
+   * When SmallObjectAllocator receives an allocation request, it either
+   * forwards
    * it to the best matching FixedAllocator object or passes it to the default
    * operator new
    *
@@ -52,110 +54,113 @@ namespace gum {
   class SmallObjectAllocator {
 
     public:
+    /**
+     * @variable The default size of chunck of memory.
+     * These chuncks are pre-allocated memory space which are
+     * then split in small memory space of the size of a small object
+     */
+    static const size_t GUM_DEFAULT_CHUNK_SIZE;
 
-      /**
-       * @variable The default size of chunck of memory.
-       * These chuncks are pre-allocated memory space which are
-       * then split in small memory space of the size of a small object
-       */
-      static const size_t GUM_DEFAULT_CHUNK_SIZE;
-
-      /**
-       * @variable The default maximal size under which an object is considered small.
-       * If an object size is over this limit, the normal new allocator is called.
-       */
-      static const size_t GUM_DEFAULT_MAX_OBJECT_SIZE;
+    /**
+     * @variable The default maximal size under which an object is considered
+     * small.
+     * If an object size is over this limit, the normal new allocator is called.
+     */
+    static const size_t GUM_DEFAULT_MAX_OBJECT_SIZE;
 
 
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
-    private :
-        // ============================================================================
-        /**
-         * Constructor.
-         * @param chunkSize is the size of a chunk in bytes.
-         * @param maxObjectSize is the max size of object to be considered small
-         * Greater object than maxObjectSize will be forwarded to op new.
-         */
-        // ============================================================================
-        SmallObjectAllocator();
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    private:
+    // ============================================================================
+    /**
+     * Constructor.
+     * @param chunkSize is the size of a chunk in bytes.
+     * @param maxObjectSize is the max size of object to be considered small
+     * Greater object than maxObjectSize will be forwarded to op new.
+     */
+    // ============================================================================
+    SmallObjectAllocator();
 
-        // ============================================================================
-        /// Copy Constructor (does nothing since we use a Singleton)
-        // ============================================================================
-        SmallObjectAllocator(const SmallObjectAllocator&){}
+    // ============================================================================
+    /// Copy Constructor (does nothing since we use a Singleton)
+    // ============================================================================
+    SmallObjectAllocator( const SmallObjectAllocator& ) {}
 
-        // ============================================================================
-        /// Operator = (does nothing since we use a Singleton)
-        // ============================================================================
-        SmallObjectAllocator& operator = (const SmallObjectAllocator&) { return instance(); }
+    // ============================================================================
+    /// Operator = (does nothing since we use a Singleton)
+    // ============================================================================
+    SmallObjectAllocator& operator=( const SmallObjectAllocator& ) {
+      return instance();
+    }
 
-    public :
+    public:
+    // ============================================================================
+    /// Destructor.
+    // ============================================================================
+    virtual ~SmallObjectAllocator();
 
-        // ============================================================================
-        /// Destructor.
-        // ============================================================================
-        virtual ~SmallObjectAllocator();
+    /// @}
 
-      /// @}
+    static SmallObjectAllocator& instance();
 
-      static SmallObjectAllocator& instance();
+    // ############################################################################
+    /// @name Allocator / Deallocator
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// Allocates a block
+    // ============================================================================
+    void* allocate( const std::size_t& objectSize );
 
-      // ############################################################################
-      /// @name Allocator / Deallocator
-      // ############################################################################
-      /// @{
-        // ============================================================================
-        /// Allocates a block
-        // ============================================================================
-        void* allocate(const std::size_t &objectSize);
+    // ============================================================================
+    /// Deallocates an object
+    /// @param pDeallocatedObject is the object to be deallocated
+    /// @param objectSize is the size of that object (useful for faster
+    /// deallocation)
+    // ============================================================================
+    void deallocate( void* pDeallocatedObject, const std::size_t& objectSize );
 
-        // ============================================================================
-        /// Deallocates an object
-        /// @param pDeallocatedObject is the object to be deallocated
-        /// @param objectSize is the size of that object (useful for faster deallocation)
-        // ============================================================================
-        void deallocate(void* pDeallocatedObject, const std::size_t& objectSize);
+    /// @}
 
-      /// @}
+    // ============================================================================
+    /// Displays the number of allocation and deallocation made so far
+    // ============================================================================
+    void displayStats() {
+      std::cout << "Nb Small Allocation : " << nbAllocation
+                << " -  Nb Small Deallocation : " << nbDeallocation
+                << std::endl;
+    }
 
-      // ============================================================================
-      /// Displays the number of allocation and deallocation made so far
-      // ============================================================================
-      void displayStats(){
-        std::cout << "Nb Small Allocation : " << nbAllocation  << " -  Nb Small Deallocation : " << nbDeallocation << std::endl;
-      }
+    Idx nbAlloc() { return nbAllocation; }
+    Idx nbDealloc() { return nbDeallocation; }
 
-      Idx nbAlloc(){ return nbAllocation; }
-      Idx nbDealloc(){ return nbDeallocation; }
+    private:
+    // ============================================================================
+    /// The pool containing FixedAllocator
+    // ============================================================================
+    typedef HashTable<Size, FixedAllocator*> __Pool;
+    __Pool __pool;
 
-    private :
+    // ============================================================================
+    /// The memory that a chunk allocates
+    // ============================================================================
+    std::size_t __chunkSize;
 
-      // ============================================================================
-      /// The pool containing FixedAllocator
-      // ============================================================================
-      typedef HashTable<Size,FixedAllocator*> __Pool;
-      __Pool __pool;
+    // ============================================================================
+    /// The maximal size of an object befor new is called
+    // ============================================================================
+    std::size_t __maxObjectSize;
 
-      // ============================================================================
-      /// The memory that a chunk allocates
-      // ============================================================================
-      std::size_t __chunkSize;
-
-      // ============================================================================
-      /// The maximal size of an object befor new is called
-      // ============================================================================
-      std::size_t __maxObjectSize;
-
-      Idx nbAllocation;
-      Idx nbDeallocation;
+    Idx nbAllocation;
+    Idx nbDeallocation;
   };
-} // namespace gum
+}  // namespace gum
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.inl>
 #endif
 
-#endif // GUM_SMALL_OBJECT_ALLOCATOR_H
+#endif  // GUM_SMALL_OBJECT_ALLOCATOR_H

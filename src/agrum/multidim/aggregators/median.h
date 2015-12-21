@@ -45,9 +45,12 @@ namespace gum {
     *
     * Median needs to have the same domain than its parent.
     *
-    * @warning if the number of parent is even, the median (with the same type as its parents)
-    * is not well defined : the median of [1,1,3,3] is 2. But what is the median of [1,1,2,2] ?
-    * The mathematical response is 1.5 which is not in the range of the variables. In that case,
+    * @warning if the number of parent is even, the median (with the same type
+    * as its parents)
+    * is not well defined : the median of [1,1,3,3] is 2. But what is the median
+    * of [1,1,2,2] ?
+    * The mathematical response is 1.5 which is not in the range of the
+    * variables. In that case,
     * we choose (arbitrarilly by excess) the value 2.
     */
     /* =========================================================================*/
