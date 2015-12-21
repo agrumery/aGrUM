@@ -40,6 +40,11 @@
 #include <agrum/config.h>
 #include <agrum/core/approximations/approximationPolicy.h>
 
+// Ajout sur branche DDE pour pouvoir compiler (à retirer très probablement)
+// problème sur template <class> class IApproximationPolicy = ExactPolicy sinon
+// (reconnaissance de ExactPolicy?)
+#include <agrum/core/approximations/exactPolicy.h>
+
 namespace gum {
 
   /**

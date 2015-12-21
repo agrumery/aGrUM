@@ -102,7 +102,7 @@ namespace gum {
     SetIteratorSafe<const DiscreteVariable*> __rvi;
 
     /// Heap keeping best score on top for immediate access
-    PriorityQueue<double, double, std::greater<double>> __remainingScores;
+    MultiPriorityQueue<double, double, std::greater<double>> __remainingScores;
 
     /// HashTable associating to each score the set of variable having that
     /// score

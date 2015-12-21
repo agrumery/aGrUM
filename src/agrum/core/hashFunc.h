@@ -666,6 +666,18 @@ namespace gum {
       : public HashFuncCastKeyPair<double, long unsigned int>::type {};
 
   /**
+   * @author JCM
+   * @brief Modification : adding mirrored pair key of the one above
+   * Though the question should be asked of whether we enforce only
+   * one version for pair key or whether we authorize mirrored version
+   * If one version is enforced sdyna.cpp must be modified!
+   * @ingroup HashF
+   */
+  template <>
+  class HashFunc<std::pair<long unsigned int, double>>
+      : public HashFuncCastKeyPair<long unsigned int, double>::type {};
+
+  /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for pairs of double and long int.
    * @ingroup hashfunctions_group
