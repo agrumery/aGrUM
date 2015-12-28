@@ -160,7 +160,7 @@ namespace gum_tests {
                          gum::MultiDimFunctionGraph<double>* a3,
                          gum::Set<const gum::DiscreteVariable*> delVars ) {
 
-      std::string dotfile = GET_PATH_STR( "FunctionGraphError.log" );
+      std::string dotfile = GET_RESSOURCES_PATH( "FunctionGraphError.log" );
       std::ofstream output( dotfile.c_str(), std::ios::out );
 
       if ( !output.good() )
@@ -396,7 +396,7 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Test sur les fonctions avec valeurs exactes
     // ************************************************************************************************
-    void test_Projections_Functions_on_MultiDimFunctionGraphs() {
+    void est_Projections_Functions_on_MultiDimFunctionGraphs() {
 
       gum::Timer time;
       double tempsGene = 0;

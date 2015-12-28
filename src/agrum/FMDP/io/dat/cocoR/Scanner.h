@@ -269,7 +269,6 @@ namespace gum {
 
       Token* NextToken();
 
-
       public:
       Signaler1<int> onLoad;
 

@@ -44,7 +44,7 @@ namespace gum_tests {
       // indeed we just want ot check that the algorithm works fine.
       gum::StructuredPlaner<double>* planer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          planer = gum::StructuredPlaner<double>::spumddInstance( 0.9, 0.01 ) );
+          planer = gum::StructuredPlaner<double>::spumddInstance( 0.9, 0.01, false ) );
 
       gum::FMDPDatReader<double> reader( &fmdp, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.trace( false ) );

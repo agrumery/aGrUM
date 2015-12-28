@@ -204,7 +204,7 @@ namespace gum_tests {
                          gum::MultiDimFunctionGraph<double>* a2,
                          gum::MultiDimFunctionGraph<double>* a3 ) {
 
-      std::string dotfile = GET_PATH_STR( "FunctionGraphError.log" );
+      std::string dotfile = GET_RESSOURCES_PATH( "FunctionGraphError.log" );
       std::ofstream output( dotfile.c_str(), std::ios::out );
 
       if ( !output.good() )
@@ -422,11 +422,9 @@ namespace gum_tests {
         delete varList;
 
         if ( !evalRes ) {
-          std::cout << "An error has occured! Aborting test." << std::endl;
+//          std::cout << "An error has occured! Aborting test." << std::endl;
           return;
         }
-
-        std::cout << ".";
 
         std::fflush( stdout );
       }
@@ -487,7 +485,7 @@ namespace gum_tests {
         delete varList;
 
         if ( !evalRes ) {
-          std::cout << "An error has occured! Aborting test." << std::endl;
+//          std::cout << "An error has occured! Aborting test." << std::endl;
           break;
         }
 
@@ -495,10 +493,10 @@ namespace gum_tests {
       }
 
       end_test_waiting();
-      std::cout << std::endl
-                << "Temps Génération : " << tempsGene
-                << "s - Temps Calcul : " << tempsCalcul
-                << "s - Temps Evaluation " << tempsEval << "s " << std::endl;
+//      std::cout << std::endl
+//                << "Temps Génération : " << tempsGene
+//                << "s - Temps Calcul : " << tempsCalcul
+//                << "s - Temps Evaluation " << tempsEval << "s " << std::endl;
     }
 
     // *****************************************************************************************************

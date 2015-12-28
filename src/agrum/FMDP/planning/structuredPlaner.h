@@ -359,7 +359,7 @@ namespace gum {
 
     // ==========================================================================
     /// Boolean used to indcates whether or not iteration informations should be
-    /// displayed
+    /// displayed on terminal
     // ==========================================================================
     bool _verbose;
 
