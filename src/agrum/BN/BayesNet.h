@@ -134,7 +134,7 @@ namespace gum {
     virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
     /**
-     * @brief Returns a map bewtenn variables and nodes of this gum::BayesNet.
+     * @brief Returns a map between variables and nodes of this gum::BayesNet.
      *
      * @return Returns a constant reference to the gum::VariableNodeMap.
      */
