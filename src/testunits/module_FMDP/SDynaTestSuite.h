@@ -46,43 +46,43 @@ namespace gum_tests {
       gum::SDYNA* sdyna = nullptr;
       //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
       //        gum::SDYNA::spitiInstance() );
-      //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
-      //        gum::SDYNA::spimddiInstance() );
-      TS_GUM_ASSERT_THROWS_NOTHING( sdyna = gum::SDYNA::RMaxMDDInstance() );
+              TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
+              gum::SDYNA::spimddiInstance() );
+      //TS_GUM_ASSERT_THROWS_NOTHING( sdyna = gum::SDYNA::RMaxMDDInstance() );
       //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
       //        gum::SDYNA::RMaxTreeInstance() );
 
-      std::cout << "Instantiate" << std::endl;
+      // std::cout<< "Instantiate" << std::endl;
       // Enregistrement des actions possibles auprès de SDyna
       for ( auto actionIter = sim.beginActions();
             actionIter != sim.endActions();
             ++actionIter ) {
         sdyna->addAction( *actionIter, sim.actionName( *actionIter ) );
       }
-      std::cout << "Actions added" << std::endl;
+      // std::cout<< "Actions added" << std::endl;
 
       // Enregistrement des variables caractérisant les états auprès de SDyna
       for ( auto varIter = sim.beginVariables(); varIter != sim.endVariables();
             ++varIter ) {
         sdyna->addVariable( *varIter );
       }
-      std::cout << "Var added" << std::endl;
+      // std::cout<< "Var added" << std::endl;
 
       TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
-      std::cout << "Initiale state chosen" << std::endl;
+      // std::cout<< "Initiale state chosen" << std::endl;
       TS_GUM_ASSERT_THROWS_NOTHING( sdyna->initialize( sim.currentState() ) );
-      std::cout << "Initialized" << std::endl;
+      // std::cout<< "Initialized" << std::endl;
 
 
       gum::Idx nbObs = 0;
-      for ( gum::Idx nbRun = 0; nbRun < 100; ++nbRun ) {
+      for ( gum::Idx nbRun = 0; nbRun < 10; ++nbRun ) {
 
         sim.setInitialStateRandomly();
         TS_GUM_ASSERT_THROWS_NOTHING(
             sdyna->setCurrentState( sim.currentState() ) );
         gum::Idx nbDec = 0;
 
-        while ( !sim.hasReachEnd() && nbDec < 125 ) {
+        while ( !sim.hasReachEnd() && nbDec < 25 ) {
 
           nbObs++;
 
@@ -90,20 +90,20 @@ namespace gum_tests {
           gum::Idx actionChosenId = 0;
           TS_GUM_ASSERT_THROWS_NOTHING( actionChosenId = sdyna->takeAction(); )
           TS_GUM_ASSERT_THROWS_NOTHING( sim.perform( actionChosenId ) );
-          std::cout << "NbRun : " << nbRun << " - NbDec : " << nbDec
-                    << " - Nbobs : " << nbObs << std::endl;
+          // std::cout<< "NbRun : " << nbRun << " - NbDec : " << nbDec
+                   // << " - Nbobs : " << nbObs << std::endl;
           nbDec++;
 
-          //            TS_GUM_ASSERT_THROWS_NOTHING (
-          //            sdyna->feedback(sim.currentState(), sim.reward());)
-          try {
-            sdyna->feedback( sim.currentState(), sim.reward() );
-          } catch ( gum::Exception ex ) {
-            std::cout << ex.errorType() << std::endl
-                      << ex.errorContent() << std::endl
-                      << ex.errorCallStack() << std::endl;
-            exit( -42 );
-          }
+          TS_GUM_ASSERT_THROWS_NOTHING (
+          sdyna->feedback(sim.currentState(), sim.reward());)
+//          try {
+//            sdyna->feedback( sim.currentState(), sim.reward() );
+//          } catch ( gum::Exception ex ) {
+//            // std::cout<< ex.errorType() << std::endl
+//                      << ex.errorContent() << std::endl
+//                      << ex.errorCallStack() << std::endl;
+//            exit( -42 );
+//          }
         }
         TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
       }
@@ -118,7 +118,7 @@ namespace gum_tests {
 
       // **************************************************************
       // Chargement du fmdp servant de base
-      gum::FMDPSimulator sim( GET_PATH_STR( "FMDP/coffee/coffee.dat" ) );
+      gum::FMDPSimulator sim( GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" ) );
 
 
       // **************************************************************
@@ -145,7 +145,7 @@ namespace gum_tests {
     // *******************************************************************************
     // Run the tests on a Taxi instance
     // *******************************************************************************
-    void est_Taxi() {
+    void test_Taxi() {
 
       // **************************************************************
       // Chargement du simulateur

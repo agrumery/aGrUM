@@ -77,9 +77,10 @@ namespace gum {
     // ==========================================================================
     static StructuredPlaner<GUM_SCALAR>*
     spumddInstance( GUM_SCALAR discountFactor = 0.9,
-                    GUM_SCALAR epsilon = 0.00001 ) {
+                    GUM_SCALAR epsilon = 0.00001,
+                    bool verbose = true ) {
       return new StructuredPlaner<GUM_SCALAR>(
-          new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon );
+          new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon, verbose );
     }
 
     // ==========================================================================
@@ -87,9 +88,10 @@ namespace gum {
     // ==========================================================================
     static StructuredPlaner<GUM_SCALAR>*
     sviInstance( GUM_SCALAR discountFactor = 0.9,
-                 GUM_SCALAR epsilon = 0.00001 ) {
+                 GUM_SCALAR epsilon = 0.00001,
+                 bool verbose = true ) {
       return new StructuredPlaner<GUM_SCALAR>(
-          new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon );
+          new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon, verbose );
     }
 
     /// @}
@@ -104,7 +106,8 @@ namespace gum {
     // ==========================================================================
     StructuredPlaner( IOperatorStrategy<GUM_SCALAR>* opi,
                       GUM_SCALAR discountFactor,
-                      GUM_SCALAR epsilon );
+                      GUM_SCALAR epsilon,
+                      bool verbose );
 
     // ==========================================================================
     /// Default destructor
@@ -353,6 +356,12 @@ namespace gum {
     GUM_SCALAR _discountFactor;
 
     IOperatorStrategy<GUM_SCALAR>* _operator;
+
+    // ==========================================================================
+    /// Boolean used to indcates whether or not iteration informations should be
+    /// displayed
+    // ==========================================================================
+    bool _verbose;
 
 
     private:

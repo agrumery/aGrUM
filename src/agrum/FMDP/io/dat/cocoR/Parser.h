@@ -33,18 +33,19 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 #if !defined( gum_MDPDAT_COCO_PARSER_H__ )
-    #define gum_MDPDAT_COCO_PARSER_H__
+#define gum_MDPDAT_COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
 // =====================================================================
 #include <agrum/FMDP/IfmdpFactory.h>
 // =====================================================================
 #undef TRY
-    #define TRY( inst ) try {\
-  inst;\
-} catch ( gum::Exception& e ) {\
-  SemErr( e.errorType() );\
-}
+#define TRY( inst )                \
+  try {                            \
+    inst;                          \
+  } catch ( gum::Exception & e ) { \
+    SemErr( e.errorType() );       \
+  }
 
 #include <iostream>
 #include <string>

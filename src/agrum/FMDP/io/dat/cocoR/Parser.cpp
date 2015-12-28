@@ -665,5 +665,3 @@ namespace gum {
 
   }  // namespace
 }  // namespace
-
-

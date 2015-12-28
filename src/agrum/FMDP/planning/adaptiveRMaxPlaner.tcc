@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of RMaxPlaner classes.
+* @brief Template implementation of AdaptiveRMaxPlaner classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
@@ -38,7 +38,7 @@
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
-#include <agrum/FMDP/planning/rMaxPlaner.h>
+#include <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code purposes only
@@ -61,24 +61,24 @@ namespace gum {
   // ===========================================================================
   // Default constructor
   // ===========================================================================
-  RMaxPlaner::RMaxPlaner( IOperatorStrategy<double>* opi,
+  AdaptiveRMaxPlaner::AdaptiveRMaxPlaner(IOperatorStrategy<double>* opi,
                           double discountFactor,
                           double epsilon,
-                          const ILearningStrategy* learner )
-      : StructuredPlaner( opi, discountFactor, epsilon )
+                          const ILearningStrategy* learner , bool verbose)
+      : StructuredPlaner( opi, discountFactor, epsilon, verbose )
       , IDecisionStrategy()
       , __fmdpLearner( learner )
       , __initialized( false ) {
 
-    GUM_CONSTRUCTOR( RMaxPlaner );
+    GUM_CONSTRUCTOR( AdaptiveRMaxPlaner );
   }
 
   // ===========================================================================
   // Default destructor
   // ===========================================================================
-  RMaxPlaner::~RMaxPlaner() {
+  AdaptiveRMaxPlaner::~AdaptiveRMaxPlaner() {
 
-    GUM_DESTRUCTOR( RMaxPlaner );
+    GUM_DESTRUCTOR( AdaptiveRMaxPlaner );
 
     for ( HashTableIteratorSafe<Idx, StatesCounter*> scIter =
               __counterTable.beginSafe();
@@ -99,7 +99,7 @@ namespace gum {
   // ==========================================================================
   // Initializes data structure needed for making the planning
   // ==========================================================================
-  void RMaxPlaner::initialize( FMDP<double>* fmdp ) {
+  void AdaptiveRMaxPlaner::initialize( FMDP<double>* fmdp ) {
     if ( !__initialized ) {
       StructuredPlaner::initialize( fmdp );
       IDecisionStrategy::initialize( fmdp );
@@ -117,7 +117,7 @@ namespace gum {
   // ===========================================================================
   // Performs a value iteration
   // ===========================================================================
-  void RMaxPlaner::makePlanning( Idx nbStep ) {
+  void AdaptiveRMaxPlaner::makePlanning( Idx nbStep ) {
 
     __makeRMaxFunctionGraphs();
 
@@ -139,7 +139,7 @@ namespace gum {
   // ===========================================================================
   // Performs a single step of value iteration
   // ===========================================================================
-  void RMaxPlaner::_initVFunction() {
+  void AdaptiveRMaxPlaner::_initVFunction() {
     _vFunction->manager()->setRootNode(
         _vFunction->manager()->addTerminalNode( 0.0 ) );
     for ( auto actionIter = _fmdp->beginActions();
@@ -152,7 +152,7 @@ namespace gum {
   // ===========================================================================
   // Performs a single step of value iteration
   // ===========================================================================
-  MultiDimFunctionGraph<double>* RMaxPlaner::_valueIteration() {
+  MultiDimFunctionGraph<double>* AdaptiveRMaxPlaner::_valueIteration() {
 
     // *****************************************************************************************
     // Loop reset
@@ -203,7 +203,7 @@ namespace gum {
   // ===========================================================================
   // Evals the policy corresponding to the given value function
   // ===========================================================================
-  void RMaxPlaner::_evalPolicy() {
+  void AdaptiveRMaxPlaner::_evalPolicy() {
 
     // *****************************************************************************************
     // Loop reset
@@ -252,7 +252,7 @@ namespace gum {
   // ===========================================================================
   //
   // ===========================================================================
-  void RMaxPlaner::__makeRMaxFunctionGraphs() {
+  void AdaptiveRMaxPlaner::__makeRMaxFunctionGraphs() {
 
     __rThreshold =
         __fmdpLearner->modaMax() * 5 > 30 ? __fmdpLearner->modaMax() * 5 : 30;
@@ -329,7 +329,7 @@ namespace gum {
   //
   // ===========================================================================
   std::pair<NodeId, NodeId>
-  RMaxPlaner::__visitLearner( const IVisitableGraphLearner* visited,
+  AdaptiveRMaxPlaner::__visitLearner( const IVisitableGraphLearner* visited,
                               NodeId currentNodeId,
                               MultiDimFunctionGraph<double>* rmax,
                               MultiDimFunctionGraph<double>* boolQ ) {
@@ -370,7 +370,7 @@ namespace gum {
   // ===========================================================================
   //
   // ===========================================================================
-  void RMaxPlaner::__clearTables() {
+  void AdaptiveRMaxPlaner::__clearTables() {
 
     for ( auto actionIter = this->fmdp()->beginActions();
           actionIter != this->fmdp()->endActions();

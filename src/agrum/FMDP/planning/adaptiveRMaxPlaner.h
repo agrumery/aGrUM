@@ -25,20 +25,20 @@
  */
 
 // =========================================================================
-#ifndef GUM_ABSTRACT_RMAX_PLANER_H
-#define GUM_ABSTRACT_RMAX_PLANER_H
+#ifndef GUM_ADAPTIVE_RMAX_PLANER_H
+#define GUM_ADAPTIVE_RMAX_PLANER_H
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
-#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
+#include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
+#include <agrum/FMDP/simulation/statesCounter.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class AbstractRMaxPlaner AbstractRMaxPlaner.h
-   * <agrum/FMDP/planning/AbstractRMaxPlaner.h>
+   * @class AdaptiveRMaxPlaner AdaptiveRMaxPlaner.h <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
@@ -46,7 +46,7 @@ namespace gum {
    * process
    *
    */
-  class AbstractRMaxPlaner : public StructuredPlaner<double> {
+  class AdaptiveRMaxPlaner : public StructuredPlaner<double>, public IDecisionStrategy {
 
 
     // ###################################################################
@@ -57,24 +57,27 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    static AbstractRMaxPlaner*
+    static AdaptiveRMaxPlaner*
     ReducedAndOrderedInstance( const ILearningStrategy* learner,
                                double discountFactor = 0.9,
-                               double epsilon = 0.00001 ) {
-      return new AbstractRMaxPlaner(
-          new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner );
+                               double epsilon = 0.00001,
+                               bool verbose = true ) {
+      return new AdaptiveRMaxPlaner(
+          new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner, verbose );
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    static AbstractRMaxPlaner* TreeInstance( const ILearningStrategy* learner,
-                                             double discountFactor = 0.9,
-                                             double epsilon = 0.00001 ) {
-      return new AbstractRMaxPlaner( new TreeOperatorStrategy<double>(),
-                                     discountFactor,
-                                     epsilon,
-                                     learner );
+    static AdaptiveRMaxPlaner* TreeInstance( const ILearningStrategy* learner,
+                                     double discountFactor = 0.9,
+                                     double epsilon = 0.00001,
+                                     bool verbose = true ) {
+      return new AdaptiveRMaxPlaner( new TreeOperatorStrategy<double>(),
+                             discountFactor,
+                             epsilon,
+                             learner,
+                             verbose);
     }
 
     /// @}
@@ -87,16 +90,17 @@ namespace gum {
     // ==========================================================================
     /// Default constructor
     // ==========================================================================
-    AbstractRMaxPlaner( IOperatorStrategy<double>* opi,
-                        double discountFactor,
-                        double epsilon,
-                        const ILearningStrategy* learner );
+    AdaptiveRMaxPlaner( IOperatorStrategy<double>* opi,
+                double discountFactor,
+                double epsilon,
+                const ILearningStrategy* learner,
+                bool verbose );
 
     // ==========================================================================
     /// Default destructor
     // ==========================================================================
     public:
-    ~AbstractRMaxPlaner();
+    ~AdaptiveRMaxPlaner();
 
     /// @}
 
@@ -107,6 +111,16 @@ namespace gum {
     /// @{
 
     public:
+    // ==========================================================================
+    /**
+     * Initializes data structure needed for making the planning
+     * @warning No calling this methods before starting the first makePlaninng
+     * will surely and definitely result in a crash
+     */
+    // ==========================================================================
+    void initialize( FMDP<double>* fmdp );
+
+
     // ==========================================================================
     /**
      * Performs a value iteration
@@ -164,19 +178,40 @@ namespace gum {
     void __clearTables();
 
     private:
-    ///
     HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsRMaxTable;
     HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsBoolTable;
     const ILearningStrategy* __fmdpLearner;
+
     double __rThreshold;
     double __rmax;
+
+
+    // ###################################################################
+    /// @name Incremental methods
+    // ###################################################################
+    /// @{
+    public:
+    void checkState( const Instantiation& newState, Idx actionId ) {
+      if ( !__initializedTable[actionId] ) {
+        __counterTable[actionId]->reset( newState );
+        __initializedTable[actionId] = true;
+      } else
+        __counterTable[actionId]->incState( newState );
+    }
+
+    private:
+    HashTable<Idx, StatesCounter*> __counterTable;
+    HashTable<Idx, bool> __initializedTable;
+
+    bool __initialized;
+    /// @}
   };
 
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/abstractRMaxPlaner.tcc>
+#include <agrum/FMDP/planning/adaptiveRMaxPlaner.tcc>
 
-#endif  // GUM_ABSTRACT_RMAX_PLANER_H
+#endif  // GUM_ADAPTIVE_RMAX_PLANER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

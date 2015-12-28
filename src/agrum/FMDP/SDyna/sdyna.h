@@ -34,8 +34,7 @@
 #include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
-#include <agrum/FMDP/planning/abstractRMaxPlaner.h>
-#include <agrum/FMDP/planning/rMaxPlaner.h>
+#include <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/decision/E_GreedyDecider.h>
 #include <agrum/FMDP/decision/lazyDecider.h>
@@ -102,62 +101,15 @@ namespace gum {
       ILearningStrategy* ls = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(
           attributeSelectionThreshold, actionReward, similarityThreshold );
       IPlanningStrategy<double>* ps =
-          StructuredPlaner<double>::spumddInstance( discountFactor, epsilon );
+          StructuredPlaner<double>::spumddInstance( discountFactor, epsilon, false );
       IDecisionStrategy* ds = new E_GreedyDecider();
       return new SDYNA( ls,
                         ps,
                         ds,
                         observationPhaseLenght,
                         nbValueIterationStep,
-                        actionReward );
-    }
-
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    static SDYNA*
-    AbstractRMaxMDDInstance( double attributeSelectionThreshold = 0.99,
-                             double similarityThreshold = 0.3,
-                             double discountFactor = 0.9,
-                             double epsilon = 1,
-                             Idx observationPhaseLenght = 100,
-                             Idx nbValueIterationStep = 10 ) {
-      bool actionReward = true;
-      ILearningStrategy* ls = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(
-          attributeSelectionThreshold, actionReward, similarityThreshold );
-      IPlanningStrategy<double>* ps =
-          AbstractRMaxPlaner::ReducedAndOrderedInstance(
-              ls, discountFactor, epsilon );
-      IDecisionStrategy* ds = new LazyDecider();
-      return new SDYNA( ls,
-                        ps,
-                        ds,
-                        observationPhaseLenght,
-                        nbValueIterationStep,
-                        actionReward );
-    }
-
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    static SDYNA*
-    AbstractRMaxTreeInstance( double attributeSelectionThreshold = 0.99,
-                              double discountFactor = 0.9,
-                              double epsilon = 1,
-                              Idx observationPhaseLenght = 100,
-                              Idx nbValueIterationStep = 10 ) {
-      bool actionReward = true;
-      ILearningStrategy* ls = new FMDPLearner<GTEST, GTEST, ITILEARNER>(
-          attributeSelectionThreshold, actionReward );
-      IPlanningStrategy<double>* ps =
-          AbstractRMaxPlaner::TreeInstance( ls, discountFactor, epsilon );
-      IDecisionStrategy* ds = new LazyDecider();
-      return new SDYNA( ls,
-                        ps,
-                        ds,
-                        observationPhaseLenght,
-                        nbValueIterationStep,
-                        actionReward );
+                        actionReward,
+                        false );
     }
 
     // ==========================================================================
@@ -172,8 +124,8 @@ namespace gum {
       bool actionReward = true;
       ILearningStrategy* ls = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(
           attributeSelectionThreshold, actionReward, similarityThreshold );
-      RMaxPlaner* rm =
-          RMaxPlaner::ReducedAndOrderedInstance( ls, discountFactor, epsilon );
+      AdaptiveRMaxPlaner* rm =
+          AdaptiveRMaxPlaner::ReducedAndOrderedInstance( ls, discountFactor, epsilon );
       IPlanningStrategy<double>* ps = rm;
       IDecisionStrategy* ds = rm;
       return new SDYNA( ls,
@@ -195,7 +147,7 @@ namespace gum {
       bool actionReward = true;
       ILearningStrategy* ls = new FMDPLearner<GTEST, GTEST, ITILEARNER>(
           attributeSelectionThreshold, actionReward );
-      RMaxPlaner* rm = RMaxPlaner::TreeInstance( ls, discountFactor, epsilon );
+      AdaptiveRMaxPlaner* rm = AdaptiveRMaxPlaner::TreeInstance( ls, discountFactor, epsilon );
       IPlanningStrategy<double>* ps = rm;
       IDecisionStrategy* ds = rm;
       return new SDYNA( ls,
@@ -278,7 +230,8 @@ namespace gum {
            IDecisionStrategy* decider,
            Idx observationPhaseLenght,
            Idx nbValueIterationStep,
-           bool actionReward );
+           bool actionReward,
+           bool verbose = true );
 
     // ==========================================================================
     /// Destructor
@@ -506,6 +459,8 @@ namespace gum {
     Set<Observation*> __bin;
 
     bool __actionReward;
+
+    bool _verbose;
   };
 
 

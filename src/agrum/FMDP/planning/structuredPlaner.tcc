@@ -59,12 +59,11 @@ namespace gum {
   // Default constructor
   // ===========================================================================
   template <typename GUM_SCALAR>
-  INLINE StructuredPlaner<GUM_SCALAR>::StructuredPlaner(
-      IOperatorStrategy<GUM_SCALAR>* opi,
+  INLINE StructuredPlaner<GUM_SCALAR>::StructuredPlaner(IOperatorStrategy<GUM_SCALAR>* opi,
       GUM_SCALAR discountFactor,
-      GUM_SCALAR epsilon )
+      GUM_SCALAR epsilon , bool verbose)
       : _discountFactor( discountFactor )
-      , _operator( opi ) {
+      , _operator( opi ), _verbose( verbose ) {
 
     GUM_CONSTRUCTOR( StructuredPlaner );
 
@@ -283,6 +282,7 @@ namespace gum {
         if ( gap < fabs( deltaV->value() ) ) gap = fabs( deltaV->value() );
       delete deltaV;
 
+      if(_verbose)
       std::cout << " ------------------- Fin itération n° " << nbIte
                 << std::endl
                 << " Gap : " << gap << " - " << __threshold << std::endl;
@@ -297,9 +297,6 @@ namespace gum {
     // Policy matching value function research
     // *****************************************************************************************
     this->_evalPolicy();
-
-    //      std::cout << this->_fmdp->toString() << std::endl;
-    //      std::cout << this->optimalPolicy2String() << std::endl;
   }
 
 

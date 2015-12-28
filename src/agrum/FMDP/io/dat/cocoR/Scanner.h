@@ -33,7 +33,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 #if !defined( gum_MDPDAT_COCO_SCANNER_H__ )
-    #define gum_MDPDAT_COCO_SCANNER_H__
+#define gum_MDPDAT_COCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -46,7 +46,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/core/cocoR/common.h>
 #include <agrum/core/errorsContainer.h>
 
-    namespace gum {
+namespace gum {
   namespace MDPDAT {
 
 
@@ -297,5 +297,4 @@ Coco/R itself) does not fall under the GNU General Public License.
 }  // namespace
 
 
-#endif           // !defined(COCO_SCANNER_H__)
-
+#endif  // !defined(COCO_SCANNER_H__)
