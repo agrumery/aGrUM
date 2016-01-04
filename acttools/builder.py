@@ -24,7 +24,7 @@ from .configuration import cfg
 from .utils import trace,setifyString,safe_cd,critic
 from .multijobs import execCde
 
-def buildCmake(current,target):
+def getCmake(current,target):
     line=cfg.cmake+" ../.." # we are in build/[release|target]
 
     if current["mode"]=="release":
@@ -68,58 +68,66 @@ def buildCmake(current,target):
     else:
       line+=" -DBUILD_PYTHON=ON"
 
-    execFromLine(current,line)
+    return line
+
+def buildCmake(current,target):
+  line=getCmake(current,target)
+  execFromLine(current,line)
+
+def getMake(current,target):
+  line=cfg.make
+
+  if current["action"]=="test":
+    if target =="aGrUM":
+      line+=" gumTest"
+    elif target!= "pyAgrum":
+      critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
+  elif current["action"]=="install":
+    line+=" install"
+  elif current["action"]=="uninstall":
+    line+=" uninstall"
+  elif current["action"]=="lib":
+    pass
+  elif current["action"]=="doc":
+    line+=" doc"
+  else:
+    critic("Action '"+current["action"]+"' not treated for now")
+
+  line+=" -j "+str(current["jobs"])
+
+  if target=="pyAgrum":
+    line+=" -C wrappers/pyAgrum"
+
+  return line
 
 def buildMake(current,target):
-    line=cfg.make
+  line=getMake(current,target)
+  execFromLine(current,line)
 
-    if current["action"]=="test":
-      if target =="aGrUM":
-        line+=" gumTest"
-      elif target!= "pyAgrum":
-        critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
-    elif current["action"]=="install":
-      line+=" install"
-    elif current["action"]=="uninstall":
-      line+=" uninstall"
-    elif current["action"]=="lib":
-      pass
-    elif current["action"]=="doc":
-      line+=" doc"
-    else:
-      critic("Action '"+current["action"]+"' not treated for now")
-
-    line+=" -j "+str(current["jobs"])
-
-    if target=="pyAgrum":
-      line+=" -C wrappers/pyAgrum"
-
-    execFromLine(current,line)
-
-
+def getPost(current,target):
+  if current["action"]=="test":
+    if target=="aGrUM":
+      if cfg.os_platform=="win32":
+        line="src\\gumTest.exe"
+      else:
+        line="src/gumTest"
+      return line,True
+    elif target=="pyAgrum":
+      line="PYTHONPATH=wrappers "
+      if cfg.os_platform=="win32":
+        line+=cfg.python+" ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
+      else:
+        line+=cfg.python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
+      return line,False
 
 def buildPost(current,target):
-    if current["action"]=="test":
-        if target=="aGrUM":
-            safe_cd(current,"src")
-            if cfg.os_platform=="win32":
-              rc=execFromLine(current,"gumTest.exe")
-            else:
-              rc=execFromLine(current,"./gumTest")
-            safe_cd(current,"..")
-        elif target=="pyAgrum":
-            run_cde="PYTHONPATH=wrappers "
-            if cfg.os_platform=="win32":
-                run_cde+=cfg.python+" ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
-            else:
-                run_cde+=cfg.python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
-            execFromLine(current,run_cde,checkRC=False)
-
+  line,checkRC=getPost(current,target)
+  execFromLine(current,line,checkRC)
 
 def execFromLine(current,line,checkRC=True):
-    trace(current,line)
-    if not current['dry_run']:
-        rc=execCde(line,current)
-        if checkRC:
-          if rc>0:
-            critic("Received error {0}".format(rc),rc=rc)
+  trace(current,line)
+  if not current['dry_run']:
+    rc=execCde(line,current)
+    if checkRC:
+      if rc>0:
+        critic("Received error {0}".format(rc),rc=rc)

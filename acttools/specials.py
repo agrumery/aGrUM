@@ -30,9 +30,15 @@ from subprocess import call
 from .configuration import cfg
 from .utils import trace,notif,critic
 from .oneByOne import checkAgrumMemoryLeaks
+from .stats import profileAgrum
 
 def isSpecialAction(current):
-  return current["action"] in set(["clean","show","autoindent","oneByone"])
+  if current["oneByOne"]==True:
+    return True
+  if current["stats"]==True:
+    return True
+
+  return current["action"] in set(["clean","show","autoindent"])
 
 def specialActions(current):
   if current["action"]=="clean":
@@ -51,15 +57,17 @@ def specialActions(current):
 
   if current["action"]=="autoindent":
     #trace(current,"Special action [autoindent]")
-    # action=show is the only action still performed even if dry_run=True
     autoindent(current)
     print("")
     return True
 
   if current["oneByOne"]==True:
     #trace(current,"Special action [oneByOne]")
-    # action=show is the only action still performed even if dry_run=True
     checkAgrumMemoryLeaks(current)
+    return True
+
+  if current["stats"]==True:
+    profileAgrum(current)
     return True
 
   return False
