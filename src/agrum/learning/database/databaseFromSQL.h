@@ -60,6 +60,20 @@ namespace gum {
 
       /**
        * @brief Default constructor.
+       *
+       * This will read the result of query and load it in memory using the
+       * DatabaseVectInRAM class.
+       *
+       * @param dataSource A declared datraSource in your odbc configuration
+       * file (usually /etc/odbc.ini).
+       * @param login The dataSource login.
+       * @param password The dataSource password.
+       * @param query The SQL query used as a database.
+       * @param timeout Defines a timeout for accessing the SQL database, if 0
+       * then no timeout is set.
+       * @param transform Used for transforming data into expected types.
+       * @param missingVal How missing values (NULL in SQL) will be
+       * represented.
        */
       DatabaseFromSQL( const std::string& dataSource,
                        const std::string& login,
@@ -68,15 +82,15 @@ namespace gum {
                        long timeout = 0,
                        const DBTransform& transform = DBTransformIdentity(),
                        const std::vector<std::string> missingVal = {
-                           "?", "N/A", "n/a"} );
+                           "NULL"} );
 
-      /// copy constructor
+      /// Copy constructor
       DatabaseFromSQL( const DatabaseFromSQL& from );
 
-      /// move constructor
+      /// Move constructor
       DatabaseFromSQL( DatabaseFromSQL&& from );
 
-      /// destructor
+      /// Destructor
       virtual ~DatabaseFromSQL();
 
       /// @}

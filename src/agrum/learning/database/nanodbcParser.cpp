@@ -43,7 +43,11 @@ namespace gum {
       try {
         if ( __result.next() ) {
           for ( auto i = 0; i < __result.columns(); ++i ) {
-            __data[i] = __result.get<std::string>( i );
+            try {
+              __data[i] = __result.get<std::string>( i );
+            } catch ( nanodbc::null_access_error& e ) {
+              __data[i] = "NULL";
+            }
           }
           return true;
         }
