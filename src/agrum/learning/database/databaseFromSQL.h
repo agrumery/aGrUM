@@ -21,7 +21,7 @@
  * @file
  * @brief The class representing a tabular database created from an SQL query.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Lionel Torti, Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifdef _ODBC
 

@@ -19,9 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief The class representing a tabular database created from a CSV
+ * @brief The class representing a tabular database created from a SQL query.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Lionel Torti, Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifdef _ODBC

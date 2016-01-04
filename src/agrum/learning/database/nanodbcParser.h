@@ -21,12 +21,7 @@
  * @file
  * @brief Class for parsing SQL results using Nanodbc.
  *
- * Typical use :
- @code
- @endcode
- *
- * @author Lionel TORTI
- *
+ * @author Lionel TORTI, Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifdef _ODBC

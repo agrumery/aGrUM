@@ -17,10 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief The class representing a tabular database created from a SQL query
+/**
+ * @file
+ * @brief The class representing a tabular database created from a SQL query.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Lionel TORTI, Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifdef _ODBC
 
