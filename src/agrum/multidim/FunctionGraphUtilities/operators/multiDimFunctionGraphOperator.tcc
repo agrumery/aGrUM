@@ -80,13 +80,11 @@ namespace gum {
     for ( auto instIter = __DG1InstantiationNeeded.beginSafe();
           instIter != __DG1InstantiationNeeded.endSafe();
           ++instIter )
-      //        if( instIter.val() != __default)
       DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
 
     for ( auto instIter = __DG2InstantiationNeeded.beginSafe();
           instIter != __DG2InstantiationNeeded.endSafe();
           ++instIter )
-      //        if( instIter.val() != __default)
       DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
 
     if ( __nbVar != 0 ) DEALLOCATE( __default, sizeof( short int ) * __nbVar );

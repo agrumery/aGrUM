@@ -35,7 +35,6 @@
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
-#include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================

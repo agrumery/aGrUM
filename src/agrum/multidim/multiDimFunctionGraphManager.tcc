@@ -236,7 +236,7 @@ namespace gum {
   void
   MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::minimizeSize() {
 
-    // Classement des variables par taille de niveau
+    // Ordering variables by number of nodes asssociated to them
     Sequence<const DiscreteVariable*> siftingSeq;
     HashTable<const DiscreteVariable*, Idx> varLvlSize;
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
@@ -263,13 +263,13 @@ namespace gum {
           sifIter != siftingSeq.endSafe();
           ++sifIter ) {
 
-      // Initialisation nouveau Sifting
+      // Initialization
       Idx currentPos = __functionGraph->variablesSequence().pos( *sifIter );
       Idx bestSize = __functionGraph->realSize();
       Idx bestPos = currentPos;
 
 
-      // Sifting vers level supérieur
+      // Sifting towards upper places
       while ( currentPos > 0 ) {
         moveTo( *sifIter, currentPos - 1 );
         currentPos = __functionGraph->variablesSequence().pos( *sifIter );
@@ -279,7 +279,7 @@ namespace gum {
         }
       }
 
-      // Sifting vers level inférieur
+      // Sifting towards lower places
       while ( currentPos < __functionGraph->variablesSequence().size() - 1 ) {
         moveTo( *sifIter, currentPos + 1 );
         currentPos = __functionGraph->variablesSequence().pos( *sifIter );
@@ -328,7 +328,6 @@ namespace gum {
         __functionGraph->_invert( currentPos, currentPos + 1 );
       }
 
-    //      reduce();
   }
 
 
@@ -359,23 +358,22 @@ namespace gum {
 
     while ( oldxNodes->list() ) {
 
-      // Recuperation de la structure associée au noeud courant
+      // Recuperating a node associated to variables x
       currentOldXNode =
           __functionGraph->__internalNodeMap[oldxNodes->list()->element()];
 
-      // Creation de la structure amenee à remplacer la structure courante
-      // et associée par conséquence à y
+      // Creating a new node associated to variable y
       currentNewYNodeSons = InternalNode::allocateNodeSons( y );
 
-      // Maintenant il faut remapper le graphe en insérant un noeud associé à x
-      // Pour chaque valeur de y
+      // Now the graph needs to be remap by inserting nodes bound to x
+      // for each values assumed by y
       for ( indy = 0; indy < y->domainSize(); ++indy ) {
 
-        // Creation du vecteur fils du noeud associe à x qui sera sont
-        // descendant pour cette valeur-ci
+        // Creating a new node bound to x that will be the son of the node
+        // tied to y for the current value assumed by y
         currentNewXNodeSons = InternalNode::allocateNodeSons( x );
 
-        // Iteration sur les différente valeurs de x pour faire le mapping
+        // Iterating on the different values taht x can assumed to do the remap
         for ( indx = 0; indx < x->domainSize(); ++indx ) {
           currentNewXNodeSons[indx] = currentOldXNode->son( indx );
           if ( !__functionGraph->isTerminalNode(
@@ -387,12 +385,12 @@ namespace gum {
                     ->son( indy );
         }
 
-        // Insertion du nouveau noeud x
+        // Inserting the new node bound to x
         currentNewYNodeSons[indy] =
             _nodeRedundancyCheck( x, currentNewXNodeSons );
       }
 
-      // Transformation de l'ancien noeud x en nouveau noeud y
+      // Replacing old node x by new node y
       currentNewYNodeId = currentNewYNodeSons[0];
       if ( __isRedundant( y, currentNewYNodeSons ) ) {
         _migrateNode( oldxNodes->list()->element(), currentNewYNodeId );
@@ -403,8 +401,7 @@ namespace gum {
           _migrateNode( oldxNodes->list()->element(), currentNewYNodeId );
           DEALLOCATE( currentNewYNodeSons, y->domainSize() * sizeof( NodeId ) );
         } else {
-          // Mise à jour des fils (il ne doivent plus considérer currentOldXNode
-          // comme un parent)
+          // Updating the sons (they must not consider old x as their parent)
           for ( Idx i = 0; i < currentOldXNode->nodeVar()->domainSize(); ++i ) {
             if ( __functionGraph->__internalNodeMap.exists(
                      currentOldXNode->son( i ) ) ) {
@@ -412,11 +409,9 @@ namespace gum {
                   ->removeParent( oldxNodes->list()->element(), i );
             }
           }
-          // Transmutation du noeud d'un noeud associé à X à un noeud associé à
-          // Y
+          // Reaffecting old node x internal attributes to correct new one
           currentOldXNode->setNode( y, currentNewYNodeSons );
-          // Mise à jour des nouveaux fils (ils doivent considerer
-          // currentOldXNode comme un parent)
+          // Updating new sons (they must consider the node as a parent)
           for ( Idx i = 0; i < currentOldXNode->nodeVar()->domainSize(); ++i ) {
             if ( __functionGraph->__internalNodeMap.exists(
                      currentNewYNodeSons[i] ) ) {
@@ -468,7 +463,7 @@ namespace gum {
       const NodeId& origin, const NodeId& destination ) {
 
     InternalNode* org = __functionGraph->__internalNodeMap[origin];
-    // Mis à jour des parents suite au déplacement
+    // Upating parents after the change
     Link<Parent>* picle = org->parents();
     while ( picle != nullptr ) {
       setSon(
@@ -476,7 +471,7 @@ namespace gum {
       picle = picle->nextLink();
     }
 
-    // Mis à jour des enfants suite au déplacement
+    // Updating sons after the change
     for ( Idx i = 0; i < org->nbSons(); ++i )
       if ( __functionGraph->__internalNodeMap.exists( org->son( i ) ) )
         __functionGraph->__internalNodeMap[org->son( i )]->removeParent( origin,
@@ -656,221 +651,3 @@ namespace gum {
   }
 
 }  // namespace gum
-
-
-// ============================================================================
-// Inserts a new non terminal node in graph.
-// NodeId of this node is generated automatically.
-//
-// @return the id of the added non terminal node.
-// ============================================================================
-//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-//    INLINE
-//    NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy
-//    >::addInternalNode ( NodeId nid ){
-
-
-//        // Getting the structure for this internal node
-//        typename MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy
-//        >::InternalNode* newNodeStruct =
-//                new typename MultiDimFunctionGraph< GUM_SCALAR,
-//                TerminalNodePolicy >::InternalNode();
-
-//        // Getting a new id for this node
-//        if( nid == 0 )
-//          nid = __functionGraph->__model.addNode();
-
-//        if( !__functionGraph->__internalNodeMap.exists(nid) ){
-//           __functionGraph->__internalNodeMap.insert( nid, newNodeStruct );
-//        }else{
-//           __functionGraph->__internalNodeMap[nid] = newNodeStruct;
-//        }
-
-//        return nid;
-//    }
-
-
-// *******************************************************************************************
-// Verification
-// First, we check if variable order has been specified
-//      if ( __functionGraph->variablesSequence().size() == 0 ){
-//        GUM_ERROR ( OperationNotAllowed, "MultiDim has no variable" );
-//      }else{
-//      // if so we check if var is in the order or not
-//        if ( !__functionGraph->variablesSequence().exists( var ) ){
-//          GUM_ERROR ( OperationNotAllowed, "Variable " << var->name() << " is
-//          not in the MultiDim" );
-//        }
-//      }
-
-//      NodeId rnid = addInternalNode(nid);
-//      __functionGraph->__internalNodeMap[rnid]->setNodeVar(var);
-//      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::_addElemToNICL(
-//      &(__functionGraph->__var2NodeIdMap[var]), rnid );
-
-
-// ############################################################################
-// @name Arcs manipulation methods.
-// ############################################################################
-
-// ============================================================================
-// Adds an arc in the DD
-//
-// @param from and
-// @param to as NodeId
-// @param modality the modality on which arc is bind
-// @throw NotFound If from and/or tail are not in the DD.
-// @throw InvalidNode if head is a terminal node
-// @throw OperationNotAllowed if arc doesn't respect variable order property
-// @throw DuplicateElement if another arc linking those nodes already exists
-//    //
-//    ============================================================================
-//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-//    void
-//    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::insertArc
-//    ( NodeId from, NodeId to, Idx modality ){
-
-//        if(!__functionGraph->__model.exists(from)){
-//          GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist."
-//          )
-//        }
-
-//        if ( __functionGraph->__valueMap.existsFirst ( from ) ) {
-//          GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal
-//          Node. No arcs can start from a terminal node" );
-//        }
-
-//        if(__functionGraph->__internalNodeMap[ from ]->nbSons() <= modality){
-//          GUM_ERROR ( InvalidArgument, " modality " << modality << " is too
-//          high for variable " << __functionGraph->__internalNodeMap[ from
-//          ]->nodeVar()->name() << "." )
-//        }
-
-//        if(!__functionGraph->__model.exists(to)){
-//          GUM_ERROR ( NotFound, " Destination node " <<  to << " does not
-//          exist." )
-//        }
-
-//        if ( !__functionGraph->__valueMap.existsFirst ( to ) ) {
-//          if ( __functionGraph->variablesSequence().pos (
-//          __functionGraph->__internalNodeMap[ from ]->nodeVar() )
-//               >= __functionGraph->variablesSequence().pos (
-//               __functionGraph->__internalNodeMap[ to ]->nodeVar() ) ) {
-//            GUM_ERROR ( OperationNotAllowed, " This arc does not respect the
-//            variable order property. Variable " <<
-//            __functionGraph->__internalNodeMap[ from ]->nodeVar()->name()
-//                << " tied to node " << from << " is after Variable " <<
-//                __functionGraph->__internalNodeMap[ to ]->nodeVar()->name() <<
-//                " tied to node "
-//                << to << " in variable order." );
-//          }
-//        }
-
-//        for ( Idx i = 0; i < __functionGraph->__internalNodeMap[ from
-//        ]->nbSons(); i++ )
-//          if ( __functionGraph->__internalNodeMap[ from ]->son(i) == to && i
-//          == modality ) {
-//            GUM_ERROR ( DuplicateElement, " A same (meaning with same value "
-//            <<  modality << " ) arc linking those two nodes " << from << " ->
-//            " << to << " already exist." );
-//            break;
-//          }
-
-//        __functionGraph->__internalNodeMap[ from ]->setSon(modality, to);
-//    }
-
-// ============================================================================
-// Erases arcs in the DD
-//
-// @param from and
-// @param to as NodeId
-// @throw InvalidArc If arc does not exist
-// @warning due to the possibility that several arc with different value have
-// the same from and to,
-// if several arcs have different value but same parent and child, this method
-// will erase all of them .
-// If you want to erase a specific one, use eraseSpecificArc
-// ============================================================================
-//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-//    void
-//    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >::eraseArc (
-//    NodeId from, NodeId to ){
-
-//      if(!__functionGraph->__model.exists(from)){
-//        GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." )
-//      }
-
-//      if(!__functionGraph->__model.exists(to)){
-//        GUM_ERROR ( NotFound, " Destination node " <<  to << " does not
-//        exist." )
-//      }
-
-//      if ( __functionGraph->__valueMap.existsFirst ( from ) ) {
-//        GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal
-//        Node. No arcs can start from a terminal node" );
-//      } else if ( !__functionGraph->__valueMap.existsFirst ( to ) ) {
-//        if ( __functionGraph->variablesSequence().pos (
-//        __functionGraph->__internalNodeMap[ from ]->nodeVar() )
-//             >= __functionGraph->variablesSequence().pos (
-//             __functionGraph->__internalNodeMap[ to ]->nodeVar() ) ) {
-//            GUM_ERROR ( InvalidArc, " This(those) arc(s) " << from << " - " <<
-//            to <<" cannot exist since it(they) violate(s) variable order." );
-//        }
-//      }
-
-//      for(Idx i = 0; i < __functionGraph->__internalNodeMap[from]->nbSons();
-//      i++)
-//        if( __functionGraph->__internalNodeMap[from]->son(i) == to )
-//            __functionGraph->__internalNodeMap[from]->setSon(i, 0);
-//    }
-
-// ============================================================================
-// Erases an arc in the DD
-//
-// @param from and
-// @param to as NodeId
-// @param modality the modality corresponding to the to delete arc
-// @throw InvalidArc If arc does not exist
-// ============================================================================
-//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-//    void
-//    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy
-//    >::eraseSpecificArc ( NodeId from, NodeId to, Idx modality ){
-
-//      if(!__functionGraph->__model.exists(from)){
-//        GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." )
-//      }
-
-//      if(!__functionGraph->__model.exists(to)){
-//        GUM_ERROR ( NotFound, " Destination node " <<  to << " does not
-//        exist." )
-//      }
-
-//      if(__functionGraph->__internalNodeMap[ from ]->nbSons() <= modality){
-//        GUM_ERROR ( gum::InvalidArgument, " modality " << modality << " is too
-//        high for variable " << __functionGraph->__internalNodeMap[ from
-//        ]->nodeVar()->name() << "." )
-//      }
-
-//      if ( __functionGraph->__valueMap.existsFirst ( from ) ) {
-//        GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal
-//        Node. No arcs can start from a terminal node" );
-//      } else if ( !__functionGraph->__valueMap.existsFirst ( to ) ) {
-//        // GUM_TRACE( "From : " << _varMap[from]->toString() << " - To : " <<
-//        _varMap[ to ]->toString() << std::endl );
-//        if ( __functionGraph->variablesSequence().pos (
-//        __functionGraph->__internalNodeMap[ from ]->nodeVar() )
-//             >= __functionGraph->variablesSequence().pos (
-//             __functionGraph->__internalNodeMap[ to ]->nodeVar() ) ) {
-//          GUM_ERROR ( OperationNotAllowed, " This arc does not respect the
-//          variable order property. Variable " <<
-//          __functionGraph->__internalNodeMap[ from ]->nodeVar()->name()
-//              << " tied to node " << from << " is after Variable " <<
-//              __functionGraph->__internalNodeMap[ to ]->nodeVar()->name() << "
-//              tied to node "
-//              << to << " in variable order." );
-//        }
-//      }
-
-//      __functionGraph->__internalNodeMap[from]->setSon(modality, 0);
-//    }

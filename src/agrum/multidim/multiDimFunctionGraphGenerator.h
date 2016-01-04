@@ -73,9 +73,6 @@ namespace gum {
                        HashTable<NodeId, Idx>& node2MinVar );
     Idx __generateVarPos( Idx offset, Idx span );
 
-
-    Idx __minNbVarInDiagram;
-    Idx __maxNbVarInDiagram;
     const Sequence<const DiscreteVariable*> __varSeq;
     Idx __nbTotalVar;
     static Idx __genSeed;

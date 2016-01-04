@@ -127,7 +127,7 @@ namespace gum {
     // ============================================================================
     /// Returns o4DGContext key
     // ============================================================================
-    const double& key( short int* instNeeded );  // const {return __key;}
+    const double& key( short int* instNeeded );
 
     /// @}
 

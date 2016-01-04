@@ -5,7 +5,7 @@ namespace gum {
 
 
   // *****************************************************************************************************
-  /// Binarisation d'un graphe de fonction
+  /// Loading the two function graphs to minimize together
   // *****************************************************************************************************
   template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   void GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::
@@ -23,52 +23,19 @@ namespace gum {
 
 
   // *****************************************************************************************************
-  /// Binarisation d'un graphe de fonction
+  /// Minimizes the two function graphs it holds
   // *****************************************************************************************************
   template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   void
   GlobalFunctionGraphMinimizer<GUM_SCALAR, TerminalNodePolicy>::minimize() {
-    //    std::cout << "NEW MINIMISE" << std::endl;
-    //    std::cout <<
-    //    "==============================================================" <<
-    //    std::endl;
-    //    std::cout << "                           EXTRACT " << std::endl;
-    //    std::cout <<
-    //    "==============================================================" <<
-    //    std::endl;
     __extractVarList();
-    //    std::cout <<
-    //    "==============================================================" <<
-    //    std::endl;
-    //    std::cout << "                           ORDER " << std::endl;
-    //    std::cout <<
-    //    "==============================================================" /*<<
-    //    __fg1->toDot() << __fg2->toDot()*/ << std::endl;
-    //    std::cout << __fg1->root() << std::endl;
     __orderSimillary();
-    //    std::cout << __fg1->root() << std::endl;
-    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-    //    __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter )
-    //      std::cout << (*varIter)->name()  << "    ";
-    //    std::cout << std::endl;
-    //    std::cout <<
-    //    "==============================================================" <<
-    //    std::endl;
-    //    std::cout << "                           MINIMIZE " << std::endl;
-    //    std::cout <<
-    //    "==============================================================" /*<<
-    //    __fg1->toDot() << __fg2->toDot()*/ << std::endl;
-    //    std::cout << __fg1->root() << std::endl;
     __minimizeGlobally();
-    //    std::cout << __fg1->root() << std::endl;
-    //    std::cout <<
-    //    "==============================================================" /*<<
-    //    __fg1->toDot() << __fg2->toDot()*/ << std::endl;
   }
 
 
   // *****************************************************************************************************
-  /// Binarisation d'un graphe de fonction
+  /// Extracting gloabl list of variables
   // *****************************************************************************************************
   template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   void GlobalFunctionGraphMinimizer<GUM_SCALAR,
@@ -104,16 +71,19 @@ namespace gum {
   }
 
   // *****************************************************************************************************
-  /// Binarisation de plusieurs graphes de fonction
+  /// Before minimization, the two graphs have to be ordered simillary
   // *****************************************************************************************************
   template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   void GlobalFunctionGraphMinimizer<GUM_SCALAR,
                                     TerminalNodePolicy>::__orderSimillary() {
 
+    // Finding an order on variables that will minimizes the number
+    // of variables swaps
+    // Inspired from an algorithm to find an efficient order in dependancy graphs
     Sequence<const DiscreteVariable *> source, puits;
     while ( !__varList.empty() ) {
 
-      // Retrait des noeuds sources et puits
+      // Removing  source and well nodes
       bool modified = true;
       while ( modified ) {
         modified = false;
@@ -140,7 +110,7 @@ namespace gum {
         }
       }
 
-      // Selection de la meilleure variable à retirer du graphe
+      // Delect best var to move out
       const DiscreteVariable* bestVar = nullptr;
       Idx bestVarDegree = 0;
       for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
@@ -158,7 +128,7 @@ namespace gum {
         }
       }
 
-      // Retrait de cette best var
+      // Moving out this var
       if ( bestVar != nullptr ) {
         source.insert( bestVar );
         __dependancyGraph.eraseNode( __dependancyMap.first( bestVar ) );
@@ -166,7 +136,7 @@ namespace gum {
       }
     }
 
-
+    // Performing the reordering
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
               source.beginSafe();
           varIter != source.endSafe();
@@ -177,18 +147,6 @@ namespace gum {
           varIter != puits.rendSafe();
           --varIter )
       __varList.insert( *varIter );
-
-    //    std::cout << "before reo" << std::endl;
-    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-    //    __fg1->variablesSequence().beginSafe(); varIter !=
-    //    __fg1->variablesSequence().endSafe(); ++varIter )
-    //      std::cout << (*varIter)->name()  << "    ";
-    //    std::cout << std::endl;
-    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-    //    __fg2->variablesSequence().beginSafe(); varIter !=
-    //    __fg2->variablesSequence().endSafe(); ++varIter )
-    //      std::cout << (*varIter)->name()  << "    ";
-    //    std::cout << std::endl;
 
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
               __varList.beginSafe();
@@ -204,32 +162,17 @@ namespace gum {
       __fg1->manager()->moveTo( *varIter, __varList.pos( *varIter ) );
       __fg2->manager()->moveTo( *varIter, __varList.pos( *varIter ) );
     }
-    //    __fg1->manager()->reduce();
-    //    __fg2->manager()->reduce();
-
-
-    //    std::cout << "after reo" << std::endl;
-    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-    //    __fg1->variablesSequence().beginSafe(); varIter !=
-    //    __fg1->variablesSequence().endSafe(); ++varIter )
-    //      std::cout << (*varIter)->name()  << "    ";
-    //    std::cout << std::endl;
-    //    for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-    //    __fg2->variablesSequence().beginSafe(); varIter !=
-    //    __fg2->variablesSequence().endSafe(); ++varIter )
-    //      std::cout << (*varIter)->name()  << "    ";
-    //    std::cout << std::endl;
   }
 
 
   // *****************************************************************************************************
-  /// Binarisation d'un graphe de fonction
+  /// Minimizes the two graphs together
   // *****************************************************************************************************
   template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   void GlobalFunctionGraphMinimizer<GUM_SCALAR,
                                     TerminalNodePolicy>::__minimizeGlobally() {
 
-    // Classement des variables par taille de niveau
+    // Ordering variables by number of nodes tied to
     Sequence<const DiscreteVariable*> siftingSeq;
     HashTable<const DiscreteVariable*, Idx> varLvlSize;
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
@@ -254,39 +197,22 @@ namespace gum {
         pos--;
       }
     }
-    //    std::cout << "**********************  BEGIN
-    //    ***************************" << __fg1->toDot() << std::endl;
 
-    // Sifting var par var
+    // Sifting var by var
     for ( SequenceIteratorSafe<const DiscreteVariable*> sifIter =
               siftingSeq.beginSafe();
           sifIter != siftingSeq.endSafe();
           ++sifIter ) {
 
-      //      std::cout <<
-      //      "========================================================================"
-      //      << std::endl;
-      //      std::cout << "                           " << (*sifIter)->name()
-      //      << "                              " << std::endl;
-      //      std::cout <<
-      //      "========================================================================"
-      //      << std::endl;
-      //      for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-      //      __varList.beginSafe(); varIter != __varList.endSafe(); ++varIter )
-      //        std::cout << (*varIter)->name()  << "    ";
-      //      std::cout << __fg1->toDot() << std::endl;
-
       bool goOn = true;
 
-      // Initialisation nouveau Sifting
+      // Initialization
       Idx currentPos = __varList.pos( *sifIter );
       Idx bestSize = __fg1->realSize() + __fg2->realSize();
       Idx bestPos = currentPos;
       Idx initPos = currentPos;
 
-      //      std::cout << currentPos << std::endl;
-
-      // Sifting vers level supérieur
+      // Sifting twoard upper level
       while ( currentPos > 0 && goOn ) {
 
         // First ensure that swap won't potentially overgrow MDD size
@@ -326,30 +252,20 @@ namespace gum {
           break;
 
         // Do the SWAP if it's ok
-        // std::cout << "------------- DG1 --------------" << std::endl;
         __fg1->manager()->moveTo( *sifIter, currentPos - 1 );
-        //        __fg1->manager()->reduce();
-        // std::cout << "------------- DG2 --------------" << std::endl;
         __fg2->manager()->moveTo( *sifIter, currentPos - 1 );
-        //        __fg2->manager()->reduce();
-        // std::cout << "------------- Fin --------------" << std::endl;
         currentPos--;
         if ( __fg1->realSize() + __fg2->realSize() < bestSize ) {
           bestPos = currentPos;
           bestSize = __fg1->realSize() + __fg2->realSize();
         }
-        // std::cout << "**********************  " << currentPos - 1 << "
-        // ***************************" << __fg1->toDot() << std::endl;
       }
-      // std::cout << "**********************  INTER
-      // ***************************" << (*sifIter)->name() << __fg1->toDot() <<
-      // std::endl;
 
       __fg1->manager()->moveTo( *sifIter, initPos );
       __fg2->manager()->moveTo( *sifIter, initPos );
       goOn = true;
 
-      // Sifting vers level inférieur
+      // Sifting towards lower level
       while ( currentPos < siftingSeq.size() - 1 && goOn ) {
 
         // First ensure that swap won't potentially overgrow MDD size
@@ -390,23 +306,14 @@ namespace gum {
 
 
         // Do the SWAP if it's ok
-        // std::cout << "------------- DG1 --------------" << std::endl;
         __fg1->manager()->moveTo( *sifIter, currentPos + 1 );
-        //        __fg1->manager()->reduce();
-        // std::cout << "------------- DG2 --------------" << std::endl;
         __fg2->manager()->moveTo( *sifIter, currentPos + 1 );
-        //        __fg2->manager()->reduce();
-        // std::cout << "------------- Fin --------------" << std::endl;
         currentPos++;
         if ( __fg1->realSize() + __fg2->realSize() < bestSize ) {
           bestPos = currentPos;
           bestSize = __fg1->realSize() + __fg2->realSize();
         }
-        // std::cout << "**********************  " << currentPos + 1 << "
-        // ***************************" << __fg1->toDot() << std::endl;
       }
-      // std::cout << "**********************  END  ***************************"
-      // << (*sifIter)->name() << __fg1->toDot() << std::endl;
 
       __fg1->manager()->moveTo( *sifIter, bestPos );
       __fg2->manager()->moveTo( *sifIter, bestPos );

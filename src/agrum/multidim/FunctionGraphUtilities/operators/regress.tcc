@@ -139,15 +139,13 @@ namespace gum {
   }
 
 
-  /* *****************************************************************************************************************************
-   */
+  /* ***************************************************************************************************************************** */
   /* __establishVarOrder */
   /*                                                                                                                               */
   /* This function computes an efficient order for the final decision diagrams.
    * Its main criterion to do so is the number of       */
   /* re-exploration to be done */
-  /* *****************************************************************************************************************************
-   */
+  /* ***************************************************************************************************************************** */
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
@@ -207,16 +205,16 @@ namespace gum {
 
       // Test : if chosing first order var cost less in terms or re exploration,
       // we chose it
-      //        if( __distance( __DG1, *fite, *site) < __distance( __DG2, *site,
-      //        *fite) ){
-      //          __rd->add( **fite );
-      //          ++fite;
-      //          continue;
-      //        } else {
-      //          __rd->add( **site );
-      //          ++site;
-      //          continue;
-      //        }
+      if( __distance( __DG1, *fite, *site) < __distance( __DG2, *site,
+      *fite) ){
+        __rd->add( **fite );
+        ++fite;
+        continue;
+      } else {
+        __rd->add( **site );
+        ++site;
+        continue;
+      }
       __rd->add( **fite );
       ++fite;
     }
@@ -443,8 +441,6 @@ namespace gum {
     // First we ensure that we hadn't already visit this pair of node under hte
     // same circumstances
 
-    //      short int* dg1NeededVar = __DG1InstantiationNeeded[
-    //      currentSituation.DG1Node() ];
     short int* dg1NeededVar =
         __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )
             ? __DG1InstantiationNeeded[currentSituation.DG1Node()]
@@ -454,8 +450,6 @@ namespace gum {
             ? __nbVar
             : __rd->variablesSequence().pos(
                   __DG1->node( currentSituation.DG1Node() )->nodeVar() );
-    //      short int* dg2NeededVar = __DG2InstantiationNeeded[
-    //      currentSituation.DG2Node() ];
     short int* dg2NeededVar =
         __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )
             ? __DG2InstantiationNeeded[currentSituation.DG2Node()]

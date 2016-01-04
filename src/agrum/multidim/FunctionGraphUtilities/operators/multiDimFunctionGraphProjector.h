@@ -79,11 +79,6 @@ namespace gum {
     // ============================================================================
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* project();
 
-    //      void __maker(Set<const DiscreteVariable*> remainingVar,
-    //      Sequence<const DiscreteVariable*> seq, std::string tab);
-    //      MultiDimFunctionGraph<GUM_SCALAR>* __project(Sequence<const
-    //      DiscreteVariable*> seq);
-
     /// @}
 
 

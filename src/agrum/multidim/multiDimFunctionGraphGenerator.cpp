@@ -45,9 +45,7 @@ namespace gum {
   // ==========================================================================
   MultiDimFunctionGraphGenerator::MultiDimFunctionGraphGenerator(
       Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable*>& varSeq )
-      : __minNbVarInDiagram( minVar )
-      , __maxNbVarInDiagram( maxVar )
-      , __varSeq( varSeq ) {
+      : __varSeq( varSeq ) {
 
     GUM_CONSTRUCTOR( MultiDimFunctionGraphGenerator );
 
@@ -79,25 +77,13 @@ namespace gum {
     HashTable<NodeId, Idx> node2MinVar;
     Idx nbIter = 0;
 
-    //        while ( ( generatedFunctionGraph->variablesSequence().size() <
-    //        __minNbVarInDiagram ) || (
-    //        generatedFunctionGraph->variablesSequence().size() >
-    //        __maxNbVarInDiagram ) ) {
-
     std::vector<NodeId> filo;
 
-    // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe
-    // isomorphe
-    //            generatedFunctionGraph->add( *(__varSeq.atPos(0)));
     generatedFunctionGraph->manager()->setRootNode(
         generatedFunctionGraph->manager()->addInternalNode(
             __varSeq.atPos( 0 ) ) );
     node2MinVar.insert( generatedFunctionGraph->root(), 0 );
     filo.push_back( generatedFunctionGraph->root() );
-
-
-    //            std::default_random_engine generator;
-    //            int rutidi = 0;
 
     while ( !filo.empty() ) {  //&& nbIter < 20 ){
 

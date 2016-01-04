@@ -98,30 +98,8 @@ namespace gum {
   // Default Destructor.
   // ================================================================
   O4DGContext::~O4DGContext() {
-
     GUM_DESTRUCTOR( O4DGContext );
-    //        MultiDimFunctionGraph::soa.deallocate( __varInstantiation,
-    //        __nbVar*sizeof(Idx) );
   }
-
-
-  //  //
-
-  //  std::string
-  //  O4DGContext::toString() const {
-  //    std::stringstream ret;
-  //    ret << " DG1 Current Node : " << __DG1ExploredNode << " - Log " <<
-  //    __DG1PrimeLog << " | DG2 Current Node : " << __DG2ExploredNode << " -
-  //    Log " << __DG2PrimeLog  << " | ";
-
-  //    for ( SequenceIterator<const DiscreteVariable*> varIter =
-  //    __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
-  //      ret << "\t Variable retrograde : " << ( *varIter )->name() << " ->
-  //      Current Modality : " << __retrogradeVarInstantiation[ __varSeq.pos(
-  //      *varIter ) ] << " | ";
-
-  //    return ret.str();
-  //  }
 }
 
 

@@ -100,7 +100,7 @@ namespace gum {
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE MultiDimFunctionGraph<GUM_SCALAR,
                                TerminalNodePolicy>::~MultiDimFunctionGraph() {
-    // Destruction du manager
+    // Manager deletion
     GUM_DESTRUCTOR( MultiDimFunctionGraph );
     if ( __manager != nullptr ) delete __manager;
     this->clear();
@@ -380,7 +380,7 @@ namespace gum {
 
     this->clear();
 
-    // Insertion des nouvelles variables
+    // New variables insertion
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
               src.variablesSequence().beginSafe();
           varIter != src.variablesSequence().endSafe();
@@ -400,7 +400,7 @@ namespace gum {
       lifo.push_back( src.root() );
     }
 
-    // Parcours en profondeur du diagramme source
+    // Depth-first exploration and copy
     while ( !lifo.empty() ) {
       NodeId currentSrcNodeId = lifo.back();
       lifo.pop_back();
@@ -451,7 +451,7 @@ namespace gum {
 
     this->clear();
 
-    // Insertion des nouvelles variables
+    // New variables insertion
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
               src.variablesSequence().beginSafe();
           varIter != src.variablesSequence().endSafe();
@@ -472,7 +472,7 @@ namespace gum {
       lifo.push_back( src.root() );
     }
 
-    // Parcours en profondeur du diagramme source
+    // Depth-first exploration and copy
     while ( !lifo.empty() ) {
       NodeId currentSrcNodeId = lifo.back();
       lifo.pop_back();
@@ -522,7 +522,7 @@ namespace gum {
 
     this->clear();
 
-    // Insertion des nouvelles variables
+    // New variables insertion
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
               src.variablesSequence().beginSafe();
           varIter != src.variablesSequence().endSafe();
@@ -542,7 +542,7 @@ namespace gum {
       lifo.push_back( src.root() );
     }
 
-    // Parcours en profondeur du diagramme source
+    // Depth-first exploration an copy
     while ( !lifo.empty() ) {
       NodeId currentSrcNodeId = lifo.back();
       lifo.pop_back();
@@ -585,7 +585,7 @@ namespace gum {
 
     this->clearAllTerminalNodes();
 
-    // Nettoyage des noeuds
+    // Nodes cleaning
     for ( HashTableIterator<NodeId, InternalNode*> nodeIter =
               __internalNodeMap.begin();
           nodeIter != __internalNodeMap.end();
@@ -596,7 +596,7 @@ namespace gum {
 
     __internalNodeMap.clear();
 
-    // Nettoyage des liste de noeuds par variables
+    // Cleaning the list of nodes for each variables
     for ( HashTableIterator<const DiscreteVariable*, LinkedList<NodeId>*>
               varIter = __var2NodeIdMap.begin();
           varIter != __var2NodeIdMap.end();

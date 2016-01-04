@@ -92,8 +92,6 @@ namespace gum {
     std::cout << "Root src : " << __src->root()
               << " - rd root : " << __rd->root() << std::endl
               << __rd->toDot() << std::endl;
-    //    std::cout << "VS :" << __rd->variablesSequence().toString() <<
-    //    std::endl;
 
     for ( SetIteratorSafe<const DiscreteVariable*> varIter =
               __delVars.beginSafe();
@@ -108,10 +106,6 @@ namespace gum {
       // ******************************************************************************************************
       if ( __rd->variablesSequence().exists( curVar ) )
         __rd->manager()->moveTo( curVar, __rd->variablesSequence().size() - 1 );
-
-      //      std::cout << "Variable " << curVar->name() << " déplacée" <<
-      //      std::endl;
-      //      std::cout << "rd root : " << __rd->root() << std::endl;
 
       // ******************************************************************************************************
       // 1er cas spécial : le diagramme est un un simple noeud terminal
@@ -130,9 +124,6 @@ namespace gum {
           __rd->erase( *curVar );
         continue;
       }
-      //      std::cout << "Diagramme non réduit à un noeud terminal" <<
-      //      std::endl;
-      //      std::cout << "rd root : " << __rd->root() << std::endl;
 
       // ******************************************************************************************************
       // 2ème cas spécial : la racine du diagramme est associée à la variable
@@ -155,9 +146,6 @@ namespace gum {
           __rd->erase( *curVar );
         continue;
       }
-      //      std::cout << "Variable racine : " <<
-      //      __rd->node(__rd->root())->nodeVar()->name() << " - Projection
-      //      standard." << std::endl;
 
       // ******************************************************************************************************
       // Cas général
@@ -168,12 +156,8 @@ namespace gum {
       filo.push_back( __rd->root() );
 
       while ( !filo.empty() ) {
-        //        std::cout << "New Iteration | filo : " << filo << " | Visited
-        //        Node : " << visitedNode << std::endl;
         NodeId curNodeId = filo.back();
         filo.pop_back();
-
-        //        std::cout << " Cur Node : " << curNodeId << std::endl;
 
         const InternalNode* curNode = __rd->node( curNodeId );
 
@@ -182,32 +166,16 @@ namespace gum {
 
           NodeId oldSonId = curNode->son( modality );
 
-          //          std::cout << "\tModality : " << modality << " => Son : "
-          //          << oldSonId << std::endl;
-
           if ( !visitedNode.exists( oldSonId ) ) {
-
-            //            std::cout << "\tNode non visited" << std::endl;
 
             NodeId newSonId = oldSonId;
 
             if ( !__rd->isTerminalNode( oldSonId ) ) {
 
-              //                std::cout << "\t\tNode non terminal" <<
-              //                std::endl;
-
 
               if ( __rd->node( oldSonId )->nodeVar() != curVar ) {
-
-                //                std::cout << "\t\t\tNode var not projected" <<
-                //                std::endl;
                 filo.push_back( oldSonId );
-
               } else {
-
-                //                std::cout << "\t\t\tNode var projected" <<
-                //                std::endl;
-
 
                 const InternalNode* curVarNode = __rd->node( oldSonId );
                 GUM_SCALAR newVal = __neutral;
@@ -222,16 +190,9 @@ namespace gum {
 
                 __rd->manager()->eraseNode( oldSonId, newSonId, false );
                 __rd->manager()->setSon( curNodeId, modality, newSonId );
-
-                //                std::cout << "\t\t\t" << oldSonId << " => " <<
-                //                newSonId << " - " << __rd->nodeValue(newSonId)
-                //                << std::endl;
               }
 
             } else {
-
-              //              std::cout << "\t\tNode terminal" << std::endl;
-
 
               GUM_SCALAR newVal = __neutral,
                          oldVal = __rd->nodeValue( oldSonId );
@@ -242,35 +203,21 @@ namespace gum {
 
               newSonId = __rd->manager()->addTerminalNode( newVal );
               __rd->manager()->setSon( curNodeId, modality, newSonId );
-
-              //              std::cout << "\t\t" << oldSonId << " => " <<
-              //              newSonId << " - " << __rd->nodeValue(newSonId) <<
-              //              std::endl;
             }
 
             visitedNode.insert( oldSonId, newSonId );
 
           } else {
 
-            //              std::cout << "\tNode visited" << std::endl;
-
             if ( __rd->node( curNodeId )->son( modality ) !=
                  visitedNode[oldSonId] )
               __rd->manager()->setSon(
                   curNodeId, modality, visitedNode[oldSonId] );
-
-            //            std::cout << "\t" << oldSonId << " => " <<
-            //            visitedNode[oldSonId] << std::endl;
           }
         }
       }
 
-      //      std::cout << "Projection done." << std::endl;
-
-
       if ( __rd->variablesSequence().exists( curVar ) ) __rd->erase( *curVar );
-
-      //      std::cout << "Variable removed from sequence." << std::endl;
     }
 
     std::cout << "DONE" << __rd->toDot() << std::endl;
