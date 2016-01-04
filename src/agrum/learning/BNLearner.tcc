@@ -45,6 +45,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    BNLearner<GUM_SCALAR>::BNLearner( const DatabaseVectInRAM& db )
+        : genericBNLearner( db ) {
+      GUM_CONSTRUCTOR( BNLearner );
+    }
+
+    template <typename GUM_SCALAR>
     BNLearner<GUM_SCALAR>::BNLearner(
         const std::string& filename,
         const NodeProperty<Sequence<std::string>>& modalities,

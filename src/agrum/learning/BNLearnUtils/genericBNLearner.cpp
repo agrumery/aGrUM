@@ -43,8 +43,12 @@ namespace gum {
 
   namespace learning {
 
-    genericBNLearner::Database::Database( std::string filename )
-        : __database( genericBNLearner::__readFile( filename ) )
+    genericBNLearner::Database::Database( const std::string& filename )
+        : Database( genericBNLearner::__readFile(filename ) ) {
+    }
+
+    genericBNLearner::Database::Database( const DatabaseVectInRAM& db )
+        : __database( db )
         , __generators( RowGeneratorIdentity() ) {
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
@@ -404,6 +408,11 @@ namespace gum {
       // for debugging purposes
       GUM_CONSTRUCTOR( genericBNLearner );
     }
+    genericBNLearner::genericBNLearner( const DatabaseVectInRAM& db )
+        : __score_database( db ) {
+      // for debugging purposes
+      GUM_CONSTRUCTOR( genericBNLearner );
+    }
 
     genericBNLearner::genericBNLearner(
         const std::string& filename,
@@ -571,6 +580,29 @@ namespace gum {
       }
 
       return *this;
+    }
+    
+    DatabaseVectInRAM readFile( const std::string& filename ) {
+      // get the extension of the file
+      int filename_size = filename.size();
+
+      if ( filename_size < 4 ) {
+        GUM_ERROR( FormatNotFound,
+                   "genericBNLearner could not determine the "
+                   "file type of the database" );
+      }
+
+      std::string extension = filename.substr( filename.size() - 4 );
+      std::transform(
+          extension.begin(), extension.end(), extension.begin(), ::tolower );
+
+      if ( extension == ".csv" ) {
+        return DatabaseFromCSV( filename );
+      }
+
+      GUM_ERROR(
+          OperationNotAllowed,
+          "genericBNLearner does not support yet this type of database file" );
     }
 
     DatabaseVectInRAM

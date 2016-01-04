@@ -86,6 +86,9 @@ namespace gum {
 
   namespace learning {
 
+    /// reads a file and returns a databaseVectInRam
+    DatabaseVectInRAM readFile( const std::string& filename );
+
     class BNLearnerListener;
 
     /** @class genericBNLearner
@@ -124,7 +127,8 @@ namespace gum {
         /// @{
 
         /// default constructor
-        Database( std::string filename );
+        Database( const std::string& file );
+        Database( const DatabaseVectInRAM& db );
 
         /// default constructor with defined modalities for some variables
         /**
@@ -277,7 +281,8 @@ namespace gum {
        * read the database file for the score / parameter estimation and var
        * names
        */
-      genericBNLearner( const std::string& filename );
+      genericBNLearner( const std::string& db );
+      genericBNLearner( const DatabaseVectInRAM& db );
 
       /**
        * read the database file for the score / parameter estimation and var

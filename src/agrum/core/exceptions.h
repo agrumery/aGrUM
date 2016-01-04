@@ -417,6 +417,13 @@ namespace gum {
   class PossiblyIncompatibleScoreApriori;
 
   /**
+   * @class gum::DatabaseError agrum/core/exceptions.h
+   * @extends gum::LearningError
+   * Error: An unknown error occured while accessing a database
+   */
+  class DatabaseError;
+
+  /**
    * @class gum::MissingVariableInDatabase agrum/core/exceptions.h
    * @extends gum::LearningError
    * Error: A name of variable is not found in the database.
@@ -522,6 +529,9 @@ namespace gum {
       LearningError,
       "Due to its weight, the apriori is currently compatible with the "
       "score but if you change the weight, it will become incompatible" )
+  GUM_MAKE_ERROR( DatabaseError,
+                  LearningError,
+                  "An error occured while accessing the database" )
   GUM_MAKE_ERROR( MissingVariableInDatabase,
                   LearningError,
                   "A name of variable is not found in the database" )

@@ -25,6 +25,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/learning/BNLearner.h>
+#include <agrum/learning/database/databaseFromSQL.h>
 
 #include <agrum/core/approximations/approximationSchemeListener.h>
 
@@ -94,6 +95,53 @@ namespace gum_tests {
         GUM_SHOWERROR( e );
       }
     }
+
+    // For this to work you need a datasource declared in your odbc file
+    // void test_asia_db() {
+    //   try {
+    //     auto db = gum::learning::DatabaseFromSQL(
+    //         "PostgreSQL",
+    //         "lto",
+    //         "Password2Change",
+    //         "select smoking , lung_cancer , bronchitis , visit_to_asia , "
+    //         "tuberculosis , tuberculos_or_cancer , dyspnoea , positive_xray "
+    //         "from asia;" );
+    //     gum::learning::BNLearner<float> learner( db );
+
+    //     learner.useLocalSearchWithTabuList( 100, 1 );
+    //     learner.setMaxIndegree( 10 );
+    //     learner.useScoreLog2Likelihood();
+
+    //     TS_ASSERT_THROWS( learner.useScoreBD(), gum::IncompatibleScoreApriori );
+    //     TS_GUM_ASSERT_THROWS_NOTHING( learner.useScoreBDeu() );
+    //     learner.useScoreLog2Likelihood();
+
+    //     learner.useK2( std::vector<gum::NodeId>{1, 5, 2, 6, 0, 3, 4, 7} );
+    //     learner.addMandatoryArc( "bronchitis", "lung_cancer" );
+    //     learner.useAprioriSmoothing();
+    //     learner.setAprioriWeight( 1 );
+
+    //     gum::NodeProperty<unsigned int> slice_order{
+    //         std::make_pair( gum::NodeId( 0 ), 1 ),
+    //         std::make_pair( gum::NodeId( 3 ), 0 ),
+    //         std::make_pair( gum::NodeId( 1 ), 0 )};
+
+    //     const std::vector<std::string>& names = learner.names();
+    //     TS_ASSERT( !names.empty() );
+
+    //     try {
+    //       gum::BayesNet<float> bn = learner.learnBN();
+    //       TS_ASSERT( bn.dag().arcs().size() == 9 );
+    //     } catch ( gum::Exception& e ) {
+    //       GUM_SHOWERROR( e );
+    //     }
+    //   } catch ( gum::Exception& e ) {
+    //     GUM_TRACE( e.errorType() );
+    //     GUM_TRACE( e.errorContent() );
+    //     GUM_TRACE( e.errorCallStack() );
+    //     TS_FAIL("plop");
+    //   }
+    // }
 
     void test_asia_with_user_modalities_string() {
       gum::NodeProperty<gum::Sequence<std::string>> modals;

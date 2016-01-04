@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined( gum_prm_o3prmr_COCO_PARSER_H__ )
+#if !defined(gum_prm_o3prmr_COCO_PARSER_H__)
 #define gum_prm_o3prmr_COCO_PARSER_H__
 
 #include <string>
@@ -40,7 +40,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <algorithm>
 #include <fstream>
 
-#include <dirent.h>
+#include<dirent.h>
 
 #include <agrum/PRM/o3prmr/O3prmrContext.h>
 
@@ -50,86 +50,89 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include "Scanner.h"
 
 namespace gum {
-  namespace prm {
-    namespace o3prmr {
+namespace prm {
+namespace o3prmr {
 
 
-      class Parser {
-        private:
-        enum {
-          _EOF = 0,
-          _integer = 1,
-          _float = 2,
-          _word = 3,
-          _eol = 4,
-          _package = 5,
-          _import = 6,
-          _request = 7,
-          _query = 8,
-          _unobserve = 9,
-          _engine = 10,
-          _grd_engine = 11,
-          _as = 12,
-          _default = 13,
-          _and = 14
-        };
-        int maxT;
+class Parser {
+  private:
+    	enum {
+		_EOF=0,
+		_integer=1,
+		_float=2,
+		_word=3,
+		_eol=4,
+		_package=5,
+		_import=6,
+		_request=7,
+		_query=8,
+		_unobserve=9,
+		_engine=10,
+		_grd_engine=11,
+		_as=12,
+		_default=13,
+		_and=14
+	};
+	int maxT;
 
-        Token* dummyToken;
-        int errDist;
-        int minErrDist;
+    Token* dummyToken;
+    int errDist;
+    int minErrDist;
 
-        void SynErr( int n );
-        void Get();
-        void Expect( int n );
-        bool StartOf( int s );
-        void ExpectWeak( int n, int follow );
-        bool WeakSeparator( int n, int syFol, int repFol );
+    void SynErr( int n );
+    void Get();
+    void Expect( int n );
+    bool StartOf( int s );
+    void ExpectWeak( int n, int follow );
+    bool WeakSeparator( int n, int syFol, int repFol );
 
-        ErrorsContainer __errors;
+    ErrorsContainer  __errors;
 
-        public:
-        Scanner* scanner;
+  public:
+    Scanner* scanner;
 
-        Token* t;   // last recognized token
-        Token* la;  // lookahead token
+    Token* t;     // last recognized token
+    Token* la;      // lookahead token
 
-        gum::prm::o3prmr::O3prmrContext<double>* __context;
-        gum::prm::o3prmr::O3prmrSession<double>* __currentSession;
+    gum::prm::o3prmr::O3prmrContext<double> *__context;
+gum::prm::o3prmr::O3prmrSession<double> *__currentSession;
 
-        void SemErr( std::string s ) { SemErr( widen( s ).c_str() ); }
+void SemErr(std::string s) {
+  SemErr(widen(s).c_str());
+}
 
-        void setO3prmrContext( gum::prm::o3prmr::O3prmrContext<double>* c ) {
-          __context = c;
-        }
+void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
+  __context=c;
+}
 
-        //=====================
+//=====================
 
-        Parser( Scanner* scanner );
-        ~Parser();
-        void SemErr( const wchar_t* msg );
-        void SynErr( const std::wstring& filename, int line, int col, int n );
-        void Warning( const wchar_t* msg );
-        const ErrorsContainer& errors() const;
+    Parser( Scanner* scanner );
+    ~Parser();
+    void SemErr( const wchar_t* msg );
+    void SynErr( const std::wstring& filename,int line, int col, int n );
+    void Warning( const wchar_t* msg );
+    const ErrorsContainer& errors() const;
 
-        void o3prmr();
-        void Ident( std::string& s );
-        void RequestBloc();
-        void Command();
-        void Observe();
-        void Unobserve();
-        void Query();
-        void SetEngine();
-        void SetGrdEngine();
-        void IdentArray( std::string& s );
+    	void o3prmr();
+	void Ident(std::string& s);
+	void RequestBloc();
+	void Command();
+	void Observe();
+	void Unobserve();
+	void Query();
+	void SetEngine();
+	void SetGrdEngine();
+	void IdentArray(std::string& s);
 
-        void Parse();
+    void Parse();
 
-      };  // end Parser
+}; // end Parser
 
-    }  // namespace
-  }    // namespace
-}  // namespace
+} // namespace
+} // namespace
+} // namespace
 
 
-#endif  // !defined(COCO_PARSER_H__)
+#endif // !defined(COCO_PARSER_H__)
+

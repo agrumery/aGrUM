@@ -66,6 +66,7 @@ namespace gum {
        * names
        */
       BNLearner( const std::string& filename );
+      BNLearner( const DatabaseVectInRAM& db );
 
       /**
        * @brief Read the database file for the score / parameter estimation and
