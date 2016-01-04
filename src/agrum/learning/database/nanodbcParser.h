@@ -29,6 +29,8 @@
  *
  */
 
+#ifdef _ODBC
+
 #ifndef GUM_NANODBC_H
 #define GUM_NANODBC_H
 
@@ -90,3 +92,5 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif  // GUM_NANODBC_H
+
+#endif // _ODBC

@@ -24,6 +24,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+#ifdef _ODBC
+
 #include <agrum/learning/database/databaseFromSQL.h>
 
 /// include the inlined functions if necessary
@@ -87,3 +89,5 @@ namespace gum {
   } /* namespace learning */
 
 } /* namespace gum */
+
+#endif // _ODBC

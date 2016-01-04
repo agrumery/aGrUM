@@ -22,6 +22,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+#ifdef _ODBC
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #include <agrum/learning/database/databaseFromSQL.h>
@@ -68,3 +70,5 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+#endif // _ODBC

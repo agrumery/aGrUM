@@ -1,3 +1,4 @@
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //! \file nanodbc.h The entirety of nanodbc can be found within this file and nanodbc.cpp.
 
 //! \mainpage
@@ -70,6 +71,8 @@
 //! License: Perpetual license to reproduce, distribute, adapt, perform, display, and sublicense.
 //! See http://www.codeguru.com/submission-guidelines.php for details.
 //! </div>
+
+#ifdef _ODBC // Enable Nanodbc only if an odbc driver was found
 
 #ifndef NANODBC_H
 #define NANODBC_H
@@ -1375,3 +1378,6 @@ void prepare(statement& stmt, const string_type& query, long timeout = 0);
 } // namespace nanodbc
 
 #endif // NANODBC_H
+
+#endif // _ODBC
+#endif // DOXYGEN_SHOULD_SKIP_THIS

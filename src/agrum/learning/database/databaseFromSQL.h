@@ -23,6 +23,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+#ifdef _ODBC
+
 #ifndef GUM_DATABASE_FROM_SQL_H
 #define GUM_DATABASE_FROM_SQL_H
 
@@ -119,3 +121,5 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DATABASE_FROM_SQL_H */
+
+#endif // _ODBC

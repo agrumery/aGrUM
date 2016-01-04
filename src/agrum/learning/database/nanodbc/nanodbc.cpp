@@ -1,3 +1,7 @@
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+#ifdef _ODBC
+
 //! \file nanodbc.cpp Implementation details.
 #ifndef DOXYGEN
 
@@ -3887,3 +3891,7 @@ template timestamp result::get(const string_type&, const timestamp&) const;
 #undef NANODBC_CALL
 
 #endif // DOXYGEN
+
+#endif // _ODBC
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+

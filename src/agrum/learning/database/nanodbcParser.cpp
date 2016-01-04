@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifdef _ODBC
+
 #include <agrum/learning/database/nanodbcParser.h>
 
 #include <stdexcept>
@@ -61,3 +63,5 @@ namespace gum {
   }  // namespace learning
 
 }  // namespace gum
+
+#endif // _ODBC

@@ -63,7 +63,9 @@ if(UNIX)
 	endif()
 
 	if(NOT ODBC_CONFIG)
-		message(FATAL_ERROR "can not find a suitable odbc driver manager")
+		message(WARNING "can not find a suitable odbc driver manager")
+  else()
+    add_definitions(-D_ODBC)
 	endif()
 
 	message(STATUS "ODBC compile flags: ${ODBC_CFLAGS}")
