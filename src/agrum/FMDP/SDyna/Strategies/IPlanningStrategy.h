@@ -68,7 +68,7 @@ namespace gum {
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
-    virtual void initialize( FMDP<GUM_SCALAR>* fmdp ) = 0;
+    virtual void initialize( const FMDP<GUM_SCALAR>* fmdp ) = 0;
 
     /// @}
 

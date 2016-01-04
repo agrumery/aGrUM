@@ -75,7 +75,7 @@ namespace gum {
     // ###################################################################
     /// @{
     public:
-    void checkState( const Instantiation& newState ) {
+    void checkState( const Instantiation& newState, Idx actionId = 0 ) {
       if ( !__initialized ) {
         __counter.reset( newState );
         __initialized = true;

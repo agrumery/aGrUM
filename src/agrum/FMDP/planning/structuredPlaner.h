@@ -181,7 +181,7 @@ namespace gum {
      * will surely and definitely result in a crash
      */
     // ==========================================================================
-    virtual void initialize( FMDP<GUM_SCALAR>* fmdp );
+    virtual void initialize( const FMDP<GUM_SCALAR>* fmdp );
 
 
     // ==========================================================================

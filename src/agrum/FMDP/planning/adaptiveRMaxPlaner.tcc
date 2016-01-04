@@ -99,7 +99,7 @@ namespace gum {
   // ==========================================================================
   // Initializes data structure needed for making the planning
   // ==========================================================================
-  void AdaptiveRMaxPlaner::initialize( FMDP<double>* fmdp ) {
+  void AdaptiveRMaxPlaner::initialize( const FMDP<double>* fmdp ) {
     if ( !__initialized ) {
       StructuredPlaner::initialize( fmdp );
       IDecisionStrategy::initialize( fmdp );

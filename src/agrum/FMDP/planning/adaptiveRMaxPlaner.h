@@ -118,7 +118,7 @@ namespace gum {
      * will surely and definitely result in a crash
      */
     // ==========================================================================
-    void initialize( FMDP<double>* fmdp );
+    void initialize( const FMDP<double>* fmdp );
 
 
     // ==========================================================================

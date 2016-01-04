@@ -129,9 +129,8 @@ namespace gum {
     /// Displays the number of allocation and deallocation made so far
     // ============================================================================
     void displayStats() {
-      std::cout << "Nb Small Allocation : " << nbAllocation
-                << " -  Nb Small Deallocation : " << nbDeallocation
-                << std::endl;
+      GUM_TRACE("Nb Small Allocation : " << nbAllocation
+                << " -  Nb Small Deallocation : " << nbDeallocation);
     }
 
     Idx nbAlloc() { return nbAllocation; }

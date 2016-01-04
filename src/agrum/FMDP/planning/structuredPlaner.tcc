@@ -230,7 +230,7 @@ namespace gum {
   // Initializes data structure needed for making the planning
   // ===========================================================================
   template <typename GUM_SCALAR>
-  void StructuredPlaner<GUM_SCALAR>::initialize( FMDP<GUM_SCALAR>* fmdp ) {
+  void StructuredPlaner<GUM_SCALAR>::initialize( const FMDP<GUM_SCALAR>* fmdp ) {
 
     _fmdp = fmdp;
 

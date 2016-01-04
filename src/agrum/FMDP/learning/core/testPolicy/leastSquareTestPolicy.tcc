@@ -51,7 +51,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void LeastSquareTestPolicy<GUM_SCALAR>::addObservation( Idx attr,
                                                           GUM_SCALAR value ) {
-    ITestPolicy<GUM_SCALAR>::addObservation();
+    ITestPolicy<GUM_SCALAR>::addObservation(attr, value);
     __sumO += value;
 
     if ( __sumAttrTable.exists( attr ) )
@@ -78,7 +78,7 @@ namespace gum {
   // Computes the GStat of current variable according to the test
   // ============================================================================
   template <typename GUM_SCALAR>
-  void LeastSquareTestPolicy<GUM_SCALAR>::computeScore() {
+  void LeastSquareTestPolicy<GUM_SCALAR>::computeScore() const {
     ITestPolicy<GUM_SCALAR>::computeScore();
     double mean = __sumO / (double)this->nbObservation();
     double errorO = 0.0;
@@ -108,8 +108,8 @@ namespace gum {
   // Returns the performance of current variable according to the test
   // ============================================================================
   template <typename GUM_SCALAR>
-  double LeastSquareTestPolicy<GUM_SCALAR>::score() {
-    if ( this->isModified() ) computeScore();
+  double LeastSquareTestPolicy<GUM_SCALAR>::score() const {
+    if ( this->_isModified() ) computeScore();
     return __score;
   }
 
@@ -117,8 +117,8 @@ namespace gum {
   // Returns a second criterion to severe ties
   // ============================================================================
   template <typename GUM_SCALAR>
-  double LeastSquareTestPolicy<GUM_SCALAR>::secondaryscore() {
-    if ( this->isModified() ) computeScore();
+  double LeastSquareTestPolicy<GUM_SCALAR>::secondaryscore() const {
+    if ( this->_isModified() ) computeScore();
     return __score;
   }
 
@@ -148,10 +148,10 @@ namespace gum {
           ++obsIter ) {
       if ( !__obsTable.exists( obsIter.key() ) )
         __obsTable.insert( obsIter.key(), new LinkedList<double>() );
-      const Link<double> srcLink = obsIter.val()->link();
+      const Link<double>* srcLink = obsIter.val()->list();
       while ( srcLink ) {
-        __obsTable[obsIter.key()]->addLink( srcLink.element() );
-        srcLink = srcLink.nextLink();
+        __obsTable[obsIter.key()]->addLink( srcLink->element() );
+        srcLink = srcLink->nextLink();
       }
     }
   }

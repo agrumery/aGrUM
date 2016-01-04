@@ -56,7 +56,7 @@ namespace gum {
     /// @{
 
     // ============================================================================
-    /// Allocators and Deallocators redefinition
+    /// Constructor
     // ============================================================================
     GTestPolicy()
         : ITestPolicy<GUM_SCALAR>()
@@ -66,7 +66,7 @@ namespace gum {
     }
 
     // ============================================================================
-    /// Allocators and Deallocators redefinition
+    /// Destructor
     // ============================================================================
     virtual ~GTestPolicy() { GUM_DESTRUCTOR( GTestPolicy ) }
 
@@ -134,12 +134,12 @@ namespace gum {
     /// @{
 
     // ============================================================================
-    /// Returns the performance of current variable according to the test
+    /// Performs the merging of current GTestPolicy instance with given instance
     // ============================================================================
     void add( const GTestPolicy<GUM_SCALAR>& src );
 
     // ============================================================================
-    ///
+    /// Returns contingency table (needed for the merging of GTestPolicy instances)
     // ============================================================================
     const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const {
       return __conTab;
@@ -177,18 +177,3 @@ namespace gum {
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.tcc>
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H */
-
-
-// ############################################################################
-/// @name Cache methods and attributes
-// ############################################################################
-/// @{
-
-//        static HashTable<std::tuple<Idx,Idx,Idx>, double> __logCache;
-//        static Idx nbLog;
-//        static Idx nbLogt;
-//        static double __logEval(std::tuple<Idx,Idx,Idx> values);
-
-//        static bool
-
-/// @}

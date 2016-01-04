@@ -49,6 +49,14 @@ namespace gum {
   class LeastSquareTestPolicy : public ITestPolicy<GUM_SCALAR> {
 
     public:
+    // ############################################################################
+    /// @name Constructor/Destrcutor
+    // ############################################################################
+    /// @{
+
+    // ============================================================================
+    /// Constructor
+    // ============================================================================
     LeastSquareTestPolicy()
         : ITestPolicy<GUM_SCALAR>()
         , __sumO( 0.0 )
@@ -56,15 +64,25 @@ namespace gum {
       GUM_CONSTRUCTOR( LeastSquareTestPolicy )
     }
 
+    // ============================================================================
+    /// Allocators and Deallocators redefinition
+    // ============================================================================
+    void* operator new( size_t s ) {
+      return SmallObjectAllocator::instance().allocate( s );
+    }
+    void operator delete( void* p ) {
+      SmallObjectAllocator::instance().deallocate( p, sizeof( LeastSquareTestPolicy ) );
+    }
+
+    // ============================================================================
+    /// Destructor
+    // ============================================================================
     virtual ~LeastSquareTestPolicy();
 
     // ############################################################################
     /// @name Observation insertion
     // ############################################################################
     /// @{
-
-    //      HashTable<Idx,Idx> __nbObsTable;
-    //      HashTable<Idx,LinkedList<double>*> __obsTable;
 
     // ============================================================================
     /// Comptabilizes the new observation
@@ -83,7 +101,7 @@ namespace gum {
     /// Returns true if enough observation were made so that the test can be
     /// relevant
     // ============================================================================
-    bool isTestRelevant() { return ( this->nbObservation() > 20 ); }
+    bool isTestRelevant() const { return ( this->nbObservation() > 20 ); }
 
     /// @}
 
@@ -96,38 +114,69 @@ namespace gum {
     // ============================================================================
     /// Returns the performance of current variable according to the test
     // ============================================================================
-    void computeScore();
+    void computeScore() const;
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
     // ============================================================================
-    double score();
+    double score() const;
 
     // ============================================================================
     /// Returns a second criterion to severe ties
     // ============================================================================
-    virtual double secondaryscore();
+    double secondaryscore() const;
 
     /// @}
 
+
+    // ############################################################################
+    /// @name Fusion Methods
+    // ############################################################################
+    /// @{
+
+    // ============================================================================
+    /// Performs the merging of current LeastSquareTestPolicy instance with
+    /// given instance
+    // ============================================================================
     void add( const LeastSquareTestPolicy<GUM_SCALAR>& src );
 
+
+    // ============================================================================
+    /// Returns global sum (needed for the merging)
+    // ============================================================================
     double sumValue() const { return __sumO; }
 
+    // ============================================================================
+    /// Returns nbobs per modality table (needed for the merging)
+    // ============================================================================
     const HashTable<Idx, Idx>& nbObsTable() const { return __nbObsTable; }
-    const HashTable<Idx, double> sumAttrTable() const { return __sumAttrTable; }
-    const HashTable<Idx, LinkedList<double>*> obsTable() const {
+
+    // ============================================================================
+    /// Returns sum per modality table (needed for the merging)
+    // ============================================================================
+    const HashTable<Idx, double>& sumAttrTable() const { return __sumAttrTable; }
+
+    // ============================================================================
+    /// Returns global sum (needed for the merging)
+    // ============================================================================
+    const HashTable<Idx, LinkedList<double>*>& obsTable() const {
       return __obsTable;
     }
 
     private:
-    ///
+    /// Global sum
     double __sumO;
 
+    /// Nb Observation for each modality assumed by variable
     HashTable<Idx, Idx> __nbObsTable;
+
+    /// Sum for each modality assumed by variable
     HashTable<Idx, double> __sumAttrTable;
+
+    /// Not sure if needed
     HashTable<Idx, LinkedList<double>*> __obsTable;
 
+    /// Keeping computed score
     double __score;
   };
 
