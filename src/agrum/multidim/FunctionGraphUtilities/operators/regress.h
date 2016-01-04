@@ -95,15 +95,6 @@ namespace gum {
     void __establishVarOrder();
 
     // ============================================================================
-    /// Heuristic methods to decide which of two retrograde variables should
-    /// come first
-    // ============================================================================
-    Idx
-    __distance( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*,
-                const DiscreteVariable*,
-                const DiscreteVariable* );
-
-    // ============================================================================
     /// Establish for each node in both function graph if it has retrograde
     /// variables
     /// beneath it

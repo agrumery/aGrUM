@@ -37,7 +37,6 @@ namespace gum {
   INLINE void
   FixedAllocator::__Chunk::__init( const std::size_t& blockSize,
                                    const unsigned char& numBlocks ) {
-    //      GUM_CONSTRUCTOR(__Chunk);
 
     // Chunk memory space allocation. A chunk allocates a memory of blockSize *
     // numBlocks size.
@@ -70,9 +69,6 @@ namespace gum {
       // If no block is available return nullptr
       return NULL;
 
-    //    std::cout << "Déb Alloc : " << (int)__blocksAvailable << " - " <<
-    //    (int)__firstAvailableBlock << " - " << (void*)__pData << std::endl;
-
     // __pData points to the beginning of allocated space.
     // __firstAvailableBlock gives us how many block to pass before getting
     // the good one. We have to multiply by blockSize to get the good memory
@@ -88,9 +84,6 @@ namespace gum {
     // We lose one block
     --__blocksAvailable;
 
-    //    std::cout << "Fin Alloc : " << (int)__blocksAvailable << " - " <<
-    //    (int)__firstAvailableBlock << " - " << (void*)__pData << std::endl;
-
     return pResult;
   }
 
@@ -100,9 +93,6 @@ namespace gum {
   INLINE void
   FixedAllocator::__Chunk::__deallocate( void* pDeallocatedBlock,
                                          const std::size_t& blockSize ) {
-
-    //    std::cout << "Déb Déalloc : " << (int)__blocksAvailable << " - " <<
-    //    (int)__firstAvailableBlock << " - " << (void*)__pData << std::endl;
 
     // first, ensure that deallocated is in this chunk
     assert( pDeallocatedBlock >= __pData );
@@ -126,9 +116,6 @@ namespace gum {
 
     // We gain one block, yeah
     ++__blocksAvailable;
-
-    //    std::cout << "Fin Déalloc : " << (int)__blocksAvailable << " - " <<
-    //    (int)__firstAvailableBlock << " - " << (void*)__pData << std::endl;
   }
 
   // ============================================================================
@@ -136,7 +123,6 @@ namespace gum {
   // ============================================================================
   INLINE void FixedAllocator::__Chunk::__release() {
     delete[] __pData;
-    //      GUM_DESTRUCTOR(__Chunk);
   }
 
 
@@ -149,7 +135,7 @@ namespace gum {
   // ============================================================================
   INLINE FixedAllocator::FixedAllocator( const std::size_t& blockSize,
                                          const unsigned char& numBlocks ) {
-    //        GUM_CONSTRUCTOR(FixedAllocator)
+//    GUM_CONSTRUCTOR(FixedAllocator)
     __blockSize = blockSize;
     __numBlocks = numBlocks;
     __allocChunk = __chunks.begin();
@@ -164,7 +150,7 @@ namespace gum {
           chunkIter != __chunks.end();
           ++chunkIter )
       chunkIter->__release();
-    //        GUM_DESTRUCTOR(FixedAllocator)
+//    GUM_DESTRUCTOR(FixedAllocator)
   }
 
   // ############################################################################
@@ -175,8 +161,6 @@ namespace gum {
   // Allocates a block
   // ============================================================================
   INLINE void* FixedAllocator::allocate() {
-
-    std::lock_guard<std::mutex> guardian( __allocMutex );
 
     if ( __chunks.empty() || __allocChunk->__blocksAvailable == 0 ) {
       // no available memory in this chunk
@@ -200,9 +184,6 @@ namespace gum {
         }
       }
     }
-
-    //      std::cout << "Allocateur choisi : " << (void*)__allocChunk->__pData
-    //      << std::endl;
     return __allocChunk->__allocate( __blockSize );
   }
 
@@ -210,8 +191,6 @@ namespace gum {
   // Deallocates a block
   // ============================================================================
   INLINE void FixedAllocator::deallocate( void* pDeallocatedBlock ) {
-
-    std::lock_guard<std::mutex> guardian( __allocMutex );
 
     if ( __deallocChunk->__pData > pDeallocatedBlock ||
          pDeallocatedBlock >

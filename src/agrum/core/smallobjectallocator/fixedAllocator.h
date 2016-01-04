@@ -185,7 +185,6 @@ namespace gum {
     // ============================================================================
     __Chunks::iterator __deallocChunk;
 
-    std::mutex __allocMutex;
   };
 
 }  // namespace gum

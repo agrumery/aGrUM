@@ -78,22 +78,19 @@ namespace gum {
   Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::
       ~Regress() {
 
+    GUM_DESTRUCTOR( Regress );
 
     for ( auto instIter = __DG1InstantiationNeeded.beginSafe();
           instIter != __DG1InstantiationNeeded.endSafe();
           ++instIter )
-      //        if( instIter.val() != __default)
       DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
 
     for ( auto instIter = __DG2InstantiationNeeded.beginSafe();
           instIter != __DG2InstantiationNeeded.endSafe();
           ++instIter )
-      //        if( instIter.val() != __default)
       DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
 
     if ( __nbVar != 0 ) DEALLOCATE( __default, sizeof( short int ) * __nbVar );
-
-    GUM_DESTRUCTOR( Regress );
   }
 
 
@@ -205,16 +202,6 @@ namespace gum {
 
       // Test : if chosing first order var cost less in terms or re exploration,
       // we chose it
-      if( __distance( __DG1, *fite, *site) < __distance( __DG2, *site,
-      *fite) ){
-        __rd->add( **fite );
-        ++fite;
-        continue;
-      } else {
-        __rd->add( **site );
-        ++site;
-        continue;
-      }
       __rd->add( **fite );
       ++fite;
     }
@@ -242,39 +229,6 @@ namespace gum {
       for ( Idx i = 0; i < __nbVar; i++ )
         __default[i] = (short int)0;
     }
-  }
-
-
-  /* *****************************************************************************************************************************
-   */
-  /* __distance */
-  /*                                                                                                                               */
-  /* This function computes the number of re-exploration needed whenever to
-   * retrograde variables collides                          */
-  /* *****************************************************************************************************************************
-   */
-  template <typename GUM_SCALAR,
-            template <typename> class COMBINEOPERATOR,
-            template <typename> class PROJECTOPERATOR,
-            template <typename> class TerminalNodePolicy>
-  Idx Regress<GUM_SCALAR,
-              COMBINEOPERATOR,
-              PROJECTOPERATOR,
-              TerminalNodePolicy>::
-      __distance(
-          const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* d,
-          const DiscreteVariable* from,
-          const DiscreteVariable* to ) {
-
-    Idx posi = d->variablesSequence().pos( from );
-    Idx dist = 1;
-
-    while ( d->variablesSequence().atPos( posi ) != to ) {
-      dist *= ( *( d->variablesSequence().atPos( posi ) ) ).domainSize();
-      posi++;
-    }
-
-    return dist;
   }
 
 
@@ -364,12 +318,6 @@ namespace gum {
         nodeIter = nodeIter->nextLink();
       }
     }
-
-    //      dg->beginValues();
-    //      while( dg->hasValue() ){
-    //        dgInstNeed.insert( dg->id(), __default );
-    //        dg->nextValue();
-    //      }
 
     for ( HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin();
           it != nodesVarDescendant.end();

@@ -51,7 +51,7 @@ namespace gum {
       : __chunkSize( GUM_DEFAULT_CHUNK_SIZE )
       , __maxObjectSize( GUM_DEFAULT_MAX_OBJECT_SIZE ) {
     __pool.setKeyUniquenessPolicy( false );
-    //      GUM_CONSTRUCTOR(SmallObjectAllocator);
+    GUM_CONSTRUCTOR(SmallObjectAllocator);
     nbAllocation = 0;
     nbDeallocation = 0;
   }
@@ -60,7 +60,7 @@ namespace gum {
   // Destructor.
   // ============================================================================
   INLINE SmallObjectAllocator::~SmallObjectAllocator() {
-    //      GUM_DESTRUCTOR(SmallObjectAllocator)
+    GUM_DESTRUCTOR(SmallObjectAllocator)
 
     GUM_TRACE( "SMALL OBJECT ALLOCATOR STATS : Nb Alloc = "
                << nbAllocation
