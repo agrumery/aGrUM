@@ -70,17 +70,17 @@ namespace gum_tests {
     public:
     void testPlanningCoffee() {
       file = GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" );
-      run();
+      // run();
     }
 
     void testPlanningTinyFactory() {
       file = GET_RESSOURCES_PATH( "FMDP/factory/tiny-factory.dat" );
-      run();
+      // run();
     }
 
     void testPlanningTaxi() {
       file = GET_RESSOURCES_PATH( "FMDP/taxi/taxi.dat" );
-      run();
+      // run();
     }
   };
 }
