@@ -61,6 +61,7 @@ if(UNIX)
 	if(NOT ODBC_CONFIG)
 		message(WARNING "Can not find a suitable odbc driver manager: nanodbc will not be enable")
   else()
+		message(WARNING "Found a suitable ODBC driver manager")
     add_definitions(-D_ODBC)
 	endif()
 
