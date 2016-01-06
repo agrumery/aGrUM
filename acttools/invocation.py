@@ -22,38 +22,48 @@
 #***************************************************************************
 from .configuration import cfg
 
-def _getParam(name):
-  return cfg.C_END+'--'+cfg.C_ERROR+name
+def _getParam(name,c_error,c_end):
+  return c_end+'--'+c_error+name
 
-def getParam(name):
-  return _getParam(name)+" "
+def getParam(name,c_error,c_end):
+  return _getParam(name,c_error,c_end)+" "
 
-def getValParam(name,val):
-  return _getParam(name)+cfg.C_END+'='+cfg.C_VALUE+str(val)+" "
+def getValParam(name,val,c_value,c_error,c_end):
+  return _getParam(name,c_error,c_end)+c_end+'='+c_value+str(val)+" "
 
-def getCommand(name):
-  return cfg.C_WARNING+name+" "
+def getCommand(name,c_warning):
+  return c_warning+name+" "
 
 def showInvocation(current,forced=False):
   if forced or not current['no_fun']:
-    invocation=cfg.C_WARNING+"invocation"+cfg.C_END+" : "+"act "
-
-    invocation+=getCommand(current['action'])
-
-    if current['action'] not in cfg.specialActions:
-      invocation+=getCommand("+".join(current['targets']))
-      invocation+=getCommand(current['mode'])
-
-
-      for opt in current.keys():
-        if not opt in ['action','mode','targets']:
-          if not opt in cfg.non_persistent:
-            invocation+=getValParam(opt,current[opt])
-
-      for opt in cfg.non_persistent:
-        if current[opt]:
-          invocation+=getParam(opt)
-
-    invocation+=cfg.C_END
-    print(invocation)
+    invocation=getInvocation(current,True)
+    print(cfg.C_WARNING+"invocation"+cfg.C_END+" : "+invocation)
     print("")
+
+
+def getInvocation(current,colored=False):
+  if colored:
+    c_warning,c_error,c_value,c_end=cfg.C_WARNING,cfg.C_ERROR,cfg.C_VALUE,cfg.C_END
+  else:
+    c_warning=c_error=c_value=c_end=''
+
+  invocation="act "
+
+  invocation+=getCommand(current['action'],c_warning)
+
+  if current['action'] not in cfg.specialActions:
+    invocation+=getCommand("+".join(current['targets']),c_warning)
+    invocation+=getCommand(current['mode'],c_warning)
+
+
+  for opt in current.keys():
+    if not opt in ['action','mode','targets']:
+      if not opt in cfg.non_persistent:
+        invocation+=getValParam(opt,current[opt],c_value,c_error,c_end)
+
+  for opt in cfg.non_persistent:
+    if current[opt]:
+      invocation+=getParam(opt,c_error,c_end)
+
+  invocation+=c_end
+  return invocation
