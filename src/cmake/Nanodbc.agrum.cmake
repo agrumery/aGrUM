@@ -59,9 +59,9 @@ if(UNIX)
 	endif()
 
 	if(NOT ODBC_CONFIG)
-		message(WARNING "Can not find a suitable odbc driver manager: nanodbc will not be enable")
+    message(STATUS "** aGrUM Notification: Can not find a suitable ODBC driver manager ")
   else()
-		message(WARNING "Found a suitable ODBC driver manager")
+    message(STATUS "** aGrUM Notification: Found a suitable ODBC driver manager ")
     add_definitions(-D_ODBC)
 	endif()
 
