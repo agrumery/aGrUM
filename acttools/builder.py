@@ -119,10 +119,12 @@ def getPost(current,target):
       else:
         line+=cfg.python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
       return line,False
+  return "",False
 
 def buildPost(current,target):
   line,checkRC=getPost(current,target)
-  execFromLine(current,line,checkRC)
+  if line!="":
+    execFromLine(current,line,checkRC)
 
 def execFromLine(current,line,checkRC=True):
   trace(current,line)
