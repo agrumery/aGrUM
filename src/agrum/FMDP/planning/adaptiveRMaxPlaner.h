@@ -38,7 +38,7 @@
 namespace gum {
 
   /**
-   * @class AdaptiveRMaxPlaner AdaptiveRMaxPlaner.h
+   * @class AdaptiveRMaxPlaner adaptiveRMaxPlaner.h
    * <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group

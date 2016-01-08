@@ -455,7 +455,7 @@ namespace gum {
     * then 0 is assumed for dimensions (i.e. variables) not prensent in the
     * instantiation.
     *
-    * @param i The instantiation used to find the data.
+    * @param inst The instantiation used to find the data.
     */
     // ============================================================================
     GUM_SCALAR& _get(const Instantiation& inst) const {

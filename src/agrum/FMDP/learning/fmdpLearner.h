@@ -42,7 +42,7 @@
 namespace gum {
 
   /**
-   * @class FMDPLearner FMDPLearner.h <agrum/FMDP/learning/FMDPLearner.h>
+   * @class FMDPLearner fmdpLearner.h <agrum/FMDP/learning/fmdpLearner.h>
    * @brief
    * @ingroup fmdp_group
    *

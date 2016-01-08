@@ -41,7 +41,7 @@
 namespace gum {
 
   /**
-   * @class FMDPFactory FMDPFactory.h <agrum/FMDP/FMDPFactory.h>
+   * @class FMDPFactory fmdpFactory.h <agrum/FMDP/fmdpFactory.h>
    * @brief A factory class to ease Factored Markov Decision Process
    * construction.
    * @ingroup fmdp_group

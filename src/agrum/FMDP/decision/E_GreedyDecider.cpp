@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the class.
+ * @brief Sources of the class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -34,7 +34,7 @@
 namespace gum {
 
   // ==========================================================================
-  /// @name Constructor & destructor.
+  // Constructor & destructor.
   // ==========================================================================
 
   // ###################################################################
@@ -59,7 +59,7 @@ namespace gum {
 
 
   // ==========================================================================
-  /// @name Initialization
+  // Initialization
   // ==========================================================================
 
   // ###################################################################
@@ -77,11 +77,11 @@ namespace gum {
 
 
   // ==========================================================================
-  /// @name Incremental methods
+  // Incremental methods
   // ==========================================================================
 
   // ###################################################################
-  /**
+  /*
    * Performs a feedback on the last transition.
    * In extenso, learn from the transition.
    * @param reachedState : the state reached after the transition
@@ -96,7 +96,7 @@ namespace gum {
   }
 
   // ###################################################################
-  /**
+  /*
    * @param the state in which we currently are
    * @return a set containing every optimal actions on that state
    */

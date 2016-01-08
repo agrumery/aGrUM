@@ -18,7 +18,7 @@
  *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                *
  ****************************************************************************/
 /**
-* @file  Headers for O4DGContext
+* @file
 * @brief Class used to manipulate o4DGContext in Function Graph Operations
 *
 * @author Pierre-Henri WUILLEMIN & Jean-Christophe Magnan

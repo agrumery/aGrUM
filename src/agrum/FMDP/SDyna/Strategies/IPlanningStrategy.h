@@ -81,11 +81,11 @@ namespace gum {
     // ==========================================================================
     /**
      * Starts a new planning
-     * @param Idx : the maximal number of value iteration performed in this
+     * @param nbIte : the maximal number of value iteration performed in this
      * planning
      */
     // ==========================================================================
-    virtual void makePlanning( Idx ) = 0;
+    virtual void makePlanning( Idx nbIte ) = 0;
 
     // ==========================================================================
     /// Returns optimalPolicy computed so far current size

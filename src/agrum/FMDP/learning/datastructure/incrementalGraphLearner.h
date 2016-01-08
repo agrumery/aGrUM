@@ -121,14 +121,15 @@ namespace gum {
     // ==========================================================================
     /**
      * Inserts a new observation
-     * @param the new observation to learn
      */
     // ==========================================================================
-    virtual void addObservation( const Observation* );
+    virtual void addObservation( const Observation* obs );
 
     private:
     // ==========================================================================
-    /// To be deprecated
+    /**
+     * Get value assumed by studied variable for current observation
+     */
     // ==========================================================================
     void __assumeValue( const Observation* obs ) {
       __assumeValue( obs, Int2Type<isScalar>() );
@@ -144,7 +145,9 @@ namespace gum {
 
 
     // ==========================================================================
-    /// To be deprecated
+    /**
+     * Seek modality assumed in obs for given var
+     */
     // ==========================================================================
     Idx __branchObs( const Observation* obs, const DiscreteVariable* var ) {
       return __branchObs( obs, var, Int2Type<isScalar>() );
@@ -203,7 +206,7 @@ namespace gum {
      * that
      * set first.
      * @param nody : the node we update
-     * @param bestVar : the set of interessting vars to be installed here
+     * @param bestVars : the set of interessting vars to be installed here
      */
     // ==========================================================================
     void _updateNode( NodeId nody, Set<const DiscreteVariable*>& bestVars );

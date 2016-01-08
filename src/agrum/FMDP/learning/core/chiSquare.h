@@ -36,8 +36,8 @@
 namespace gum {
 
   /**
-   * @class ChiSquare ChiSquare.h
-   * <agrum/FMDP/learning/FunctionGraph/chiSquare.h>
+   * @class ChiSquare chiSquare.h
+   * <agrum/FMDP/learning/core/testPolicy/chiSquare.h>
    * @brief
    * @ingroup fmdp_group
    *

@@ -69,7 +69,7 @@ namespace gum {
     FillUp = 7
   };
   /**
-   * @class Taxi taxi.h <agrum/FMDP/simulation/taxi.h>
+   * @class Taxi taxiSimulator.h <agrum/FMDP/simulation/taxiSimulator.h>
    * @brief A class to simulate the Taxi problem
    * @ingroup fmdp_group
    *

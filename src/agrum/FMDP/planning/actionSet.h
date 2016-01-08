@@ -44,7 +44,7 @@
 namespace gum {
 
   /**
-   * @struct ArgumentMaximisesAction spumdd.h <agrum/FMDP/planning/spumdd.h>
+   * @struct ArgumentMaximisesAction actionSet.h <agrum/FMDP/planning/actionSet.h>
    * @brief Argument Maximization function object class
    * @ingroup core
    *
