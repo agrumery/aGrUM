@@ -17,10 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <sstream>
-#include <agrum/multidim/multiDimAdressable.h>
+/**
+ * @file
+ * @brief Implementation of gum::Instantiation.
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/instantiation.h>
 
 namespace gum {
 
@@ -37,8 +42,7 @@ namespace gum {
     if ( master ) actAsSlave( master->getMasterRef() );
   }
 
-  /// constructor for a Instantiation contained into a MultiDimInterface
-
+  // constructor for a Instantiation contained into a MultiDimInterface
   Instantiation::Instantiation( MultiDimAdressable& d )
       : __master( 0 )
       , __overflow( false ) {
@@ -55,8 +59,7 @@ namespace gum {
     __init( const_cast<MultiDimAdressable*>( &d ) );
   }
 
-  /// constructor for a Instantiation contained into a MultiDimInterface
-
+  // constructor for a Instantiation contained into a MultiDimInterface
   Instantiation::Instantiation( MultiDimAdressable* d )
       : __master( 0 )
       , __overflow( false ) {
@@ -66,11 +69,9 @@ namespace gum {
     if ( d ) __init( d );
   }
 
-  /// constructor for a Instantiation contained into a MultiDimInterface
-  /** this constructor is needed in order to allow creation of
-   * Instantiation(this)
-   * in MultiDimAdressable and below */
-
+  // constructor for a Instantiation contained into a MultiDimInterface this
+  // constructor is needed in order to allow creation of Instantiation(this) in
+  // MultiDimAdressable and below
   Instantiation::Instantiation( const MultiDimAdressable* const_d )
       : __master( 0 )
       , __overflow( false ) {
@@ -80,8 +81,7 @@ namespace gum {
     if ( const_d ) __init( const_cast<MultiDimAdressable*>( const_d ) );
   }
 
-  /// copy constructor
-
+  // copy constructor
   Instantiation::Instantiation( const Instantiation& aI,
                                 const bool notifyMaster )
       : MultiDimInterface()
@@ -126,7 +126,7 @@ namespace gum {
     return *this;
   }
 
-  /// Gives a string version of a Instantiation
+  // Gives a string version of a Instantiation
   std::string Instantiation::toString() const {
     std::stringstream sstr;
     // check if the value of the instantiation is correct
@@ -151,7 +151,7 @@ namespace gum {
     return sstr.str();
   }
 
-  /// give a Id value for Hamming distance
+  // give a Id value for Hamming distance
   Idx Instantiation::hamming() const {
     Idx res = 0;
 
@@ -184,8 +184,7 @@ namespace gum {
     }
   }
 
-  /// an operator for user-friendly displaying the content of a Instantiation
-
+  // an operator for user-friendly displaying the content of a Instantiation
   std::ostream& operator<<( std::ostream& aStream, const Instantiation& i ) {
     aStream << i.toString();
     return aStream;
@@ -193,4 +192,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#ifdef GUM_NO_INLINE
+// Inline file added in agrum/multidim/multiDimAdressable.cpp
+#endif /* GUM_NO_INLINE */
+
