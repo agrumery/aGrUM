@@ -38,7 +38,8 @@
 namespace gum {
 
   /**
-   * @class AdaptiveRMaxPlaner AdaptiveRMaxPlaner.h <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
+   * @class AdaptiveRMaxPlaner AdaptiveRMaxPlaner.h
+   * <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
@@ -46,7 +47,8 @@ namespace gum {
    * process
    *
    */
-  class AdaptiveRMaxPlaner : public StructuredPlaner<double>, public IDecisionStrategy {
+  class AdaptiveRMaxPlaner : public StructuredPlaner<double>,
+                             public IDecisionStrategy {
 
 
     // ###################################################################
@@ -62,22 +64,25 @@ namespace gum {
                                double discountFactor = 0.9,
                                double epsilon = 0.00001,
                                bool verbose = true ) {
-      return new AdaptiveRMaxPlaner(
-          new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner, verbose );
+      return new AdaptiveRMaxPlaner( new MDDOperatorStrategy<double>(),
+                                     discountFactor,
+                                     epsilon,
+                                     learner,
+                                     verbose );
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
     static AdaptiveRMaxPlaner* TreeInstance( const ILearningStrategy* learner,
-                                     double discountFactor = 0.9,
-                                     double epsilon = 0.00001,
-                                     bool verbose = true ) {
+                                             double discountFactor = 0.9,
+                                             double epsilon = 0.00001,
+                                             bool verbose = true ) {
       return new AdaptiveRMaxPlaner( new TreeOperatorStrategy<double>(),
-                             discountFactor,
-                             epsilon,
-                             learner,
-                             verbose);
+                                     discountFactor,
+                                     epsilon,
+                                     learner,
+                                     verbose );
     }
 
     /// @}
@@ -91,10 +96,10 @@ namespace gum {
     /// Default constructor
     // ==========================================================================
     AdaptiveRMaxPlaner( IOperatorStrategy<double>* opi,
-                double discountFactor,
-                double epsilon,
-                const ILearningStrategy* learner,
-                bool verbose );
+                        double discountFactor,
+                        double epsilon,
+                        const ILearningStrategy* learner,
+                        bool verbose );
 
     // ==========================================================================
     /// Default destructor

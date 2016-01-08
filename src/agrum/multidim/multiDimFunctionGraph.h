@@ -43,6 +43,7 @@
 #include <agrum/multidim/multiDimFunctionGraphManager.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 #include <agrum/multidim/FunctionGraphUtilities/link.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // ============================================================================
 
@@ -101,7 +102,7 @@ namespace gum {
     // ============================================================================
     static MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
     getTreeInstance() {
-      return new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>( false );
+      return new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>(false);
     }
 
     /// @}
@@ -115,20 +116,20 @@ namespace gum {
     /// Default constructor.
     // ============================================================================
     private:
-    MultiDimFunctionGraph( bool isReduced = true );
+    MultiDimFunctionGraph(bool isReduced = true);
 
     public:
     // ============================================================================
     /// Copy constructor.
     // ============================================================================
     MultiDimFunctionGraph(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from);
 
     // ============================================================================
     /// Copy Operator.
     // ============================================================================
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& operator=(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from);
 
     // ============================================================================
     /// Destructor.
@@ -167,37 +168,37 @@ namespace gum {
 
     // ============================================================================
     /**
-    * see MultiDimImplementation::set ( const Instantiation &i, const GUM_SCALAR
-    * &value )
+    * see MultiDimImplementation::set (const Instantiation &i, const GUM_SCALAR
+    * &value)
     *
     * @throw OperationNotAllowed. Function Graph can't be edited so easily.
     * MultiDimFunctionGraphManager provides the framework to editate a Function
     * Graph.
     */
     // ============================================================================
-    void set( const Instantiation& i, const GUM_SCALAR& value ) const;
+    void set(const Instantiation& i, const GUM_SCALAR& value) const;
 
     // ============================================================================
     /**
-    * see MultiDimImplementation::fill( const GUM_SCALAR &d )
+    * see MultiDimImplementation::fill(const GUM_SCALAR &d)
     *
     * @throw OperationNotAllowed. Function Graph can't be edited so easily.
     * MultiDimFunctionGraphManager provides the framework to editate a Function
     * Graph.
     */
     // ============================================================================
-    void fill( const GUM_SCALAR& d ) const;
+    void fill(const GUM_SCALAR& d) const;
 
     // ==============================================================================
     /**
-    * see MultiDimImplementation::fillWith ( const std::vector<GUM_SCALAR>& v )
+    * see MultiDimImplementation::fillWith (const std::vector<GUM_SCALAR>& v)
     *
     * @throw OperationNotAllowed. Function Graph can't be edited so easily.
     * MultiDimFunctionGraphManager provides the framework to editate a Function
     * Graph.
     */
     // ==============================================================================
-    void fillWith( const std::vector<GUM_SCALAR>& v ) const;
+    void fillWith(const std::vector<GUM_SCALAR>& v) const;
 
     /// @}
 
@@ -210,12 +211,12 @@ namespace gum {
     // ============================================================================
     /// See MultiDimInterface::add(const DiscreteVariable& v)
     // ============================================================================
-    virtual void add( const DiscreteVariable& v );
+    virtual void add(const DiscreteVariable& v);
 
     // ============================================================================
     /// See MultiDimInterface::erase(const DiscreteVariable& v)
     // ============================================================================
-    void erase( const DiscreteVariable& v );
+    void erase(const DiscreteVariable& v);
 
     // ============================================================================
     /// see MultiDimImplementation::realSize()
@@ -229,47 +230,47 @@ namespace gum {
     // ############################################################################
     /// @{
     // ============================================================================
-    /** see MultiDimImplementation::changeNotification( Instantiation& i,
+    /** see MultiDimImplementation::changeNotification(Instantiation& i,
     *                                                       const
     * DiscreteVariable* const var,
     *                                                       const Idx&
-    * oldval,const Idx& newval )
+    * oldval,const Idx& newval)
     */
     // ============================================================================
-    void changeNotification( Instantiation& i,
+    void changeNotification(Instantiation& i,
                              const DiscreteVariable* const var,
                              const Idx& oldval,
-                             const Idx& newval );
+                             const Idx& newval);
 
     // ============================================================================
-    /// see MultiDimImplementation::setFirstNotification( Instantiation& i )
+    /// see MultiDimImplementation::setFirstNotification(Instantiation& i)
     // ============================================================================
-    void setFirstNotification( Instantiation& i );
+    void setFirstNotification(Instantiation& i);
 
     // ============================================================================
-    /// see MultiDimImplementation::setLastNotification( Instantiation& i )
+    /// see MultiDimImplementation::setLastNotification(Instantiation& i)
     // ============================================================================
-    void setLastNotification( Instantiation& i );
+    void setLastNotification(Instantiation& i);
 
     // ============================================================================
-    /// see MultiDimImplementation::setIncNotification( Instantiation& i )
+    /// see MultiDimImplementation::setIncNotification(Instantiation& i)
     // ============================================================================
-    void setIncNotification( Instantiation& i );
+    void setIncNotification(Instantiation& i);
 
     // ============================================================================
-    /// see MultiDimImplementation::setDecNotification( Instantiation& i )
+    /// see MultiDimImplementation::setDecNotification(Instantiation& i)
     // ============================================================================
-    void setDecNotification( Instantiation& i );
+    void setDecNotification(Instantiation& i);
 
     // ============================================================================
-    /// see MultiDimImplementation::setChangeNotification( Instantiation& i )
+    /// see MultiDimImplementation::setChangeNotification(Instantiation& i)
     // ===========================================================================
-    void setChangeNotification( Instantiation& i );
+    void setChangeNotification(Instantiation& i);
 
     // ============================================================================
-    /// see MultiDimImplementation::toString( const Instantiation *i )
+    /// see MultiDimImplementation::toString(const Instantiation *i)
     // ============================================================================
-    const std::string toString( const Instantiation* i ) const;
+    const std::string toString(const Instantiation* i) const;
 
     /// @}
 
@@ -293,8 +294,8 @@ namespace gum {
      * multiDim.
      */
     // ============================================================================
-    void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                   Instantiation* p_i = (Instantiation*)0 ) const;
+    void copyFrom(const MultiDimContainer<GUM_SCALAR>& src,
+                   Instantiation* p_i = (Instantiation*)0) const;
 
     // ============================================================================
     /**
@@ -304,7 +305,7 @@ namespace gum {
      * multiDim.
      */
     // ============================================================================
-    void copy( const MultiDimContainer<GUM_SCALAR>& src );
+    void copy(const MultiDimContainer<GUM_SCALAR>& src);
 
     // ============================================================================
     /**
@@ -313,7 +314,7 @@ namespace gum {
      */
     // ============================================================================
     void
-    copy( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
+    copy(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src);
 
     // ============================================================================
     /**
@@ -323,13 +324,13 @@ namespace gum {
      * @warning This has two implications.
      * First, this is not just a renaming. Pointers are trully changed.
      * Second, for each pair of variable, the new variable MUST macth the number
-     * of variables of the old variable.
+     * of modalities of the old variable.
      */
     // ============================================================================
     void copyAndReassign(
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>&
-            reassign );
+            reassign);
 
     // ============================================================================
     /**
@@ -338,7 +339,7 @@ namespace gum {
     // ============================================================================
     void copyAndMultiplyByScalar(
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
-        GUM_SCALAR gamma );
+        GUM_SCALAR gamma);
 
     // ============================================================================
     /**
@@ -357,7 +358,7 @@ namespace gum {
     // ============================================================================
     /// Returns a const reference to the manager of this diagram
     // ============================================================================
-    std::string toDot( bool withBackArcs = false ) const;
+    std::string toDot(bool withBackArcs = false) const;
 
     // ============================================================================
     /// Returns a const reference to the manager of this diagram
@@ -377,23 +378,34 @@ namespace gum {
     // ============================================================================
     /// Indicates if given node is terminal or not
     // ============================================================================
-    bool isTerminalNode( const NodeId& node ) const {
-      return !__internalNodeMap.exists( node );
+    bool isTerminalNode(const NodeId& node) const {
+      return this->existsTerminalNode(node);
+    }
+
+    // ============================================================================
+    /// Indicates if given node is terminal or not
+    // ============================================================================
+    bool isInternalNode(const NodeId& node) const {
+      return this->__internalNodeMap.exists(node);
     }
 
     // ============================================================================
     /// Returns value associated to given node
     /// @throw InvalidNode if node isn't terminal
     // ============================================================================
-    const GUM_SCALAR& nodeValue( NodeId n ) const {
-      return this->terminalNodeValue( n );
+    const GUM_SCALAR& nodeValue(NodeId n) const {
+      if(!isTerminalNode(n))
+        GUM_ERROR(InvalidArgument, "Id " << n << " is not bound to any terminal node")
+      return this->terminalNodeValue(n);
     }
 
     // ============================================================================
     /// Returns internalNode structure associated to that nodeId
     /// @throw InvalidNode if node is terminal
     // ============================================================================
-    const InternalNode* node( NodeId n ) const {
+    const InternalNode* node(NodeId n) const {
+      if(!isInternalNode(n))
+        GUM_ERROR(InvalidArgument, "Id " << n << " is not bound to any terminal node")
       return this->__internalNodeMap[n];
     }
 
@@ -401,7 +413,9 @@ namespace gum {
     /// Returns the list of node associated to given variable
     // ============================================================================
     const LinkedList<NodeId>*
-    varNodeListe( const DiscreteVariable* var ) const {
+    varNodeListe(const DiscreteVariable* var) const {
+      if(!this->variablesSequence().exists(var))
+        GUM_ERROR(InvalidArgument, "Var " << var->name() << " has not been inserted in the function graph")
       return __var2NodeIdMap[var];
     }
 
@@ -415,9 +429,9 @@ namespace gum {
     // ============================================================================
     /// Sets the name of the table represented by this structure
     // ============================================================================
-    void setTableName( const std::string& name ) { __tableName = name; }
+    void setTableName(const std::string& name) { __tableName = name; }
 
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
     bool isReducedAndOrdered() const { return __isReduced; }
 
@@ -428,7 +442,7 @@ namespace gum {
     /// Technically this should be call by any subclass overloading this method
     /// to proceed with the changes in this class containers.
     // ============================================================================
-    void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+    void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 
     // ============================================================================
     /**
@@ -444,9 +458,9 @@ namespace gum {
     * @param i The instantiation used to find the data.
     */
     // ============================================================================
-    GUM_SCALAR& _get( const Instantiation& inst ) const {
-      GUM_ERROR( OperationNotAllowed,
-                 "You can't edit a function by other mean than the manager" );
+    GUM_SCALAR& _get(const Instantiation& inst) const {
+      GUM_ERROR(OperationNotAllowed,
+                 "You can't edit a function by other mean than the manager");
     }
 
 

@@ -63,7 +63,7 @@ namespace gum {
       , __observationPhaseLenght( observationPhaseLenght )
       , __nbValueIterationStep( nbValueIterationStep )
       , __actionReward( actionReward )
-      , _verbose(verbose) {
+      , _verbose( verbose ) {
 
     GUM_CONSTRUCTOR( SDYNA )
 
@@ -190,11 +190,11 @@ namespace gum {
    */
   // ###################################################################
   void SDYNA::makePlanning( Idx nbValueIterationStep ) {
-    if(_verbose) std::cout << "Updating decision trees ..." << std::endl;
+    if ( _verbose ) std::cout << "Updating decision trees ..." << std::endl;
     __learner->updateFMDP();
     // std::cout << << "Done" << std::endl;
 
-    if(_verbose) std::cout << "Planning ..." << std::endl;
+    if ( _verbose ) std::cout << "Planning ..." << std::endl;
     __planer->makePlanning( nbValueIterationStep );
     // std::cout << << "Done" << std::endl;
 

@@ -33,9 +33,6 @@
 #include <agrum/core/priorityQueue.h>
 // ==========================================================================
 
-#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
-#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
-
 namespace gum {
 
   Idx MultiDimFunctionGraphGenerator::__genSeed = 0;

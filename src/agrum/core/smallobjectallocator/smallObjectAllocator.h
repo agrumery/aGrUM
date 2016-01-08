@@ -129,8 +129,9 @@ namespace gum {
     /// Displays the number of allocation and deallocation made so far
     // ============================================================================
     void displayStats() {
-      GUM_TRACE("Nb Small Allocation : " << nbAllocation
-                << " -  Nb Small Deallocation : " << nbDeallocation);
+      GUM_TRACE( "Nb Small Allocation : " << nbAllocation
+                                          << " -  Nb Small Deallocation : "
+                                          << nbDeallocation );
     }
 
     Idx nbAlloc() { return nbAllocation; }
@@ -157,6 +158,11 @@ namespace gum {
     Idx nbDeallocation;
   };
 }  // namespace gum
+
+// Macro used to shorten code in classes using SmallObjectAllocator
+#define SOA_ALLOCATE(x ) SmallObjectAllocator::instance().allocate(x )
+#define SOA_DEALLOCATE(x, y ) \
+  SmallObjectAllocator::instance().deallocate(x, y )
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.inl>

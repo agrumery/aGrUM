@@ -139,7 +139,8 @@ namespace gum {
     void add( const GTestPolicy<GUM_SCALAR>& src );
 
     // ============================================================================
-    /// Returns contingency table (needed for the merging of GTestPolicy instances)
+    /// Returns contingency table (needed for the merging of GTestPolicy
+    /// instances)
     // ============================================================================
     const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const {
       return __conTab;

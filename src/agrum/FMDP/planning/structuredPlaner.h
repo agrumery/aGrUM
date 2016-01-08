@@ -80,7 +80,10 @@ namespace gum {
                     GUM_SCALAR epsilon = 0.00001,
                     bool verbose = true ) {
       return new StructuredPlaner<GUM_SCALAR>(
-          new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon, verbose );
+          new MDDOperatorStrategy<GUM_SCALAR>(),
+          discountFactor,
+          epsilon,
+          verbose );
     }
 
     // ==========================================================================
@@ -91,7 +94,10 @@ namespace gum {
                  GUM_SCALAR epsilon = 0.00001,
                  bool verbose = true ) {
       return new StructuredPlaner<GUM_SCALAR>(
-          new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon, verbose );
+          new TreeOperatorStrategy<GUM_SCALAR>(),
+          discountFactor,
+          epsilon,
+          verbose );
     }
 
     /// @}

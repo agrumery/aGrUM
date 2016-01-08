@@ -184,7 +184,6 @@ namespace gum {
     /// Last Chunk used for a deallocation
     // ============================================================================
     __Chunks::iterator __deallocChunk;
-
   };
 
 }  // namespace gum

@@ -540,7 +540,7 @@ namespace gum {
     } else {
       const InternalNode* currentNode = src->node( currentNodeId );
       NodeId* sonsMap = static_cast<NodeId*>(
-          ALLOCATE( sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
+          SOA_ALLOCATE( sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
       for ( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
         sonsMap[moda] = __recurArgMaxCopy(
             currentNode->son( moda ), actionId, src, argMaxCpy, visitedNodes );
@@ -626,7 +626,7 @@ namespace gum {
     } else {
       const InternalNode* currentNode = argMaxOptVFunc->node( currentNodeId );
       NodeId* sonsMap = static_cast<NodeId*>(
-          ALLOCATE( sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
+          SOA_ALLOCATE( sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
       for ( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
         sonsMap[moda] = __recurExtractOptPol(
             currentNode->son( moda ), argMaxOptVFunc, visitedNodes );
