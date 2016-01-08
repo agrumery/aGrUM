@@ -1,15 +1,12 @@
 option(NANODBC_USE_UNICODE "build with unicode support turned on" OFF)
-option(NANODBC_USE_BOOST_CONVERT "build using Boost.Locale for string convert" OFF)
-option(NANODBC_HANDLE_NODATA_BUG "enable special handling for SQL_NO_DATA (required for vertica)" OFF)
-option(NANODBC_STATIC "build static instead of shared library" OFF)
-option(NANODBC_EXAMPLES "build examples" OFF)
-option(NANODBC_TEST "build tests" OFF)
-option(NANODBC_INSTALL "generate install target" OFF)
-option(NANODBC_ENABLE_LIBCXX "Use libc++ if available." ON)
 
-if(APPLE)
-	set(CMAKE_MACOSX_RPATH ON)
-endif()
+set(NANODBC_USE_BOOST_CONVERT OFF) #"build using Boost.Locale for string convert" OFF)
+set(NANODBC_HANDLE_NODATA_BUG OFF) #"enable special handling for SQL_NO_DATA (required for vertica)" OFF)
+set(NANODBC_STATIC OFF) # "build static instead of shared library" OFF)
+set(NANODBC_EXAMPLES OFF) # "build examples" OFF)
+set(NANODBC_TEST "build tests" OFF) # OFF)
+set(NANODBC_INSTALL "generate install target" OFF) # OFF)
+set(NANODBC_ENABLE_LIBCXX "Use libc++ if available." ON) # ON)
 
 ########################################
 ## find unixODBC or iODBC config binary
@@ -59,8 +56,9 @@ if(UNIX)
 	endif()
 
 	if(NOT ODBC_CONFIG)
-		message(WARNING "Can not find a suitable odbc driver manager: nanodbc will not be enable")
+    message(STATUS "** aGrUM Notification: Can not find a suitable ODBC driver manager ")
   else()
+    message(STATUS "** aGrUM Notification: Found a suitable ODBC driver manager ")
     add_definitions(-D_ODBC)
 	endif()
 

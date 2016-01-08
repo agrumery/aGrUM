@@ -140,7 +140,6 @@ def checkConsistency(current):
     check_modules(current)
     checkAndWriteTests(current)
 
-  check_aGrumTest('stats',current)
   check_aGrumTest('oneByOne',current)
   if current['coverage'] and current['mode'] != "debug":
     error("Option [coverage] can only be used with [debug] builds.")

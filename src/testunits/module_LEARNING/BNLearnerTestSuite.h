@@ -96,7 +96,10 @@ namespace gum_tests {
       }
     }
 
-    // For this to work you need a datasource declared in your odbc file
+    // WARNING: this test is commented on purpouse: you need a running database
+    // with a table filled with the content of the asia.csv file. You will also
+    // need a proper odbc configuration (under linux and macos you'll need
+    // unixodbc and specific database odbc drivers).
     // void test_asia_db() {
     //   try {
     //     auto db = gum::learning::DatabaseFromSQL(

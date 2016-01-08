@@ -5,23 +5,21 @@ if (POLICY CMP0018)
   cmake_policy(SET CMP0018 OLD)
 endif ()
 
-include("modules.txt")
+if(APPLE)
+	set(CMAKE_MACOSX_RPATH ON)
+endif()
+
 
 set (CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-include(Options.agrum)
+include(Config.agrum)
+
+include("modules.txt")
 include(Modules.agrum)
+
 include(Nanodbc.agrum)
 
-include(Config.agrum)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in" "${AGRUM_BINARY_DIR}/agrum/config.h")
-
-### CONDITIONAL RULES (if flex/bison have been found, we add rules) ####
-#include("${CMAKE_CURRENT_CMAKE_DIR}/FlexBison.agrum.cmake")
-#if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
-#    FlexBisonTarget(learning/XmlCsvParser parseXmlCsv)
-#endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
-####################################################################
 
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include(CocoR.agrum)
@@ -47,6 +45,8 @@ set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INC
 add_library(${LIBAGRUM} ${AGRUM_FILES})
 set_target_properties (${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
+target_link_libraries( ${LIBAGRUM} ${ODBC_LIBRARIES} )
+
 if (GUM_COVERAGE)
   set_target_properties( ${LIBAGRUM} PROPERTIES COMPILE_FLAGS " --coverage" )
   target_link_libraries( ${LIBAGRUM} "gcov" )

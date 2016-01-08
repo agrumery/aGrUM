@@ -17,12 +17,6 @@
  * The \ref bn_group module list all classes for using Bayesian Networks with
  * aGrUM.
  *
- * \section bn_model Using the BayesNetFactory class
- * The gum::ByesNetFactory class is usefull when writing serializers and
- * deserailizers for the gum::BayesNet class. You can also use it to create
- * gum:BayesNet directly in C++, you may however find that using directly the
- * gum::BayesNet class simpler.
- * 
  * We will use the classic Asia network to illustrate how the 
  * gum::BayesNetFactory class works.
  *
@@ -48,14 +42,125 @@
  * }
  * \enddot
  *
+ * \section bn_class Creating Bayesian Networks
+ *
+ * The following code illustrates how to create the Asia network using the
+ * gum::BayesNet class. To create an instance of a Bayesian Network, you simply
+ * need to call the gum::BayesNet class constructor.
+ *
+ * \code{.cpp}
+ * auto bn = gum::BayesNet<double>("Asia");
+ * \endcode
+ *
+ * Use the gum::BayesNet::add( const gum::DiscreteVariable& ) method to add variables
+ * in the Bayesian Network. The following variables are available in aGrUM:
+ *  - gum::LabelizedVariable: for classic discrete random variables;
+ *  - gum::DiscretizedVariable: for discretized continuous random variables;
+ *  - gum::RangeVariable: for discrete random variables over an integer interval.
+ *
+ * \code{.cpp}
+ * // Variables are added by copy to the BayesNet, so you can use a single
+ * // gum::LabelizedVariable to add all varaibles with the same domain
+ * auto var = gum::LabelizedVariable(
+ *     "template", "A variable of the Asia Bayesian Network", 0 );
+ * var.addLabel( "True" );
+ * var.addLabel( "False" );
+ *
+ * var.setName( "Visit to Asia" );
+ * auto visitToAsia = bn.add( var );
+ * var.setName( "Smoker" );
+ * auto smoker = bn.add( var );
+ * var.setName( "Has Tuberculosis" );
+ * auto hasTuberculosis = bn.add( var );
+ * var.setName( "Has Lung Cancer" );
+ * auto hasLungCancer = bn.add( var );
+ * var.setName( "Has Bronchitis" );
+ * auto hasBronchitis = bn.add( var );
+ * var.setName( "Tuberculosis or Cancer" );
+ * auto tubOrCancer = bn.add( var );
+ * var.setName( "XRay Result" );
+ * auto xray = bn.add( var );
+ * var.setName( "Dyspnea" );
+ * auto dyspnea = bn.add( var );
+ * \endcode
+ *
+ * You can also use the gum::BayesNet::idFromName( const std::string& ) method to retrieve
+ * variable's id from its name.
+ *
+ * Use the gum::BayesNet::addArc( gum::Id, gum::Id ) to add arcs between node in the Bayesian
+ * Network.
+ *
+ * \code{.cpp}
+ * bn.addArc( visitToAsia, hasTuberculosis );
+ * bn.addArc( hasTuberculosis, tubOrCancer );
+ * bn.addArc( smoker, hasLungCancer );
+ * bn.addArc( smoker, hasBronchitis );
+ * bn.addArc( hasLungCancer, tubOrCancer );
+ * bn.addArc( tubOrCancer, xray );
+ * bn.addArc( tubOrCancer, dyspnea );
+ * bn.addArc( hasBronchitis, dyspnea );
+ * \endcode
+ *
+ * Finally, use the gumm:BayesNet::cpt( gum::Id ) to access a variable's
+ * conditional probability table. See \ref using_multidims to learn how to fill
+ * gum::Potential. Here we use the gum::Potential::fillwith( const std::vector&
+ * ) method.
+ *
+ * \code{.cpp}
+ * bn.cpt( visitToAsia ).fillWith( { 0.1f, 0.9f } );
+ * bn.cpt( smoker ).fillWith( { 0.7f, 0.3f } );
+ * bn.cpt( hasTuberculosis ).fillWith( { 
+ * // True | False  == hasTuberculosis 
+ *    0.05f, 0.01f, // visitToAsia == True
+ *    0.95f, 0.99f  // visitToAsia == False
+ * } );
+ * bn.cpt( hasLungCancer ).fillWith( {
+ * // True | False  == hasLungCancer
+ *    0.10f, 0.90f, // smoker == True
+ *    0.01f, 0.99f  // smoker == False
+ * } );
+ * bn.cpt( tubOrCancer ).fillWith( {
+ * // True | False  == tubOrCancer
+ *    1.00f, 0.00f, // hasTuberculosis == True,  hasLungCancer == True
+ *    1.00f, 0.00f, // hasTuberculosis == False, hasLungCancer == True
+ *    1.00f, 0.00f, // hasTuberculosis == True,  hasLungCancer == False
+ *    0.00f, 1.00f  // hasTuberculosis == False, hasLungCancer == False
+ * } );
+ * bn.cpt( xray ).fillWith( {
+ * // True | False  == xray
+ *    0.98f, 0.02f, // tubOrCancer == 0
+ *    0.05f, 0.95f  // tubOrCancer == 1
+ * } );
+ * bn.cpt( dyspnea ).fillWith( {
+ * // True | False  == dyspnea
+ *    0.90f, 0.10f, // tubOrCancer == True,  hasBronchitis == True
+ *    0.70f, 0.30f, // tubOrCancer == False, hasBronchitis == True
+ *    0.80f, 0.20f, // tubOrCancer == True,  hasBronchitis == False
+ *    0.10f, 0.90f  // tubOrCancer == False, hasBronchitis == False
+ * } );
+ * \endcode
+ *
+ * Filling conditionnal probability tables can be hard and you should use the
+ * commenting trick as above to help you with large tables. It is important to
+ * remember that the std::vector is used to fill a multidimensionnal table
+ * where each line should sum to 1, i.e. each line stores \f$P(X_i |
+ * \pi(X_i)\f$.
+ *
+ * \section bn_factory Using the gum::BayesNetFactory class
+ * The gum::ByesNetFactory class is usefull when writing serializers and
+ * deserailizers for the gum::BayesNet class. You can also use it to create
+ * gum:BayesNet directly in C++, you may however find that using directly the
+ * gum::BayesNet class simpler.
+ * 
+ *
  * \subsection bn_factory_creation Instantiating the factory
  * The gum::BayesNetFactory expects a pointer toward a gum::BayesNet. The
  * factory will not release this pointer, so you should be careful to release
  * it yourself.
  *
  * \code{.cpp}
- * auto asia = new gum::BayesNet<double>();
- * gum::BayesNetFactory<double> factory(asia);
+ * auto asia = gum::BayesNet<double>();
+ * auto factory = gum::BayesNetFactory<double>(&asia);
  * \endcode
  *
  * Most methods follow a start / end pattern . 
@@ -84,12 +189,63 @@
  * Asia Network
  * example:
  * \code{.cpp}
+ * // Visit to Asia
  * factory.startVariableDeclaration();
- * factory.variableName("Visit To Asia");
- * factory.variableDescription("True if patient visited Asia in the past months");
- * factory.addModality("True");
- * factory.addModality("False");
- * auto id = factory.endVariableDeclaration();
+ * factory.variableName( "Visit To Asia" );
+ * factory.variableDescription(
+ *     "True if patient visited Asia in the past months" );
+ * factory.addModality( "True" );
+ * factory.addModality( "False" );
+ * factory.endVariableDeclaration();
+
+ * // Smoker
+ * factory.startVariableDeclaration();
+ * factory.variableName( "Smoker" );
+ * factory.addModality( "True" );
+ * factory.addModality( "False" );
+ * factory.endVariableDeclaration();
+
+ * // Has Tuberculosis
+ * factory.startVariableDeclaration();
+ * factory.variableName( "Has Tuberculosis" );
+ * factory.addModality( "True" );
+ * factory.addModality( "False" );
+ * factory.endVariableDeclaration();
+
+ * // Has Lung Cancer
+ * factory.startVariableDeclaration();
+ * factory.variableName( "Has Lung Cancer" );
+ * factory.addModality( "True" );
+ * factory.addModality( "False" );
+ * factory.endVariableDeclaration();
+
+ * // Tuberculosis or Cancer
+ * factory.startVariableDeclaration();
+ * factory.variableName( "Tuberculosis or Cancer" );
+ * factory.addModality( "True" );
+ * factory.addModality( "False" );
+ * factory.endVariableDeclaration();
+
+ * // Has Bronchitis
+ * factory.startVariableDeclaration();
+ * factory.variableName( "Has Bronchitis" );
+ * factory.addModality( "True" );
+ * factory.addModality( "False" );
+ * factory.endVariableDeclaration();
+
+ * // XRay Result
+ * factory.startVariableDeclaration();
+ * factory.variableName( "XRay Result" );
+ * factory.addModality( "True" );
+ * factory.addModality( "False" );
+ * factory.endVariableDeclaration();
+
+ * // Dyspnea
+ * factory.startVariableDeclaration();
+ * factory.variableName( "Dyspnea" );
+ * factory.addModality( "True" );
+ * factory.addModality( "False" );
+ * factory.endVariableDeclaration();
  * \endcode
  *
  * The gum::BayesNetFactory::endVariableDeclaration() method returns the
@@ -107,9 +263,36 @@
  * start end methods without adding any parent will not result in an error.
  *
  * \code{.cpp}
- * factory.startParentsDeclaration("Tuberculosis or Cancer");
+ * // Parents of Has Tuberculosis
+ * factory.startParentsDeclaration( "Has Tuberculosis" );
+ * factory.addParent( "Visit To Asia" );
+ * factory.endParentsDeclaration();
+
+ * // Parents of Has Lung Cancer
+ * factory.startParentsDeclaration( "Has Lung Cancer" );
+ * factory.addParent( "Smoker" );
+ * factory.endParentsDeclaration();
+
+ * // Parents of Tuberculosis or Cancer
+ * factory.startParentsDeclaration( "Tuberculosis or Cancer" );
  * factory.addParent( "Has Tuberculosis" );
  * factory.addParent( "Has Lung Cancer" );
+ * factory.endParentsDeclaration();
+
+ * // Parents of Has Bronchitis
+ * factory.startParentsDeclaration( "Has Bronchitis" );
+ * factory.addParent( "Smoker" );
+ * factory.endParentsDeclaration();
+
+ * // Parents of XRay Result
+ * factory.startParentsDeclaration( "XRay Result" );
+ * factory.addParent( "Tuberculosis or Cancer" );
+ * factory.endParentsDeclaration();
+
+ * // Parents of Dyspnea
+ * factory.startParentsDeclaration( "Dyspnea" );
+ * factory.addParent( "Tuberculosis or Cancer" );
+ * factory.addParent( "Has Bronchitis" );
  * factory.endParentsDeclaration();
  * \endcode
  *
@@ -134,8 +317,8 @@
  * in the Asia Network example can be achieved as follow:
  * \code{.cpp}
  * factory.startRawProbabilityDeclaration("VisitToAsia");
- * std::vector<std::string> variables { "VisitToAsia" };
- * std::vector<double> values { 0.01, 0.99 };
+ * auto variables = std::vector<std::string>{ "VisitToAsia" };
+ * auto values = std::vector<float>{ 0.01f, 0.99f };
  * factory.rawConditionalTable(variables, values);
  * factory.endRawProbabilityDeclaration();
  * \endcode
@@ -144,16 +327,17 @@
  * \code{.cpp}
  * factory.startRawProbabilityDeclaration("Tuberculosis or Cancer");
  *
- * std::vector<std::string> variables;
- * variables.push_back("Tuberculosis or Cancer");
- * variables.push_back("Has Tuberculosis");
- * variables.push_back("Has Lung Cancer");
+ * variables = std::vector<std::string>{
+ *   "Tuberculosis or Cancer",
+ *   "Has Tuberculosis",
+ *   "Has Lung Cancer"
+ * };
  *
- * std::vector<double> values
- * //      True     ||    False        => Has Lung Cancer
- * //  True | False || True | False    => Has Tuberculosis
- * {     0.00, 0.00,     0.00, 1.00,   // False
- *       1.00, 1.00,     1.00, 0.00 }; // True
+ * values = std::vector<float>
+ * //      True      ||    False        => Has Lung Cancer
+ * //  True | False  || True | False    => Has Tuberculosis
+ * {     0.00f, 0.00f,     0.00f, 1.00f,   // False
+ *       1.00f, 1.00f,     1.00f, 0.00f }; // True
  *
  * factory.rawConditionalTable(variables, values);
  * factory.endRawProbabilityDeclaration();
@@ -185,8 +369,8 @@
  * factory.startFactorizedEntry();
  *
  * // Tuberculosis or Cancer -> True | False
- * std::vector<double> values = { 1.00, 0.00 };
- * factor.setVariableValues( value );
+ * values = std::vector<float>{ 1.00f, 0.00f };
+ * factory.setVariableValues( values );
  *
  * factory.endFactorizedEntry();
  *
@@ -195,11 +379,11 @@
  * factory.setParentModality( "Has Tuberculosis", "False" );
  *
  * // Tuberculosis or Cancer -> True | False
- * std::vector<double> values { 0.00  , 1.00 };
+ * values = std::vector<float>{ 0.00f, 1.00f };
  * factory.setVariableValues( values );
  *
  * factory.endFactorizedEntry();
- * factor.endFactorizedProbabilityDeclaration();
+ * factory.endFactorizedProbabilityDeclaration();
  * \endcode
  *
  * While adding values in a factorized definition, two methods are available:
@@ -226,18 +410,18 @@
  *  - gum::BayesNetInference::eraseAllEvidence().
  *
  * \code{.cpp}
- * gum::BayesNet<double> asia("Asia");
+ * auto asia = gum::BayesNet<double>( "Asia" );
  * // Constructing the BayesNet...
  *
  * // Choose one among available inference algorithms
- * gum::ShaferShenoyInference inference( bn );
- * auto id = bn.idFromName( "Has Lung Cancer" );
+ * auto inference = gum::ShaferShenoyInference<double>( asia );
+ * auto id = asia.idFromName( "Has Lung Cancer" );
  * auto marginal = inference.posterior( id );
  *
  * // We can add some evidence
  * // Index 0 is False, 1 True
- * inference.addHardEvidence( bn.idFromName( "Visit to Asia", (gum::Idx)0 ) );
- * inference.addHardEvidence( bn.idFromName( "Dyspnea", (gum::Idx)0 ));
+ * inference.addHardEvidence( bn.idFromName( "Visit to Asia"), 0 );
+ * inference.addHardEvidence( bn.idFromName( "Dyspnea"), 0 );
  *
  * auto updated_marginal = inference.posterior( id );
  * \endcode
@@ -276,13 +460,13 @@
  * deserialization error occurred.
  *
  *  \code{.cpp}
- *  gum::BayesNet<double> asia("Asia");
+ *  auto asia = gum::BayesNet<double>("Asia");
  *
  *  // One implementation of the gum::BNReader class
- *  gum::BIFReader reader( &bn, "/path/to/bif/file.bif" );
+ *  auto reader = gum::BIFReader<double>( &asia, "/path/to/bif/file.bif" );
  *
  *  try {
- *    reader.proceed()
+ *    reader.proceed();
  *  } catch ( gum::IOError& e ) {
  *    // A gum::IOError will be erased if an error occured
  *  }
@@ -296,11 +480,11 @@
  * Both methods will raise a gum::IOError if a serialization error occurred.
  *
  *  \code{.cpp}
- *  gum::BayesNet<double> asia("Asia");
+ *  auto asia = gum::BayesNet<double>("Asia");
  *  // Constructing BayesNet...
  *
  *  // One implementation of the gum::BNWriter class
- *  gum::BIFWriter writer;
+ *  auto writer = gum::BIFWriter<double>();
  *  try {
  *    // This will print the asia BayesNet on the standard output stream
  *    writer.write( std::cout, asia );
@@ -308,7 +492,7 @@
  *    // This will write the asia BayesNet in the given file
  *    writer.write( "/tmp/asiaNetwork.bif", asia );
  *  } catch ( gum::IOError& e ) {
- *    // A gum::IOError will be erased if an error occured
+ *    // A gum::IOError will be raised if an error occured
  *  }
  *  \endcode
  *
