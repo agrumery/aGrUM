@@ -100,8 +100,8 @@ namespace gum {
       bool actionReward = false;
       ILearningStrategy* ls = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(
           attributeSelectionThreshold, actionReward, similarityThreshold );
-      IPlanningStrategy<double>* ps =
-          StructuredPlaner<double>::spumddInstance( discountFactor, epsilon, false );
+      IPlanningStrategy<double>* ps = StructuredPlaner<double>::spumddInstance(
+          discountFactor, epsilon, false );
       IDecisionStrategy* ds = new E_GreedyDecider();
       return new SDYNA( ls,
                         ps,
@@ -124,8 +124,8 @@ namespace gum {
       bool actionReward = true;
       ILearningStrategy* ls = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(
           attributeSelectionThreshold, actionReward, similarityThreshold );
-      AdaptiveRMaxPlaner* rm =
-          AdaptiveRMaxPlaner::ReducedAndOrderedInstance( ls, discountFactor, epsilon );
+      AdaptiveRMaxPlaner* rm = AdaptiveRMaxPlaner::ReducedAndOrderedInstance(
+          ls, discountFactor, epsilon );
       IPlanningStrategy<double>* ps = rm;
       IDecisionStrategy* ds = rm;
       return new SDYNA( ls,
@@ -147,7 +147,8 @@ namespace gum {
       bool actionReward = true;
       ILearningStrategy* ls = new FMDPLearner<GTEST, GTEST, ITILEARNER>(
           attributeSelectionThreshold, actionReward );
-      AdaptiveRMaxPlaner* rm = AdaptiveRMaxPlaner::TreeInstance( ls, discountFactor, epsilon );
+      AdaptiveRMaxPlaner* rm =
+          AdaptiveRMaxPlaner::TreeInstance( ls, discountFactor, epsilon );
       IPlanningStrategy<double>* ps = rm;
       IDecisionStrategy* ds = rm;
       return new SDYNA( ls,
@@ -215,12 +216,6 @@ namespace gum {
     /**
      * Constructor
      *
-     * @param observationPhaseLenght : the number of observation done before a
-     * replanning is launch. If equals 0, a planning is done after each
-     * structural
-     * change.
-     * @param nbValueIterationStep : the number of value iteration done during
-     * one planning
      * @return an instance of SDyna architecture
      */
     // ==========================================================================
@@ -281,10 +276,16 @@ namespace gum {
     // ###################################################################
     /// @{
     public:
-    void initialize();
     // ==========================================================================
     /**
      * Initializes the Sdyna instance.
+     */
+    // ==========================================================================
+    void initialize();
+
+    // ==========================================================================
+    /**
+     * Initializes the Sdyna instance at given state.
      * @param initialState : the state of the studied system from which we will
      * begin the explore, learn and exploit process
      */
@@ -303,8 +304,7 @@ namespace gum {
     /**
      * Sets last state visited to the given state.
      * During the learning process, we will consider that were in this state
-     * before
-     * the transition.
+     * before the transition.
      * @param currentState : the state
      */
     // ==========================================================================
@@ -314,11 +314,11 @@ namespace gum {
 
     // ==========================================================================
     /**
-     * @return the id of the action the SDyna instance wish to be performed
-     * @param the state in which we currently are
+     * @return actionId the id of the action the SDyna instance wish to be performed
+     * @param curState the state in which we currently are
      */
     // ==========================================================================
-    Idx takeAction( const Instantiation& );
+    Idx takeAction( const Instantiation& curState);
 
     // ==========================================================================
     /**
@@ -358,11 +358,11 @@ namespace gum {
     // ==========================================================================
     /**
      * Starts a new planning
-     * @param Idx : the maximal number of value iteration performed in this
+     * @param nbStep : the maximal number of value iteration performed in this
      * planning
      */
     // ==========================================================================
-    void makePlanning( Idx );
+    void makePlanning( Idx nbStep );
 
     /// @}
 

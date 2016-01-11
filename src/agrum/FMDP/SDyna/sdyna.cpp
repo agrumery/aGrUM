@@ -38,7 +38,7 @@ namespace gum {
   // ==========================================================================
 
   // ###################################################################
-  /**
+  /*
    * Constructor
    *
    * @param observationPhaseLenght : the number of observation done before a
@@ -63,7 +63,7 @@ namespace gum {
       , __observationPhaseLenght( observationPhaseLenght )
       , __nbValueIterationStep( nbValueIterationStep )
       , __actionReward( actionReward )
-      , _verbose(verbose) {
+      , _verbose( verbose ) {
 
     GUM_CONSTRUCTOR( SDYNA )
 
@@ -73,7 +73,7 @@ namespace gum {
   }
 
   // ###################################################################
-  /// Destructor
+  // Destructor
   // ###################################################################
   SDYNA::~SDYNA() {
 
@@ -93,7 +93,7 @@ namespace gum {
   }
 
   // ==========================================================================
-  /// Initialization
+  // Initialization
   // ==========================================================================
 
   void SDYNA::initialize() {
@@ -103,7 +103,7 @@ namespace gum {
   }
 
   // ###################################################################
-  /**
+  /*
    * Initializes the Sdyna instance.
    * @param initialState : the state of the studied system from which we will
    * begin the explore, learn and exploit process
@@ -119,7 +119,7 @@ namespace gum {
   // ==========================================================================
 
   // ###################################################################
-  /**
+  /*
    * Performs a feedback on the last transition.
    * In extenso, learn from the transition.
    * @param originalState : the state we were in before the transition
@@ -138,7 +138,7 @@ namespace gum {
   }
 
   // ###################################################################
-  /**
+  /*
    * Performs a feedback on the last transition.
    * In extenso, learn from the transition.
    * @param reachedState : the state reached after the transition
@@ -183,26 +183,26 @@ namespace gum {
   }
 
   // ###################################################################
-  /**
+  /*
    * Starts a new planning
    * @param Idx : the maximal number of value iteration performed in this
    * planning
    */
   // ###################################################################
   void SDYNA::makePlanning( Idx nbValueIterationStep ) {
-    if(_verbose) std::cout << "Updating decision trees ..." << std::endl;
+    if ( _verbose ) std::cout << "Updating decision trees ..." << std::endl;
     __learner->updateFMDP();
     // std::cout << << "Done" << std::endl;
 
-    if(_verbose) std::cout << "Planning ..." << std::endl;
+    if ( _verbose ) std::cout << "Planning ..." << std::endl;
     __planer->makePlanning( nbValueIterationStep );
     // std::cout << << "Done" << std::endl;
 
     __decider->setOptimalStrategy( __planer->optimalPolicy() );
   }
 
-  // ###################################################################
-  /**
+  // ##################################################################
+  /*
    * @return the id of the action the SDyna instance wish to be performed
    * @param the state in which we currently are
    */
@@ -213,7 +213,7 @@ namespace gum {
   }
 
   // ###################################################################
-  /**
+  /*
    * @return the id of the action the SDyna instance wish to be performed
    */
   // ###################################################################

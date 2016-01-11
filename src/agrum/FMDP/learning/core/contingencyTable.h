@@ -42,7 +42,7 @@
 namespace gum {
 
   /**
-   * @class ContingencyTable.h <agrum/FMDP/learning/core/contingencyTable.h>
+   * @class ContingencyTable contingencyTable.h <agrum/FMDP/learning/core/contingencyTable.h>
    * @brief
    * @ingroup fmdp_group
    *

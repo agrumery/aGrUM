@@ -35,8 +35,6 @@
 #include <agrum/variables/labelizedVariable.h>
 // =======================================================
 
-#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
-#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 namespace gum {
 
@@ -326,7 +324,7 @@ namespace gum {
     if ( !tot ) return this->_target->manager()->addTerminalNode( 0.0 );
 
     NodeId* sonsMap = static_cast<NodeId*>(
-        ALLOCATE( sizeof( NodeId ) * this->_value->domainSize() ) );
+        SOA_ALLOCATE( sizeof( NodeId ) * this->_value->domainSize() ) );
     for ( Idx modality = 0; modality < this->_value->domainSize();
           ++modality ) {
       double newVal = 0.0;

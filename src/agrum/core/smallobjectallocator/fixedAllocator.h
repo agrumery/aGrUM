@@ -121,7 +121,7 @@ namespace gum {
     /**
      * Constructor.
      * @param blockSize is the size of an allocated block.
-     * @param numBlock is the number of block allocated per chunk
+     * @param numBlocks is the number of block allocated per chunk
      * numBlock * blockSize is the size that a chunk allocates directly
      * when it is created
      */
@@ -184,7 +184,6 @@ namespace gum {
     /// Last Chunk used for a deallocation
     // ============================================================================
     __Chunks::iterator __deallocChunk;
-
   };
 
 }  // namespace gum

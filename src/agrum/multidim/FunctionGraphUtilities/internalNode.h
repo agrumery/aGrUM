@@ -78,7 +78,7 @@ namespace gum {
   };
 
   /**
-   * @class InternalNode InternalNode.h
+   * @class InternalNode internalNode.h
    * <agrum/multidim/FunctionGraphUtilities/internalNode.h>
    *
    * @brief Structure used to represent a node internal structure

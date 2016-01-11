@@ -29,8 +29,6 @@
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =======================================================================================
 
-#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
-#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 namespace gum {
 
@@ -80,14 +78,14 @@ namespace gum {
     for ( auto instIter = __DG1InstantiationNeeded.beginSafe();
           instIter != __DG1InstantiationNeeded.endSafe();
           ++instIter )
-      DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
+      SOA_DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
 
     for ( auto instIter = __DG2InstantiationNeeded.beginSafe();
           instIter != __DG2InstantiationNeeded.endSafe();
           ++instIter )
-      DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
+      SOA_DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
 
-    if ( __nbVar != 0 ) DEALLOCATE( __default, sizeof( short int ) * __nbVar );
+    if ( __nbVar != 0 ) SOA_DEALLOCATE( __default, sizeof( short int ) * __nbVar );
   }
 
 
@@ -113,7 +111,7 @@ namespace gum {
 
     Idx* varInst = nullptr;
     if ( __nbVar != 0 ) {
-      varInst = static_cast<Idx*>( ALLOCATE( sizeof( Idx ) * __nbVar ) );
+      varInst = static_cast<Idx*>( SOA_ALLOCATE( sizeof( Idx ) * __nbVar ) );
       for ( Idx i = 0; i < __nbVar; i++ )
         varInst[i] = (Idx)0;
     }
@@ -125,7 +123,7 @@ namespace gum {
     NodeId root = __compute( conti, (Idx)0 - 1 );
     __rd->manager()->setRootNode( root );
 
-    if ( __nbVar != 0 ) DEALLOCATE( varInst, sizeof( Idx ) * __nbVar );
+    if ( __nbVar != 0 ) SOA_DEALLOCATE( varInst, sizeof( Idx ) * __nbVar );
 
     return __rd;
   }
@@ -230,7 +228,7 @@ namespace gum {
 
     if ( __nbVar != 0 ) {
       __default =
-          static_cast<short int*>( ALLOCATE( sizeof( short int ) * __nbVar ) );
+          static_cast<short int*>( SOA_ALLOCATE( sizeof( short int ) * __nbVar ) );
       for ( Idx i = 0; i < __nbVar; i++ )
         __default[i] = (short int)0;
     }
@@ -296,11 +294,11 @@ namespace gum {
       while ( nodeIter != nullptr ) {
 
         short int* instantiationNeeded =
-            static_cast<short int*>( ALLOCATE( tableSize ) );
+            static_cast<short int*>( SOA_ALLOCATE( tableSize ) );
         dgInstNeed.insert( nodeIter->element(), instantiationNeeded );
 
         short int* varDescendant =
-            static_cast<short int*>( ALLOCATE( tableSize ) );
+            static_cast<short int*>( SOA_ALLOCATE( tableSize ) );
         nodesVarDescendant.insert( nodeIter->element(), varDescendant );
         for ( Idx j = 0; j < __nbVar; j++ ) {
           instantiationNeeded[j] = (short int)0;
@@ -354,7 +352,7 @@ namespace gum {
     for ( HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin();
           it != nodesVarDescendant.end();
           ++it ) {
-      DEALLOCATE( it.val(), tableSize );
+      SOA_DEALLOCATE( it.val(), tableSize );
     }
     nodesVarDescendant.clear();
   }
@@ -441,14 +439,14 @@ namespace gum {
                   __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
     short int* instNeeded =
-        static_cast<short int*>( ALLOCATE( sizeof( short int ) * __nbVar ) );
+        static_cast<short int*>( SOA_ALLOCATE( sizeof( short int ) * __nbVar ) );
     for ( Idx i = 0; i < __nbVar; i++ )
       instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
 
     double curSitKey = currentSituation.key( instNeeded );
 
     if ( __explorationTable.exists( curSitKey ) ) {
-      DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
+      SOA_DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
       return __explorationTable[curSitKey];
     }
 
@@ -478,7 +476,7 @@ namespace gum {
         currentSituation.setDG1Node( origDG1 );
         currentSituation.setDG2Node( origDG2 );
 
-        DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
+        SOA_DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
 
         return newNode;
       }
@@ -501,7 +499,7 @@ namespace gum {
         currentSituation.setDG1Node( origDG1 );
         currentSituation.setDG2Node( origDG2 );
 
-        DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
+        SOA_DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
 
         return newNode;
       }
@@ -529,7 +527,7 @@ namespace gum {
         const DiscreteVariable* curVar =
             __rd->variablesSequence().atPos( varPos );
         NodeId* sonsIds = static_cast<NodeId*>(
-            ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
+            SOA_ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
 
         for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
 
@@ -545,7 +543,7 @@ namespace gum {
         currentSituation.setDG1Node( origDG1 );
         currentSituation.setDG2Node( origDG2 );
 
-        DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
+        SOA_DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
 
         return newNode;
       }
@@ -566,7 +564,7 @@ namespace gum {
       Idx varPos = __rd->variablesSequence().pos( curVar );
 
       NodeId* sonsIds = static_cast<NodeId*>(
-          ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
+          SOA_ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
 
       for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
 
@@ -584,7 +582,7 @@ namespace gum {
       currentSituation.setDG1Node( origDG1 );
       currentSituation.setDG2Node( origDG2 );
 
-      DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
+      SOA_DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
 
       return newNode;
     }
@@ -596,7 +594,7 @@ namespace gum {
 
       const DiscreteVariable* curVar = leaddgNode->nodeVar();
       NodeId* sonsIds = static_cast<NodeId*>(
-          ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
+          SOA_ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
 
       for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
         currentSituation.chgVarModality( leadVarPos, modality + 1 );
@@ -612,7 +610,7 @@ namespace gum {
       currentSituation.setDG1Node( origDG1 );
       currentSituation.setDG2Node( origDG2 );
 
-      DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
+      SOA_DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
 
       return newNode;
     }

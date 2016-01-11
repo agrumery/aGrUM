@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the \epsilon-greedy decision maker class.
+ * @brief Headers of the epsilon-greedy decision maker class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -44,10 +44,10 @@ namespace gum {
 
   /**
    * @class E_GreedyDecider E_GreedyDecider.h
-   * <agrum/FMDP/SDyna/E_GreedyDecider.h>
-   * @brief Class to make decision following an \epsilon-greedy compromise
+   * <agrum/FMDP/decision/E_GreedyDecider.h>
+   * @brief Class to make decision following an epsilon-greedy compromise
    * between exploration and exploitation
-   * @ingroup fmdp_group
+   *
    *
    */
   class E_GreedyDecider : public IDecisionStrategy {

@@ -44,8 +44,6 @@
 /// For shorter line and hence more comprehensive code purposes only
 #define RECASTED( x ) \
   reinterpret_cast<const MultiDimFunctionGraph<double>*>( x )
-#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
-#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 namespace gum {
 
@@ -346,9 +344,9 @@ namespace gum {
     }
 
 
-    NodeId* rmaxsons = static_cast<NodeId*>( ALLOCATE(
+    NodeId* rmaxsons = static_cast<NodeId*>( SOA_ALLOCATE(
         sizeof( NodeId ) * visited->nodeVar( currentNodeId )->domainSize() ) );
-    NodeId* bqsons = static_cast<NodeId*>( ALLOCATE(
+    NodeId* bqsons = static_cast<NodeId*>( SOA_ALLOCATE(
         sizeof( NodeId ) * visited->nodeVar( currentNodeId )->domainSize() ) );
 
     for ( Idx moda = 0; moda < visited->nodeVar( currentNodeId )->domainSize();

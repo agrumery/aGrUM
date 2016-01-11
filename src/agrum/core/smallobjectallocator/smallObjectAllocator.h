@@ -55,14 +55,14 @@ namespace gum {
 
     public:
     /**
-     * @variable The default size of chunck of memory.
+     * @param The default size of chunck of memory.
      * These chuncks are pre-allocated memory space which are
      * then split in small memory space of the size of a small object
      */
     static const size_t GUM_DEFAULT_CHUNK_SIZE;
 
     /**
-     * @variable The default maximal size under which an object is considered
+     * @param The default maximal size under which an object is considered
      * small.
      * If an object size is over this limit, the normal new allocator is called.
      */
@@ -77,8 +77,6 @@ namespace gum {
     // ============================================================================
     /**
      * Constructor.
-     * @param chunkSize is the size of a chunk in bytes.
-     * @param maxObjectSize is the max size of object to be considered small
      * Greater object than maxObjectSize will be forwarded to op new.
      */
     // ============================================================================
@@ -129,8 +127,9 @@ namespace gum {
     /// Displays the number of allocation and deallocation made so far
     // ============================================================================
     void displayStats() {
-      GUM_TRACE("Nb Small Allocation : " << nbAllocation
-                << " -  Nb Small Deallocation : " << nbDeallocation);
+      GUM_TRACE( "Nb Small Allocation : " << nbAllocation
+                                          << " -  Nb Small Deallocation : "
+                                          << nbDeallocation );
     }
 
     Idx nbAlloc() { return nbAllocation; }
@@ -157,6 +156,11 @@ namespace gum {
     Idx nbDeallocation;
   };
 }  // namespace gum
+
+// Macro used to shorten code in classes using SmallObjectAllocator
+#define SOA_ALLOCATE(x ) SmallObjectAllocator::instance().allocate(x )
+#define SOA_DEALLOCATE(x, y ) \
+  SmallObjectAllocator::instance().deallocate(x, y )
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.inl>

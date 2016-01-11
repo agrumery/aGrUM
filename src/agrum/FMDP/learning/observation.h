@@ -38,7 +38,7 @@
 namespace gum {
 
   /**
-   * @class Observation Observation.h <agrum/FMDP/learning/observation.h>
+   * @class Observation observation.h <agrum/FMDP/learning/observation.h>
    * @brief
    * @ingroup fmdp_group
    *

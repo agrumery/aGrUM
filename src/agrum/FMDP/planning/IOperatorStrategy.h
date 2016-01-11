@@ -85,7 +85,7 @@ namespace gum {
     public:
     // ==========================================================================
     /// Performs a multiplication/projection on given qAction
-    /// @param qAction : the computed Q(s,a)
+    /// @return qAction : the computed Q(s,a)
     /// @warning given qAction is deleted, return the new one
     // ==========================================================================
     virtual MultiDimFunctionGraph<GUM_SCALAR>*

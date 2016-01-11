@@ -34,8 +34,8 @@
 
 namespace gum {
   /**
-   * @class FMDPSimulator FMDPSimulator.h
-   * <agrum/FMDP/simulation/FMDPSimulator.h>
+   * @class FMDPSimulator fmdpSimulator.h
+   * <agrum/FMDP/simulation/fmdpSimulator.h>
    * @brief A class to simulate a Factored Markov Decision Process.
    * @ingroup fmdp_group
    *

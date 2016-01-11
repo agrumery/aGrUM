@@ -36,10 +36,10 @@
 namespace gum {
 
   /**
-   * @class StatisticalLazyDecider StatisticalLazyDecider.h
-   * <agrum/FMDP/SDyna/StatisticalLazyDecider.h>
-   * @brief Class to make decision following an \epsilon-greedy compromise
-   * between exploration and exploitation
+   * @class StatisticalLazyDecider statisticalLazyDecider.h
+   * <agrum/FMDP/decision/statisticalLazyDecider.h>
+   * @brief Class to make no decision at all yet performing statistic on visited states.
+   * Actions are randomly chosen among all actions available
    * @ingroup fmdp_group
    *
    * Does nothing more for decison making

@@ -127,6 +127,7 @@ namespace gum {
      * NodeId of this node is generated automatically.
      *
      * @param var Associated variable
+     * @param sons a table of size var->domainSize() containing nodeid of sons nodes
      * @throw OperationNotAllowed if MultiDimFunctionGraph has no variable yet.
      * @return the id of the added non terminal node.
      */
@@ -144,6 +145,7 @@ namespace gum {
      * NodeId of this node is generated automatically.
      *
      * @param var Associated variable
+     * @param nid desired id for that node
      * @throw OperationNotAllowed if MultiDimFunctionGraph has no variable yet.
      * @return the id of the added non terminal node.
      */
@@ -330,4 +332,3 @@ namespace gum {
 // ============================================================================
 #endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 // ============================================================================
-

@@ -70,7 +70,6 @@ namespace gum {
      * @param target : the MultiDimFunctionGraph in which we load the structure
      * @param attributeSelectionThreshold : threshold under which a node is not
      * installed (pe-pruning)
-     * @param temporaryAPIfix : Issue in API in regard to IMDDI
      * @param attributeListe : Set of vars on which we rely to explain the
      * behaviour of learned variable
      * @param learnedValue : the variable from which we try to learn the
@@ -89,8 +88,7 @@ namespace gum {
      * @param target : the MultiDimFunctionGraph in which we load the structure
      * @param attributeSelectionThreshold : threshold under which a node is not
      * installed (pe-pruning)
-     * @param temporaryAPIfix : Issue in API in regard to IMDDI
-     * @param attributeListeSet of vars on which we rely to explain the
+     * @param attributeListe : Set of vars on which we rely to explain the
      * behaviour of learned function
      */
     // ==========================================================================
@@ -113,10 +111,10 @@ namespace gum {
     // ==========================================================================
     /**
      * Inserts a new observation
-     * @param the new observation to learn
+     * @param obs the new observation to learn
      */
     // ==========================================================================
-    void addObservation( const Observation* );
+    void addObservation( const Observation* obs );
 
     protected:
     // ==========================================================================
@@ -189,11 +187,11 @@ namespace gum {
     // ==========================================================================
     /**
      * Inserts an internal node in the target
-     * @param the source node in internal graph
+     * @param src the source node in internal graph
      * @return the mathcing node id in the target
      */
     // ==========================================================================
-    NodeId __insertNodeInFunctionGraph( NodeId );
+    NodeId __insertNodeInFunctionGraph( NodeId src );
 
     // ==========================================================================
     /**
@@ -201,7 +199,7 @@ namespace gum {
      * This function is a dispatcher that will call the right function according
      * to
      * the value of the template isScalar
-     * @param the source node in the learned graph
+     * @param src the source node in the learned graph
      * @return the matching node in the target
      */
     // ==========================================================================
@@ -214,22 +212,22 @@ namespace gum {
      * Insert a terminal node in the target.
      * This function is called if we're learning a real value function.
      * Inserts then a single value in target.
-     * @param the source node in the learned graph
+     * @param src the source node in the learned graph
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId __insertTerminalNode( NodeId, Int2Type<true> );
+    NodeId __insertTerminalNode( NodeId src, Int2Type<true> );
 
     // ==========================================================================
     /**
      * Insert a terminal node in the target.
      * This function is called if we're learning the behaviour of a variable.
      * Inserts then this variable and the relevant value beneath into target.
-     * @param the source node in the learned graph
+     * @param src the source node in the learned graph
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId __insertTerminalNode( NodeId, Int2Type<false> );
+    NodeId __insertTerminalNode( NodeId src, Int2Type<false> );
 
     /// @}
 

@@ -36,9 +36,6 @@
 #include <agrum/variables/discreteVariable.h>
 // =======================================================
 
-#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
-#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
-
 namespace gum {
 
   // ============================================================================
@@ -96,7 +93,7 @@ namespace gum {
     for ( auto nodeIter = _nodeSonsMap.beginSafe();
           nodeIter != _nodeSonsMap.endSafe();
           ++nodeIter )
-      DEALLOCATE( nodeIter.val(),
+      SOA_DEALLOCATE( nodeIter.val(),
                   sizeof( NodeId ) *
                       _nodeVarMap[nodeIter.key()]->domainSize() );
 
@@ -233,7 +230,7 @@ namespace gum {
         _removeNode( sonId );
       }
 
-      DEALLOCATE( _nodeSonsMap[currentNodeId],
+      SOA_DEALLOCATE( _nodeSonsMap[currentNodeId],
                   sizeof( NodeId ) * _nodeVarMap[currentNodeId]->domainSize() );
       _nodeSonsMap.erase( currentNodeId );
 
@@ -270,10 +267,10 @@ namespace gum {
       // Observation*>
       NodeDatabase<AttributeSelection, isScalar>** dbMap =
           static_cast<NodeDatabase<AttributeSelection, isScalar>**>(
-              ALLOCATE( sizeof( NodeDatabase<AttributeSelection, isScalar>* ) *
+              SOA_ALLOCATE( sizeof( NodeDatabase<AttributeSelection, isScalar>* ) *
                         desiredVar->domainSize() ) );
       Set<const Observation*>** obsetMap =
-          static_cast<Set<const Observation*>**>( ALLOCATE(
+          static_cast<Set<const Observation*>**>( SOA_ALLOCATE(
               sizeof( Set<const Observation*>* ) * desiredVar->domainSize() ) );
       for ( Idx modality = 0; modality < desiredVar->domainSize();
             ++modality ) {
@@ -291,16 +288,16 @@ namespace gum {
 
       // Then we can install each new leaves (and put in place the sonsMap)
       NodeId* sonsMap = static_cast<NodeId*>(
-          ALLOCATE( sizeof( NodeId ) * desiredVar->domainSize() ) );
+          SOA_ALLOCATE( sizeof( NodeId ) * desiredVar->domainSize() ) );
       for ( Idx modality = 0; modality < desiredVar->domainSize(); ++modality )
         sonsMap[modality] =
             _insertLeafNode( dbMap[modality], _value, obsetMap[modality] );
 
       // Some necessary clean up
-      DEALLOCATE( dbMap,
+      SOA_DEALLOCATE( dbMap,
                   sizeof( NodeDatabase<AttributeSelection, isScalar>* ) *
                       desiredVar->domainSize() );
-      DEALLOCATE( obsetMap,
+      SOA_DEALLOCATE( obsetMap,
                   sizeof( Set<const Observation*>* ) *
                       desiredVar->domainSize() );
 
@@ -324,14 +321,14 @@ namespace gum {
     //        sonsNodeDatabase =
     //        _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
     NodeId* sonsMap = static_cast<NodeId*>(
-        ALLOCATE( sizeof( NodeId ) * desiredVar->domainSize() ) );
+        SOA_ALLOCATE( sizeof( NodeId ) * desiredVar->domainSize() ) );
 
     // Then we create the new mapping
     for ( Idx desiredVarModality = 0;
           desiredVarModality < desiredVar->domainSize();
           ++desiredVarModality ) {
 
-      NodeId* grandSonsMap = static_cast<NodeId*>( ALLOCATE(
+      NodeId* grandSonsMap = static_cast<NodeId*>( SOA_ALLOCATE(
           sizeof( NodeId ) * _nodeVarMap[currentNodeId]->domainSize() ) );
       NodeDatabase<AttributeSelection, isScalar>* sonDB =
           new NodeDatabase<AttributeSelection, isScalar>( &_setOfVars, _value );
@@ -357,7 +354,7 @@ namespace gum {
     }
 
     // We suppress the old sons map and remap to the new one
-    DEALLOCATE( _nodeSonsMap[currentNodeId],
+    SOA_DEALLOCATE( _nodeSonsMap[currentNodeId],
                 sizeof( NodeId ) * _nodeVarMap[currentNodeId]->domainSize() );
     _nodeSonsMap[currentNodeId] = sonsMap;
 
@@ -475,7 +472,7 @@ namespace gum {
 
     // Retrait du vecteur fils
     if ( _nodeSonsMap.exists( currentNodeId ) ) {
-      DEALLOCATE( _nodeSonsMap[currentNodeId],
+      SOA_DEALLOCATE( _nodeSonsMap[currentNodeId],
                   sizeof( NodeId ) * _nodeVarMap[currentNodeId]->domainSize() );
       _nodeSonsMap.erase( currentNodeId );
     }

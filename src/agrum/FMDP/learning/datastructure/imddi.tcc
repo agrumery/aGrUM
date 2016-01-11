@@ -35,8 +35,6 @@
 #include <agrum/variables/labelizedVariable.h>
 // =======================================================
 
-#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
-#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 namespace gum {
 
@@ -386,7 +384,7 @@ namespace gum {
             curNodeIter;
             curNodeIter = curNodeIter->nextLink() ) {
         NodeId* sonsMap = static_cast<NodeId*>(
-            ALLOCATE( sizeof( NodeId ) * ( *varIter )->domainSize() ) );
+            SOA_ALLOCATE( sizeof( NodeId ) * ( *varIter )->domainSize() ) );
         for ( Idx modality = 0; modality < ( *varIter )->domainSize();
               ++modality )
           sonsMap[modality] =
@@ -430,7 +428,7 @@ namespace gum {
       AbstractLeaf* leaf, Int2Type<false> ) {
 
     NodeId* sonsMap = static_cast<NodeId*>(
-        ALLOCATE( sizeof( NodeId ) * this->_value->domainSize() ) );
+        SOA_ALLOCATE( sizeof( NodeId ) * this->_value->domainSize() ) );
     for ( Idx modality = 0; modality < this->_value->domainSize();
           ++modality ) {
       double newVal = 0.0;

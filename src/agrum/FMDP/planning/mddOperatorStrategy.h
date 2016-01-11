@@ -34,7 +34,7 @@
 namespace gum {
 
   /**
-   * @class MDDOperatorStrategy spumdd.h <agrum/FMDP/planning/spumdd.h>
+   * @class MDDOperatorStrategy mddOperatorStrategy.h <agrum/FMDP/planning/mddOperatorStrategy.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
@@ -94,11 +94,9 @@ namespace gum {
 
     protected:
     // ==========================================================================
-    /// Performs a multiplication/projection on given qAction
-    /// @param qAction : the computed Q(s,a)
-    /// @param pxip : the transition probabilities for the xip variable
-    /// @param xip : the variable we eliminate on the projection
-    /// @warning given qAction is deleted, return the new one
+    /**
+     *  Computes Qaction for given actionid
+     */
     // ==========================================================================
     MultiDimFunctionGraph<GUM_SCALAR>*
     regress( const MultiDimFunctionGraph<GUM_SCALAR>* Vold,

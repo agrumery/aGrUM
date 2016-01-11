@@ -35,7 +35,7 @@
 namespace gum {
 
   /**
-   * @class RandomDecider RandomDecider.h <agrum/FMDP/SDyna/RandomDecider.h>
+   * @class RandomDecider randomDecider.h <agrum/FMDP/decision/randomDecider.h>
    * @brief Class to make decision randomly
    * @ingroup fmdp_group
    *

@@ -28,9 +28,6 @@
 // ============================================================================
 #include <agrum/multidim/FunctionGraphUtilities/link.h>
 // ============================================================================
-#define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
-#define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
-// ============================================================================
 
 namespace gum {
 

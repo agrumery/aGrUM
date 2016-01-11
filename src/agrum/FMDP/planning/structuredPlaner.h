@@ -80,7 +80,10 @@ namespace gum {
                     GUM_SCALAR epsilon = 0.00001,
                     bool verbose = true ) {
       return new StructuredPlaner<GUM_SCALAR>(
-          new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon, verbose );
+          new MDDOperatorStrategy<GUM_SCALAR>(),
+          discountFactor,
+          epsilon,
+          verbose );
     }
 
     // ==========================================================================
@@ -91,7 +94,10 @@ namespace gum {
                  GUM_SCALAR epsilon = 0.00001,
                  bool verbose = true ) {
       return new StructuredPlaner<GUM_SCALAR>(
-          new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon, verbose );
+          new TreeOperatorStrategy<GUM_SCALAR>(),
+          discountFactor,
+          epsilon,
+          verbose );
     }
 
     /// @}
@@ -236,7 +242,7 @@ namespace gum {
     _minimiseFunctions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& );
 
     // ==========================================================================
-    /// Perform the R(s) + \gamma . function
+    /// Perform the R(s) + gamma . function
     /// @warning function is deleted, new one is returned
     // ==========================================================================
     virtual MultiDimFunctionGraph<GUM_SCALAR>*
@@ -295,7 +301,7 @@ namespace gum {
                                           SetTerminalNodePolicy>*>& );
 
     // ==========================================================================
-    /// From V(s)* = argmax_a Q*(s,a), this function extract \pi*(s)
+    /// From V(s)* = argmax_a Q*(s,a), this function extract pi*(s)
     /// This function mainly consists in extracting from each ArgMaxSet
     /// presents at the leaves the associated ActionSet
     /// @warning deallocate the argmax optimal value function

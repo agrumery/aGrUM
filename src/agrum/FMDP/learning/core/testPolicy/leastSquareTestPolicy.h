@@ -71,7 +71,8 @@ namespace gum {
       return SmallObjectAllocator::instance().allocate( s );
     }
     void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( LeastSquareTestPolicy ) );
+      SmallObjectAllocator::instance().deallocate(
+          p, sizeof( LeastSquareTestPolicy ) );
     }
 
     // ============================================================================
@@ -154,7 +155,9 @@ namespace gum {
     // ============================================================================
     /// Returns sum per modality table (needed for the merging)
     // ============================================================================
-    const HashTable<Idx, double>& sumAttrTable() const { return __sumAttrTable; }
+    const HashTable<Idx, double>& sumAttrTable() const {
+      return __sumAttrTable;
+    }
 
     // ============================================================================
     /// Returns global sum (needed for the merging)
