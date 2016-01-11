@@ -17,6 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Inline implementation for the abstract base class for all multi
+ * dimensionnal containers.
+ *
+ * MultiDimAdressable is the abstract base class for all multi dimensionnal
+ * adressable. Its purpose is to deal with slave Instantiation and notification
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
 
 // to ease IDE parser
 #include <agrum/multidim/multiDimAdressable.h>

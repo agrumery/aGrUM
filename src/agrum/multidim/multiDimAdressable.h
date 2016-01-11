@@ -19,13 +19,13 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Abstract base class for all multi dimensionnal containers.
+ * @brief Headers for the abstract base class for all multi dimensionnal
+ * containers.
  *
  * MultiDimAdressable is the abstract base class for all multi dimensionnal
  * adressable. Its purpose is to deal with slave Instantiation and notification
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- *<{prenom.nom}_at_lip6.fr>
  */
 
 #ifndef GUM_MULTIDIM_ADRESSABLE_H
@@ -39,124 +39,123 @@
 #include <agrum/multidim/instantiation.h>
 
 namespace gum {
-  /* =========================================================================*/
-  /* =========================================================================*/
-  /* ===                             GUM_MULTI_DIM_ADRESSABLE === */
-  /* =========================================================================*/
-  /* =========================================================================*/
+  // =========================================================================
+  // ===                             GUM_MULTI_DIM_ADRESSABLE              ===
+  // =========================================================================
   /**
    * @class MultiDimAdressable
-   * @brief Abstract base class for all multi dimensionnal addressable.
+   * @headerfile multiDimAdressable.h <agrum/multidim/multiDimAdressable.h>
    * @ingroup multidim_group
+   *
+   * @brief Abstract base class for all multi dimensionnal addressable.
    *
    * MultiDimAdressable is the abstract base class for all multi dimensionnal
    * adressable. Its purpose is to deal with slave Instantiation and
-   *notification.
+   * notification.
    */
-  /* =========================================================================*/
-
   class MultiDimAdressable : public MultiDimInterface {
     public:
-    // ############################################################################
+    // =======================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // =======================================================================
     /// @{
 
-    /// Default constructor.
-
+    /**
+     * @brief Default constructor.
+     */
     MultiDimAdressable();
 
-    /// Copy constructor.
-
+    /**
+     * @brief Copy constructor.
+     */
     MultiDimAdressable( const MultiDimAdressable& from );
 
-    /// Destructor.
-
+    /**
+     * @brief Destructor.
+     */
     virtual ~MultiDimAdressable();
 
     /// @}
-
-    // ############################################################################
+    // =======================================================================
     /// @name Slave management and extension due to slave management
-    // ############################################################################
+    // =======================================================================
     /// @{
 
-    /*
-     * Register i as a slave of this gum::MultiDimAdressable.
-     * @return Returns true if i becomes a slave of this
-     * gum::MultiDimAdressable.
+    /**
+     * @brief Register i as a slave of this MultiDimAdressable.
+     * @param i The Instantiation to enslave.
+     * @return Returns true if i becomes a slave of this MultiDimAdressable.
      */
-
     virtual bool registerSlave( Instantiation& i ) = 0;
 
     /**
-     * Unregister i as a slave of this gum::MultiDimAdressable.
+     * @brief Unregister i as a slave of this MultiDimAdressable.
+     * @param i The Instantiation to free.
      * @return Returns true, whatever happens.
      */
-
     virtual bool unregisterSlave( Instantiation& i ) = 0;
 
     /**
-     * Listen to change in a given Instantiation.
-     * @param i the Instantiation
-    * @param var The changed dim.
-    * @param oldval The old value.
-    * @param newval The changed value.
+     * @brief Listen to changes in a given Instantiation.
+     * @param i The Instantiation to listen.
+     * @param var The changed dim.
+     * @param oldval The old value.
+     * @param newval The changed value.
      */
-
     virtual void changeNotification( Instantiation& i,
                                      const DiscreteVariable* const var,
                                      const Idx& oldval,
                                      const Idx& newval ) = 0;
 
     /**
-     * Listen to setFirst in a given Instantiation.
-     * @param i The Instantiation.
+     * @brief Listen to setFirst in a given Instantiation.
+     * @param i The Instantiation to listen.
      */
-
     virtual void setFirstNotification( Instantiation& i ) = 0;
 
     /**
-     * Listen to setLast in a given Instantiation.
-     * @param i The Instantiation.
+     * @brief Listen to setLast in a given Instantiation.
+     * @param i The Instantiation to listen.
      */
-
     virtual void setLastNotification( Instantiation& i ) = 0;
 
     /**
-     * Listen to increment in a given Instantiation.
-     * @param i The Instantiation
+     * @brief Listen to increment in a given Instantiation.
+     * @param i The Instantiation to listen.
      */
-
     virtual void setIncNotification( Instantiation& i ) = 0;
 
     /**
-     * Listen to increment in each recorded Instantiation.
-     * @param i The Instantiation
+     * @brief Listen to increment in each recorded Instantiation.
+     * @param i The Instantiation to listen.
      */
-
     virtual void setDecNotification( Instantiation& i ) = 0;
 
-    /// Listen to an assignment of a value in a Instantiation.
-    // ===========================================================================
+    /**
+     * @brief Listen to an assignment of a value in a Instantiation.
+     * @param i The Instantiation to listen.
+     */
     virtual void setChangeNotification( Instantiation& i ) = 0;
 
     /**
-     * In order to insure the dereference for decorators, we need to virtualize
-     * the access to master pointer.
+     * @brief In order to insure the dereference for decorators, we need to
+     * virtualize the access to master pointer.
+     * @return Returns the master of this MultiDimAdressable.
      */
-
     virtual MultiDimAdressable& getMasterRef( void ) = 0;
 
     /**
-     * In order to insure the dereference for decorators, we need to virtualize
-     * the access to master pointer.
+     * @brief In order to insure the dereference for decorators, we need to
+     * virtualize the access to master pointer.
+     * @return Returns the master of this MultiDimAdressable.
      */
-
     virtual const MultiDimAdressable& getMasterRef( void ) const = 0;
 
-    /// String representation of internal data about i in this.
-
+    /**
+     * @brief Return a string representation of internal data about i in this.
+     * @param i The Instantiation to represent.
+     * @return Return a string representation of internal data about i in this.
+     */
     virtual const std::string toString( const Instantiation* i ) const = 0;
 
     /// @}
