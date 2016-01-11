@@ -663,7 +663,7 @@ namespace gum {
      * unset the end flag, use functions unsetOverflow(), unsetEnd() or one of
      * the setFirst() or setLast().
      *
-     * @param The set of variable to not increment in this Instantiation.
+     * @param i The set of variable to not increment in this Instantiation.
      */
     void incOut( const Instantiation& i );
 
@@ -701,7 +701,7 @@ namespace gum {
      * within the same loop). To unset the end flag, use functions
      * unsetOverflow(), unsetEnd() or one of the setFirst() or setLast().
      *
-     * @param The variable not to increment in this Instantiation.
+     * @param v The variable not to increment in this Instantiation.
      */
     void incNotVar( const DiscreteVariable& v );
 
@@ -1149,7 +1149,7 @@ namespace gum {
 
     /**
      * @brief Initialize this Instantiation.
-     * @param This Instantiation's master.
+     * @param master This Instantiation's master.
      */
     void __init( MultiDimAdressable* master );
 

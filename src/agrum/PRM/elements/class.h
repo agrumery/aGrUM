@@ -131,6 +131,11 @@ namespace gum {
       // ========================================================================
       /// @{
 
+      /**
+       * @brief Returns true if elt is an output node.
+       * @param elt A node of this class.
+       * @return Returns true if elt is an output node.
+       */
       virtual bool isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const;
 
       /**
@@ -142,8 +147,7 @@ namespace gum {
        * class.
        * @return true if safe_name is a cast descendant.
        * @throw NotFound Raised if safe_name does not name an
-       * Attribute<GUM_SCALAR>
-       *                 in this Class<GUM_SCALAR>.
+       * Attribute<GUM_SCALAR> in this Class<GUM_SCALAR>.
        */
       bool isCastDescendant( const std::string& safe_name ) const;
 
