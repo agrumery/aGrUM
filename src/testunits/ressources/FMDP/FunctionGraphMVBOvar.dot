@@ -1,0 +1,53 @@
+
+digraph " NO NAME" {
+node [shape = box];
+  16;  16 [label="16 - 0"];
+  17;  17 [label="17 - 10"];
+  18;  18 [label="18 - 9"];
+  19;  19 [label="19 - 1"];
+
+node [shape = ellipse];
+  1;  1 [label="1 - C"];
+  2;  2 [label="2 - ADR"];
+  3;  3 [label="3 - C'"];
+  6;  6 [label="6 - BO"];
+  10;  10 [label="10 - BPU"];
+  12;  12 [label="12 - BDR"];
+  14;  14 [label="14 - C'"];
+  20;  20 [label="20 - PL"];
+  21;  21 [label="21 - APU"];
+
+  1 -> 14 [label=" 1, ",color="#0000ff"];
+  1 -> 20 [label=" 0, ",color="#0000ff"];
+  2 -> 3 [label=" 0, ",color="#0000ff"];
+  2 -> 12 [label=" 1, ",color="#0000ff"];
+  2 -> 21 [label="0",color="#ff0000"];
+  2 -> 20 [label="0",color="#ff0000"];
+  3 -> 16 [label=" 1, ",color="#0000ff"];
+  3 -> 17 [label=" 0, ",color="#0000ff"];
+  3 -> 6 [label="0",color="#ff0000"];
+  3 -> 12 [label="0",color="#ff0000"];
+  3 -> 10 [label="0",color="#ff0000"];
+  3 -> 2 [label="0",color="#ff0000"];
+  6 -> 3 [label=" 0, ",color="#0000ff"];
+  6 -> 14 [label=" 1, ",color="#0000ff"];
+  6 -> 12 [label="1",color="#ff0000"];
+  6 -> 10 [label="1",color="#ff0000"];
+  10 -> 3 [label=" 0, ",color="#0000ff"];
+  10 -> 6 [label=" 1, ",color="#0000ff"];
+  10 -> 21 [label="1",color="#ff0000"];
+  12 -> 3 [label=" 0, ",color="#0000ff"];
+  12 -> 6 [label=" 1, ",color="#0000ff"];
+  12 -> 2 [label="1",color="#ff0000"];
+  14 -> 19 [label=" 0, ",color="#0000ff"];
+  14 -> 18 [label=" 1, ",color="#0000ff"];
+  14 -> 1 [label="1",color="#ff0000"];
+  14 -> 6 [label="1",color="#ff0000"];
+  20 -> 21 [label=" 1, ",color="#0000ff"];
+  20 -> 2 [label=" 0, ",color="#0000ff"];
+  20 -> 1 [label="0",color="#ff0000"];
+  21 -> 2 [label=" 0, ",color="#0000ff"];
+  21 -> 10 [label=" 1, ",color="#0000ff"];
+  21 -> 20 [label="1",color="#ff0000"];
+
+}
