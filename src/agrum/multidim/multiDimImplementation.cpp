@@ -17,4 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation of gum::MultiDimImplementation.
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
 #include <agrum/multidim/multiDimImplementation.h>
+
