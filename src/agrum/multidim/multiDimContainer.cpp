@@ -19,28 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of MultiDimInterface.
+ * @brief Implementation of MultiDimContainer.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
-#include <agrum/multidim/multiDimInterface.h>
+#include <agrum/multidim/multiDimContainer.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/multidim/multiDimInterface.inl>
-#endif  // GUM_NOINLINE
-
-namespace gum {
-
-  MultiDimInterface& operator<<( MultiDimInterface& c,
-                                 const DiscreteVariable& v ) {
-    c.add( v );
-    return c;
-  }
-
-  MultiDimInterface& operator>>( MultiDimInterface& c,
-                                 const DiscreteVariable& v ) {
-    c.erase( v );
-    return c;
-  }
-
-} /* namespace gum */
