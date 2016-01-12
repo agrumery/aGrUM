@@ -295,8 +295,12 @@ namespace gum {
     }
   }
 
-  // for friendly displaying the content of the array
+  template <typename GUM_SCALAR>
+  INLINE void MultiDimImplementation<GUM_SCALAR>::_invert( Idx p1, Idx p2 ) {
+    __vars.swap( p1, p2 );
+  }
 
+  // for friendly displaying the content of the array
   template <typename GUM_SCALAR>
   INLINE std::ostream& operator<<( std::ostream& out,
                                    const MultiDimImplementation<GUM_SCALAR>& array ) {

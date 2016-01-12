@@ -334,9 +334,7 @@ namespace gum {
         if (__functionGraph->__var2NodeIdMap[preVar]->list() &&
              __functionGraph->__var2NodeIdMap[movedVar]->list())
           __adjacentSwap(preVar, movedVar);
-        const auto& previous_var = __functionGraph->variable(currentPos);
-        const auto& current_var = __functionGraph->variable(currentPos);
-        __functionGraph->_swap(&previous_var, &current_var);
+        __functionGraph->_invert(currentPos - 1, currentPos);
       }
     else
       for (Idx currentPos =
@@ -348,10 +346,9 @@ namespace gum {
         if (__functionGraph->__var2NodeIdMap[suiVar]->list() &&
              __functionGraph->__var2NodeIdMap[movedVar]->list())
           __adjacentSwap(movedVar, suiVar);
-        const auto& current_var = __functionGraph->variable(currentPos);
-        const auto& next_var = __functionGraph->variable(currentPos + 1);
-        __functionGraph->_swap(&current_var, &next_var);
+        __functionGraph->_invert(currentPos, currentPos + 1);
       }
+
   }
 
 

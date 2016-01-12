@@ -266,6 +266,17 @@ namespace gum {
      */
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
+    /**
+     * @brief Inverts variables at position p1 and p2
+     *
+     * Call this from subclass when you want to invert position of two
+     * variables in the MultiDimImplementation.
+     *
+     * @param p1 The first position.
+     * @param p2 The second position.
+     */
+    virtual void _invert( Idx p1, Idx p2 );
+
     /// @}
 
     private:

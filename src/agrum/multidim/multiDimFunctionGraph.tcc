@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                              //
@@ -725,7 +726,7 @@ namespace gum {
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::_swap(
       const DiscreteVariable* x, const DiscreteVariable* y) {
-    MultiDimImplementation<GUM_SCALAR>::_swap(x, y);
+    GUM_ERROR(OperationNotAllowed, "Not Implemented Yet")
   }
 
   // ============================================================================
