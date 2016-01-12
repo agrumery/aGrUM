@@ -88,12 +88,6 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    /// Using MultiDimContainer::get(const Instantiation&).
-    using MultiDimContainer<GUM_SCALAR>::get;
-
-    /// @see gum::MultiDimInterface::variablesSequence()
-    virtual const Sequence<const DiscreteVariable*>& variablesSequence( void ) const;
-
     /**
      * @brief Returns the real name of the multiDim implementation
      *
@@ -105,7 +99,7 @@ namespace gum {
      * which is the best functions to use, say, when we wish to use operators
      * such as operator+ on two MultiDimImplementations.
      *
-     * @Return Returns the real name of the multiDim implementation
+     * @return Returns the real name of the multiDim implementation
      */
     virtual const std::string& name() const = 0;
 
@@ -116,24 +110,6 @@ namespace gum {
      * operator have been defined.
      */
     const std::string& basename() const;
-
-    /// @}
-    // ========================================================================
-    /// @name Implementation of MultiDimInterface
-    // ========================================================================
-    /// @{
-
-    /// @see gum::MultiDimInterface::add(const DiscreteVariable& v)
-    virtual void add( const DiscreteVariable& v );
-
-    /// @see gum::MultiDimInterface::erase(const DiscreteVariable& v)
-    virtual void erase( const DiscreteVariable& v );
-
-    /// @see gum::MultiDimInterface::nbrDim()
-    virtual Idx nbrDim() const;
-
-    /// @see gum::MultiDimInterface::domainSize()
-    virtual Size domainSize() const;
 
     /**
      * @brief Returns the real number of parameters used for this table.
@@ -162,50 +138,42 @@ namespace gum {
      */
     float compressionRate() const;
 
-    /// @see gum::MultiDimInterface::variable(Idx i)
-    const DiscreteVariable& variable( Idx i ) const;
+    /// @}
+    // ========================================================================
+    /// @name MultiDimInterface implementation
+    // ========================================================================
+    /// @{
+    virtual Idx nbrDim() const;
 
-    /// @see gum::MultiDimInterface::pos( const DiscreteVariable& )
-    Idx pos( const DiscreteVariable& v ) const;
+    virtual Size domainSize() const;
 
-    /// @see gum::MultiDimInterface::contains(const DiscreteVariable& v)
-    bool contains( const DiscreteVariable& v ) const;
+    virtual void add( const DiscreteVariable& v );
 
-    /// @see gum::MultiDimInterface::clear()
-    bool empty() const;
+    virtual void erase( const DiscreteVariable& v );
+
+    virtual const Sequence<const DiscreteVariable*>& variablesSequence( void ) const;
+
+    virtual const DiscreteVariable& variable( Idx i ) const;
+ 
+    virtual Idx pos( const DiscreteVariable& v ) const;
+
+    virtual bool contains( const DiscreteVariable& v ) const;
+
+    virtual bool empty() const;
 
     /// @}
     // =========================================================================
-    /// @name Slave management and extension due to slave management
+    /// @name MultiDimAdressable implementation
     // =========================================================================
     /// @{
 
-    /// @see MultiDimAdressable::getMasterRef()
-    virtual MultiDimAdressable& getMasterRef( void );
-
-    /// @see MultiDimAdressable::getMasterRef() const
-    virtual const MultiDimAdressable& getMasterRef( void ) const;
-
-    /// @see MultiDimAdressable::registerSlave( Instantiation& )
     virtual bool registerSlave( Instantiation& i );
 
-    /// @see MultiDimArray::unregisterSlave( Instantiation& )
     virtual bool unregisterSlave( Instantiation& i );
 
-    /// @}
-    // =========================================================================
-    /// @name Fast large modifications in structures
-    // =========================================================================
-    /// @{
+    virtual MultiDimAdressable& getMasterRef( void );
 
-    /// @see gum::MultiDimContainer::beginMultipleChanges()
-    virtual void beginMultipleChanges( void );
-
-    /// @see gum::MultiDimContainer::endMultipleChanges()
-    virtual void endMultipleChanges( void );
-
-    /// @see gum::MultiDimContainer::endMultipleChanges(const GUM_SCALAR& )
-    virtual void endMultipleChanges( const GUM_SCALAR& );
+    virtual const MultiDimAdressable& getMasterRef( void ) const;
 
     /// @}
     // =========================================================================
@@ -213,8 +181,15 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    /// @see MultiDimContainer::newFactory()
+    using MultiDimContainer<GUM_SCALAR>::get;
+
     virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
+
+    virtual void beginMultipleChanges( void );
+
+    virtual void endMultipleChanges( void );
+
+    virtual void endMultipleChanges( const GUM_SCALAR& );
 
     /// @}
 
