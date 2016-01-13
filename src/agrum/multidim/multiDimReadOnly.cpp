@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr   *
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,10 +19,10 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of the MultiDimWithOffset class.
+ * @brief Header of the MultiDimReadOnly class.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/multidim/multiDimWithOffset.h>
+#include <agrum/multidim/multiDimReadOnly.h>
 

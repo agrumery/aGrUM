@@ -17,6 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Headers of the MultiDimWithOffset class.
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
 
 // to ease IDE parsers...
 #include <agrum/multidim/multiDimImplementation.h>
@@ -24,7 +30,7 @@
 
 namespace gum {
 
-  /// Default constructor: creates an empty null dimensional matrix
+  // Default constructor: creates an empty null dimensional matrix
 
   template <typename GUM_SCALAR>
   MultiDimWithOffset<GUM_SCALAR>::MultiDimWithOffset()
@@ -33,7 +39,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimWithOffset );
   }
 
-  /// copy constructor
+  // copy constructor
 
   template <typename GUM_SCALAR>
   MultiDimWithOffset<GUM_SCALAR>::MultiDimWithOffset(
@@ -44,7 +50,7 @@ namespace gum {
     GUM_CONS_CPY( MultiDimWithOffset );
   }
 
-  /// destructor
+  // destructor
 
   template <typename GUM_SCALAR>
   MultiDimWithOffset<GUM_SCALAR>::~MultiDimWithOffset() {
@@ -54,7 +60,7 @@ namespace gum {
     // MultiDimImplementation
   }
 
-  /// add a new dimension, needed for updating the _offsets & _gaps
+  // add a new dimension, needed for updating the _offsets & _gaps
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimWithOffset<GUM_SCALAR>::add( const DiscreteVariable& v ) {
@@ -68,7 +74,7 @@ namespace gum {
     _gaps.insert( &v, lg );
   }
 
-  /// removes a dimension, needed for updating the _offsets & _gaps
+  // removes a dimension, needed for updating the _offsets & _gaps
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -91,7 +97,7 @@ namespace gum {
     MultiDimImplementation<GUM_SCALAR>::erase( v );
   }
 
-  /// listen to change in each recorded Instantiation.
+  // listen to change in each recorded Instantiation.
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimWithOffset<GUM_SCALAR>::changeNotification(
@@ -113,7 +119,7 @@ namespace gum {
     }
   }
 
-  /// listen to an assignment of a value in a Instantiation
+  // listen to an assignment of a value in a Instantiation
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -122,7 +128,7 @@ namespace gum {
     _offsets[&i] = _getOffs( i );
   }
 
-  /// listen to setFirst in each recorded Instantiation.
+  // listen to setFirst in each recorded Instantiation.
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -131,7 +137,7 @@ namespace gum {
     _offsets[&i] = 0;
   }
 
-  /// listen to setLast in each recorded Instantiation.
+  // listen to setLast in each recorded Instantiation.
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -140,7 +146,7 @@ namespace gum {
     _offsets[&i] = this->domainSize() - 1;
   }
 
-  /// listen to increment in each recorded Instantiation.
+  // listen to increment in each recorded Instantiation.
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -150,7 +156,7 @@ namespace gum {
     ++_offsets[&i];
   }
 
-  /// listen to increment in each recorded Instantiation.
+  // listen to increment in each recorded Instantiation.
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -160,7 +166,7 @@ namespace gum {
     --_offsets[&i];
   }
 
-  /// add a Instantiation as a slave
+  // add a Instantiation as a slave
 
   template <typename GUM_SCALAR>
   INLINE bool
@@ -174,7 +180,7 @@ namespace gum {
     return false;
   }
 
-  /// remove a registered slave instantiation
+  // remove a registered slave instantiation
 
   template <typename GUM_SCALAR>
   INLINE bool
@@ -184,7 +190,7 @@ namespace gum {
     return true;
   }
 
-  /// Compute the offset of a Instantiation
+  // Compute the offset of a Instantiation
   /** If the instantiation is not fully compatible with the MultiDimWithOffset,
    * no exception thrown
    * but 0 is assumed for dimensions not present in the instantiation.
@@ -207,8 +213,8 @@ namespace gum {
     return off;
   }
 
-  /// For a given indice of a value in the vector _values, this method computes
-  /// the corresponding instantiation
+  // For a given indice of a value in the vector _values, this method computes
+  // the corresponding instantiation
   /**
    * @param result the result of this methods, we assume that the given
    * instantiation already contains all the variables
@@ -231,7 +237,7 @@ namespace gum {
     GUM_ASSERT( indice == 0 );
   }
 
-  /// string representation of internal data about i in this.
+  // string representation of internal data about i in this.
   template <typename GUM_SCALAR>
   INLINE const std::string
   MultiDimWithOffset<GUM_SCALAR>::toString( const Instantiation* i ) const {
@@ -252,8 +258,8 @@ namespace gum {
     return _getOffs( i );
   }
 
-  /// set the Instantiation to the values corresponding to the offset (in this
-  /// array)
+  // set the Instantiation to the values corresponding to the offset (in this
+  // array)
   template <typename GUM_SCALAR>
   INLINE Instantiation&
   MultiDimWithOffset<GUM_SCALAR>::fromOffset( Instantiation& i,

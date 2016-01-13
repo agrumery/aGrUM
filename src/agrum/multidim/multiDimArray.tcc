@@ -17,13 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation of the MultiDimArray class.
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
 
 #include <agrum/multidim/multiDimWithOffset.h>
 #include <agrum/multidim/multiDimArray.h>
 
 namespace gum {
 
-  /// Default constructor: creates an empty null dimensional matrix
+  // Default constructor: creates an empty null dimensional matrix
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR>::MultiDimArray()
       : MultiDimWithOffset<GUM_SCALAR>() {
@@ -31,7 +37,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimArray );
   }
 
-  /// copy constructor
+  // copy constructor
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR>::MultiDimArray(
       const MultiDimArray<GUM_SCALAR>& src )
@@ -41,7 +47,7 @@ namespace gum {
     GUM_CONS_CPY( MultiDimArray );
   }
 
-  /// destructor
+  // destructor
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR>::~MultiDimArray() {
     // for debugging purposes
@@ -49,7 +55,7 @@ namespace gum {
     // no need to unregister all slaves as it will be done by MultiDimWithOffset
   }
 
-  /// data access operator
+  // data access operator
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR&
   MultiDimArray<GUM_SCALAR>::_get( const Instantiation& i ) const {
@@ -60,7 +66,7 @@ namespace gum {
     }
   }
 
-  /// add a new dimension, needed for updating the _offsets & _gaps
+  // add a new dimension, needed for updating the _offsets & _gaps
   template <typename GUM_SCALAR>
   INLINE void MultiDimArray<GUM_SCALAR>::add( const DiscreteVariable& v ) {
     Size lg = MultiDimWithOffset<GUM_SCALAR>::domainSize();
@@ -71,7 +77,7 @@ namespace gum {
     }
   }
 
-  /// removes a dimension, needed for updating the _offsets & _gaps
+  // removes a dimension, needed for updating the _offsets & _gaps
   template <typename GUM_SCALAR>
   INLINE void MultiDimArray<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
     Sequence<const DiscreteVariable*> variables = this->variablesSequence();
@@ -116,7 +122,7 @@ namespace gum {
     return this->domainSize();
   }
 
-  /// synchronise content after MultipleChanges
+  // synchronise content after MultipleChanges
   template <typename GUM_SCALAR>
   INLINE void MultiDimArray<GUM_SCALAR>::_commitMultipleChanges( void ) {
     if ( MultiDimWithOffset<GUM_SCALAR>::domainSize() != _values.size() ) {
@@ -124,7 +130,7 @@ namespace gum {
     }
   }
 
-  /// synchronise content after MultipleChanges
+  // synchronise content after MultipleChanges
   template <typename GUM_SCALAR>
   INLINE void
   MultiDimArray<GUM_SCALAR>::_commitMultipleChanges( const GUM_SCALAR& x ) {
@@ -146,7 +152,7 @@ namespace gum {
     return new MultiDimArray<GUM_SCALAR>;
   }
 
-  /// returns the element stored in the multidimArray at a given offset
+  // returns the element stored in the multidimArray at a given offset
   template <typename GUM_SCALAR>
   INLINE const GUM_SCALAR&
   MultiDimArray<GUM_SCALAR>::unsafeGet( Idx offset ) const {
@@ -159,7 +165,7 @@ namespace gum {
     _values[offset] = data;
   }
 
-  /// returns the element stored in the multidimArray at a given offset
+  // returns the element stored in the multidimArray at a given offset
   template <typename GUM_SCALAR>
   INLINE const GUM_SCALAR&
   MultiDimArray<GUM_SCALAR>::getByOffset( Idx offset ) const {
@@ -195,4 +201,3 @@ namespace gum {
 
 } /* namespace gum */
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
