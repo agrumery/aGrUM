@@ -14,7 +14,7 @@ if(USE_NANODBC)
 	CHECK_INCLUDE_FILE_CXX("sql.h" HAVE_SQLHEADER)
 	IF(NOT HAVE_SQLHEADER)
 		set(USE_NANODBC OFF)
-		message(STATUS "USECan not find <sql.h>. Nanodbc support is OFF.")
+		message(STATUS "** aGrUM Notification: Can not find <sql.h>. Nanodbc support is OFF.")
 	ENDIF(NOT HAVE_SQLHEADER)
 ENDIF(USE_NANODBC)
 
