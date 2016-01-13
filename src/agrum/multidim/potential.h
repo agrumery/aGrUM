@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr   *
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,13 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Class representing a potential. Using the decorator pattern, this
- * representation is independant from the implementation of the multidimension
- * matrix
- *
+/**
+ * @file
+ * @brief Header of the Potential class.
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- *<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_POTENTIAL_H
 #define GUM_POTENTIAL_H
@@ -31,142 +28,112 @@
 #include <vector>
 
 #include <agrum/config.h>
-
 #include <agrum/core/set.h>
-
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
-  /* ===                          GUM_PROBA                                  ===
-   */
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
-  /** @class Potential
-   * @brief Class representing a potential. Using the decorator pattern, this
-   * representation is independant from the implementation of the multidimension
-   * matrix
-   * @ingroup multidim_group */
-  /* ===========================================================================
+  // ==========================================================================
+  // ===                          POTENTIAL                                 ===
+  // ==========================================================================
+
+  /**
+   * @class Potential potential.h <agrum/multidim/potential.h>
+   * @ingroup multidim_group
+   *
+   * @brief Class representing a potential.
+   *
+   * Using the decorator pattern, this representation is independant from the
+   * implementation of the multidimensional matrix.
+   *
+   * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
+   * matrix.
    */
   template <typename GUM_SCALAR>
-
   class Potential : public MultiDimDecorator<GUM_SCALAR> {
 
     public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
+    // =========================================================================
+    /// @name Constructors, Destructors and Copy
+    // =========================================================================
     /// @{
 
     /**
-     * Default constructor: creates an empty null dimensional matrix
-     * choose a MultiDimArray<> as decorated implementation.
+     * @brief Default constructor.
+     *
+     * Creates an empty null dimensional matrix with a MultiDimArray as
+     * its implementation.
      */
     Potential();
 
     /**
-     * Creates an potential around aContent.
-     * @param aContent decorated implementation
+     * @brief Creates an potential around aContent.
+     * @param aContent The implementation of this Potential.
      */
     explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent );
 
     /**
-     * Copy constructor.
+     * @brief Copy constructor.
+     * @param src The Potential to copy.
      */
     explicit Potential( const Potential<GUM_SCALAR>& src );
 
     /**
-     * Copy constructor.
+     * @brief Copy constructor.
      *
-     * The newly created matrix contains the same variables and the same values
-     *as
-     * from, but no instantiation is associated to it.
-     * @param aContent decorated implementation
-     * @param src the multidimensional matrix we copy into this
+     * The newly created Potential share the variables and the values
+     * from src, but no instantiation is associated to it.
+     *
+     * @param aContent The implementation to use in this Potential.
+     * @param src The MultiDimContainer to copy.
      */
     explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
                         const MultiDimContainer<GUM_SCALAR>& src );
 
     /**
-     * Destructor.
+     * @brief Copy operator.
      *
-     * Note that, when the multidimensional array is removed from memory, its
-     * variables are not removed as well.
+     * @param src The Potential to copy.
+     */
+    Potential<GUM_SCALAR>& operator=( const Potential<GUM_SCALAR>& src );
+
+    /**
+     * @brief Destructor.
      */
     ~Potential();
 
     /// @}
+    // ========================================================================
+    /// @name MultiDimContainer implementation
+    // ========================================================================
+    /// @{
 
-    /**
-     * This method creates a clone of this object, withouth its content
-     * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * @warning you must desallocate by yourself the memory
-     * @return an empty clone of this object with the same type
-     */
     virtual Potential<GUM_SCALAR>* newFactory() const;
 
-    /// @name classic operations on probability in Shafer-Shenoy
+    virtual const std::string toString() const;
+
+    /// @}
+    // ========================================================================
+    /// @name Class operation for Potential instances
+    // ========================================================================
     ///@{
 
     /// normalisation of this do nothing if sum is 0
     Potential<GUM_SCALAR>& normalize() const;
 
-    /// marginalizing p over the vars on *this.
-    /// @throw OperationNotAllowed if there is var in *this not in p.
-    Potential<GUM_SCALAR>& marginalize( const Potential<GUM_SCALAR>& p ) const;
-
-    /// Multiplication of args.
-    /// @throw OperationNotAllowed if *this is not empty
-    void multiplicate( const Potential<GUM_SCALAR>& p1,
-                       const Potential<GUM_SCALAR>& p2 );
-
-    /// Multiplication of this and arg (in this).
-    Potential<GUM_SCALAR>& multiplicateBy( const Potential<GUM_SCALAR>& p1 );
-
-    ///@}
-
-    Potential<GUM_SCALAR>& operator=( const Potential<GUM_SCALAR>& src );
-
     /// sum of all elements in this
     const GUM_SCALAR sum() const;
-
-    /**
-     * string representation of this.
-     */
-    virtual const std::string toString() const;
+    ///@}
 
     protected:
-    /// perform the marginalization p over the vars on *this.
-    void _marginalize( const Potential& p,
-                       const Set<const DiscreteVariable*>& del_vars ) const;
-
-    /// perform the multiplication of args.
-    void _multiplicate( const Potential& p1, const Potential& p2 );
 
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
-  extern template class Potential<float>;
-  extern template class Potential<double>;
 } /* namespace gum */
 
 #include <agrum/multidim/potential.tcc>
 
 #endif /* GUM_POTENTIAL_H */
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

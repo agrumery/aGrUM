@@ -437,16 +437,27 @@ namespace gum {
       SVED<GUM_SCALAR>::BucketSet pool, trash;
       __bb.compute( i, elt->id() );
       __eliminateNodes( i, elt->id(), pool, trash );
-      m.fill( (GUM_SCALAR)1 );
 
-      for ( const auto pot : pool ) {
+      std::vector< const Potential<GUM_SCALAR>* > result;
+      for ( auto pot : pool ) {
         if ( pot->contains( *( m.variablesSequence().atPos( 0 ) ) ) )
-          m.multiplicateBy( *pot );
+          result.push_back( pot );
       }
 
-      GUM_ASSERT( m.nbrDim() == (Size)1 );
+      while (result.size() > 1) {
+        const auto &p1 = *(result.back());
+        result.pop_back();
+        const auto &p2 = *(result.back());
+        result.pop_back();
+        auto mult = new Potential<GUM_SCALAR>( p1 * p2 );
+        result.push_back( mult );
+        trash.insert(mult);
+      }
 
+      m = *(result.back());
       m.normalize();
+
+      GUM_ASSERT( m.nbrDim() == (Size)1 );
 
       // cleaning up the mess
       for ( const auto pot : trash )

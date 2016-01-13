@@ -55,8 +55,8 @@ namespace gum {
    * See operator<<(std::ostream&, const MultiDimImplementation<GUM_SCALAR>&)
    * to print a gum::MultiDimImplementation.
    *
-   * @tparam GUM_SCALAR The type of the values stored in the
-   * MultiDimImplementation.
+   * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
+   * matrix.
    */
   template <typename GUM_SCALAR>
   class MultiDimImplementation : public MultiDimContainer<GUM_SCALAR> {

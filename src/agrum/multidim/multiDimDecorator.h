@@ -45,9 +45,12 @@ namespace gum {
    * multidimensional matrix concepts.
    *
    * A MultiDimDecorator is a virtual class for all encapsulation of
-   * MultiDimImplementation * (for instance probability, utility, etc.).  It
-   * implements a decorator design pattern in order to have a array/tree/sparse
-   * matrix/... implementation for multiDim<*GUM_SCALAR*>
+   * MultiDimImplementation, for example probability, utility, etc.  It
+   * implements a decorator design pattern in order to have a array, tree,
+   * sparse or matrix (...) implementation of MultiDimImplementation.
+   *
+   * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
+   * matrix.
    */
   template <typename GUM_SCALAR>
   class MultiDimDecorator : public MultiDimContainer<GUM_SCALAR> {

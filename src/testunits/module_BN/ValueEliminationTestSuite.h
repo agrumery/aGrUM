@@ -121,12 +121,13 @@ namespace gum_tests {
         p3.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i1 );
-        p.marginalize( p3 );
+        gum::Set<const gum::DiscreteVariable*> del_vars;
+        del_vars << &(bn->variable(i1));
+        auto p = projectSum(p3, del_vars);
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p[j], 1.0, 1e-5 );
+          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
+        delete p;
       }
 
       const gum::Potential<float>& p4 = bn->cpt( i4 );
@@ -139,12 +140,13 @@ namespace gum_tests {
         p4.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i1 ) << bn->variable( i2 );
-        p.marginalize( p4 );
+        gum::Set<const gum::DiscreteVariable*> del_vars;
+        del_vars << &(bn->variable(i1)) << &(bn->variable(i2));
+        auto p = projectSum(p4, del_vars);
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p[j], 1.0, 1e-5 );
+          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
+        delete p;
       }
 
       const gum::Potential<float>& p5 = bn->cpt( i5 );
@@ -159,13 +161,15 @@ namespace gum_tests {
         p5.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i4 ) << bn->variable( i2 ) << bn->variable( i3 );
-        p.marginalize( p5 );
+        gum::Set<const gum::DiscreteVariable*> del_vars;
+        del_vars << &( bn->variable( i4 ) ) << &( bn->variable( i2 ) )
+                 << &( bn->variable( i3 ) );
+        auto p = projectSum(p5, del_vars);
 
         for ( gum::Instantiation j( p ); !j.end(); ++j ) {
-          TS_ASSERT_DELTA( p[j], 1.0, 1e-5 );
+          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
         }
+        delete p;
       }
     }
 

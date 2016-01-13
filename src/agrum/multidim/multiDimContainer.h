@@ -77,7 +77,8 @@ namespace gum {
    * }
    * @endcode
    *
-   * @tparam GUM_SCALAR The type stored in the multidimensional matrix.
+   * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
+   * matrix.
    */
   template <typename GUM_SCALAR>
   class MultiDimContainer : public MultiDimAdressable {
