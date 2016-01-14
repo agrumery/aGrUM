@@ -623,6 +623,7 @@ namespace gum {
         result.pop_back();
         auto mult = new Potential<GUM_SCALAR>(p1 * p2);
         trash.insert( mult );
+        result.push_back(mult);
       }
 
       m = *(result.back());
