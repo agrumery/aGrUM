@@ -5,7 +5,7 @@
 BasedOnStyle: LLVM
 
 Standard: Cpp11
-ColumnLimit: 90
+ColumnLimit: 80
 
 MaxEmptyLinesToKeep: 2
 
