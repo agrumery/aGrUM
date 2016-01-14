@@ -122,7 +122,7 @@ namespace gum_tests {
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &(bn->variable(i1));
+        del_vars << &(bn->variable(i3));
         auto p = projectSum(p3, del_vars);
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
@@ -141,7 +141,7 @@ namespace gum_tests {
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &(bn->variable(i1)) << &(bn->variable(i2));
+        del_vars << &(bn->variable(i4));
         auto p = projectSum(p4, del_vars);
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
@@ -162,8 +162,7 @@ namespace gum_tests {
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &( bn->variable( i4 ) ) << &( bn->variable( i2 ) )
-                 << &( bn->variable( i3 ) );
+        del_vars << &( bn->variable( i5 ) );
         auto p = projectSum(p5, del_vars);
 
         for ( gum::Instantiation j( p ); !j.end(); ++j ) {
