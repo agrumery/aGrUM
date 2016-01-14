@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -22,11 +21,9 @@
  * @file
  * @brief Sources of gum::MultiDimFunctionGraph.
  *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  * @author Jean-Christophe Magnan
- *
  */
-// =============================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
-// =============================================================================
 
-namespace gum {}  // end of namespace gum
+#include <agrum/multidim/multiDimFunctionGraph.h>
+

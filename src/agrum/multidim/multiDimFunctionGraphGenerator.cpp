@@ -21,25 +21,21 @@
  * @file
  * @brief Sources of MultiDimFunctionGraphGenerator.
  *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  * @author Jean-Christophe Magnan
  *
  */
-// ==========================================================================
+
 #include <random>
 #include <cstdlib>
-// ==========================================================================
 #include <agrum/multidim/multiDimFunctionGraphGenerator.h>
-// ==========================================================================
 #include <agrum/core/priorityQueue.h>
-// ==========================================================================
 
 namespace gum {
 
   Idx MultiDimFunctionGraphGenerator::__genSeed = 0;
 
-  // ==========================================================================
   // Constructor
-  // ==========================================================================
   MultiDimFunctionGraphGenerator::MultiDimFunctionGraphGenerator(
       Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable*>& varSeq )
       : __varSeq( varSeq ) {
@@ -49,9 +45,7 @@ namespace gum {
     __nbTotalVar = __varSeq.size();
   }
 
-  // ==========================================================================
   // Destructor
-  // ==========================================================================
   MultiDimFunctionGraphGenerator::~MultiDimFunctionGraphGenerator() {
 
     GUM_DESTRUCTOR( MultiDimFunctionGraphGenerator );

@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -20,22 +19,19 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::MultiDimFunctionGraphManager.
+ * @brief Headers of MultiDimFunctionGraphManager.
  *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  * @author Jean-Christophe Magnan
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 
-// ============================================================================
 #include <agrum/config.h>
-// ============================================================================
 #include <agrum/graphs/nodeGraphPart.h>
-// ============================================================================
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
-// ============================================================================
 
 namespace gum {
 
@@ -43,287 +39,384 @@ namespace gum {
   class MultiDimFunctionGraph;
 
   /**
-   * @class MultiDimFunctionGraphManager multiDimFunctionGraphManager.h
-   <agrum/multidim/multiDimFunctionGraphManager.h>
-   *
-   * @brief Class implementingting a function graph manager
-   * This class provides the methods to edit a Function Graph.
-   * Any modification on a MultiDimFunctionGraph graph is done via this class.
-   *
-   * At any time during the runtime, it exists only one instance of this class
-   for a given MultiDimFunctionGraph.
-   * To get such instance, use MultiDimFunctionGraph::getManager();
-   * To do so :@code
-       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dg =
-   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>::get*ANY*Instance();
-       MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy>* dgm =
-   dg->manager();
-       @endcode
-   * This is the only way to get an instance of a MultiDimFunctionGraphManager
-   since the constructor is private.
-   *
+   * @class MultiDimFunctionGraphManager
    * @ingroup multidim_group
+   *
+   * @brief Class implementingting a function graph manager.
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/multidim/multiDimFunctionGraphManager.h>
+   * @endcode
+   *
+   * This class provides methods to edit a Function Graph. Any modification on
+   * a MultiDimFunctionGraph graph must be done via this class.
+   *
+   * This class is a singleton and its unique instance ca be accessed using the
+   * MultiDimFunctionGraph::getManager() method.
+   *
+   * To do so :
+   *
+   * @code
+   * // You can also use getTreeInstance()
+   * auto * func_graph =
+   *    MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
+   * auto manager = dg->manager();
+   * @endcode
+   *
+   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
+   * @tparam TerminalNodePolicy The terminal node policy to use.
    */
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   class MultiDimFunctionGraphManager {
-    // ############################################################################
+    // =========================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // =========================================================================
     /// @{
 
-    // ============================================================================
-    /// This friend methods from is the only way to get an instance of a
-    /// manager.
-    /// See class description for more info.
-    // ============================================================================
+    /**
+     * @brief This friend methods from is the only way to get an instance of a
+     * manager.
+     *
+     * See class description for more info.
+     */
     friend MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>*
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::manager();
 
-    // ============================================================================
     /**
-     * Default constructor.
-     * Private.
+     * @brief Default constructor.
+     *
      * You have to call MultiDimFunctionGraph::getManager() to get the instance
      * of MultiDimFunctionGraphManager bound to your function graph.
      */
-    // ============================================================================
     protected:
     MultiDimFunctionGraphManager(
         MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master );
 
     public:
-    // ============================================================================
-    /// Destructor. Don't worry, it will be call on the destruction of your
-    /// MultiDimFunctionGraph.
-    // ============================================================================
+    /**
+     * @brief Class destructor.
+     */
     virtual ~MultiDimFunctionGraphManager();
 
     /// @}
-
-    // ############################################################################
+    // =========================================================================
     /// @name Nodes manipulation methods.
-    // ############################################################################
+    // =========================================================================
     /// @{
-    // ============================================================================
-    /// Sets root node of decision diagram
-    // ============================================================================
+
+    /**
+     * @brief Sets root node of decision diagram.
+     * @param root The node to set as root.
+     */
     void setRootNode( const NodeId& root );
 
-
-    // ============================================================================
     /**
-     * Inserts a new non terminal node in graph.
+     * @brief Inserts a new non terminal node in graph.
+     *
      * NodeId of this node is generated automatically.
      *
      * @param var Associated variable
-     * @return the id of the added non terminal node.
+     * @return The id of the added non terminal node.
      */
-    // ============================================================================
     NodeId addInternalNode( const DiscreteVariable* var );
 
-    // ============================================================================
     /**
-     * Inserts a new non terminal node in graph.
+     * @brief Inserts a new non terminal node in graph.
+     *
      * NodeId of this node is generated automatically.
      *
-     * @param var Associated variable
-     * @param sons a table of size var->domainSize() containing nodeid of sons nodes
-     * @throw OperationNotAllowed if MultiDimFunctionGraph has no variable yet.
-     * @return the id of the added non terminal node.
+     * @param var The associated variable.
+     * @param sons A table of size var->domainSize() containing nodeid of sons
+     * nodes.
+     * @return Returns the id of the added non terminal node.
+     *
+     * @throw OperationNotAllowed Raised if MultiDimFunctionGraph has no
+     * variable yet.
      */
-    // ============================================================================
     virtual NodeId addInternalNode( const DiscreteVariable* var,
                                     NodeId* sons ) = 0;
 
     protected:
+    /**
+     * @brief Adds an internal node.
+     * @param var The node to add.
+     * @param sons The node sons.
+     * @return Returns the added node id.
+     */
     NodeId _addInternalNode( const DiscreteVariable* var, NodeId* sons );
 
     public:
-    // ============================================================================
     /**
-     * Inserts a new non terminal node in graph.
+     * @brief Inserts a new non terminal node in graph.
+     *
      * NodeId of this node is generated automatically.
      *
-     * @param var Associated variable
-     * @param nid desired id for that node
-     * @throw OperationNotAllowed if MultiDimFunctionGraph has no variable yet.
-     * @return the id of the added non terminal node.
+     * @param var The ssociated variable.
+     * @param nid The desired id for that node.
+     * @return Returns the id of the added non terminal node.
+     *
+     * @throw OperationNotAllowed Raised if MultiDimFunctionGraph has no
+     * variable yet.
      */
-    // ============================================================================
     NodeId addInternalNode( const DiscreteVariable* var, NodeId nid );
 
-    // ============================================================================
     /**
-     * Adds a value to the MultiDimFunctionGraph.
-     * This will create a terminal node, which of id is returned.
-     * If a terminal node with such value already exists,
-     * its id will be return instead.
+     * @brief Adds a value to the MultiDimFunctionGraph.
+     *
+     * This will create a terminal node, which of id is returned. If a
+     * terminal node with such value already exists, its id will be return
+     * instead.
      *
      * @param value The value added by copy.
-     * @return the id of the terminal node hence created.
-     *
+     * @return Returns he id of the terminal node hence created.
      */
-    // ============================================================================
     NodeId addTerminalNode( const GUM_SCALAR& value );
 
-    // ============================================================================
     /**
-     * Erases a node from the diagram.
+     * @brief Erases a node from the diagram.
      *
      * @param id The id of the variable to erase.
-     * @param replacingId offers the possibility to reroute any parent to the
-     * given node
-     * @param updateParents indicates if such remapping has to be done
-     * @throw NotFound if node isn't in diagram
+     * @param replacingId Offers the possibility to reroute any parent to the
+     * given node.
+     * @param updateParents Indicates if such remapping has to be done.
+     *
+     * @throw NotFound Raised if node isn't in diagram.
      */
-    // ============================================================================
     void
     eraseNode( NodeId id, NodeId replacingId = 0, bool updateParents = true );
 
     /// @}
-
-    // ############################################################################
+    // =========================================================================
     /// @name Manipulation methods.
-    // ############################################################################
+    // =========================================================================
     /// @{
 
-    // ============================================================================
-    /// Sets nodes son for given modality to designated son node
-    // ============================================================================
+    /**
+     * @brief Sets nodes son for given modality to designated son node.
+     * @param node The node to which a node is added.
+     * @param modality The modality for which sonNode is added to node.
+     * @param sonNode The node to add as a son to node.
+     */
     void
     setSon( const NodeId& node, const Idx& modality, const NodeId& sonNode );
 
 
-    // ============================================================================
-    /// Performs a sifting in search of a(local) minimal size
-    // ============================================================================
+    /**
+     * @brief Performs a sifting in search of a(local) minimal size.
+     */
     void minimizeSize();
 
-    // ============================================================================
-    /// Changes var position in variable sequence
-    // ============================================================================
+    /**
+     * @brief Changes var position in variable sequence.
+     * @param x The varaible to change.
+     * @param desiredPos The new posiition.
+     */
     void moveTo( const DiscreteVariable* x, Idx desiredPos );
 
     private:
-    // ============================================================================
-    /// Swap two adjacent variable.
-    /// Order is important here.
-    /// X must precede Y before the swap (at the end Y will then precede X).
-    /// Not respecting this constraint leads to unattended behaviour.
-    // ============================================================================
+    /**
+     * @brief Swap two adjacent variable.
+     *
+     * Order is important here.  X must precede Y before the swap (at the end Y
+     * will then precede X).  Not respecting this constraint leads to
+     * unattended behaviour.
+     *
+     * @param x The first variable to swap.
+     * @param y The second variable to swap.
+     */
     void __adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y );
 
     protected:
-    // ============================================================================
-    /// Remaps all arcs going to ou going from the first given node to the
-    /// second
-    /// node, then delete first node.
-    // ============================================================================
-    void _migrateNode( const NodeId&, const NodeId& );
+    /**
+     * @brief Remaps all arcs going to ou going from the first given node to
+     * the second node, then delete first node.
+     *
+     * @param x The variable from which all arcs are removed.
+     * @param y The variable for which all of x arcs are added.
+     */
+    void _migrateNode( const NodeId& x, const NodeId& y );
 
     /// @}
-
-    // ############################################################################
+    // =========================================================================
     /// @name Redundancy methods.
-    // ############################################################################
+    // =========================================================================
     /// @{
 
     protected:
-    // ============================================================================
-    /// Checks if a similar node does not already exists in the graph or
-    /// if it has the same child for every variable value
-    /// If no node is a match, this node is added to the graph
-    /// @warning : will deallocate by itslef sonsMap if a match exists
-    // ============================================================================
+    /**
+     * @brief Check for redundancy.
+     *
+     * Checks if a similar node does not already exists in the graph or if it
+     * has the same child for every variable value. If no node is a match, this
+     * node is added to the graph.
+     *
+     * @warning : will free by itslef sonsMap if a match exists.
+     *
+     * @param var The node to add in the graph.
+     * @param sonsMap The node sons.
+     * @return Returns the nodes id in the graph.
+     */
     NodeId _nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsMap );
 
     private:
-    // ============================================================================
-    /// Checks if a similar node does not already exists in the graph
-    /// (meaning for every value assume by the associated variable, these two
-    /// nodes
-    /// have the same children)
-    /// @warning WON'T deallocate sons
-    // ============================================================================
+    /**
+     * @brief Checks if a similar node does not already exists in the graph.
+     *
+     * Tow nodes are similar if for every value assumed by the associated
+     * variable, these two nodes have the same children.
+     *
+     * @warning This will not free sons.
+     *
+     * @param var The node to check for.
+     * @param sons The node sons.
+     * @return Returns the node id if found, 0 otherwhise.
+     */
     NodeId __checkIsomorphism( const DiscreteVariable* var, NodeId* sons );
 
-    // ============================================================================
-    /// Checks if node has the same child for every variable value
-    /// @warning WON'T deallocate sons
-    // ============================================================================
+    /**
+     * @brief Checks if node has the same child for every variable value.
+     *
+     * @warning WON'T deallocate sons
+     *
+     * @param var The node to check for.
+     * @param sons The node sons.
+     * @return Returns true if the node is redundant.
+     */
     bool __isRedundant( const DiscreteVariable* var, NodeId* sons );
 
-    // ============================================================================
-    /// Ensures that every isomorphic subgraphs are merged together.
-    // ============================================================================
     public:
+
+    /**
+     * @brief Ensures that every isomorphic subgraphs are merged together.
+     */
     virtual void reduce() = 0;
 
     protected:
-    void _reduce();
 
+    /**
+     * @brief Ensures that every isomorphic subgraphs are merged together.
+     */
+    void _reduce();
 
     /// @}
 
     public:
-    // ============================================================================
-    /// Removes var without nodes in the diagram
-    // ============================================================================
+
+    /**
+     * @brief Removes var without nodes in the diagram
+     */
     void clean();
 
-
     private:
-    // ============================================================================
     /// The multidimdecisiongraph supposed to be edited.
-    // ============================================================================
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __functionGraph;
   };
 
+  // ===========================================================================
+  // MultiDimFunctionGraphTreeManager
+  // ===========================================================================
+
+  /**
+   * @class MultiDimFunctionGraphTreeManager
+   * @ingroup multidim_group
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/multidim/multiDimFunctionGraphManager.h>
+   * @endcode
+   *
+   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
+   * @tparam TerminalNodePolicy The terminal node policy to use.
+   */
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   class MultiDimFunctionGraphTreeManager
       : public MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy> {
-    // ============================================================================
+
     /// This friend methods from is the only way to get an instance of a
     /// manager.
-    /// See class description for more info.
-    // ============================================================================
     friend MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>*
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::manager();
 
+    // ========================================================================
+    /// @name Constructor and destructor
+    // ========================================================================
+    /// @{
+    /**
+     * @brief Class constructor.
+     */
     MultiDimFunctionGraphTreeManager(
-        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master )
-        : MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>(
-              master ) {}
+        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master );
 
     public:
-    NodeId addInternalNode( const DiscreteVariable* var, NodeId* sons ) {
-      return this->_addInternalNode( var, sons );
-    }
-    void reduce() {}
+    /**
+     * @brief Class destructor.
+     */
+    ~MultiDimFunctionGraphTreeManager();
+
+    /// @}
+    // ========================================================================
+    /// @name Inherited methods
+    // ========================================================================
+    /// @{
+    virtual NodeId addInternalNode( const DiscreteVariable* var, NodeId* sons );
+
+    virtual void reduce();
+    /// @}
   };
 
+  // ===========================================================================
+  // MultiDimFunctionGraphROManager
+  // ===========================================================================
+
+  /**
+   * @class MultiDimFunctionGraphTreeManager
+   * @ingroup multidim_group
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/multidim/multiDimFunctionGraphManager.h>
+   * @endcode
+   *
+   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
+   * @tparam TerminalNodePolicy The terminal node policy to use.
+   */
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   class MultiDimFunctionGraphROManager
       : public MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy> {
 
-    // ============================================================================
-    /// This friend methods from is the only way to get an instance of a
+    /// This friend methods from is the only way to get an instance of a 
     /// manager.
-    /// See class description for more info.
-    // ============================================================================
     friend MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>*
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::manager();
 
+    // ========================================================================
+    /// @name Constructor and destructor
+    // ========================================================================
+    /// @{
     MultiDimFunctionGraphROManager(
-        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master )
-        : MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>(
-              master ) {}
+        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master );
 
     public:
-    NodeId addInternalNode( const DiscreteVariable* var, NodeId* sons ) {
-      return this->_nodeRedundancyCheck( var, sons );
-    }
-    void reduce() { this->_reduce(); }
+    ~MultiDimFunctionGraphROManager();
+
+    /// @}
+    // ========================================================================
+    /// @name Inherited methods
+    // ========================================================================
+    /// @{
+
+    virtual NodeId addInternalNode( const DiscreteVariable* var, NodeId* sons );
+
+    virtual void reduce();
+ 
+    /// @}
   };
 }  // namespace gum
 
