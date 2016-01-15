@@ -52,7 +52,7 @@ namespace gum {
    * multiDimImplementations, i.e., functions projecting tables over all
    * their variables
    *
-   * @ingroup multidim_group */
+   * @ingroup multidim_op_group */
   /* ===========================================================================
    */
   template <typename GUM_SCALAR>

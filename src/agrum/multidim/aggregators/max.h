@@ -38,7 +38,7 @@ namespace gum {
     /* =========================================================================*/
     /** @class Max
     * @brief max aggregator
-    * @ingroup multidim_group
+    * @ingroup multidim_agg_group
     *
     * @see MultiDimAggregator for more details of implementations
     *

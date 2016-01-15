@@ -42,7 +42,7 @@ namespace gum {
     /** @class MultiDimAggregator multiDimAggregator.h
      *<agrum/multidim/aggregators/multiDimAggregator.h>
      * @brief Abstract base class for all multi dimensionnal aggregator
-     * @ingroup multidim_group
+     * @ingroup multidim_agg_group
      *
      * The principle of a deterministic aggregator is that
      * \f$P[i,J_1,\cdots,J_n]=1 \iff

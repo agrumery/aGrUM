@@ -19,25 +19,12 @@
 ***************************************************************************/
 /**
  * @file
- * @brief The documentation main page.
+ * @brief Credal networks documentation.
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  * @author Lionel TORTI
  */
 
-/*!
- * \mainpage aGrUM a GRaphical Universal Model
- *
- * # Presentation #
- *
- * aGrUM is a C++ library designed for easily building applications
- * using
- * graphical models such as Bayesian networks, influence diagrams, decision
- * trees,
- * GAI networks or Markov decision processes. It is written to provide the basic
- * building blocks to perform the following tasks :
- *   - graphical model learning / elicitation,
- *   - inference within the graphical model,
- *   - planification.
+/**
+ * \defgroup cn_group Credal Networks
  */
-
