@@ -26,19 +26,19 @@
 
 namespace gum {
 
-  /// indicates whether a given variable belongs to the SetInst
+  // indicates whether a given variable belongs to the SetInst
 
   INLINE bool SetInst::contains( const DiscreteVariable& v ) const {
     return __vars.exists( &v );
   }
 
-  /// indicates whether a given variable belongs to the SetInst
+  // indicates whether a given variable belongs to the SetInst
 
   INLINE bool SetInst::contains( const DiscreteVariable* v ) const {
     return __vars.exists( v );
   }
 
-  /// modifies internally the value of a given variable of the sequence
+  // modifies internally the value of a given variable of the sequence
 
   INLINE void SetInst::__chgVal( Idx varPos, Idx newVal ) {
 
@@ -50,7 +50,7 @@ namespace gum {
     //      );
   }
 
-  /// modifies the value of a given variable of the sequence (external function)
+  // modifies the value of a given variable of the sequence (external function)
 
   INLINE SetInst& SetInst::chgVal( const DiscreteVariable& v, Idx newVal ) {
     try {
@@ -94,7 +94,7 @@ namespace gum {
     }
   }
 
-  /// modifies the value of a given variable of the sequence (external function)
+  // modifies the value of a given variable of the sequence (external function)
 
   INLINE SetInst& SetInst::chgVal( Idx varPos, Idx newVal ) {
     // check that the variable does belong to the SetInst and that the new
@@ -111,7 +111,7 @@ namespace gum {
     return *this;
   }
 
-  /// modifies internally the value of a given variable of the sequence
+  // modifies internally the value of a given variable of the sequence
 
   INLINE void SetInst::__chgVals( Idx varPos, const Size newVals ) {
 
@@ -124,7 +124,7 @@ namespace gum {
     //     );
   }
 
-  /// modifies the value of a given variable of the sequence (external function)
+  // modifies the value of a given variable of the sequence (external function)
 
   INLINE SetInst& SetInst::chgVals( const DiscreteVariable& v,
                                     const Size newVals ) {
@@ -170,7 +170,7 @@ namespace gum {
     }
   }
 
-  /// modifies the value of a given variable of the sequence (external function)
+  // modifies the value of a given variable of the sequence (external function)
 
   INLINE SetInst& SetInst::chgVals( Idx varPos, const Size newVal ) {
     // check that the variable does belong to the SetInst and that the new
@@ -520,7 +520,7 @@ namespace gum {
     }
   }
 
-  /// adds a new var to the sequence of vars
+  // adds a new var to the sequence of vars
 
   INLINE void SetInst::add( const DiscreteVariable& v ) {
     // if __master : not allowed
@@ -535,7 +535,7 @@ namespace gum {
     __add( v );
   }
 
-  /// removes a variable from the sequence of vars
+  // removes a variable from the sequence of vars
 
   INLINE void SetInst::erase( const DiscreteVariable& v ) {
     // if __master : not allowed
@@ -549,7 +549,7 @@ namespace gum {
     __erase( v );
   }
 
-  /// removes everything
+  // removes everything
   INLINE void SetInst::clear( void ) {
     // if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave SetInst" );
 
@@ -570,20 +570,20 @@ namespace gum {
     return s;
   }
 
-  /// returns the index of a var
+  // returns the index of a var
 
   INLINE Idx SetInst::pos( const DiscreteVariable& k ) const {
     return __vars.pos( &k );
   }
 
-  /// Default constructor
+  // Default constructor
 
   INLINE SetInst::SetInst()
       : /*__master( 0 ),*/ __overflow( false ) {
     GUM_CONSTRUCTOR( SetInst );
   }
 
-  /// destructor
+  // destructor
 
   INLINE SetInst::~SetInst() {
     GUM_DESTRUCTOR( SetInst );
@@ -592,11 +592,11 @@ namespace gum {
     // if ( __master )  __master->unregisterSlave( *this );
   }
 
-  /// returns the number of vars in the sequence
+  // returns the number of vars in the sequence
 
   INLINE Idx SetInst::nbrDim() const { return __vars.size(); }
 
-  /// returns the current value of a given variable
+  // returns the current value of a given variable
 
   INLINE Size SetInst::vals( Idx i ) const {
     if ( i >= __vals.size() ) GUM_ERROR( NotFound, "" );
@@ -604,14 +604,14 @@ namespace gum {
     return __vals[i];
   }
 
-  /// returns the current value of a given variable
-  /// need to create functions TODO
+  // returns the current value of a given variable
+  // need to create functions TODO
 
   INLINE Size SetInst::vals( const DiscreteVariable& var ) const {
     return __vals[__vars.pos( &var )];
   }
 
-  /// returns the current value of a given variable
+  // returns the current value of a given variable
 
   INLINE Size SetInst::vals( const DiscreteVariable* var ) const {
     return __vals[__vars.pos( var )];
@@ -659,39 +659,39 @@ namespace gum {
       GUM_ERROR( NotFound, "There is more than one value " );
   }
 
-  /// returns the variable at position i in the tuple
+  // returns the variable at position i in the tuple
 
   INLINE const DiscreteVariable& SetInst::variable( Idx i ) const {
     return *( __vars.atPos( i ) );
   }
 
-  /// indicates whether the current value of the tuple is correct or not
+  // indicates whether the current value of the tuple is correct or not
 
   INLINE bool SetInst::inOverflow() const { return __overflow; }
 
-  /// end() just is a synonym for inOverflow()
+  // end() just is a synonym for inOverflow()
 
   INLINE bool SetInst::end() const { return inOverflow(); }
 
-  /// rend() just is a synonym for inOverflow()
+  // rend() just is a synonym for inOverflow()
 
   INLINE bool SetInst::rend() const { return inOverflow(); }
 
-  /// indicates that the current value is correct even if it should be in
-  /// overflow
+  // indicates that the current value is correct even if it should be in
+  // overflow
 
   INLINE void SetInst::unsetOverflow() { __overflow = false; }
 
-  /// alias for unsetOverflow
+  // alias for unsetOverflow
 
   INLINE void SetInst::unsetEnd() { __overflow = false; }
 
-  /// reorder vars in *this
+  // reorder vars in *this
   INLINE void SetInst::reorder( const SetInst& i ) {
     reorder( i.variablesSequence() );
   }
 
-  /// change values with those in i
+  // change values with those in i
 
   INLINE SetInst& SetInst::chgValIn( const SetInst& i ) {
     __overflow = false;
@@ -705,14 +705,14 @@ namespace gum {
     return *this;
   }
 
-  /// returns the sequence of DiscreteVariable
+  // returns the sequence of DiscreteVariable
 
   INLINE const Sequence<const DiscreteVariable*>&
   SetInst::variablesSequence() const {
     return __vars;
   }
 
-  /// swap 2 vars in the SetInst
+  // swap 2 vars in the SetInst
 
   INLINE void SetInst::__swap( Idx i, Idx j ) {
     if ( i == j ) return;
@@ -728,7 +728,7 @@ namespace gum {
     __vals[j] = v;
   }
 
-  /// reordering
+  // reordering
 
   INLINE void
   SetInst::reorder( const Sequence<const DiscreteVariable*>& original ) {
@@ -747,7 +747,7 @@ namespace gum {
     }
   }
 
-  /// adds a new var to the sequence of vars
+  // adds a new var to the sequence of vars
 
   INLINE void SetInst::__add( const DiscreteVariable& v ) {
     __vars.insert( &v );
@@ -755,7 +755,7 @@ namespace gum {
     __overflow = false;
   }
 
-  /// removes a variable from the sequence of vars
+  // removes a variable from the sequence of vars
 
   INLINE void SetInst::__erase( const DiscreteVariable& v ) {
     // get the position of the variable
@@ -764,10 +764,10 @@ namespace gum {
     __vals.erase( __vals.begin() + pos );
   }
 
-  /// is this empty ?
+  // is this empty ?
   INLINE bool SetInst::empty() const { return __vals.empty(); }
 
-  /// Replace x by y.
+  // Replace x by y.
   INLINE void SetInst::_swap( const DiscreteVariable* x,
                               const DiscreteVariable* y ) {
     __vars.setAtPos( __vars.pos( x ), y );

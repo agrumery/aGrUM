@@ -37,7 +37,7 @@ namespace gum {
 
   /**
    * @class MultiDimPartialInstantiation
-   * #ingroup multidim_group
+   * @ingroup multidim_group
    *
    * @warning Doxygen does not like spanning command on multiple line, so we
    * could not configure it with the correct include directive. Use the
@@ -84,7 +84,7 @@ namespace gum {
      * @return Returns this MultiDimPartialInstantiation.
      */
     MultiDimPartialInstantiation<GUM_SCALAR, TABLE>&
-    operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& );
+    operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& src );
 
     /// @}
     // =========================================================================
@@ -125,9 +125,9 @@ namespace gum {
      * @warning If inst_vars is precisely equal to the variables of table, the
      * result is an empty table.
      *
+     * @param container Placeholder of the instantiation of table given inst_vars.
      * @param table The table to parially instantiate.
      * @param inst_vars A mapping between variables and their instantiation.
-     * @container Placeholder of the instantiation of table given inst_vars.
      */
     void
     instantiate( TABLE<GUM_SCALAR>& container,
