@@ -224,20 +224,7 @@ namespace gum {
     return sstr.str();
   }
 
-  // give a Id value for Hamming distance
-  /*  Idx SetInst::hamming() const  {
-      Sequence<const DiscreteVariable *>::iterator iter = __vars.begin();
-      Idx res = 0;
-
-      do
-      res += val( iter.pos() );
-      while ( ++iter != __vars.end() );
-
-      return res;
-      }*/
-
   // an operator for user-friendly displaying the content of a SetInst
-
   std::ostream& operator<<( std::ostream& aStream, const SetInst& i ) {
     aStream << i.toString();
     return aStream;

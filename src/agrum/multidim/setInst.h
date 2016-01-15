@@ -280,124 +280,124 @@ namespace gum {
     const DiscreteVariable& variable( Idx i ) const;
 
     /**
-     * @brief Assign newval to variable v in the SetInst.
+     * @brief Assign newVal to variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The index of the value assigned (consider the values of v
+     * @param newVal The index of the value assigned (consider the values of v
      * as an array indexed from 0 to n of values (which might be anything from
-     * real numbers to strings, etc). Parameter newval indicates the index in
+     * real numbers to strings, etc). Parameter newVal indicates the index in
      * this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
-    SetInst& chgVal( const DiscreteVariable& v, Idx newval );
+    SetInst& chgVal( const DiscreteVariable& v, Idx newVal );
 
     /**
-     * @brief Assign newval to variable v in the SetInst.
+     * @brief Assign newVal to variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The index of the value assigned (consider the values of v
+     * @param newVal The index of the value assigned (consider the values of v
      * as an array indexed from 0 to n of values (which might be anything from
-     * real numbers to strings, etc). Parameter newval indicates the index in
+     * real numbers to strings, etc). Parameter newVal indicates the index in
      * this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
-    SetInst& chgVal( const DiscreteVariable* v, Idx newval );
+    SetInst& chgVal( const DiscreteVariable* v, Idx newVal );
 
     /**
-     * @brief Assign newval to variable at position varPos in the SetInst.
+     * @brief Assign newVal to variable at position varPos in the SetInst.
      *
      * @param varPos The index of the variable whose value is assigned in the
      * tuple of variables of the SetInst.
-     * @param newval The index of the value assigned (consider the values of
+     * @param newVal The index of the value assigned (consider the values of
      * the variable as an array indexed from 0 to n of values (which might be
-     * anything from real numbers to strings, etc). Parameter newval indicates
+     * anything from real numbers to strings, etc). Parameter newVal indicates
      * the index in this array of the new value taken by the variable.
      * @return A reference to *this in order to chain the chgVal.
      *
      * @throw NotFound raised if the variable does not belong to this
-     * @throw OutOfBound raised if newval is not a possible value for
+     * @throw OutOfBound raised if newVal is not a possible value for
      *        the variable
      */
-    SetInst& chgVal( Idx varPos, Idx newval );
+    SetInst& chgVal( Idx varPos, Idx newVal );
 
     /**
-     * @brief Assign newval to variable v in the SetInst.
+     * @brief Assign newVal to variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The index of the value assigned (consider the values of v
+     * @param newVal The index of the value assigned (consider the values of v
      * as an array indexed from 0 to n of values (which might be anything from
-     * real numbers to strings, etc). Parameter newval indicates the index in
+     * real numbers to strings, etc). Parameter newVal indicates the index in
      * this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
-    SetInst& chgVals( const DiscreteVariable& v, const Size newval );
+    SetInst& chgVals( const DiscreteVariable& v, const Size newVal );
 
     /**
-     * @brief Add newval to variable v in the SetInst.
+     * @brief Add newVal to variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value added to the index of the value assigned
+     * @param newVal The value added to the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& addVal( const DiscreteVariable& v, Idx newVal );
 
     /**
-     * @brief Add newval to variable v in the SetInst.
+     * @brief Add newVal to variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value added to the index of the value assigned
+     * @param newVal The value added to the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& addVals( const DiscreteVariable& v, const Size newVal );
 
     /**
-     * @brief Remove newval from the variable v in the SetInst.
+     * @brief Remove newVal from the variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value removed to the index of the value assigned
+     * @param newVal The value removed to the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& remVal( const DiscreteVariable& v, Idx newVal );
 
     /**
-     * @brief Remove newval from the variable v in the SetInst.
+     * @brief Remove newVal from the variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value removed to the index of the value assigned
+     * @param newVal The value removed to the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& remVals( const DiscreteVariable& v, const Size newVal );
 
@@ -406,14 +406,14 @@ namespace gum {
      * value.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value intersected with the index of the value assigned
+     * @param newVal The value intersected with the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& interVals( const DiscreteVariable& v, const Size newVal );
 
@@ -422,89 +422,89 @@ namespace gum {
      * value.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value intersected with the index of the value assigned
+     * @param newVal The value intersected with the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& interVal( const DiscreteVariable& v, Idx newVal );
 
     /**
-     * @brief Assign newval to variable v in the SetInst.
+     * @brief Assign newVal to variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The index of the value assigned (consider the values of v
+     * @param newVal The index of the value assigned (consider the values of v
      * as an array indexed from 0 to n of values (which might be anything from
-     * real numbers to strings, etc). Parameter newval indicates the index in
+     * real numbers to strings, etc). Parameter newVal indicates the index in
      * this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
-    SetInst& chgVals( const DiscreteVariable* v, const Size newval );
+    SetInst& chgVals( const DiscreteVariable* v, const Size newVal );
 
     /**
-     * @brief Add newval to variable v in the SetInst.
+     * @brief Add newVal to variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value added to the index of the value assigned
+     * @param newVal The value added to the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& addVal( const DiscreteVariable* v, Idx newVal );
 
     /**
-     * @brief Add newval to variable v in the SetInst.
+     * @brief Add newVal to variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value added to the index of the value assigned
+     * @param newVal The value added to the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& addVals( const DiscreteVariable* v, const Size newVal );
 
     /**
-     * @brief Remove newval from the variable v in the SetInst.
+     * @brief Remove newVal from the variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value removed to the index of the value assigned
+     * @param newVal The value removed to the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& remVal( const DiscreteVariable* v, Idx newVal );
 
     /**
-     * @brief Remove newval from the variable v in the SetInst.
+     * @brief Remove newVal from the variable v in the SetInst.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value removed to the index of the value assigned
+     * @param newVal The value removed to the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& remVals( const DiscreteVariable* v, const Size newVal );
 
@@ -513,14 +513,14 @@ namespace gum {
      * value.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value intersected with the index of the value assigned
+     * @param newVal The value intersected with the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& interVals( const DiscreteVariable* v, const Size newVal );
 
@@ -529,91 +529,95 @@ namespace gum {
      * value.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The value intersected with the index of the value assigned
+     * @param newVal The value intersected with the index of the value assigned
      * (consider the values of v as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBound Raised if newVal is not a possible value for v.
      */
     SetInst& interVal( const DiscreteVariable* v, Idx newVal );
 
     /**
-     * @brief Assign newval to variable at position varPos in the SetInst.
+     * @brief Assign newVal to variable at position varPos in the SetInst.
      *
      * @param varPos The index of the variable whose value is assigned in the
      *        tuple of variables of the SetInst.
-     * @param newval The index of the value assigned (consider the values of the
+     * @param newVal The index of the value assigned (consider the values of the
      *        variable as an array indexed from 0 to n of values (which might be
-     *        anything from real numbers to strings, etc). Parameter newval
+     *        anything from real numbers to strings, etc). Parameter newVal
      *        indicates the index in this array of the new value taken by the
      *        variable.
      * @return A reference to *this in order to chain the chgVal.
      * @throw NotFound Raised if the variable does not belong to this
-     * @throw OutOfBound Raised if newval is not a possible value for
+     * @throw OutOfBound Raised if newVal is not a possible value for
      *        the variable
      */
-    SetInst& chgVals( Idx varPos, const Size newval );
+    SetInst& chgVals( Idx varPos, const Size newVal );
 
     /**
-     * @brief Add newval to variable v in the SetInst.
+     * @brief Add newVal to variable v in the SetInst.
      *
-     * @param v The variable whose value is assigned.
-     * @param newval The value added to the index of the value assigned
-     * (consider the values of v as an array indexed from 0 to n of values
+     * @param varPos The variable whose value is assigned.
+     * @param newVal The value added to the index of the value assigned
+     * (consider the values of varPos as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by
+     * varPos.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
-     * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw NotFound Raised if variable varPos does not belong to the SetInst.
+     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
      */
     SetInst& addVal( Idx varPos, Idx newVal );
 
     /**
-     * @brief Add newval to variable v in the SetInst.
+     * @brief Add newVal to variable varPos in the SetInst.
      *
-     * @param v The variable whose value is assigned.
-     * @param newval The value added to the index of the value assigned
-     * (consider the values of v as an array indexed from 0 to n of values
+     * @param varPos The variable whose value is assigned.
+     * @param newVal The value added to the index of the value assigned
+     * (consider the values of varPos as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by
+     * varPos.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
-     * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw NotFound Raised if variable varPos does not belong to the SetInst.
+     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
      */
     SetInst& addVals( Idx varPos, const Size newVal );
 
     /**
-     * @brief Remove newval from the variable v in the SetInst.
+     * @brief Remove newVal from the variable varPos in the SetInst.
      *
-     * @param v The variable whose value is assigned.
-     * @param newval The value removed to the index of the value assigned
-     * (consider the values of v as an array indexed from 0 to n of values
+     * @param varPos The variable whose value is assigned.
+     * @param newVal The value removed to the index of the value assigned
+     * (consider the values of varPos as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by
+     * varPos.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
-     * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw NotFound Raised if variable varPos does not belong to the SetInst.
+     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
      */
     SetInst& remVal( Idx varPos, Idx newVal );
 
     /**
-     * @brief Remove newval from the variable v in the SetInst.
+     * @brief Remove newVal from the variable varPos in the SetInst.
      *
-     * @param v The variable whose value is assigned.
-     * @param newval The value removed to the index of the value assigned
-     * (consider the values of v as an array indexed from 0 to n of values
+     * @param varPos The variable whose value is assigned.
+     * @param newVal The value removed to the index of the value assigned
+     * (consider the values of varPos as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by
+     * varPos.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
-     * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw NotFound Raised if variable varPos does not belong to the SetInst.
+     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
      */
     SetInst& remVals( Idx varPos, const Size newVal );
 
@@ -621,15 +625,16 @@ namespace gum {
      * @brief Does an intersection (binary and) between the old value and new
      * value.
      *
-     * @param v The variable whose value is assigned.
-     * @param newval The value intersected with the index of the value assigned
-     * (consider the values of v as an array indexed from 0 to n of values
+     * @param varPos The variable whose value is assigned.
+     * @param newVal The value intersected with the index of the value assigned
+     * (consider the values of varPos as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by
+     * varPos.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
-     * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw NotFound Raised if variable varPos does not belong to the SetInst.
+     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
      */
     SetInst& interVals( Idx varPos, const Size newVal );
 
@@ -637,15 +642,16 @@ namespace gum {
      * @brief Does an intersection (binary and) between the old value and new
      * value.
      *
-     * @param v The variable whose value is assigned.
-     * @param newval The value intersected with the index of the value assigned
-     * (consider the values of v as an array indexed from 0 to n of values
+     * @param varPos The variable whose value is assigned.
+     * @param newVal The value intersected with the index of the value assigned
+     * (consider the values of varPos as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by
+     * varPos.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
-     * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw NotFound Raised if variable varPos does not belong to the SetInst.
+     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
      */
     SetInst& interVal( Idx varPos, Idx newVal );
 
@@ -653,15 +659,16 @@ namespace gum {
      * @brief Does the difference (binary or) between the old value and new
      * value.
      *
-     * @param v The variable whose value is assigned.
-     * @param newval The value intersected with the index of the value assigned
-     * (consider the values of v as an array indexed from 0 to n of values
+     * @param varPos The variable whose value is assigned.
+     * @param newVal The value intersected with the index of the value assigned
+     * (consider the values of varPos as an array indexed from 0 to n of values
      * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
+     * newVal indicates the index in this array of the new value taken by
+     * varPos.
      * @return Returns a reference to *this in order to chain the chgVal.
      *
-     * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw NotFound Raised if variable varPos does not belong to the SetInst.
+     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
      */
     SetInst& chgDifVal( Idx varPos, const Size newVal );
 
@@ -699,12 +706,6 @@ namespace gum {
      * @return Returns true if the SetInst is empty.
      */
     virtual bool empty( void ) const;
-
-    /**
-     * @brief Returns the hamming distance of this SetInst.
-     * @return Returns the hamming distance of this SetInst.
-     */
-    Idx hamming() const;
 
     /**
      * @brief Give a string version of SetInst.
@@ -856,14 +857,14 @@ namespace gum {
     /**
      * @brief Change the value of a variable.
      * @param varPos The variable index.
-     * @param varPos The new value.
+     * @param newVal The new value.
      */
     void __chgVal( Idx varPos, Idx newVal );
 
     /**
      * @brief Change the value of a variable.
      * @param varPos The variable index.
-     * @param varPos The new value.
+     * @param newVal The new value.
      */
     void __chgVals( Idx varPos, const Size newVal );
 
@@ -906,21 +907,6 @@ namespace gum {
      *  @param v The variable to remove.
      */
     void __erase( const DiscreteVariable& v );
-    //
-    //    /**
-    //     *  This function is called by the master (if any) when changes arise
-    //     in its
-    //     *  vars list.
-    //     *  @warning No implementation of this method?
-    //     *
-    //     *  @param v the new vars list
-    //     */
-    //
-    //    void __notifiedDimChanged( const Sequence<const DiscreteVariable*>& v
-    //    );
-
-    /// initialisation (same in 4 constructors)
-
 
     /**
      * @brief Intialize the SetInst.
