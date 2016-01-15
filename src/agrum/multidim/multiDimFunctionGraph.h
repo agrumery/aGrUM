@@ -56,10 +56,17 @@ namespace gum {
 
   /**
    * @class MultiDimFunctionGraph
-   * @headerfile multiDimFunctionGraph.h <agrum/multidim/multiDimFunctionGraph.h>
    * @ingroup multidim_group
    *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/multidim/multiDimFunctionGraph.h>
+   * @endcode
+   *
    * @brief Class implementingting a function graph.
+   *
    * @tparam GUM_SCALAR The type of scalars stored in this multidimensional
    * table.
    * @tparam TerminalNodePolicy The terminal node policy to use in this

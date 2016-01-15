@@ -17,13 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Efficient functionals for instantiating some variables in
- * multiDimensional tables
+/**
+ * @file
+ * @brief Implementation for partial instantiation functions.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
 // allow partialInstantiationPatterns to be used
 #define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED 1
@@ -92,7 +91,7 @@ GUM_MULTI_DIM_DECORATOR_PARTIAL_INST( partialInstantiation )
 
 namespace gum {
 
-  /// the function used to register all the above functions
+  // the function used to register all the above functions
   template <typename GUM_SCALAR>
   void partialInstantiation4MultiDimInit() {
     static bool first_init = true;
@@ -114,7 +113,7 @@ namespace gum {
     }
   }
 
-  /// the function used to register all the above functions
+  // the function used to register all the above functions
   template <typename GUM_SCALAR>
   void pointerPartialInstantiation4MultiDimInit() {
     static bool first_init = true;
@@ -143,5 +142,3 @@ namespace gum {
 
 // remove permission to use operatorsPatterns
 #undef GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */

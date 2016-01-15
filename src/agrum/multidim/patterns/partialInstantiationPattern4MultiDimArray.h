@@ -23,6 +23,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
 
+#include <agrum/core/sequence.h>
+
 // check if we allowed these patterns to be used
 #ifndef GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 

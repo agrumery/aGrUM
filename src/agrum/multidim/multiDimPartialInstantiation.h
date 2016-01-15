@@ -17,9 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief A generic class to instantiate a subset of variables of a MultiDim
- *table
+/**
+ * @file
+ * @brief Headers of MultiDimPartialInstantiation.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -35,67 +35,106 @@
 
 namespace gum {
 
+  /**
+   * @class MultiDimPartialInstantiation
+   * #ingroup multidim_group
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/multidim/multiDimPartialInstantiation.h>
+   * @endcode
+   *
+   * @brief A generic class to instantiate a subset of variables of a
+   * multidimensional table.
+   *
+   * @tparam GUM_SCALAR The type of scalars stored in this multidimensional
+   * table.
+   * @tparam Table The class of multidimensional table to use.
+   */
   template <typename GUM_SCALAR, template <typename> class TABLE>
   class MultiDimPartialInstantiation {
     public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
+    // =========================================================================
+    /// @name Constructors, Destructors and Copy
+    // =========================================================================
     /// @{
 
-    /// default constructor
+    /**
+     * @brief Default constructor.
+     */
     MultiDimPartialInstantiation();
 
-    /// copy constructor
+    /**
+     * @brief Copy constructor.
+     * @param src The MultiDimPartialInstantiation to copy.
+     */
     MultiDimPartialInstantiation(
-        const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& );
+        const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& src );
 
-    /// destructor
+    /**
+     * @brief Class destructor.
+     */
     virtual ~MultiDimPartialInstantiation();
 
-    /// virtual constructor
-    /** @return a new fresh MultiDimPartialInstantiation for the same kind of
-     * table and data*/
-    virtual MultiDimPartialInstantiation<GUM_SCALAR, TABLE>* newFactory() const;
-
-    /// @}
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
-
-    /// copy operator
+    /**
+     * @brief Copy operator.
+     * @param src The MultiDimPartialInstantiation to copy.
+     * @return Returns this MultiDimPartialInstantiation.
+     */
     MultiDimPartialInstantiation<GUM_SCALAR, TABLE>&
     operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& );
 
     /// @}
-
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
+    // =========================================================================
+    /// @name inherited methdods
+    // =========================================================================
     /// @{
 
-    /** @brief creates and returns the partial instantiation of the table over a
-     * subset of its vars
+    virtual MultiDimPartialInstantiation<GUM_SCALAR, TABLE>* newFactory() const;
+
+    /// @}
+    // =========================================================================
+    /// @name Accessors/Modifiers
+    // =========================================================================
+    /// @{
+
+    /**
+     * @brief Creates and returns the partial instantiation of the table over a
+     * subset of its variables.
      *
-     * @return a new freshly created TABLE which is the result of the
-     *instantiation
-     * of a subset of the variables of the TABLE passed in argument
      * @warning If inst_vars is precisely equal to the variables of table, the
-     * result is an empty table. */
+     * result is an empty table.
+     *
+     * @param table The table to parially instantiate.
+     * @param inst_vars A mapping between variables and their instantiation.
+     *
+     * @return A new freshly created TABLE which is the result of the
+     * instantiation of a subset of the variables of the TABLE passed in
+     * argument.
+     */
     TABLE<GUM_SCALAR>*
     instantiate( const TABLE<GUM_SCALAR>& table,
                  const HashTable<const DiscreteVariable*, Idx>& inst_vars );
+
+    /**
+     * @brief Creates and returns the partial instantiation of the table over a
+     * subset of its variables.
+     *
+     * @warning If inst_vars is precisely equal to the variables of table, the
+     * result is an empty table.
+     *
+     * @param table The table to parially instantiate.
+     * @param inst_vars A mapping between variables and their instantiation.
+     * @container Placeholder of the instantiation of table given inst_vars.
+     */
     void
     instantiate( TABLE<GUM_SCALAR>& container,
                  const TABLE<GUM_SCALAR>& table,
                  const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
     /// @}
-
-    private:
-    /// the function that is used to actually perform the instantiation
   };
 
 } /* namespace gum */

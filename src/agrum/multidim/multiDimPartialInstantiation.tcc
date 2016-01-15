@@ -17,51 +17,51 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief A generic class to instantiate a subset of variables of a MultiDim
- *table
+/**
+ * @file
+ * @brief Implementation of MultiDimPartialInstantiation.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#include <agrum/config.h>
 #include <typeinfo>
+#include <agrum/config.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
-  /// constructor
+  // constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimPartialInstantiation<GUM_SCALAR,
                                TABLE>::MultiDimPartialInstantiation() {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_CONSTRUCTOR( MultiDimPartialInstantiation );
   }
 
-  /// copy constructor
+  // copy constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::MultiDimPartialInstantiation(
       const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& from ) {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_CONS_CPY( MultiDimPartialInstantiation );
   }
 
-  /// destructor
+  // destructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimPartialInstantiation<GUM_SCALAR,
                                TABLE>::~MultiDimPartialInstantiation() {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_DESTRUCTOR( MultiDimPartialInstantiation );
   }
 
-  /// virtual constructor
+  // virtual constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimPartialInstantiation<GUM_SCALAR, TABLE>*
   MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::newFactory() const {
     return new MultiDimPartialInstantiation<GUM_SCALAR, TABLE>( *this );
   }
 
-  /// copy operator
+  // copy operator
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimPartialInstantiation<GUM_SCALAR, TABLE>&
       MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::
@@ -69,7 +69,7 @@ namespace gum {
     return *this;
   }
 
-  /// creates and returns the partial instantiation of the table
+  // creates and returns the partial instantiation of the table
   template <typename GUM_SCALAR, template <typename> class TABLE>
   TABLE<GUM_SCALAR>*
   MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::instantiate(
@@ -80,7 +80,7 @@ namespace gum {
     return new TABLE<GUM_SCALAR>( new_impl );
   }
 
-  /// creates and returns the partial instantiation of the table
+  // creates and returns the partial instantiation of the table
   template <typename GUM_SCALAR, template <typename> class TABLE>
   void MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::instantiate(
       TABLE<GUM_SCALAR>& container,
