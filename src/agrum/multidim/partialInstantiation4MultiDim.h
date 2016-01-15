@@ -29,7 +29,7 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/variables/DiscreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 //#include <agrum/multidim/multiDimImplementation.h>
 //#include <agrum/multidim/multiDimArray.h>
 //#include <agrum/multidim/multiDimDecorator.h>
