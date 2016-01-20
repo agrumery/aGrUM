@@ -765,6 +765,7 @@ WARN_LOGFILE           = warning.txt
 
 INPUT                  = @AGRUM_SOURCE_DIR@/agrum \
                          @AGRUM_SOURCE_DIR@/docs/doc \
+                         @AGRUM_SOURCE_DIR@/docs/howtos \ 
                          @AGRUM_SOURCE_DIR@/docs/modules 
 
 # This tag can be used to specify the character encoding of the source files
