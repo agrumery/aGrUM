@@ -118,6 +118,8 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::learning::ScoreInternalNoApriori<>;
+
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.tcc>
 

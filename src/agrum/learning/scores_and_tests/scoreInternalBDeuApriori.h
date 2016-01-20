@@ -111,6 +111,8 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::learning::ScoreInternalBDeuApriori<>;
+
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/scoreInternalBDeuApriori.tcc>
 
