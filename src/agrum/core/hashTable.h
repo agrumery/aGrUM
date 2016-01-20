@@ -2943,6 +2943,11 @@ namespace gum {
 
 }  // namespace gum
 
+extern template class gum::HashTable<int, int>;
+extern template class gum::HashTable<int, std::string>;
+extern template class gum::HashTable<std::string, std::string>;
+extern template class gum::HashTable<std::string, int>;
+
 // always include the implementation of the templates
 #include <agrum/core/hashTable.tcc>
 
