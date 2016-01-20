@@ -25,10 +25,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 #include <agrum/core/binTreeNode.h>
 
 template class gum::BinTreeNode<int>;
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS

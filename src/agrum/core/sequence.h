@@ -1440,6 +1440,12 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::Sequence<int>;
+extern template class gum::Sequence<long>;
+extern template class gum::Sequence<float>;
+extern template class gum::Sequence<double>;
+extern template class gum::Sequence<std::string>;
+
 // always include the implementation of the templates
 #include <agrum/core/sequence.tcc>
 

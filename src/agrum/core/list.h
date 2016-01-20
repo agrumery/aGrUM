@@ -2525,6 +2525,10 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::List<bool>;
+extern template class gum::List<int>;
+extern template class gum::List<unsigned int>;
+
 // always include the implementation of the templates
 #include <agrum/core/list.tcc>
 

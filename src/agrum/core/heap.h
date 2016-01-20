@@ -382,6 +382,11 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::Heap<int>;
+extern template class gum::Heap<long>;
+extern template class gum::Heap<float>;
+extern template class gum::Heap<double>;
+
 // always include the implementation of the templates
 #include <agrum/core/heap.tcc>
 

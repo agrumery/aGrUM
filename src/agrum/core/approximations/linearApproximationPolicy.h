@@ -236,6 +236,9 @@ namespace gum {
   };
 }
 
+extern template class gum::LinearApproximationPolicy<float>;
+extern template class gum::LinearApproximationPolicy<double>;
+
 // Always inline template classes implementation.
 #include <agrum/core/approximations/linearApproximationPolicy.tcc>
 

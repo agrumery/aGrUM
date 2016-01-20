@@ -1151,6 +1151,12 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::Set<int>;
+extern template class gum::Set<long>;
+extern template class gum::Set<float>;
+extern template class gum::Set<double>;
+extern template class gum::Set<std::string>;
+
 // always include the implementation of the templates
 #include <agrum/core/set.tcc>
 

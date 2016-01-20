@@ -79,11 +79,10 @@ namespace gum {
   const void* const __list_end_safe = __get_list_end_safe();
   const void* const __list_end = __get_list_end();
 
-  // to optimize compile-link time, provide the usual lists
-  template class List<bool>;
-  template class List<int>;
-  template class List<unsigned int>;
-
 } /* namespace gum */
+  
+template class gum::List<bool>;
+template class gum::List<int>;
+template class gum::List<unsigned int>;
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

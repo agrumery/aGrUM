@@ -345,6 +345,11 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::RefPtr<int>;
+extern template class gum::RefPtr<long>;
+extern template class gum::RefPtr<float>;
+extern template class gum::RefPtr<double>;
+
 // always include the .tcc as it contains only templates
 #include <agrum/core/refPtr.tcc>
 

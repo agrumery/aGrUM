@@ -641,6 +641,8 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::BinSearchTree<int>;
+
 // always include the template implementations
 #include <agrum/core/binSearchTree.tcc>
 
