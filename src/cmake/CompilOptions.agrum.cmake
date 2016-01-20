@@ -13,7 +13,7 @@ find_package (CXX11)
 if (CXX11_FOUND)
   set (AGRUM_CXX_FLAGS "${CXX11_FLAGS} ${AGRUM_CXX_FLAGS}" )
 else ()
-  message(FATAL_ERROR "aGrUM is now using C++11. Please find a compiler (for instance GCC) C++11 compliant")
+  message(FATAL_ERROR "** aGrUM error: aGrUM is now using C++11. Please find a compiler (for instance GCC) C++11 compliant")
 endif ()
 
 if(MINGW)
@@ -57,4 +57,3 @@ set(GUM_TRACE_ON FALSE)
 endif ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
 
 set(CMAKE_CXX_FLAGS "${AGRUM_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
-

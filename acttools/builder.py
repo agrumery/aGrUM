@@ -37,6 +37,11 @@ def getCmake(current,target):
     else:
         line+=" -DFOR_PYTHON2=ON"
 
+    if current["withSQL"]==True:
+        line+=" -DUSE_NANODBC=ON"
+    else:
+        line+=" -DUSE_NANODBC=OFF"
+
     line+=" -DCMAKE_INSTALL_PREFIX="+current["destination"]
 
     if current["verbose"]:
