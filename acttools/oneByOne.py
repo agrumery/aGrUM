@@ -29,7 +29,7 @@ from .utils import notif,warn,trace,setifyString
 from .tests import checkTests,testNames
 
 def checkAgrumMemoryLeak(x):
-  commande='act test debug -t {0}'.format(x)
+  commande='act test debug -t {0} -m all'.format(x)
 
   first=cfg.C_WARNING+x+cfg.C_END+" : "
   flag=0
