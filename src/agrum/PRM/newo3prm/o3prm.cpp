@@ -46,8 +46,6 @@ namespace gum {
       O3PRM::~O3PRM() { GUM_DESTRUCTOR( O3PRM ); }
 
       std::vector<O3Type>& O3PRM::types() { return __types; }
-
-
     }  // o3prm
   } // prm
 } // gum

@@ -107,37 +107,50 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::NEWO3PRM() {
+		UNIT();
 		while (la->kind == _type) {
-			while (!(la->kind == _EOF || la->kind == _type)) {SynErr(21); Get();}
 			UNIT();
 		}
 }
 
 void Parser::UNIT() {
-		TYPE();
+		TYPE_UNIT();
 }
 
-void Parser::TYPE() {
-		O3List labels; 
+void Parser::TYPE_UNIT() {
+		auto n = errors().error_count; 
+		auto name = std::string(); 
+		auto labels = O3List(); 
+		TYPE_BODY(name, labels);
+		if (ok(n)) { get_prm()->types().push_back( O3Type(name, labels) ); } 
+}
+
+void Parser::TYPE_BODY(std::string& name, O3List& labels) {
+		while (!(la->kind == _EOF || la->kind == _type)) {SynErr(21); Get();}
 		Expect(_type);
-		Expect(_word);
-		auto name = narrow(t->val); 
+		WORD(name);
 		LIST(labels);
+		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(22); Get();}
 		Expect(_semicolon);
-		get_prm()->types().push_back( O3Type(name, labels) ); 
+}
+
+void Parser::WORD(std::string& w) {
+		Expect(_word);
+		w = narrow(t->val); 
 }
 
 void Parser::LIST(O3List& list ) {
-		if (la->kind == _semicolon) {
-		} else if (la->kind == _word) {
+		auto w = std::string(); 
+		WORD(w);
+		list.push_back(w); 
+		Expect(_comma);
+		WORD(w);
+		list.push_back(w); 
+		while (la->kind == _comma) {
 			Get();
-			list.push_back(narrow(t->val)); 
-			while (la->kind == _comma) {
-				Get();
-				Expect(_word);
-				list.push_back(narrow(t->val)); 
-			}
-		} else SynErr(22);
+			WORD(w);
+			list.push_back(w); 
+		}
 }
 
 
@@ -254,7 +267,7 @@ bool Parser::StartOf( int s ) {
   const bool x = false;
 
   	static bool set[1][22] = {
-		{T,x,x,x, x,x,x,x, x,T,x,x, x,x,x,x, x,x,x,x, x,x}
+		{T,x,x,x, x,x,x,x, T,T,x,x, x,x,x,x, x,x,x,x, x,x}
 	};
 
 
@@ -301,8 +314,8 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 18: s = coco_string_create(L"real expected"); break;
 			case 19: s = coco_string_create(L"string expected"); break;
 			case 20: s = coco_string_create(L"??? expected"); break;
-			case 21: s = coco_string_create(L"this symbol not expected in NEWO3PRM"); break;
-			case 22: s = coco_string_create(L"invalid LIST"); break;
+			case 21: s = coco_string_create(L"this symbol not expected in TYPE_BODY"); break;
+			case 22: s = coco_string_create(L"this symbol not expected in TYPE_BODY"); break;
 
 
     default: {
