@@ -6,7 +6,7 @@
 
 #include <string>
 #include <vector>
-#include <agrum/PRM/newo3prm/o3prm_prm.h>
+#include <agrum/PRM/newo3prm/o3prm.h>
 
 //##############################################################################
 //
@@ -14,21 +14,23 @@
 //
 //##############################################################################
 
-COMPILER O3PRM
+COMPILER NEWO3PRM
 
 private:
 
-using o3prm_list = std::vector<std::string>;
-using o3prm_type = gum::prm::o3prm::o3prm_type;
-gum::prm::o3prm::o3prm_prm* __prm;
+using O3List = std::vector<std::string>;
+using O3Type = gum::prm::o3prm::O3Type;
+using O3PRM = gum::prm::o3prm::O3PRM;
+
+O3PRM* __prm;
 
 public:
 // Set the parser factory.
-void set_prm(gum::prm::o3prm::o3prm_prm* prm) {
+void set_prm(O3PRM* prm) {
   __prm = prm;
 }
 
-gum::prm::o3prm::o3prm_prm* get_prm() {
+O3PRM* get_prm() {
   return __prm;
 }
 
@@ -85,25 +87,25 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //________________________
-O3PRM = {SYNC UNIT} . 
+NEWO3PRM = {SYNC UNIT} . 
 
 //________________________
 UNIT = TYPE .
 
 //________________________
 TYPE =
-  (. o3prm_list labels; .)
+  (. O3List labels; .)
   type word (. auto name = narrow(t->val); .)
   LIST<labels> ';'
-  (. get_prm()->types().push_back( o3prm_type(name, labels) ); .)
+  (. get_prm()->types().push_back( O3Type(name, labels) ); .)
   . 
 
 
-LIST< o3prm_list& list > =
+LIST< O3List& list > =
   ( | word (. list.push_back(narrow(t->val)); .)
     { ',' word (. list.push_back(narrow(t->val)); .)
     }
   )
   .
 
-END O3PRM.
+END NEWO3PRM.

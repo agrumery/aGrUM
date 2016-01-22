@@ -106,7 +106,7 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
   }
 }
 
-void Parser::O3PRM() {
+void Parser::NEWO3PRM() {
 		while (la->kind == _type) {
 			while (!(la->kind == _EOF || la->kind == _type)) {SynErr(21); Get();}
 			UNIT();
@@ -118,16 +118,16 @@ void Parser::UNIT() {
 }
 
 void Parser::TYPE() {
-		o3prm_list labels; 
+		O3List labels; 
 		Expect(_type);
 		Expect(_word);
 		auto name = narrow(t->val); 
 		LIST(labels);
 		Expect(_semicolon);
-		get_prm()->types().push_back( o3prm_type(name, labels) ); 
+		get_prm()->types().push_back( O3Type(name, labels) ); 
 }
 
-void Parser::LIST(o3prm_list& list ) {
+void Parser::LIST(O3List& list ) {
 		if (la->kind == _semicolon) {
 		} else if (la->kind == _word) {
 			Get();
@@ -234,7 +234,7 @@ void Parser::Parse() {
   la = dummyToken = new Token();
   la->val = coco_string_create( L"Dummy Token" );
   Get();
-  	O3PRM();
+  	NEWO3PRM();
 
 }
 
@@ -301,7 +301,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 18: s = coco_string_create(L"real expected"); break;
 			case 19: s = coco_string_create(L"string expected"); break;
 			case 20: s = coco_string_create(L"??? expected"); break;
-			case 21: s = coco_string_create(L"this symbol not expected in O3PRM"); break;
+			case 21: s = coco_string_create(L"this symbol not expected in NEWO3PRM"); break;
 			case 22: s = coco_string_create(L"invalid LIST"); break;
 
 

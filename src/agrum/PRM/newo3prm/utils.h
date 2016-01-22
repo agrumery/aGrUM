@@ -29,36 +29,28 @@
 #ifndef GUM_PRM_O3PRM_O3PRM_H
 #define GUM_PRM_O3PRM_O3PRM_H
 
-#include <regex>
-#include <sstream>
 #include <string>
-#include <vector>
+#include <sstream>
+#include <memory>
 
-#include <agrum/core/sequence.h>
-#include <agrum/graphs/DAG.h>
-#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
+#include <agrum/PRM/PRMFactory.h>
+#include <agrum/PRM/newO3prm/cocoR/Parser.h>
+#include <agrum/PRM/newO3prm/cocoR/Scanner.h>
+#include <agrum/PRM/newo3prm/o3prm.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      std::vector<NodeId> topological_order( const gum::DAG& src );
+      void build_prm( gum::prm::PRM<double>& prm,
+                      gum::prm::o3prm::O3PRM& tmp_prm );
 
-      std::string clean( const std::string& text );
-
-      std::string print( const ParseError& err );
-
-      template <typename GUM_SCALAR>
-      bool name_used( const PRM<GUM_SCALAR>& prm, const std::string& name );
-
-      std::string read_stream( std::istream& input );
-
-      bool ends_with( std::string const& value, std::string const& ending );
+      void parse_stream( gum::prm::PRM<double>& prm,
+                         std::stringstream& input,
+                         std::stringstream& output );
     }
   }
 }
-
-#include <agrum/PRM/newo3prm/utils.tcc>
 
 #endif  // GUM_PRM_O3PRM_O3PRM_H

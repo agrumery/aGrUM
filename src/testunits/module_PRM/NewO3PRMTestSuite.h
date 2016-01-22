@@ -25,6 +25,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/prm/PRM.h>
+#include <agrum/prm/newo3prm/utils.h>
 #include <agrum/prm/newo3prm/o3prm.h>
 
 namespace gum_tests {
