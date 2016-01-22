@@ -24,6 +24,8 @@ using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
 
+bool ok (int n) { return errors().error_count == n; }
+
 public:
 // Set the parser factory.
 void set_prm(O3PRM* prm) {
@@ -87,25 +89,38 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //________________________
-NEWO3PRM = {SYNC UNIT} . 
+NEWO3PRM = UNIT { UNIT } . 
 
 //________________________
-UNIT = TYPE .
+UNIT = TYPE_UNIT .
 
 //________________________
-TYPE =
-  (. O3List labels; .)
-  type word (. auto name = narrow(t->val); .)
-  LIST<labels> ';'
-  (. get_prm()->types().push_back( O3Type(name, labels) ); .)
-  . 
+TYPE_UNIT = 
+  (. auto n = errors().error_count; .)
+  (. auto name = std::string(); .)
+  (. auto labels = O3List(); .)
+  TYPE_BODY<name, labels>
+  (. if (ok(n)) { get_prm()->types().push_back( O3Type(name, labels) ); } .)
+  .
 
+TYPE_BODY<std::string& name, O3List& labels> =
+  SYNC type WORD<name> LIST<labels> SYNC ';' . 
 
 LIST< O3List& list > =
-  ( | word (. list.push_back(narrow(t->val)); .)
-    { ',' word (. list.push_back(narrow(t->val)); .)
-    }
-  )
+  (. auto w = std::string(); .)
+  WORD<w>
+  (. list.push_back(w); .)
+  ','
+  WORD<w>
+  (. list.push_back(w); .)
+  {
+    ','
+    WORD<w>
+    (. list.push_back(w); .)
+  }
   .
+
+WORD<std::string& w> =
+  word (. w = narrow(t->val); .) .
 
 END NEWO3PRM.
