@@ -48,6 +48,21 @@ namespace gum {
         }
       }
 
+      std::string clean( const std::string& s ) {
+        if ( s.find( "this symbol not expected in TYPE_BODY" ) ) {
+          return "Syntax error: this symbol is not expected in a type "
+                 "declaration";
+        }
+        return s;
+      }
+
+      std::string print( const ParseError& err ) {
+        std::stringstream s;
+        s << err.filename << "|" << err.line << " col " << err.column << "| "
+          << clean(err.msg);
+        return s.str();
+      }
+
       void parse_stream( gum::prm::PRM<double>& prm,
                          std::stringstream& input,
                          std::stringstream& output ) {
@@ -55,7 +70,7 @@ namespace gum {
             new unsigned char[input.str().length() + 1] );
         strcpy( (char*)buffer.get(), input.str().c_str() );
         auto s = o3prm_scanner(
-            buffer.get(), input.str().length() + 1, "unknown file" );
+            buffer.get(), input.str().length() + 1, "" );
         auto p = o3prm_parser( &s );
         auto tmp_prm = O3PRM();
         p.set_prm( &tmp_prm );
@@ -63,7 +78,7 @@ namespace gum {
         const auto& errors = p.errors();
         for ( auto i = 0; i < p.errors().count(); ++i ) {
           auto err = p.errors().error( i );
-          output << err.toString() << std::endl;
+          output << print( err ) << std::endl;
         }
         build_prm( prm, tmp_prm );
       }
