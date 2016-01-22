@@ -37,7 +37,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #include <string>
 #include <vector>
-#include <agrum/PRM/newo3prm/o3prm_prm.h>
+#include <agrum/PRM/newo3prm/o3prm.h>
 
 #include <iostream>
 #include <string>
@@ -96,17 +96,19 @@ class Parser {
 
     private:
 
-using o3prm_list = std::vector<std::string>;
-using o3prm_type = gum::prm::o3prm::o3prm_type;
-gum::prm::o3prm::o3prm_prm* __prm;
+using O3List = std::vector<std::string>;
+using O3Type = gum::prm::o3prm::O3Type;
+using O3PRM = gum::prm::o3prm::O3PRM;
+
+O3PRM* __prm;
 
 public:
 // Set the parser factory.
-void set_prm(gum::prm::o3prm::o3prm_prm* prm) {
+void set_prm(O3PRM* prm) {
   __prm = prm;
 }
 
-gum::prm::o3prm::o3prm_prm* get_prm() {
+O3PRM* get_prm() {
   return __prm;
 }
 
@@ -125,10 +127,10 @@ gum::prm::o3prm::o3prm_prm* get_prm() {
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
 
-    	void O3PRM();
+    	void NEWO3PRM();
 	void UNIT();
 	void TYPE();
-	void LIST(o3prm_list& list );
+	void LIST(O3List& list );
 
     void Parse();
 
