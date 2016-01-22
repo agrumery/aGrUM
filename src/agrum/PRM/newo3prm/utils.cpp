@@ -26,73 +26,46 @@
  * @author Lionel TORTI
  */
 
-#include <agrum/PRM/newo3prm/utils.h>
+#include <agrum/PRM/newO3prm/utils.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      std::vector<NodeId> topological_order( const gum::DAG& src ) {
-        auto dag = src;
-        auto roots = std::vector<NodeId>();
-        auto order = std::vector<NodeId>();
-        for ( const auto node : dag.nodes() ) {
-          if ( dag.parents( node ).empty() ) {
-            roots.push_back( node );
+      using o3prm_scanner = gum::prm::newo3prm::Scanner;
+      using o3prm_parser = gum::prm::newo3prm::Parser;
+
+      void build_prm( gum::prm::PRM<double>& prm,
+                      gum::prm::o3prm::O3PRM& tmp_prm ) {
+        gum::prm::PRMFactory<double> factory( &prm );
+        // building types
+        for ( auto type : tmp_prm.types() ) {
+          factory.startDiscreteType( type.name() );
+          for ( auto label : type.labels() ) {
+            factory.addLabel( label );
           }
+          factory.endDiscreteType();
         }
-        while ( roots.size() ) {
-          order.push_back( roots.back() );
-          roots.pop_back();
-          while ( dag.children( order.back() ).size() ) {
-            auto child = *( dag.children( order.back() ).begin() );
-            dag.eraseArc( Arc( order.back(), child ) );
-            if ( dag.parents( child ).empty() ) {
-              roots.push_back( child );
-            }
-          }
-        }
-        return std::move( order );
       }
 
-      std::string clean( const std::string& text ) {
-        auto match = std::regex( "Syntax error" );
-        if ( std::regex_search( text, match ) ) {
-          auto regex = std::regex( "[A-Z_][A-Z_]+" );
-          auto output = std::stringstream();
-          output << std::regex_replace( text, regex, "declaration" );
-          return std::move( output.str() );
+      void parse_stream( gum::prm::PRM<double>& prm,
+                         std::stringstream& input,
+                         std::stringstream& output ) {
+        auto buffer = std::unique_ptr<unsigned char[]>(
+            new unsigned char[input.str().length() + 1] );
+        strcpy( (char*)buffer.get(), input.str().c_str() );
+        auto s = o3prm_scanner(
+            buffer.get(), input.str().length() + 1, "unknown file" );
+        auto p = o3prm_parser( &s );
+        auto tmp_prm = O3PRM();
+        p.set_prm( &tmp_prm );
+        p.Parse();
+        const auto& errors = p.errors();
+        for ( auto i = 0; i < p.errors().count(); ++i ) {
+          auto err = p.errors().error( i );
+          output << err.toString() << std::endl;
         }
-        return text;
-      }
-
-      std::string print( const ParseError& err ) {
-        std::stringstream s;
-        s << err.filename << "|" << err.line << " col " << err.column << "| "
-          << clean(err.msg);
-        return std::move(s.str());
-      }
-
-      std::string read_stream( std::istream& input ) {
-        if ( input ) {
-          input.seekg( 0, input.end );
-          auto length = input.tellg();
-          input.seekg( 0, input.beg );
-
-          auto str = std::string();
-          str.resize( length, ' ' );
-          auto begin = &*str.begin();
-
-          input.read( begin, length );
-
-          return std::move(str);
-        }
-        GUM_ERROR( OperationNotAllowed, "Could not open file" );
-      }
-
-      bool ends_with( std::string const& value, std::string const& ending ) {
-        if ( ending.size() > value.size() ) return false;
-        return std::equal( ending.rbegin(), ending.rend(), value.rbegin() );
+        build_prm( prm, tmp_prm );
       }
     }
   }
