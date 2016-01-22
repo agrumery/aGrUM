@@ -102,6 +102,8 @@ using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
 
+bool ok (int n) { return errors().error_count == n; }
+
 public:
 // Set the parser factory.
 void set_prm(O3PRM* prm) {
@@ -129,7 +131,9 @@ O3PRM* get_prm() {
 
     	void NEWO3PRM();
 	void UNIT();
-	void TYPE();
+	void TYPE_UNIT();
+	void TYPE_BODY(std::string& name, O3List& labels);
+	void WORD(std::string& w);
 	void LIST(O3List& list );
 
     void Parse();
