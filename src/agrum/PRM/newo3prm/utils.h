@@ -20,52 +20,37 @@
 
 /**
  * @file
- * @brief Headers for parsing function for the O3PRM language.
+ * @brief Headers for utilities functions for the O3PRM language.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
+#ifndef GUM_PRM_O3PRM_O3PRM_H
+#define GUM_PRM_O3PRM_O3PRM_H
+
 #include <string>
-#include <vector>
+#include <sstream>
+#include <memory>
 
-#include <agrum/config.h>
-
-#ifndef GUM_PRM_O3PRM_PRM_H
-#define GUM_PRM_O3PRM_PRM_H
+#include <agrum/PRM/PRM.h>
+#include <agrum/PRM/PRMFactory.h>
+#include <agrum/PRM/newO3prm/cocoR/Parser.h>
+#include <agrum/PRM/newO3prm/cocoR/Scanner.h>
+#include <agrum/PRM/newo3prm/o3prm.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      class O3Type {
-        public:
-        O3Type( std::string name, std::vector<std::string>& labels );
+      void build_prm( gum::prm::PRM<double>& prm,
+                      gum::prm::o3prm::O3PRM& tmp_prm );
 
-        ~O3Type();
+      void parse_stream( gum::prm::PRM<double>& prm,
+                         std::stringstream& input,
+                         std::stringstream& output );
+    }
+  }
+}
 
-        const std::string& name();
-        const std::vector<std::string>& labels();
-
-        private:
-        std::string __name;
-        std::vector<std::string> __labels;
-      };
-
-      class O3PRM {
-        public:
-        O3PRM();
-        ~O3PRM();
-
-        std::vector<O3Type>& types();
-
-        private:
-        std::vector<O3Type> __types;
-      };
-
-    } // o3prm
-  } // prm
-} // gum
-
-#endif // GUM_PRM_O3PRM_PRM_H
-
+#endif  // GUM_PRM_O3PRM_O3PRM_H

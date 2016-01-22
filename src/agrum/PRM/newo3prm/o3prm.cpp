@@ -20,56 +20,34 @@
 
 /**
  * @file
- * @brief Headers for parsing function for the O3PRM language.
+ * @brief Implementation for parsing function for the O3PRM language.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
-#include <string>
-#include <vector>
-
-#include <agrum/config.h>
-
-#ifndef GUM_PRM_O3PRM_PRM_H
-#define GUM_PRM_O3PRM_PRM_H
+#include <agrum/PRM/newo3prm/o3prm.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      class o3prm_type {
-        public:
-        o3prm_type( std::string name, std::vector<std::string>& labels )
-            : __name( name )
-            , __labels( labels ) {
-          GUM_CONSTRUCTOR( o3prm_type );
-        }
-        ~o3prm_type() { GUM_DESTRUCTOR( o3prm_type ); }
+      O3Type::O3Type( std::string name, std::vector<std::string>& labels )
+          : __name( name )
+          , __labels( labels ) {
+        GUM_CONSTRUCTOR( O3Type );
+      }
+      O3Type::~O3Type() { GUM_DESTRUCTOR( O3Type ); }
 
-        const std::string& name() { return __name; } 
-        const std::vector<std::string>& labels() { return __labels; } 
+      const std::string& O3Type::name() { return __name; }
+      const std::vector<std::string>& O3Type::labels() { return __labels; }
+
+      O3PRM::O3PRM() { GUM_CONSTRUCTOR( O3PRM ); }
+      O3PRM::~O3PRM() { GUM_DESTRUCTOR( O3PRM ); }
+
+      std::vector<O3Type>& O3PRM::types() { return __types; }
 
 
-        private:
-        std::string __name;
-        std::vector<std::string> __labels;
-      };
-
-      class o3prm_prm {
-        public:
-        o3prm_prm() { GUM_CONSTRUCTOR( o3prm_prm ); }
-        ~o3prm_prm() { GUM_DESTRUCTOR( o3prm_prm ); }
-
-        std::vector<o3prm_type>& types() { return __types; }
-
-        private:
-        std::vector<o3prm_type> __types;
-      };
-
-    } // o3prm
+    }  // o3prm
   } // prm
 } // gum
-
-#endif // GUM_PRM_O3PRM_PRM_H
-
