@@ -26,60 +26,50 @@
  * @author Lionel TORTI
  */
 
-#ifndef GUM_PRM_O3PRM_O3PRM_H
-#define GUM_PRM_O3PRM_O3PRM_H
-
 #include <string>
-#include <sstream>
-#include <memory>
+#include <vector>
 
-#include <agrum/PRM/PRM.h>
-#include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/newo3prm/o3prm_prm.h>
-#include <agrum/PRM/newO3prm/cocoR/Scanner.h>
-#include <agrum/PRM/newO3prm/cocoR/Parser.h>
+#include <agrum/config.h>
+
+#ifndef GUM_PRM_O3PRM_PRM_H
+#define GUM_PRM_O3PRM_PRM_H
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      using o3prm_scanner = gum::prm::newo3prm::Scanner;
-      using o3prm_parser = gum::prm::newo3prm::Parser;
-
-      void build_prm( gum::prm::PRM<double>& prm,
-                      gum::prm::o3prm::o3prm_prm& tmp_prm ) {
-        gum::prm::PRMFactory<double> factory(&prm);
-        // building types
-        for (auto type: tmp_prm.types()) {
-          factory.startDiscreteType( type.name() );
-          for (auto label: type.labels()) {
-            factory.addLabel(label);
-          }
-          factory.endDiscreteType();
+      class o3prm_type {
+        public:
+        o3prm_type( std::string name, std::vector<std::string>& labels )
+            : __name( name )
+            , __labels( labels ) {
+          GUM_CONSTRUCTOR( o3prm_type );
         }
-      }
+        ~o3prm_type() { GUM_DESTRUCTOR( o3prm_type ); }
 
-      void parse_stream( gum::prm::PRM<double>& prm,
-                         std::stringstream& input,
-                         std::stringstream& output ) {
-        auto buffer = std::unique_ptr<unsigned char[]>(
-            new unsigned char[input.str().length() + 1] );
-        strcpy( (char*)buffer.get(), input.str().c_str() );
-        auto s = o3prm_scanner(
-            buffer.get(), input.str().length() + 1, "unknown file" );
-        auto p = o3prm_parser( &s );
-        auto tmp_prm = o3prm_prm();
-        p.set_prm( &tmp_prm );
-        p.Parse();
-        const auto& errors = p.errors();
-        for ( auto i = 0; i < p.errors().count(); ++i ) {
-          auto err = p.errors().error( i );
-          output << err.toString() << std::endl;
-        }
-        build_prm( prm, tmp_prm );
-      }
-    }
-  }
-}
+        const std::string& name() { return __name; } 
+        const std::vector<std::string>& labels() { return __labels; } 
 
-#endif  // GUM_PRM_O3PRM_O3PRM_H
+
+        private:
+        std::string __name;
+        std::vector<std::string> __labels;
+      };
+
+      class o3prm_prm {
+        public:
+        o3prm_prm() { GUM_CONSTRUCTOR( o3prm_prm ); }
+        ~o3prm_prm() { GUM_DESTRUCTOR( o3prm_prm ); }
+
+        std::vector<o3prm_type>& types() { return __types; }
+
+        private:
+        std::vector<o3prm_type> __types;
+      };
+
+    } // o3prm
+  } // prm
+} // gum
+
+#endif // GUM_PRM_O3PRM_PRM_H
+
