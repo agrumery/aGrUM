@@ -1,0 +1,109 @@
+//##############################################################################
+//
+//                               HEADERS
+//
+//##############################################################################
+
+#include <string>
+#include <vector>
+#include <agrum/PRM/newo3prm/o3prm_prm.h>
+
+//##############################################################################
+//
+//                             class Parser
+//
+//##############################################################################
+
+COMPILER O3PRM
+
+private:
+
+using o3prm_list = std::vector<std::string>;
+using o3prm_type = gum::prm::o3prm::o3prm_type;
+gum::prm::o3prm::o3prm_prm* __prm;
+
+public:
+// Set the parser factory.
+void set_prm(gum::prm::o3prm::o3prm_prm* prm) {
+  __prm = prm;
+}
+
+gum::prm::o3prm::o3prm_prm* get_prm() {
+  return __prm;
+}
+
+//##############################################################################
+//
+//                              SCANNER RULES
+//
+//##############################################################################
+
+//________________________
+CHARACTERS
+letter = 'A'..'Z' + 'a'..'z'+ '_' .
+digit  = '0'..'9'.
+eol    = '\n'.
+noQuote1 = ANY - '"' .
+noQuote2 = ANY - "'" .
+
+//________________________
+TOKENS
+integer    = ['+'|'-'] digit {digit}.
+float      = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
+word       = letter {(letter | digit)}.
+eol        = '\n'.
+dot        = '.'.
+comma      = ','.
+colon      = ':'.
+semicolon  = ';'.
+type       = "type".
+class      = "class".
+interface  = "interface".
+extends    = "extends".
+system     = "system".
+dependson  = "dependson".
+default    = "default".
+implements = "implements".
+int        = "int".
+real       = "real".
+string     = '"' { noQuote1 } '"' | "'" {noQuote2 } "'" .
+
+//________________________
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "//" TO eol
+
+IGNORE '\r' + eol + '\t'
+
+$checkEOF=false // disable the end of file check
+
+//##############################################################################
+//
+//                              PARSER RULES
+//
+//##############################################################################
+
+PRODUCTIONS
+
+//________________________
+O3PRM = {SYNC UNIT} . 
+
+//________________________
+UNIT = TYPE .
+
+//________________________
+TYPE =
+  (. o3prm_list labels; .)
+  type word (. auto name = narrow(t->val); .)
+  LIST<labels> ';'
+  (. get_prm()->types().push_back( o3prm_type(name, labels) ); .)
+  . 
+
+
+LIST< o3prm_list& list > =
+  ( | word (. list.push_back(narrow(t->val)); .)
+    { ',' word (. list.push_back(narrow(t->val)); .)
+    }
+  )
+  .
+
+END O3PRM.
