@@ -67,7 +67,7 @@ namespace gum_tests {
       // Assert
       auto line = std::string();
       std::getline( output, line );
-      auto msg = "|1 col 1| Syntax error: this symbol is not expected in a "
+      auto msg = "|1 col 1| Syntax error : this symbol not expected in "
                  "type declaration";
       TS_ASSERT_EQUALS( line, msg);
       TS_ASSERT_EQUALS( prm.types().size(), 1 );

@@ -48,12 +48,11 @@ namespace gum {
         }
       }
 
-      std::string clean( const std::string& s ) {
-        if ( s.find( "this symbol not expected in TYPE_BODY" ) ) {
-          return "Syntax error: this symbol is not expected in a type "
-                 "declaration";
-        }
-        return s;
+      std::string clean( const std::string& text ) {
+        std::regex regex( "TYPE_BODY" );
+        std::stringstream output;
+        output << std::regex_replace( text, regex, "type declaration" );
+        return output.str();
       }
 
       std::string print( const ParseError& err ) {
