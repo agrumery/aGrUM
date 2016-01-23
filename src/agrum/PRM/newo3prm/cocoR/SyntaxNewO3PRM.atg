@@ -54,7 +54,7 @@ noQuote2 = ANY - "'" .
 TOKENS
 integer    = ['+'|'-'] digit {digit}.
 float      = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
-word       = letter {(letter | digit)}.
+label      = letter {(letter | digit)}.
 eol        = '\n'.
 dot        = '.'.
 comma      = ','.
@@ -104,7 +104,7 @@ TYPE_UNIT =
   .
 
 TYPE_BODY<std::string& name, O3List& labels> =
-  SYNC type WORD<name> LIST<labels> SYNC ';' . 
+  type WORD<name> LIST<labels> ';' . 
 
 LIST< O3List& list > =
   (. auto w = std::string(); .)
@@ -121,6 +121,6 @@ LIST< O3List& list > =
   .
 
 WORD<std::string& w> =
-  word (. w = narrow(t->val); .) .
+  label (. w = narrow(t->val); .) .
 
 END NEWO3PRM.
