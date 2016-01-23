@@ -301,162 +301,39 @@ namespace gum {
       }
 
       O3Type::O3Type( const O3Type& src )
-          : __pos( src.__pos )
-          , __name( src.__name )
-          , __super( src.__super )
+          : __name( src.__name )
           , __labels( src.__labels ) {
         GUM_CONS_CPY( O3Type );
       }
 
       O3Type::O3Type( O3Type&& src )
-          : __pos( std::move( src.__pos ) )
-          , __name( std::move( src.__name ) )
-          , __super( std::move( src.__super ) )
+          : __name( std::move( src.__name ) )
           , __labels( std::move( src.__labels ) ) {
         GUM_CONS_MOV( O3Type );
       }
 
       O3Type::~O3Type() { GUM_DESTRUCTOR( O3Type ); }
 
-      O3Type& O3Type::operator=( const O3Type& src ) {
-        if ( this == &src ) {
-          return *this;
-        }
-        __pos = src.__pos;
-        __name = src.__name;
-        __super = src.__super;
-        __labels = src.__labels;
-        return *this;
-      }
+      const std::string& O3Type::name() const { return __name; }
+      const std::vector<std::string>& O3Type::labels() const { return __labels; }
 
-      O3Type& O3Type::operator=( O3Type&& src ) {
-        if ( this == &src ) {
-          return *this;
-        }
-        __pos = std::move( src.__pos );
-        __name = std::move( src.__name );
-        __super = std::move( src.__super );
-        __labels = std::move( src.__labels );
-        return *this;
-      }
+      O3PRM::O3PRM() { GUM_CONSTRUCTOR( O3PRM ); }
 
-      O3Label& O3Type::name() { return __name; }
-      const O3Label& O3Type::name() const { return __name; }
-      O3Label& O3Type::super() { return __super; }
-      const O3Label& O3Type::super() const { return __super; }
-      const O3Type::LabelMap& O3Type::labels() const { return __labels; }
-      const Position& O3Type::position() const { return __pos; }
-
-      O3IntType::O3IntType() { GUM_CONSTRUCTOR( O3IntType ); }
-
-      O3IntType::O3IntType( const Position& pos,
-                            const O3Label& name,
-                            const O3Integer& start,
-                            const O3Integer& end )
-          : __pos( pos )
-          , __name( name )
-          , __start( start )
-          , __end( end ) {
-        GUM_CONSTRUCTOR( O3IntType );
-      }
-
-      O3IntType::O3IntType( const O3IntType& src )
-          : __pos( src.__pos )
-          , __name( src.__name )
-          , __start( src.__start )
-          , __end( src.__end ) {
-        GUM_CONS_CPY( O3IntType );
-      }
-
-      O3IntType::O3IntType( O3IntType&& src )
-          : __pos( std::move( src.__pos ) )
-          , __name( std::move( src.__name ) )
-          , __start( std::move( src.__start ) )
-          , __end( std::move( src.__end ) ) {
-        GUM_CONS_MOV( O3IntType );
-      }
-
-      O3IntType::~O3IntType() { GUM_DESTRUCTOR( O3IntType ); }
-
-      O3IntType& O3IntType::operator=( const O3IntType& src ) {
-        if ( this == &src ) {
-          return *this;
-        }
-        __pos = src.__pos;
-        __name = src.__name;
-        __start = src.__start;
-        __end = src.__end;
-        return *this;
-      }
-
-      O3IntType& O3IntType::operator=( O3IntType&& src ) {
-        if ( this == &src ) {
-          return *this;
-        }
-        __pos = std::move( src.__pos );
-        __name = std::move( src.__name );
-        __start = std::move( src.__start );
-        __end = std::move( src.__end );
-        return *this;
-      }
-
-      const O3Label& O3IntType::name() const { return __name; }
-
-      const O3Integer& O3IntType::start() const { return __start; }
-
-      const O3Integer& O3IntType::end() const { return __end; }
-
-      const Position& O3IntType::position() const { return __pos; }
-
-      O3PRM::O3PRM() {
-        GUM_CONSTRUCTOR( O3PRM );
-        // Creating the boolean type
-        auto name = O3Label( Position(), "boolean" );
-        auto f = O3Label( Position(), "false" );
-        auto t = O3Label( Position(), "true" );
-        auto labels = O3Type::LabelMap();
-        labels.push_back( O3Type::LabelPair( f, O3Label() ) );
-        labels.push_back( O3Type::LabelPair( t, O3Label() ) );
-        auto boolean = std::unique_ptr<O3Type>(
-            new O3Type( Position(), name, O3Label(), labels ) );
-        __types.push_back( std::move( boolean ) );
-      }
-
-      O3PRM::O3PRM( const O3PRM& src ) {
+      O3PRM::O3PRM( const O3PRM& src )
+          : __types( src.__types ) {
         GUM_CONS_CPY( O3PRM );
-        for ( const auto& t : src.__types ) {
-          __types.emplace_back( new O3Type( *t ) );
-        }
-        for ( const auto& t : src.__int_types ) {
-          __int_types.emplace_back( new O3IntType( *t ) );
-        }
-        for ( const auto& i : src.__interfaces ) {
-          __interfaces.emplace_back( new O3Interface( *i ) );
-        }
-        for ( const auto& c : src.__classes ) {
-          __classes.emplace_back( new O3Class( *c ) );
-        }
-        for ( const auto& s : src.__systems ) {
-          __systems.emplace_back( new O3System( *s ) );
-        }
-        for ( const auto& i : src.__imports ) {
-          __imports.emplace_back( new O3Import( *i ) );
-        }
       }
 
       O3PRM::O3PRM( O3PRM&& src )
-          : __types( std::move( src.__types ) )
-          , __int_types( std::move( src.__int_types ) )
-          , __interfaces( std::move( src.__interfaces ) )
-          , __classes( std::move( src.__classes ) )
-          , __systems( std::move( src.__systems ) )
-          , __imports( std::move( src.__imports ) ) {
+          : __types( std::move( src.__types ) ) {
         GUM_CONS_MOV( O3PRM );
       }
 
       O3PRM::~O3PRM() { GUM_DESTRUCTOR( O3PRM ); }
 
       std::vector<O3Type>& O3PRM::types() { return __types; }
+      const std::vector<O3Type>& O3PRM::types() const { return __types; }
+
     }  // o3prm
   }    // prm
 }  // gum
