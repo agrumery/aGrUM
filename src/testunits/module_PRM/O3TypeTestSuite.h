@@ -217,6 +217,48 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( map[0], 1 );
       TS_ASSERT_EQUALS( map[1], 0 );
     }
+
+    void testExtendedTypeError1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type state extend boolean "
+            << "OK: true,"
+            << "NOK: false;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "state" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 19| Syntax error : comma expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testExtendedTypeError2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type state extends foobar "
+            << "OK: true,"
+            << "NOK: false;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "state" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 19| Syntax error : comma expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
   };
 
     void testSimpleTypeError9() {
