@@ -764,7 +764,6 @@ WARN_LOGFILE           = warning.txt
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = @AGRUM_SOURCE_DIR@/agrum \
-                         @AGRUM_SOURCE_DIR@/docs/doc \
                          @AGRUM_SOURCE_DIR@/docs/howtos \ 
                          @AGRUM_SOURCE_DIR@/docs/modules 
 
