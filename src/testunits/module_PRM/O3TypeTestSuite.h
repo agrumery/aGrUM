@@ -171,7 +171,7 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 12| Syntax error : label expected" << std::endl;
+      msg << "|1 col 12| Syntax error : invalid type declaration" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "state" ) );
@@ -214,8 +214,8 @@ namespace gum_tests {
       TS_ASSERT( state.isSubTypeOf( boolean ) );
       const auto& map = state.label_map();
       TS_ASSERT_EQUALS( map.size(), 2 );
-      TS_ASSERT_EQUALS( map[0], 0 );
-      TS_ASSERT_EQUALS( map[1], 1 );
+      TS_ASSERT_EQUALS( map[0], 1 );
+      TS_ASSERT_EQUALS( map[1], 0 );
     }
   };
 

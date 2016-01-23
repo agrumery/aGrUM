@@ -31,6 +31,7 @@
 #include <utility>
 
 #include <agrum/config.h>
+#include <agrum/core/hashTable.h>
 
 #ifndef GUM_PRM_O3PRM_PRM_H
 #define GUM_PRM_O3PRM_PRM_H
@@ -41,17 +42,20 @@ namespace gum {
 
       class O3Type {
         public:
-        O3Type( std::string name, std::vector<std::string>& labels );
+        using LabelMap = std::vector<std::pair<std::string, std::string>>;
+        O3Type( std::string name, std::string super, LabelMap& labels );
         O3Type( const O3Type& src );
         O3Type( O3Type&& src );
         ~O3Type();
 
         const std::string& name() const;
-        const std::vector<std::string>& labels() const;
+        const std::string& super() const;
+        const LabelMap& labels() const;
 
         private:
         std::string __name;
-        std::vector<std::string> __labels;
+        std::string __super;
+        LabelMap __labels;
       };
 
       class O3PRM {

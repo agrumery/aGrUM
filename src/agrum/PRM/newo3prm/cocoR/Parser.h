@@ -37,6 +37,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #include <string>
 #include <vector>
+#include <utility>
+#include <agrum/core/hashTable.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 
 #include <iostream>
@@ -96,13 +98,16 @@ class Parser {
 
     private:
 
-using O3List = std::vector<std::string>;
+using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using O3Type = gum::prm::o3prm::O3Type;
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
 
-bool ok (int n) { return errors().error_count == n; }
+bool __ok (int n) { return errors().error_count == n; }
+void __addO3Type( std::string name, std::string super, LabelMap& labels ) {
+  get_prm()->types().push_back( O3Type( name, super, labels ) ); 
+}
 
 public:
 // Set the parser factory.
@@ -132,9 +137,10 @@ O3PRM* get_prm() {
     	void NEWO3PRM();
 	void UNIT();
 	void TYPE_UNIT();
-	void TYPE_BODY(std::string& name, O3List& labels);
-	void WORD(std::string& w);
-	void LIST(O3List& list );
+	void TYPE_BODY(std::string& name, std::string& super, LabelMap& labels);
+	void WORD(std::string& s);
+	void LIST(LabelMap& labels );
+	void MAP(LabelMap& labels );
 
     void Parse();
 

@@ -32,20 +32,25 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      O3Type::O3Type( std::string name, std::vector<std::string>& labels )
+      O3Type::O3Type( std::string name,
+                      std::string super,
+                      O3Type::LabelMap& labels )
           : __name( name )
+          , __super( super )
           , __labels( labels ) {
         GUM_CONSTRUCTOR( O3Type );
       }
 
       O3Type::O3Type( const O3Type& src )
           : __name( src.__name )
+          , __super( src.__super )
           , __labels( src.__labels ) {
         GUM_CONS_CPY( O3Type );
       }
 
       O3Type::O3Type( O3Type&& src )
           : __name( std::move( src.__name ) )
+          , __super( std::move( src.__super ) )
           , __labels( std::move( src.__labels ) ) {
         GUM_CONS_MOV( O3Type );
       }
@@ -53,7 +58,8 @@ namespace gum {
       O3Type::~O3Type() { GUM_DESTRUCTOR( O3Type ); }
 
       const std::string& O3Type::name() const { return __name; }
-      const std::vector<std::string>& O3Type::labels() const { return __labels; }
+      const std::string& O3Type::super() const { return __super; }
+      const O3Type::LabelMap& O3Type::labels() const { return __labels; }
 
       O3PRM::O3PRM() { GUM_CONSTRUCTOR( O3PRM ); }
 
