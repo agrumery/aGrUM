@@ -29,9 +29,11 @@
 #ifndef GUM_PRM_O3PRM_O3PRM_H
 #define GUM_PRM_O3PRM_O3PRM_H
 
-#include <string>
-#include <sstream>
+#include <iterator>
 #include <memory>
+#include <regex>
+#include <sstream>
+#include <string>
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
