@@ -55,7 +55,7 @@ class Parser {
 		_EOF=0,
 		_integer=1,
 		_float=2,
-		_word=3,
+		_label=3,
 		_eol=4,
 		_dot=5,
 		_comma=6,

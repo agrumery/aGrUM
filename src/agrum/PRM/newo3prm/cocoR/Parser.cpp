@@ -126,16 +126,14 @@ void Parser::TYPE_UNIT() {
 }
 
 void Parser::TYPE_BODY(std::string& name, O3List& labels) {
-		while (!(la->kind == _EOF || la->kind == _type)) {SynErr(21); Get();}
 		Expect(_type);
 		WORD(name);
 		LIST(labels);
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(22); Get();}
 		Expect(_semicolon);
 }
 
 void Parser::WORD(std::string& w) {
-		Expect(_word);
+		Expect(_label);
 		w = narrow(t->val); 
 }
 
@@ -267,7 +265,7 @@ bool Parser::StartOf( int s ) {
   const bool x = false;
 
   	static bool set[1][22] = {
-		{T,x,x,x, x,x,x,x, T,T,x,x, x,x,x,x, x,x,x,x, x,x}
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
 	};
 
 
@@ -296,7 +294,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
       			case 0: s = coco_string_create(L"EOF expected"); break;
 			case 1: s = coco_string_create(L"integer expected"); break;
 			case 2: s = coco_string_create(L"float expected"); break;
-			case 3: s = coco_string_create(L"word expected"); break;
+			case 3: s = coco_string_create(L"label expected"); break;
 			case 4: s = coco_string_create(L"eol expected"); break;
 			case 5: s = coco_string_create(L"dot expected"); break;
 			case 6: s = coco_string_create(L"comma expected"); break;
@@ -314,8 +312,6 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 18: s = coco_string_create(L"real expected"); break;
 			case 19: s = coco_string_create(L"string expected"); break;
 			case 20: s = coco_string_create(L"??? expected"); break;
-			case 21: s = coco_string_create(L"this symbol not expected in TYPE_BODY"); break;
-			case 22: s = coco_string_create(L"this symbol not expected in TYPE_BODY"); break;
 
 
     default: {
