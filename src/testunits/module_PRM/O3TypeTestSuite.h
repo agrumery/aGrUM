@@ -194,6 +194,31 @@ namespace gum_tests {
       TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
+    void testExtendedType() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type state extends boolean "
+            << "OK: true,"
+            << "NOK: false;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.types().size(), 2 );
+      TS_ASSERT( prm.isType( "state" ) );
+      const auto& boolean = prm.type( "boolean" );
+      const auto& state = prm.type( "state" );
+      TS_ASSERT( state.isSubTypeOf( boolean ) );
+      const auto& map = state.label_map();
+      TS_ASSERT_EQUALS( map.size(), 2 );
+      TS_ASSERT_EQUALS( map[0], 0 );
+      TS_ASSERT_EQUALS( map[1], 1 );
+    }
+  };
+
     void testSimpleTypeError9() {
       // Arrange
       auto input = std::stringstream();
