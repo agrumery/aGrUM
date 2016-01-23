@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class NewO3PRMTestSuite : public CxxTest::TestSuite {
+  class O3TypeTestSuite : public CxxTest::TestSuite {
     public:
     void setUp() {}
 
