@@ -37,15 +37,41 @@ namespace gum {
           , __labels( labels ) {
         GUM_CONSTRUCTOR( O3Type );
       }
+
+      O3Type::O3Type( const O3Type& src )
+          : __name( src.__name )
+          , __labels( src.__labels ) {
+        GUM_CONS_CPY( O3Type );
+      }
+
+      O3Type::O3Type( O3Type&& src )
+          : __name( std::move( src.__name ) )
+          , __labels( std::move( src.__labels ) ) {
+        GUM_CONS_MOV( O3Type );
+      }
+
       O3Type::~O3Type() { GUM_DESTRUCTOR( O3Type ); }
 
-      const std::string& O3Type::name() { return __name; }
-      const std::vector<std::string>& O3Type::labels() { return __labels; }
+      const std::string& O3Type::name() const { return __name; }
+      const std::vector<std::string>& O3Type::labels() const { return __labels; }
 
       O3PRM::O3PRM() { GUM_CONSTRUCTOR( O3PRM ); }
+
+      O3PRM::O3PRM( const O3PRM& src )
+          : __types( src.__types ) {
+        GUM_CONS_CPY( O3PRM );
+      }
+
+      O3PRM::O3PRM( O3PRM&& src )
+          : __types( std::move( src.__types ) ) {
+        GUM_CONS_MOV( O3PRM );
+      }
+
       O3PRM::~O3PRM() { GUM_DESTRUCTOR( O3PRM ); }
 
       std::vector<O3Type>& O3PRM::types() { return __types; }
+      const std::vector<O3Type>& O3PRM::types() const { return __types; }
+
     }  // o3prm
-  } // prm
-} // gum
+  }    // prm
+}  // gum

@@ -28,6 +28,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 
 #include <agrum/config.h>
 
@@ -41,11 +42,12 @@ namespace gum {
       class O3Type {
         public:
         O3Type( std::string name, std::vector<std::string>& labels );
-
+        O3Type( const O3Type& src );
+        O3Type( O3Type&& src );
         ~O3Type();
 
-        const std::string& name();
-        const std::vector<std::string>& labels();
+        const std::string& name() const;
+        const std::vector<std::string>& labels() const;
 
         private:
         std::string __name;
@@ -55,9 +57,12 @@ namespace gum {
       class O3PRM {
         public:
         O3PRM();
+        O3PRM( const O3PRM& src );
+        O3PRM( O3PRM&& src );
         ~O3PRM();
 
         std::vector<O3Type>& types();
+        const std::vector<O3Type>& types() const;
 
         private:
         std::vector<O3Type> __types;
