@@ -120,34 +120,73 @@ void Parser::UNIT() {
 void Parser::TYPE_UNIT() {
 		auto n = errors().error_count; 
 		auto name = std::string(); 
-		auto labels = O3List(); 
-		TYPE_BODY(name, labels);
-		if (ok(n)) { get_prm()->types().push_back( O3Type(name, labels) ); } 
+		auto super = std::string(); 
+		auto labels = LabelMap(); 
+		TYPE_BODY(name, super, labels);
+		if ( __ok( n ) ) { __addO3Type( name, super, labels ); } 
 }
 
-void Parser::TYPE_BODY(std::string& name, O3List& labels) {
+void Parser::TYPE_BODY(std::string& name, std::string& super, LabelMap& labels) {
 		Expect(_type);
 		WORD(name);
-		LIST(labels);
+		if (la->kind == _label) {
+			LIST(labels);
+		} else if (la->kind == _extends) {
+			Get();
+			WORD(super);
+			MAP(labels);
+		} else SynErr(21);
 		Expect(_semicolon);
 }
 
-void Parser::WORD(std::string& w) {
+void Parser::WORD(std::string& s) {
 		Expect(_label);
-		w = narrow(t->val); 
+		s = narrow( t->val ); 
 }
 
-void Parser::LIST(O3List& list ) {
-		auto w = std::string(); 
-		WORD(w);
-		list.push_back(w); 
+void Parser::LIST(LabelMap& labels ) {
+		auto s = std::string(); 
+		auto pair = std::pair<std::string, std::string>(); 
+		WORD(s);
+		pair.first = s; 
+		labels.push_back( pair ); 
 		Expect(_comma);
-		WORD(w);
-		list.push_back(w); 
+		WORD(s);
+		pair.first = s; 
+		labels.push_back( pair ); 
 		while (la->kind == _comma) {
 			Get();
-			WORD(w);
-			list.push_back(w); 
+			WORD(s);
+			pair.first = s; 
+			labels.push_back( pair ); 
+		}
+}
+
+void Parser::MAP(LabelMap& labels ) {
+		auto first = std::string(); 
+		auto second = std::string(); 
+		auto pair = std::pair<std::string, std::string>(); 
+		WORD(first);
+		Expect(_colon);
+		WORD(second);
+		pair.first = first; 
+		pair.second = second; 
+		labels.push_back( pair ); 
+		Expect(_comma);
+		WORD(first);
+		Expect(_colon);
+		WORD(second);
+		pair.first = first; 
+		pair.second = second; 
+		labels.push_back( pair ); 
+		while (la->kind == _comma) {
+			Get();
+			WORD(first);
+			Expect(_colon);
+			WORD(second);
+			pair.first = first; 
+			pair.second = second; 
+			labels.push_back( pair ); 
 		}
 }
 
@@ -312,6 +351,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 18: s = coco_string_create(L"real expected"); break;
 			case 19: s = coco_string_create(L"string expected"); break;
 			case 20: s = coco_string_create(L"??? expected"); break;
+			case 21: s = coco_string_create(L"invalid TYPE_BODY"); break;
 
 
     default: {

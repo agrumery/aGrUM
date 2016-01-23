@@ -40,9 +40,9 @@ namespace gum {
         gum::prm::PRMFactory<double> factory( &prm );
         // building types
         for ( auto type : tmp_prm.types() ) {
-          factory.startDiscreteType( type.name() );
+          factory.startDiscreteType( type.name(), type.super() );
           for ( auto label : type.labels() ) {
-            factory.addLabel( label );
+            factory.addLabel( label.first, label.second );
           }
           factory.endDiscreteType();
         }

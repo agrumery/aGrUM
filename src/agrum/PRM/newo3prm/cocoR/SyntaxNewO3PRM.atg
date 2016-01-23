@@ -6,6 +6,8 @@
 
 #include <string>
 #include <vector>
+#include <utility>
+#include <agrum/core/hashTable.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 
 //##############################################################################
@@ -18,13 +20,16 @@ COMPILER NEWO3PRM
 
 private:
 
-using O3List = std::vector<std::string>;
+using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using O3Type = gum::prm::o3prm::O3Type;
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
 
-bool ok (int n) { return errors().error_count == n; }
+bool __ok (int n) { return errors().error_count == n; }
+void __addO3Type( std::string name, std::string super, LabelMap& labels ) {
+  get_prm()->types().push_back( O3Type( name, super, labels ) ); 
+}
 
 public:
 // Set the parser factory.
@@ -98,29 +103,69 @@ UNIT = TYPE_UNIT .
 TYPE_UNIT = 
   (. auto n = errors().error_count; .)
   (. auto name = std::string(); .)
-  (. auto labels = O3List(); .)
-  TYPE_BODY<name, labels>
-  (. if (ok(n)) { get_prm()->types().push_back( O3Type(name, labels) ); } .)
+  (. auto super = std::string(); .)
+  (. auto labels = LabelMap(); .)
+  TYPE_BODY<name, super, labels>
+  (. if ( __ok( n ) ) { __addO3Type( name, super, labels ); } .)
   .
 
-TYPE_BODY<std::string& name, O3List& labels> =
-  type WORD<name> LIST<labels> ';' . 
+//________________________
+TYPE_BODY<std::string& name, std::string& super, LabelMap& labels> =
+  type
+  WORD<name> 
+  (
+    LIST<labels>
+    |
+    extends WORD<super> MAP<labels>
+  )
+  ';'
+  . 
 
-LIST< O3List& list > =
-  (. auto w = std::string(); .)
-  WORD<w>
-  (. list.push_back(w); .)
+//________________________
+MAP< LabelMap& labels > =
+  (. auto first = std::string(); .)
+  (. auto second = std::string(); .)
+  (. auto pair = std::pair<std::string, std::string>(); .)
+  WORD<first> ':' WORD<second>
+  (. pair.first = first; .)
+  (. pair.second = second; .)
+  (. labels.push_back( pair ); .)
   ','
-  WORD<w>
-  (. list.push_back(w); .)
+  WORD<first> ':' WORD<second>
+  (. pair.first = first; .)
+  (. pair.second = second; .)
+  (. labels.push_back( pair ); .)
   {
     ','
-    WORD<w>
-    (. list.push_back(w); .)
+    WORD<first> ':' WORD<second>
+    (. pair.first = first; .)
+    (. pair.second = second; .)
+    (. labels.push_back( pair ); .)
   }
   .
 
-WORD<std::string& w> =
-  label (. w = narrow(t->val); .) .
+//________________________
+LIST< LabelMap& labels > =
+  (. auto s = std::string(); .)
+  (. auto pair = std::pair<std::string, std::string>(); .)
+  WORD<s>
+  (. pair.first = s; .)
+  (. labels.push_back( pair ); .)
+  ','
+  WORD<s>
+  (. pair.first = s; .)
+  (. labels.push_back( pair ); .)
+  {
+    ','
+    WORD<s>
+    (. pair.first = s; .)
+    (. labels.push_back( pair ); .)
+  }
+  .
 
+//________________________
+WORD<std::string& s> =
+  label (. s = narrow( t->val ); .) .
+
+//________________________
 END NEWO3PRM.

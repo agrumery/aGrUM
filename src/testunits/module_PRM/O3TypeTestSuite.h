@@ -171,7 +171,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 14| Syntax error : invalid declaration" << std::endl;
+      msg << "|1 col 12| Syntax error : invalid type declaration" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -214,8 +214,8 @@ namespace gum_tests {
       TS_ASSERT( state.isSubTypeOf( boolean ) );
       const auto& map = state.label_map();
       TS_ASSERT_EQUALS( map.size(), 2 );
-      TS_ASSERT_EQUALS( map[0], 0 );
-      TS_ASSERT_EQUALS( map[1], 1 );
+      TS_ASSERT_EQUALS( map[0], 1 );
+      TS_ASSERT_EQUALS( map[1], 0 );
     }
   };
 
