@@ -108,7 +108,7 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 
 void Parser::NEWO3PRM() {
 		UNIT();
-		while (la->kind == _type) {
+		while (la->kind == _type || la->kind == _int) {
 			UNIT();
 		}
 }
@@ -121,10 +121,17 @@ void Parser::TYPE_UNIT() {
 		auto n = errors().error_count; 
 		auto pos = Position(); 
 		auto name = O3Label(); 
-		auto super = O3Label(); 
-		auto labels = LabelMap(); 
-		TYPE_BODY(pos, name, super, labels);
-		if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } 
+		if (la->kind == _type) {
+			auto super = O3Label(); 
+			auto labels = LabelMap(); 
+			TYPE_BODY(pos, name, super, labels);
+			if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } 
+		} else if (la->kind == _int) {
+			auto start = O3Integer(); 
+			auto end = O3Integer(); 
+			INT_BODY(pos, name, start, end);
+			if ( __ok( n ) ) { __addO3IntType( pos, name, start, end ); } 
+		} else SynErr(23);
 }
 
 void Parser::TYPE_BODY(Position& pos, O3Label& name, O3Label& super, LabelMap& labels) {
@@ -136,7 +143,18 @@ void Parser::TYPE_BODY(Position& pos, O3Label& name, O3Label& super, LabelMap& l
 			Get();
 			LABEL(super);
 			MAP(labels);
-		} else SynErr(21);
+		} else SynErr(24);
+		Expect(_semicolon);
+}
+
+void Parser::INT_BODY(Position& pos, O3Label& name, O3Integer& start, O3Integer& end) {
+		INT(pos);
+		Expect(20 /* "(" */);
+		INTEGER(start);
+		Expect(_comma);
+		INTEGER(end);
+		Expect(21 /* ")" */);
+		LABEL(name);
 		Expect(_semicolon);
 }
 
@@ -197,6 +215,19 @@ void Parser::MAP(LabelMap& labels ) {
 			pair.second = second; 
 			labels.push_back( pair ); 
 		}
+}
+
+void Parser::INT(Position& pos) {
+		Expect(_int);
+		pos.file( narrow( scanner->filename() ) ); 
+		pos.line( t->line ); 
+		pos.column( t->col ); 
+}
+
+void Parser::INTEGER(O3Integer& i) {
+		Expect(_integer);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		i = O3Integer( pos, coco_atoi( t->val ) ); 
 }
 
 
@@ -298,7 +329,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 20;
+  	maxT = 22;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -312,8 +343,8 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[1][22] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
+  	static bool set[1][24] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x}
 	};
 
 
@@ -359,8 +390,11 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 17: s = coco_string_create(L"int expected"); break;
 			case 18: s = coco_string_create(L"real expected"); break;
 			case 19: s = coco_string_create(L"string expected"); break;
-			case 20: s = coco_string_create(L"??? expected"); break;
-			case 21: s = coco_string_create(L"invalid TYPE_BODY"); break;
+			case 20: s = coco_string_create(L"\"(\" expected"); break;
+			case 21: s = coco_string_create(L"\")\" expected"); break;
+			case 22: s = coco_string_create(L"??? expected"); break;
+			case 23: s = coco_string_create(L"invalid TYPE_UNIT"); break;
+			case 24: s = coco_string_create(L"invalid TYPE_BODY"); break;
 
 
     default: {

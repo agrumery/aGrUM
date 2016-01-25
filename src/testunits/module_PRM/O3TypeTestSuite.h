@@ -171,7 +171,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 14| Syntax error : invalid type declaration" << std::endl;
+      msg << "|1 col 14| Syntax error : invalid declaration" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -301,6 +301,33 @@ namespace gum_tests {
       TS_ASSERT( prm.isType( "t_state" ) );
       TS_ASSERT( prm.isType( "t_degraded" ) );
       TS_ASSERT_EQUALS( output.str(), "" );
+    }
+
+    void testIntType() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (0,9) t_power;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.types().size(), 2 );
+      TS_ASSERT( prm.isType( "t_power" ) );
+      auto power = prm.type( "t_power" );
+      TS_ASSERT_EQUALS( power.variable().domainSize(), 10 );
+      TS_ASSERT_EQUALS( power.variable().label( 0 ), "0" );
+      TS_ASSERT_EQUALS( power.variable().label( 1 ), "1" );
+      TS_ASSERT_EQUALS( power.variable().label( 2 ), "2" );
+      TS_ASSERT_EQUALS( power.variable().label( 3 ), "3" );
+      TS_ASSERT_EQUALS( power.variable().label( 4 ), "4" );
+      TS_ASSERT_EQUALS( power.variable().label( 5 ), "5" );
+      TS_ASSERT_EQUALS( power.variable().label( 6 ), "6" );
+      TS_ASSERT_EQUALS( power.variable().label( 7 ), "7" );
+      TS_ASSERT_EQUALS( power.variable().label( 8 ), "8" );
+      TS_ASSERT_EQUALS( power.variable().label( 9 ), "9" );
     }
   };
 
