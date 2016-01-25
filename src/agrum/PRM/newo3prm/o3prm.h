@@ -47,6 +47,8 @@ namespace gum {
         Position( const Position& src );
         Position( Position&& src );
         ~Position();
+        Position& operator=( const Position& src );
+        Position& operator=( Position&& src );
         const std::string& file() const;
         void file( const std::string& file );
         int line() const;
@@ -60,23 +62,49 @@ namespace gum {
         int __column;
       };
 
+      class O3Label {
+        public:
+        O3Label();
+        O3Label( const Position& pos, const std::string& label );
+        O3Label( const O3Label& src );
+        O3Label( O3Label&& src );
+        ~O3Label();
+        O3Label& operator=( const O3Label& src );
+        O3Label& operator=( O3Label&& src );
+
+        const Position& position() const;
+        void position( const Position& pos );
+
+        const std::string& label() const;
+        void label( const std::string& label );
+
+        private:
+        Position __pos;
+        std::string __label;
+      };
+
       class O3Type {
         public:
-        using LabelMap = std::vector<std::pair<std::string, std::string>>;
-        O3Type( Position pos, std::string name, std::string super, LabelMap& labels );
+        using LabelMap = std::vector<std::pair<O3Label, O3Label>>;
+        O3Type( const Position& pos,
+                const O3Label& name,
+                const O3Label& super,
+                LabelMap& labels );
         O3Type( const O3Type& src );
         O3Type( O3Type&& src );
         ~O3Type();
+        O3Type& operator=( const O3Type& src );
+        O3Type& operator=( O3Type&& src );
 
-        const std::string& name() const;
-        const std::string& super() const;
+        const O3Label& name() const;
+        const O3Label& super() const;
         const LabelMap& labels() const;
         const Position& position() const;
 
         private:
         Position __position;
-        std::string __name;
-        std::string __super;
+        O3Label __name;
+        O3Label __super;
         LabelMap __labels;
       };
 
@@ -86,6 +114,8 @@ namespace gum {
         O3PRM( const O3PRM& src );
         O3PRM( O3PRM&& src );
         ~O3PRM();
+        O3PRM& operator=( const O3PRM& src );
+        O3PRM& operator=( O3PRM&& src );
 
         std::vector<O3Type>& types();
         const std::vector<O3Type>& types() const;
@@ -94,9 +124,9 @@ namespace gum {
         std::vector<O3Type> __types;
       };
 
-    } // o3prm
-  } // prm
-} // gum
+    }  // o3prm
+  }    // prm
+}  // gum
 
-#endif // GUM_PRM_O3PRM_PRM_H
+#endif  // GUM_PRM_O3PRM_PRM_H
 

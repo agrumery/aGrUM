@@ -38,36 +38,36 @@ namespace gum {
       bool check_o3type( gum::prm::PRM<double>& prm,
                          const gum::prm::o3prm::O3Type& type,
                          std::stringstream& output ) {
-        if ( prm.isType( type.name() ) ) {
+        if ( prm.isType( type.name().label() ) ) {
           const auto& pos = type.position();
           output << pos.file() << "|" << pos.line() << " col " << pos.column()
                  << "|"
                  << " Type error : "
-                 << "Type name " << type.name() << " already used" << std::endl;
+                 << "Type name " << type.name().label() << " already used" << std::endl;
           return false;
         }
-        if ( type.super() != "" ) {
-          if ( not prm.isType( type.super() ) ) {
-            const auto& pos = type.position();
+        if ( type.super().label() != "" ) {
+          if ( not prm.isType( type.super().label() ) ) {
+            const auto& pos = type.super().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Type error : "
-                   << "Unknown type " << type.super() << std::endl;
+                   << "Unknown type " << type.super().label() << std::endl;
             return false;
           } else {
             for ( auto pair : type.labels() ) {
-              const auto& super = prm.type( type.super() ).variable();
+              const auto& super = prm.type( type.super().label() ).variable();
               auto super_labels = gum::Set<std::string>();
               for ( gum::Size i = 0; i < super.domainSize(); ++i ) {
                 super_labels.insert( super.label( i ) );
               }
-              if ( not super_labels.contains( pair.second ) ) {
-                const auto& pos = type.position();
+              if ( not super_labels.contains( pair.second.label() ) ) {
+                const auto& pos = pair.second.position();
                 output << pos.file() << "|" << pos.line() << " col "
                        << pos.column() << "|"
                        << " Type error : "
-                       << "Label " << pair.second << " does not belong to type "
-                       << type.super() << std::endl;
+                       << "Unknown label " << pair.second.label() << " in "
+                       << type.super().label() << std::endl;
                 return false;
               }
             }
@@ -83,9 +83,9 @@ namespace gum {
         // building types
         for ( auto type : tmp_prm.types() ) {
           if ( check_o3type( prm, type, output ) ) {
-            factory.startDiscreteType( type.name(), type.super() );
+            factory.startDiscreteType( type.name().label(), type.super().label() );
             for ( auto label : type.labels() ) {
-              factory.addLabel( label.first, label.second );
+              factory.addLabel( label.first.label(), label.second.label() );
             }
             factory.endDiscreteType();
           }
