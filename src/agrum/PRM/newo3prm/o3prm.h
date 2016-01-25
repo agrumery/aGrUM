@@ -85,7 +85,9 @@ namespace gum {
 
       class O3Type {
         public:
-        using LabelMap = std::vector<std::pair<O3Label, O3Label>>;
+        using LabelPair = std::pair<O3Label, O3Label>;
+        using LabelMap = std::vector<LabelPair>;
+        O3Type();
         O3Type( const Position& pos,
                 const O3Label& name,
                 const O3Label& super,
@@ -123,6 +125,7 @@ namespace gum {
         private:
         std::vector<O3Type> __types;
       };
+
 
     }  // o3prm
   }    // prm

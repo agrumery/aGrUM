@@ -46,6 +46,9 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      bool check_o3type( const gum::prm::o3prm::O3PRM& prm,
+                         std::string& output );
+
       bool check_o3type( gum::prm::PRM<double>& prm,
                          const gum::prm::o3prm::O3Type& type,
                          std::stringstream& output );
