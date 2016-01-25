@@ -22,8 +22,10 @@ private:
 
 using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
+using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3Type = gum::prm::o3prm::O3Type;
+using O3IntType = gum::prm::o3prm::O3IntType;
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
@@ -34,6 +36,13 @@ void __addO3Type( Position& pos,
                   const O3Label& super,
                   LabelMap& labels ) {
   get_prm()->types().push_back( O3Type( pos, name, super, labels ) ); 
+}
+
+void __addO3IntType( Position& pos,
+                     const O3Label& name,
+                     const O3Integer& start,
+                     const O3Integer& end ) {
+  get_prm()->int_types().push_back( O3IntType( pos, name, start, end ) );
 }
 
 public:
@@ -109,10 +118,17 @@ TYPE_UNIT =
   (. auto n = errors().error_count; .)
   (. auto pos = Position(); .)
   (. auto name = O3Label(); .)
-  (. auto super = O3Label(); .)
-  (. auto labels = LabelMap(); .)
-  TYPE_BODY<pos, name, super, labels>
-  (. if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } .)
+  (
+    (. auto super = O3Label(); .)
+    (. auto labels = LabelMap(); .)
+    TYPE_BODY<pos, name, super, labels>
+    (. if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } .)
+  |
+    (. auto start = O3Integer(); .)
+    (. auto end = O3Integer(); .)
+    INT_BODY<pos, name, start, end>
+    (. if ( __ok( n ) ) { __addO3IntType( pos, name, start, end ); } .)
+  )
   .
 
 //________________________
@@ -130,6 +146,26 @@ TYPE_BODY<Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
 //________________________
 TYPE<Position& pos> = 
   type
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
+  .
+
+//________________________
+INT_BODY<Position& pos, O3Label& name, O3Integer& start, O3Integer& end> =
+  INT<pos>
+  '('
+  INTEGER<start>
+  ','
+  INTEGER<end>
+  ')'
+  LABEL<name>
+  ';'
+  .
+
+//________________________
+INT<Position& pos> =
+  int
   (. pos.file( narrow( scanner->filename() ) ); .)
   (. pos.line( t->line ); .)
   (. pos.column( t->col ); .)
@@ -175,6 +211,13 @@ LIST< LabelMap& labels > =
     (. pair.first = l; .)
     (. labels.push_back( pair ); .)
   }
+  .
+
+//________________________
+INTEGER<O3Integer& i> =
+  integer
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. i = O3Integer( pos, coco_atoi( t->val ) ); .)
   .
 
 //________________________

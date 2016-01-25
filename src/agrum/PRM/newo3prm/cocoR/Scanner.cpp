@@ -315,8 +315,8 @@ void Scanner::Init() {
   percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 20;
-	noSym = 20;
+  	maxT = 22;
+	noSym = 22;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 15);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
@@ -331,6 +331,8 @@ void Scanner::Init() {
 	start.set(59, 11);
 	start.set(34, 12);
 	start.set(39, 13);
+	start.set(40, 17);
+	start.set(41, 18);
 		start.set(Buffer::EoF, -1);
 	keywords.set(L"type", 9);
 	keywords.set(L"class", 10);
@@ -613,6 +615,10 @@ case_0:
 		case 16:
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_15;}
 			else {goto case_0;}
+		case 17:
+			{t->kind = 20; break;}
+		case 18:
+			{t->kind = 21; break;}
 
   }
 

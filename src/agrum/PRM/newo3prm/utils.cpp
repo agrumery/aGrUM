@@ -64,7 +64,7 @@ namespace gum {
             data.nodeMap.insert( id, type );
           } catch ( gum::DuplicateElement& e ) {
             // Raised if duplicate type names
-            const auto& pos = type.position();
+            const auto& pos = type.name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Type error : "
@@ -223,6 +223,43 @@ namespace gum {
         return true;
       }
 
+      bool check_o3inttype( const gum::prm::o3prm::O3PRM& tmp_prm,
+                            std::vector<O3IntType>& int_types,
+                            std::stringstream& output ) {
+        auto names = gum::Set<std::string>();
+        for ( auto type: tmp_prm.types() ) {
+          try {
+            names.insert( type.name().label() );
+          } catch (DuplicateElement& e) {
+            // Ignore, they are checked for in check_o3type
+          }
+        }
+        for ( auto type: tmp_prm.int_types() ) {
+          if ( names.contains( type.name().label() ) ) {
+            // Raised if duplicate type names
+            const auto& pos = type.name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Type error : "
+                   << "Type name " << type.name().label() << " already used"
+                   << std::endl;
+            return false;
+          } else if ( type.end().value() - type.start().value() < 2 ) {
+            // Invalid range
+            const auto& pos = type.name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Type error : "
+                   << "Invalid range " << type.start().value() << " -> "
+                   << type.end().value() << std::endl;
+            return false;
+          } else {
+            int_types.push_back( type );
+          }
+        }
+        return true;
+      }
+
       void build_prm( gum::prm::PRM<double>& prm,
                       gum::prm::o3prm::O3PRM& tmp_prm,
                       std::stringstream& output ) {
@@ -239,12 +276,26 @@ namespace gum {
             factory.endDiscreteType();
           }
         }
+        // building int types
+        auto int_types = std::vector<O3IntType>();
+        if ( check_o3inttype( tmp_prm, int_types, output ) ) {
+          for ( auto type : int_types ) {
+            factory.startDiscreteType( type.name().label() );
+            for ( auto i = type.start().value(); i <= type.end().value();
+                  ++i ) {
+              auto s = std::stringstream();
+              s << i;
+              factory.addLabel( std::string( s.str() ) );
+            }
+            factory.endDiscreteType();
+          }
+        }
       }
 
       std::string clean( const std::string& text ) {
-        std::regex regex( "TYPE_BODY" );
-        std::stringstream output;
-        output << std::regex_replace( text, regex, "type declaration" );
+        auto regex = std::regex( "TYPE_(BODY|UNIT)" );
+        auto output = std::stringstream();
+        output << std::regex_replace( text, regex, "declaration" );
         return output.str();
       }
 
