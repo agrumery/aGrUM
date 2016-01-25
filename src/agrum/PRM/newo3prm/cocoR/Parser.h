@@ -100,8 +100,10 @@ class Parser {
 
 using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
+using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3Type = gum::prm::o3prm::O3Type;
+using O3IntType = gum::prm::o3prm::O3IntType;
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
@@ -112,6 +114,13 @@ void __addO3Type( Position& pos,
                   const O3Label& super,
                   LabelMap& labels ) {
   get_prm()->types().push_back( O3Type( pos, name, super, labels ) ); 
+}
+
+void __addO3IntType( Position& pos,
+                     const O3Label& name,
+                     const O3Integer& start,
+                     const O3Integer& end ) {
+  get_prm()->int_types().push_back( O3IntType( pos, name, start, end ) );
 }
 
 public:
@@ -143,10 +152,13 @@ O3PRM* get_prm() {
 	void UNIT();
 	void TYPE_UNIT();
 	void TYPE_BODY(Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
+	void INT_BODY(Position& pos, O3Label& name, O3Integer& start, O3Integer& end);
 	void TYPE(Position& pos);
 	void LABEL(O3Label& l);
 	void LIST(LabelMap& labels );
 	void MAP(LabelMap& labels );
+	void INT(Position& pos);
+	void INTEGER(O3Integer& i);
 
     void Parse();
 
