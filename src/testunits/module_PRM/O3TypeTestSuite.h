@@ -39,7 +39,7 @@ namespace gum_tests {
     void testSimpleType() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state OK, NOK;";
+      input << "type t_state OK, NOK;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       // Act
@@ -48,8 +48,8 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.types().size(), 2 );
-      TS_ASSERT( prm.isType( "state" ) );
-      auto state = prm.type( "state" );
+      TS_ASSERT( prm.isType( "t_state" ) );
+      auto state = prm.type( "t_state" );
       TS_ASSERT_EQUALS( state.variable().domainSize(), 2 );
       TS_ASSERT_EQUALS( state.variable().label( 0 ), "OK" );
       TS_ASSERT_EQUALS( state.variable().label( 1 ), "NOK" );
@@ -58,7 +58,7 @@ namespace gum_tests {
     void testSimpleTypeError1() {
       // Arrange
       auto input = std::stringstream();
-      input << "types state OK, NOK;";
+      input << "types t_state OK, NOK;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       // Act
@@ -71,13 +71,13 @@ namespace gum_tests {
       msg << "|1 col 1| Syntax error : type expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
     void testSimpleTypeError2() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state OK, NOK";
+      input << "type t_state OK, NOK";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       // Act
@@ -85,16 +85,16 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 19| Syntax error : semicolon expected" << std::endl;
+      msg << "|1 col 21| Syntax error : semicolon expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
     void testSimpleTypeError3() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state OK, NOK" << std::endl << "type t_ink empty, full;";
+      input << "type t_state OK, NOK" << std::endl << "type t_ink empty, full;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       // Act
@@ -105,14 +105,14 @@ namespace gum_tests {
       msg << "|2 col 1| Syntax error : semicolon expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 2 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
       TS_ASSERT( prm.isType( "t_ink" ) );
     }
 
     void testSimpleTypeError4() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state OK;";
+      input << "type t_state OK;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       // Act
@@ -120,16 +120,16 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 14| Syntax error : comma expected" << std::endl;
+      msg << "|1 col 16| Syntax error : comma expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
     void testSimpleTypeError5() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state OK,;";
+      input << "type t_state OK,;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       // Act
@@ -137,10 +137,10 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 15| Syntax error : label expected" << std::endl;
+      msg << "|1 col 17| Syntax error : label expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
     void testSimpleTypeError6() {
@@ -157,13 +157,13 @@ namespace gum_tests {
       msg << "|1 col 6| Syntax error : label expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
     void testSimpleTypeError7() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state +=%./, NOK;";
+      input << "type t_state +=%./, NOK;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       // Act
@@ -171,16 +171,16 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 12| Syntax error : invalid type declaration" << std::endl;
+      msg << "|1 col 14| Syntax error : invalid type declaration" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
     void testSimpleTypeError8() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state OK, +NOK;";
+      input << "type t_state OK, +NOK;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       // Act
@@ -188,16 +188,16 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 16| Syntax error : label expected" << std::endl;
+      msg << "|1 col 18| Syntax error : label expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
     void testExtendedType() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state extends boolean "
+      input << "type t_state extends boolean "
             << "OK: true,"
             << "NOK: false;";
       auto output = std::stringstream();
@@ -208,9 +208,9 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.types().size(), 2 );
-      TS_ASSERT( prm.isType( "state" ) );
+      TS_ASSERT( prm.isType( "t_state" ) );
       const auto& boolean = prm.type( "boolean" );
-      const auto& state = prm.type( "state" );
+      const auto& state = prm.type( "t_state" );
       TS_ASSERT( state.isSubTypeOf( boolean ) );
       const auto& map = state.label_map();
       TS_ASSERT_EQUALS( map.size(), 2 );
@@ -221,7 +221,7 @@ namespace gum_tests {
     void testExtendedTypeError1() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state extend boolean "
+      input << "type t_state extend boolean "
             << "OK: true,"
             << "NOK: false;";
       auto output = std::stringstream();
@@ -231,18 +231,18 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 19| Syntax error : comma expected";
+      msg << "|1 col 21| Syntax error : comma expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
     void testExtendedTypeError2() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state extends foobar "
+      input << "type t_state extends foobar "
             << "OK: true,"
             << "NOK: false;";
       auto output = std::stringstream();
@@ -252,18 +252,18 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 20| Type error : Unknown type foobar";
+      msg << "|1 col 22| Type error : Unknown type foobar";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
     void testExtendedTypeError3() {
       // Arrange
       auto input = std::stringstream();
-      input << "type state extends boolean " << std::endl
+      input << "type t_state extends boolean " << std::endl
             << "OK: vrue," << std::endl
             << "NOK: false;" << std::endl;
       auto output = std::stringstream();
@@ -273,12 +273,34 @@ namespace gum_tests {
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
-      TS_ASSERT( not prm.isType( "state" ) );
+      TS_ASSERT( not prm.isType( "t_state" ) );
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|2 col 5| Type error : Unknown label vrue in boolean";
       TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testOrderDoesNotMatter() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type t_degraded extends t_state " << std::endl
+            << "OK: OK," << std::endl
+            << "Dysfunctional: NOK," << std::endl
+            << "Degraded: NOK;" << std::endl;
+      input << "type t_state extends boolean" << std::endl
+            << "OK: true," << std::endl
+            << "NOK: false;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 3 );
+      TS_ASSERT( prm.isType( "t_state" ) );
+      TS_ASSERT( prm.isType( "t_degraded" ) );
+      TS_ASSERT_EQUALS( output.str(), "" );
     }
   };
 

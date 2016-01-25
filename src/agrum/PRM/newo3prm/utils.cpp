@@ -35,6 +35,153 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
+      O3Type boolean_type() {
+        auto name = O3Label( Position(), "boolean" );
+        auto f = O3Label( Position(), "false" );
+        auto t = O3Label( Position(), "true" );
+        auto labels = O3Type::LabelMap();
+        labels.push_back( O3Type::LabelPair( f, O3Label() ) );
+        labels.push_back( O3Type::LabelPair( t, O3Label() ) );
+        return std::move( O3Type( Position(), name, O3Label(), labels ) );
+      }
+
+      struct CheckO3Type {
+        gum::HashTable<std::string, gum::NodeId> nameMap;
+        gum::HashTable<std::string, O3Type> typeMap;
+        gum::HashTable<NodeId, O3Type> nodeMap;
+        gum::DAG dag;
+      };
+
+      bool add_types2dag( CheckO3Type& data,
+                          gum::prm::o3prm::O3PRM& prm,
+                          std::stringstream& output ) {
+        // Adding nodes to the type inheritance graph
+        for ( auto& type : prm.types() ) {
+          auto id = data.dag.addNode();
+          try {
+            data.nameMap.insert( type.name().label(), id );
+            data.typeMap.insert( type.name().label(), type );
+            data.nodeMap.insert( id, type );
+          } catch ( gum::DuplicateElement& e ) {
+            // Raised if duplicate type names
+            const auto& pos = type.position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Type error : "
+                   << "Type name " << type.name().label() << " already used"
+                   << std::endl;
+            return false;
+          }
+        }
+        return true;
+      }
+
+      bool add_arcs2dag( CheckO3Type& data,
+                         gum::prm::o3prm::O3PRM& prm,
+                         std::stringstream& output ) {
+        // Adding arcs to the graph inheritance graph
+        for ( const auto& type : prm.types() ) {
+          if ( type.super().label() != "" ) {
+            try {
+              auto head = data.nameMap[type.super().label()];
+              auto tail = data.nameMap[type.name().label()];
+              data.dag.addArc( tail, head );
+            } catch ( gum::NotFound& e ) {
+              // Unknown super type
+              const auto& pos = type.super().position();
+              output << pos.file() << "|" << pos.line() << " col "
+                     << pos.column() << "|"
+                     << " Type error : "
+                     << "Unknown type " << type.super().label() << std::endl;
+              return false;
+            } catch ( gum::InvalidDirectedCycle& e ) {
+              // Cyclic inheritance
+              const auto& pos = type.position();
+              output << pos.file() << "|" << pos.line() << " col "
+                     << pos.column() << "|"
+                     << " Type error : "
+                     << "Cyclic inheritance between type "
+                     << type.name().label() << " and type "
+                     << type.super().label() << std::endl;
+              return false;
+            }
+            // Check labels inheritance
+            for ( auto pair : type.labels() ) {
+              auto super = data.typeMap[type.super().label()];
+              auto super_labels = gum::Set<std::string>();
+              for ( auto label : super.labels() ) {
+                super_labels.insert( label.first.label() );
+              }
+              if ( not super_labels.contains( pair.second.label() ) ) {
+                const auto& pos = pair.second.position();
+                output << pos.file() << "|" << pos.line() << " col "
+                       << pos.column() << "|"
+                       << " Type error : "
+                       << "Unknown label " << pair.second.label() << " in "
+                       << type.super().label() << std::endl;
+                return false;
+              }
+            }
+          }
+        }
+        return true;
+      }
+
+      gum::Sequence<NodeId> topologicalOrder( const gum::DAG& src ) {
+        auto dag = src;
+        auto roots = std::vector<NodeId>();
+        auto order = gum::Sequence<NodeId>();
+        for ( const auto node : dag.nodes() ) {
+          if ( dag.parents( node ).empty() ) {
+            roots.push_back( node );
+          }
+        }
+        while ( roots.size() ) {
+          order.insert( roots.back() );
+          roots.pop_back();
+          while ( dag.children( order.back() ).size() ) {
+            auto child = *( dag.children( order.back() ).begin() );
+            dag.eraseArc( Arc( order.back(), child ) );
+            if ( dag.parents( child ).empty() ) {
+              roots.push_back( child );
+            }
+          }
+        }
+        return std::move( order );
+      }
+
+      void add_type_order( CheckO3Type& data, std::vector<O3Type>& types ) {
+        auto topo_order = topologicalOrder( data.dag );
+        for ( auto iter = topo_order.rbegin(); iter != topo_order.rend();
+              --iter ) {
+          if ( data.nodeMap[*iter].name().label() != "boolean" ) {
+            types.push_back( data.nodeMap[*iter] );
+          }
+        }
+      }
+
+      bool check_o3type( gum::prm::o3prm::O3PRM& prm,
+                         std::vector<O3Type>& types,
+                         std::stringstream& output ) {
+        auto data = CheckO3Type();
+        // Adding boolean as a primitive type
+        auto boolean = boolean_type();
+        auto id = data.dag.addNode();
+        data.nameMap.insert( "boolean", id );
+        data.typeMap.insert( "boolean", boolean );
+        data.nodeMap.insert( id, boolean );
+
+        if ( not add_types2dag( data, prm, output ) ) {
+          return false;
+        }
+        if ( not add_arcs2dag( data, prm, output ) ) {
+          return false;
+        }
+        add_type_order( data, types );
+
+        return true;
+      }
+
       bool check_o3type( gum::prm::PRM<double>& prm,
                          const gum::prm::o3prm::O3Type& type,
                          std::stringstream& output ) {
@@ -81,9 +228,11 @@ namespace gum {
                       std::stringstream& output ) {
         gum::prm::PRMFactory<double> factory( &prm );
         // building types
-        for ( auto type : tmp_prm.types() ) {
-          if ( check_o3type( prm, type, output ) ) {
-            factory.startDiscreteType( type.name().label(), type.super().label() );
+        auto types = std::vector<O3Type>();
+        if ( check_o3type( tmp_prm, types, output ) ) {
+          for ( auto type : types ) {
+            factory.startDiscreteType( type.name().label(),
+                                       type.super().label() );
             for ( auto label : type.labels() ) {
               factory.addLabel( label.first.label(), label.second.label() );
             }
