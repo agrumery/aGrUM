@@ -256,7 +256,28 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 1| Type error : Unknown type foobar";
+      msg << "|1 col 20| Type error : Unknown type foobar";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testExtendedTypeError3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type state extends boolean " << std::endl
+            << "OK: vrue," << std::endl
+            << "NOK: false;" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "state" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|2 col 5| Type error : Unknown label vrue in boolean";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
   };
