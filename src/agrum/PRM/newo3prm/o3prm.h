@@ -40,10 +40,30 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      class Position {
+        public:
+        Position();
+        Position( const std::string& filename, int line, int column );
+        Position( const Position& src );
+        Position( Position&& src );
+        ~Position();
+        const std::string& file() const;
+        void file( const std::string& file );
+        int line() const;
+        void line( int line );
+        int column() const;
+        void column( int column );
+
+        private:
+        std::string __file;
+        int __line;
+        int __column;
+      };
+
       class O3Type {
         public:
         using LabelMap = std::vector<std::pair<std::string, std::string>>;
-        O3Type( std::string name, std::string super, LabelMap& labels );
+        O3Type( Position pos, std::string name, std::string super, LabelMap& labels );
         O3Type( const O3Type& src );
         O3Type( O3Type&& src );
         ~O3Type();
@@ -51,8 +71,10 @@ namespace gum {
         const std::string& name() const;
         const std::string& super() const;
         const LabelMap& labels() const;
+        const Position& position() const;
 
         private:
+        Position __position;
         std::string __name;
         std::string __super;
         LabelMap __labels;
