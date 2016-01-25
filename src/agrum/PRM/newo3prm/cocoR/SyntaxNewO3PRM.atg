@@ -22,6 +22,7 @@ private:
 
 using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
+using O3Label = gum::prm::o3prm::O3Label;
 using O3Type = gum::prm::o3prm::O3Type;
 using O3PRM = gum::prm::o3prm::O3PRM;
 
@@ -29,8 +30,8 @@ O3PRM* __prm;
 
 bool __ok (int n) { return errors().error_count == n; }
 void __addO3Type( Position& pos,
-                  std::string name,
-                  std::string super,
+                  const O3Label& name,
+                  const O3Label& super,
                   LabelMap& labels ) {
   get_prm()->types().push_back( O3Type( pos, name, super, labels ) ); 
 }
@@ -107,21 +108,21 @@ UNIT = TYPE_UNIT .
 TYPE_UNIT = 
   (. auto n = errors().error_count; .)
   (. auto pos = Position(); .)
-  (. auto name = std::string(); .)
-  (. auto super = std::string(); .)
+  (. auto name = O3Label(); .)
+  (. auto super = O3Label(); .)
   (. auto labels = LabelMap(); .)
   TYPE_BODY<pos, name, super, labels>
   (. if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } .)
   .
 
 //________________________
-TYPE_BODY<Position& pos, std::string& name, std::string& super, LabelMap& labels> =
+TYPE_BODY<Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
   TYPE<pos>
-  WORD<name> 
+  LABEL<name> 
   (
     LIST<labels>
     |
-    extends WORD<super> MAP<labels>
+    extends LABEL<super> MAP<labels>
   )
   ';'
   . 
@@ -136,21 +137,21 @@ TYPE<Position& pos> =
 
 //________________________
 MAP< LabelMap& labels > =
-  (. auto first = std::string(); .)
-  (. auto second = std::string(); .)
-  (. auto pair = std::pair<std::string, std::string>(); .)
-  WORD<first> ':' WORD<second>
+  (. auto first = O3Label(); .)
+  (. auto second = O3Label(); .)
+  (. auto pair = std::pair<O3Label, O3Label>(); .)
+  LABEL<first> ':' LABEL<second>
   (. pair.first = first; .)
   (. pair.second = second; .)
   (. labels.push_back( pair ); .)
   ','
-  WORD<first> ':' WORD<second>
+  LABEL<first> ':' LABEL<second>
   (. pair.first = first; .)
   (. pair.second = second; .)
   (. labels.push_back( pair ); .)
   {
     ','
-    WORD<first> ':' WORD<second>
+    LABEL<first> ':' LABEL<second>
     (. pair.first = first; .)
     (. pair.second = second; .)
     (. labels.push_back( pair ); .)
@@ -159,26 +160,29 @@ MAP< LabelMap& labels > =
 
 //________________________
 LIST< LabelMap& labels > =
-  (. auto s = std::string(); .)
-  (. auto pair = std::pair<std::string, std::string>(); .)
-  WORD<s>
-  (. pair.first = s; .)
+  (. auto l = O3Label(); .)
+  (. auto pair = std::pair<O3Label, O3Label>(); .)
+  LABEL<l>
+  (. pair.first = l; .)
   (. labels.push_back( pair ); .)
   ','
-  WORD<s>
-  (. pair.first = s; .)
+  LABEL<l>
+  (. pair.first = l; .)
   (. labels.push_back( pair ); .)
   {
     ','
-    WORD<s>
-    (. pair.first = s; .)
+    LABEL<l>
+    (. pair.first = l; .)
     (. labels.push_back( pair ); .)
   }
   .
 
 //________________________
-WORD<std::string& s> =
-  label (. s = narrow( t->val ); .) .
+LABEL<O3Label& l> =
+  label
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
 
 //________________________
 END NEWO3PRM.

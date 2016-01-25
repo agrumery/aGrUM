@@ -120,21 +120,21 @@ void Parser::UNIT() {
 void Parser::TYPE_UNIT() {
 		auto n = errors().error_count; 
 		auto pos = Position(); 
-		auto name = std::string(); 
-		auto super = std::string(); 
+		auto name = O3Label(); 
+		auto super = O3Label(); 
 		auto labels = LabelMap(); 
 		TYPE_BODY(pos, name, super, labels);
 		if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } 
 }
 
-void Parser::TYPE_BODY(Position& pos, std::string& name, std::string& super, LabelMap& labels) {
+void Parser::TYPE_BODY(Position& pos, O3Label& name, O3Label& super, LabelMap& labels) {
 		TYPE(pos);
-		WORD(name);
+		LABEL(name);
 		if (la->kind == _label) {
 			LIST(labels);
 		} else if (la->kind == _extends) {
 			Get();
-			WORD(super);
+			LABEL(super);
 			MAP(labels);
 		} else SynErr(21);
 		Expect(_semicolon);
@@ -147,51 +147,52 @@ void Parser::TYPE(Position& pos) {
 		pos.column( t->col ); 
 }
 
-void Parser::WORD(std::string& s) {
+void Parser::LABEL(O3Label& l) {
 		Expect(_label);
-		s = narrow( t->val ); 
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		l = O3Label( pos, narrow( t->val ) ); 
 }
 
 void Parser::LIST(LabelMap& labels ) {
-		auto s = std::string(); 
-		auto pair = std::pair<std::string, std::string>(); 
-		WORD(s);
-		pair.first = s; 
+		auto l = O3Label(); 
+		auto pair = std::pair<O3Label, O3Label>(); 
+		LABEL(l);
+		pair.first = l; 
 		labels.push_back( pair ); 
 		Expect(_comma);
-		WORD(s);
-		pair.first = s; 
+		LABEL(l);
+		pair.first = l; 
 		labels.push_back( pair ); 
 		while (la->kind == _comma) {
 			Get();
-			WORD(s);
-			pair.first = s; 
+			LABEL(l);
+			pair.first = l; 
 			labels.push_back( pair ); 
 		}
 }
 
 void Parser::MAP(LabelMap& labels ) {
-		auto first = std::string(); 
-		auto second = std::string(); 
-		auto pair = std::pair<std::string, std::string>(); 
-		WORD(first);
+		auto first = O3Label(); 
+		auto second = O3Label(); 
+		auto pair = std::pair<O3Label, O3Label>(); 
+		LABEL(first);
 		Expect(_colon);
-		WORD(second);
+		LABEL(second);
 		pair.first = first; 
 		pair.second = second; 
 		labels.push_back( pair ); 
 		Expect(_comma);
-		WORD(first);
+		LABEL(first);
 		Expect(_colon);
-		WORD(second);
+		LABEL(second);
 		pair.first = first; 
 		pair.second = second; 
 		labels.push_back( pair ); 
 		while (la->kind == _comma) {
 			Get();
-			WORD(first);
+			LABEL(first);
 			Expect(_colon);
-			WORD(second);
+			LABEL(second);
 			pair.first = first; 
 			pair.second = second; 
 			labels.push_back( pair ); 
