@@ -35,6 +35,7 @@
 #include <sstream>
 #include <string>
 
+#include <agrum/core/set.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/newO3prm/cocoR/Parser.h>
@@ -45,8 +46,16 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      bool check_o3type( gum::prm::PRM<double>& prm,
+                         const gum::prm::o3prm::O3Type& type,
+                         std::stringstream& output );
+
       void build_prm( gum::prm::PRM<double>& prm,
                       gum::prm::o3prm::O3PRM& tmp_prm );
+
+      std::string clean( const std::string& text );
+
+      std::string print( const ParseError& err );
 
       void parse_stream( gum::prm::PRM<double>& prm,
                          std::stringstream& input,

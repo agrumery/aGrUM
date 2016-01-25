@@ -21,14 +21,18 @@ COMPILER NEWO3PRM
 private:
 
 using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
+using Position = gum::prm::o3prm::Position;
 using O3Type = gum::prm::o3prm::O3Type;
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
 
 bool __ok (int n) { return errors().error_count == n; }
-void __addO3Type( std::string name, std::string super, LabelMap& labels ) {
-  get_prm()->types().push_back( O3Type( name, super, labels ) ); 
+void __addO3Type( Position& pos,
+                  std::string name,
+                  std::string super,
+                  LabelMap& labels ) {
+  get_prm()->types().push_back( O3Type( pos, name, super, labels ) ); 
 }
 
 public:
@@ -102,16 +106,17 @@ UNIT = TYPE_UNIT .
 //________________________
 TYPE_UNIT = 
   (. auto n = errors().error_count; .)
+  (. auto pos = Position(); .)
   (. auto name = std::string(); .)
   (. auto super = std::string(); .)
   (. auto labels = LabelMap(); .)
-  TYPE_BODY<name, super, labels>
-  (. if ( __ok( n ) ) { __addO3Type( name, super, labels ); } .)
+  TYPE_BODY<pos, name, super, labels>
+  (. if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } .)
   .
 
 //________________________
-TYPE_BODY<std::string& name, std::string& super, LabelMap& labels> =
-  type
+TYPE_BODY<Position& pos, std::string& name, std::string& super, LabelMap& labels> =
+  TYPE<pos>
   WORD<name> 
   (
     LIST<labels>
@@ -120,6 +125,14 @@ TYPE_BODY<std::string& name, std::string& super, LabelMap& labels> =
   )
   ';'
   . 
+
+//________________________
+TYPE<Position& pos> = 
+  type
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
+  .
 
 //________________________
 MAP< LabelMap& labels > =
