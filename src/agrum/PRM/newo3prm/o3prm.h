@@ -62,6 +62,27 @@ namespace gum {
         int __column;
       };
 
+      class O3Integer {
+        public:
+        O3Integer();
+        O3Integer( const Position& pos, int value );
+        O3Integer( const O3Integer& src );
+        O3Integer( O3Integer&& src );
+        ~O3Integer();
+        O3Integer& operator=( const O3Integer& src );
+        O3Integer& operator=( O3Integer&& src );
+
+        const Position& position() const;
+        void position( const Position& pos );
+
+        int value() const;
+        void value(int i);
+
+        private:
+        Position __pos;
+        int __value;
+      };
+
       class O3Label {
         public:
         O3Label();
@@ -104,10 +125,35 @@ namespace gum {
         const Position& position() const;
 
         private:
-        Position __position;
+        Position __pos;
         O3Label __name;
         O3Label __super;
         LabelMap __labels;
+      };
+
+      class O3IntType {
+        public:
+        O3IntType();
+        O3IntType( const Position& pos,
+                   const O3Label& name,
+                   const O3Integer& start,
+                   const O3Integer& end );
+        O3IntType( const O3IntType& src );
+        O3IntType( O3IntType&& src );
+        ~O3IntType();
+        O3IntType& operator=( const O3IntType& src );
+        O3IntType& operator=( O3IntType&& src );
+
+        const O3Label& name() const;
+        const O3Integer& start() const;
+        const O3Integer& end() const;
+        const Position& position() const;
+
+        private:
+        Position __pos;
+        O3Label __name;
+        O3Integer __start;
+        O3Integer __end;
       };
 
       class O3PRM {
@@ -122,8 +168,12 @@ namespace gum {
         std::vector<O3Type>& types();
         const std::vector<O3Type>& types() const;
 
+        std::vector<O3IntType>& int_types();
+        const std::vector<O3IntType>& int_types() const;
+
         private:
         std::vector<O3Type> __types;
+        std::vector<O3IntType> __int_types;
       };
 
 
