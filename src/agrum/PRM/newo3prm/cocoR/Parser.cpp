@@ -119,15 +119,16 @@ void Parser::UNIT() {
 
 void Parser::TYPE_UNIT() {
 		auto n = errors().error_count; 
+		auto pos = Position(); 
 		auto name = std::string(); 
 		auto super = std::string(); 
 		auto labels = LabelMap(); 
-		TYPE_BODY(name, super, labels);
-		if ( __ok( n ) ) { __addO3Type( name, super, labels ); } 
+		TYPE_BODY(pos, name, super, labels);
+		if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } 
 }
 
-void Parser::TYPE_BODY(std::string& name, std::string& super, LabelMap& labels) {
-		Expect(_type);
+void Parser::TYPE_BODY(Position& pos, std::string& name, std::string& super, LabelMap& labels) {
+		TYPE(pos);
 		WORD(name);
 		if (la->kind == _label) {
 			LIST(labels);
@@ -137,6 +138,13 @@ void Parser::TYPE_BODY(std::string& name, std::string& super, LabelMap& labels) 
 			MAP(labels);
 		} else SynErr(21);
 		Expect(_semicolon);
+}
+
+void Parser::TYPE(Position& pos) {
+		Expect(_type);
+		pos.file( narrow( scanner->filename() ) ); 
+		pos.line( t->line ); 
+		pos.column( t->col ); 
 }
 
 void Parser::WORD(std::string& s) {

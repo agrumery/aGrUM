@@ -256,7 +256,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 19| Syntax error : comma expected";
+      msg << "|1 col 1| Type error : Unknown type foobar";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
   };

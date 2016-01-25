@@ -35,16 +35,60 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
+      bool check_o3type( gum::prm::PRM<double>& prm,
+                         const gum::prm::o3prm::O3Type& type,
+                         std::stringstream& output ) {
+        if ( prm.isType( type.name() ) ) {
+          const auto& pos = type.position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Type error : "
+                 << "Type name " << type.name() << " already used" << std::endl;
+          return false;
+        }
+        if ( type.super() != "" ) {
+          if ( not prm.isType( type.super() ) ) {
+            const auto& pos = type.position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Type error : "
+                   << "Unknown type " << type.super() << std::endl;
+            return false;
+          } else {
+            for ( auto pair : type.labels() ) {
+              const auto& super = prm.type( type.super() ).variable();
+              auto super_labels = gum::Set<std::string>();
+              for ( gum::Size i = 0; i < super.domainSize(); ++i ) {
+                super_labels.insert( super.label( i ) );
+              }
+              if ( not super_labels.contains( pair.second ) ) {
+                const auto& pos = type.position();
+                output << pos.file() << "|" << pos.line() << " col "
+                       << pos.column() << "|"
+                       << " Type error : "
+                       << "Label " << pair.second << " does not belong to type "
+                       << type.super() << std::endl;
+                return false;
+              }
+            }
+          }
+        }
+        return true;
+      }
+
       void build_prm( gum::prm::PRM<double>& prm,
-                      gum::prm::o3prm::O3PRM& tmp_prm ) {
+                      gum::prm::o3prm::O3PRM& tmp_prm,
+                      std::stringstream& output ) {
         gum::prm::PRMFactory<double> factory( &prm );
         // building types
         for ( auto type : tmp_prm.types() ) {
-          factory.startDiscreteType( type.name(), type.super() );
-          for ( auto label : type.labels() ) {
-            factory.addLabel( label.first, label.second );
+          if ( check_o3type( prm, type, output ) ) {
+            factory.startDiscreteType( type.name(), type.super() );
+            for ( auto label : type.labels() ) {
+              factory.addLabel( label.first, label.second );
+            }
+            factory.endDiscreteType();
           }
-          factory.endDiscreteType();
         }
       }
 
@@ -71,7 +115,7 @@ namespace gum {
         auto s = o3prm_scanner(
             buffer.get(), input.str().length() + 1, "" );
         auto p = o3prm_parser( &s );
-        auto tmp_prm = O3PRM();
+        auto tmp_prm = gum::prm::o3prm::O3PRM();
         p.set_prm( &tmp_prm );
         p.Parse();
         const auto& errors = p.errors();
@@ -79,7 +123,7 @@ namespace gum {
           auto err = p.errors().error( i );
           output << print( err ) << std::endl;
         }
-        build_prm( prm, tmp_prm );
+        build_prm( prm, tmp_prm, output );
       }
     }
   }
