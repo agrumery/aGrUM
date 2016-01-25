@@ -32,24 +32,68 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      O3Type::O3Type( std::string name,
+      Position::Position()
+          : __file( "" )
+          , __line( 0 )
+          , __column( 0 ) {
+        GUM_CONSTRUCTOR( Position );
+      }
+
+      Position::Position( const std::string& file, int line, int column )
+          : __file( file )
+          , __line( line )
+          , __column( column ) {
+        GUM_CONSTRUCTOR( Position );
+      }
+
+      Position::Position( const Position& src )
+          : __file( src.__file )
+          , __line( src.__line )
+          , __column( src.__column ) {
+        GUM_CONS_CPY( Position );
+      }
+
+      Position::Position( Position&& src )
+          : __file( std::move( src.__file ) )
+          , __line( std::move( src.__line ) )
+          , __column( std::move( src.__column ) ) {
+        GUM_CONS_MOV( Position );
+      }
+
+      Position::~Position() { GUM_DESTRUCTOR( Position ); }
+
+      const std::string& Position::file() const { return __file; }
+      void Position::file( const std::string& file ) { __file = file; }
+
+      int Position::line() const { return __line; }
+      void Position::line( int line ) { __line = line; }
+
+      int Position::column() const { return __column; }
+      void Position::column( int column ) { __column = column; }
+
+
+      O3Type::O3Type( Position pos,
+                      std::string name,
                       std::string super,
                       O3Type::LabelMap& labels )
-          : __name( name )
+          : __position( pos )
+          , __name( name )
           , __super( super )
           , __labels( labels ) {
         GUM_CONSTRUCTOR( O3Type );
       }
 
       O3Type::O3Type( const O3Type& src )
-          : __name( src.__name )
+          : __position( src.__position )
+          , __name( src.__name )
           , __super( src.__super )
           , __labels( src.__labels ) {
         GUM_CONS_CPY( O3Type );
       }
 
       O3Type::O3Type( O3Type&& src )
-          : __name( std::move( src.__name ) )
+          : __position( std::move( src.__position ) )
+          , __name( std::move( src.__name ) )
           , __super( std::move( src.__super ) )
           , __labels( std::move( src.__labels ) ) {
         GUM_CONS_MOV( O3Type );
@@ -60,6 +104,7 @@ namespace gum {
       const std::string& O3Type::name() const { return __name; }
       const std::string& O3Type::super() const { return __super; }
       const O3Type::LabelMap& O3Type::labels() const { return __labels; }
+      const Position& O3Type::position() const { return __position; }
 
       O3PRM::O3PRM() { GUM_CONSTRUCTOR( O3PRM ); }
 
