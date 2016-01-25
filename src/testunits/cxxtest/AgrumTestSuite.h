@@ -11,6 +11,7 @@
 
 #define TS_GUM_ASSERT_THROWS_NOTHING( x )                             \
   TS_ASSERT_THROWS_NOTHING( try { x; } catch ( gum::Exception & e ) { \
+    GUM_TRACE_NEWLINE                                                 \
     GUM_SHOWERROR( e );                                               \
     TS_FAIL( "gum::Exception thrown" );                               \
   } )
