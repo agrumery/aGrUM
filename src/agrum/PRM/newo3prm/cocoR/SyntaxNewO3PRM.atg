@@ -24,8 +24,14 @@ using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Label = gum::prm::o3prm::O3Label;
+
 using O3Type = gum::prm::o3prm::O3Type;
 using O3IntType = gum::prm::o3prm::O3IntType;
+
+using O3Interface = gum::prm::o3prm::O3Interface;
+using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
+using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
+
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
@@ -43,6 +49,13 @@ void __addO3IntType( Position& pos,
                      const O3Integer& start,
                      const O3Integer& end ) {
   get_prm()->int_types().push_back( O3IntType( pos, name, start, end ) );
+}
+
+void __addO3Interface( Position& pos,
+                       const O3Label& name,
+                       const O3Label& super,
+                       const O3InterfaceElementList& elts ) {
+  get_prm()->interfaces().push_back( O3Interface( pos, name, super, elts ) );
 }
 
 public:
@@ -111,7 +124,44 @@ PRODUCTIONS
 NEWO3PRM = UNIT { UNIT } . 
 
 //________________________
-UNIT = TYPE_UNIT .
+UNIT = 
+  (
+    TYPE_UNIT
+  |
+    INTERFACE_UNIT
+  )
+  .
+//________________________
+INTERFACE_UNIT =
+  (. auto n = errors().error_count; .)
+  (. auto pos = Position(); .)
+  (. auto name = O3Label(); .)
+  (. auto super = O3Label(); .)
+  (. auto elts = O3InterfaceElementList(); .)
+  INTERFACE_DECLARATION<pos, name, super, elts >
+  (. if (__ok(n)) { __addO3Interface( pos, name, super, elts ); } .)
+  .
+
+//________________________
+INTERFACE_DECLARATION<Position& pos,
+                      O3Label& name,
+                      O3Label& super,
+                      O3InterfaceElementList& elts> =
+  interface
+  LABEL<name>
+  [
+    extends LABEL<super>
+  ]
+  '{' { INTERFACE_BODY<elts> } '}'
+  .
+
+//________________________
+INTERFACE_BODY<O3InterfaceElementList& elts> =
+  (. auto type = O3Label(); .)
+  (. auto name = O3Label(); .)
+  LABEL<type> LABEL<name> ';'
+  (. elts.push_back( O3InterfaceElement( type, name ) ); .)
+  .
 
 //________________________
 TYPE_UNIT = 
@@ -121,18 +171,18 @@ TYPE_UNIT =
   (
     (. auto super = O3Label(); .)
     (. auto labels = LabelMap(); .)
-    TYPE_BODY<pos, name, super, labels>
+    TYPE_DECLARATION<pos, name, super, labels>
     (. if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } .)
   |
     (. auto start = O3Integer(); .)
     (. auto end = O3Integer(); .)
-    INT_BODY<pos, name, start, end>
+    INT_TYPE_DECLARATION<pos, name, start, end>
     (. if ( __ok( n ) ) { __addO3IntType( pos, name, start, end ); } .)
   )
   .
 
 //________________________
-TYPE_BODY<Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
+TYPE_DECLARATION<Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
   TYPE<pos>
   LABEL<name> 
   (
@@ -152,7 +202,7 @@ TYPE<Position& pos> =
   .
 
 //________________________
-INT_BODY<Position& pos, O3Label& name, O3Integer& start, O3Integer& end> =
+INT_TYPE_DECLARATION<Position& pos, O3Label& name, O3Integer& start, O3Integer& end> =
   INT<pos>
   '('
   INTEGER<start>

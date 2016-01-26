@@ -194,6 +194,24 @@ namespace gum_tests {
       TS_ASSERT( not prm.isType( "t_state" ) );
     }
 
+    void testSimpleTypeError9() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type t_state OK, NOK;" << std::endl
+      << "type t_state OK, YEA, GOO;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      auto msg = std::stringstream();
+      msg << "|2 col 6| Type error : Type t_state exists already" << std::endl;
+      TS_ASSERT_EQUALS( output.str(), msg.str() );
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_state" ) );
+    }
+
     void testExtendedType() {
       // Arrange
       auto input = std::stringstream();

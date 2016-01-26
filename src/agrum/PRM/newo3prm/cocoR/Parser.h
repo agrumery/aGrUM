@@ -102,8 +102,14 @@ using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Label = gum::prm::o3prm::O3Label;
+
 using O3Type = gum::prm::o3prm::O3Type;
 using O3IntType = gum::prm::o3prm::O3IntType;
+
+using O3Interface = gum::prm::o3prm::O3Interface;
+using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
+using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
+
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
@@ -121,6 +127,13 @@ void __addO3IntType( Position& pos,
                      const O3Integer& start,
                      const O3Integer& end ) {
   get_prm()->int_types().push_back( O3IntType( pos, name, start, end ) );
+}
+
+void __addO3Interface( Position& pos,
+                       const O3Label& name,
+                       const O3Label& super,
+                       const O3InterfaceElementList& elts ) {
+  get_prm()->interfaces().push_back( O3Interface( pos, name, super, elts ) );
 }
 
 public:
@@ -151,10 +164,16 @@ O3PRM* get_prm() {
     	void NEWO3PRM();
 	void UNIT();
 	void TYPE_UNIT();
-	void TYPE_BODY(Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
-	void INT_BODY(Position& pos, O3Label& name, O3Integer& start, O3Integer& end);
-	void TYPE(Position& pos);
+	void INTERFACE_UNIT();
+	void INTERFACE_DECLARATION(Position& pos,
+O3Label& name,
+O3Label& super,
+O3InterfaceElementList& elts);
 	void LABEL(O3Label& l);
+	void INTERFACE_BODY(O3InterfaceElementList& elts);
+	void TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
+	void INT_TYPE_DECLARATION(Position& pos, O3Label& name, O3Integer& start, O3Integer& end);
+	void TYPE(Position& pos);
 	void LIST(LabelMap& labels );
 	void MAP(LabelMap& labels );
 	void INT(Position& pos);
