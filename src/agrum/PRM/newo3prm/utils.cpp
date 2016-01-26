@@ -244,7 +244,7 @@ namespace gum {
                    << "Type name " << type.name().label() << " already used"
                    << std::endl;
             return false;
-          } else if ( type.end().value() - type.start().value() < 2 ) {
+          } else if ( type.end().value() - type.start().value() < 1 ) {
             // Invalid range
             const auto& pos = type.name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
@@ -281,10 +281,10 @@ namespace gum {
         if ( check_o3inttype( tmp_prm, int_types, output ) ) {
           for ( auto type : int_types ) {
             factory.startDiscreteType( type.name().label() );
-            for ( auto i = type.start().value(); i <= type.end().value();
-                  ++i ) {
+            auto n = type.end().value() - type.start().value();
+            for ( auto i = 0; i <= n; ++i ) {
               auto s = std::stringstream();
-              s << i;
+              s << type.start().value()+i;
               factory.addLabel( std::string( s.str() ) );
             }
             factory.endDiscreteType();
