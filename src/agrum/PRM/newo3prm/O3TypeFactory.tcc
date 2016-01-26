@@ -130,7 +130,7 @@ namespace gum {
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Type error : "
-                   << "Type name " << type.name().label() << " already used"
+                   << "Type " << type.name().label() << " exists already"
                    << std::endl;
             return false;
           }
