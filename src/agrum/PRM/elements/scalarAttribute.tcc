@@ -100,7 +100,7 @@ namespace gum {
         const Attribute<GUM_SCALAR>& source ) {
 
       delete __cpf;
-      __cpf = new Potential<double>();
+      __cpf = new Potential<GUM_SCALAR>();
 
       for ( auto var : source.cpf().variablesSequence() ) {
         __cpf->add( *( bij.second( var ) ) );
