@@ -26,132 +26,30 @@
  * @author Lionel TORTI
  */
 
-#ifndef GUM_PRM_O3PRM_O3PRM_FACTORY_H
-#define GUM_PRM_O3PRM_O3PRM_FACTORY_H
+#ifndef GUM_PRM_O3PRM_O3PRM_FACGTORY_H
+#define GUM_PRM_O3PRM_O3PRM_FACGTORY_H
 
+#include <regex>
 #include <string>
-#include <vector>
+#include <sstream>
 
-#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
+#include <agrum/PRM/newO3prm/cocoR/Parser.h>
+#include <agrum/PRM/newO3prm/cocoR/Scanner.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
+#include <agrum/PRM/newo3prm/O3TypeFactory.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      template <typename GUM_SCALAR>
-      class O3PRMFactory {
-        public:
-        O3PRMFactory( );
-        O3PRMFactory( PRM<GUM_SCALAR>& prm );
-        O3PRMFactory( const O3PRMFactory& src );
-        O3PRMFactory( O3PRMFactory&& src );
-        ~O3PRMFactory();
-        O3PRMFactory& operator=( const O3PRMFactory& src );
-        O3PRMFactory& operator=( O3PRMFactory&& src );
+      void parse_stream( gum::prm::PRM<double>& prm,
+                         std::stringstream& input,
+                         std::stringstream& output );
 
-        /// Read file and load its content using a PRMFactory.
-        /// The package parameter set the file's content package.
-        int readFile( const std::string& file,
-                      const std::string& module = "" );
+    }
+  }
+}
 
-        /// With readString method, you must set the current path
-        /// to search from import yourself, using addClassPath.
-        int readString( const std::string& string );
-
-        void parseStream( std::istream& input,
-                          std::ostream& output,
-                          std::string module = "" );
-        /**
-         * @brief This methods defines the list of paths to look for o3prm
-         * files.
-         *
-         * Use / for path separator ! Even on Windows !
-         *
-         * @param class_path A semicolon separated list of paths.
-         */
-        void setClassPath( const std::string& class_path );
-
-        /**
-         * @brief Add a list of paths to look for o3prm
-         * files.
-         *
-         * Use / for path separator ! Even on Windows !
-         *
-         * @param class_path A semicolon separated list of paths.
-         */
-        void addClassPath( const std::string& class_path );
-
-        gum::prm::PRM<GUM_SCALAR>* prm() { return __prm; }
-        const gum::prm::PRM<GUM_SCALAR>* prm() const { return __prm; }
-
-        /// @{
-        /// publishing Errors API
-
-        /// # of errors
-        Size errors() const;
-        /// # of errors
-        Size warnings() const;
-
-        ///
-        const ErrorsContainer& errorsContainer() const;
-
-        /// line of ith error or warning
-        unsigned int errLine( unsigned int i ) const;
-        /// col of ith error or warning
-        unsigned int errCol( unsigned int i ) const;
-        /// filename of ith error or warning
-        std::wstring errFilename( unsigned int i ) const;
-        /// type of ith error or warning
-        bool errIsError( unsigned int i ) const;
-        /// message of ith error or warning
-        std::string errMsg( unsigned int i ) const;
-
-        /// send on std::cerr the list of errors
-        void showElegantErrors( std::ostream& o = std::cerr ) const;
-
-        /// send on std::cerr the list of errors or warnings
-        void showElegantErrorsAndWarnings( std::ostream& o = std::cerr ) const;
-
-        /// send on std::cerr the number of errors and the number of warnings
-        void showErrorCounts( std::ostream& o = std::cerr ) const;
-        /// @}
-
-        private:
-        PRM<GUM_SCALAR>* __prm;
-        std::unique_ptr<O3PRM> __o3_prm;
-        std::vector<std::string> __class_path;
-        Set<std::string> __imported;
-
-        // Needed when file can't be parse (can not open it for exemple)
-        ErrorsContainer __errors;
-
-        // Read a file into a std::string
-        std::string __readFile( const std::string& file );
-
-        void __readStream( std::istream& input,
-                           const std::string& file,
-                           std::string module = "" );
-
-        void __parseImport( const O3Import& i, const std::string& module_path );
-
-        void __parseStream( std::istream& input,
-                            const std::string& filename,
-                            const std::string& module );
-
-        std::vector<const O3Import*> __copyImports();
-
-      };
-
-    } // o3prm
-  } // prm
-} // gum
-
-#include <agrum/PRM/newo3prm/O3PRMFactory.tcc>
-
-extern template class gum::prm::o3prm::O3PRMFactory<float>;
-extern template class gum::prm::o3prm::O3PRMFactory<double>;
-
-#endif // GUM_PRM_O3PRM_O3PRM_FACTORY_H
+#endif // GUM_PRM_O3PRM_O3PRM_FACGTORY_H
 

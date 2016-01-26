@@ -31,12 +31,10 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 #include <agrum/PRM/newo3prm/utils.h>
-#include <agrum/PRM/newo3prm/O3NameSolver.h>
 
 #ifndef GUM_PRM_O3PRM_O3TYPE_FACTORY_H
 #define GUM_PRM_O3PRM_O3TYPE_FACTORY_H
@@ -45,51 +43,33 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      template <typename GUM_SCALAR>
-      class O3TypeFactory {
+      template <typename GUM_SCALAR> class O3TypeFactory {
 
         public:
-        O3TypeFactory( PRM<GUM_SCALAR>& prm,
-                       O3PRM& o3_prm,
-                       O3NameSolver<GUM_SCALAR>& solver,
-                       ErrorsContainer& errors );
-        O3TypeFactory( const O3TypeFactory<GUM_SCALAR>& src );
-        O3TypeFactory( O3TypeFactory<GUM_SCALAR>&& src );
+        O3TypeFactory();
+        O3TypeFactory( const O3TypeFactory& src );
+        O3TypeFactory( O3TypeFactory&& src );
         ~O3TypeFactory();
-        O3TypeFactory& operator=( const O3TypeFactory<GUM_SCALAR>& src );
-        O3TypeFactory& operator=( O3TypeFactory<GUM_SCALAR>&& src );
 
-        void build();
+        void
+        build( PRM<GUM_SCALAR>& prm, O3PRM& my_o3prm, std::ostream& output );
 
         private:
-        PRM<GUM_SCALAR>* __prm;
-        O3PRM* __o3_prm;
-        O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer* __errors;
 
-        bool __build;
-
-        HashTable<std::string, O3Type*> __superMap;
         HashTable<std::string, gum::NodeId> __nameMap;
-        HashTable<std::string, O3Type*> __typeMap;
-        HashTable<NodeId, O3Type*> __nodeMap;
+        HashTable<std::string, O3Type> __typeMap;
+        HashTable<NodeId, O3Type> __nodeMap;
         DAG __dag;
-        std::vector<O3Type*> __o3Types;
-        std::vector<O3IntType*> __o3IntTypes;
+        std::vector<O3Type> __o3Types;
+        std::vector<O3IntType> __o3IntTypes;
 
-        void __buildTypes();
-        void __buildIntTypes();
-
-        bool __isPrimitiveType( O3Type& type );
-
-        bool __checkO3Types();
-        bool __addTypes2Dag();
-        bool __addArcs2Dag();
-        bool __checkLabels( O3Type& type );
-
+        void __initialize();
+        void __boolean();
+        bool __addTypes2Dag( O3PRM& prm, std::ostream& output );
+        bool __addArcs2Dag( O3PRM& prm, std::ostream& output );
         void __setO3TypeCreationOrder();
-
-        bool __checkO3IntTypes();
+        bool __checkO3Types( O3PRM& prm, std::ostream& output );
+        bool __checkO3IntTypes( O3PRM& prm, std::ostream& output );
       };
 
     }  // o3prm
@@ -101,5 +81,5 @@ namespace gum {
 extern template class gum::prm::o3prm::O3TypeFactory<float>;
 extern template class gum::prm::o3prm::O3TypeFactory<double>;
 
-#endif  // GUM_PRM_O3PRM_O3TYPE_FACTORY_H
+#endif // GUM_PRM_O3PRM_O3TYPE_FACTORY_H
 

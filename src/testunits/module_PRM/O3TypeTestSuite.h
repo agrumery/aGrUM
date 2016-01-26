@@ -24,9 +24,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/PRM/PRM.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
-#include <agrum/PRM/newo3prm/O3PRMFactory.h>
+#include <agrum/prm/PRM.h>
+#include <agrum/prm/newo3prm/o3prm.h>
+#include <agrum/prm/newo3prm/O3PRMFactory.h>
 
 namespace gum_tests {
 
