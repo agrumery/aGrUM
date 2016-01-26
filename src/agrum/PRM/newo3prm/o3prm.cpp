@@ -175,7 +175,7 @@ namespace gum {
       O3Type::O3Type( const Position& pos,
                       const O3Label& name,
                       const O3Label& super,
-                      LabelMap& labels )
+                      const LabelMap& labels )
           : __pos( pos )
           , __name( name )
           , __super( super )
@@ -311,6 +311,74 @@ namespace gum {
       std::vector<O3IntType>& O3PRM::int_types() { return __int_types; }
       const std::vector<O3IntType>& O3PRM::int_types() const {
         return __int_types;
+      }
+
+      std::vector<O3Interface>& O3PRM::interfaces() { return __interfaces; }
+      const std::vector<O3Interface>& O3PRM::interfaces() const {
+        return __interfaces;
+      }
+
+      O3InterfaceElement::O3InterfaceElement( const O3Label& type,
+                                              const O3Label& name )
+          : __type( type )
+          , __name( name ) {
+        GUM_CONSTRUCTOR( O3InterfaceElement );
+      }
+
+      O3InterfaceElement::O3InterfaceElement( const O3InterfaceElement& src )
+          : __type( src.__type )
+          , __name( src.__name ) {
+        GUM_CONS_CPY( O3InterfaceElement );
+      }
+
+      O3InterfaceElement::O3InterfaceElement( O3InterfaceElement&& src )
+          : __type( std::move( src.__type ) )
+          , __name( std::move( src.__name ) ) {
+        GUM_CONS_MOV( O3InterfaceElement );
+      }
+
+      O3InterfaceElement::~O3InterfaceElement() {
+        GUM_DESTRUCTOR( O3InterfaceElement );
+      }
+
+      const O3Label& O3InterfaceElement::type() const { return __type; }
+      const O3Label& O3InterfaceElement::name() const { return __name; }
+
+      O3Interface::O3Interface( const Position& pos,
+                                const O3Label& name,
+                                const O3Label& super,
+                                const O3InterfaceElementList& elts )
+          : __pos( pos )
+          , __name( name )
+          , __super( super )
+          , __elts( elts ) {
+        GUM_CONSTRUCTOR( O3Interface );
+      }
+
+      O3Interface::O3Interface( const O3Interface& src )
+          : __pos( src.__pos )
+          , __name( src.__name )
+          , __super( src.__super )
+          , __elts( src.__elts ) {
+        GUM_CONS_CPY( O3Interface );
+      }
+
+      O3Interface::O3Interface( O3Interface&& src )
+          : __pos( std::move( src.__pos ) )
+          , __name( std::move( src.__name ) )
+          , __super( std::move( src.__super ) )
+          , __elts( std::move( src.__elts ) ) {
+        GUM_CONS_MOV( O3Interface );
+      }
+
+      O3Interface::~O3Interface() { GUM_DESTRUCTOR( O3Interface ); }
+
+      const O3Label& O3Interface::name() const { return __name; }
+
+      const O3Label& O3Interface::super() const { return __super; }
+
+      const O3Interface::O3InterfaceElementList& O3Interface::elements() const {
+        return __elts;
       }
 
     }  // o3prm

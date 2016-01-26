@@ -112,7 +112,7 @@ namespace gum {
         O3Type( const Position& pos,
                 const O3Label& name,
                 const O3Label& super,
-                LabelMap& labels );
+                const LabelMap& labels );
         O3Type( const O3Type& src );
         O3Type( O3Type&& src );
         ~O3Type();
@@ -156,6 +156,43 @@ namespace gum {
         O3Integer __end;
       };
 
+      class O3InterfaceElement {
+        public:
+        O3InterfaceElement( const O3Label& type, const O3Label& name );
+        O3InterfaceElement( const O3InterfaceElement& src);
+        O3InterfaceElement( O3InterfaceElement&& src);
+        ~O3InterfaceElement();
+
+        const O3Label& type() const;
+        const O3Label& name() const;
+
+        private:
+        O3Label __type;
+        O3Label __name;
+      };
+
+      class O3Interface {
+        public:
+        using O3InterfaceElementList = std::vector<O3InterfaceElement>;
+
+        O3Interface( const Position& pos,
+                     const O3Label& name,
+                     const O3Label& super,
+                     const O3InterfaceElementList& elts );
+        O3Interface( const O3Interface& src );
+        O3Interface( O3Interface&& src );
+        ~O3Interface();
+        const O3Label& name() const;
+        const O3Label& super() const;
+        const O3InterfaceElementList& elements() const;
+
+        private:
+        Position __pos;
+        O3Label __name;
+        O3Label __super;
+        O3InterfaceElementList __elts;
+      };
+
       class O3PRM {
         public:
         O3PRM();
@@ -171,15 +208,18 @@ namespace gum {
         std::vector<O3IntType>& int_types();
         const std::vector<O3IntType>& int_types() const;
 
+        std::vector<O3Interface>& interfaces();
+        const std::vector<O3Interface>& interfaces() const;
+
         private:
         std::vector<O3Type> __types;
         std::vector<O3IntType> __int_types;
+        std::vector<O3Interface> __interfaces;
       };
 
-
-    }  // o3prm
-  }    // prm
-}  // gum
+    } // o3prm
+  } // prm
+} // gum
 
 #endif  // GUM_PRM_O3PRM_PRM_H
 
