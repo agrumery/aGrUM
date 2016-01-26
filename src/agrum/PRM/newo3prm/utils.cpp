@@ -56,7 +56,7 @@ namespace gum {
       }
 
       std::string clean( const std::string& text ) {
-        auto regex = std::regex( "TYPE_(BODY|UNIT)" );
+        auto regex = std::regex( "(UNIT|TYPE_(DECLARATION|UNIT))" );
         auto output = std::stringstream();
         output << std::regex_replace( text, regex, "declaration" );
         return std::move(output.str());

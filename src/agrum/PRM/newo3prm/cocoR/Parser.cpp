@@ -108,13 +108,17 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 
 void Parser::NEWO3PRM() {
 		UNIT();
-		while (la->kind == _type || la->kind == _int) {
+		while (la->kind == _type || la->kind == _interface || la->kind == _int) {
 			UNIT();
 		}
 }
 
 void Parser::UNIT() {
-		TYPE_UNIT();
+		if (la->kind == _type || la->kind == _int) {
+			TYPE_UNIT();
+		} else if (la->kind == _interface) {
+			INTERFACE_UNIT();
+		} else SynErr(25);
 }
 
 void Parser::TYPE_UNIT() {
@@ -124,17 +128,59 @@ void Parser::TYPE_UNIT() {
 		if (la->kind == _type) {
 			auto super = O3Label(); 
 			auto labels = LabelMap(); 
-			TYPE_BODY(pos, name, super, labels);
+			TYPE_DECLARATION(pos, name, super, labels);
 			if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } 
 		} else if (la->kind == _int) {
 			auto start = O3Integer(); 
 			auto end = O3Integer(); 
-			INT_BODY(pos, name, start, end);
+			INT_TYPE_DECLARATION(pos, name, start, end);
 			if ( __ok( n ) ) { __addO3IntType( pos, name, start, end ); } 
-		} else SynErr(23);
+		} else SynErr(26);
 }
 
-void Parser::TYPE_BODY(Position& pos, O3Label& name, O3Label& super, LabelMap& labels) {
+void Parser::INTERFACE_UNIT() {
+		auto n = errors().error_count; 
+		auto pos = Position(); 
+		auto name = O3Label(); 
+		auto super = O3Label(); 
+		auto elts = O3InterfaceElementList(); 
+		INTERFACE_DECLARATION(pos, name, super, elts );
+		if (__ok(n)) { __addO3Interface( pos, name, super, elts ); } 
+}
+
+void Parser::INTERFACE_DECLARATION(Position& pos,
+O3Label& name,
+O3Label& super,
+O3InterfaceElementList& elts) {
+		Expect(_interface);
+		LABEL(name);
+		if (la->kind == _extends) {
+			Get();
+			LABEL(super);
+		}
+		Expect(20 /* "{" */);
+		while (la->kind == _label) {
+			INTERFACE_BODY(elts);
+		}
+		Expect(21 /* "}" */);
+}
+
+void Parser::LABEL(O3Label& l) {
+		Expect(_label);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		l = O3Label( pos, narrow( t->val ) ); 
+}
+
+void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
+		auto type = O3Label(); 
+		auto name = O3Label(); 
+		LABEL(type);
+		LABEL(name);
+		Expect(_semicolon);
+		elts.push_back( O3InterfaceElement( type, name ) ); 
+}
+
+void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, LabelMap& labels) {
 		TYPE(pos);
 		LABEL(name);
 		if (la->kind == _label) {
@@ -143,17 +189,17 @@ void Parser::TYPE_BODY(Position& pos, O3Label& name, O3Label& super, LabelMap& l
 			Get();
 			LABEL(super);
 			MAP(labels);
-		} else SynErr(24);
+		} else SynErr(27);
 		Expect(_semicolon);
 }
 
-void Parser::INT_BODY(Position& pos, O3Label& name, O3Integer& start, O3Integer& end) {
+void Parser::INT_TYPE_DECLARATION(Position& pos, O3Label& name, O3Integer& start, O3Integer& end) {
 		INT(pos);
-		Expect(20 /* "(" */);
+		Expect(22 /* "(" */);
 		INTEGER(start);
 		Expect(_comma);
 		INTEGER(end);
-		Expect(21 /* ")" */);
+		Expect(23 /* ")" */);
 		LABEL(name);
 		Expect(_semicolon);
 }
@@ -163,12 +209,6 @@ void Parser::TYPE(Position& pos) {
 		pos.file( narrow( scanner->filename() ) ); 
 		pos.line( t->line ); 
 		pos.column( t->col ); 
-}
-
-void Parser::LABEL(O3Label& l) {
-		Expect(_label);
-		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		l = O3Label( pos, narrow( t->val ) ); 
 }
 
 void Parser::LIST(LabelMap& labels ) {
@@ -329,7 +369,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 22;
+  	maxT = 24;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -343,8 +383,8 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[1][24] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x}
+  	static bool set[1][26] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
 	};
 
 
@@ -390,11 +430,14 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 17: s = coco_string_create(L"int expected"); break;
 			case 18: s = coco_string_create(L"real expected"); break;
 			case 19: s = coco_string_create(L"string expected"); break;
-			case 20: s = coco_string_create(L"\"(\" expected"); break;
-			case 21: s = coco_string_create(L"\")\" expected"); break;
-			case 22: s = coco_string_create(L"??? expected"); break;
-			case 23: s = coco_string_create(L"invalid TYPE_UNIT"); break;
-			case 24: s = coco_string_create(L"invalid TYPE_BODY"); break;
+			case 20: s = coco_string_create(L"\"{\" expected"); break;
+			case 21: s = coco_string_create(L"\"}\" expected"); break;
+			case 22: s = coco_string_create(L"\"(\" expected"); break;
+			case 23: s = coco_string_create(L"\")\" expected"); break;
+			case 24: s = coco_string_create(L"??? expected"); break;
+			case 25: s = coco_string_create(L"invalid UNIT"); break;
+			case 26: s = coco_string_create(L"invalid TYPE_UNIT"); break;
+			case 27: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
 
 
     default: {

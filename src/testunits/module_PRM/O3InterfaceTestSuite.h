@@ -24,9 +24,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/PRM/PRM.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
-#include <agrum/PRM/newo3prm/O3PRMFactory.h>
+#include <agrum/prm/PRM.h>
+#include <agrum/prm/newo3prm/o3prm.h>
+#include <agrum/prm/newo3prm/O3PRMFactory.h>
 
 namespace gum_tests {
 
@@ -42,16 +42,16 @@ namespace gum_tests {
       input << "interface IBar { }";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)0 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 0 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
       TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
     }
 
@@ -61,16 +61,16 @@ namespace gum_tests {
       input << "interfaces IBar { }";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|1 col 1| Syntax error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
@@ -80,16 +80,16 @@ namespace gum_tests {
       input << "interface { }";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|1 col 11| Syntax error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
@@ -99,16 +99,16 @@ namespace gum_tests {
       input << "interface ++++/ze { }";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|1 col 11| Syntax error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
@@ -120,16 +120,16 @@ namespace gum_tests {
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
       TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
     }
 
@@ -141,20 +141,20 @@ namespace gum_tests {
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 1| Type error : Unknown type t_state";
+      msg << "|2 col 1| Interface error : Unknown identifier t_state";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)0 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 0 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
       TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
     }
 
@@ -166,16 +166,16 @@ namespace gum_tests {
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|2 col 1| Syntax error : \"}\" expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
@@ -187,16 +187,16 @@ namespace gum_tests {
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|2 col 6| Syntax error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
@@ -208,16 +208,16 @@ namespace gum_tests {
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|3 col 1| Syntax error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
@@ -229,16 +229,16 @@ namespace gum_tests {
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|2 col 9| Syntax error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
@@ -250,16 +250,39 @@ namespace gum_tests {
             << "};";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
+      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
+    }
+
+    void testOrderDoesNotMatter() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface IBar { " << std::endl
+            << "t_state state;" << std::endl
+            << "}" << std::endl
+            << "type t_state OK, NOK;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
+      TS_ASSERT( prm.isType( "t_state" ) );
+      TS_ASSERT( prm.isInterface( "IBar" ) );
+      const auto& i_bar = prm.interface( "IBar" );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
       TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
     }
 
@@ -272,353 +295,23 @@ namespace gum_tests {
             << "};";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|3 col 1| Interface error : Element state already exists";
-      TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
+      msg << "|2 col 9| Interface error : attribue state exists already";
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
       TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
+
     }
 
-    void testInterfaceWithReference() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}";
-      input << "interface IBar { " << std::endl
-            << "IFoo myFoo;" << std::endl
-            << "boolean state;" << std::endl
-            << "}";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)2 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), (gum::Size)0 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
-      TS_ASSERT( prm.isInterface( "IBar" ) );
-      const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), (gum::Size)1 );
-      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
-    }
-
-    void testSuperInterface() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}";
-      input << "interface IBar extends IFoo { " << std::endl
-            << "boolean unstate;" << std::endl
-            << "}";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)2 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), (gum::Size)0 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
-      TS_ASSERT( prm.isInterface( "IBar" ) );
-      const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)2 );
-      TS_ASSERT_EQUALS( i_bar.super(), i_foo );
-    }
-
-    void testSuperInterfaceError1() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      input << "interface IBar extends IFooBar { " << std::endl
-            << "boolean unstate;" << std::endl
-            << "}";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      std::string line;
-      std::getline( output, line );
-      auto msg = std::stringstream();
-      msg << "|4 col 24| Interface error : Interface IFooBar not found";
-      TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IFoo" ) );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
-    }
-
-    void testSuperInterfaceError2() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "type t_state OK, NOK;" << std::endl;
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      input << "interface IBar extends t_state { " << std::endl
-            << "boolean unstate;" << std::endl
-            << "}";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      std::string line;
-      std::getline( output, line );
-      auto msg = std::stringstream();
-      msg << "|5 col 24| Interface error : Interface t_state not found";
-      TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IFoo" ) );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
-    }
-
-    void testSuperInterfaceError3() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      input << "interface IBar extend IFoo { " << std::endl
-            << "boolean unstate;" << std::endl
-            << "}";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      std::string line;
-      std::getline( output, line );
-      auto msg = std::stringstream();
-      msg << "|4 col 16| Syntax error : \"{\" expected";
-      TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-    }
-
-    void testSuperInterfaceWithAttributeOverload() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "type t_state extends boolean" << std::endl;
-      input << "OK:true, NOK:false;" << std::endl;
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      input << "interface IBar extends IFoo { " << std::endl
-            << "t_state state;" << std::endl
-            << "}";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)2 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), (gum::Size)0 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
-      TS_ASSERT( prm.isInterface( "IBar" ) );
-      const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)2 );
-      TS_ASSERT_EQUALS( i_bar.super(), i_foo );
-    }
-
-    void testSuperInterfaceWithReferenceOverload() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      input << "interface IBar extends IFoo { " << std::endl
-            << "}";
-      input << "interface IPlop { " << std::endl
-            << "IFoo myFoo;" << std::endl
-            << "}";
-      input << "interface IPloc extends IPlop { " << std::endl
-            << "IBar myFoo; " << std::endl
-            << "}";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)4 );
-      TS_ASSERT( prm.isInterface( "IPlop" ) );
-      const auto& i_plop = prm.interface( "IPlop" );
-      TS_ASSERT_EQUALS( i_plop.attributes().size(), (gum::Size)0 );
-      TS_ASSERT_EQUALS( i_plop.referenceSlots().size(), (gum::Size)1 );
-      TS_ASSERT_THROWS( i_plop.super(), gum::NotFound );
-      TS_ASSERT( prm.isInterface( "IPloc" ) );
-      const auto& i_ploc = prm.interface( "IPloc" );
-      TS_ASSERT_EQUALS( i_ploc.attributes().size(), (gum::Size)0 );
-      TS_ASSERT_EQUALS( i_ploc.referenceSlots().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_ploc.super(), i_plop );
-    }
-
-    void testOrderDoesNotMatter1() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IBar { " << std::endl
-            << "t_state state;" << std::endl
-            << "}" << std::endl
-            << "type t_state OK, NOK;";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
-      TS_ASSERT( prm.isType( "t_state" ) );
-      TS_ASSERT( prm.isInterface( "IBar" ) );
-      const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), (gum::Size)0 );
-      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
-    }
-
-    void testOrderDoesNotMatter2() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IBar extends IFoo { " << std::endl
-            << "t_state state;" << std::endl
-            << "}";
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      input << "type t_state extends boolean" << std::endl
-            << "OK:true, NOK:false;" << std::endl;
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)2 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), (gum::Size)0 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
-      TS_ASSERT( prm.isInterface( "IBar" ) );
-      const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)2 );
-      TS_ASSERT_EQUALS( i_bar.super(), i_foo );
-    }
-
-    void testOrderDoesNotMatter3() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IBar { " << std::endl
-            << "IFoo foo;" << std::endl
-            << "boolean state;" << std::endl
-            << "}";
-      input << "interface IFoo { " << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)2 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), (gum::Size)0 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
-      TS_ASSERT( prm.isInterface( "IBar" ) );
-      const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
-    }
-
-    void testOrderDoesNotMatter4() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IBar { " << std::endl
-            << "IFoo foo;" << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      input << "interface IFoo { " << std::endl
-            << "IBar bar; " << std::endl
-            << "boolean state;" << std::endl
-            << "}" << std::endl;
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)2 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), (gum::Size)1 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
-      TS_ASSERT( prm.isInterface( "IBar" ) );
-      const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), (gum::Size)1 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), (gum::Size)1 );
-      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
-    }
-
-    void testInterfaceWithReferenceError() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IFoo { " << std::endl
-            << "IFoo foo;" << std::endl
-            << "boolean state;" << std::endl
-            << "}";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      std::string line;
-      std::getline( output, line );
-      auto msg = std::stringstream();
-      msg << "|2 col 1| Reference Slot error : Interface IFoo cannot reference "
-             "itself";
-      TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
-    }
   };
 
 }  // namespace gum_tests
