@@ -29,40 +29,25 @@
 #ifndef GUM_PRM_O3PRM_O3PRM_H
 #define GUM_PRM_O3PRM_O3PRM_H
 
-#include <iterator>
-#include <memory>
 #include <regex>
 #include <sstream>
 #include <string>
+#include <vector>
 
-#include <agrum/core/set.h>
-#include <agrum/PRM/PRM.h>
-#include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/newO3prm/cocoR/Parser.h>
-#include <agrum/PRM/newO3prm/cocoR/Scanner.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
+#include <agrum/core/sequence.h>
+#include <agrum/graphs/DAG.h>
+#include <agrum/core/errorsContainer.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      bool check_o3type( const gum::prm::o3prm::O3PRM& prm,
-                         std::string& output );
-
-      bool check_o3type( gum::prm::PRM<double>& prm,
-                         const gum::prm::o3prm::O3Type& type,
-                         std::stringstream& output );
-
-      void build_prm( gum::prm::PRM<double>& prm,
-                      gum::prm::o3prm::O3PRM& tmp_prm );
+      gum::Sequence<NodeId> topologicalOrder( const gum::DAG& src );
 
       std::string clean( const std::string& text );
 
       std::string print( const ParseError& err );
 
-      void parse_stream( gum::prm::PRM<double>& prm,
-                         std::stringstream& input,
-                         std::stringstream& output );
     }
   }
 }

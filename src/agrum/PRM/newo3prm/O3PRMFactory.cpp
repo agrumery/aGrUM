@@ -32,8 +32,31 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      template class gum::prm::o3prm::O3PRMFactory<float>;
-      template class gum::prm::o3prm::O3PRMFactory<double>;
+      using o3prm_scanner = gum::prm::newo3prm::Scanner;
+      using o3prm_parser = gum::prm::newo3prm::Parser;
+
+      void parse_stream( gum::prm::PRM<double>& prm,
+                         std::stringstream& input,
+                         std::stringstream& output ) {
+        auto buffer = std::unique_ptr<unsigned char[]>(
+            new unsigned char[input.str().length() + 1] );
+        strcpy( (char*)buffer.get(), input.str().c_str() );
+        auto s = o3prm_scanner(
+            buffer.get(), input.str().length() + 1, "" );
+        auto p = o3prm_parser( &s );
+        auto tmp_prm = gum::prm::o3prm::O3PRM();
+        p.set_prm( &tmp_prm );
+        p.Parse();
+        const auto& errors = p.errors();
+        for ( auto i = 0; i < p.errors().count(); ++i ) {
+          auto err = p.errors().error( i );
+          output << print( err ) << std::endl;
+        }
+
+        auto type_factory = O3TypeFactory<double>();
+        type_factory.build(prm, tmp_prm, output);
+      }
+
     }
   }
 }
