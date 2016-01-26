@@ -1367,26 +1367,32 @@ namespace gum {
     PRMFactory<GUM_SCALAR>::startAttribute( const std::string& type,
                                             const std::string& name ) {
       ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
-      Attribute<GUM_SCALAR>* a;
-
-      if ( PRMObject::isClass( *c ) ) {
-        a = new FormAttribute<GUM_SCALAR>(
-            static_cast<Class<GUM_SCALAR>&>( *c ),
-            name,
-            *__retrieveType( type ) );
-      } else {
-        a = new ScalarAttribute<GUM_SCALAR>( name, *__retrieveType( type ) );
-      }
-
-      std::string dot = ".";
-
+      Attribute<GUM_SCALAR>* a = nullptr;
       try {
-        c->add( a );
-      } catch ( DuplicateElement& ) {
-        c->overload( a );
-      }
 
-      __stack.push_back( a );
+        if ( PRMObject::isClass( *c ) ) {
+          a = new FormAttribute<GUM_SCALAR>(
+              static_cast<Class<GUM_SCALAR>&>( *c ),
+              name,
+              *__retrieveType( type ) );
+        } else {
+          a = new ScalarAttribute<GUM_SCALAR>( name, *__retrieveType( type ) );
+        }
+
+        std::string dot = ".";
+
+        try {
+          c->add( a );
+        } catch ( DuplicateElement& ) {
+          c->overload( a );
+        }
+        __stack.push_back( a );
+      } catch ( OperationNotAllowed& e ) {
+        if ( a != nullptr ) {
+          delete a;
+        }
+        throw e;
+      }
     }
 
     template <typename GUM_SCALAR>
