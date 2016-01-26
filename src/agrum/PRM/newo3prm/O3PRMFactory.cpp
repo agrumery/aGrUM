@@ -20,53 +20,41 @@
 
 /**
  * @file
- * @brief Implementation for utilities functions for the O3PRM language.
+ * @brief Implementation for the O3PRMFactory class.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
-#include <agrum/PRM/newO3prm/utils.h>
+#include <agrum/PRM/newo3prm/O3PRMFactory.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      gum::Sequence<NodeId> topologicalOrder( const gum::DAG& src ) {
-        auto dag = src;
-        auto roots = std::vector<NodeId>();
-        auto order = gum::Sequence<NodeId>();
-        for ( const auto node : dag.nodes() ) {
-          if ( dag.parents( node ).empty() ) {
-            roots.push_back( node );
-          }
-        }
-        while ( roots.size() ) {
-          order.insert( roots.back() );
-          roots.pop_back();
-          while ( dag.children( order.back() ).size() ) {
-            auto child = *( dag.children( order.back() ).begin() );
-            dag.eraseArc( Arc( order.back(), child ) );
-            if ( dag.parents( child ).empty() ) {
-              roots.push_back( child );
-            }
-          }
-        }
-        return std::move( order );
-      }
+      using o3prm_scanner = gum::prm::newo3prm::Scanner;
+      using o3prm_parser = gum::prm::newo3prm::Parser;
 
-      std::string clean( const std::string& text ) {
-        auto regex = std::regex( "TYPE_(BODY|UNIT)" );
-        auto output = std::stringstream();
-        output << std::regex_replace( text, regex, "declaration" );
-        return std::move(output.str());
-      }
+      void parse_stream( gum::prm::PRM<double>& prm,
+                         std::stringstream& input,
+                         std::stringstream& output ) {
+        auto buffer = std::unique_ptr<unsigned char[]>(
+            new unsigned char[input.str().length() + 1] );
+        strcpy( (char*)buffer.get(), input.str().c_str() );
+        auto s = o3prm_scanner(
+            buffer.get(), input.str().length() + 1, "" );
+        auto p = o3prm_parser( &s );
+        auto tmp_prm = gum::prm::o3prm::O3PRM();
+        p.set_prm( &tmp_prm );
+        p.Parse();
+        const auto& errors = p.errors();
+        for ( auto i = 0; i < p.errors().count(); ++i ) {
+          auto err = p.errors().error( i );
+          output << print( err ) << std::endl;
+        }
 
-      std::string print( const ParseError& err ) {
-        std::stringstream s;
-        s << err.filename << "|" << err.line << " col " << err.column << "| "
-          << clean(err.msg);
-        return std::move(s.str());
+        auto type_factory = O3TypeFactory<double>();
+        type_factory.build(prm, tmp_prm, output);
       }
 
     }

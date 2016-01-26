@@ -20,55 +20,14 @@
 
 /**
  * @file
- * @brief Implementation for utilities functions for the O3PRM language.
+ * @brief Implementation for the O3TypeFactory class.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
-#include <agrum/PRM/newO3prm/utils.h>
+#include <agrum/prm/newo3prm/O3TypeFactory.h>
 
-namespace gum {
-  namespace prm {
-    namespace o3prm {
+template class gum::prm::o3prm::O3TypeFactory<float>;
+template class gum::prm::o3prm::O3TypeFactory<double>;
 
-      gum::Sequence<NodeId> topologicalOrder( const gum::DAG& src ) {
-        auto dag = src;
-        auto roots = std::vector<NodeId>();
-        auto order = gum::Sequence<NodeId>();
-        for ( const auto node : dag.nodes() ) {
-          if ( dag.parents( node ).empty() ) {
-            roots.push_back( node );
-          }
-        }
-        while ( roots.size() ) {
-          order.insert( roots.back() );
-          roots.pop_back();
-          while ( dag.children( order.back() ).size() ) {
-            auto child = *( dag.children( order.back() ).begin() );
-            dag.eraseArc( Arc( order.back(), child ) );
-            if ( dag.parents( child ).empty() ) {
-              roots.push_back( child );
-            }
-          }
-        }
-        return std::move( order );
-      }
-
-      std::string clean( const std::string& text ) {
-        auto regex = std::regex( "TYPE_(BODY|UNIT)" );
-        auto output = std::stringstream();
-        output << std::regex_replace( text, regex, "declaration" );
-        return std::move(output.str());
-      }
-
-      std::string print( const ParseError& err ) {
-        std::stringstream s;
-        s << err.filename << "|" << err.line << " col " << err.column << "| "
-          << clean(err.msg);
-        return std::move(s.str());
-      }
-
-    }
-  }
-}
