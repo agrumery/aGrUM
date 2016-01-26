@@ -329,6 +329,235 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( power.variable().label( 8 ), "8" );
       TS_ASSERT_EQUALS( power.variable().label( 9 ), "9" );
     }
+
+    void testIntTypeWithNegatives() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "int (-9,9) t_power;";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        TS_ASSERT_EQUALS( output.str(), "" );
+        TS_ASSERT_EQUALS( prm.types().size(), 2 );
+        TS_ASSERT( prm.isType( "t_power" ) );
+        auto power = prm.type( "t_power" );
+        TS_ASSERT_EQUALS( power.variable().domainSize(), 19 );
+        TS_ASSERT_EQUALS( power.variable().label( 0 ), "-9" );
+        TS_ASSERT_EQUALS( power.variable().label( 1 ), "-8" );
+        TS_ASSERT_EQUALS( power.variable().label( 2 ), "-7" );
+        TS_ASSERT_EQUALS( power.variable().label( 3 ), "-6" );
+        TS_ASSERT_EQUALS( power.variable().label( 4 ), "-5" );
+        TS_ASSERT_EQUALS( power.variable().label( 5 ), "-4" );
+        TS_ASSERT_EQUALS( power.variable().label( 6 ), "-3" );
+        TS_ASSERT_EQUALS( power.variable().label( 7 ), "-2" );
+        TS_ASSERT_EQUALS( power.variable().label( 8 ), "-1" );
+        TS_ASSERT_EQUALS( power.variable().label( 9 ), "0" );
+        TS_ASSERT_EQUALS( power.variable().label( 10 ), "1" );
+        TS_ASSERT_EQUALS( power.variable().label( 11 ), "2" );
+        TS_ASSERT_EQUALS( power.variable().label( 12 ), "3" );
+        TS_ASSERT_EQUALS( power.variable().label( 13 ), "4" );
+        TS_ASSERT_EQUALS( power.variable().label( 14 ), "5" );
+        TS_ASSERT_EQUALS( power.variable().label( 15 ), "6" );
+        TS_ASSERT_EQUALS( power.variable().label( 16 ), "7" );
+        TS_ASSERT_EQUALS( power.variable().label( 17 ), "8" );
+      } catch ( gum::OutOfBounds& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+    void testIntTypeError1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "ints (0,9) t_power;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 1| Syntax error : invalid declaration";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int 0,9 t_power;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 5| Syntax error : \"(\" expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (0 9) t_power;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 8| Syntax error : comma expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError4() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (0, 9) +==++;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 12| Syntax error : label expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError5() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (plop, 9) t_power";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 6| Syntax error : integer expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError6() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (0, 9, 15) t_power";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 10| Syntax error : \")\" expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError7() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (0.0, 9) t_power";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 6| Syntax error : integer expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError8() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (9, 9) t_power";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 19| Syntax error : semicolon expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError9() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (10, 9) t_power";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 20| Syntax error : semicolon expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testIntTypeError10() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int (9, 0) t_power";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
+      TS_ASSERT( not prm.isType( "t_power" ) );
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 19| Syntax error : semicolon expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
   };
 
 }  // namespace gum_tests
