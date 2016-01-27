@@ -277,7 +277,18 @@ namespace gum {
 
       const Position& O3IntType::position() const { return __pos; }
 
-      O3PRM::O3PRM() { GUM_CONSTRUCTOR( O3PRM ); }
+      O3PRM::O3PRM() {
+        GUM_CONSTRUCTOR( O3PRM );
+        // Creating the boolean type
+        auto name = O3Label( Position(), "boolean" );
+        auto f = O3Label( Position(), "false" );
+        auto t = O3Label( Position(), "true" );
+        auto labels = O3Type::LabelMap();
+        labels.push_back( O3Type::LabelPair( f, O3Label() ) );
+        labels.push_back( O3Type::LabelPair( t, O3Label() ) );
+        auto boolean = O3Type( Position(), name, O3Label(), labels );
+        __types.push_back( std::move(boolean) );
+      }
 
       O3PRM::O3PRM( const O3PRM& src )
           : __types( src.__types )
