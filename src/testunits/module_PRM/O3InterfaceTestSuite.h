@@ -302,16 +302,73 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 9| Interface error : attribue state exists already";
+      msg << "|3 col 1| Interface error : Element state already exists";
+      TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
       TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
       TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
       TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
-
     }
 
+    void testInterfaceWithReference() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface IFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}";
+      input << "interface IBar { " << std::endl
+            << "IFoo myFoo;" << std::endl
+            << "boolean state;" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 2 );
+      TS_ASSERT( prm.isInterface( "IFoo" ) );
+      const auto& i_foo = prm.interface( "IFoo" );
+      TS_ASSERT_EQUALS( i_foo.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), 0 );
+      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
+      TS_ASSERT( prm.isInterface( "IBar" ) );
+      const auto& i_bar = prm.interface( "IBar" );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 1 );
+      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
+    }
+
+    void testSuperInterface() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface IFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}";
+      input << "interface IBar extends IFoo { " << std::endl
+            << "boolean unstate;" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 2 );
+      TS_ASSERT( prm.isInterface( "IFoo" ) );
+      const auto& i_foo = prm.interface( "IFoo" );
+      TS_ASSERT_EQUALS( i_foo.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), 0 );
+      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
+      TS_ASSERT( prm.isInterface( "IBar" ) );
+      const auto& i_bar = prm.interface( "IBar" );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 2 );
+      TS_ASSERT_EQUALS( i_bar.super(), i_foo );
+    }
   };
 
 }  // namespace gum_tests
