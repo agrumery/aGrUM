@@ -66,7 +66,7 @@ namespace gum {
         std::vector<O3IntType> __o3IntTypes;
 
         void __initialize();
-        void __boolean();
+        bool __isPrimitiveType( const O3Type& type );
         bool __addTypes2Dag( PRM<GUM_SCALAR>& prm,
                              O3PRM& tmp_prm,
                              std::ostream& output );
