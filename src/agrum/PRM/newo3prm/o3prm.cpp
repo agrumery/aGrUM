@@ -373,6 +373,8 @@ namespace gum {
 
       O3Interface::~O3Interface() { GUM_DESTRUCTOR( O3Interface ); }
 
+      const Position& O3Interface::position() const { return __pos; }
+
       const O3Label& O3Interface::name() const { return __name; }
 
       const O3Label& O3Interface::super() const { return __super; }
