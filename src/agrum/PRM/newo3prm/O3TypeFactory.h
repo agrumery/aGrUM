@@ -63,7 +63,7 @@ namespace gum {
         HashTable<NodeId, const O3Type*> __nodeMap;
         DAG __dag;
         std::vector<const O3Type*> __o3Types;
-        std::vector<O3IntType> __o3IntTypes;
+        std::vector<const O3IntType*> __o3IntTypes;
 
         void __initialize();
         bool __isPrimitiveType( const O3Type& type );

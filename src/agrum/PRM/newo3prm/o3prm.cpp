@@ -291,17 +291,25 @@ namespace gum {
         __types.push_back( std::move(boolean) );
       }
 
-      O3PRM::O3PRM( const O3PRM& src )
-          : __int_types( src.__int_types ) {
+      O3PRM::O3PRM( const O3PRM& src ) {
         GUM_CONS_CPY( O3PRM );
         for ( const auto& t : src.__types ) {
           __types.push_back( std::unique_ptr<O3Type>( new O3Type( *t ) ) );
+        }
+        for ( const auto& t : src.__int_types ) {
+          __int_types.push_back(
+              std::unique_ptr<O3IntType>( new O3IntType( *t ) ) );
+        }
+        for ( const auto& i : src.__interfaces ) {
+          __interfaces.push_back(
+              std::unique_ptr<O3Interface>( new O3Interface( *i ) ) );
         }
       }
 
       O3PRM::O3PRM( O3PRM&& src )
           : __types( std::move( src.__types ) )
-          , __int_types( std::move( src.__int_types ) ) {
+          , __int_types( std::move( src.__int_types ) )
+          , __interfaces( std::move( src.__interfaces) ) {
         GUM_CONS_MOV( O3PRM );
       }
 
@@ -311,13 +319,21 @@ namespace gum {
         for ( const auto& t : src.__types ) {
           __types.push_back( std::unique_ptr<O3Type>( new O3Type( *t ) ) );
         }
-        __int_types = src.__int_types;
+        for ( const auto& t : src.__int_types ) {
+          __int_types.push_back(
+              std::unique_ptr<O3IntType>( new O3IntType( *t ) ) );
+        }
+        for ( const auto& i : src.__interfaces ) {
+          __interfaces.push_back(
+              std::unique_ptr<O3Interface>( new O3Interface( *i ) ) );
+        }
         return *this;
       }
 
       O3PRM& O3PRM::operator=( O3PRM&& src ) {
         __types = std::move( src.__types );
         __int_types = std::move( src.__int_types );
+        __interfaces = std::move( src.__interfaces );
         return *this;
       }
 
@@ -326,13 +342,18 @@ namespace gum {
         return __types;
       }
 
-      std::vector<O3IntType>& O3PRM::int_types() { return __int_types; }
-      const std::vector<O3IntType>& O3PRM::int_types() const {
+      std::vector<std::unique_ptr<O3IntType>>& O3PRM::int_types() {
+        return __int_types;
+      }
+      const std::vector<std::unique_ptr<O3IntType>>& O3PRM::int_types() const {
         return __int_types;
       }
 
-      std::vector<O3Interface>& O3PRM::interfaces() { return __interfaces; }
-      const std::vector<O3Interface>& O3PRM::interfaces() const {
+      std::vector<std::unique_ptr<O3Interface>>& O3PRM::interfaces() {
+        return __interfaces;
+      }
+      const std::vector<std::unique_ptr<O3Interface>>&
+      O3PRM::interfaces() const {
         return __interfaces;
       }
 

@@ -57,30 +57,30 @@ namespace gum {
         operator=( O3InterfaceFactory<GUM_SCALAR>&& src );
 
         void
-        build( PRM<GUM_SCALAR>& prm, O3PRM& my_o3prm, std::ostream& output );
+        build( PRM<GUM_SCALAR>& prm, const O3PRM& my_o3prm, std::ostream& output );
 
         private:
         HashTable<std::string, gum::NodeId> __nameMap;
-        HashTable<std::string, O3Interface> __interfaceMap;
-        HashTable<NodeId, O3Interface> __nodeMap;
+        HashTable<std::string, const O3Interface*> __interfaceMap;
+        HashTable<NodeId, const O3Interface*> __nodeMap;
         DAG __dag;
-        std::vector<O3Interface> __o3Interface;
+        std::vector<const O3Interface*> __o3Interface;
 
         void __initialize();
         bool __addInterface2Dag( PRM<GUM_SCALAR>& prm,
-                                 O3PRM& tmp_prm,
+                                 const O3PRM& tmp_prm,
                                  std::ostream& output );
 
-        bool __addArcs2Dag( O3PRM& prm, std::ostream& output );
+        bool __addArcs2Dag( const O3PRM& prm, std::ostream& output );
 
         void __setO3InterfaceCreationOrder();
 
         bool __checkO3Interfaces( PRM<GUM_SCALAR>& prm,
-                                  O3PRM& tmp_prm,
+                                  const O3PRM& tmp_prm,
                                   std::ostream& output );
 
         bool __checkInterfaceElement( PRM<GUM_SCALAR>& prm,
-                                      O3InterfaceElement& elt,
+                                      const O3InterfaceElement& elt,
                                       std::ostream& output );
       };
 
