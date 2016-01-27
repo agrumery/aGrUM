@@ -340,6 +340,8 @@ namespace gum {
 
       virtual void continueInterface( const std::string& name ) override;
 
+      virtual void continueInterface( const std::string& name ) override;
+
       /**
        * @brief Add an attribute to an interface.
        *
