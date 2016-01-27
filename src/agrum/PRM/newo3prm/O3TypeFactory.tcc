@@ -72,7 +72,11 @@ namespace gum {
         __typeMap = HashTable<std::string, O3Type>();
         __nodeMap = HashTable<NodeId, O3Type>();
         __dag = DAG();
-        __boolean();
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3TypeFactory<GUM_SCALAR>::__isPrimitiveType( const O3Type& type ) {
+        return type.name().label() == "boolean";
       }
 
       template <typename GUM_SCALAR>
@@ -85,12 +89,14 @@ namespace gum {
         if ( __checkO3Types( prm, my_o3prm, output ) ) {
           __setO3TypeCreationOrder();
           for ( auto type : __o3Types ) {
-            factory.startDiscreteType( type.name().label(),
-                                       type.super().label() );
-            for ( auto label : type.labels() ) {
-              factory.addLabel( label.first.label(), label.second.label() );
+            if ( not __isPrimitiveType( type ) ) {
+              factory.startDiscreteType( type.name().label(),
+                                         type.super().label() );
+              for ( auto label : type.labels() ) {
+                factory.addLabel( label.first.label(), label.second.label() );
+              }
+              factory.endDiscreteType();
             }
-            factory.endDiscreteType();
           }
         }
         // building int types
@@ -109,30 +115,13 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3TypeFactory<GUM_SCALAR>::__boolean() {
-        // Creating the boolean type
-        auto name = O3Label( Position(), "boolean" );
-        auto f = O3Label( Position(), "false" );
-        auto t = O3Label( Position(), "true" );
-        auto labels = O3Type::LabelMap();
-        labels.push_back( O3Type::LabelPair( f, O3Label() ) );
-        labels.push_back( O3Type::LabelPair( t, O3Label() ) );
-        auto boolean = O3Type( Position(), name, O3Label(), labels );
-
-        // Adding the boolean type
-        auto id = __dag.addNode();
-        __nameMap.insert( "boolean", id );
-        __typeMap.insert( "boolean", boolean );
-        __nodeMap.insert( id, boolean );
-      }
-
-      template <typename GUM_SCALAR>
       bool O3TypeFactory<GUM_SCALAR>::__addTypes2Dag( PRM<GUM_SCALAR>& prm,
                                                       O3PRM& tmp_prm,
                                                       std::ostream& output ) {
         // Adding nodes to the type inheritance graph
         for ( auto& type : tmp_prm.types() ) {
-          if ( name_used<GUM_SCALAR>( prm, type.name().label() ) ) {
+          if ( not __isPrimitiveType( type ) and
+               name_used<GUM_SCALAR>( prm, type.name().label() ) ) {
             // Raised if duplicate type names
             const auto& pos = type.name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
