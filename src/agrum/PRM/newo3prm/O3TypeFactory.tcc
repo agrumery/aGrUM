@@ -69,8 +69,8 @@ namespace gum {
       template <typename GUM_SCALAR>
       void O3TypeFactory<GUM_SCALAR>::__initialize() {
         __nameMap = HashTable<std::string, NodeId>();
-        __typeMap = HashTable<std::string, O3Type>();
-        __nodeMap = HashTable<NodeId, O3Type>();
+        __typeMap = HashTable<std::string, const O3Type*>();
+        __nodeMap = HashTable<NodeId, const O3Type*>();
         __dag = DAG();
       }
 
@@ -81,7 +81,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3TypeFactory<GUM_SCALAR>::build( PRM<GUM_SCALAR>& prm,
-                                             O3PRM& my_o3prm,
+                                             const O3PRM& my_o3prm,
                                              std::ostream& output ) {
         __initialize();
         PRMFactory<GUM_SCALAR> factory( &prm );
@@ -89,10 +89,10 @@ namespace gum {
         if ( __checkO3Types( prm, my_o3prm, output ) ) {
           __setO3TypeCreationOrder();
           for ( auto type : __o3Types ) {
-            if ( not __isPrimitiveType( type ) ) {
-              factory.startDiscreteType( type.name().label(),
-                                         type.super().label() );
-              for ( auto label : type.labels() ) {
+            if ( not __isPrimitiveType( *type ) ) {
+              factory.startDiscreteType( type->name().label(),
+                                         type->super().label() );
+              for ( const auto& label : type->labels() ) {
                 factory.addLabel( label.first.label(), label.second.label() );
               }
               factory.endDiscreteType();
@@ -101,7 +101,7 @@ namespace gum {
         }
         // building int types
         if ( __checkO3IntTypes( my_o3prm, output ) ) {
-          for ( auto type : __o3IntTypes ) {
+          for ( const auto& type : __o3IntTypes ) {
             factory.startDiscreteType( type.name().label() );
             auto n = type.end().value() - type.start().value();
             for ( auto i = 0; i <= n; ++i ) {
@@ -116,33 +116,33 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3TypeFactory<GUM_SCALAR>::__addTypes2Dag( PRM<GUM_SCALAR>& prm,
-                                                      O3PRM& tmp_prm,
+                                                      const O3PRM& tmp_prm,
                                                       std::ostream& output ) {
         // Adding nodes to the type inheritance graph
-        for ( auto& type : tmp_prm.types() ) {
-          if ( not __isPrimitiveType( type ) and
-               name_used<GUM_SCALAR>( prm, type.name().label() ) ) {
+        for ( const auto& type : tmp_prm.types() ) {
+          if ( not __isPrimitiveType( *type ) and
+               name_used<GUM_SCALAR>( prm, type->name().label() ) ) {
             // Raised if duplicate type names
-            const auto& pos = type.name().position();
+            const auto& pos = type->name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Type error : "
-                   << "Type name " << type.name().label() << " exists already"
+                   << "Type name " << type->name().label() << " exists already"
                    << std::endl;
             return false;
           }
           auto id = __dag.addNode();
           try {
-            __nameMap.insert( type.name().label(), id );
-            __typeMap.insert( type.name().label(), type );
-            __nodeMap.insert( id, type );
+            __nameMap.insert( type->name().label(), id );
+            __typeMap.insert( type->name().label(), type.get() );
+            __nodeMap.insert( id, type.get() );
           } catch ( DuplicateElement& e ) {
             // Raised if duplicate type names
-            const auto& pos = type.name().position();
+            const auto& pos = type->name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Type error : "
-                   << "Type " << type.name().label() << " exists already"
+                   << "Type " << type->name().label() << " exists already"
                    << std::endl;
             return false;
           }
@@ -151,39 +151,39 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__addArcs2Dag( O3PRM& prm,
+      bool O3TypeFactory<GUM_SCALAR>::__addArcs2Dag( const O3PRM& prm,
                                                      std::ostream& output ) {
         // Adding arcs to the graph inheritance graph
         for ( const auto& type : prm.types() ) {
-          if ( type.super().label() != "" ) {
+          if ( type->super().label() != "" ) {
             try {
-              auto head = __nameMap[type.super().label()];
-              auto tail = __nameMap[type.name().label()];
+              auto head = __nameMap[type->super().label()];
+              auto tail = __nameMap[type->name().label()];
               __dag.addArc( tail, head );
             } catch ( NotFound& e ) {
               // Unknown super type
-              const auto& pos = type.super().position();
+              const auto& pos = type->super().position();
               output << pos.file() << "|" << pos.line() << " col "
                      << pos.column() << "|"
                      << " Type error : "
-                     << "Unknown type " << type.super().label() << std::endl;
+                     << "Unknown type " << type->super().label() << std::endl;
               return false;
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
-              const auto& pos = type.position();
+              const auto& pos = type->position();
               output << pos.file() << "|" << pos.line() << " col "
                      << pos.column() << "|"
                      << " Type error : "
                      << "Cyclic inheritance between type "
-                     << type.name().label() << " and type "
-                     << type.super().label() << std::endl;
+                     << type->name().label() << " and type "
+                     << type->super().label() << std::endl;
               return false;
             }
             // Check labels inheritance
-            for ( auto pair : type.labels() ) {
-              auto super = __typeMap[type.super().label()];
+            for ( const auto& pair : type->labels() ) {
+              const auto& super = __typeMap[type->super().label()];
               auto super_labels = Set<std::string>();
-              for ( auto label : super.labels() ) {
+              for ( const auto& label : super->labels() ) {
                 super_labels.insert( label.first.label() );
               }
               if ( not super_labels.contains( pair.second.label() ) ) {
@@ -192,7 +192,7 @@ namespace gum {
                        << pos.column() << "|"
                        << " Type error : "
                        << "Unknown label " << pair.second.label() << " in "
-                       << type.super().label() << std::endl;
+                       << type->super().label() << std::endl;
                 return false;
               }
             }
@@ -206,7 +206,7 @@ namespace gum {
         auto topo_order = topologicalOrder( __dag );
         for ( auto iter = topo_order.rbegin(); iter != topo_order.rend();
               --iter ) {
-          if ( __nodeMap[*iter].name().label() != "boolean" ) {
+          if ( __nodeMap[*iter]->name().label() != "boolean" ) {
             __o3Types.push_back( __nodeMap[*iter] );
           }
         }
@@ -214,7 +214,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3TypeFactory<GUM_SCALAR>::__checkO3Types( PRM<GUM_SCALAR>& prm,
-                                                      O3PRM& tmp_prm,
+                                                      const O3PRM& tmp_prm,
                                                       std::ostream& output ) {
         return __addTypes2Dag( prm, tmp_prm, output ) and
                __addArcs2Dag( tmp_prm, output );
@@ -222,17 +222,17 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool
-      O3TypeFactory<GUM_SCALAR>::__checkO3IntTypes( O3PRM& prm,
+      O3TypeFactory<GUM_SCALAR>::__checkO3IntTypes( const O3PRM& prm,
                                                     std::ostream& output ) {
         auto names = gum::Set<std::string>();
-        for ( auto type : prm.types() ) {
+        for ( const auto& type : prm.types() ) {
           try {
-            names.insert( type.name().label() );
+            names.insert( type->name().label() );
           } catch ( DuplicateElement& e ) {
             // Ignore, they are checked for in check_o3type
           }
         }
-        for ( auto type : prm.int_types() ) {
+        for ( const auto& type : prm.int_types() ) {
           if ( names.contains( type.name().label() ) ) {
             // Raised if duplicate type names
             const auto& pos = type.name().position();
