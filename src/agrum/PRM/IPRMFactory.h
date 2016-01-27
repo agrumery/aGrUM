@@ -79,6 +79,7 @@ namespace gum {
       virtual void endClass() = 0;
       virtual void startInterface( const std::string& i,
                                    const std::string& extends = "" ) = 0;
+      virtual void continueInterface( const std::string& name ) = 0;
       virtual void addAttribute( const std::string& type,
                                  const std::string& name ) = 0;
       virtual void endInterface() = 0;

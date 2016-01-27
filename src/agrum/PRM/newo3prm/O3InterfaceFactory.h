@@ -20,7 +20,7 @@
 
 /**
  * @file
- * @brief Headers for the O3TypeFactory class.
+ * @brief Headers for the O3InterfaceFactory class.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
@@ -36,56 +36,62 @@
 #include <agrum/PRM/newo3prm/o3prm.h>
 #include <agrum/PRM/newo3prm/utils.h>
 
-#ifndef GUM_PRM_O3PRM_O3TYPE_FACTORY_H
-#define GUM_PRM_O3PRM_O3TYPE_FACTORY_H
+#ifndef GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
+#define GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
       template <typename GUM_SCALAR>
-      class O3TypeFactory {
+      class O3InterfaceFactory {
 
         public:
-        O3TypeFactory();
-        O3TypeFactory( const O3TypeFactory<GUM_SCALAR>& src );
-        O3TypeFactory( O3TypeFactory<GUM_SCALAR>&& src );
-        ~O3TypeFactory();
-        O3TypeFactory& operator=(const O3TypeFactory<GUM_SCALAR>& src);
-        O3TypeFactory& operator=(O3TypeFactory<GUM_SCALAR>&& src);
+        O3InterfaceFactory();
+        O3InterfaceFactory( const O3InterfaceFactory<GUM_SCALAR>& src );
+        O3InterfaceFactory( O3InterfaceFactory<GUM_SCALAR>&& src );
+        ~O3InterfaceFactory();
+        O3InterfaceFactory<GUM_SCALAR>&
+        operator=( const O3InterfaceFactory<GUM_SCALAR>& src );
+        O3InterfaceFactory<GUM_SCALAR>&
+        operator=( O3InterfaceFactory<GUM_SCALAR>&& src );
 
         void
         build( PRM<GUM_SCALAR>& prm, O3PRM& my_o3prm, std::ostream& output );
 
         private:
         HashTable<std::string, gum::NodeId> __nameMap;
-        HashTable<std::string, O3Type> __typeMap;
-        HashTable<NodeId, O3Type> __nodeMap;
+        HashTable<std::string, O3Interface> __interfaceMap;
+        HashTable<NodeId, O3Interface> __nodeMap;
         DAG __dag;
-        std::vector<O3Type> __o3Types;
-        std::vector<O3IntType> __o3IntTypes;
+        std::vector<O3Interface> __o3Interface;
 
         void __initialize();
-        void __boolean();
-        bool __addTypes2Dag( PRM<GUM_SCALAR>& prm,
-                             O3PRM& tmp_prm,
-                             std::ostream& output );
+        bool __addInterface2Dag( PRM<GUM_SCALAR>& prm,
+                                 O3PRM& tmp_prm,
+                                 std::ostream& output );
+
         bool __addArcs2Dag( O3PRM& prm, std::ostream& output );
-        void __setO3TypeCreationOrder();
-        bool __checkO3Types( PRM<GUM_SCALAR>& prm,
-                             O3PRM& tmp_prm,
-                             std::ostream& output );
-        bool __checkO3IntTypes( O3PRM& prm, std::ostream& output );
+
+        void __setO3InterfaceCreationOrder();
+
+        bool __checkO3Interfaces( PRM<GUM_SCALAR>& prm,
+                                  O3PRM& tmp_prm,
+                                  std::ostream& output );
+
+        bool __checkInterfaceElement( PRM<GUM_SCALAR>& prm,
+                                      O3InterfaceElement& elt,
+                                      std::ostream& output );
       };
 
     }  // o3prm
   }    // prm
 }  // gum
 
-#include <agrum/PRM/newo3prm/O3TypeFactory.tcc>
+#include <agrum/PRM/newo3prm/O3InterfaceFactory.tcc>
 
-extern template class gum::prm::o3prm::O3TypeFactory<float>;
-extern template class gum::prm::o3prm::O3TypeFactory<double>;
+extern template class gum::prm::o3prm::O3InterfaceFactory<float>;
+extern template class gum::prm::o3prm::O3InterfaceFactory<double>;
 
-#endif  // GUM_PRM_O3PRM_O3TYPE_FACTORY_H
+#endif  // GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
 

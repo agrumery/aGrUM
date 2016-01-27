@@ -264,6 +264,19 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    void PRMFactory<GUM_SCALAR>::continueInterface( const std::string& name ) {
+      std::string real_name = __addPrefix( name );
+      if ( not __prm->__interfaceMap.exists( real_name ) ) {
+        std::stringstream msg;
+        msg << "\"" << real_name << "\" not found.";
+        GUM_ERROR( DuplicateElement, msg.str() );
+      }
+
+      Interface<GUM_SCALAR>* i = __retrieveInterface( real_name );
+      __stack.push_back( i );
+    }
+
+    template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::addAttribute( Attribute<GUM_SCALAR>* attr ) {
       Class<GUM_SCALAR>* c = static_cast<Class<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::CLASS ) );

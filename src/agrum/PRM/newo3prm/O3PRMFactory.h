@@ -38,6 +38,7 @@
 #include <agrum/PRM/newO3prm/cocoR/Scanner.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 #include <agrum/PRM/newo3prm/O3TypeFactory.h>
+#include <agrum/PRM/newo3prm/O3InterfaceFactory.h>
 
 namespace gum {
   namespace prm {

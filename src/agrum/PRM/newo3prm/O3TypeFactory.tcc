@@ -55,6 +55,18 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
+      O3TypeFactory<GUM_SCALAR>& O3TypeFactory<GUM_SCALAR>::
+      operator=( const O3TypeFactory<GUM_SCALAR>& src ) {
+        return *this;
+      }
+
+      template <typename GUM_SCALAR>
+      O3TypeFactory<GUM_SCALAR>& O3TypeFactory<GUM_SCALAR>::
+      operator=( O3TypeFactory<GUM_SCALAR>&& src ) {
+        return *this;
+      }
+
+      template <typename GUM_SCALAR>
       void O3TypeFactory<GUM_SCALAR>::__initialize() {
         __nameMap = HashTable<std::string, NodeId>();
         __typeMap = HashTable<std::string, O3Type>();
