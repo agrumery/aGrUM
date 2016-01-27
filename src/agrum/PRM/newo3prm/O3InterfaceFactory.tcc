@@ -69,39 +69,39 @@ namespace gum {
       template <typename GUM_SCALAR>
       void O3InterfaceFactory<GUM_SCALAR>::__initialize() {
         __nameMap = HashTable<std::string, gum::NodeId>();
-        __interfaceMap = HashTable<std::string, O3Interface>();
-        __nodeMap = HashTable<NodeId, O3Interface>();
+        __interfaceMap = HashTable<std::string, const O3Interface*>();
+        __nodeMap = HashTable<NodeId, const O3Interface*>();
         __dag = DAG();
-        __o3Interface = std::vector<O3Interface>();
+        __o3Interface = std::vector<const O3Interface*>();
       }
 
       template <typename GUM_SCALAR>
       bool O3InterfaceFactory<GUM_SCALAR>::__addInterface2Dag(
-          PRM<GUM_SCALAR>& prm, O3PRM& tmp_prm, std::ostream& output ) {
+          PRM<GUM_SCALAR>& prm, const O3PRM& tmp_prm, std::ostream& output ) {
         // Adding nodes to the type inheritance graph
-        for ( auto& i : tmp_prm.interfaces() ) {
-          if ( name_used<GUM_SCALAR>( prm, i.name().label() ) ) {
+        for ( const auto& i : tmp_prm.interfaces() ) {
+          if ( name_used<GUM_SCALAR>( prm, i->name().label() ) ) {
             // Raised if duplicate interface names
-            const auto& pos = i.name().position();
+            const auto& pos = i->name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Interface error : "
-                   << "Interface name " << i.name().label() << " exists already"
+                   << "Interface name " << i->name().label() << " exists already"
                    << std::endl;
             return false;
           }
           auto id = __dag.addNode();
           try {
-            __nameMap.insert( i.name().label(), id );
-            __interfaceMap.insert( i.name().label(), i );
-            __nodeMap.insert( id, i );
+            __nameMap.insert( i->name().label(), id );
+            __interfaceMap.insert( i->name().label(), i.get() );
+            __nodeMap.insert( id, i.get() );
           } catch ( DuplicateElement& e ) {
             // Raised if duplicate type names
-            const auto& pos = i.name().position();
+            const auto& pos = i->name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Interface error : "
-                   << "Interface name " << i.name().label() << " exists already"
+                   << "Interface name " << i->name().label() << " exists already"
                    << std::endl;
             return false;
           }
@@ -111,32 +111,32 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool
-      O3InterfaceFactory<GUM_SCALAR>::__addArcs2Dag( O3PRM& prm,
+      O3InterfaceFactory<GUM_SCALAR>::__addArcs2Dag( const O3PRM& prm,
                                                      std::ostream& output ) {
         // Adding arcs to the graph inheritance graph
         for ( const auto& i : prm.interfaces() ) {
-          if ( i.super().label() != "" ) {
+          if ( i->super().label() != "" ) {
             try {
-              auto head = __nameMap[i.super().label()];
-              auto tail = __nameMap[i.name().label()];
+              auto head = __nameMap[i->super().label()];
+              auto tail = __nameMap[i->name().label()];
               __dag.addArc( tail, head );
             } catch ( NotFound& e ) {
               // Unknown super interface
-              const auto& pos = i.super().position();
+              const auto& pos = i->super().position();
               output << pos.file() << "|" << pos.line() << " col "
                      << pos.column() << "|"
                      << " Interface error : "
-                     << "Unknown interface " << i.super().label() << std::endl;
+                     << "Unknown interface " << i->super().label() << std::endl;
               return false;
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
-              const auto& pos = i.position();
+              const auto& pos = i->position();
               output << pos.file() << "|" << pos.line() << " col "
                      << pos.column() << "|"
                      << " Interface error : "
                      << "Cyclic inheritance between interface "
-                     << i.name().label() << " and interface "
-                     << i.super().label() << std::endl;
+                     << i->name().label() << " and interface "
+                     << i->super().label() << std::endl;
               return false;
             }
           }
@@ -155,7 +155,9 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3InterfaceFactory<GUM_SCALAR>::__checkInterfaceElement(
-          PRM<GUM_SCALAR>& prm, O3InterfaceElement& elt, std::ostream& output ) {
+          PRM<GUM_SCALAR>& prm,
+          const O3InterfaceElement& elt,
+          std::ostream& output ) {
         if ( not( prm.isType( elt.type().label() ) or
                   prm.isInterface( elt.type().label() ) or
                   prm.isClass( elt.type().label() ) ) ) {
@@ -172,14 +174,14 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3InterfaceFactory<GUM_SCALAR>::__checkO3Interfaces(
-          PRM<GUM_SCALAR>& prm, O3PRM& tmp_prm, std::ostream& output ) {
+          PRM<GUM_SCALAR>& prm, const O3PRM& tmp_prm, std::ostream& output ) {
         return __addInterface2Dag( prm, tmp_prm, output ) and
                __addArcs2Dag( tmp_prm, output );
       }
 
       template <typename GUM_SCALAR>
       void O3InterfaceFactory<GUM_SCALAR>::build( PRM<GUM_SCALAR>& prm,
-                                                  O3PRM& tmp_prm,
+                                                  const O3PRM& tmp_prm,
                                                   std::ostream& output ) {
         __initialize();
         PRMFactory<GUM_SCALAR> factory( &prm );
@@ -187,13 +189,13 @@ namespace gum {
           __setO3InterfaceCreationOrder();
 
           for ( auto i : __o3Interface ) {
-            factory.startInterface( i.name().label(), i.super().label() );
+            factory.startInterface( i->name().label(), i->super().label() );
             factory.endInterface();
           }
 
           for ( auto i : __o3Interface ) {
-            factory.continueInterface( i.name().label() );
-            for ( auto elt : i.elements() ) {
+            factory.continueInterface( i->name().label() );
+            for ( const auto& elt : i->elements() ) {
               if ( __checkInterfaceElement( prm, elt, output ) ) {
                 try {
                   if ( prm.isType( elt.type().label() ) ) {

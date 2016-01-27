@@ -206,16 +206,16 @@ namespace gum {
         std::vector<std::unique_ptr<O3Type>>& types();
         const std::vector<std::unique_ptr<O3Type>>& types() const;
 
-        std::vector<O3IntType>& int_types();
-        const std::vector<O3IntType>& int_types() const;
+        std::vector<std::unique_ptr<O3IntType>>& int_types();
+        const std::vector<std::unique_ptr<O3IntType>>& int_types() const;
 
-        std::vector<O3Interface>& interfaces();
-        const std::vector<O3Interface>& interfaces() const;
+        std::vector<std::unique_ptr<O3Interface>>& interfaces();
+        const std::vector<std::unique_ptr<O3Interface>>& interfaces() const;
 
         private:
         std::vector<std::unique_ptr<O3Type>> __types;
-        std::vector<O3IntType> __int_types;
-        std::vector<O3Interface> __interfaces;
+        std::vector<std::unique_ptr<O3IntType>> __int_types;
+        std::vector<std::unique_ptr<O3Interface>> __interfaces;
       };
 
     } // o3prm
