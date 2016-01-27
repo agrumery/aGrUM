@@ -152,7 +152,7 @@ void Parser::INTERFACE_DECLARATION(Position& pos,
 O3Label& name,
 O3Label& super,
 O3InterfaceElementList& elts) {
-		Expect(_interface);
+		INTERFACE(pos);
 		LABEL(name);
 		if (la->kind == _extends) {
 			Get();
@@ -163,6 +163,13 @@ O3InterfaceElementList& elts) {
 			INTERFACE_BODY(elts);
 		}
 		Expect(21 /* "}" */);
+}
+
+void Parser::INTERFACE(Position& pos) {
+		Expect(_interface);
+		pos.file( narrow( scanner->filename() ) ); 
+		pos.line( t->line ); 
+		pos.column( t->col ); 
 }
 
 void Parser::LABEL(O3Label& l) {

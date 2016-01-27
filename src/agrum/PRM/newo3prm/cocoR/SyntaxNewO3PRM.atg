@@ -147,12 +147,20 @@ INTERFACE_DECLARATION<Position& pos,
                       O3Label& name,
                       O3Label& super,
                       O3InterfaceElementList& elts> =
-  interface
+  INTERFACE<pos>
   LABEL<name>
   [
     extends LABEL<super>
   ]
   '{' { INTERFACE_BODY<elts> } '}'
+  .
+
+//________________________
+INTERFACE<Position& pos> =
+  interface
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
   .
 
 //________________________

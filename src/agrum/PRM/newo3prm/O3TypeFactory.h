@@ -43,7 +43,8 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      template <typename GUM_SCALAR> class O3TypeFactory {
+      template <typename GUM_SCALAR>
+      class O3TypeFactory {
 
         public:
         O3TypeFactory();
@@ -55,7 +56,6 @@ namespace gum {
         build( PRM<GUM_SCALAR>& prm, O3PRM& my_o3prm, std::ostream& output );
 
         private:
-
         HashTable<std::string, gum::NodeId> __nameMap;
         HashTable<std::string, O3Type> __typeMap;
         HashTable<NodeId, O3Type> __nodeMap;
@@ -65,10 +65,14 @@ namespace gum {
 
         void __initialize();
         void __boolean();
-        bool __addTypes2Dag( O3PRM& prm, std::ostream& output );
+        bool __addTypes2Dag( PRM<GUM_SCALAR>& prm,
+                             O3PRM& tmp_prm,
+                             std::ostream& output );
         bool __addArcs2Dag( O3PRM& prm, std::ostream& output );
         void __setO3TypeCreationOrder();
-        bool __checkO3Types( O3PRM& prm, std::ostream& output );
+        bool __checkO3Types( PRM<GUM_SCALAR>& prm,
+                             O3PRM& tmp_prm,
+                             std::ostream& output );
         bool __checkO3IntTypes( O3PRM& prm, std::ostream& output );
       };
 
@@ -81,5 +85,5 @@ namespace gum {
 extern template class gum::prm::o3prm::O3TypeFactory<float>;
 extern template class gum::prm::o3prm::O3TypeFactory<double>;
 
-#endif // GUM_PRM_O3PRM_O3TYPE_FACTORY_H
+#endif  // GUM_PRM_O3PRM_O3TYPE_FACTORY_H
 

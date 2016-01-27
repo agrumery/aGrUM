@@ -169,6 +169,7 @@ O3PRM* get_prm() {
 O3Label& name,
 O3Label& super,
 O3InterfaceElementList& elts);
+	void INTERFACE(Position& pos);
 	void LABEL(O3Label& l);
 	void INTERFACE_BODY(O3InterfaceElementList& elts);
 	void TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, LabelMap& labels);

@@ -37,6 +37,7 @@
 #include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/core/errorsContainer.h>
+#include <agrum/PRM/PRM.h>
 
 namespace gum {
   namespace prm {
@@ -48,8 +49,12 @@ namespace gum {
 
       std::string print( const ParseError& err );
 
+      template <typename GUM_SCALAR>
+      bool name_used( const PRM<GUM_SCALAR>& prm, const std::string& name );
     }
   }
 }
+
+#include <agrum/PRM/newo3prm/utils.tcc>
 
 #endif  // GUM_PRM_O3PRM_O3PRM_H
