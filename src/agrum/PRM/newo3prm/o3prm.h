@@ -182,6 +182,7 @@ namespace gum {
         O3Interface( const O3Interface& src );
         O3Interface( O3Interface&& src );
         ~O3Interface();
+        const Position& position() const;
         const O3Label& name() const;
         const O3Label& super() const;
         const O3InterfaceElementList& elements() const;

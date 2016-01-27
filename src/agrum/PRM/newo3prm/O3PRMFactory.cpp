@@ -35,40 +35,80 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
+      bool check_interface_element( PRM<double>& prm,
+                                    O3InterfaceElement elt,
+                                    std::ostream& output ) {
+        if ( not( prm.isType( elt.type().label() ) or
+                  prm.isInterface( elt.type().label() ) or
+                  prm.isClass( elt.type().label() ) ) ) {
+          // Raised unknown type
+          const auto& pos = elt.type().position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Interface error : "
+                 << "Unknown identifier " << elt.type().label() << std::endl;
+          return false;
+        }
+        return true;
+      }
+
+      bool check_interface( PRM<double>& prm,
+                            O3Interface& i,
+                            std::ostream& output ) {
+        if ( name_used<double>( prm, i.name().label() ) ) {
+          const auto& pos = i.position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Interface error : "
+                 << "Interface name " << i.name().label() << " exists already"
+                 << std::endl;
+          return false;
+        }
+        if ( i.super().label() != "" and
+             not prm.isInterface( i.super().label() ) ) {
+          const auto& pos = i.position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Interface error : "
+                 << "Unknown super interface " << i.super().label()
+                 << std::endl;
+          return false;
+        }
+        bool ok = true;
+        for ( auto elt : i.elements() ) {
+          ok = check_interface_element( prm, elt, output ) and ok;
+        }
+        return ok;
+      }
+
       void build_interface( PRM<double>& prm,
                             O3PRM& tmp_prm,
                             std::ostream& output ) {
         PRMFactory<double> factory( &prm );
         for ( auto i : tmp_prm.interfaces() ) {
-          factory.startInterface( i.name().label(), i.super().label() );
-          for ( auto elt : i.elements() ) {
-            try {
-              if ( prm.isType( elt.type().label() ) ) {
-                factory.addAttribute( elt.type().label(), elt.name().label() );
-              } else if ( prm.isInterface( elt.type().label() ) or
-                          prm.isClass( elt.type().label() ) ) {
-                factory.addReferenceSlot(
-                    elt.type().label(), elt.name().label(), false );
-              } else {
-                // Raised unknown type
+          if ( check_interface( prm, i, output ) ) {
+            factory.startInterface( i.name().label(), i.super().label() );
+            for ( auto elt : i.elements() ) {
+              try {
+                if ( prm.isType( elt.type().label() ) ) {
+                  factory.addAttribute( elt.type().label(),
+                                        elt.name().label() );
+                } else {
+                  factory.addReferenceSlot(
+                      elt.type().label(), elt.name().label(), false );
+                }
+              } catch ( OperationNotAllowed& e ) {
+                // Duplicate
                 const auto& pos = elt.type().position();
                 output << pos.file() << "|" << pos.line() << " col "
                        << pos.column() << "|"
                        << " Interface error : "
-                       << "Unknown identifier " << elt.type().label()
+                       << "Element " << elt.name().label() << " already exists"
                        << std::endl;
               }
-            } catch ( OperationNotAllowed& e ) {
-              // Duplicate
-              const auto& pos = elt.type().position();
-              output << pos.file() << "|" << pos.line() << " col "
-                     << pos.column() << "|"
-                     << " Interface error : "
-                     << "Element " << elt.name().label() << " already exists"
-                     << std::endl;
             }
+            factory.endInterface();
           }
-          factory.endInterface();
         }
       }
 

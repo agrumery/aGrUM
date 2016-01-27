@@ -20,41 +20,25 @@
 
 /**
  * @file
- * @brief Headers for utilities functions for the O3PRM language.
+ * @brief Template implementation for utilities functions for the O3PRM
+ * language.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
-#ifndef GUM_PRM_O3PRM_O3PRM_H
-#define GUM_PRM_O3PRM_O3PRM_H
-
-#include <regex>
-#include <sstream>
-#include <string>
-#include <vector>
-
-#include <agrum/core/sequence.h>
-#include <agrum/graphs/DAG.h>
-#include <agrum/core/errorsContainer.h>
-#include <agrum/PRM/PRM.h>
+#include <agrum/PRM/newo3prm/utils.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      gum::Sequence<NodeId> topologicalOrder( const gum::DAG& src );
-
-      std::string clean( const std::string& text );
-
-      std::string print( const ParseError& err );
-
       template <typename GUM_SCALAR>
-      bool name_used( const PRM<GUM_SCALAR>& prm, const std::string& name );
+      bool name_used( const PRM<GUM_SCALAR>& prm, const std::string& name ) {
+        return ( prm.isType( name ) or prm.isInterface( name ) or
+                 prm.isClass( name ) );
+      }
+
     }
   }
 }
-
-#include <agrum/PRM/newo3prm/utils.tcc>
-
-#endif  // GUM_PRM_O3PRM_O3PRM_H

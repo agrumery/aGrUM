@@ -70,7 +70,7 @@ namespace gum {
         __initialize();
         PRMFactory<GUM_SCALAR> factory( &prm );
         // building types
-        if ( __checkO3Types( my_o3prm, output ) ) {
+        if ( __checkO3Types( prm, my_o3prm, output ) ) {
           __setO3TypeCreationOrder();
           for ( auto type : __o3Types ) {
             factory.startDiscreteType( type.name().label(),
@@ -115,10 +115,21 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__addTypes2Dag( O3PRM& prm,
+      bool O3TypeFactory<GUM_SCALAR>::__addTypes2Dag( PRM<GUM_SCALAR>& prm,
+                                                      O3PRM& tmp_prm,
                                                       std::ostream& output ) {
         // Adding nodes to the type inheritance graph
-        for ( auto& type : prm.types() ) {
+        for ( auto& type : tmp_prm.types() ) {
+          if ( name_used<GUM_SCALAR>( prm, type.name().label() ) ) {
+            // Raised if duplicate type names
+            const auto& pos = type.name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Type error : "
+                   << "Type name " << type.name().label() << " exists already"
+                   << std::endl;
+            return false;
+          }
           auto id = __dag.addNode();
           try {
             __nameMap.insert( type.name().label(), id );
@@ -201,9 +212,11 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__checkO3Types( O3PRM& prm,
+      bool O3TypeFactory<GUM_SCALAR>::__checkO3Types( PRM<GUM_SCALAR>& prm,
+                                                      O3PRM& tmp_prm,
                                                       std::ostream& output ) {
-        return __addTypes2Dag( prm, output ) and __addArcs2Dag( prm, output );
+        return __addTypes2Dag( prm, tmp_prm, output ) and
+               __addArcs2Dag( tmp_prm, output );
       }
 
       template <typename GUM_SCALAR>
