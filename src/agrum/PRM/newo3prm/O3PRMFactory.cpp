@@ -64,7 +64,7 @@ namespace gum {
               output << pos.file() << "|" << pos.line() << " col "
                      << pos.column() << "|"
                      << " Interface error : "
-                     << " Element " << elt.type().label() << " already exists"
+                     << "Element " << elt.name().label() << " already exists"
                      << std::endl;
             }
           }
