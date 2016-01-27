@@ -48,9 +48,11 @@ namespace gum {
 
         public:
         O3TypeFactory();
-        O3TypeFactory( const O3TypeFactory& src );
-        O3TypeFactory( O3TypeFactory&& src );
+        O3TypeFactory( const O3TypeFactory<GUM_SCALAR>& src );
+        O3TypeFactory( O3TypeFactory<GUM_SCALAR>&& src );
         ~O3TypeFactory();
+        O3TypeFactory& operator=(const O3TypeFactory<GUM_SCALAR>& src);
+        O3TypeFactory& operator=(O3TypeFactory<GUM_SCALAR>&& src);
 
         void
         build( PRM<GUM_SCALAR>& prm, O3PRM& my_o3prm, std::ostream& output );

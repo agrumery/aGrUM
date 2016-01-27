@@ -35,8 +35,6 @@
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 #include <agrum/PRM/newo3prm/utils.h>
-#include <agrum/PRM/newo3prm/O3NameSolver.h>
-#include <agrum/PRM/newo3prm/errors.h>
 
 #ifndef GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
 #define GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
@@ -49,10 +47,7 @@ namespace gum {
       class O3InterfaceFactory {
 
         public:
-        O3InterfaceFactory( PRM<GUM_SCALAR>& prm,
-                            O3PRM& o3_prm,
-                            O3NameSolver<GUM_SCALAR>& solver,
-                            ErrorsContainer& errors );
+        O3InterfaceFactory();
         O3InterfaceFactory( const O3InterfaceFactory<GUM_SCALAR>& src );
         O3InterfaceFactory( O3InterfaceFactory<GUM_SCALAR>&& src );
         ~O3InterfaceFactory();
@@ -61,43 +56,32 @@ namespace gum {
         O3InterfaceFactory<GUM_SCALAR>&
         operator=( O3InterfaceFactory<GUM_SCALAR>&& src );
 
-        void buildInterfaces();
-
-        void buildElements();
+        void
+        build( PRM<GUM_SCALAR>& prm, O3PRM& my_o3prm, std::ostream& output );
 
         private:
-        PRM<GUM_SCALAR>* __prm;
-        O3PRM* __o3_prm;
-        O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer* __errors;
-
-        HashTable<std::string, std::string> __eltName;
         HashTable<std::string, gum::NodeId> __nameMap;
-        HashTable<std::string, O3Interface*> __interfaceMap;
-        HashTable<NodeId, O3Interface*> __nodeMap;
+        HashTable<std::string, O3Interface> __interfaceMap;
+        HashTable<NodeId, O3Interface> __nodeMap;
         DAG __dag;
-        std::vector<O3Interface*> __o3Interface;
+        std::vector<O3Interface> __o3Interface;
 
-        bool __addInterface2Dag();
+        void __initialize();
+        bool __addInterface2Dag( PRM<GUM_SCALAR>& prm,
+                                 O3PRM& tmp_prm,
+                                 std::ostream& output );
 
-        bool __addArcs2Dag();
+        bool __addArcs2Dag( O3PRM& prm, std::ostream& output );
 
         void __setO3InterfaceCreationOrder();
 
-        bool __checkO3Interfaces();
+        bool __checkO3Interfaces( PRM<GUM_SCALAR>& prm,
+                                  O3PRM& tmp_prm,
+                                  std::ostream& output );
 
-        bool __checkInterfaceElement( O3Interface& i, O3InterfaceElement& elt );
-
-        bool __checkOverloadLegality( O3Interface& i, O3InterfaceElement& elt );
-
-        bool __checkAttributeOverloadLegality( O3Interface& i,
-                                               O3InterfaceElement& elt );
-
-        bool __checkReferenceOverloadLegality( O3Interface& i,
-                                               O3InterfaceElement& elt );
-
-        bool __checkCyclicReference( O3Interface& i, O3InterfaceElement& elt );
-
+        bool __checkInterfaceElement( PRM<GUM_SCALAR>& prm,
+                                      O3InterfaceElement& elt,
+                                      std::ostream& output );
       };
 
     }  // o3prm
