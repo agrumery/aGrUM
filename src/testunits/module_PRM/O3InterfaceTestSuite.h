@@ -150,8 +150,12 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|2 col 1| Interface error : Unknown identifier t_state";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
+      TS_ASSERT( prm.isInterface( "IBar" ) );
+      const auto& i_bar = prm.interface( "IBar" );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 0 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
+      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
     }
 
     void testSimpleInterfaceError2() {
@@ -362,7 +366,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), 2 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
       TS_ASSERT_EQUALS( i_bar.super(), i_foo );
     }
 
@@ -384,14 +388,10 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 1| Interface error : Unknown super interface IFooBar";
+      msg << "|4 col 24| Interface error : Unknown interface IFooBar";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), 1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), 0 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
+      TS_ASSERT( not prm.isInterface( "IFoo" ) );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
@@ -414,14 +414,10 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 1| Interface error : Unknown super interface t_state";
+      msg << "|5 col 24| Interface error : Unknown interface t_state";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), 1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), 0 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
+      TS_ASSERT( not prm.isInterface( "IFoo" ) );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
     }
 
