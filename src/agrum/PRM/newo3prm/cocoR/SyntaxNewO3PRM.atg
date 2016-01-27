@@ -41,7 +41,8 @@ void __addO3Type( Position& pos,
                   const O3Label& name,
                   const O3Label& super,
                   LabelMap& labels ) {
-  get_prm()->types().push_back( O3Type( pos, name, super, labels ) ); 
+  auto t = std::unique_ptr<O3Type>( new O3Type( pos, name, super, labels ) );
+  get_prm()->types().push_back( std::move( t ) ); 
 }
 
 void __addO3IntType( Position& pos,

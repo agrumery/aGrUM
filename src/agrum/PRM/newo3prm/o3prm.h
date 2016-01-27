@@ -203,8 +203,8 @@ namespace gum {
         O3PRM& operator=( const O3PRM& src );
         O3PRM& operator=( O3PRM&& src );
 
-        std::vector<O3Type>& types();
-        const std::vector<O3Type>& types() const;
+        std::vector<std::unique_ptr<O3Type>>& types();
+        const std::vector<std::unique_ptr<O3Type>>& types() const;
 
         std::vector<O3IntType>& int_types();
         const std::vector<O3IntType>& int_types() const;
@@ -213,7 +213,7 @@ namespace gum {
         const std::vector<O3Interface>& interfaces() const;
 
         private:
-        std::vector<O3Type> __types;
+        std::vector<std::unique_ptr<O3Type>> __types;
         std::vector<O3IntType> __int_types;
         std::vector<O3Interface> __interfaces;
       };
