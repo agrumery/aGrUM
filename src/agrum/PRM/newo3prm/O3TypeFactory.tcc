@@ -101,12 +101,12 @@ namespace gum {
         }
         // building int types
         if ( __checkO3IntTypes( my_o3prm, output ) ) {
-          for ( const auto& type : __o3IntTypes ) {
-            factory.startDiscreteType( type.name().label() );
-            auto n = type.end().value() - type.start().value();
+          for ( auto type : __o3IntTypes ) {
+            factory.startDiscreteType( type->name().label() );
+            auto n = type->end().value() - type->start().value();
             for ( auto i = 0; i <= n; ++i ) {
               auto s = std::stringstream();
-              s << type.start().value() + i;
+              s << type->start().value() + i;
               factory.addLabel( std::string( s.str() ) );
             }
             factory.endDiscreteType();
@@ -233,26 +233,26 @@ namespace gum {
           }
         }
         for ( const auto& type : prm.int_types() ) {
-          if ( names.contains( type.name().label() ) ) {
+          if ( names.contains( type->name().label() ) ) {
             // Raised if duplicate type names
-            const auto& pos = type.name().position();
+            const auto& pos = type->name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Type error : "
-                   << "Type name " << type.name().label() << " already used"
+                   << "Type name " << type->name().label() << " already used"
                    << std::endl;
             return false;
-          } else if ( type.end().value() - type.start().value() < 1 ) {
+          } else if ( type->end().value() - type->start().value() < 1 ) {
             // Invalid range
-            const auto& pos = type.name().position();
+            const auto& pos = type->name().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Type error : "
-                   << "Invalid range " << type.start().value() << " -> "
-                   << type.end().value() << std::endl;
+                   << "Invalid range " << type->start().value() << " -> "
+                   << type->end().value() << std::endl;
             return false;
           } else {
-            __o3IntTypes.push_back( type );
+            __o3IntTypes.push_back( type.get() );
           }
         }
         return true;

@@ -127,14 +127,17 @@ void __addO3IntType( Position& pos,
                      const O3Label& name,
                      const O3Integer& start,
                      const O3Integer& end ) {
-  get_prm()->int_types().push_back( O3IntType( pos, name, start, end ) );
+  auto t = std::unique_ptr<O3IntType>( new O3IntType( pos, name, start, end ) );
+  get_prm()->int_types().push_back( std::move( t ) );
 }
 
 void __addO3Interface( Position& pos,
                        const O3Label& name,
                        const O3Label& super,
                        const O3InterfaceElementList& elts ) {
-  get_prm()->interfaces().push_back( O3Interface( pos, name, super, elts ) );
+  auto i =
+      std::unique_ptr<O3Interface>( new O3Interface( pos, name, super, elts ) );
+  get_prm()->interfaces().push_back( std::move( i ) );
 }
 
 public:
