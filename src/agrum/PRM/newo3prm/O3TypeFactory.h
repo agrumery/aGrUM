@@ -55,27 +55,27 @@ namespace gum {
         O3TypeFactory& operator=(O3TypeFactory<GUM_SCALAR>&& src);
 
         void
-        build( PRM<GUM_SCALAR>& prm, O3PRM& my_o3prm, std::ostream& output );
+        build( PRM<GUM_SCALAR>& prm, const O3PRM& my_o3prm, std::ostream& output );
 
         private:
         HashTable<std::string, gum::NodeId> __nameMap;
-        HashTable<std::string, O3Type> __typeMap;
-        HashTable<NodeId, O3Type> __nodeMap;
+        HashTable<std::string, const O3Type*> __typeMap;
+        HashTable<NodeId, const O3Type*> __nodeMap;
         DAG __dag;
-        std::vector<O3Type> __o3Types;
+        std::vector<const O3Type*> __o3Types;
         std::vector<O3IntType> __o3IntTypes;
 
         void __initialize();
         bool __isPrimitiveType( const O3Type& type );
         bool __addTypes2Dag( PRM<GUM_SCALAR>& prm,
-                             O3PRM& tmp_prm,
+                             const O3PRM& tmp_prm,
                              std::ostream& output );
-        bool __addArcs2Dag( O3PRM& prm, std::ostream& output );
+        bool __addArcs2Dag( const O3PRM& prm, std::ostream& output );
         void __setO3TypeCreationOrder();
         bool __checkO3Types( PRM<GUM_SCALAR>& prm,
-                             O3PRM& tmp_prm,
+                             const O3PRM& tmp_prm,
                              std::ostream& output );
-        bool __checkO3IntTypes( O3PRM& prm, std::ostream& output );
+        bool __checkO3IntTypes( const O3PRM& prm, std::ostream& output );
       };
 
     }  // o3prm

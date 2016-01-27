@@ -286,14 +286,17 @@ namespace gum {
         auto labels = O3Type::LabelMap();
         labels.push_back( O3Type::LabelPair( f, O3Label() ) );
         labels.push_back( O3Type::LabelPair( t, O3Label() ) );
-        auto boolean = O3Type( Position(), name, O3Label(), labels );
+        auto boolean = std::unique_ptr<O3Type>(
+            new O3Type( Position(), name, O3Label(), labels ) );
         __types.push_back( std::move(boolean) );
       }
 
       O3PRM::O3PRM( const O3PRM& src )
-          : __types( src.__types )
-          , __int_types( src.__int_types ) {
+          : __int_types( src.__int_types ) {
         GUM_CONS_CPY( O3PRM );
+        for ( const auto& t : src.__types ) {
+          __types.push_back( std::unique_ptr<O3Type>( new O3Type( *t ) ) );
+        }
       }
 
       O3PRM::O3PRM( O3PRM&& src )
@@ -305,7 +308,9 @@ namespace gum {
       O3PRM::~O3PRM() { GUM_DESTRUCTOR( O3PRM ); }
 
       O3PRM& O3PRM::operator=( const O3PRM& src ) {
-        __types = src.__types;
+        for ( const auto& t : src.__types ) {
+          __types.push_back( std::unique_ptr<O3Type>( new O3Type( *t ) ) );
+        }
         __int_types = src.__int_types;
         return *this;
       }
@@ -316,8 +321,10 @@ namespace gum {
         return *this;
       }
 
-      std::vector<O3Type>& O3PRM::types() { return __types; }
-      const std::vector<O3Type>& O3PRM::types() const { return __types; }
+      std::vector<std::unique_ptr<O3Type>>& O3PRM::types() { return __types; }
+      const std::vector<std::unique_ptr<O3Type>>& O3PRM::types() const {
+        return __types;
+      }
 
       std::vector<O3IntType>& O3PRM::int_types() { return __int_types; }
       const std::vector<O3IntType>& O3PRM::int_types() const {
