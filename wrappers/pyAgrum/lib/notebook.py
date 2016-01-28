@@ -114,7 +114,30 @@ def getPosterior(bn,ev,target):
     return gum.Potential(inf.posterior(bn.idFromName(target)))
     # creating a new Potential from posterior (will disappear with ie)
 
-def getFigProba(p):
+def getFigProbaV(p):
+    """
+    Show a matplotlib bar (vertical histogram) for a Potential p.
+
+    """
+    var=p.variable(0)
+    ra=np.arange(var.domainSize())
+
+    fig=plt.figure()
+    fig.set_figwidth(var.domainSize()/4.0)
+    fig.set_figheight(2)
+
+    ax=fig.add_subplot(111)
+
+    ax.bar(ra,p.tolist(),align='center')
+    #ax.set_ylim(0,1)
+    ax.set_xticks(ra)
+    ax.set_xticklabels([])
+    #ax.set_xlabel('Probability')
+    ax.set_title(var.name())
+    ax.get_yaxis().grid(True)
+    return fig
+
+def getFigProbaH(p):
     """
     Show a matplotlib barh (horizontal histogram) for a Potential p.
 
@@ -138,6 +161,16 @@ def getFigProba(p):
     ax.set_title(var.name())
     ax.get_xaxis().grid(True)
     return fig
+
+def getFigProba(p):
+    """
+    Show a matplotlib histogram for a Potential p.
+
+    """
+    if p.variable(0).domainSize()>5:
+        return getFigProbaV(p)
+    else:
+        return getFigProbaH(p)
 
 def showProba(p):
     fig=getFigProba(p)
