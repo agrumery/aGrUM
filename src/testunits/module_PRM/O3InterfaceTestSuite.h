@@ -263,29 +263,6 @@ namespace gum_tests {
       TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
     }
 
-    void testOrderDoesNotMatter() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "interface IBar { " << std::endl
-            << "t_state state;" << std::endl
-            << "}" << std::endl
-            << "type t_state OK, NOK;";
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
-      // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
-      TS_ASSERT( prm.isType( "t_state" ) );
-      TS_ASSERT( prm.isInterface( "IBar" ) );
-      const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
-      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
-      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
-    }
-
     void testSimpleInterfaceError6() {
       // Arrange
       auto input = std::stringstream();
@@ -476,6 +453,86 @@ namespace gum_tests {
       const auto& i_bar = prm.interface( "IBar" );
       TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
       TS_ASSERT_EQUALS( i_bar.super(), i_foo );
+    }
+
+    void testOrderDoesNotMatter1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface IBar { " << std::endl
+            << "t_state state;" << std::endl
+            << "}" << std::endl
+            << "type t_state OK, NOK;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
+      TS_ASSERT( prm.isType( "t_state" ) );
+      TS_ASSERT( prm.isInterface( "IBar" ) );
+      const auto& i_bar = prm.interface( "IBar" );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.referenceSlots().size(), 0 );
+      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
+    }
+
+    void testOrderDoesNotMatter2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface IBar extends IFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}";
+      input << "interface IFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 2 );
+      TS_ASSERT( prm.isInterface( "IFoo" ) );
+      const auto& i_foo = prm.interface( "IFoo" );
+      TS_ASSERT_EQUALS( i_foo.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), 0 );
+      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
+      TS_ASSERT( prm.isInterface( "IBar" ) );
+      const auto& i_bar = prm.interface( "IBar" );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.super(), i_foo );
+    }
+
+    void testOrderDoesNotMatter3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface IBar { " << std::endl
+            << "IFoo foo;" << std::endl
+            << "boolean state;" << std::endl
+            << "}";
+      input << "interface IFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 2 );
+      TS_ASSERT( prm.isInterface( "IFoo" ) );
+      const auto& i_foo = prm.interface( "IFoo" );
+      TS_ASSERT_EQUALS( i_foo.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), 0 );
+      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
+      TS_ASSERT( prm.isInterface( "IBar" ) );
+      const auto& i_bar = prm.interface( "IBar" );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
     }
   };
 
