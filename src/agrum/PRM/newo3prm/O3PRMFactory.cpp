@@ -35,6 +35,30 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
+      void build_class( PRM<double>& prm,
+                        O3PRM& o3_prm,
+                        std::ostream& output ) {
+        PRMFactory<double> factory(&prm);
+        for ( const auto& c: o3_prm.classes() ) {
+          Set<std::string> implements;
+          for (const auto& i: c->interfaces()) {
+            implements.insert(i.label());
+          }
+          factory.startClass(
+              c->name().label(), c->super().label(), &implements );
+          for (const auto& attr: c->elements()) {
+            factory.startAttribute( attr.type().label(), attr.name().label() );
+            std::vector<double> values;
+            for (const auto& val: attr.values()) {
+              values.push_back( val.value() );
+            }
+            factory.setRawCPFByColumns( values );
+            factory.endAttribute();
+          }
+          factory.endClass();
+        }
+      }
+
       void parse_stream( gum::prm::PRM<double>& prm,
                          std::stringstream& input,
                          std::stringstream& output ) {
@@ -43,8 +67,8 @@ namespace gum {
         strcpy( (char*)buffer.get(), input.str().c_str() );
         auto s = o3prm_scanner( buffer.get(), input.str().length() + 1, "" );
         auto p = o3prm_parser( &s );
-        auto tmp_prm = gum::prm::o3prm::O3PRM();
-        p.set_prm( &tmp_prm );
+        auto o3_prm = gum::prm::o3prm::O3PRM();
+        p.set_prm( &o3_prm );
         p.Parse();
         const auto& errors = p.errors();
         for ( auto i = 0; i < p.errors().count(); ++i ) {
@@ -53,10 +77,12 @@ namespace gum {
         }
 
         auto type_factory = O3TypeFactory<double>();
-        type_factory.build( prm, tmp_prm, output );
+        type_factory.build( prm, o3_prm, output );
 
         auto interface_factory = O3InterfaceFactory<double>();
-        interface_factory.build( prm, tmp_prm, output );
+        interface_factory.build( prm, o3_prm, output );
+
+        build_class( prm, o3_prm, output );
       }
     }
   }
