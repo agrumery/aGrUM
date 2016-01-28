@@ -380,6 +380,20 @@ namespace gum {
         GUM_DESTRUCTOR( O3InterfaceElement );
       }
 
+      O3InterfaceElement& O3InterfaceElement::
+      operator=( const O3InterfaceElement& src ) {
+        __type = src.__type;
+        __name = src.__name;
+        return *this;
+      }
+
+      O3InterfaceElement& O3InterfaceElement::
+      operator=( O3InterfaceElement&& src ) {
+        __type = std::move( src.__type );
+        __name = std::move( src.__name );
+        return *this;
+      }
+
       const O3Label& O3InterfaceElement::type() const { return __type; }
       const O3Label& O3InterfaceElement::name() const { return __name; }
 
@@ -389,17 +403,19 @@ namespace gum {
                                 const O3InterfaceElementList& elts )
           : __pos( pos )
           , __name( name )
-          , __super( super )
-          , __elts( elts ) {
+          , __super( super ) {
         GUM_CONSTRUCTOR( O3Interface );
+        auto copy = new O3InterfaceElementList( elts );
+        __elts = std::unique_ptr<O3InterfaceElementList>( copy );
       }
 
       O3Interface::O3Interface( const O3Interface& src )
           : __pos( src.__pos )
           , __name( src.__name )
-          , __super( src.__super )
-          , __elts( src.__elts ) {
+          , __super( src.__super ) {
         GUM_CONS_CPY( O3Interface );
+        auto copy = new O3InterfaceElementList( src.elements() );
+        __elts = std::unique_ptr<O3InterfaceElementList>( copy );
       }
 
       O3Interface::O3Interface( O3Interface&& src )
@@ -412,6 +428,23 @@ namespace gum {
 
       O3Interface::~O3Interface() { GUM_DESTRUCTOR( O3Interface ); }
 
+      O3Interface& O3Interface::operator=( const O3Interface& src ) {
+        __pos = src.__pos;
+        __name = src.__name;
+        __super = src.__super;
+        auto copy = new O3InterfaceElementList( src.elements() );
+        __elts = std::unique_ptr<O3InterfaceElementList>( copy );
+        return *this;
+      }
+
+      O3Interface& O3Interface::operator=( O3Interface&& src ) {
+        __pos = std::move( src.__pos );
+        __name = std::move( src.__name );
+        __super = std::move( src.__super );
+        __elts = std::move( src.__elts );
+        return *this;
+      }
+
       const Position& O3Interface::position() const { return __pos; }
 
       const O3Label& O3Interface::name() const { return __name; }
@@ -419,7 +452,7 @@ namespace gum {
       const O3Label& O3Interface::super() const { return __super; }
 
       const O3Interface::O3InterfaceElementList& O3Interface::elements() const {
-        return __elts;
+        return *__elts;
       }
 
     }  // o3prm

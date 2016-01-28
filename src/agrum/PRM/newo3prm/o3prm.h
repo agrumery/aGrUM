@@ -162,6 +162,8 @@ namespace gum {
         O3InterfaceElement( const O3InterfaceElement& src);
         O3InterfaceElement( O3InterfaceElement&& src);
         ~O3InterfaceElement();
+        O3InterfaceElement& operator=( const O3InterfaceElement& src);
+        O3InterfaceElement& operator=( O3InterfaceElement&& src);
 
         const O3Label& type() const;
         const O3Label& name() const;
@@ -182,6 +184,9 @@ namespace gum {
         O3Interface( const O3Interface& src );
         O3Interface( O3Interface&& src );
         ~O3Interface();
+        O3Interface& operator=( const O3Interface& src);
+        O3Interface& operator=( O3Interface&& src);
+
         const Position& position() const;
         const O3Label& name() const;
         const O3Label& super() const;
@@ -191,7 +196,7 @@ namespace gum {
         Position __pos;
         O3Label __name;
         O3Label __super;
-        O3InterfaceElementList __elts;
+        std::unique_ptr<O3InterfaceElementList> __elts;
       };
 
       class O3PRM {
