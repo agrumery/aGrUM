@@ -78,7 +78,7 @@ namespace gum {
     MultiDimAggregator<GUM_SCALAR>::get( const Instantiation& i ) const {
       if ( this->nbrDim() < 2 ) {
         GUM_ERROR( OperationNotAllowed,
-                   "Not enough variable for an aggregator" );
+                   "Not enough variable for an aggregator : " << *this );
       }
 
       const DiscreteVariable& agg = this->variable( (Idx)0 );

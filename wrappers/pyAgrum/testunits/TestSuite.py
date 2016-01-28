@@ -1,3 +1,6 @@
+
+
+
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
@@ -24,15 +27,15 @@ import AggregatorsForBNTestSuite
 import time
 
 tests = unittest.TestSuite([
-                            #VariablesTestSuite.ts,
-                            #BayesNetTestSuite.ts,
-                            #PythonBNListenerTestSuite.ts,
-                            #PotentialTestSuite.ts,
-                            #LazyPropagationTestSuite.ts,
-                            #JunctionTreeTestSuite.ts,
-                            #GibbsTestSuite.ts,
-                            #ICIModelsForBNTestSuite.ts,
-                            #BNLearnerTestSuite.ts
+                            VariablesTestSuite.ts,
+                            BayesNetTestSuite.ts,
+                            PythonBNListenerTestSuite.ts,
+                            PotentialTestSuite.ts,
+                            LazyPropagationTestSuite.ts,
+                            JunctionTreeTestSuite.ts,
+                            GibbsTestSuite.ts,
+                            ICIModelsForBNTestSuite.ts,
+                            BNLearnerTestSuite.ts,
                             AggregatorsForBNTestSuite.ts
                             ])
 
