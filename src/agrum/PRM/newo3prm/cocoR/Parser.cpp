@@ -108,7 +108,7 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 
 void Parser::NEWO3PRM() {
 		UNIT();
-		while (la->kind == _type || la->kind == _interface || la->kind == _int) {
+		while (StartOf(1)) {
 			UNIT();
 		}
 }
@@ -118,7 +118,9 @@ void Parser::UNIT() {
 			TYPE_UNIT();
 		} else if (la->kind == _interface) {
 			INTERFACE_UNIT();
-		} else SynErr(25);
+		} else if (la->kind == _class) {
+			CLASS_UNIT();
+		} else SynErr(27);
 }
 
 void Parser::TYPE_UNIT() {
@@ -135,7 +137,7 @@ void Parser::TYPE_UNIT() {
 			auto end = O3Integer(); 
 			INT_TYPE_DECLARATION(pos, name, start, end);
 			if ( __ok( n ) ) { __addO3IntType( pos, name, start, end ); } 
-		} else SynErr(26);
+		} else SynErr(28);
 }
 
 void Parser::INTERFACE_UNIT() {
@@ -146,6 +148,93 @@ void Parser::INTERFACE_UNIT() {
 		auto elts = O3InterfaceElementList(); 
 		INTERFACE_DECLARATION(pos, name, super, elts );
 		if (__ok(n)) { __addO3Interface( pos, name, super, elts ); } 
+}
+
+void Parser::CLASS_UNIT() {
+		auto n = errors().error_count; 
+		auto pos = Position(); 
+		auto name = O3Label(); 
+		auto super = O3Label(); 
+		auto interfaces = O3LabelList(); 
+		auto elts = O3ClassElementList(); 
+		CLASS_DECLARATION(pos, name, super, interfaces, elts );
+		if (__ok(n)) { __addO3Class( pos, name, super, interfaces, elts ); } 
+}
+
+void Parser::CLASS_DECLARATION(Position& pos,
+O3Label& name,
+O3Label& super,
+O3LabelList& interfaces,
+O3ClassElementList& elts) {
+		CLASS(pos);
+		LABEL(name);
+		if (la->kind == _extends) {
+			Get();
+			LABEL(super);
+		}
+		if (la->kind == _implements) {
+			Get();
+			INTERFACE_LIST(interfaces);
+		}
+		Expect(20 /* "{" */);
+		while (la->kind == _label) {
+			CLASS_BODY(elts);
+		}
+		Expect(21 /* "}" */);
+}
+
+void Parser::CLASS(Position& pos) {
+		Expect(_class);
+		pos.file( narrow( scanner->filename() ) ); 
+		pos.line( t->line ); 
+		pos.column( t->col ); 
+}
+
+void Parser::LABEL(O3Label& l) {
+		Expect(_label);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		l = O3Label( pos, narrow( t->val ) ); 
+}
+
+void Parser::INTERFACE_LIST(O3LabelList& list) {
+		auto label = O3Label(); 
+		LABEL(label);
+		list.push_back( label ); 
+		while (la->kind == _comma) {
+			Get();
+			LABEL(label);
+			list.push_back( label ); 
+		}
+}
+
+void Parser::CLASS_BODY(O3ClassElementList& elts) {
+		auto type = O3Label(); 
+		auto name = O3Label(); 
+		auto values = O3FloatList(); 
+		LABEL(type);
+		LABEL(name);
+		Expect(22 /* "[" */);
+		FLOAT_LIST(values);
+		Expect(23 /* "]" */);
+		Expect(_semicolon);
+		elts.push_back( O3ClassElement(type, name, values) ); 
+}
+
+void Parser::FLOAT_LIST(O3FloatList& values) {
+		auto val = O3Float(); 
+		FLOAT(val);
+		values.push_back( val ); 
+		while (la->kind == _comma) {
+			Get();
+			FLOAT(val);
+			values.push_back( val ); 
+		}
+}
+
+void Parser::FLOAT(O3Float& f) {
+		Expect(_float);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		f = O3Float( pos, coco_atof( t->val ) ); 
 }
 
 void Parser::INTERFACE_DECLARATION(Position& pos,
@@ -172,12 +261,6 @@ void Parser::INTERFACE(Position& pos) {
 		pos.column( t->col ); 
 }
 
-void Parser::LABEL(O3Label& l) {
-		Expect(_label);
-		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		l = O3Label( pos, narrow( t->val ) ); 
-}
-
 void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
@@ -191,22 +274,22 @@ void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, Labe
 		TYPE(pos);
 		LABEL(name);
 		if (la->kind == _label) {
-			LIST(labels);
+			TYPE_VALUE_LIST(labels);
 		} else if (la->kind == _extends) {
 			Get();
 			LABEL(super);
 			MAP(labels);
-		} else SynErr(27);
+		} else SynErr(29);
 		Expect(_semicolon);
 }
 
 void Parser::INT_TYPE_DECLARATION(Position& pos, O3Label& name, O3Integer& start, O3Integer& end) {
 		INT(pos);
-		Expect(22 /* "(" */);
+		Expect(24 /* "(" */);
 		INTEGER(start);
 		Expect(_comma);
 		INTEGER(end);
-		Expect(23 /* ")" */);
+		Expect(25 /* ")" */);
 		LABEL(name);
 		Expect(_semicolon);
 }
@@ -218,7 +301,7 @@ void Parser::TYPE(Position& pos) {
 		pos.column( t->col ); 
 }
 
-void Parser::LIST(LabelMap& labels ) {
+void Parser::TYPE_VALUE_LIST(LabelMap& labels ) {
 		auto l = O3Label(); 
 		auto pair = std::pair<O3Label, O3Label>(); 
 		LABEL(l);
@@ -376,7 +459,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 24;
+  	maxT = 26;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -390,8 +473,9 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[1][26] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
+  	static bool set[2][28] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
+		{x,x,x,x, x,x,x,x, x,T,T,T, x,x,x,x, x,T,x,x, x,x,x,x, x,x,x,x}
 	};
 
 
@@ -439,12 +523,14 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 19: s = coco_string_create(L"string expected"); break;
 			case 20: s = coco_string_create(L"\"{\" expected"); break;
 			case 21: s = coco_string_create(L"\"}\" expected"); break;
-			case 22: s = coco_string_create(L"\"(\" expected"); break;
-			case 23: s = coco_string_create(L"\")\" expected"); break;
-			case 24: s = coco_string_create(L"??? expected"); break;
-			case 25: s = coco_string_create(L"invalid UNIT"); break;
-			case 26: s = coco_string_create(L"invalid TYPE_UNIT"); break;
-			case 27: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
+			case 22: s = coco_string_create(L"\"[\" expected"); break;
+			case 23: s = coco_string_create(L"\"]\" expected"); break;
+			case 24: s = coco_string_create(L"\"(\" expected"); break;
+			case 25: s = coco_string_create(L"\")\" expected"); break;
+			case 26: s = coco_string_create(L"??? expected"); break;
+			case 27: s = coco_string_create(L"invalid UNIT"); break;
+			case 28: s = coco_string_create(L"invalid TYPE_UNIT"); break;
+			case 29: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
 
 
     default: {

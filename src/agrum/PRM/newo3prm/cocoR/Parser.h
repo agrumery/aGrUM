@@ -101,7 +101,10 @@ class Parser {
 using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
+using O3Float = gum::prm::o3prm::O3Float;
+using O3FloatList = gum::prm::o3prm::O3ClassElement::O3FloatList;
 using O3Label = gum::prm::o3prm::O3Label;
+using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
 
 using O3Type = gum::prm::o3prm::O3Type;
 using O3IntType = gum::prm::o3prm::O3IntType;
@@ -109,6 +112,10 @@ using O3IntType = gum::prm::o3prm::O3IntType;
 using O3Interface = gum::prm::o3prm::O3Interface;
 using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
 using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
+
+using O3Class = gum::prm::o3prm::O3Class;
+using O3ClassElement = gum::prm::o3prm::O3ClassElement;
+using O3ClassElementList = gum::prm::o3prm::O3Class::O3ClassElementList;
 
 using O3PRM = gum::prm::o3prm::O3PRM;
 
@@ -140,6 +147,16 @@ void __addO3Interface( Position& pos,
   get_prm()->interfaces().push_back( std::move( i ) );
 }
 
+void __addO3Class( Position& pos,
+                   O3Label& name,
+                   O3Label& super,
+                   O3LabelList& interfaces,
+                   O3ClassElementList& elts ) {
+  auto c = std::unique_ptr<O3Class>(
+      new O3Class( pos, name, super, interfaces, elts ) );
+  get_prm()->classes().push_back( std::move( c ) );
+}
+
 public:
 // Set the parser factory.
 void set_prm(O3PRM* prm) {
@@ -169,17 +186,28 @@ O3PRM* get_prm() {
 	void UNIT();
 	void TYPE_UNIT();
 	void INTERFACE_UNIT();
+	void CLASS_UNIT();
+	void CLASS_DECLARATION(Position& pos,
+O3Label& name,
+O3Label& super,
+O3LabelList& interfaces,
+O3ClassElementList& elts);
+	void CLASS(Position& pos);
+	void LABEL(O3Label& l);
+	void INTERFACE_LIST(O3LabelList& list);
+	void CLASS_BODY(O3ClassElementList& elts);
+	void FLOAT_LIST(O3FloatList& values);
+	void FLOAT(O3Float& f);
 	void INTERFACE_DECLARATION(Position& pos,
 O3Label& name,
 O3Label& super,
 O3InterfaceElementList& elts);
 	void INTERFACE(Position& pos);
-	void LABEL(O3Label& l);
 	void INTERFACE_BODY(O3InterfaceElementList& elts);
 	void TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
 	void INT_TYPE_DECLARATION(Position& pos, O3Label& name, O3Integer& start, O3Integer& end);
 	void TYPE(Position& pos);
-	void LIST(LabelMap& labels );
+	void TYPE_VALUE_LIST(LabelMap& labels );
 	void MAP(LabelMap& labels );
 	void INT(Position& pos);
 	void INTEGER(O3Integer& i);
