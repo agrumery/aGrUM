@@ -35,25 +35,107 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
-      void build_class( PRM<double>& prm,
-                        O3PRM& o3_prm,
-                        std::ostream& output ) {
-        PRMFactory<double> factory(&prm);
-        for ( const auto& c: o3_prm.classes() ) {
+
+      bool check_attribute( PRM<double>& prm,
+                            const O3Class& o3_c,
+                            const O3Attribute& attr,
+                            std::ostream& output ) {
+        // Check type
+        if ( not prm.isType( attr.type().label() ) ) {
+          const auto& pos = attr.type().position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Attribute error : "
+                 << "Type " << attr.type().label() << " not found" << std::endl;
+          return false;
+        }
+        const auto& type = prm.type( attr.type().label() );
+        Size domain_size = type->domainSize();
+        // Check for parents existence
+        const auto& c = prm.getClass( o3_c.name().label() );
+        for ( const auto& prnt : attr.parents() ) {
+          if ( not c.exists( prnt.label() ) ) {
+            const auto& pos = prnt.position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Attribute error : "
+                   << "Parent " << prnt.label() << " not found" << std::endl;
+            return false;
+          }
+          const auto& elt = c.get( prnt.label() );
+          if ( not( gum::prm::ClassElement<double>::isAttribute( elt ) or
+                    gum::prm::ClassElement<double>::isSlotChain( elt ) ) ) {
+            const auto& pos = prnt.position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Attribute error : "
+                   << "Illegal parent " << prnt.label() << std::endl;
+            return false;
+          }
+          domain_size *= elt.type()->domainSize();
+        }
+        // Check for CPT size
+        if ( domain_size != attr.values().size() ) {
+          const auto& pos = attr.name().position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Attribute error : "
+                 << "Illegal CPT size, expected " << domain_size << " found "
+                 << attr.values().size() << std::endl;
+          return false;
+        }
+        // Check that CPT sums to 1
+        Size parent_size = domain_size / type->domainSize();
+        auto values = std::vector<float>( parent_size );
+        for ( auto i = 0; i < attr.values().size(); ++i ) {
+          auto idx = i % parent_size;
+          values[idx] += attr.values()[i].value();
+        }
+        //{
+        //  std::stringstream plop;
+        //  for ( auto f : values ) {
+        //    plop << f << " (" << (std::abs( f - 1.0f ) < 1.0e-6) << ") ";
+        //  }
+        //  GUM_TRACE( plop.str() )
+        //}
+        if ( not std::all_of(
+                 values.cbegin(),
+                 values.cend(),
+                 []( float f ) { return std::abs( f - 1.0f ) < 1.0e-6; } ) ) {
+          const auto& pos = attr.name().position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Attribute error : "
+                 << "CPT does not sum to 1" << std::endl;
+          return false;
+        }
+        return true;
+      }
+
+      void
+      build_class( PRM<double>& prm, O3PRM& o3_prm, std::ostream& output ) {
+        PRMFactory<double> factory( &prm );
+        for ( const auto& c : o3_prm.classes() ) {
           Set<std::string> implements;
-          for (const auto& i: c->interfaces()) {
-            implements.insert(i.label());
+          for ( const auto& i : c->interfaces() ) {
+            implements.insert( i.label() );
           }
           factory.startClass(
               c->name().label(), c->super().label(), &implements );
-          for (const auto& attr: c->elements()) {
-            factory.startAttribute( attr.type().label(), attr.name().label() );
-            std::vector<double> values;
-            for (const auto& val: attr.values()) {
-              values.push_back( val.value() );
+          for ( const auto& attr : c->elements() ) {
+            if ( check_attribute( prm, *c, attr, output ) ) {
+              factory.startAttribute( attr.type().label(),
+                                      attr.name().label() );
+              for ( const auto& parent : attr.parents() ) {
+                factory.addParent( parent.label() );
+              }
+              std::vector<double> values;
+              for ( const auto& val : attr.values() ) {
+                values.push_back( val.value() );
+              }
+              factory.setRawCPFByColumns( values );
+              factory.endAttribute();
             }
-            factory.setRawCPFByColumns( values );
-            factory.endAttribute();
           }
           factory.endClass();
         }

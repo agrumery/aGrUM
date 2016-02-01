@@ -156,7 +156,7 @@ void Parser::CLASS_UNIT() {
 		auto name = O3Label(); 
 		auto super = O3Label(); 
 		auto interfaces = O3LabelList(); 
-		auto elts = O3ClassElementList(); 
+		auto elts = O3AttributeList(); 
 		CLASS_DECLARATION(pos, name, super, interfaces, elts );
 		if (__ok(n)) { __addO3Class( pos, name, super, interfaces, elts ); } 
 }
@@ -165,7 +165,7 @@ void Parser::CLASS_DECLARATION(Position& pos,
 O3Label& name,
 O3Label& super,
 O3LabelList& interfaces,
-O3ClassElementList& elts) {
+O3AttributeList& elts) {
 		CLASS(pos);
 		LABEL(name);
 		if (la->kind == _extends) {
@@ -174,7 +174,7 @@ O3ClassElementList& elts) {
 		}
 		if (la->kind == _implements) {
 			Get();
-			INTERFACE_LIST(interfaces);
+			LABEL_LIST(interfaces);
 		}
 		Expect(20 /* "{" */);
 		while (la->kind == _label) {
@@ -196,7 +196,7 @@ void Parser::LABEL(O3Label& l) {
 		l = O3Label( pos, narrow( t->val ) ); 
 }
 
-void Parser::INTERFACE_LIST(O3LabelList& list) {
+void Parser::LABEL_LIST(O3LabelList& list) {
 		auto label = O3Label(); 
 		LABEL(label);
 		list.push_back( label ); 
@@ -207,17 +207,24 @@ void Parser::INTERFACE_LIST(O3LabelList& list) {
 		}
 }
 
-void Parser::CLASS_BODY(O3ClassElementList& elts) {
+void Parser::CLASS_BODY(O3AttributeList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
+		auto parents = O3LabelList(); 
 		auto values = O3FloatList(); 
 		LABEL(type);
 		LABEL(name);
+		if (la->kind == _dependson) {
+			Get();
+			LABEL_LIST(parents);
+		}
+		Expect(20 /* "{" */);
 		Expect(22 /* "[" */);
 		FLOAT_LIST(values);
 		Expect(23 /* "]" */);
+		Expect(21 /* "}" */);
 		Expect(_semicolon);
-		elts.push_back( O3ClassElement(type, name, values) ); 
+		elts.push_back( O3Attribute(type, name, parents, values) ); 
 }
 
 void Parser::FLOAT_LIST(O3FloatList& values) {
