@@ -102,7 +102,7 @@ using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Float = gum::prm::o3prm::O3Float;
-using O3FloatList = gum::prm::o3prm::O3ClassElement::O3FloatList;
+using O3FloatList = gum::prm::o3prm::O3Attribute::O3FloatList;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
 
@@ -114,8 +114,8 @@ using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
 using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
 using O3Class = gum::prm::o3prm::O3Class;
-using O3ClassElement = gum::prm::o3prm::O3ClassElement;
-using O3ClassElementList = gum::prm::o3prm::O3Class::O3ClassElementList;
+using O3Attribute = gum::prm::o3prm::O3Attribute;
+using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
 using O3PRM = gum::prm::o3prm::O3PRM;
 
@@ -151,7 +151,7 @@ void __addO3Class( Position& pos,
                    O3Label& name,
                    O3Label& super,
                    O3LabelList& interfaces,
-                   O3ClassElementList& elts ) {
+                   O3AttributeList& elts ) {
   auto c = std::unique_ptr<O3Class>(
       new O3Class( pos, name, super, interfaces, elts ) );
   get_prm()->classes().push_back( std::move( c ) );
@@ -191,11 +191,11 @@ O3PRM* get_prm() {
 O3Label& name,
 O3Label& super,
 O3LabelList& interfaces,
-O3ClassElementList& elts);
+O3AttributeList& elts);
 	void CLASS(Position& pos);
 	void LABEL(O3Label& l);
-	void INTERFACE_LIST(O3LabelList& list);
-	void CLASS_BODY(O3ClassElementList& elts);
+	void LABEL_LIST(O3LabelList& list);
+	void CLASS_BODY(O3AttributeList& elts);
 	void FLOAT_LIST(O3FloatList& values);
 	void FLOAT(O3Float& f);
 	void INTERFACE_DECLARATION(Position& pos,

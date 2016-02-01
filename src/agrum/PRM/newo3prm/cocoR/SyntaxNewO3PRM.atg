@@ -24,7 +24,7 @@ using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Float = gum::prm::o3prm::O3Float;
-using O3FloatList = gum::prm::o3prm::O3ClassElement::O3FloatList;
+using O3FloatList = gum::prm::o3prm::O3Attribute::O3FloatList;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
 
@@ -36,8 +36,8 @@ using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
 using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
 using O3Class = gum::prm::o3prm::O3Class;
-using O3ClassElement = gum::prm::o3prm::O3ClassElement;
-using O3ClassElementList = gum::prm::o3prm::O3Class::O3ClassElementList;
+using O3Attribute = gum::prm::o3prm::O3Attribute;
+using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
 using O3PRM = gum::prm::o3prm::O3PRM;
 
@@ -73,7 +73,7 @@ void __addO3Class( Position& pos,
                    O3Label& name,
                    O3Label& super,
                    O3LabelList& interfaces,
-                   O3ClassElementList& elts ) {
+                   O3AttributeList& elts ) {
   auto c = std::unique_ptr<O3Class>(
       new O3Class( pos, name, super, interfaces, elts ) );
   get_prm()->classes().push_back( std::move( c ) );
@@ -162,7 +162,7 @@ CLASS_UNIT =
   (. auto name = O3Label(); .)
   (. auto super = O3Label(); .)
   (. auto interfaces = O3LabelList(); .)
-  (. auto elts = O3ClassElementList(); .)
+  (. auto elts = O3AttributeList(); .)
   CLASS_DECLARATION<pos, name, super, interfaces, elts >
   (. if (__ok(n)) { __addO3Class( pos, name, super, interfaces, elts ); } .)
   .
@@ -172,14 +172,14 @@ CLASS_DECLARATION<Position& pos,
                   O3Label& name,
                   O3Label& super,
                   O3LabelList& interfaces,
-                  O3ClassElementList& elts> =
+                  O3AttributeList& elts> =
   CLASS<pos>
   LABEL<name>
   [
     extends LABEL<super>
   ]
   [
-    implements INTERFACE_LIST<interfaces>
+    implements LABEL_LIST<interfaces>
   ]
   '{' { CLASS_BODY<elts> } '}'
   .
@@ -193,31 +193,27 @@ CLASS<Position& pos> =
   .
 
 //________________________
-INTERFACE_LIST<O3LabelList& list> =
-  (. auto label = O3Label(); .)
-  LABEL<label>
-  (. list.push_back( label ); .)
-  {
-    ','
-    LABEL<label> 
-    (. list.push_back( label ); .)
-  }
-  .
-
-//________________________
-CLASS_BODY<O3ClassElementList& elts> =
+CLASS_BODY<O3AttributeList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
+  (. auto parents = O3LabelList(); .)
   (. auto values = O3FloatList(); .)
   LABEL<type>
   LABEL<name>
+  [
+    dependson
+    LABEL_LIST<parents> 
+  ]
+  '{'
   '['
     FLOAT_LIST<values>
   ']'
+  '}'
   ';'
-  (. elts.push_back( O3ClassElement(type, name, values) ); .)
+  (. elts.push_back( O3Attribute(type, name, parents, values) ); .)
   .
 
+//________________________
 FLOAT_LIST<O3FloatList& values> =
   (. auto val = O3Float(); .)
   FLOAT<val>
@@ -389,6 +385,18 @@ LABEL<O3Label& l> =
   label
   (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
+
+//________________________
+LABEL_LIST<O3LabelList& list> =
+  (. auto label = O3Label(); .)
+  LABEL<label>
+  (. list.push_back( label ); .)
+  {
+    ','
+    LABEL<label> 
+    (. list.push_back( label ); .)
+  }
   .
 
 //________________________
