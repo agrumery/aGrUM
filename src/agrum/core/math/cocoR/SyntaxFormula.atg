@@ -87,17 +87,17 @@ PRODUCTIONS
 
 //________________________
 EVAL =  
-  (expression { expression }) (. __formula->finalize(); .)
+  (expression { expression }) (. __formula->__finalize(); .)
   .                           
 
 expression =
-    integer    (. __formula->push_number((double)coco_atoi(t->val)); .)
-    | float    (. __formula->push_number((double)coco_atof(t->val)); .)
-    | operator (. __formula->push_operator(narrow(t->val)[0]); .)
-    | '('      (. __formula->push_leftParenthesis(); .)
-    | ')'      (. __formula->push_rightParenthesis(); .)
-    | ident    (. __formula->push_identifier(narrow(t->val)); .)
-    | ','      (. __formula->push_comma(); .)
+    integer    (. __formula->__push_number((double)coco_atoi(t->val)); .)
+    | float    (. __formula->__push_number((double)coco_atof(t->val)); .)
+    | operator (. __formula->__push_operator(narrow(t->val)[0]); .)
+    | '('      (. __formula->__push_leftParenthesis(); .)
+    | ')'      (. __formula->__push_rightParenthesis(); .)
+    | ident    (. __formula->__push_identifier(narrow(t->val)); .)
+    | ','      (. __formula->__push_comma(); .)
   .
 
 END EVAL.

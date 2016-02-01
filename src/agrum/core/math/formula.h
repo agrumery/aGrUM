@@ -242,16 +242,19 @@ namespace gum {
     size_t __function_argc() const;
   };
 
+  //extern class gum::formula::Parser;
   /**
-  * @brief Evaluates a string as a algebraic formula.
-  *
-  * Implementation of the Shunting-yard algorithm to convert infix notation to
-  * RPN. The gum::Formula::result() method implements the postfix algorithm to
-  * compute the formula result.
-  *
-  * @warning Checking is only done when evaluating the formula !
-  */
+   * @brief Evaluates a string as a algebraic formula.
+   * @ingroup math_group
+   *
+   * Implementation of the Shunting-yard algorithm to convert infix notation to
+   * RPN. The gum::Formula::result() method implements the postfix algorithm to
+   * compute the formula result.
+   *
+   * @warning Checking is only done when evaluating the formula !
+   */
   class Formula {
+    friend class gum::formula::Parser;
 
     public:
     // ========================================================================
@@ -288,6 +291,12 @@ namespace gum {
      * @return Returns this gum::Formula.
      */
     Formula& operator=( const Formula& source );
+  
+    /// @}
+    // ========================================================================
+    /// @name Accessors & modifiers
+    // ========================================================================
+    /// @{
 
     /**
      * @brief Returns the variables used by this gum::Formula.
@@ -303,67 +312,88 @@ namespace gum {
 
     /**
      * @brief Returns the result of this gum::Formula.
+     *
+     * Each call to Formula::result() will reevaluate the formulas result.
+     *
      * @return Returns the result of this gum::Formula.
      */
     double result() const;
 
     /**
+     * @brief Returns the formula.
+     */
+    const std::string& formula() const;
+
+    /**
+     * @brief Returns the formula.
+     */
+    std::string& formula();
+
+    private:
+    /// @}
+    // ========================================================================
+    /// @name Private accessors & modifiers used by the Formula Parser
+    // ========================================================================
+    /// @{
+
+    /**
      * @brief Push a number in the formula.
      * @param v The number to push.
      */
-    void push_number( const double& v );
+    void __push_number( const double& v );
 
     /**
      * @brief Push an operator in the formula.
      * @param o The operator to push.
      */
-    void push_operator( char o );
+    void __push_operator( char o );
 
     /**
      * @brief Push a left parenthesis in the formula.
      */
-    void push_leftParenthesis();
+    void __push_leftParenthesis();
 
     /**
      * @brief Push a right parenthesis in the formula.
      */
-    void push_rightParenthesis();
+    void __push_rightParenthesis();
 
     /**
      * @brief Push a function in the formula.
      * @param func The function to push.
      */
-    void push_function( const std::string& func );
+    void __push_function( const std::string& func );
 
     /**
      * @brief Push a variable in the formula.
      */
-    void push_variable( const std::string& var );
+    void __push_variable( const std::string& var );
 
     /**
      * @brief Use this if you don't know if ident is a function or a variable.
      */
-    void push_identifier( const std::string& ident );
+    void __push_identifier( const std::string& ident );
 
     /**
      * @brief Push a comma in the formula.
      */
-    void push_comma();
+    void __push_comma();
 
     /**
      * @brief Finalize the formula and prepare it for evaluation.
      */
-    void finalize();
+    void __finalize();
 
-    private:
+    /// @}
+
     /// The formula to evaluate.
     std::string __formula;
 
     /// The scanner used by the formula.
-    gum::formula::Scanner* __scanner;
+    std::unique_ptr<gum::formula::Scanner> __scanner;
 
     /// The parser used by the formula.
-    gum::formula::Parser* __parser;
+    std::unique_ptr<gum::formula::Parser> __parser;
 
     /// The last token added to the formula.
     FormulaPart __last_token;
@@ -376,27 +406,6 @@ namespace gum {
 
     /// The variables available in this formula.
     HashTable<std::string, double> __variables;
-
-    /**
-     * @brief Returns the output vector.
-     * @return Returns the output vector.
-     */
-    /// @{
-    std::vector<FormulaPart>& output();
-    const std::vector<FormulaPart>& output() const;
-    /// @}
-
-    /**
-     * @brief Returns the formula's inner stack.
-     * @return Returns the formula's inner stack.
-     */
-    std::stack<FormulaPart>& stack();
-
-    /**
-     * @brief Returns the formula's inner stack.
-     * @return Returns the formula's inner stack.
-     */
-    const std::stack<FormulaPart>& stack() const;
 
     /**
      * @brief Pop the operator in the inner formula's stack.
@@ -445,5 +454,9 @@ namespace gum {
   };
 
 } /* namespace gum */
+
+#ifndef GUM_NO_INLINE
+#include <agrum/core/math/formula.inl>
+#endif  // GUM_NO_INLINE
 
 #endif /* GUM_MATH_FORMULA_H */
