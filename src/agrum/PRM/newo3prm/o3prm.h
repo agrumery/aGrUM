@@ -220,38 +220,42 @@ namespace gum {
         std::unique_ptr<O3InterfaceElementList> __elts;
       };
 
-      class O3ClassElement {
+      class O3Attribute {
         public:
         using O3FloatList = std::vector<O3Float>;
-        O3ClassElement( const O3Label& type,
+        using O3LabelList = std::vector<O3Label>;
+        O3Attribute( const O3Label& type,
                         const O3Label& name,
+                        const O3LabelList& parents,
                         const O3FloatList& values );
-        O3ClassElement( const O3ClassElement& src);
-        O3ClassElement( O3ClassElement&& src);
-        ~O3ClassElement();
-        O3ClassElement& operator=( const O3ClassElement& src);
-        O3ClassElement& operator=( O3ClassElement&& src);
+        O3Attribute( const O3Attribute& src);
+        O3Attribute( O3Attribute&& src);
+        ~O3Attribute();
+        O3Attribute& operator=( const O3Attribute& src);
+        O3Attribute& operator=( O3Attribute&& src);
 
         const O3Label& type() const;
         const O3Label& name() const;
+        const O3LabelList& parents() const;
         const O3FloatList& values() const;
 
         private:
         O3Label __type;
         O3Label __name;
+        O3LabelList __parents;
         std::unique_ptr<O3FloatList> __values;
       };
 
       class O3Class {
         public:
         using O3LabelList = std::vector<O3Label>;
-        using O3ClassElementList = std::vector<O3ClassElement>;
+        using O3AttributeList = std::vector<O3Attribute>;
 
         O3Class( const Position& pos,
                  const O3Label& name,
                  const O3Label& super,
                  const O3LabelList& interfaces,
-                 const O3ClassElementList& elts );
+                 const O3AttributeList& elts );
         O3Class( const O3Class& src );
         O3Class( O3Class&& src );
         ~O3Class();
@@ -262,14 +266,14 @@ namespace gum {
         const O3Label& name() const;
         const O3Label& super() const;
         const O3LabelList& interfaces() const;
-        const O3ClassElementList& elements() const;
+        const O3AttributeList& elements() const;
 
         private:
         Position __pos;
         O3Label __name;
         O3Label __super;
         std::unique_ptr<O3LabelList> __interfaces;
-        std::unique_ptr<O3ClassElementList> __elts;
+        std::unique_ptr<O3AttributeList> __elts;
       };
 
       class O3PRM {

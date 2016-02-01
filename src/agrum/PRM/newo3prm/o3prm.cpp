@@ -392,13 +392,9 @@ namespace gum {
         return __interfaces;
       }
 
-      O3PRM::O3ClassList& O3PRM::classes() {
-        return __classes;
-      }
+      O3PRM::O3ClassList& O3PRM::classes() { return __classes; }
 
-      const O3PRM::O3ClassList& O3PRM::classes() const {
-        return __classes;
-      }
+      const O3PRM::O3ClassList& O3PRM::classes() const { return __classes; }
 
       O3InterfaceElement::O3InterfaceElement( const O3Label& type,
                                               const O3Label& name )
@@ -498,55 +494,60 @@ namespace gum {
         return *__elts;
       }
 
-      O3ClassElement::O3ClassElement( const O3Label& type,
-                                      const O3Label& name,
-                                      const O3FloatList& values )
+      O3Attribute::O3Attribute( const O3Label& type,
+                                const O3Label& name,
+                                const O3LabelList& parents,
+                                const O3FloatList& values )
           : __type( type )
-          , __name( name ) {
-        GUM_CONSTRUCTOR( O3ClassElement );
+          , __name( name )
+          , __parents( parents ) {
+        GUM_CONSTRUCTOR( O3Attribute );
         auto copy = new O3FloatList( values );
         __values = std::unique_ptr<O3FloatList>( copy );
       }
 
-      O3ClassElement::O3ClassElement( const O3ClassElement& src )
+      O3Attribute::O3Attribute( const O3Attribute& src )
           : __type( src.__type )
-          , __name( src.__name ) {
-        GUM_CONS_CPY( O3ClassElement );
-        auto copy = new O3FloatList( *(src.__values) );
+          , __name( src.__name )
+          , __parents( src.__parents ) {
+        GUM_CONS_CPY( O3Attribute );
+        auto copy = new O3FloatList( *( src.__values ) );
         __values = std::unique_ptr<O3FloatList>( copy );
       }
 
-      O3ClassElement::O3ClassElement( O3ClassElement&& src )
+      O3Attribute::O3Attribute( O3Attribute&& src )
           : __type( std::move( src.__type ) )
           , __name( std::move( src.__name ) )
+          , __parents( std::move( src.__parents ) )
           , __values( std::move( src.__values ) ) {
-        GUM_CONS_MOV( O3ClassElement );
+        GUM_CONS_MOV( O3Attribute );
       }
 
-      O3ClassElement::~O3ClassElement() {
-        GUM_DESTRUCTOR( O3ClassElement );
-      }
+      O3Attribute::~O3Attribute() { GUM_DESTRUCTOR( O3Attribute ); }
 
-      O3ClassElement& O3ClassElement::
-      operator=( const O3ClassElement& src ) {
+      O3Attribute& O3Attribute::operator=( const O3Attribute& src ) {
         __type = src.__type;
         __name = src.__name;
-        auto copy = new O3FloatList( *(src.__values) );
+        __parents = src.__parents;
+        auto copy = new O3FloatList( *( src.__values ) );
         __values = std::unique_ptr<O3FloatList>( copy );
         return *this;
       }
 
-      O3ClassElement& O3ClassElement::
-      operator=( O3ClassElement&& src ) {
+      O3Attribute& O3Attribute::operator=( O3Attribute&& src ) {
         __type = std::move( src.__type );
         __name = std::move( src.__name );
+        __parents = std::move( src.__parents );
         __values = std::move( src.__values );
         return *this;
       }
 
-      const O3Label& O3ClassElement::type() const { return __type; }
-      const O3Label& O3ClassElement::name() const { return __name; }
-      const O3ClassElement::O3FloatList& O3ClassElement::values() const {
+      const O3Label& O3Attribute::type() const { return __type; }
+      const O3Label& O3Attribute::name() const { return __name; }
+      const O3Attribute::O3LabelList& O3Attribute::parents() const {
+        return __parents;
+      }
+      const O3Attribute::O3FloatList& O3Attribute::values() const {
         return *__values;
       }
 
@@ -554,15 +555,15 @@ namespace gum {
                         const O3Label& name,
                         const O3Label& super,
                         const O3LabelList& interfaces,
-                        const O3ClassElementList& elts )
+                        const O3AttributeList& elts )
           : __pos( pos )
           , __name( name )
           , __super( super ) {
         GUM_CONSTRUCTOR( O3Class );
         auto i = new O3LabelList( interfaces );
         __interfaces = std::unique_ptr<O3LabelList>( i );
-        auto e = new O3ClassElementList( elts );
-        __elts = std::unique_ptr<O3ClassElementList>( e );
+        auto e = new O3AttributeList( elts );
+        __elts = std::unique_ptr<O3AttributeList>( e );
       }
 
       O3Class::O3Class( const O3Class& src )
@@ -572,8 +573,8 @@ namespace gum {
         GUM_CONS_CPY( O3Class );
         auto i = new O3LabelList( src.interfaces() );
         __interfaces = std::unique_ptr<O3LabelList>( i );
-        auto e = new O3ClassElementList( src.elements() );
-        __elts = std::unique_ptr<O3ClassElementList>( e );
+        auto e = new O3AttributeList( src.elements() );
+        __elts = std::unique_ptr<O3AttributeList>( e );
       }
 
       O3Class::O3Class( O3Class&& src )
@@ -585,9 +586,7 @@ namespace gum {
         GUM_CONS_MOV( O3Class );
       }
 
-      O3Class::~O3Class() {
-        GUM_DESTRUCTOR( O3Class );
-      }
+      O3Class::~O3Class() { GUM_DESTRUCTOR( O3Class ); }
 
       O3Class& O3Class::operator=( const O3Class& src ) {
         __pos = src.__pos;
@@ -595,8 +594,8 @@ namespace gum {
         __super = src.__super;
         auto i = new O3LabelList( src.interfaces() );
         __interfaces = std::unique_ptr<O3LabelList>( i );
-        auto e = new O3ClassElementList( src.elements() );
-        __elts = std::unique_ptr<O3ClassElementList>( e );
+        auto e = new O3AttributeList( src.elements() );
+        __elts = std::unique_ptr<O3AttributeList>( e );
         return *this;
       }
 
@@ -609,23 +608,17 @@ namespace gum {
         return *this;
       }
 
-      const Position& O3Class::position() const {
-        return __pos;
-      }
+      const Position& O3Class::position() const { return __pos; }
 
-      const O3Label& O3Class::name() const {
-        return __name;
-      }
+      const O3Label& O3Class::name() const { return __name; }
 
-      const O3Label& O3Class::super() const {
-        return __super;
-      }
+      const O3Label& O3Class::super() const { return __super; }
 
       const O3Class::O3LabelList& O3Class::interfaces() const {
         return *__interfaces;
       }
 
-      const O3Class::O3ClassElementList& O3Class::elements() const {
+      const O3Class::O3AttributeList& O3Class::elements() const {
         return *__elts;
       }
 
