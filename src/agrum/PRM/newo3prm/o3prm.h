@@ -32,6 +32,7 @@
 
 #include <agrum/config.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/math/formula.h>
 
 #ifndef GUM_PRM_O3PRM_PRM_H
 #define GUM_PRM_O3PRM_PRM_H
@@ -60,6 +61,27 @@ namespace gum {
         std::string __file;
         int __line;
         int __column;
+      };
+
+      class O3Formula {
+        public:
+        O3Formula();
+        O3Formula( const Position& pos, const Formula& formula );
+        O3Formula( const O3Formula& src );
+        O3Formula( O3Formula&& src );
+        ~O3Formula();
+        O3Formula& operator=( const O3Formula& src );
+        O3Formula& operator=( O3Formula&& src );
+
+        const Position& position() const;
+        void position( const Position& pos );
+
+        const Formula& formula() const;
+        Formula& formula();
+
+        private:
+        Position __pos;
+        std::unique_ptr<Formula> __formula;
       };
 
       class O3Float {
@@ -222,12 +244,12 @@ namespace gum {
 
       class O3Attribute {
         public:
-        using O3FloatList = std::vector<O3Float>;
+        using O3FormulaList = std::vector<O3Formula>;
         using O3LabelList = std::vector<O3Label>;
         O3Attribute( const O3Label& type,
                         const O3Label& name,
                         const O3LabelList& parents,
-                        const O3FloatList& values );
+                        const O3FormulaList& values );
         O3Attribute( const O3Attribute& src);
         O3Attribute( O3Attribute&& src);
         ~O3Attribute();
@@ -237,13 +259,13 @@ namespace gum {
         const O3Label& type() const;
         const O3Label& name() const;
         const O3LabelList& parents() const;
-        const O3FloatList& values() const;
+        const O3FormulaList& values() const;
 
         private:
         O3Label __type;
         O3Label __name;
         O3LabelList __parents;
-        std::unique_ptr<O3FloatList> __values;
+        std::unique_ptr<O3FormulaList> __values;
       };
 
       class O3Class {

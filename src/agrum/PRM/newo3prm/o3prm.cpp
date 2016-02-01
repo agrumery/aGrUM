@@ -167,6 +167,50 @@ namespace gum {
       float O3Float::value() const { return __value; }
       void O3Float::value( float f ) { __value = f; }
 
+      O3Formula::O3Formula()
+          : __pos()
+          , __formula( std::unique_ptr<Formula>( new Formula( "" ) ) ) {
+        GUM_CONSTRUCTOR( O3Formula );
+      }
+
+      O3Formula::O3Formula( const Position& pos, const Formula& formula )
+          : __pos( pos )
+          , __formula( std::unique_ptr<Formula>( new Formula( formula ) ) ) {
+        GUM_CONSTRUCTOR( O3Formula );
+      }
+
+      O3Formula::O3Formula( const O3Formula& src )
+          : __pos( src.__pos )
+          , __formula( std::unique_ptr<Formula>( new Formula( src.formula() ) ) ) {
+        GUM_CONS_CPY( O3Formula );
+      }
+
+      O3Formula::O3Formula( O3Formula&& src )
+          : __pos( std::move( src.__pos ) )
+          , __formula( std::move( src.__formula ) ) {
+        GUM_CONS_MOV( O3Formula );
+      }
+
+      O3Formula::~O3Formula() { GUM_DESTRUCTOR( O3Formula ); }
+
+      O3Formula& O3Formula::operator=( const O3Formula& src ) {
+        __pos = src.__pos;
+        __formula = std::unique_ptr<Formula>( new Formula( src.formula() ) );
+        return *this;
+      }
+
+      O3Formula& O3Formula::operator=( O3Formula&& src ) {
+        __pos = std::move( src.__pos );
+        __formula = std::move( src.__formula );
+        return *this;
+      }
+
+      const Position& O3Formula::position() const { return __pos; }
+
+      void O3Formula::position( const Position& pos ) { __pos = pos; }
+
+      const Formula& O3Formula::formula() const { return *__formula; }
+      Formula& O3Formula::formula() { return *__formula; }
 
       O3Label::O3Label()
           : __pos()
@@ -497,13 +541,13 @@ namespace gum {
       O3Attribute::O3Attribute( const O3Label& type,
                                 const O3Label& name,
                                 const O3LabelList& parents,
-                                const O3FloatList& values )
+                                const O3FormulaList& values )
           : __type( type )
           , __name( name )
           , __parents( parents ) {
         GUM_CONSTRUCTOR( O3Attribute );
-        auto copy = new O3FloatList( values );
-        __values = std::unique_ptr<O3FloatList>( copy );
+        auto copy = new O3FormulaList( values );
+        __values = std::unique_ptr<O3FormulaList>( copy );
       }
 
       O3Attribute::O3Attribute( const O3Attribute& src )
@@ -511,8 +555,8 @@ namespace gum {
           , __name( src.__name )
           , __parents( src.__parents ) {
         GUM_CONS_CPY( O3Attribute );
-        auto copy = new O3FloatList( *( src.__values ) );
-        __values = std::unique_ptr<O3FloatList>( copy );
+        auto copy = new O3FormulaList( *( src.__values ) );
+        __values = std::unique_ptr<O3FormulaList>( copy );
       }
 
       O3Attribute::O3Attribute( O3Attribute&& src )
@@ -529,8 +573,8 @@ namespace gum {
         __type = src.__type;
         __name = src.__name;
         __parents = src.__parents;
-        auto copy = new O3FloatList( *( src.__values ) );
-        __values = std::unique_ptr<O3FloatList>( copy );
+        auto copy = new O3FormulaList( *( src.__values ) );
+        __values = std::unique_ptr<O3FormulaList>( copy );
         return *this;
       }
 
@@ -547,7 +591,7 @@ namespace gum {
       const O3Attribute::O3LabelList& O3Attribute::parents() const {
         return __parents;
       }
-      const O3Attribute::O3FloatList& O3Attribute::values() const {
+      const O3Attribute::O3FormulaList& O3Attribute::values() const {
         return *__values;
       }
 
