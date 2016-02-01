@@ -101,8 +101,8 @@ class Parser {
 using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
-using O3Float = gum::prm::o3prm::O3Float;
-using O3FloatList = gum::prm::o3prm::O3Attribute::O3FloatList;
+using O3Formula = gum::prm::o3prm::O3Formula;
+using O3FormulaList = gum::prm::o3prm::O3Attribute::O3FormulaList;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
 
@@ -196,8 +196,8 @@ O3AttributeList& elts);
 	void LABEL(O3Label& l);
 	void LABEL_LIST(O3LabelList& list);
 	void CLASS_BODY(O3AttributeList& elts);
-	void FLOAT_LIST(O3FloatList& values);
-	void FLOAT(O3Float& f);
+	void FORMULA_LIST(O3FormulaList& values);
+	void FORMULA(O3Formula& f);
 	void INTERFACE_DECLARATION(Position& pos,
 O3Label& name,
 O3Label& super,
