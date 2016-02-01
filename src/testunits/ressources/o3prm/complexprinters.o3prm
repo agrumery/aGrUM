@@ -97,8 +97,8 @@ class Computer implements Equipment {
       NOK: 0.00, 1.00, 0.00;
     };
     boolean can_print dependson working_printer, equipState {
-      // working_printer |              false                 | |              true             |
-      // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+      // working_printer |              false            | |              true             |
+      // equipState      | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
       /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
       /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
     };
