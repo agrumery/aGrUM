@@ -23,8 +23,8 @@ private:
 using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
-using O3Float = gum::prm::o3prm::O3Float;
-using O3FloatList = gum::prm::o3prm::O3Attribute::O3FloatList;
+using O3Formula = gum::prm::o3prm::O3Formula;
+using O3FormulaList = gum::prm::o3prm::O3Attribute::O3FormulaList;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
 
@@ -197,7 +197,7 @@ CLASS_BODY<O3AttributeList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
   (. auto parents = O3LabelList(); .)
-  (. auto values = O3FloatList(); .)
+  (. auto values = O3FormulaList(); .)
   LABEL<type>
   LABEL<name>
   [
@@ -206,7 +206,7 @@ CLASS_BODY<O3AttributeList& elts> =
   ]
   '{'
   '['
-    FLOAT_LIST<values>
+    FORMULA_LIST<values>
   ']'
   '}'
   ';'
@@ -214,14 +214,14 @@ CLASS_BODY<O3AttributeList& elts> =
   .
 
 //________________________
-FLOAT_LIST<O3FloatList& values> =
-  (. auto val = O3Float(); .)
-  FLOAT<val>
-  (. values.push_back( val ); .)
+FORMULA_LIST<O3FormulaList& values> =
+  (. auto f = O3Formula(); .)
+  FORMULA<f>
+  (. values.push_back( f ); .)
   {
     ','
-    FLOAT<val>
-    (. values.push_back( val ); .)
+    FORMULA<f>
+    (. values.push_back( f ); .)
   }
   .
 
@@ -366,14 +366,6 @@ TYPE_VALUE_LIST< LabelMap& labels > =
   .
 
 //________________________
-FLOAT<O3Float& f> =
-  float
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
-  (. f = O3Float( pos, coco_atof( t->val ) ); .)
-  .
-  
-
-//________________________
 INTEGER<O3Integer& i> =
   integer
   (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
@@ -385,6 +377,19 @@ LABEL<O3Label& l> =
   label
   (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
+
+//________________________
+FORMULA<O3Formula& f> =
+  ( 
+    string
+    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Formula( pos, narrow( t->val ) ); .)
+  |
+    float
+    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Formula( pos, narrow( t->val ) ); .)
+  )
   .
 
 //________________________

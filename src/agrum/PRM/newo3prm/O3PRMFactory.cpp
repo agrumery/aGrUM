@@ -89,15 +89,8 @@ namespace gum {
         auto values = std::vector<float>( parent_size );
         for ( auto i = 0; i < attr.values().size(); ++i ) {
           auto idx = i % parent_size;
-          values[idx] += attr.values()[i].value();
+          values[idx] += attr.values()[i].formula().result();
         }
-        //{
-        //  std::stringstream plop;
-        //  for ( auto f : values ) {
-        //    plop << f << " (" << (std::abs( f - 1.0f ) < 1.0e-6) << ") ";
-        //  }
-        //  GUM_TRACE( plop.str() )
-        //}
         if ( not std::all_of(
                  values.cbegin(),
                  values.cend(),
@@ -129,9 +122,9 @@ namespace gum {
               for ( const auto& parent : attr.parents() ) {
                 factory.addParent( parent.label() );
               }
-              std::vector<double> values;
+              std::vector<std::string> values;
               for ( const auto& val : attr.values() ) {
-                values.push_back( val.value() );
+                values.push_back( val.formula().formula() );
               }
               factory.setRawCPFByColumns( values );
               factory.endAttribute();

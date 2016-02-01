@@ -211,7 +211,7 @@ void Parser::CLASS_BODY(O3AttributeList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
 		auto parents = O3LabelList(); 
-		auto values = O3FloatList(); 
+		auto values = O3FormulaList(); 
 		LABEL(type);
 		LABEL(name);
 		if (la->kind == _dependson) {
@@ -220,28 +220,34 @@ void Parser::CLASS_BODY(O3AttributeList& elts) {
 		}
 		Expect(20 /* "{" */);
 		Expect(22 /* "[" */);
-		FLOAT_LIST(values);
+		FORMULA_LIST(values);
 		Expect(23 /* "]" */);
 		Expect(21 /* "}" */);
 		Expect(_semicolon);
 		elts.push_back( O3Attribute(type, name, parents, values) ); 
 }
 
-void Parser::FLOAT_LIST(O3FloatList& values) {
-		auto val = O3Float(); 
-		FLOAT(val);
-		values.push_back( val ); 
+void Parser::FORMULA_LIST(O3FormulaList& values) {
+		auto f = O3Formula(); 
+		FORMULA(f);
+		values.push_back( f ); 
 		while (la->kind == _comma) {
 			Get();
-			FLOAT(val);
-			values.push_back( val ); 
+			FORMULA(f);
+			values.push_back( f ); 
 		}
 }
 
-void Parser::FLOAT(O3Float& f) {
-		Expect(_float);
-		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		f = O3Float( pos, coco_atof( t->val ) ); 
+void Parser::FORMULA(O3Formula& f) {
+		if (la->kind == _string) {
+			Get();
+			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+			f = O3Formula( pos, narrow( t->val ) ); 
+		} else if (la->kind == _float) {
+			Get();
+			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+			f = O3Formula( pos, narrow( t->val ) ); 
+		} else SynErr(29);
 }
 
 void Parser::INTERFACE_DECLARATION(Position& pos,
@@ -286,7 +292,7 @@ void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, Labe
 			Get();
 			LABEL(super);
 			MAP(labels);
-		} else SynErr(29);
+		} else SynErr(30);
 		Expect(_semicolon);
 }
 
@@ -537,7 +543,8 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 26: s = coco_string_create(L"??? expected"); break;
 			case 27: s = coco_string_create(L"invalid UNIT"); break;
 			case 28: s = coco_string_create(L"invalid TYPE_UNIT"); break;
-			case 29: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
+			case 29: s = coco_string_create(L"invalid FORMULA"); break;
+			case 30: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
 
 
     default: {
