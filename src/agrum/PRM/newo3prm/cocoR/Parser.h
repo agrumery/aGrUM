@@ -38,6 +38,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <string>
 #include <vector>
 #include <utility>
+#include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 
@@ -103,6 +104,8 @@ using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Formula = gum::prm::o3prm::O3Formula;
 using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
+using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
+using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
 
@@ -114,6 +117,7 @@ using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
 using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
 using O3RawCPT = gum::prm::o3prm::O3RawCPT;
+using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
 using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
@@ -198,8 +202,17 @@ O3AttributeList& elts);
 	void LABEL(O3Label& l);
 	void LABEL_LIST(O3LabelList& list);
 	void CLASS_BODY(O3AttributeList& elts);
+	void RAW_CPT(const O3Label& name,
+const O3Label& type,
+const O3LabelList& parents,
+O3AttributeList& elts);
+	void RULE_CPT(const O3Label& name,
+const O3Label& type,
+const O3LabelList& parents,
+O3AttributeList& elts);
 	void FORMULA_LIST(O3FormulaList& values);
-	void FORMULA(O3Formula& f);
+	void RULE(O3RuleList& rules);
+	void LABEL_OR_STAR_LIST(O3LabelList& list);
 	void INTERFACE_DECLARATION(Position& pos,
 O3Label& name,
 O3Label& super,
@@ -213,6 +226,8 @@ O3InterfaceElementList& elts);
 	void MAP(LabelMap& labels );
 	void INT(Position& pos);
 	void INTEGER(O3Integer& i);
+	void LABEL_OR_STAR(O3Label& l);
+	void FORMULA(O3Formula& f);
 
     void Parse();
 

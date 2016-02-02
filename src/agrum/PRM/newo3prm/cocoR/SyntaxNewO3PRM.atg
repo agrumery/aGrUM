@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 
@@ -25,6 +26,8 @@ using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Formula = gum::prm::o3prm::O3Formula;
 using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
+using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
+using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
 
@@ -36,6 +39,7 @@ using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
 using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
 using O3RawCPT = gum::prm::o3prm::O3RawCPT;
+using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
 using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
@@ -199,33 +203,60 @@ CLASS_BODY<O3AttributeList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
   (. auto parents = O3LabelList(); .)
-  (. auto values = O3FormulaList(); .)
   LABEL<type>
   LABEL<name>
-  [
+  (
+    '{'
+    RAW_CPT<name, type, parents, elts>
+    '}'
+  |
     dependson
     LABEL_LIST<parents> 
-  ]
-  '{'
+    '{'
+        (
+          RAW_CPT<name, type, parents, elts>
+        |
+          RULE_CPT<name, type, parents, elts>
+        )
+    '}'
+  )
+  ';'
+  .
+
+//________________________
+RAW_CPT<const O3Label& name,
+        const O3Label& type,
+        const O3LabelList& parents,
+        O3AttributeList& elts> =
+  (. auto values = O3FormulaList(); .)
   '['
     FORMULA_LIST<values>
   ']'
-  '}'
-  ';'
   (. auto attr = new O3RawCPT( type, name, parents, values ); .)
   (. elts.push_back( std::unique_ptr<O3Attribute>(attr) ); .)
   .
 
 //________________________
-FORMULA_LIST<O3FormulaList& values> =
-  (. auto f = O3Formula(); .)
-  FORMULA<f>
-  (. values.push_back( f ); .)
-  {
-    ','
-    FORMULA<f>
-    (. values.push_back( f ); .)
-  }
+RULE_CPT<const O3Label& name,
+         const O3Label& type,
+         const O3LabelList& parents,
+         O3AttributeList& elts> =
+  (. auto rules = O3RuleList(); .)
+  RULE<rules> { RULE<rules> }
+  (. auto attr = new O3RuleCPT( type, name, parents, std::move(rules) ); .)
+  (. elts.push_back( std::unique_ptr<O3Attribute>( attr ) ); .)
+  .
+
+//________________________
+RULE<O3RuleList& rules> =
+  (. auto labels = O3LabelList(); .)
+  (. auto formulas = O3FormulaList(); .)
+  LABEL_OR_STAR_LIST<labels>
+  ':'
+  FORMULA_LIST<formulas>
+  ';'
+  (. auto rule = O3Rule(std::move(labels), std::move(formulas)); .)
+  (. rules.push_back( std::move(rule) ); .)
   .
 
 //________________________
@@ -383,19 +414,6 @@ LABEL<O3Label& l> =
   .
 
 //________________________
-FORMULA<O3Formula& f> =
-  ( 
-    string
-    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
-    (. f = O3Formula( pos, narrow( t->val ) ); .)
-  |
-    float
-    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
-    (. f = O3Formula( pos, narrow( t->val ) ); .)
-  )
-  .
-
-//________________________
 LABEL_LIST<O3LabelList& list> =
   (. auto label = O3Label(); .)
   LABEL<label>
@@ -404,6 +422,53 @@ LABEL_LIST<O3LabelList& list> =
     ','
     LABEL<label> 
     (. list.push_back( label ); .)
+  }
+  .
+
+//________________________
+LABEL_OR_STAR<O3Label& l> =
+  ( label | '*' )
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
+
+//________________________
+LABEL_OR_STAR_LIST<O3LabelList& list> =
+  (. auto label = O3Label(); .)
+  LABEL_OR_STAR<label>
+  (. list.push_back( label ); .)
+  {
+    ','
+    LABEL_OR_STAR<label> 
+    (. list.push_back( label ); .)
+  }
+  .
+
+
+//________________________
+FORMULA<O3Formula& f> =
+  ( 
+    string
+    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. auto value = narrow(t->val); .)
+    (. value = value.size() > 2 ? value.substr(1, value.size() - 2) : "" ; .)
+    (. f = O3Formula( pos, value ); .)
+  |
+    float
+    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Formula( pos, narrow( t->val ) ); .)
+  )
+  .
+
+//________________________
+FORMULA_LIST<O3FormulaList& values> =
+  (. auto f = O3Formula(); .)
+  FORMULA<f>
+  (. values.push_back( f ); .)
+  {
+    ','
+    FORMULA<f>
+    (. values.push_back( f ); .)
   }
   .
 

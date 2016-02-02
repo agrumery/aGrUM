@@ -92,6 +92,8 @@ namespace gum {
       setRawCPFByFloatColumns( const std::vector<float>& array ) = 0;
       virtual void setCPFByFloatRule( const std::vector<std::string>& labels,
                                       const std::vector<float>& values ) = 0;
+      virtual void setCPFByRule( const std::vector<std::string>& labels,
+                                 const std::vector<std::string>& values ) =0;
       virtual void
       setRawCPFByColumns( const std::vector<std::string>& array ) = 0;
       virtual void

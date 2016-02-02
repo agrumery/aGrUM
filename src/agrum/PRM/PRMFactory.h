@@ -416,9 +416,7 @@ namespace gum {
       void setRawCPFByLines( const std::vector<GUM_SCALAR>& array );
 
       /**
-       * @brief Not implemented!
-       *
-       * Gives the factory the CPF in its raw form.
+       * @brief  Gives the factory the CPF in its raw form.
        *
        * The creation of the CPF is left to the factory because we do not know
        * what level of complexity for CPF implementation can be handled by the
@@ -440,7 +438,7 @@ namespace gum {
       void setRawCPFByColumns( const std::vector<GUM_SCALAR>& array );
 
       /**
-       * Fills the CPF using a rule.
+       * @brief Fills the CPF using a rule.
        *
        * The labels vector is filled with one of each parent's labels or
        * with a wildcard ("*"). If a wildcard is used then all values of the
@@ -453,6 +451,127 @@ namespace gum {
        */
       virtual void setCPFByRule( const std::vector<std::string>& labels,
                                  const std::vector<GUM_SCALAR>& values );
+
+      /**
+       * @brief Fills the CPF using a rule and gum::Formula.
+       *
+       * The labels vector is filled with one of each parent's labels or
+       * with a wildcard ("*"). If a wildcard is used then all values of the
+       * corresponding parents are used. The sequence of parents must be the
+       * declaration order used when adding the current attribute's parents.
+       *
+       * @param labels The value of each parents.
+       * @param values The probability values of the current attribute given
+       *               the values in parenst.
+       */
+      virtual void setCPFByRule( const std::vector<std::string>& labels,
+                                 const std::vector<std::string>& values );
+
+      /**
+       * @brief Gives the factory the CPF in its raw form.
+       *
+       * The creation of the CPF is left to the factory because we do not know
+       * what level of complexity for CPF implementation can be handled by the
+       * PRM<GUM_SCALAR> implementation.
+       *
+       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+       * with A, B and C boolean variables ( {f, t}, the order is
+       * important), then the following array is valid:
+       * @code
+       * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
+       *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
+       *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
+       *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
+       * @endcode
+       *
+       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       */
+      virtual void
+      setRawCPFByFloatLines( const std::vector<float>& array ) override;
+
+      /**
+       * @brief Gives the factory the CPF in its raw form.
+       *
+       * The creation of the CPF is left to the factory because we do not know
+       * what level of complexity for CPF implementation can be handled by the
+       * PRM<GUM_SCALAR> implementation.
+       *
+       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+       * with A, B and C boolean variables ( {f, t}, the order is
+       * important), then the following array is valid:
+       * @code
+       * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
+       * [ 0.2,     0.7,     0.5,     0.01,
+       *   0.8,     0.3,     0.5,     0.99]
+       * @endcode
+       *
+       * See PRMFactory::setRawCPFByLines() for more details.
+       *
+       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       */
+      virtual void
+      setRawCPFByFloatColumns( const std::vector<float>& array ) override;
+
+      /**
+       * @brief  Gives the factory the CPF in its raw form use gum::Formula.
+       *
+       * The creation of the CPF is left to the factory because we do not know
+       * what level of complexity for CPF implementation can be handled by the
+       * PRM<GUM_SCALAR> implementation.
+       *
+       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+       * with A, B and C boolean variables ( {f, t}, the order is
+       * important), then the following array is valid:
+       * @code
+       * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
+       * [ 0.2,     0.7,     0.5,     0.01,
+       *   0.8,     0.3,     0.5,     0.99]
+       * @endcode
+       *
+       * See PRMFactory::setRawCPFByLines() for more details.
+       *
+       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       */
+      virtual void
+      setRawCPFByColumns( const std::vector<std::string>& array ) override;
+
+      /**
+       * @brief Gives the factory the CPF in its raw form using gum::Formula.
+       *
+       * The creation of the CPF is left to the factory because we do not know
+       * what level of complexity for CPF implementation can be handled by the
+       * PRM<GUM_SCALAR> implementation.
+       *
+       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+       * with A, B and C boolean variables ( {f, t}, the order is
+       * important), then the following array is valid:
+       * @code
+       * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
+       *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
+       *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
+       *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
+       * @endcode
+       *
+       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       */
+      virtual void
+      setRawCPFByLines( const std::vector<std::string>& array ) override;
+
+      /**
+       * @brief Fills the CPF using a rule.
+       *
+       * The labels vector is filled with one of each parent's labels or
+       * with a wildcard ("*"). If a wildcard is used then all values of the
+       * corresponding parents are used. The sequence of parents must be the
+       * declaration order used when adding the current attribute's parents.
+       *
+       * @param labels The value of each parents.
+       * @param values The probability values of the current attribute given
+       *               the values in parenst.
+       */
+      virtual void
+      setCPFByFloatRule( const std::vector<std::string>& labels,
+                         const std::vector<float>& values ) override;
 
       /**
        * Tells the factory that we finished declaring an attribute.
@@ -639,78 +758,6 @@ namespace gum {
 
       /// @}
 
-      /// @name float input for parameters
-      /// @{
-
-      /**
-       * Gives the factory the CPF in its raw form.
-       *
-       * The creation of the CPF is left to the factory because we do not know
-       * what level of complexity for CPF implementation can be handled by the
-       * PRM<GUM_SCALAR> implementation.
-       *
-       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-       * with A, B and C boolean variables ( {f, t}, the order is
-       * important), then the following array is valid:
-       * @code
-       * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
-       *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
-       *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
-       *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
-       * @endcode
-       *
-       * @throw OperationNotAllowed Raised if the given operation is illegal.
-       */
-      virtual void
-      setRawCPFByFloatLines( const std::vector<float>& array ) override;
-
-      /**
-       * @brief Not implemented!
-       *
-       * Gives the factory the CPF in its raw form.
-       *
-       * The creation of the CPF is left to the factory because we do not know
-       * what level of complexity for CPF implementation can be handled by the
-       * PRM<GUM_SCALAR> implementation.
-       *
-       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-       * with A, B and C boolean variables ( {f, t}, the order is
-       * important), then the following array is valid:
-       * @code
-       * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
-       * [ 0.2,     0.7,     0.5,     0.01,
-       *   0.8,     0.3,     0.5,     0.99]
-       * @endcode
-       *
-       * See PRMFactory::setRawCPFByLines() for more details.
-       *
-       * @throw OperationNotAllowed Raised if the given operation is illegal.
-       */
-      virtual void
-      setRawCPFByFloatColumns( const std::vector<float>& array ) override;
-
-
-      virtual void
-      setRawCPFByColumns( const std::vector<std::string>& array ) override;
-      virtual void
-      setRawCPFByLines( const std::vector<std::string>& array ) override;
-
-      /**
-       * Fills the CPF using a rule.
-       *
-       * The labels vector is filled with one of each parent's labels or
-       * with a wildcard ("*"). If a wildcard is used then all values of the
-       * corresponding parents are used. The sequence of parents must be the
-       * declaration order used when adding the current attribute's parents.
-       *
-       * @param labels The value of each parents.
-       * @param values The probability values of the current attribute given
-       *               the values in parenst.
-       */
-      virtual void
-      setCPFByFloatRule( const std::vector<std::string>& labels,
-                         const std::vector<float>& values ) override;
-      /// @}
       private:
       /// Decompose a string in v using dots ('.') as delimiters.
       void __fill_sc_in_vector( std::vector<std::string>& v,

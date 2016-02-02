@@ -699,8 +699,59 @@ namespace gum {
       }
 
       std::unique_ptr<O3Attribute> O3RawCPT::copy() const {
-        auto copy = new O3RawCPT(*this);
-        return std::move(std::unique_ptr<O3Attribute>(copy));
+        auto copy = new O3RawCPT( *this );
+        return std::move( std::unique_ptr<O3Attribute>( copy ) );
+      }
+
+      O3RuleCPT::O3RuleCPT( const O3Label& type,
+                            const O3Label& name,
+                            const O3Attribute::O3LabelList& parents,
+                            O3RuleList&& rules )
+          : O3Attribute( type, name, parents )
+          , __rules( std::unique_ptr<O3RuleList>( new O3RuleList( rules ) ) ) {
+        GUM_CONSTRUCTOR( O3RuleCPT );
+      }
+
+      O3RuleCPT::O3RuleCPT( const O3RuleCPT::O3RuleCPT& src )
+          : O3Attribute( src )
+          , __rules(
+                std::unique_ptr<O3RuleList>( new O3RuleList( src.rules() ) ) ) {
+        GUM_CONS_CPY( O3RuleCPT );
+      }
+
+      O3RuleCPT::O3RuleCPT( O3RuleCPT::O3RuleCPT&& src )
+          : O3Attribute( src )
+          , __rules( std::move( src.__rules ) ) {
+        GUM_CONS_MOV( O3RuleCPT );
+      }
+
+      O3RuleCPT::~O3RuleCPT() { GUM_DESTRUCTOR( O3RuleCPT ); }
+
+      O3RuleCPT& O3RuleCPT::operator=( const O3RuleCPT::O3RuleCPT& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+
+        O3Attribute::operator=( src );
+        __rules = std::unique_ptr<O3RuleList>( new O3RuleList( src.rules() ) );
+        return *this;
+      }
+
+      O3RuleCPT& O3RuleCPT::operator=( O3RuleCPT::O3RuleCPT&& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+
+        O3Attribute::operator=( src );
+        __rules = std::move( src.__rules );
+        return *this;
+      }
+
+      const O3RuleCPT::O3RuleList& O3RuleCPT::rules() const { return *__rules; }
+
+      std::unique_ptr<O3Attribute> O3RuleCPT::copy() const {
+        auto copy = new O3RuleCPT( *this );
+        return std::move( std::unique_ptr<O3Attribute>( copy ) );
       }
 
       O3Class::O3Class( const Position& pos,
@@ -716,7 +767,7 @@ namespace gum {
         __interfaces = std::unique_ptr<O3LabelList>( i );
         auto e = new O3AttributeList();
         __elts = std::unique_ptr<O3AttributeList>( e );
-        for (const auto& elt: elts) {
+        for ( const auto& elt : elts ) {
           __elts->push_back( elt->copy() );
         }
       }
@@ -728,7 +779,7 @@ namespace gum {
         GUM_CONS_CPY( O3Class );
         auto i = new O3LabelList( src.interfaces() );
         __interfaces = std::unique_ptr<O3LabelList>( i );
-        auto e = new O3AttributeList( );
+        auto e = new O3AttributeList();
         __elts = std::unique_ptr<O3AttributeList>( e );
         for ( const auto& elt : src.elements() ) {
           __elts->push_back( elt->copy() );
@@ -755,9 +806,9 @@ namespace gum {
         __super = src.__super;
         auto i = new O3LabelList( src.interfaces() );
         __interfaces = std::unique_ptr<O3LabelList>( i );
-        auto e = new O3AttributeList( );
+        auto e = new O3AttributeList();
         __elts = std::unique_ptr<O3AttributeList>( e );
-        for (const auto& elt: src.elements()) {
+        for ( const auto& elt : src.elements() ) {
           __elts->push_back( elt->copy() );
         }
         return *this;

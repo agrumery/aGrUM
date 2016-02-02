@@ -504,21 +504,77 @@ namespace gum {
         Instantiation inst( form->formulas() );
         inst.setVals( jnst );
 
-        std::stringstream inst_seq;
-        for ( auto var : inst.variablesSequence() ) {
-          inst_seq << var << " ";
-        }
-
-        std::stringstream form_seq;
-        for ( auto var : form->formulas().variablesSequence() ) {
-          form_seq << var << " ";
-        }
-
         for ( Size i = 0; i < form->type()->domainSize(); ++i ) {
           inst.chgVal( form->type().variable(), i );
 
           for ( inst.setFirstIn( knst ); not inst.end(); inst.incIn( knst ) ) {
             form->formulas().set( inst, std::to_string( values[i] ) );
+          }
+        }
+
+      } else {
+        GUM_ERROR( OperationNotAllowed, "invalide attribute type" );
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void PRMFactory<GUM_SCALAR>::setCPFByRule(
+        const std::vector<std::string>& parents,
+        const std::vector<std::string>& values ) {
+      
+      auto a = static_cast<Attribute<GUM_SCALAR>*>(
+          __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
+
+      if ( ( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
+        GUM_ERROR( OperationNotAllowed, "wrong number of parents" );
+      }
+
+      if ( values.size() != a->type().variable().domainSize() ) {
+        GUM_ERROR( OperationNotAllowed, "wrong number of values" );
+      }
+
+      if ( dynamic_cast<FormAttribute<GUM_SCALAR>*>( a ) ) {
+        auto form = static_cast<FormAttribute<GUM_SCALAR>*>( a );
+        // jnst holds parents with a specific value (not "*")
+        // knst holds parents without a specific value ("*")
+        Instantiation jnst, knst;
+        const DiscreteVariable* var = 0;
+        // not_used Size pos = 0;
+        bool found = false;
+
+        for ( size_t i = 0; i < parents.size(); ++i ) {
+          var = form->formulas().variablesSequence().atPos( 1 + i );
+
+          if ( parents[i] == "*" ) {
+            knst.add( *var );
+          } else {
+            jnst.add( *var );
+            // not_used pos = 0;
+            found = false;
+
+            for ( Size j = 0; j < var->domainSize(); ++j ) {
+              if ( var->label( j ) == parents[i] ) {
+                jnst.chgVal( *var, j );
+                found = true;
+                break;
+              }
+            }
+
+            if ( not found ) {
+              std::string msg = "could not find label ";
+              GUM_ERROR( NotFound, msg + parents[i] );
+            }
+          }
+        }
+
+        Instantiation inst( form->formulas() );
+        inst.setVals( jnst );
+
+        for ( Size i = 0; i < form->type()->domainSize(); ++i ) {
+          inst.chgVal( form->type().variable(), i );
+
+          for ( inst.setFirstIn( knst ); not inst.end(); inst.incIn( knst ) ) {
+            form->formulas().set( inst, values[i]  );
           }
         }
 
