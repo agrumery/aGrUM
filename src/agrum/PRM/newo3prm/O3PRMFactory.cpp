@@ -35,6 +35,40 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
+      bool check_raw_cpt( const O3RawCPT& attr,
+                          const Type<double>& type,
+                          Size domainSize,
+                          std::ostream& output ) {
+        // Check for CPT size
+        if ( domainSize != attr.values().size() ) {
+          const auto& pos = attr.name().position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Attribute error : "
+                 << "Illegal CPT size, expected " << domainSize << " found "
+                 << attr.values().size() << std::endl;
+          return false;
+        }
+        // Check that CPT sums to 1
+        Size parent_size = domainSize / type->domainSize();
+        auto values = std::vector<float>( parent_size );
+        for ( auto i = 0; i < attr.values().size(); ++i ) {
+          auto idx = i % parent_size;
+          values[idx] += attr.values()[i].formula().result();
+        }
+        if ( not std::all_of(
+                 values.cbegin(),
+                 values.cend(),
+                 []( float f ) { return std::abs( f - 1.0f ) < 1.0e-6; } ) ) {
+          const auto& pos = attr.name().position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Attribute error : "
+                 << "CPT does not sum to 1" << std::endl;
+          return false;
+        }
+        return true;
+      }
 
       bool check_attribute( PRM<double>& prm,
                             const O3Class& o3_c,
@@ -74,33 +108,10 @@ namespace gum {
           }
           domain_size *= elt.type()->domainSize();
         }
-        // Check for CPT size
-        if ( domain_size != attr.values().size() ) {
-          const auto& pos = attr.name().position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Attribute error : "
-                 << "Illegal CPT size, expected " << domain_size << " found "
-                 << attr.values().size() << std::endl;
-          return false;
-        }
-        // Check that CPT sums to 1
-        Size parent_size = domain_size / type->domainSize();
-        auto values = std::vector<float>( parent_size );
-        for ( auto i = 0; i < attr.values().size(); ++i ) {
-          auto idx = i % parent_size;
-          values[idx] += attr.values()[i].formula().result();
-        }
-        if ( not std::all_of(
-                 values.cbegin(),
-                 values.cend(),
-                 []( float f ) { return std::abs( f - 1.0f ) < 1.0e-6; } ) ) {
-          const auto& pos = attr.name().position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Attribute error : "
-                 << "CPT does not sum to 1" << std::endl;
-          return false;
+
+        auto raw = dynamic_cast<const O3RawCPT*>( &attr );
+        if ( raw ) {
+          return check_raw_cpt( *raw, type, domain_size, output );
         }
         return true;
       }
@@ -116,17 +127,20 @@ namespace gum {
           factory.startClass(
               c->name().label(), c->super().label(), &implements );
           for ( const auto& attr : c->elements() ) {
-            if ( check_attribute( prm, *c, attr, output ) ) {
-              factory.startAttribute( attr.type().label(),
-                                      attr.name().label() );
-              for ( const auto& parent : attr.parents() ) {
+            if ( check_attribute( prm, *c, *attr, output ) ) {
+              factory.startAttribute( attr->type().label(),
+                                      attr->name().label() );
+              for ( const auto& parent : attr->parents() ) {
                 factory.addParent( parent.label() );
               }
-              std::vector<std::string> values;
-              for ( const auto& val : attr.values() ) {
-                values.push_back( val.formula().formula() );
+              auto raw = dynamic_cast<const O3RawCPT*>(attr.get());
+              if ( raw ) {
+                std::vector<std::string> values;
+                for ( const auto& val : raw->values() ) {
+                  values.push_back( val.formula().formula() );
+                }
+                factory.setRawCPFByColumns( values );
               }
-              factory.setRawCPFByColumns( values );
               factory.endAttribute();
             }
           }

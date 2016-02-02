@@ -102,7 +102,7 @@ using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Formula = gum::prm::o3prm::O3Formula;
-using O3FormulaList = gum::prm::o3prm::O3Attribute::O3FormulaList;
+using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
 
@@ -113,9 +113,11 @@ using O3Interface = gum::prm::o3prm::O3Interface;
 using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
 using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
-using O3Class = gum::prm::o3prm::O3Class;
+using O3RawCPT = gum::prm::o3prm::O3RawCPT;
 using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
+
+using O3Class = gum::prm::o3prm::O3Class;
 
 using O3PRM = gum::prm::o3prm::O3PRM;
 
