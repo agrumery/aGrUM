@@ -70,6 +70,45 @@ namespace gum {
         return true;
       }
 
+      bool check_rule_cpt( const Class<double>& c,
+                           const O3RuleCPT& attr,
+                           std::ostream& output ) {
+        for ( const auto& rule : attr.rules() ) {
+          // Check labels for all parents
+          if ( rule.first.size() != attr.parents().size() ) {
+            const auto& pos = rule.first.front().position();
+            output << pos.file() << "|" << pos.line() << "|"
+                   << " Attribute error : "
+                   << "Expected " << attr.parents().size()
+                   << " value(s), found " << rule.first.size() << std::endl;
+            return false;
+          }
+          // Check that forumals are valid and sums to 1
+          auto sum = 0.0f;
+          for ( const auto& f : rule.second ) {
+            try {
+              sum += f.formula().result();
+            } catch ( OperationNotAllowed& ) {
+              const auto& pos = f.position();
+              output << pos.file() << "|" << pos.line() << "|"
+                     << " Attribute error : "
+                     << "Unknown value in CPT: \"" << f.formula().formula()
+                     << "\"";
+              return false;
+            }
+          }
+          // Check that CPT sums to 1
+          if ( std::abs( sum - 1.0f ) > 1e-6 ) {
+            const auto& pos = rule.first.front().position();
+            output << pos.file() << "|" << pos.line() << "|"
+                   << " Attribute error : "
+                   << "CPT does not sum to 1";
+            return false;
+          }
+        }
+        return true;
+      }
+
       bool check_attribute( PRM<double>& prm,
                             const O3Class& o3_c,
                             const O3Attribute& attr,
@@ -113,6 +152,10 @@ namespace gum {
         if ( raw ) {
           return check_raw_cpt( *raw, type, domain_size, output );
         }
+        auto rule = dynamic_cast<const O3RuleCPT*>( &attr );
+        if ( rule ) {
+          return check_rule_cpt(c, *rule, output );
+        }
         return true;
       }
 
@@ -120,7 +163,7 @@ namespace gum {
       build_class( PRM<double>& prm, O3PRM& o3_prm, std::ostream& output ) {
         PRMFactory<double> factory( &prm );
         for ( const auto& c : o3_prm.classes() ) {
-          Set<std::string> implements;
+          auto implements = Set<std::string>();
           for ( const auto& i : c->interfaces() ) {
             implements.insert( i.label() );
           }
@@ -133,13 +176,27 @@ namespace gum {
               for ( const auto& parent : attr->parents() ) {
                 factory.addParent( parent.label() );
               }
-              auto raw = dynamic_cast<const O3RawCPT*>(attr.get());
+              auto raw = dynamic_cast<const O3RawCPT*>( attr.get() );
               if ( raw ) {
-                std::vector<std::string> values;
+                auto values = std::vector<std::string>();
                 for ( const auto& val : raw->values() ) {
                   values.push_back( val.formula().formula() );
                 }
                 factory.setRawCPFByColumns( values );
+              }
+              auto rule_cpt = dynamic_cast<const O3RuleCPT*>( attr.get() );
+              if ( rule_cpt ) {
+                for ( const auto& rule : rule_cpt->rules() ) {
+                  auto labels = std::vector<std::string>();
+                  auto values = std::vector<std::string>();
+                  for ( const auto& lbl : rule.first ) {
+                    labels.push_back( lbl.label() );
+                  }
+                  for ( const auto& form : rule.second ) {
+                    values.push_back( form.formula().formula() );
+                  }
+                  factory.setCPFByRule( labels, values );
+                }
               }
               factory.endAttribute();
             }

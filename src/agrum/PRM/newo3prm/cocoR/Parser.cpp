@@ -120,7 +120,7 @@ void Parser::UNIT() {
 			INTERFACE_UNIT();
 		} else if (la->kind == _class) {
 			CLASS_UNIT();
-		} else SynErr(27);
+		} else SynErr(28);
 }
 
 void Parser::TYPE_UNIT() {
@@ -137,7 +137,7 @@ void Parser::TYPE_UNIT() {
 			auto end = O3Integer(); 
 			INT_TYPE_DECLARATION(pos, name, start, end);
 			if ( __ok( n ) ) { __addO3IntType( pos, name, start, end ); } 
-		} else SynErr(28);
+		} else SynErr(29);
 }
 
 void Parser::INTERFACE_UNIT() {
@@ -211,21 +211,49 @@ void Parser::CLASS_BODY(O3AttributeList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
 		auto parents = O3LabelList(); 
-		auto values = O3FormulaList(); 
 		LABEL(type);
 		LABEL(name);
-		if (la->kind == _dependson) {
+		if (la->kind == 20 /* "{" */) {
+			Get();
+			RAW_CPT(name, type, parents, elts);
+			Expect(21 /* "}" */);
+		} else if (la->kind == _dependson) {
 			Get();
 			LABEL_LIST(parents);
-		}
-		Expect(20 /* "{" */);
+			Expect(20 /* "{" */);
+			if (la->kind == 22 /* "[" */) {
+				RAW_CPT(name, type, parents, elts);
+			} else if (la->kind == _label || la->kind == 26 /* "*" */) {
+				RULE_CPT(name, type, parents, elts);
+			} else SynErr(30);
+			Expect(21 /* "}" */);
+		} else SynErr(31);
+		Expect(_semicolon);
+}
+
+void Parser::RAW_CPT(const O3Label& name,
+const O3Label& type,
+const O3LabelList& parents,
+O3AttributeList& elts) {
+		auto values = O3FormulaList(); 
 		Expect(22 /* "[" */);
 		FORMULA_LIST(values);
 		Expect(23 /* "]" */);
-		Expect(21 /* "}" */);
-		Expect(_semicolon);
 		auto attr = new O3RawCPT( type, name, parents, values ); 
 		elts.push_back( std::unique_ptr<O3Attribute>(attr) ); 
+}
+
+void Parser::RULE_CPT(const O3Label& name,
+const O3Label& type,
+const O3LabelList& parents,
+O3AttributeList& elts) {
+		auto rules = O3RuleList(); 
+		RULE(rules);
+		while (la->kind == _label || la->kind == 26 /* "*" */) {
+			RULE(rules);
+		}
+		auto attr = new O3RuleCPT( type, name, parents, std::move(rules) ); 
+		elts.push_back( std::unique_ptr<O3Attribute>( attr ) ); 
 }
 
 void Parser::FORMULA_LIST(O3FormulaList& values) {
@@ -239,16 +267,26 @@ void Parser::FORMULA_LIST(O3FormulaList& values) {
 		}
 }
 
-void Parser::FORMULA(O3Formula& f) {
-		if (la->kind == _string) {
+void Parser::RULE(O3RuleList& rules) {
+		auto labels = O3LabelList(); 
+		auto formulas = O3FormulaList(); 
+		LABEL_OR_STAR_LIST(labels);
+		Expect(_colon);
+		FORMULA_LIST(formulas);
+		Expect(_semicolon);
+		auto rule = O3Rule(std::move(labels), std::move(formulas)); 
+		rules.push_back( std::move(rule) ); 
+}
+
+void Parser::LABEL_OR_STAR_LIST(O3LabelList& list) {
+		auto label = O3Label(); 
+		LABEL_OR_STAR(label);
+		list.push_back( label ); 
+		while (la->kind == _comma) {
 			Get();
-			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-			f = O3Formula( pos, narrow( t->val ) ); 
-		} else if (la->kind == _float) {
-			Get();
-			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-			f = O3Formula( pos, narrow( t->val ) ); 
-		} else SynErr(29);
+			LABEL_OR_STAR(label);
+			list.push_back( label ); 
+		}
 }
 
 void Parser::INTERFACE_DECLARATION(Position& pos,
@@ -293,7 +331,7 @@ void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, Labe
 			Get();
 			LABEL(super);
 			MAP(labels);
-		} else SynErr(30);
+		} else SynErr(32);
 		Expect(_semicolon);
 }
 
@@ -372,6 +410,30 @@ void Parser::INTEGER(O3Integer& i) {
 		Expect(_integer);
 		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 		i = O3Integer( pos, coco_atoi( t->val ) ); 
+}
+
+void Parser::LABEL_OR_STAR(O3Label& l) {
+		if (la->kind == _label) {
+			Get();
+		} else if (la->kind == 26 /* "*" */) {
+			Get();
+		} else SynErr(33);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		l = O3Label( pos, narrow( t->val ) ); 
+}
+
+void Parser::FORMULA(O3Formula& f) {
+		if (la->kind == _string) {
+			Get();
+			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+			auto value = narrow(t->val); 
+			value = value.size() > 2 ? value.substr(1, value.size() - 2) : "" ; 
+			f = O3Formula( pos, value ); 
+		} else if (la->kind == _float) {
+			Get();
+			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+			f = O3Formula( pos, narrow( t->val ) ); 
+		} else SynErr(34);
 }
 
 
@@ -473,7 +535,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 26;
+  	maxT = 27;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -487,9 +549,9 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[2][28] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
-		{x,x,x,x, x,x,x,x, x,T,T,T, x,x,x,x, x,T,x,x, x,x,x,x, x,x,x,x}
+  	static bool set[2][29] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
+		{x,x,x,x, x,x,x,x, x,T,T,T, x,x,x,x, x,T,x,x, x,x,x,x, x,x,x,x, x}
 	};
 
 
@@ -541,11 +603,15 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 23: s = coco_string_create(L"\"]\" expected"); break;
 			case 24: s = coco_string_create(L"\"(\" expected"); break;
 			case 25: s = coco_string_create(L"\")\" expected"); break;
-			case 26: s = coco_string_create(L"??? expected"); break;
-			case 27: s = coco_string_create(L"invalid UNIT"); break;
-			case 28: s = coco_string_create(L"invalid TYPE_UNIT"); break;
-			case 29: s = coco_string_create(L"invalid FORMULA"); break;
-			case 30: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
+			case 26: s = coco_string_create(L"\"*\" expected"); break;
+			case 27: s = coco_string_create(L"??? expected"); break;
+			case 28: s = coco_string_create(L"invalid UNIT"); break;
+			case 29: s = coco_string_create(L"invalid TYPE_UNIT"); break;
+			case 30: s = coco_string_create(L"invalid CLASS_BODY"); break;
+			case 31: s = coco_string_create(L"invalid CLASS_BODY"); break;
+			case 32: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
+			case 33: s = coco_string_create(L"invalid LABEL_OR_STAR"); break;
+			case 34: s = coco_string_create(L"invalid FORMULA"); break;
 
 
     default: {
