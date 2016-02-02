@@ -224,7 +224,8 @@ void Parser::CLASS_BODY(O3AttributeList& elts) {
 		Expect(23 /* "]" */);
 		Expect(21 /* "}" */);
 		Expect(_semicolon);
-		elts.push_back( O3Attribute(type, name, parents, values) ); 
+		auto attr = new O3RawCPT( type, name, parents, values ); 
+		elts.push_back( std::unique_ptr<O3Attribute>(attr) ); 
 }
 
 void Parser::FORMULA_LIST(O3FormulaList& values) {

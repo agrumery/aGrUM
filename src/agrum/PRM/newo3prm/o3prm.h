@@ -244,34 +244,53 @@ namespace gum {
 
       class O3Attribute {
         public:
-        using O3FormulaList = std::vector<O3Formula>;
         using O3LabelList = std::vector<O3Label>;
         O3Attribute( const O3Label& type,
                         const O3Label& name,
-                        const O3LabelList& parents,
-                        const O3FormulaList& values );
+                        const O3LabelList& parents);
         O3Attribute( const O3Attribute& src);
         O3Attribute( O3Attribute&& src);
-        ~O3Attribute();
+        virtual ~O3Attribute();
         O3Attribute& operator=( const O3Attribute& src);
         O3Attribute& operator=( O3Attribute&& src);
 
         const O3Label& type() const;
         const O3Label& name() const;
         const O3LabelList& parents() const;
-        const O3FormulaList& values() const;
+
+        virtual std::unique_ptr<O3Attribute> copy() const =0;
 
         private:
         O3Label __type;
         O3Label __name;
         O3LabelList __parents;
+      };
+
+      class O3RawCPT : public O3Attribute {
+        public:
+        using O3FormulaList = std::vector<O3Formula>;
+        O3RawCPT( const O3Label& type,
+                        const O3Label& name,
+                        const O3Attribute::O3LabelList& parents,
+                        const O3FormulaList& values );
+        O3RawCPT( const O3RawCPT& src);
+        O3RawCPT( O3RawCPT&& src);
+        ~O3RawCPT();
+        O3RawCPT& operator=( const O3RawCPT& src);
+        O3RawCPT& operator=( O3RawCPT&& src);
+
+        const O3FormulaList& values() const;
+
+        virtual std::unique_ptr<O3Attribute> copy() const;
+
+        private:
         std::unique_ptr<O3FormulaList> __values;
       };
 
       class O3Class {
         public:
         using O3LabelList = std::vector<O3Label>;
-        using O3AttributeList = std::vector<O3Attribute>;
+        using O3AttributeList = std::vector<std::unique_ptr<O3Attribute>>;
 
         O3Class( const Position& pos,
                  const O3Label& name,
