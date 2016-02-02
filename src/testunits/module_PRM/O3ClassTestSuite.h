@@ -317,6 +317,285 @@ namespace gum_tests {
       }
     }
 
+    void testSimpleRules1() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "type t_state OK, NOK;" << std::endl;
+        input << "class Bar { " << std::endl
+              << "t_state state {[0.2, 0.8]};" << std::endl
+              << "boolean isWorking dependson state {" << std::endl
+              << "OK: 0.1, 0.9;" << std::endl
+              << "NOK: 0.8, 0.2;" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        TS_ASSERT_EQUALS( output.str(), "" );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+        TS_ASSERT( prm.isClass( "Bar" ) );
+        const auto& bar = prm.getClass( "Bar" );
+        TS_ASSERT_EQUALS( bar.attributes().size(), 2 );
+        TS_ASSERT( bar.exists( "state" ) );
+        const auto& state = bar.get( "state" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( state ) );
+        TS_ASSERT( bar.exists( "isWorking" ) );
+        const auto& isWorking = bar.get( "isWorking" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( isWorking ) );
+        const auto& cpf = isWorking.cpf();
+        TS_ASSERT( cpf.variablesSequence().exists( &(state.type().variable()) ) );
+        TS_ASSERT_EQUALS( cpf.domainSize(), 4 );
+        auto i = gum::Instantiation( cpf );
+        i.setFirst();
+        TS_ASSERT_DELTA( cpf[i], 0.1, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.9, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+        TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
+        TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+    void testSimpleRules2() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "type t_state OK, NOK;" << std::endl;
+        input << "class Bar { " << std::endl
+              << "t_state state {[0.2, 0.8]};" << std::endl
+              << "boolean isWorking dependson state {" << std::endl
+              << "OK: 0.1, 0.9;" << std::endl
+              << "*: 0.8, 0.2;" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        TS_ASSERT_EQUALS( output.str(), "" );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+        TS_ASSERT( prm.isClass( "Bar" ) );
+        const auto& bar = prm.getClass( "Bar" );
+        TS_ASSERT_EQUALS( bar.attributes().size(), 2 );
+        TS_ASSERT( bar.exists( "state" ) );
+        const auto& state = bar.get( "state" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( state ) );
+        TS_ASSERT( bar.exists( "isWorking" ) );
+        const auto& isWorking = bar.get( "isWorking" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( isWorking ) );
+        const auto& cpf = isWorking.cpf();
+        TS_ASSERT( cpf.variablesSequence().exists( &(state.type().variable()) ) );
+        TS_ASSERT_EQUALS( cpf.domainSize(), 4 );
+        auto i = gum::Instantiation( cpf );
+        i.setFirst();
+        TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+        TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
+        TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+    void testSimpleRules3() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "type t_state OK, NOK;" << std::endl;
+        input << "class Bar { " << std::endl
+              << "t_state state {[0.2, 0.8]};" << std::endl
+              << "boolean isWorking dependson state {" << std::endl
+              << "OK: \"10/100\", \"90/100\";" << std::endl
+              << "NOK: \"80/100\", \"20/100\";" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        TS_ASSERT_EQUALS( output.str(), "" );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+        TS_ASSERT( prm.isClass( "Bar" ) );
+        const auto& bar = prm.getClass( "Bar" );
+        TS_ASSERT_EQUALS( bar.attributes().size(), 2 );
+        TS_ASSERT( bar.exists( "state" ) );
+        const auto& state = bar.get( "state" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( state ) );
+        TS_ASSERT( bar.exists( "isWorking" ) );
+        const auto& isWorking = bar.get( "isWorking" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( isWorking ) );
+        const auto& cpf = isWorking.cpf();
+        TS_ASSERT( cpf.variablesSequence().exists( &(state.type().variable()) ) );
+        TS_ASSERT_EQUALS( cpf.domainSize(), 4 );
+        auto i = gum::Instantiation( cpf );
+        i.setFirst();
+        TS_ASSERT_DELTA( cpf[i], 0.1, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.9, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+        TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
+        TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+    void testSimpleRules4() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "type t_state OK, NOK;" << std::endl;
+        input << "class Bar { " << std::endl
+              << "t_state state {[0.2, 0.8]};" << std::endl
+              << "boolean isWorking dependson state {" << std::endl
+              << "OK: '10/100', '90/100';" << std::endl
+              << "NOK: '80/100', '20/100';" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        TS_ASSERT_EQUALS( output.str(), "" );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+        TS_ASSERT( prm.isClass( "Bar" ) );
+        const auto& bar = prm.getClass( "Bar" );
+        TS_ASSERT_EQUALS( bar.attributes().size(), 2 );
+        TS_ASSERT( bar.exists( "state" ) );
+        const auto& state = bar.get( "state" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( state ) );
+        TS_ASSERT( bar.exists( "isWorking" ) );
+        const auto& isWorking = bar.get( "isWorking" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( isWorking ) );
+        const auto& cpf = isWorking.cpf();
+        TS_ASSERT( cpf.variablesSequence().exists( &(state.type().variable()) ) );
+        TS_ASSERT_EQUALS( cpf.domainSize(), 4 );
+        auto i = gum::Instantiation( cpf );
+        i.setFirst();
+        TS_ASSERT_DELTA( cpf[i], 0.1, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.9, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+        TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
+        TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+    void testSimpleRulesError1() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "type t_state OK, NOK;" << std::endl;
+        input << "class Bar { " << std::endl
+              << "t_state state {[0.2, 0.8]};" << std::endl
+              << "boolean isWorking dependson state {" << std::endl
+              << "OK: '10/100', '110/100';" << std::endl
+              << "NOK: '80/100', '20/100';" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        std::string line;
+        std::getline( output, line );
+        auto msg = std::stringstream();
+        msg << "|5| Attribute error : CPT does not sum to 1";
+        TS_ASSERT_EQUALS( line, msg.str() );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+    void testSimpleRulesError2() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "type t_state OK, NOK;" << std::endl;
+        input << "class Bar { " << std::endl
+              << "t_state state {[0.2, 0.8]};" << std::endl
+              << "boolean isWorking dependson state {" << std::endl
+              << "OK, FOO: '10/100', '110/100';" << std::endl
+              << "NOK, BAR: '80/100', '20/100';" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        std::string line;
+        std::getline( output, line );
+        auto msg = std::stringstream();
+        msg << "|5| Attribute error : Expected 1 value(s), found 2";
+        TS_ASSERT_EQUALS( line, msg.str() );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+    void testSimpleRulesError3() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "type t_state OK, NOK;" << std::endl;
+        input << "class Bar { " << std::endl
+              << "t_state state {[0.2, 0.8]};" << std::endl
+              << "boolean isWorking dependson state {" << std::endl
+              << "OK: '10/100', '90/100';" << std::endl
+              << "NOK: 'FOO', '20/100';" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        std::string line;
+        std::getline( output, line );
+        auto msg = std::stringstream();
+        msg << "|6| Attribute error : Unknown value in CPT: \"FOO\"";
+        TS_ASSERT_EQUALS( line, msg.str() );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
     //void testSimpleClassError1() {
     //  // Arrange
     //  auto input = std::stringstream();

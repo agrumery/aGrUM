@@ -98,7 +98,7 @@ namespace gum {
         void position( const Position& pos );
 
         float value() const;
-        void value(float f);
+        void value( float f );
 
         private:
         Position __pos;
@@ -119,7 +119,7 @@ namespace gum {
         void position( const Position& pos );
 
         int value() const;
-        void value(int i);
+        void value( int i );
 
         private:
         Position __pos;
@@ -202,11 +202,11 @@ namespace gum {
       class O3InterfaceElement {
         public:
         O3InterfaceElement( const O3Label& type, const O3Label& name );
-        O3InterfaceElement( const O3InterfaceElement& src);
-        O3InterfaceElement( O3InterfaceElement&& src);
+        O3InterfaceElement( const O3InterfaceElement& src );
+        O3InterfaceElement( O3InterfaceElement&& src );
         ~O3InterfaceElement();
-        O3InterfaceElement& operator=( const O3InterfaceElement& src);
-        O3InterfaceElement& operator=( O3InterfaceElement&& src);
+        O3InterfaceElement& operator=( const O3InterfaceElement& src );
+        O3InterfaceElement& operator=( O3InterfaceElement&& src );
 
         const O3Label& type() const;
         const O3Label& name() const;
@@ -227,8 +227,8 @@ namespace gum {
         O3Interface( const O3Interface& src );
         O3Interface( O3Interface&& src );
         ~O3Interface();
-        O3Interface& operator=( const O3Interface& src);
-        O3Interface& operator=( O3Interface&& src);
+        O3Interface& operator=( const O3Interface& src );
+        O3Interface& operator=( O3Interface&& src );
 
         const Position& position() const;
         const O3Label& name() const;
@@ -246,19 +246,19 @@ namespace gum {
         public:
         using O3LabelList = std::vector<O3Label>;
         O3Attribute( const O3Label& type,
-                        const O3Label& name,
-                        const O3LabelList& parents);
-        O3Attribute( const O3Attribute& src);
-        O3Attribute( O3Attribute&& src);
+                     const O3Label& name,
+                     const O3LabelList& parents );
+        O3Attribute( const O3Attribute& src );
+        O3Attribute( O3Attribute&& src );
         virtual ~O3Attribute();
-        O3Attribute& operator=( const O3Attribute& src);
-        O3Attribute& operator=( O3Attribute&& src);
+        O3Attribute& operator=( const O3Attribute& src );
+        O3Attribute& operator=( O3Attribute&& src );
 
         const O3Label& type() const;
         const O3Label& name() const;
         const O3LabelList& parents() const;
 
-        virtual std::unique_ptr<O3Attribute> copy() const =0;
+        virtual std::unique_ptr<O3Attribute> copy() const = 0;
 
         private:
         O3Label __type;
@@ -270,14 +270,14 @@ namespace gum {
         public:
         using O3FormulaList = std::vector<O3Formula>;
         O3RawCPT( const O3Label& type,
-                        const O3Label& name,
-                        const O3Attribute::O3LabelList& parents,
-                        const O3FormulaList& values );
-        O3RawCPT( const O3RawCPT& src);
-        O3RawCPT( O3RawCPT&& src);
+                  const O3Label& name,
+                  const O3Attribute::O3LabelList& parents,
+                  const O3FormulaList& values );
+        O3RawCPT( const O3RawCPT& src );
+        O3RawCPT( O3RawCPT&& src );
         ~O3RawCPT();
-        O3RawCPT& operator=( const O3RawCPT& src);
-        O3RawCPT& operator=( O3RawCPT&& src);
+        O3RawCPT& operator=( const O3RawCPT& src );
+        O3RawCPT& operator=( O3RawCPT&& src );
 
         const O3FormulaList& values() const;
 
@@ -285,6 +285,30 @@ namespace gum {
 
         private:
         std::unique_ptr<O3FormulaList> __values;
+      };
+
+      class O3RuleCPT : public O3Attribute {
+        public:
+        using O3LabelList = std::vector<O3Label>;
+        using O3FormulaList = std::vector<O3Formula>;
+        using O3Rule = std::pair<O3LabelList, O3FormulaList>;
+        using O3RuleList = std::vector<O3Rule>;
+        O3RuleCPT( const O3Label& type,
+                   const O3Label& name,
+                   const O3Attribute::O3LabelList& parents,
+                   O3RuleList&& rules );
+        O3RuleCPT( const O3RuleCPT& src );
+        O3RuleCPT( O3RuleCPT&& src );
+        ~O3RuleCPT();
+        O3RuleCPT& operator=( const O3RuleCPT& src );
+        O3RuleCPT& operator=( O3RuleCPT&& src );
+
+        const O3RuleList& rules() const;
+
+        virtual std::unique_ptr<O3Attribute> copy() const;
+
+        private:
+        std::unique_ptr<O3RuleList> __rules;
       };
 
       class O3Class {
@@ -350,9 +374,9 @@ namespace gum {
         O3ClassList __classes;
       };
 
-    } // o3prm
-  } // prm
-} // gum
+    }  // o3prm
+  }    // prm
+}  // gum
 
 #endif  // GUM_PRM_O3PRM_PRM_H
 
