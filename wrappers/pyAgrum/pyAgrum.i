@@ -51,6 +51,8 @@ using namespace std;
 %include "influenceDiagram.i"
 %include "influenceDiagramInference.i"
 
+%include "prm.i"
+
 
 //////////////////////////////////////////////////////////////////
 /* extraction of the API for all wrappers */
