@@ -68,19 +68,34 @@ namespace gum_tests {
     }
 
     public:
-    void testPlanningCoffee() {
+    void estPlanningCoffee() {
       file = GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" );
       run();
     }
 
-    void testPlanningTinyFactory() {
+    void estPlanningTinyFactory() {
       file = GET_RESSOURCES_PATH( "FMDP/factory/tiny-factory.dat" );
       run();
     }
 
     void testPlanningTaxi() {
       file = GET_RESSOURCES_PATH( "FMDP/taxi/taxi.dat" );
-      run();
+
+      gum::FMDP<double> fmdp( true );
+
+      gum::FMDPDatReader<double> reader( &fmdp, file );
+      reader.trace( false );
+      reader.proceed();
+
+//      for(gum::SequenceIteratorSafe<gum::Idx> actIter = fmdp.beginActions(); actIter != fmdp.endActions(); ++actIter)
+//        std::cout << *actIter << " - " << fmdp.actionName(*actIter) << std::endl;
+
+      for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter)
+          std::cout << std::endl << "ROOT : " << static_cast<const gum::MultiDimFunctionGraph<double>*>(fmdp.transition(2, *varIter))->root() << std::endl;
+
+
+
+      //run();
     }
   };
 }

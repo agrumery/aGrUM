@@ -378,6 +378,8 @@ namespace gum {
                  "function graph into Tree function graph "
                  "(or vice-versa)." )
 
+     std::cout << src.toDot() << std::endl;
+
     this->clear();
 
     // Insertion des nouvelles variables
@@ -390,15 +392,25 @@ namespace gum {
     std::vector<NodeId> lifo;
     Bijection<NodeId, NodeId> src2dest;
 
-    if ( src.isTerminalNode( src.root() ) )
+    std::cout << std::endl << "ROOT : " << src.root() << std::endl;
+    try{
+    if ( src.isTerminalNode( src.root() ) ){
+            std::cout << "EREH" << std::endl;
       this->manager()->setRootNode(
           this->manager()->addTerminalNode( src.nodeValue( src.root() ) ) );
+        }
     else {
+            std::cout << "HERE" << std::endl;
       this->manager()->setRootNode( this->manager()->addInternalNode(
           src.node( src.root() )->nodeVar() ) );
       src2dest.insert( src.root(), this->root() );
       lifo.push_back( src.root() );
     }
+    } catch(gum::Exception e){
+        std::cout << e.errorType() << std::endl << e.errorContent() << std::endl << e.errorCallStack() << std::endl;
+    }
+
+    std::cout << "CHECK IV" << std::endl;
 
     // Parcours en profondeur du diagramme source
     while ( !lifo.empty() ) {
