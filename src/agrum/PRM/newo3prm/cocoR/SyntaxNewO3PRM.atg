@@ -21,15 +21,20 @@ COMPILER NEWO3PRM
 
 private:
 
-using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
+
 using O3Integer = gum::prm::o3prm::O3Integer;
-using O3Formula = gum::prm::o3prm::O3Formula;
-using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
-using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
-using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
+using O3Float = gum::prm::o3prm::O3Float;
+
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
+using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
+
+using O3Formula = gum::prm::o3prm::O3Formula;
+using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
+
+using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
+using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
 
 using O3Type = gum::prm::o3prm::O3Type;
 using O3IntType = gum::prm::o3prm::O3IntType;
@@ -38,9 +43,12 @@ using O3Interface = gum::prm::o3prm::O3Interface;
 using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
 using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
+using O3Parameter = gum::prm::o3prm::O3Parameter;
+using O3ParameterList = gum::prm::o3prm::O3Class::O3ParameterList;
+
+using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3RawCPT = gum::prm::o3prm::O3RawCPT;
 using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
-using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
 using O3Class = gum::prm::o3prm::O3Class;
@@ -79,9 +87,10 @@ void __addO3Class( Position& pos,
                    O3Label& name,
                    O3Label& super,
                    O3LabelList& interfaces,
-                   O3AttributeList& elts ) {
+                   O3ParameterList& params,
+                   O3AttributeList& elts) {
   auto c = std::unique_ptr<O3Class>(
-      new O3Class( pos, name, super, interfaces, elts ) );
+      new O3Class( pos, name, super, interfaces, params, elts ) );
   get_prm()->classes().push_back( std::move( c ) );
 }
 
@@ -169,8 +178,9 @@ CLASS_UNIT =
   (. auto super = O3Label(); .)
   (. auto interfaces = O3LabelList(); .)
   (. auto elts = O3AttributeList(); .)
-  CLASS_DECLARATION<pos, name, super, interfaces, elts >
-  (. if (__ok(n)) { __addO3Class( pos, name, super, interfaces, elts ); } .)
+  (. auto params = O3ParameterList(); .)
+  CLASS_DECLARATION<pos, name, super, interfaces, elts, params>
+  (. if (__ok(n)) { __addO3Class( pos, name, super, interfaces, params, elts); } .)
   .
 
 //________________________
@@ -178,7 +188,8 @@ CLASS_DECLARATION<Position& pos,
                   O3Label& name,
                   O3Label& super,
                   O3LabelList& interfaces,
-                  O3AttributeList& elts> =
+                  O3AttributeList& elts,
+                  O3ParameterList& params> =
   CLASS<pos>
   LABEL<name>
   [
@@ -187,7 +198,7 @@ CLASS_DECLARATION<Position& pos,
   [
     implements LABEL_LIST<interfaces>
   ]
-  '{' { CLASS_BODY<elts> } '}'
+  '{' { CLASS_BODY<elts, params> } '}'
   .
                    
 //________________________
@@ -199,7 +210,31 @@ CLASS<Position& pos> =
   .
 
 //________________________
-CLASS_BODY<O3AttributeList& elts> =
+CLASS_BODY<O3AttributeList& elts, O3ParameterList& params> =
+    CLASS_ELEMENT<elts>
+  |
+    CLASS_PARAMETER<params>
+  .
+
+//________________________
+CLASS_PARAMETER<O3ParameterList& params> =
+    (. auto name = O3Label(); .)
+    (. auto val = O3Integer(); .)
+    int 
+    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    LABEL<name> default INTEGER<val> ';'
+    (. params.push_back( O3Parameter(pos, name, val) ); .)
+  |
+    (. auto name = O3Label(); .)
+    (. auto val = O3Float(); .)
+    real
+    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    LABEL<name> default FLOAT<val> ';'
+    (. params.push_back( O3Parameter(pos, name, val) ); .)
+  .
+
+//________________________
+CLASS_ELEMENT<O3AttributeList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
   (. auto parents = O3LabelList(); .)
@@ -407,6 +442,13 @@ INTEGER<O3Integer& i> =
   .
 
 //________________________
+FLOAT<O3Float& f> =
+  float
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. f = O3Float( pos, coco_atof( t->val ) ); .)
+  .
+
+//________________________
 LABEL<O3Label& l> =
   label
   (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
@@ -443,7 +485,6 @@ LABEL_OR_STAR_LIST<O3LabelList& list> =
     (. list.push_back( label ); .)
   }
   .
-
 
 //________________________
 FORMULA<O3Formula& f> =
