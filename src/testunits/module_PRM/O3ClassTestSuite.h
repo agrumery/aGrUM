@@ -596,6 +596,94 @@ namespace gum_tests {
       }
     }
 
+    void testSimpleParameter1() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "class Bar { " << std::endl
+              << "real lambda default 0.003;" << std::endl
+              << "int t default 8760;" << std::endl
+              << "boolean state { " << std::endl
+              << "[ 'exp(-lambda*t)', '1-exp(-lambda*t)' ]" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        TS_ASSERT_EQUALS( output.str(), "" );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+        const auto& bar = prm.getClass( "Bar" );
+        TS_ASSERT_EQUALS( bar.attributes().size(), 1 );
+        TS_ASSERT( bar.exists( "state" ) );
+        const auto& state = bar.get( "state" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( state ) );
+        const auto& cpf = state.cpf();
+        TS_ASSERT( cpf.variablesSequence().exists( &(state.type().variable()) ) );
+        TS_ASSERT_EQUALS( cpf.domainSize(), 2 );
+        auto i = gum::Instantiation( cpf );
+        i.setFirst();
+        TS_ASSERT_DELTA( cpf[i], std::exp(-0.003*8760), 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 1-std::exp(-0.003*8760), 1e-6 );
+        TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
+        TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+    void testSimpleParameter2() {
+      try {
+        // Arrange
+        auto input = std::stringstream();
+        input << "type t_state OK, NOK;" << std::endl;
+        input << "class Bar { " << std::endl
+              << "real lambda default 0.003;" << std::endl
+              << "int t default 8760;" << std::endl
+              << "t_state state {[0.2, 0.8]};" << std::endl
+              << "boolean isWorking dependson state {" << std::endl
+              << "OK: 'exp(-lambda*t)', '1-exp(-lambda*t)';" << std::endl
+              << "NOK: '1.0', '0.0';" << std::endl
+              << "};" << std::endl
+              << "}";
+        auto output = std::stringstream();
+        gum::prm::PRM<double> prm;
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            gum::prm::o3prm::parse_stream( prm, input, output ) );
+        // Assert
+        TS_ASSERT_EQUALS( output.str(), "" );
+        TS_ASSERT_EQUALS( prm.classes().size(), 1 );
+        const auto& bar = prm.getClass( "Bar" );
+        TS_ASSERT_EQUALS( bar.attributes().size(), 2 );
+        TS_ASSERT( bar.exists( "state" ) );
+        const auto& state = bar.get( "state" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( state ) );
+        TS_ASSERT( bar.exists( "isWorking" ) );
+        const auto& isWorking = bar.get( "isWorking" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( isWorking ) );
+        const auto& cpf = isWorking.cpf();
+        TS_ASSERT( cpf.variablesSequence().exists( &(state.type().variable()) ) );
+        TS_ASSERT_EQUALS( cpf.domainSize(), 4 );
+        auto i = gum::Instantiation( cpf );
+        i.setFirst();
+        TS_ASSERT_DELTA( cpf[i], std::exp(-0.003*8760), 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 1-std::exp(-0.003*8760), 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 1.0, 1e-6 );
+        i.inc();
+        TS_ASSERT_DELTA( cpf[i], 0.0, 1e-6 );
+        TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
+        TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
     //void testSimpleClassError1() {
     //  // Arrange
     //  auto input = std::stringstream();

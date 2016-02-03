@@ -157,15 +157,17 @@ void Parser::CLASS_UNIT() {
 		auto super = O3Label(); 
 		auto interfaces = O3LabelList(); 
 		auto elts = O3AttributeList(); 
-		CLASS_DECLARATION(pos, name, super, interfaces, elts );
-		if (__ok(n)) { __addO3Class( pos, name, super, interfaces, elts ); } 
+		auto params = O3ParameterList(); 
+		CLASS_DECLARATION(pos, name, super, interfaces, elts, params);
+		if (__ok(n)) { __addO3Class( pos, name, super, interfaces, params, elts); } 
 }
 
 void Parser::CLASS_DECLARATION(Position& pos,
 O3Label& name,
 O3Label& super,
 O3LabelList& interfaces,
-O3AttributeList& elts) {
+O3AttributeList& elts,
+O3ParameterList& params) {
 		CLASS(pos);
 		LABEL(name);
 		if (la->kind == _extends) {
@@ -177,8 +179,8 @@ O3AttributeList& elts) {
 			LABEL_LIST(interfaces);
 		}
 		Expect(20 /* "{" */);
-		while (la->kind == _label) {
-			CLASS_BODY(elts);
+		while (la->kind == _label || la->kind == _int || la->kind == _real) {
+			CLASS_BODY(elts, params);
 		}
 		Expect(21 /* "}" */);
 }
@@ -207,7 +209,15 @@ void Parser::LABEL_LIST(O3LabelList& list) {
 		}
 }
 
-void Parser::CLASS_BODY(O3AttributeList& elts) {
+void Parser::CLASS_BODY(O3AttributeList& elts, O3ParameterList& params) {
+		if (la->kind == _label) {
+			CLASS_ELEMENT(elts);
+		} else if (la->kind == _int || la->kind == _real) {
+			CLASS_PARAMETER(params);
+		} else SynErr(30);
+}
+
+void Parser::CLASS_ELEMENT(O3AttributeList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
 		auto parents = O3LabelList(); 
@@ -225,10 +235,46 @@ void Parser::CLASS_BODY(O3AttributeList& elts) {
 				RAW_CPT(name, type, parents, elts);
 			} else if (la->kind == _label || la->kind == 26 /* "*" */) {
 				RULE_CPT(name, type, parents, elts);
-			} else SynErr(30);
+			} else SynErr(31);
 			Expect(21 /* "}" */);
-		} else SynErr(31);
+		} else SynErr(32);
 		Expect(_semicolon);
+}
+
+void Parser::CLASS_PARAMETER(O3ParameterList& params) {
+		if (la->kind == _int) {
+			auto name = O3Label(); 
+			auto val = O3Integer(); 
+			Get();
+			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+			LABEL(name);
+			Expect(_default);
+			INTEGER(val);
+			Expect(_semicolon);
+			params.push_back( O3Parameter(pos, name, val) ); 
+		} else if (la->kind == _real) {
+			auto name = O3Label(); 
+			auto val = O3Float(); 
+			Get();
+			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+			LABEL(name);
+			Expect(_default);
+			FLOAT(val);
+			Expect(_semicolon);
+			params.push_back( O3Parameter(pos, name, val) ); 
+		} else SynErr(33);
+}
+
+void Parser::INTEGER(O3Integer& i) {
+		Expect(_integer);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		i = O3Integer( pos, coco_atoi( t->val ) ); 
+}
+
+void Parser::FLOAT(O3Float& f) {
+		Expect(_float);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		f = O3Float( pos, coco_atof( t->val ) ); 
 }
 
 void Parser::RAW_CPT(const O3Label& name,
@@ -331,7 +377,7 @@ void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, Labe
 			Get();
 			LABEL(super);
 			MAP(labels);
-		} else SynErr(32);
+		} else SynErr(34);
 		Expect(_semicolon);
 }
 
@@ -406,18 +452,12 @@ void Parser::INT(Position& pos) {
 		pos.column( t->col ); 
 }
 
-void Parser::INTEGER(O3Integer& i) {
-		Expect(_integer);
-		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		i = O3Integer( pos, coco_atoi( t->val ) ); 
-}
-
 void Parser::LABEL_OR_STAR(O3Label& l) {
 		if (la->kind == _label) {
 			Get();
 		} else if (la->kind == 26 /* "*" */) {
 			Get();
-		} else SynErr(33);
+		} else SynErr(35);
 		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 		l = O3Label( pos, narrow( t->val ) ); 
 }
@@ -433,7 +473,7 @@ void Parser::FORMULA(O3Formula& f) {
 			Get();
 			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 			f = O3Formula( pos, narrow( t->val ) ); 
-		} else SynErr(34);
+		} else SynErr(36);
 }
 
 
@@ -608,10 +648,12 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 28: s = coco_string_create(L"invalid UNIT"); break;
 			case 29: s = coco_string_create(L"invalid TYPE_UNIT"); break;
 			case 30: s = coco_string_create(L"invalid CLASS_BODY"); break;
-			case 31: s = coco_string_create(L"invalid CLASS_BODY"); break;
-			case 32: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
-			case 33: s = coco_string_create(L"invalid LABEL_OR_STAR"); break;
-			case 34: s = coco_string_create(L"invalid FORMULA"); break;
+			case 31: s = coco_string_create(L"invalid CLASS_ELEMENT"); break;
+			case 32: s = coco_string_create(L"invalid CLASS_ELEMENT"); break;
+			case 33: s = coco_string_create(L"invalid CLASS_PARAMETER"); break;
+			case 34: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
+			case 35: s = coco_string_create(L"invalid LABEL_OR_STAR"); break;
+			case 36: s = coco_string_create(L"invalid FORMULA"); break;
 
 
     default: {

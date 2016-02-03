@@ -99,15 +99,20 @@ class Parser {
 
     private:
 
-using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 using Position = gum::prm::o3prm::Position;
+
 using O3Integer = gum::prm::o3prm::O3Integer;
-using O3Formula = gum::prm::o3prm::O3Formula;
-using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
-using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
-using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
+using O3Float = gum::prm::o3prm::O3Float;
+
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
+using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
+
+using O3Formula = gum::prm::o3prm::O3Formula;
+using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
+
+using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
+using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
 
 using O3Type = gum::prm::o3prm::O3Type;
 using O3IntType = gum::prm::o3prm::O3IntType;
@@ -116,9 +121,12 @@ using O3Interface = gum::prm::o3prm::O3Interface;
 using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
 using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
+using O3Parameter = gum::prm::o3prm::O3Parameter;
+using O3ParameterList = gum::prm::o3prm::O3Class::O3ParameterList;
+
+using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3RawCPT = gum::prm::o3prm::O3RawCPT;
 using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
-using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
 using O3Class = gum::prm::o3prm::O3Class;
@@ -157,9 +165,10 @@ void __addO3Class( Position& pos,
                    O3Label& name,
                    O3Label& super,
                    O3LabelList& interfaces,
-                   O3AttributeList& elts ) {
+                   O3ParameterList& params,
+                   O3AttributeList& elts) {
   auto c = std::unique_ptr<O3Class>(
-      new O3Class( pos, name, super, interfaces, elts ) );
+      new O3Class( pos, name, super, interfaces, params, elts ) );
   get_prm()->classes().push_back( std::move( c ) );
 }
 
@@ -197,11 +206,16 @@ O3PRM* get_prm() {
 O3Label& name,
 O3Label& super,
 O3LabelList& interfaces,
-O3AttributeList& elts);
+O3AttributeList& elts,
+O3ParameterList& params);
 	void CLASS(Position& pos);
 	void LABEL(O3Label& l);
 	void LABEL_LIST(O3LabelList& list);
-	void CLASS_BODY(O3AttributeList& elts);
+	void CLASS_BODY(O3AttributeList& elts, O3ParameterList& params);
+	void CLASS_ELEMENT(O3AttributeList& elts);
+	void CLASS_PARAMETER(O3ParameterList& params);
+	void INTEGER(O3Integer& i);
+	void FLOAT(O3Float& f);
 	void RAW_CPT(const O3Label& name,
 const O3Label& type,
 const O3LabelList& parents,
@@ -225,7 +239,6 @@ O3InterfaceElementList& elts);
 	void TYPE_VALUE_LIST(LabelMap& labels );
 	void MAP(LabelMap& labels );
 	void INT(Position& pos);
-	void INTEGER(O3Integer& i);
 	void LABEL_OR_STAR(O3Label& l);
 	void FORMULA(O3Formula& f);
 
