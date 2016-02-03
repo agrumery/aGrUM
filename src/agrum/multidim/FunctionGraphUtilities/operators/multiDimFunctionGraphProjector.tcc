@@ -89,9 +89,6 @@ namespace gum {
 
 
     __rd->copy( *__src );
-    std::cout << "Root src : " << __src->root()
-              << " - rd root : " << __rd->root() << std::endl
-              << __rd->toDot() << std::endl;
 
     for ( SetIteratorSafe<const DiscreteVariable*> varIter =
               __delVars.beginSafe();
@@ -130,7 +127,7 @@ namespace gum {
       // projetée
       // ******************************************************************************************************
       if ( __rd->node( __rd->root() )->nodeVar() == curVar ) {
-        // std::cout << "Heu ...." << std::endl;
+
         const InternalNode* curVarNode = __rd->node( __rd->root() );
         GUM_SCALAR newVal = __neutral;
         for ( Idx curVarModality = 0; curVarModality < curVar->domainSize();
@@ -220,7 +217,6 @@ namespace gum {
       if ( __rd->variablesSequence().exists( curVar ) ) __rd->erase( *curVar );
     }
 
-    std::cout << "DONE" << __rd->toDot() << std::endl;
     return __rd;
   }
 

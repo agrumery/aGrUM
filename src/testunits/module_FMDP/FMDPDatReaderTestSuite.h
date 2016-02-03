@@ -65,6 +65,14 @@ namespace gum_tests {
 
       int deletedFile=std::remove(GET_RESSOURCES_PATH( "FMDP/FMDPDatRead.dot" ));
       if(deletedFile!=0) std::cout << "Couldn't delete output file." << std::endl;
+
+
+      // Only way to ensure diagrams are read correctly
+      for(gum::SequenceIteratorSafe<gum::Idx> actIter = fmdp.beginActions(); actIter != fmdp.endActions(); ++actIter)
+        for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter){
+          gum::MultiDimFunctionGraph<float>* hey = new gum::MultiDimFunctionGraph<float>(* static_cast<const gum::MultiDimFunctionGraph<float>*>(fmdp.transition(*actIter, *varIter)));
+          delete hey;
+        }
     }
 
     public:
