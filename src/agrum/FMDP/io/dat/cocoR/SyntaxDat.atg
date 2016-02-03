@@ -186,12 +186,14 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Transition Function Graph recursion rule
         /// *************************************************************************************
-        SUB_TRANSITION_FUNCTION_GRAPH =                         (. std::string name_of_var;
-                                                                                                std::string modality_of_var;
-                                                                                                NodeId var_id; .)
-                IDENT<name_of_var>                                           (. var_id = __factory->addInternalNode( name_of_var );
-                                                                                                if( !__parentNode.empty() )
-                                                                                                    __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); .)
+        SUB_TRANSITION_DECISION_GRAPH =           (. std::string name_of_var;
+                                                       std::string modality_of_var;
+                                                       NodeId var_id; .)
+                IDENT<name_of_var>                  (. var_id = __factory->addInternalNode( name_of_var );
+                                                       if( !__parentNode.empty() )
+                                                         __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
+                                                       else
+                                                         __factory->setRoot(var_id); .)
                 {'('
                 IDENT_OR_INTEGER<modality_of_var>                  (. __parentNode.push_back( var_id );
                                                                                                __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); .)
@@ -204,13 +206,15 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Transition diagram leaf rule
         /// *************************************************************************************
-        TRANSITION_LEAF =                 (. float value;
-                                                          gum::Idx i = 0;
-                                                          NodeId var_id = __factory->addInternalNode( __currentFunctionGraphVar );
-                                                          if( !__parentNode.empty() )
-                                                              __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); .)
-                FLOAT<value>                (. NodeId val_id = __factory->addTerminalNode( value );
-                                                          __factory->addArc( var_id, val_id, i ); .)
+        TRANSITION_LEAF =       (. float value;
+                                   gum::Idx i = 0;
+                                   NodeId var_id = __factory->addInternalNode( __currentFunctionGraphVar );
+                                   if( !__parentNode.empty() )
+                                      __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
+                                   else
+                                     __factory->setRoot(var_id); .)
+                FLOAT<value>    (. NodeId val_id = __factory->addTerminalNode( value );
+                                   __factory->addArc( var_id, val_id, i ); .)
                 { 
                 FLOAT<value>                 (. ++i;
                                                            val_id = __factory->addTerminalNode( value );
@@ -263,12 +267,14 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Function Graph recursion rule
         /// *************************************************************************************
-        SUB_FUNCTION_GRAPH =                                         (. std::string name_of_var;
-                                                                                             std::string modality_of_var;
-                                                                                             NodeId var_id;.)
-                IDENT<name_of_var>                                        (. var_id = __factory->addInternalNode( name_of_var );
-                                                                                             if( !__parentNode.empty() )
-                                                                                                 __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); .)
+        SUB_DECISION_GRAPH =                      (. std::string name_of_var;
+                                                       std::string modality_of_var;
+                                                       NodeId var_id;.)
+                IDENT<name_of_var>                  (. var_id = __factory->addInternalNode( name_of_var );
+                                                       if( !__parentNode.empty() )
+                                                         __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
+                                                       else
+                                                       __factory->setRoot(var_id); .)
                 {'('
                 IDENT_OR_INTEGER<modality_of_var>                (. __parentNode.push_back( var_id );
                                                                                              __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  .)
