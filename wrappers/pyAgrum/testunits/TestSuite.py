@@ -1,3 +1,6 @@
+
+
+
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
@@ -9,6 +12,7 @@ import sys
 sys.path.insert(1,"..")
 
 import unittest
+
 import VariablesTestSuite
 import BayesNetTestSuite
 import PythonBNListenerTestSuite
@@ -18,6 +22,7 @@ import JunctionTreeTestSuite
 import GibbsTestSuite
 import ICIModelsForBNTestSuite
 import BNLearnerTestSuite
+import AggregatorsForBNTestSuite
 
 import time
 
@@ -30,7 +35,8 @@ tests = unittest.TestSuite([
                             JunctionTreeTestSuite.ts,
                             GibbsTestSuite.ts,
                             ICIModelsForBNTestSuite.ts,
-                            BNLearnerTestSuite.ts
+                            BNLearnerTestSuite.ts,
+                            AggregatorsForBNTestSuite.ts
                             ])
 
 

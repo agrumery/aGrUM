@@ -213,6 +213,8 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::learning::ScoreBD<>;
+
 /// always include the template implementation
 #include <agrum/learning/scores_and_tests/scoreBD.tcc>
 

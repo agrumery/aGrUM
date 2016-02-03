@@ -28,9 +28,17 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
-#include <agrum/multidim/aggregators/or.h>
+#include <agrum/multidim/aggregators/amplitude.h>
 #include <agrum/multidim/aggregators/and.h>
+#include <agrum/multidim/aggregators/count.h>
+#include <agrum/multidim/aggregators/exists.h>
+#include <agrum/multidim/aggregators/forall.h>
+#include <agrum/multidim/aggregators/max.h>
+#include <agrum/multidim/aggregators/median.h>
+#include <agrum/multidim/aggregators/min.h>
+#include <agrum/multidim/aggregators/or.h>
 
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
@@ -303,6 +311,59 @@ namespace gum {
     reverseArc( Arc( tail, head ) );
   }
 
+
+  //==============================================
+  // Aggregators
+  //=============================================
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::addAMPLITUDE( const DiscreteVariable& var ) {
+    return add( var, new aggregator::Amplitude<GUM_SCALAR>() );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::addAND( const DiscreteVariable& var ) {
+    if ( var.domainSize() > 2 )
+    GUM_ERROR( SizeError, "an AND has to be boolean" );
+
+    return add( var, new aggregator::And<GUM_SCALAR>() );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::addCOUNT( const DiscreteVariable& var ,Idx value) {
+    return add( var, new aggregator::Count<GUM_SCALAR>(value) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::addEXISTS( const DiscreteVariable& var,Idx value ) {
+    if ( var.domainSize() > 2 )
+    GUM_ERROR( SizeError, "an EXISTS has to be boolean" );
+
+    return add( var, new aggregator::Exists<GUM_SCALAR>(value) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::addFORALL( const DiscreteVariable& var,Idx value ) {
+    if ( var.domainSize() > 2 )
+    GUM_ERROR( SizeError, "an EXISTS has to be boolean" );
+
+    return add( var, new aggregator::Forall<GUM_SCALAR>(value) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::addMAX( const DiscreteVariable& var) {
+    return add( var, new aggregator::Max<GUM_SCALAR>() );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::addMEDIAN( const DiscreteVariable& var) {
+    return add( var, new aggregator::Median<GUM_SCALAR>() );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::addMIN( const DiscreteVariable& var) {
+    return add( var, new aggregator::Min<GUM_SCALAR>() );
+  }
+
   template <typename GUM_SCALAR>
   INLINE NodeId BayesNet<GUM_SCALAR>::addOR( const DiscreteVariable& var ) {
     if ( var.domainSize() > 2 )
@@ -311,14 +372,10 @@ namespace gum {
     return add( var, new aggregator::Or<GUM_SCALAR>() );
   }
 
-  template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addAND( const DiscreteVariable& var ) {
-    if ( var.domainSize() > 2 )
-      GUM_ERROR( SizeError, "an AND has to be boolean" );
 
-    return add( var, new aggregator::And<GUM_SCALAR>() );
-  }
-
+  //================================
+  // ICIModels
+  //================================
   template <typename GUM_SCALAR>
   INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyOR( const DiscreteVariable& var,
                                                   GUM_SCALAR external_weight ) {
@@ -461,13 +518,16 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void BayesNet<GUM_SCALAR>::generateCPTs() {
+  INLINE void BayesNet<GUM_SCALAR>::generateCPTs() {
+    for ( auto node : nodes() )
+      generateCPT( node );
+  }
+  template <typename GUM_SCALAR>
+  INLINE void BayesNet<GUM_SCALAR>::generateCPT(NodeId node) {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
-    for ( auto node : nodes() ) {
-      generator.generateCPT( cpt( node ).pos( variable( node ) ), cpt( node ) );
+    generator.generateCPT( cpt( node ).pos( variable( node ) ), cpt( node ) );
     }
-  }
 
   template <typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::changePotential( NodeId id,

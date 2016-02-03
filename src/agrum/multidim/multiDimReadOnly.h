@@ -19,10 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Header of the gum::MultiDimReadOnly class.
+ * @brief Header of the MultiDimReadOnly class.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- *<{prenom.nom}_at_lip6.fr>
  */
 
 #ifndef GUM_MULTI_DIM_READONLY_H
@@ -31,67 +30,67 @@
 #include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
+
   /**
    * @class MultiDimReadOnly
-   * @brief Abstract base class for all multi dimensionnal read only structure.
-   *
+   * @headerfile multiDimReadOnly.h <agrum/multidim/multiDimReadOnly.h>
    * @ingroup multidim_group
+   *
+   * @brief Abstract base class for all multi dimensionnal read only structure.
+   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * table.
    */
   template <typename GUM_SCALAR>
   class MultiDimReadOnly : public MultiDimImplementation<GUM_SCALAR> {
     public:
-    // ############################################################################
+    // =========================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // =========================================================================
     /// @{
-
-    /// Default constructor.
-
-    MultiDimReadOnly();
-
-    /// Copy constructor.
-
-    MultiDimReadOnly( const MultiDimReadOnly<GUM_SCALAR>& from );
-
-    /// Destructor.
-
-    virtual ~MultiDimReadOnly();
-
-    /// @}
 
     /**
-     * This method creates a clone of this object, withouth its content
-     * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * @warning you must desallocate by yourself the memory
-     * @return an empty clone of this object with the same type
+     * @brief Default constructor.
      */
+    MultiDimReadOnly();
+
+    /**
+     * @brief Copy constructor.
+     * @param from The MultiDimReadOnly to copy.
+     */
+    MultiDimReadOnly( const MultiDimReadOnly<GUM_SCALAR>& from );
+
+    /**
+     * @brief Class destructor.
+     */
+    virtual ~MultiDimReadOnly();
+
     virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
-    // ############################################################################
+    /// @}
+    // =========================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // =========================================================================
     /// @{
 
-    /// @throw OperationNotAllowed Raised because this is a read only table.
-
+    /**
+     * @warning An OperationNotAllowed will be raised because this is a read
+     * only table.
+     */
     virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
 
-    /// @throw OperationNotAllowed Raised because this is a read only table.
-
+    /**
+     * @warning An OperationNotAllowed will be raised because this is a read
+     * only table.
+     */
     virtual void fill( const GUM_SCALAR& ) const;
 
     /// @}
 
     protected:
-    /// @throw OperationNotAllowed Raised because this is a read only table.
-
+    /**
+     * @warning An OperationNotAllowed will be raised because this is a read
+     * only table.
+     */
     virtual GUM_SCALAR& _get( const Instantiation& i ) const;
   };
 } /* namespace gum */

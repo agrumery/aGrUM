@@ -26,6 +26,8 @@
 
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/multidim/operators/multiDimCombinationDefault.h>
+#include <agrum/multidim/operators/operators4MultiDim.h>
+
 namespace gum {
 
   template <typename GUM_SCALAR>
@@ -137,7 +139,7 @@ namespace gum {
       NodeId id, Potential<GUM_SCALAR>& marginal ) {
     __computeEliminationOrder();
     __createInitialPool();
-    Set<Potential<GUM_SCALAR>*> pool( __pool );
+    Set<Potential<GUM_SCALAR>*> pool(__pool);
 
     for ( size_t i = 0; i < __eliminationOrder.size(); ++i ) {
       if ( __eliminationOrder[i] != id ) {
@@ -151,20 +153,31 @@ namespace gum {
       // No evidence on query
     }
 
-    marginal.add( this->bn().variable( id ) );
-    marginal.fill( (GUM_SCALAR)1 );
-
-    for ( auto pot : pool ) {
-      if ( pot->nbrDim() > 0 ) {
-        marginal.multiplicateBy( *pot );
+    std::vector<Potential<GUM_SCALAR>*> result;
+    for (auto pot: pool) {
+      if ( pot->contains( this->bn().variable(id) ) ) {
+        result.push_back( pot );
       }
     }
 
+    while (result.size() > 1) {
+      auto &p1 = *(result.back());
+      result.pop_back();
+      auto &p2 = *(result.back());
+      result.pop_back();
+      auto mult = new Potential<GUM_SCALAR>(p1 * p2);
+      result.push_back( mult );
+      __trash.insert( mult );
+    }
+
+    // Copy result in marginal
+    marginal = *(result.back());
     marginal.normalize();
 
     // Cleaning up the mess
-    for ( auto pot : __trash )
+    for ( auto pot : __trash ) {
       delete pot;
+    }
 
     __trash.clear();
   }

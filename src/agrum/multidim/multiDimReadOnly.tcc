@@ -19,10 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of the gum::MultiDimReadOnly class.
+ * @brief Implementation of the MultiDimReadOnly class.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- *<{prenom.nom}_at_lip6.fr>
  */
 
 namespace gum {

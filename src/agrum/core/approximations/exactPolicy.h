@@ -110,6 +110,9 @@ namespace gum {
   };
 }
 
+extern template class gum::ExactPolicy<float>;
+extern template class gum::ExactPolicy<double>;
+
 // Always include inlined implementation of template class
 #include <agrum/core/approximations/exactPolicy.tcc>
 

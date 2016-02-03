@@ -1938,6 +1938,9 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::Bijection<int, int>;
+extern template class gum::Bijection<std::string, std::string>;
+
 // always include the template implementations
 #include <agrum/core/bijection.tcc>
 

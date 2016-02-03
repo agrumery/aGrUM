@@ -1085,6 +1085,9 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::PriorityQueue<std::string>;
+extern template class gum::PriorityQueue<int, int>;
+
 // always include the implementation of the templates
 #include <agrum/core/priorityQueue.tcc>
 

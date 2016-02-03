@@ -39,7 +39,7 @@ namespace gum {
 
     /** @class And
     * @brief And aggregator
-    * @ingroup multidim_group
+    * @ingroup multidim_agg_group
     *
     * @see MultiDimAggregator for more details of implementations
     *

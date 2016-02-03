@@ -42,7 +42,7 @@ namespace gum {
     // if ( master ) actAsSlave( master->getMasterRef() );
   }
 
-  /// constructor for a SetInst contained into a MultiDimInterface
+  // constructor for a SetInst contained into a MultiDimInterface
 
   SetInst::SetInst( MultiDimAdressable& d )
       : /*__master( 0 ),*/ __overflow( false ) {
@@ -58,7 +58,7 @@ namespace gum {
     __init( const_cast<MultiDimAdressable*>( &d ) );
   }
 
-  /// constructor for a SetInst contained into a MultiDimInterface
+  // constructor for a SetInst contained into a MultiDimInterface
 
   SetInst::SetInst( MultiDimAdressable* d )
       : /*__master( 0 ),*/ __overflow( false ) {
@@ -68,7 +68,7 @@ namespace gum {
     if ( d ) __init( d );
   }
 
-  /// constructor for a SetInst contained into a MultiDimInterface
+  // constructor for a SetInst contained into a MultiDimInterface
   /** this constructor is needed in order to allow creation of SetInst(this)
    * in MultiDimAdressable and below */
 
@@ -80,7 +80,7 @@ namespace gum {
     if ( const_d ) __init( const_cast<MultiDimAdressable*>( const_d ) );
   }
 
-  /// copy constructor
+  // copy constructor
 
   SetInst::SetInst( const SetInst& aI )
       : /* MultiDimInterface(), __master( 0 ),*/ __overflow( false ) {
@@ -140,8 +140,8 @@ namespace gum {
     return *this;
   }
 
-  /// function is called by the master (if any) when changes arise in its vars
-  /// list
+  // function is called by the master (if any) when changes arise in its vars
+  // list
 
   /*
      void SetInst::changeDimCommand
@@ -167,7 +167,7 @@ namespace gum {
   __master->changeNotification(*this);
   }
   */
-  /// Gives a string version of a SetInst
+  // Gives a string version of a SetInst
   std::string SetInst::toString() const {
     std::stringstream sstr;
     // check if the value of the SetInst is correct
@@ -224,20 +224,7 @@ namespace gum {
     return sstr.str();
   }
 
-  /// give a Id value for Hamming distance
-  /*  Idx SetInst::hamming() const  {
-      Sequence<const DiscreteVariable *>::iterator iter = __vars.begin();
-      Idx res = 0;
-
-      do
-      res += val( iter.pos() );
-      while ( ++iter != __vars.end() );
-
-      return res;
-      }*/
-
-  /// an operator for user-friendly displaying the content of a SetInst
-
+  // an operator for user-friendly displaying the content of a SetInst
   std::ostream& operator<<( std::ostream& aStream, const SetInst& i ) {
     aStream << i.toString();
     return aStream;
@@ -251,6 +238,19 @@ namespace gum {
                             const gum::DiscreteVariable& i ) {
     inst.erase( i );
     return inst;
+  }
+
+  void gum::SetInst::assign_values(
+      gum::Bijection<const gum::DiscreteVariable*,
+                     const gum::DiscreteVariable*>& bij,
+      const gum::SetInst& i,
+      gum::SetInst& j ) {
+    try {
+      for ( const auto var : i.variablesSequence() )
+        j.chgVal( bij.second( var ), i.val( var ) );
+    } catch ( gum::NotFound& ) {
+      GUM_ERROR( gum::NotFound, "missing variable in bijection or SetInst" );
+    }
   }
 
 } /* namespace gum */

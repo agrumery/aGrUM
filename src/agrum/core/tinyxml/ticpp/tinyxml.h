@@ -324,7 +324,7 @@ class TiXmlBase
   protected:
   static const char* SkipWhiteSpace( const char*, TiXmlEncoding encoding );
   inline static bool IsWhiteSpace( char c ) {
-    return ( isspace( (unsigned char)c ) || c == '\n' || c == '\r' );
+    return ( std::isspace( (unsigned char)c ) || c == '\n' || c == '\r' );
   }
   inline static bool IsWhiteSpace( int c ) {
     if ( c < 256 ) return IsWhiteSpace( (char)c );
@@ -416,11 +416,11 @@ class TiXmlBase
   static int IsAlphaNum( unsigned char anyByte, TiXmlEncoding encoding );
   inline static int ToLower( int v, TiXmlEncoding encoding ) {
     if ( encoding == TIXML_ENCODING_UTF8 ) {
-      if ( v < 128 ) return tolower( v );
+      if ( v < 128 ) return std::tolower( v );
 
       return v;
     } else {
-      return tolower( v );
+      return std::tolower( v );
     }
   }
   static void

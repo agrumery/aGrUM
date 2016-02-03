@@ -17,10 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation of MultiDimSparse.
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
 
 namespace gum {
 
-  /// Default constructor: creates an empty null dimensional matrix
+  // Default constructor: creates an empty null dimensional matrix
 
   template <typename GUM_SCALAR>
   MultiDimSparse<GUM_SCALAR>::MultiDimSparse( const GUM_SCALAR& default_value )
@@ -30,11 +36,10 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimSparse );
   }
 
-  /// copy constructor
+  // copy constructor
 
   template <typename GUM_SCALAR>
-  MultiDimSparse<GUM_SCALAR>::MultiDimSparse(
-      const MultiDimSparse<GUM_SCALAR>& from )
+  MultiDimSparse<GUM_SCALAR>::MultiDimSparse( const MultiDimSparse<GUM_SCALAR>& from )
       : MultiDimWithOffset<GUM_SCALAR>( from )
       , _params( from._params )
       , _default( from._default ) {
@@ -42,7 +47,7 @@ namespace gum {
     GUM_CONS_CPY( MultiDimSparse );
   }
 
-  /// destructor
+  // destructor
 
   template <typename GUM_SCALAR>
   MultiDimSparse<GUM_SCALAR>::~MultiDimSparse() {
@@ -51,11 +56,10 @@ namespace gum {
     // no need to unregister all slaves as it will be done by MultiDimWithOffset
   }
 
-  /// data access operator
+  // data access operator
 
   template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR
-  MultiDimSparse<GUM_SCALAR>::get( const Instantiation& i ) const {
+  INLINE GUM_SCALAR MultiDimSparse<GUM_SCALAR>::get( const Instantiation& i ) const {
     Size key;
 
     if ( i.isMaster( this ) ) {
@@ -85,7 +89,7 @@ namespace gum {
     }
   }
 
-  /// add a new dimension, needed for updating the _offsets & _gaps
+  // add a new dimension, needed for updating the _offsets & _gaps
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimSparse<GUM_SCALAR>::add( const DiscreteVariable& v ) {
@@ -95,7 +99,7 @@ namespace gum {
     fill( _default );
   }
 
-  /// removes a dimension, needed for updating the _offsets & _gaps
+  // removes a dimension, needed for updating the _offsets & _gaps
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimSparse<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
@@ -105,7 +109,7 @@ namespace gum {
     fill( _default );
   }
 
-  /// synchronise content after MultipleChanges
+  // synchronise content after MultipleChanges
   template <typename GUM_SCALAR>
   INLINE void MultiDimSparse<GUM_SCALAR>::_commitMultipleChanges( void ) {
     //@todo : anything better than that !
@@ -125,8 +129,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE MultiDimContainer<GUM_SCALAR>*
-  MultiDimSparse<GUM_SCALAR>::newFactory() const {
+  INLINE MultiDimContainer<GUM_SCALAR>* MultiDimSparse<GUM_SCALAR>::newFactory() const {
     return new MultiDimSparse<GUM_SCALAR>( _default );
   }
 
@@ -141,6 +144,11 @@ namespace gum {
   INLINE void MultiDimSparse<GUM_SCALAR>::_swap( const DiscreteVariable* x,
                                                  const DiscreteVariable* y ) {
     MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR& MultiDimSparse<GUM_SCALAR>::_get( const Instantiation& i ) const {
+    GUM_ERROR( OperationNotAllowed, "Do not use this with the MultiDimSparse class." );
   }
 
 } /* namespace gum */

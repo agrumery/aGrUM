@@ -59,7 +59,11 @@ def getInvocation(current,colored=False):
   for opt in current.keys():
     if not opt in ['action','mode','targets']:
       if not opt in cfg.non_persistent:
-        invocation+=getValParam(opt,current[opt],c_value,c_error,c_end)
+          if not opt in cfg.swapOptions.keys():
+              invocation+=getValParam(opt,current[opt],c_value,c_error,c_end)
+
+  for opt in cfg.swapOptions.keys():
+      invocation+=getParam(cfg.swapOptions[opt][current[opt]],c_error,c_end)
 
   for opt in cfg.non_persistent:
     if current[opt]:

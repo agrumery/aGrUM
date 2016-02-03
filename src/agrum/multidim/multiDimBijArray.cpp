@@ -17,5 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation of the MultiDimBijArray class.
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ * @author Lionel TORTI
+ */
 
 #include <agrum/multidim/multiDimBijArray.h>
+

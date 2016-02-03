@@ -35,6 +35,7 @@
 #include <utility>
 
 #include <agrum/config.h>
+#include <agrum/core/hashFunc.h>
 
 namespace gum {
 
@@ -186,6 +187,17 @@ namespace gum {
   };
 
 } /* namespace gum */
+
+extern template class gum::HashFunc<
+    std::tuple<gum::learning::IdSet<std::allocator<unsigned int>>>>;
+extern template class gum::HashFunc<
+    std::tuple<gum::learning::IdSet<std::allocator<unsigned int>>,
+               unsigned int>>;
+extern template class gum::HashFunc<
+    std::tuple<gum::learning::IdSet<std::allocator<unsigned int>>,
+               unsigned int,
+               unsigned int>>;
+
 
 // always include the template implementation
 #include <agrum/learning/scores_and_tests/idSet.tcc>

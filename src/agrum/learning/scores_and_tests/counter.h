@@ -438,6 +438,8 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::learning::Counter<>;
+
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/counter.tcc>
 

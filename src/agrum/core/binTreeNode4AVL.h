@@ -365,6 +365,8 @@ namespace gum {
 
 }  // namespace gum
 
+extern template class gum::BinTreeNode4AVL<int>;
+
 // always include the template implementations
 #include <agrum/core/binTreeNode4AVL.tcc>
 

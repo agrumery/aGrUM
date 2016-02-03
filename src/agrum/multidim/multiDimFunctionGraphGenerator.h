@@ -21,60 +21,80 @@
  * @file
  * @brief Headers of gum::MultiDimFunctionGraphGenerator.
  *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  * @author Jean-Christophe Magnan
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H
 
-// ============================================================================
 #include <agrum/config.h>
-// ============================================================================
 #include <agrum/multidim/multiDimFunctionGraph.h>
-// ============================================================================
 
 namespace gum {
   /**
-   * @class MultiDimFunctionGraphGenerator multiDimFunctionGraphGenerator.h
-   * <agrum/multidim/multiDimFunctionGraphGenerator.h>
+   * @class MultiDimFunctionGraphGenerator
+   * @ingroup multidim_group
    *
    * @brief Class implementing a function graph generator with template type
-   * :double
+   * double.
    *
-   * @ingroup multidim_group
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/multidim/multiDimFunctionGraphGenerator.h>
+   * @endcode
+   *
    */
   class MultiDimFunctionGraphGenerator {
 
     public:
-    // ############################################################################
+    // =========================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // =========================================================================
+
     /// @{
-    // ============================================================================
-    /// Default constructor.
-    // ============================================================================
+    /**
+     * @brief Default constructor.
+     */
     MultiDimFunctionGraphGenerator(
         Idx maxVar,
         Idx minVar,
         const Sequence<const DiscreteVariable*>& varSeq );
 
-    // ============================================================================
-    /// destructor.
-    // ============================================================================
+    /**
+     * @brief Class destructor.
+     */
     ~MultiDimFunctionGraphGenerator();
 
     /// @}
 
+    /**
+     * @brief Generates a MultiDimFunctionGraph.
+     */
     MultiDimFunctionGraph<double>* generate();
 
 
     private:
+    /**
+     * @brief Creates a leaf.
+     */
     bool __createLeaf( NodeId currentNodeId,
                        HashTable<NodeId, Idx>& node2MinVar );
+
+    /**
+     * @brief Generate a variable position.
+     */
     Idx __generateVarPos( Idx offset, Idx span );
 
+    /// The variables
     const Sequence<const DiscreteVariable*> __varSeq;
+
+    /// The total number of variables
     Idx __nbTotalVar;
+
+    /// The seed for random numbers
     static Idx __genSeed;
   };
 } /* end of namespace */

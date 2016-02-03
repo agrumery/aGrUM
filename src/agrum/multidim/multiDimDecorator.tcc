@@ -17,6 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation for MultiDimDecorator.
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
 
 // include the operators that will be used by the decorators
 #include <agrum/multidim/operators/operators4MultiDim.h>
@@ -29,7 +35,7 @@
 
 namespace gum {
 
-  /// constructor
+  // constructor
 
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
@@ -60,7 +66,7 @@ namespace gum {
     }
   }
 
-  /// destructor
+  // destructor
 
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>::~MultiDimDecorator() {
@@ -71,7 +77,7 @@ namespace gum {
     GUM_DESTRUCTOR( MultiDimDecorator );
   }
 
-  /// return a data, given a Insantiation - final method
+  // return a data, given a Insantiation - final method
 
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR&
@@ -92,21 +98,21 @@ namespace gum {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->set( i, value );
   }
 
-  /// get the size of domains - final method
+  // get the size of domains - final method
 
   template <typename GUM_SCALAR>
   INLINE Size MultiDimDecorator<GUM_SCALAR>::domainSize() const {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->domainSize();
   }
 
-  /// add a new var to the sequence of vars - final method
+  // add a new var to the sequence of vars - final method
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimDecorator<GUM_SCALAR>::add( const DiscreteVariable& v ) {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->add( v );
   }
 
-  /// listen to change in each recorded Instantiation. final method
+  // listen to change in each recorded Instantiation. final method
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimDecorator<GUM_SCALAR>::changeNotification(
@@ -118,7 +124,7 @@ namespace gum {
         ->changeNotification( i, var, oldval, newval );
   }
 
-  /// listen to an assignment of a value in a Instantiation
+  // listen to an assignment of a value in a Instantiation
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -126,7 +132,7 @@ namespace gum {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->setChangeNotification( i );
   }
 
-  /// listen to setFirst in each recorded Instantiation. final method.
+  // listen to setFirst in each recorded Instantiation. final method.
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -134,7 +140,7 @@ namespace gum {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->setFirstNotification( i );
   }
 
-  /// listen to setLast in each recorded Instantiation. final method.
+  // listen to setLast in each recorded Instantiation. final method.
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -142,7 +148,7 @@ namespace gum {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->setLastNotification( i );
   }
 
-  /// listen to increment in each recorded Instantiation. final method.
+  // listen to increment in each recorded Instantiation. final method.
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -150,7 +156,7 @@ namespace gum {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->setIncNotification( i );
   }
 
-  /// listen to increment in each recorded Instantiation. final method.
+  // listen to increment in each recorded Instantiation. final method.
 
   template <typename GUM_SCALAR>
   INLINE void
@@ -158,7 +164,7 @@ namespace gum {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->setDecNotification( i );
   }
 
-  /// add a Instantiation as a slave of this
+  // add a Instantiation as a slave of this
 
   template <typename GUM_SCALAR>
   INLINE bool MultiDimDecorator<GUM_SCALAR>::registerSlave( Instantiation& i ) {
@@ -205,7 +211,7 @@ namespace gum {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->fill( d );
   }
 
-  /// notification modification on vars to all Instantiation listeners.
+  // notification modification on vars to all Instantiation listeners.
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimDecorator<GUM_SCALAR>::notifyChange() const {
@@ -213,7 +219,7 @@ namespace gum {
     GUM_ERROR( OperationNotAllowed, "Not implemented yet" );
   }
 
-  /// give a const ref to the sequence of DiscreteVariable*. final method.
+  // give a const ref to the sequence of DiscreteVariable*. final method.
 
   template <typename GUM_SCALAR>
   INLINE const Sequence<const DiscreteVariable*>&
@@ -221,44 +227,44 @@ namespace gum {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->variablesSequence();
   }
 
-  /// get the nbr of vars in the sequence. final method
+  // get the nbr of vars in the sequence. final method
 
   template <typename GUM_SCALAR>
   INLINE Idx MultiDimDecorator<GUM_SCALAR>::nbrDim() const {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->nbrDim();
   }
 
-  /// In order to insure the deref. for decorators, we need to virtualize the
-  /// access to master pointer
+  // In order to insure the deref. for decorators, we need to virtualize the
+  // access to master pointer
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>&
   MultiDimDecorator<GUM_SCALAR>::getMasterRef( void ) {
     return *_content;
   }
 
-  /// In order to insure the deref. for decorators, we need to virtualize the
-  /// access to master pointer
+  // In order to insure the deref. for decorators, we need to virtualize the
+  // access to master pointer
   template <typename GUM_SCALAR>
   INLINE const MultiDimImplementation<GUM_SCALAR>&
   MultiDimDecorator<GUM_SCALAR>::getMasterRef( void ) const {
     return *_content;
   }
 
-  /// protected access to _content
+  // protected access to _content
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>*
   MultiDimDecorator<GUM_SCALAR>::content() {
     return _content;
   }
 
-  /// protected access to _content
+  // protected access to _content
   template <typename GUM_SCALAR>
   INLINE const MultiDimImplementation<GUM_SCALAR>*
   MultiDimDecorator<GUM_SCALAR>::content() const {
     return _content;
   }
 
-  /// string representation of internal data about i in this.
+  // string representation of internal data about i in this.
   template <typename GUM_SCALAR>
   INLINE const std::string
   MultiDimDecorator<GUM_SCALAR>::toString( const Instantiation* i ) const {
@@ -281,7 +287,7 @@ namespace gum {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->endMultipleChanges( x );
   }
 
-  /// Perform an homothety on a multiDim container
+  // Perform an homothety on a multiDim container
   template <typename GUM_SCALAR>
   INLINE void MultiDimDecorator<GUM_SCALAR>::homothetic(
       const GUM_SCALAR alpha,
@@ -295,7 +301,7 @@ namespace gum {
     }
   }
 
-  /// iterate add on each element of a multiDim container
+  // iterate add on each element of a multiDim container
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR MultiDimDecorator<GUM_SCALAR>::fold(
       GUM_SCALAR ( *add )( const GUM_SCALAR, const GUM_SCALAR ) ) const {
@@ -321,18 +327,10 @@ namespace gum {
       // TODO : control the dimensions ?
       MultiDimImplementation<GUM_SCALAR>* tmp = _content;
       _content = aContent;
-      /// registers all instantiations
+      // registers all instantiations
       delete ( tmp );
     }
   }
-  // template <typename GUM_SCALAR>
-  // MultiDimDecorator<GUM_SCALAR>* MultiDimDecorator<GUM_SCALAR>::newFactory()
-  // const
-  // {
-  //   return new MultiDimDecorator<GUM_SCALAR>
-  //     ( static_cast<MultiDimImplementation<GUM_SCALAR>*>
-  //       ( this->getContent()->newFactory() ) );
-  // }
 
   template <typename GUM_SCALAR>
   INLINE const std::string MultiDimDecorator<GUM_SCALAR>::toString() const {

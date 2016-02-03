@@ -25,6 +25,8 @@
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/multiDimBucket.h>
+#include <agrum/multidim/operators/operators4MultiDim.h>
+#include <agrum/multidim/operators/projections4MultiDim.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/instantiation.h>
 
@@ -43,13 +45,33 @@ namespace gum_tests {
 
     // Product must have variables
     void __makeProduct( gum::Potential<double>& product ) {
-      gum::Potential<double> temp;
-
-      for ( size_t i = 0; i < 5; ++i ) {
-        temp.multiplicateBy( *( __potentials->at( i ) ) );
+      std::vector<gum::Potential<double>*> trash, temp(*__potentials);
+      while (temp.size() > 1) {
+        auto& p1 = *(temp.back());
+        temp.pop_back();
+        auto& p2 = *(temp.back());
+        temp.pop_back();
+        auto mult = new gum::Potential<double>(p1 * p2);
+        temp.push_back(mult);
+        trash.push_back(mult);
       }
 
-      product.marginalize( temp );
+      auto result = temp.back();
+      auto del_vars = gum::Set<const gum::DiscreteVariable*>();
+      for (auto var: result->variablesSequence()) {
+        if (not product.contains(*var)) {
+        del_vars.insert( var );
+      }
+      }
+
+      result = new gum::Potential<double>(gum::projectSum( *result, del_vars ));
+      trash.push_back( result );
+
+      product = *result;
+
+      for (auto pot: trash) {
+        delete pot;
+      }
     }
 
     public:
@@ -425,7 +447,7 @@ namespace gum_tests {
     }
 
     void testWithSmallBN() {
-      gum::BayesNet<float>* bn = new gum::BayesNet<float>();
+      gum::BayesNet<double>* bn = new gum::BayesNet<double>();
       gum::LabelizedVariable vc( "c", "cloudy", 2 ), vs( "s", "sprinklet", 2 );
       gum::LabelizedVariable vr( "r", "rain", 2 ), vw( "w", "wet grass", 2 );
       gum::Id c = bn->add( vc );
@@ -437,64 +459,64 @@ namespace gum_tests {
       bn->addArc( s, w );
       bn->addArc( r, w );
       {
-        const float t[2] = {0.5, 0.5};
-        const std::vector<float> ca( t, t + 2 );
+        const double t[2] = {0.5, 0.5};
+        const std::vector<double> ca( t, t + 2 );
         bn->cpt( c ).fillWith( ca );
       }
 
       {
-        const float t[4] = {0.5, 0.5, 0.9, 0.1};
-        const std::vector<float> sa( t, t + 4 );
+        const double t[4] = {0.5, 0.5, 0.9, 0.1};
+        const std::vector<double> sa( t, t + 4 );
         bn->cpt( s ).fillWith( sa );
       }
 
       {
-        const float t[4] = {0.8, 0.2, 0.2, 0.8};
-        const std::vector<float> ra( t, t + 4 );
+        const double t[4] = {0.8, 0.2, 0.2, 0.8};
+        const std::vector<double> ra( t, t + 4 );
         bn->cpt( r ).fillWith( ra );
       }
 
       {
-        const float t[8] = {1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99};
-        const std::vector<float> wa( t, t + 8 );
+        const double t[8] = {1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99};
+        const std::vector<double> wa( t, t + 8 );
         bn->cpt( w ).fillWith( wa );
       }
 
-      gum::Potential<float>* e_s = new gum::Potential<float>();
+      gum::Potential<double>* e_s = new gum::Potential<double>();
       {
         e_s->add( bn->variable( s ) );
-        const float t[2] = {0., 1.};
-        const std::vector<float> sa( t, t + 2 );
+        const double t[2] = {0., 1.};
+        const std::vector<double> sa( t, t + 2 );
         e_s->fillWith( sa );
       }
 
-      gum::Potential<float>* e_c = new gum::Potential<float>();
+      gum::Potential<double>* e_c = new gum::Potential<double>();
       {
         e_c->add( bn->variable( c ) );
-        const float t[2] = {1., 0.};
-        const std::vector<float> ca( t, t + 2 );
+        const double t[2] = {1., 0.};
+        const std::vector<double> ca( t, t + 2 );
         e_c->fillWith( ca );
       }
 
-      gum::Potential<float> clique_csr;
-      gum::MultiDimBucket<float> bucket_csr;
+      gum::Potential<double> clique_csr;
+      gum::MultiDimBucket<double> bucket_csr;
       clique_csr.add( bn->variable( c ) );
       bucket_csr.add( bn->variable( c ) );
       clique_csr.add( bn->variable( r ) );
       bucket_csr.add( bn->variable( s ) );
       clique_csr.add( bn->variable( s ) );
       bucket_csr.add( bn->variable( r ) );
-      clique_csr.fill( (float)1 );
+      clique_csr.fill( (double)1 );
       bucket_csr.add( bn->cpt( c ) );
-      clique_csr.multiplicateBy( bn->cpt( c ) );
+      clique_csr = gum::Potential<double>( clique_csr * bn->cpt( c ) );
       bucket_csr.add( bn->cpt( s ) );
-      clique_csr.multiplicateBy( bn->cpt( r ) );
+      clique_csr = gum::Potential<double>( clique_csr * bn->cpt( r ) );
       bucket_csr.add( bn->cpt( r ) );
-      clique_csr.multiplicateBy( bn->cpt( s ) );
+      clique_csr = gum::Potential<double>( clique_csr * bn->cpt( s ) );
       bucket_csr.add( e_s );
-      clique_csr.multiplicateBy( *e_s );
+      clique_csr = gum::Potential<double>( clique_csr * *e_s );
       bucket_csr.add( e_c );
-      clique_csr.multiplicateBy( *e_c );
+      clique_csr = gum::Potential<double>( clique_csr * *e_c );
 
       {
         gum::Instantiation i;
@@ -507,13 +529,21 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential<float> sep_sr;
-      gum::MultiDimBucket<float> bucket_sr;
+      gum::Potential<double> sep_sr;
+      gum::MultiDimBucket<double> bucket_sr;
       sep_sr.add( bn->variable( s ) );
       bucket_sr.add( bn->variable( s ) );
       sep_sr.add( bn->variable( r ) );
       bucket_sr.add( bn->variable( r ) );
-      sep_sr.marginalize( clique_csr );
+
+      auto del_vars = gum::Set<const gum::DiscreteVariable*>();
+      for (auto var: clique_csr.variablesSequence() ) {
+        if (not sep_sr.contains( *var ) ) {
+          del_vars.insert( var );
+        }
+      }
+      sep_sr = gum::Potential<double>( gum::projectSum( clique_csr, del_vars ) );
+
       bucket_sr.add( bucket_csr );
 
       {
@@ -526,17 +556,17 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential<float> clique_wsr;
-      gum::MultiDimBucket<float> bucket_wsr;
+      gum::Potential<double> clique_wsr;
+      gum::MultiDimBucket<double> bucket_wsr;
       clique_wsr.add( bn->variable( w ) );
       bucket_wsr.add( bn->variable( w ) );
       clique_wsr.add( bn->variable( s ) );
       bucket_wsr.add( bn->variable( s ) );
       clique_wsr.add( bn->variable( r ) );
       bucket_wsr.add( bn->variable( r ) );
-      clique_wsr.fill( (float)1 );
+      clique_wsr.fill( (double)1 );
       bucket_wsr.add( bn->cpt( w ) );
-      clique_wsr.multiplicateBy( bn->cpt( w ) );
+      clique_wsr = gum::Potential<double>( clique_wsr * bn->cpt( w ) );
 
       {
         gum::Instantiation i;
@@ -549,20 +579,27 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential<float> tmp;
-      gum::MultiDimBucket<float> bucket_marg_w;
+      gum::Potential<double> tmp;
+      gum::MultiDimBucket<double> bucket_marg_w;
       tmp.add( bn->variable( w ) );
       bucket_marg_w.add( bn->variable( w ) );
       tmp.add( bn->variable( s ) );
       bucket_marg_w.add( bucket_wsr );
       tmp.add( bn->variable( r ) );
       bucket_marg_w.add( bucket_sr );
-      tmp.fill( (float)1 );
-      tmp.multiplicateBy( clique_wsr );
-      tmp.multiplicateBy( sep_sr );
-      gum::Potential<float> marg_w;
+      tmp.fill( (double)1 );
+      tmp = gum::Potential<double>( tmp * clique_wsr );
+      tmp = gum::Potential<double>( tmp * sep_sr );
+      gum::Potential<double> marg_w;
       marg_w.add( bn->variable( w ) );
-      marg_w.marginalize( tmp );
+
+      del_vars = gum::Set<const gum::DiscreteVariable*>();
+      for (auto var: tmp.variablesSequence()) {
+        if (not marg_w.contains( *var ) ) {
+          del_vars.insert( var );
+        }
+      }
+      marg_w = gum::Potential<double>( gum::projectSum( tmp, del_vars ) );
 
       {
         gum::Instantiation i;
@@ -573,7 +610,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential<float> norm_b_m_w;
+      gum::Potential<double> norm_b_m_w;
       norm_b_m_w.add( bn->variable( w ) );
       {
         gum::Instantiation i( norm_b_m_w );
@@ -583,16 +620,16 @@ namespace gum_tests {
         }
       }
 
-      gum::MultiDimBucket<float> false_sep_sr;
+      gum::MultiDimBucket<double> false_sep_sr;
       false_sep_sr.add( bn->variable( s ) );
       false_sep_sr.add( bn->variable( r ) );
       false_sep_sr.add( bucket_wsr );
 
-      gum::MultiDimBucket<float> false_marg_w;
+      gum::MultiDimBucket<double> false_marg_w;
       false_marg_w.add( bn->variable( w ) );
       false_marg_w.add( false_sep_sr );
       false_marg_w.add( bucket_wsr );
-      gum::Potential<float> fnw;
+      gum::Potential<double> fnw;
       fnw.add( bn->variable( w ) );
       {
         gum::Instantiation i;

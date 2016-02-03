@@ -483,11 +483,6 @@ class Vector_double(_object):
         return _pyAgrum.Vector_double___len__(self)
 
 
-    def pop(self):
-        """pop(Vector_double self) -> std::vector< double >::value_type"""
-        return _pyAgrum.Vector_double_pop(self)
-
-
     def __getslice__(self, i, j):
         """__getslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j) -> Vector_double"""
         return _pyAgrum.Vector_double___getslice__(self, i, j)
@@ -495,8 +490,8 @@ class Vector_double(_object):
 
     def __setslice__(self, *args):
         """
-        __setslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j, Vector_double v)
         __setslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j)
+        __setslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j, Vector_double v)
         """
         return _pyAgrum.Vector_double___setslice__(self, *args)
 
@@ -531,6 +526,11 @@ class Vector_double(_object):
         return _pyAgrum.Vector_double___setitem__(self, *args)
 
 
+    def pop(self):
+        """pop(Vector_double self) -> std::vector< double >::value_type"""
+        return _pyAgrum.Vector_double_pop(self)
+
+
     def append(self, x):
         """append(Vector_double self, std::vector< double >::value_type const & x)"""
         return _pyAgrum.Vector_double_append(self, x)
@@ -546,19 +546,9 @@ class Vector_double(_object):
         return _pyAgrum.Vector_double_size(self)
 
 
-    def clear(self):
-        """clear(Vector_double self)"""
-        return _pyAgrum.Vector_double_clear(self)
-
-
     def swap(self, v):
         """swap(Vector_double self, Vector_double v)"""
         return _pyAgrum.Vector_double_swap(self, v)
-
-
-    def get_allocator(self):
-        """get_allocator(Vector_double self) -> std::vector< double >::allocator_type"""
-        return _pyAgrum.Vector_double_get_allocator(self)
 
 
     def begin(self):
@@ -579,6 +569,16 @@ class Vector_double(_object):
     def rend(self):
         """rend(Vector_double self) -> std::vector< double >::reverse_iterator"""
         return _pyAgrum.Vector_double_rend(self)
+
+
+    def clear(self):
+        """clear(Vector_double self)"""
+        return _pyAgrum.Vector_double_clear(self)
+
+
+    def get_allocator(self):
+        """get_allocator(Vector_double self) -> std::vector< double >::allocator_type"""
+        return _pyAgrum.Vector_double_get_allocator(self)
 
 
     def pop_back(self):
@@ -688,11 +688,6 @@ class Vector_string(_object):
         return _pyAgrum.Vector_string___len__(self)
 
 
-    def pop(self):
-        """pop(Vector_string self) -> std::vector< std::string >::value_type"""
-        return _pyAgrum.Vector_string_pop(self)
-
-
     def __getslice__(self, i, j):
         """__getslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j) -> Vector_string"""
         return _pyAgrum.Vector_string___getslice__(self, i, j)
@@ -700,8 +695,8 @@ class Vector_string(_object):
 
     def __setslice__(self, *args):
         """
-        __setslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j, Vector_string v)
         __setslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j)
+        __setslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j, Vector_string v)
         """
         return _pyAgrum.Vector_string___setslice__(self, *args)
 
@@ -736,6 +731,11 @@ class Vector_string(_object):
         return _pyAgrum.Vector_string___setitem__(self, *args)
 
 
+    def pop(self):
+        """pop(Vector_string self) -> std::vector< std::string >::value_type"""
+        return _pyAgrum.Vector_string_pop(self)
+
+
     def append(self, x):
         """append(Vector_string self, std::vector< std::string >::value_type const & x)"""
         return _pyAgrum.Vector_string_append(self, x)
@@ -751,19 +751,9 @@ class Vector_string(_object):
         return _pyAgrum.Vector_string_size(self)
 
 
-    def clear(self):
-        """clear(Vector_string self)"""
-        return _pyAgrum.Vector_string_clear(self)
-
-
     def swap(self, v):
         """swap(Vector_string self, Vector_string v)"""
         return _pyAgrum.Vector_string_swap(self, v)
-
-
-    def get_allocator(self):
-        """get_allocator(Vector_string self) -> std::vector< std::string >::allocator_type"""
-        return _pyAgrum.Vector_string_get_allocator(self)
 
 
     def begin(self):
@@ -784,6 +774,16 @@ class Vector_string(_object):
     def rend(self):
         """rend(Vector_string self) -> std::vector< std::string >::reverse_iterator"""
         return _pyAgrum.Vector_string_rend(self)
+
+
+    def clear(self):
+        """clear(Vector_string self)"""
+        return _pyAgrum.Vector_string_clear(self)
+
+
+    def get_allocator(self):
+        """get_allocator(Vector_string self) -> std::vector< std::string >::allocator_type"""
+        return _pyAgrum.Vector_string_get_allocator(self)
 
 
     def pop_back(self):
@@ -2058,6 +2058,34 @@ class PossiblyIncompatibleScoreApriori(LearningError):
     __del__ = lambda self: None
 PossiblyIncompatibleScoreApriori_swigregister = _pyAgrum.PossiblyIncompatibleScoreApriori_swigregister
 PossiblyIncompatibleScoreApriori_swigregister(PossiblyIncompatibleScoreApriori)
+
+class DatabaseError(LearningError):
+    """Proxy of C++ gum::DatabaseError class."""
+
+    __swig_setmethods__ = {}
+    for _s in [LearningError]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DatabaseError, name, value)
+    __swig_getmethods__ = {}
+    for _s in [LearningError]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, DatabaseError, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(gum::DatabaseError self, std::string aMsg, std::string aType) -> DatabaseError
+        __init__(gum::DatabaseError self, std::string aMsg) -> DatabaseError
+        """
+        this = _pyAgrum.new_DatabaseError(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_DatabaseError
+    __del__ = lambda self: None
+DatabaseError_swigregister = _pyAgrum.DatabaseError_swigregister
+DatabaseError_swigregister(DatabaseError)
 
 class MissingVariableInDatabase(LearningError):
     """Proxy of C++ gum::MissingVariableInDatabase class."""
@@ -3842,7 +3870,7 @@ class MultiDimContainer_double(_object):
     def endMultipleChanges(self, *args):
         """
         endMultipleChanges(MultiDimContainer_double self)
-        endMultipleChanges(MultiDimContainer_double self, double const & arg2)
+        endMultipleChanges(MultiDimContainer_double self, double const & v)
         """
         return _pyAgrum.MultiDimContainer_double_endMultipleChanges(self, *args)
 
@@ -3886,21 +3914,6 @@ class Potential_double(_object):
     def normalize(self):
         """normalize(Potential_double self) -> Potential_double"""
         return _pyAgrum.Potential_double_normalize(self)
-
-
-    def marginalize(self, p):
-        """marginalize(Potential_double self, Potential_double p) -> Potential_double"""
-        return _pyAgrum.Potential_double_marginalize(self, p)
-
-
-    def multiplicate(self, p1, p2):
-        """multiplicate(Potential_double self, Potential_double p1, Potential_double p2)"""
-        return _pyAgrum.Potential_double_multiplicate(self, p1, p2)
-
-
-    def multiplicateBy(self, p1):
-        """multiplicateBy(Potential_double self, Potential_double p1) -> Potential_double"""
-        return _pyAgrum.Potential_double_multiplicateBy(self, p1)
 
 
     def sum(self):
@@ -4148,24 +4161,6 @@ class UtilityTable_double(_object):
     def newFactory(self):
         """newFactory(UtilityTable_double self) -> UtilityTable_double"""
         return _pyAgrum.UtilityTable_double_newFactory(self)
-
-
-    def sum(self, p1, p2):
-        """sum(UtilityTable_double self, UtilityTable_double p1, UtilityTable_double p2)"""
-        return _pyAgrum.UtilityTable_double_sum(self, p1, p2)
-
-
-    def sumBy(self, *args):
-        """
-        sumBy(UtilityTable_double self, UtilityTable_double toAdd)
-        sumBy(UtilityTable_double self, gum::List< gum::UtilityTable< double > * > const & utilitiesList)
-        """
-        return _pyAgrum.UtilityTable_double_sumBy(self, *args)
-
-
-    def reduceBy(self, varList):
-        """reduceBy(UtilityTable_double self, gum::List< gum::DiscreteVariable const * > const & varList) -> UtilityTable_double"""
-        return _pyAgrum.UtilityTable_double_reduceBy(self, varList)
 
 
     def variablesSequence(self):
@@ -4625,6 +4620,50 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_addAND(self, variable)
 
 
+    def addAMPLITUDE(self, variable):
+        """addAMPLITUDE(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId"""
+        return _pyAgrum.BayesNet_double_addAMPLITUDE(self, variable)
+
+
+    def addCOUNT(self, variable, Value=1):
+        """
+        addCOUNT(BayesNet_double self, DiscreteVariable variable, gum::Idx Value=1) -> gum::NodeId
+        addCOUNT(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
+        """
+        return _pyAgrum.BayesNet_double_addCOUNT(self, variable, Value)
+
+
+    def addEXISTS(self, variable, Value=1):
+        """
+        addEXISTS(BayesNet_double self, DiscreteVariable variable, gum::Idx Value=1) -> gum::NodeId
+        addEXISTS(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
+        """
+        return _pyAgrum.BayesNet_double_addEXISTS(self, variable, Value)
+
+
+    def addFORALL(self, variable, Value=1):
+        """
+        addFORALL(BayesNet_double self, DiscreteVariable variable, gum::Id Value=1) -> gum::NodeId
+        addFORALL(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
+        """
+        return _pyAgrum.BayesNet_double_addFORALL(self, variable, Value)
+
+
+    def addMAX(self, variable):
+        """addMAX(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId"""
+        return _pyAgrum.BayesNet_double_addMAX(self, variable)
+
+
+    def addMEDIAN(self, variable):
+        """addMEDIAN(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId"""
+        return _pyAgrum.BayesNet_double_addMEDIAN(self, variable)
+
+
+    def addMIN(self, variable):
+        """addMIN(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId"""
+        return _pyAgrum.BayesNet_double_addMIN(self, variable)
+
+
     def addWeightedArc(self, tail, head, causalWeight):
         """addWeightedArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head, double causalWeight)"""
         return _pyAgrum.BayesNet_double_addWeightedArc(self, tail, head, causalWeight)
@@ -4633,6 +4672,11 @@ class BayesNet_double(IBayesNet_double):
     def generateCPTs(self):
         """generateCPTs(BayesNet_double self)"""
         return _pyAgrum.BayesNet_double_generateCPTs(self)
+
+
+    def generateCPT(self, node):
+        """generateCPT(BayesNet_double self, gum::NodeId node)"""
+        return _pyAgrum.BayesNet_double_generateCPT(self, node)
 
 
     def changePotential(self, id, newPot):
@@ -6200,6 +6244,7 @@ class BNLearner_double(_object):
     def __init__(self, *args):
         """
         __init__(gum::learning::BNLearner<(double)> self, std::string const & filename) -> BNLearner_double
+        __init__(gum::learning::BNLearner<(double)> self, DatabaseVectInRAM db) -> BNLearner_double
         __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, NodeProperty< gum::Sequence< std::string > > const & modalities, bool parse_database=False) -> BNLearner_double
         __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, NodeProperty< gum::Sequence< std::string > > const & modalities) -> BNLearner_double
         __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, BayesNet_double src, bool parse_database=False) -> BNLearner_double

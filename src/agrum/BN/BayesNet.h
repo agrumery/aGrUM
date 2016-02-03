@@ -496,6 +496,20 @@ namespace gum {
     NodeId addAND( const DiscreteVariable& variable );
 
     /**
+     * Others aggregators
+     * @{
+     */
+    NodeId addAMPLITUDE(const DiscreteVariable& variable);
+    NodeId addCOUNT(const DiscreteVariable& variable,Idx Value=1);
+    NodeId addEXISTS(const DiscreteVariable& variable,Idx Value=1);
+    NodeId addFORALL(const DiscreteVariable& variable,Id Value=1);
+    NodeId addMAX(const DiscreteVariable& variable);
+    NodeId addMEDIAN(const DiscreteVariable& variable);
+    NodeId addMIN(const DiscreteVariable& variable);
+    /**
+     * @}
+     */
+    /**
      * Add an arc in the BN, and update arc.head's CPT.
      *
      * @param head and
@@ -510,6 +524,9 @@ namespace gum {
 
     /// randomly generates CPTs for a given structure
     void generateCPTs();
+
+    /// randomly generate CPT for a given node in a given structure
+    void generateCPT(NodeId node);
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.

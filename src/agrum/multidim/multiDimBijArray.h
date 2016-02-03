@@ -19,8 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::Instance
+ * @brief Headers of the MultiDimBijArray class.
  *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  * @author Lionel TORTI
  */
 
@@ -35,97 +36,77 @@
 namespace gum {
 
   /**
-   * @class MultiDimBijArray "multiDimBijArray.h"
-   * <agrum/multidim/multiDimBijArray.h>
-   * @brief Decorator of a MultiDimArray, using a bijection over the variables.
+   * @class MultiDimBijArray
+   * @headerfile multiDimBijArray.h <agrum/multidim/multiDimBijArray.h>
    * @ingroup multidim_group
+   *
+   * @brief Decorator of a MultiDimArray, using a bijection over the variables.
+   *
+   * @tparam GUM_SCALAR The type of scaler stored in this multidimensional
+   * table.
    */
   template <typename GUM_SCALAR>
   class MultiDimBijArray : public MultiDimWithOffset<GUM_SCALAR> {
     public:
-    typedef Bijection<const DiscreteVariable*, const DiscreteVariable*>
-        VarBijection;
+    using VarBijection = Bijection<const DiscreteVariable*, const DiscreteVariable*>;
 
-    // ############################################################################
+    // =========================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // =========================================================================
     /// @{
 
-    /// Gets the content of decorator and uses its implementation.
-    /// @throw OperationNotAllowed If decorator's content is not a MultiDimArray
-    ///                            raise an OperationNotAllowed
-
+    /**
+     * @brief Class constructor.
+     *
+     * @param bijection The bijection between variables in array and variable
+     * in this.
+     * @param array The MultiDimArray decorated by this MultiDimBijArray.
+     */
     MultiDimBijArray( const VarBijection& bijection,
                       const MultiDimArray<GUM_SCALAR>& array );
 
-    /// Gets the content of decorator and uses its implementation.
-    /// @throw OperationNotAllowed If decorator's content is not a MultiDimArray
-    ///                            raise an OperationNotAllowed
-
+    /**
+     * @brief Class constructor.
+     *
+     * @param bijection The bijection between variables in array and variable
+     * in this.
+     * @param array The MultiDimBijArray decorated by this MultiDimBijArray.
+     */
     MultiDimBijArray( const VarBijection& bijection,
                       const MultiDimBijArray<GUM_SCALAR>& array );
 
-    /// copy constructor
-    /** The newly created matrix contains the same variables and the same values
-     * as
-     * from, but no instantiation is associated to it.
-     * @param from the multidimensional matrix we copy into this */
-
+    /**
+     * @brief Copy constructor.
+     *
+     * The newly created matrix contains the same variables and the same values
+     * as from, but no instantiation is associated to it.
+     *
+     * @param from The MultiDimBijArray to copy.
+     */
     MultiDimBijArray( const MultiDimBijArray<GUM_SCALAR>& from );
 
-    /// destructor
-    /** Note that, when the multidimensional array is removed from memory, its
-     * variables are not removed as well. */
-
+    /**
+     * @brief Class destructor.
+     */
     virtual ~MultiDimBijArray();
 
     /// @}
-
-    /**
-     * This method creates a clone of this object, withouth its content
-     * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * This will return a MultiDimArray since MultiDimBijArray are a decoration
-     * of that class.
-     *
-     * @warning you must desallocate by yourself the memory
-     * @return an empty clone of this object with the same type
-     */
-    virtual MultiDimBijArray<GUM_SCALAR>* newFactory() const;
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
+    // ========================================================================
+    /// @name Modifiers -- will raise OperationNotAllowed exceptions
+    // ========================================================================
     /// @{
-
     /**
-     * This will raise an exception: read only structure
-     * @param from
-     * @throw OperationNotAllowed You can't change a readonly structure
+     * @warning This will raise an exception: read only structure.
+     * @throw OperationNotAllowed Raised since you can't change a readonly
+     * structure.
      */
     MultiDimBijArray<GUM_SCALAR>&
     operator=( const MultiDimBijArray<GUM_SCALAR>& from );
 
-    /// @}
-
-    /// Returns the real name of this implementation
-    virtual const std::string& name() const;
-
-    /// Returns the value pointed by i.
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
-
     /**
-     * This will raise an exception:  read only structure
-     * MultiDimBijArray.
-     * @param i
-     * @param value
-     * @throw OperationNotAllowed You can't change a readonly structure
+     * @warning This will raise an exception: read only structure.
+     * @throw OperationNotAllowed Raised since you can't change a readonly
+     * structure.
      */
     virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
 
@@ -145,10 +126,6 @@ namespace gum {
      */
     virtual void erase( const DiscreteVariable& v );
 
-    /// This function is used for compute @see compressionRatio().
-    /// @return the real number of parameters used for this table.
-    virtual Size realSize() const;
-
     /**
      * This will raise an exception: you can't change the data
      * @param d the value changed
@@ -164,18 +141,34 @@ namespace gum {
      */
     virtual void fillWith( const std::vector<GUM_SCALAR>& v ) const;
 
+    /// @}
+    // ========================================================================
+    /// @name Inherited methods 
+    // ========================================================================
+    /// @{
+
+    virtual const std::string& name() const;
+
+    virtual GUM_SCALAR get( const Instantiation& i ) const;
+
+    virtual Size realSize() const;
+
+    virtual MultiDimBijArray<GUM_SCALAR>* newFactory() const;
+
+    /// @}
+
     protected:
     virtual GUM_SCALAR& _get( const Instantiation& i ) const;
 
-    /// synchronise content after MultipleChanges
     virtual void _commitMultipleChanges( void );
 
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
     private:
-    /// the true data.
+    /// The true data.
     const MultiDimArray<GUM_SCALAR>& __array;
 
+    /// The class name.
     std::string __name;
   };
 }  // namespace gum

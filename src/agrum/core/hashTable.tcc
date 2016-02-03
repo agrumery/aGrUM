@@ -258,7 +258,7 @@ namespace gum {
       if ( ptr->key() == key ) return ptr->val();
 
     GUM_ERROR( NotFound,
-               "hashtable's chained list contains no element with this key" );
+               "hashtable's chained list contains no element with this key <"<<key<<">" );
   }
 
   template <typename Key, typename Val, typename Alloc>

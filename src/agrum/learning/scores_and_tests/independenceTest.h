@@ -310,6 +310,8 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::learning::IndependenceTest<>;
+
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/independenceTest.tcc>
 

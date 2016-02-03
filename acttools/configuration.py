@@ -70,6 +70,7 @@ def initParams():
     cfg.default['python']="3"
     cfg.default['dry_run']=False
     cfg.default['coverage']=False
+    cfg.default['withSQL']=True
 
     cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
     cfg.modes=set("debug release".split())
@@ -77,9 +78,19 @@ def initParams():
     cfg.moduleLabels=parseModulesTxt()
     cfg.modules=set(cfg.moduleLabels)
 
-    cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne","dry_run"]
+    cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne","dry_run","coverage"]
     cfg.mains=["action","targets","mode"]
     cfg.specialActions=["show","clean","autoindent"]
+    cfg.swapOptions={
+        "verbose" : {
+            True: "verbose",
+            False: "quiet"
+        },
+        "withSQL" : {
+            True: "withSQL",
+            False: "withoutSQL"
+        }
+    }
 
 def configureOptions(current):
     us="%prog [options] ["+"|".join(sorted(cfg.actions))+"] ["+"|".join(cfg.modes)+"] ["+"|".join(cfg.targets)+"]"
@@ -100,6 +111,16 @@ def configureOptions(current):
                                         action="store_false",
                                         dest="verbose",
                                         default=current['verbose'])
+    cfg.parser.add_option("", "--withSQL",
+                                        help="connection to SQL datasource via ODBC.",
+                                        action="store_true",
+                                        dest="withSQL",
+                                        default=current['withSQL'])
+    cfg.parser.add_option("", "--withoutSQL",
+                                        help="no connection to SQL datasource via ODBC.",
+                                        action="store_false",
+                                        dest="withSQL",
+                                        default=current['withSQL'])
     cfg.parser.add_option("", "--fixed_seed",
                                         help="Random seed is fixed once for all. Hence random algorithms should be time-normalized.",
                                         action="store_true",
@@ -115,7 +136,7 @@ def configureOptions(current):
                                         action="store_true",
                                         dest="oneByOne",
                                         default=False)
-    cfg.parser.add_option("-d", "--dest",
+    cfg.parser.add_option("-d", "--destination",
                                         help="destination folder when installing",
                                         metavar="FOLDER",
                                         dest="destination",
@@ -130,7 +151,7 @@ def configureOptions(current):
                                         metavar="TESTS-COMMAND",
                                         dest="tests",
                                         default=current['tests'])
-    cfg.parser.add_option("-m","--module",
+    cfg.parser.add_option("-m","--modules",
                                         help="module management : {show|all|module1+module2+module3}",
                                         metavar="MODULES-COMMAND",
                                         dest="modules",
@@ -140,16 +161,19 @@ def configureOptions(current):
                                         action="store_true",
                                         dest="static_lib",
                                         default=False)
-    cfg.parser.add_option("", "--python",   help="{2|3}",
+    cfg.parser.add_option("", "--python",
+                                        help="{2|3}",
                                         type="choice",
                                         choices=["2", "3"],
                                         dest="python",
                                         default="3")
-    cfg.parser.add_option("", "--dry-run",  help="dry run",
+    cfg.parser.add_option("", "--dry-run",
+                                        help="dry run",
                                         action="store_true",
                                         dest="dry_run",
                                         default=False)
-    cfg.parser.add_option("", "--coverage",  help="build with code coverage options enable (debug only)",
+    cfg.parser.add_option("", "--coverage",
+                                        help="build with code coverage options enable (debug only)",
                                         action="store_true",
                                         dest="coverage",
                                         default=False)

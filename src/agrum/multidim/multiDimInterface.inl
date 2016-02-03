@@ -17,13 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 /**
  * @file
  * @brief Inline implementation of gumMultiDimInterface
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
- *
  */
 
 // to ease IDE parser

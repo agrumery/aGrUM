@@ -17,9 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief A container for registering partial instantiations on
- * multiDimImplementations
+/**
+ * @file
+ * @brief Implementation of PartialInstantiationRegister4MultiDim.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -27,12 +27,11 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #include <agrum/config.h>
-
 #include <agrum/multidim/partialInstantiationRegister4MultiDim.h>
 
 namespace gum {
 
-  /// adds a new entry into the register
+  // adds a new entry into the register
   template <typename GUM_SCALAR>
   void PartialInstantiationRegister4MultiDim<GUM_SCALAR>::insert(
       const std::string& instantiation_func_name,
@@ -61,7 +60,7 @@ namespace gum {
     theset->insert( type_multidim, newFunction );
   }
 
-  /// removes a given entry from the register
+  // removes a given entry from the register
   template <typename GUM_SCALAR>
   void PartialInstantiationRegister4MultiDim<GUM_SCALAR>::erase(
       const std::string& instantiation_func_name,
@@ -73,7 +72,7 @@ namespace gum {
     theset->erase( type_multidim );
   }
 
-  /// indicates whether a given entry exists in the register
+  // indicates whether a given entry exists in the register
   template <typename GUM_SCALAR>
   INLINE bool PartialInstantiationRegister4MultiDim<GUM_SCALAR>::exists(
       const std::string& instantiation_func_name,
@@ -95,8 +94,8 @@ namespace gum {
     return theset->operator[]( type_multidim );
   }
 
-  /// a named constructor that constructs one and only one Register per data
-  /// type
+  // a named constructor that constructs one and only one Register per data
+  // type
   template <typename GUM_SCALAR>
   PartialInstantiationRegister4MultiDim<GUM_SCALAR>&
   PartialInstantiationRegister4MultiDim<GUM_SCALAR>::Register() {
@@ -123,12 +122,12 @@ namespace gum {
     return container;
   }
 
-  /// Default constructor: creates an empty register
+  // Default constructor: creates an empty register
   template <typename GUM_SCALAR>
   PartialInstantiationRegister4MultiDim<
       GUM_SCALAR>::PartialInstantiationRegister4MultiDim() {}
 
-  /// destructor
+  // destructor
   template <typename GUM_SCALAR>
   PartialInstantiationRegister4MultiDim<
       GUM_SCALAR>::~PartialInstantiationRegister4MultiDim() {
@@ -141,8 +140,8 @@ namespace gum {
       delete iter.val();
   }
 
-  /// a function to more easily register new instantiation functions in
-  /// MultiDims
+  // a function to more easily register new instantiation functions in
+  // MultiDims
   template <typename GUM_SCALAR>
   void registerPartialInstantiation(
       const std::string& instantiation_func_name,

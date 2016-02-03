@@ -184,6 +184,8 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::AVLSearchTree<int>;
+
 // always include the template implementations
 #include <agrum/core/AVLSearchTree.tcc>
 

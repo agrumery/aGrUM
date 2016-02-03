@@ -19,65 +19,60 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the gum::MultiDimWithOffset class.
+ * @brief Headers of the MultiDimWithOffset class.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- *<{prenom.nom}_at_lip6.fr>
  */
 
 #ifndef GUM_MULTI_DIM_WITH_OFFSET_H
 #define GUM_MULTI_DIM_WITH_OFFSET_H
 
 #include <vector>
-
 #include <agrum/config.h>
-
 #include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
-  /* =========================================================================*/
-  /* =========================================================================*/
-  /* ===                    GUM_MULTI_DIM_WITH_OFFSET === */
-  /* =========================================================================*/
-  /* =========================================================================*/
+  // ==========================================================================
+  // ===                    GUM_MULTI_DIM_WITH_OFFSET === */
+  // ==========================================================================
   /**
    * @class MultiDimWithOffset
+   * @headerfile multiDimWithOffset.h <agrum/multidim/multiDimWithOffset.h>
    * @brief Abstract class for Multidimensional matrix stored as an array in
-   *memory
-   *        and with an offset associated with each slave instantiation.
+   * memory and with an offset associated with each slave instantiation.
    *
    * @ingroup multidim_group
+   * @tparam GUM_SCALAR The type of scalar stored in the multidimensional
+   * table.
    */
   template <typename GUM_SCALAR>
-
   class MultiDimWithOffset : public MultiDimImplementation<GUM_SCALAR> {
     public:
+    // =========================================================================
+    /// @name Constructors, destructor and copy.
+    // =========================================================================
+    /// @{
+
+    /**
+     * @brief Class constructor.
+     */
     MultiDimWithOffset();
 
     /**
      * @brief Copy constructor.
      *
-     * The newly created matrix contains the same variables but no instantiation
-     * is associated to it.
-     * @param from The multidimensional matrix we copy into this.
+     * The newly created matrix contains the same variables but no
+     * instantiation is associated to it.
+     *
+     * @param from The MultiDimWithOffset to copy.
      */
     MultiDimWithOffset( const MultiDimWithOffset<GUM_SCALAR>& from );
 
     /**
-     * @brief Destrucor.
-     *
-     * Note that, when the multidimensional array is removed from memory, its
-     * variables are not removed as well.
+     * @brief Class destrucor.
      */
     virtual ~MultiDimWithOffset();
 
-    /// @}
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-
-    /// @{
     /**
      * Copy operator.
      *
@@ -86,93 +81,45 @@ namespace gum {
     MultiDimWithOffset<GUM_SCALAR>&
     operator=( const MultiDimWithOffset<GUM_SCALAR>& from );
 
-    /// @}
-
-    /**
-     * This method creates a clone of this object, withouth its content
-     * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * @warning you must desallocate by yourself the memory
-     * @return an empty clone of this object with the same type
-     */
     virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-
+    /// @}
+    // =========================================================================
+    /// @name Accessors and modifiers
+    // =========================================================================
     /// @{
 
-    /**
-     * Add a new dimension, needed for updating the offsets & gaps.
-     *
-     * See also gum::MultiDimInterface::add().
-     */
     virtual void add( const DiscreteVariable& v );
 
-    /**
-     * Removes a dimension, needed for updating the offsets & gaps
-     *
-     * See also gum::MultiDimInterface::erase().
-     */
     virtual void erase( const DiscreteVariable& v );
 
-    /**
-     * Fill the table with the scalar value d.
-     *
-     * @param d A scalar which is used to fill the multidimensional table.
-     */
     virtual void fill( const GUM_SCALAR& d ) const = 0;
 
-    /// Returns string representating of internal data about i in this.
     virtual const std::string toString( const Instantiation* i ) const;
 
-    /// @}
-
-    // ############################################################################
-    /// @name Slave management and extension due to slave management
-    // ############################################################################
-
-    /// @{
-
-    /// See gum::MultiDimAdressable::changeNotification().
     virtual void changeNotification( Instantiation& i,
                                      const DiscreteVariable* const var,
                                      const Idx& oldval,
                                      const Idx& newval );
 
-    /// See gum::MultiDimAdressable::setChangeNotification().
     virtual void setChangeNotification( Instantiation& i );
 
-    /// See gum::MultiDimAdressable::setFirstNotification().
     virtual void setFirstNotification( Instantiation& i );
 
-    /// See gum::MultiDimAdressable::setLastNotification().
     virtual void setLastNotification( Instantiation& i );
 
-    /// See gum::MultiDimAdressable::setChangeNotification().
     void setIncNotification( Instantiation& i );
 
-    /// See gum::MultiDimAdressable::setDecNotification().
     void setDecNotification( Instantiation& i );
 
-    /// See gum::MultiDimAdressable::registerSlave().
     virtual bool registerSlave( Instantiation& i );
 
-    /// See gum::MultiDimAdressable::unregisterSlave().
     virtual bool unregisterSlave( Instantiation& i );
 
     /// @}
-
-    // ############################################################################
-    /// @name access to offset in MultiDimWithOffset
-    // ############################################################################
+    // =========================================================================
+    /// @name Access to offset in MultiDimWithOffset
+    // =========================================================================
     ///@{
 
     ///
@@ -223,30 +170,27 @@ namespace gum {
      * @brief The gaps between consecutive values of a given variable.
      *
      * For each variable, we keep track of the interval between two consecutive
-     * values of the variable in vector values. Thus, shifting from one value to
-     * the next one is equivalent to incrementing/decrementing by gaps the
-     *current
-     * offset w.r.t. vector values.
+     * values of the variable in vector values. Thus, shifting from one value
+     * to the next one is equivalent to incrementing/decrementing by gaps the
+     * current offset w.r.t. vector values.
      */
     HashTable<const DiscreteVariable*, Size> _gaps;
 
     /// The position in the array of each slave Instantiation.
     HashTable<const Instantiation*, Size> _offsets;
 
-    /** @brief For a given index of a value in the vector values, this method
-     *         computes the corresponding instantiation.
+    /**
+     * @brief For a given index of a value in the vector values, this method
+     * computes the corresponding instantiation.
      *
      * @param result the result of this methods, we assume that the given
-     *               instantiation already contains all the variables
-     *               contained in the gum::MultiDimArray (if V is the set of
-     *variables
-     *               of this tab, V must be a subset of variables in
-     *               result or the exact set)
+     * instantiation already contains all the variables contained in the
+     * MultiDimArray (if V is the set of variables of this tab, V must be a
+     * subset of variables in result or the exact set)
      * @param indice The index in the vector values
      */
     void _computeInstantiationValue( Instantiation& result, Size indice ) const;
 
-    /// data access operator
     virtual GUM_SCALAR& _get( const Instantiation& i ) const = 0;
   };
 } /* namespace gum */
