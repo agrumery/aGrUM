@@ -35,7 +35,8 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
-      bool check_raw_cpt( const O3RawCPT& attr,
+      bool check_raw_cpt( const Class<double>& c,
+                          O3RawCPT& attr,
                           const Type<double>& type,
                           Size domainSize,
                           std::ostream& output ) {
@@ -48,6 +49,13 @@ namespace gum {
                  << "Illegal CPT size, expected " << domainSize << " found "
                  << attr.values().size() << std::endl;
           return false;
+        }
+        // Add parameters to formulas
+        for ( auto& f : attr.values() ) {
+          for ( const auto& values : c.scope() ) {
+            f.formula().variables().insert( values.first,
+                                            values.second->value() );
+          }
         }
         // Check that CPT sums to 1
         Size parent_size = domainSize / type->domainSize();
@@ -71,9 +79,9 @@ namespace gum {
       }
 
       bool check_rule_cpt( const Class<double>& c,
-                           const O3RuleCPT& attr,
+                           O3RuleCPT& attr,
                            std::ostream& output ) {
-        for ( const auto& rule : attr.rules() ) {
+        for ( auto& rule : attr.rules() ) {
           // Check labels for all parents
           if ( rule.first.size() != attr.parents().size() ) {
             const auto& pos = rule.first.front().position();
@@ -83,7 +91,14 @@ namespace gum {
                    << " value(s), found " << rule.first.size() << std::endl;
             return false;
           }
-          // Check that forumals are valid and sums to 1
+          // Add parameters to formulas
+          for ( auto& f : rule.second ) {
+            for ( const auto& values : c.scope() ) {
+              f.formula().variables().insert( values.first,
+                                              values.second->value() );
+            }
+          }
+          // Check that formulas are valid and sums to 1
           auto sum = 0.0f;
           for ( const auto& f : rule.second ) {
             try {
@@ -111,7 +126,7 @@ namespace gum {
 
       bool check_attribute( PRM<double>& prm,
                             const O3Class& o3_c,
-                            const O3Attribute& attr,
+                            O3Attribute& attr,
                             std::ostream& output ) {
         // Check type
         if ( not prm.isType( attr.type().label() ) ) {
@@ -148,13 +163,13 @@ namespace gum {
           domain_size *= elt.type()->domainSize();
         }
 
-        auto raw = dynamic_cast<const O3RawCPT*>( &attr );
+        auto raw = dynamic_cast<O3RawCPT*>( &attr );
         if ( raw ) {
-          return check_raw_cpt( *raw, type, domain_size, output );
+          return check_raw_cpt( c, *raw, type, domain_size, output );
         }
-        auto rule = dynamic_cast<const O3RuleCPT*>( &attr );
+        auto rule = dynamic_cast<O3RuleCPT*>( &attr );
         if ( rule ) {
-          return check_rule_cpt(c, *rule, output );
+          return check_rule_cpt( c, *rule, output );
         }
         return true;
       }
@@ -169,7 +184,22 @@ namespace gum {
           }
           factory.startClass(
               c->name().label(), c->super().label(), &implements );
-          for ( const auto& attr : c->elements() ) {
+          for ( const auto& p : c->parameters() ) {
+            switch ( p.type() ) {
+              case O3Parameter::Type::INT: {
+                factory.addParameter(
+                    "int", p.name().label(), p.value().value() );
+                break;
+              }
+              case O3Parameter::Type::FLOAT: {
+                factory.addParameter(
+                    "real", p.name().label(), p.value().value() );
+                break;
+              }
+              default: { GUM_ERROR( FatalError, "unknown O3Paramater type" ); }
+            }
+          }
+          for ( auto& attr : c->elements() ) {
             if ( check_attribute( prm, *c, *attr, output ) ) {
               factory.startAttribute( attr->type().label(),
                                       attr->name().label() );

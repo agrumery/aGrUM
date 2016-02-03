@@ -242,6 +242,34 @@ namespace gum {
         std::unique_ptr<O3InterfaceElementList> __elts;
       };
 
+      class O3Parameter {
+        public:
+        enum class Type { INT, FLOAT };
+
+        O3Parameter( const Position& pos,
+                     const O3Label& name,
+                     const O3Integer& value );
+        O3Parameter( const Position& pos,
+                     const O3Label& name,
+                     const O3Float& value );
+        O3Parameter( const O3Parameter& src );
+        O3Parameter( O3Parameter&& src );
+        ~O3Parameter();
+        O3Parameter& operator=( const O3Parameter& src );
+        O3Parameter& operator=( O3Parameter&& src );
+
+        Type type() const;
+        const Position& position() const;
+        const O3Label& name() const;
+        const O3Float& value() const;
+
+        private:
+        Type __type;
+        Position __pos;
+        O3Label __name;
+        O3Float __value;
+      };
+
       class O3Attribute {
         public:
         using O3LabelList = std::vector<O3Label>;
@@ -279,6 +307,7 @@ namespace gum {
         O3RawCPT& operator=( const O3RawCPT& src );
         O3RawCPT& operator=( O3RawCPT&& src );
 
+        O3FormulaList& values();
         const O3FormulaList& values() const;
 
         virtual std::unique_ptr<O3Attribute> copy() const;
@@ -303,6 +332,7 @@ namespace gum {
         O3RuleCPT& operator=( const O3RuleCPT& src );
         O3RuleCPT& operator=( O3RuleCPT&& src );
 
+        O3RuleList& rules();
         const O3RuleList& rules() const;
 
         virtual std::unique_ptr<O3Attribute> copy() const;
@@ -315,11 +345,13 @@ namespace gum {
         public:
         using O3LabelList = std::vector<O3Label>;
         using O3AttributeList = std::vector<std::unique_ptr<O3Attribute>>;
+        using O3ParameterList = std::vector<O3Parameter>;
 
         O3Class( const Position& pos,
                  const O3Label& name,
                  const O3Label& super,
                  const O3LabelList& interfaces,
+                 const O3ParameterList& params,
                  const O3AttributeList& elts );
         O3Class( const O3Class& src );
         O3Class( O3Class&& src );
@@ -331,6 +363,8 @@ namespace gum {
         const O3Label& name() const;
         const O3Label& super() const;
         const O3LabelList& interfaces() const;
+        const O3ParameterList& parameters() const;
+        O3AttributeList& elements();
         const O3AttributeList& elements() const;
 
         private:
@@ -338,6 +372,7 @@ namespace gum {
         O3Label __name;
         O3Label __super;
         std::unique_ptr<O3LabelList> __interfaces;
+        std::unique_ptr<O3ParameterList> __params;
         std::unique_ptr<O3AttributeList> __elts;
       };
 
