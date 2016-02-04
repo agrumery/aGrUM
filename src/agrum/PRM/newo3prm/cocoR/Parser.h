@@ -124,6 +124,9 @@ using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementL
 using O3Parameter = gum::prm::o3prm::O3Parameter;
 using O3ParameterList = gum::prm::o3prm::O3Class::O3ParameterList;
 
+using O3ReferenceSlot = gum::prm::o3prm::O3ReferenceSlot;
+using O3ReferenceSlotList = gum::prm::o3prm::O3Class::O3ReferenceSlotList;
+
 using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3RawCPT = gum::prm::o3prm::O3RawCPT;
 using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
@@ -161,15 +164,9 @@ void __addO3Interface( Position& pos,
   get_prm()->interfaces().push_back( std::move( i ) );
 }
 
-void __addO3Class( Position& pos,
-                   O3Label& name,
-                   O3Label& super,
-                   O3LabelList& interfaces,
-                   O3ParameterList& params,
-                   O3AttributeList& elts) {
-  auto c = std::unique_ptr<O3Class>(
-      new O3Class( pos, name, super, interfaces, params, elts ) );
-  get_prm()->classes().push_back( std::move( c ) );
+void __addO3Class( O3Class&& c ) {
+  get_prm()->classes().push_back(
+      std::unique_ptr<O3Class>( new O3Class( c ) ) );
 }
 
 public:
@@ -206,24 +203,27 @@ O3PRM* get_prm() {
 O3Label& name,
 O3Label& super,
 O3LabelList& interfaces,
-O3AttributeList& elts,
-O3ParameterList& params);
+O3ParameterList& params,
+O3ReferenceSlotList& refs,
+O3AttributeList& elts);
 	void CLASS(Position& pos);
 	void LABEL(O3Label& l);
 	void LABEL_LIST(O3LabelList& list);
-	void CLASS_BODY(O3AttributeList& elts, O3ParameterList& params);
-	void CLASS_ELEMENT(O3AttributeList& elts);
+	void CLASS_BODY(O3ParameterList& params, O3ReferenceSlotList& refs, O3AttributeList& elts);
 	void CLASS_PARAMETER(O3ParameterList& params);
+	void CLASS_ELEMENT(O3ReferenceSlotList& refs, O3AttributeList& elts);
 	void INTEGER(O3Integer& i);
 	void FLOAT(O3Float& f);
 	void RAW_CPT(const O3Label& name,
 const O3Label& type,
 const O3LabelList& parents,
 O3AttributeList& elts);
+	void IDENTIFIER_LIST(O3LabelList& list);
 	void RULE_CPT(const O3Label& name,
 const O3Label& type,
 const O3LabelList& parents,
 O3AttributeList& elts);
+	void REFERENCE_SLOT(O3Label& type, O3Label& name, O3ReferenceSlotList& refs);
 	void FORMULA_LIST(O3FormulaList& values);
 	void RULE(O3RuleList& rules);
 	void LABEL_OR_STAR_LIST(O3LabelList& list);
@@ -239,6 +239,7 @@ O3InterfaceElementList& elts);
 	void TYPE_VALUE_LIST(LabelMap& labels );
 	void MAP(LabelMap& labels );
 	void INT(Position& pos);
+	void IDENTIFIER(O3Label& ident);
 	void LABEL_OR_STAR(O3Label& l);
 	void FORMULA(O3Formula& f);
 

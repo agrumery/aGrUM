@@ -270,6 +270,27 @@ namespace gum {
         O3Float __value;
       };
 
+      class O3ReferenceSlot {
+        public:
+        O3ReferenceSlot( const O3Label& type,
+                         const O3Label& name,
+                         bool isArray );
+        O3ReferenceSlot( const O3ReferenceSlot& src );
+        O3ReferenceSlot( O3ReferenceSlot&& src );
+        ~O3ReferenceSlot();
+        O3ReferenceSlot& operator=( const O3ReferenceSlot& src );
+        O3ReferenceSlot& operator=( O3ReferenceSlot&& src );
+
+        const O3Label& type() const;
+        const O3Label& name() const;
+        bool isArray() const;
+
+        private:
+        O3Label __type;
+        O3Label __name;
+        bool __isArray;
+      };
+
       class O3Attribute {
         public:
         using O3LabelList = std::vector<O3Label>;
@@ -346,13 +367,9 @@ namespace gum {
         using O3LabelList = std::vector<O3Label>;
         using O3AttributeList = std::vector<std::unique_ptr<O3Attribute>>;
         using O3ParameterList = std::vector<O3Parameter>;
+        using O3ReferenceSlotList = std::vector<O3ReferenceSlot>;
 
-        O3Class( const Position& pos,
-                 const O3Label& name,
-                 const O3Label& super,
-                 const O3LabelList& interfaces,
-                 const O3ParameterList& params,
-                 const O3AttributeList& elts );
+        O3Class();
         O3Class( const O3Class& src );
         O3Class( O3Class&& src );
         ~O3Class();
@@ -360,12 +377,25 @@ namespace gum {
         O3Class& operator=( O3Class&& src );
 
         const Position& position() const;
+        Position& position();
+
         const O3Label& name() const;
+        O3Label& name();
+
         const O3Label& super() const;
+        O3Label& super();
+
         const O3LabelList& interfaces() const;
+        O3LabelList& interfaces();
+
         const O3ParameterList& parameters() const;
-        O3AttributeList& elements();
+        O3ParameterList& parameters();
+
+        const O3ReferenceSlotList& referenceSlots() const;
+        O3ReferenceSlotList& referenceSlots();
+
         const O3AttributeList& elements() const;
+        O3AttributeList& elements();
 
         private:
         Position __pos;
@@ -373,6 +403,7 @@ namespace gum {
         O3Label __super;
         std::unique_ptr<O3LabelList> __interfaces;
         std::unique_ptr<O3ParameterList> __params;
+        std::unique_ptr<O3ReferenceSlotList> __refs;
         std::unique_ptr<O3AttributeList> __elts;
       };
 
