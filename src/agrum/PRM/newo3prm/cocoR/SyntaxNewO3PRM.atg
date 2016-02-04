@@ -46,6 +46,9 @@ using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementL
 using O3Parameter = gum::prm::o3prm::O3Parameter;
 using O3ParameterList = gum::prm::o3prm::O3Class::O3ParameterList;
 
+using O3ReferenceSlot = gum::prm::o3prm::O3ReferenceSlot;
+using O3ReferenceSlotList = gum::prm::o3prm::O3Class::O3ReferenceSlotList;
+
 using O3Attribute = gum::prm::o3prm::O3Attribute;
 using O3RawCPT = gum::prm::o3prm::O3RawCPT;
 using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
@@ -83,15 +86,9 @@ void __addO3Interface( Position& pos,
   get_prm()->interfaces().push_back( std::move( i ) );
 }
 
-void __addO3Class( Position& pos,
-                   O3Label& name,
-                   O3Label& super,
-                   O3LabelList& interfaces,
-                   O3ParameterList& params,
-                   O3AttributeList& elts) {
-  auto c = std::unique_ptr<O3Class>(
-      new O3Class( pos, name, super, interfaces, params, elts ) );
-  get_prm()->classes().push_back( std::move( c ) );
+void __addO3Class( O3Class&& c ) {
+  get_prm()->classes().push_back(
+      std::unique_ptr<O3Class>( new O3Class( c ) ) );
 }
 
 public:
@@ -173,14 +170,15 @@ UNIT =
 //________________________
 CLASS_UNIT =
   (. auto n = errors().error_count; .)
-  (. auto pos = Position(); .)
-  (. auto name = O3Label(); .)
-  (. auto super = O3Label(); .)
-  (. auto interfaces = O3LabelList(); .)
-  (. auto elts = O3AttributeList(); .)
-  (. auto params = O3ParameterList(); .)
-  CLASS_DECLARATION<pos, name, super, interfaces, elts, params>
-  (. if (__ok(n)) { __addO3Class( pos, name, super, interfaces, params, elts); } .)
+  (. auto c = O3Class(); .)
+  CLASS_DECLARATION<c.position(),
+                    c.name(),
+                    c.super(),
+                    c.interfaces(),
+                    c.parameters(),
+                    c.referenceSlots(),
+                    c.elements()>
+  (. if (__ok(n)) { __addO3Class( std::move(c) ); } .)
   .
 
 //________________________
@@ -188,8 +186,9 @@ CLASS_DECLARATION<Position& pos,
                   O3Label& name,
                   O3Label& super,
                   O3LabelList& interfaces,
-                  O3AttributeList& elts,
-                  O3ParameterList& params> =
+                  O3ParameterList& params,
+                  O3ReferenceSlotList& refs,
+                  O3AttributeList& elts> =
   CLASS<pos>
   LABEL<name>
   [
@@ -198,7 +197,7 @@ CLASS_DECLARATION<Position& pos,
   [
     implements LABEL_LIST<interfaces>
   ]
-  '{' { CLASS_BODY<elts, params> } '}'
+  '{' { CLASS_BODY<params, refs, elts> } '}'
   .
                    
 //________________________
@@ -210,10 +209,10 @@ CLASS<Position& pos> =
   .
 
 //________________________
-CLASS_BODY<O3AttributeList& elts, O3ParameterList& params> =
-    CLASS_ELEMENT<elts>
-  |
+CLASS_BODY<O3ParameterList& params, O3ReferenceSlotList& refs, O3AttributeList& elts> =
     CLASS_PARAMETER<params>
+  |
+    CLASS_ELEMENT<refs, elts>
   .
 
 //________________________
@@ -234,7 +233,7 @@ CLASS_PARAMETER<O3ParameterList& params> =
   .
 
 //________________________
-CLASS_ELEMENT<O3AttributeList& elts> =
+CLASS_ELEMENT<O3ReferenceSlotList& refs, O3AttributeList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
   (. auto parents = O3LabelList(); .)
@@ -244,9 +243,10 @@ CLASS_ELEMENT<O3AttributeList& elts> =
     '{'
     RAW_CPT<name, type, parents, elts>
     '}'
+    ';'
   |
     dependson
-    LABEL_LIST<parents> 
+    IDENTIFIER_LIST<parents> 
     '{'
         (
           RAW_CPT<name, type, parents, elts>
@@ -254,8 +254,22 @@ CLASS_ELEMENT<O3AttributeList& elts> =
           RULE_CPT<name, type, parents, elts>
         )
     '}'
+    ';'
+  |
+    REFERENCE_SLOT<type, name, refs>
   )
+  .
+
+//________________________
+REFERENCE_SLOT<O3Label& type, O3Label& name, O3ReferenceSlotList& refs> =
+  (. auto isArray = false; .)
+  [
+    '['
+    ']'
+    (. isArray = true; .)
+  ]
   ';'
+  (. refs.push_back( O3ReferenceSlot( type, name, isArray ) ); .)
   .
 
 //________________________
@@ -453,6 +467,33 @@ LABEL<O3Label& l> =
   label
   (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
+
+//________________________
+IDENTIFIER_LIST<O3LabelList& list> =
+  (. auto label = O3Label(); .)
+  IDENTIFIER<label>
+  (. list.push_back( label ); .)
+  {
+    ','
+    IDENTIFIER<label> 
+    (. list.push_back( label ); .)
+  }
+  .
+
+//________________________
+IDENTIFIER<O3Label& ident> =
+  (. auto s = std::stringstream(); .)
+  label
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. s << narrow( t->val ); .)
+  {
+    "."
+    (. s << narrow( t->val ); .)
+    label 
+    (. s << narrow( t->val ); .)
+  }
+  (. ident = O3Label( pos, s.str() ); .)
   .
 
 //________________________

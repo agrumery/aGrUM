@@ -142,6 +142,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -177,6 +178,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -226,6 +228,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -255,6 +258,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( line, msg.str() );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -284,6 +288,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( line, msg.str() );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -315,6 +320,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( line, msg.str() );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -364,6 +370,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -413,6 +420,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -462,6 +470,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -511,6 +520,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -540,6 +550,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( line, msg.str() );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -569,6 +580,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( line, msg.str() );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -598,6 +610,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( line, msg.str() );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -638,6 +651,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -688,6 +702,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -711,7 +726,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( output.str(), "" );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
         TS_ASSERT( prm.isInterface( "Foo" ) );
-        const auto& foo = prm.interface( "Bar" );
+        const auto& foo = prm.interface( "Foo" );
         TS_ASSERT_EQUALS( foo.attributes().size(), 1 );
         TS_ASSERT( foo.exists( "state" ) );
         const auto& state = foo.get( "state" );
@@ -721,13 +736,15 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.attributes().size(), 0 );
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 1 );
         TS_ASSERT( bar.exists( "myFoo" ) );
-        TS_ASSERT( gum::prm::ClassElement<double>::isReferenceSlot( bar.get("myFoo") ) );
+        TS_ASSERT( gum::prm::ClassElement<double>::isReferenceSlot(
+            bar.get( "myFoo" ) ) );
         const auto& myFoo = static_cast<const gum::prm::ReferenceSlot<double>&>(
             bar.get( "myFoo" ) );
-        TS_ASSERT_EQUALS( &(myFoo.slotType()), &(foo) );
+        TS_ASSERT_EQUALS( &( myFoo.slotType() ), &( foo ) );
         TS_ASSERT( not myFoo.isArray() );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -751,7 +768,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( output.str(), "" );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
         TS_ASSERT( prm.isInterface( "Foo" ) );
-        const auto& foo = prm.interface( "Bar" );
+        const auto& foo = prm.interface( "Foo" );
         TS_ASSERT_EQUALS( foo.attributes().size(), 1 );
         TS_ASSERT( foo.exists( "state" ) );
         const auto& state = foo.get( "state" );
@@ -761,13 +778,15 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bar.attributes().size(), 0 );
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 1 );
         TS_ASSERT( bar.exists( "myFoo" ) );
-        TS_ASSERT( gum::prm::ClassElement<double>::isReferenceSlot( bar.get("myFoo") ) );
+        TS_ASSERT( gum::prm::ClassElement<double>::isReferenceSlot(
+            bar.get( "myFoo" ) ) );
         const auto& myFoo = static_cast<const gum::prm::ReferenceSlot<double>&>(
             bar.get( "myFoo" ) );
-        TS_ASSERT_EQUALS( &(myFoo.slotType()), &(foo) );
+        TS_ASSERT_EQUALS( &( myFoo.slotType() ), &( foo ) );
         TS_ASSERT( myFoo.isArray() );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
@@ -776,12 +795,15 @@ namespace gum_tests {
       try {
         // Arrange
         auto input = std::stringstream();
+        input << "type state OK, NOK;" << std::endl;
         input << "interface Foo { " << std::endl
-              << "boolean state;" << std::endl
+              << "state state;" << std::endl
               << "}" << std::endl;
         input << "class Bar { " << std::endl
-              << "Foo foo;" << std::endl
-              << "boolean isWorking dependson foo.state {" << std::endl
+              << "real lambda default 0.003;" << std::endl
+              << "int t default 8760;" << std::endl
+              << "Foo myFoo;" << std::endl
+              << "boolean isWorking dependson myFoo.state {" << std::endl
               << "OK: 'exp(-lambda*t)', '1-exp(-lambda*t)';" << std::endl
               << "NOK: '1.0', '0.0';" << std::endl
               << "};" << std::endl
@@ -795,27 +817,32 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( output.str(), "" );
         TS_ASSERT_EQUALS( prm.classes().size(), 1 );
         TS_ASSERT( prm.isInterface( "Foo" ) );
-        const auto& foo = prm.interface( "Bar" );
+        const auto& foo = prm.interface( "Foo" );
         TS_ASSERT_EQUALS( foo.attributes().size(), 1 );
         TS_ASSERT( foo.exists( "state" ) );
         const auto& state = foo.get( "state" );
         TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( state ) );
         TS_ASSERT( prm.isClass( "Bar" ) );
         const auto& bar = prm.getClass( "Bar" );
-        TS_ASSERT_EQUALS( bar.attributes().size(), 0 );
+        TS_ASSERT_EQUALS( bar.attributes().size(), 1 );
         TS_ASSERT_EQUALS( bar.referenceSlots().size(), 1 );
         TS_ASSERT( bar.exists( "myFoo" ) );
-        TS_ASSERT( gum::prm::ClassElement<double>::isReferenceSlot( bar.get("myFoo") ) );
+        TS_ASSERT( gum::prm::ClassElement<double>::isReferenceSlot(
+            bar.get( "myFoo" ) ) );
         const auto& myFoo = static_cast<const gum::prm::ReferenceSlot<double>&>(
             bar.get( "myFoo" ) );
-        TS_ASSERT_EQUALS( &(myFoo.slotType()), &foo );
+        TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
         TS_ASSERT( not myFoo.isArray() );
         TS_ASSERT( bar.exists( "isWorking" ) );
         const auto& isWorking = bar.get( "isWorking" );
         TS_ASSERT( gum::prm::ClassElement<double>::isAttribute( isWorking ) );
         const auto& cpf = isWorking.cpf();
+        TS_ASSERT( not cpf.variablesSequence().exists(
+            &( state.type().variable() ) ) );
+        TS_ASSERT( bar.exists( "myFoo.state" ) );
+        const auto& chain = bar.get( "myFoo.state" );
         TS_ASSERT(
-            cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+            cpf.variablesSequence().exists( &( chain.type().variable() ) ) );
         TS_ASSERT_EQUALS( cpf.domainSize(), 4 );
         auto i = gum::Instantiation( cpf );
         i.setFirst();
@@ -828,6 +855,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( cpf[i], 0.0, 1e-6 );
         TS_ASSERT_THROWS( bar.super(), gum::NotFound );
       } catch ( gum::Exception& e ) {
+        GUM_TRACE_NEWLINE;
         GUM_SHOWERROR( e );
       }
     }
