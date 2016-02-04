@@ -854,7 +854,7 @@ namespace gum {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given NodeId" );
+                   "no ClassElement<GUM_SCALAR> with the given NodeId ("<<id<<")" );
       }
     }
 
@@ -865,7 +865,7 @@ namespace gum {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given name" );
+                   "no ClassElement<GUM_SCALAR> with the given name ("<<name<<")" );
       }
     }
 
@@ -876,7 +876,7 @@ namespace gum {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given name" );
+                   "no ClassElement<GUM_SCALAR> with the given name ("<<name<<")" );
       }
     }
 

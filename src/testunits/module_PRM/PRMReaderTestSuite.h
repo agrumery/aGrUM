@@ -33,7 +33,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.readFile( GET_RESSOURCES_PATH(
                                         "o3prm/inference.o3prm" ) ) );
 
-      if ( res != 0 ) reader.showElegantErrors();
+      if ( res != 0 ) {
+        reader.showElegantErrors();
+      }
 
       TS_ASSERT_EQUALS( res, 0 );
 
@@ -45,14 +47,16 @@ namespace gum_tests {
     }
 
     void /*test*/ Regression1() {  // error when attribute defined with
-                                   // interface as
-                                   // type
+      // interface as
+      // type
       gum::prm::o3prm::O3prmReader<double> reader;
       int res;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.readFile( GET_RESSOURCES_PATH(
                                         "o3prm/withinterfaces.o3prm" ) ) );
 
-      if ( res != 0 ) reader.showElegantErrors();
+      if ( res != 0 ) {
+        reader.showElegantErrors();
+      }
 
       TS_ASSERT_EQUALS( res, 0 );
 
