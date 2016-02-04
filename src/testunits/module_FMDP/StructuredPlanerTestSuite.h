@@ -40,8 +40,6 @@ namespace gum_tests {
     void run() {
 
       gum::FMDP<double> fmdp( true );
-      // gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high,
-      // indeed we just want ot check that the algorithm works fine.
       gum::StructuredPlaner<double>* planer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
           planer = gum::StructuredPlaner<double>::spumddInstance( 0.9, 0.01, false ) );
@@ -70,17 +68,17 @@ namespace gum_tests {
     public:
     void testPlanningCoffee() {
       file = GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" );
-      // run();
+      run();
     }
 
     void testPlanningTinyFactory() {
       file = GET_RESSOURCES_PATH( "FMDP/factory/tiny-factory.dat" );
-      // run();
+      run();
     }
 
     void testPlanningTaxi() {
       file = GET_RESSOURCES_PATH( "FMDP/taxi/taxi.dat" );
-      // run();
+      run();
     }
   };
 }
