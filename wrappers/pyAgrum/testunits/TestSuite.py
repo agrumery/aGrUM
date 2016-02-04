@@ -28,16 +28,16 @@ import PRMexplorerTestSuite
 import time
 
 tests = unittest.TestSuite([
-                            #VariablesTestSuite.ts,
-                            #BayesNetTestSuite.ts,
-                            #PythonBNListenerTestSuite.ts,
-                            #PotentialTestSuite.ts,
-                            #LazyPropagationTestSuite.ts,
-                            #JunctionTreeTestSuite.ts,
-                            #GibbsTestSuite.ts,
-                            #ICIModelsForBNTestSuite.ts,
-                            #BNLearnerTestSuite.ts,
-                            #AggregatorsForBNTestSuite.ts,
+                            VariablesTestSuite.ts,
+                            BayesNetTestSuite.ts,
+                            PythonBNListenerTestSuite.ts,
+                            PotentialTestSuite.ts,
+                            LazyPropagationTestSuite.ts,
+                            JunctionTreeTestSuite.ts,
+                            GibbsTestSuite.ts,
+                            ICIModelsForBNTestSuite.ts,
+                            BNLearnerTestSuite.ts,
+                            AggregatorsForBNTestSuite.ts,
                             PRMexplorerTestSuite.ts
                             ])
 

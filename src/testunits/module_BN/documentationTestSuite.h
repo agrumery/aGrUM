@@ -313,14 +313,14 @@ namespace gum_tests {
         auto id = asia.idFromName( "Has Lung Cancer" );
         const auto& marginal = inference.posterior( id );
         // To prevent warning for unused variable
-        TS_ASSERT_EQUALS( marginal.domainSize(), 2 );
+        TS_ASSERT_EQUALS( marginal.domainSize(), gum::Size(2) );
         // We can add some evidence
         // Index 0 is False, 1 True
         inference.addHardEvidence( asia.idFromName( "Visit to Asia" ), 0 );
         inference.addHardEvidence( asia.idFromName( "Dyspnea" ), 0 );
         const auto& updated_marginal = inference.posterior( id );
         // To prevent warning for unused variable
-        TS_ASSERT_EQUALS( updated_marginal.domainSize(), 2 );
+        TS_ASSERT_EQUALS( updated_marginal.domainSize(), gum::Size(2) );
       } catch ( gum::Exception& e ) {
         TS_FAIL( e.errorContent() );
       }
