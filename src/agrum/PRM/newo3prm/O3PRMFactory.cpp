@@ -35,11 +35,56 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
-      bool check_raw_cpt( const Class<double>& c,
+      bool check_ref( const PRM<double>& prm, O3ReferenceSlot& ref ) {
+        return true;
+      }
+
+      const ClassElement<double>*
+      resolve_slotchain( const ClassElementContainer<double>& c,
+                         const O3Label& chain,
+                         std::ostream& output ) {
+        auto s = chain.label();
+        auto idx = (std::size_t)0;
+        auto current = &c;
+        for ( idx = s.find( '.', idx ); idx != std::string::npos;
+              idx = s.find( '.', idx ) ) {
+          auto value = s.substr( 0, idx );
+          if ( not current->exists( value ) ) {
+            const auto& pos = chain.position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Slot chain error : "
+                   << "Link " << value << " in chain " << chain.label()
+                   << " not found" << std::endl;
+            return nullptr;
+          }
+          auto ref = dynamic_cast<const ReferenceSlot<double>*>(
+              &( current->get( value ) ) );
+          if ( ref ) {
+            current = &( ref->slotType() );
+            s = s.substr( idx + 1 );
+          }
+        }
+        return &( current->get( s ) );
+      }
+
+      bool check_raw_cpt( const PRM<double>& prm,
+                          const Class<double>& c,
                           O3RawCPT& attr,
-                          const Type<double>& type,
-                          Size domainSize,
                           std::ostream& output ) {
+        const auto& type = prm.type( attr.type().label() );
+
+        auto domainSize = type->domainSize();
+        for ( auto& prnt : attr.parents() ) {
+          try {
+            domainSize *= c.get( prnt.label() ).type()->domainSize();
+          } catch ( NotFound& ) {
+            // If we are here, all parents have been check so resolve_slotchain
+            // will not raise an error and not return a null_ptr
+            domainSize *=
+                resolve_slotchain( c, prnt, output )->type()->domainSize();
+          }
+        }
         // Check for CPT size
         if ( domainSize != attr.values().size() ) {
           const auto& pos = attr.name().position();
@@ -76,6 +121,41 @@ namespace gum {
           return false;
         }
         return true;
+      }
+
+      bool check_local_parent( const Class<double>& c, const O3Label& prnt, std::ostream& output ) {
+        if ( not c.exists( prnt.label() ) ) {
+          const auto& pos = prnt.position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Attribute error : "
+                 << "Parent " << prnt.label() << " not found" << std::endl;
+          return false;
+        }
+        const auto& elt = c.get( prnt.label() );
+        if ( not( gum::prm::ClassElement<double>::isAttribute( elt ) or
+                  gum::prm::ClassElement<double>::isSlotChain( elt ) ) ) {
+          const auto& pos = prnt.position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Attribute error : "
+                 << "Illegal parent " << prnt.label() << std::endl;
+          return false;
+        }
+        return true;
+      }
+
+      bool check_remote_parent( const ClassElementContainer<double>& c,
+                                const O3Label& prnt, std::ostream& output ) {
+        return resolve_slotchain( c, prnt, output ) != nullptr;
+      }
+
+      bool check_parent( const Class<double>& c, const O3Label& prnt, std::ostream& output ) {
+        if ( prnt.label().find( '.' ) == std::string::npos ) {
+          return check_local_parent( c, prnt, output );
+        } else {
+          return check_remote_parent( c, prnt, output );
+        }
       }
 
       bool check_rule_cpt( const Class<double>& c,
@@ -137,35 +217,17 @@ namespace gum {
                  << "Type " << attr.type().label() << " not found" << std::endl;
           return false;
         }
-        const auto& type = prm.type( attr.type().label() );
-        Size domain_size = type->domainSize();
         // Check for parents existence
         const auto& c = prm.getClass( o3_c.name().label() );
-        for ( const auto& prnt : attr.parents() ) {
-          if ( not c.exists( prnt.label() ) ) {
-            const auto& pos = prnt.position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Attribute error : "
-                   << "Parent " << prnt.label() << " not found" << std::endl;
+        for ( auto& prnt : attr.parents() ) {
+          if ( not check_parent( c, prnt, output ) ) {
             return false;
           }
-          const auto& elt = c.get( prnt.label() );
-          if ( not( gum::prm::ClassElement<double>::isAttribute( elt ) or
-                    gum::prm::ClassElement<double>::isSlotChain( elt ) ) ) {
-            const auto& pos = prnt.position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Attribute error : "
-                   << "Illegal parent " << prnt.label() << std::endl;
-            return false;
-          }
-          domain_size *= elt.type()->domainSize();
         }
-
+        // Check that CPT sums to 1
         auto raw = dynamic_cast<O3RawCPT*>( &attr );
         if ( raw ) {
-          return check_raw_cpt( c, *raw, type, domain_size, output );
+          return check_raw_cpt( prm, c, *raw, output );
         }
         auto rule = dynamic_cast<O3RuleCPT*>( &attr );
         if ( rule ) {
@@ -197,6 +259,12 @@ namespace gum {
                 break;
               }
               default: { GUM_ERROR( FatalError, "unknown O3Paramater type" ); }
+            }
+          }
+          for ( auto& ref : c->referenceSlots() ) {
+            if ( check_ref( prm, ref ) ) {
+              factory.addReferenceSlot(
+                  ref.type().label(), ref.name().label(), ref.isArray() );
             }
           }
           for ( auto& attr : c->elements() ) {
