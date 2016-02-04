@@ -161,7 +161,7 @@ namespace gum {
 
           return str;
         }
-        GUM_ERROR( OperationNotAllowed, "Could not open file" );
+        GUM_ERROR( IOError, "Could not open file ("<<file<<")" );
       }
 
       template <typename GUM_SCALAR>

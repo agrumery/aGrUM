@@ -25,38 +25,64 @@
  * @author Pierre-Henri WUILLEMIN
  */
 #include <string>
+#include <Python.h>
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 class PRMexplorer {
-  private:
-  gum::prm::PRM<double>* __prm;
-
   public:
-  void loadPRM(std::string file,bool verbose=false) {//, const std::string& package = "" ) {
-    std::string package="";
+  PRMexplorer( std::string file,
+               std::string classpath = "",
+               bool verbose = false ) {
 
     std::stringstream stream;
     gum::prm::o3prm::O3prmReader<double> reader;
 
-    auto nbErr = reader.readFile( file, package);
+    reader.setClassPath( classpath );
+
+    auto nbErr = reader.readFile( file );
+
     reader.showElegantErrorsAndWarnings( stream );
     if ( nbErr > 0 ) {
       reader.showErrorCounts( stream );
       GUM_ERROR( gum::FatalError, stream.str() );
     }
-    std::cout << stream.str() << std::endl;
+    if (verbose) {
+      std::cout << stream.str() << std::endl;
+    }
 
     __prm = reader.prm();
-  }
+  };
 
-  std::vector<std::string> classes() {
-    std::vector<std::string> v;
+  PyObject* classes() {
+    PyObject* q = PyList_New( 0 );
 
     for ( auto c : __prm->classes() )
-      v.push_back( c->name() );
+      PyList_Append( q, PyString_FromString( c->name().c_str() ) );
 
-    return v;
+    return q;
+  };
+
+  PyObject* attributes( std::string classname, bool allAttributes = false ) {
+    PyObject* q = PyList_New( 0 );
+
+    for ( auto c : __prm->getClass( classname ).attributes() )
+      if ( allAttributes ) {
+        PyList_Append( q, PyString_FromString( c->safeName().c_str() ) );
+      } else if ( &( __prm->getClass( classname ).get( c->name() ) ) ==
+                  c )  // remove automatically created attributes
+                       // (cast-descendant)
+        PyList_Append( q, PyString_FromString( c->name().c_str() ) );
+
+    return q;
   }
+
+  const gum::Potential<double>& cpf( std::string classname,
+                                     std::string attribute ) {
+    return __prm->getClass( classname ).get( attribute ).cpf();
+  }
+
+  private:
+  gum::prm::PRM<double>* __prm;
 };

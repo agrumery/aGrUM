@@ -7,6 +7,9 @@ interface generator."
 %module(docstring=DOCSTRING, directors="1") pyAgrum
 %feature("autodoc", "1");
 
+%include "std_vector.i"
+%include "std_string.i"
+
 %{
 #define SWIG_FILE_WITH_INIT
 

@@ -108,6 +108,113 @@ except __builtin__.Exception:
     weakref_proxy = lambda x: x
 
 
+class SwigPyIterator(_object):
+    """Proxy of C++ swig::SwigPyIterator class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, SwigPyIterator, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, SwigPyIterator, name)
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyAgrum.delete_SwigPyIterator
+    __del__ = lambda self: None
+
+    def value(self) -> "PyObject *":
+        """value(SwigPyIterator self) -> PyObject *"""
+        return _pyAgrum.SwigPyIterator_value(self)
+
+
+    def incr(self, n: 'size_t'=1) -> "swig::SwigPyIterator *":
+        """
+        incr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
+        incr(SwigPyIterator self) -> SwigPyIterator
+        """
+        return _pyAgrum.SwigPyIterator_incr(self, n)
+
+
+    def decr(self, n: 'size_t'=1) -> "swig::SwigPyIterator *":
+        """
+        decr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
+        decr(SwigPyIterator self) -> SwigPyIterator
+        """
+        return _pyAgrum.SwigPyIterator_decr(self, n)
+
+
+    def distance(self, x: 'SwigPyIterator') -> "ptrdiff_t":
+        """distance(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t"""
+        return _pyAgrum.SwigPyIterator_distance(self, x)
+
+
+    def equal(self, x: 'SwigPyIterator') -> "bool":
+        """equal(SwigPyIterator self, SwigPyIterator x) -> bool"""
+        return _pyAgrum.SwigPyIterator_equal(self, x)
+
+
+    def copy(self) -> "swig::SwigPyIterator *":
+        """copy(SwigPyIterator self) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator_copy(self)
+
+
+    def next(self) -> "PyObject *":
+        """next(SwigPyIterator self) -> PyObject *"""
+        return _pyAgrum.SwigPyIterator_next(self)
+
+
+    def __next__(self) -> "PyObject *":
+        """__next__(SwigPyIterator self) -> PyObject *"""
+        return _pyAgrum.SwigPyIterator___next__(self)
+
+
+    def previous(self) -> "PyObject *":
+        """previous(SwigPyIterator self) -> PyObject *"""
+        return _pyAgrum.SwigPyIterator_previous(self)
+
+
+    def advance(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator *":
+        """advance(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator_advance(self, n)
+
+
+    def __eq__(self, x: 'SwigPyIterator') -> "bool":
+        """__eq__(SwigPyIterator self, SwigPyIterator x) -> bool"""
+        return _pyAgrum.SwigPyIterator___eq__(self, x)
+
+
+    def __ne__(self, x: 'SwigPyIterator') -> "bool":
+        """__ne__(SwigPyIterator self, SwigPyIterator x) -> bool"""
+        return _pyAgrum.SwigPyIterator___ne__(self, x)
+
+
+    def __iadd__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator &":
+        """__iadd__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator___iadd__(self, n)
+
+
+    def __isub__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator &":
+        """__isub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator___isub__(self, n)
+
+
+    def __add__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator *":
+        """__add__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator___add__(self, n)
+
+
+    def __sub__(self, *args) -> "ptrdiff_t":
+        """
+        __sub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
+        __sub__(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t
+        """
+        return _pyAgrum.SwigPyIterator___sub__(self, *args)
+
+    def __iter__(self):
+        return self
+SwigPyIterator_swigregister = _pyAgrum.SwigPyIterator_swigregister
+SwigPyIterator_swigregister(SwigPyIterator)
+
 
 import numpy
 
@@ -358,137 +465,39 @@ class PRMexplorer(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, PRMexplorer, name)
     __repr__ = _swig_repr
 
-    def loadPRM(self, file: 'std::string', verbose: 'bool'=False) -> "void":
+    def __init__(self, *args):
         """
-        loadPRM(PRMexplorer self, std::string file, bool verbose=False)
-        loadPRM(PRMexplorer self, std::string file)
+        __init__(PRMexplorer self, std::string file, std::string classpath, bool verbose=False) -> PRMexplorer
+        __init__(PRMexplorer self, std::string file, std::string classpath) -> PRMexplorer
+        __init__(PRMexplorer self, std::string file) -> PRMexplorer
         """
-        return _pyAgrum.PRMexplorer_loadPRM(self, file, verbose)
-
-
-    def classes(self) -> "std::vector< std::string,std::allocator< std::string > >":
-        """classes(PRMexplorer self) -> Vector_string"""
-        return _pyAgrum.PRMexplorer_classes(self)
-
-
-    def __init__(self):
-        """__init__(PRMexplorer self) -> PRMexplorer"""
-        this = _pyAgrum.new_PRMexplorer()
+        this = _pyAgrum.new_PRMexplorer(*args)
         try:
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+    def classes(self) -> "PyObject *":
+        """classes(PRMexplorer self) -> PyObject *"""
+        return _pyAgrum.PRMexplorer_classes(self)
+
+
+    def attributes(self, classname: 'std::string', allAttributes: 'bool'=False) -> "PyObject *":
+        """
+        attributes(PRMexplorer self, std::string classname, bool allAttributes=False) -> PyObject
+        attributes(PRMexplorer self, std::string classname) -> PyObject *
+        """
+        return _pyAgrum.PRMexplorer_attributes(self, classname, allAttributes)
+
+
+    def cpf(self, classname: 'std::string', attribute: 'std::string') -> "gum::Potential< double > const &":
+        """cpf(PRMexplorer self, std::string classname, std::string attribute) -> Potential_double"""
+        return _pyAgrum.PRMexplorer_cpf(self, classname, attribute)
+
     __swig_destroy__ = _pyAgrum.delete_PRMexplorer
     __del__ = lambda self: None
 PRMexplorer_swigregister = _pyAgrum.PRMexplorer_swigregister
 PRMexplorer_swigregister(PRMexplorer)
-
-class SwigPyIterator(_object):
-    """Proxy of C++ swig::SwigPyIterator class."""
-
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, SwigPyIterator, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, SwigPyIterator, name)
-
-    def __init__(self, *args, **kwargs):
-        raise AttributeError("No constructor defined - class is abstract")
-    __repr__ = _swig_repr
-    __swig_destroy__ = _pyAgrum.delete_SwigPyIterator
-    __del__ = lambda self: None
-
-    def value(self) -> "PyObject *":
-        """value(SwigPyIterator self) -> PyObject *"""
-        return _pyAgrum.SwigPyIterator_value(self)
-
-
-    def incr(self, n: 'size_t'=1) -> "swig::SwigPyIterator *":
-        """
-        incr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
-        incr(SwigPyIterator self) -> SwigPyIterator
-        """
-        return _pyAgrum.SwigPyIterator_incr(self, n)
-
-
-    def decr(self, n: 'size_t'=1) -> "swig::SwigPyIterator *":
-        """
-        decr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
-        decr(SwigPyIterator self) -> SwigPyIterator
-        """
-        return _pyAgrum.SwigPyIterator_decr(self, n)
-
-
-    def distance(self, x: 'SwigPyIterator') -> "ptrdiff_t":
-        """distance(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t"""
-        return _pyAgrum.SwigPyIterator_distance(self, x)
-
-
-    def equal(self, x: 'SwigPyIterator') -> "bool":
-        """equal(SwigPyIterator self, SwigPyIterator x) -> bool"""
-        return _pyAgrum.SwigPyIterator_equal(self, x)
-
-
-    def copy(self) -> "swig::SwigPyIterator *":
-        """copy(SwigPyIterator self) -> SwigPyIterator"""
-        return _pyAgrum.SwigPyIterator_copy(self)
-
-
-    def next(self) -> "PyObject *":
-        """next(SwigPyIterator self) -> PyObject *"""
-        return _pyAgrum.SwigPyIterator_next(self)
-
-
-    def __next__(self) -> "PyObject *":
-        """__next__(SwigPyIterator self) -> PyObject *"""
-        return _pyAgrum.SwigPyIterator___next__(self)
-
-
-    def previous(self) -> "PyObject *":
-        """previous(SwigPyIterator self) -> PyObject *"""
-        return _pyAgrum.SwigPyIterator_previous(self)
-
-
-    def advance(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator *":
-        """advance(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
-        return _pyAgrum.SwigPyIterator_advance(self, n)
-
-
-    def __eq__(self, x: 'SwigPyIterator') -> "bool":
-        """__eq__(SwigPyIterator self, SwigPyIterator x) -> bool"""
-        return _pyAgrum.SwigPyIterator___eq__(self, x)
-
-
-    def __ne__(self, x: 'SwigPyIterator') -> "bool":
-        """__ne__(SwigPyIterator self, SwigPyIterator x) -> bool"""
-        return _pyAgrum.SwigPyIterator___ne__(self, x)
-
-
-    def __iadd__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator &":
-        """__iadd__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
-        return _pyAgrum.SwigPyIterator___iadd__(self, n)
-
-
-    def __isub__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator &":
-        """__isub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
-        return _pyAgrum.SwigPyIterator___isub__(self, n)
-
-
-    def __add__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator *":
-        """__add__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
-        return _pyAgrum.SwigPyIterator___add__(self, n)
-
-
-    def __sub__(self, *args) -> "ptrdiff_t":
-        """
-        __sub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
-        __sub__(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t
-        """
-        return _pyAgrum.SwigPyIterator___sub__(self, *args)
-
-    def __iter__(self):
-        return self
-SwigPyIterator_swigregister = _pyAgrum.SwigPyIterator_swigregister
-SwigPyIterator_swigregister(SwigPyIterator)
 
 class Vector_double(_object):
     """Proxy of C++ std::vector<(double)> class."""
@@ -936,11 +945,6 @@ class GumException(Exception):
     def errorCallStack(self) -> "std::string const":
         """errorCallStack(GumException self) -> std::string const"""
         return _pyAgrum.GumException_errorCallStack(self)
-
-
-    def __str__(self) -> "char const *":
-        """__str__(GumException self) -> char const *"""
-        return _pyAgrum.GumException___str__(self)
 
 GumException_swigregister = _pyAgrum.GumException_swigregister
 GumException_swigregister(GumException)
