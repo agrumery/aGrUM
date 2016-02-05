@@ -174,11 +174,11 @@ O3AttributeList& elts) {
 		LABEL(name);
 		if (la->kind == _extends) {
 			Get();
-			LABEL(super);
+			IDENTIFIER(super);
 		}
 		if (la->kind == _implements) {
 			Get();
-			LABEL_LIST(interfaces);
+			IDENTIFIER_LIST(interfaces);
 		}
 		Expect(20 /* "{" */);
 		while (la->kind == _label || la->kind == _int || la->kind == _real) {
@@ -200,13 +200,27 @@ void Parser::LABEL(O3Label& l) {
 		l = O3Label( pos, narrow( t->val ) ); 
 }
 
-void Parser::LABEL_LIST(O3LabelList& list) {
+void Parser::IDENTIFIER(O3Label& ident) {
+		auto s = std::stringstream(); 
+		Expect(_label);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		s << narrow( t->val ); 
+		while (la->kind == _dot) {
+			Get();
+			s << narrow( t->val ); 
+			Expect(_label);
+			s << narrow( t->val ); 
+		}
+		ident = O3Label( pos, s.str() ); 
+}
+
+void Parser::IDENTIFIER_LIST(O3LabelList& list) {
 		auto label = O3Label(); 
-		LABEL(label);
+		IDENTIFIER(label);
 		list.push_back( label ); 
 		while (la->kind == _comma) {
 			Get();
-			LABEL(label);
+			IDENTIFIER(label);
 			list.push_back( label ); 
 		}
 }
@@ -247,7 +261,7 @@ void Parser::CLASS_ELEMENT(O3ReferenceSlotList& refs, O3AttributeList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
 		auto parents = O3LabelList(); 
-		LABEL(type);
+		IDENTIFIER(type);
 		LABEL(name);
 		if (la->kind == 20 /* "{" */) {
 			Get();
@@ -292,17 +306,6 @@ O3AttributeList& elts) {
 		Expect(23 /* "]" */);
 		auto attr = new O3RawCPT( type, name, parents, values ); 
 		elts.push_back( std::unique_ptr<O3Attribute>(attr) ); 
-}
-
-void Parser::IDENTIFIER_LIST(O3LabelList& list) {
-		auto label = O3Label(); 
-		IDENTIFIER(label);
-		list.push_back( label ); 
-		while (la->kind == _comma) {
-			Get();
-			IDENTIFIER(label);
-			list.push_back( label ); 
-		}
 }
 
 void Parser::RULE_CPT(const O3Label& name,
@@ -370,7 +373,7 @@ O3InterfaceElementList& elts) {
 		LABEL(name);
 		if (la->kind == _extends) {
 			Get();
-			LABEL(super);
+			IDENTIFIER(super);
 		}
 		Expect(20 /* "{" */);
 		while (la->kind == _label) {
@@ -389,7 +392,7 @@ void Parser::INTERFACE(Position& pos) {
 void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
-		LABEL(type);
+		IDENTIFIER(type);
 		LABEL(name);
 		Expect(_semicolon);
 		elts.push_back( O3InterfaceElement( type, name ) ); 
@@ -402,7 +405,7 @@ void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, Labe
 			TYPE_VALUE_LIST(labels);
 		} else if (la->kind == _extends) {
 			Get();
-			LABEL(super);
+			IDENTIFIER(super);
 			MAP(labels);
 		} else SynErr(34);
 		Expect(_semicolon);
@@ -477,20 +480,6 @@ void Parser::INT(Position& pos) {
 		pos.file( narrow( scanner->filename() ) ); 
 		pos.line( t->line ); 
 		pos.column( t->col ); 
-}
-
-void Parser::IDENTIFIER(O3Label& ident) {
-		auto s = std::stringstream(); 
-		Expect(_label);
-		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		s << narrow( t->val ); 
-		while (la->kind == _dot) {
-			Get();
-			s << narrow( t->val ); 
-			Expect(_label);
-			s << narrow( t->val ); 
-		}
-		ident = O3Label( pos, s.str() ); 
 }
 
 void Parser::LABEL_OR_STAR(O3Label& l) {

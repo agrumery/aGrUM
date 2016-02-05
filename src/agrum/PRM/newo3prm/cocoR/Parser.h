@@ -208,7 +208,8 @@ O3ReferenceSlotList& refs,
 O3AttributeList& elts);
 	void CLASS(Position& pos);
 	void LABEL(O3Label& l);
-	void LABEL_LIST(O3LabelList& list);
+	void IDENTIFIER(O3Label& ident);
+	void IDENTIFIER_LIST(O3LabelList& list);
 	void CLASS_BODY(O3ParameterList& params, O3ReferenceSlotList& refs, O3AttributeList& elts);
 	void CLASS_PARAMETER(O3ParameterList& params);
 	void CLASS_ELEMENT(O3ReferenceSlotList& refs, O3AttributeList& elts);
@@ -218,7 +219,6 @@ O3AttributeList& elts);
 const O3Label& type,
 const O3LabelList& parents,
 O3AttributeList& elts);
-	void IDENTIFIER_LIST(O3LabelList& list);
 	void RULE_CPT(const O3Label& name,
 const O3Label& type,
 const O3LabelList& parents,
@@ -239,7 +239,6 @@ O3InterfaceElementList& elts);
 	void TYPE_VALUE_LIST(LabelMap& labels );
 	void MAP(LabelMap& labels );
 	void INT(Position& pos);
-	void IDENTIFIER(O3Label& ident);
 	void LABEL_OR_STAR(O3Label& l);
 	void FORMULA(O3Formula& f);
 
