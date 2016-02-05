@@ -192,10 +192,10 @@ CLASS_DECLARATION<Position& pos,
   CLASS<pos>
   LABEL<name>
   [
-    extends LABEL<super>
+    extends IDENTIFIER<super>
   ]
   [
-    implements LABEL_LIST<interfaces>
+    implements IDENTIFIER_LIST<interfaces>
   ]
   '{' { CLASS_BODY<params, refs, elts> } '}'
   .
@@ -237,7 +237,7 @@ CLASS_ELEMENT<O3ReferenceSlotList& refs, O3AttributeList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
   (. auto parents = O3LabelList(); .)
-  LABEL<type>
+  IDENTIFIER<type>
   LABEL<name>
   (
     '{'
@@ -327,7 +327,7 @@ INTERFACE_DECLARATION<Position& pos,
   INTERFACE<pos>
   LABEL<name>
   [
-    extends LABEL<super>
+    extends IDENTIFIER<super>
   ]
   '{' { INTERFACE_BODY<elts> } '}'
   .
@@ -344,7 +344,7 @@ INTERFACE<Position& pos> =
 INTERFACE_BODY<O3InterfaceElementList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
-  LABEL<type> LABEL<name> ';'
+  IDENTIFIER<type> LABEL<name> ';'
   (. elts.push_back( O3InterfaceElement( type, name ) ); .)
   .
 
@@ -373,7 +373,7 @@ TYPE_DECLARATION<Position& pos, O3Label& name, O3Label& super, LabelMap& labels>
   (
     TYPE_VALUE_LIST<labels>
     |
-    extends LABEL<super> MAP<labels>
+    extends IDENTIFIER<super> MAP<labels>
   )
   ';'
   . 
@@ -496,17 +496,17 @@ IDENTIFIER<O3Label& ident> =
   (. ident = O3Label( pos, s.str() ); .)
   .
 
-//________________________
-LABEL_LIST<O3LabelList& list> =
-  (. auto label = O3Label(); .)
-  LABEL<label>
-  (. list.push_back( label ); .)
-  {
-    ','
-    LABEL<label> 
-    (. list.push_back( label ); .)
-  }
-  .
+////________________________
+//LABEL_LIST<O3LabelList& list> =
+//  (. auto label = O3Label(); .)
+//  LABEL<label>
+//  (. list.push_back( label ); .)
+//  {
+//    ','
+//    LABEL<label> 
+//    (. list.push_back( label ); .)
+//  }
+//  .
 
 //________________________
 LABEL_OR_STAR<O3Label& l> =
