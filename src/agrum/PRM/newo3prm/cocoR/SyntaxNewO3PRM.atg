@@ -54,6 +54,9 @@ using O3RawCPT = gum::prm::o3prm::O3RawCPT;
 using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
 using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
+using O3Aggregate = gum::prm::o3prm::O3Aggregate;
+using O3AggregateList = gum::prm::o3prm::O3Class::O3AggregateList;
+
 using O3Class = gum::prm::o3prm::O3Class;
 
 using O3PRM = gum::prm::o3prm::O3PRM;
@@ -171,33 +174,21 @@ UNIT =
 CLASS_UNIT =
   (. auto n = errors().error_count; .)
   (. auto c = O3Class(); .)
-  CLASS_DECLARATION<c.position(),
-                    c.name(),
-                    c.super(),
-                    c.interfaces(),
-                    c.parameters(),
-                    c.referenceSlots(),
-                    c.elements()>
+  CLASS_DECLARATION<c>
   (. if (__ok(n)) { __addO3Class( std::move(c) ); } .)
   .
 
 //________________________
-CLASS_DECLARATION<Position& pos,
-                  O3Label& name,
-                  O3Label& super,
-                  O3LabelList& interfaces,
-                  O3ParameterList& params,
-                  O3ReferenceSlotList& refs,
-                  O3AttributeList& elts> =
-  CLASS<pos>
-  LABEL<name>
+CLASS_DECLARATION<O3Class& c> =
+  CLASS<c.position()>
+  LABEL<c.name()>
   [
-    extends IDENTIFIER<super>
+    extends IDENTIFIER<c.super()>
   ]
   [
-    implements IDENTIFIER_LIST<interfaces>
+    implements IDENTIFIER_LIST<c.interfaces()>
   ]
-  '{' { CLASS_BODY<params, refs, elts> } '}'
+  '{' { CLASS_BODY<c> } '}'
   .
                    
 //________________________
@@ -209,10 +200,10 @@ CLASS<Position& pos> =
   .
 
 //________________________
-CLASS_BODY<O3ParameterList& params, O3ReferenceSlotList& refs, O3AttributeList& elts> =
-    CLASS_PARAMETER<params>
+CLASS_BODY<O3Class& c> =
+    CLASS_PARAMETER<c.parameters()>
   |
-    CLASS_ELEMENT<refs, elts>
+    CLASS_ELEMENT<c>
   .
 
 //________________________
@@ -233,48 +224,94 @@ CLASS_PARAMETER<O3ParameterList& params> =
   .
 
 //________________________
-CLASS_ELEMENT<O3ReferenceSlotList& refs, O3AttributeList& elts> =
+CLASS_ELEMENT<O3Class& c> =
   (. auto type = O3Label(); .)
-  (. auto name = O3Label(); .)
-  (. auto parents = O3LabelList(); .)
   IDENTIFIER<type>
-  LABEL<name>
   (
-    '{'
-    RAW_CPT<name, type, parents, elts>
-    '}'
-    ';'
+    ARRAY_REFERENCE_SLOT<type, c.referenceSlots()>
   |
-    dependson
-    IDENTIFIER_LIST<parents> 
-    '{'
-        (
-          RAW_CPT<name, type, parents, elts>
-        |
-          RULE_CPT<name, type, parents, elts>
-        )
-    '}'
-    ';'
-  |
-    REFERENCE_SLOT<type, name, refs>
+    NAMED_CLASS_ELEMENT<type, c>
   )
   .
 
 //________________________
-REFERENCE_SLOT<O3Label& type, O3Label& name, O3ReferenceSlotList& refs> =
+ARRAY_REFERENCE_SLOT<O3Label& type, O3ReferenceSlotList& refs> =
   (. auto isArray = false; .)
-  [
-    '['
-    ']'
-    (. isArray = true; .)
-  ]
+  (. isArray = true; .)
+  (. auto name = O3Label(); .)
+  '['
+  ']'
+  LABEL<name>
   ';'
   (. refs.push_back( O3ReferenceSlot( type, name, isArray ) ); .)
   .
 
 //________________________
-RAW_CPT<const O3Label& name,
-        const O3Label& type,
+NAMED_CLASS_ELEMENT<O3Label& type, O3Class& c> =
+  (. auto name = O3Label(); .)
+  LABEL<name>
+  ( 
+    REFERENCE_SLOT<type, name, c>
+  | 
+    ATTRIBUTE<type, name, c>
+  |
+    AGGREGATE<type, name, c>
+  )
+  .
+
+//________________________
+REFERENCE_SLOT<O3Label& type, O3Label& name, O3Class& c> =
+    ';'
+    (. c.referenceSlots().push_back( O3ReferenceSlot( type, name, false ) ); .)
+    .
+
+//________________________
+ATTRIBUTE<O3Label& type, O3Label& name, O3Class& c> =
+    (. auto parents = O3LabelList(); .)
+    [
+      dependson
+      IDENTIFIER_LIST<parents> 
+    ]
+    '{'
+        (
+          RAW_CPT<type, name, parents, c.attributes()>
+        |
+          RULE_CPT<type, name, parents, c.attributes()>
+        )
+    '}'
+    ';'
+    .
+
+//________________________
+AGGREGATE<O3Label& type, O3Label& name, O3Class& c> =
+  (. auto agg = O3Aggregate(); .)
+  (. agg.variableType() = type; .)
+  (. agg.name() = name; .)
+  '='
+  LABEL<agg.aggregateType()>
+  '('
+  AGGREGATE_PARENTS<agg.parents()>
+  [
+    ','
+    LABEL_LIST<agg.parameters()> 
+  ]
+  ')'
+  ';'
+  (. c.aggregates().push_back( std::move(agg) ); .)
+  .
+
+//________________________
+AGGREGATE_PARENTS<O3LabelList& parents> =
+    (. auto prnt = O3Label(); .)
+    IDENTIFIER<prnt>
+    (. parents.push_back(prnt); .)
+  |
+    '[' IDENTIFIER_LIST<parents> ']'
+  .
+
+//________________________
+RAW_CPT<const O3Label& type,
+        const O3Label& name,
         const O3LabelList& parents,
         O3AttributeList& elts> =
   (. auto values = O3FormulaList(); .)
@@ -286,8 +323,8 @@ RAW_CPT<const O3Label& name,
   .
 
 //________________________
-RULE_CPT<const O3Label& name,
-         const O3Label& type,
+RULE_CPT<const O3Label& type,
+         const O3Label& name,
          const O3LabelList& parents,
          O3AttributeList& elts> =
   (. auto rules = O3RuleList(); .)
@@ -449,6 +486,14 @@ TYPE_VALUE_LIST< LabelMap& labels > =
   .
 
 //________________________
+INTEGER_AS_LABEL<O3Label& l> =
+  integer
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
+
+
+//________________________
 INTEGER<O3Integer& i> =
   integer
   (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
@@ -463,8 +508,15 @@ FLOAT<O3Float& f> =
   .
 
 //________________________
+LABEL_OR_INT<O3Label& l> =
+    LABEL<l>
+  |
+    INTEGER_AS_LABEL<l>
+  .
+
+//________________________
 LABEL<O3Label& l> =
-  label
+  label 
   (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. l = O3Label( pos, narrow( t->val ) ); .)
   .
@@ -496,17 +548,17 @@ IDENTIFIER<O3Label& ident> =
   (. ident = O3Label( pos, s.str() ); .)
   .
 
-////________________________
-//LABEL_LIST<O3LabelList& list> =
-//  (. auto label = O3Label(); .)
-//  LABEL<label>
-//  (. list.push_back( label ); .)
-//  {
-//    ','
-//    LABEL<label> 
-//    (. list.push_back( label ); .)
-//  }
-//  .
+//________________________
+LABEL_LIST<O3LabelList& list> =
+  (. auto label = O3Label(); .)
+  LABEL_OR_INT<label>
+  (. list.push_back( label ); .)
+  {
+    ','
+    LABEL_OR_INT<label> 
+    (. list.push_back( label ); .)
+  }
+  .
 
 //________________________
 LABEL_OR_STAR<O3Label& l> =
