@@ -35,6 +35,13 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
+      bool check_aggregate( const PRM<double>& prm,
+                            O3Class& c,
+                            O3Aggregate& agg,
+                            std::ostream& output ) {
+        return true;
+      }
+
       bool check_ref( const PRM<double>& prm, O3ReferenceSlot& ref ) {
         return true;
       }
@@ -136,7 +143,9 @@ namespace gum {
         return true;
       }
 
-      bool check_local_parent( const Class<double>& c, const O3Label& prnt, std::ostream& output ) {
+      bool check_local_parent( const Class<double>& c,
+                               const O3Label& prnt,
+                               std::ostream& output ) {
         if ( not c.exists( prnt.label() ) ) {
           const auto& pos = prnt.position();
           output << pos.file() << "|" << pos.line() << " col " << pos.column()
@@ -159,11 +168,14 @@ namespace gum {
       }
 
       bool check_remote_parent( const ClassElementContainer<double>& c,
-                                const O3Label& prnt, std::ostream& output ) {
+                                const O3Label& prnt,
+                                std::ostream& output ) {
         return resolve_slotchain( c, prnt, output ) != nullptr;
       }
 
-      bool check_parent( const Class<double>& c, const O3Label& prnt, std::ostream& output ) {
+      bool check_parent( const Class<double>& c,
+                         const O3Label& prnt,
+                         std::ostream& output ) {
         if ( prnt.label().find( '.' ) == std::string::npos ) {
           return check_local_parent( c, prnt, output );
         } else {
@@ -259,6 +271,7 @@ namespace gum {
           }
           factory.startClass(
               c->name().label(), c->super().label(), &implements );
+          // Parameters
           for ( const auto& p : c->parameters() ) {
             switch ( p.type() ) {
               case O3Parameter::Type::INT: {
@@ -274,13 +287,15 @@ namespace gum {
               default: { GUM_ERROR( FatalError, "unknown O3Paramater type" ); }
             }
           }
+          // References
           for ( auto& ref : c->referenceSlots() ) {
             if ( check_ref( prm, ref ) ) {
               factory.addReferenceSlot(
                   ref.type().label(), ref.name().label(), ref.isArray() );
             }
           }
-          for ( auto& attr : c->elements() ) {
+          // Attributes
+          for ( auto& attr : c->attributes() ) {
             if ( check_attribute( prm, *c, *attr, output ) ) {
               factory.startAttribute( attr->type().label(),
                                       attr->name().label() );
@@ -310,6 +325,24 @@ namespace gum {
                 }
               }
               factory.endAttribute();
+            }
+          }
+          // Aggregates
+          for ( auto& agg : c->aggregates() ) {
+            if ( check_aggregate( prm, *c, agg, output ) ) {
+              auto parents = std::vector<std::string>();
+              for ( auto& prnt : agg.parents() ) {
+                parents.push_back( prnt.label() );
+              }
+              auto params = std::vector<std::string>();
+              for ( auto& param : agg.parameters() ) {
+                params.push_back( param.label() );
+              }
+              factory.addAggregator( agg.name().label(),
+                                     agg.aggregateType().label(),
+                                     parents,
+                                     params,
+                                     agg.variableType().label() );
             }
           }
           factory.endClass();
