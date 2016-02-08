@@ -618,6 +618,8 @@ namespace gum {
        * @param agg_type The name of the aggregator type of this aggregator.
        * @param chains The set of chains on which this aggregate applies.
        * @param params The list of parameters for this aggregator.
+       * @param type Some aggregators have a user defined type, use this
+       * parameter to define it.
        *
        * @throw OperationNotAllowed Raised if one or more parameters misses or
        * are not correct.
@@ -628,7 +630,8 @@ namespace gum {
       addAggregator( const std::string& name,
                      const std::string& agg_type,
                      const std::vector<std::string>& chains,
-                     const std::vector<std::string>& params ) override;
+                     const std::vector<std::string>& params,
+                     std::string type="" ) override;
 
       /**
        * @brief Add a compound noisy-or as an Attribute<GUM_SCALAR> to the

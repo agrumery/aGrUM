@@ -120,7 +120,7 @@ void Parser::UNIT() {
 			INTERFACE_UNIT();
 		} else if (la->kind == _class) {
 			CLASS_UNIT();
-		} else SynErr(28);
+		} else SynErr(29);
 }
 
 void Parser::TYPE_UNIT() {
@@ -137,7 +137,7 @@ void Parser::TYPE_UNIT() {
 			auto end = O3Integer(); 
 			INT_TYPE_DECLARATION(pos, name, start, end);
 			if ( __ok( n ) ) { __addO3IntType( pos, name, start, end ); } 
-		} else SynErr(29);
+		} else SynErr(30);
 }
 
 void Parser::INTERFACE_UNIT() {
@@ -153,36 +153,24 @@ void Parser::INTERFACE_UNIT() {
 void Parser::CLASS_UNIT() {
 		auto n = errors().error_count; 
 		auto c = O3Class(); 
-		CLASS_DECLARATION(c.position(),
-c.name(),
-c.super(),
-c.interfaces(),
-c.parameters(),
-c.referenceSlots(),
-c.elements());
+		CLASS_DECLARATION(c);
 		if (__ok(n)) { __addO3Class( std::move(c) ); } 
 }
 
-void Parser::CLASS_DECLARATION(Position& pos,
-O3Label& name,
-O3Label& super,
-O3LabelList& interfaces,
-O3ParameterList& params,
-O3ReferenceSlotList& refs,
-O3AttributeList& elts) {
-		CLASS(pos);
-		LABEL(name);
+void Parser::CLASS_DECLARATION(O3Class& c) {
+		CLASS(c.position());
+		LABEL(c.name());
 		if (la->kind == _extends) {
 			Get();
-			IDENTIFIER(super);
+			IDENTIFIER(c.super());
 		}
 		if (la->kind == _implements) {
 			Get();
-			IDENTIFIER_LIST(interfaces);
+			IDENTIFIER_LIST(c.interfaces());
 		}
 		Expect(20 /* "{" */);
 		while (la->kind == _label || la->kind == _int || la->kind == _real) {
-			CLASS_BODY(params, refs, elts);
+			CLASS_BODY(c);
 		}
 		Expect(21 /* "}" */);
 }
@@ -225,12 +213,12 @@ void Parser::IDENTIFIER_LIST(O3LabelList& list) {
 		}
 }
 
-void Parser::CLASS_BODY(O3ParameterList& params, O3ReferenceSlotList& refs, O3AttributeList& elts) {
+void Parser::CLASS_BODY(O3Class& c) {
 		if (la->kind == _int || la->kind == _real) {
-			CLASS_PARAMETER(params);
+			CLASS_PARAMETER(c.parameters());
 		} else if (la->kind == _label) {
-			CLASS_ELEMENT(refs, elts);
-		} else SynErr(30);
+			CLASS_ELEMENT(c);
+		} else SynErr(31);
 }
 
 void Parser::CLASS_PARAMETER(O3ParameterList& params) {
@@ -254,33 +242,16 @@ void Parser::CLASS_PARAMETER(O3ParameterList& params) {
 			FLOAT(val);
 			Expect(_semicolon);
 			params.push_back( O3Parameter(pos, name, val) ); 
-		} else SynErr(31);
+		} else SynErr(32);
 }
 
-void Parser::CLASS_ELEMENT(O3ReferenceSlotList& refs, O3AttributeList& elts) {
+void Parser::CLASS_ELEMENT(O3Class& c) {
 		auto type = O3Label(); 
-		auto name = O3Label(); 
-		auto parents = O3LabelList(); 
 		IDENTIFIER(type);
-		LABEL(name);
-		if (la->kind == 20 /* "{" */) {
-			Get();
-			RAW_CPT(name, type, parents, elts);
-			Expect(21 /* "}" */);
-			Expect(_semicolon);
-		} else if (la->kind == _dependson) {
-			Get();
-			IDENTIFIER_LIST(parents);
-			Expect(20 /* "{" */);
-			if (la->kind == 22 /* "[" */) {
-				RAW_CPT(name, type, parents, elts);
-			} else if (la->kind == _label || la->kind == 26 /* "*" */) {
-				RULE_CPT(name, type, parents, elts);
-			} else SynErr(32);
-			Expect(21 /* "}" */);
-			Expect(_semicolon);
-		} else if (la->kind == _semicolon || la->kind == 22 /* "[" */) {
-			REFERENCE_SLOT(type, name, refs);
+		if (la->kind == 22 /* "[" */) {
+			ARRAY_REFERENCE_SLOT(type, c.referenceSlots());
+		} else if (la->kind == _label) {
+			NAMED_CLASS_ELEMENT(type, c);
 		} else SynErr(33);
 }
 
@@ -296,8 +267,69 @@ void Parser::FLOAT(O3Float& f) {
 		f = O3Float( pos, coco_atof( t->val ) ); 
 }
 
-void Parser::RAW_CPT(const O3Label& name,
-const O3Label& type,
+void Parser::ARRAY_REFERENCE_SLOT(O3Label& type, O3ReferenceSlotList& refs) {
+		auto isArray = false; 
+		isArray = true; 
+		auto name = O3Label(); 
+		Expect(22 /* "[" */);
+		Expect(23 /* "]" */);
+		LABEL(name);
+		Expect(_semicolon);
+		refs.push_back( O3ReferenceSlot( type, name, isArray ) ); 
+}
+
+void Parser::NAMED_CLASS_ELEMENT(O3Label& type, O3Class& c) {
+		auto name = O3Label(); 
+		LABEL(name);
+		if (la->kind == _semicolon) {
+			REFERENCE_SLOT(type, name, c);
+		} else if (la->kind == _dependson || la->kind == 20 /* "{" */) {
+			ATTRIBUTE(type, name, c);
+		} else if (la->kind == 24 /* "=" */) {
+			AGGREGATE(type, name, c);
+		} else SynErr(34);
+}
+
+void Parser::REFERENCE_SLOT(O3Label& type, O3Label& name, O3Class& c) {
+		Expect(_semicolon);
+		c.referenceSlots().push_back( O3ReferenceSlot( type, name, false ) ); 
+}
+
+void Parser::ATTRIBUTE(O3Label& type, O3Label& name, O3Class& c) {
+		auto parents = O3LabelList(); 
+		if (la->kind == _dependson) {
+			Get();
+			IDENTIFIER_LIST(parents);
+		}
+		Expect(20 /* "{" */);
+		if (la->kind == 22 /* "[" */) {
+			RAW_CPT(type, name, parents, c.attributes());
+		} else if (la->kind == _label || la->kind == 27 /* "*" */) {
+			RULE_CPT(type, name, parents, c.attributes());
+		} else SynErr(35);
+		Expect(21 /* "}" */);
+		Expect(_semicolon);
+}
+
+void Parser::AGGREGATE(O3Label& type, O3Label& name, O3Class& c) {
+		auto agg = O3Aggregate(); 
+		agg.variableType() = type; 
+		agg.name() = name; 
+		Expect(24 /* "=" */);
+		LABEL(agg.aggregateType());
+		Expect(25 /* "(" */);
+		AGGREGATE_PARENTS(agg.parents());
+		if (la->kind == _comma) {
+			Get();
+			LABEL_LIST(agg.parameters());
+		}
+		Expect(26 /* ")" */);
+		Expect(_semicolon);
+		c.aggregates().push_back( std::move(agg) ); 
+}
+
+void Parser::RAW_CPT(const O3Label& type,
+const O3Label& name,
 const O3LabelList& parents,
 O3AttributeList& elts) {
 		auto values = O3FormulaList(); 
@@ -308,28 +340,40 @@ O3AttributeList& elts) {
 		elts.push_back( std::unique_ptr<O3Attribute>(attr) ); 
 }
 
-void Parser::RULE_CPT(const O3Label& name,
-const O3Label& type,
+void Parser::RULE_CPT(const O3Label& type,
+const O3Label& name,
 const O3LabelList& parents,
 O3AttributeList& elts) {
 		auto rules = O3RuleList(); 
 		RULE(rules);
-		while (la->kind == _label || la->kind == 26 /* "*" */) {
+		while (la->kind == _label || la->kind == 27 /* "*" */) {
 			RULE(rules);
 		}
 		auto attr = new O3RuleCPT( type, name, parents, std::move(rules) ); 
 		elts.push_back( std::unique_ptr<O3Attribute>( attr ) ); 
 }
 
-void Parser::REFERENCE_SLOT(O3Label& type, O3Label& name, O3ReferenceSlotList& refs) {
-		auto isArray = false; 
-		if (la->kind == 22 /* "[" */) {
+void Parser::AGGREGATE_PARENTS(O3LabelList& parents) {
+		if (la->kind == _label) {
+			auto prnt = O3Label(); 
+			IDENTIFIER(prnt);
+			parents.push_back(prnt); 
+		} else if (la->kind == 22 /* "[" */) {
 			Get();
+			IDENTIFIER_LIST(parents);
 			Expect(23 /* "]" */);
-			isArray = true; 
+		} else SynErr(36);
+}
+
+void Parser::LABEL_LIST(O3LabelList& list) {
+		auto label = O3Label(); 
+		LABEL_OR_INT(label);
+		list.push_back( label ); 
+		while (la->kind == _comma) {
+			Get();
+			LABEL_OR_INT(label);
+			list.push_back( label ); 
 		}
-		Expect(_semicolon);
-		refs.push_back( O3ReferenceSlot( type, name, isArray ) ); 
 }
 
 void Parser::FORMULA_LIST(O3FormulaList& values) {
@@ -407,17 +451,17 @@ void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, Labe
 			Get();
 			IDENTIFIER(super);
 			MAP(labels);
-		} else SynErr(34);
+		} else SynErr(37);
 		Expect(_semicolon);
 }
 
 void Parser::INT_TYPE_DECLARATION(Position& pos, O3Label& name, O3Integer& start, O3Integer& end) {
 		INT(pos);
-		Expect(24 /* "(" */);
+		Expect(25 /* "(" */);
 		INTEGER(start);
 		Expect(_comma);
 		INTEGER(end);
-		Expect(25 /* ")" */);
+		Expect(26 /* ")" */);
 		LABEL(name);
 		Expect(_semicolon);
 }
@@ -482,12 +526,26 @@ void Parser::INT(Position& pos) {
 		pos.column( t->col ); 
 }
 
+void Parser::INTEGER_AS_LABEL(O3Label& l) {
+		Expect(_integer);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		l = O3Label( pos, narrow( t->val ) ); 
+}
+
+void Parser::LABEL_OR_INT(O3Label& l) {
+		if (la->kind == _label) {
+			LABEL(l);
+		} else if (la->kind == _integer) {
+			INTEGER_AS_LABEL(l);
+		} else SynErr(38);
+}
+
 void Parser::LABEL_OR_STAR(O3Label& l) {
 		if (la->kind == _label) {
 			Get();
-		} else if (la->kind == 26 /* "*" */) {
+		} else if (la->kind == 27 /* "*" */) {
 			Get();
-		} else SynErr(35);
+		} else SynErr(39);
 		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 		l = O3Label( pos, narrow( t->val ) ); 
 }
@@ -503,7 +561,7 @@ void Parser::FORMULA(O3Formula& f) {
 			Get();
 			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 			f = O3Formula( pos, narrow( t->val ) ); 
-		} else SynErr(36);
+		} else SynErr(40);
 }
 
 
@@ -605,7 +663,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 27;
+  	maxT = 28;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -619,9 +677,9 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[2][29] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,x,x,x, x,x,x,x, x,T,T,T, x,x,x,x, x,T,x,x, x,x,x,x, x,x,x,x, x}
+  	static bool set[2][30] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,T,T,T, x,x,x,x, x,T,x,x, x,x,x,x, x,x,x,x, x,x}
 	};
 
 
@@ -671,19 +729,23 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 21: s = coco_string_create(L"\"}\" expected"); break;
 			case 22: s = coco_string_create(L"\"[\" expected"); break;
 			case 23: s = coco_string_create(L"\"]\" expected"); break;
-			case 24: s = coco_string_create(L"\"(\" expected"); break;
-			case 25: s = coco_string_create(L"\")\" expected"); break;
-			case 26: s = coco_string_create(L"\"*\" expected"); break;
-			case 27: s = coco_string_create(L"??? expected"); break;
-			case 28: s = coco_string_create(L"invalid UNIT"); break;
-			case 29: s = coco_string_create(L"invalid TYPE_UNIT"); break;
-			case 30: s = coco_string_create(L"invalid CLASS_BODY"); break;
-			case 31: s = coco_string_create(L"invalid CLASS_PARAMETER"); break;
-			case 32: s = coco_string_create(L"invalid CLASS_ELEMENT"); break;
+			case 24: s = coco_string_create(L"\"=\" expected"); break;
+			case 25: s = coco_string_create(L"\"(\" expected"); break;
+			case 26: s = coco_string_create(L"\")\" expected"); break;
+			case 27: s = coco_string_create(L"\"*\" expected"); break;
+			case 28: s = coco_string_create(L"??? expected"); break;
+			case 29: s = coco_string_create(L"invalid UNIT"); break;
+			case 30: s = coco_string_create(L"invalid TYPE_UNIT"); break;
+			case 31: s = coco_string_create(L"invalid CLASS_BODY"); break;
+			case 32: s = coco_string_create(L"invalid CLASS_PARAMETER"); break;
 			case 33: s = coco_string_create(L"invalid CLASS_ELEMENT"); break;
-			case 34: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
-			case 35: s = coco_string_create(L"invalid LABEL_OR_STAR"); break;
-			case 36: s = coco_string_create(L"invalid FORMULA"); break;
+			case 34: s = coco_string_create(L"invalid NAMED_CLASS_ELEMENT"); break;
+			case 35: s = coco_string_create(L"invalid ATTRIBUTE"); break;
+			case 36: s = coco_string_create(L"invalid AGGREGATE_PARENTS"); break;
+			case 37: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
+			case 38: s = coco_string_create(L"invalid LABEL_OR_INT"); break;
+			case 39: s = coco_string_create(L"invalid LABEL_OR_STAR"); break;
+			case 40: s = coco_string_create(L"invalid FORMULA"); break;
 
 
     default: {

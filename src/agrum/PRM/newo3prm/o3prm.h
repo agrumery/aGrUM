@@ -147,6 +147,8 @@ namespace gum {
         std::string __label;
       };
 
+      std::ostream& operator<<( std::ostream& o, const O3Label& src ); 
+
       class O3Type {
         public:
         using LabelPair = std::pair<O3Label, O3Label>;
@@ -362,12 +364,42 @@ namespace gum {
         std::unique_ptr<O3RuleList> __rules;
       };
 
+      class O3Aggregate {
+        public:
+        using O3LabelList = std::vector<O3Label>;
+        O3Aggregate();
+        O3Aggregate( const O3Aggregate& src );
+        O3Aggregate( O3Aggregate&& src );
+        virtual ~O3Aggregate();
+        O3Aggregate& operator=( const O3Aggregate& src );
+        O3Aggregate& operator=( O3Aggregate&& src );
+
+        O3Label& variableType();
+        const O3Label& variableType() const;
+        O3Label& aggregateType();
+        const O3Label& aggregateType() const;
+        O3Label& name();
+        const O3Label& name() const;
+        O3LabelList& parents();
+        const O3LabelList& parents() const;
+        O3LabelList& parameters();
+        const O3LabelList& parameters() const;
+
+        private:
+        O3Label __variableType;
+        O3Label __aggregateType;
+        O3Label __name;
+        O3LabelList __parents;
+        O3LabelList __parameters;
+      };
+
       class O3Class {
         public:
         using O3LabelList = std::vector<O3Label>;
-        using O3AttributeList = std::vector<std::unique_ptr<O3Attribute>>;
         using O3ParameterList = std::vector<O3Parameter>;
         using O3ReferenceSlotList = std::vector<O3ReferenceSlot>;
+        using O3AttributeList = std::vector<std::unique_ptr<O3Attribute>>;
+        using O3AggregateList = std::vector<O3Aggregate>;
 
         O3Class();
         O3Class( const O3Class& src );
@@ -394,8 +426,11 @@ namespace gum {
         const O3ReferenceSlotList& referenceSlots() const;
         O3ReferenceSlotList& referenceSlots();
 
-        const O3AttributeList& elements() const;
-        O3AttributeList& elements();
+        const O3AttributeList& attributes() const;
+        O3AttributeList& attributes();
+
+        const O3AggregateList& aggregates() const;
+        O3AggregateList& aggregates();
 
         private:
         Position __pos;
@@ -404,7 +439,8 @@ namespace gum {
         std::unique_ptr<O3LabelList> __interfaces;
         std::unique_ptr<O3ParameterList> __params;
         std::unique_ptr<O3ReferenceSlotList> __refs;
-        std::unique_ptr<O3AttributeList> __elts;
+        std::unique_ptr<O3AttributeList> __attrs;
+        std::unique_ptr<O3AggregateList> __aggs;
       };
 
       class O3PRM {

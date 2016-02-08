@@ -105,7 +105,8 @@ namespace gum {
       virtual void addAggregator( const std::string& name,
                                   const std::string& agg_type,
                                   const std::vector<std::string>& chains,
-                                  const std::vector<std::string>& params ) = 0;
+                                  const std::vector<std::string>& params,
+                                  std::string type="" ) = 0;
       virtual void
       addNoisyOrCompound( const std::string& name,
                           const std::vector<std::string>& chains,

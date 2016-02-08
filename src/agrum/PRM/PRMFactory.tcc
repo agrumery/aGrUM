@@ -615,7 +615,8 @@ namespace gum {
         const std::string& name,
         const std::string& agg_type,
         const std::vector<std::string>& chains,
-        const std::vector<std::string>& params ) {
+        const std::vector<std::string>& params,
+        std::string type ) {
       Class<GUM_SCALAR>* c = static_cast<Class<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::CLASS ) );
       // Checking call legality
@@ -700,11 +701,11 @@ namespace gum {
         case Aggregate<GUM_SCALAR>::AggregateType::AMPLITUDE:
         case Aggregate<GUM_SCALAR>::AggregateType::MIN:
         case Aggregate<GUM_SCALAR>::AggregateType::MAX: {
-          if ( params.size() != 1 ) {
+          if ( params.size() != 0 ) {
             GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
           }
 
-          auto output_type = __retrieveType( params[0] );
+          auto output_type = __retrieveType(type );
 
           // Creating and adding the Aggregate<GUM_SCALAR>
           agg = new Aggregate<GUM_SCALAR>(
@@ -714,7 +715,7 @@ namespace gum {
         }
 
         case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
-          if ( params.size() != 2 ) {
+          if ( params.size() != 1 ) {
             GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
           }
 
@@ -733,7 +734,7 @@ namespace gum {
             GUM_ERROR( NotFound, "could not find label" );
           }
 
-          auto output_type = __retrieveType( params[1] );
+          auto output_type = __retrieveType( type );
 
           // Creating and adding the Aggregate<GUM_SCALAR>
           agg = new Aggregate<GUM_SCALAR>(
