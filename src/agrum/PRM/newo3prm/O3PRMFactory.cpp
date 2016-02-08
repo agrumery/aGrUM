@@ -39,6 +39,22 @@ namespace gum {
         return true;
       }
 
+      bool check_slotchain_link( const ClassElementContainer<double>* c,
+                                 const O3Label& chain,
+                                 const std::string& s,
+                                 std::ostream& output ) {
+        if ( not c->exists( s ) ) {
+          const auto& pos = chain.position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Slot chain error : "
+                 << "Link " << s << " in chain " << chain.label()
+                 << " not found" << std::endl;
+          return false;
+        }
+        return true;
+      }
+
       const ClassElement<double>*
       resolve_slotchain( const ClassElementContainer<double>& c,
                          const O3Label& chain,
@@ -49,13 +65,7 @@ namespace gum {
         for ( idx = s.find( '.', idx ); idx != std::string::npos;
               idx = s.find( '.', idx ) ) {
           auto value = s.substr( 0, idx );
-          if ( not current->exists( value ) ) {
-            const auto& pos = chain.position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Slot chain error : "
-                   << "Link " << value << " in chain " << chain.label()
-                   << " not found" << std::endl;
+          if ( not check_slotchain_link( current, chain, value, output ) ) {
             return nullptr;
           }
           auto ref = dynamic_cast<const ReferenceSlot<double>*>(
@@ -64,6 +74,9 @@ namespace gum {
             current = &( ref->slotType() );
             s = s.substr( idx + 1 );
           }
+        }
+        if ( not check_slotchain_link( current, chain, s, output ) ) {
+          return nullptr;
         }
         return &( current->get( s ) );
       }
