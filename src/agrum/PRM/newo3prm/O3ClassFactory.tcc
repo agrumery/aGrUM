@@ -68,7 +68,9 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::__addParameters(
-          PRMFactory<GUM_SCALAR>& factory, O3Class& c, std::ostream& output ) {
+          PRMFactory<GUM_SCALAR>& factory,
+          const O3Class& c,
+          std::ostream& output ) {
         for ( const auto& p : c.parameters() ) {
           switch ( p.type() ) {
             case O3Parameter::Type::INT: {
@@ -88,7 +90,10 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3ClassFactory<GUM_SCALAR>::__checkReferenceSlot(
-          const PRM<GUM_SCALAR>& prm, O3Class& c, O3ReferenceSlot& ref, std::ostream& output ) {
+          const PRM<GUM_SCALAR>& prm,
+          const O3Class& c,
+          const O3ReferenceSlot& ref,
+          std::ostream& output ) {
         if ( not( prm.isInterface( ref.type().label() ) or
                   prm.isClass( ref.type().label() ) ) ) {
           const auto& pos = ref.name().position();
@@ -114,7 +119,9 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::__addReferenceSlots(
-          PRMFactory<GUM_SCALAR>& factory, O3Class& c, std::ostream& output ) {
+          PRMFactory<GUM_SCALAR>& factory,
+          const O3Class& c,
+          std::ostream& output ) {
         // References
         for ( auto& ref : c.referenceSlots() ) {
           if ( __checkReferenceSlot( *( factory.prm() ), c, ref, output ) ) {
@@ -247,6 +254,7 @@ namespace gum {
         }
         // Add parameters to formulas
         for ( auto& f : attr.values() ) {
+          f.formula().variables().clear();
           for ( const auto& values : c.scope() ) {
             f.formula().variables().insert( values.first,
                                             values.second->value() );
@@ -288,6 +296,7 @@ namespace gum {
           }
           // Add parameters to formulas
           for ( auto& f : rule.second ) {
+            f.formula().variables().clear();
             for ( const auto& values : c.scope() ) {
               f.formula().variables().insert( values.first,
                                               values.second->value() );
@@ -321,7 +330,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool
-      O3ClassFactory<GUM_SCALAR>::__checkAttribute( PRM<GUM_SCALAR>& prm,
+      O3ClassFactory<GUM_SCALAR>::__checkAttribute( const PRM<GUM_SCALAR>& prm,
                                                     const O3Class& o3_c,
                                                     O3Attribute& attr,
                                                     std::ostream& output ) {
@@ -333,6 +342,22 @@ namespace gum {
                  << " Attribute error : "
                  << "Type " << attr.type().label() << " not found" << std::endl;
           return false;
+        }
+        // Checking type legality if overload
+        if ( prm.isClass( o3_c.super().label() ) ) {
+          const auto& super = prm.getClass( o3_c.super().label() );
+          const auto& agg_type = prm.type( attr.type().label() );
+          if ( super.exists( attr.name().label() ) and
+               not agg_type.isSubTypeOf(
+                   super.get( attr.name().label() ).type() ) ) {
+            const auto& pos = attr.name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Class error : "
+                   << "Illegal overload of element " << attr.name()
+                   << " from class " << super.name() << std::endl;
+            return false;
+          }
         }
         // Check for parents existence
         const auto& c = prm.getClass( o3_c.name().label() );
@@ -358,7 +383,7 @@ namespace gum {
           PRMFactory<GUM_SCALAR>& factory, O3Class& c, std::ostream& output ) {
         // Attributes
         for ( auto& attr : c.attributes() ) {
-          if ( __checkAttribute( *(factory.prm()), c, *attr, output ) ) {
+          if ( __checkAttribute( *( factory.prm() ), c, *attr, output ) ) {
             factory.startAttribute( attr->type().label(),
                                     attr->name().label() );
             for ( const auto& parent : attr->parents() ) {
@@ -393,7 +418,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3ClassFactory<GUM_SCALAR>::__checkParametersNumber(
-          O3Aggregate& agg, size_t n, std::ostream& output ) {
+          const O3Aggregate& agg, size_t n, std::ostream& output ) {
         if ( agg.parameters().size() != n ) {
           const auto& pos = agg.name().position();
           output << pos.file() << "|" << pos.line() << " col " << pos.column()
@@ -408,7 +433,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3ClassFactory<GUM_SCALAR>::__checkParameterValue(
-          O3Aggregate& agg,
+          const O3Aggregate& agg,
           const gum::prm::Type<GUM_SCALAR>& t,
           std::ostream& output ) {
         const auto& param = agg.parameters().front();
@@ -435,8 +460,8 @@ namespace gum {
       template <typename GUM_SCALAR>
       bool
       O3ClassFactory<GUM_SCALAR>::__checkAggregate( const PRM<GUM_SCALAR>& prm,
-                                                    O3Class& o3class,
-                                                    O3Aggregate& agg,
+                                                    const O3Class& o3class,
+                                                    const O3Aggregate& agg,
                                                     std::ostream& output ) {
         const auto& c = prm.getClass( o3class.name().label() );
         auto t = (const gum::prm::Type<GUM_SCALAR>*)nullptr;
@@ -464,6 +489,22 @@ namespace gum {
                      << std::endl;
               return false;
             }
+          }
+        }
+        // Checking type legality if overload
+        if ( prm.isClass( o3class.super().label() ) ) {
+          const auto& super = prm.getClass( o3class.super().label() );
+          const auto& agg_type = prm.type( agg.variableType().label() );
+          if ( super.exists( agg.name().label() ) and
+               not agg_type.isSubTypeOf(
+                   super.get( agg.name().label() ).type() ) ) {
+            const auto& pos = agg.name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Class error : "
+                   << "Illegal overload of element " << agg.name()
+                   << " from class " << super.name() << std::endl;
+            return false;
           }
         }
         // Checking parameters numbers
@@ -507,10 +548,12 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::__addAggregates(
-          PRMFactory<GUM_SCALAR>& factory, O3Class& c, std::ostream& output ) {
+          PRMFactory<GUM_SCALAR>& factory,
+          const O3Class& c,
+          std::ostream& output ) {
         // Aggregates
         for ( auto& agg : c.aggregates() ) {
-          if ( __checkAggregate( *(factory.prm()), c, agg, output ) ) {
+          if ( __checkAggregate( *( factory.prm() ), c, agg, output ) ) {
             auto parents = std::vector<std::string>();
             for ( auto& prnt : agg.parents() ) {
               parents.push_back( prnt.label() );
@@ -529,25 +572,174 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::build( PRM<GUM_SCALAR>& prm,
-                                              const O3PRM& o3_prm,
-                                              std::ostream& output ) {
-        PRMFactory<GUM_SCALAR> factory( &prm );
-        for ( const auto& c : o3_prm.classes() ) {
-          // Interfaces
-          auto implements = Set<std::string>();
-          for ( const auto& i : c->interfaces() ) {
-            implements.insert( i.label() );
-          }
-          factory.startClass(
-              c->name().label(), c->super().label(), &implements );
-
-          __addParameters( factory, *c, output );
-          __addReferenceSlots( factory, *c, output );
-          __addAttributes( factory, *c, output );
-          __addAggregates( factory, *c, output );
-          factory.endClass();
+      void O3ClassFactory<GUM_SCALAR>::__setO3ClassCreationOrder() {
+        auto topo_order = topologicalOrder( __dag );
+        for ( auto iter = topo_order.rbegin(); iter != topo_order.rend();
+              --iter ) {
+          __o3Classes.push_back( __nodeMap[*iter] );
         }
+      }
+
+      template <typename GUM_SCALAR>
+      bool
+      O3ClassFactory<GUM_SCALAR>::__addClass2DAG( const PRM<GUM_SCALAR>& prm,
+                                                  const O3PRM& o3_prm,
+                                                  std::ostream& output ) {
+        for ( const auto& c : o3_prm.classes() ) {
+          if ( name_used<GUM_SCALAR>( prm, c->name().label() ) ) {
+            // Raised if duplicate interface names
+            const auto& pos = c->name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Class error : "
+                   << "Class name " << c->name().label() << " exists already"
+                   << std::endl;
+            return false;
+          }
+          auto id = __dag.addNode();
+          try {
+            __nameMap.insert( c->name().label(), id );
+            __classMap.insert( c->name().label(), c.get() );
+            __nodeMap.insert( id, c.get() );
+          } catch ( DuplicateElement& e ) {
+            // Raised if duplicate type names
+            const auto& pos = c->name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Class error : "
+                   << "Class name " << c->name().label() << " exists already"
+                   << std::endl;
+            return false;
+          }
+          // Cheking interface implementation
+          for ( const auto& i : c->interfaces() ) {
+            if ( not prm.isInterface( i.label() ) ) {
+              const auto& pos = i.position();
+              output << pos.file() << "|" << pos.line() << " col "
+                     << pos.column() << "|"
+                     << " Class error : "
+                     << "Interface " << i.label() << " not found" << std::endl;
+              return false;
+            }
+            const auto& real_i = prm.interface( i.label() );
+            for ( const auto& attr : real_i.attributes() ) {
+              if ( not __checkImplementation( prm, *c, *attr ) ) {
+                const auto& pos = i.position();
+                output << pos.file() << "|" << pos.line() << " col "
+                       << pos.column() << "|"
+                       << " Class error : "
+                       << "Class " << c->name().label()
+                       << " does not implement "
+                       << "attribute " << attr->name() << " of interface "
+                       << i.label() << std::endl;
+                return false;
+              }
+            }
+          }
+        }
+        return true;
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
+          const PRM<GUM_SCALAR>& prm,
+          const O3Class& c,
+          const Attribute<GUM_SCALAR>& attr ) {
+        return std::any_of( c.attributes().cbegin(),
+                            c.attributes().cend(),
+                            [&attr, &prm](
+                                const std::unique_ptr<O3Attribute>& o3_attr ) {
+                              auto t_name = o3_attr->type().label();
+                              return o3_attr->name().label() == attr.name() and
+                                     prm.isType( t_name ) and
+                                     prm.type( t_name )
+                                         .isSubTypeOf( attr.type() );
+                            } ) or
+               std::any_of( c.aggregates().cbegin(),
+                            c.aggregates().cend(),
+                            [&attr, &prm]( const O3Aggregate& agg ) {
+                              auto t_name = agg.variableType().label();
+                              return agg.name().label() == attr.name() and
+                                     prm.isType( t_name ) and
+                                     prm.type( t_name )
+                                         .isSubTypeOf( attr.type() );
+
+                            } );
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3ClassFactory<GUM_SCALAR>::__addArcs2Dag( const O3PRM& prm,
+                                                      std::ostream& output ) {
+        // Adding arcs to the graph inheritance graph
+        for ( const auto& c : prm.classes() ) {
+          if ( c->super().label() != "" ) {
+            try {
+              auto head = __nameMap[c->super().label()];
+              auto tail = __nameMap[c->name().label()];
+              __dag.addArc( tail, head );
+            } catch ( NotFound& e ) {
+              // Unknown super interface
+              const auto& pos = c->super().position();
+              output << pos.file() << "|" << pos.line() << " col "
+                     << pos.column() << "|"
+                     << " Class error : "
+                     << "Unknown class " << c->super().label() << std::endl;
+              return false;
+            } catch ( InvalidDirectedCycle& e ) {
+              // Cyclic inheritance
+              const auto& pos = c->position();
+              output << pos.file() << "|" << pos.line() << " col "
+                     << pos.column() << "|"
+                     << " Class error : "
+                     << "Cyclic inheritance between class " << c->name().label()
+                     << " and class " << c->super().label() << std::endl;
+              return false;
+            }
+          }
+        }
+        return true;
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3ClassFactory<GUM_SCALAR>::__checkO3Classes(
+          const PRM<GUM_SCALAR>& prm, O3PRM& tmp_prm, std::ostream& output ) {
+        return __addClass2DAG( prm, tmp_prm, output ) and
+               __addArcs2Dag( tmp_prm, output );
+      }
+
+      template <typename GUM_SCALAR>
+      void O3ClassFactory<GUM_SCALAR>::build( PRM<GUM_SCALAR>& prm,
+                                              O3PRM& o3_prm,
+                                              std::ostream& output ) {
+        __initialize();
+        PRMFactory<GUM_SCALAR> factory( &prm );
+        if ( __checkO3Classes( prm, o3_prm, output ) ) {
+          __setO3ClassCreationOrder();
+          for ( auto c : __o3Classes ) {
+            // Interfaces
+            auto implements = Set<std::string>();
+            for ( const auto& i : c->interfaces() ) {
+              implements.insert( i.label() );
+            }
+            factory.startClass(
+                c->name().label(), c->super().label(), &implements );
+
+            __addParameters( factory, *c, output );
+            __addReferenceSlots( factory, *c, output );
+            __addAttributes( factory, *c, output );
+            __addAggregates( factory, *c, output );
+            factory.endClass();
+          }
+        }
+      }
+
+      template <typename GUM_SCALAR>
+      void O3ClassFactory<GUM_SCALAR>::__initialize() {
+        __nameMap = HashTable<std::string, gum::NodeId>();
+        __classMap = HashTable<std::string, O3Class*>();
+        __nodeMap = HashTable<NodeId, O3Class*>();
+        __dag = DAG();
+        __o3Classes = std::vector<O3Class*>();
       }
 
     }  // o3prm

@@ -979,7 +979,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "boolean isWorking = or([myFoos.state, myBoos.state]);" << std::endl
+            << "boolean isWorking = or([myFoos.state, myBoos.state]);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1070,7 +1071,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "boolean isWorking = and([myFoos.state, myBoos.state]);" << std::endl
+            << "boolean isWorking = and([myFoos.state, myBoos.state]);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1163,7 +1165,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "boolean isWorking = forall([myFoos.state, myBoos.state], OK);" << std::endl
+            << "boolean isWorking = forall([myFoos.state, myBoos.state], OK);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1350,7 +1353,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "state isWorking = min([myFoos.state, myBoos.state]);" << std::endl
+            << "state isWorking = min([myFoos.state, myBoos.state]);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1443,7 +1447,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "state isWorking = max([myFoos.state, myBoos.state]);" << std::endl
+            << "state isWorking = max([myFoos.state, myBoos.state]);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1536,7 +1541,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "state isWorking = median([myFoos.state, myBoos.state]);" << std::endl
+            << "state isWorking = median([myFoos.state, myBoos.state]);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1629,7 +1635,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "state isWorking = amplitude([myFoos.state, myBoos.state]);" << std::endl
+            << "state isWorking = amplitude([myFoos.state, myBoos.state]);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1722,7 +1729,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "state isWorking = count([myFoos.state, myBoos.state], 5);" << std::endl
+            << "state isWorking = count([myFoos.state, myBoos.state], 5);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1802,7 +1810,8 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 24| Slot chain error : Link st in chain myFoos.st not found";
+      msg << "|6 col 24| Slot chain error : Link st in chain myFoos.st not "
+             "found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -1842,7 +1851,8 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Boo[] myBoos;" << std::endl
-            << "boolean isWorking = or([myFoos.state, myBoos.state]);" << std::endl
+            << "boolean isWorking = or([myFoos.state, myBoos.state]);"
+            << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -1880,6 +1890,222 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|7 col 39| Aggregate error : Parameter foobar in aggregate "
              "isWorking does not match any expected values";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testInheritance1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface Foo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "class Bar implements Foo { " << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( "", output.str() );
+      TS_ASSERT( prm.isInterface( "Foo" ) );
+      const auto& foo = prm.interface( "Foo" );
+      TS_ASSERT( prm.isClass( "Bar" ) );
+      TS_ASSERT_EQUALS( foo.referenceSlots().size(), 0 );
+      TS_ASSERT_EQUALS( foo.attributes().size(), 1 );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT( foo.isSuperTypeOf( bar ) );
+      TS_ASSERT( bar.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &foo ) ) );
+      TS_ASSERT_EQUALS( bar.parameters().size(), 0 );
+      TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
+      TS_ASSERT_EQUALS( bar.slotChains().size(), 0 );
+      TS_ASSERT_EQUALS( bar.attributes().size(), 1 );
+    }
+
+    void testInheritance2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface Foo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "class Bar implements Foo { " << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( "", output.str() );
+      TS_ASSERT( prm.isInterface( "Foo" ) );
+      const auto& foo = prm.interface( "Foo" );
+      TS_ASSERT( prm.isClass( "Bar" ) );
+      TS_ASSERT_EQUALS( foo.referenceSlots().size(), 0 );
+      TS_ASSERT_EQUALS( foo.attributes().size(), 1 );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT( foo.isSuperTypeOf( bar ) );
+      TS_ASSERT( bar.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &foo ) ) );
+      TS_ASSERT_EQUALS( bar.parameters().size(), 0 );
+      TS_ASSERT_EQUALS( bar.referenceSlots().size(), 0 );
+      TS_ASSERT_EQUALS( bar.slotChains().size(), 0 );
+      TS_ASSERT_EQUALS( bar.attributes().size(), 1 );
+    }
+
+    void testInheritance3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface iFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "class Foo implements iFoo { " << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}";
+      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "class Bar extends Foo { " << std::endl
+            << "state state {[0.5, 0.5]};" << std::endl
+            << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
+            << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( "", output.str() );
+      TS_ASSERT( prm.isInterface( "iFoo" ) );
+      const auto& ifoo = prm.interface( "iFoo" );
+      TS_ASSERT_EQUALS( ifoo.referenceSlots().size(), 0 );
+      TS_ASSERT_EQUALS( ifoo.attributes().size(), 1 );
+      TS_ASSERT( prm.isClass( "Foo" ) );
+      const auto& foo = prm.getClass( "Foo" );
+      TS_ASSERT( ifoo.isSuperTypeOf( foo ) );
+      TS_ASSERT( foo.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT( ifoo.isSuperTypeOf( bar ) );
+      TS_ASSERT( foo.isSuperTypeOf( bar ) );
+      TS_ASSERT_EQUALS( &( bar.super() ), &( foo ) );
+      TS_ASSERT( bar.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+    }
+
+    void testInheritanceError1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface iFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "class Foo implements Bar { " << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|4 col 22| Class error : Interface Bar not found";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testInheritanceError2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface iFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "class Foo implements iFoo { " << std::endl
+            << "boolean stat {[0.2, 0.8]};" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|4 col 22| Class error : Class Foo does not implement attribute "
+             "state of interface iFoo";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testInheritanceError3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface iFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "type state OK, NOK;" << std::endl;
+      input << "class Foo implements iFoo { " << std::endl
+            << "state state {[0.2, 0.8]};" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|5 col 22| Class error : Class Foo does not implement attribute "
+             "state of interface iFoo";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testInheritanceError4() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "class Foo { " << std::endl
+            << "boolean state {[0.3, 0.7]};" << std::endl
+            << "}" << std::endl;
+      input << "class Bar extends oo { " << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|4 col 19| Class error : Unknown class oo";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testInheritanceError5() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "class Foo { " << std::endl
+            << "boolean state {[0.3, 0.7]};" << std::endl
+            << "}" << std::endl;
+      input << "type state OK, NOK;" << std::endl;
+      input << "class Bar extends Foo { " << std::endl
+            << "state state {[0.2, 0.8]};" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|6 col 7| Class error : Illegal overload of element state from "
+             "class Foo";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
   };
