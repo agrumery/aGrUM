@@ -56,9 +56,80 @@ namespace gum {
         O3ClassFactory<GUM_SCALAR>&
         operator=( O3ClassFactory<GUM_SCALAR>&& src );
 
-        void
-        build( PRM<GUM_SCALAR>& prm, const O3PRM& my_o3prm, std::ostream& output );
+        void build( PRM<GUM_SCALAR>& prm,
+                    const O3PRM& my_o3prm,
+                    std::ostream& output );
 
+        private:
+        void __addParameters( PRMFactory<GUM_SCALAR>& factory,
+                                          O3Class& c,
+                                          std::ostream& output );
+
+        bool __checkReferenceSlot( const PRM<GUM_SCALAR>& prm,
+                                   O3Class& c,
+                                   O3ReferenceSlot& ref,
+                                   std::ostream& output);
+
+        void __addReferenceSlots( PRMFactory<GUM_SCALAR>& factory,
+                                  O3Class& c,
+                                  std::ostream& output );
+
+        bool __checkLocalParent( const Class<GUM_SCALAR>& c,
+                                 const O3Label& prnt,
+                                 std::ostream& output );
+
+        bool __checkRemoteParent( const ClassElementContainer<GUM_SCALAR>& c,
+                                  const O3Label& prnt,
+                                  std::ostream& output );
+
+        bool __checkParent( const Class<GUM_SCALAR>& c,
+                            const O3Label& prnt,
+                            std::ostream& output );
+
+        const ClassElement<GUM_SCALAR>*
+        __resolveSlotChain( const ClassElementContainer<GUM_SCALAR>& c,
+                            const O3Label& chain,
+                            std::ostream& output );
+
+        bool __checkSlotChainLink( const ClassElementContainer<GUM_SCALAR>& c,
+                                   const O3Label& chain,
+                                   const std::string& s,
+                                   std::ostream& output );
+
+        bool __checkRawCPT( const PRM<GUM_SCALAR>& prm,
+                            const Class<GUM_SCALAR>& c,
+                            O3RawCPT& attr,
+                            std::ostream& output );
+
+        bool __checkRuleCPT( const Class<GUM_SCALAR>& c,
+                             O3RuleCPT& attr,
+                             std::ostream& output );
+
+        bool __checkAttribute( PRM<GUM_SCALAR>& prm,
+                               const O3Class& o3_c,
+                               O3Attribute& attr,
+                               std::ostream& output );
+
+        void __addAttributes( PRMFactory<GUM_SCALAR>& factory,
+                              O3Class& c,
+                              std::ostream& output );
+
+        bool __checkParametersNumber( O3Aggregate& agg,
+                                      size_t n,
+                                      std::ostream& output );
+
+        bool __checkParameterValue( O3Aggregate& agg,
+                                    const gum::prm::Type<GUM_SCALAR>& t,
+                                    std::ostream& output );
+
+        bool __checkAggregate( const PRM<GUM_SCALAR>& prm,
+                               O3Class& o3class,
+                               O3Aggregate& agg,
+                               std::ostream& output );
+
+        void __addAggregates( PRMFactory<GUM_SCALAR>& factory,
+                              O3Class& c,
+                              std::ostream& output );
       };
 
     } // o3prm
