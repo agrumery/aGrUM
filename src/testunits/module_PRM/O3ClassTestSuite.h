@@ -1758,6 +1758,130 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( agg.agg_type(),
                         gum::prm::Aggregate<double>::AggregateType::COUNT );
     }
+
+    void testOrAggregateWithErrors1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface Foo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "class Bar { " << std::endl
+            << "Foo[] myFoos;" << std::endl
+            << "boolean isWorking = or(myBoos.state);" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|6 col 24| Slot chain error : Link myBoos in chain myBoos.state "
+             "not found";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testOrAggregateWithErrors2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface Foo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "class Bar { " << std::endl
+            << "Foo[] myFoos;" << std::endl
+            << "boolean isWorking = or(myFoos.st);" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|6 col 24| Slot chain error : Link st in chain myFoos.st not found";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testOrAggregateWithErrors3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface Foo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "class Bar { " << std::endl
+            << "Foo[] myFoos;" << std::endl
+            << "boolean isWorking = or();" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|6 col 24| Syntax error : invalid AGGREGATE_PARENTS";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testOrAggregateWithErrors4() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface Foo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "type state OK, NOK;" << std::endl;
+      input << "interface Boo { " << std::endl
+            << "state state;" << std::endl
+            << "}" << std::endl;
+      input << "class Bar { " << std::endl
+            << "Foo[] myFoos;" << std::endl
+            << "Boo[] myBoos;" << std::endl
+            << "boolean isWorking = or([myFoos.state, myBoos.state]);" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|11 col 39| Aggregate error : Expected type boolean for parent "
+             "myBoos.state, found state";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testCountAggregateWithErrors5() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int(0,10) state;" << std::endl;
+      input << "interface Foo { " << std::endl
+            << "state state;" << std::endl
+            << "}" << std::endl;
+      input << "class Bar { " << std::endl
+            << "Foo[] myFoos;" << std::endl
+            << "state isWorking = count(myFoos.state, foobar);" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|7 col 39| Aggregate error : Parameter foobar in aggregate "
+             "isWorking does not match any expected values";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
   };
 
 }  // namespace gum_tests
