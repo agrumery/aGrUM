@@ -35,22 +35,13 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
-      bool check_aggregate( const PRM<double>& prm,
-                            O3Class& c,
-                            O3Aggregate& agg,
-                            std::ostream& output ) {
-        return true;
-      }
+      using AggregateType = gum::prm::Aggregate<double>::AggregateType;
 
-      bool check_ref( const PRM<double>& prm, O3ReferenceSlot& ref ) {
-        return true;
-      }
-
-      bool check_slotchain_link( const ClassElementContainer<double>* c,
+      bool check_slotchain_link( const ClassElementContainer<double>& c,
                                  const O3Label& chain,
                                  const std::string& s,
                                  std::ostream& output ) {
-        if ( not c->exists( s ) ) {
+        if ( not c.exists( s ) ) {
           const auto& pos = chain.position();
           output << pos.file() << "|" << pos.line() << " col " << pos.column()
                  << "|"
@@ -72,7 +63,7 @@ namespace gum {
         for ( idx = s.find( '.', idx ); idx != std::string::npos;
               idx = s.find( '.', idx ) ) {
           auto value = s.substr( 0, idx );
-          if ( not check_slotchain_link( current, chain, value, output ) ) {
+          if ( not check_slotchain_link( *current, chain, value, output ) ) {
             return nullptr;
           }
           auto ref = dynamic_cast<const ReferenceSlot<double>*>(
@@ -82,10 +73,125 @@ namespace gum {
             s = s.substr( idx + 1 );
           }
         }
-        if ( not check_slotchain_link( current, chain, s, output ) ) {
+        if ( not check_slotchain_link( *current, chain, s, output ) ) {
           return nullptr;
         }
         return &( current->get( s ) );
+      }
+
+
+      bool check_parameters_number( O3Aggregate& agg,
+                                    size_t n,
+                                    std::ostream& output ) {
+        if ( agg.parameters().size() != n ) {
+          const auto& pos = agg.name().position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Aggregate error : "
+                 << "Expected " << n << " parameters "
+                 << ", found " << agg.parameters().size() << std::endl;
+          return false;
+        }
+        return true;
+      }
+
+      bool check_parameter_value( O3Aggregate& agg,
+                                  const gum::prm::Type<double>& t,
+                                  std::ostream& output ) {
+        const auto& param = agg.parameters().front();
+        bool found = false;
+        for ( Size idx = 0; idx < t.variable().domainSize(); ++idx ) {
+          if ( t.variable().label( idx ) == param.label() ) {
+            found = true;
+            break;
+          }
+        }
+        if ( not found ) {
+          const auto& pos = param.position();
+          output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                 << "|"
+                 << " Aggregate error : "
+                 << "Parameter " << param.label() << " in aggregate "
+                 << agg.name().label() << " does not match any expected values"
+                 << std::endl;
+          return false;
+        }
+        return true;
+      }
+
+      bool check_aggregate( const PRM<double>& prm,
+                            O3Class& o3class,
+                            O3Aggregate& agg,
+                            std::ostream& output ) {
+        const auto& c = prm.getClass( o3class.name().label() );
+        auto t = (const gum::prm::Type<double>*)nullptr;
+        // Checking parents
+        for ( const auto& prnt : agg.parents() ) {
+          auto elt = resolve_slotchain( c, prnt, output );
+          if ( elt == nullptr ) {
+            const auto& pos = prnt.position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Aggregate error : "
+                   << "Parent " << prnt.label() << " not found" << std::endl;
+            return false;
+          } else {
+            if ( t == nullptr or ( *t ) == elt->type() ) {
+              t = &( elt->type() );
+            } else {
+              // Wront type in chain
+              const auto& pos = prnt.position();
+              output << pos.file() << "|" << pos.line() << " col "
+                     << pos.column() << "|"
+                     << " Aggregate error : "
+                     << "Expected type " << t->name() << " for parent "
+                     << prnt.label() << ", found " << elt->type().name()
+                     << std::endl;
+              return false;
+            }
+          }
+        }
+        // Checking parameters numbers
+        bool ok = false;
+        switch ( gum::prm::Aggregate<double>::str2enum(
+            agg.aggregateType().label() ) ) {
+          case AggregateType::MIN:
+          case AggregateType::MAX:
+          case AggregateType::AMPLITUDE:
+          case AggregateType::MEDIAN:
+          case AggregateType::OR:
+          case AggregateType::AND: {
+            ok = check_parameters_number( agg, 0, output );
+            break;
+          }
+          case AggregateType::FORALL:
+          case AggregateType::EXISTS:
+          case AggregateType::COUNT: {
+            ok = check_parameters_number( agg, 1, output );
+            break;
+          }
+          default: { GUM_ERROR( FatalError, "unknown aggregate type" ); }
+        }
+        if ( not ok ) {
+          return false;
+        }
+        // Checking parameters type
+        switch ( gum::prm::Aggregate<double>::str2enum(
+            agg.aggregateType().label() ) ) {
+          case AggregateType::FORALL:
+          case AggregateType::EXISTS:
+          case AggregateType::COUNT: {
+            ok = check_parameter_value( agg, *t, output );
+            break;
+          }
+          default: {  // Nothing to do
+          }
+        }
+        return ok;
+      }
+
+      bool check_ref( const PRM<double>& prm, O3ReferenceSlot& ref ) {
+        return true;
       }
 
       bool check_raw_cpt( const PRM<double>& prm,
