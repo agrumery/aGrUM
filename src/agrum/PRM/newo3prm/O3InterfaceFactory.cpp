@@ -20,7 +20,7 @@
 
 /**
  * @file
- * @brief Implementation for the O3TypeFactory class.
+ * @brief Implementation for the O3InterfaceFactory class.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
