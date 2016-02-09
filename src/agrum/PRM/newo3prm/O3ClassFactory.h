@@ -35,7 +35,6 @@
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 #include <agrum/PRM/newo3prm/utils.h>
-#include <agrum/PRM/newo3prm/O3NameSolver.h>
 
 #ifndef GUM_PRM_O3PRM_O3CLASS_FACTORY_H
 #define GUM_PRM_O3PRM_O3CLASS_FACTORY_H
@@ -48,10 +47,7 @@ namespace gum {
       class O3ClassFactory {
 
         public:
-        O3ClassFactory( PRM<GUM_SCALAR>& prm,
-                        O3PRM& o3_prm,
-                        O3NameSolver<GUM_SCALAR>& solver,
-                        ErrorsContainer& errors );
+        O3ClassFactory();
         O3ClassFactory( const O3ClassFactory<GUM_SCALAR>& src );
         O3ClassFactory( O3ClassFactory<GUM_SCALAR>&& src );
         ~O3ClassFactory();
@@ -60,137 +56,14 @@ namespace gum {
         O3ClassFactory<GUM_SCALAR>&
         operator=( O3ClassFactory<GUM_SCALAR>&& src );
 
-        void buildClasses();
+        void
+        build( PRM<GUM_SCALAR>& prm, const O3PRM& my_o3prm, std::ostream& output );
 
-        void buildImplementations();
-
-        void buildParameters();
-
-        void buildReferenceSlots();
-
-        void declareAttributes();
-
-        void completeAttributes();
-
-        void buildAggregates();
-
-        private:
-        PRM<GUM_SCALAR>* __prm;
-        O3PRM* __o3_prm;
-        O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer* __errors;
-
-        HashTable<std::string, gum::NodeId> __nameMap;
-        HashTable<std::string, O3Class*> __classMap;
-        HashTable<NodeId, O3Class*> __nodeMap;
-        DAG __dag;
-        std::vector<O3Class*> __o3Classes;
-
-        bool __buildImplementation;
-        bool __buildParameter;
-        bool __buildReferenceSlots;
-
-        /// Checking classes
-        /// @{
-        void __setO3ClassCreationOrder();
-
-        bool __checkAndAddNodesToDag();
-
-        bool __checkAndAddArcsToDag();
-
-        bool __checkO3Classes();
-        /// @}
-
-        /// Checking Implementations
-        /// @{
-        bool __checkImplementation( O3Class& c );
-
-        bool __checkImplementation( O3Label& o3_type,
-                                    const Type<GUM_SCALAR>& type );
-
-        bool
-        __checkImplementation( O3Label& o3_type,
-                               const ClassElementContainer<GUM_SCALAR>& type );
-        /// @}
-
-        /// Checking and Adding Paramteters
-        /// @{
-        void __addParameters( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
-
-        /// @}
-
-        /// Checking and adding Reference Slots
-        /// @{
-        void __addReferenceSlots( O3Class& c );
-
-
-        bool __checkReferenceSlot( O3Class& c, O3ReferenceSlot& ref );
-        /// @}
-
-        /// Checking and adding Attributes
-        /// @{
-        void __declareAttribute( O3Class& c );
-
-        bool __checkAttributeForDeclaration( O3Class& o3_c, O3Attribute& attr );
-
-        void __completeAttribute( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
-
-        bool __checkAttributeForCompletion( const O3Class& o3_c,
-                                            O3Attribute& attr );
-
-        bool __checkParent( const Class<GUM_SCALAR>& c, const O3Label& prnt );
-
-        bool __checkLocalParent( const Class<GUM_SCALAR>& c,
-                                 const O3Label& prnt );
-
-        bool __checkRemoteParent( const ClassElementContainer<GUM_SCALAR>& c,
-                                  const O3Label& prnt );
-
-
-        bool __checkRawCPT( const Class<GUM_SCALAR>& c, O3RawCPT& attr );
-
-        bool __checkRuleCPT( const Class<GUM_SCALAR>& c, O3RuleCPT& attr );
-
-        /// @}
-
-        /// Utility methods
-        /// @{
-        const ClassElement<GUM_SCALAR>*
-        __resolveSlotChain( const ClassElementContainer<GUM_SCALAR>& c,
-                            const O3Label& chain );
-
-        bool __checkSlotChainLink( const ClassElementContainer<GUM_SCALAR>& c,
-                                   const O3Label& chain,
-                                   const std::string& s );
-        /// @}
-
-        /// Checking and adding Aggregates
-        /// @{
-        void __addAggregates( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
-
-        bool __checkAggregate( O3Class& o3class, O3Aggregate& agg );
-
-        const Type<GUM_SCALAR>* __checkAggParents( O3Class& o3class,
-                                                   O3Aggregate& agg );
-
-        bool __checkAggTypeLegality( O3Class& o3class, O3Aggregate& agg );
-
-
-        bool __checkAggParameters( O3Class& o3class,
-                                   O3Aggregate& agg,
-                                   const Type<GUM_SCALAR>* t );
-
-        bool __checkParametersNumber( O3Aggregate& agg, size_t n );
-
-        bool __checkParameterValue( O3Aggregate& agg,
-                                    const gum::prm::Type<GUM_SCALAR>& t );
-
-        // @}
       };
 
-    }  // o3prm
-  }    // prm
-}  // gum
+    } // o3prm
+  } // prm
+} // gum
 
 #include <agrum/PRM/newo3prm/O3ClassFactory.tcc>
 
