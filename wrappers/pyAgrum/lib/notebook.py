@@ -342,11 +342,15 @@ def showEntropy(bn,evs,size="4",cmap=INFOcmap):
                               "</div>"))
 
 
-def showInference(bn,evs={},targets={},size="7",format='png'):
+def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
     # targets={} => each node is a target
-    ie=gum.LazyPropagation(bn)
+    if engine is None:
+      ie=gum.LazyPropagation(bn)
+    else:
+      ie=engine    
     ie.setEvidence(evs)
     ie.makeInference()
+      
     from tempfile import TemporaryDirectory
     with TemporaryDirectory() as temp_dir:
         dotstr ="digraph structs {\n"
