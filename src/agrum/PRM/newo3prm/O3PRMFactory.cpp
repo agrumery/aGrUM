@@ -58,10 +58,19 @@ namespace gum {
         type_factory.build( prm, o3_prm, output );
 
         auto interface_factory = O3InterfaceFactory<double>();
-        interface_factory.build( prm, o3_prm, output );
-
         auto class_factory = O3ClassFactory<double>();
-        class_factory.build( prm, o3_prm, output );
+        //interface_factory.build( prm, o3_prm, output );
+        //class_factory.build( prm, o3_prm, output );
+
+        interface_factory.buildInterfaces( prm, o3_prm, output );
+        class_factory.buildClasses( prm, o3_prm, output );
+        interface_factory.buildElements( prm, o3_prm, output );
+        class_factory.buildImplementations(prm, o3_prm, output);
+        class_factory.buildParameters( prm, o3_prm, output );
+        class_factory.buildReferenceSlots( prm, o3_prm, output );
+        class_factory.declareAttributes( prm, o3_prm, output );
+        class_factory.buildAggregates( prm, o3_prm, output );
+        class_factory.completeAttributes( prm, o3_prm, output );
       }
     }
   }

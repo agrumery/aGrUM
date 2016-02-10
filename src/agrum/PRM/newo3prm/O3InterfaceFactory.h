@@ -56,6 +56,14 @@ namespace gum {
         O3InterfaceFactory<GUM_SCALAR>&
         operator=( O3InterfaceFactory<GUM_SCALAR>&& src );
 
+        void buildInterfaces( PRM<GUM_SCALAR>& prm,
+                              const O3PRM& tmp_prm,
+                              std::ostream& output );
+
+        void buildElements( PRM<GUM_SCALAR>& prm,
+                            const O3PRM& tmp_prm,
+                            std::ostream& output );
+
         void
         build( PRM<GUM_SCALAR>& prm, const O3PRM& my_o3prm, std::ostream& output );
 
