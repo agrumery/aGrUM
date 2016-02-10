@@ -22,7 +22,7 @@
 #***************************************************************************
 
 import re
-import anydbm
+#import anydbm
 from os import remove
 import shelve
 

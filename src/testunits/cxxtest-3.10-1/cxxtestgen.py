@@ -64,7 +64,7 @@ def main():
 def usage( problem = None ):
     '''Print usage info and exit'''
     if problem is None:
-        print usageString()
+        print(usageString())
         sys.exit(0)
     else:
         sys.stderr.write( usageString() )
@@ -89,7 +89,7 @@ def parseCommandline():
                                             'error-printer', 'abort-on-fail', 'have-std', 'no-std',
                                             'have-eh', 'no-eh', 'template=', 'include=',
                                             'root', 'part', 'no-static-init', 'factor', 'longlong='] )
-    except getopt.error, problem:
+    except (getopt.error, problem):
         usage( problem )
     setOptions( options )
     return setFiles( patterns )
