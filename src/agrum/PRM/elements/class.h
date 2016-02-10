@@ -285,16 +285,12 @@ namespace gum {
 
       /// @}
 
-      /// @name For custom inheritance
-      /// @{
-      void inheritReferenceSlots();
-      void inheritParameters();
-      void inheritAttributes();
-      void inheritAggregates();
-      void inheritSlotChains();
-      void initializeInheritance();
-      void completeInheritance( const std::string& attr );
-      /// @}
+      void __inheritReferenceSlots();
+      void __inheritParameters();
+      void __inheritAttributes();
+      void __inheritAggregates();
+      void __initializeInheritance();
+      void __completeInheritance();
 
       protected:
       /// returns a constant reference over this interface's dag.
