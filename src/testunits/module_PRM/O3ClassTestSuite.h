@@ -2108,6 +2108,157 @@ namespace gum_tests {
              "class Foo";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
+
+    void testOrderDoesNotMatter1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "class Bar extends Foo { " << std::endl
+            << "state state {[0.5, 0.5]};" << std::endl
+            << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
+            << std::endl
+            << "}" << std::endl;
+      input << "class Foo implements iFoo { " << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}" << std::endl;
+      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "interface iFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( "", output.str() );
+      TS_ASSERT( prm.isInterface( "iFoo" ) );
+      const auto& ifoo = prm.interface( "iFoo" );
+      TS_ASSERT_EQUALS( ifoo.referenceSlots().size(), 0 );
+      TS_ASSERT_EQUALS( ifoo.attributes().size(), 1 );
+      TS_ASSERT( prm.isClass( "Foo" ) );
+      const auto& foo = prm.getClass( "Foo" );
+      TS_ASSERT( ifoo.isSuperTypeOf( foo ) );
+      TS_ASSERT( foo.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT( ifoo.isSuperTypeOf( bar ) );
+      TS_ASSERT( foo.isSuperTypeOf( bar ) );
+      TS_ASSERT_EQUALS( &( bar.super() ), &( foo ) );
+      TS_ASSERT( bar.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+    }
+
+    void testOrderDoesNotMatter2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "class Bar extends Foo { " << std::endl
+            << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
+            << std::endl
+            << "state state {[0.5, 0.5]};" << std::endl
+            << "}" << std::endl;
+      input << "class Foo implements iFoo { " << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}" << std::endl;
+      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "interface iFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( "", output.str() );
+      TS_ASSERT( prm.isInterface( "iFoo" ) );
+      const auto& ifoo = prm.interface( "iFoo" );
+      TS_ASSERT_EQUALS( ifoo.referenceSlots().size(), 0 );
+      TS_ASSERT_EQUALS( ifoo.attributes().size(), 1 );
+      TS_ASSERT( prm.isClass( "Foo" ) );
+      const auto& foo = prm.getClass( "Foo" );
+      TS_ASSERT( ifoo.isSuperTypeOf( foo ) );
+      TS_ASSERT( foo.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT( ifoo.isSuperTypeOf( bar ) );
+      TS_ASSERT( foo.isSuperTypeOf( bar ) );
+      TS_ASSERT_EQUALS( &( bar.super() ), &( foo ) );
+      TS_ASSERT( bar.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+    }
+
+    void testOrderDoesNotMatter3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "class Bar extends Foo { " << std::endl
+            << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
+            << std::endl
+            << "state state {[0.5, 0.5]};" << std::endl
+            << "}" << std::endl;
+      input << "class Foo implements iFoo { " << std::endl
+            << "Bar myBar;" << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}" << std::endl;
+      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "interface iFoo { " << std::endl
+            << "Bar myBar;" << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( "", output.str() );
+      TS_ASSERT( prm.isInterface( "iFoo" ) );
+      const auto& ifoo = prm.interface( "iFoo" );
+      TS_ASSERT_EQUALS( ifoo.referenceSlots().size(), 1 );
+      TS_ASSERT_EQUALS( ifoo.attributes().size(), 1 );
+      TS_ASSERT( prm.isClass( "Foo" ) );
+      const auto& foo = prm.getClass( "Foo" );
+      TS_ASSERT( ifoo.isSuperTypeOf( foo ) );
+      TS_ASSERT( foo.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT( ifoo.isSuperTypeOf( bar ) );
+      TS_ASSERT( foo.isSuperTypeOf( bar ) );
+      TS_ASSERT_EQUALS( &( bar.super() ), &( foo ) );
+      TS_ASSERT( bar.implements().contains(
+          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+    }
+
+    void testOrderDoesNotMatter3WithError() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "class Bar extends Foo { " << std::endl
+            << "Bar myBar;" << std::endl
+            << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
+            << std::endl
+            << "state state {[0.5, 0.5]};" << std::endl
+            << "}" << std::endl;
+      input << "class Foo implements iFoo { " << std::endl
+            << "Bar myBar;" << std::endl
+            << "boolean state {[0.2, 0.8]};" << std::endl
+            << "}" << std::endl;
+      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "interface iFoo { " << std::endl
+            << "Bar myBar;" << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|2 col 5| Reference Slot error :  Reference Slot name myBar "
+             "exists already";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
   };
 
 }  // namespace gum_tests

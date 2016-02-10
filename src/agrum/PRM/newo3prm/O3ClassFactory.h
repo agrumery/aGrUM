@@ -56,6 +56,34 @@ namespace gum {
         O3ClassFactory<GUM_SCALAR>&
         operator=( O3ClassFactory<GUM_SCALAR>&& src );
 
+        void buildClasses( PRM<GUM_SCALAR>& prm,
+                           O3PRM& o3_prm,
+                           std::ostream& output );
+
+        void buildImplementations( PRM<GUM_SCALAR>& prm,
+                                   O3PRM& o3_prm,
+                                   std::ostream& output );
+
+        void buildParameters( PRM<GUM_SCALAR>& prm,
+                              O3PRM& o3_prm,
+                              std::ostream& output );
+
+        void buildReferenceSlots( PRM<GUM_SCALAR>& prm,
+                              O3PRM& o3_prm,
+                              std::ostream& output );
+
+        void declareAttributes( PRM<GUM_SCALAR>& prm,
+                                O3PRM& o3_prm,
+                                std::ostream& output );
+
+        void completeAttributes( PRM<GUM_SCALAR>& prm,
+                                O3PRM& o3_prm,
+                                std::ostream& output );
+
+        void buildAggregates( PRM<GUM_SCALAR>& prm,
+                             O3PRM& o3_prm,
+                             std::ostream& output );
+
         void build( PRM<GUM_SCALAR>& prm,
                     O3PRM& my_o3prm,
                     std::ostream& output );
@@ -66,6 +94,7 @@ namespace gum {
         HashTable<NodeId, O3Class*> __nodeMap;
         DAG __dag;
         std::vector<O3Class*> __o3Classes;
+        bool __build;
 
         void __initialize();
       
@@ -130,6 +159,16 @@ namespace gum {
                                O3Attribute& attr,
                                std::ostream& output );
 
+        bool __checkAttributeForDeclaration( const PRM<GUM_SCALAR>& prm,
+                                             const O3Class& o3_c,
+                                             O3Attribute& attr,
+                                             std::ostream& output );
+
+        bool __checkAttributeForCompletion( const PRM<GUM_SCALAR>& prm,
+                                            const O3Class& o3_c,
+                                            O3Attribute& attr,
+                                            std::ostream& output );
+
         void __addAttributes( PRMFactory<GUM_SCALAR>& factory,
                               O3Class& c,
                               std::ostream& output );
@@ -147,9 +186,21 @@ namespace gum {
                                const O3Aggregate& agg,
                                std::ostream& output );
 
+        void __declareAttribute( PRMFactory<GUM_SCALAR>& factory,
+                                 O3Class& c,
+                                 std::ostream& output );
+
         void __addAggregates( PRMFactory<GUM_SCALAR>& factory,
                               const O3Class& c,
                               std::ostream& output );
+
+        void __completeAttribute( PRMFactory<GUM_SCALAR>& factory,
+                                  O3Class& c,
+                                  std::ostream& output );
+
+        bool __checkImplementation( const PRM<GUM_SCALAR>& prm,
+                                    const O3PRM& o3_prm,
+                                    std::ostream& output );
 
         bool __checkImplementation( const PRM<GUM_SCALAR>& prm,
                                     const O3Class& c,

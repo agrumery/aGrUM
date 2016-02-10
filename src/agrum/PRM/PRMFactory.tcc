@@ -1499,6 +1499,20 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE void
+    PRMFactory<GUM_SCALAR>::continueAttribute( const std::string& name ) {
+      ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
+      if ( not c->exists( name ) ) {
+        GUM_ERROR( NotFound, name << "not found" );
+      }
+      auto& a = c->get( name );
+      if ( not ClassElement<GUM_SCALAR>::isAttribute( a ) ) {
+        GUM_ERROR( OperationNotAllowed, name << " not an attribute" );
+      }
+      __stack.push_back( &a );
+    }
+
+    template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::endAttribute() {
       __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute );
       __stack.pop_back();
