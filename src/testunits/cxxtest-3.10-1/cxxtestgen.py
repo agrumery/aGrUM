@@ -322,7 +322,8 @@ def scanLineForDestroy( suite, lineNo, line ):
 
 def cstr( str ):
     '''Convert a string to its C representation'''
-    return '"' + string.replace( str, '\\', '\\\\' ) + '"'
+    return '"' + str.replace('\\', '\\\\')  + '"'
+    #return '"' + string.replace( str, '\\', '\\\\' ) + '"'
 
 
 def addSuiteCreateDestroy( suite, which, line ):
@@ -342,10 +343,10 @@ def closeSuite():
 
 def verifySuite(suite):
     '''Verify current suite is legal'''
-    if suite.has_key('create') and not suite.has_key('destroy'):
+    if 'create' in suite and not 'destroy' in suite:
         abort( '%s:%s: Suite %s has createSuite() but no destroySuite()' %
                (suite['file'], suite['create'], suite['name']) )
-    if suite.has_key('destroy') and not suite.has_key('create'):
+    if 'destroy' in suite and not 'create' in suite:
         abort( '%s:%s: Suite %s has destroySuite() but no createSuite()' %
                (suite['file'], suite['destroy'], suite['name']) )
 
@@ -481,7 +482,7 @@ def isGenerated(suite):
 
 def isDynamic(suite):
     '''Checks whether a suite is dynamic'''
-    return suite.has_key('create')
+    return 'create' in suite
 
 lastIncluded = ''
 def writeInclude(output, file):
