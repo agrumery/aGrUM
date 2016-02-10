@@ -13,10 +13,10 @@ class HappyClass {
   boolean has_yellow = forall ([A.color], yellow);
   boolean all_colors = and( [ has_red, has_blue, has_green, has_yellow ] );
   boolean any_colors = or( [ has_red, has_blue, has_green, has_yellow ] );
-  t_color infrared = min( [ has_red, has_blue, has_green, has_yellow ], t_color);  
-  t_color ultra_violet = max( [ has_red, has_blue, has_green, has_yellow ], t_color);  
-  t_color median = median( [ has_red, has_blue, has_green, has_yellow ], t_color );  
-  t_color amp = amplitude( [ has_red, has_blue, has_green, has_yellow ], t_color );  
+  t_color infrared = min( [ has_red, has_blue, has_green, has_yellow ]);  
+  t_color ultra_violet = max( [ has_red, has_blue, has_green, has_yellow ]);  
+  t_color median = median( [ has_red, has_blue, has_green, has_yellow ]);  
+  t_color amp = amplitude( [ has_red, has_blue, has_green, has_yellow ]);  
 
   boolean yolo dependson infrared, ultra_violet, median, amp {
     *, *, *, *: 0.99, 0.01;

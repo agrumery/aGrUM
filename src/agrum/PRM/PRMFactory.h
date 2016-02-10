@@ -302,7 +302,10 @@ namespace gum {
       virtual void
       startClass( const std::string& c,
                   const std::string& ext = "",
-                  const Set<std::string>* implements = nullptr ) override;
+                  const Set<std::string>* implements = nullptr,
+                  bool delayInheritance=false ) override;
+
+      virtual void continueClass( const std::string& c ) override;
 
       /**
        * Tells the factory that we finished a class declaration.
@@ -311,7 +314,7 @@ namespace gum {
        *respect one of
        *                  it's Interface<GUM_SCALAR>.
        */
-      virtual void endClass() override;
+      virtual void endClass( bool checkImplementations = true ) override;
 
       /// @}
       // ======================================================================
@@ -383,6 +386,8 @@ namespace gum {
        */
       virtual void startAttribute( const std::string& type,
                                    const std::string& name ) override;
+
+      virtual void continueAttribute( const std::string& name ) override;
 
       /**
        * Tells the factory that we add a parent to the current declared

@@ -454,6 +454,8 @@ namespace gum {
     void __push_stack( FormulaPart t );
   };
 
+  std::string func2str( FormulaPart::token_function func );
+
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE

@@ -501,9 +501,9 @@ Aggregate<std::string type, std::string name> =
                     (. std::string func, s; std::vector<std::string> chains, labels; .)
     '=' word        (. func = narrow(t->val); .)
     '(' AggChains<chains> (
-          ')' (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .) 
+          ')' (. TRY2(factory().addAggregator(name, func, chains, labels, type), "Can not create aggregator "+name) .) 
         | WEAK ',' AggLabels<labels> { ',' AggLabels<labels> } ')' 
-          (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .)
+          (. TRY2(factory().addAggregator(name, func, chains, labels, type), "Can not create aggregator "+name) .)
         )
     SYNC ';'
     .

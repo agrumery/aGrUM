@@ -99,7 +99,8 @@ namespace gum {
     void
     PRMFactory<GUM_SCALAR>::startClass( const std::string& name,
                                         const std::string& extends,
-                                        const Set<std::string>* implements ) {
+                                        const Set<std::string>* implements,
+                                        bool delayInheritance ) {
       std::string real_name = __addPrefix( name );
       if ( __prm->__classMap.exists( real_name ) ||
            __prm->__interfaceMap.exists( real_name ) ) {
@@ -124,11 +125,11 @@ namespace gum {
       if ( ( extends == "" ) and impl.empty() ) {
         c = new Class<GUM_SCALAR>( real_name );
       } else if ( ( extends != "" ) and impl.empty() ) {
-        c = new Class<GUM_SCALAR>( real_name, *mother );
+        c = new Class<GUM_SCALAR>( real_name, *mother, delayInheritance);
       } else if ( ( extends == "" ) and ( not impl.empty() ) ) {
-        c = new Class<GUM_SCALAR>( real_name, impl );
+        c = new Class<GUM_SCALAR>( real_name, impl, delayInheritance );
       } else if ( ( extends != "" ) and ( not impl.empty() ) ) {
-        c = new Class<GUM_SCALAR>( real_name, *mother, impl );
+        c = new Class<GUM_SCALAR>( real_name, *mother, impl, delayInheritance );
       }
 
       __prm->__classMap.insert( c->name(), c );
@@ -137,11 +138,25 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void PRMFactory<GUM_SCALAR>::endClass() {
+    void
+    PRMFactory<GUM_SCALAR>::continueClass( const std::string& name ) {
+      std::string real_name = __addPrefix( name );
+      if ( not( __prm->__classMap.exists( real_name ) ) ) {
+        std::stringstream msg;
+        msg << "\"" << real_name << "\" not found";
+        GUM_ERROR( NotFound, msg.str() );
+      }
+      __stack.push_back( &(__prm->getClass( real_name ) ) );
+    }
+
+    template <typename GUM_SCALAR>
+    void PRMFactory<GUM_SCALAR>::endClass(bool checkImplementations) {
       Class<GUM_SCALAR>* c = static_cast<Class<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::CLASS ) );
 
-      __checkInterfaceImplementation( c );
+      if ( checkImplementations ) {
+        __checkInterfaceImplementation( c );
+      }
 
       __stack.pop_back();
     }
@@ -1463,6 +1478,20 @@ namespace gum {
         }
         throw e;
       }
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE void
+    PRMFactory<GUM_SCALAR>::continueAttribute( const std::string& name ) {
+      ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
+      if ( not c->exists( name ) ) {
+        GUM_ERROR( NotFound, name << "not found" );
+      }
+      auto& a = c->get( name );
+      if ( not ClassElement<GUM_SCALAR>::isAttribute( a ) ) {
+        GUM_ERROR( OperationNotAllowed, name << " not an attribute" );
+      }
+      __stack.push_back( &a );
     }
 
     template <typename GUM_SCALAR>

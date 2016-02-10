@@ -443,7 +443,7 @@ void Parser::Aggregate(std::string type, std::string name) {
 		AggChains(chains);
 		if (la->kind == _RIGHT_CAST) {
 			Get();
-			TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) 
+			TRY2(factory().addAggregator(name, func, chains, labels, type), "Can not create aggregator "+name) 
 		} else if (la->kind == _comma) {
 			ExpectWeak(_comma, 6);
 			AggLabels(labels);
@@ -452,7 +452,7 @@ void Parser::Aggregate(std::string type, std::string name) {
 				AggLabels(labels);
 			}
 			Expect(_RIGHT_CAST);
-			TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) 
+			TRY2(factory().addAggregator(name, func, chains, labels, type), "Can not create aggregator "+name) 
 		} else SynErr(56);
 		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(57); Get();}
 		Expect(_semicolon);

@@ -74,7 +74,9 @@ namespace gum {
        * @param name The subclass name.
        * @param super The super Class<GUM_SCALAR> of this.
        */
-      Class( const std::string& name, Class<GUM_SCALAR>& super );
+      Class( const std::string& name,
+             Class<GUM_SCALAR>& super,
+             bool delayInheritance = false );
 
       /**
        * Constructor for building a Class<GUM_SCALAR> implementing several each
@@ -83,7 +85,9 @@ namespace gum {
        * @param name The sub class name.
        * @param set The Set of implemented interfaces.
        */
-      Class( const std::string& name, const Set<Interface<GUM_SCALAR>*>& set );
+      Class( const std::string& name,
+             const Set<Interface<GUM_SCALAR>*>& set,
+             bool delayInheritance = false );
 
       /**
        * Constructor for building a subclass of super and implementing each
@@ -94,7 +98,8 @@ namespace gum {
        */
       Class( const std::string& name,
              Class<GUM_SCALAR>& super,
-             const Set<Interface<GUM_SCALAR>*>& set );
+             const Set<Interface<GUM_SCALAR>*>& set,
+             bool delayInheritance = false );
 
       /// Copy constructor.
       Class( const Class<GUM_SCALAR>& source ) = delete;
@@ -279,7 +284,12 @@ namespace gum {
       operator[]( const std::string& name ) const;
 
       /// @}
-
+      void __inheritReferenceSlots();
+      void __inheritParameters();
+      void __inheritAttributes();
+      void __inheritAggregates();
+      void __initializeInheritance();
+      void __completeInheritance();
       protected:
       /// returns a constant reference over this interface's dag.
       virtual const DAG& _dag() const;
@@ -365,8 +375,17 @@ namespace gum {
       /// subtypes).
       Set<Class<GUM_SCALAR>*> __extensions;
 
+      /// The bijection between variables in super and variables in this
+      /// The bijection's firsts are attributes in this and its seconds are
+      /// attributes in c.
+      Bijection<const DiscreteVariable*, const DiscreteVariable*>* __bijection;
+
+
       /// Proceed with the copy when this inherits c.
       void __inheritClass( const Class<GUM_SCALAR>& c );
+   
+      /// Proceed with the implementation of interfaces
+      void __implementInterfaces(bool delayInheritance);
 
       /// Check if elt is present in an implementation. If it is, its IO flags
       /// are updated.

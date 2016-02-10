@@ -75,8 +75,10 @@ namespace gum {
       virtual void
       startClass( const std::string& c,
                   const std::string& extends = "",
-                  const Set<std::string>* implements = nullptr ) = 0;
-      virtual void endClass() = 0;
+                  const Set<std::string>* implements = nullptr,
+                  bool delayInheritance = false ) = 0;
+      virtual void continueClass( const std::string& c ) = 0;
+      virtual void endClass( bool checkImplementations = true ) = 0;
       virtual void startInterface( const std::string& i,
                                    const std::string& extends = "" ) = 0;
       virtual void continueInterface( const std::string& name ) = 0;
@@ -86,6 +88,7 @@ namespace gum {
       // virtual void addAttribute ( Attribute<GUM_SCALAR>* attr ) =0;
       virtual void startAttribute( const std::string& type,
                                    const std::string& name ) = 0;
+      virtual void continueAttribute( const std::string& name ) = 0;
       virtual void addParent( const std::string& name ) = 0;
       virtual void setRawCPFByFloatLines( const std::vector<float>& array ) = 0;
       virtual void
