@@ -74,7 +74,8 @@ class Parser {
 		_implements=16,
 		_int=17,
 		_real=18,
-		_string=19
+		_add=19,
+		_string=20
 	};
 	int maxT;
 
@@ -137,6 +138,11 @@ using O3AggregateList = gum::prm::o3prm::O3Class::O3AggregateList;
 
 using O3Class = gum::prm::o3prm::O3Class;
 
+using O3System = gum::prm::o3prm::O3System;
+using O3Instance = gum::prm::o3prm::O3Instance;
+using O3Assignment = gum::prm::o3prm::O3Assignment;
+using O3Increment = gum::prm::o3prm::O3Increment;
+
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
@@ -169,7 +175,12 @@ void __addO3Interface( Position& pos,
 
 void __addO3Class( O3Class&& c ) {
   get_prm()->classes().push_back(
-      std::unique_ptr<O3Class>( new O3Class( c ) ) );
+      std::unique_ptr<O3Class>( new O3Class( std::move(c) ) ) );
+}
+
+void __addO3System( O3System&& c ) {
+  get_prm()->systems().push_back(
+      std::unique_ptr<O3System>( new O3System( std::move(c) ) ) );
 }
 
 public:
@@ -202,6 +213,7 @@ O3PRM* get_prm() {
 	void TYPE_UNIT();
 	void INTERFACE_UNIT();
 	void CLASS_UNIT();
+	void SYSTEM_UNIT();
 	void CLASS_DECLARATION(O3Class& c);
 	void CLASS(Position& pos);
 	void LABEL(O3Label& l);
@@ -242,6 +254,8 @@ O3InterfaceElementList& elts);
 	void TYPE_VALUE_LIST(LabelMap& labels );
 	void MAP(LabelMap& labels );
 	void INT(Position& pos);
+	void SYSTEM_DECLARATION(O3System& s);
+	void SYSTEM_BODY(O3System& s);
 	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
 	void LABEL_OR_STAR(O3Label& l);

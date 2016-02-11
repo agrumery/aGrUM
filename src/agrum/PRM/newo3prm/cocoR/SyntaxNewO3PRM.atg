@@ -59,6 +59,11 @@ using O3AggregateList = gum::prm::o3prm::O3Class::O3AggregateList;
 
 using O3Class = gum::prm::o3prm::O3Class;
 
+using O3System = gum::prm::o3prm::O3System;
+using O3Instance = gum::prm::o3prm::O3Instance;
+using O3Assignment = gum::prm::o3prm::O3Assignment;
+using O3Increment = gum::prm::o3prm::O3Increment;
+
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
@@ -91,7 +96,12 @@ void __addO3Interface( Position& pos,
 
 void __addO3Class( O3Class&& c ) {
   get_prm()->classes().push_back(
-      std::unique_ptr<O3Class>( new O3Class( c ) ) );
+      std::unique_ptr<O3Class>( new O3Class( std::move(c) ) ) );
+}
+
+void __addO3System( O3System&& c ) {
+  get_prm()->systems().push_back(
+      std::unique_ptr<O3System>( new O3System( std::move(c) ) ) );
 }
 
 public:
@@ -138,6 +148,7 @@ default    = "default".
 implements = "implements".
 int        = "int".
 real       = "real".
+add        =  "+=".
 string     = '"' { noQuote1 } '"' | "'" {noQuote2 } "'" .
 
 //________________________
@@ -167,8 +178,14 @@ UNIT =
     INTERFACE_UNIT
   |
     CLASS_UNIT
+  |
+    SYSTEM_UNIT
   )
   .
+
+// ===========================================================================
+// ===                          CLASS RULES                                ===
+// ===========================================================================
 
 //________________________
 CLASS_UNIT =
@@ -345,6 +362,10 @@ RULE<O3RuleList& rules> =
   (. rules.push_back( std::move(rule) ); .)
   .
 
+// ===========================================================================
+// ===                        INTERFACE RULES                              ===
+// ===========================================================================
+
 //________________________
 INTERFACE_UNIT =
   (. auto n = errors().error_count; .)
@@ -384,6 +405,10 @@ INTERFACE_BODY<O3InterfaceElementList& elts> =
   IDENTIFIER<type> LABEL<name> ';'
   (. elts.push_back( O3InterfaceElement( type, name ) ); .)
   .
+
+// ===========================================================================
+// ===                            TYPE RULES                               ===
+// ===========================================================================
 
 //________________________
 TYPE_UNIT = 
@@ -484,6 +509,49 @@ TYPE_VALUE_LIST< LabelMap& labels > =
     (. labels.push_back( pair ); .)
   }
   .
+
+// ===========================================================================
+// ===                          SYSTEM RULES                               ===
+// ===========================================================================
+
+SYSTEM_UNIT =
+  (. auto n = errors().error_count; .)
+  (. auto s = O3System(); .)
+  SYSTEM_DECLARATION<s>
+  (. if (__ok(n)) { __addO3System( std::move(s) ); } .)
+  .
+
+SYSTEM_DECLARATION<O3System& s> =
+  system
+  LABEL<s.name()>
+  '{'
+  {
+    SYSTEM_BODY<s>
+  }
+  '}'
+  .
+
+SYSTEM_BODY<O3System& s> =
+  (. auto type = O3Label(); .)
+  (. auto name = O3Label(); .)
+  (. auto size = O3Integer(); .)
+  IDENTIFIER<type> // either a type or a slot chain
+  (
+    LABEL<name> 
+    [
+      '[' INTEGER<size> ']'
+    ]
+  | 
+    '=' LABEL<name> 
+  |
+    add LABEL<name>
+  )
+  ';'
+  .
+
+// ===========================================================================
+// ===                         GENERIC RULES                               ===
+// ===========================================================================
 
 //________________________
 INTEGER_AS_LABEL<O3Label& l> =
