@@ -433,12 +433,21 @@ namespace gum {
           __interfaces.push_back(
               std::unique_ptr<O3Interface>( new O3Interface( *i ) ) );
         }
+        for ( const auto& c : src.__classes ) {
+          __classes.push_back( std::unique_ptr<O3Class>( new O3Class( *c ) ) );
+        }
+        for ( const auto& s : src.__systems ) {
+          __systems.push_back(
+              std::unique_ptr<O3System>( new O3System( *s ) ) );
+        }
       }
 
       O3PRM::O3PRM( O3PRM&& src )
           : __types( std::move( src.__types ) )
           , __int_types( std::move( src.__int_types ) )
-          , __interfaces( std::move( src.__interfaces ) ) {
+          , __interfaces( std::move( src.__interfaces ) )
+          , __classes( std::move( src.__classes ) )
+          , __systems( std::move( src.__systems ) ) {
         GUM_CONS_MOV( O3PRM );
       }
 
@@ -459,6 +468,13 @@ namespace gum {
           __interfaces.push_back(
               std::unique_ptr<O3Interface>( new O3Interface( *i ) ) );
         }
+        for ( const auto& c : src.__classes ) {
+          __classes.push_back( std::unique_ptr<O3Class>( new O3Class( *c ) ) );
+        }
+        for ( const auto& s : src.__systems ) {
+          __systems.push_back(
+              std::unique_ptr<O3System>( new O3System( *s ) ) );
+        }
         return *this;
       }
 
@@ -469,6 +485,8 @@ namespace gum {
         __types = std::move( src.__types );
         __int_types = std::move( src.__int_types );
         __interfaces = std::move( src.__interfaces );
+        __classes = std::move( src.__classes );
+        __systems = std::move( src.__systems );
         return *this;
       }
 
@@ -488,6 +506,10 @@ namespace gum {
       O3PRM::O3ClassList& O3PRM::classes() { return __classes; }
 
       const O3PRM::O3ClassList& O3PRM::classes() const { return __classes; }
+
+      O3PRM::O3SystemList& O3PRM::systems() { return __systems; }
+
+      const O3PRM::O3SystemList& O3PRM::systems() const { return __systems; }
 
       O3InterfaceElement::O3InterfaceElement( const O3Label& type,
                                               const O3Label& name )
@@ -1101,6 +1123,239 @@ namespace gum {
         o << src.label();
         return o;
       }
+
+      O3Assignment::O3Assignment() { GUM_CONSTRUCTOR( O3Assignment ); }
+
+      O3Assignment::O3Assignment( const O3Assignment& src )
+          : __pos( src.__pos )
+          , __leftValue( src.__leftValue )
+          , __rightValue( src.__rightValue ) {
+        GUM_CONS_CPY( O3Assignment );
+      }
+
+      O3Assignment::O3Assignment( O3Assignment&& src )
+          : __pos( std::move( src.__pos ) )
+          , __leftValue( std::move( src.__leftValue ) )
+          , __rightValue( std::move( src.__rightValue ) ) {
+        GUM_CONS_CPY( O3Assignment );
+      }
+
+      O3Assignment::~O3Assignment() { GUM_DESTRUCTOR( O3Assignment ); }
+
+      O3Assignment& O3Assignment::operator=( const O3Assignment& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __pos = src.__pos;
+        __leftValue = src.__leftValue;
+        __rightValue = src.__rightValue;
+        return *this;
+      }
+
+      O3Assignment& O3Assignment::operator=( O3Assignment&& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __pos = std::move( src.__pos );
+        __leftValue = std::move( src.__leftValue );
+        __rightValue = std::move( src.__rightValue );
+        return *this;
+      }
+
+      const Position& O3Assignment::position() const { return __pos; }
+
+      Position& O3Assignment::position() { return __pos; }
+
+      const O3Label& O3Assignment::leftValue() const { return __leftValue; }
+
+      O3Label& O3Assignment::leftValue() { return __leftValue; }
+
+      const O3Label& O3Assignment::rightValue() const { return __rightValue; }
+
+      O3Label& O3Assignment::rightValue() { return __rightValue; }
+
+      O3Increment::O3Increment() { GUM_CONSTRUCTOR( O3Increment ); }
+
+      O3Increment::O3Increment( const O3Increment& src )
+          : __pos( src.__pos )
+          , __leftValue( src.__leftValue )
+          , __rightValue( src.__rightValue ) {
+        GUM_CONS_CPY( O3Increment );
+      }
+
+      O3Increment::O3Increment( O3Increment&& src )
+          : __pos( std::move( src.__pos ) )
+          , __leftValue( std::move( src.__leftValue ) )
+          , __rightValue( std::move( src.__rightValue ) ) {
+        GUM_CONS_CPY( O3Increment );
+      }
+
+      O3Increment::~O3Increment() { GUM_DESTRUCTOR( O3Increment ); }
+
+      O3Increment& O3Increment::operator=( const O3Increment& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __pos = src.__pos;
+        __leftValue = src.__leftValue;
+        __rightValue = src.__rightValue;
+        return *this;
+      }
+
+      O3Increment& O3Increment::operator=( O3Increment&& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __pos = std::move( src.__pos );
+        __leftValue = std::move( src.__leftValue );
+        __rightValue = std::move( src.__rightValue );
+        return *this;
+      }
+
+      const Position& O3Increment::position() const { return __pos; }
+
+      Position& O3Increment::position() { return __pos; }
+
+      const O3Label& O3Increment::leftValue() const { return __leftValue; }
+
+      O3Label& O3Increment::leftValue() { return __leftValue; }
+
+      const O3Label& O3Increment::rightValue() const { return __rightValue; }
+
+      O3Label& O3Increment::rightValue() { return __rightValue; }
+
+      O3Instance::O3Instance() { GUM_CONSTRUCTOR( O3Instance ); }
+
+      O3Instance::O3Instance( const O3Instance& src )
+          : __pos( src.__pos )
+          , __type( src.__type )
+          , __name( src.__name )
+          , __size( src.__size ) {
+        GUM_CONS_CPY( O3Instance );
+      }
+
+      O3Instance::O3Instance( O3Instance&& src )
+          : __pos( std::move( src.__pos ) )
+          , __type( std::move( src.__type ) )
+          , __name( std::move( src.__name ) )
+          , __size( std::move( src.__size ) ) {
+        GUM_CONS_MOV( O3Instance );
+      }
+
+      O3Instance::~O3Instance() { GUM_DESTRUCTOR( O3Instance ); }
+
+      O3Instance& O3Instance::operator=( const O3Instance& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __pos = src.__pos;
+        __type = src.__type;
+        __name = src.__name;
+        __size = src.__size;
+        return *this;
+      }
+
+      O3Instance& O3Instance::operator=( O3Instance&& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __pos = std::move( src.__pos );
+        __type = std::move( src.__type );
+        __name = std::move( src.__name );
+        __size = std::move( src.__size );
+        return *this;
+      }
+
+      const Position& O3Instance::position() const { return __pos; }
+
+      Position& O3Instance::position() { return __pos; }
+
+      const O3Label& O3Instance::type() const { return __type; }
+
+      O3Label& O3Instance::type() { return __type; }
+
+      const O3Label& O3Instance::name() const { return __name; }
+
+      O3Label& O3Instance::name() { return __name; }
+
+      const O3Integer& O3Instance::size() const { return __size; }
+
+      O3Integer& O3Instance::size() { return __size; }
+
+      O3System::O3System() { GUM_CONSTRUCTOR( O3System ); }
+
+      O3System::O3System( const O3System& src )
+          : __pos( src.__pos )
+          , __name( src.__name )
+          , __instances( src.__instances )
+          , __assigments( src.__assigments )
+          , __increments( src.__increments ) {
+        GUM_CONS_CPY( O3System );
+      }
+
+      O3System::O3System( O3System&& src )
+          : __pos( std::move( src.__pos ) )
+          , __name( std::move( src.__name ) )
+          , __instances( std::move( src.__instances ) )
+          , __assigments( std::move( src.__assigments ) )
+          , __increments( std::move( src.__increments ) ) {
+        GUM_CONS_MOV( O3System );
+      }
+
+      O3System::~O3System() { GUM_DESTRUCTOR( O3System ); }
+
+      O3System& O3System::operator=( const O3System& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __pos = src.__pos;
+        __name = src.__name;
+        __instances = src.__instances;
+        __assigments = src.__assigments;
+        __increments = src.__increments;
+        return *this;
+      }
+
+      O3System& O3System::operator=( O3System&& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+
+        __pos = std::move( src.__pos );
+        __name = std::move( src.__name );
+        __instances = std::move( src.__instances );
+        __assigments = std::move( src.__assigments );
+        __increments = std::move( src.__increments );
+        return *this;
+      }
+
+      const Position& O3System::position() const { return __pos; }
+
+      Position& O3System::position() { return __pos; }
+
+      const O3Label& O3System::name() const { return __name; }
+
+      O3Label& O3System::name() { return __name; }
+
+      const O3System::O3InstanceList& O3System::instances() const {
+        return __instances;
+      }
+
+      O3System::O3InstanceList& O3System::instances() { return __instances; }
+
+      const O3System::O3AssignmentList& O3System::assignments() const {
+        return __assigments;
+      }
+
+      O3System::O3AssignmentList& O3System::assignments() {
+        return __assigments;
+      }
+
+      const O3System::O3IncrementList& O3System::increments() const {
+        return __increments;
+      }
+
+      O3System::O3IncrementList& O3System::increments() { return __increments; }
 
     }  // o3prm
   }    // prm

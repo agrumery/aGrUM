@@ -443,12 +443,128 @@ namespace gum {
         std::unique_ptr<O3AggregateList> __aggs;
       };
 
+      class O3Assignment {
+        public:
+
+        O3Assignment();
+        O3Assignment( const O3Assignment& src );
+        O3Assignment( O3Assignment&& src );
+        ~O3Assignment();
+        O3Assignment& operator=( const O3Assignment& src );
+        O3Assignment& operator=( O3Assignment&& src );
+
+        const Position& position() const;
+        Position& position();
+
+        const O3Label& leftValue() const;
+        O3Label& leftValue();
+
+        const O3Label& rightValue() const;
+        O3Label& rightValue();
+
+        private:
+        Position __pos;
+        O3Label __leftValue;
+        O3Label __rightValue;
+      };
+
+      class O3Increment {
+        public:
+
+        O3Increment();
+        O3Increment( const O3Increment& src );
+        O3Increment( O3Increment&& src );
+        ~O3Increment();
+        O3Increment& operator=( const O3Increment& src );
+        O3Increment& operator=( O3Increment&& src );
+
+        const Position& position() const;
+        Position& position();
+
+        const O3Label& leftValue() const;
+        O3Label& leftValue();
+
+        const O3Label& rightValue() const;
+        O3Label& rightValue();
+
+        private:
+        Position __pos;
+        O3Label __leftValue;
+        O3Label __rightValue;
+      };
+
+      class O3Instance {
+        public:
+
+        O3Instance();
+        O3Instance( const O3Instance& src );
+        O3Instance( O3Instance&& src );
+        ~O3Instance();
+        O3Instance& operator=( const O3Instance& src );
+        O3Instance& operator=( O3Instance&& src );
+
+        const Position& position() const;
+        Position& position();
+
+        const O3Label& type() const;
+        O3Label& type();
+
+        const O3Label& name() const;
+        O3Label& name();
+
+        const O3Integer& size() const;
+        O3Integer& size();
+
+        private:
+        Position __pos;
+        O3Label __type;
+        O3Label __name;
+        O3Integer __size;
+      };
+
+      class O3System {
+        public:
+        using O3InstanceList = std::vector<O3Instance>;
+        using O3AssignmentList = std::vector<O3Assignment>;
+        using O3IncrementList = std::vector<O3Increment>;
+
+        O3System();
+        O3System( const O3System& src );
+        O3System( O3System&& src );
+        ~O3System();
+        O3System& operator=( const O3System& src );
+        O3System& operator=( O3System&& src );
+
+        const Position& position() const;
+        Position& position();
+
+        const O3Label& name() const;
+        O3Label& name();
+
+        const O3InstanceList& instances() const;
+        O3InstanceList& instances();
+
+        const O3AssignmentList& assignments() const;
+        O3AssignmentList& assignments();
+
+        const O3IncrementList& increments() const;
+        O3IncrementList& increments();
+
+        private:
+        Position __pos;
+        O3Label __name;
+        O3InstanceList __instances;
+        O3AssignmentList __assigments;
+        O3IncrementList __increments;
+      };
+
       class O3PRM {
         public:
         using O3TypeList = std::vector<std::unique_ptr<O3Type>>;
         using O3IntTypeList = std::vector<std::unique_ptr<O3IntType>>;
         using O3InterfaceList = std::vector<std::unique_ptr<O3Interface>>;
         using O3ClassList = std::vector<std::unique_ptr<O3Class>>;
+        using O3SystemList = std::vector<std::unique_ptr<O3System>>;
 
         O3PRM();
         O3PRM( const O3PRM& src );
@@ -469,11 +585,15 @@ namespace gum {
         O3ClassList& classes();
         const O3ClassList& classes() const;
 
+        O3SystemList& systems();
+        const O3SystemList& systems() const;
+
         private:
         O3TypeList __types;
         O3IntTypeList __int_types;
         O3InterfaceList __interfaces;
         O3ClassList __classes;
+        O3SystemList __systems;
       };
 
     }  // o3prm
