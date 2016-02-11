@@ -46,8 +46,8 @@ namespace gum {
     namespace o3prm {
 
       void parse_stream( gum::prm::PRM<double>& prm,
-                         std::stringstream& input,
-                         std::stringstream& output );
+                         std::istream& input,
+                         std::ostream& output );
 
     }
   }
