@@ -307,6 +307,15 @@ namespace gum {
         for ( auto i = 0; i < attr.values().size(); ++i ) {
           auto idx = i % parent_size;
           values[idx] += attr.values()[i].formula().result();
+          if ( values[idx] < 0 or values[idx] > 1) {
+            const auto& pos = attr.values()[i].position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+              << "|"
+              << " Attribute error : "
+              << "Illegal CPT value " << values[idx] << std::endl;
+            __build = false;
+            return false;
+          }
         }
         if ( not std::all_of(
                  values.cbegin(),
@@ -349,7 +358,17 @@ namespace gum {
           auto sum = 0.0f;
           for ( const auto& f : rule.second ) {
             try {
-              sum += f.formula().result();
+              auto value = f.formula().result();
+              sum += value;
+              if ( value < 0 or value > 1 ) {
+                const auto& pos = f.position();
+                output << pos.file() << "|" << pos.line() << " col "
+                       << pos.column() << "|"
+                       << " Attribute error : "
+                       << "Illegal CPT value " << value << std::endl;
+                __build = false;
+                return false;
+              }
             } catch ( OperationNotAllowed& ) {
               const auto& pos = f.position();
               output << pos.file() << "|" << pos.line() << "|"
