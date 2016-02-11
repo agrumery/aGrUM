@@ -73,6 +73,7 @@ namespace gum {
         __nodeMap = HashTable<NodeId, const O3Interface*>();
         __dag = DAG();
         __o3Interface = std::vector<const O3Interface*>();
+        __build = true;
       }
 
       template <typename GUM_SCALAR>
@@ -86,8 +87,9 @@ namespace gum {
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Interface error : "
-                   << "Interface name " << i->name().label() << " exists already"
-                   << std::endl;
+                   << "Interface name " << i->name().label()
+                   << " exists already" << std::endl;
+            __build = false;
             return false;
           }
           auto id = __dag.addNode();
@@ -101,8 +103,9 @@ namespace gum {
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
                    << " Interface error : "
-                   << "Interface name " << i->name().label() << " exists already"
-                   << std::endl;
+                   << "Interface name " << i->name().label()
+                   << " exists already" << std::endl;
+            __build = false;
             return false;
           }
         }
@@ -127,6 +130,7 @@ namespace gum {
                      << pos.column() << "|"
                      << " Interface error : "
                      << "Unknown interface " << i->super().label() << std::endl;
+              __build = false;
               return false;
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
@@ -137,6 +141,7 @@ namespace gum {
                      << "Cyclic inheritance between interface "
                      << i->name().label() << " and interface "
                      << i->super().label() << std::endl;
+              __build = false;
               return false;
             }
           }
@@ -156,6 +161,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       bool O3InterfaceFactory<GUM_SCALAR>::__checkInterfaceElement(
           PRM<GUM_SCALAR>& prm,
+          const O3Interface& i,
           const O3InterfaceElement& elt,
           std::ostream& output ) {
         if ( not( prm.isType( elt.type().label() ) or
@@ -167,7 +173,44 @@ namespace gum {
                  << "|"
                  << " Interface error : "
                  << "Unknown identifier " << elt.type().label() << std::endl;
+          __build = false;
           return false;
+        }
+        if ( prm.isInterface( elt.type().label() ) ) {
+          const auto& real_i = prm.interface( i.name().label() );
+          const auto& ref_type = prm.interface( elt.type().label() );
+          if ( ( &real_i ) == ( &ref_type ) ) {
+            const auto& pos = elt.type().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Reference Slot error : "
+                   << "Interface " << i.name().label()
+                   << " cannot reference itself" << std::endl;
+            __build = false;
+            return false;
+          }
+          if ( ref_type.isSubTypeOf( real_i ) ) {
+            const auto& pos = elt.type().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Reference Slot error : "
+                   << "Interface " << i.name().label()
+                   << " cannot reference subinterface " << elt.type().label()
+                   << std::endl;
+            __build = false;
+            return false;
+          }
+          if ( real_i.isSubTypeOf( ref_type ) ) {
+            const auto& pos = elt.type().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Reference Slot error : "
+                   << "Interface " << i.name().label()
+                   << " cannot reference super interface " << elt.type().label()
+                   << std::endl;
+            __build = false;
+            return false;
+          }
         }
         return true;
       }
@@ -196,83 +239,35 @@ namespace gum {
       template <typename GUM_SCALAR>
       void O3InterfaceFactory<GUM_SCALAR>::buildElements(
           PRM<GUM_SCALAR>& prm, const O3PRM& tmp_prm, std::ostream& output ) {
-        PRMFactory<GUM_SCALAR> factory( &prm );
-        for ( auto i : __o3Interface ) {
-          factory.continueInterface( i->name().label() );
-          for ( const auto& elt : i->elements() ) {
-            if ( __checkInterfaceElement( prm, elt, output ) ) {
-              try {
-                if ( prm.isType( elt.type().label() ) ) {
-                  factory.addAttribute( elt.type().label(),
-                                        elt.name().label() );
-                } else {
-                  factory.addReferenceSlot(
-                      elt.type().label(), elt.name().label(), false );
+        if ( __build ) {
+          PRMFactory<GUM_SCALAR> factory( &prm );
+          for ( auto i : __o3Interface ) {
+            factory.continueInterface( i->name().label() );
+            for ( const auto& elt : i->elements() ) {
+              if ( __checkInterfaceElement( prm, *i, elt, output ) ) {
+                try {
+                  if ( prm.isType( elt.type().label() ) ) {
+                    factory.addAttribute( elt.type().label(),
+                                          elt.name().label() );
+                  } else {
+                    factory.addReferenceSlot(
+                        elt.type().label(), elt.name().label(), false );
+                  }
+                } catch ( OperationNotAllowed& e ) {
+                  // Duplicate or Wrong overload
+                  const auto& pos = elt.type().position();
+                  output << pos.file() << "|" << pos.line() << " col "
+                         << pos.column() << "|"
+                         << " Interface error : "
+                         << "Element " << elt.name().label()
+                         << " already exists" << std::endl;
                 }
-              } catch ( OperationNotAllowed& e ) {
-                // Duplicate or Wrong overload
-                const auto& pos = elt.type().position();
-                output << pos.file() << "|" << pos.line() << " col "
-                       << pos.column() << "|"
-                       << " Interface error : "
-                       << "Element " << elt.name().label() << " already exists"
-                       << std::endl;
               }
             }
+            factory.endInterface();
           }
-          factory.endInterface();
         }
       }
-
-      template <typename GUM_SCALAR>
-      void O3InterfaceFactory<GUM_SCALAR>::build( PRM<GUM_SCALAR>& prm,
-                                                  const O3PRM& tmp_prm,
-                                                  std::ostream& output ) {
-        buildInterfaces( prm, tmp_prm, output );
-        buildElements( prm, tmp_prm, output );
-      }
-
-      //template <typename GUM_SCALAR>
-      //void O3InterfaceFactory<GUM_SCALAR>::build( PRM<GUM_SCALAR>& prm,
-      //                                            const O3PRM& tmp_prm,
-      //                                            std::ostream& output ) {
-      //  __initialize();
-      //  PRMFactory<GUM_SCALAR> factory( &prm );
-      //  if ( __checkO3Interfaces( prm, tmp_prm, output ) ) {
-      //    __setO3InterfaceCreationOrder();
-
-      //    for ( auto i : __o3Interface ) {
-      //      factory.startInterface( i->name().label(), i->super().label() );
-      //      factory.endInterface();
-      //    }
-
-      //    for ( auto i : __o3Interface ) {
-      //      factory.continueInterface( i->name().label() );
-      //      for ( const auto& elt : i->elements() ) {
-      //        if ( __checkInterfaceElement( prm, elt, output ) ) {
-      //          try {
-      //            if ( prm.isType( elt.type().label() ) ) {
-      //              factory.addAttribute( elt.type().label(),
-      //                                    elt.name().label() );
-      //            } else {
-      //              factory.addReferenceSlot(
-      //                  elt.type().label(), elt.name().label(), false );
-      //            }
-      //          } catch ( OperationNotAllowed& e ) {
-      //            // Duplicate or Wrong overload
-      //            const auto& pos = elt.type().position();
-      //            output << pos.file() << "|" << pos.line() << " col "
-      //                   << pos.column() << "|"
-      //                   << " Interface error : "
-      //                   << "Element " << elt.name().label()
-      //                   << " already exists" << std::endl;
-      //          }
-      //        }
-      //      }
-      //      factory.endInterface();
-      //    }
-      //  }
-      //}
     }
   }
 }
