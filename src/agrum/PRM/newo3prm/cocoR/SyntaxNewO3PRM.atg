@@ -659,6 +659,10 @@ FORMULA<O3Formula& f> =
     float
     (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
     (. f = O3Formula( pos, narrow( t->val ) ); .)
+  | 
+    integer
+    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Formula( pos, narrow( t->val ) ); .)
   )
   .
 

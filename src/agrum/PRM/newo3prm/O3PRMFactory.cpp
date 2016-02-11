@@ -38,6 +38,75 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+
+      //struct Node {
+      //  class enum Type { CLASS, INTERFACE };
+
+      //  Type type;
+      //  O3Class* c;
+      //  O3Interface* i;
+
+      //  Node( O3Class* src )
+      //      : __type( Type::CLASS )
+      //      , c( src )
+      //      , i( nullptr ) {}
+
+      //  Node( O3Interface* src )
+      //      : __type( Type::INTERFACE )
+      //      , c( nullptr )
+      //      , i( src ) {}
+      //};
+
+      //void build( PRM<double>& prm, O3PRM& o3_prm ) {
+      //  auto dag = DAG();
+      //  auto id_map = HashTable<NodeId, Node>();
+      //  auto name_map = HashTable<td::string, NodeId>();
+
+      //  // Build inheritance graph
+      //  for ( auto& c : prm.classes() ) {
+      //    auto id = dag.addNode();
+      //    id_map.insert( id, Node( c.get() ) );
+      //    id_map.insert( c->name().label(), id );
+      //  }
+
+      //  for ( auto& i : prm.interfaces() ) {
+      //    auto id = dag.addNode();
+      //    id_map.insert( id, i.get() );
+      //    id_map.insert( i->name().label(), id );
+      //  }
+
+      //  // Adding arcs
+      //  for ( auto& c : prm.classes() ) {
+      //    auto id = name_map[c->name().label()];
+      //    if ( c->super().label() != "" ) {
+      //      auto super = name_map[c->super().label()];
+      //      dag.addArc( super, id );
+      //    }
+      //  }
+
+      //  auto order = topologicalOrder(dag);
+      //  auto visited = Set<NodeId>();
+      //  for ( auto id : order) {
+      //    if (not visited.exists(id)) {
+      //      visited.insert(id);
+      //      auto& node = id_map[id];
+      //      switch (node.type) {
+      //        case Node::Type::CLASS: {
+      //          __build( prm, o3_prm, *( node.c ), visited, node_map );
+      //          break;
+      //        }
+      //        case Node::Type::INTERFACE: {
+      //          __build( prm, o3_prm, *( node.i ), visited, node_map );
+      //          break;
+      //        }
+      //        default: {
+      //          GUM_ERROR(FatalError, "WTF");
+      //        }
+      //      }
+      //    }
+      //  }
+      //}
+
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
