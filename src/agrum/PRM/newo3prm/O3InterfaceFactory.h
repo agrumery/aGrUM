@@ -64,15 +64,13 @@ namespace gum {
                             const O3PRM& tmp_prm,
                             std::ostream& output );
 
-        void
-        build( PRM<GUM_SCALAR>& prm, const O3PRM& my_o3prm, std::ostream& output );
-
         private:
         HashTable<std::string, gum::NodeId> __nameMap;
         HashTable<std::string, const O3Interface*> __interfaceMap;
         HashTable<NodeId, const O3Interface*> __nodeMap;
         DAG __dag;
         std::vector<const O3Interface*> __o3Interface;
+        bool __build;
 
         void __initialize();
         bool __addInterface2Dag( PRM<GUM_SCALAR>& prm,
@@ -88,6 +86,7 @@ namespace gum {
                                   std::ostream& output );
 
         bool __checkInterfaceElement( PRM<GUM_SCALAR>& prm,
+                                      const O3Interface& i,
                                       const O3InterfaceElement& elt,
                                       std::ostream& output );
       };

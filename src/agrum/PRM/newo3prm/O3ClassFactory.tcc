@@ -100,8 +100,8 @@ namespace gum {
           output << pos.file() << "|" << pos.line() << " col " << pos.column()
                  << "|"
                  << " Reference Slot error : "
-                 << "Reference Slot type " << ref.type().label()
-                 << " not found" << std::endl;
+                 << "Reference Slot type " << ref.type().label() << " not found"
+                 << std::endl;
           __build = false;
           return false;
         }
@@ -118,6 +118,16 @@ namespace gum {
         }
         if ( prm.isClass( ref.type().label() ) ) {
           const auto& ref_type = prm.getClass( ref.type().label() );
+          if ( ( &ref_type ) == ( &real_c ) ) {
+            const auto& pos = ref.type().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Reference Slot error : "
+                   << "Class " << c.name().label() << " cannot reference itself"
+                   << std::endl;
+            __build = false;
+            return false;
+          }
           if ( ref_type.isSubTypeOf( real_c ) ) {
             const auto& pos = ref.type().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
