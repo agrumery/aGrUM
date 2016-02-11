@@ -28,6 +28,12 @@
 
 #include <agrum/PRM/newo3prm/O3PRMFactory.h>
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cstdint>
+
 namespace gum {
   namespace prm {
     namespace o3prm {
@@ -35,15 +41,31 @@ namespace gum {
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
 
+      std::string read_stream( std::istream& input ) {
+        if ( input ) {
+          input.seekg( 0, input.end );
+          auto length = input.tellg();
+          input.seekg( 0, input.beg );
 
+          auto str = std::string();
+          str.resize( length, ' ' );
+          auto begin = &*str.begin();
+
+          input.read( begin, length );
+
+          return std::move(str);
+        }
+        GUM_ERROR( OperationNotAllowed, "Could not open file" );
+      }
 
       void parse_stream( gum::prm::PRM<double>& prm,
-                         std::stringstream& input,
-                         std::stringstream& output ) {
+                         std::istream& input,
+                         std::ostream& output ) {
+        auto sBuff = read_stream( input );
         auto buffer = std::unique_ptr<unsigned char[]>(
-            new unsigned char[input.str().length() + 1] );
-        strcpy( (char*)buffer.get(), input.str().c_str() );
-        auto s = o3prm_scanner( buffer.get(), input.str().length() + 1, "" );
+            new unsigned char[sBuff.length() + 1] );
+        strcpy( (char*)buffer.get(), sBuff.c_str() );
+        auto s = o3prm_scanner( buffer.get(), sBuff.length() + 1, "" );
         auto p = o3prm_parser( &s );
         auto o3_prm = gum::prm::o3prm::O3PRM();
         p.set_prm( &o3_prm );
@@ -59,13 +81,13 @@ namespace gum {
 
         auto interface_factory = O3InterfaceFactory<double>();
         auto class_factory = O3ClassFactory<double>();
-        //interface_factory.build( prm, o3_prm, output );
-        //class_factory.build( prm, o3_prm, output );
+        // interface_factory.build( prm, o3_prm, output );
+        // class_factory.build( prm, o3_prm, output );
 
         interface_factory.buildInterfaces( prm, o3_prm, output );
         class_factory.buildClasses( prm, o3_prm, output );
         interface_factory.buildElements( prm, o3_prm, output );
-        class_factory.buildImplementations(prm, o3_prm, output);
+        class_factory.buildImplementations( prm, o3_prm, output );
         class_factory.buildParameters( prm, o3_prm, output );
         class_factory.buildReferenceSlots( prm, o3_prm, output );
         class_factory.declareAttributes( prm, o3_prm, output );
