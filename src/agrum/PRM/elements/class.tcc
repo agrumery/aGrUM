@@ -71,7 +71,7 @@ namespace gum {
       GUM_CONSTRUCTOR( Class );
 
       if ( not delayInheritance ) {
-        __implementInterfaces(false);
+        __implementInterfaces( false );
       }
     }
 
@@ -101,12 +101,12 @@ namespace gum {
       }
 
       if ( not delayInheritance ) {
-        __implementInterfaces(false);
+        __implementInterfaces( false );
       }
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__implementInterfaces(bool delayedInheritance) {
+    void Class<GUM_SCALAR>::__implementInterfaces( bool delayedInheritance ) {
       for ( const auto impl : *__implements ) {
         impl->__addImplementation( this );
         if ( ( not __super ) or
@@ -257,8 +257,8 @@ namespace gum {
           }
         }
       }
-      if (__implements) {
-        __implementInterfaces(true);
+      if ( __implements ) {
+        __implementInterfaces( true );
       }
     }
 
@@ -534,7 +534,8 @@ namespace gum {
                    "name already used by another ClassElement<GUM_SCALAR>" );
       }
 
-      elt->setId( __dag.addNode() );
+      elt->setId( nextNodeId() );
+      __dag.addNode( elt->id() );
       __nodeIdMap.insert( elt->id(), elt );
       __nameMap.insert( elt->name(), elt );
 
@@ -719,7 +720,8 @@ namespace gum {
           // No interface
         }
         if ( not found ) {
-          child->setId( __dag.addNode() );
+          child->setId( nextNodeId() );
+          __dag.addNode( child->id() );
         }
         __nodeIdMap.insert( child->id(), child );
         // Only use child's safe name when adding to the name map!
@@ -813,7 +815,8 @@ namespace gum {
 
       // Checking if we have to add cast descendant
       if ( overloader->type() != overloaded->type() ) {
-        overloader->setId( __dag.addNode() );
+        overloader->setId( nextNodeId() );
+        __dag.addNode( overloader->id() );
         try {
           __nodeIdMap.insert( overloader->id(), overloader );
         } catch ( DuplicateElement& e ) {
@@ -953,7 +956,8 @@ namespace gum {
 
       while ( parent->type().super() != end->type() ) {
         child = parent->getCastDescendant();
-        child->setId( __dag.addNode() );
+        child->setId( nextNodeId() );
+        __dag.addNode( child->id() );
         __nodeIdMap.insert( child->id(), child );
         // Only use child's safe name when adding to the name map!
         __nameMap.insert( child->safeName(), child );
