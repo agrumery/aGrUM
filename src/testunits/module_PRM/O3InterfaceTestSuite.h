@@ -566,7 +566,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( i_bar.super(), gum::NotFound );
     }
 
-    void testOrderDoesNotMatter5() {
+    void testInterfaceWithReferenceError() {
       // Arrange
       auto input = std::stringstream();
       input << "interface IFoo { " << std::endl
@@ -579,13 +579,13 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           gum::prm::o3prm::parse_stream( prm, input, output ) );
       // Assert
-      TS_ASSERT_EQUALS( output.str(), "" );
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|2 col 1| Reference Slot error : Interface IFoo cannot reference "
+             "itself";
+      TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), 1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), 1 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
     }
   };
 
