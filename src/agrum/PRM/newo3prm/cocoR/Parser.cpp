@@ -602,6 +602,10 @@ void Parser::FORMULA(O3Formula& f) {
 			Get();
 			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 			f = O3Formula( pos, narrow( t->val ) ); 
+		} else if (la->kind == _integer) {
+			Get();
+			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+			f = O3Formula( pos, narrow( t->val ) ); 
 		} else SynErr(42);
 }
 
