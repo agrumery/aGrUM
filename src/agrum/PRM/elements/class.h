@@ -289,8 +289,9 @@ namespace gum {
       void __inheritParameters();
       void __inheritAttributes();
       void __inheritAggregates();
+      void __inheritSlotChains();
       void __initializeInheritance();
-      void __completeInheritance();
+      void __completeInheritance( const std::string& attr );
 
       protected:
       /// returns a constant reference over this interface's dag.

@@ -184,7 +184,8 @@ namespace gum {
         }
         const auto& elt = c.get( prnt.label() );
         if ( not( gum::prm::ClassElement<GUM_SCALAR>::isAttribute( elt ) or
-                  gum::prm::ClassElement<GUM_SCALAR>::isSlotChain( elt ) ) ) {
+                  gum::prm::ClassElement<GUM_SCALAR>::isSlotChain( elt ) or
+                  gum::prm::ClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
           const auto& pos = prnt.position();
           output << pos.file() << "|" << pos.line() << " col " << pos.column()
                  << "|"
@@ -928,9 +929,24 @@ namespace gum {
           PRMFactory<GUM_SCALAR> factory( &prm );
           // Class with a super class must be declared after
           for ( auto c : __o3Classes ) {
+            prm.getClass( c->name().label() ).__inheritSlotChains();
             factory.continueClass( c->name().label() );
             __completeAttribute( factory, *c, output );
-            prm.getClass( c->name().label() ).__completeInheritance();
+            if ( c->super().label() != "" ) {
+              auto& super = prm.getClass( c->super().label() );
+              auto to_complete = Set<std::string>();
+              for ( auto a : super.attributes() ) {
+                to_complete.insert( a->safeName() );
+              }
+              for ( auto& a : c->attributes() ) {
+                to_complete.erase( prm.getClass( c->name().label() )
+                                       .get( a->name().label() )
+                                       .safeName() );
+              }
+              for ( auto a : to_complete ) {
+                prm.getClass( c->name().label() ).__completeInheritance( a );
+              }
+            }
             factory.endClass( true );
           }
         }
