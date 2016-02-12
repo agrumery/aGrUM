@@ -70,6 +70,33 @@ namespace gum_tests {
       const auto& foo = prm->system( "Foo" );
       TS_ASSERT_EQUALS( foo.size(), 0 );
     }
+
+    void testMicroSystem() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system microSys {" << std::endl
+            << "PowerSupply pow;" << std::endl
+            << "Room r;" << std::endl
+            << "Printer p;" << std::endl
+            << "Computer c;" << std::endl
+            << "r.power = pow;" << std::endl
+            << "p.room = r;" << std::endl
+            << "c.room = r;" << std::endl
+            << "c.printers = p;" << std::endl
+            << "Equipment e;" << std::endl
+            << "e.room = r;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm->systems().size(), 1 );
+      TS_ASSERT( prm->isSystem( "microSys" ) );
+      const auto& foo = prm->system( "microSys" );
+      TS_ASSERT_EQUALS( foo.size(), 5 );
+    }
   };
 
 }  // namespace gum_tests

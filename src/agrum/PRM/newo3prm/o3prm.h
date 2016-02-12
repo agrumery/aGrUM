@@ -453,19 +453,19 @@ namespace gum {
         O3Assignment& operator=( const O3Assignment& src );
         O3Assignment& operator=( O3Assignment&& src );
 
-        const Position& position() const;
-        Position& position();
+        const O3Label& leftInstance() const;
+        O3Label& leftInstance();
 
-        const O3Label& leftValue() const;
-        O3Label& leftValue();
+        const O3Label& leftReference() const;
+        O3Label& leftReference();
 
-        const O3Label& rightValue() const;
-        O3Label& rightValue();
+        const O3Label& rightInstance() const;
+        O3Label& rightInstance();
 
         private:
-        Position __pos;
-        O3Label __leftValue;
-        O3Label __rightValue;
+        O3Label __leftInstance;
+        O3Label __leftReference;
+        O3Label __rightInstance;
       };
 
       class O3Increment {
@@ -478,19 +478,19 @@ namespace gum {
         O3Increment& operator=( const O3Increment& src );
         O3Increment& operator=( O3Increment&& src );
 
-        const Position& position() const;
-        Position& position();
+        const O3Label& leftInstance() const;
+        O3Label& leftInstance();
 
-        const O3Label& leftValue() const;
-        O3Label& leftValue();
+        const O3Label& leftReference() const;
+        O3Label& leftReference();
 
-        const O3Label& rightValue() const;
-        O3Label& rightValue();
+        const O3Label& rightInstance() const;
+        O3Label& rightInstance();
 
         private:
-        Position __pos;
-        O3Label __leftValue;
-        O3Label __rightValue;
+        O3Label __leftInstance;
+        O3Label __leftReference;
+        O3Label __rightInstance;
       };
 
       class O3Instance {
@@ -503,9 +503,6 @@ namespace gum {
         O3Instance& operator=( const O3Instance& src );
         O3Instance& operator=( O3Instance&& src );
 
-        const Position& position() const;
-        Position& position();
-
         const O3Label& type() const;
         O3Label& type();
 
@@ -516,7 +513,6 @@ namespace gum {
         O3Integer& size();
 
         private:
-        Position __pos;
         O3Label __type;
         O3Label __name;
         O3Integer __size;
@@ -535,9 +531,6 @@ namespace gum {
         O3System& operator=( const O3System& src );
         O3System& operator=( O3System&& src );
 
-        const Position& position() const;
-        Position& position();
-
         const O3Label& name() const;
         O3Label& name();
 
@@ -551,7 +544,6 @@ namespace gum {
         O3IncrementList& increments();
 
         private:
-        Position __pos;
         O3Label __name;
         O3InstanceList __instances;
         O3AssignmentList __assigments;
