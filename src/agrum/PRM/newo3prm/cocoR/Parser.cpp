@@ -198,17 +198,13 @@ void Parser::LABEL(O3Label& l) {
 }
 
 void Parser::IDENTIFIER(O3Label& ident) {
-		auto s = std::stringstream(); 
-		Expect(_label);
-		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		s << narrow( t->val ); 
-		while (la->kind == _dot) {
+		CHAIN(ident);
+		if (la->kind == _dot) {
 			Get();
-			s << narrow( t->val ); 
-			Expect(_label);
-			s << narrow( t->val ); 
+			Expect(26 /* "(" */);
+			CHAIN(ident);
+			Expect(27 /* ")" */);
 		}
-		ident = O3Label( pos, s.str() ); 
 }
 
 void Parser::IDENTIFIER_LIST(O3LabelList& list) {
@@ -579,6 +575,20 @@ void Parser::LABEL_OR_INT(O3Label& l) {
 		} else if (la->kind == _integer) {
 			INTEGER_AS_LABEL(l);
 		} else SynErr(40);
+}
+
+void Parser::CHAIN(O3Label& ident) {
+		auto s = std::stringstream(); 
+		Expect(_label);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		s << narrow( t->val ); 
+		while (la->kind == _dot) {
+			Get();
+			s << narrow( t->val ); 
+			Expect(_label);
+			s << narrow( t->val ); 
+		}
+		ident = O3Label( pos, s.str() ); 
 }
 
 void Parser::LABEL_OR_STAR(O3Label& l) {

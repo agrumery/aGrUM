@@ -58,7 +58,7 @@ namespace gum_tests {
     void testSimpleSystem() {
       // Arrange
       auto input = std::stringstream();
-      input << "System Foo { }";
+      input << "system Foo { }";
       auto output = std::stringstream();
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(

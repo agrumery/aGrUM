@@ -258,6 +258,7 @@ O3InterfaceElementList& elts);
 	void SYSTEM_BODY(O3System& s);
 	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
+	void CHAIN(O3Label& ident);
 	void LABEL_OR_STAR(O3Label& l);
 	void FORMULA(O3Formula& f);
 
