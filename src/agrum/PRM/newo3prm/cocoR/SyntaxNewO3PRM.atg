@@ -104,6 +104,20 @@ void __addO3System( O3System&& c ) {
       std::unique_ptr<O3System>( new O3System( std::move(c) ) ) );
 }
 
+void __split( const O3Label& value, O3Label& left, O3Label& right) {
+  auto idx = value.label().find_first_of('.');
+  if ( ( idx == std::string::npos ) or ( idx == value.label().size() - 1 ) ) {
+    left = O3Label( value.position(), value.label() );
+    right = O3Label( value.position(), value.label() );
+  } else {
+    left = O3Label( value.position(), value.label().substr( 0, idx ) );
+    auto pos = Position( value.position().file(),
+                         value.position().line(),
+                         value.position().column() + idx );
+    right = O3Label( pos, value.label().substr( idx + 1 ) );
+  }
+}
+
 public:
 // Set the parser factory.
 void set_prm(O3PRM* prm) {
@@ -148,7 +162,7 @@ default    = "default".
 implements = "implements".
 int        = "int".
 real       = "real".
-add        =  "+=".
+inc        =  "+=".
 string     = '"' { noQuote1 } '"' | "'" {noQuote2 } "'" .
 
 //________________________
@@ -531,22 +545,47 @@ SYSTEM_DECLARATION<O3System& s> =
   '}'
   .
 
-SYSTEM_BODY<O3System& s> =
-  (. auto type = O3Label(); .)
-  (. auto name = O3Label(); .)
-  (. auto size = O3Integer(); .)
-  IDENTIFIER<type> // either a type or a slot chain
+SYSTEM_BODY<O3System& sys> =
+  (. auto leftValue = O3Label(); .)
+  IDENTIFIER<leftValue>
   (
-    LABEL<name> 
-    [
-      '[' INTEGER<size> ']'
-    ]
-  | 
-    '=' LABEL<name> 
+    INSTANTIATION<leftValue, sys>
   |
-    add LABEL<name>
+    ASSIGNMENT<leftValue, sys>
+  |
+    INCREMENT<leftValue, sys>
   )
+  .
+
+INSTANTIATION<O3Label& leftValue, O3System& sys> =
+  (. auto inst = O3Instance(); .)
+  (. inst.type() = leftValue; .)
+  LABEL<inst.name()>
+  [
+    '['
+    INTEGER<inst.size()>
+    ']'
+  ]
   ';'
+  (. sys.instances().push_back( std::move( inst ) ); .)
+  .
+
+ASSIGNMENT<O3Label& leftValue, O3System& sys> =
+  (. auto ass = O3Assignment(); .)
+  (. __split(leftValue, ass.leftInstance(), ass.leftReference()); .)
+  '='
+  LABEL<ass.rightInstance()>
+  ';'
+  (. sys.assignments().push_back( std::move( ass ) ); .)
+  .
+
+INCREMENT<O3Label& leftValue, O3System& sys> =
+  (. auto inc = O3Increment(); .)
+  (. __split(leftValue, inc.leftInstance(), inc.leftReference()); .)
+  inc
+  LABEL<inc.rightInstance()>
+  ';'
+  (. sys.increments().push_back( std::move( inc ) ); .)
   .
 
 // ===========================================================================

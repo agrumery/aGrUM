@@ -26,6 +26,8 @@
  * @author Lionel TORTI
  */
 
+#include <agrum/PRM/newo3prm/utils.h>
+#include <agrum/PRM/newo3prm/o3prm.h>
 #include <agrum/PRM/newo3prm/O3PRMFactory.h>
 
 #include <iostream>
@@ -37,6 +39,39 @@
 namespace gum {
   namespace prm {
     namespace o3prm {
+
+      bool check_system(PRM<double>& prm, O3System& sys, std::ostream& output) {
+        return true;
+      }
+
+      void
+      build_systems( PRM<double>& prm, O3PRM& o3_prm, std::ostream& output ) {
+        PRMFactory<double> factory( &prm );
+        for ( auto& sys : o3_prm.systems() ) {
+          if ( check_system( prm, *sys, output ) ) {
+            factory.startSystem( sys->name().label() );
+            for ( auto& i : sys->instances() ) {
+              if ( i.size().value() > 1 ) {
+                factory.addArray(
+                    i.type().label(), i.name().label(), i.size().value() );
+              } else {
+                factory.addInstance( i.type().label(), i.name().label() );
+              }
+            }
+            for ( auto& ass : sys->assignments() ) {
+              factory.setReferenceSlot( ass.leftInstance().label(),
+                                        ass.leftReference().label(),
+                                        ass.rightInstance().label() );
+            }
+            for ( auto& inc : sys->increments() ) {
+              factory.setReferenceSlot( inc.leftInstance().label(),
+                                        inc.leftReference().label(),
+                                        inc.rightInstance().label() );
+            }
+            factory.endSystem();
+          }
+        }
+      }
 
       using o3prm_scanner = gum::prm::newo3prm::Scanner;
       using o3prm_parser = gum::prm::newo3prm::Parser;
@@ -77,13 +112,11 @@ namespace gum {
         }
 
         auto type_factory = O3TypeFactory<double>();
-        type_factory.build( prm, o3_prm, output );
 
         auto interface_factory = O3InterfaceFactory<double>();
         auto class_factory = O3ClassFactory<double>();
-        // interface_factory.build( prm, o3_prm, output );
-        // class_factory.build( prm, o3_prm, output );
 
+        type_factory.build( prm, o3_prm, output );
         interface_factory.buildInterfaces( prm, o3_prm, output );
         class_factory.buildClasses( prm, o3_prm, output );
         interface_factory.buildElements( prm, o3_prm, output );
@@ -93,6 +126,7 @@ namespace gum {
         class_factory.declareAttributes( prm, o3_prm, output );
         class_factory.buildAggregates( prm, o3_prm, output );
         class_factory.completeAttributes( prm, o3_prm, output );
+        build_systems( prm, o3_prm, output );
       }
     }
   }
