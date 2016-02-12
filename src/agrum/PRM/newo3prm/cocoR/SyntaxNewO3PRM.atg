@@ -603,6 +603,17 @@ IDENTIFIER_LIST<O3LabelList& list> =
 
 //________________________
 IDENTIFIER<O3Label& ident> =
+  CHAIN<ident>
+  [
+    '.'
+    '('
+    CHAIN<ident>
+    ')'
+  ]
+  .
+
+//________________________
+CHAIN<O3Label& ident> =
   (. auto s = std::stringstream(); .)
   label
   (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
