@@ -74,7 +74,7 @@ class Parser {
 		_implements=16,
 		_int=17,
 		_real=18,
-		_add=19,
+		_inc=19,
 		_string=20
 	};
 	int maxT;
@@ -183,6 +183,20 @@ void __addO3System( O3System&& c ) {
       std::unique_ptr<O3System>( new O3System( std::move(c) ) ) );
 }
 
+void __split( const O3Label& value, O3Label& left, O3Label& right) {
+  auto idx = value.label().find_first_of('.');
+  if ( ( idx == std::string::npos ) or ( idx == value.label().size() - 1 ) ) {
+    left = O3Label( value.position(), value.label() );
+    right = O3Label( value.position(), value.label() );
+  } else {
+    left = O3Label( value.position(), value.label().substr( 0, idx ) );
+    auto pos = Position( value.position().file(),
+                         value.position().line(),
+                         value.position().column() + idx );
+    right = O3Label( pos, value.label().substr( idx + 1 ) );
+  }
+}
+
 public:
 // Set the parser factory.
 void set_prm(O3PRM* prm) {
@@ -255,7 +269,10 @@ O3InterfaceElementList& elts);
 	void MAP(LabelMap& labels );
 	void INT(Position& pos);
 	void SYSTEM_DECLARATION(O3System& s);
-	void SYSTEM_BODY(O3System& s);
+	void SYSTEM_BODY(O3System& sys);
+	void INSTANTIATION(O3Label& leftValue, O3System& sys);
+	void ASSIGNMENT(O3Label& leftValue, O3System& sys);
+	void INCREMENT(O3Label& leftValue, O3System& sys);
 	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
 	void CHAIN(O3Label& ident);

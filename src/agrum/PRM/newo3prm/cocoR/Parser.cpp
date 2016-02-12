@@ -541,26 +541,47 @@ void Parser::SYSTEM_DECLARATION(O3System& s) {
 		Expect(22 /* "}" */);
 }
 
-void Parser::SYSTEM_BODY(O3System& s) {
-		auto type = O3Label(); 
-		auto name = O3Label(); 
-		auto size = O3Integer(); 
-		IDENTIFIER(type);
+void Parser::SYSTEM_BODY(O3System& sys) {
+		auto leftValue = O3Label(); 
+		IDENTIFIER(leftValue);
 		if (la->kind == _label) {
-			LABEL(name);
-			if (la->kind == 23 /* "[" */) {
-				Get();
-				INTEGER(size);
-				Expect(24 /* "]" */);
-			}
+			INSTANTIATION(leftValue, sys);
 		} else if (la->kind == 25 /* "=" */) {
-			Get();
-			LABEL(name);
-		} else if (la->kind == _add) {
-			Get();
-			LABEL(name);
+			ASSIGNMENT(leftValue, sys);
+		} else if (la->kind == _inc) {
+			INCREMENT(leftValue, sys);
 		} else SynErr(39);
+}
+
+void Parser::INSTANTIATION(O3Label& leftValue, O3System& sys) {
+		auto inst = O3Instance(); 
+		inst.type() = leftValue; 
+		LABEL(inst.name());
+		if (la->kind == 23 /* "[" */) {
+			Get();
+			INTEGER(inst.size());
+			Expect(24 /* "]" */);
+		}
 		Expect(_semicolon);
+		sys.instances().push_back( std::move( inst ) ); 
+}
+
+void Parser::ASSIGNMENT(O3Label& leftValue, O3System& sys) {
+		auto ass = O3Assignment(); 
+		__split(leftValue, ass.leftInstance(), ass.leftReference()); 
+		Expect(25 /* "=" */);
+		LABEL(ass.rightInstance());
+		Expect(_semicolon);
+		sys.assignments().push_back( std::move( ass ) ); 
+}
+
+void Parser::INCREMENT(O3Label& leftValue, O3System& sys) {
+		auto inc = O3Increment(); 
+		__split(leftValue, inc.leftInstance(), inc.leftReference()); 
+		Expect(_inc);
+		LABEL(inc.rightInstance());
+		Expect(_semicolon);
+		sys.increments().push_back( std::move( inc ) ); 
 }
 
 void Parser::INTEGER_AS_LABEL(O3Label& l) {
@@ -779,7 +800,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 16: s = coco_string_create(L"implements expected"); break;
 			case 17: s = coco_string_create(L"int expected"); break;
 			case 18: s = coco_string_create(L"real expected"); break;
-			case 19: s = coco_string_create(L"add expected"); break;
+			case 19: s = coco_string_create(L"inc expected"); break;
 			case 20: s = coco_string_create(L"string expected"); break;
 			case 21: s = coco_string_create(L"\"{\" expected"); break;
 			case 22: s = coco_string_create(L"\"}\" expected"); break;
