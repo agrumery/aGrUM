@@ -40,7 +40,98 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      bool check_system(PRM<double>& prm, O3System& sys, std::ostream& output) {
+      bool
+      check_system( PRM<double>& prm, O3System& sys, std::ostream& output ) {
+        auto name_map = HashTable<std::string, O3Instance*>();
+        for ( auto& i : sys.instances() ) {
+          if ( not prm.isClass( i.type().label() ) ) {
+            const auto& pos = i.type().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Instance error : "
+                   << "Instance type is not a class " << i.type().label()
+                   << std::endl;
+            return false;
+          }
+          if ( name_map.exists( i.name().label() ) ) {
+            const auto& pos = i.type().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Instance error : "
+                   << "Instance " << i.name().label() << " already exists"
+                   << std::endl;
+            return false;
+          }
+          name_map.insert( i.name().label(), &i );
+        }
+        for ( auto& ass : sys.assignments() ) {
+          if ( ass.leftInstance().label() == ass.leftReference().label() ) {
+            const auto& pos = ass.leftInstance().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Assignment error : "
+                   << "Invalid left expression " << ass.leftInstance().label()
+                   << std::endl;
+            return false;
+          }
+          if ( not name_map.exists( ass.leftInstance().label() ) ) {
+            const auto& pos = ass.leftInstance().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Assignment error : "
+                   << "Instance " << ass.leftInstance().label() << " not found"
+                   << std::endl;
+            return false;
+          }
+          auto i = name_map[ass.leftInstance().label()];
+          const auto& type = prm.getClass( i->type().label() );
+          const auto& ref = ass.leftReference().label();
+          if ( not( type.exists( ass.leftReference().label() ) and
+                    ClassElement<double>::isReferenceSlot(
+                        type.get( ref ) ) ) ) {
+            const auto& pos = ass.leftReference().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Assignment error : "
+                   << "Reference " << ass.leftReference().label()
+                   << " not found in class " << type.name() << std::endl;
+            return false;
+          }
+        }
+        for ( auto& inc : sys.increments() ) {
+          if ( inc.leftInstance().label() == inc.leftReference().label() ) {
+            const auto& pos = inc.leftInstance().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Increment error : "
+                   << "Invalid left expression " << inc.leftInstance().label()
+                   << std::endl;
+            return false;
+          }
+          if ( not name_map.exists( inc.leftInstance().label() ) ) {
+            const auto& pos = inc.leftInstance().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Increment error : "
+                   << "Instance " << inc.leftInstance().label() << " not found"
+                   << std::endl;
+            return false;
+          }
+          auto i = name_map[inc.leftInstance().label()];
+          const auto& type = prm.getClass( i->type().label() );
+          const auto& ref = inc.leftReference().label();
+          if ( not( type.exists( inc.leftReference().label() ) and
+                    ClassElement<double>::isReferenceSlot(
+                        type.get( ref ) ) ) ) {
+            const auto& pos = inc.leftReference().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Increment error : "
+                   << "Reference " << inc.leftReference().label()
+                   << " not found in class " << type.name() << std::endl;
+            return false;
+          }
+        }
         return true;
       }
 
