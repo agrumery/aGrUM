@@ -64,18 +64,19 @@ class Parser {
 		_comma=6,
 		_colon=7,
 		_semicolon=8,
-		_type=9,
-		_class=10,
-		_interface=11,
-		_extends=12,
-		_system=13,
-		_dependson=14,
-		_default=15,
-		_implements=16,
-		_int=17,
-		_real=18,
-		_inc=19,
-		_string=20
+		_import=9,
+		_type=10,
+		_class=11,
+		_interface=12,
+		_extends=13,
+		_system=14,
+		_dependson=15,
+		_default=16,
+		_implements=17,
+		_int=18,
+		_real=19,
+		_inc=20,
+		_string=21
 	};
 	int maxT;
 
@@ -145,6 +146,9 @@ using O3InstanceParameterList = gum::prm::o3prm::O3Instance::O3InstanceParameter
 using O3Assignment = gum::prm::o3prm::O3Assignment;
 using O3Increment = gum::prm::o3prm::O3Increment;
 
+using O3Import = gum::prm::o3prm::O3Import;
+using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
+
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
@@ -183,6 +187,11 @@ void __addO3Class( O3Class&& c ) {
 void __addO3System( O3System&& c ) {
   get_prm()->systems().push_back(
       std::unique_ptr<O3System>( new O3System( std::move(c) ) ) );
+}
+
+void __addO3Import( O3Import&& i ) {
+  get_prm()->imports().push_back(
+      std::unique_ptr<O3Import>( new O3Import( std::move( i ) ) ) );
 }
 
 void __split( const O3Label& value, O3Label& left, O3Label& right) {
@@ -226,6 +235,7 @@ O3PRM* get_prm() {
 
     	void NEWO3PRM();
 	void UNIT();
+	void IMPORT_UNIT();
 	void TYPE_UNIT();
 	void INTERFACE_UNIT();
 	void CLASS_UNIT();
@@ -277,6 +287,7 @@ O3InterfaceElementList& elts);
 	void INCREMENT(O3Label& leftValue, O3System& sys);
 	void PARAMETER_LIST(O3InstanceParameterList& params);
 	void INTEGER_AS_FLOAT(O3Float& f);
+	void IMPORT_DECLARATION(O3Import& import);
 	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
 	void CHAIN(O3Label& ident);

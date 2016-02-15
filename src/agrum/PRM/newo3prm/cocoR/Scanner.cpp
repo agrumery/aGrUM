@@ -315,8 +315,8 @@ void Scanner::Init() {
   percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 29;
-	noSym = 29;
+  	maxT = 30;
+	noSym = 30;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 16);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
@@ -340,16 +340,17 @@ void Scanner::Init() {
 	start.set(41, 25);
 	start.set(42, 26);
 		start.set(Buffer::EoF, -1);
-	keywords.set(L"type", 9);
-	keywords.set(L"class", 10);
-	keywords.set(L"interface", 11);
-	keywords.set(L"extends", 12);
-	keywords.set(L"system", 13);
-	keywords.set(L"dependson", 14);
-	keywords.set(L"default", 15);
-	keywords.set(L"implements", 16);
-	keywords.set(L"int", 17);
-	keywords.set(L"real", 18);
+	keywords.set(L"import", 9);
+	keywords.set(L"type", 10);
+	keywords.set(L"class", 11);
+	keywords.set(L"interface", 12);
+	keywords.set(L"extends", 13);
+	keywords.set(L"system", 14);
+	keywords.set(L"dependson", 15);
+	keywords.set(L"default", 16);
+	keywords.set(L"implements", 17);
+	keywords.set(L"int", 18);
+	keywords.set(L"real", 19);
 
 
   tvalLength = 128;
@@ -601,7 +602,7 @@ case_0:
 			{t->kind = 8; break;}
 		case 12:
 			case_12:
-			{t->kind = 19; break;}
+			{t->kind = 20; break;}
 		case 13:
 			case_13:
 			if (ch <= L'!' || (ch >= L'#' && ch <= 65535)) {AddCh(); goto case_13;}
@@ -614,7 +615,7 @@ case_0:
 			else {goto case_0;}
 		case 15:
 			case_15:
-			{t->kind = 20; break;}
+			{t->kind = 21; break;}
 		case 16:
 			case_16:
 			recEnd = pos; recKind = 1;
@@ -629,21 +630,21 @@ case_0:
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_16;}
 			else {goto case_0;}
 		case 19:
-			{t->kind = 21; break;}
-		case 20:
 			{t->kind = 22; break;}
-		case 21:
+		case 20:
 			{t->kind = 23; break;}
-		case 22:
+		case 21:
 			{t->kind = 24; break;}
-		case 23:
+		case 22:
 			{t->kind = 25; break;}
-		case 24:
+		case 23:
 			{t->kind = 26; break;}
-		case 25:
+		case 24:
 			{t->kind = 27; break;}
-		case 26:
+		case 25:
 			{t->kind = 28; break;}
+		case 26:
+			{t->kind = 29; break;}
 
   }
 
