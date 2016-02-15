@@ -467,9 +467,9 @@ class PRMexplorer(_object):
 
     def __init__(self, *args):
         """
-        __init__(PRMexplorer self, std::string file, std::string classpath, bool verbose=False) -> PRMexplorer
-        __init__(PRMexplorer self, std::string file, std::string classpath) -> PRMexplorer
-        __init__(PRMexplorer self, std::string file) -> PRMexplorer
+        __init__(PRMexplorer self, std::string filename, std::string classpath, bool verbose=False) -> PRMexplorer
+        __init__(PRMexplorer self, std::string filename, std::string classpath) -> PRMexplorer
+        __init__(PRMexplorer self, std::string filename) -> PRMexplorer
         """
         this = _pyAgrum.new_PRMexplorer(*args)
         try:
@@ -488,6 +488,11 @@ class PRMexplorer(_object):
         attributes(PRMexplorer self, std::string classname) -> PyObject *
         """
         return _pyAgrum.PRMexplorer_attributes(self, classname, allAttributes)
+
+
+    def parameters(self, classname: 'std::string') -> "PyObject *":
+        """parameters(PRMexplorer self, std::string classname) -> PyObject *"""
+        return _pyAgrum.PRMexplorer_parameters(self, classname)
 
 
     def cpf(self, classname: 'std::string', attribute: 'std::string') -> "gum::Potential< double > const &":

@@ -86,7 +86,7 @@ set(_PYAGRUMLIB "_pyAgrum")
 
 
 message(STATUS "================================")
-message(STATUS "python version : ${PYTHONLIBS_VERSION_STRING}")
+message(STATUS "python version : ${PYTHON_COMPLETE_VERSION}")
 message(STATUS "python installation : ${PYTHON_INSTALL}")
 message(STATUS "python include : ${PYTHON_INCLUDE_DIR}")
 message(STATUS "python library : ${PYTHON_LIBRARY}")

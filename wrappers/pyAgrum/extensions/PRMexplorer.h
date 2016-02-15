@@ -32,7 +32,13 @@
 
 class PRMexplorer {
   public:
-  PRMexplorer( std::string file,
+  /**
+   * Create an explorer from a filename and a classpath
+   * @param filename
+   * @param classpath
+   * @param verbose to print warnings and errors
+   */
+  PRMexplorer( std::string filename,
                std::string classpath = "",
                bool verbose = false ) {
 
@@ -41,7 +47,7 @@ class PRMexplorer {
 
     reader.setClassPath( classpath );
 
-    auto nbErr = reader.readFile( file );
+    auto nbErr = reader.readFile( filename );
 
     reader.showElegantErrorsAndWarnings( stream );
     if ( nbErr > 0 ) {
@@ -55,6 +61,9 @@ class PRMexplorer {
     __prm = reader.prm();
   };
 
+  /**
+   * @return a list of class names
+   */
   PyObject* classes() {
     PyObject* q = PyList_New( 0 );
 
@@ -64,6 +73,11 @@ class PRMexplorer {
     return q;
   };
 
+  /**
+   * @return a list of attribute names from a class
+   * @param classname : the name of the class
+   * @param allAttributes : even automatically generated attributes
+   */
   PyObject* attributes( std::string classname, bool allAttributes = false ) {
     PyObject* q = PyList_New( 0 );
 
@@ -78,10 +92,33 @@ class PRMexplorer {
     return q;
   }
 
+
+  /**
+   * @return a list of parameters from a class
+   * @param classname : the name of the class
+   */
+  PyObject* parameters( std::string classname) {
+    PyObject* q = PyList_New( 0 );
+
+    for ( auto c : __prm->getClass( classname ).parameters() )
+      PyList_Append( q, PyString_FromString( c->safeName().c_str() ) );
+
+    return q;
+  }
+
+
+
+  /**
+   * @return the potential of an attribute in a class
+   * @param classname : the name of the class   *
+   * @param attribute : the name of the attribute
+   */
   const gum::Potential<double>& cpf( std::string classname,
                                      std::string attribute ) {
     return __prm->getClass( classname ).get( attribute ).cpf();
   }
+
+
 
   private:
   gum::prm::PRM<double>* __prm;
