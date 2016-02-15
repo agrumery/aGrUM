@@ -579,6 +579,23 @@ namespace gum {
         O3IncrementList __increments;
       };
 
+      class O3Import {
+        public:
+        O3Import();
+        O3Import(const O3Import& src);
+        O3Import(O3Import&& src);
+        ~O3Import();
+        O3Import& operator=(const O3Import& src);
+        O3Import& operator=(O3Import&& src);
+
+        const O3Label& import() const;
+        O3Label& import();
+
+        private:
+        O3Label __import;
+
+      };
+
       class O3PRM {
         public:
         using O3TypeList = std::vector<std::unique_ptr<O3Type>>;
@@ -586,6 +603,7 @@ namespace gum {
         using O3InterfaceList = std::vector<std::unique_ptr<O3Interface>>;
         using O3ClassList = std::vector<std::unique_ptr<O3Class>>;
         using O3SystemList = std::vector<std::unique_ptr<O3System>>;
+        using O3ImportList = std::vector<std::unique_ptr<O3Import>>;
 
         O3PRM();
         O3PRM( const O3PRM& src );
@@ -609,12 +627,16 @@ namespace gum {
         O3SystemList& systems();
         const O3SystemList& systems() const;
 
+        O3ImportList& imports();
+        const O3ImportList& imports() const;
+
         private:
         O3TypeList __types;
         O3IntTypeList __int_types;
         O3InterfaceList __interfaces;
         O3ClassList __classes;
         O3SystemList __systems;
+        O3ImportList __imports;
       };
 
     }  // o3prm
