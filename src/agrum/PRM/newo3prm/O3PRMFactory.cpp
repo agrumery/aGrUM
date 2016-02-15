@@ -29,6 +29,7 @@
 #include <agrum/PRM/newo3prm/utils.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 #include <agrum/PRM/newo3prm/O3PRMFactory.h>
+#include <agrum/PRM/elements/classElement.h>
 
 #include <iostream>
 #include <fstream>
@@ -40,9 +41,68 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      bool
-      check_system( PRM<double>& prm, O3System& sys, std::ostream& output ) {
-        auto name_map = HashTable<std::string, O3Instance*>();
+      using NameMap = HashTable<std::string, O3Instance*>;
+
+
+      bool __checkParameters( const Class<double>& type,
+                              const O3Instance& inst,
+                              std::ostream& output ) {
+        for ( const auto& param : inst.parameters() ) {
+          if ( not type.exists( param.name().label() ) ) {
+            const auto& pos = param.name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Instance error : "
+                   << "Parameter " << param.name().label() << " not found"
+                   << std::endl;
+            return false;
+          }
+          if ( not ClassElement<double>::isParameter(
+                   type.get( param.name().label() ) ) ) {
+            const auto& pos = param.name().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Instance error : " << param.name().label()
+                   << " is not a parameter" << std::endl;
+            return false;
+          }
+          const auto& type_param = static_cast<const Parameter<double>&>(
+              type.get( param.name().label() ) );
+          switch ( type_param.valueType() ) {
+            case Parameter<double>::ParameterType::INT: {
+              if ( not param.isInteger() ) {
+                const auto& pos = param.value().position();
+                output << pos.file() << "|" << pos.line() << " col "
+                       << pos.column() << "|"
+                       << " Instance error : "
+                       << "Parameter " << param.name().label()
+                       << " is an integer" << std::endl;
+                return false;
+              }
+              break;
+              case Parameter<double>::ParameterType::REAL: {
+                if ( param.isInteger() ) {
+                  const auto& pos = param.value().position();
+                  output << pos.file() << "|" << pos.line() << " col "
+                         << pos.column() << "|"
+                         << " Instance error : "
+                         << "Parameter " << param.name().label()
+                         << " is a float" << std::endl;
+                  return false;
+                }
+                break;
+              }
+              default: { GUM_ERROR( FatalError, "unknown parameter type" ); }
+            }
+          }
+        }
+        return true;
+      }
+
+      bool __checkInstance( PRM<double>& prm,
+                            O3System& sys,
+                            NameMap& name_map,
+                            std::ostream& output ) {
         for ( auto& i : sys.instances() ) {
           if ( not prm.isClass( i.type().label() ) ) {
             const auto& pos = i.type().position();
@@ -52,6 +112,12 @@ namespace gum {
                    << "Instance type is not a class " << i.type().label()
                    << std::endl;
             return false;
+          }
+          const auto& type = prm.getClass( i.type().label() );
+          if ( type.parameters().size() > 0 ) {
+            if ( not __checkParameters( type, i, output ) ) {
+              return false;
+            }
           }
           if ( name_map.exists( i.name().label() ) ) {
             const auto& pos = i.type().position();
@@ -64,6 +130,13 @@ namespace gum {
           }
           name_map.insert( i.name().label(), &i );
         }
+        return true;
+      }
+
+      bool __checkAssignments( PRM<double>& prm,
+                               O3System& sys,
+                               NameMap& name_map,
+                               std::ostream& output ) {
         for ( auto& ass : sys.assignments() ) {
           if ( ass.leftInstance().label() == ass.leftReference().label() ) {
             const auto& pos = ass.leftInstance().position();
@@ -98,6 +171,13 @@ namespace gum {
             return false;
           }
         }
+        return true;
+      }
+
+      bool __checkIncrements( PRM<double>& prm,
+                              O3System& sys,
+                              NameMap& name_map,
+                              std::ostream& output ) {
         for ( auto& inc : sys.increments() ) {
           if ( inc.leftInstance().label() == inc.leftReference().label() ) {
             const auto& pos = inc.leftInstance().position();
@@ -131,6 +211,19 @@ namespace gum {
                    << " not found in class " << type.name() << std::endl;
             return false;
           }
+        }
+        return true;
+      }
+
+      bool
+      check_system( PRM<double>& prm, O3System& sys, std::ostream& output ) {
+        auto name_map = NameMap();
+        if ( not __checkInstance( prm, sys, name_map, output ) ) {
+          return false;
+        }
+        if ( not( __checkAssignments( prm, sys, name_map, output ) and
+                  __checkIncrements( prm, sys, name_map, output ) ) ) {
+          return false;
         }
         return true;
       }
