@@ -140,6 +140,8 @@ using O3Class = gum::prm::o3prm::O3Class;
 
 using O3System = gum::prm::o3prm::O3System;
 using O3Instance = gum::prm::o3prm::O3Instance;
+using O3InstanceParameter = gum::prm::o3prm::O3InstanceParameter;
+using O3InstanceParameterList = gum::prm::o3prm::O3Instance::O3InstanceParameterList;
 using O3Assignment = gum::prm::o3prm::O3Assignment;
 using O3Increment = gum::prm::o3prm::O3Increment;
 
@@ -273,6 +275,8 @@ O3InterfaceElementList& elts);
 	void INSTANTIATION(O3Label& leftValue, O3System& sys);
 	void ASSIGNMENT(O3Label& leftValue, O3System& sys);
 	void INCREMENT(O3Label& leftValue, O3System& sys);
+	void PARAMETER_LIST(O3InstanceParameterList& params);
+	void INTEGER_AS_FLOAT(O3Float& f);
 	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
 	void CHAIN(O3Label& ident);
