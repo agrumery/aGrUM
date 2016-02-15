@@ -20,39 +20,14 @@
 
 /**
  * @file
- * @brief Implementation for the O3TypeFactory class.
+ * @brief Implementation for the O3SystemFactory class.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
-#ifndef GUM_PRM_O3PRM_O3PRM_FACGTORY_H
-#define GUM_PRM_O3PRM_O3PRM_FACGTORY_H
-
-#include <regex>
-#include <string>
-#include <sstream>
-
-#include <agrum/PRM/PRM.h>
-#include <agrum/PRM/newO3prm/cocoR/Parser.h>
-#include <agrum/PRM/newO3prm/cocoR/Scanner.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
-#include <agrum/PRM/newo3prm/O3TypeFactory.h>
-#include <agrum/PRM/newo3prm/O3InterfaceFactory.h>
-#include <agrum/PRM/newo3prm/O3ClassFactory.h>
 #include <agrum/PRM/newo3prm/O3SystemFactory.h>
 
-namespace gum {
-  namespace prm {
-    namespace o3prm {
-
-      void parse_stream( gum::prm::PRM<double>& prm,
-                         std::istream& input,
-                         std::ostream& output );
-
-    }
-  }
-}
-
-#endif // GUM_PRM_O3PRM_O3PRM_FACGTORY_H
+template class gum::prm::o3prm::O3SystemFactory<float>;
+template class gum::prm::o3prm::O3SystemFactory<double>;
 
