@@ -515,6 +515,14 @@ namespace gum {
 
       const O3PRM::O3SystemList& O3PRM::systems() const { return __systems; }
 
+      O3PRM::O3ImportList& O3PRM::imports() {
+        return __imports;
+      }
+
+      const O3PRM::O3ImportList& O3PRM::imports() const {
+        return __imports;
+      }
+
       O3InterfaceElement::O3InterfaceElement( const O3Label& type,
                                               const O3Label& name )
           : __type( type )
@@ -1424,6 +1432,48 @@ namespace gum {
       bool& O3InstanceParameter::isInteger() {
         return __isInteger;
       }
+
+        O3Import::O3Import() {
+          GUM_CONSTRUCTOR( O3Import );
+        }
+
+        O3Import::O3Import( const O3Import& src )
+            : __import( src.__import ) {
+          GUM_CONSTRUCTOR( O3Import );
+        }
+
+        O3Import::O3Import( O3Import&& src )
+            : __import( std::move( src.__import ) ) {
+          GUM_CONS_MOV( O3Import );
+        }
+
+        O3Import::~O3Import() {
+          GUM_DESTRUCTOR( O3Import );
+        }
+
+        O3Import& O3Import::operator=(const O3Import& src) {
+          if (this == &src) {
+            return *this;
+          }
+          __import = src.__import;
+          return *this;
+        }
+
+        O3Import& O3Import::operator=(O3Import&& src) {
+          if (this == &src) {
+            return *this;
+          }
+          __import = src.__import;
+          return *this;
+        }
+
+        const O3Label& O3Import::import() const {
+          return __import;
+        }
+
+        O3Label& O3Import::import() {
+          return __import;
+        }
 
     }  // o3prm
   }    // prm
