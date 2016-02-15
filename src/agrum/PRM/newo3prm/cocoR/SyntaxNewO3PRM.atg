@@ -61,6 +61,8 @@ using O3Class = gum::prm::o3prm::O3Class;
 
 using O3System = gum::prm::o3prm::O3System;
 using O3Instance = gum::prm::o3prm::O3Instance;
+using O3InstanceParameter = gum::prm::o3prm::O3InstanceParameter;
+using O3InstanceParameterList = gum::prm::o3prm::O3Instance::O3InstanceParameterList;
 using O3Assignment = gum::prm::o3prm::O3Assignment;
 using O3Increment = gum::prm::o3prm::O3Increment;
 
@@ -528,6 +530,7 @@ TYPE_VALUE_LIST< LabelMap& labels > =
 // ===                          SYSTEM RULES                               ===
 // ===========================================================================
 
+//________________________
 SYSTEM_UNIT =
   (. auto n = errors().error_count; .)
   (. auto s = O3System(); .)
@@ -535,6 +538,7 @@ SYSTEM_UNIT =
   (. if (__ok(n)) { __addO3System( std::move(s) ); } .)
   .
 
+//________________________
 SYSTEM_DECLARATION<O3System& s> =
   system
   LABEL<s.name()>
@@ -545,6 +549,7 @@ SYSTEM_DECLARATION<O3System& s> =
   '}'
   .
 
+//________________________
 SYSTEM_BODY<O3System& sys> =
   (. auto leftValue = O3Label(); .)
   IDENTIFIER<leftValue>
@@ -557,19 +562,29 @@ SYSTEM_BODY<O3System& sys> =
   )
   .
 
+//________________________
 INSTANTIATION<O3Label& leftValue, O3System& sys> =
   (. auto inst = O3Instance(); .)
   (. inst.type() = leftValue; .)
   LABEL<inst.name()>
-  [
-    '['
-    INTEGER<inst.size()>
-    ']'
-  ]
-  ';'
-  (. sys.instances().push_back( std::move( inst ) ); .)
+  (
+    [
+      '['
+      INTEGER<inst.size()>
+      ']'
+    ]
+    ';'
+    (. sys.instances().push_back( std::move( inst ) ); .)
+  |
+    '('
+    PARAMETER_LIST<inst.parameters()>
+    ')'
+    ';'
+    (. sys.instances().push_back( std::move( inst ) ); .)
+  )
   .
 
+//________________________
 ASSIGNMENT<O3Label& leftValue, O3System& sys> =
   (. auto ass = O3Assignment(); .)
   (. __split(leftValue, ass.leftInstance(), ass.leftReference()); .)
@@ -579,6 +594,7 @@ ASSIGNMENT<O3Label& leftValue, O3System& sys> =
   (. sys.assignments().push_back( std::move( ass ) ); .)
   .
 
+//________________________
 INCREMENT<O3Label& leftValue, O3System& sys> =
   (. auto inc = O3Increment(); .)
   (. __split(leftValue, inc.leftInstance(), inc.leftReference()); .)
@@ -586,6 +602,21 @@ INCREMENT<O3Label& leftValue, O3System& sys> =
   LABEL<inc.rightInstance()>
   ';'
   (. sys.increments().push_back( std::move( inc ) ); .)
+  .
+
+//________________________
+PARAMETER_LIST<O3InstanceParameterList& params> =
+  (. auto p = O3InstanceParameter(); .)
+  LABEL<p.name()>
+  '='
+  (
+    INTEGER_AS_FLOAT<p.value()>
+    (. p.isInteger() = true; .)
+  |
+    FLOAT<p.value()>
+    (. p.isInteger() = false; .)
+  )
+  ';'
   .
 
 // ===========================================================================
@@ -599,6 +630,12 @@ INTEGER_AS_LABEL<O3Label& l> =
   (. l = O3Label( pos, narrow( t->val ) ); .)
   .
 
+//________________________
+INTEGER_AS_FLOAT<O3Float& f> =
+  integer
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. f = O3Float( pos, coco_atoi( t->val ) ); .)
+  .
 
 //________________________
 INTEGER<O3Integer& i> =

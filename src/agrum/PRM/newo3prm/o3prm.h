@@ -493,8 +493,33 @@ namespace gum {
         O3Label __rightInstance;
       };
 
+      class O3InstanceParameter {
+        public:
+        O3InstanceParameter();
+        O3InstanceParameter( const O3InstanceParameter& src );
+        O3InstanceParameter( O3InstanceParameter&& src );
+        ~O3InstanceParameter();
+        O3InstanceParameter& operator=( const O3InstanceParameter& src );
+        O3InstanceParameter& operator=( O3InstanceParameter&& src );
+
+        const O3Label& name() const;
+        O3Label& name();
+
+        const O3Float& value() const;
+        O3Float& value();
+
+        bool isInteger() const;
+        bool& isInteger();
+
+        private:
+        O3Label __name;
+        O3Float __value;
+        bool __isInteger;
+      };
+
       class O3Instance {
         public:
+        using O3InstanceParameterList = std::vector<O3InstanceParameter>;
 
         O3Instance();
         O3Instance( const O3Instance& src );
@@ -512,10 +537,14 @@ namespace gum {
         const O3Integer& size() const;
         O3Integer& size();
 
+        const O3InstanceParameterList& parameters() const;
+        O3InstanceParameterList& parameters();
+
         private:
         O3Label __type;
         O3Label __name;
         O3Integer __size;
+        O3InstanceParameterList __parameters;
       };
 
       class O3System {

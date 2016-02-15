@@ -1228,14 +1228,16 @@ namespace gum {
       O3Instance::O3Instance( const O3Instance& src )
           : __type( src.__type )
           , __name( src.__name )
-          , __size( src.__size ) {
+          , __size( src.__size )
+          , __parameters( src.__parameters ) {
         GUM_CONS_CPY( O3Instance );
       }
 
       O3Instance::O3Instance( O3Instance&& src )
           : __type( std::move( src.__type ) )
           , __name( std::move( src.__name ) )
-          , __size( std::move( src.__size ) ) {
+          , __size( std::move( src.__size ) )
+          , __parameters( std::move( src.__parameters ) ) {
         GUM_CONS_MOV( O3Instance );
       }
 
@@ -1248,6 +1250,7 @@ namespace gum {
         __type = src.__type;
         __name = src.__name;
         __size = src.__size;
+        __parameters = src.__parameters;
         return *this;
       }
 
@@ -1258,6 +1261,7 @@ namespace gum {
         __type = std::move( src.__type );
         __name = std::move( src.__name );
         __size = std::move( src.__size );
+        __parameters = std::move( src.__parameters );
         return *this;
       }
 
@@ -1272,6 +1276,14 @@ namespace gum {
       const O3Integer& O3Instance::size() const { return __size; }
 
       O3Integer& O3Instance::size() { return __size; }
+
+      const O3Instance::O3InstanceParameterList& O3Instance::parameters() const {
+        return __parameters;
+      }
+
+      O3Instance::O3InstanceParameterList& O3Instance::parameters() {
+        return __parameters;
+      }
 
       O3System::O3System() { GUM_CONSTRUCTOR( O3System ); }
 
@@ -1342,6 +1354,75 @@ namespace gum {
       std::ostream& operator<<( std::ostream& o, const O3Label& src ) {
         o << src.label();
         return o;
+      }
+
+      O3InstanceParameter::O3InstanceParameter()
+          : __isInteger( false ) {
+        GUM_CONSTRUCTOR( O3InstanceParameter );
+      }
+
+      O3InstanceParameter::O3InstanceParameter( const O3InstanceParameter& src )
+          : __name( src.__name )
+          , __value( src.__value )
+          , __isInteger( src.__isInteger ) {
+        GUM_CONS_CPY( O3InstanceParameter );
+      }
+
+      O3InstanceParameter::O3InstanceParameter( O3InstanceParameter&& src )
+          : __name( std::move( src.__name ) )
+          , __value( std::move( src.__value ) )
+          , __isInteger( std::move( src.__isInteger ) ) {
+        GUM_CONS_MOV( O3InstanceParameter );
+      }
+
+      O3InstanceParameter::~O3InstanceParameter() {
+        GUM_DESTRUCTOR( O3InstanceParameter );
+      }
+
+      O3InstanceParameter& O3InstanceParameter::
+      operator=( const O3InstanceParameter& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __name = src.__name;
+        __value = src.__value;
+        __isInteger = src.__isInteger;
+        return *this;
+      }
+
+      O3InstanceParameter& O3InstanceParameter::
+      operator=( O3InstanceParameter&& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __name = std::move( src.__name );
+        __value = std::move( src.__value );
+        __isInteger = std::move( src.__isInteger );
+        return *this;
+      }
+
+      const O3Label& O3InstanceParameter::name() const {
+        return __name;
+      }
+
+      O3Label& O3InstanceParameter::name() {
+        return __name;
+      }
+
+      const O3Float& O3InstanceParameter::value() const {
+        return __value;
+      }
+
+      O3Float& O3InstanceParameter::value() {
+        return __value;
+      }
+
+      bool O3InstanceParameter::isInteger() const {
+        return __isInteger;
+      }
+
+      bool& O3InstanceParameter::isInteger() {
+        return __isInteger;
       }
 
     }  // o3prm
