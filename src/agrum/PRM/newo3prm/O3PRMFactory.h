@@ -40,6 +40,7 @@
 #include <agrum/PRM/newo3prm/O3TypeFactory.h>
 #include <agrum/PRM/newo3prm/O3InterfaceFactory.h>
 #include <agrum/PRM/newo3prm/O3ClassFactory.h>
+#include <agrum/PRM/newo3prm/O3SystemFactory.h>
 
 namespace gum {
   namespace prm {

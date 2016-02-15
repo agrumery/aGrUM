@@ -34,7 +34,6 @@
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
-#include <agrum/PRM/newo3prm/O3NameSolver.h>
 #include <agrum/PRM/newo3prm/utils.h>
 
 #ifndef GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H
@@ -48,10 +47,7 @@ namespace gum {
       class O3SystemFactory {
 
         public:
-        O3SystemFactory( PRM<GUM_SCALAR>& prm,
-                         O3PRM& o3_prm,
-                         O3NameSolver<GUM_SCALAR>& solver,
-                         ErrorsContainer& errors );
+        O3SystemFactory();
         O3SystemFactory( const O3SystemFactory<GUM_SCALAR>& src );
         O3SystemFactory( O3SystemFactory<GUM_SCALAR>&& src );
         ~O3SystemFactory();
@@ -60,32 +56,29 @@ namespace gum {
         O3SystemFactory<GUM_SCALAR>&
         operator=( O3SystemFactory<GUM_SCALAR>&& src );
 
-        void build();
+        void build( PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, std::ostream& output );
 
         private:
-        PRM<GUM_SCALAR>* __prm;
-        O3PRM* __o3_prm;
-        O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer* __errors;
-
         HashTable<std::string, O3Instance*> __nameMap;
 
-        void __addInstances( PRMFactory<GUM_SCALAR>& factory, O3System& sys );
+        bool
+        __checkSystem( PRM<GUM_SCALAR>& prm, O3System& sys, std::ostream& output );
 
-        void __addAssignments( PRMFactory<GUM_SCALAR>& factory, O3System& sys );
-
-        void __addIncrements( PRMFactory<GUM_SCALAR>& factory, O3System& sys );
-
-        bool __checkSystem( O3System& sys );
-
-        bool __checkIncrements( O3System& sys );
+        bool __checkIncrements( PRM<GUM_SCALAR>& prm,
+                                O3System& sys,
+                                std::ostream& output );
 
         bool __checkParameters( const Class<GUM_SCALAR>& type,
-                                const O3Instance& inst );
+                                const O3Instance& inst,
+                                std::ostream& output );
+        
+        bool __checkInstance( PRM<GUM_SCALAR>& prm,
+                              O3System& sys,
+                              std::ostream& output );
 
-        bool __checkInstance( O3System& sys );
-
-        bool __checkAssignments( O3System& sys );
+        bool __checkAssignments( PRM<GUM_SCALAR>& prm,
+                                 O3System& sys,
+                                 std::ostream& output );
       };
 
     }  // o3prm
