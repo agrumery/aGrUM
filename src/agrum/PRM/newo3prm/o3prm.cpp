@@ -136,11 +136,11 @@ namespace gum {
       }
 
       const Position& O3Integer::position() const { return __pos; }
+      Position& O3Integer::position() { return __pos; }
 
-      void O3Integer::position( const Position& pos ) { __pos = pos; }
 
       int O3Integer::value() const { return __value; }
-      void O3Integer::value( int i ) { __value = i; }
+      int& O3Integer::value() { return __value; }
 
       O3Float::O3Float() { GUM_CONSTRUCTOR( O3Float ); }
 
@@ -183,11 +183,10 @@ namespace gum {
       }
 
       const Position& O3Float::position() const { return __pos; }
-
-      void O3Float::position( const Position& pos ) { __pos = pos; }
+      Position& O3Float::position() { return __pos; }
 
       float O3Float::value() const { return __value; }
-      void O3Float::value( float f ) { __value = f; }
+      float& O3Float::value() { return __value; }
 
       O3Formula::O3Formula()
           : __pos()
@@ -235,8 +234,7 @@ namespace gum {
       }
 
       const Position& O3Formula::position() const { return __pos; }
-
-      void O3Formula::position( const Position& pos ) { __pos = pos; }
+      Position& O3Formula::position() { return __pos; }
 
       const Formula& O3Formula::formula() const { return *__formula; }
       Formula& O3Formula::formula() { return *__formula; }
@@ -286,12 +284,10 @@ namespace gum {
       }
 
       const Position& O3Label::position() const { return __pos; }
-
-      void O3Label::position( const Position& pos ) { __pos = pos; }
+      Position& O3Label::position() { return __pos; }
 
       const std::string& O3Label::label() const { return __label; }
-
-      void O3Label::label( const std::string& label ) { __label = label; }
+      std::string& O3Label::label() { return __label; }
 
       O3Type::O3Type( const Position& pos,
                       const O3Label& name,
@@ -1135,6 +1131,7 @@ namespace gum {
 
       O3Assignment::O3Assignment( const O3Assignment& src )
           : __leftInstance( src.__leftInstance )
+          , __index( src.__index )
           , __leftReference( src.__leftReference )
           , __rightInstance( src.__rightInstance ) {
         GUM_CONS_CPY( O3Assignment );
@@ -1142,6 +1139,7 @@ namespace gum {
 
       O3Assignment::O3Assignment( O3Assignment&& src )
           : __leftInstance( std::move( src.__leftInstance ) )
+          , __index( std::move( src.__index ) )
           , __leftReference( std::move( src.__leftReference ) )
           , __rightInstance( std::move( src.__rightInstance ) ) {
         GUM_CONS_CPY( O3Assignment );
@@ -1154,6 +1152,7 @@ namespace gum {
           return *this;
         }
         __leftInstance = src.__leftInstance;
+        __index = src.__index;
         __leftReference = src.__leftReference;
         __rightInstance = src.__rightInstance;
         return *this;
@@ -1164,6 +1163,7 @@ namespace gum {
           return *this;
         }
         __leftInstance = std::move( src.__leftInstance );
+        __index = std::move( src.__index );
         __leftReference = std::move( src.__leftReference );
         __rightInstance = std::move( src.__rightInstance );
         return *this;
@@ -1172,6 +1172,14 @@ namespace gum {
       const O3Label& O3Assignment::leftInstance() const { return __leftInstance; }
 
       O3Label& O3Assignment::leftInstance() { return __leftInstance; }
+
+      const O3Integer& O3Assignment::index() const {
+        return __index;
+      }
+
+      O3Integer& O3Assignment::index() {
+        return __index;
+      }
 
       const O3Label& O3Assignment::leftReference() const { return __leftReference; }
 
@@ -1185,6 +1193,7 @@ namespace gum {
 
       O3Increment::O3Increment( const O3Increment& src )
           : __leftInstance( src.__leftInstance )
+          , __index( src.__index )
           , __leftReference( src.__leftReference )
           , __rightInstance( src.__rightInstance ) {
         GUM_CONS_CPY( O3Increment );
@@ -1192,6 +1201,7 @@ namespace gum {
 
       O3Increment::O3Increment( O3Increment&& src )
           : __leftInstance( std::move( src.__leftInstance ) )
+          , __index( std::move( src.__index ) )
           , __leftReference( std::move( src.__leftReference ) )
           , __rightInstance( std::move( src.__rightInstance ) ) {
         GUM_CONS_CPY( O3Increment );
@@ -1204,6 +1214,7 @@ namespace gum {
           return *this;
         }
         __leftInstance = src.__leftInstance;
+        __index = src.__index;
         __leftReference = src.__leftReference;
         __rightInstance = src.__rightInstance;
         return *this;
@@ -1214,6 +1225,7 @@ namespace gum {
           return *this;
         }
         __leftInstance = std::move( src.__leftInstance );
+        __index = std::move( src.__index );
         __leftReference = std::move( src.__leftReference );
         __rightInstance = std::move( src.__rightInstance );
         return *this;
@@ -1222,6 +1234,14 @@ namespace gum {
       const O3Label& O3Increment::leftInstance() const { return __leftInstance; }
 
       O3Label& O3Increment::leftInstance() { return __leftInstance; }
+
+      const O3Integer& O3Increment::index() const {
+        return __index;
+      }
+
+      O3Integer& O3Increment::index() {
+        return __index;
+      }
 
       const O3Label& O3Increment::leftReference() const { return __leftReference; }
 
