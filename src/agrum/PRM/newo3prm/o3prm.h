@@ -74,7 +74,7 @@ namespace gum {
         O3Formula& operator=( O3Formula&& src );
 
         const Position& position() const;
-        void position( const Position& pos );
+        Position& position();
 
         const Formula& formula() const;
         Formula& formula();
@@ -95,10 +95,10 @@ namespace gum {
         O3Float& operator=( O3Float&& src );
 
         const Position& position() const;
-        void position( const Position& pos );
+        Position& position();
 
         float value() const;
-        void value( float f );
+        float& value();
 
         private:
         Position __pos;
@@ -116,10 +116,10 @@ namespace gum {
         O3Integer& operator=( O3Integer&& src );
 
         const Position& position() const;
-        void position( const Position& pos );
+        Position& position();
 
         int value() const;
-        void value( int i );
+        int& value();
 
         private:
         Position __pos;
@@ -137,10 +137,10 @@ namespace gum {
         O3Label& operator=( O3Label&& src );
 
         const Position& position() const;
-        void position( const Position& pos );
+        Position& position();
 
         const std::string& label() const;
-        void label( const std::string& label );
+        std::string& label();
 
         private:
         Position __pos;
@@ -455,6 +455,9 @@ namespace gum {
 
         const O3Label& leftInstance() const;
         O3Label& leftInstance();
+        
+        const O3Integer& index() const;
+        O3Integer& index();
 
         const O3Label& leftReference() const;
         O3Label& leftReference();
@@ -464,6 +467,7 @@ namespace gum {
 
         private:
         O3Label __leftInstance;
+        O3Integer __index;
         O3Label __leftReference;
         O3Label __rightInstance;
       };
@@ -481,6 +485,9 @@ namespace gum {
         const O3Label& leftInstance() const;
         O3Label& leftInstance();
 
+        const O3Integer& index() const;
+        O3Integer& index();
+
         const O3Label& leftReference() const;
         O3Label& leftReference();
 
@@ -489,6 +496,7 @@ namespace gum {
 
         private:
         O3Label __leftInstance;
+        O3Integer __index;
         O3Label __leftReference;
         O3Label __rightInstance;
       };
