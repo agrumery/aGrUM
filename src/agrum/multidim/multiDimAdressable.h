@@ -71,6 +71,11 @@ namespace gum {
     MultiDimAdressable( const MultiDimAdressable& from );
 
     /**
+     * @brief Class move constructor.
+     */
+    MultiDimAdressable( const MultiDimAdressable&& );
+
+    /**
      * @brief Destructor.
      */
     virtual ~MultiDimAdressable();

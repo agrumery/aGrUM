@@ -67,6 +67,18 @@ namespace gum {
     MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent );
 
     /**
+     * @brief copy constructor
+     */
+    MultiDimDecorator(const MultiDimDecorator<GUM_SCALAR>& from);
+    MultiDimDecorator<GUM_SCALAR>& operator=(const MultiDimDecorator& from);
+
+
+    /**
+     * @brief Class move constructor.
+     */
+    MultiDimDecorator( const MultiDimDecorator<GUM_SCALAR>&& );
+
+    /**
      * @brief Class destructor.
      */
     ~MultiDimDecorator();
@@ -154,7 +166,7 @@ namespace gum {
     virtual void beginMultipleChanges( void );
 
     virtual void endMultipleChanges( void );
-    
+
     virtual void endMultipleChanges( const GUM_SCALAR& );
 
     virtual const std::string toString( const Instantiation* i ) const;

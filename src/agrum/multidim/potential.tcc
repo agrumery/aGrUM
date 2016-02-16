@@ -23,10 +23,15 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-// to ease IDE parser
-#include <agrum/multidim/potential.h>
-
 namespace gum {
+
+/// move constructor
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>&& from )
+      : MultiDimDecorator<GUM_SCALAR>( std::forward<const MultiDimDecorator<GUM_SCALAR>&&>( from ) ) {
+    GUM_CONS_MOV( Potential );
+  }
 
   // Default constructor: creates an empty null dimensional matrix
   /*
@@ -87,9 +92,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
   operator=( const Potential<GUM_SCALAR>& src ) {
-    MultiDimDecorator<GUM_SCALAR>::content()->copy(
-        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
-            src.getMasterRef() ) );
+    MultiDimDecorator<GUM_SCALAR>::operator=(src);
     return *this;
   }
 
@@ -151,4 +154,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

@@ -26,12 +26,17 @@
 
 #include <agrum/config.h>
 
-#include <agrum/multidim/multiDimContainer.h>
 
 namespace gum {
 
-  // Default constructor
+  template <typename GUM_SCALAR>
+  INLINE MultiDimContainer<GUM_SCALAR>::MultiDimContainer(
+      const MultiDimContainer<GUM_SCALAR>&& from )
+      : MultiDimAdressable( std::forward<const MultiDimAdressable&&>( from ) ) {
+    GUM_CONS_MOV( MultiDimContainer );
+  }
 
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>::MultiDimContainer()
       : MultiDimAdressable() {
@@ -39,12 +44,16 @@ namespace gum {
   }
 
   // Copy constructor
-
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>::MultiDimContainer(
       const MultiDimContainer<GUM_SCALAR>& src )
       : MultiDimAdressable( src ) {
     GUM_CONS_CPY( MultiDimContainer );
+  }
+  template <typename GUM_SCALAR>
+  INLINE MultiDimContainer<GUM_SCALAR>& MultiDimContainer<GUM_SCALAR>::operator=(const MultiDimContainer<GUM_SCALAR>& from) {
+
+    return *this;
   }
 
   // destructor

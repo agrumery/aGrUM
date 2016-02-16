@@ -98,6 +98,12 @@ namespace gum {
      * @param src The MultiDimContainer to copy.
      */
     MultiDimContainer( const MultiDimContainer<GUM_SCALAR>& src );
+    MultiDimContainer& operator=(const MultiDimContainer<GUM_SCALAR>& src);
+
+    /**
+     * @brief Class move constructor.
+     */
+    MultiDimContainer( const MultiDimContainer<GUM_SCALAR>&& );
 
     /**
      * @brief Destructor.

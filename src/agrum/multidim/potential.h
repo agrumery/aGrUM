@@ -80,6 +80,11 @@ namespace gum {
     explicit Potential( const Potential<GUM_SCALAR>& src );
 
     /**
+     * move constructeur
+     **/
+    Potential( const Potential<GUM_SCALAR>&& from );
+
+    /**
      * @brief Copy constructor.
      *
      * The newly created Potential share the variables and the values
@@ -127,13 +132,38 @@ namespace gum {
     ///@}
 
     protected:
-
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
+
+  /// the function to be used to add two Potentials
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p1,
+                                   const Potential<GUM_SCALAR>& p2 ) {
+    return std::move( Potential<GUM_SCALAR>( *p1.content() + *p2.content() ) );
+  }
+
+  /// the function to be used to subtract two Potentials
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p1,
+                                   const Potential<GUM_SCALAR>& p2 ) {
+    return std::move( Potential<GUM_SCALAR>( *p1.content() - *p2.content() ) );
+  }
+
+  /// the function to be used to multiply two Potentials
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR> operator*( const Potential<GUM_SCALAR>& p1,
+                                   const Potential<GUM_SCALAR>& p2 ) {
+    return std::move( Potential<GUM_SCALAR>( *p1.content() * *p2.content() ) );
+  }
+
+  /// the function to be used to divide two Potentials
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p1,
+                                   const Potential<GUM_SCALAR>& p2 ) {
+    return std::move( Potential<GUM_SCALAR>( *p1.content() / *p2.content() ) );
+  }
 } /* namespace gum */
 
 #include <agrum/multidim/potential.tcc>
-
 #endif /* GUM_POTENTIAL_H */
-

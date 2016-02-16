@@ -288,7 +288,7 @@
 #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_OP( operator+, +)
+//PH GUM_MULTI_DIM_DECORATOR_OP( operator+, +)
 
 /// the function to be used to multiply two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator*
@@ -300,7 +300,7 @@ GUM_MULTI_DIM_DECORATOR_OP( operator+, +)
 #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
 /// the function to be used to multiply two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_OP( operator*, *)
+//PH GUM_MULTI_DIM_DECORATOR_OP( operator*, *)
 
 /// the function to be used to subtract two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator-
@@ -310,7 +310,7 @@ GUM_MULTI_DIM_DECORATOR_OP( operator*, *)
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
 /// the function to be used to subtract two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_OP( operator-, -)
+//PH GUM_MULTI_DIM_DECORATOR_OP( operator-, -)
 
 /// the function to be used to divide two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator/
@@ -320,7 +320,7 @@ GUM_MULTI_DIM_DECORATOR_OP( operator-, -)
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
 /// the function to be used to divide two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_OP( operator/, /)
+//PH GUM_MULTI_DIM_DECORATOR_OP( operator/, /)
 
 /// default "basename" functions for combining two MultiDimImplementations
 

@@ -33,6 +33,12 @@
 
 namespace gum {
 
+  INLINE
+  MultiDimAdressable::MultiDimAdressable( const MultiDimAdressable&& from )
+      : MultiDimInterface( std::forward<const MultiDimInterface&&>( from ) ) {
+    GUM_CONS_MOV( MultiDimAdressable );
+  }
+
   INLINE MultiDimAdressable::MultiDimAdressable() {
     GUM_CONSTRUCTOR( MultiDimAdressable );
   }

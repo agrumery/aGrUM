@@ -30,12 +30,39 @@
 #include <agrum/multidim/operators/completeProjections4MultiDim.h>
 #include <agrum/multidim/partialInstantiation4MultiDim.h>
 
-// to ease IDE parsers
-#include <agrum/multidim/multiDimDecorator.h>
-
 namespace gum {
 
-  // constructor
+  // constructors
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      const MultiDimDecorator<GUM_SCALAR>&& from )
+      : MultiDimContainer<GUM_SCALAR>(
+            std::forward<const MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
+    GUM_CONS_MOV( MultiDimDecorator );
+    _content = from._content;
+    from._content = nullptr;
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      const MultiDimDecorator<GUM_SCALAR>& from )
+      : MultiDimContainer<GUM_SCALAR>( from ) {
+    GUM_CONS_CPY( MultiDimDecorator );
+    MultiDimDecorator<GUM_SCALAR>::content()->copy(
+        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
+            from.getMasterRef() ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
+  operator=( const MultiDimDecorator<GUM_SCALAR>& from ) {
+    MultiDimContainer<GUM_SCALAR>::operator=( from );
+    MultiDimDecorator<GUM_SCALAR>::content()->copy(
+        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
+            from.getMasterRef() ) );
+    return *this;
+  }
 
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(

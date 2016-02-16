@@ -154,5 +154,70 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( P1.copy( P2 ) );
       }
     }
+
+    void testOperators() {
+      auto a = gum::LabelizedVariable( "a", "afoo" );
+      auto b = gum::LabelizedVariable( "b", "bfoo" );
+      auto c = gum::LabelizedVariable( "c", "cfoo" );
+
+      gum::Potential<int> p1;
+      p1 << a << b;
+      p1.fillWith( {1, 2, 3, 4} );
+
+      gum::Potential<int> p2;
+      p2 << b << c;
+      p2.fillWith( {5, 6, 7, 8} );
+
+      // just checking memory allocation (what else ?)
+      auto pA = p1 * p2;
+      TS_ASSERT_EQUALS( pA.toString(),
+                        "<b:0|c:0|a:0> :: 5 /"
+                        "<b:1|c:0|a:0> :: 18 /"
+                        "<b:0|c:1|a:0> :: 7 /"
+                        "<b:1|c:1|a:0> :: 24 /"
+                        "<b:0|c:0|a:1> :: 10 /"
+                        "<b:1|c:0|a:1> :: 24 /"
+                        "<b:0|c:1|a:1> :: 14 /"
+                        "<b:1|c:1|a:1> :: 32" );
+      auto pB = p1 + p2;
+      TS_ASSERT_EQUALS( pB.toString(),
+                        "<b:0|c:0|a:0> :: 6 /"
+                        "<b:1|c:0|a:0> :: 9 /"
+                        "<b:0|c:1|a:0> :: 8 /"
+                        "<b:1|c:1|a:0> :: 11 /"
+                        "<b:0|c:0|a:1> :: 7 /"
+                        "<b:1|c:0|a:1> :: 10 /"
+                        "<b:0|c:1|a:1> :: 9 /"
+                        "<b:1|c:1|a:1> :: 12" );
+      auto pC = p2 / p1;
+      TS_ASSERT_EQUALS( pC.toString(),
+                        "<b:0|a:0|c:0> :: 5 /"
+                        "<b:1|a:0|c:0> :: 2 /"
+                        "<b:0|a:1|c:0> :: 2 /"
+                        "<b:1|a:1|c:0> :: 1 /"
+                        "<b:0|a:0|c:1> :: 7 /"
+                        "<b:1|a:0|c:1> :: 2 /"
+                        "<b:0|a:1|c:1> :: 3 /"
+                        "<b:1|a:1|c:1> :: 2" );
+      auto pD = p2 - p1;
+      TS_ASSERT_EQUALS( pD.toString(),
+                        "<b:0|a:0|c:0> :: 4 /"
+                        "<b:1|a:0|c:0> :: 3 /"
+                        "<b:0|a:1|c:0> :: 3 /"
+                        "<b:1|a:1|c:0> :: 2 /"
+                        "<b:0|a:0|c:1> :: 6 /"
+                        "<b:1|a:0|c:1> :: 5 /"
+                        "<b:0|a:1|c:1> :: 5 /"
+                        "<b:1|a:1|c:1> :: 4" );
+      TS_ASSERT_EQUALS( ( ( p1 * p2 ) - ( p2 / p1 ) + p1 ).toString(),
+                        "<b:0|a:0|c:0> :: 1 /"
+                        "<b:1|a:0|c:0> :: 19 /"
+                        "<b:0|a:1|c:0> :: 10 /"
+                        "<b:1|a:1|c:0> :: 27 /"
+                        "<b:0|a:0|c:1> :: 1 /"
+                        "<b:1|a:0|c:1> :: 25 /"
+                        "<b:0|a:1|c:1> :: 13 /"
+                        "<b:1|a:1|c:1> :: 34");
+    }
   };
 }
