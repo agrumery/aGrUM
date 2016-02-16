@@ -1509,19 +1509,17 @@ namespace gum {
       }
       System<GUM_SCALAR>* model = new System<GUM_SCALAR>( __addPrefix( name ) );
       __stack.push_back( model );
+      __prm->__systemMap.insert( model->name(), model );
+      __prm->__systems.insert( model );
     }
 
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::endSystem() {
       try {
-
         System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>(
             __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
         __stack.pop_back();
         model->instantiate();
-        __prm->__systemMap.insert( model->name(), model );
-        __prm->__systems.insert( model );
-
       } catch ( Exception& e ) {
         GUM_ERROR( FatalError, "could not create system" );
       }

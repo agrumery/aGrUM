@@ -83,12 +83,27 @@ namespace gum {
                 factory.addInstance( i.type().label(), i.name().label() );
               }
             }
+            const auto& real_sys = prm.system( sys->name().label() );
             for ( auto& ass : sys->assignments() ) {
-              factory.setReferenceSlot( ass.leftInstance().label(),
+              auto sBuff = std::stringstream();
+              if ( real_sys.isArray( ass.leftInstance().label() ) ) {
+                sBuff << ass.leftInstance().label() << "["
+                      << ass.index().value() << "]";
+              } else {
+                sBuff << ass.leftInstance().label();
+              }
+              factory.setReferenceSlot( sBuff.str(),
                                         ass.leftReference().label(),
                                         ass.rightInstance().label() );
             }
             for ( auto& inc : sys->increments() ) {
+              auto sBuff = std::stringstream();
+              if ( real_sys.isArray( inc.leftInstance().label() ) ) {
+                sBuff << inc.leftInstance().label() << "["
+                      << inc.index().value() << "]";
+              } else {
+                sBuff << inc.leftInstance().label();
+              }
               factory.setReferenceSlot( inc.leftInstance().label(),
                                         inc.leftReference().label(),
                                         inc.rightInstance().label() );
