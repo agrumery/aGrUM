@@ -1926,7 +1926,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 24| Syntax error : invalid AGGREGATE_PARENTS";
+      msg << "|6 col 24| Syntax error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
