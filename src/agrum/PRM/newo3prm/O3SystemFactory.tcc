@@ -108,7 +108,17 @@ namespace gum {
                                         inc.leftReference().label(),
                                         inc.rightInstance().label() );
             }
+            try {
             factory.endSystem();
+            } catch ( FatalError& e ) {
+              const auto& pos = sys->name().position();
+              output << pos.file() << "|" << pos.line() << " col "
+                     << pos.column() << "|"
+                     << " System error : "
+                     << "Incomplete system, some reference slots must be "
+                        "unassigned"
+                     << std::endl;
+            }
           }
         }
       }
@@ -123,46 +133,6 @@ namespace gum {
         if ( not( __checkAssignments( prm, sys, output ) and
                   __checkIncrements( prm, sys, output ) ) ) {
           return false;
-        }
-        return true;
-      }
-
-      template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkIncrements(
-          PRM<GUM_SCALAR>& prm, O3System& sys, std::ostream& output ) {
-        for ( auto& inc : sys.increments() ) {
-          if ( inc.leftInstance().label() == inc.leftReference().label() ) {
-            const auto& pos = inc.leftInstance().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Increment error : "
-                   << "Invalid left expression " << inc.leftInstance().label()
-                   << std::endl;
-            return false;
-          }
-          if ( not __nameMap.exists( inc.leftInstance().label() ) ) {
-            const auto& pos = inc.leftInstance().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Increment error : "
-                   << "Instance " << inc.leftInstance().label() << " not found"
-                   << std::endl;
-            return false;
-          }
-          auto i = __nameMap[inc.leftInstance().label()];
-          const auto& type = prm.getClass( i->type().label() );
-          const auto& ref = inc.leftReference().label();
-          if ( not( type.exists( inc.leftReference().label() ) and
-                    ClassElement<GUM_SCALAR>::isReferenceSlot(
-                        type.get( ref ) ) ) ) {
-            const auto& pos = inc.leftReference().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Increment error : "
-                   << "Reference " << inc.leftReference().label()
-                   << " not found in class " << type.name() << std::endl;
-            return false;
-          }
         }
         return true;
       }
@@ -232,9 +202,8 @@ namespace gum {
             const auto& pos = i.type().position();
             output << pos.file() << "|" << pos.line() << " col " << pos.column()
                    << "|"
-                   << " Instance error : "
-                   << "Instance type is not a class " << i.type().label()
-                   << std::endl;
+                   << " Instance error : " << i.type().label()
+                   << " is not a class" << std::endl;
             return false;
           }
           const auto& type = prm.getClass( i.type().label() );
@@ -291,6 +260,79 @@ namespace gum {
                    << " Assignment error : "
                    << "Reference " << ass.leftReference().label()
                    << " not found in class " << type.name() << std::endl;
+            return false;
+          }
+          const auto& real_ref =
+              static_cast < const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+          if ( real_ref.isArray() and
+               __nameMap[ass.rightInstance().label()]->size().value() == 0 ) {
+            const auto& pos = ass.leftReference().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Assignment error : "
+                   << ass.rightInstance().label()
+                   << " is not an array" << std::endl;
+            return false;
+          }
+          if ( (not real_ref.isArray()) and
+               __nameMap[ass.rightInstance().label()]->size().value() > 0 ) {
+            const auto& pos = ass.leftReference().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Assignment error : "
+                   << ass.leftInstance().label()
+                   << " is not an array" << std::endl;
+            return false;
+          }
+        }
+        return true;
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3SystemFactory<GUM_SCALAR>::__checkIncrements(
+          PRM<GUM_SCALAR>& prm, O3System& sys, std::ostream& output ) {
+        for ( auto& inc : sys.increments() ) {
+          if ( inc.leftInstance().label() == inc.leftReference().label() ) {
+            const auto& pos = inc.leftInstance().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Increment error : "
+                   << "Invalid left expression " << inc.leftInstance().label()
+                   << std::endl;
+            return false;
+          }
+          if ( not __nameMap.exists( inc.leftInstance().label() ) ) {
+            const auto& pos = inc.leftInstance().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Increment error : "
+                   << "Instance " << inc.leftInstance().label() << " not found"
+                   << std::endl;
+            return false;
+          }
+          auto i = __nameMap[inc.leftInstance().label()];
+          const auto& type = prm.getClass( i->type().label() );
+          const auto& ref = inc.leftReference().label();
+          if ( not( type.exists( inc.leftReference().label() ) and
+                    ClassElement<GUM_SCALAR>::isReferenceSlot(
+                        type.get( ref ) ) ) ) {
+            const auto& pos = inc.leftReference().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Increment error : "
+                   << "Reference " << inc.leftReference().label()
+                   << " not found in class " << type.name() << std::endl;
+            return false;
+          }
+          const auto& real_ref =
+              static_cast < const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+          if ( not real_ref.isArray() ) {
+            const auto& pos = inc.leftReference().position();
+            output << pos.file() << "|" << pos.line() << " col " << pos.column()
+                   << "|"
+                   << " Increment error : "
+                   << "Reference " << inc.leftReference().label()
+                   << " is not an array" << std::endl;
             return false;
           }
         }

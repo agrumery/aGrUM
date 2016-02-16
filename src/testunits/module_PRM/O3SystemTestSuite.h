@@ -82,7 +82,7 @@ namespace gum_tests {
             << "r.power = pow;" << std::endl
             << "p.room = r;" << std::endl
             << "c.room = r;" << std::endl
-            << "c.printers = p;" << std::endl
+            << "c.printers += p;" << std::endl
             << "Equipment e;" << std::endl
             << "e.room = r;" << std::endl
             << "}" << std::endl;
@@ -96,6 +96,160 @@ namespace gum_tests {
       TS_ASSERT( prm->isSystem( "microSys" ) );
       const auto& foo = prm->system( "microSys" );
       TS_ASSERT_EQUALS( foo.size(), 5 );
+    }
+
+    void testMicroSystemWithError1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system microSys {" << std::endl
+            << "PowerSupply;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|2 col 12| Syntax error : invalid declaration";
+      TS_ASSERT_EQUALS( line, msg.str() );
+      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+    }
+
+    void testMicroSystemWithError2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system microSys {" << std::endl
+            << "FOO bar;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|2 col 1| Instance error : FOO is not a class";
+      TS_ASSERT_EQUALS( line, msg.str() );
+      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+    }
+
+    void testMicroSystemWithError3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system {" << std::endl
+            << "PowerSupply pow;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 8| Syntax error : label expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+    }
+
+    void testMicroSystemWithError4() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system microSys {" << std::endl
+            << "PowerSupply pow" << std::endl
+            << "Room r;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|3 col 1| Syntax error : semicolon expected";
+      TS_ASSERT_EQUALS( line, msg.str() );
+      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+    }
+
+    void testMicroSystemWithError5() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system microSys {" << std::endl
+            << "PowerSupply pow;" << std::endl
+            << "Room r;" << std::endl
+            << "Printer p;" << std::endl
+            << "Computer c;" << std::endl
+            << "r.power   pow;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|6 col 1| Instance error : rpower is not a class";
+      TS_ASSERT_EQUALS( line, msg.str() );
+      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+    }
+
+    void testMicroSystemWithError6() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system microSys {" << std::endl
+            << "PowerSupply pow;" << std::endl
+            << "Room r;" << std::endl
+            << "Printer p;" << std::endl
+            << "Computer c;" << std::endl
+            << "r.power = pow;" << std::endl
+            << "p.room = r;" << std::endl
+            << "//c.room = r;" << std::endl
+            << "c.printers += p;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 8| System error : Incomplete system, some reference slots "
+             "must be unassigned";
+      TS_ASSERT_EQUALS( line, msg.str() );
+      TS_ASSERT_EQUALS( prm->systems().size(), 1 );
+    }
+
+    void testMicroSystemWithError7() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system microSys {" << std::endl
+            << "PowerSupply pow;" << std::endl
+            << "Room r;" << std::endl
+            << "Printer p;" << std::endl
+            << "Printer p;" << std::endl
+            << "Computer c;" << std::endl
+            << "r.power = pow;" << std::endl
+            << "p.room = r;" << std::endl
+            << "//c.room = r;" << std::endl
+            << "c.printers = p;" << std::endl
+            << "}" << std::endl;
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|5 col 1| Instance error : Instance p already exists";
+      TS_ASSERT_EQUALS( line, msg.str() );
+      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
     }
 
     void testSmallSystem() {

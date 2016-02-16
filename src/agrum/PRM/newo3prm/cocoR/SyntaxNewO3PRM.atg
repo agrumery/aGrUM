@@ -659,53 +659,6 @@ SYSTEM_BODY<O3System& sys> =
   ';'
   .
 
-////________________________
-//INSTANCE_DECLARATION<O3System& sys> =
-//  (. auto inst = O3Instance(); .)
-//  CHAIN<inst.type()>
-//  [
-//    ARRAY<inst.size()>
-//  ]
-//  LABEL<inst.name()>
-//  [
-//    '('
-//    PARAMETER_LIST<inst.parameters()>
-//    ')'
-//  ]
-//  ';'
-//  (. sys.instances().push_back( std::move( inst ) ); .)
-//  .
-//
-////________________________
-//REFERENCE_ASSIGNMENT<O3System& sys> =
-//  (. auto ass = O3Assignment(); .)
-//  LABEL<ass.leftInstance()>
-//  [
-//    ARRAY<ass.index()>
-//  ]
-//  '.' 
-//  LABEL<ass.leftReference()> 
-//  '=' 
-//  LABEL<ass.rightInstance()> 
-//  ';'
-//  (. sys.assignments().push_back( std::move( ass ) ); .)
-//  .
-//
-////________________________
-//REFERENCE_INCREMENT<O3System& sys> =
-//  (. auto inc = O3Increment(); .)
-//  LABEL<inc.leftInstance()>
-//  [
-//    ARRAY<inc.index()>
-//  ]
-//  '.' 
-//  LABEL<inc.leftReference()> 
-//  inc 
-//  LABEL<inc.rightInstance()> 
-//  ';'
-//  (. sys.increments().push_back( std::move( inc ) ); .)
-//  .
-
 //________________________
 PARAMETER_LIST<O3InstanceParameterList& params> =
   (. auto p = O3InstanceParameter(); .)
