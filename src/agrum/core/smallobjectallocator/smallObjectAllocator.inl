@@ -29,7 +29,6 @@
 #include <assert.h>
 // ============================================================================
 #include <agrum/core/smallobjectallocator/fixedAllocator.h>
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // ============================================================================
 
 

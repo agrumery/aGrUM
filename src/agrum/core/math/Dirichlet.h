@@ -61,7 +61,7 @@ namespace gum {
      * @param params The distribution parameters.
      * @param seed The distribution seed.
      */
-    Dirichlet( const param_type& params, unsigned int seed = 0 );
+    Dirichlet( const param_type& params, unsigned int seed = GUM_RANDOMSEED );
 
     /**
      * @brief Copy constructor.

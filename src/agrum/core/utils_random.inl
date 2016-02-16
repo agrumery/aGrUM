@@ -32,10 +32,9 @@ namespace gum {
   double randomProba() { return ( (double)rand() ) / ( (double)RAND_MAX ); }
 
   INLINE
-  void initRandom( unsigned int init ) {
-    if ( init ) {
-      srand( init );
-      randomGeneratorSeed( init );
+  void initRandom( unsigned int seed ) {
+    if ( seed ) {
+      srand( seed );
     } else {
       srand( randomGeneratorSeed() );
     }

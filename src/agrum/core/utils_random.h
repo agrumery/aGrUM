@@ -27,6 +27,7 @@
 #ifndef GUM_UTILS_RANDOM_H
 #define GUM_UTILS_RANDOM_H
 
+#include <random>
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
@@ -34,6 +35,8 @@
 #include <numeric>
 #include <utility>
 #include <vector>
+
+#include <agrum/config.h>
 
 namespace gum {
 
@@ -56,17 +59,21 @@ namespace gum {
   std::vector<GUM_SCALAR> randomDistribution( Size n );
 
   /**
-   * @brief Initialize random generator seed.
-   * @param init The seed.
-   */
-  void initRandom( unsigned int init = 0 );
-
-  /**
    * @brief Returns the aGrUM's seed used by the std::generators.
    * @param seed The seed.
    * @return Returns the aGrUM's seed used by the std::generators.
    */
-  unsigned int& randomGeneratorSeed( unsigned int seed = 0 );
+  unsigned int randomGeneratorSeed();
+
+  /**
+   * @brief Initialize random generator seed.
+   */
+  void initRandom(unsigned int seed=0 );
+
+  /**
+   * define a random_engine with correct seed
+   */
+  std::default_random_engine getRandomGenerator(unsigned int seed=0);
 
   /// @}
 } /* namespace gum */

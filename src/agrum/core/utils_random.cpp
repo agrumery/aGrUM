@@ -23,6 +23,9 @@
  *
  * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
  */
+#include <chrono>
+
+#include <agrum/config.h>
 #include <agrum/core/utils.h>
 
 #ifdef GUM_NO_INLINE
@@ -32,11 +35,17 @@
 namespace gum {
 
   // returns the aGrUM's seed used by the std::generators
-  unsigned int& randomGeneratorSeed( unsigned int seed ) {
-    static unsigned int gum_seed =
-        std::chrono::system_clock::now().time_since_epoch().count();
-    if ( seed ) gum_seed = seed;
-    return gum_seed;
+  unsigned int randomGeneratorSeed() {
+    return ( GUM_RANDOMSEED == 0 )
+               ? std::chrono::system_clock::now().time_since_epoch().count()
+               : GUM_RANDOMSEED;
+  }
+
+
+  std::default_random_engine getRandomGenerator( unsigned int seed ) {
+    std::default_random_engine generator;
+    generator.seed( seed ? seed : randomGeneratorSeed() );
+    return generator;
   }
 
 } /* namespace gum */

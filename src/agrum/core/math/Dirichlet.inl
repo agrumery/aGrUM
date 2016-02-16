@@ -27,7 +27,7 @@ namespace gum {
 
   // default constructor
   INLINE Dirichlet::Dirichlet( const param_type& params, unsigned int seed )
-      : __generator( seed ? seed : gum::randomGeneratorSeed() )
+      : __generator( gum::getRandomGenerator(seed) )
       , __params( params ) {
     GUM_CONSTRUCTOR( Dirichlet );
   }
