@@ -551,54 +551,112 @@ void Parser::SYSTEM_DECLARATION(O3System& s) {
 }
 
 void Parser::SYSTEM_BODY(O3System& sys) {
-		auto leftValue = O3Label(); 
-		IDENTIFIER(leftValue);
-		if (la->kind == _label) {
-			INSTANTIATION(leftValue, sys);
-		} else if (la->kind == 26 /* "=" */) {
-			ASSIGNMENT(leftValue, sys);
-		} else if (la->kind == _inc) {
-			INCREMENT(leftValue, sys);
-		} else SynErr(40);
-}
-
-void Parser::INSTANTIATION(O3Label& leftValue, O3System& sys) {
-		auto inst = O3Instance(); 
-		inst.type() = leftValue; 
-		LABEL(inst.name());
-		if (la->kind == _semicolon || la->kind == 24 /* "[" */) {
-			if (la->kind == 24 /* "[" */) {
-				Get();
-				INTEGER(inst.size());
-				Expect(25 /* "]" */);
-			}
-			Expect(_semicolon);
-			sys.instances().push_back( std::move( inst ) ); 
-		} else if (la->kind == 27 /* "(" */) {
+		auto left_value = std::stringstream(); 
+		Expect(_label);
+		left_value << narrow(t->val); 
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		if (la->kind == _dot) {
 			Get();
-			PARAMETER_LIST(inst.parameters());
-			Expect(28 /* ")" */);
-			Expect(_semicolon);
+			Expect(_label);
+			auto tmp = narrow( t->val ); 
+			auto tmp_pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+			if (la->kind == _label || la->kind == _dot || la->kind == 24 /* "[" */) {
+				left_value << tmp; 
+				while (la->kind == _dot) {
+					Get();
+					Expect(_label);
+					left_value << narrow( t->val ); 
+				}
+				auto inst = O3Instance(); 
+				inst.type().label() = left_value.str(); 
+				inst.type().position() = pos; 
+				if (la->kind == 24 /* "[" */) {
+					ARRAY(inst.size());
+				}
+				LABEL(inst.name());
+				if (la->kind == 27 /* "(" */) {
+					Get();
+					PARAMETER_LIST(inst.parameters());
+					Expect(28 /* ")" */);
+				}
+				sys.instances().push_back( std::move( inst ) ); 
+			} else if (la->kind == _inc || la->kind == 26 /* "=" */) {
+				if (la->kind == 26 /* "=" */) {
+					auto ass = O3Assignment(); 
+					ass.leftInstance().label() = left_value.str(); 
+					ass.leftInstance().position() = pos; 
+					ass.leftReference().label() = tmp; 
+					ass.leftReference().position() = tmp_pos; 
+					Get();
+					LABEL(ass.rightInstance());
+					sys.assignments().push_back( std::move( ass ) ); 
+				} else {
+					auto inc = O3Increment(); 
+					inc.leftInstance().label() = left_value.str(); 
+					inc.leftInstance().position() = pos; 
+					inc.leftReference().label() = tmp; 
+					inc.leftReference().position() = tmp_pos; 
+					Get();
+					LABEL(inc.rightInstance());
+					sys.increments().push_back( std::move( inc ) ); 
+				}
+			} else SynErr(40);
+		} else if (la->kind == 24 /* "[" */) {
+			auto i = O3Integer(); 
+			ARRAY(i);
+			if (la->kind == _label) {
+				auto inst = O3Instance(); 
+				inst.type().label() = left_value.str(); 
+				inst.type().position() = pos; 
+				inst.size() = i; 
+				LABEL(inst.name());
+				if (la->kind == 27 /* "(" */) {
+					Get();
+					PARAMETER_LIST(inst.parameters());
+					Expect(28 /* ")" */);
+				}
+				sys.instances().push_back( std::move( inst ) ); 
+			} else if (la->kind == _dot) {
+				auto ref = O3Label(); 
+				Get();
+				LABEL(ref);
+				if (la->kind == 26 /* "=" */) {
+					auto ass = O3Assignment(); 
+					ass.leftInstance().label() = left_value.str(); 
+					ass.index() = i; 
+					ass.leftReference() = ref; 
+					Get();
+					LABEL(ass.rightInstance());
+					sys.assignments().push_back( std::move( ass ) ); 
+				} else if (la->kind == _inc) {
+					auto inc = O3Increment(); 
+					inc.leftInstance().label() = left_value.str(); 
+					inc.index() = i; 
+					inc.leftReference() = ref; 
+					Get();
+					LABEL(inc.rightInstance());
+					sys.increments().push_back( std::move( inc ) ); 
+				} else SynErr(41);
+			} else SynErr(42);
+		} else if (la->kind == _label) {
+			auto inst = O3Instance(); 
+			inst.type().label() = left_value.str(); 
+			inst.type().position() = pos; 
+			LABEL(inst.name());
+			if (la->kind == 27 /* "(" */) {
+				Get();
+				PARAMETER_LIST(inst.parameters());
+				Expect(28 /* ")" */);
+			}
 			sys.instances().push_back( std::move( inst ) ); 
-		} else SynErr(41);
+		} else SynErr(43);
+		Expect(_semicolon);
 }
 
-void Parser::ASSIGNMENT(O3Label& leftValue, O3System& sys) {
-		auto ass = O3Assignment(); 
-		__split(leftValue, ass.leftInstance(), ass.leftReference()); 
-		Expect(26 /* "=" */);
-		LABEL(ass.rightInstance());
-		Expect(_semicolon);
-		sys.assignments().push_back( std::move( ass ) ); 
-}
-
-void Parser::INCREMENT(O3Label& leftValue, O3System& sys) {
-		auto inc = O3Increment(); 
-		__split(leftValue, inc.leftInstance(), inc.leftReference()); 
-		Expect(_inc);
-		LABEL(inc.rightInstance());
-		Expect(_semicolon);
-		sys.increments().push_back( std::move( inc ) ); 
+void Parser::ARRAY(O3Integer& size) {
+		Expect(24 /* "[" */);
+		INTEGER(size);
+		Expect(25 /* "]" */);
 }
 
 void Parser::PARAMETER_LIST(O3InstanceParameterList& params) {
@@ -611,7 +669,7 @@ void Parser::PARAMETER_LIST(O3InstanceParameterList& params) {
 		} else if (la->kind == _float) {
 			FLOAT(p.value());
 			p.isInteger() = false; 
-		} else SynErr(42);
+		} else SynErr(44);
 		Expect(_semicolon);
 }
 
@@ -638,7 +696,7 @@ void Parser::LABEL_OR_INT(O3Label& l) {
 			LABEL(l);
 		} else if (la->kind == _integer) {
 			INTEGER_AS_LABEL(l);
-		} else SynErr(43);
+		} else SynErr(45);
 }
 
 void Parser::CHAIN(O3Label& ident) {
@@ -660,7 +718,7 @@ void Parser::LABEL_OR_STAR(O3Label& l) {
 			Get();
 		} else if (la->kind == 29 /* "*" */) {
 			Get();
-		} else SynErr(44);
+		} else SynErr(46);
 		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 		l = O3Label( pos, narrow( t->val ) ); 
 }
@@ -680,7 +738,7 @@ void Parser::FORMULA(O3Formula& f) {
 			Get();
 			auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 			f = O3Formula( pos, narrow( t->val ) ); 
-		} else SynErr(45);
+		} else SynErr(47);
 }
 
 
@@ -865,11 +923,13 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 38: s = coco_string_create(L"invalid AGGREGATE_PARENTS"); break;
 			case 39: s = coco_string_create(L"invalid TYPE_DECLARATION"); break;
 			case 40: s = coco_string_create(L"invalid SYSTEM_BODY"); break;
-			case 41: s = coco_string_create(L"invalid INSTANTIATION"); break;
-			case 42: s = coco_string_create(L"invalid PARAMETER_LIST"); break;
-			case 43: s = coco_string_create(L"invalid LABEL_OR_INT"); break;
-			case 44: s = coco_string_create(L"invalid LABEL_OR_STAR"); break;
-			case 45: s = coco_string_create(L"invalid FORMULA"); break;
+			case 41: s = coco_string_create(L"invalid SYSTEM_BODY"); break;
+			case 42: s = coco_string_create(L"invalid SYSTEM_BODY"); break;
+			case 43: s = coco_string_create(L"invalid SYSTEM_BODY"); break;
+			case 44: s = coco_string_create(L"invalid PARAMETER_LIST"); break;
+			case 45: s = coco_string_create(L"invalid LABEL_OR_INT"); break;
+			case 46: s = coco_string_create(L"invalid LABEL_OR_STAR"); break;
+			case 47: s = coco_string_create(L"invalid FORMULA"); break;
 
 
     default: {

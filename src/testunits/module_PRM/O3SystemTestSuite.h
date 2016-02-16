@@ -97,6 +97,49 @@ namespace gum_tests {
       const auto& foo = prm->system( "microSys" );
       TS_ASSERT_EQUALS( foo.size(), 5 );
     }
+
+    void testSmallSystem() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system smallSys {" << std::endl
+            << "  PowerSupply pow;" << std::endl
+            << "  Room r;" << std::endl
+            << "  Printer[2] printers;" << std::endl
+            << "  Printer another_printer;" << std::endl
+            << "  Computer[4] computers;" << std::endl
+            << "  Computer another_computer;" << std::endl
+            << "  r.power = pow;" << std::endl
+            << "  printers[0].room = r;" << std::endl
+            << "  printers[1].room = r;" << std::endl
+            << "  another_printer.room = r;" << std::endl
+            << "  computers[0].room = r;" << std::endl
+            << "  computers[1].room = r;" << std::endl
+            << "  computers[2].room = r;" << std::endl
+            << "  computers[3].room = r;" << std::endl
+            << "  another_computer.room = r;" << std::endl
+            << "  computers[0].printers = printers;" << std::endl
+            << "  computers[0].printers += another_printer;" << std::endl
+            << "  computers[1].printers = printers;" << std::endl
+            << "  computers[1].printers += another_printer;" << std::endl
+            << "  computers[2].printers = printers;" << std::endl
+            << "  computers[2].printers += another_printer;" << std::endl
+            << "  computers[3].printers = printers;" << std::endl
+            << "  computers[3].printers += another_printer;" << std::endl
+            << "  another_computer.printers = printers;" << std::endl
+            << "  another_computer.printers += another_printer;" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::prm::o3prm::parse_stream( *prm, input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm->systems().size(), 1 );
+      TS_ASSERT( prm->isSystem( "smallSys" ) );
+      const auto& foo = prm->system( "smallSys" );
+      TS_ASSERT_EQUALS( foo.size(), 10 );
+    }
+
   };
 
 }  // namespace gum_tests
