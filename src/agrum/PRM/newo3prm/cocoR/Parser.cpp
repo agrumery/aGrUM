@@ -177,10 +177,10 @@ void Parser::SYSTEM_UNIT() {
 
 void Parser::CLASS_DECLARATION(O3Class& c) {
 		CLASS(c.position());
-		LABEL(c.name());
+		PREFIXED_LABEL(c.name());
 		if (la->kind == _extends) {
 			Get();
-			IDENTIFIER(c.super());
+			CHAIN(c.super());
 		}
 		if (la->kind == _implements) {
 			Get();
@@ -200,20 +200,26 @@ void Parser::CLASS(Position& pos) {
 		pos.column( t->col ); 
 }
 
-void Parser::LABEL(O3Label& l) {
+void Parser::PREFIXED_LABEL(O3Label& l) {
 		Expect(_label);
 		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		l = O3Label( pos, narrow( t->val ) ); 
+		auto label = narrow( t->val ); 
+		if (__prefix != "") { label = __prefix + "." + label; } 
+		l = O3Label( pos, label ); 
 }
 
-void Parser::IDENTIFIER(O3Label& ident) {
-		CHAIN(ident);
-		if (la->kind == _dot) {
+void Parser::CHAIN(O3Label& ident) {
+		auto s = std::stringstream(); 
+		Expect(_label);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		s << narrow( t->val ); 
+		while (la->kind == _dot) {
 			Get();
-			Expect(27 /* "(" */);
-			CHAIN(ident);
-			Expect(28 /* ")" */);
+			s << narrow( t->val ); 
+			Expect(_label);
+			s << narrow( t->val ); 
 		}
+		ident = O3Label( pos, s.str() ); 
 }
 
 void Parser::IDENTIFIER_LIST(O3LabelList& list) {
@@ -261,12 +267,18 @@ void Parser::CLASS_PARAMETER(O3ParameterList& params) {
 
 void Parser::CLASS_ELEMENT(O3Class& c) {
 		auto type = O3Label(); 
-		IDENTIFIER(type);
+		CHAIN(type);
 		if (la->kind == 24 /* "[" */) {
 			ARRAY_REFERENCE_SLOT(type, c.referenceSlots());
 		} else if (la->kind == _label) {
 			NAMED_CLASS_ELEMENT(type, c);
 		} else SynErr(35);
+}
+
+void Parser::LABEL(O3Label& l) {
+		Expect(_label);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		l = O3Label( pos, narrow( t->val ) ); 
 }
 
 void Parser::INTEGER(O3Integer& i) {
@@ -390,6 +402,38 @@ void Parser::LABEL_LIST(O3LabelList& list) {
 		}
 }
 
+void Parser::IDENTIFIER(O3Label& ident) {
+		auto s = std::stringstream(); 
+		Expect(_label);
+		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
+		s << narrow( t->val ); 
+		while (la->kind == _dot) {
+			Get();
+			s << narrow( t->val ); 
+			Expect(_label);
+			s << narrow( t->val ); 
+		}
+		if (la->kind == _dot) {
+			Get();
+			s << narrow( t->val ); 
+			Expect(27 /* "(" */);
+			s << narrow( t->val ); 
+			Expect(_label);
+			s << narrow( t->val ); 
+			while (la->kind == _dot) {
+				Get();
+				s << narrow( t->val ); 
+				Expect(_label);
+				s << narrow( t->val ); 
+			}
+			Expect(28 /* ")" */);
+			s << narrow( t->val ); 
+			Expect(_label);
+			s << narrow( t->val ); 
+		}
+		ident = O3Label( pos, s.str() ); 
+}
+
 void Parser::FORMULA_LIST(O3FormulaList& values) {
 		auto f = O3Formula(); 
 		FORMULA(f);
@@ -428,10 +472,10 @@ O3Label& name,
 O3Label& super,
 O3InterfaceElementList& elts) {
 		INTERFACE(pos);
-		LABEL(name);
+		PREFIXED_LABEL(name);
 		if (la->kind == _extends) {
 			Get();
-			IDENTIFIER(super);
+			CHAIN(super);
 		}
 		Expect(22 /* "{" */);
 		while (la->kind == _label) {
@@ -450,7 +494,7 @@ void Parser::INTERFACE(Position& pos) {
 void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
-		IDENTIFIER(type);
+		CHAIN(type);
 		LABEL(name);
 		Expect(_semicolon);
 		elts.push_back( O3InterfaceElement( type, name ) ); 
@@ -458,12 +502,12 @@ void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
 
 void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, LabelMap& labels) {
 		TYPE(pos);
-		LABEL(name);
+		PREFIXED_LABEL(name);
 		if (la->kind == _label) {
 			TYPE_VALUE_LIST(labels);
 		} else if (la->kind == _extends) {
 			Get();
-			IDENTIFIER(super);
+			CHAIN(super);
 			MAP(labels);
 		} else SynErr(39);
 		Expect(_semicolon);
@@ -542,7 +586,7 @@ void Parser::INT(Position& pos) {
 
 void Parser::SYSTEM_DECLARATION(O3System& s) {
 		Expect(_system);
-		LABEL(s.name());
+		PREFIXED_LABEL(s.name());
 		Expect(22 /* "{" */);
 		while (la->kind == _label) {
 			SYSTEM_BODY(s);
@@ -681,7 +725,7 @@ void Parser::INTEGER_AS_FLOAT(O3Float& f) {
 
 void Parser::IMPORT_DECLARATION(O3Import& import) {
 		Expect(_import);
-		IDENTIFIER(import.import());
+		CHAIN(import.import());
 		Expect(_semicolon);
 }
 
@@ -697,20 +741,6 @@ void Parser::LABEL_OR_INT(O3Label& l) {
 		} else if (la->kind == _integer) {
 			INTEGER_AS_LABEL(l);
 		} else SynErr(45);
-}
-
-void Parser::CHAIN(O3Label& ident) {
-		auto s = std::stringstream(); 
-		Expect(_label);
-		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		s << narrow( t->val ); 
-		while (la->kind == _dot) {
-			Get();
-			s << narrow( t->val ); 
-			Expect(_label);
-			s << narrow( t->val ); 
-		}
-		ident = O3Label( pos, s.str() ); 
 }
 
 void Parser::LABEL_OR_STAR(O3Label& l) {

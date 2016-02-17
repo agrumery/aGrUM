@@ -152,6 +152,7 @@ using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
+std::string __prefix;
 
 bool __ok (int n) { return errors().error_count == n; }
 void __addO3Type( Position& pos,
@@ -218,6 +219,11 @@ O3PRM* get_prm() {
   return __prm;
 }
 
+// Set the prefix for types, interfaces, classes and systems parsed
+void set_prefix( const std::string& prefix) {
+  __prefix = prefix;
+}
+
 //##############################################################################
 //
 //                              SCANNER RULES
@@ -242,12 +248,13 @@ O3PRM* get_prm() {
 	void SYSTEM_UNIT();
 	void CLASS_DECLARATION(O3Class& c);
 	void CLASS(Position& pos);
-	void LABEL(O3Label& l);
-	void IDENTIFIER(O3Label& ident);
+	void PREFIXED_LABEL(O3Label& l);
+	void CHAIN(O3Label& ident);
 	void IDENTIFIER_LIST(O3LabelList& list);
 	void CLASS_BODY(O3Class& c);
 	void CLASS_PARAMETER(O3ParameterList& params);
 	void CLASS_ELEMENT(O3Class& c);
+	void LABEL(O3Label& l);
 	void INTEGER(O3Integer& i);
 	void FLOAT(O3Float& f);
 	void ARRAY_REFERENCE_SLOT(O3Label& type, O3ReferenceSlotList& refs);
@@ -265,6 +272,7 @@ const O3LabelList& parents,
 O3AttributeList& elts);
 	void AGGREGATE_PARENTS(O3LabelList& parents);
 	void LABEL_LIST(O3LabelList& list);
+	void IDENTIFIER(O3Label& ident);
 	void FORMULA_LIST(O3FormulaList& values);
 	void RULE(O3RuleList& rules);
 	void LABEL_OR_STAR_LIST(O3LabelList& list);
@@ -288,7 +296,6 @@ O3InterfaceElementList& elts);
 	void IMPORT_DECLARATION(O3Import& import);
 	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
-	void CHAIN(O3Label& ident);
 	void LABEL_OR_STAR(O3Label& l);
 	void FORMULA(O3Formula& f);
 
