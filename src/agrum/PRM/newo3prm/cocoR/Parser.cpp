@@ -204,7 +204,7 @@ void Parser::PREFIXED_LABEL(O3Label& l) {
 		Expect(_label);
 		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 		auto label = narrow( t->val ); 
-		if (__prefix != "") { label = __prefix + "." + label; } 
+		if (__prefix != "") { label = __prefix + label; } 
 		l = O3Label( pos, label ); 
 }
 

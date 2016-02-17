@@ -53,6 +53,8 @@ namespace gum {
       bool name_used( const PRM<GUM_SCALAR>& prm, const std::string& name );
 
       std::string read_stream( std::istream& input );
+
+      bool ends_with( std::string const& value, std::string const& ending );
     }
   }
 }
