@@ -252,8 +252,9 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void
       O3PRMFactory<GUM_SCALAR>::parseStream( std::istream& input,
-                                             std::ostream& output ) {
-        __readStream( input );
+                                             std::ostream& output,
+                                             std::string module ) {
+        __readStream( input, module );
 
         for ( auto i = 0; i < __errors.count(); ++i ) {
           auto err = __errors.error( i );
@@ -310,7 +311,11 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void
       O3PRMFactory<GUM_SCALAR>::__readStream( std::istream& input,
-                                              const std::string& module ) {
+                                              std::string module ) {
+        if ( module.size() > 0 and module.back() != '.' ) {
+          module.append( "." );
+        }
+
         __parseStream(input, module);
 
         for ( const auto& i : __o3_prm->imports() ) {

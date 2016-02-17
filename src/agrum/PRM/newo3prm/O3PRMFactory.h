@@ -59,7 +59,9 @@ namespace gum {
         /// to search from import yourself, using addClassPath.
         int readString( const std::string& string );
 
-        void parseStream( std::istream& input, std::ostream& output );
+        void parseStream( std::istream& input,
+                          std::ostream& output,
+                          std::string module = "" );
         /**
          * @brief This methods defines the list of paths to look for o3prm
          * files.
@@ -125,7 +127,7 @@ namespace gum {
         std::string __readFile( const std::string& file );
 
         void __readStream( std::istream& input,
-                           const std::string& module = "" );
+                           std::string module = "" );
 
         void __parseImport( const O3Import& i, const std::string& module_path );
 

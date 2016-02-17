@@ -60,6 +60,7 @@ namespace gum {
                     ErrorsContainer& errors );
 
         private:
+        HashTable<std::string, const O3Type*> __superMap;
         HashTable<std::string, gum::NodeId> __nameMap;
         HashTable<std::string, const O3Type*> __typeMap;
         HashTable<NodeId, const O3Type*> __nodeMap;
@@ -68,6 +69,7 @@ namespace gum {
         std::vector<const O3IntType*> __o3IntTypes;
 
         void __initialize();
+        bool __resolveType( const O3Label& name, ErrorsContainer& errors );
         void __setO3TypeCreationOrder();
         bool __isPrimitiveType( const O3Type& type );
         bool __addTypes2Dag( PRM<GUM_SCALAR>& prm,
