@@ -72,6 +72,7 @@ using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
 using O3PRM = gum::prm::o3prm::O3PRM;
 
 O3PRM* __prm;
+std::string __prefix;
 
 bool __ok (int n) { return errors().error_count == n; }
 void __addO3Type( Position& pos,
@@ -136,6 +137,11 @@ void set_prm(O3PRM* prm) {
 
 O3PRM* get_prm() {
   return __prm;
+}
+
+// Set the prefix for types, interfaces, classes and systems parsed
+void set_prefix( const std::string& prefix) {
+  __prefix = prefix;
 }
 
 //##############################################################################
@@ -225,9 +231,9 @@ CLASS_UNIT =
 //________________________
 CLASS_DECLARATION<O3Class& c> =
   CLASS<c.position()>
-  LABEL<c.name()>
+  PREFIXED_LABEL<c.name()>
   [
-    extends IDENTIFIER<c.super()>
+    extends CHAIN<c.super()>
   ]
   [
     implements IDENTIFIER_LIST<c.interfaces()>
@@ -270,7 +276,7 @@ CLASS_PARAMETER<O3ParameterList& params> =
 //________________________
 CLASS_ELEMENT<O3Class& c> =
   (. auto type = O3Label(); .)
-  IDENTIFIER<type>
+  CHAIN<type>
   (
     ARRAY_REFERENCE_SLOT<type, c.referenceSlots()>
   |
@@ -410,9 +416,9 @@ INTERFACE_DECLARATION<Position& pos,
                       O3Label& super,
                       O3InterfaceElementList& elts> =
   INTERFACE<pos>
-  LABEL<name>
+  PREFIXED_LABEL<name>
   [
-    extends IDENTIFIER<super>
+    extends CHAIN<super>
   ]
   '{' { INTERFACE_BODY<elts> } '}'
   .
@@ -429,7 +435,7 @@ INTERFACE<Position& pos> =
 INTERFACE_BODY<O3InterfaceElementList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
-  IDENTIFIER<type> LABEL<name> ';'
+  CHAIN<type> LABEL<name> ';'
   (. elts.push_back( O3InterfaceElement( type, name ) ); .)
   .
 
@@ -458,11 +464,11 @@ TYPE_UNIT =
 //________________________
 TYPE_DECLARATION<Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
   TYPE<pos>
-  LABEL<name> 
+  PREFIXED_LABEL<name> 
   (
     TYPE_VALUE_LIST<labels>
     |
-    extends IDENTIFIER<super> MAP<labels>
+    extends CHAIN<super> MAP<labels>
   )
   ';'
   . 
@@ -552,7 +558,7 @@ SYSTEM_UNIT =
 //________________________
 SYSTEM_DECLARATION<O3System& s> =
   system
-  LABEL<s.name()>
+  PREFIXED_LABEL<s.name()>
   '{'
   {
     SYSTEM_BODY<s>
@@ -688,7 +694,7 @@ IMPORT_UNIT=
 //________________________
 IMPORT_DECLARATION<O3Import& import> =
   import
-  IDENTIFIER<import.import()>
+  CHAIN<import.import()>
   ';'
   .
 
@@ -739,6 +745,15 @@ LABEL<O3Label& l> =
   .
 
 //________________________
+PREFIXED_LABEL<O3Label& l> =
+  label 
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto label = narrow( t->val ); .)
+  (. if (__prefix != "") { label = __prefix + "." + label; } .)
+  (. l = O3Label( pos, label ); .)
+  .
+
+//________________________
 IDENTIFIER_LIST<O3LabelList& list> =
   (. auto label = O3Label(); .)
   IDENTIFIER<label>
@@ -752,13 +767,35 @@ IDENTIFIER_LIST<O3LabelList& list> =
 
 //________________________
 IDENTIFIER<O3Label& ident> =
-  CHAIN<ident>
-  [
-    '.'
-    '('
-    CHAIN<ident>
-    ')'
+  (. auto s = std::stringstream(); .)
+  label
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. s << narrow( t->val ); .)
+  {
+    '.' 
+    (. s << narrow( t->val ); .)
+    label 
+    (. s << narrow( t->val ); .)
+  }
+  [ 
+    '.' 
+    (. s << narrow( t->val ); .)
+    '(' 
+    (. s << narrow( t->val ); .)
+    label 
+    (. s << narrow( t->val ); .)
+    { 
+      '.' 
+      (. s << narrow( t->val ); .)
+      label 
+      (. s << narrow( t->val ); .)
+    } 
+    ')' 
+    (. s << narrow( t->val ); .)
+    label 
+    (. s << narrow( t->val ); .)
   ]
+  (. ident = O3Label( pos, s.str() ); .)
   .
 
 //________________________

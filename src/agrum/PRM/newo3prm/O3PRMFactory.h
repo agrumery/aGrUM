@@ -34,6 +34,7 @@
 
 #include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
+#include <agrum/PRM/newo3prm/O3PRM.h>
 
 namespace gum {
   namespace prm {
@@ -52,7 +53,7 @@ namespace gum {
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
         int readFile( const std::string& file,
-                      const std::string& package = "" );
+                      const std::string& module = "" );
 
         /// With readString method, you must set the current path
         /// to search from import yourself, using addClassPath.
@@ -113,7 +114,9 @@ namespace gum {
 
         private:
         PRM<GUM_SCALAR>* __prm;
+        std::unique_ptr<O3PRM> __o3_prm;
         std::vector<std::string> __class_path;
+        Set<std::string> __imported;
 
         // Needed when file can't be parse (can not open it for exemple)
         ErrorsContainer __errors;
@@ -121,8 +124,13 @@ namespace gum {
         // Read a file into a std::string
         std::string __readFile( const std::string& file );
 
-        void __readStream( std::istream& input );
+        void __readStream( std::istream& input,
+                           const std::string& module = "" );
 
+        void __parseImport( const O3Import& i, const std::string& module_path );
+
+        void
+        __parseStream( std::istream& input, const std::string& module );
       };
 
     } // o3prm
