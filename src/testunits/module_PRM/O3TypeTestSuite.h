@@ -201,9 +201,9 @@ namespace gum_tests {
       << "type t_state OK, YEA, GOO;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
       msg << "|2 col 6| Type error : Type t_state exists already" << std::endl;
@@ -220,9 +220,9 @@ namespace gum_tests {
             << "NOK: false;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.types().size(), 2 );
@@ -244,9 +244,9 @@ namespace gum_tests {
             << "NOK: false;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -265,9 +265,9 @@ namespace gum_tests {
             << "NOK: false;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -286,9 +286,9 @@ namespace gum_tests {
             << "NOK: false;" << std::endl;
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -311,9 +311,9 @@ namespace gum_tests {
             << "NOK: false;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 3 );
       TS_ASSERT( prm.isType( "t_state" ) );
@@ -327,9 +327,9 @@ namespace gum_tests {
       input << "int (0,9) t_power;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.types().size(), 2 );
@@ -355,9 +355,9 @@ namespace gum_tests {
         input << "int (-9,9) t_power;";
         auto output = std::stringstream();
         gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(
-            gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
         // Assert
         TS_ASSERT_EQUALS( output.str(), "" );
         TS_ASSERT_EQUALS( prm.types().size(), 2 );
@@ -393,9 +393,9 @@ namespace gum_tests {
       input << "ints (0,9) t_power;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -412,9 +412,9 @@ namespace gum_tests {
       input << "int 0,9 t_power;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -431,9 +431,9 @@ namespace gum_tests {
       input << "int (0 9) t_power;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -450,9 +450,9 @@ namespace gum_tests {
       input << "int (0, 9) +==++;";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -469,9 +469,9 @@ namespace gum_tests {
       input << "int (plop, 9) t_power";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -488,9 +488,9 @@ namespace gum_tests {
       input << "int (0, 9, 15) t_power";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -507,9 +507,9 @@ namespace gum_tests {
       input << "int (0.0, 9) t_power";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -526,9 +526,9 @@ namespace gum_tests {
       input << "int (9, 9) t_power";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -545,9 +545,9 @@ namespace gum_tests {
       input << "int (10, 9) t_power";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
@@ -564,9 +564,9 @@ namespace gum_tests {
       input << "int (9, 0) t_power";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::prm::o3prm::parse_stream( prm, input, output ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_power" ) );
