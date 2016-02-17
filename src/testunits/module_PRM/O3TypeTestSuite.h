@@ -576,6 +576,46 @@ namespace gum_tests {
       msg << "|1 col 19| Syntax error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
-  };
 
+    void testTypeInModule1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type t_state OK, NOK;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output, "fr.agrum" ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.types().size(), 2 );
+      TS_ASSERT( not prm.isType( "t_state" ) );
+      TS_ASSERT( prm.isType( "fr.agrum.t_state" ) );
+    }
+
+    void testTypeInModule2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type t_degraded extends t_state " << std::endl
+            << "OK: OK," << std::endl
+            << "Dysfunctional: NOK," << std::endl
+            << "Degraded: NOK;" << std::endl;
+      input << "type t_state extends boolean" << std::endl
+            << "OK: true," << std::endl
+            << "NOK: false;";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>(prm);
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output, "fr.agrum" ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.types().size(), 3 );
+      TS_ASSERT( not prm.isType( "t_state" ) );
+      TS_ASSERT( prm.isType( "fr.agrum.t_state" ) );
+      TS_ASSERT( not prm.isType( "t_degraded" ) );
+      TS_ASSERT( prm.isType( "fr.agrum.t_degraded" ) );
+    }
+
+   };
 }  // namespace gum_tests

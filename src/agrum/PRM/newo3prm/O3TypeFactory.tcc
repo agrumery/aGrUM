@@ -68,6 +68,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3TypeFactory<GUM_SCALAR>::__initialize() {
+        __superMap = HashTable<std::string, const O3Type*>();
         __nameMap = HashTable<std::string, NodeId>();
         __typeMap = HashTable<std::string, const O3Type*>();
         __nodeMap = HashTable<NodeId, const O3Type*>();
@@ -90,8 +91,11 @@ namespace gum {
           __setO3TypeCreationOrder();
           for ( auto type : __o3Types ) {
             if ( not __isPrimitiveType( *type ) ) {
-              factory.startDiscreteType( type->name().label(),
-                                         type->super().label() );
+              auto super = std::string();
+              if (type->super().label() != "") {
+                super = __superMap[type->super().label()]->name().label();
+              }
+              factory.startDiscreteType( type->name().label(), super );
               for ( const auto& label : type->labels() ) {
                 factory.addLabel( label.first.label(), label.second.label() );
               }
@@ -150,24 +154,68 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
+      bool O3TypeFactory<GUM_SCALAR>::__resolveType( const O3Label& super,
+                                                     ErrorsContainer& errors ) {
+        // If we've already found super real name
+        if ( __superMap.exists( super.label() ) ) {
+          return true;
+        }
+        // If super's name exists as is
+        if ( __typeMap.exists( super.label() ) ) {
+          __superMap.insert( super.label(),
+                             __typeMap[super.label()] );
+          return true;
+        }
+        // Try to complete super type's module
+        auto matches = std::vector<std::pair<std::string, NodeId>>();
+        std::copy_if( __nameMap.begin(),
+                      __nameMap.end(),
+                      std::back_inserter( matches ),
+                      [&super]( const std::pair<std::string, NodeId>& pair ) {
+                        return ends_with( pair.first, super.label() );
+                      } );
+        if ( matches.size() == 1 ) {  // One match is good
+          __superMap.insert( super.label(),
+                             __typeMap[matches.back().first] );
+          return true;
+        } else if ( matches.size() == 0 ) {  // 0 match is not found
+          // Unknown super type
+          const auto& pos = super.position();
+          auto msg = std::stringstream();
+          msg << "Type error : "
+              << "Unknown type " << super.label();
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+          return false;
+        } else {  // More than one match is ambiguous
+          // Ambiguous name
+          const auto& pos = super.position();
+          auto msg = std::stringstream();
+          msg << "Type error : "
+              << "Ambiguous type " << super.label()
+              << ", found more than one elligible type: ";
+          for ( auto i = 0; i < matches.size() - 1; ++i ) {
+            msg << matches[i].first << ", ";
+          }
+          msg << matches.back().first;
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+          return false;
+        }
+      }
+
+      template <typename GUM_SCALAR>
       bool O3TypeFactory<GUM_SCALAR>::__addArcs2Dag( const O3PRM& prm,
                                                      ErrorsContainer& errors ) {
         // Adding arcs to the graph inheritance graph
         for ( const auto& type : prm.types() ) {
-          if ( type->super().label() != "" ) {
-            try {
-              auto head = __nameMap[type->super().label()];
-              auto tail = __nameMap[type->name().label()];
-              __dag.addArc( tail, head );
-            } catch ( NotFound& e ) {
-              // Unknown super type
-              const auto& pos = type->super().position();
-              auto msg = std::stringstream();
-              msg << "Type error : "
-                  << "Unknown type " << type->super().label();
-              errors.addError(
-                  msg.str(), pos.file(), pos.line(), pos.column() );
+          if ( type->super().label() != "") {
+            if (not __resolveType( type->super(), errors ) ) {
               return false;
+            }
+            auto super = __superMap[type->super().label()];
+            auto head = __nameMap[super->name().label()];
+            auto tail = __nameMap[type->name().label()];
+            try {
+              __dag.addArc( tail, head );
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
               const auto& pos = type->position();
@@ -181,7 +229,6 @@ namespace gum {
             }
             // Check labels inheritance
             for ( const auto& pair : type->labels() ) {
-              const auto& super = __typeMap[type->super().label()];
               auto super_labels = Set<std::string>();
               for ( const auto& label : super->labels() ) {
                 super_labels.insert( label.first.label() );
