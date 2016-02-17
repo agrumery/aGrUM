@@ -32,7 +32,7 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      gum::Sequence<NodeId> topologicalOrder( const gum::DAG& src ) {
+      gum::Sequence<NodeId> topological_order( const gum::DAG& src ) {
         auto dag = src;
         auto roots = std::vector<NodeId>();
         auto order = gum::Sequence<NodeId>();
@@ -67,6 +67,23 @@ namespace gum {
         s << err.filename << "|" << err.line << " col " << err.column << "| "
           << clean(err.msg);
         return std::move(s.str());
+      }
+
+      std::string read_stream( std::istream& input ) {
+        if ( input ) {
+          input.seekg( 0, input.end );
+          auto length = input.tellg();
+          input.seekg( 0, input.beg );
+
+          auto str = std::string();
+          str.resize( length, ' ' );
+          auto begin = &*str.begin();
+
+          input.read( begin, length );
+
+          return std::move(str);
+        }
+        GUM_ERROR( OperationNotAllowed, "Could not open file" );
       }
 
     }
