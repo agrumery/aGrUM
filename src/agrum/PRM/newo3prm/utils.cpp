@@ -56,10 +56,14 @@ namespace gum {
       }
 
       std::string clean( const std::string& text ) {
-        auto regex = std::regex( "[A-Z_][A-Z_]+" );
-        auto output = std::stringstream();
-        output << std::regex_replace( text, regex, "declaration" );
-        return std::move(output.str());
+        auto match = std::regex( "Syntax error" );
+        if ( std::regex_search( text, match ) ) {
+          auto regex = std::regex( "[A-Z_][A-Z_]+" );
+          auto output = std::stringstream();
+          output << std::regex_replace( text, regex, "declaration" );
+          return std::move( output.str() );
+        }
+        return text;
       }
 
       std::string print( const ParseError& err ) {

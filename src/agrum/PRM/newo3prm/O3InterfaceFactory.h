@@ -58,11 +58,11 @@ namespace gum {
 
         void buildInterfaces( PRM<GUM_SCALAR>& prm,
                               const O3PRM& tmp_prm,
-                              std::ostream& output );
+                              ErrorsContainer& errors );
 
         void buildElements( PRM<GUM_SCALAR>& prm,
                             const O3PRM& tmp_prm,
-                            std::ostream& output );
+                            ErrorsContainer& errors );
 
         private:
         HashTable<std::string, gum::NodeId> __nameMap;
@@ -75,20 +75,20 @@ namespace gum {
         void __initialize();
         bool __addInterface2Dag( PRM<GUM_SCALAR>& prm,
                                  const O3PRM& tmp_prm,
-                                 std::ostream& output );
+                                 ErrorsContainer& errors );
 
-        bool __addArcs2Dag( const O3PRM& prm, std::ostream& output );
+        bool __addArcs2Dag( const O3PRM& prm, ErrorsContainer& errors );
 
         void __setO3InterfaceCreationOrder();
 
         bool __checkO3Interfaces( PRM<GUM_SCALAR>& prm,
                                   const O3PRM& tmp_prm,
-                                  std::ostream& output );
+                                  ErrorsContainer& errors );
 
         bool __checkInterfaceElement( PRM<GUM_SCALAR>& prm,
                                       const O3Interface& i,
                                       const O3InterfaceElement& elt,
-                                      std::ostream& output );
+                                      ErrorsContainer& errors );
       };
 
     }  // o3prm
