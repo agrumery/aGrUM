@@ -31,6 +31,7 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
@@ -51,11 +52,12 @@ namespace gum {
         O3TypeFactory( const O3TypeFactory<GUM_SCALAR>& src );
         O3TypeFactory( O3TypeFactory<GUM_SCALAR>&& src );
         ~O3TypeFactory();
-        O3TypeFactory& operator=(const O3TypeFactory<GUM_SCALAR>& src);
-        O3TypeFactory& operator=(O3TypeFactory<GUM_SCALAR>&& src);
+        O3TypeFactory& operator=( const O3TypeFactory<GUM_SCALAR>& src );
+        O3TypeFactory& operator=( O3TypeFactory<GUM_SCALAR>&& src );
 
-        void
-        build( PRM<GUM_SCALAR>& prm, const O3PRM& my_o3prm, std::ostream& output );
+        void build( PRM<GUM_SCALAR>& prm,
+                    const O3PRM& my_o3prm,
+                    ErrorsContainer& errors );
 
         private:
         HashTable<std::string, gum::NodeId> __nameMap;
@@ -66,16 +68,16 @@ namespace gum {
         std::vector<const O3IntType*> __o3IntTypes;
 
         void __initialize();
+        void __setO3TypeCreationOrder();
         bool __isPrimitiveType( const O3Type& type );
         bool __addTypes2Dag( PRM<GUM_SCALAR>& prm,
                              const O3PRM& tmp_prm,
-                             std::ostream& output );
-        bool __addArcs2Dag( const O3PRM& prm, std::ostream& output );
-        void __setO3TypeCreationOrder();
+                             ErrorsContainer& errors );
+        bool __addArcs2Dag( const O3PRM& prm, ErrorsContainer& errors );
         bool __checkO3Types( PRM<GUM_SCALAR>& prm,
                              const O3PRM& tmp_prm,
-                             std::ostream& output );
-        bool __checkO3IntTypes( const O3PRM& prm, std::ostream& output );
+                             ErrorsContainer& errors );
+        bool __checkO3IntTypes( const O3PRM& prm, ErrorsContainer& errors );
       };
 
     }  // o3prm

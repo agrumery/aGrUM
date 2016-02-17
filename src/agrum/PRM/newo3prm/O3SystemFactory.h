@@ -56,29 +56,29 @@ namespace gum {
         O3SystemFactory<GUM_SCALAR>&
         operator=( O3SystemFactory<GUM_SCALAR>&& src );
 
-        void build( PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, std::ostream& output );
+        void build( PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, ErrorsContainer& errors );
 
         private:
         HashTable<std::string, O3Instance*> __nameMap;
 
         bool
-        __checkSystem( PRM<GUM_SCALAR>& prm, O3System& sys, std::ostream& output );
+        __checkSystem( PRM<GUM_SCALAR>& prm, O3System& sys, ErrorsContainer& errors );
 
         bool __checkIncrements( PRM<GUM_SCALAR>& prm,
                                 O3System& sys,
-                                std::ostream& output );
+                                ErrorsContainer& errors );
 
         bool __checkParameters( const Class<GUM_SCALAR>& type,
                                 const O3Instance& inst,
-                                std::ostream& output );
+                                ErrorsContainer& errors );
         
         bool __checkInstance( PRM<GUM_SCALAR>& prm,
                               O3System& sys,
-                              std::ostream& output );
+                              ErrorsContainer& errors );
 
         bool __checkAssignments( PRM<GUM_SCALAR>& prm,
                                  O3System& sys,
-                                 std::ostream& output );
+                                 ErrorsContainer& errors );
       };
 
     }  // o3prm

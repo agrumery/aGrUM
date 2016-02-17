@@ -82,11 +82,11 @@ namespace gum {
       template <typename GUM_SCALAR>
       void O3TypeFactory<GUM_SCALAR>::build( PRM<GUM_SCALAR>& prm,
                                              const O3PRM& my_o3prm,
-                                             std::ostream& output ) {
+                                             ErrorsContainer& errors ) {
         __initialize();
         PRMFactory<GUM_SCALAR> factory( &prm );
         // building types
-        if ( __checkO3Types( prm, my_o3prm, output ) ) {
+        if ( __checkO3Types( prm, my_o3prm, errors ) ) {
           __setO3TypeCreationOrder();
           for ( auto type : __o3Types ) {
             if ( not __isPrimitiveType( *type ) ) {
@@ -100,7 +100,7 @@ namespace gum {
           }
         }
         // building int types
-        if ( __checkO3IntTypes( my_o3prm, output ) ) {
+        if ( __checkO3IntTypes( my_o3prm, errors ) ) {
           for ( auto type : __o3IntTypes ) {
             factory.startDiscreteType( type->name().label() );
             auto n = type->end().value() - type->start().value();
@@ -115,20 +115,20 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__addTypes2Dag( PRM<GUM_SCALAR>& prm,
-                                                      const O3PRM& tmp_prm,
-                                                      std::ostream& output ) {
+      bool
+      O3TypeFactory<GUM_SCALAR>::__addTypes2Dag( PRM<GUM_SCALAR>& prm,
+                                                 const O3PRM& tmp_prm,
+                                                 ErrorsContainer& errors ) {
         // Adding nodes to the type inheritance graph
         for ( const auto& type : tmp_prm.types() ) {
           if ( not __isPrimitiveType( *type ) and
                name_used<GUM_SCALAR>( prm, type->name().label() ) ) {
             // Raised if duplicate type names
             const auto& pos = type->name().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Type error : "
-                   << "Type name " << type->name().label() << " exists already"
-                   << std::endl;
+            auto msg = std::stringstream();
+            msg << "Type error : "
+                << "Type name " << type->name().label() << " exists already";
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             return false;
           }
           auto id = __dag.addNode();
@@ -139,11 +139,10 @@ namespace gum {
           } catch ( DuplicateElement& e ) {
             // Raised if duplicate type names
             const auto& pos = type->name().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Type error : "
-                   << "Type " << type->name().label() << " exists already"
-                   << std::endl;
+            auto msg = std::stringstream();
+            msg << "Type error : "
+                << "Type " << type->name().label() << " exists already";
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             return false;
           }
         }
@@ -152,7 +151,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3TypeFactory<GUM_SCALAR>::__addArcs2Dag( const O3PRM& prm,
-                                                     std::ostream& output ) {
+                                                     ErrorsContainer& errors ) {
         // Adding arcs to the graph inheritance graph
         for ( const auto& type : prm.types() ) {
           if ( type->super().label() != "" ) {
@@ -163,20 +162,21 @@ namespace gum {
             } catch ( NotFound& e ) {
               // Unknown super type
               const auto& pos = type->super().position();
-              output << pos.file() << "|" << pos.line() << " col "
-                     << pos.column() << "|"
-                     << " Type error : "
-                     << "Unknown type " << type->super().label() << std::endl;
+              auto msg = std::stringstream();
+              msg << "Type error : "
+                  << "Unknown type " << type->super().label();
+              errors.addError(
+                  msg.str(), pos.file(), pos.line(), pos.column() );
               return false;
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
               const auto& pos = type->position();
-              output << pos.file() << "|" << pos.line() << " col "
-                     << pos.column() << "|"
-                     << " Type error : "
-                     << "Cyclic inheritance between type "
-                     << type->name().label() << " and type "
-                     << type->super().label() << std::endl;
+              auto msg = std::stringstream();
+              msg << "Type error : "
+                  << "Cyclic inheritance between type " << type->name().label()
+                  << " and type " << type->super().label();
+              errors.addError(
+                  msg.str(), pos.file(), pos.line(), pos.column() );
               return false;
             }
             // Check labels inheritance
@@ -188,11 +188,12 @@ namespace gum {
               }
               if ( not super_labels.contains( pair.second.label() ) ) {
                 const auto& pos = pair.second.position();
-                output << pos.file() << "|" << pos.line() << " col "
-                       << pos.column() << "|"
-                       << " Type error : "
-                       << "Unknown label " << pair.second.label() << " in "
-                       << type->super().label() << std::endl;
+                auto msg = std::stringstream();
+                msg << "Type error : "
+                    << "Unknown label " << pair.second.label() << " in "
+                    << type->super().label();
+                errors.addError(
+                    msg.str(), pos.file(), pos.line(), pos.column() );
                 return false;
               }
             }
@@ -213,17 +214,18 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__checkO3Types( PRM<GUM_SCALAR>& prm,
-                                                      const O3PRM& tmp_prm,
-                                                      std::ostream& output ) {
-        return __addTypes2Dag( prm, tmp_prm, output ) and
-               __addArcs2Dag( tmp_prm, output );
+      bool
+      O3TypeFactory<GUM_SCALAR>::__checkO3Types( PRM<GUM_SCALAR>& prm,
+                                                 const O3PRM& tmp_prm,
+                                                 ErrorsContainer& errors ) {
+        return __addTypes2Dag( prm, tmp_prm, errors ) and
+               __addArcs2Dag( tmp_prm, errors );
       }
 
       template <typename GUM_SCALAR>
       bool
       O3TypeFactory<GUM_SCALAR>::__checkO3IntTypes( const O3PRM& prm,
-                                                    std::ostream& output ) {
+                                                    ErrorsContainer& errors ) {
         auto names = gum::Set<std::string>();
         for ( const auto& type : prm.types() ) {
           try {
@@ -236,20 +238,19 @@ namespace gum {
           if ( names.contains( type->name().label() ) ) {
             // Raised if duplicate type names
             const auto& pos = type->name().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Type error : "
-                   << "Type name " << type->name().label() << " already used"
-                   << std::endl;
+            auto msg = std::stringstream();
+            msg << "Type error : "
+                << "Type name " << type->name().label() << " already used";
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             return false;
           } else if ( type->end().value() - type->start().value() < 1 ) {
             // Invalid range
             const auto& pos = type->name().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Type error : "
-                   << "Invalid range " << type->start().value() << " -> "
-                   << type->end().value() << std::endl;
+            auto msg = std::stringstream();
+            msg << "Type error : "
+                << "Invalid range " << type->start().value() << " -> "
+                << type->end().value();
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             return false;
           } else {
             __o3IntTypes.push_back( type.get() );
