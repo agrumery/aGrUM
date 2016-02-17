@@ -2233,19 +2233,23 @@ def randomProba():
     """randomProba() -> double"""
     return _pyAgrum.randomProba()
 
-def initRandom(init=0):
+def randomGeneratorSeed():
+    """randomGeneratorSeed() -> unsigned int"""
+    return _pyAgrum.randomGeneratorSeed()
+
+def initRandom(seed=0):
     """
-    initRandom(unsigned int init=0)
+    initRandom(unsigned int seed=0)
     initRandom()
     """
-    return _pyAgrum.initRandom(init)
+    return _pyAgrum.initRandom(seed)
 
-def randomGeneratorSeed(seed=0):
+def getRandomGenerator(seed=0):
     """
-    randomGeneratorSeed(unsigned int seed=0) -> unsigned int
-    randomGeneratorSeed() -> unsigned int &
+    getRandomGenerator(unsigned int seed=0) -> std::default_random_engine
+    getRandomGenerator() -> std::default_random_engine
     """
-    return _pyAgrum.randomGeneratorSeed(seed)
+    return _pyAgrum.getRandomGenerator(seed)
 
 def isOMP():
     """isOMP() -> bool"""
@@ -3938,6 +3942,7 @@ class Potential_double(_object):
         __init__(gum::Potential<(double)> self) -> Potential_double
         __init__(gum::Potential<(double)> self, gum::MultiDimImplementation< double > * aContent) -> Potential_double
         __init__(gum::Potential<(double)> self, Potential_double src) -> Potential_double
+        __init__(gum::Potential<(double)> self, Potential_double arg2) -> Potential_double
         __init__(gum::Potential<(double)> self, gum::MultiDimImplementation< double > * aContent, MultiDimContainer_double src) -> Potential_double
         """
         this = _pyAgrum.new_Potential_double(*args)
@@ -3968,19 +3973,37 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_sum(self)
 
 
+    def __add__(self, b):
+        """__add__(Potential_double self, Potential_double b) -> Potential_double"""
+        return _pyAgrum.Potential_double___add__(self, b)
+
+
+    def __sub__(self, b):
+        """__sub__(Potential_double self, Potential_double b) -> Potential_double"""
+        return _pyAgrum.Potential_double___sub__(self, b)
+
+
+    def __mul__(self, b):
+        """__mul__(Potential_double self, Potential_double b) -> Potential_double"""
+        return _pyAgrum.Potential_double___mul__(self, b)
+
+
+    def __truediv__(self, b):
+        """__truediv__(Potential_double self, Potential_double b) -> Potential_double"""
+        return _pyAgrum.Potential_double___truediv__(self, b)
+
+
+    def __div__(self, b):
+        """__div__(Potential_double self, Potential_double b) -> Potential_double"""
+        return _pyAgrum.Potential_double___div__(self, b)
+
+
+
     def variablesSequence(self):
         varlist = []
         for i in range(0, self.nbrDim()):
             varlist.append(self.variable(i))
         return varlist
-
-    def __mul__(self,p2):
-        """
-        return self * p2
-        """
-        p=Potential()
-        p.multiplicate(self,p2)
-        return p
 
     def eliminates(self,var):
         """
@@ -4170,6 +4193,7 @@ class Potential_double(_object):
         val = _pyAgrum.Potential_double_add(self, v)
 
         self._notSync=True
+        return self
 
 
         return val

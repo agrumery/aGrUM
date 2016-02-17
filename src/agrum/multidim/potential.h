@@ -167,3 +167,12 @@ namespace gum {
 
 #include <agrum/multidim/potential.tcc>
 #endif /* GUM_POTENTIAL_H */
+
+
+
+
+
+
+
+
+

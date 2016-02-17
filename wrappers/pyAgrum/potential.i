@@ -10,6 +10,7 @@
 %}
 %pythonappend gum::Potential::add %{
         self._notSync=True
+        return self
 %}
 %pythonappend gum::Potential::remove %{
         self._notSync=True
@@ -19,20 +20,36 @@
 %}
 
 %extend gum::Potential<double> {
+gum::Potential<double> __add__(const gum::Potential<double>& b) {
+  return gum::operator+(*$self,b);
+}
+
+gum::Potential<double> __sub__(const gum::Potential<double>& b) {
+  return gum::operator-(*$self,b);
+}
+
+gum::Potential<double> __mul__(const gum::Potential<double>& b) {
+  return gum::operator*(*$self,b);
+}
+
+// division for python3
+gum::Potential<double> __truediv__(const gum::Potential<double>& b) {
+  return gum::operator/(*$self,b);
+}
+
+// division for python2
+gum::Potential<double> __div__(const gum::Potential<double>& b) {
+  return gum::operator/(*$self,b);
+}
+
+
 %pythoncode {
+    
     def variablesSequence(self):
         varlist = []
         for i in range(0, self.nbrDim()):
             varlist.append(self.variable(i))
         return varlist
-
-    def __mul__(self,p2):
-        """
-        return self * p2
-        """
-        p=Potential()
-        p.multiplicate(self,p2)
-        return p
 
     def eliminates(self,var):
         """
@@ -179,3 +196,4 @@
     void var_names() {}
     void var_dims() {}
 }
+

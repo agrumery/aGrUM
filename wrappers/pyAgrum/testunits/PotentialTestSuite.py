@@ -170,7 +170,6 @@ class TestIndexs(PotentialTestCase):
 
         self.assertListsAlmostEqual(list3[:,0].tolist(), list3[:,0,:].tolist())
 
-
     def testDictIndex(self):
         bn = gum.BayesNet()
         id_list = []
@@ -205,6 +204,28 @@ class TestIndexs(PotentialTestCase):
 
         self.assertListsAlmostEqual(list2.toarray(), np.array([[0.1, 0.6],[0.9,0.4]]))
 
+class TestOperators(pyAgrumTestCase):        
+  def testSimpleOperators(self):
+    a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    q=gum.Potential()
+    q.add(b).add(c)
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    print(p+q)    
+    print(p-q)    
+    print(p*q)    
+    print(p/q)
+    print(p*q-p/q)
+ 
+    #r=p.max([a,b])
+    #r=p.sum([a,b])
+
+
 
 
 ts = unittest.TestSuite()
@@ -215,3 +236,5 @@ ts.addTest(TestInsertions('testWithInstantiation'))
 ts.addTest(TestInsertions('testCopyConstructor'))
 ts.addTest(TestIndexs('testNumpyIndex'))
 ts.addTest(TestIndexs('testDictIndex'))
+ts.addTest(TestIndexs('testDictIndex'))
+ts.addTest(TestOperators('testSimpleOperators'))
