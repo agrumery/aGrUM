@@ -70,7 +70,7 @@ namespace gum {
       void O3ClassFactory<GUM_SCALAR>::__addParameters(
           PRMFactory<GUM_SCALAR>& factory,
           const O3Class& c,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         for ( const auto& p : c.parameters() ) {
           switch ( p.type() ) {
             case O3Parameter::Type::INT: {
@@ -93,26 +93,25 @@ namespace gum {
           const PRM<GUM_SCALAR>& prm,
           const O3Class& c,
           const O3ReferenceSlot& ref,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         if ( not( prm.isInterface( ref.type().label() ) or
                   prm.isClass( ref.type().label() ) ) ) {
           const auto& pos = ref.name().position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Reference Slot error : "
-                 << "Reference Slot type " << ref.type().label() << " not found"
-                 << std::endl;
+          auto msg = std::stringstream();
+          msg << "Reference Slot error : "
+              << "Reference Slot type " << ref.type().label() << " not found";
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
         const auto& real_c = prm.getClass( c.name().label() );
         if ( real_c.exists( ref.name().label() ) ) {
           const auto& pos = ref.name().position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Reference Slot error : "
-                 << "Reference Slot name " << ref.name().label()
-                 << " exists already" << std::endl;
+          auto msg = std::stringstream();
+          msg << "Reference Slot error : "
+              << "Reference Slot name " << ref.name().label()
+              << " exists already";
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -120,33 +119,30 @@ namespace gum {
           const auto& ref_type = prm.getClass( ref.type().label() );
           if ( ( &ref_type ) == ( &real_c ) ) {
             const auto& pos = ref.type().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Reference Slot error : "
-                   << "Class " << c.name().label() << " cannot reference itself"
-                   << std::endl;
+            auto msg = std::stringstream();
+            msg << "Reference Slot error : "
+                << "Class " << c.name().label() << " cannot reference itself";
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
           if ( ref_type.isSubTypeOf( real_c ) ) {
             const auto& pos = ref.type().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Reference Slot error : "
-                   << "Class " << c.name().label()
-                   << " cannot reference subclass " << ref.type().label()
-                   << std::endl;
+            auto msg = std::stringstream();
+            msg << "Reference Slot error : "
+                << "Class " << c.name().label() << " cannot reference subclass "
+                << ref.type().label();
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
           if ( real_c.isSubTypeOf( ref_type ) ) {
             const auto& pos = ref.type().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Reference Slot error : "
-                   << "Class " << c.name().label()
-                   << " cannot reference super class " << ref.type().label()
-                   << std::endl;
+            auto msg = std::stringstream();
+            msg << "Reference Slot error : "
+                << "Class " << c.name().label()
+                << " cannot reference super class " << ref.type().label();
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
@@ -158,10 +154,10 @@ namespace gum {
       void O3ClassFactory<GUM_SCALAR>::__addReferenceSlots(
           PRMFactory<GUM_SCALAR>& factory,
           const O3Class& c,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         // References
         for ( auto& ref : c.referenceSlots() ) {
-          if ( __checkReferenceSlot( *( factory.prm() ), c, ref, output ) ) {
+          if ( __checkReferenceSlot( *( factory.prm() ), c, ref, errors ) ) {
             factory.addReferenceSlot(
                 ref.type().label(), ref.name().label(), ref.isArray() );
           }
@@ -172,13 +168,13 @@ namespace gum {
       bool O3ClassFactory<GUM_SCALAR>::__checkLocalParent(
           const Class<GUM_SCALAR>& c,
           const O3Label& prnt,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         if ( not c.exists( prnt.label() ) ) {
           const auto& pos = prnt.position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Attribute error : "
-                 << "Parent " << prnt.label() << " not found" << std::endl;
+          auto msg = std::stringstream();
+          msg << "Attribute error : "
+              << "Parent " << prnt.label() << " not found";
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -187,10 +183,10 @@ namespace gum {
                   gum::prm::ClassElement<GUM_SCALAR>::isSlotChain( elt ) or
                   gum::prm::ClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
           const auto& pos = prnt.position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Attribute error : "
-                 << "Illegal parent " << prnt.label() << std::endl;
+          auto msg = std::stringstream();
+          msg << "Attribute error : "
+              << "Illegal parent " << prnt.label();
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -201,19 +197,19 @@ namespace gum {
       bool O3ClassFactory<GUM_SCALAR>::__checkRemoteParent(
           const ClassElementContainer<GUM_SCALAR>& c,
           const O3Label& prnt,
-          std::ostream& output ) {
-        return __resolveSlotChain( c, prnt, output ) != nullptr;
+          ErrorsContainer& errors ) {
+        return __resolveSlotChain( c, prnt, errors ) != nullptr;
       }
 
       template <typename GUM_SCALAR>
       bool
       O3ClassFactory<GUM_SCALAR>::__checkParent( const Class<GUM_SCALAR>& c,
                                                  const O3Label& prnt,
-                                                 std::ostream& output ) {
+                                                 ErrorsContainer& errors ) {
         if ( prnt.label().find( '.' ) == std::string::npos ) {
-          return __checkLocalParent( c, prnt, output );
+          return __checkLocalParent( c, prnt, errors );
         } else {
-          return __checkRemoteParent( c, prnt, output );
+          return __checkRemoteParent( c, prnt, errors );
         }
       }
 
@@ -222,14 +218,14 @@ namespace gum {
       O3ClassFactory<GUM_SCALAR>::__resolveSlotChain(
           const ClassElementContainer<GUM_SCALAR>& c,
           const O3Label& chain,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         auto s = chain.label();
         auto idx = (std::size_t)0;
         auto current = &c;
         for ( idx = s.find( '.', idx ); idx != std::string::npos;
               idx = s.find( '.', idx ) ) {
           auto value = s.substr( 0, idx );
-          if ( not __checkSlotChainLink( *current, chain, value, output ) ) {
+          if ( not __checkSlotChainLink( *current, chain, value, errors ) ) {
             return nullptr;
           }
           auto ref = dynamic_cast<const ReferenceSlot<GUM_SCALAR>*>(
@@ -239,7 +235,7 @@ namespace gum {
             s = s.substr( idx + 1 );
           }
         }
-        if ( not __checkSlotChainLink( *current, chain, s, output ) ) {
+        if ( not __checkSlotChainLink( *current, chain, s, errors ) ) {
           return nullptr;
         }
         return &( current->get( s ) );
@@ -250,14 +246,13 @@ namespace gum {
           const ClassElementContainer<GUM_SCALAR>& c,
           const O3Label& chain,
           const std::string& s,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         if ( not c.exists( s ) ) {
           const auto& pos = chain.position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Slot chain error : "
-                 << "Link " << s << " in chain " << chain.label()
-                 << " not found" << std::endl;
+          auto msg = std::stringstream();
+          msg << "Slot chain error : "
+              << "Link " << s << " in chain " << chain.label() << " not found";
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -269,7 +264,7 @@ namespace gum {
       O3ClassFactory<GUM_SCALAR>::__checkRawCPT( const PRM<GUM_SCALAR>& prm,
                                                  const Class<GUM_SCALAR>& c,
                                                  O3RawCPT& attr,
-                                                 std::ostream& output ) {
+                                                 ErrorsContainer& errors ) {
         const auto& type = prm.type( attr.type().label() );
 
         auto domainSize = type->domainSize();
@@ -280,17 +275,17 @@ namespace gum {
             // If we are here, all parents have been check so __resolveSlotChain
             // will not raise an error and not return a null_ptr
             domainSize *=
-                __resolveSlotChain( c, prnt, output )->type()->domainSize();
+                __resolveSlotChain( c, prnt, errors )->type()->domainSize();
           }
         }
         // Check for CPT size
         if ( domainSize != attr.values().size() ) {
           const auto& pos = attr.name().position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Attribute error : "
-                 << "Illegal CPT size, expected " << domainSize << " found "
-                 << attr.values().size() << std::endl;
+          auto msg = std::stringstream();
+          msg << "Attribute error : "
+              << "Illegal CPT size, expected " << domainSize << " found "
+              << attr.values().size();
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -308,12 +303,12 @@ namespace gum {
         for ( auto i = 0; i < attr.values().size(); ++i ) {
           auto idx = i % parent_size;
           values[idx] += attr.values()[i].formula().result();
-          if ( values[idx] < 0 or values[idx] > 1) {
+          if ( values[idx] < 0 or values[idx] > 1 ) {
             const auto& pos = attr.values()[i].position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-              << "|"
-              << " Attribute error : "
-              << "Illegal CPT value " << values[idx] << std::endl;
+            auto msg = std::stringstream();
+            msg << "Attribute error : "
+                << "Illegal CPT value " << values[idx];
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
@@ -323,10 +318,10 @@ namespace gum {
                  values.cend(),
                  []( float f ) { return std::abs( f - 1.0f ) < 1.0e-6; } ) ) {
           const auto& pos = attr.name().position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Attribute error : "
-                 << "CPT does not sum to 1" << std::endl;
+          auto msg = std::stringstream();
+          msg << "Attribute error : "
+              << "CPT does not sum to 1";
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -334,16 +329,19 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkRuleCPT(
-          const Class<GUM_SCALAR>& c, O3RuleCPT& attr, std::ostream& output ) {
+      bool
+      O3ClassFactory<GUM_SCALAR>::__checkRuleCPT( const Class<GUM_SCALAR>& c,
+                                                  O3RuleCPT& attr,
+                                                  ErrorsContainer& errors ) {
         for ( auto& rule : attr.rules() ) {
           // Check labels for all parents
           if ( rule.first.size() != attr.parents().size() ) {
             const auto& pos = rule.first.front().position();
-            output << pos.file() << "|" << pos.line() << "|"
-                   << " Attribute error : "
-                   << "Expected " << attr.parents().size()
-                   << " value(s), found " << rule.first.size() << std::endl;
+            auto msg = std::stringstream();
+            msg << "Attribute error : "
+                << "Expected " << attr.parents().size() << " value(s), found "
+                << rule.first.size();
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
@@ -363,19 +361,22 @@ namespace gum {
               sum += value;
               if ( value < 0 or value > 1 ) {
                 const auto& pos = f.position();
-                output << pos.file() << "|" << pos.line() << " col "
-                       << pos.column() << "|"
-                       << " Attribute error : "
-                       << "Illegal CPT value " << value << std::endl;
+                auto msg = std::stringstream();
+                msg << "Attribute error : "
+                    << "Illegal CPT value " << value;
+                errors.addError(
+                    msg.str(), pos.file(), pos.line(), pos.column() );
                 __build = false;
                 return false;
               }
             } catch ( OperationNotAllowed& ) {
               const auto& pos = f.position();
-              output << pos.file() << "|" << pos.line() << "|"
-                     << " Attribute error : "
-                     << "Unknown value in CPT: \"" << f.formula().formula()
-                     << "\"";
+              auto msg = std::stringstream();
+              msg << "Attribute error : "
+                  << "Unknown value in CPT: \"" << f.formula().formula()
+                  << "\"";
+              errors.addError(
+                  msg.str(), pos.file(), pos.line(), pos.column() );
               __build = false;
               return false;
             }
@@ -383,9 +384,10 @@ namespace gum {
           // Check that CPT sums to 1
           if ( std::abs( sum - 1.0f ) > 1e-6 ) {
             const auto& pos = rule.first.front().position();
-            output << pos.file() << "|" << pos.line() << "|"
-                   << " Attribute error : "
-                   << "CPT does not sum to 1";
+            auto msg = std::stringstream();
+            msg << "Attribute error : "
+                << "CPT does not sum to 1";
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
@@ -398,14 +400,14 @@ namespace gum {
           const PRM<GUM_SCALAR>& prm,
           const O3Class& o3_c,
           O3Attribute& attr,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         // Check type
         if ( not prm.isType( attr.type().label() ) ) {
           const auto& pos = attr.type().position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Attribute error : "
-                 << "Type " << attr.type().label() << " not found" << std::endl;
+          auto msg = std::stringstream();
+          msg << " Attribute error : "
+              << "Type " << attr.type().label() << " not found";
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -417,11 +419,11 @@ namespace gum {
                not agg_type.isSubTypeOf(
                    super.get( attr.name().label() ).type() ) ) {
             const auto& pos = attr.name().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Class error : "
-                   << "Illegal overload of element " << attr.name()
-                   << " from class " << super.name() << std::endl;
+            auto msg = std::stringstream();
+            msg << "Class error : "
+                << "Illegal overload of element " << attr.name()
+                << " from class " << super.name();
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
@@ -434,11 +436,11 @@ namespace gum {
           const PRM<GUM_SCALAR>& prm,
           const O3Class& o3_c,
           O3Attribute& attr,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         // Check for parents existence
         const auto& c = prm.getClass( o3_c.name().label() );
         for ( auto& prnt : attr.parents() ) {
-          if ( not __checkParent( c, prnt, output ) ) {
+          if ( not __checkParent( c, prnt, errors ) ) {
             __build = false;
             return false;
           }
@@ -446,22 +448,24 @@ namespace gum {
         // Check that CPT sums to 1
         auto raw = dynamic_cast<O3RawCPT*>( &attr );
         if ( raw ) {
-          return __checkRawCPT( prm, c, *raw, output );
+          return __checkRawCPT( prm, c, *raw, errors );
         }
         auto rule = dynamic_cast<O3RuleCPT*>( &attr );
         if ( rule ) {
-          return __checkRuleCPT( c, *rule, output );
+          return __checkRuleCPT( c, *rule, errors );
         }
         return true;
       }
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::__declareAttribute(
-          PRMFactory<GUM_SCALAR>& factory, O3Class& c, std::ostream& output ) {
+          PRMFactory<GUM_SCALAR>& factory,
+          O3Class& c,
+          ErrorsContainer& errors ) {
         // Attributes
         for ( auto& attr : c.attributes() ) {
           if ( __checkAttributeForDeclaration(
-                   *( factory.prm() ), c, *attr, output ) ) {
+                   *( factory.prm() ), c, *attr, errors ) ) {
             factory.startAttribute( attr->type().label(),
                                     attr->name().label() );
             factory.endAttribute();
@@ -471,11 +475,13 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::__completeAttribute(
-          PRMFactory<GUM_SCALAR>& factory, O3Class& c, std::ostream& output ) {
+          PRMFactory<GUM_SCALAR>& factory,
+          O3Class& c,
+          ErrorsContainer& errors ) {
         // Attributes
         for ( auto& attr : c.attributes() ) {
           if ( __checkAttributeForCompletion(
-                   *( factory.prm() ), c, *attr, output ) ) {
+                   *( factory.prm() ), c, *attr, errors ) ) {
             factory.continueAttribute( attr->name().label() );
             for ( const auto& parent : attr->parents() ) {
               factory.addParent( parent.label() );
@@ -509,14 +515,14 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3ClassFactory<GUM_SCALAR>::__checkParametersNumber(
-          const O3Aggregate& agg, size_t n, std::ostream& output ) {
+          const O3Aggregate& agg, size_t n, ErrorsContainer& errors ) {
         if ( agg.parameters().size() != n ) {
           const auto& pos = agg.name().position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Aggregate error : "
-                 << "Expected " << n << " parameters "
-                 << ", found " << agg.parameters().size() << std::endl;
+          auto msg = std::stringstream();
+          msg << "Aggregate error : "
+              << "Expected " << n << " parameters "
+              << ", found " << agg.parameters().size();
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -527,7 +533,7 @@ namespace gum {
       bool O3ClassFactory<GUM_SCALAR>::__checkParameterValue(
           const O3Aggregate& agg,
           const gum::prm::Type<GUM_SCALAR>& t,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         const auto& param = agg.parameters().front();
         bool found = false;
         for ( Size idx = 0; idx < t.variable().domainSize(); ++idx ) {
@@ -538,12 +544,11 @@ namespace gum {
         }
         if ( not found ) {
           const auto& pos = param.position();
-          output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                 << "|"
-                 << " Aggregate error : "
-                 << "Parameter " << param.label() << " in aggregate "
-                 << agg.name().label() << " does not match any expected values"
-                 << std::endl;
+          auto msg = std::stringstream();
+          msg << "Aggregate error : "
+              << "Parameter " << param.label() << " in aggregate "
+              << agg.name().label() << " does not match any expected values";
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           __build = false;
           return false;
         }
@@ -555,18 +560,18 @@ namespace gum {
       O3ClassFactory<GUM_SCALAR>::__checkAggregate( const PRM<GUM_SCALAR>& prm,
                                                     const O3Class& o3class,
                                                     const O3Aggregate& agg,
-                                                    std::ostream& output ) {
+                                                    ErrorsContainer& errors ) {
         const auto& c = prm.getClass( o3class.name().label() );
         auto t = (const gum::prm::Type<GUM_SCALAR>*)nullptr;
         // Checking parents
         for ( const auto& prnt : agg.parents() ) {
-          auto elt = __resolveSlotChain( c, prnt, output );
+          auto elt = __resolveSlotChain( c, prnt, errors );
           if ( elt == nullptr ) {
             const auto& pos = prnt.position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Aggregate error : "
-                   << "Parent " << prnt.label() << " not found" << std::endl;
+            auto msg = std::stringstream();
+            msg << "Aggregate error : "
+                << "Parent " << prnt.label() << " not found" << std::endl;
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           } else {
@@ -575,12 +580,12 @@ namespace gum {
             } else {
               // Wront type in chain
               const auto& pos = prnt.position();
-              output << pos.file() << "|" << pos.line() << " col "
-                     << pos.column() << "|"
-                     << " Aggregate error : "
-                     << "Expected type " << t->name() << " for parent "
-                     << prnt.label() << ", found " << elt->type().name()
-                     << std::endl;
+              auto msg = std::stringstream();
+              msg << "Aggregate error : "
+                  << "Expected type " << t->name() << " for parent "
+                  << prnt.label() << ", found " << elt->type().name();
+              errors.addError(
+                  msg.str(), pos.file(), pos.line(), pos.column() );
               __build = false;
               return false;
             }
@@ -594,11 +599,11 @@ namespace gum {
                not agg_type.isSubTypeOf(
                    super.get( agg.name().label() ).type() ) ) {
             const auto& pos = agg.name().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Class error : "
-                   << "Illegal overload of element " << agg.name()
-                   << " from class " << super.name() << std::endl;
+            auto msg = std::stringstream();
+            msg << "Class error : "
+                << "Illegal overload of element " << agg.name()
+                << " from class " << super.name();
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
@@ -613,13 +618,13 @@ namespace gum {
           case Aggregate<GUM_SCALAR>::AggregateType::MEDIAN:
           case Aggregate<GUM_SCALAR>::AggregateType::OR:
           case Aggregate<GUM_SCALAR>::AggregateType::AND: {
-            ok = __checkParametersNumber( agg, 0, output );
+            ok = __checkParametersNumber( agg, 0, errors );
             break;
           }
           case Aggregate<GUM_SCALAR>::AggregateType::FORALL:
           case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
           case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
-            ok = __checkParametersNumber( agg, 1, output );
+            ok = __checkParametersNumber( agg, 1, errors );
             break;
           }
           default: { GUM_ERROR( FatalError, "unknown aggregate type" ); }
@@ -634,7 +639,7 @@ namespace gum {
           case Aggregate<GUM_SCALAR>::AggregateType::FORALL:
           case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
           case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
-            ok = __checkParameterValue( agg, *t, output );
+            ok = __checkParameterValue( agg, *t, errors );
             break;
           }
           default: {  // Nothing to do
@@ -647,10 +652,10 @@ namespace gum {
       void O3ClassFactory<GUM_SCALAR>::__addAggregates(
           PRMFactory<GUM_SCALAR>& factory,
           const O3Class& c,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         // Aggregates
         for ( auto& agg : c.aggregates() ) {
-          if ( __checkAggregate( *( factory.prm() ), c, agg, output ) ) {
+          if ( __checkAggregate( *( factory.prm() ), c, agg, errors ) ) {
             auto parents = std::vector<std::string>();
             for ( auto& prnt : agg.parents() ) {
               parents.push_back( prnt.label() );
@@ -681,16 +686,15 @@ namespace gum {
       bool O3ClassFactory<GUM_SCALAR>::__checkAndAddNodesToDag(
           const PRM<GUM_SCALAR>& prm,
           const O3PRM& o3_prm,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         for ( const auto& c : o3_prm.classes() ) {
           if ( name_used<GUM_SCALAR>( prm, c->name().label() ) ) {
             // Raised if duplicate interface names
             const auto& pos = c->name().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Class error : "
-                   << "Class name " << c->name().label() << " exists already"
-                   << std::endl;
+            auto msg = std::stringstream();
+            msg << "Class error : "
+                << "Class name " << c->name().label() << " exists already";
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
@@ -702,11 +706,10 @@ namespace gum {
           } catch ( DuplicateElement& e ) {
             // Raised if duplicate type names
             const auto& pos = c->name().position();
-            output << pos.file() << "|" << pos.line() << " col " << pos.column()
-                   << "|"
-                   << " Class error : "
-                   << "Class name " << c->name().label() << " exists already"
-                   << std::endl;
+            auto msg = std::stringstream();
+            msg << "Class error : "
+                << "Class name " << c->name().label() << " exists already";
+            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
           }
@@ -715,11 +718,11 @@ namespace gum {
             for ( const auto& i : c->interfaces() ) {
               if ( not prm.isInterface( i.label() ) ) {
                 const auto& pos = i.position();
-                output << pos.file() << "|" << pos.line() << " col "
-                       << pos.column() << "|"
-                       << " Class error : "
-                       << "Interface " << i.label() << " not found"
-                       << std::endl;
+                auto msg = std::stringstream();
+                msg << "Class error : "
+                    << "Interface " << i.label() << " not found";
+                errors.addError(
+                    msg.str(), pos.file(), pos.line(), pos.column() );
                 __build = false;
                 return false;
               }
@@ -733,7 +736,7 @@ namespace gum {
       bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
           const PRM<GUM_SCALAR>& prm,
           const O3PRM& o3_prm,
-          std::ostream& output ) {
+          ErrorsContainer& errors ) {
         for ( const auto& c : o3_prm.classes() ) {
           // Cheking interface implementation
           for ( const auto& i : c->interfaces() ) {
@@ -741,13 +744,13 @@ namespace gum {
             for ( const auto& attr : real_i.attributes() ) {
               if ( not __checkImplementation( prm, *c, *attr ) ) {
                 const auto& pos = i.position();
-                output << pos.file() << "|" << pos.line() << " col "
-                       << pos.column() << "|"
-                       << " Class error : "
-                       << "Class " << c->name().label()
-                       << " does not implement "
-                       << "attribute " << attr->name() << " of interface "
-                       << i.label() << std::endl;
+                auto msg = std::stringstream();
+                msg << "Class error : "
+                    << "Class " << c->name().label() << " does not implement "
+                    << "attribute " << attr->name() << " of interface "
+                    << i.label();
+                errors.addError(
+                    msg.str(), pos.file(), pos.line(), pos.column() );
                 __build = false;
                 return false;
               }
@@ -786,7 +789,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool O3ClassFactory<GUM_SCALAR>::__checkAndAddArcsToDag(
-          const O3PRM& prm, std::ostream& output ) {
+          const O3PRM& prm, ErrorsContainer& errors ) {
         // Adding arcs to the graph inheritance graph
         for ( const auto& c : prm.classes() ) {
           if ( c->super().label() != "" ) {
@@ -797,20 +800,22 @@ namespace gum {
             } catch ( NotFound& e ) {
               // Unknown super interface
               const auto& pos = c->super().position();
-              output << pos.file() << "|" << pos.line() << " col "
-                     << pos.column() << "|"
-                     << " Class error : "
-                     << "Unknown class " << c->super().label() << std::endl;
+              auto msg = std::stringstream();
+              msg << "Class error : "
+                  << "Unknown class " << c->super().label();
+              errors.addError(
+                  msg.str(), pos.file(), pos.line(), pos.column() );
               __build = false;
               return false;
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
               const auto& pos = c->position();
-              output << pos.file() << "|" << pos.line() << " col "
-                     << pos.column() << "|"
-                     << " Class error : "
-                     << "Cyclic inheritance between class " << c->name().label()
-                     << " and class " << c->super().label() << std::endl;
+              auto msg = std::stringstream();
+              msg << "Class error : "
+                  << "Cyclic inheritance between class " << c->name().label()
+                  << " and class " << c->super().label();
+              errors.addError(
+                  msg.str(), pos.file(), pos.line(), pos.column() );
               __build = false;
               return false;
             }
@@ -820,20 +825,22 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkO3Classes(
-          const PRM<GUM_SCALAR>& prm, O3PRM& tmp_prm, std::ostream& output ) {
-        return __checkAndAddNodesToDag( prm, tmp_prm, output ) and
-               __checkAndAddArcsToDag( tmp_prm, output );
+      bool
+      O3ClassFactory<GUM_SCALAR>::__checkO3Classes( const PRM<GUM_SCALAR>& prm,
+                                                    O3PRM& tmp_prm,
+                                                    ErrorsContainer& errors ) {
+        return __checkAndAddNodesToDag( prm, tmp_prm, errors ) and
+               __checkAndAddArcsToDag( tmp_prm, errors );
       }
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::buildClasses( PRM<GUM_SCALAR>& prm,
                                                      O3PRM& o3_prm,
-                                                     std::ostream& output ) {
+                                                     ErrorsContainer& errors ) {
         __initialize();
         PRMFactory<GUM_SCALAR> factory( &prm );
         // Class with a super class must be declared after
-        __build = __checkO3Classes( prm, o3_prm, output );
+        __build = __checkO3Classes( prm, o3_prm, errors );
         if ( __build ) {
           __setO3ClassCreationOrder();
           for ( auto c : __o3Classes ) {
@@ -851,8 +858,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::buildImplementations(
-          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, std::ostream& output ) {
-        __build = __build and __checkImplementation( prm, o3_prm, output );
+          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, ErrorsContainer& errors ) {
+        __build = __build and __checkImplementation( prm, o3_prm, errors );
         if ( __build ) {
           for ( auto c : __o3Classes ) {
             prm.getClass( c->name().label() ).__initializeInheritance();
@@ -861,16 +868,15 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::buildParameters( PRM<GUM_SCALAR>& prm,
-                                                        O3PRM& o3_prm,
-                                                        std::ostream& output ) {
+      void O3ClassFactory<GUM_SCALAR>::buildParameters(
+          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, ErrorsContainer& errors ) {
         if ( __build ) {
           PRMFactory<GUM_SCALAR> factory( &prm );
           // Class with a super class must be declared after
           for ( auto c : __o3Classes ) {
             prm.getClass( c->name().label() ).__inheritParameters();
             factory.continueClass( c->name().label() );
-            __addParameters( factory, *c, output );
+            __addParameters( factory, *c, errors );
             factory.endClass( false );
           }
         }
@@ -878,30 +884,29 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::buildReferenceSlots(
-          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, std::ostream& output ) {
+          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, ErrorsContainer& errors ) {
         if ( __build ) {
           PRMFactory<GUM_SCALAR> factory( &prm );
           // Class with a super class must be declared after
           for ( auto c : __o3Classes ) {
             prm.getClass( c->name().label() ).__inheritReferenceSlots();
             factory.continueClass( c->name().label() );
-            __addReferenceSlots( factory, *c, output );
+            __addReferenceSlots( factory, *c, errors );
             factory.endClass( false );
           }
         }
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::buildAggregates( PRM<GUM_SCALAR>& prm,
-                                                        O3PRM& o3_prm,
-                                                        std::ostream& output ) {
+      void O3ClassFactory<GUM_SCALAR>::buildAggregates(
+          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, ErrorsContainer& errors ) {
         if ( __build ) {
           PRMFactory<GUM_SCALAR> factory( &prm );
           // Class with a super class must be declared after
           for ( auto c : __o3Classes ) {
             prm.getClass( c->name().label() ).__inheritAggregates();
             factory.continueClass( c->name().label() );
-            __addAggregates( factory, *c, output );
+            __addAggregates( factory, *c, errors );
             factory.endClass( false );
           }
         }
@@ -909,14 +914,14 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::declareAttributes(
-          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, std::ostream& output ) {
+          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, ErrorsContainer& errors ) {
         if ( __build ) {
           PRMFactory<GUM_SCALAR> factory( &prm );
           // Class with a super class must be declared after
           for ( auto c : __o3Classes ) {
             prm.getClass( c->name().label() ).__inheritAttributes();
             factory.continueClass( c->name().label() );
-            __declareAttribute( factory, *c, output );
+            __declareAttribute( factory, *c, errors );
             factory.endClass( false );
           }
         }
@@ -924,14 +929,14 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::completeAttributes(
-          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, std::ostream& output ) {
+          PRM<GUM_SCALAR>& prm, O3PRM& o3_prm, ErrorsContainer& errors ) {
         if ( __build ) {
           PRMFactory<GUM_SCALAR> factory( &prm );
           // Class with a super class must be declared after
           for ( auto c : __o3Classes ) {
             prm.getClass( c->name().label() ).__inheritSlotChains();
             factory.continueClass( c->name().label() );
-            __completeAttribute( factory, *c, output );
+            __completeAttribute( factory, *c, errors );
             if ( c->super().label() != "" ) {
               auto& super = prm.getClass( c->super().label() );
               auto to_complete = Set<std::string>();

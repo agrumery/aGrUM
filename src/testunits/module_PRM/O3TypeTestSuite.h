@@ -104,9 +104,9 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|2 col 1| Syntax error : semicolon expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
-      TS_ASSERT_EQUALS( prm.types().size(), 2 );
+      TS_ASSERT_EQUALS( prm.types().size(), 1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
-      TS_ASSERT( prm.isType( "t_ink" ) );
+      TS_ASSERT( not prm.isType( "t_ink" ) );
     }
 
     void testSimpleTypeError4() {
