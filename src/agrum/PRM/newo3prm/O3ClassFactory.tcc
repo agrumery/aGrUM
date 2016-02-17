@@ -670,7 +670,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::__setO3ClassCreationOrder() {
-        auto topo_order = topologicalOrder( __dag );
+        auto topo_order = topological_order( __dag );
         for ( auto iter = topo_order.rbegin(); iter != topo_order.rend();
               --iter ) {
           __o3Classes.push_back( __nodeMap[*iter] );

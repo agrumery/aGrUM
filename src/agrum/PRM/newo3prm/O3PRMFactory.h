@@ -26,33 +26,113 @@
  * @author Lionel TORTI
  */
 
-#ifndef GUM_PRM_O3PRM_O3PRM_FACGTORY_H
-#define GUM_PRM_O3PRM_O3PRM_FACGTORY_H
+#ifndef GUM_PRM_O3PRM_O3PRM_FACTORY_H
+#define GUM_PRM_O3PRM_O3PRM_FACTORY_H
 
-#include <regex>
 #include <string>
-#include <sstream>
+#include <vector>
 
+#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
-#include <agrum/PRM/newO3prm/cocoR/Parser.h>
-#include <agrum/PRM/newO3prm/cocoR/Scanner.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
-#include <agrum/PRM/newo3prm/O3TypeFactory.h>
-#include <agrum/PRM/newo3prm/O3InterfaceFactory.h>
-#include <agrum/PRM/newo3prm/O3ClassFactory.h>
-#include <agrum/PRM/newo3prm/O3SystemFactory.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      void parse_stream( gum::prm::PRM<double>& prm,
-                         std::istream& input,
-                         std::ostream& output );
+      template <typename GUM_SCALAR>
+      class O3PRMFactory {
+        public:
+        O3PRMFactory( PRM<GUM_SCALAR>& prm );
+        O3PRMFactory( const O3PRMFactory& src );
+        O3PRMFactory( O3PRMFactory&& src );
+        ~O3PRMFactory();
+        O3PRMFactory& operator=( const O3PRMFactory& src );
+        O3PRMFactory& operator=( O3PRMFactory&& src );
 
-    }
-  }
-}
+        /// Read file and load its content using a PRMFactory.
+        /// The package parameter set the file's content package.
+        int readFile( const std::string& file,
+                      const std::string& package = "" );
 
-#endif // GUM_PRM_O3PRM_O3PRM_FACGTORY_H
+        /// With readString method, you must set the current path
+        /// to search from import yourself, using addClassPath.
+        int readString( const std::string& string );
+
+        void parseStream( std::istream& input, std::ostream& output );
+        /**
+         * @brief This methods defines the list of paths to look for o3prm
+         * files.
+         *
+         * Use / for path separator ! Even on Windows !
+         *
+         * @param class_path A semicolon separated list of paths.
+         */
+        void setClassPath( const std::string& class_path );
+
+        /**
+         * @brief Add a list of paths to look for o3prm
+         * files.
+         *
+         * Use / for path separator ! Even on Windows !
+         *
+         * @param class_path A semicolon separated list of paths.
+         */
+        void addClassPath( const std::string& class_path );
+
+        /// @{
+        /// publishing Errors API
+
+        /// # of errors
+        Size errors() const;
+        /// # of errors
+        Size warnings() const;
+
+        ///
+        const ErrorsContainer& errorsContainer() const;
+
+        /// line of ith error or warning
+        unsigned int errLine( unsigned int i ) const;
+        /// col of ith error or warning
+        unsigned int errCol( unsigned int i ) const;
+        /// filename of ith error or warning
+        std::wstring errFilename( unsigned int i ) const;
+        /// type of ith error or warning
+        bool errIsError( unsigned int i ) const;
+        /// message of ith error or warning
+        std::string errMsg( unsigned int i ) const;
+
+        /// send on std::cerr the list of errors
+        void showElegantErrors( std::ostream& o = std::cerr ) const;
+
+        /// send on std::cerr the list of errors or warnings
+        void showElegantErrorsAndWarnings( std::ostream& o = std::cerr ) const;
+
+        /// send on std::cerr the number of errors and the number of warnings
+        void showErrorCounts( std::ostream& o = std::cerr ) const;
+        /// @}
+
+        private:
+        PRM<GUM_SCALAR>* __prm;
+        std::vector<std::string> __class_path;
+
+        // Needed when file can't be parse (can not open it for exemple)
+        ErrorsContainer __errors;
+
+        // Read a file into a std::string
+        std::string __readFile( const std::string& file );
+
+        void __readStream( std::istream& input );
+
+      };
+
+    } // o3prm
+  } // prm
+} // gum
+
+#include <agrum/PRM/newo3prm/O3PRMFactory.tcc>
+
+extern template class gum::prm::o3prm::O3PRMFactory<float>;
+extern template class gum::prm::o3prm::O3PRMFactory<double>;
+
+#endif // GUM_PRM_O3PRM_O3PRM_FACTORY_H
 

@@ -203,7 +203,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3TypeFactory<GUM_SCALAR>::__setO3TypeCreationOrder() {
-        auto topo_order = topologicalOrder( __dag );
+        auto topo_order = topological_order( __dag );
         for ( auto iter = topo_order.rbegin(); iter != topo_order.rend();
               --iter ) {
           if ( __nodeMap[*iter]->name().label() != "boolean" ) {

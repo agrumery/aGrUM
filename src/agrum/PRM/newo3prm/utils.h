@@ -43,7 +43,7 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      gum::Sequence<NodeId> topologicalOrder( const gum::DAG& src );
+      gum::Sequence<NodeId> topological_order( const gum::DAG& src );
 
       std::string clean( const std::string& text );
 
@@ -51,6 +51,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool name_used( const PRM<GUM_SCALAR>& prm, const std::string& name );
+
+      std::string read_stream( std::istream& input );
     }
   }
 }
