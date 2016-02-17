@@ -219,17 +219,17 @@ namespace gum {
           auto class_factory = O3ClassFactory<GUM_SCALAR>();
           auto system_factory = O3SystemFactory<GUM_SCALAR>();
 
-          type_factory.build( *__prm, o3_prm, output );
-          interface_factory.buildInterfaces( *__prm, o3_prm, output );
-          class_factory.buildClasses( *__prm, o3_prm, output );
-          interface_factory.buildElements( *__prm, o3_prm, output );
-          class_factory.buildImplementations( *__prm, o3_prm, output );
-          class_factory.buildParameters( *__prm, o3_prm, output );
-          class_factory.buildReferenceSlots( *__prm, o3_prm, output );
-          class_factory.declareAttributes( *__prm, o3_prm, output );
-          class_factory.buildAggregates( *__prm, o3_prm, output );
-          class_factory.completeAttributes( *__prm, o3_prm, output );
-          system_factory.build( *__prm, o3_prm, output );
+          type_factory.build( *__prm, o3_prm, __errors );
+          interface_factory.buildInterfaces( *__prm, o3_prm, __errors );
+          class_factory.buildClasses( *__prm, o3_prm, __errors );
+          interface_factory.buildElements( *__prm, o3_prm, __errors );
+          class_factory.buildImplementations( *__prm, o3_prm, __errors );
+          class_factory.buildParameters( *__prm, o3_prm, __errors );
+          class_factory.buildReferenceSlots( *__prm, o3_prm, __errors );
+          class_factory.declareAttributes( *__prm, o3_prm, __errors );
+          class_factory.buildAggregates( *__prm, o3_prm, __errors );
+          class_factory.completeAttributes( *__prm, o3_prm, __errors );
+          system_factory.build( *__prm, o3_prm, __errors );
         }
       }
     }

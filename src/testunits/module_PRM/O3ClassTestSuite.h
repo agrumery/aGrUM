@@ -520,7 +520,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5| Attribute error : Expected 1 value(s), found 2";
+      msg << "|5 col 1| Attribute error : Expected 1 value(s), found 2";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
     }
@@ -545,7 +545,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6| Attribute error : Unknown value in CPT: \"FOO\"";
+      msg << "|6 col 6| Attribute error : Unknown value in CPT: \"FOO\"";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
     }

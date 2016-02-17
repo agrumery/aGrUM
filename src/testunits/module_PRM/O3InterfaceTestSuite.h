@@ -418,13 +418,7 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|4 col 16| Syntax error : \"{\" expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
-      TS_ASSERT( prm.isInterface( "IFoo" ) );
-      const auto& i_foo = prm.interface( "IFoo" );
-      TS_ASSERT_EQUALS( i_foo.attributes().size(), 1 );
-      TS_ASSERT_EQUALS( i_foo.referenceSlots().size(), 0 );
-      TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
     }
 
     void testSuperInterfaceWithOverload() {
