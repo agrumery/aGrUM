@@ -380,7 +380,7 @@ O3AttributeList& elts) {
 }
 
 void Parser::AGGREGATE_PARENTS(O3LabelList& parents) {
-		if (la->kind == _label) {
+		if (la->kind == _label || la->kind == 27 /* "(" */) {
 			auto prnt = O3Label(); 
 			IDENTIFIER(prnt);
 			parents.push_back(prnt); 
@@ -404,32 +404,18 @@ void Parser::LABEL_LIST(O3LabelList& list) {
 
 void Parser::IDENTIFIER(O3Label& ident) {
 		auto s = std::stringstream(); 
-		Expect(_label);
+		if (la->kind == 27 /* "(" */) {
+			CAST(s);
+		}
+		LINK(s);
 		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
-		s << narrow( t->val ); 
 		while (la->kind == _dot) {
 			Get();
 			s << narrow( t->val ); 
-			Expect(_label);
-			s << narrow( t->val ); 
-		}
-		if (la->kind == _dot) {
-			Get();
-			s << narrow( t->val ); 
-			Expect(27 /* "(" */);
-			s << narrow( t->val ); 
-			Expect(_label);
-			s << narrow( t->val ); 
-			while (la->kind == _dot) {
-				Get();
-				s << narrow( t->val ); 
-				Expect(_label);
-				s << narrow( t->val ); 
+			if (la->kind == 27 /* "(" */) {
+				CAST(s);
 			}
-			Expect(28 /* ")" */);
-			s << narrow( t->val ); 
-			Expect(_label);
-			s << narrow( t->val ); 
+			LINK(s);
 		}
 		ident = O3Label( pos, s.str() ); 
 }
@@ -741,6 +727,24 @@ void Parser::LABEL_OR_INT(O3Label& l) {
 		} else if (la->kind == _integer) {
 			INTEGER_AS_LABEL(l);
 		} else SynErr(45);
+}
+
+void Parser::CAST(std::stringstream& s) {
+		Expect(27 /* "(" */);
+		s << narrow( t->val ); 
+		LINK(s);
+		while (la->kind == _dot) {
+			Get();
+			s << narrow( t->val ); 
+			LINK(s);
+		}
+		Expect(28 /* ")" */);
+		s << narrow( t->val ); 
+}
+
+void Parser::LINK(std::stringstream& s) {
+		Expect(_label);
+		s << narrow( t->val ); 
 }
 
 void Parser::LABEL_OR_STAR(O3Label& l) {

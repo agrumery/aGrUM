@@ -43,6 +43,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       class O3PRMFactory {
         public:
+        O3PRMFactory( );
         O3PRMFactory( PRM<GUM_SCALAR>& prm );
         O3PRMFactory( const O3PRMFactory& src );
         O3PRMFactory( O3PRMFactory&& src );
@@ -81,6 +82,9 @@ namespace gum {
          * @param class_path A semicolon separated list of paths.
          */
         void addClassPath( const std::string& class_path );
+
+        gum::prm::PRM<GUM_SCALAR>* prm() { return __prm; }
+        const gum::prm::PRM<GUM_SCALAR>* prm() const { return __prm; }
 
         /// @{
         /// publishing Errors API
@@ -127,12 +131,14 @@ namespace gum {
         std::string __readFile( const std::string& file );
 
         void __readStream( std::istream& input,
+                           const std::string& file,
                            std::string module = "" );
 
         void __parseImport( const O3Import& i, const std::string& module_path );
 
-        void
-        __parseStream( std::istream& input, const std::string& module );
+        void __parseStream( std::istream& input,
+                            const std::string& filename,
+                            const std::string& module );
       };
 
     } // o3prm

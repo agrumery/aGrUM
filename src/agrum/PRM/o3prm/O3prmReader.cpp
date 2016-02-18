@@ -32,7 +32,7 @@ namespace gum {
 
     namespace o3prm {
 
-      template class O3prmReader<double>;
+      //template class O3prmReader<double>;
 
     } /* namespace o3prm */
   }   /* namespace prm */

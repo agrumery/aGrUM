@@ -27,100 +27,97 @@
 #ifndef GUM_O3PRM_READER_H
 #define GUM_O3PRM_READER_H
 
-#include <fstream>
-
-#include <agrum/PRM/PRMFactory.h>
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-// including coco-generated PARSER and SCANNER
-
-#include <agrum/PRM/o3prm/cocoR/Parser.h>
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/PRM/newo3prm/O3PRMFactory.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
+
       template <typename GUM_SCALAR>
-      class O3prmReader {
-        public:
-        O3prmReader();
+      using O3prmReader = O3PRMFactory<GUM_SCALAR>;
 
-        ~O3prmReader();
 
-        /// Read file and load its content using a PRMFactory.
-        /// The package parameter set the file's content package.
-        int readFile( const std::string& file,
-                      const std::string& package = "" );
+      //template <typename GUM_SCALAR>
+      //class O3prmReader {
+      //  public:
+      //  O3prmReader();
 
-        /// With readString method, you must set the current path
-        /// to search from import yourself, using addClassPath.
-        int readString( const std::string& string );
+      //  ~O3prmReader();
 
-        /**
-         * @brief This methods defines the list of paths to look for o3prm
-         *files.
-         * Use / for path separator ! Even on Windows !
-         *
-         * @param class_path A semicolon separated list of paths.
-         */
-        void setClassPath( const std::string& class_path );
-        void addClassPath( const std::string& class_path );
+      //  /// Read file and load its content using a PRMFactory.
+      //  /// The package parameter set the file's content package.
+      //  int readFile( const std::string& file,
+      //                const std::string& package = "" );
 
-        gum::prm::PRM<GUM_SCALAR>* prm();
-        const gum::prm::PRM<GUM_SCALAR>* prm() const;
+      //  /// With readString method, you must set the current path
+      //  /// to search from import yourself, using addClassPath.
+      //  int readString( const std::string& string );
 
-        /// @{
-        /// publishing Errors API
+      //  /**
+      //   * @brief This methods defines the list of paths to look for o3prm
+      //   *files.
+      //   * Use / for path separator ! Even on Windows !
+      //   *
+      //   * @param class_path A semicolon separated list of paths.
+      //   */
+      //  void setClassPath( const std::string& class_path );
+      //  void addClassPath( const std::string& class_path );
 
-        /// # of errors
-        Size errors() const;
-        /// # of errors
-        Size warnings() const;
+      //  gum::prm::PRM<GUM_SCALAR>* prm();
+      //  const gum::prm::PRM<GUM_SCALAR>* prm() const;
 
-        ///
-        const ErrorsContainer& errorsContainer() const;
+      //  /// @{
+      //  /// publishing Errors API
 
-        /// line of ith error or warning
-        unsigned int errLine( unsigned int i ) const;
-        /// col of ith error or warning
-        unsigned int errCol( unsigned int i ) const;
-        /// filename of ith error or warning
-        std::wstring errFilename( unsigned int i ) const;
-        /// type of ith error or warning
-        bool errIsError( unsigned int i ) const;
-        /// message of ith error or warning
-        std::string errMsg( unsigned int i ) const;
+      //  /// # of errors
+      //  Size errors() const;
+      //  /// # of errors
+      //  Size warnings() const;
 
-        /// send on std::cerr the list of errors
-        void showElegantErrors( std::ostream& o = std::cerr ) const;
+      //  ///
+      //  const ErrorsContainer& errorsContainer() const;
 
-        /// send on std::cerr the list of errors or warnings
-        void showElegantErrorsAndWarnings( std::ostream& o = std::cerr ) const;
+      //  /// line of ith error or warning
+      //  unsigned int errLine( unsigned int i ) const;
+      //  /// col of ith error or warning
+      //  unsigned int errCol( unsigned int i ) const;
+      //  /// filename of ith error or warning
+      //  std::wstring errFilename( unsigned int i ) const;
+      //  /// type of ith error or warning
+      //  bool errIsError( unsigned int i ) const;
+      //  /// message of ith error or warning
+      //  std::string errMsg( unsigned int i ) const;
 
-        /// send on std::cerr the number of errors and the number of warnings
-        void showErrorCounts( std::ostream& o = std::cerr ) const;
-        /// @}
+      //  /// send on std::cerr the list of errors
+      //  void showElegantErrors( std::ostream& o = std::cerr ) const;
 
-        private:
-        O3prmReader( const O3prmReader& source );
+      //  /// send on std::cerr the list of errors or warnings
+      //  void showElegantErrorsAndWarnings( std::ostream& o = std::cerr ) const;
 
-        O3prmReader& operator=( const O3prmReader& source );
+      //  /// send on std::cerr the number of errors and the number of warnings
+      //  void showErrorCounts( std::ostream& o = std::cerr ) const;
+      //  /// @}
 
-        gum::prm::PRMFactory<GUM_SCALAR> __factory;
+      //  private:
+      //  O3prmReader( const O3prmReader& source );
 
-        std::vector<std::string> __class_path;
+      //  O3prmReader& operator=( const O3prmReader& source );
 
-        Parser* __parser;
-        bool __parseDone;
-        bool __prmTake;
-        // Needed when file can't be parse (can not open it for exemple)
-        ErrorsContainer __errors;
+      //  gum::prm::PRMFactory<GUM_SCALAR> __factory;
 
-        // Read a file into a std::string
-        std::string __readFile( const std::string& file );
-      };
+      //  std::vector<std::string> __class_path;
 
-      extern template class O3prmReader<double>;
+      //  Parser* __parser;
+      //  bool __parseDone;
+      //  bool __prmTake;
+      //  // Needed when file can't be parse (can not open it for exemple)
+      //  ErrorsContainer __errors;
+
+      //  // Read a file into a std::string
+      //  std::string __readFile( const std::string& file );
+      //};
+
+      //extern template class O3prmReader<double>;
     } /* namespace o3prm */
   }   /* namespace prm */
 } /* namespace gum */
