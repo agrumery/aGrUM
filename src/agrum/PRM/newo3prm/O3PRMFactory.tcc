@@ -41,6 +41,7 @@
 #include <agrum/PRM/newO3prm/cocoR/Scanner.h>
 #include <agrum/PRM/newo3prm/O3ClassFactory.h>
 #include <agrum/PRM/newo3prm/O3InterfaceFactory.h>
+#include <agrum/PRM/newo3prm/O3NameSolver.h>
 
 namespace gum {
   namespace prm {
@@ -138,6 +139,7 @@ namespace gum {
           return __errors.count();
 
         } catch ( gum::Exception& e ) {
+          GUM_SHOWERROR(e);
           __errors.addException( e.errorContent(), file );
           return __errors.count();
         } catch ( ... ) {
@@ -336,13 +338,15 @@ namespace gum {
         }
 
         if ( __errors.error_count == 0 ) {
-          auto type_factory = O3TypeFactory<GUM_SCALAR>();
+          auto solver = O3NameSolver<GUM_SCALAR>( *__prm, *__o3_prm, __errors );
+          auto type_factory =
+              O3TypeFactory<GUM_SCALAR>( *__prm, *__o3_prm, solver, __errors );
 
           auto interface_factory = O3InterfaceFactory<GUM_SCALAR>();
           auto class_factory = O3ClassFactory<GUM_SCALAR>();
           auto system_factory = O3SystemFactory<GUM_SCALAR>();
 
-          type_factory.build( *__prm, *__o3_prm, __errors );
+          type_factory.build();
           interface_factory.buildInterfaces( *__prm, *__o3_prm, __errors );
           class_factory.buildClasses( *__prm, *__o3_prm, __errors );
           interface_factory.buildElements( *__prm, *__o3_prm, __errors );
