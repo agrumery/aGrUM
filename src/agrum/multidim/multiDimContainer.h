@@ -104,6 +104,7 @@ namespace gum {
      * @brief Class move constructor.
      */
     MultiDimContainer( const MultiDimContainer<GUM_SCALAR>&& );
+    MultiDimContainer& operator=(MultiDimContainer<GUM_SCALAR>&& src);
 
     /**
      * @brief Destructor.

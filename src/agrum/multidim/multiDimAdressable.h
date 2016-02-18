@@ -69,11 +69,14 @@ namespace gum {
      * @brief Copy constructor.
      */
     MultiDimAdressable( const MultiDimAdressable& from );
+    MultiDimAdressable& operator=(const MultiDimAdressable& from );
 
     /**
      * @brief Class move constructor.
      */
     MultiDimAdressable( const MultiDimAdressable&& );
+    MultiDimAdressable& operator=(MultiDimAdressable&& from );
+
 
     /**
      * @brief Destructor.

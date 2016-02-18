@@ -31,16 +31,6 @@
 
 #include <agrum/multidim/operators/completeProjectionRegister4MultiDim.h>
 
-#define GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( NAME )                   \
-  namespace gum {                                                       \
-    template <typename GUM_SCALAR>                                      \
-    GUM_SCALAR NAME( const MultiDimDecorator<GUM_SCALAR>& table,        \
-                     Instantiation* instantiation ) {                   \
-      const MultiDimImplementation<GUM_SCALAR>* impl = table.content(); \
-      return NAME( *impl, instantiation );                              \
-    }                                                                   \
-  }
-
 /// a specialized max projection function for multiDimArrays
 
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectMaxMultiDimArray
@@ -215,18 +205,12 @@
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
-/// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectMax )
-
 /// the function to be used to project a MultiDimImplementation using a Min
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectMin
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME "min"
 #include <agrum/multidim/patterns/completeProjectionPattern4MultiDimImplementation.h>
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
-
-/// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectMin )
 
 /// the function to be used to project a MultiDimImplementation using a Sum
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectSum
@@ -235,18 +219,12 @@ GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectMin )
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
-/// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectSum )
-
 /// the function to be used to project a MultiDimImplementation using a Product
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectProduct
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME "product"
 #include <agrum/multidim/patterns/completeProjectionPattern4MultiDimImplementation.h>
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
-
-/// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectProduct )
 
 /// default "basename" functions for projecting MultiDimImplementations
 

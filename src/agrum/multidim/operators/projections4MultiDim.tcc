@@ -29,17 +29,6 @@
 
 #include <agrum/multidim/operators/projectionRegister4MultiDim.h>
 
-#define GUM_MULTI_DIM_DECORATOR_PROJ( NAME )                            \
-  namespace gum {                                                       \
-    template <typename GUM_SCALAR>                                      \
-    MultiDimImplementation<GUM_SCALAR>*                                 \
-    NAME( const MultiDimDecorator<GUM_SCALAR>& table,                   \
-          const Set<const DiscreteVariable*>& del_vars ) {              \
-      const MultiDimImplementation<GUM_SCALAR>* impl = table.content(); \
-      return NAME( *impl, del_vars );                                   \
-    }                                                                   \
-  }
-
 /// a specialized max projection function for multiDimArrays
 
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMaxMultiDimArray
@@ -313,9 +302,6 @@
 #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
-/// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_PROJ( projectMax )
-
 /// the function to be used to project a MultiDimImplementation using a Min
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMin
 #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "min"
@@ -324,9 +310,6 @@ GUM_MULTI_DIM_DECORATOR_PROJ( projectMax )
 #undef GUM_MULTI_DIM_PROJECTION_NAME
 #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
-
-/// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_PROJ( projectMin )
 
 /// the function to be used to project a MultiDimImplementation using a Sum
 #define GUM_MULTI_DIM_PROJECTION_NAME projectSum
@@ -337,9 +320,6 @@ GUM_MULTI_DIM_DECORATOR_PROJ( projectMin )
 #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
-/// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_PROJ( projectSum )
-
 /// the function to be used to project a MultiDimImplementation using a Product
 #define GUM_MULTI_DIM_PROJECTION_NAME projectProduct
 #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "product"
@@ -348,9 +328,6 @@ GUM_MULTI_DIM_DECORATOR_PROJ( projectSum )
 #undef GUM_MULTI_DIM_PROJECTION_NAME
 #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
-
-/// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_PROJ( projectProduct )
 
 /// default "basename" functions for projecting MultiDimImplementations
 

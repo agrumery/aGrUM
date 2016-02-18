@@ -30,7 +30,6 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/multidim/multiDimDecorator.h>
 
 namespace gum {
 
@@ -42,7 +41,7 @@ namespace gum {
    * @return function ProjectMaxMultiDimArrays allocates on the heap the
    * new T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator/function
-   * projectMax on multiDimDecorators. This operator will take care to select
+   * projectMax on MultiDimImplementation. This operator will take care to select
    * this
    * function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
@@ -73,7 +72,7 @@ namespace gum {
    * @return function ProjectMaxMultiDimArrays allocates on the heap the
    * new T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator/function
-   * projectMin on multiDimDecorators. This operator will take care to select
+   * projectMin on MultiDimImplementation. This operator will take care to select
    * this
    * function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
@@ -104,7 +103,7 @@ namespace gum {
    * @return function ProjectMaxMultiDimArrays allocates on the heap the
    * new T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator/function
-   * projectSum on multiDimDecorators. This operator will take care to select
+   * projectSum on MultiDimImplementation. This operator will take care to select
    * this
    * function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
@@ -135,7 +134,7 @@ namespace gum {
    * @return function ProjectMaxMultiDimArrays allocates on the heap the
    * new T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator/function
-   * projectProduct on multiDimDecorators. This operator will take care to
+   * projectProduct on MultiDimImplementation. This operator will take care to
    * select
    * this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
@@ -194,7 +193,7 @@ namespace gum {
   * @return function ProjectMaxMultiDimFunctionGraph allocates on the heap the
   * new T multiDimFunctionGraph and returns it
   * @warning In practice, do not use this function but rather operator/function
-  * projectMax on multiDimDecorators. This operator will take care to select
+  * projectMax on MultiDimImplementation. This operator will take care to select
   * this
   * function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
@@ -218,7 +217,7 @@ namespace gum {
   * @return function ProjectMaxMultiDimFunctionGraphs allocates on the heap the
   * new T multiDimFunctionGraph and returns it
   * @warning In practice, do not use this function but rather operator/function
-  * projectMin on multiDimDecorators. This operator will take care to select
+  * projectMin on MultiDimImplementation. This operator will take care to select
   * this
   * function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
@@ -242,7 +241,7 @@ namespace gum {
   * @return function ProjectMaxMultiDimFunctionGraphs allocates on the heap the
   * new T multiDimFunctionGraph and returns it
   * @warning In practice, do not use this function but rather operator/function
-  * projectSum on multiDimDecorators. This operator will take care to select
+  * projectSum on MultiDimImplementation. This operator will take care to select
   * this
   * function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
@@ -266,7 +265,7 @@ namespace gum {
   * @return function ProjectMaxMultiDimFunctionGraphs allocates on the heap the
   * new T multiDimFunctionGraph and returns it
   * @warning In practice, do not use this function but rather operator/function
-  * projectProduct on multiDimDecorators. This operator will take care to select
+  * projectProduct on MultiDimImplementation. This operator will take care to select
   * this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
   MultiDimFunctionGraph<GUM_SCALAR>* projectProductMultiDimFunctionGraph(
@@ -280,19 +279,10 @@ namespace gum {
 
   /// @}
 
-  // the operators that should be used to select appropriately the functions
-  // to project multiDimDecorators
-
   /// the function to be used to project a MultiDimImplementation using a Max
   template <typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>*
   projectMax( const MultiDimImplementation<GUM_SCALAR>& table,
-              const Set<const DiscreteVariable*>& del_vars );
-
-  /// the function to be used to project a MultiDimDecorator using a Max
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>*
-  projectMax( const MultiDimDecorator<GUM_SCALAR>&,
               const Set<const DiscreteVariable*>& del_vars );
 
   /// the function to be used to project a MultiDimImplementation using a Min
@@ -301,23 +291,11 @@ namespace gum {
   projectMin( const MultiDimImplementation<GUM_SCALAR>& table,
               const Set<const DiscreteVariable*>& del_vars );
 
-  /// the function to be used to project a MultiDimDecorator using a Min
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>*
-  projectMin( const MultiDimDecorator<GUM_SCALAR>&,
-              const Set<const DiscreteVariable*>& del_vars );
-
-  /// the function to be used to project a MultiDimImplementation using a sum
   template <typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>*
   projectSum( const MultiDimImplementation<GUM_SCALAR>& table,
               const Set<const DiscreteVariable*>& del_vars );
 
-  /// the function to be used to project a MultiDimDecorator using a sum
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>*
-  projectSum( const MultiDimDecorator<GUM_SCALAR>&,
-              const Set<const DiscreteVariable*>& del_vars );
 
   /// the function to be used to project a MultiDimImplementation using a
   /// Product
@@ -326,11 +304,6 @@ namespace gum {
   projectProduct( const MultiDimImplementation<GUM_SCALAR>& table,
                   const Set<const DiscreteVariable*>& del_vars );
 
-  /// the function to be used to project a MultiDimDecorator using a Product
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>*
-  projectProduct( const MultiDimDecorator<GUM_SCALAR>&,
-                  const Set<const DiscreteVariable*>& del_vars );
 
   //
   // DO NOT FORGET TO REGISTER YOUR PROJECTION FUNCTIONS AT THE END OF FILE

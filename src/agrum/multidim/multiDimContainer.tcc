@@ -51,8 +51,15 @@ namespace gum {
     GUM_CONS_CPY( MultiDimContainer );
   }
   template <typename GUM_SCALAR>
-  INLINE MultiDimContainer<GUM_SCALAR>& MultiDimContainer<GUM_SCALAR>::operator=(const MultiDimContainer<GUM_SCALAR>& from) {
-
+  INLINE MultiDimContainer<GUM_SCALAR>& MultiDimContainer<GUM_SCALAR>::
+  operator=( const MultiDimContainer<GUM_SCALAR>& from ) {
+    MultiDimAdressable::operator=( from );
+    return *this;
+  }
+  template <typename GUM_SCALAR>
+  INLINE MultiDimContainer<GUM_SCALAR>& MultiDimContainer<GUM_SCALAR>::
+  operator=( MultiDimContainer<GUM_SCALAR>&& from ) {
+    MultiDimAdressable::operator=( std::forward<MultiDimAdressable&&>( from ) );
     return *this;
   }
 

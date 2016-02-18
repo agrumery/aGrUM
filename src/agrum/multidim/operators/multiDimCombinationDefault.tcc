@@ -113,9 +113,6 @@ namespace gum {
   }
 
   /// returns the result of the combination
-  /// @todo This implementation is very improvable : we need a way for
-  /// decorators
-  /// to swap contents instead of copying it...
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void MultiDimCombinationDefault<GUM_SCALAR, TABLE>::combine(
       TABLE<GUM_SCALAR>& container, const Set<const TABLE<GUM_SCALAR>*>& set ) {

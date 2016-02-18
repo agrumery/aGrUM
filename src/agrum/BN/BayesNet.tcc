@@ -295,7 +295,7 @@ namespace gum {
     // update the conditional distributions of head and tail
     Set<const DiscreteVariable*> del_vars;
     del_vars << &( variable( tail ) );
-    Potential<GUM_SCALAR> new_cpt_head{projectSum( prod, del_vars )};
+    Potential<GUM_SCALAR> new_cpt_head=prod.projectSum( del_vars );
     Potential<GUM_SCALAR>& cpt_head =
         const_cast<Potential<GUM_SCALAR>&>( cpt( head ) );
     cpt_head = new_cpt_head;

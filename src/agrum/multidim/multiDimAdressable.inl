@@ -52,4 +52,13 @@ namespace gum {
     GUM_DESTRUCTOR( MultiDimAdressable );
   }
 
+  INLINE MultiDimAdressable& MultiDimAdressable::operator=(const MultiDimAdressable& from) {
+    MultiDimInterface::operator=(from);
+    return *this;
+  }
+  INLINE MultiDimAdressable& MultiDimAdressable::operator=(MultiDimAdressable&& from) {
+    MultiDimInterface::operator=(std::forward<MultiDimInterface&&>(from));
+    return *this;
+  }
+
 } /* namespace gum */

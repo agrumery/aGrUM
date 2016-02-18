@@ -29,17 +29,6 @@
 
 #include <agrum/multidim/operators/operatorRegister4MultiDim.h>
 
-#define GUM_MULTI_DIM_DECORATOR_OP( NAME, OP )                          \
-  namespace gum {                                                       \
-    template <typename T>                                               \
-    MultiDimImplementation<T>* NAME( const MultiDimDecorator<T>& t1,    \
-                                     const MultiDimDecorator<T>& t2 ) { \
-      const MultiDimImplementation<T>* impl1 = t1.content();            \
-      const MultiDimImplementation<T>* impl2 = t2.content();            \
-      return ( *impl1 OP * impl2 );                                     \
-    }                                                                   \
-  }
-
 /* *******************************************************************************************
  */
 /*                                                                                             */
@@ -287,9 +276,6 @@
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
-/// the function to be used to add two MultiDimDecorators
-//PH GUM_MULTI_DIM_DECORATOR_OP( operator+, +)
-
 /// the function to be used to multiply two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator*
 #define GUM_MULTI_DIM_OPERATOR_FUNC_NAME "*"
@@ -299,9 +285,6 @@
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
-/// the function to be used to multiply two MultiDimDecorators
-//PH GUM_MULTI_DIM_DECORATOR_OP( operator*, *)
-
 /// the function to be used to subtract two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator-
 #define GUM_MULTI_DIM_OPERATOR_FUNC_NAME "-"
@@ -309,18 +292,12 @@
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
-/// the function to be used to subtract two MultiDimDecorators
-//PH GUM_MULTI_DIM_DECORATOR_OP( operator-, -)
-
 /// the function to be used to divide two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator/
 #define GUM_MULTI_DIM_OPERATOR_FUNC_NAME "/"
 #include <agrum/multidim/patterns/operatorPattern4MultiDimImplementation.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
-
-/// the function to be used to divide two MultiDimDecorators
-//PH GUM_MULTI_DIM_DECORATOR_OP( operator/, /)
 
 /// default "basename" functions for combining two MultiDimImplementations
 

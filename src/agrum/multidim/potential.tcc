@@ -22,14 +22,16 @@
  * @brief Implementation of the Potential class.
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+#include <agrum/multidim/operators/projections4MultiDim.h>
 
 namespace gum {
 
-/// move constructor
+  /// move constructor
 
   template <typename GUM_SCALAR>
-  INLINE Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>&& from )
-      : MultiDimDecorator<GUM_SCALAR>( std::forward<const MultiDimDecorator<GUM_SCALAR>&&>( from ) ) {
+  INLINE Potential<GUM_SCALAR>::Potential( Potential<GUM_SCALAR>&& from )
+      : MultiDimDecorator<GUM_SCALAR>(
+            std::forward<const MultiDimDecorator<GUM_SCALAR>&&>( from ) ) {
     GUM_CONS_MOV( Potential );
   }
 
@@ -88,11 +90,20 @@ namespace gum {
     }
   }
 
-  // operator =
+  // operator = copy
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
   operator=( const Potential<GUM_SCALAR>& src ) {
-    MultiDimDecorator<GUM_SCALAR>::operator=(src);
+    MultiDimDecorator<GUM_SCALAR>::operator=( src );
+    return *this;
+  }
+
+  // operator = move
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
+  operator=( Potential<GUM_SCALAR>&& src ) {
+    MultiDimDecorator<GUM_SCALAR>::operator=(
+        std::forward<MultiDimDecorator<GUM_SCALAR>&&>( src ) );
     return *this;
   }
 
@@ -153,4 +164,32 @@ namespace gum {
     return const_cast<Potential<GUM_SCALAR>&>( *this );
   }
 
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectSum(
+      const Set<const DiscreteVariable*>& del_vars ) const {
+    return std::move( Potential<GUM_SCALAR>(
+        gum::projectSum( *this->content(), del_vars ) ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectProduct(
+      const Set<const DiscreteVariable*>& del_vars ) const {
+    return std::move( Potential<GUM_SCALAR>(
+        gum::projectProduct( *this->content(), del_vars ) ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectMin(
+      const Set<const DiscreteVariable*>& del_vars ) const {
+    return std::move( Potential<GUM_SCALAR>(
+        gum::projectMin( *this->content(), del_vars ) ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectMax(
+      const Set<const DiscreteVariable*>& del_vars ) const {
+    return std::move( Potential<GUM_SCALAR>(
+        gum::projectMax( *this->content(), del_vars ) ) );
+  }
 } /* namespace gum */

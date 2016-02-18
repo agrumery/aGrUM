@@ -35,11 +35,29 @@ namespace gum {
   // constructors
 
   template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
+  operator=( MultiDimDecorator<GUM_SCALAR>&& from ) {
+    MultiDimContainer<GUM_SCALAR>::operator=( std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) );
+
+    if ( this != &from ) {
+      if ( _content ) delete _content;
+
+      _content = from._content;
+      from._content = nullptr;
+    }
+
+    return *this;
+  }
+
+
+  template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
-      const MultiDimDecorator<GUM_SCALAR>&& from )
+      MultiDimDecorator<GUM_SCALAR>&& from )
       : MultiDimContainer<GUM_SCALAR>(
-            std::forward<const MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
+            std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
     GUM_CONS_MOV( MultiDimDecorator );
+
+    if ( _content ) delete _content;
     _content = from._content;
     from._content = nullptr;
   }

@@ -82,7 +82,7 @@ namespace gum {
     /**
      * move constructeur
      **/
-    Potential( const Potential<GUM_SCALAR>&& from );
+    Potential( Potential<GUM_SCALAR>&& from );
 
     /**
      * @brief Copy constructor.
@@ -102,6 +102,13 @@ namespace gum {
      * @param src The Potential to copy.
      */
     Potential<GUM_SCALAR>& operator=( const Potential<GUM_SCALAR>& src );
+
+    /**
+     * @brief Move operator.
+     *
+     * @param src The Potential to move.
+     */
+    Potential<GUM_SCALAR>& operator=( Potential<GUM_SCALAR>&& src );
 
     /**
      * @brief Destructor.
@@ -129,6 +136,31 @@ namespace gum {
 
     /// sum of all elements in this
     const GUM_SCALAR sum() const;
+
+    /**
+     * Projection using sum as operation (and implementation-optimized operations)
+     * @param del_vars is the set of vars to eliminate
+     */
+    Potential<GUM_SCALAR> projectSum(const Set<const DiscreteVariable*>& del_vars) const;
+
+    /**
+     * Projection using multiplication as operation (and implementation-optimized operations)
+     * @param del_vars is the set of vars to eliminate
+     */
+    Potential<GUM_SCALAR> projectProduct(const Set<const DiscreteVariable*>& del_vars) const;
+
+    /**
+     * Projection using min as operation (and implementation-optimized operations)
+     * @param del_vars is the set of vars to eliminate
+     */
+    Potential<GUM_SCALAR> projectMin(const Set<const DiscreteVariable*>& del_vars) const;
+
+    /**
+     * Projection using max as operation (and implementation-optimized operations)
+     * @param del_vars is the set of vars to eliminate
+     */
+    Potential<GUM_SCALAR> projectMax(const Set<const DiscreteVariable*>& del_vars) const;
+      //projectSum( prod, del_vars )
     ///@}
 
     protected:

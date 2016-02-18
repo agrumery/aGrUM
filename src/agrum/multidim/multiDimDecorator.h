@@ -67,16 +67,17 @@ namespace gum {
     MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent );
 
     /**
-     * @brief copy constructor
+     * @brief copy constructor & assignment
      */
     MultiDimDecorator(const MultiDimDecorator<GUM_SCALAR>& from);
     MultiDimDecorator<GUM_SCALAR>& operator=(const MultiDimDecorator& from);
 
 
     /**
-     * @brief Class move constructor.
+     * @brief Class move constructor & assignment
      */
-    MultiDimDecorator( const MultiDimDecorator<GUM_SCALAR>&& );
+    MultiDimDecorator( MultiDimDecorator<GUM_SCALAR>&& );
+    MultiDimDecorator<GUM_SCALAR>& operator=(MultiDimDecorator&& from);
 
     /**
      * @brief Class destructor.
