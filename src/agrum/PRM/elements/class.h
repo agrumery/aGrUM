@@ -279,6 +279,7 @@ namespace gum {
       operator[]( const std::string& name ) const;
 
       /// @}
+
       protected:
       /// returns a constant reference over this interface's dag.
       virtual const DAG& _dag() const;

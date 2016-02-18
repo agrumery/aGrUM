@@ -23,6 +23,7 @@ import GibbsTestSuite
 import ICIModelsForBNTestSuite
 import BNLearnerTestSuite
 import AggregatorsForBNTestSuite
+import PRMexplorerTestSuite
 
 import time
 
@@ -36,7 +37,8 @@ tests = unittest.TestSuite([
                             GibbsTestSuite.ts,
                             ICIModelsForBNTestSuite.ts,
                             BNLearnerTestSuite.ts,
-                            AggregatorsForBNTestSuite.ts
+                            AggregatorsForBNTestSuite.ts,
+                            PRMexplorerTestSuite.ts
                             ])
 
 

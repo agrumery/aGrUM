@@ -24,8 +24,8 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN & PH WUILLEMIN
  */
 
-#ifndef GUM_SKOOL_READER_H
-#define GUM_SKOOL_READER_H
+#ifndef GUM_O3PRM_READER_H
+#define GUM_O3PRM_READER_H
 
 #include <fstream>
 
@@ -127,4 +127,4 @@ namespace gum {
 
 #include <agrum/PRM/o3prm/O3prmReader.tcc>
 
-#endif /* GUM_SKOOL_READER_H */
+#endif /* GUM_O3PRM_READER_H */

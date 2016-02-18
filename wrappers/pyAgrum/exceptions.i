@@ -118,7 +118,7 @@
 
 
 /* CLASS EXTENSIONS */
-%extend gum::Exception {
+%extend gum::GumException {
   const char * __str__() {
     return self->errorContent().c_str();
   }

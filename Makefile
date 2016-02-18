@@ -3,43 +3,41 @@
 #
 ACT=./act --no-fun
 
-JOBS=2
-
 last:
 	$(ACT)
 	
 library:
-	$(ACT) lib release aGrUM -j $(JOBS)
+	$(ACT) lib release aGrUM 
 
 librarydebug:
-	$(ACT) lib debug aGrUM -j $(JOBS)
+	$(ACT) lib debug aGrUM 
 
 install:
-	$(ACT) install release aGrUM -j $(JOBS)
+	$(ACT) install release aGrUM 
 
 installdebug:
-	$(ACT) install debug aGrUM -j $(JOBS)
+	$(ACT) install debug aGrUM 
 
 test:
-	$(ACT) test release -j $(JOBS)
+	$(ACT) test release 
 
 testdebug:
-	$(ACT) test debug -j $(JOBS)
+	$(ACT) test debug 
 
 testall:
-	$(ACT) test release -t all -m all -j $(JOBS)
+	$(ACT) test release -t all -m all 
 
 testalldebug:
-	$(ACT) test debug -t all -m all -j $(JOBS)
+	$(ACT) test debug -t all -m all 
 
 run:
-	$(ACT) run release -j $(JOBS)
+	$(ACT) run release 
 
 rundebug:
-	$(ACT) run debug -j $(JOBS)
+	$(ACT) run debug 
 
 pyAgrum:
-	$(ACT) wrapper pyAgrum -j $(JOBS)
+	$(ACT) wrapper pyAgrum 
 
 clean:
 	$(ACT) clean
