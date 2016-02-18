@@ -75,15 +75,16 @@ O3PRM* __prm;
 std::string __prefix;
 
 bool __ok (int n) { return errors().error_count == n; }
-void __addO3Type( Position& pos,
+
+void __addO3Type( const Position& pos,
                   const O3Label& name,
                   const O3Label& super,
-                  LabelMap& labels ) {
+                  const LabelMap& labels ) {
   auto t = std::unique_ptr<O3Type>( new O3Type( pos, name, super, labels ) );
   get_prm()->types().push_back( std::move( t ) ); 
 }
 
-void __addO3IntType( Position& pos,
+void __addO3IntType( const Position& pos,
                      const O3Label& name,
                      const O3Integer& start,
                      const O3Integer& end ) {
@@ -91,7 +92,7 @@ void __addO3IntType( Position& pos,
   get_prm()->int_types().push_back( std::move( t ) );
 }
 
-void __addO3Interface( Position& pos,
+void __addO3Interface( const Position& pos,
                        const O3Label& name,
                        const O3Label& super,
                        const O3InterfaceElementList& elts ) {
@@ -767,35 +768,42 @@ IDENTIFIER_LIST<O3LabelList& list> =
 
 //________________________
 IDENTIFIER<O3Label& ident> =
+
   (. auto s = std::stringstream(); .)
-  label
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
-  (. s << narrow( t->val ); .)
-  {
-    '.' 
-    (. s << narrow( t->val ); .)
-    label 
-    (. s << narrow( t->val ); .)
-  }
-  [ 
-    '.' 
-    (. s << narrow( t->val ); .)
-    '(' 
-    (. s << narrow( t->val ); .)
-    label 
-    (. s << narrow( t->val ); .)
-    { 
-      '.' 
-      (. s << narrow( t->val ); .)
-      label 
-      (. s << narrow( t->val ); .)
-    } 
-    ')' 
-    (. s << narrow( t->val ); .)
-    label 
-    (. s << narrow( t->val ); .)
+  [
+    CAST<s>
   ]
+  LINK<s>
+  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  {
+    '.'
+    (. s << narrow( t->val ); .)
+    [
+      CAST<s>
+    ]
+    LINK<s>
+  }
   (. ident = O3Label( pos, s.str() ); .)
+  .
+
+//________________________
+CAST<std::stringstream& s> =
+  '(' 
+  (. s << narrow( t->val ); .)
+  LINK<s> 
+  { 
+    '.' 
+    (. s << narrow( t->val ); .)
+    LINK<s> 
+  } 
+  ')' 
+  (. s << narrow( t->val ); .)
+  .
+
+//________________________
+LINK<std::stringstream& s> = 
+  label
+  (. s << narrow( t->val ); .)
   .
 
 //________________________
