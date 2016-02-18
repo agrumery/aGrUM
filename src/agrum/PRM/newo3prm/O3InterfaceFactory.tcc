@@ -68,6 +68,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3InterfaceFactory<GUM_SCALAR>::__initialize() {
+        __superMap = HashTable<std::string, const O3Interface*>();
+        __eltName = HashTable<std::string, std::string>();
         __nameMap = HashTable<std::string, gum::NodeId>();
         __interfaceMap = HashTable<std::string, const O3Interface*>();
         __nodeMap = HashTable<NodeId, const O3Interface*>();
@@ -119,20 +121,14 @@ namespace gum {
         // Adding arcs to the graph inheritance graph
         for ( const auto& i : prm.interfaces() ) {
           if ( i->super().label() != "" ) {
-            try {
-              auto head = __nameMap[i->super().label()];
-              auto tail = __nameMap[i->name().label()];
-              __dag.addArc( tail, head );
-            } catch ( NotFound& e ) {
-              // Unknown super interface
-              const auto& pos = i->super().position();
-              auto msg = std::stringstream();
-              msg << "Interface error : "
-                  << "Unknown interface " << i->super().label();
-              errors.addError(
-                  msg.str(), pos.file(), pos.line(), pos.column() );
-              __build = false;
+            if ( not __resolveInterface( i->super(), errors ) ) {
               return false;
+            }
+            auto super = __superMap[i->super().label()];
+            auto head = __nameMap[super->name().label()];
+            auto tail = __nameMap[i->name().label()];
+            try {
+              __dag.addArc( tail, head );
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
               const auto& pos = i->position();
@@ -140,7 +136,7 @@ namespace gum {
               msg << "Interface error : "
                   << "Cyclic inheritance between interface "
                   << i->name().label() << " and interface "
-                  << i->super().label();
+                  << super->name().label();
               errors.addError(
                   msg.str(), pos.file(), pos.line(), pos.column() );
               __build = false;
@@ -166,9 +162,7 @@ namespace gum {
           const O3Interface& i,
           const O3InterfaceElement& elt,
           ErrorsContainer& errors ) {
-        if ( not( prm.isType( elt.type().label() ) or
-                  prm.isInterface( elt.type().label() ) or
-                  prm.isClass( elt.type().label() ) ) ) {
+        if ( not __resolveElementName( prm, elt.name(), errors ) ) {
           // Raised unknown type
           const auto& pos = elt.type().position();
           auto msg = std::stringstream();
@@ -178,9 +172,9 @@ namespace gum {
           __build = false;
           return false;
         }
-        if ( prm.isInterface( elt.type().label() ) ) {
+        if ( prm.isInterface( __eltName[elt.type().label()] ) ) {
           const auto& real_i = prm.interface( i.name().label() );
-          const auto& ref_type = prm.interface( elt.type().label() );
+          const auto& ref_type = prm.interface( __eltName[elt.type().label()] );
           if ( ( &real_i ) == ( &ref_type ) ) {
             const auto& pos = elt.type().position();
             auto msg = std::stringstream();
@@ -196,7 +190,8 @@ namespace gum {
             auto msg = std::stringstream();
             msg << "Reference Slot error : "
                 << "Interface " << i.name().label()
-                << " cannot reference subinterface " << elt.type().label();
+                << " cannot reference subinterface "
+                << __eltName[elt.type().label()];
             errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
@@ -206,7 +201,8 @@ namespace gum {
             auto msg = std::stringstream();
             msg << "Reference Slot error : "
                 << "Interface " << i.name().label()
-                << " cannot reference super interface " << elt.type().label();
+                << " cannot reference super interface "
+                << __eltName[elt.type().label()];
             errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
             __build = false;
             return false;
@@ -234,7 +230,11 @@ namespace gum {
         if ( __checkO3Interfaces( prm, tmp_prm, errors ) ) {
           __setO3InterfaceCreationOrder();
           for ( auto i : __o3Interface ) {
-            factory.startInterface( i->name().label(), i->super().label() );
+            auto super = std::string();
+            if ( i->super().label() != "" ) {
+              super = __superMap[i->super().label()]->name().label();
+            }
+            factory.startInterface( i->name().label(), super );
             factory.endInterface();
           }
         }
@@ -275,7 +275,120 @@ namespace gum {
           }
         }
       }
-    }
-  }
-}
+
+      template <typename GUM_SCALAR>
+      bool O3InterfaceFactory<GUM_SCALAR>::__resolveElementName(
+          const PRM<GUM_SCALAR>& prm,
+          const O3Label& name,
+          ErrorsContainer& errors ) {
+        // If we've already found the interface real name
+        if ( __eltName.exists( name.label() ) ) {
+          return true;
+        }
+        // If name exists as is
+        if ( prm.isType( name.label() ) or prm.isInterface( name.label() ) or
+             prm.isClass( name.label() ) ) {
+          __eltName.insert( name.label(), name.label() );
+          return true;
+        }
+        // Trying with types
+        auto matches = std::vector<const PRMObject*>();
+        std::copy_if( prm.types().begin(),
+                      prm.types().end(),
+                      std::back_inserter( matches ),
+                      [&name]( const Type<GUM_SCALAR>* type ) {
+                        return ends_with( type->name(), name.label() );
+                      } );
+        // Trying with classes
+        std::copy_if( prm.classes().begin(),
+                      prm.classes().end(),
+                      std::back_inserter( matches ),
+                      [&name]( const Class<GUM_SCALAR>* c ) {
+                        return ends_with( c->name(), name.label() );
+                      } );
+        // Trying with interfaces
+        std::copy_if( prm.interfaces().begin(),
+                      prm.interfaces().end(),
+                      std::back_inserter( matches ),
+                      [&name]( const Interface<GUM_SCALAR>* i ) {
+                        return ends_with( i->name(), name.label() );
+                      } );
+        if ( matches.size() == 1 ) {  // One match is good
+          __eltName.insert( name.label(), matches.back()->name() );
+          return true;
+        } else if ( matches.size() == 0 ) {  // 0 match is not found
+          // Unknown name type
+          const auto& pos = name.position();
+          auto msg = std::stringstream();
+          msg << "Interface error : "
+              << "Unknown type, class or interface " << name.label();
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+          return false;
+        } else {  // More than one match is ambiguous
+          // Ambiguous name
+          const auto& pos = name.position();
+          auto msg = std::stringstream();
+          msg << "Interface error : "
+              << "Ambiguous name " << name.label()
+              << ", found more than one elligible type, class or interface: ";
+          for ( auto i = 0; i < matches.size() - 1; ++i ) {
+            msg << matches[i]->name() << ", ";
+          }
+          msg << matches.back()->name();
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+          return false;
+        }
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3InterfaceFactory<GUM_SCALAR>::__resolveInterface(
+          const O3Label& super, ErrorsContainer& errors ) {
+        // If we've already found super real name
+        if ( __superMap.exists( super.label() ) ) {
+          return true;
+        }
+        // If super's name exists as is
+        if ( __interfaceMap.exists( super.label() ) ) {
+          __superMap.insert( super.label(), __interfaceMap[super.label()] );
+          return true;
+        }
+        // Try to complete super type's module
+        auto matches = std::vector<std::pair<std::string, NodeId>>();
+        std::copy_if( __nameMap.begin(),
+                      __nameMap.end(),
+                      std::back_inserter( matches ),
+                      [&super]( const std::pair<std::string, NodeId>& pair ) {
+                        return ends_with( pair.first, super.label() );
+                      } );
+        if ( matches.size() == 1 ) {  // One match is good
+          __superMap.insert( super.label(), __interfaceMap[matches.back().first] );
+          return true;
+        } else if ( matches.size() == 0 ) {  // 0 match is not found
+          // Unknown super interface
+          const auto& pos = super.position();
+          auto msg = std::stringstream();
+          msg << "Interface error : "
+              << "Unknown interface " << super.label();
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+          __build = false;
+          return false;
+        } else {  // More than one match is ambiguous
+          // Ambiguous name
+          const auto& pos = super.position();
+          auto msg = std::stringstream();
+          msg << "Interface error : "
+              << "Ambiguous interface " << super.label()
+              << ", found more than one elligible interface: ";
+          for ( auto i = 0; i < matches.size() - 1; ++i ) {
+            msg << matches[i].first << ", ";
+          }
+          msg << matches.back().first;
+          errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+          return false;
+        }
+      }
+
+    } // o3prm
+  } // prm
+} // gum
 
