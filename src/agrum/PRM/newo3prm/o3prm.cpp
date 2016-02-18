@@ -340,7 +340,9 @@ namespace gum {
         return *this;
       }
 
+      O3Label& O3Type::name() { return __name; }
       const O3Label& O3Type::name() const { return __name; }
+      O3Label& O3Type::super() { return __super; }
       const O3Label& O3Type::super() const { return __super; }
       const O3Type::LabelMap& O3Type::labels() const { return __labels; }
       const Position& O3Type::position() const { return __pos; }

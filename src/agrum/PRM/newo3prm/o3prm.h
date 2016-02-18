@@ -164,7 +164,9 @@ namespace gum {
         O3Type& operator=( const O3Type& src );
         O3Type& operator=( O3Type&& src );
 
+        O3Label& name();
         const O3Label& name() const;
+        O3Label& super();
         const O3Label& super() const;
         const LabelMap& labels() const;
         const Position& position() const;
