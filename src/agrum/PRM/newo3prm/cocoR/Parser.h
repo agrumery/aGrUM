@@ -155,15 +155,16 @@ O3PRM* __prm;
 std::string __prefix;
 
 bool __ok (int n) { return errors().error_count == n; }
-void __addO3Type( Position& pos,
+
+void __addO3Type( const Position& pos,
                   const O3Label& name,
                   const O3Label& super,
-                  LabelMap& labels ) {
+                  const LabelMap& labels ) {
   auto t = std::unique_ptr<O3Type>( new O3Type( pos, name, super, labels ) );
   get_prm()->types().push_back( std::move( t ) ); 
 }
 
-void __addO3IntType( Position& pos,
+void __addO3IntType( const Position& pos,
                      const O3Label& name,
                      const O3Integer& start,
                      const O3Integer& end ) {
@@ -171,7 +172,7 @@ void __addO3IntType( Position& pos,
   get_prm()->int_types().push_back( std::move( t ) );
 }
 
-void __addO3Interface( Position& pos,
+void __addO3Interface( const Position& pos,
                        const O3Label& name,
                        const O3Label& super,
                        const O3InterfaceElementList& elts ) {
@@ -296,6 +297,8 @@ O3InterfaceElementList& elts);
 	void IMPORT_DECLARATION(O3Import& import);
 	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
+	void CAST(std::stringstream& s);
+	void LINK(std::stringstream& s);
 	void LABEL_OR_STAR(O3Label& l);
 	void FORMULA(O3Formula& f);
 
