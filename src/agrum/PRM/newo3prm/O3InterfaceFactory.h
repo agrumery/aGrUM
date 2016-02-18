@@ -65,6 +65,8 @@ namespace gum {
                             ErrorsContainer& errors );
 
         private:
+        HashTable<std::string, const O3Interface*> __superMap;
+        HashTable<std::string, std::string> __eltName;
         HashTable<std::string, gum::NodeId> __nameMap;
         HashTable<std::string, const O3Interface*> __interfaceMap;
         HashTable<NodeId, const O3Interface*> __nodeMap;
@@ -73,6 +75,11 @@ namespace gum {
         bool __build;
 
         void __initialize();
+        bool __resolveElementName( const PRM<GUM_SCALAR>& prm,
+                                   const O3Label& name,
+                                   ErrorsContainer& errors );
+        bool __resolveInterface( const O3Label& super,
+                                 ErrorsContainer& errors );
         bool __addInterface2Dag( PRM<GUM_SCALAR>& prm,
                                  const O3PRM& tmp_prm,
                                  ErrorsContainer& errors );
