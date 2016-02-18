@@ -32,17 +32,17 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      gum::Sequence<NodeId> topological_order( const gum::DAG& src ) {
+      std::vector<NodeId> topological_order( const gum::DAG& src ) {
         auto dag = src;
         auto roots = std::vector<NodeId>();
-        auto order = gum::Sequence<NodeId>();
+        auto order = std::vector<NodeId>();
         for ( const auto node : dag.nodes() ) {
           if ( dag.parents( node ).empty() ) {
             roots.push_back( node );
           }
         }
         while ( roots.size() ) {
-          order.insert( roots.back() );
+          order.push_back( roots.back() );
           roots.pop_back();
           while ( dag.children( order.back() ).size() ) {
             auto child = *( dag.children( order.back() ).begin() );
