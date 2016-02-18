@@ -85,6 +85,10 @@ namespace gum {
                               ErrorsContainer& errors );
 
         private:
+        HashTable<std::string, std::string> __typeName;
+        HashTable<std::string, std::string> __refName;
+        HashTable<std::string, std::string> __interfaceName;
+        HashTable<std::string, const O3Class*> __superMap;
         HashTable<std::string, gum::NodeId> __nameMap;
         HashTable<std::string, O3Class*> __classMap;
         HashTable<NodeId, O3Class*> __nodeMap;
@@ -155,6 +159,22 @@ namespace gum {
                                     const gum::prm::Type<GUM_SCALAR>& t,
                                     ErrorsContainer& errors );
 
+        const Type<GUM_SCALAR>* __checkAggParents( const PRM<GUM_SCALAR>& prm,
+                                                   const O3Class& o3class,
+                                                   const O3Aggregate& agg,
+                                                   ErrorsContainer& errors );
+
+        bool __checkAggTypeLegality( const PRM<GUM_SCALAR>& prm,
+                                     const O3Class& o3class,
+                                     const O3Aggregate& agg,
+                                     ErrorsContainer& errors );
+
+        bool __checkAggParameters( const PRM<GUM_SCALAR>& prm,
+                                   const O3Class& o3class,
+                                   const O3Aggregate& agg,
+                                   const Type<GUM_SCALAR>* t,
+                                   ErrorsContainer& errors );
+
         bool __checkAggregate( const PRM<GUM_SCALAR>& prm,
                                const O3Class& o3class,
                                const O3Aggregate& agg,
@@ -192,6 +212,20 @@ namespace gum {
         void __addAggregates( PRMFactory<GUM_SCALAR>& factory,
                               const O3Class& c,
                               ErrorsContainer& errors );
+
+        bool __resolveInterface( const PRM<GUM_SCALAR>& prm,
+                                 const O3Label& name,
+                                 ErrorsContainer& errors );
+
+        bool __resolveClass( const O3Label& super, ErrorsContainer& errors );
+
+        bool __resolveReferenceName( const PRM<GUM_SCALAR>& prm,
+                                     const O3Label& name,
+                                     ErrorsContainer& errors );
+
+        bool __resolveTypeName( const PRM<GUM_SCALAR>& prm,
+                                const O3Label& name,
+                                ErrorsContainer& errors );
       };
 
     }  // o3prm

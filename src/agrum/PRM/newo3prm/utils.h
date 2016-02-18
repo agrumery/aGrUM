@@ -43,7 +43,7 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      gum::Sequence<NodeId> topological_order( const gum::DAG& src );
+      std::vector<NodeId> topological_order( const gum::DAG& src );
 
       std::string clean( const std::string& text );
 

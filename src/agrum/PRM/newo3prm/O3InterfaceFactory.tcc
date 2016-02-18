@@ -330,7 +330,7 @@ namespace gum {
           auto msg = std::stringstream();
           msg << "Interface error : "
               << "Ambiguous name " << name.label()
-              << ", found more than one elligible type, class or interface: ";
+              << ", found more than one elligible types, classes or interfaces: ";
           for ( auto i = 0; i < matches.size() - 1; ++i ) {
             msg << matches[i]->name() << ", ";
           }
