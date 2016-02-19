@@ -342,14 +342,15 @@ namespace gum {
           auto type_factory =
               O3TypeFactory<GUM_SCALAR>( *__prm, *__o3_prm, solver, __errors );
 
-          auto interface_factory = O3InterfaceFactory<GUM_SCALAR>();
+          auto interface_factory = O3InterfaceFactory<GUM_SCALAR>(
+              *__prm, *__o3_prm, solver, __errors );
           auto class_factory = O3ClassFactory<GUM_SCALAR>();
           auto system_factory = O3SystemFactory<GUM_SCALAR>();
 
           type_factory.build();
-          interface_factory.buildInterfaces( *__prm, *__o3_prm, __errors );
+          interface_factory.buildInterfaces();
           class_factory.buildClasses( *__prm, *__o3_prm, __errors );
-          interface_factory.buildElements( *__prm, *__o3_prm, __errors );
+          interface_factory.buildElements();
           class_factory.buildImplementations( *__prm, *__o3_prm, __errors );
           class_factory.buildParameters( *__prm, *__o3_prm, __errors );
           class_factory.buildReferenceSlots( *__prm, *__o3_prm, __errors );

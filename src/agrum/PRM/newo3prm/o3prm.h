@@ -147,7 +147,7 @@ namespace gum {
         std::string __label;
       };
 
-      std::ostream& operator<<( std::ostream& o, const O3Label& src ); 
+      std::ostream& operator<<( std::ostream& o, const O3Label& src );
 
       class O3Type {
         public:
@@ -212,7 +212,10 @@ namespace gum {
         O3InterfaceElement& operator=( const O3InterfaceElement& src );
         O3InterfaceElement& operator=( O3InterfaceElement&& src );
 
+        O3Label& type();
         const O3Label& type() const;
+
+        O3Label& name();
         const O3Label& name() const;
 
         private:
@@ -235,8 +238,13 @@ namespace gum {
         O3Interface& operator=( O3Interface&& src );
 
         const Position& position() const;
+        O3Label& name();
         const O3Label& name() const;
+
+        O3Label& super();
         const O3Label& super() const;
+
+        O3InterfaceElementList& elements();
         const O3InterfaceElementList& elements() const;
 
         private:
@@ -447,7 +455,6 @@ namespace gum {
 
       class O3Assignment {
         public:
-
         O3Assignment();
         O3Assignment( const O3Assignment& src );
         O3Assignment( O3Assignment&& src );
@@ -457,7 +464,7 @@ namespace gum {
 
         const O3Label& leftInstance() const;
         O3Label& leftInstance();
-        
+
         const O3Integer& index() const;
         O3Integer& index();
 
@@ -476,7 +483,6 @@ namespace gum {
 
       class O3Increment {
         public:
-
         O3Increment();
         O3Increment( const O3Increment& src );
         O3Increment( O3Increment&& src );
@@ -592,18 +598,17 @@ namespace gum {
       class O3Import {
         public:
         O3Import();
-        O3Import(const O3Import& src);
-        O3Import(O3Import&& src);
+        O3Import( const O3Import& src );
+        O3Import( O3Import&& src );
         ~O3Import();
-        O3Import& operator=(const O3Import& src);
-        O3Import& operator=(O3Import&& src);
+        O3Import& operator=( const O3Import& src );
+        O3Import& operator=( O3Import&& src );
 
         const O3Label& import() const;
         O3Label& import();
 
         private:
         O3Label __import;
-
       };
 
       class O3PRM {
