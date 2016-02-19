@@ -35,6 +35,8 @@
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/newo3prm/o3prm.h>
 #include <agrum/PRM/newo3prm/utils.h>
+#include <agrum/PRM/newo3prm/O3NameSolver.h>
+#include <agrum/PRM/newo3prm/errors.h>
 
 #ifndef GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
 #define GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
@@ -47,7 +49,10 @@ namespace gum {
       class O3InterfaceFactory {
 
         public:
-        O3InterfaceFactory();
+        O3InterfaceFactory( PRM<GUM_SCALAR>& prm,
+                            O3PRM& o3_prm,
+                            O3NameSolver<GUM_SCALAR>& solver,
+                            ErrorsContainer& errors );
         O3InterfaceFactory( const O3InterfaceFactory<GUM_SCALAR>& src );
         O3InterfaceFactory( O3InterfaceFactory<GUM_SCALAR>&& src );
         ~O3InterfaceFactory();
@@ -56,46 +61,36 @@ namespace gum {
         O3InterfaceFactory<GUM_SCALAR>&
         operator=( O3InterfaceFactory<GUM_SCALAR>&& src );
 
-        void buildInterfaces( PRM<GUM_SCALAR>& prm,
-                              const O3PRM& tmp_prm,
-                              ErrorsContainer& errors );
+        void buildInterfaces();
 
-        void buildElements( PRM<GUM_SCALAR>& prm,
-                            const O3PRM& tmp_prm,
-                            ErrorsContainer& errors );
+        void buildElements();
 
         private:
-        HashTable<std::string, const O3Interface*> __superMap;
+        PRM<GUM_SCALAR>* __prm;
+        O3PRM* __o3_prm;
+        O3NameSolver<GUM_SCALAR>* __solver;
+        ErrorsContainer* __errors;
+
         HashTable<std::string, std::string> __eltName;
         HashTable<std::string, gum::NodeId> __nameMap;
-        HashTable<std::string, const O3Interface*> __interfaceMap;
-        HashTable<NodeId, const O3Interface*> __nodeMap;
+        HashTable<std::string, O3Interface*> __interfaceMap;
+        HashTable<NodeId, O3Interface*> __nodeMap;
         DAG __dag;
-        std::vector<const O3Interface*> __o3Interface;
-        bool __build;
+        std::vector<O3Interface*> __o3Interface;
 
-        void __initialize();
-        bool __resolveElementName( const PRM<GUM_SCALAR>& prm,
-                                   const O3Label& name,
-                                   ErrorsContainer& errors );
-        bool __resolveInterface( const O3Label& super,
-                                 ErrorsContainer& errors );
-        bool __addInterface2Dag( PRM<GUM_SCALAR>& prm,
-                                 const O3PRM& tmp_prm,
-                                 ErrorsContainer& errors );
+        bool __buildInterfaces;
+        bool __buildElements;
 
-        bool __addArcs2Dag( const O3PRM& prm, ErrorsContainer& errors );
+        bool __addInterface2Dag();
+
+        bool __addArcs2Dag();
 
         void __setO3InterfaceCreationOrder();
 
-        bool __checkO3Interfaces( PRM<GUM_SCALAR>& prm,
-                                  const O3PRM& tmp_prm,
-                                  ErrorsContainer& errors );
+        bool __checkO3Interfaces();
 
-        bool __checkInterfaceElement( PRM<GUM_SCALAR>& prm,
-                                      const O3Interface& i,
-                                      const O3InterfaceElement& elt,
-                                      ErrorsContainer& errors );
+        bool __checkInterfaceElement( O3Interface& i,
+                                      O3InterfaceElement& elt );
       };
 
     }  // o3prm

@@ -60,14 +60,24 @@ namespace gum {
         O3NameSolver( const O3NameSolver<GUM_SCALAR>& src )
             : __prm( src.__prm )
             , __o3_prm( src.__o3_prm )
-            , __errors( src.__errors ) {
+            , __errors( src.__errors )
+            , __typeName( src.__typeName )
+            , __eltName( src.__eltName )
+            , __refName( src.__refName )
+            , __interfaceName( src.__interfaceName )
+            , __className( src.__className ) {
           GUM_CONS_CPY( O3NameSolver );
         }
 
         O3NameSolver( O3NameSolver<GUM_SCALAR>&& src )
             : __prm( std::move( src.__prm ) )
             , __o3_prm( std::move( src.__o3_prm ) )
-            , __errors( std::move( src.__errors ) ) {
+            , __errors( std::move( src.__errors ) )
+            , __typeName( std::move( src.__typeName ) )
+            , __eltName( std::move( src.__eltName ) )
+            , __refName( std::move( src.__refName ) )
+            , __interfaceName( std::move( src.__interfaceName ) )
+            , __className( std::move( src.__className ) ) {
           GUM_CONS_MOV( O3NameSolver );
         }
 
@@ -81,6 +91,11 @@ namespace gum {
           __prm = src.__prm;
           __o3_prm = src.__o3_prm;
           __errors = src.__errors;
+          __typeName = src.__typeName;
+          __eltName = src.__eltName;
+          __refName = src.__refName;
+          __interfaceName = src.__interfaceName;
+          __className = src.__className;
           return *this;
         }
 
@@ -91,7 +106,107 @@ namespace gum {
           __prm = std::move( src.__prm );
           __o3_prm = std::move( src.__o3_prm );
           __errors = std::move( src.__errors );
+          __typeName = std::move( src.__typeName );
+          __eltName = std::move( src.__eltName );
+          __refName = std::move( src.__refName );
+          __interfaceName = std::move( src.__interfaceName );
+          __className = std::move( src.__className );
           return *this;
+        }
+
+        bool resolveClassElement( O3Label& name ) {
+          // If empty string, we return an empty string
+          if ( name.label() == "" ) {
+            return true;
+          }
+          // If we've already found the element real name
+          if ( __eltName.exists( name.label() ) ) {
+            name.label() = __eltName[name.label()];
+            return true;
+          }
+          // If name exists as is
+          if ( __prm->isType( name.label() ) ) {
+            __eltName.insert( name.label(), name.label() );
+            return true;
+          }
+
+          auto found = Set<std::string>();
+          auto matches = std::vector<std::string>();
+
+          // Trying with types
+          for ( auto t : __prm->types() ) {
+            if ( ends_with( t->name(), name.label() ) ) {
+              if ( not found.exists( t->name() ) ) {
+                found.insert( t->name() );
+                matches.push_back( t->name() );
+              }
+            }
+          }
+          // Trying with O3Types
+          for ( auto& t : __o3_prm->types() ) {
+            if ( ends_with( t->name().label(), name.label() ) ) {
+              if ( not found.exists( t->name().label() ) ) {
+                found.insert( t->name().label() );
+                matches.push_back( t->name().label() );
+              }
+            }
+          }
+
+          // Trying with interfaces
+          for ( auto i : __prm->interfaces() ) {
+            if ( ends_with( i->name(), name.label() ) ) {
+              if ( not found.exists( i->name() ) ) {
+                found.insert( i->name() );
+                matches.push_back( i->name() );
+              }
+            }
+          }
+          // Trying with O3Interface
+          for ( auto& i : __o3_prm->interfaces() ) {
+            if ( ends_with( i->name().label(), name.label() ) ) {
+              if ( not found.exists( i->name().label() ) ) {
+                found.insert( i->name().label() );
+                matches.push_back( i->name().label() );
+              }
+            }
+          }
+
+          // Trying with class
+          for ( auto c : __prm->classes() ) {
+            if ( ends_with( c->name(), name.label() ) ) {
+              if ( not found.exists( c->name() ) ) {
+                found.insert( c->name() );
+                matches.push_back( c->name() );
+              }
+            }
+          }
+          // Trying with O3Class
+          for ( auto& c : __o3_prm->classes() ) {
+            if ( ends_with( c->name().label(), name.label() ) ) {
+              if ( not found.exists( c->name().label() ) ) {
+                found.insert( c->name().label() );
+                matches.push_back( c->name().label() );
+              }
+            }
+          }
+
+          if ( matches.size() == 1 ) {  // One match is good
+            __eltName.insert( name.label(), matches.back() );
+            name.label() = matches.back();
+            return true;
+
+          } else if ( matches.size() == 0 ) {  // 0 match is not found
+
+            // Unknown name type
+            O3PRM_TYPE_NOT_FOUND( name, *__errors );
+            return false;
+
+          } else {  // More than one match is ambiguous
+
+            // Ambiguous name
+            O3PRM_TYPE_AMBIGUOUS( name, matches, *__errors );
+            return false;
+          }
         }
 
         bool resolveType( O3Label& name ) {
@@ -99,7 +214,7 @@ namespace gum {
           if ( name.label() == "" ) {
             return true;
           }
-          // If we've already found the interface real name
+          // If we've already found the type real name
           if ( __typeName.exists( name.label() ) ) {
             name.label() = __typeName[name.label()];
             return true;
@@ -110,18 +225,25 @@ namespace gum {
             return true;
           }
 
+          auto found = Set<std::string>();
           auto matches = std::vector<std::string>();
 
           // Trying with types
           for ( auto t : __prm->types() ) {
             if ( ends_with( t->name(), name.label() ) ) {
-              matches.push_back( t->name() );
+              if ( not found.exists( t->name() ) ) {
+                found.insert( t->name() );
+                matches.push_back( t->name() );
+              }
             }
           }
           // Trying with O3Types
           for ( auto& t : __o3_prm->types() ) {
             if ( ends_with( t->name().label(), name.label() ) ) {
-              matches.push_back( t->name().label() );
+              if ( not found.exists( t->name().label() ) ) {
+                found.insert( t->name().label() );
+                matches.push_back( t->name().label() );
+              }
             }
           }
 
@@ -133,13 +255,13 @@ namespace gum {
           } else if ( matches.size() == 0 ) {  // 0 match is not found
 
             // Unknown name type
-            O3PRM_TYPE_NOT_FOUND( name, __errors );
+            O3PRM_TYPE_NOT_FOUND( name, *__errors );
             return false;
 
           } else {  // More than one match is ambiguous
 
             // Ambiguous name
-            O3PRM_TYPE_AMBIGUOUS( name, matches, __errors );
+            O3PRM_TYPE_AMBIGUOUS( name, matches, *__errors );
             return false;
           }
         }
@@ -151,7 +273,7 @@ namespace gum {
           }
           // If we've already found the interface real name
           if ( __interfaceName.exists( name.label() ) ) {
-            name.label() = __interfaceName[name];
+            name.label() = __interfaceName[name.label()];
             return true;
           }
           // If name exists as is
@@ -159,17 +281,25 @@ namespace gum {
             __interfaceName.insert( name.label(), name.label() );
             return true;
           }
+
+          auto found = Set<std::string>();
           auto matches = std::vector<std::string>();
           // Trying with interfaces
-          for (auto i: __prm->interfaces()) {
-            if (ends_with( i->name(), name.label()) ) {
-              matches.push_back(i->name());
+          for ( auto i : __prm->interfaces() ) {
+            if ( ends_with( i->name(), name.label() ) ) {
+              if ( not found.exists( i->name() ) ) {
+                found.insert( i->name() );
+                matches.push_back( i->name() );
+              }
             }
           }
           // Trying with O3Interface
           for ( auto& i : __o3_prm->interfaces() ) {
-            if (ends_with( i->name().label(), name.label()) ) {
-              matches.push_back( i->name().label() );
+            if ( ends_with( i->name().label(), name.label() ) ) {
+              if ( not found.exists( i->name().label() ) ) {
+                found.insert( i->name().label() );
+                matches.push_back( i->name().label() );
+              }
             }
           }
           if ( matches.size() == 1 ) {  // One match is good
@@ -178,11 +308,11 @@ namespace gum {
             return true;
           } else if ( matches.size() == 0 ) {  // 0 match is not found
             // Unknown name type
-            O3PRM_INTERFACE_NOT_FOUND( name, __errors );
+            O3PRM_INTERFACE_NOT_FOUND( name, *__errors );
             return false;
           } else {  // More than one match is ambiguous
             // Ambiguous name
-            O3PRM_INTERFACE_AMBIGUOUS( name, matches, __errors );
+            O3PRM_INTERFACE_AMBIGUOUS( name, matches, *__errors );
             return false;
           }
         }
@@ -202,25 +332,40 @@ namespace gum {
             __className.insert( name.label(), name.label() );
             return true;
           }
-          // Try to complete super type's module
-          auto matches = std::vector<const Class<GUM_SCALAR>*>();
-          std::copy_if( __prm->classes().begin(),
-                        __prm->classes().end(),
-                        std::back_inserter( matches ),
-                        [&name]( const Class<GUM_SCALAR>* c ) {
-                          return ends_with( c->name(), name.label() );
-                        } );
+
+          auto matches = std::vector<std::string>();
+          auto found = Set<std::string>();
+          // Try to complete with Class
+          for ( auto c : __prm->classes() ) {
+            if ( ends_with( c->name(), name.label() ) ) {
+              if ( not found.exists( c->name() ) ) {
+                found.insert( c->name() );
+                matches.push_back( c->name() );
+              }
+            }
+          }
+
+          // Try to complete with O3Class
+          for ( auto& c : __o3_prm->classes() ) {
+            if ( ends_with( c->name().label(), name.label() ) ) {
+              if ( not found.exists( c->name().label() ) ) {
+                found.insert( c->name().label() );
+                matches.push_back( c->name().label() );
+              }
+            }
+          }
+
           if ( matches.size() == 1 ) {  // One match is good
-            __className.insert( name.label(), matches.back()->name() );
-            name.label() = matches.back()->name();
+            __className.insert( name.label(), matches.back() );
+            name.label() = matches.back();
             return true;
           } else if ( matches.size() == 0 ) {  // 0 match is not found
-            // Unknown super interface
-            O3PRM_CLASS_NOT_FOUND( name, __errors );
+            // Unknown super class
+            O3PRM_CLASS_NOT_FOUND( name, *__errors );
             return false;
           } else {  // More than one match is ambiguous
             // Ambiguous name
-            O3PRM_CLASS_AMBIGUOUS( name, matches, __errors );
+            O3PRM_CLASS_AMBIGUOUS( name, matches, *__errors );
             return false;
           }
         }
@@ -230,7 +375,7 @@ namespace gum {
           if ( name.label() == "" ) {
             return true;
           }
-          // If we've already found the interface real name
+          // If we've already found the reference real name
           if ( __refName.exists( name.label() ) ) {
             name.label() = __refName[name.label()];
             return true;
@@ -241,32 +386,61 @@ namespace gum {
             __refName.insert( name.label(), name.label() );
             return true;
           }
-          auto matches = std::vector<const PRMObject*>();
-          // Trying with classes
-          std::copy_if( __prm->classes().begin(),
-                        __prm->classes().end(),
-                        std::back_inserter( matches ),
-                        [&name]( const Class<GUM_SCALAR>* c ) {
-                          return ends_with( c->name(), name.label() );
-                        } );
+
+          auto found = Set<std::string>();
+          auto matches = std::vector<std::string>();
+
           // Trying with interfaces
-          std::copy_if( __prm->interfaces().begin(),
-                        __prm->interfaces().end(),
-                        std::back_inserter( matches ),
-                        [&name]( const Interface<GUM_SCALAR>* i ) {
-                          return ends_with( i->name(), name.label() );
-                        } );
+          for ( auto i : __prm->interfaces() ) {
+            if ( ends_with( i->name(), name.label() ) ) {
+              if ( not found.exists( i->name() ) ) {
+                found.insert( i->name() );
+                matches.push_back( i->name() );
+              }
+            }
+          }
+
+          // Trying with O3Interface
+          for ( auto& i : __o3_prm->interfaces() ) {
+            if ( ends_with( i->name().label(), name.label() ) ) {
+              if ( not found.exists( i->name().label() ) ) {
+                found.insert( i->name().label() );
+                matches.push_back( i->name().label() );
+              }
+            }
+          }
+
+          // Try to complete with Class
+          for ( auto c : __prm->classes() ) {
+            if ( ends_with( c->name(), name.label() ) ) {
+              if ( not found.exists( c->name() ) ) {
+                found.insert( c->name() );
+                matches.push_back( c->name() );
+              }
+            }
+          }
+
+          // Try to complete with O3Class
+          for ( auto& c : __o3_prm->classes() ) {
+            if ( ends_with( c->name().label(), name.label() ) ) {
+              if ( not found.exists( c->name().label() ) ) {
+                found.insert( c->name().label() );
+                matches.push_back( c->name().label() );
+              }
+            }
+          }
+
           if ( matches.size() == 1 ) {  // One match is good
-            __refName.insert( name.label(), matches.back()->name() );
-            name.label() = matches.back()->name();
+            __refName.insert( name.label(), matches.back() );
+            name.label() = matches.back();
             return true;
           } else if ( matches.size() == 0 ) {  // 0 match is not found
             // Unknown name type
-            O3PRM_REFERENCE_NOT_FOUND( name, __errors );
+            O3PRM_REFERENCE_NOT_FOUND( name, *__errors );
             return false;
           } else {  // More than one match is ambiguous
             // Ambiguous name
-            O3PRM_REFERENCE_AMBIGUOUS( name, matches, __errors );
+            O3PRM_REFERENCE_AMBIGUOUS( name, matches, *__errors );
             return false;
           }
         }
@@ -277,6 +451,7 @@ namespace gum {
         ErrorsContainer* __errors;
 
         NameMap __typeName;
+        NameMap __eltName;
         NameMap __refName;
         NameMap __interfaceName;
         NameMap __className;

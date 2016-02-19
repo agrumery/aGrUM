@@ -513,13 +513,9 @@ namespace gum {
 
       const O3PRM::O3SystemList& O3PRM::systems() const { return __systems; }
 
-      O3PRM::O3ImportList& O3PRM::imports() {
-        return __imports;
-      }
+      O3PRM::O3ImportList& O3PRM::imports() { return __imports; }
 
-      const O3PRM::O3ImportList& O3PRM::imports() const {
-        return __imports;
-      }
+      const O3PRM::O3ImportList& O3PRM::imports() const { return __imports; }
 
       O3InterfaceElement::O3InterfaceElement( const O3Label& type,
                                               const O3Label& name )
@@ -564,7 +560,10 @@ namespace gum {
         return *this;
       }
 
+      O3Label& O3InterfaceElement::type() { return __type; }
       const O3Label& O3InterfaceElement::type() const { return __type; }
+
+      O3Label& O3InterfaceElement::name() { return __name; }
       const O3Label& O3InterfaceElement::name() const { return __name; }
 
       O3Interface::O3Interface( const Position& pos,
@@ -623,10 +622,15 @@ namespace gum {
 
       const Position& O3Interface::position() const { return __pos; }
 
+      O3Label& O3Interface::name() { return __name; }
       const O3Label& O3Interface::name() const { return __name; }
 
+      O3Label& O3Interface::super() { return __super; }
       const O3Label& O3Interface::super() const { return __super; }
 
+      O3Interface::O3InterfaceElementList& O3Interface::elements() {
+        return *__elts;
+      }
       const O3Interface::O3InterfaceElementList& O3Interface::elements() const {
         return *__elts;
       }
@@ -1171,23 +1175,25 @@ namespace gum {
         return *this;
       }
 
-      const O3Label& O3Assignment::leftInstance() const { return __leftInstance; }
+      const O3Label& O3Assignment::leftInstance() const {
+        return __leftInstance;
+      }
 
       O3Label& O3Assignment::leftInstance() { return __leftInstance; }
 
-      const O3Integer& O3Assignment::index() const {
-        return __index;
-      }
+      const O3Integer& O3Assignment::index() const { return __index; }
 
-      O3Integer& O3Assignment::index() {
-        return __index;
-      }
+      O3Integer& O3Assignment::index() { return __index; }
 
-      const O3Label& O3Assignment::leftReference() const { return __leftReference; }
+      const O3Label& O3Assignment::leftReference() const {
+        return __leftReference;
+      }
 
       O3Label& O3Assignment::leftReference() { return __leftReference; }
 
-      const O3Label& O3Assignment::rightInstance() const { return __rightInstance; }
+      const O3Label& O3Assignment::rightInstance() const {
+        return __rightInstance;
+      }
 
       O3Label& O3Assignment::rightInstance() { return __rightInstance; }
 
@@ -1233,23 +1239,25 @@ namespace gum {
         return *this;
       }
 
-      const O3Label& O3Increment::leftInstance() const { return __leftInstance; }
+      const O3Label& O3Increment::leftInstance() const {
+        return __leftInstance;
+      }
 
       O3Label& O3Increment::leftInstance() { return __leftInstance; }
 
-      const O3Integer& O3Increment::index() const {
-        return __index;
-      }
+      const O3Integer& O3Increment::index() const { return __index; }
 
-      O3Integer& O3Increment::index() {
-        return __index;
-      }
+      O3Integer& O3Increment::index() { return __index; }
 
-      const O3Label& O3Increment::leftReference() const { return __leftReference; }
+      const O3Label& O3Increment::leftReference() const {
+        return __leftReference;
+      }
 
       O3Label& O3Increment::leftReference() { return __leftReference; }
 
-      const O3Label& O3Increment::rightInstance() const { return __rightInstance; }
+      const O3Label& O3Increment::rightInstance() const {
+        return __rightInstance;
+      }
 
       O3Label& O3Increment::rightInstance() { return __rightInstance; }
 
@@ -1307,7 +1315,8 @@ namespace gum {
 
       O3Integer& O3Instance::size() { return __size; }
 
-      const O3Instance::O3InstanceParameterList& O3Instance::parameters() const {
+      const O3Instance::O3InstanceParameterList&
+      O3Instance::parameters() const {
         return __parameters;
       }
 
@@ -1431,71 +1440,51 @@ namespace gum {
         return *this;
       }
 
-      const O3Label& O3InstanceParameter::name() const {
-        return __name;
+      const O3Label& O3InstanceParameter::name() const { return __name; }
+
+      O3Label& O3InstanceParameter::name() { return __name; }
+
+      const O3Float& O3InstanceParameter::value() const { return __value; }
+
+      O3Float& O3InstanceParameter::value() { return __value; }
+
+      bool O3InstanceParameter::isInteger() const { return __isInteger; }
+
+      bool& O3InstanceParameter::isInteger() { return __isInteger; }
+
+      O3Import::O3Import() { GUM_CONSTRUCTOR( O3Import ); }
+
+      O3Import::O3Import( const O3Import& src )
+          : __import( src.__import ) {
+        GUM_CONSTRUCTOR( O3Import );
       }
 
-      O3Label& O3InstanceParameter::name() {
-        return __name;
+      O3Import::O3Import( O3Import&& src )
+          : __import( std::move( src.__import ) ) {
+        GUM_CONS_MOV( O3Import );
       }
 
-      const O3Float& O3InstanceParameter::value() const {
-        return __value;
-      }
+      O3Import::~O3Import() { GUM_DESTRUCTOR( O3Import ); }
 
-      O3Float& O3InstanceParameter::value() {
-        return __value;
-      }
-
-      bool O3InstanceParameter::isInteger() const {
-        return __isInteger;
-      }
-
-      bool& O3InstanceParameter::isInteger() {
-        return __isInteger;
-      }
-
-        O3Import::O3Import() {
-          GUM_CONSTRUCTOR( O3Import );
-        }
-
-        O3Import::O3Import( const O3Import& src )
-            : __import( src.__import ) {
-          GUM_CONSTRUCTOR( O3Import );
-        }
-
-        O3Import::O3Import( O3Import&& src )
-            : __import( std::move( src.__import ) ) {
-          GUM_CONS_MOV( O3Import );
-        }
-
-        O3Import::~O3Import() {
-          GUM_DESTRUCTOR( O3Import );
-        }
-
-        O3Import& O3Import::operator=(const O3Import& src) {
-          if (this == &src) {
-            return *this;
-          }
-          __import = src.__import;
+      O3Import& O3Import::operator=( const O3Import& src ) {
+        if ( this == &src ) {
           return *this;
         }
+        __import = src.__import;
+        return *this;
+      }
 
-        O3Import& O3Import::operator=(O3Import&& src) {
-          if (this == &src) {
-            return *this;
-          }
-          __import = src.__import;
+      O3Import& O3Import::operator=( O3Import&& src ) {
+        if ( this == &src ) {
           return *this;
         }
+        __import = src.__import;
+        return *this;
+      }
 
-        const O3Label& O3Import::import() const {
-          return __import;
-        }
+      const O3Label& O3Import::import() const { return __import; }
 
-        O3Label& O3Import::import() {
-          return __import;
-        }
+      O3Label& O3Import::import() { return __import; }
 
     }  // o3prm
   }    // prm
