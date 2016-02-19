@@ -130,11 +130,11 @@ namespace gum {
         return;
       } else if ( pots.size() == 1 ) {
         tmp = const_cast<Potential<GUM_SCALAR>*>( *pots.begin() );
-        pot = new Potential<GUM_SCALAR>( projectSum( *tmp, var_set ) );
+        pot = new Potential<GUM_SCALAR>( tmp->projectSum( var_set ) );
       } else {
         MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb( multPotential );
         tmp = Comb.combine( pots );
-        pot = new Potential<GUM_SCALAR>( projectSum( *tmp, var_set ) );
+        pot = new Potential<GUM_SCALAR>( tmp->projectSum(  var_set ) );
         delete tmp;
       }
 

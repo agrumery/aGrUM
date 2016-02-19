@@ -222,6 +222,7 @@ namespace gum {
       Set<Potential<GUM_SCALAR>*>& trash ) {
     // THIS IS A (TEMPLATIZED) COPY OF prm::eliminateNode
     {
+      /*
       const gum::DiscreteVariable* var = &( this->bn().variable( id ) );
 
       Potential<GUM_SCALAR>* tmp = 0;
@@ -255,6 +256,7 @@ namespace gum {
 
       pool.insert( pot );
       trash.insert( pot );
+      */
     }
   }
 

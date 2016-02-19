@@ -31,9 +31,20 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR>::Potential( Potential<GUM_SCALAR>&& from )
       : MultiDimDecorator<GUM_SCALAR>(
-            std::forward<const MultiDimDecorator<GUM_SCALAR>&&>( from ) ) {
+            std::forward<MultiDimDecorator<GUM_SCALAR>&&>( from ) ) {
     GUM_CONS_MOV( Potential );
   }
+
+  // copy constructor
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>& src )
+      : Potential<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>(
+                                   src.content()->newFactory() ),
+                               *( src.content() ) ) {
+    // for debugging purposes
+    GUM_CONS_CPY( Potential );
+  }
+
 
   // Default constructor: creates an empty null dimensional matrix
   /*
@@ -54,16 +65,6 @@ namespace gum {
       : MultiDimDecorator<GUM_SCALAR>( aContent ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
-  }
-
-  // copy constructor
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>& src )
-      : Potential<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>(
-                                   src.content()->newFactory() ),
-                               *( src.content() ) ) {
-    // for debugging purposes
-    GUM_CONS_CPY( Potential );
   }
 
   // complex copy constructor : we choose the implementation
@@ -95,6 +96,7 @@ namespace gum {
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
   operator=( const Potential<GUM_SCALAR>& src ) {
     MultiDimDecorator<GUM_SCALAR>::operator=( src );
+    GUM_OP_CPY(Potential);
     return *this;
   }
 
@@ -104,6 +106,8 @@ namespace gum {
   operator=( Potential<GUM_SCALAR>&& src ) {
     MultiDimDecorator<GUM_SCALAR>::operator=(
         std::forward<MultiDimDecorator<GUM_SCALAR>&&>( src ) );
+
+    GUM_OP_MOV(Potential);
     return *this;
   }
 
