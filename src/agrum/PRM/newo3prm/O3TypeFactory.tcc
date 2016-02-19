@@ -203,7 +203,7 @@ namespace gum {
           } catch ( DuplicateElement& e ) {
 
             // Raised if duplicate type names
-            O3PRM_TYPE_DUPPLICATE( type->name(), __errors );
+            O3PRM_TYPE_DUPPLICATE( type->name(), *__errors );
             return false;
           }
         }
@@ -233,7 +233,7 @@ namespace gum {
 
               // Cyclic inheritance
               O3PRM_TYPE_CYCLIC_INHERITANCE(
-                  type->name(), type->super(), __errors );
+                  type->name(), type->super(), *__errors );
               return false;
             }
 
@@ -260,7 +260,7 @@ namespace gum {
           }
 
           if ( not super_labels.contains( pair.second.label() ) ) {
-            O3PRM_TYPE_UNKNOWN_LABEL( type.super(), pair.second, __errors );
+            O3PRM_TYPE_UNKNOWN_LABEL( type.super(), pair.second, *__errors );
             return false;
           }
         }
@@ -292,13 +292,13 @@ namespace gum {
           if ( names.contains( type->name().label() ) ) {
 
             // Raised if duplicate type names
-            O3PRM_TYPE_DUPPLICATE( type->name(), __errors );
+            O3PRM_TYPE_DUPPLICATE( type->name(), *__errors );
             return false;
 
           } else if ( type->end().value() - type->start().value() < 1 ) {
 
             // Invalid range
-            O3PRM_TYPE_INVALID_RANGE( type, __errors );
+            O3PRM_TYPE_INVALID_RANGE( *type, *__errors );
             return false;
 
           } else {

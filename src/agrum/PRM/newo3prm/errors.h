@@ -26,146 +26,88 @@
  * @author Lionel TORTI
  */
 
+#include <string>
 #include <sstream>
+#include <vector>
+
+#include <agrum/core/errorsContainer.h>
+#include <agrum/PRM/newo3prm/o3prm.h>
 
 #ifndef GUM_PRM_O3PRM_ERRORS_H
 #define GUM_PRM_O3PRM_ERRORS_H
 
-#define O3PRM_TYPE_NOT_FOUND( val, errors )                              \
-  {                                                                      \
-    auto pos = val.position();                                           \
-    auto msg = std::stringstream();                                      \
-    msg << "Type error : "                                               \
-        << "Unknown type " << val.label();                               \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+namespace gum {
+  namespace prm {
+    namespace o3prm {
 
-#define O3PRM_TYPE_AMBIGUOUS( val, matches, errors )                     \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Type error : "                                               \
-        << "Ambiguous name " << val.label()                              \
-        << ", found more than one elligible types: ";                    \
-    for ( auto i = 0; i < matches.size() - 1; ++i ) {                    \
-      msg << matches[i] << ", ";                                         \
-    }                                                                    \
-    msg << matches.back();                                               \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
 
-#define O3PRM_TYPE_RESERVED( val, errors )                               \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Type error : "                                               \
-        << "Type name " << val.label() << " is reserved";                \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_TYPE_NOT_FOUND( const O3Label& val, ErrorsContainer& errors );
 
-#define O3PRM_TYPE_DUPPLICATE( val, errors )                             \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Type error : "                                               \
-        << "Type " << val.label() << " exists already";                  \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_TYPE_AMBIGUOUS( const O3Label& val,
+                                 const std::vector<std::string>& matches,
+                                 ErrorsContainer& errors );
 
-#define O3PRM_TYPE_CYCLIC_INHERITANCE( sub_type, super_type, errors )    \
-  {                                                                      \
-    const auto& pos = sub_type.position();                               \
-    auto msg = std::stringstream();                                      \
-    msg << "Type error : "                                               \
-        << "Cyclic inheritance between type " << sub_type.label()        \
-        << " and type " << super_type.label();                           \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_TYPE_RESERVED( const O3Label& val, ErrorsContainer& errors );
 
-#define O3PRM_TYPE_UNKNOWN_LABEL( type, l, errors )                      \
-  {                                                                      \
-    const auto& pos = l.position();                                      \
-    auto msg = std::stringstream();                                      \
-    msg << "Type error : "                                               \
-        << "Unknown label " << l.label() << " in " << type.label();      \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_TYPE_DUPPLICATE( const O3Label& val, ErrorsContainer& errors );
 
-#define O3PRM_TYPE_INVALID_RANGE( val, errors )                          \
-  {                                                                      \
-    const auto& pos = val->name().position();                            \
-    auto msg = std::stringstream();                                      \
-    msg << "Type error : "                                               \
-        << "Invalid range " << val->start().value() << " -> "            \
-        << val->end().value();                                           \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_TYPE_CYCLIC_INHERITANCE( const O3Label& sub_type,
+                                          const O3Label& super_type,
+                                          ErrorsContainer& errors );
 
-#define O3PRM_CLASS_NOT_FOUND( val, errors )                             \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Class error : "                                              \
-        << "Unknown class " << val.label();                              \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_TYPE_UNKNOWN_LABEL( const O3Label& type,
+                                     const O3Label& l,
+                                     ErrorsContainer& errors );
 
-#define O3PRM_CLASS_AMBIGUOUS( val, matches, errors )                    \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Class error : "                                              \
-        << "Name " << val.label() << " is ambiguous: ";                  \
-    for ( auto i = 0; i < matches.size() - 1; ++i ) {                    \
-      msg << matches[i].first << ", ";                                   \
-    }                                                                    \
-    msg << matches.back().first;                                         \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_TYPE_INVALID_RANGE( const O3IntType& val,
+                                     ErrorsContainer& errors );
 
-#define O3PRM_INTERFACE_NOT_FOUND( val, errors )                         \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Interface error : "                                          \
-        << "Interface " << val.label() << " not found";                  \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_CLASS_NOT_FOUND( const O3Label& val, ErrorsContainer& errors );
 
-#define O3PRM_INTERFACE_AMBIGUOUS( val, matches, errors )                \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Inteface error : "                                           \
-        << "Name " << val.label() << " is ambiguous: ";                  \
-    for ( auto i = 0; i < matches.size() - 1; ++i ) {                    \
-      msg << matches[i] << ", ";                                         \
-    }                                                                    \
-    msg << matches.back();                                               \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_CLASS_AMBIGUOUS( const O3Label& val,
+                                  const std::vector<std::string>& matches,
+                                  ErrorsContainer& errors );
 
-#define O3PRM_REFERENCE_NOT_FOUND( val, errors )                         \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Reference Slot error : "                                     \
-        << "Reference Slot type " << val.label() << " not found";        \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_INTERFACE_NOT_FOUND( const O3Label& val,
+                                      ErrorsContainer& errors );
 
-#define O3PRM_REFERENCE_AMBIGUOUS( val, matches, errors )                \
-  {                                                                      \
-    const auto& pos = val.position();                                    \
-    auto msg = std::stringstream();                                      \
-    msg << "Reference Slot error : "                                     \
-        << "Name " << val.label() << " is ambiguous: ";                  \
-    for ( auto i = 0; i < matches.size() - 1; ++i ) {                    \
-      msg << matches[i]->name() << ", ";                                 \
-    }                                                                    \
-    msg << matches.back()->name();                                       \
-    errors->addError( msg.str(), pos.file(), pos.line(), pos.column() ); \
-  }
+      void O3PRM_INTERFACE_AMBIGUOUS( const O3Label& val,
+                                      const std::vector<std::string>& matches,
+                                      ErrorsContainer& errors );
+
+      void O3PRM_INTERFACE_DUPLICATE( const O3Label& val,
+                                      ErrorsContainer& errors );
+
+      void O3PRM_INTERFACE_DUPLICATE_ELEMENT( const O3InterfaceElement& elt,
+                                              ErrorsContainer& errors );
+
+      void O3PRM_INTERFACE_CYCLIC_INHERITANCE( const O3Label& sub,
+                                               const O3Label& super,
+                                               ErrorsContainer& errors );
+
+      void O3PRM_INTERFACE_SELF_REFERENCE( const O3Interface& i,
+                                           const O3InterfaceElement& r,
+                                           ErrorsContainer& errors );
+
+      void O3PRM_INTERFACE_ILLEGAL_SUB_REFERENCE( const O3Interface& i,
+                                                  const O3InterfaceElement& ref,
+                                                  ErrorsContainer& errors );
+
+      void O3PRM_INTERFACE_ILLEGAL_SUPER_REFERENCE( const O3Interface& i,
+                                                    const O3InterfaceElement& r,
+                                                    ErrorsContainer& errors );
+
+      void O3PRM_REFERENCE_NOT_FOUND( const O3Label& val,
+                                      ErrorsContainer& errors );
+
+      void O3PRM_REFERENCE_AMBIGUOUS( const O3Label& val,
+                                      const std::vector<std::string>& matches,
+                                      ErrorsContainer& errors );
+
+
+    }  // o3prm
+  }    // prm
+}  // gum
 
 #endif  // GUM_PRM_O3PRM_ERRORS_H
 

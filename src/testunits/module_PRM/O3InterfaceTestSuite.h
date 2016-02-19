@@ -148,7 +148,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 1| Interface error : Unknown identifier t_state";
+      msg << "|2 col 1| Type error : Unknown type t_state";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), 1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
@@ -365,7 +365,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 24| Interface error : Unknown interface IFooBar";
+      msg << "|4 col 24| Interface error : Interface IFooBar not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IFoo" ) );
@@ -391,7 +391,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 24| Interface error : Unknown interface t_state";
+      msg << "|5 col 24| Interface error : Interface t_state not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
       TS_ASSERT( not prm.isInterface( "IFoo" ) );
