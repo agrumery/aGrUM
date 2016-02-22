@@ -172,8 +172,9 @@ namespace gum_tests {
       p2.fillWith( {5, 6, 7, 8} );
 
       GUM_CHECKPOINT;
-      gum::Potential<int> p = p1;
+      auto p = p1;
 
+      GUM_CHECKPOINT;
       // just checking memory allocation (what else ?)
       auto pA = p1 * p2;
       TS_ASSERT_EQUALS( pA.toString(),

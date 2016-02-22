@@ -104,9 +104,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
   operator=( Potential<GUM_SCALAR>&& src ) {
+    GUM_CHECKPOINT;
     MultiDimDecorator<GUM_SCALAR>::operator=(
         std::forward<MultiDimDecorator<GUM_SCALAR>&&>( src ) );
 
+    GUM_CHECKPOINT;
     GUM_OP_MOV(Potential);
     return *this;
   }

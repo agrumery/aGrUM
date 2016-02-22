@@ -71,13 +71,13 @@ namespace gum {
      * @brief Creates an potential around aContent.
      * @param aContent The implementation of this Potential.
      */
-    explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent );
+    Potential( MultiDimImplementation<GUM_SCALAR>* aContent );
 
     /**
      * @brief Copy constructor.
      * @param src The Potential to copy.
      */
-    explicit Potential( const Potential<GUM_SCALAR>& src );
+    Potential( const Potential<GUM_SCALAR>& src );
 
     /**
      * move constructeur
