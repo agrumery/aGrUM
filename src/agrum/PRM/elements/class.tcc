@@ -142,7 +142,28 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__inheritReferenceSlots() {
+    void Class<GUM_SCALAR>::initializeInheritance() {
+      if ( __super ) {
+        const auto& c = super();
+        // Adding implemented interfaces of c, if any
+        if ( c.__implements ) {
+          if ( not __implements ) {
+            __implements =
+                new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) );
+          } else {
+            for ( auto i : *( c.__implements ) ) {
+              __implements->insert( i );
+            }
+          }
+        }
+      }
+      if ( __implements ) {
+        __implementInterfaces( true );
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::inheritReferenceSlots() {
       if ( __super ) {
 
         const auto& c = super();
@@ -169,7 +190,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__inheritParameters() {
+    void Class<GUM_SCALAR>::inheritParameters() {
       if ( __super ) {
         const auto& c = super();
         // Copying parameters
@@ -188,7 +209,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__inheritAttributes() {
+    void Class<GUM_SCALAR>::inheritAttributes() {
       if ( __super ) {
         const auto& c = super();
         for ( const auto c_attr : c.__attributes ) {
@@ -219,7 +240,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__inheritAggregates() {
+    void Class<GUM_SCALAR>::inheritAggregates() {
       if ( __super ) {
         const auto& c = super();
         for ( const auto c_agg : c.__aggregates ) {
@@ -251,28 +272,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__initializeInheritance() {
-      if ( __super ) {
-        const auto& c = super();
-        // Adding implemented interfaces of c, if any
-        if ( c.__implements ) {
-          if ( not __implements ) {
-            __implements =
-                new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) );
-          } else {
-            for ( auto i : *( c.__implements ) ) {
-              __implements->insert( i );
-            }
-          }
-        }
-      }
-      if ( __implements ) {
-        __implementInterfaces( true );
-      }
-    }
-
-    template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__inheritSlotChains() {
+    void Class<GUM_SCALAR>::inheritSlotChains() {
       if ( __super ) {
         const auto& c = super();
         // Copying slot chains
@@ -300,7 +300,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__completeInheritance(const std::string& name) {
+    void Class<GUM_SCALAR>::completeInheritance(const std::string& name) {
       if ( __super ) {
         if (not ClassElement<GUM_SCALAR>::isAttribute(this->get(name))) {
           GUM_ERROR( OperationNotAllowed,

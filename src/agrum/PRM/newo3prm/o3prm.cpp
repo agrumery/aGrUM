@@ -680,6 +680,7 @@ namespace gum {
         return *this;
       }
 
+      O3Label& O3Attribute::type() { return __type; }
       const O3Label& O3Attribute::type() const { return __type; }
       const O3Label& O3Attribute::name() const { return __name; }
       const O3Attribute::O3LabelList& O3Attribute::parents() const {
@@ -1044,6 +1045,7 @@ namespace gum {
         return *this;
       }
 
+      O3Label& O3ReferenceSlot::type() { return __type; }
       const O3Label& O3ReferenceSlot::type() const { return __type; }
 
       const O3Label& O3ReferenceSlot::name() const { return __name; }

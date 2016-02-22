@@ -139,7 +139,7 @@ namespace gum {
           return __errors.count();
 
         } catch ( gum::Exception& e ) {
-          GUM_SHOWERROR(e);
+          GUM_SHOWERROR( e );
           __errors.addException( e.errorContent(), file );
           return __errors.count();
         } catch ( ... ) {
@@ -291,8 +291,9 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE void O3PRMFactory<GUM_SCALAR>::__parseImport(
-          const O3Import& i, const std::string& module ) {
+      INLINE void
+      O3PRMFactory<GUM_SCALAR>::__parseImport( const O3Import& i,
+                                               const std::string& module ) {
         auto module_path = module;
         std::replace( module_path.begin(), module_path.end(), '.', '/' );
         if ( not __imported.exists( i.import().label() ) ) {
@@ -309,7 +310,8 @@ namespace gum {
             file_path = cp + module + path + ".o3prm";
             file = std::ifstream( file_path );
             if ( file.is_open() ) {
-              __parseStream( file, file_path, module + "." + i.import().label() );
+              __parseStream(
+                  file, file_path, module + "." + i.import().label() );
               break;
             }
             const auto& pos = i.import().position();
@@ -323,10 +325,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE void
-      O3PRMFactory<GUM_SCALAR>::__readStream( std::istream& input,
-                                              const std::string& file,
-                                              std::string module ) {
+      INLINE void O3PRMFactory<GUM_SCALAR>::__readStream(
+          std::istream& input, const std::string& file, std::string module ) {
         if ( module.size() > 0 and module.back() != '.' ) {
           module.append( "." );
         }
@@ -334,7 +334,7 @@ namespace gum {
         __parseStream( input, file, module );
 
         for ( const auto& i : __o3_prm->imports() ) {
-          __parseImport( *i, module);
+          __parseImport( *i, module );
         }
 
         if ( __errors.error_count == 0 ) {
@@ -344,20 +344,29 @@ namespace gum {
 
           auto interface_factory = O3InterfaceFactory<GUM_SCALAR>(
               *__prm, *__o3_prm, solver, __errors );
-          auto class_factory = O3ClassFactory<GUM_SCALAR>();
+          auto class_factory =
+              O3ClassFactory<GUM_SCALAR>( *__prm, *__o3_prm, solver, __errors );
+
           auto system_factory = O3SystemFactory<GUM_SCALAR>();
 
-          type_factory.build();
-          interface_factory.buildInterfaces();
-          class_factory.buildClasses( *__prm, *__o3_prm, __errors );
-          interface_factory.buildElements();
-          class_factory.buildImplementations( *__prm, *__o3_prm, __errors );
-          class_factory.buildParameters( *__prm, *__o3_prm, __errors );
-          class_factory.buildReferenceSlots( *__prm, *__o3_prm, __errors );
-          class_factory.declareAttributes( *__prm, *__o3_prm, __errors );
-          class_factory.buildAggregates( *__prm, *__o3_prm, __errors );
-          class_factory.completeAttributes( *__prm, *__o3_prm, __errors );
-          system_factory.build( *__prm, *__o3_prm, __errors );
+          try {
+            type_factory.build();
+            interface_factory.buildInterfaces();
+            class_factory.buildClasses();
+            interface_factory.buildElements();
+            class_factory.buildImplementations();
+            class_factory.buildParameters();
+            class_factory.buildReferenceSlots();
+            class_factory.declareAttributes();
+            class_factory.buildAggregates();
+            class_factory.completeAttributes();
+            system_factory.build( *__prm, *__o3_prm, __errors );
+          } catch ( Exception& e ) {
+            __errors.addException( "an unknown error occured", file );
+            //GUM_SHOWERROR( e );
+          } catch ( ... ) {
+            __errors.addException( "an unknown exception occured", file );
+          }
         }
       }
     }
