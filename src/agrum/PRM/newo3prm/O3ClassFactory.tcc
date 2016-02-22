@@ -455,7 +455,6 @@ namespace gum {
       void O3ClassFactory<GUM_SCALAR>::declareAttributes() {
         // Class with a super class must be declared after
         for ( auto c : __o3Classes ) {
-
           __prm->getClass( c->name().label() ).inheritAttributes();
           __declareAttribute( *c );
         }
@@ -491,15 +490,16 @@ namespace gum {
 
         // Checking type legality if overload
         if ( c.super().label() != "" ) {
-
           const auto& super = __prm->getClass( c.super().label() );
 
-          const auto& super_type = super.get( attr.name().label() ).type();
+          if (not super.exists( attr.name().label() )) {
+            return true;
+          }
 
+          const auto& super_type = super.get( attr.name().label() ).type();
           const auto& type = __prm->type( attr.type().label() );
 
-          if ( super.exists( attr.name().label() ) and
-               not type.isSubTypeOf( super_type ) ) {
+          if ( not type.isSubTypeOf( super_type ) ) {
 
             O3PRM_CLASS_ILLEGAL_OVERLOAD( c.super(), attr.name(), *__errors );
             return false;

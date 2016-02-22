@@ -242,6 +242,13 @@ namespace gum {
           return false;
         }
 
+        const auto& real_i = __prm->interface( i.name().label() );
+        if ( real_i.exists( elt.name().label() ) ) {
+
+          O3PRM_INTERFACE_DUPLICATE_ELEMENT( elt, *__errors );
+          return false;
+        }
+
         if ( __prm->isInterface( elt.type().label() ) or
              __prm->isClass( elt.type().label() ) ) {
 
