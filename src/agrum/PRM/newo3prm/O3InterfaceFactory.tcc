@@ -110,7 +110,7 @@ namespace gum {
       void O3InterfaceFactory<GUM_SCALAR>::buildInterfaces() {
         if ( __buildInterfaces ) {
           GUM_ERROR( FatalError,
-                     "intefaces have already been built, change PRM to rebuild" );
+                     "intefaces have already been built" );
         }
         __buildInterfaces = true;
 
@@ -198,8 +198,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       void O3InterfaceFactory<GUM_SCALAR>::buildElements() {
         if ( __buildElements ) {
-          GUM_ERROR( FatalError, "intefaces elements have already been built, "
-                                 "change PRM to rebuild" );
+          GUM_ERROR( FatalError, "intefaces elements have already been built" );
         }
         __buildElements = true;
 
