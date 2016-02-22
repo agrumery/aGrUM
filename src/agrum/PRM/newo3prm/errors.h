@@ -68,6 +68,90 @@ namespace gum {
                                   const std::vector<std::string>& matches,
                                   ErrorsContainer& errors );
 
+      void O3PRM_CLASS_DUPLICATE( const O3Label& val, ErrorsContainer& errors );
+
+      void O3PRM_CLASS_CYLIC_INHERITANCE( const O3Label& sub,
+                                          const O3Label& super,
+                                          ErrorsContainer& errors );
+
+      void O3PRM_CLASS_ATTR_IMPLEMENTATION( const O3Label& c,
+                                            const O3Label& i,
+                                            const O3Label& attr,
+                                            ErrorsContainer& errors );
+
+      void O3PRM_CLASS_AGG_IMPLEMENTATION( const O3Label& c,
+                                           const O3Label& i,
+                                           const O3Label& attr,
+                                           ErrorsContainer& errors );
+
+      void O3PRM_CLASS_REF_IMPLEMENTATION( const O3Label& c,
+                                           const O3Label& i,
+                                           const O3Label& ref,
+                                           ErrorsContainer& errors );
+
+      void O3PRM_CLASS_MISSING_ATTRIBUTES( const O3Label& c,
+                                           const O3Label& i,
+                                           ErrorsContainer& errors );
+
+      void O3PRM_CLASS_DUPLICATE_REFERENCE( const O3Label& ref,
+                                            ErrorsContainer& errors );
+
+      void O3PRM_CLASS_SELF_REFERENCE( const O3Label& c,
+                                       const O3Label& ref,
+                                       ErrorsContainer& errors );
+
+      void O3PRM_CLASS_ILLEGAL_SUB_REFERENCE( const O3Label& c,
+                                              const O3Label& sub,
+                                              ErrorsContainer& errors );
+
+      void O3PRM_CLASS_ILLEGAL_SUPER_REFERENCE( const O3Label& c,
+                                                const O3Label& super,
+                                                ErrorsContainer& errors );
+
+      void O3PRM_CLASS_PARENT_NOT_FOUND( const O3Label& parent,
+                                         ErrorsContainer& errors );
+
+      void O3PRM_CLASS_ILLEGAL_PARENT( const O3Label& parent,
+                                       ErrorsContainer& errors );
+
+      void O3PRM_CLASS_LINK_NOT_FOUND( const O3Label& chain,
+                                       const std::string& s,
+                                       ErrorsContainer& errors );
+
+      void O3PRM_CLASS_ILLEGAL_CPT_SIZE( const O3Label& attr,
+                                         Size found,
+                                         Size expected,
+                                         ErrorsContainer& errors );
+
+      void O3PRM_CLASS_ILLEGAL_CPT_VALUE( const O3Formula& f,
+                                          ErrorsContainer& errors );
+
+      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1( const O3Label& attr,
+                                              ErrorsContainer& errors );
+
+      void O3PRM_CLASS_ILLEGAL_RULE_SIZE( const O3RuleCPT::O3Rule& rule,
+                                          size_t found,
+                                          size_t expected,
+                                          ErrorsContainer& errors );
+
+      void O3PRM_CLASS_WRONG_PARENT_TYPE( const O3Label& prnt,
+                                          const std::string& expected,
+                                          const std::string& found,
+                                          ErrorsContainer& errors );
+
+      void O3PRM_CLASS_ILLEGAL_OVERLOAD( const O3Label& elt,
+                                         const O3Label& super,
+                                         ErrorsContainer& errors );
+
+      void O3PRM_CLASS_AGG_PARAMETERS( const O3Label& agg,
+                                       Size expected,
+                                       Size found,
+                                       ErrorsContainer& errors );
+
+      void O3PRM_CLASS_AGG_PARAMETER_NOT_FOUND( const O3Label& agg,
+                                                const O3Label& param,
+                                                ErrorsContainer& errors );
+
       void O3PRM_INTERFACE_NOT_FOUND( const O3Label& val,
                                       ErrorsContainer& errors );
 
