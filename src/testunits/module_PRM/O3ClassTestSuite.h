@@ -238,7 +238,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 9| Attribute error : CPT does not sum to 1";
+      msg << "|4 col 9| Class error : CPT does not sum to 1";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
     }
@@ -263,7 +263,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 29| Attribute error : Parent stat not found";
+      msg << "|4 col 29| Class error : Parent stat not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
     }
@@ -289,7 +289,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 9| Attribute error : Illegal CPT size, expected 4 found "
+      msg << "|4 col 9| Class error : Illegal CPT size, expected 4 found "
              "6";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
@@ -495,7 +495,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 15| Attribute error : Illegal CPT value 1.1";
+      msg << "|5 col 15| Class error : Illegal CPT value 1.1";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
     }
@@ -520,7 +520,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 1| Attribute error : Expected 1 value(s), found 2";
+      msg << "|5 col 1| Class error : Expected 1 value(s), found 2";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
     }
@@ -545,7 +545,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 6| Attribute error : Unknown value in CPT: \"FOO\"";
+      msg << "|6 col 6| Class error : Illegal CPT value \"FOO\"";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
     }
@@ -858,7 +858,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|9 col 29| Slot chain error : Link myfoo in chain myfoo.state "
+      msg << "|9 col 29| Class error : Link myfoo in chain myfoo.state "
              "not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
@@ -889,7 +889,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|9 col 29| Slot chain error : Link stat in chain myFoo.stat not "
+      msg << "|9 col 29| Class error : Link stat in chain myFoo.stat not "
              "found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
@@ -919,7 +919,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|8 col 29| Slot chain error : Link myFoo in chain myFoo.state "
+      msg << "|8 col 29| Class error : Link myFoo in chain myFoo.state "
              "not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 1 );
@@ -951,7 +951,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 1| Reference Slot error : Class Foo cannot reference "
+      msg << "|6 col 1| Class error : Class Foo cannot reference "
              "subclass Bar";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 2 );
@@ -979,7 +979,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 1| Reference Slot error : Class Bar cannot reference "
+      msg << "|2 col 1| Class error : Class Bar cannot reference "
              "super class Foo";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), 2 );
@@ -1012,7 +1012,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|7 col 1| Reference Slot error : Class Foo cannot reference "
+      msg << "|7 col 1| Class error : Class Foo cannot reference "
              "subclass Bar";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
@@ -1878,7 +1878,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 24| Slot chain error : Link myBoos in chain myBoos.state "
+      msg << "|6 col 24| Class error : Link myBoos in chain myBoos.state "
              "not found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
@@ -1902,7 +1902,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 24| Slot chain error : Link st in chain myFoos.st not "
+      msg << "|6 col 24| Class error : Link st in chain myFoos.st not "
              "found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
@@ -2104,7 +2104,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 22| Class error : Interface Bar not found";
+      msg << "|4 col 22| Interface error : Interface Bar not found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -2126,8 +2126,8 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 22| Class error : Class Foo does not implement attribute "
-             "state of interface iFoo";
+      msg << "|4 col 7| Class error : Class Foo does not implement all of "
+             "interface iFoo attributes";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -2150,8 +2150,8 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 22| Class error : Class Foo does not implement attribute "
-             "state of interface iFoo";
+      msg << "|6 col 7| Class error : Class Foo attribute state does not "
+             "respect interface iFoo";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 

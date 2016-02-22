@@ -293,6 +293,7 @@ namespace gum {
         O3ReferenceSlot& operator=( const O3ReferenceSlot& src );
         O3ReferenceSlot& operator=( O3ReferenceSlot&& src );
 
+        O3Label& type();
         const O3Label& type() const;
         const O3Label& name() const;
         bool isArray() const;
@@ -315,6 +316,7 @@ namespace gum {
         O3Attribute& operator=( const O3Attribute& src );
         O3Attribute& operator=( O3Attribute&& src );
 
+        O3Label& type();
         const O3Label& type() const;
         const O3Label& name() const;
         const O3LabelList& parents() const;

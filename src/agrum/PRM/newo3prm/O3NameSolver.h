@@ -370,7 +370,7 @@ namespace gum {
           }
         }
 
-        bool resolveReferenceName( O3Label& name ) {
+        bool resolveSlotType( O3Label& name ) {
           // If empty string, we return an empty string
           if ( name.label() == "" ) {
             return true;
