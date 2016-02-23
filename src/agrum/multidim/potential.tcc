@@ -23,6 +23,7 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 #include <agrum/multidim/operators/projections4MultiDim.h>
+#include <agrum/multidim/potential.h>
 
 namespace gum {
 
@@ -95,7 +96,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
   operator=( const Potential<GUM_SCALAR>& src ) {
+      GUM_CHECKPOINT;
     MultiDimDecorator<GUM_SCALAR>::operator=( src );
+      GUM_CHECKPOINT;
     GUM_OP_CPY(Potential);
     return *this;
   }
@@ -108,7 +111,9 @@ namespace gum {
     MultiDimDecorator<GUM_SCALAR>::operator=(
         std::forward<MultiDimDecorator<GUM_SCALAR>&&>( src ) );
 
+      GUM_CHECKPOINT;
     GUM_CHECKPOINT;
+      GUM_CHECKPOINT;
     GUM_OP_MOV(Potential);
     return *this;
   }
@@ -118,6 +123,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>::~Potential() {
     // for debugging purposes
+      GUM_CHECKPOINT;
     GUM_DESTRUCTOR( Potential );
   }
 
@@ -174,6 +180,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectSum(
       const Set<const DiscreteVariable*>& del_vars ) const {
+      GUM_CHECKPOINT;
     return std::move( Potential<GUM_SCALAR>(
         gum::projectSum( *this->content(), del_vars ) ) );
   }
@@ -181,6 +188,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectProduct(
       const Set<const DiscreteVariable*>& del_vars ) const {
+      GUM_CHECKPOINT;
     return std::move( Potential<GUM_SCALAR>(
         gum::projectProduct( *this->content(), del_vars ) ) );
   }

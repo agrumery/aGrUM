@@ -64,20 +64,20 @@ namespace gum {
      * @brief Class constructor.
      * @param aContent The implementation used by this MultiDimDecorator.
      */
-    MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent );
+    MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent = nullptr );
 
     /**
      * @brief copy constructor & assignment
      */
-    MultiDimDecorator(const MultiDimDecorator<GUM_SCALAR>& from);
-    MultiDimDecorator<GUM_SCALAR>& operator=(const MultiDimDecorator& from);
+    MultiDimDecorator( const MultiDimDecorator<GUM_SCALAR>& from );
+    MultiDimDecorator<GUM_SCALAR>& operator=( const MultiDimDecorator& from );
 
 
     /**
      * @brief Class move constructor & assignment
      */
     MultiDimDecorator( MultiDimDecorator<GUM_SCALAR>&& );
-    MultiDimDecorator<GUM_SCALAR>& operator=(MultiDimDecorator&& from);
+    MultiDimDecorator<GUM_SCALAR>& operator=( MultiDimDecorator&& from );
 
     /**
      * @brief Class destructor.
@@ -120,9 +120,9 @@ namespace gum {
     virtual bool registerSlave( Instantiation& i );
 
     virtual void changeNotification( Instantiation& i,
-                             const DiscreteVariable* const var,
-                             const Idx& oldval,
-                             const Idx& newval );
+                                     const DiscreteVariable* const var,
+                                     const Idx& oldval,
+                                     const Idx& newval );
 
     virtual void setChangeNotification( Instantiation& i );
 
@@ -138,7 +138,8 @@ namespace gum {
 
     virtual MultiDimImplementation<GUM_SCALAR>& getMasterRef( void );
 
-    virtual const MultiDimImplementation<GUM_SCALAR>& getMasterRef( void ) const;
+    virtual const MultiDimImplementation<GUM_SCALAR>&
+    getMasterRef( void ) const;
 
     /// @}
     // =========================================================================

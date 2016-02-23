@@ -30,72 +30,12 @@
 #include <agrum/multidim/operators/completeProjections4MultiDim.h>
 #include <agrum/multidim/partialInstantiation4MultiDim.h>
 
+#include <agrum/multidim/multiDimDecorator.h>
+
 namespace gum {
-
-  // constructors
-
+  // instrumental and non-API function
   template <typename GUM_SCALAR>
-  INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
-  operator=( MultiDimDecorator<GUM_SCALAR>&& from ) {
-    MultiDimContainer<GUM_SCALAR>::operator=( std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) );
-    GUM_OP_MOV( MultiDimDecorator );
-
-    if ( this != &from ) {
-      if ( _content!=nullptr ) delete (_content);
-
-      _content = from._content;
-      from._content = nullptr;
-    }
-
-    return *this;
-  }
-
-
-  template <typename GUM_SCALAR>
-  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
-      MultiDimDecorator<GUM_SCALAR>&& from )
-      : MultiDimContainer<GUM_SCALAR>(
-            std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
-	GUM_CHECKPOINT;
-    GUM_CONS_MOV( MultiDimDecorator );
-
-	GUM_CHECKPOINT;
-    if ( this != &from ) {
-	GUM_CHECKPOINT;
-      if ( _content!=nullptr ) delete (_content);
-      
-	GUM_CHECKPOINT;
-      _content = from._content;
-      from._content = nullptr;
-    }
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
-      const MultiDimDecorator<GUM_SCALAR>& from )
-      : MultiDimContainer<GUM_SCALAR>( from ) {
-    GUM_CONS_CPY( MultiDimDecorator );
-    MultiDimDecorator<GUM_SCALAR>::content()->copy(
-        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
-            from.getMasterRef() ) );
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
-  operator=( const MultiDimDecorator<GUM_SCALAR>& from ) {
-    MultiDimContainer<GUM_SCALAR>::operator=( from );
-    MultiDimDecorator<GUM_SCALAR>::content()->copy(
-        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
-            from.getMasterRef() ) );
-    return *this;
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
-      MultiDimImplementation<GUM_SCALAR>* aContent )
-      : _content( aContent ) {
-    GUM_CONSTRUCTOR( MultiDimDecorator );
-
+  static void ___initPotentialOperators() {
     static bool first = true;
 
     if ( first ) {
@@ -118,13 +58,92 @@ namespace gum {
       inst.init();
     }
   }
+  // constructors
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
+  operator=( MultiDimDecorator<GUM_SCALAR>&& from ) {
+    MultiDimContainer<GUM_SCALAR>::operator=(
+        std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) );
+    GUM_OP_MOV( MultiDimDecorator );
+
+    if ( this != &from ) {
+      auto tmp = _content;
+      _content = from._content;
+      if ( tmp != nullptr ) delete ( tmp );
+      from._content = nullptr;
+    }
+
+    return *this;
+  }
+
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      MultiDimDecorator<GUM_SCALAR>&& from )
+      : MultiDimContainer<GUM_SCALAR>(
+            std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
+    ___initPotentialOperators<GUM_SCALAR>();
+    GUM_CHECKPOINT;
+    GUM_CONS_MOV( MultiDimDecorator );
+
+    GUM_CHECKPOINT;
+    if ( this != &from ) {
+      GUM_CHECKPOINT;
+      auto tmp = _content;
+      GUM_CHECKPOINT;
+      if ( tmp != nullptr ) {
+        GUM_CHECKPOINT;
+        GUM_TRACE_VAR( *tmp );
+      }
+      GUM_CHECKPOINT;
+      _content = from._content;
+      GUM_CHECKPOINT;
+      if ( tmp != nullptr ) delete ( tmp );
+
+      GUM_CHECKPOINT;
+      from._content = nullptr;
+    }
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      const MultiDimDecorator<GUM_SCALAR>& from )
+      : MultiDimContainer<GUM_SCALAR>( from ) {
+    GUM_CONS_CPY( MultiDimDecorator );
+    ___initPotentialOperators<GUM_SCALAR>();
+    MultiDimDecorator<GUM_SCALAR>::content()->copy(
+        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
+            from.getMasterRef() ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
+  operator=( const MultiDimDecorator<GUM_SCALAR>& from ) {
+    ___initPotentialOperators<GUM_SCALAR>();
+    MultiDimContainer<GUM_SCALAR>::operator=( from );
+    MultiDimDecorator<GUM_SCALAR>::content()->copy(
+        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
+            from.getMasterRef() ) );
+    return *this;
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      MultiDimImplementation<GUM_SCALAR>* aContent )
+      : _content( aContent ) {
+    GUM_CONSTRUCTOR( MultiDimDecorator );
+    ___initPotentialOperators<GUM_SCALAR>();
+  }
 
   // destructor
 
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>::~MultiDimDecorator() {
-    if ( _content!=nullptr ) {
-      delete _content;
+    GUM_CHECKPOINT;
+    if ( _content != nullptr ) {
+      GUM_CHECKPOINT;
+      delete ( _content );
     }
 
     GUM_DESTRUCTOR( MultiDimDecorator );
