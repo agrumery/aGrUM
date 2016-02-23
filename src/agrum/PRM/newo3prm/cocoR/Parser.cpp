@@ -700,7 +700,6 @@ void Parser::PARAMETER_LIST(O3InstanceParameterList& params) {
 			FLOAT(p.value());
 			p.isInteger() = false; 
 		} else SynErr(44);
-		Expect(_semicolon);
 }
 
 void Parser::INTEGER_AS_FLOAT(O3Float& f) {

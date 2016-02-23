@@ -78,9 +78,6 @@ namespace gum {
         DAG __dag;
         std::vector<O3Interface*> __o3Interface;
 
-        bool __buildInterfaces;
-        bool __buildElements;
-
         bool __addInterface2Dag();
 
         bool __addArcs2Dag();

@@ -678,7 +678,6 @@ PARAMETER_LIST<O3InstanceParameterList& params> =
     FLOAT<p.value()>
     (. p.isInteger() = false; .)
   )
-  ';'
   .
 
 // ===========================================================================
