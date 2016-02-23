@@ -80,7 +80,8 @@ namespace gum {
       virtual void continueClass( const std::string& c ) = 0;
       virtual void endClass( bool checkImplementations = true ) = 0;
       virtual void startInterface( const std::string& i,
-                                   const std::string& extends = "" ) = 0;
+                                   const std::string& extends = "",
+                                   bool delayInheritance = false ) = 0;
       virtual void continueInterface( const std::string& name ) = 0;
       virtual void addAttribute( const std::string& type,
                                  const std::string& name ) = 0;

@@ -41,9 +41,7 @@ namespace gum {
           : __prm( &prm )
           , __o3_prm( &o3_prm )
           , __solver( &solver )
-          , __errors( &errors )
-          , __buildInterfaces( false )
-          , __buildElements( false ) {
+          , __errors( &errors ) {
         GUM_CONSTRUCTOR( O3InterfaceFactory );
       }
 
@@ -53,9 +51,7 @@ namespace gum {
           : __prm( src.__prm )
           , __o3_prm( src.__o3_prm )
           , __solver( src.__solver )
-          , __errors( src.__errors )
-          , __buildInterfaces( src.__buildInterfaces )
-          , __buildElements( src.__buildElements ) {
+          , __errors( src.__errors ) {
         GUM_CONS_CPY( O3InterfaceFactory );
       }
 
@@ -65,9 +61,7 @@ namespace gum {
           : __prm( std::move( src.__prm ) )
           , __o3_prm( std::move( src.__o3_prm ) )
           , __solver( std::move( src.__solver ) )
-          , __errors( std::move( src.__errors ) )
-          , __buildInterfaces( std::move( src.__buildInterfaces ) )
-          , __buildElements( std::move( src.__buildElements ) ) {
+          , __errors( std::move( src.__errors ) ) {
         GUM_CONS_MOV( O3InterfaceFactory );
       }
 
@@ -86,8 +80,6 @@ namespace gum {
         __o3_prm = src.__o3_prm;
         __solver = src.__solver;
         __errors = src.__errors;
-        __buildInterfaces = src.__buildInterfaces;
-        __buildElements = src.__buildElements;
         return *this;
       }
 
@@ -101,18 +93,11 @@ namespace gum {
         __o3_prm = std::move( src.__o3_prm );
         __solver = std::move( src.__solver );
         __errors = std::move( src.__errors );
-        __buildInterfaces = std::move( src.__buildInterfaces );
-        __buildElements = std::move( src.__buildElements );
         return *this;
       }
 
       template <typename GUM_SCALAR>
       void O3InterfaceFactory<GUM_SCALAR>::buildInterfaces() {
-        if ( __buildInterfaces ) {
-          GUM_ERROR( FatalError,
-                     "intefaces have already been built" );
-        }
-        __buildInterfaces = true;
 
         PRMFactory<GUM_SCALAR> factory( __prm );
         if ( __checkO3Interfaces() ) {
@@ -122,7 +107,8 @@ namespace gum {
           for ( auto i : __o3Interface ) {
 
             if ( __solver->resolveInterface( i->super() ) ) {
-              factory.startInterface( i->name().label(), i->super().label() );
+              factory.startInterface(
+                  i->name().label(), i->super().label(), true );
               factory.endInterface();
             }
           }
@@ -197,14 +183,12 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3InterfaceFactory<GUM_SCALAR>::buildElements() {
-        if ( __buildElements ) {
-          GUM_ERROR( FatalError, "intefaces elements have already been built" );
-        }
-        __buildElements = true;
 
         PRMFactory<GUM_SCALAR> factory( __prm );
 
         for ( auto i : __o3Interface ) {
+
+          __prm->interface( i->name().label() ).inheritInterface();
 
           factory.continueInterface( i->name().label() );
 
