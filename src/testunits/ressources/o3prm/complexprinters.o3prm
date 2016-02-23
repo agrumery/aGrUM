@@ -43,7 +43,7 @@ OK: OK,
 int(0,5) mycount;
 
 class PowerSupply {
-    t_state state { [ "0.99", "0.00" ] };
+    t_state state { [ "0.99", "0.01" ] };
 }
 
 class Room {

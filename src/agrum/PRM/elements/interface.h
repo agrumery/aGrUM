@@ -69,7 +69,9 @@ namespace gum {
        * @param name The sub-interface name.
        * @param super The super Interface of this.
        */
-      Interface( const std::string& name, Interface& super );
+      Interface( const std::string& name,
+                 Interface& super,
+                 bool delayInheritance = false );
 
       /// Copy constructor.
       Interface( const Interface& source );
@@ -247,6 +249,12 @@ namespace gum {
        * Returns the set of Class<GUM_SCALAR> implementing this Interface.
        */
       const Set<Class<GUM_SCALAR>*>& implementations() const;
+
+      /**
+       * Inherits from this interface super interface, this should only be done
+       * when this inteface inheritance was delayed.
+       */
+      void inheritInterface();
 
       /// @}
       // ========================================================================

@@ -33,19 +33,35 @@ namespace gum_tests {
 
   class O3SystemTestSuite : public CxxTest::TestSuite {
     public:
-    gum::prm::PRM<double>* prm;
+    gum::prm::PRM<double>* simple_printers;
+    gum::prm::PRM<double>* complex_printers;
 
     void setUp() {
       try {
-        auto path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
-        prm = new gum::prm::PRM<double>();
-        auto input = std::ifstream( path );
-        auto output = std::stringstream();
-        auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
-        factory.parseStream( input, output );
-        if ( output.str() != "" ) {
-          GUM_TRACE( output.str() );
-          GUM_ERROR( gum::FatalError, "corrupted ressource file" );
+        {
+          // printers.o3prm
+          auto path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
+          simple_printers = new gum::prm::PRM<double>();
+          auto factory =
+              gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
+          factory.readFile( path );
+          if ( factory.errors() > 0 ) {
+            factory.showElegantErrorsAndWarnings();
+            GUM_ERROR( gum::FatalError, "corrupted ressource file" );
+          }
+        }
+
+        {
+          // complex_printers.o3prm
+          auto path = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+          complex_printers = new gum::prm::PRM<double>();
+          auto factory =
+              gum::prm::o3prm::O3PRMFactory<double>( *complex_printers );
+          factory.readFile( path, "fr.lip6.printers" );
+          if ( factory.errors() > 0 ) {
+            factory.showElegantErrorsAndWarnings();
+            GUM_ERROR( gum::FatalError, "corrupted ressource file" );
+          }
         }
       } catch ( gum::Exception& e ) {
         GUM_TRACE_NEWLINE;
@@ -54,21 +70,24 @@ namespace gum_tests {
       }
     }
 
-    void tearDown() { delete prm; }
+    void tearDown() {
+      delete simple_printers;
+      delete complex_printers;
+    }
 
     void testSimpleSystem() {
       // Arrange
       auto input = std::stringstream();
       input << "system Foo { }";
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm->systems().size(), 1 );
-      TS_ASSERT( prm->isSystem( "Foo" ) );
-      const auto& foo = prm->system( "Foo" );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 1 );
+      TS_ASSERT( simple_printers->isSystem( "Foo" ) );
+      const auto& foo = simple_printers->system( "Foo" );
       TS_ASSERT_EQUALS( foo.size(), 0 );
     }
 
@@ -88,14 +107,14 @@ namespace gum_tests {
             << "e.room = r;" << std::endl
             << "}" << std::endl;
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm->systems().size(), 1 );
-      TS_ASSERT( prm->isSystem( "microSys" ) );
-      const auto& foo = prm->system( "microSys" );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 1 );
+      TS_ASSERT( simple_printers->isSystem( "microSys" ) );
+      const auto& foo = simple_printers->system( "microSys" );
       TS_ASSERT_EQUALS( foo.size(), 5 );
     }
 
@@ -106,7 +125,7 @@ namespace gum_tests {
             << "PowerSupply;" << std::endl
             << "}" << std::endl;
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -115,7 +134,7 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|2 col 12| Syntax error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
 
     void testMicroSystemWithError2() {
@@ -125,7 +144,7 @@ namespace gum_tests {
             << "FOO bar;" << std::endl
             << "}" << std::endl;
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -134,7 +153,7 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|2 col 1| Instance error : FOO is not a class";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
 
     void testMicroSystemWithError3() {
@@ -144,7 +163,7 @@ namespace gum_tests {
             << "PowerSupply pow;" << std::endl
             << "}" << std::endl;
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -153,7 +172,7 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|1 col 8| Syntax error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
 
     void testMicroSystemWithError4() {
@@ -164,7 +183,7 @@ namespace gum_tests {
             << "Room r;" << std::endl
             << "}" << std::endl;
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -173,7 +192,7 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|3 col 1| Syntax error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
 
     void testMicroSystemWithError5() {
@@ -187,7 +206,7 @@ namespace gum_tests {
             << "r.power   pow;" << std::endl
             << "}" << std::endl;
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -196,7 +215,7 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|6 col 1| Instance error : rpower is not a class";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
 
     void testMicroSystemWithError6() {
@@ -213,7 +232,7 @@ namespace gum_tests {
             << "c.printers += p;" << std::endl
             << "}" << std::endl;
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -223,7 +242,7 @@ namespace gum_tests {
       msg << "|1 col 8| System error : Incomplete system, some reference slots "
              "must be unassigned";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm->systems().size(), 1 );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 1 );
     }
 
     void testMicroSystemWithError7() {
@@ -241,7 +260,7 @@ namespace gum_tests {
             << "c.printers = p;" << std::endl
             << "}" << std::endl;
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -250,7 +269,7 @@ namespace gum_tests {
       auto msg = std::stringstream();
       msg << "|5 col 1| Instance error : Instance p already exists";
       TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm->systems().size(), 0 );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
 
     void testSmallSystem() {
@@ -284,17 +303,52 @@ namespace gum_tests {
             << "  another_computer.printers += another_printer;" << std::endl
             << "}";
       auto output = std::stringstream();
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *prm );
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
-      TS_ASSERT_EQUALS( prm->systems().size(), 1 );
-      TS_ASSERT( prm->isSystem( "smallSys" ) );
-      const auto& foo = prm->system( "smallSys" );
+      TS_ASSERT_EQUALS( simple_printers->systems().size(), 1 );
+      TS_ASSERT( simple_printers->isSystem( "smallSys" ) );
+      const auto& foo = simple_printers->system( "smallSys" );
       TS_ASSERT_EQUALS( foo.size(), 10 );
     }
 
+    void testComplexSystem() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "system aSys {" << std::endl
+            << "  PowerSupply pow;" << std::endl
+            << "  Room r;" << std::endl
+            << "  BWPrinter[10] bw_printers;" << std::endl
+            << "  ColorPrinter[2] color_printers;" << std::endl
+            << "  bw_printers.room = r;" << std::endl
+            << "  color_printers.room = r;" << std::endl
+            << "  r.power = pow;" << std::endl
+            << "  Computer c1;" << std::endl
+            << "  Computer c2;" << std::endl
+            << "  c1.room = r;" << std::endl
+            << "  c2.room = r;" << std::endl
+            << "  c1.printers = bw_printers;" << std::endl
+            << "  c2.printers = bw_printers;" << std::endl
+            << "  c1.printers += color_printers;" << std::endl
+            << "  c2.printers += color_printers;" << std::endl
+            << "  ParamClass param;" << std::endl
+            << "  param.room = r;" << std::endl
+            << "  ParamClass paramBis(lambda=0.001);" << std::endl
+            << "  paramBis.room = r;" << std::endl
+            << "}";
+      auto output = std::stringstream();
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( *complex_printers );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( complex_printers->systems().size(), 1 );
+      TS_ASSERT( complex_printers->isSystem( "smallSys" ) );
+      const auto& foo = complex_printers->system( "smallSys" );
+      TS_ASSERT_EQUALS( foo.size(), 10 );
+    }
   };
 
 }  // namespace gum_tests

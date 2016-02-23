@@ -335,7 +335,8 @@ namespace gum {
        *                 Interface<GUM_SCALAR>.
        */
       virtual void startInterface( const std::string& i,
-                                   const std::string& ext = "" ) override;
+                                   const std::string& ext = "",
+                                   bool delayInheritance = false ) override;
 
       virtual void continueInterface( const std::string& name ) override;
 

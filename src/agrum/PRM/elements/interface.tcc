@@ -42,12 +42,15 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Interface<GUM_SCALAR>::Interface( const std::string& name,
-                                      Interface<GUM_SCALAR>& super )
+                                      Interface<GUM_SCALAR>& super,
+                                      bool delayInheritance )
         : ClassElementContainer<GUM_SCALAR>( name )
         , __dag( super.__dag )
         , __super( &super ) {
       GUM_CONSTRUCTOR( Interface );
-      __inheritInterface( super );
+      if ( not delayInheritance ) {
+        __inheritInterface( super );
+      }
     }
 
     template <typename GUM_SCALAR>
@@ -65,6 +68,13 @@ namespace gum {
 
       for ( const auto& elt : __nodeIdMap ) {
         delete elt.second;
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Interface<GUM_SCALAR>::inheritInterface() {
+      if (__super != nullptr) {
+        __inheritInterface( *__super );
       }
     }
 

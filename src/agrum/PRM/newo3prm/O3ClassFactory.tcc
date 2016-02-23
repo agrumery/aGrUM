@@ -790,31 +790,40 @@ namespace gum {
       O3ClassFactory<GUM_SCALAR>::__resolveSlotChain(
           const ClassElementContainer<GUM_SCALAR>& c, const O3Label& chain ) {
 
+        auto link_regex = std::regex( R"d((\([\w\.]*\))?\w+)d" );
         auto s = chain.label();
-        auto idx = (std::size_t)0;
         auto current = &c;
+        auto match = std::smatch();
 
-        for ( idx = s.find( '.', idx ); idx != std::string::npos;
-              idx = s.find( '.', idx ) ) {
+        while ( std::regex_search( s, match, link_regex ) ) {
+          auto link = match[0];
 
-          auto value = s.substr( 0, idx );
-
-          if ( not __checkSlotChainLink( *current, chain, value ) ) {
+          if ( not __checkSlotChainLink( *current, chain, link ) ) {
             return nullptr;
           }
 
-          auto ref = dynamic_cast<const ReferenceSlot<GUM_SCALAR>*>(
-              &( current->get( value ) ) );
-          if ( ref ) {
-            current = &( ref->slotType() );
-            s = s.substr( idx + 1 );
+          auto elt = &( current->get( link ) );
+
+          if ( match[0].str().size() == s.size() ) {
+            // last link, should be an attribute or aggregate
+            return elt;
+
+          } else {
+            // should be a reference slot
+
+            auto ref = dynamic_cast<const ReferenceSlot<GUM_SCALAR>*>( elt );
+            if ( ref ) {
+              current = &( ref->slotType() );
+              // Links are seperated by dots, so we need to skip the next one
+              s = s.substr( match[0].str().size() + 1 );
+            } else {
+              return nullptr;  // failsafe to prevent infinite loop
+            }
           }
         }
 
-        if ( not __checkSlotChainLink( *current, chain, s ) ) {
-          return nullptr;
-        }
-        return &( current->get( s ) );
+        // Encountered only reference slots
+        return nullptr;
       }
 
       template <typename GUM_SCALAR>

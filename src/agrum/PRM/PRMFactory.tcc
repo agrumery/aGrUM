@@ -252,7 +252,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::startInterface( const std::string& name,
-                                                 const std::string& extends ) {
+                                                 const std::string& extends,
+                                                 bool delayInheritance ) {
       std::string real_name = __addPrefix( name );
       if ( __prm->__classMap.exists( real_name ) ||
            __prm->__interfaceMap.exists( real_name ) ) {
@@ -268,7 +269,7 @@ namespace gum {
       }
 
       if ( super != 0 ) {
-        i = new Interface<GUM_SCALAR>( real_name, *super );
+        i = new Interface<GUM_SCALAR>( real_name, *super, delayInheritance );
       } else {
         i = new Interface<GUM_SCALAR>( real_name );
       }
