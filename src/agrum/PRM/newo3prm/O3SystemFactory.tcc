@@ -33,19 +33,37 @@ namespace gum {
     namespace o3prm {
 
       template <typename GUM_SCALAR>
-      O3SystemFactory<GUM_SCALAR>::O3SystemFactory() {
+      O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
+          PRM<GUM_SCALAR>& prm,
+          O3PRM& o3_prm,
+          O3NameSolver<GUM_SCALAR>& solver,
+          ErrorsContainer& errors )
+          : __prm( &prm )
+          , __o3_prm( &o3_prm )
+          , __solver( &solver )
+          , __errors( &errors ) {
         GUM_CONSTRUCTOR( O3SystemFactory );
       }
 
       template <typename GUM_SCALAR>
       O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
-          const O3SystemFactory<GUM_SCALAR>& src ) {
+          const O3SystemFactory<GUM_SCALAR>& src )
+          : __prm( src.__prm )
+          , __o3_prm( src.__o3_prm )
+          , __solver( src.__solver )
+          , __errors( src.__errors )
+          , __nameMap( src.__nameMap ) {
         GUM_CONS_CPY( O3SystemFactory );
       }
 
       template <typename GUM_SCALAR>
       O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
-          O3SystemFactory<GUM_SCALAR>&& src ) {
+          O3SystemFactory<GUM_SCALAR>&& src )
+          : __prm( std::move( src.__prm ) )
+          , __o3_prm( std::move( src.__o3_prm ) )
+          , __solver( std::move( src.__solver ) )
+          , __errors( std::move( src.__errors ) )
+          , __nameMap( std::move( src.__nameMap) ) {
         GUM_CONS_MOV( O3SystemFactory );
       }
 
@@ -57,223 +75,235 @@ namespace gum {
       template <typename GUM_SCALAR>
       O3SystemFactory<GUM_SCALAR>& O3SystemFactory<GUM_SCALAR>::
       operator=( const O3SystemFactory<GUM_SCALAR>& src ) {
+        if (this == &src ) {
+          return *this;
+        }
+        __prm = src.__prm;
+        __o3_prm = src.__o3_prm;
+        __solver = src.__solver;
+        __errors = src.__errors;
         return *this;
       }
 
       template <typename GUM_SCALAR>
       O3SystemFactory<GUM_SCALAR>& O3SystemFactory<GUM_SCALAR>::
       operator=( O3SystemFactory<GUM_SCALAR>&& src ) {
+        if ( this == &src ) {
+          return *this;
+        }
+        __prm = std::move( src.__prm );
+        __o3_prm = std::move( src.__o3_prm );
+        __solver = std::move( src.__solver );
+        __errors = std::move( src.__errors );
         return *this;
       }
 
       template <typename GUM_SCALAR>
-      void O3SystemFactory<GUM_SCALAR>::build( PRM<GUM_SCALAR>& prm,
-                                               O3PRM& o3_prm,
-                                               ErrorsContainer& errors ) {
-        __nameMap = HashTable<std::string, O3Instance*>();
-        PRMFactory<GUM_SCALAR> factory( &prm );
-        for ( auto& sys : o3_prm.systems() ) {
-          if ( __checkSystem( prm, *sys, errors ) ) {
+      void O3SystemFactory<GUM_SCALAR>::build() {
+
+        PRMFactory<GUM_SCALAR> factory( __prm );
+
+        for ( auto& sys : __o3_prm->systems() ) {
+
+          if ( __checkSystem( *sys ) ) {
+
             factory.startSystem( sys->name().label() );
-            for ( auto& i : sys->instances() ) {
-              if ( i.size().value() > 1 ) {
-                factory.addArray(
-                    i.type().label(), i.name().label(), i.size().value() );
-              } else {
-                factory.addInstance( i.type().label(), i.name().label() );
-              }
-            }
-            const auto& real_sys = prm.system( sys->name().label() );
-            for ( auto& ass : sys->assignments() ) {
-              auto sBuff = std::stringstream();
-              if ( real_sys.isArray( ass.leftInstance().label() ) ) {
-                sBuff << ass.leftInstance().label() << "["
-                      << ass.index().value() << "]";
-              } else {
-                sBuff << ass.leftInstance().label();
-              }
-              factory.setReferenceSlot( sBuff.str(),
-                                        ass.leftReference().label(),
-                                        ass.rightInstance().label() );
-            }
-            for ( auto& inc : sys->increments() ) {
-              auto sBuff = std::stringstream();
-              if ( real_sys.isArray( inc.leftInstance().label() ) ) {
-                sBuff << inc.leftInstance().label() << "["
-                      << inc.index().value() << "]";
-              } else {
-                sBuff << inc.leftInstance().label();
-              }
-              factory.setReferenceSlot( inc.leftInstance().label(),
-                                        inc.leftReference().label(),
-                                        inc.rightInstance().label() );
-            }
+
+            __addInstances( factory, *sys );
+            __addAssignments( factory, *sys );
+            __addIncrements( factory, *sys );
+
             try {
+
               factory.endSystem();
+
             } catch ( FatalError& e ) {
-              const auto& pos = sys->name().position();
-              auto msg = std::stringstream();
-              msg << "System error : "
-                  << "Incomplete system, some reference slots must be "
-                     "unassigned";
-              errors.addError(
-                  msg.str(), pos.file(), pos.line(), pos.column() );
+
+              O3PRM_SYSTEM_INSTANTIATION_FAILED( *sys, *__errors );
             }
           }
         }
       }
 
       template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkSystem(
-          PRM<GUM_SCALAR>& prm, O3System& sys, ErrorsContainer& errors ) {
-        if ( not __checkInstance( prm, sys, errors ) ) {
-          return false;
+      void O3SystemFactory<GUM_SCALAR>::__addInstances( PRMFactory<GUM_SCALAR>& factory,
+                                            O3System& sys ) {
+        for ( auto& i : sys.instances() ) {
+
+          if ( i.size().value() > 1 ) {
+            factory.addArray(
+                i.type().label(), i.name().label(), i.size().value() );
+          } else {
+            factory.addInstance( i.type().label(), i.name().label() );
+          }
         }
-        if ( not( __checkAssignments( prm, sys, errors ) and
-                  __checkIncrements( prm, sys, errors ) ) ) {
-          return false;
+      }
+
+      template <typename GUM_SCALAR>
+      void O3SystemFactory<GUM_SCALAR>::__addAssignments( PRMFactory<GUM_SCALAR>& factory,
+                                              O3System& sys ) {
+        const auto& real_sys = __prm->system( sys.name().label() );
+
+        for ( auto& ass : sys.assignments() ) {
+
+          auto sBuff = std::stringstream();
+
+          if ( real_sys.isArray( ass.leftInstance().label() ) ) {
+            sBuff << ass.leftInstance().label() << "[" << ass.index().value()
+                  << "]";
+          } else {
+            sBuff << ass.leftInstance().label();
+          }
+
+          factory.setReferenceSlot( sBuff.str(),
+                                    ass.leftReference().label(),
+                                    ass.rightInstance().label() );
         }
+      }
+
+      template <typename GUM_SCALAR>
+      void O3SystemFactory<GUM_SCALAR>::__addIncrements( PRMFactory<GUM_SCALAR>& factory,
+                                             O3System& sys ) {
+        const auto& real_sys = __prm->system( sys.name().label() );
+        for ( auto& inc : sys.increments() ) {
+
+          auto sBuff = std::stringstream();
+          if ( real_sys.isArray( inc.leftInstance().label() ) ) {
+            sBuff << inc.leftInstance().label() << "[" << inc.index().value()
+                  << "]";
+          } else {
+            sBuff << inc.leftInstance().label();
+          }
+          factory.setReferenceSlot( sBuff.str(),
+                                    inc.leftReference().label(),
+                                    inc.rightInstance().label() );
+        }
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3SystemFactory<GUM_SCALAR>::__checkSystem( O3System& sys ) {
+
+        if ( __checkInstance( sys ) and __checkAssignments( sys ) and
+             __checkIncrements( sys ) ) {
+          return true;
+        }
+
+        return false;
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3SystemFactory<GUM_SCALAR>::__checkInstance( O3System& sys ) {
+
+        for ( auto& i : sys.instances() ) {
+
+          if ( not __solver->resolveClass( i.type() ) ) {
+            return false;
+          }
+
+          const auto& type = __prm->getClass( i.type().label() );
+          if ( type.parameters().size() > 0 ) {
+            if ( not __checkParameters( type, i ) ) {
+              return false;
+            }
+          }
+
+          if ( __nameMap.exists( i.name().label() ) ) {
+            O3PRM_SYSTEM_DUPLICATE_INSTANCE( i, *__errors );
+            return false;
+          }
+
+          __nameMap.insert( i.name().label(), &i );
+        }
+
         return true;
       }
 
       template <typename GUM_SCALAR>
       bool O3SystemFactory<GUM_SCALAR>::__checkParameters(
-          const Class<GUM_SCALAR>& type,
-          const O3Instance& inst,
-          ErrorsContainer& errors ) {
+          const Class<GUM_SCALAR>& type, const O3Instance& inst ) {
+
         for ( const auto& param : inst.parameters() ) {
+
           if ( not type.exists( param.name().label() ) ) {
-            const auto& pos = param.name().position();
-            auto msg = std::stringstream();
-            msg << "Instance error : "
-                << "Parameter " << param.name().label() << " not found";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+            O3PRM_SYSTEM_PARAMETER_NOT_FOUND( param, *__errors );
             return false;
           }
+
           if ( not ClassElement<GUM_SCALAR>::isParameter(
                    type.get( param.name().label() ) ) ) {
-            const auto& pos = param.name().position();
-            auto msg = std::stringstream();
-            msg << "Instance error : " << param.name().label()
-                << " is not a parameter";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+            O3PRM_SYSTEM_NOT_A_PARAMETER( param, *__errors );
             return false;
           }
+
           const auto& type_param = static_cast<const Parameter<GUM_SCALAR>&>(
               type.get( param.name().label() ) );
+
           switch ( type_param.valueType() ) {
+
             case Parameter<GUM_SCALAR>::ParameterType::INT: {
               if ( not param.isInteger() ) {
-                const auto& pos = param.value().position();
-                auto msg = std::stringstream();
-                msg << "Instance error : "
-                    << "Parameter " << param.name().label() << " is an integer";
-                errors.addError(
-                    msg.str(), pos.file(), pos.line(), pos.column() );
+                O3PRM_SYSTEM_PARAMETER_NOT_INT( param, *__errors );
                 return false;
               }
               break;
-              case Parameter<GUM_SCALAR>::ParameterType::REAL: {
-                if ( param.isInteger() ) {
-                  const auto& pos = param.value().position();
-                  auto msg = std::stringstream();
-                  msg << "Instance error : "
-                      << "Parameter " << param.name().label() << " is a float";
-                  errors.addError(
-                      msg.str(), pos.file(), pos.line(), pos.column() );
-                  return false;
-                }
-                break;
+            }
+
+            case Parameter<GUM_SCALAR>::ParameterType::REAL: {
+              if ( param.isInteger() ) {
+                O3PRM_SYSTEM_PARAMETER_NOT_FLOAT( param, *__errors );
+                return false;
               }
-              default: { GUM_ERROR( FatalError, "unknown parameter type" ); }
+              break;
             }
+
+            default: { GUM_ERROR( FatalError, "unknown parameter type" ); }
           }
         }
         return true;
       }
 
       template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkInstance(
-          PRM<GUM_SCALAR>& prm, O3System& sys, ErrorsContainer& errors ) {
-        for ( auto& i : sys.instances() ) {
-          if ( not prm.isClass( i.type().label() ) ) {
-            const auto& pos = i.type().position();
-            auto msg = std::stringstream();
-            msg << "Instance error : " << i.type().label() << " is not a class";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
-            return false;
-          }
-          const auto& type = prm.getClass( i.type().label() );
-          if ( type.parameters().size() > 0 ) {
-            if ( not __checkParameters( type, i, errors ) ) {
-              return false;
-            }
-          }
-          if ( __nameMap.exists( i.name().label() ) ) {
-            const auto& pos = i.type().position();
-            auto msg = std::stringstream();
-            msg << "Instance error : "
-                << "Instance " << i.name().label() << " already exists";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
-            return false;
-          }
-          __nameMap.insert( i.name().label(), &i );
-        }
-        return true;
-      }
+      bool O3SystemFactory<GUM_SCALAR>::__checkAssignments( O3System& sys ) {
 
-      template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkAssignments(
-          PRM<GUM_SCALAR>& prm, O3System& sys, ErrorsContainer& errors ) {
         for ( auto& ass : sys.assignments() ) {
+
           if ( ass.leftInstance().label() == ass.leftReference().label() ) {
-            const auto& pos = ass.leftInstance().position();
-            auto msg = std::stringstream();
-            msg << "Assignment error : "
-                << "Invalid left expression " << ass.leftInstance().label();
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+            O3PRM_SYSTEM_INVALID_LEFT_VALUE( ass.leftInstance(), *__errors );
             return false;
           }
+
           if ( not __nameMap.exists( ass.leftInstance().label() ) ) {
-            const auto& pos = ass.leftInstance().position();
-            auto msg = std::stringstream();
-            msg << "Assignment error : "
-                << "Instance " << ass.leftInstance().label() << " not found";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+            O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.leftInstance(), *__errors);
             return false;
           }
+
           auto i = __nameMap[ass.leftInstance().label()];
-          const auto& type = prm.getClass( i->type().label() );
+          const auto& type = __prm->getClass( i->type().label() );
           const auto& ref = ass.leftReference().label();
+
           if ( not( type.exists( ass.leftReference().label() ) and
                     ClassElement<GUM_SCALAR>::isReferenceSlot(
                         type.get( ref ) ) ) ) {
-            const auto& pos = ass.leftReference().position();
-            auto msg = std::stringstream();
-            msg << " Assignment error : "
-                << "Reference " << ass.leftReference().label()
-                << " not found in class " << type.name();
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+
+            O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
+                ass.leftReference(), type.name(), *__errors );
             return false;
           }
+
           const auto& real_ref =
               static_cast<const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+
           if ( real_ref.isArray() and
                __nameMap[ass.rightInstance().label()]->size().value() == 0 ) {
-            const auto& pos = ass.leftReference().position();
-            auto msg = std::stringstream();
-            msg << "Assignment error : " << ass.rightInstance().label()
-                << " is not an array";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+
+            O3PRM_SYSTEM_NOT_AN_ARRAY( ass.rightInstance(), *__errors );
             return false;
           }
+
           if ( ( not real_ref.isArray() ) and
                __nameMap[ass.rightInstance().label()]->size().value() > 0 ) {
-            const auto& pos = ass.leftReference().position();
-            auto msg = std::stringstream();
-            msg << "Assignment error : " << ass.leftInstance().label()
-                << " is not an array";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+
+            O3PRM_SYSTEM_NOT_AN_ARRAY( ass.leftReference(), *__errors );
             return false;
           }
         }
@@ -281,51 +311,43 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkIncrements(
-          PRM<GUM_SCALAR>& prm, O3System& sys, ErrorsContainer& errors ) {
+      bool O3SystemFactory<GUM_SCALAR>::__checkIncrements( O3System& sys ) {
+
         for ( auto& inc : sys.increments() ) {
+
           if ( inc.leftInstance().label() == inc.leftReference().label() ) {
-            const auto& pos = inc.leftInstance().position();
-            auto msg = std::stringstream();
-            msg << "Increment error : "
-                << "Invalid left expression " << inc.leftInstance().label();
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+            O3PRM_SYSTEM_INVALID_LEFT_VALUE( inc.leftInstance(), *__errors );
             return false;
           }
+
           if ( not __nameMap.exists( inc.leftInstance().label() ) ) {
-            const auto& pos = inc.leftInstance().position();
-            auto msg = std::stringstream();
-            msg << "Increment error : "
-                << "Instance " << inc.leftInstance().label() << " not found";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+            O3PRM_SYSTEM_INSTANCE_NOT_FOUND( inc.leftInstance(), *__errors );
             return false;
           }
+
           auto i = __nameMap[inc.leftInstance().label()];
-          const auto& type = prm.getClass( i->type().label() );
+          const auto& type = __prm->getClass( i->type().label() );
           const auto& ref = inc.leftReference().label();
+
           if ( not( type.exists( inc.leftReference().label() ) and
                     ClassElement<GUM_SCALAR>::isReferenceSlot(
                         type.get( ref ) ) ) ) {
-            const auto& pos = inc.leftReference().position();
-            auto msg = std::stringstream();
-            msg << "Increment error : "
-                << "Reference " << inc.leftReference().label()
-                << " not found in class " << type.name();
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+
+            O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
+                inc.leftReference(), type.name(), *__errors );
             return false;
           }
+
           const auto& real_ref =
               static_cast<const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+
           if ( not real_ref.isArray() ) {
-            const auto& pos = inc.leftReference().position();
-            auto msg = std::stringstream();
-            msg << "Increment error : "
-                << "Reference " << inc.leftReference().label()
-                << " is not an array";
-            errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+
+            O3PRM_SYSTEM_NOT_AN_ARRAY( inc.leftReference(), *__errors );
             return false;
           }
         }
+
         return true;
       }
     }  // o3prm

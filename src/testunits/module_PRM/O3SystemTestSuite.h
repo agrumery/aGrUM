@@ -151,7 +151,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 1| Instance error : FOO is not a class";
+      msg << "|2 col 1| Class error : Unknown class FOO";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
@@ -213,7 +213,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 1| Instance error : rpower is not a class";
+      msg << "|6 col 1| Class error : r.power is not a class";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
@@ -239,8 +239,8 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 8| System error : Incomplete system, some reference slots "
-             "must be unassigned";
+      msg << "|1 col 8| System error : Could not instantiate the system, some "
+             "reference slots must be unassigned";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), 1 );
     }
@@ -267,7 +267,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 1| Instance error : Instance p already exists";
+      msg << "|5 col 1| System error : Instance p already exists";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), 0 );
     }
@@ -345,9 +345,9 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( complex_printers->systems().size(), 1 );
-      TS_ASSERT( complex_printers->isSystem( "smallSys" ) );
-      const auto& foo = complex_printers->system( "smallSys" );
-      TS_ASSERT_EQUALS( foo.size(), 10 );
+      TS_ASSERT( complex_printers->isSystem( "aSys" ) );
+      const auto& foo = complex_printers->system( "aSys" );
+      TS_ASSERT_EQUALS( foo.size(), 18 );
     }
   };
 

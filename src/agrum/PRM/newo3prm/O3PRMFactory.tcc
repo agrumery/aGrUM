@@ -347,7 +347,8 @@ namespace gum {
           auto class_factory =
               O3ClassFactory<GUM_SCALAR>( *__prm, *__o3_prm, solver, __errors );
 
-          auto system_factory = O3SystemFactory<GUM_SCALAR>();
+          auto system_factory = O3SystemFactory<GUM_SCALAR>(
+              *__prm, *__o3_prm, solver, __errors );
 
           try {
             type_factory.build();
@@ -360,7 +361,7 @@ namespace gum {
             class_factory.declareAttributes();
             class_factory.buildAggregates();
             class_factory.completeAttributes();
-            system_factory.build( *__prm, *__o3_prm, __errors );
+            system_factory.build();
           } catch ( Exception& e ) {
 
             if (__errors.count() == 0) {
