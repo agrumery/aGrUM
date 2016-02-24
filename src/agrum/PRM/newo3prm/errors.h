@@ -188,6 +188,39 @@ namespace gum {
                                       const std::vector<std::string>& matches,
                                       ErrorsContainer& errors );
 
+      void O3PRM_SYSTEM_INSTANTIATION_FAILED( const O3System& sys,
+                                              ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_NOT_A_CLASS( const O3Instance& i,
+                                     ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_DUPLICATE_INSTANCE( const O3Instance& i,
+                                            ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_NOT_A_PARAMETER( const O3InstanceParameter& param,
+                                         ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_PARAMETER_NOT_FOUND( const O3InstanceParameter& param,
+                                             ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_PARAMETER_NOT_INT( const O3InstanceParameter& param,
+                                           ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_PARAMETER_NOT_FLOAT( const O3InstanceParameter& param,
+                                             ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_INVALID_LEFT_VALUE( const O3Label& val,
+                                            ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_INSTANCE_NOT_FOUND( const O3Label& i,
+                                            ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_REFERENCE_NOT_FOUND( const O3Label& ref,
+                                             const std::string& type,
+                                             ErrorsContainer& errors );
+
+      void O3PRM_SYSTEM_NOT_AN_ARRAY( const O3Label& val,
+                                      ErrorsContainer& errors );
 
     }  // o3prm
   }    // prm

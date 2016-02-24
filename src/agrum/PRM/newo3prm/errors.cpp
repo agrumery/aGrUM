@@ -284,9 +284,9 @@ namespace gum {
         msg << "Class error : "
             << "Illegal CPT value ";
         try {
-            msg << f.formula().result();
-        } catch (...) {
-            msg << "\"" << f.formula().formula() << "\"";
+          msg << f.formula().result();
+        } catch ( ... ) {
+          msg << "\"" << f.formula().formula() << "\"";
         }
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -461,6 +461,104 @@ namespace gum {
           msg << matches[i] << ", ";
         }
         msg << matches.back();
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_INSTANTIATION_FAILED( const O3System& sys,
+                                              ErrorsContainer& errors ) {
+        const auto& pos = sys.name().position();
+        auto msg = std::stringstream();
+        msg << "System error : "
+            << "Could not instantiate the system, some reference slots must be "
+               "unassigned";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_NOT_A_CLASS( const O3Instance& i,
+                                     ErrorsContainer& errors ) {
+        const auto& pos = i.type().position();
+        auto msg = std::stringstream();
+        msg << "System error : " << i.type().label() << " is not a class";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_DUPLICATE_INSTANCE( const O3Instance& i,
+                                            ErrorsContainer& errors ) {
+        const auto& pos = i.type().position();
+        auto msg = std::stringstream();
+        msg << "System error : "
+            << "Instance " << i.name().label() << " already exists";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_NOT_A_PARAMETER( const O3InstanceParameter& param,
+                                         ErrorsContainer& errors ) {
+        const auto& pos = param.name().position();
+        auto msg = std::stringstream();
+        msg << "Instance error : " << param.name().label()
+            << " is not a parameter";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_PARAMETER_NOT_FOUND( const O3InstanceParameter& param,
+                                             ErrorsContainer& errors ) {
+        const auto& pos = param.name().position();
+        auto msg = std::stringstream();
+        msg << "System error : "
+            << "Parameter " << param.name().label() << " not found";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_PARAMETER_NOT_INT( const O3InstanceParameter& param,
+                                           ErrorsContainer& errors ) {
+        const auto& pos = param.value().position();
+        auto msg = std::stringstream();
+        msg << "System error : "
+            << "Parameter " << param.name().label() << " is an integer";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_PARAMETER_NOT_FLOAT( const O3InstanceParameter& param,
+                                             ErrorsContainer& errors ) {
+        const auto& pos = param.value().position();
+        auto msg = std::stringstream();
+        msg << "System error : "
+            << "Parameter " << param.name().label() << " is a float";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_INVALID_LEFT_VALUE( const O3Label& val,
+                                            ErrorsContainer& errors ) {
+        const auto& pos = val.position();
+        auto msg = std::stringstream();
+        msg << "System error : "
+            << "Invalid left expression " << val.label();
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+      void O3PRM_SYSTEM_INSTANCE_NOT_FOUND( const O3Label& i,
+                                            ErrorsContainer& errors ) {
+        const auto& pos = i.position();
+        auto msg = std::stringstream();
+        msg << "System error : "
+            << "Instance " << i.label() << " not found";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_REFERENCE_NOT_FOUND( const O3Label& ref,
+                                             const std::string& type,
+                                             ErrorsContainer& errors ) {
+        const auto& pos = ref.position();
+        auto msg = std::stringstream();
+        msg << " System error : "
+            << "Reference " << ref.label() << " not found in class " << type;
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_SYSTEM_NOT_AN_ARRAY( const O3Label& val,
+                                      ErrorsContainer& errors ) {
+        const auto& pos = val.position();
+        auto msg = std::stringstream();
+        msg << "System error : " << val.label() << " is not an array";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
