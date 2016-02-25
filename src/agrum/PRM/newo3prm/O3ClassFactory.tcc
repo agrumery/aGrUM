@@ -501,7 +501,7 @@ namespace gum {
 
           if ( not type.isSubTypeOf( super_type ) ) {
 
-            O3PRM_CLASS_ILLEGAL_OVERLOAD( c.super(), attr.name(), *__errors );
+            O3PRM_CLASS_ILLEGAL_OVERLOAD( attr.name(), c.super(), *__errors );
             return false;
           }
         }
