@@ -343,7 +343,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 2 );
       TS_ASSERT_EQUALS( i_bar.super(), i_foo );
     }
 
@@ -421,14 +421,16 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( prm.interfaces().size(), 0 );
     }
 
-    void testSuperInterfaceWithOverload() {
+    void testSuperInterfaceWithAttributeOverload() {
       // Arrange
       auto input = std::stringstream();
+      input << "type t_state extends boolean" << std::endl;
+      input << "OK:true, NOK:false;" << std::endl;
       input << "interface IFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
       input << "interface IBar extends IFoo { " << std::endl
-            << "boolean state;" << std::endl
+            << "t_state state;" << std::endl
             << "}";
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
@@ -445,8 +447,42 @@ namespace gum_tests {
       TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 2 );
       TS_ASSERT_EQUALS( i_bar.super(), i_foo );
+    }
+
+    void testSuperInterfaceWithReferenceOverload() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "interface IFoo { " << std::endl
+            << "boolean state;" << std::endl
+            << "}" << std::endl;
+      input << "interface IBar extends IFoo { " << std::endl
+            << "}";
+      input << "interface IPlop { " << std::endl
+            << "IFoo myFoo;" << std::endl
+            << "}";
+      input << "interface IPloc extends IPlop { " << std::endl
+            << "IBar myFoo; " << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), 4 );
+      TS_ASSERT( prm.isInterface( "IPlop" ) );
+      const auto& i_plop = prm.interface( "IPlop" );
+      TS_ASSERT_EQUALS( i_plop.attributes().size(), 0 );
+      TS_ASSERT_EQUALS( i_plop.referenceSlots().size(), 1 );
+      TS_ASSERT_THROWS( i_plop.super(), gum::NotFound );
+      TS_ASSERT( prm.isInterface( "IPloc" ) );
+      const auto& i_ploc = prm.interface( "IPloc" );
+      TS_ASSERT_EQUALS( i_ploc.attributes().size(), 0 );
+      TS_ASSERT_EQUALS( i_ploc.referenceSlots().size(), 1 );
+      TS_ASSERT_EQUALS( i_ploc.super(), i_plop );
     }
 
     void testOrderDoesNotMatter1() {
@@ -476,11 +512,13 @@ namespace gum_tests {
       // Arrange
       auto input = std::stringstream();
       input << "interface IBar extends IFoo { " << std::endl
-            << "boolean state;" << std::endl
+            << "t_state state;" << std::endl
             << "}";
       input << "interface IFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
+      input << "type t_state extends boolean" << std::endl
+            << "OK:true, NOK:false;" << std::endl;
       auto output = std::stringstream();
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
@@ -496,7 +534,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( i_foo.super(), gum::NotFound );
       TS_ASSERT( prm.isInterface( "IBar" ) );
       const auto& i_bar = prm.interface( "IBar" );
-      TS_ASSERT_EQUALS( i_bar.attributes().size(), 1 );
+      TS_ASSERT_EQUALS( i_bar.attributes().size(), 2 );
       TS_ASSERT_EQUALS( i_bar.super(), i_foo );
     }
 
