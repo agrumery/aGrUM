@@ -101,19 +101,22 @@ void __addO3Interface( const Position& pos,
   get_prm()->interfaces().push_back( std::move( i ) );
 }
 
-void __addO3Class( O3Class&& c ) {
-  get_prm()->classes().push_back(
-      std::unique_ptr<O3Class>( new O3Class( std::move(c) ) ) );
+void __addO3Class( O3Class c ) {
+  auto c_ptr = new O3Class( std::move( c ) );
+  auto u_ptr = std::unique_ptr<O3Class>( c_ptr );
+  get_prm()->classes().push_back( std::move( u_ptr ) );
 }
 
-void __addO3System( O3System&& c ) {
-  get_prm()->systems().push_back(
-      std::unique_ptr<O3System>( new O3System( std::move(c) ) ) );
+void __addO3System( O3System s ) {
+  auto s_ptr = new O3System( std::move( s ) );
+  auto u_ptr = std::unique_ptr<O3System>( s_ptr );
+  get_prm()->systems().push_back( std::move( u_ptr ) );
 }
 
-void __addO3Import( O3Import&& i ) {
-  get_prm()->imports().push_back(
-      std::unique_ptr<O3Import>( new O3Import( std::move( i ) ) ) );
+void __addO3Import( O3Import i ) {
+  auto i_ptr = new O3Import( std::move( i ) );
+  auto u_ptr = std::unique_ptr<O3Import>( i_ptr );
+  get_prm()->imports().push_back( std::move( u_ptr ) );
 }
 
 void __split( const O3Label& value, O3Label& left, O3Label& right) {
@@ -579,9 +582,11 @@ SYSTEM_BODY<O3System& sys> =
     (. auto tmp = narrow( t->val ); .)
     (. auto tmp_pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
     (
+      (. left_value << "."; .)
       (. left_value << tmp; .)
       {
         '.' 
+        (. left_value << "."; .)
         label
         (. left_value << narrow( t->val ); .)
       }
@@ -605,6 +610,7 @@ SYSTEM_BODY<O3System& sys> =
         (. ass.leftInstance().position() = pos; .)
         (. ass.leftReference().label() = tmp; .)
         (. ass.leftReference().position() = tmp_pos; .)
+        (. ass.index().value() = -1; .)
         '=' LABEL<ass.rightInstance()>
         (. sys.assignments().push_back( std::move( ass ) ); .)
       | 
@@ -613,6 +619,7 @@ SYSTEM_BODY<O3System& sys> =
         (. inc.leftInstance().position() = pos; .)
         (. inc.leftReference().label() = tmp; .)
         (. inc.leftReference().position() = tmp_pos; .)
+        (. inc.index().value() = -1; .)
         inc LABEL<inc.rightInstance()>
         (. sys.increments().push_back( std::move( inc ) ); .)
       )
@@ -688,7 +695,7 @@ PARAMETER_LIST<O3InstanceParameterList& params> =
 IMPORT_UNIT=
   (. auto i = O3Import(); .)
   IMPORT_DECLARATION<i>
-  (. __addO3Import(std::move(i)); .)
+  (. __addO3Import( std::move( i ) ); .)
   .
 
 //________________________
