@@ -80,15 +80,6 @@ namespace gum {
     }
 
 
-
-
-
-
-
-
-
-
-    //==============
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
   operator=( MultiDimDecorator<GUM_SCALAR>&& from ) {

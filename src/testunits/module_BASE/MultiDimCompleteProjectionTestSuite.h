@@ -396,11 +396,6 @@ namespace gum_tests {
       float t3 = local_projmax( t1, inst );
       TS_ASSERT( t2 == t3 );
 
-      gum::Instantiation inst2( t1 );
-      t2 = t1.projectMax( &inst2 );
-      TS_ASSERT( t2 == t3 );
-      TS_ASSERT( local_equal( inst2, inst ) );
-
       for ( unsigned int i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
@@ -444,49 +439,14 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_Pointer_potential() {
-      std::vector<gum::LabelizedVariable*> vars( 10 );
-
-      for ( unsigned int i = 0; i < 10; ++i ) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 4 );
-      }
-
-      gum::Potential<float*>* t1 = new gum::Potential<float*>;
-
-      *t1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] ) << *( vars[3] )
-          << *( vars[4] ) << *( vars[5] ) << *( vars[6] ) << *( vars[7] )
-          << *( vars[8] ) << *( vars[9] );
-      randomInitPPointer( *t1 );
-
-      gum::Instantiation inst( t1 );
-      float* t2 = projectMax( *t1 );
-      float* t3 = local_projmax( *t1, inst );
-
-      TS_ASSERT( *t2 == *t3 );
-      TS_ASSERT( t2 == t3 );
-
-      gum::Instantiation inst2( t1 );
-      t2 = projectMax( *t1, &inst2 );
-      TS_ASSERT( local_equal( inst2, inst ) );
-      TS_ASSERT( t2 == t3 );
-
-      pointerDelete( t1 );
-
-      for ( unsigned int i = 0; i < vars.size(); ++i )
-        delete vars[i];
-    }
-
     static float myMax( const gum::Potential<float>& table,
                         gum::Instantiation* inst ) {
-      return projectMax( table, inst );
+      return table.max();
     }
 
     void test_MultiDimCompleteProjection() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
-
+      GUM_CHECKPOINT;
       for ( unsigned int i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
@@ -511,7 +471,6 @@ namespace gum_tests {
       gum::Instantiation inst2( t1 );
       t2 = Proj.project( t1, &inst2 );
       TS_ASSERT( t2 == t3 );
-      TS_ASSERT( local_equal( inst2, inst ) );
 
       Proj.setProjectFunction( myMax );
       t2 = Proj.project( t1 );

@@ -41,7 +41,6 @@ namespace gum {
       MultiDimImplementation<GUM_SCALAR>* aContent )
       : MultiDimDecorator<GUM_SCALAR>( aContent ) {
     // for debugging purposes
-    GUM_TRACE( "constructor providing implementation" );
     GUM_CONSTRUCTOR( Potential );
   }
   // copy constructor
@@ -50,7 +49,7 @@ namespace gum {
       : Potential<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>(
                                    src.content()->newFactory() ),
                                *( src.content() ) ) {
-    GUM_TRACE( "copy constructor" );
+    // todo how to optimize copy of content ?
     // GUM_CONS_CPY not here because in called Potential
     // GUM_CONS_CPY( Potential );
   }
@@ -61,10 +60,8 @@ namespace gum {
   INLINE Potential<GUM_SCALAR>::Potential( Potential<GUM_SCALAR>&& from )
       : MultiDimDecorator<GUM_SCALAR>(
             std::forward<MultiDimDecorator<GUM_SCALAR>>( from ) ) {
-    GUM_TRACE( "move constructor" );
     GUM_CONS_MOV( Potential );
   }
-
 
   // complex copy constructor : we choose the implementation
   template <typename GUM_SCALAR>
@@ -72,7 +69,6 @@ namespace gum {
       MultiDimImplementation<GUM_SCALAR>* aContent,
       const MultiDimContainer<GUM_SCALAR>& src )
       : MultiDimDecorator<GUM_SCALAR>( aContent ) {
-    GUM_TRACE( "copy constructory with implementation" );
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
 
@@ -96,7 +92,6 @@ namespace gum {
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
   operator=( const Potential<GUM_SCALAR>& src ) {
     MultiDimDecorator<GUM_SCALAR>::operator=( src );
-    GUM_TRACE( "operator= copy" );
     GUM_OP_CPY( Potential );
     return *this;
   }
@@ -115,7 +110,6 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>::~Potential() {
-    GUM_TRACE( "destructor" );
     // for debugging purposes
     GUM_DESTRUCTOR( Potential );
   }
@@ -177,7 +171,6 @@ namespace gum {
     // ref
     return const_cast<Potential<GUM_SCALAR>&>( *this );
   }
-
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectSum(
