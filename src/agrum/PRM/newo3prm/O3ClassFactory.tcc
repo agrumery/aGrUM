@@ -249,7 +249,7 @@ namespace gum {
 
             const auto& real_i = __prm->interface( i.label() );
 
-            auto counter = 0;
+            auto counter = (Size)0;
             for ( const auto& a : real_i.attributes() ) {
 
               if ( attr_map.exists( a->name() ) ) {
@@ -764,7 +764,7 @@ namespace gum {
         Size parent_size = domainSize / type->domainSize();
         auto values = std::vector<float>( parent_size );
 
-        for ( auto i = 0; i < attr.values().size(); ++i ) {
+        for ( std::size_t i = 0; i < attr.values().size(); ++i ) {
 
           auto idx = i % parent_size;
           values[idx] += attr.values()[i].formula().result();

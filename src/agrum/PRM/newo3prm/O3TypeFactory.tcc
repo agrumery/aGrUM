@@ -26,9 +26,9 @@
  * @author Lionel TORTI
  */
 
-#include <agrum/prm/newo3prm/O3TypeFactory.h>
+#include <agrum/PRM/newo3prm/O3TypeFactory.h>
 
-#include <agrum/prm/newo3prm/errors.h>
+#include <agrum/PRM/newo3prm/errors.h>
 
 namespace gum {
   namespace prm {

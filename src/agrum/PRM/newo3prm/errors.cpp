@@ -48,7 +48,7 @@ namespace gum {
         msg << "Type error : "
             << "Ambiguous name " << val.label()
             << ", found more than one elligible types: ";
-        for ( auto i = 0; i < matches.size() - 1; ++i ) {
+        for ( std::size_t i = 0; i < matches.size() - 1; ++i ) {
           msg << matches[i] << ", ";
         }
         msg << matches.back();
@@ -120,7 +120,7 @@ namespace gum {
         auto msg = std::stringstream();
         msg << "Class error : "
             << "Name " << val.label() << " is ambiguous: ";
-        for ( auto i = 0; i < matches.size() - 1; ++i ) {
+        for ( std::size_t i = 0; i < matches.size() - 1; ++i ) {
           msg << matches[i] << ", ";
         }
         msg << matches.back();
@@ -374,7 +374,7 @@ namespace gum {
         auto msg = std::stringstream();
         msg << "Inteface error : "
             << "Name " << val.label() << " is ambiguous: ";
-        for ( auto i = 0; i < matches.size() - 1; ++i ) {
+        for ( std::size_t i = 0; i < matches.size() - 1; ++i ) {
           msg << matches[i] << ", ";
         }
         msg << matches.back();
@@ -467,7 +467,7 @@ namespace gum {
         auto msg = std::stringstream();
         msg << "Reference Slot error : "
             << "Name " << val.label() << " is ambiguous: ";
-        for ( auto i = 0; i < matches.size() - 1; ++i ) {
+        for ( std::size_t i = 0; i < matches.size() - 1; ++i ) {
           msg << matches[i] << ", ";
         }
         msg << matches.back();

@@ -34,7 +34,7 @@
 
 #include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
-#include <agrum/PRM/newo3prm/O3PRM.h>
+#include <agrum/PRM/newo3prm/o3prm.h>
 
 namespace gum {
   namespace prm {

@@ -26,7 +26,7 @@
  * @author Lionel TORTI
  */
 
-#include <agrum/PRM/newO3prm/utils.h>
+#include <agrum/PRM/newo3prm/utils.h>
 
 namespace gum {
   namespace prm {
