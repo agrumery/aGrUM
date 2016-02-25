@@ -120,6 +120,8 @@ namespace gum {
             } catch ( FatalError& e ) {
 
               O3PRM_SYSTEM_INSTANTIATION_FAILED( *sys, *__errors );
+              GUM_TRACE_NEWLINE;
+              GUM_SHOWERROR( e );
             }
           }
         }
@@ -140,43 +142,76 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3SystemFactory<GUM_SCALAR>::__addAssignments( PRMFactory<GUM_SCALAR>& factory,
-                                              O3System& sys ) {
+      void O3SystemFactory<GUM_SCALAR>::__addAssignments(
+          PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
         const auto& real_sys = __prm->system( sys.name().label() );
 
         for ( auto& ass : sys.assignments() ) {
-
-          auto sBuff = std::stringstream();
-
           if ( real_sys.isArray( ass.leftInstance().label() ) ) {
-            sBuff << ass.leftInstance().label() << "[" << ass.index().value()
-                  << "]";
-          } else {
-            sBuff << ass.leftInstance().label();
-          }
 
-          factory.setReferenceSlot( sBuff.str(),
-                                    ass.leftReference().label(),
-                                    ass.rightInstance().label() );
+            if ( ass.index().value() == -1 ) {
+
+              factory.setReferenceSlot( ass.leftInstance().label(),
+                                        ass.leftReference().label(),
+                                        ass.rightInstance().label() );
+
+            } else {
+
+              auto sBuff = std::stringstream();
+
+              if ( real_sys.isArray( ass.leftInstance().label() ) ) {
+                sBuff << ass.leftInstance().label() << "["
+                      << ass.index().value() << "]";
+              } else {
+                sBuff << ass.leftInstance().label();
+              }
+
+              factory.setReferenceSlot( sBuff.str(),
+                                        ass.leftReference().label(),
+                                        ass.rightInstance().label() );
+            }
+          } else {
+            factory.setReferenceSlot( ass.leftInstance().label(),
+                                      ass.leftReference().label(),
+                                      ass.rightInstance().label() );
+          }
         }
       }
 
       template <typename GUM_SCALAR>
-      void O3SystemFactory<GUM_SCALAR>::__addIncrements( PRMFactory<GUM_SCALAR>& factory,
-                                             O3System& sys ) {
+      void O3SystemFactory<GUM_SCALAR>::__addIncrements(
+          PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
         const auto& real_sys = __prm->system( sys.name().label() );
         for ( auto& inc : sys.increments() ) {
 
           auto sBuff = std::stringstream();
           if ( real_sys.isArray( inc.leftInstance().label() ) ) {
-            sBuff << inc.leftInstance().label() << "[" << inc.index().value()
-                  << "]";
+            if ( inc.index().value() == -1 ) {
+
+              factory.setReferenceSlot( inc.leftInstance().label(),
+                                        inc.leftReference().label(),
+                                        inc.rightInstance().label() );
+
+            } else {
+
+              auto sBuff = std::stringstream();
+
+              if ( real_sys.isArray( inc.leftInstance().label() ) ) {
+                sBuff << inc.leftInstance().label() << "["
+                      << inc.index().value() << "]";
+              } else {
+                sBuff << inc.leftInstance().label();
+              }
+
+              factory.setReferenceSlot( sBuff.str(),
+                                        inc.leftReference().label(),
+                                        inc.rightInstance().label() );
+            }
           } else {
-            sBuff << inc.leftInstance().label();
+            factory.setReferenceSlot( inc.leftInstance().label(),
+                                      inc.leftReference().label(),
+                                      inc.rightInstance().label() );
           }
-          factory.setReferenceSlot( sBuff.str(),
-                                    inc.leftReference().label(),
-                                    inc.rightInstance().label() );
         }
       }
 

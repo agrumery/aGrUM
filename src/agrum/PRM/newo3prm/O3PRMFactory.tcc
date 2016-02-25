@@ -69,6 +69,7 @@ namespace gum {
           : __prm( src.__prm )
           , __o3_prm( std::unique_ptr<O3PRM>( new O3PRM( *( src.__o3_prm ) ) ) )
           , __class_path( src.__class_path )
+          , __imported( src.__imported )
           , __errors( src.__errors ) {
         GUM_CONS_CPY( O3PRMFactory );
       }
@@ -78,6 +79,7 @@ namespace gum {
           : __prm( std::move( src.__prm ) )
           , __o3_prm( std::move( src.__o3_prm ) )
           , __class_path( std::move( src.__class_path ) )
+          , __imported( std::move( src.__imported ) )
           , __errors( std::move( src.__errors ) ) {
         GUM_CONS_CPY( O3PRMFactory );
       }
@@ -96,6 +98,7 @@ namespace gum {
         __prm = src.__prm;
         __o3_prm = std::unique_ptr<O3PRM>( new O3PRM( *( src.__o3_prm ) ) );
         __class_path = src.__class_path;
+        __imported = src.__imported;
         __errors = src.__errors;
         return *this;
       }
@@ -107,7 +110,9 @@ namespace gum {
           return *this;
         }
         __prm = std::move( src.__prm );
+        __o3_prm = std::move( src.__o3_prm );
         __class_path = std::move( src.__class_path );
+        __imported = std::move( src.__imported );
         __errors = std::move( src.__errors );
         return *this;
       }
@@ -294,26 +299,37 @@ namespace gum {
       INLINE void
       O3PRMFactory<GUM_SCALAR>::__parseImport( const O3Import& i,
                                                const std::string& module ) {
-        auto module_path = module;
-        std::replace( module_path.begin(), module_path.end(), '.', '/' );
+
         if ( not __imported.exists( i.import().label() ) ) {
+
+          auto module_path = module;
+          std::replace( module_path.begin(), module_path.end(), '.', '/' );
+
           __imported.insert( i.import().label() );
           auto path = i.import().label();
           std::replace( path.begin(), path.end(), '.', '/' );
+
           for ( const auto& cp : __class_path ) {
+
             auto file_path = cp + path + ".o3prm";
             auto file = std::ifstream( file_path );
+
             if ( file.is_open() ) {
+
               __parseStream( file, file_path, i.import().label() );
               break;
             }
+
             file_path = cp + module + path + ".o3prm";
             file = std::ifstream( file_path );
+
             if ( file.is_open() ) {
+
               __parseStream(
                   file, file_path, module + "." + i.import().label() );
               break;
             }
+
             const auto& pos = i.import().position();
             auto msg = std::stringstream();
             msg << "Import error: could not resolve import "
