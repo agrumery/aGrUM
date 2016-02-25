@@ -1,6 +1,6 @@
 # -*- encoding: UTF-8 -*-
 
-import pyAgrum as gum 
+import pyAgrum as gum
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
@@ -28,6 +28,22 @@ class TestDiscreteVariable(VariablesTestCase):
         self.assertFalse(self.varD.empty())
         self.assertEqual(self.varD.label(3), "super")
 
+    def testLabelsOfVars(self):
+        v=gum.LabelizedVariable("a","a")
+        self.assertEqual(v.labels(),("0","1"))
+        self.assertNotEqual(v.labels(),("1","0"))
+
+        v=gum.LabelizedVariable("b","b",0).addLabel("toto").addLabel("titi").addLabel("yes")
+        self.assertEqual(v.labels(),("toto","titi","yes"))
+
+        v=gum.RangeVariable("c","c",0,5)
+        self.assertEqual(v.labels(),("0","1","2","3","4","5"))
+
+        v=gum.RangeVariable("d","d",3,5)
+        self.assertEqual(v.labels(),("3","4","5"))
+
+        v=gum.DiscretizedVariable("e","e").addTick(1).addTick(2).addTick(3).addTick(4)
+        self.assertEqual(v.labels(),("[1;2[","[2;3[","[3;4]"))
 
 
 class TestLabelizedVariable(VariablesTestCase):
@@ -159,10 +175,9 @@ class TestDiscretizedVariable(VariablesTestCase):
                                 if (i+j+k+l+m+n==21) & (i*j*k*l*m*n==720):
                                     self.toto(i, j, k, l, m, n)
 
-
-
 ts = unittest.TestSuite()
 ts.addTest(TestDiscreteVariable('testLabelizedVarCopy'))
+ts.addTest(TestDiscreteVariable('testLabelsOfVars'))
 ts.addTest(TestLabelizedVariable('testCopyConstructor'))
 ts.addTest(TestLabelizedVariable('testPythonListComprehension'))
 ts.addTest(TestLabelizedVariable('testLabels'))

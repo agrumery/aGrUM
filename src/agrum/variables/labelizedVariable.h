@@ -149,10 +149,6 @@ namespace gum {
     /// returns the size of the random discrete variable domain
     virtual Size domainSize() const;
 
-    /// returns the set of labels of the variable
-
-    const Sequence<std::string>& labels() const;
-
     /// returns the type of variable
     virtual VarType varType( void ) const;
 
