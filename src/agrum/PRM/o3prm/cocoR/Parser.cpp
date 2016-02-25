@@ -416,7 +416,7 @@ void Parser::Attribute(std::string type, std::string name) {
 			std::vector<std::string> cpt; std::string s; 
 			CPFValue(s);
 			cpt.push_back(s); 
-			while (WeakSeparator(_comma,5,4) ) {
+			while (WeakSeparator(_comma,4,5) ) {
 				CPFValue(s);
 				cpt.push_back(s); 
 			}
@@ -523,14 +523,14 @@ void Parser::CPTRule(bool &error) {
 		std::string s; float f; 
 		CPTRuleValue(s);
 		labels.push_back(s); 
-		while (WeakSeparator(_comma,8,7) ) {
+		while (WeakSeparator(_comma,7,8) ) {
 			CPTRuleValue(s);
 			labels.push_back(s); 
 		}
 		Expect(_colon);
 		Number(f);
 		values.push_back(f); 
-		while (WeakSeparator(_comma,10,9) ) {
+		while (WeakSeparator(_comma,9,10) ) {
 			Number(f);
 			values.push_back(f); 
 		}
@@ -559,7 +559,7 @@ void Parser::AggChains(std::vector<std::string>& chains ) {
 			std::string s; 
 			CastIdent(s);
 			chains.push_back(s); 
-			while (WeakSeparator(_comma,11,4) ) {
+			while (WeakSeparator(_comma,11,5) ) {
 				CastIdent(s);
 				chains.push_back(s); 
 			}
@@ -585,7 +585,7 @@ void Parser::AggLabels(std::vector<std::string>& labels ) {
 			Get();
 			Expect(_word);
 			labels.push_back(narrow(t->val)); 
-			while (WeakSeparator(_comma,13,12) ) {
+			while (WeakSeparator(_comma,12,13) ) {
 				Expect(_word);
 				labels.push_back(narrow(t->val)); 
 			}
@@ -603,7 +603,7 @@ void Parser::NumberList(std::vector<float>& numbers ) {
 			Get();
 			Number(f);
 			numbers.push_back(f); 
-			while (WeakSeparator(_comma,10,4) ) {
+			while (WeakSeparator(_comma,9,5) ) {
 				Number(f);
 				numbers.push_back(f); 
 			}
@@ -645,7 +645,7 @@ void Parser::InstanceDecl(std::string l1) {
 			Get();
 			InstanceParameters(hash);
 			if (la->kind == _comma || la->kind == _RIGHT_CAST) {
-				while (WeakSeparator(_comma,15,14) ) {
+				while (WeakSeparator(_comma,14,15) ) {
 					InstanceParameters(hash);
 				}
 			}
@@ -784,18 +784,18 @@ bool Parser::StartOf( int s ) {
 		{x,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
 		{T,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
 		{T,T,T,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,x,T, T,T,x,x, x,x,x,x, x,x},
-		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x},
 		{x,T,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x},
 		{T,x,x,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,x,T, T,T,T,x, x,x,x,x, x,x},
-		{x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
 		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, T,x,x,x, x,x},
-		{x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
 		{x,T,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
 		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,T,x,x, x,x,x,x, x,x},
 		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-		{x,x,x,T, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,T,x,x, x,x,x,x, x,x},
+		{x,x,x,T, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
 	};
 
 

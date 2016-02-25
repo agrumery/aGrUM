@@ -95,6 +95,7 @@ Buffer::Buffer( Buffer* b ) {
 }
 
 Buffer::Buffer( const unsigned char* buf, int len ) {
+  this->isUserStream = false;
   this->buf = new unsigned char[len];
   memcpy( this->buf, buf, len*sizeof( unsigned char ) );
   bufStart = 0;
