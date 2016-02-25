@@ -27,46 +27,44 @@
 
 namespace gum {
 
+  // Default constructor: creates an empty null dimensional matrix
+  // choose a MultiDimArray<> as decorated implementation
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR>::Potential()
+      : MultiDimDecorator<GUM_SCALAR>( new MultiDimArray<GUM_SCALAR>() ) {
+    GUM_CONSTRUCTOR( Potential );
+  }
+
+  // constructor using aContent as content
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR>::Potential(
+      MultiDimImplementation<GUM_SCALAR>* aContent )
+      : MultiDimDecorator<GUM_SCALAR>( aContent ) {
+    // for debugging purposes
+    GUM_TRACE( "constructor providing implementation" );
+    GUM_CONSTRUCTOR( Potential );
+  }
+  // copy constructor
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>& src )
+      : Potential<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>(
+                                   src.content()->newFactory() ),
+                               *( src.content() ) ) {
+    GUM_TRACE( "copy constructor" );
+    // GUM_CONS_CPY not here because in called Potential
+    // GUM_CONS_CPY( Potential );
+  }
+
   /// move constructor
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR>::Potential( Potential<GUM_SCALAR>&& from )
       : MultiDimDecorator<GUM_SCALAR>(
-            std::forward<MultiDimDecorator<GUM_SCALAR>&&>( from ) ) {
+            std::forward<MultiDimDecorator<GUM_SCALAR>>( from ) ) {
+    GUM_TRACE( "move constructor" );
     GUM_CONS_MOV( Potential );
   }
 
-  // copy constructor
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>& src )
-      : Potential<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>(
-                                   src.content()->newFactory() ),
-                               *( src.content() ) ) {
-    // for debugging purposes
-    GUM_CONS_CPY( Potential );
-  }
-
-
-  // Default constructor: creates an empty null dimensional matrix
-  /*
-   * choose a MultiDimArray<> as decorated implementation  */
-
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR>::Potential()
-      : MultiDimDecorator<GUM_SCALAR>( new MultiDimArray<GUM_SCALAR>() ) {
-    // for debugging purposes
-    GUM_CONSTRUCTOR( Potential );
-  }
-
-  // Default constructor: creates an empty null dimensional matrix
-
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR>::Potential(
-      MultiDimImplementation<GUM_SCALAR>* aContent )
-      : MultiDimDecorator<GUM_SCALAR>( aContent ) {
-    // for debugging purposes
-    GUM_CONSTRUCTOR( Potential );
-  }
 
   // complex copy constructor : we choose the implementation
   template <typename GUM_SCALAR>
@@ -74,6 +72,7 @@ namespace gum {
       MultiDimImplementation<GUM_SCALAR>* aContent,
       const MultiDimContainer<GUM_SCALAR>& src )
       : MultiDimDecorator<GUM_SCALAR>( aContent ) {
+    GUM_TRACE( "copy constructory with implementation" );
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
 
@@ -96,10 +95,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
   operator=( const Potential<GUM_SCALAR>& src ) {
-      GUM_CHECKPOINT;
     MultiDimDecorator<GUM_SCALAR>::operator=( src );
-      GUM_CHECKPOINT;
-    GUM_OP_CPY(Potential);
+    GUM_TRACE( "operator= copy" );
+    GUM_OP_CPY( Potential );
     return *this;
   }
 
@@ -107,14 +105,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::
   operator=( Potential<GUM_SCALAR>&& src ) {
-    GUM_CHECKPOINT;
     MultiDimDecorator<GUM_SCALAR>::operator=(
-        std::forward<MultiDimDecorator<GUM_SCALAR>&&>( src ) );
-
-      GUM_CHECKPOINT;
-    GUM_CHECKPOINT;
-      GUM_CHECKPOINT;
-    GUM_OP_MOV(Potential);
+        std::forward<MultiDimDecorator<GUM_SCALAR>>( src ) );
+    GUM_OP_MOV( Potential );
     return *this;
   }
 
@@ -122,8 +115,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>::~Potential() {
+    GUM_TRACE( "destructor" );
     // for debugging purposes
-      GUM_CHECKPOINT;
     GUM_DESTRUCTOR( Potential );
   }
 
@@ -148,14 +141,23 @@ namespace gum {
 
   // sum of all elements in this
   template <typename GUM_SCALAR>
-  INLINE const GUM_SCALAR Potential<GUM_SCALAR>::sum() const {
-    Instantiation i( this->_content );
-    GUM_SCALAR s = (GUM_SCALAR)0;
-
-    for ( i.setFirst(); !i.end(); ++i )
-      s += this->get( i );
-
-    return s;
+  INLINE GUM_SCALAR Potential<GUM_SCALAR>::sum() const {
+    return gum::projectSum( *this->content() );
+  }
+  // product of all elements in this
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR Potential<GUM_SCALAR>::product() const {
+    return gum::projectProduct( *this->content() );
+  }
+  // max of all elements in this
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR Potential<GUM_SCALAR>::max() const {
+    return gum::projectMax( *this->content() );
+  }
+  // min of all elements in this
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR Potential<GUM_SCALAR>::min() const {
+    return gum::projectMin( *this->content() );
   }
 
   // normalisation of this
@@ -180,30 +182,29 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectSum(
       const Set<const DiscreteVariable*>& del_vars ) const {
-      GUM_CHECKPOINT;
-    return std::move( Potential<GUM_SCALAR>(
-        gum::projectSum( *this->content(), del_vars ) ) );
+    return Potential<GUM_SCALAR>(
+        gum::projectSum( *this->content(), del_vars ) );
   }
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectProduct(
       const Set<const DiscreteVariable*>& del_vars ) const {
-      GUM_CHECKPOINT;
-    return std::move( Potential<GUM_SCALAR>(
-        gum::projectProduct( *this->content(), del_vars ) ) );
+    return Potential<GUM_SCALAR>(
+        gum::projectProduct( *this->content(), del_vars ) );
   }
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectMin(
       const Set<const DiscreteVariable*>& del_vars ) const {
-    return std::move( Potential<GUM_SCALAR>(
-        gum::projectMin( *this->content(), del_vars ) ) );
+    return Potential<GUM_SCALAR>(
+        gum::projectMin( *this->content(), del_vars ) );
   }
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectMax(
       const Set<const DiscreteVariable*>& del_vars ) const {
-    return std::move( Potential<GUM_SCALAR>(
-        gum::projectMax( *this->content(), del_vars ) ) );
+    return Potential<GUM_SCALAR>(
+        gum::projectMax( *this->content(), del_vars ) );
   }
+
 } /* namespace gum */

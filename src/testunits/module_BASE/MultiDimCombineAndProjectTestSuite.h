@@ -175,13 +175,13 @@ namespace gum_tests {
     static gum::Potential<float>*
     mySum( const gum::Potential<float>& table,
            const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
-      return new gum::Potential<float>( projectSum( table, del_vars ) );
+      return new gum::Potential<float>( table.projectSum( del_vars ) );
     }
 
     static gum::Potential<float>*
     myMax( const gum::Potential<float>& table,
            const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
-      return new gum::Potential<float>( projectMax( table, del_vars ) );
+      return new gum::Potential<float>( table.projectMax( del_vars ) );
     }
   };
 

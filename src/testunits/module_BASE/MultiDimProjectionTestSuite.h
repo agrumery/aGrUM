@@ -955,20 +955,19 @@ namespace gum_tests {
       del_vars.insert( vars[1] );
       gum::MultiDimProjection<float, gum::Potential> Proj( myMax );
 
-      gum::Potential<float>* t2 =
-          new gum::Potential<float>( projectMax( t1, del_vars ) );
-      gum::Potential<float>* t3 = Proj.project( t1, del_vars );
-      TS_ASSERT( *t2 == *t3 );
 
-      delete t2;
-      delete t3;
-
-      t2 = new gum::Potential<float>( projectMax( t1, proj_set ) );
-      t3 = Proj.project( t1, proj_set );
-      TS_ASSERT( *t2 == *t3 );
-
-      delete t2;
-      delete t3;
+      {
+        auto t2 = t1.projectMax( del_vars );
+        auto t3 = Proj.project( t1, del_vars );
+        TS_ASSERT( t2 == *t3 );
+        delete t3;
+      }
+      {
+        auto t2 = t1.projectMax( proj_set );
+        auto t3 = Proj.project( t1, proj_set );
+        TS_ASSERT( *t2 == *t3 );
+        delete(t3);
+      }
 
       proj_set.insert( vars[0] );
       proj_set.insert( vars[9] );

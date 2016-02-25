@@ -156,25 +156,20 @@ namespace gum_tests {
     }
 
     void testOperators() {
-      GUM_CHECKPOINT;
       auto a = gum::LabelizedVariable( "a", "afoo" );
       auto b = gum::LabelizedVariable( "b", "bfoo" );
       auto c = gum::LabelizedVariable( "c", "cfoo" );
 
-      GUM_CHECKPOINT;
       gum::Potential<int> p1;
       p1 << a << b;
       p1.fillWith( {1, 2, 3, 4} );
 
-      GUM_CHECKPOINT;
       gum::Potential<int> p2;
       p2 << b << c;
       p2.fillWith( {5, 6, 7, 8} );
 
-      GUM_CHECKPOINT;
       auto p = p1;
 
-      GUM_CHECKPOINT;
       // just checking memory allocation (what else ?)
       auto pA = p1 * p2;
       TS_ASSERT_EQUALS( pA.toString(),
@@ -187,7 +182,6 @@ namespace gum_tests {
                         "<b:0|c:1|a:1> :: 14 /"
                         "<b:1|c:1|a:1> :: 32" );
 
-      GUM_CHECKPOINT;
       auto pB = p1 + p2;
       TS_ASSERT_EQUALS( pB.toString(),
                         "<b:0|c:0|a:0> :: 6 /"
@@ -199,7 +193,6 @@ namespace gum_tests {
                         "<b:0|c:1|a:1> :: 9 /"
                         "<b:1|c:1|a:1> :: 12" );
 
-      GUM_CHECKPOINT;
       auto pC = p2 / p1;
       TS_ASSERT_EQUALS( pC.toString(),
                         "<b:0|a:0|c:0> :: 5 /"
@@ -211,7 +204,6 @@ namespace gum_tests {
                         "<b:0|a:1|c:1> :: 3 /"
                         "<b:1|a:1|c:1> :: 2" );
 
-      GUM_CHECKPOINT;
       auto pD = p2 - p1;
       TS_ASSERT_EQUALS( pD.toString(),
                         "<b:0|a:0|c:0> :: 4 /"
@@ -223,8 +215,20 @@ namespace gum_tests {
                         "<b:0|a:1|c:1> :: 5 /"
                         "<b:1|a:1|c:1> :: 4" );
 
-      GUM_CHECKPOINT;
       TS_ASSERT_EQUALS( ( ( p1 * p2 ) - ( p2 / p1 ) + p1 ).toString(),
+                        "<b:0|a:0|c:0> :: 1 /"
+                        "<b:1|a:0|c:0> :: 19 /"
+                        "<b:0|a:1|c:0> :: 10 /"
+                        "<b:1|a:1|c:0> :: 27 /"
+                        "<b:0|a:0|c:1> :: 1 /"
+                        "<b:1|a:0|c:1> :: 25 /"
+                        "<b:0|a:1|c:1> :: 13 /"
+                        "<b:1|a:1|c:1> :: 34" );
+
+      p = p1 * p2;
+      p -= ( p2 / p1 );
+      p += p1;
+      TS_ASSERT_EQUALS( p.toString(),
                         "<b:0|a:0|c:0> :: 1 /"
                         "<b:1|a:0|c:0> :: 19 /"
                         "<b:0|a:1|c:0> :: 10 /"

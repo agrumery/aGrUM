@@ -61,6 +61,35 @@ namespace gum {
   // constructors
 
   template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      MultiDimImplementation<GUM_SCALAR>* aContent )
+      : _content( aContent ) {
+    ___initPotentialOperators<GUM_SCALAR>();
+    GUM_CONSTRUCTOR( MultiDimDecorator );
+  }
+
+    template <typename GUM_SCALAR>
+    INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+            const MultiDimDecorator<GUM_SCALAR>& from )
+            : MultiDimContainer<GUM_SCALAR>( from ) {
+      GUM_CONS_CPY( MultiDimDecorator );
+      ___initPotentialOperators<GUM_SCALAR>();
+      MultiDimDecorator<GUM_SCALAR>::content()->copy(
+              dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
+                      from.getMasterRef() ) );
+    }
+
+
+
+
+
+
+
+
+
+
+    //==============
+  template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
   operator=( MultiDimDecorator<GUM_SCALAR>&& from ) {
     MultiDimContainer<GUM_SCALAR>::operator=(
@@ -83,39 +112,20 @@ namespace gum {
       MultiDimDecorator<GUM_SCALAR>&& from )
       : MultiDimContainer<GUM_SCALAR>(
             std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
-    ___initPotentialOperators<GUM_SCALAR>();
-    GUM_CHECKPOINT;
     GUM_CONS_MOV( MultiDimDecorator );
 
-    GUM_CHECKPOINT;
     if ( this != &from ) {
-      GUM_CHECKPOINT;
       auto tmp = _content;
-      GUM_CHECKPOINT;
-      if ( tmp != nullptr ) {
-        GUM_CHECKPOINT;
-        GUM_TRACE_VAR( *tmp );
-      }
-      GUM_CHECKPOINT;
       _content = from._content;
-      GUM_CHECKPOINT;
-      if ( tmp != nullptr ) delete ( tmp );
+      if ( tmp != nullptr ) {
+        delete ( tmp );
+      }
 
-      GUM_CHECKPOINT;
       from._content = nullptr;
     }
   }
 
-  template <typename GUM_SCALAR>
-  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
-      const MultiDimDecorator<GUM_SCALAR>& from )
-      : MultiDimContainer<GUM_SCALAR>( from ) {
-    GUM_CONS_CPY( MultiDimDecorator );
-    ___initPotentialOperators<GUM_SCALAR>();
-    MultiDimDecorator<GUM_SCALAR>::content()->copy(
-        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
-            from.getMasterRef() ) );
-  }
+
 
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
@@ -128,28 +138,19 @@ namespace gum {
     return *this;
   }
 
-  template <typename GUM_SCALAR>
-  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
-      MultiDimImplementation<GUM_SCALAR>* aContent )
-      : _content( aContent ) {
-    GUM_CONSTRUCTOR( MultiDimDecorator );
-    ___initPotentialOperators<GUM_SCALAR>();
-  }
 
   // destructor
 
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>::~MultiDimDecorator() {
-    GUM_CHECKPOINT;
     if ( _content != nullptr ) {
-      GUM_CHECKPOINT;
       delete ( _content );
     }
 
     GUM_DESTRUCTOR( MultiDimDecorator );
   }
 
-  // return a data, given a Insantiation - final method
+  // return a data, given a Instantiation - final method
 
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR&

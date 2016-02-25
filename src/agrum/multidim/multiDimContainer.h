@@ -198,7 +198,7 @@ namespace gum {
      * size than this MultiDimContainer.
      */
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                           Instantiation* p_i = (Instantiation*)0 ) const;
+                           Instantiation* p_i = nullptr ) const;
 
     /**
      * @brief Removes all variables in this MultiDimContainer and copy the

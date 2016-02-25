@@ -75,40 +75,28 @@ namespace gum {
 
     /**
      * @brief Copy constructor.
-     * @param src The Potential to copy.
-     */
-    Potential( const Potential<GUM_SCALAR>& src );
-
-    /**
-     * move constructeur
-     **/
-    Potential( Potential<GUM_SCALAR>&& from );
-
-    /**
-     * @brief Copy constructor.
      *
      * The newly created Potential share the variables and the values
-     * from src, but no instantiation is associated to it.
+     * from src, but no instantiation is associated to it. It allows to force
+     * the chosen implementation and to copy the data from src.
      *
      * @param aContent The implementation to use in this Potential.
      * @param src The MultiDimContainer to copy.
      */
-    explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
-                        const MultiDimContainer<GUM_SCALAR>& src );
-
+    Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
+               const MultiDimContainer<GUM_SCALAR>& src );
     /**
-     * @brief Copy operator.
-     *
-     * @param src The Potential to copy.
+     * @brief Copy constructor & assignment
      */
+    Potential( const Potential<GUM_SCALAR>& src );
     Potential<GUM_SCALAR>& operator=( const Potential<GUM_SCALAR>& src );
 
     /**
-     * @brief Move operator.
-     *
-     * @param src The Potential to move.
-     */
+     * move constructor & assignement
+     **/
+    Potential( Potential<GUM_SCALAR>&& from );
     Potential<GUM_SCALAR>& operator=( Potential<GUM_SCALAR>&& src );
+
 
     /**
      * @brief Destructor.
@@ -134,77 +122,101 @@ namespace gum {
     /// normalisation of this do nothing if sum is 0
     Potential<GUM_SCALAR>& normalize() const;
 
-    /// sum of all elements in this
-    const GUM_SCALAR sum() const;
-
     /**
-     * Projection using sum as operation (and implementation-optimized operations)
+     * Projection using sum as operation (and implementation-optimized
+     * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential<GUM_SCALAR> projectSum(const Set<const DiscreteVariable*>& del_vars) const;
+    Potential<GUM_SCALAR>
+    projectSum( const Set<const DiscreteVariable*>& del_vars ) const;
 
     /**
-     * Projection using multiplication as operation (and implementation-optimized operations)
+     * Projection using multiplication as operation (and
+     * implementation-optimized operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential<GUM_SCALAR> projectProduct(const Set<const DiscreteVariable*>& del_vars) const;
+    Potential<GUM_SCALAR>
+    projectProduct( const Set<const DiscreteVariable*>& del_vars ) const;
 
     /**
-     * Projection using min as operation (and implementation-optimized operations)
+     * Projection using min as operation (and implementation-optimized
+     * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential<GUM_SCALAR> projectMin(const Set<const DiscreteVariable*>& del_vars) const;
+    Potential<GUM_SCALAR>
+    projectMin( const Set<const DiscreteVariable*>& del_vars ) const;
 
     /**
-     * Projection using max as operation (and implementation-optimized operations)
+     * Projection using max as operation (and implementation-optimized
+     * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential<GUM_SCALAR> projectMax(const Set<const DiscreteVariable*>& del_vars) const;
-      //projectSum( prod, del_vars )
+    Potential<GUM_SCALAR>
+    projectMax( const Set<const DiscreteVariable*>& del_vars ) const;
+
+    /// sum of all elements in the Potential
+    GUM_SCALAR sum() const;
+    /// product of all elements in the Potential
+    GUM_SCALAR product() const;
+    /// max of all elements in the Potential
+    GUM_SCALAR max() const;
+    /// min of all elements in the Potential
+    GUM_SCALAR min() const;
+
+    ///@}
+
+    // ========================================================================
+    /// @name Potential algebra operators
+    // ========================================================================
+    ///@{
+
+
+    /// the function to be used to add two Potentials
+    Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p2 ) const {
+      return Potential<GUM_SCALAR>( *this->content() + *p2.content() );
+    }
+
+    /// the function to be used to subtract two Potentials
+    Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p2 ) const {
+      return Potential<GUM_SCALAR>( *this->content() - *p2.content() );
+    }
+
+    /// the function to be used to multiply two Potentials
+    Potential<GUM_SCALAR> operator*( const Potential<GUM_SCALAR>& p2 ) const {
+      return Potential<GUM_SCALAR>( *this->content() * *p2.content() );
+    }
+
+    /// the function to be used to divide two Potentials
+    Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p2 ) const {
+      return Potential<GUM_SCALAR>( *this->content() / *p2.content() );
+    }
+
+    Potential<GUM_SCALAR>& operator+=( const Potential<GUM_SCALAR>& r ) {
+      *this = *this + r;
+      return *this;
+    }
+
+    Potential<GUM_SCALAR>& operator*=( const Potential<GUM_SCALAR>& r ) {
+      *this = *this* r;
+      return *this;
+    }
+
+    Potential<GUM_SCALAR>& operator-=( const Potential<GUM_SCALAR>& r ) {
+      *this = *this - r;
+      return *this;
+    }
+
+    Potential<GUM_SCALAR>& operator/=( const Potential<GUM_SCALAR>& r ) {
+      *this = *this / r;
+      return *this;
+    }
     ///@}
 
     protected:
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
-
-  /// the function to be used to add two Potentials
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p1,
-                                   const Potential<GUM_SCALAR>& p2 ) {
-    return std::move( Potential<GUM_SCALAR>( *p1.content() + *p2.content() ) );
-  }
-
-  /// the function to be used to subtract two Potentials
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p1,
-                                   const Potential<GUM_SCALAR>& p2 ) {
-    return std::move( Potential<GUM_SCALAR>( *p1.content() - *p2.content() ) );
-  }
-
-  /// the function to be used to multiply two Potentials
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR> operator*( const Potential<GUM_SCALAR>& p1,
-                                   const Potential<GUM_SCALAR>& p2 ) {
-    return std::move( Potential<GUM_SCALAR>( *p1.content() * *p2.content() ) );
-  }
-
-  /// the function to be used to divide two Potentials
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p1,
-                                   const Potential<GUM_SCALAR>& p2 ) {
-    return std::move( Potential<GUM_SCALAR>( *p1.content() / *p2.content() ) );
-  }
 } /* namespace gum */
 
 #include <agrum/multidim/potential.tcc>
 #endif /* GUM_POTENTIAL_H */
-
-
-
-
-
-
-
-
-

@@ -45,33 +45,21 @@ namespace gum_tests {
 
     // Product must have variables
     void __makeProduct( gum::Potential<double>& product ) {
-      std::vector<gum::Potential<double>*> trash, temp(*__potentials);
-      while (temp.size() > 1) {
-        auto& p1 = *(temp.back());
+      std::vector<gum::Potential<double>*> temp( *__potentials );
+      gum::Potential<double> result;
+      while ( temp.size() > 0 ) {
+        result = result * ( *temp.back() );
         temp.pop_back();
-        auto& p2 = *(temp.back());
-        temp.pop_back();
-        auto mult = new gum::Potential<double>(p1 * p2);
-        temp.push_back(mult);
-        trash.push_back(mult);
       }
 
-      auto result = temp.back();
       auto del_vars = gum::Set<const gum::DiscreteVariable*>();
-      for (auto var: result->variablesSequence()) {
-        if (not product.contains(*var)) {
-        del_vars.insert( var );
-      }
+      for ( auto var : result.variablesSequence() ) {
+        if ( not product.contains( *var ) ) {
+          del_vars.insert( var );
+        }
       }
 
-      result = new gum::Potential<double>(gum::projectSum( *result, del_vars ));
-      trash.push_back( result );
-
-      product = *result;
-
-      for (auto pot: trash) {
-        delete pot;
-      }
+      product = result.projectSum( del_vars );
     }
 
     public:
@@ -435,7 +423,8 @@ namespace gum_tests {
             else
               outBucket++;
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl << e.errorContent() << std::endl;
+          std::cerr << std::endl
+                    << e.errorContent() << std::endl;
           TS_ASSERT( false );
         }
 
@@ -537,13 +526,12 @@ namespace gum_tests {
       bucket_sr.add( bn->variable( r ) );
 
       auto del_vars = gum::Set<const gum::DiscreteVariable*>();
-      for (auto var: clique_csr.variablesSequence() ) {
-        if (not sep_sr.contains( *var ) ) {
+      for ( auto var : clique_csr.variablesSequence() ) {
+        if ( not sep_sr.contains( *var ) ) {
           del_vars.insert( var );
         }
       }
-      sep_sr = gum::Potential<double>( gum::projectSum( clique_csr, del_vars ) );
-
+      sep_sr = clique_csr.projectSum( del_vars );
       bucket_sr.add( bucket_csr );
 
       {
@@ -594,12 +582,12 @@ namespace gum_tests {
       marg_w.add( bn->variable( w ) );
 
       del_vars = gum::Set<const gum::DiscreteVariable*>();
-      for (auto var: tmp.variablesSequence()) {
-        if (not marg_w.contains( *var ) ) {
+      for ( auto var : tmp.variablesSequence() ) {
+        if ( not marg_w.contains( *var ) ) {
           del_vars.insert( var );
         }
       }
-      marg_w = gum::Potential<double>( gum::projectSum( tmp, del_vars ) );
+      marg_w = gum::Potential<double>( tmp.projectSum( del_vars ) );
 
       {
         gum::Instantiation i;
@@ -622,8 +610,8 @@ namespace gum_tests {
 
       gum::MultiDimBucket<double> false_sep_sr;
       false_sep_sr.add( bn->variable( s ) );
-      false_sep_sr.add( bn->variable( r ) );
       false_sep_sr.add( bucket_wsr );
+      false_sep_sr.add( bn->variable( r ) );
 
       gum::MultiDimBucket<double> false_marg_w;
       false_marg_w.add( bn->variable( w ) );

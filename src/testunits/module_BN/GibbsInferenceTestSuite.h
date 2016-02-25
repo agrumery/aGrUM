@@ -141,11 +141,10 @@ namespace gum_tests {
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &(bn->variable(i3));
-        auto p = gum::projectSum( p3, del_vars );
+        auto p = p3.projectSum( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
-        delete p;
+          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
       }
 
       const gum::Potential<float>& p4 = bn->cpt( i4 );
@@ -160,11 +159,10 @@ namespace gum_tests {
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &(bn->variable( i4 ));
-        auto p = gum::projectSum( p4, del_vars);
+        auto p = p4.projectSum( del_vars);
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
-        delete p;
+          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
       }
 
       const gum::Potential<float>& p5 = bn->cpt( i5 );
@@ -181,12 +179,11 @@ namespace gum_tests {
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &(bn->variable(i5));
-        auto p = gum::projectSum( p5, del_vars );
+        auto p = p5.projectSum( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j ) {
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
+          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
         }
-        delete p;
       }
     }
 

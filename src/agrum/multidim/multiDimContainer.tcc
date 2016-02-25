@@ -101,19 +101,23 @@ namespace gum {
   const std::string MultiDimContainer<GUM_SCALAR>::toString() const {
     // we create a new instantiation and iterate over it to display the whole
     // content of the array
+    if ( this->nbrDim() == 0 ) {
+      return "[]";
+    }
+
     std::stringstream ss;
-    Instantiation myinst( const_cast<MultiDimContainer*>( this ) );
+    Instantiation inst( const_cast<MultiDimContainer*>( this ) );
 
     bool first = true;
 
-    for ( myinst.setFirst(); !myinst.end(); ++myinst ) {
+    for ( inst.setFirst(); !inst.end(); ++inst ) {
+
       if ( !first ) {
         ss << " /";
       }
-
       first = false;
 
-      ss << myinst << " :: " << get( myinst );
+      ss << inst << " :: " << get( inst );
     }
 
     return ss.str();

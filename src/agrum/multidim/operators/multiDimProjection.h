@@ -73,7 +73,8 @@
 namespace gum {
 
   template <typename GUM_SCALAR, template <typename> class TABLE>
-  class MultiDimProjection {
+  class
+  MultiDimProjection {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

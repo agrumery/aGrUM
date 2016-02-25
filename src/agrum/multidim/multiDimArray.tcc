@@ -198,6 +198,4 @@ namespace gum {
                                                 const DiscreteVariable* y ) {
     MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
   }
-
 } /* namespace gum */
-

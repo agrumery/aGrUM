@@ -72,7 +72,7 @@ namespace gum {
      * @param src The MultiDimArray to copy.
      */
     MultiDimArray( const MultiDimArray<GUM_SCALAR>& src );
- 
+
     /**
      * @brief Copy operator.
      * @param src The MultiDimArray to copy.
@@ -81,7 +81,7 @@ namespace gum {
     MultiDimArray<GUM_SCALAR>&
     operator=( const MultiDimArray<GUM_SCALAR>& src );
 
-    /** 
+    /**
      * @brief Class destructor.
      *
      * Note that, when the multidimensional array is removed src memory, its
@@ -134,7 +134,7 @@ namespace gum {
      */
     const GUM_SCALAR& unsafeGet( Idx offset ) const;
 
-    /** 
+    /**
      * @brief Returns the element stored in the multidimArray at a given
      * offset.
      *
@@ -154,7 +154,7 @@ namespace gum {
      */
     const GUM_SCALAR& getByOffset( Idx offset ) const;
 
-    /** 
+    /**
      * @brief Modifies the element stored in the multidimArray at a given
      * offset.
      *
@@ -173,9 +173,9 @@ namespace gum {
      * @param offset The offset where to store the value.
      * @param val The value to store.
      */
-    void unsafeSet( Idx offset, const GUM_SCALAR& val);
+    void unsafeSet( Idx offset, const GUM_SCALAR& val );
 
-    /** 
+    /**
      * @brief Modifies the element stored in the multidimArray at a given
      * offset.
      *

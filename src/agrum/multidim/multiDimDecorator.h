@@ -72,6 +72,19 @@ namespace gum {
     MultiDimDecorator( const MultiDimDecorator<GUM_SCALAR>& from );
     MultiDimDecorator<GUM_SCALAR>& operator=( const MultiDimDecorator& from );
 
+    /**
+     * @brief Copy constructor.
+     *
+     * The newly created Potential share the variables and the values
+     * from src, but no instantiation is associated to it. It allows to force
+     * the chosen implementation and to copy the data from src.
+     *
+     * @param aContent The implementation to use in this Potential.
+     * @param src The MultiDimContainer to copy.
+     */
+    /*MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent,
+                       const MultiDimContainer<GUM_SCALAR>& src );*/
+
 
     /**
      * @brief Class move constructor & assignment
