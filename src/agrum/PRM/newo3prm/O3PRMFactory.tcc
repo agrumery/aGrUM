@@ -37,8 +37,8 @@
 #include <agrum/PRM/newo3prm/utils.h>
 #include <agrum/PRM/newo3prm/O3SystemFactory.h>
 #include <agrum/PRM/newo3prm/O3TypeFactory.h>
-#include <agrum/PRM/newO3prm/cocoR/Parser.h>
-#include <agrum/PRM/newO3prm/cocoR/Scanner.h>
+#include <agrum/PRM/newo3prm/cocoR/Parser.h>
+#include <agrum/PRM/newo3prm/cocoR/Scanner.h>
 #include <agrum/PRM/newo3prm/O3ClassFactory.h>
 #include <agrum/PRM/newo3prm/O3InterfaceFactory.h>
 #include <agrum/PRM/newo3prm/O3NameSolver.h>

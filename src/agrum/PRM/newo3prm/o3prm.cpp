@@ -761,14 +761,14 @@ namespace gum {
         GUM_CONSTRUCTOR( O3RuleCPT );
       }
 
-      O3RuleCPT::O3RuleCPT( const O3RuleCPT::O3RuleCPT& src )
+      O3RuleCPT::O3RuleCPT( const O3RuleCPT& src )
           : O3Attribute( src )
           , __rules(
                 std::unique_ptr<O3RuleList>( new O3RuleList( src.rules() ) ) ) {
         GUM_CONS_CPY( O3RuleCPT );
       }
 
-      O3RuleCPT::O3RuleCPT( O3RuleCPT::O3RuleCPT&& src )
+      O3RuleCPT::O3RuleCPT( O3RuleCPT&& src )
           : O3Attribute( src )
           , __rules( std::move( src.__rules ) ) {
         GUM_CONS_MOV( O3RuleCPT );
@@ -776,7 +776,7 @@ namespace gum {
 
       O3RuleCPT::~O3RuleCPT() { GUM_DESTRUCTOR( O3RuleCPT ); }
 
-      O3RuleCPT& O3RuleCPT::operator=( const O3RuleCPT::O3RuleCPT& src ) {
+      O3RuleCPT& O3RuleCPT::operator=( const O3RuleCPT& src ) {
         if ( this == &src ) {
           return *this;
         }
@@ -786,7 +786,7 @@ namespace gum {
         return *this;
       }
 
-      O3RuleCPT& O3RuleCPT::operator=( O3RuleCPT::O3RuleCPT&& src ) {
+      O3RuleCPT& O3RuleCPT::operator=( O3RuleCPT&& src ) {
         if ( this == &src ) {
           return *this;
         }
