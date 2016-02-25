@@ -442,6 +442,10 @@ namespace gum {
           __systems.push_back(
               std::unique_ptr<O3System>( new O3System( *s ) ) );
         }
+        for ( const auto& i : src.__imports ) {
+          __imports.push_back( 
+              std::unique_ptr<O3Import>( new O3Import( *i ) ) );
+        }
       }
 
       O3PRM::O3PRM( O3PRM&& src )
@@ -449,7 +453,8 @@ namespace gum {
           , __int_types( std::move( src.__int_types ) )
           , __interfaces( std::move( src.__interfaces ) )
           , __classes( std::move( src.__classes ) )
-          , __systems( std::move( src.__systems ) ) {
+          , __systems( std::move( src.__systems ) )
+          , __imports( std::move( src.__imports ) ) {
         GUM_CONS_MOV( O3PRM );
       }
 
@@ -477,6 +482,10 @@ namespace gum {
           __systems.push_back(
               std::unique_ptr<O3System>( new O3System( *s ) ) );
         }
+        for ( const auto& i : src.__imports ) {
+          __imports.push_back(
+              std::unique_ptr<O3Import>( new O3Import( *i ) ) );
+        }
         return *this;
       }
 
@@ -489,6 +498,7 @@ namespace gum {
         __interfaces = std::move( src.__interfaces );
         __classes = std::move( src.__classes );
         __systems = std::move( src.__systems );
+        __imports = std::move( src.__imports );
         return *this;
       }
 
@@ -1480,7 +1490,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __import = src.__import;
+        __import = std::move( src.__import );
         return *this;
       }
 

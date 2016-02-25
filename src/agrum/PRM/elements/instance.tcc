@@ -107,44 +107,50 @@ namespace gum {
     template <typename GUM_SCALAR>
     void
     Instance<GUM_SCALAR>::__instantiateSlotChain( SlotChain<GUM_SCALAR>* sc ) {
-      auto first_id = sc->chain()[0]->id();
-      auto set =
-          new Set<Instance<GUM_SCALAR>*>( *( __referenceMap[first_id] ) );
-      // We proceed with a width-first run of the slot chain
-      for ( Size idx = 1; idx < sc->chain().size() - 1; ++idx ) {
-        auto temp = new Set<Instance<GUM_SCALAR>*>();
-        for ( auto current : *set ) {
-          auto& ref = current->type().get( sc->chain()[idx]->name() );
-          for ( auto next : *( current->__referenceMap[ref.id()] ) ) {
-            temp->insert( next );
+      try {
+        auto first_id = sc->chain()[0]->id();
+        auto set =
+            new Set<Instance<GUM_SCALAR>*>( *( __referenceMap[first_id] ) );
+        // We proceed with a width-first run of the slot chain
+        for ( Size idx = 1; idx < sc->chain().size() - 1; ++idx ) {
+          auto temp = new Set<Instance<GUM_SCALAR>*>();
+          for ( auto current : *set ) {
+            auto& ref = current->type().get( sc->chain()[idx]->name() );
+            for ( auto next : *( current->__referenceMap[ref.id()] ) ) {
+              temp->insert( next );
+            }
+          }
+          delete set;
+          set = temp;
+        }
+        GUM_ASSERT( set->size() > 0 );
+        // set contains all the instances references by sc
+        if ( __referenceMap.exists( sc->id() ) ) {
+          delete __referenceMap[sc->id()];
+          __referenceMap[sc->id()] = set;
+        } else {
+          __referenceMap.insert( sc->id(), set );
+        }
+
+        // Add refering instances
+        for ( auto i : *set ) {
+          __addReferingInstance( sc, i );
+        }
+
+        // If sc is not multiple so it can be added as a parent of an attribute
+        if ( not sc->isMultiple() ) {
+          // We should have only one instance
+          // Less ugly way to get the single instance in set
+          for ( auto instance : *set ) {
+            auto& attr = instance->get( sc->lastElt().safeName() );
+            __bijection.insert( &( sc->type().variable() ),
+                                &( attr.type().variable() ) );
           }
         }
-        delete set;
-        set = temp;
-      }
-      GUM_ASSERT( set->size() > 0 );
-      // set contains all the instances references by sc
-      if ( __referenceMap.exists( sc->id() ) ) {
-        delete __referenceMap[sc->id()];
-        __referenceMap[sc->id()] = set;
-      } else {
-        __referenceMap.insert( sc->id(), set );
-      }
-
-      // Add refering instances
-      for ( auto i : *set ) {
-        __addReferingInstance( sc, i );
-      }
-
-      // If sc is not multiple so it can be added as a parent of an attribute
-      if ( not sc->isMultiple() ) {
-        // We should have only one instance
-        // Less ugly way to get the single instance in set
-        for ( auto instance : *set ) {
-          auto& attr = instance->get( sc->lastElt().safeName() );
-          __bijection.insert( &( sc->type().variable() ),
-                              &( attr.type().variable() ) );
-        }
+      } catch ( Exception& e ) {
+        GUM_TRACE_NEWLINE;
+        GUM_SHOWERROR( e );
+        throw e;
       }
     }
 
