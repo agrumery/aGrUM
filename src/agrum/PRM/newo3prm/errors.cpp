@@ -110,6 +110,7 @@ namespace gum {
         msg << "Class error : "
             << "Unknown class " << val.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+        GUM_ERROR( FatalError, msg.str() );
       }
 
       void O3PRM_CLASS_AMBIGUOUS( const O3Label& val,
@@ -438,6 +439,15 @@ namespace gum {
         msg << "Reference Slot error : "
             << "Interface " << i.name().label()
             << " cannot reference super interface " << r.type().label();
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_INTERFACE_ILLEGAL_OVERLOAD( const O3InterfaceElement& elt,
+                                             ErrorsContainer& errors ) {
+        const auto& pos = elt.type().position();
+        auto msg = std::stringstream();
+        msg << "Reference Slot error : "
+            << "Illegal overload of element " << elt.name().label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 

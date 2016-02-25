@@ -86,8 +86,18 @@ namespace gum {
 
         bool __checkO3Interfaces();
 
-        bool __checkInterfaceElement( O3Interface& i,
-                                      O3InterfaceElement& elt );
+        bool __checkInterfaceElement( O3Interface& i, O3InterfaceElement& elt );
+
+        bool __checkOverloadLegality( O3Interface& i, O3InterfaceElement& elt );
+
+        bool __checkAttributeOverloadLegality( O3Interface& i,
+                                               O3InterfaceElement& elt );
+
+        bool __checkReferenceOverloadLegality( O3Interface& i,
+                                               O3InterfaceElement& elt );
+
+        bool __checkCyclicReference( O3Interface& i, O3InterfaceElement& elt );
+
       };
 
     }  // o3prm

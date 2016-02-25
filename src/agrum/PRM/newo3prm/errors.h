@@ -181,6 +181,9 @@ namespace gum {
                                                     const O3InterfaceElement& r,
                                                     ErrorsContainer& errors );
 
+      void O3PRM_INTERFACE_ILLEGAL_OVERLOAD( const O3InterfaceElement& elt,
+                                             ErrorsContainer& errors );
+
       void O3PRM_REFERENCE_NOT_FOUND( const O3Label& val,
                                       ErrorsContainer& errors );
 
