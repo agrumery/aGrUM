@@ -45,10 +45,15 @@ namespace gum_tests {
 
     // Product must have variables
     void __makeProduct( gum::Potential<double>& product ) {
+      if ( __potentials->size() == 0 ) return;
+
       std::vector<gum::Potential<double>*> temp( *__potentials );
-      gum::Potential<double> result;
+
+      // we use the first element as init for the result
+      gum::Potential<double> result = *temp.back();
+      temp.pop_back();
       while ( temp.size() > 0 ) {
-        result = result * ( *temp.back() );
+        result *= ( *temp.back() );
         temp.pop_back();
       }
 
@@ -58,7 +63,6 @@ namespace gum_tests {
           del_vars.insert( var );
         }
       }
-
       product = result.projectSum( del_vars );
     }
 
@@ -181,7 +185,6 @@ namespace gum_tests {
       gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING( bucket = new gum::MultiDimBucket<double>() );
-
       if ( bucket != 0 ) {
         TS_ASSERT_THROWS_NOTHING( __fillBucket( bucket ) );
 
@@ -191,9 +194,9 @@ namespace gum_tests {
         }
 
         TS_GUM_ASSERT_THROWS_NOTHING( bucket->compute() );
-
         TS_GUM_ASSERT_THROWS_NOTHING( __makeProduct( product ) );
         gum::Instantiation inst( product );
+
         TS_ASSERT_EQUALS( bucket->domainSize(), product.domainSize() );
         TS_ASSERT_EQUALS( bucket->nbrDim(), product.nbrDim() );
 
@@ -201,7 +204,6 @@ namespace gum_tests {
           TS_ASSERT_DELTA(
               bucket->get( inst ), product.get( inst ), (double)0.01 );
         }
-
         delete bucket;
       }
     }
@@ -237,7 +239,7 @@ namespace gum_tests {
     }
 
     void testInstantiationsWithBuffer() {
-      gum::MultiDimBucket<double>* bucket = 0;
+        gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING( bucket = new gum::MultiDimBucket<double>() );
 
@@ -646,5 +648,3 @@ namespace gum_tests {
     }
   };
 }
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
