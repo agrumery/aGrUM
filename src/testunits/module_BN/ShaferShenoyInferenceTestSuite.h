@@ -75,9 +75,7 @@ namespace gum_tests {
 
       {
         // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;
-        const std::vector<float> v( t, t + n );
+        const std::vector<float> v{0.2, 0.8};
         p1.fillWith( v );
       }
 
@@ -86,9 +84,7 @@ namespace gum_tests {
 
       {
         // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;
-        const std::vector<float> v( t, t + n );
+        const std::vector<float> v( {0.3, 0.7} );
         p2.fillWith( v );
       }
 
@@ -96,59 +92,50 @@ namespace gum_tests {
       TS_ASSERT( p3.nbrDim() == 2 );
       {
         // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;
-        const std::vector<float> v( t, t + n );
+        const std::vector<float> v( {0.1, 0.9, 0.9, 0.1} );
         p3.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &(bn->variable( i3 ));
-        auto p = gum::projectSum( p3, del_vars );
+        auto p = p3.projectSum( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
-        delete p;
+          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
       }
 
       const gum::Potential<float>& p4 = bn->cpt( i4 );
       TS_ASSERT( p4.nbrDim() == 3 );
       {
         // FILLING PARAMS
-        const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;
-        const std::vector<float> v( t, t + n );
+        const std::vector<float> v({0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0});
         p4.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &( bn->variable( i4 ) );
-        auto p = gum::projectSum( p4, del_vars );
+        auto p = p4.projectSum( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
-        delete p;
+          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
       }
 
       const gum::Potential<float>& p5 = bn->cpt( i5 );
       TS_ASSERT( p5.nbrDim() == 4 );
       {
         // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
-                             0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
-                             0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0};
-        int n = 24;
-        const std::vector<float> v( t, t + n );
+        const std::vector<float> v( {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
+                                     0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
+                                     0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0});
         p5.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &( bn->variable( i5 ) );
-        auto p = gum::projectSum( p5, del_vars );
+        auto p = p5.projectSum( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
-        delete p;
+          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
       }
     }
 
