@@ -11,35 +11,35 @@ include(CheckCXXSourceCompiles)
 include(FindPackageHandleStandardArgs)
 
 set(CXX14_FLAG_CANDIDATES
-    #GCC>=4.7.3
-    "-std=c++14"
-    #Microsoft Visual Studio, and everything that automatically accepts C++14
-    " "
-    #Intel windows
-    "/Qstd=c++14"
-    )
+        #GCC>=4.7.3
+        "-std=c++14"
+        #Microsoft Visual Studio, and everything that automatically accepts C++14
+        " "
+        #Intel windows
+        "/Qstd=c++14"
+        )
 
 set(CXX14_TEST_SOURCE
-"
-class Matrix
-{
-public:
-    Matrix(int a, int b, int c, int d)
-        : data {a, b, c, d}
-    {}
+        "
+        class Matrix
+        {
+        public:
+            Matrix(int a, int b, int c, int d)
+                : data {a, b, c, d}
+            {}
 
-private:
-    int data[4];
-};
+        private:
+            int data[4];
+        };
 
-int main()
-{
-    int n[] {4,7,6,1,2};
-    for (auto i : n)
-        Matrix mat (3,5,1,2);
-    return 0;
-}
-")
+        int main()
+        {
+            int n[] {4,7,6,1,2};
+            for (auto i : n)
+                Matrix mat (3,5,1,2);
+            return 0;
+        }
+        ")
 
 foreach(FLAG ${CXX14_FLAG_CANDIDATES})
     set(SAFE_CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")

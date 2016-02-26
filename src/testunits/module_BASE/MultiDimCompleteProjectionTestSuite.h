@@ -446,7 +446,6 @@ namespace gum_tests {
 
     void test_MultiDimCompleteProjection() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
-      GUM_CHECKPOINT;
       for ( unsigned int i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;

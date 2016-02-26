@@ -98,13 +98,13 @@ namespace gum {
      * @param src The MultiDimContainer to copy.
      */
     MultiDimContainer( const MultiDimContainer<GUM_SCALAR>& src );
-    MultiDimContainer& operator=(const MultiDimContainer<GUM_SCALAR>& src);
+    MultiDimContainer& operator=( const MultiDimContainer<GUM_SCALAR>& src );
 
     /**
      * @brief Class move constructor.
      */
     MultiDimContainer( const MultiDimContainer<GUM_SCALAR>&& );
-    MultiDimContainer& operator=(MultiDimContainer<GUM_SCALAR>&& src);
+    MultiDimContainer& operator=( MultiDimContainer<GUM_SCALAR>&& src );
 
     /**
      * @brief Destructor.
@@ -177,6 +177,7 @@ namespace gum {
      * MultiDimContainer domain size.
      */
     virtual void fillWith( const std::vector<GUM_SCALAR>& v ) const;
+    // beforeMerge add fillWith({1,2,3,4})
 
     /// @}
     // =========================================================================
@@ -199,6 +200,8 @@ namespace gum {
      */
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
                            Instantiation* p_i = nullptr ) const;
+    // beforeMerge dedicated copyFrom for MultiDimArray
+    // beforeMerge check move operator when p=p1+p2
 
     /**
      * @brief Removes all variables in this MultiDimContainer and copy the

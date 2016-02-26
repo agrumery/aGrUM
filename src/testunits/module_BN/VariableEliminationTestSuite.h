@@ -45,7 +45,7 @@ namespace gum_tests {
     public:
     gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float> *e_i1, *e_i4;
+    gum::Potential<float>* e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -94,10 +94,7 @@ namespace gum_tests {
 
       {
         // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;
-        const std::vector<float> v( t, t + n );
-        p1.fillWith( v );
+        p1.fillWith( std::vector<float>{0.2, 0.8} );
       }
 
       const gum::Potential<float>& p2 = bn->cpt( i2 );
@@ -105,70 +102,65 @@ namespace gum_tests {
 
       {
         // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;
-        const std::vector<float> v( t, t + n );
-        p2.fillWith( v );
+        p2.fillWith( std::vector<float>{0.3, 0.7} );
       }
 
       const gum::Potential<float>& p3 = bn->cpt( i3 );
       TS_ASSERT( p3.nbrDim() == 2 );
       {
         // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;
-        const std::vector<float> v( t, t + n );
-        p3.fillWith( v );
+        p3.fillWith( std::vector<float>{0.1, 0.9, 0.9, 0.1} );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &(bn->variable(i3));
-        auto p = projectSum(p3, del_vars);
+        del_vars << &( bn->variable( i3 ) );
+        auto p = p3.projectSum( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
-        delete p;
+          TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
       }
 
       const gum::Potential<float>& p4 = bn->cpt( i4 );
       TS_ASSERT( p4.nbrDim() == 3 );
       {
         // FILLING PARAMS
-        const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;
-        const std::vector<float> v( t, t + n );
-        p4.fillWith( v );
+        p4.fillWith(
+            std::vector<float>{0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0} );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &(bn->variable(i4));
-        auto p = projectSum(p4, del_vars);
+        del_vars << &( bn->variable( i4 ) );
+        auto p = p4.projectSum( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
-        delete p;
+          TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
       }
 
       const gum::Potential<float>& p5 = bn->cpt( i5 );
       TS_ASSERT( p5.nbrDim() == 4 );
       {
         // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
-                             0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
-                             0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0};
-        int n = 24;
-        const std::vector<float> v( t, t + n );
-        p5.fillWith( v );
+        p5.fillWith( std::vector<float>{
+            // clang-format off
+            0.3,0.6,0.1,
+            0.5,0.5,0.0,
+            0.5,0.5,0.0,
+            1.0,0.0,0.0,
+            0.4,0.6,0.0,
+            0.5,0.5,0.0,
+            0.5,0.5,0.0,
+            0.0,0.0,1.0
+            // clang-format on
+        } );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &( bn->variable( i5 ) );
-        auto p = projectSum(p5, del_vars);
+        auto p = p5.projectSum( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j ) {
-          TS_ASSERT_DELTA( p->get(j), 1.0, 1e-5 );
+          TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
         }
-        delete p;
       }
     }
 
@@ -186,7 +178,7 @@ namespace gum_tests {
       }
     }
 
-    void testValueElim() {
+    void testVariableElimination() {
       fill( *bn );
       gum::VariableElimination<float>* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -510,32 +502,10 @@ namespace gum_tests {
     private:
     // Builds a BN to test the inference
     void fill( gum::BayesNet<float>& bn ) {
-      const gum::Potential<float>& p1 = bn.cpt( i1 );
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;
-        const std::vector<float> v( t, t + n );
-        p1.fillWith( v );
-      }
-
-      const gum::Potential<float>& p2 = bn.cpt( i2 );
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;
-        const std::vector<float> v( t, t + n );
-        p2.fillWith( v );
-      }
-
-      const gum::Potential<float>& p3 = bn.cpt( i3 );
-      {
-        // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;
-        const std::vector<float> v( t, t + n );
-        p3.fillWith( v );
-      }
+      // FILLING PARAMS
+      bn.cpt( i1 ).fillWith( std::vector<float>{0.2, 0.8} );
+      bn.cpt( i2 ).fillWith( std::vector<float>{0.3, 0.7} );
+      bn.cpt( i3 ).fillWith( std::vector<float>{0.1, 0.9, 0.9, 0.1} );
 
       const gum::Potential<float>& p4 = bn.cpt( i4 );
       {
