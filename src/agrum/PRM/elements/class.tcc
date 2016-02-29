@@ -307,23 +307,23 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::completeInheritance(const std::string& name) {
       if ( __super ) {
-        if (not ClassElement<GUM_SCALAR>::isAttribute(this->get(name))) {
+        auto& elt = this->get( name );
+        if ( not( ClassElement<GUM_SCALAR>::isAttribute( elt ) or
+                  ClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
           GUM_ERROR( OperationNotAllowed,
                      "you can only complete inheritance for attributes" );
         }
-        auto& attr = static_cast<Attribute<GUM_SCALAR>&>(this->get(name));
 
-        // Copying dependencies yield by arcs
-        for ( const auto& prnt : super().dag().parents( attr.id() ) ) {
-          auto& prnt_elt = this->get( super().get( prnt ).safeName() );
-          prnt_elt.addChild( attr );
-          attr.addParent( prnt_elt );
+        for ( const auto& prnt : super().dag().parents( elt.id() ) ) {
+          this->addArc( super().get( prnt ).safeName(), elt.safeName() );
         }
 
-
-        auto& super_attr =
-            static_cast<const Attribute<GUM_SCALAR>&>( super().get( name ) );
-        attr.copyCpf( *__bijection, super_attr );
+        if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
+          auto& attr = static_cast<Attribute<GUM_SCALAR>&>( elt );
+          auto& super_attr =
+              static_cast<const Attribute<GUM_SCALAR>&>( super().get( name ) );
+          attr.copyCpf( *__bijection, super_attr );
+        }
       }
     }
 

@@ -1234,40 +1234,6 @@ namespace gum_tests {
             sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
         TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
 
-        // Checking that all class DAG are generated
-        for ( auto c : prm->classes() ) {
-          for ( auto node = c->dag().begin(); node != c->dag().end(); ++node ) {
-            TS_ASSERT( c->exists( *node ) );
-            TS_ASSERT_THROWS_NOTHING( c->get( *node ) );
-            for ( auto prnt : c->dag().parents( *node ) ) {
-              TS_ASSERT( c->exists( prnt ) );
-              TS_ASSERT_THROWS_NOTHING( c->get( prnt ) );
-            }
-
-            for ( auto child : c->dag().children( *node ) ) {
-              TS_ASSERT( c->exists( child ) );
-              TS_ASSERT_THROWS_NOTHING( c->get( child ) );
-            }
-          }
-          // checking parameters
-          for ( auto elt : c->parameters() ) {
-            c->dag().exists( elt->id() );
-          }
-          for ( auto elt : c->referenceSlots() ) {
-            c->dag().exists( elt->id() );
-          }
-          for ( auto elt : c->attributes() ) {
-            c->dag().exists( elt->id() );
-          }
-          for ( auto elt : c->aggregates() ) {
-            c->dag().exists( elt->id() );
-          }
-          for ( auto elt : c->slotChains() ) {
-            c->dag().exists( elt->id() );
-          }
-        }
-
-        // Checking that all instances attributes are generated
         for ( auto i = sys->begin(); i != sys->end(); ++i ) {
           for ( auto attr = i.val()->begin(); attr != i.val()->end(); ++attr ) {
             try {

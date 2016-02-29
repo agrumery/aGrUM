@@ -103,6 +103,8 @@ namespace gum {
         PRMFactory<GUM_SCALAR> factory( __prm );
 
         for ( auto& sys : __o3_prm->systems() ) {
+          // Reseting name map for each system
+          __nameMap = HashTable<std::string, O3Instance*>();
 
           if ( __checkSystem( *sys ) ) {
 
@@ -131,11 +133,22 @@ namespace gum {
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
         for ( auto& i : sys.instances() ) {
 
-          if ( i.size().value() > 1 ) {
-            factory.addArray(
-                i.type().label(), i.name().label(), i.size().value() );
+          if ( i.parameters().size() > 0 ) {
+
+            auto params = HashTable<std::string, double>();
+            for ( auto& p: i.parameters() ) {
+              params.insert( p.name().label(), (double)p.value().value() );
+            }
+            factory.addInstance( i.type().label(), i.name().label(), params );
+
           } else {
-            factory.addInstance( i.type().label(), i.name().label() );
+
+            if ( i.size().value() > 1 ) {
+              factory.addArray(
+                  i.type().label(), i.name().label(), i.size().value() );
+            } else {
+              factory.addInstance( i.type().label(), i.name().label() );
+            }
           }
         }
       }

@@ -531,9 +531,19 @@ namespace gum {
               to_complete.insert( a->safeName() );
             }
 
+            for ( auto a : super.aggregates() ) {
+              to_complete.insert( a->safeName() );
+            }
+
             for ( auto& a : c->attributes() ) {
               to_complete.erase( __prm->getClass( c->name().label() )
                                      .get( a->name().label() )
+                                     .safeName() );
+            }
+
+            for ( auto& a : c->aggregates() ) {
+              to_complete.erase( __prm->getClass( c->name().label() )
+                                     .get( a.name().label() )
                                      .safeName() );
             }
 
