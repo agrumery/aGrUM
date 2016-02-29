@@ -118,50 +118,6 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE int
-      O3PRMFactory<GUM_SCALAR>::readFile( const std::string& file,
-                                          const std::string& module ) {
-        try {
-          auto lastSlashIndex = file.find_last_of( '/' );
-
-          auto dir = Directory( file.substr( 0, lastSlashIndex + 1 ) );
-
-          if ( !dir.isValid() ) {
-            __errors.addException( "could not find file", file );
-            return __errors.count();
-          }
-
-          auto basename = file.substr( lastSlashIndex + 1 );
-          auto absFilename = dir.absolutePath() + basename;
-
-          auto input = std::ifstream( absFilename );
-          if ( input.is_open() ) {
-            __readStream( input, file, module );
-          } else {
-            __errors.addException( "could not open file", file );
-          }
-
-          return __errors.count();
-
-        } catch ( gum::Exception& e ) {
-          GUM_SHOWERROR( e );
-          __errors.addException( e.errorContent(), file );
-          return __errors.count();
-        } catch ( ... ) {
-          __errors.addException( "unknown error", file );
-          return __errors.count();
-        }
-      }
-
-      template <typename GUM_SCALAR>
-      INLINE int
-      O3PRMFactory<GUM_SCALAR>::readString( const std::string& str ) {
-        auto sBuff = std::stringstream( str );
-        __readStream( sBuff, "" );
-        return __errors.count();
-      }
-
-      template <typename GUM_SCALAR>
       void
       O3PRMFactory<GUM_SCALAR>::setClassPath( const std::string& class_path ) {
         __class_path = std::vector<std::string>();
@@ -270,6 +226,50 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
+      INLINE int
+      O3PRMFactory<GUM_SCALAR>::readString( const std::string& str ) {
+        auto sBuff = std::stringstream( str );
+        __readStream( sBuff, "" );
+        return __errors.count();
+      }
+
+      template <typename GUM_SCALAR>
+      INLINE int
+      O3PRMFactory<GUM_SCALAR>::readFile( const std::string& file,
+                                          const std::string& module ) {
+        try {
+          auto lastSlashIndex = file.find_last_of( '/' );
+
+          auto dir = Directory( file.substr( 0, lastSlashIndex + 1 ) );
+
+          if ( !dir.isValid() ) {
+            __errors.addException( "could not find file", file );
+            return __errors.count();
+          }
+
+          auto basename = file.substr( lastSlashIndex + 1 );
+          auto absFilename = dir.absolutePath() + basename;
+
+          auto input = std::ifstream( absFilename );
+          if ( input.is_open() ) {
+            __readStream( input, file, module );
+          } else {
+            __errors.addException( "could not open file", file );
+          }
+
+          return __errors.count();
+
+        } catch ( gum::Exception& e ) {
+          GUM_SHOWERROR( e );
+          __errors.addException( e.errorContent(), file );
+          return __errors.count();
+        } catch ( ... ) {
+          __errors.addException( "unknown error", file );
+          return __errors.count();
+        }
+      }
+
+      template <typename GUM_SCALAR>
       INLINE void O3PRMFactory<GUM_SCALAR>::parseStream( std::istream& input,
                                                          std::ostream& output,
                                                          std::string module ) {
@@ -287,12 +287,13 @@ namespace gum {
         auto buffer = std::unique_ptr<unsigned char[]>(
             new unsigned char[sBuff.length() + 1] );
         strcpy( (char*)buffer.get(), sBuff.c_str() );
-        auto s = o3prm_scanner( buffer.get(), sBuff.length() + 1, filename );
+        auto s =
+            o3prm_scanner( buffer.get(), sBuff.length() + 1, filename );
         auto p = o3prm_parser( &s );
         p.set_prm( __o3_prm.get() );
         p.set_prefix( module );
         p.Parse();
-        __errors = p.errors();
+        __errors += p.errors();
       }
 
       template <typename GUM_SCALAR>
@@ -301,11 +302,11 @@ namespace gum {
                                                const std::string& module ) {
 
         if ( not __imported.exists( i.import().label() ) ) {
+          __imported.insert( i.import().label() );
 
           auto module_path = module;
           std::replace( module_path.begin(), module_path.end(), '.', '/' );
 
-          __imported.insert( i.import().label() );
           auto path = i.import().label();
           std::replace( path.begin(), path.end(), '.', '/' );
 
@@ -341,17 +342,35 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
+      INLINE std::vector<const O3Import*>
+      O3PRMFactory<GUM_SCALAR>::__copyImports() {
+        auto copy = std::vector<const O3Import*>();
+        for ( const auto& i : __o3_prm->imports() ) {
+          if ( not __imported.exists( i->import().label() ) ) {
+            copy.push_back( i.get() );
+          }
+        }
+        return std::move( copy );
+      }
+
+      template <typename GUM_SCALAR>
       INLINE void O3PRMFactory<GUM_SCALAR>::__readStream(
           std::istream& input, const std::string& file, std::string module ) {
+
         if ( module.size() > 0 and module.back() != '.' ) {
           module.append( "." );
         }
 
         __parseStream( input, file, module );
 
-        for ( const auto& i : __o3_prm->imports() ) {
-          __parseImport( *i, module );
-        }
+        auto imports = __copyImports();
+        do {
+          for ( auto i : imports ) {
+            __parseImport( *i, module );
+          }
+          imports = __copyImports();
+        } while ( imports.size() > 0 );
+
 
         if ( __errors.error_count == 0 ) {
           auto solver = O3NameSolver<GUM_SCALAR>( *__prm, *__o3_prm, __errors );
@@ -375,16 +394,15 @@ namespace gum {
             class_factory.buildParameters();
             class_factory.buildReferenceSlots();
             class_factory.declareAttributes();
-            class_factory.buildAggregates();
             class_factory.completeAttributes();
             system_factory.build();
           } catch ( Exception& e ) {
 
-            if (__errors.count() == 0) {
+            if ( __errors.count() == 0 ) {
               __errors.addException( "an unknown error occured", file );
             }
-            //GUM_TRACE_NEWLINE;
-            //GUM_SHOWERROR( e );
+            // GUM_TRACE_NEWLINE;
+            // GUM_SHOWERROR( e );
 
           } catch ( ... ) {
             __errors.addException( "an unknown exception occured", file );

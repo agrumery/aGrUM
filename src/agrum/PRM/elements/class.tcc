@@ -169,20 +169,24 @@ namespace gum {
         const auto& c = super();
         // Copying reference slots
         for ( const auto c_refslot : c.__referenceSlots ) {
-          ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR>(
+          auto ref = new ReferenceSlot<GUM_SCALAR>(
               c_refslot->name(),
               const_cast<ClassElementContainer<GUM_SCALAR>&>(
                   c_refslot->slotType() ),
               c_refslot->isArray() );
 
-          ref->setId( c_refslot->id() );
-          __dag.addNode(ref->id());
-          __nodeIdMap.insert( ref->id(), ref );
-          __referenceSlots.insert( ref );
+            ref->setId( c_refslot->id() );
+            // Not reserved by an interface
+            if (not __dag.existsNode( ref->id() )) { 
+              __dag.addNode( ref->id() );
+            }
+            __nodeIdMap.insert( ref->id(), ref );
+            __referenceSlots.insert( ref );
 
           if ( c.__nameMap[c_refslot->name()] ==
-               c.__nameMap[c_refslot->safeName()] )
+               c.__nameMap[c_refslot->safeName()] ) {
             __nameMap.insert( ref->name(), ref );
+          }
 
           __nameMap.insert( ref->safeName(), ref );
         }
@@ -242,8 +246,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::inheritAggregates() {
       if ( __super ) {
-        const auto& c = super();
-        for ( const auto c_agg : c.__aggregates ) {
+        for ( const auto c_agg : __super->__aggregates ) {
+
           Aggregate<GUM_SCALAR>* agg = nullptr;
 
           try {
@@ -259,11 +263,12 @@ namespace gum {
           __bijection->insert( &( c_agg->type().variable() ),
                                &( agg->type().variable() ) );
           agg->setId( c_agg->id() );
-          __dag.addNode(agg->id());
+          __dag.addNode( agg->id() );
           __nodeIdMap.insert( agg->id(), agg );
           __aggregates.insert( agg );
 
-          if ( c.__nameMap[c_agg->name()] == c.__nameMap[c_agg->safeName()] )
+          if ( __super->__nameMap[c_agg->name()] ==
+               __super->__nameMap[c_agg->safeName()] )
             __nameMap.insert( agg->name(), agg );
 
           __nameMap.insert( agg->safeName(), agg );
@@ -310,9 +315,11 @@ namespace gum {
 
         // Copying dependencies yield by arcs
         for ( const auto& prnt : super().dag().parents( attr.id() ) ) {
-          __nodeIdMap[prnt]->addChild( attr );
-          attr.addParent( *( __nodeIdMap[prnt] ) );
+          auto& prnt_elt = this->get( super().get( prnt ).safeName() );
+          prnt_elt.addChild( attr );
+          attr.addParent( prnt_elt );
         }
+
 
         auto& super_attr =
             static_cast<const Attribute<GUM_SCALAR>&>( super().get( name ) );
@@ -832,13 +839,7 @@ namespace gum {
       if ( overloader->type() != overloaded->type() ) {
         overloader->setId( nextNodeId() );
         __dag.addNode( overloader->id() );
-        try {
-          __nodeIdMap.insert( overloader->id(), overloader );
-        } catch ( DuplicateElement& e ) {
-          GUM_TRACE_VAR( __nodeIdMap[overloader->id()]->safeName() );
-          GUM_TRACE_VAR( overloader->safeName() )
-          throw e;
-        }
+        __nodeIdMap.insert( overloader->id(), overloader );
         __nameMap[overloader->name()] = overloader;
         __nameMap.insert( overloader->safeName(), overloader );
         __attributes.insert( overloader );

@@ -102,21 +102,16 @@ void __addO3Interface( const Position& pos,
 }
 
 void __addO3Class( O3Class c ) {
-  auto c_ptr = new O3Class( std::move( c ) );
-  auto u_ptr = std::unique_ptr<O3Class>( c_ptr );
-  get_prm()->classes().push_back( std::move( u_ptr ) );
+  get_prm()->classes().emplace_back( new O3Class( std::move( c ) ) );
 }
 
 void __addO3System( O3System s ) {
-  auto s_ptr = new O3System( std::move( s ) );
-  auto u_ptr = std::unique_ptr<O3System>( s_ptr );
-  get_prm()->systems().push_back( std::move( u_ptr ) );
+  GUM_TRACE_VAR( s.name() );
+  get_prm()->systems().emplace_back( new O3System( std::move( s ) ) );
 }
 
 void __addO3Import( O3Import i ) {
-  auto i_ptr = new O3Import( std::move( i ) );
-  auto u_ptr = std::unique_ptr<O3Import>( i_ptr );
-  get_prm()->imports().push_back( std::move( u_ptr ) );
+  get_prm()->imports().emplace_back( new O3Import( std::move( i ) ) );
 }
 
 void __split( const O3Label& value, O3Label& left, O3Label& right) {
@@ -144,8 +139,11 @@ O3PRM* get_prm() {
 }
 
 // Set the prefix for types, interfaces, classes and systems parsed
-void set_prefix( const std::string& prefix) {
+void set_prefix( const std::string& prefix ) {
   __prefix = prefix;
+  if ( __prefix.size() > 0 and __prefix[__prefix.size() - 1] != '.' ) {
+    __prefix.append( "." );
+  }
 }
 
 //##############################################################################
@@ -204,11 +202,10 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //________________________
-NEWO3PRM = UNIT { UNIT } . 
+NEWO3PRM = [ IMPORT_UNIT ] UNIT { UNIT }. 
 
 //________________________
 UNIT = 
-  { IMPORT_UNIT }
   (
     TYPE_UNIT
   |
@@ -675,6 +672,15 @@ SYSTEM_BODY<O3System& sys> =
 
 //________________________
 PARAMETER_LIST<O3InstanceParameterList& params> =
+  PARAMETER<params>
+  {
+    ','
+    PARAMETER<params>
+  }
+  .
+
+//________________________
+PARAMETER<O3InstanceParameterList& params> =
   (. auto p = O3InstanceParameter(); .)
   LABEL<p.name()>
   '='
@@ -685,6 +691,7 @@ PARAMETER_LIST<O3InstanceParameterList& params> =
     FLOAT<p.value()>
     (. p.isInteger() = false; .)
   )
+  (. params.push_back( std::move( p ) ); .)
   .
 
 // ===========================================================================
@@ -693,6 +700,14 @@ PARAMETER_LIST<O3InstanceParameterList& params> =
 
 //________________________
 IMPORT_UNIT=
+  IMPORT_BODY
+  {
+    IMPORT_BODY
+  }
+  .
+
+//________________________
+IMPORT_BODY=
   (. auto i = O3Import(); .)
   IMPORT_DECLARATION<i>
   (. __addO3Import( std::move( i ) ); .)

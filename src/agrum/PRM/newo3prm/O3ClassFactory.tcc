@@ -375,7 +375,6 @@ namespace gum {
 
         // Class with a super class must be declared after
         for ( auto c : __o3Classes ) {
-
           __prm->getClass( c->name().label() ).inheritReferenceSlots();
           __addReferenceSlots( *c );
         }
@@ -456,7 +455,9 @@ namespace gum {
         // Class with a super class must be declared after
         for ( auto c : __o3Classes ) {
           __prm->getClass( c->name().label() ).inheritAttributes();
+          __prm->getClass( c->name().label() ).inheritAggregates();
           __declareAttribute( *c );
+          __buildAggregates( *c );
         }
       }
 
@@ -841,19 +842,13 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::buildAggregates() {
+      void O3ClassFactory<GUM_SCALAR>::__buildAggregates( O3Class& c ) {
 
         PRMFactory<GUM_SCALAR> factory( __prm );
 
-        // Class with a super class must be declared after
-        for ( auto c : __o3Classes ) {
-
-          __prm->getClass( c->name().label() ).inheritAggregates();
-
-          factory.continueClass( c->name().label() );
-          __addAggregates( factory, *c );
-          factory.endClass( false );
-        }
+        factory.continueClass( c.name().label() );
+        __addAggregates( factory, c );
+        factory.endClass( false );
       }
 
       template <typename GUM_SCALAR>

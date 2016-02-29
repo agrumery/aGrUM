@@ -139,6 +139,9 @@ namespace gum {
         void __parseStream( std::istream& input,
                             const std::string& filename,
                             const std::string& module );
+
+        std::vector<const O3Import*> __copyImports();
+
       };
 
     } // o3prm

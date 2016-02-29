@@ -63,7 +63,7 @@ namespace gum {
           , __o3_prm( std::move( src.__o3_prm ) )
           , __solver( std::move( src.__solver ) )
           , __errors( std::move( src.__errors ) )
-          , __nameMap( std::move( src.__nameMap) ) {
+          , __nameMap( std::move( src.__nameMap ) ) {
         GUM_CONS_MOV( O3SystemFactory );
       }
 
@@ -75,7 +75,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       O3SystemFactory<GUM_SCALAR>& O3SystemFactory<GUM_SCALAR>::
       operator=( const O3SystemFactory<GUM_SCALAR>& src ) {
-        if (this == &src ) {
+        if ( this == &src ) {
           return *this;
         }
         __prm = src.__prm;
@@ -100,7 +100,6 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void O3SystemFactory<GUM_SCALAR>::build() {
-
         PRMFactory<GUM_SCALAR> factory( __prm );
 
         for ( auto& sys : __o3_prm->systems() ) {
@@ -128,8 +127,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3SystemFactory<GUM_SCALAR>::__addInstances( PRMFactory<GUM_SCALAR>& factory,
-                                            O3System& sys ) {
+      void O3SystemFactory<GUM_SCALAR>::__addInstances(
+          PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
         for ( auto& i : sys.instances() ) {
 
           if ( i.size().value() > 1 ) {
@@ -308,7 +307,7 @@ namespace gum {
           }
 
           if ( not __nameMap.exists( ass.leftInstance().label() ) ) {
-            O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.leftInstance(), *__errors);
+            O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.leftInstance(), *__errors );
             return false;
           }
 
