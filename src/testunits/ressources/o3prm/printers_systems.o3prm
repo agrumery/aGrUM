@@ -85,7 +85,7 @@ system microSys {
   p.room = r;
 
   c.room = r;
-  c.printers = p;
+  c.printers += p;
 
   Equipment e;
 

@@ -25,7 +25,7 @@ class HappyClass {
 
   boolean happy dependson all_colors, any_colors, yolo {
     *, *, *: 0.01, 0.99;
-    false, false, false: 0.99, 0.001;
+    false, false, false: 0.99, 0.01;
   };
 
 }

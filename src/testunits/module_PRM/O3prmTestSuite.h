@@ -1082,6 +1082,7 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) ) );
         TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
         TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        reader.showElegantErrorsAndWarnings();
         gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
 
@@ -1214,24 +1215,45 @@ namespace gum_tests {
         reader.addClassPath( GET_RESSOURCES_PATH( "o3prmr" ) );
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(
             GET_RESSOURCES_PATH( "o3prmr/systems/MySystem.o3prm" ),
-            "systems" ) );
-
-        TS_ASSERT_EQUALS( reader.errors(), (unsigned int)0 );
-        if ( reader.errors() ) {
-          reader.showElegantErrorsAndWarnings();
-        }
+            "systems.MySystem" ) );
+        TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        reader.showElegantErrorsAndWarnings();
 
         gum::prm::PRM<double>* prm = nullptr;
+
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
         gum::Size class_count = prm->classes().size();
         class_count += prm->interfaces().size();
         TS_ASSERT_EQUALS( class_count,
                           (gum::Size)11 );  // Don't forget param subclasses !
 
+        TS_ASSERT_EQUALS( prm->systems().size(), 1 );
         gum::prm::System<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(
-            sys = &( prm->system( "systems.MySystem" ) ) );
+            sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
         TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
+
+        for ( auto i = sys->begin(); i != sys->end(); ++i ) {
+          for ( auto attr = i.val()->begin(); attr != i.val()->end(); ++attr ) {
+            try {
+              auto inst = gum::Instantiation( attr.val()->cpf() );
+              auto sum = 0.0;
+              for ( inst.begin(); not inst.end(); inst.inc() ) {
+                sum += attr.val()->cpf()[inst];
+              }
+              auto card = 1;
+              for ( auto var : attr.val()->cpf().variablesSequence() ) {
+                card *= var->domainSize();
+              }
+              card /= attr.val()->type()->domainSize();
+
+              TS_ASSERT_DELTA( sum / card, 1.0, 1e-6 );
+            } catch ( gum::Exception& e ) {
+              TS_FAIL( e.errorContent() );
+            }
+          }
+        }
 
         if ( prm ) {
           delete prm;
@@ -1502,6 +1524,9 @@ namespace gum_tests {
       // Act & Assert
       TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
       TS_ASSERT_DIFFERS( reader.errors(), (gum::Size)0 );
+      if ( reader.prm() ) {
+        delete reader.prm();
+      }
     }
 
     void testFileNotFoundInResDir() {
@@ -1513,6 +1538,9 @@ namespace gum_tests {
       // Act & Assert
       TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
       TS_ASSERT_DIFFERS( reader.errors(), (gum::Size)0 );
+      if ( reader.prm() ) {
+        delete reader.prm();
+      }
     }
 
     void testAsiaWithErrors() {
@@ -1524,7 +1552,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         // Assert
-        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)2 );
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)1 );
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
         delete reader.prm();
       } catch ( gum::Exception& e ) {
@@ -1691,6 +1719,28 @@ namespace gum_tests {
         GUM_TRACE( e.errorCallStack() );
       }
     }
+
+    //void testCedric() {
+    //  try {
+    //    // Arrange
+    //    gum::prm::o3prm::O3prmReader<double> reader;
+    //    std::string file = GET_RESSOURCES_PATH( "o3prm/Build_5M_Test.o3prm" );
+    //    std::string package = "";
+    //    // Act
+    //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+    //    // Assert
+    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+    //    if ( reader.errors() ) {
+    //      reader.showElegantErrorsAndWarnings();
+    //    }
+    //    TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+    //    delete reader.prm();
+    //  } catch ( gum::Exception& e ) {
+    //    TS_ASSERT( false );
+    //    GUM_TRACE( e.errorContent() );
+    //    GUM_TRACE( e.errorCallStack() );
+    //  }
+    //}
   };
 
 }  // namespace gum_tests
