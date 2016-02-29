@@ -425,26 +425,22 @@ namespace gum {
       O3PRM::O3PRM( const O3PRM& src ) {
         GUM_CONS_CPY( O3PRM );
         for ( const auto& t : src.__types ) {
-          __types.push_back( std::unique_ptr<O3Type>( new O3Type( *t ) ) );
+          __types.emplace_back( new O3Type( *t ) );
         }
         for ( const auto& t : src.__int_types ) {
-          __int_types.push_back(
-              std::unique_ptr<O3IntType>( new O3IntType( *t ) ) );
+          __int_types.emplace_back( new O3IntType( *t ) );
         }
         for ( const auto& i : src.__interfaces ) {
-          __interfaces.push_back(
-              std::unique_ptr<O3Interface>( new O3Interface( *i ) ) );
+          __interfaces.emplace_back( new O3Interface( *i ) );
         }
         for ( const auto& c : src.__classes ) {
-          __classes.push_back( std::unique_ptr<O3Class>( new O3Class( *c ) ) );
+          __classes.emplace_back( new O3Class( *c ) );
         }
         for ( const auto& s : src.__systems ) {
-          __systems.push_back(
-              std::unique_ptr<O3System>( new O3System( *s ) ) );
+          __systems.emplace_back( new O3System( *s ) );
         }
         for ( const auto& i : src.__imports ) {
-          __imports.push_back( 
-              std::unique_ptr<O3Import>( new O3Import( *i ) ) );
+          __imports.emplace_back( new O3Import( *i ) );
         }
       }
 
@@ -465,26 +461,22 @@ namespace gum {
           return *this;
         }
         for ( const auto& t : src.__types ) {
-          __types.push_back( std::unique_ptr<O3Type>( new O3Type( *t ) ) );
+          __types.emplace_back( new O3Type( *t ) );
         }
         for ( const auto& t : src.__int_types ) {
-          __int_types.push_back(
-              std::unique_ptr<O3IntType>( new O3IntType( *t ) ) );
+          __int_types.emplace_back( new O3IntType( *t ) );
         }
         for ( const auto& i : src.__interfaces ) {
-          __interfaces.push_back(
-              std::unique_ptr<O3Interface>( new O3Interface( *i ) ) );
+          __interfaces.emplace_back( new O3Interface( *i ) );
         }
         for ( const auto& c : src.__classes ) {
-          __classes.push_back( std::unique_ptr<O3Class>( new O3Class( *c ) ) );
+          __classes.emplace_back( new O3Class( *c ) );
         }
         for ( const auto& s : src.__systems ) {
-          __systems.push_back(
-              std::unique_ptr<O3System>( new O3System( *s ) ) );
+          __systems.emplace_back( new O3System( *s ) );
         }
         for ( const auto& i : src.__imports ) {
-          __imports.push_back(
-              std::unique_ptr<O3Import>( new O3Import( *i ) ) );
+          __imports.emplace_back( new O3Import( *i ) );
         }
         return *this;
       }

@@ -72,7 +72,6 @@ namespace gum {
 
         void completeAttributes();
 
-        void buildAggregates();
 
         private:
         PRM<GUM_SCALAR>* __prm;
@@ -85,10 +84,6 @@ namespace gum {
         HashTable<NodeId, O3Class*> __nodeMap;
         DAG __dag;
         std::vector<O3Class*> __o3Classes;
-
-        bool __buildImplementation;
-        bool __buildParameter;
-        bool __buildReferenceSlots;
 
         /// Checking classes
         /// @{
@@ -166,6 +161,8 @@ namespace gum {
 
         /// Checking and adding Aggregates
         /// @{
+        void __buildAggregates( O3Class& c );
+
         void __addAggregates( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
 
         bool __checkAggregate( O3Class& o3class, O3Aggregate& agg );

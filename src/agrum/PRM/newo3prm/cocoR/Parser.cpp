@@ -107,16 +107,23 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::NEWO3PRM() {
+		if (la->kind == _import) {
+			IMPORT_UNIT();
+		}
 		UNIT();
 		while (StartOf(1)) {
 			UNIT();
 		}
 }
 
-void Parser::UNIT() {
+void Parser::IMPORT_UNIT() {
+		IMPORT_BODY();
 		while (la->kind == _import) {
-			IMPORT_UNIT();
+			IMPORT_BODY();
 		}
+}
+
+void Parser::UNIT() {
 		if (la->kind == _type || la->kind == _int) {
 			TYPE_UNIT();
 		} else if (la->kind == _interface) {
@@ -126,12 +133,6 @@ void Parser::UNIT() {
 		} else if (la->kind == _system) {
 			SYSTEM_UNIT();
 		} else SynErr(31);
-}
-
-void Parser::IMPORT_UNIT() {
-		auto i = O3Import(); 
-		IMPORT_DECLARATION(i);
-		__addO3Import(std::move(i)); 
 }
 
 void Parser::TYPE_UNIT() {
@@ -690,6 +691,14 @@ void Parser::ARRAY(O3Integer& size) {
 }
 
 void Parser::PARAMETER_LIST(O3InstanceParameterList& params) {
+		PARAMETER(params);
+		while (la->kind == _comma) {
+			Get();
+			PARAMETER(params);
+		}
+}
+
+void Parser::PARAMETER(O3InstanceParameterList& params) {
 		auto p = O3InstanceParameter(); 
 		LABEL(p.name());
 		Expect(26 /* "=" */);
@@ -700,12 +709,19 @@ void Parser::PARAMETER_LIST(O3InstanceParameterList& params) {
 			FLOAT(p.value());
 			p.isInteger() = false; 
 		} else SynErr(44);
+		params.push_back( std::move( p ) ); 
 }
 
 void Parser::INTEGER_AS_FLOAT(O3Float& f) {
 		Expect(_integer);
 		auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 		f = O3Float( pos, coco_atoi( t->val ) ); 
+}
+
+void Parser::IMPORT_BODY() {
+		auto i = O3Import(); 
+		IMPORT_DECLARATION(i);
+		__addO3Import( std::move( i ) ); 
 }
 
 void Parser::IMPORT_DECLARATION(O3Import& import) {
@@ -889,7 +905,7 @@ bool Parser::StartOf( int s ) {
 
   	static bool set[2][32] = {
 		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
-		{x,x,x,x, x,x,x,x, x,T,T,T, T,x,T,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x}
+		{x,x,x,x, x,x,x,x, x,x,T,T, T,x,T,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x}
 	};
 
 
@@ -959,7 +975,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 41: s = coco_string_create(L"invalid SYSTEM_BODY"); break;
 			case 42: s = coco_string_create(L"invalid SYSTEM_BODY"); break;
 			case 43: s = coco_string_create(L"invalid SYSTEM_BODY"); break;
-			case 44: s = coco_string_create(L"invalid PARAMETER_LIST"); break;
+			case 44: s = coco_string_create(L"invalid PARAMETER"); break;
 			case 45: s = coco_string_create(L"invalid LABEL_OR_INT"); break;
 			case 46: s = coco_string_create(L"invalid LABEL_OR_STAR"); break;
 			case 47: s = coco_string_create(L"invalid FORMULA"); break;

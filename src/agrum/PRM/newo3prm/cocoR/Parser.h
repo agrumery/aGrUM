@@ -181,19 +181,16 @@ void __addO3Interface( const Position& pos,
   get_prm()->interfaces().push_back( std::move( i ) );
 }
 
-void __addO3Class( O3Class&& c ) {
-  get_prm()->classes().push_back(
-      std::unique_ptr<O3Class>( new O3Class( std::move(c) ) ) );
+void __addO3Class( O3Class c ) {
+  get_prm()->classes().emplace_back( new O3Class( std::move( c ) ) );
 }
 
-void __addO3System( O3System&& c ) {
-  get_prm()->systems().push_back(
-      std::unique_ptr<O3System>( new O3System( std::move(c) ) ) );
+void __addO3System( O3System s ) {
+  get_prm()->systems().emplace_back( new O3System( std::move( s ) ) );
 }
 
-void __addO3Import( O3Import&& i ) {
-  get_prm()->imports().push_back(
-      std::unique_ptr<O3Import>( new O3Import( std::move( i ) ) ) );
+void __addO3Import( O3Import i ) {
+  get_prm()->imports().emplace_back( new O3Import( std::move( i ) ) );
 }
 
 void __split( const O3Label& value, O3Label& left, O3Label& right) {
@@ -221,8 +218,11 @@ O3PRM* get_prm() {
 }
 
 // Set the prefix for types, interfaces, classes and systems parsed
-void set_prefix( const std::string& prefix) {
+void set_prefix( const std::string& prefix ) {
   __prefix = prefix;
+  if ( __prefix.size() > 0 and __prefix[__prefix.size() - 1] != '.' ) {
+    __prefix.append( "." );
+  }
 }
 
 //##############################################################################
@@ -241,8 +241,8 @@ void set_prefix( const std::string& prefix) {
     const ErrorsContainer& errors() const;
 
     	void NEWO3PRM();
-	void UNIT();
 	void IMPORT_UNIT();
+	void UNIT();
 	void TYPE_UNIT();
 	void INTERFACE_UNIT();
 	void CLASS_UNIT();
@@ -293,7 +293,9 @@ O3InterfaceElementList& elts);
 	void SYSTEM_BODY(O3System& sys);
 	void ARRAY(O3Integer& size);
 	void PARAMETER_LIST(O3InstanceParameterList& params);
+	void PARAMETER(O3InstanceParameterList& params);
 	void INTEGER_AS_FLOAT(O3Float& f);
+	void IMPORT_BODY();
 	void IMPORT_DECLARATION(O3Import& import);
 	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
