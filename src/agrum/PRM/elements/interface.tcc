@@ -89,10 +89,12 @@ namespace gum {
         __nodeIdMap.insert( attr->id(), attr );
         __attributes.insert( attr );
 
-        if ( i.__nameMap[i_attr->name()] == i.__nameMap[i_attr->safeName()] )
+        if ( i.__nameMap[i_attr->name()] == i.__nameMap[i_attr->safeName()] ) {
           __nameMap.insert( attr->name(), attr );
+        }
 
         __nameMap.insert( attr->safeName(), attr );
+        __dag.addNode( attr->id() );
       }
 
       // Copying reference slots
@@ -106,10 +108,12 @@ namespace gum {
         __nodeIdMap.insert( ref->id(), ref );
         __referenceSlots.insert( ref );
 
-        if ( i.__nameMap.exists( ref->name() ) )
+        if ( i.__nameMap.exists( ref->name() ) ) {
           __nameMap.insert( ref->name(), ref );
+        }
 
         __nameMap.insert( ref->safeName(), ref );
+        __dag.addNode( ref->id() );
       }
     }
 

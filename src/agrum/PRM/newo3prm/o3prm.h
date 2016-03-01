@@ -205,7 +205,7 @@ namespace gum {
 
       class O3InterfaceElement {
         public:
-        O3InterfaceElement( const O3Label& type, const O3Label& name );
+        O3InterfaceElement( const O3Label& type, const O3Label& name, bool isArray );
         O3InterfaceElement( const O3InterfaceElement& src );
         O3InterfaceElement( O3InterfaceElement&& src );
         ~O3InterfaceElement();
@@ -218,9 +218,12 @@ namespace gum {
         O3Label& name();
         const O3Label& name() const;
 
+        bool isArray() const;
+
         private:
         O3Label __type;
         O3Label __name;
+        bool __isArray;
       };
 
       class O3Interface {

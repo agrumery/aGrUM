@@ -205,7 +205,7 @@ namespace gum {
                 } else {
 
                   factory.addReferenceSlot(
-                      elt.type().label(), elt.name().label(), false );
+                      elt.type().label(), elt.name().label(), elt.isArray() );
                 }
 
               } catch ( OperationNotAllowed& e ) {
@@ -223,6 +223,11 @@ namespace gum {
           O3Interface& i, O3InterfaceElement& elt ) {
 
         if ( not __solver->resolveClassElement( elt.type() ) ) {
+          return false;
+        }
+
+        if ( __prm->isType( elt.type().label() ) and elt.isArray() ) {
+          O3PRM_INTERFACE_ILLEGAL_ARRAY( elt.name(), *__errors );
           return false;
         }
 
@@ -336,10 +341,6 @@ namespace gum {
 
           if ( ref_type->isSubTypeOf( real_i ) ) {
             O3PRM_INTERFACE_ILLEGAL_SUB_REFERENCE( i, elt, *__errors );
-            return false;
-          }
-          if ( real_i.isSubTypeOf( *ref_type ) ) {
-            O3PRM_INTERFACE_ILLEGAL_SUPER_REFERENCE( i, elt, *__errors );
             return false;
           }
         }

@@ -957,34 +957,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)2 );
     }
 
-    void testClassWithReferenceError5() {
-      // Arrange
-      auto input = std::stringstream();
-      input << "class Bar extends Foo { " << std::endl
-            << "Foo myFoo;" << std::endl
-            << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
-            << std::endl
-            << "state state {[0.5, 0.5]};" << std::endl
-            << "}" << std::endl;
-      input << "class Foo{ " << std::endl
-            << "boolean state {[0.2, 0.8]};" << std::endl
-            << "}" << std::endl;
-      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
-      auto output = std::stringstream();
-      gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
-      // Act
-      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
-      // Assert
-      std::string line;
-      std::getline( output, line );
-      auto msg = std::stringstream();
-      msg << "|2 col 1| Class error : Class Bar cannot reference "
-             "super class Foo";
-      TS_ASSERT_EQUALS( line, msg.str() );
-      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)2 );
-    }
-
     void testClassWithReferenceError6() {
       // Arrange
       auto input = std::stringstream();

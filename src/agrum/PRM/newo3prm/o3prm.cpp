@@ -520,21 +520,25 @@ namespace gum {
       const O3PRM::O3ImportList& O3PRM::imports() const { return __imports; }
 
       O3InterfaceElement::O3InterfaceElement( const O3Label& type,
-                                              const O3Label& name )
+                                              const O3Label& name,
+                                              bool isArray )
           : __type( type )
-          , __name( name ) {
+          , __name( name )
+          , __isArray( isArray ) {
         GUM_CONSTRUCTOR( O3InterfaceElement );
       }
 
       O3InterfaceElement::O3InterfaceElement( const O3InterfaceElement& src )
           : __type( src.__type )
-          , __name( src.__name ) {
+          , __name( src.__name )
+          , __isArray( src.__isArray ) {
         GUM_CONS_CPY( O3InterfaceElement );
       }
 
       O3InterfaceElement::O3InterfaceElement( O3InterfaceElement&& src )
           : __type( std::move( src.__type ) )
-          , __name( std::move( src.__name ) ) {
+          , __name( std::move( src.__name ) )
+          , __isArray( std::move( src.__isArray ) ) {
         GUM_CONS_MOV( O3InterfaceElement );
       }
 
@@ -549,6 +553,7 @@ namespace gum {
         }
         __type = src.__type;
         __name = src.__name;
+        __isArray = src.__isArray;
         return *this;
       }
 
@@ -559,6 +564,7 @@ namespace gum {
         }
         __type = std::move( src.__type );
         __name = std::move( src.__name );
+        __isArray = std::move( src.__isArray );
         return *this;
       }
 
@@ -567,6 +573,8 @@ namespace gum {
 
       O3Label& O3InterfaceElement::name() { return __name; }
       const O3Label& O3InterfaceElement::name() const { return __name; }
+
+      bool O3InterfaceElement::isArray() const { return __isArray; }
 
       O3Interface::O3Interface( const Position& pos,
                                 const O3Label& name,

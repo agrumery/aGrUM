@@ -106,7 +106,6 @@ void __addO3Class( O3Class c ) {
 }
 
 void __addO3System( O3System s ) {
-  GUM_TRACE_VAR( s.name() );
   get_prm()->systems().emplace_back( new O3System( std::move( s ) ) );
 }
 
@@ -436,8 +435,14 @@ INTERFACE<Position& pos> =
 INTERFACE_BODY<O3InterfaceElementList& elts> =
   (. auto type = O3Label(); .)
   (. auto name = O3Label(); .)
-  CHAIN<type> LABEL<name> ';'
-  (. elts.push_back( O3InterfaceElement( type, name ) ); .)
+  (. auto isArray = false; .)
+  CHAIN<type>
+  [
+    '['
+    ']'
+    (. isArray = true; .)
+  ] LABEL<name> ';'
+  (. elts.push_back( O3InterfaceElement( type, name, isArray ) ); .)
   .
 
 // ===========================================================================
