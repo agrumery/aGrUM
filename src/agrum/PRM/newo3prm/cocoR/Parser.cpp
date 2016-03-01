@@ -481,10 +481,16 @@ void Parser::INTERFACE(Position& pos) {
 void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
 		auto type = O3Label(); 
 		auto name = O3Label(); 
+		auto isArray = false; 
 		CHAIN(type);
+		if (la->kind == 24 /* "[" */) {
+			Get();
+			Expect(25 /* "]" */);
+			isArray = true; 
+		}
 		LABEL(name);
 		Expect(_semicolon);
-		elts.push_back( O3InterfaceElement( type, name ) ); 
+		elts.push_back( O3InterfaceElement( type, name, isArray ) ); 
 }
 
 void Parser::TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, LabelMap& labels) {

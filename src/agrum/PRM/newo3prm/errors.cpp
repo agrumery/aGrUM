@@ -228,17 +228,6 @@ namespace gum {
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
-      void O3PRM_CLASS_ILLEGAL_SUPER_REFERENCE( const O3Label& c,
-                                                const O3Label& super,
-                                                ErrorsContainer& errors ) {
-        const auto& pos = super.position();
-        auto msg = std::stringstream();
-        msg << "Class error : "
-            << "Class " << c.label() << " cannot reference super class "
-            << super.label();
-        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
-      }
-
       void O3PRM_CLASS_PARENT_NOT_FOUND( const O3Label& parent,
                                          ErrorsContainer& errors ) {
         const auto& pos = parent.position();
@@ -358,6 +347,15 @@ namespace gum {
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
+      void O3PRM_INTERFACE_ILLEGAL_ARRAY( const O3Label& val,
+                                          ErrorsContainer& errors ) {
+        const auto& pos = val.position();
+        auto msg = std::stringstream();
+        msg << "Interface error : "
+            << "Attribute " << val.label() << " can not be an array";
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
       void O3PRM_INTERFACE_NOT_FOUND( const O3Label& val,
                                       ErrorsContainer& errors ) {
         const auto& pos = val.position();
@@ -428,17 +426,6 @@ namespace gum {
         msg << "Reference Slot error : "
             << "Interface " << i.name().label()
             << " cannot reference subinterface " << ref.type().label();
-        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
-      }
-
-      void O3PRM_INTERFACE_ILLEGAL_SUPER_REFERENCE( const O3Interface& i,
-                                                    const O3InterfaceElement& r,
-                                                    ErrorsContainer& errors ) {
-        const auto& pos = r.type().position();
-        auto msg = std::stringstream();
-        msg << "Reference Slot error : "
-            << "Interface " << i.name().label()
-            << " cannot reference super interface " << r.type().label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 

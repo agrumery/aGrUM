@@ -438,13 +438,6 @@ namespace gum {
             return false;
           }
 
-          // No reference to superclasses
-          if ( real_c.isSubTypeOf( ref_type ) ) {
-
-            O3PRM_CLASS_ILLEGAL_SUPER_REFERENCE(
-                c.name(), ref.type(), *__errors );
-            return false;
-          }
         }
 
         return true;

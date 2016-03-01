@@ -104,10 +104,6 @@ namespace gum {
                                               const O3Label& sub,
                                               ErrorsContainer& errors );
 
-      void O3PRM_CLASS_ILLEGAL_SUPER_REFERENCE( const O3Label& c,
-                                                const O3Label& super,
-                                                ErrorsContainer& errors );
-
       void O3PRM_CLASS_PARENT_NOT_FOUND( const O3Label& parent,
                                          ErrorsContainer& errors );
 
@@ -152,6 +148,9 @@ namespace gum {
                                                 const O3Label& param,
                                                 ErrorsContainer& errors );
 
+      void O3PRM_INTERFACE_ILLEGAL_ARRAY( const O3Label& val,
+                                          ErrorsContainer& errors );
+
       void O3PRM_INTERFACE_NOT_FOUND( const O3Label& val,
                                       ErrorsContainer& errors );
 
@@ -176,10 +175,6 @@ namespace gum {
       void O3PRM_INTERFACE_ILLEGAL_SUB_REFERENCE( const O3Interface& i,
                                                   const O3InterfaceElement& ref,
                                                   ErrorsContainer& errors );
-
-      void O3PRM_INTERFACE_ILLEGAL_SUPER_REFERENCE( const O3Interface& i,
-                                                    const O3InterfaceElement& r,
-                                                    ErrorsContainer& errors );
 
       void O3PRM_INTERFACE_ILLEGAL_OVERLOAD( const O3InterfaceElement& elt,
                                              ErrorsContainer& errors );
