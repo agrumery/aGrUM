@@ -107,6 +107,9 @@ namespace gum {
      */
     virtual const std::string label( Idx indice ) const = 0;
 
+    ///vector of labels
+    std::vector<std::string> labels() const;
+
     /// get a numerical representation of the indice-th value.
     virtual double numerical( Idx indice ) const = 0;
 
