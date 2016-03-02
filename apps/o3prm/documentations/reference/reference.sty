@@ -1,4 +1,4 @@
-% -*- coding: UTF-8 -*- 
+% -*- coding: UTF-8 -*-
 
 \usepackage{makeidx}
 \usepackage{graphicx}
@@ -11,18 +11,18 @@
 \usepackage{threeparttable}
 \usepackage{subfig}
 \usepackage{array}
-\usepackage{natbib}
-\bibpunct{(}{)}{;}{a}{,}{,}
 \usepackage{mathabx}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usepackage{times}
 \usepackage[toc,page]{appendix}
 
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
 \usepackage{tikz}
 \usetikzlibrary{shapes,calc,through,backgrounds,arrows,positioning,fit}
 
-\usepackage{auto-pst-pdf}
-\usepackage{hyperref}
+\usepackage[final]{hyperref}
 
 %\newtheorem{law}{\bf Law}[chapter]
 %\newtheorem{defn}{\bf Definition}[chapter]
@@ -328,3 +328,18 @@
 \def\captionof#1#2{{\def\@captype{#1}#2}}
 \makeatother
 
+
+\def\o3prmlogo{\includegraphics[width=2cm]{o3prm.png}}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[L]{
+    \parbox[b]{\dimexpr\linewidth-2.5cm\relax}{ \ \\
+    {\color{black}\rule{\dimexpr\linewidth\relax}{0.4pt}}\\
+    \url{http://o3prm.lip6.fr} \hfill \sffamily \bfseries\hfill \thepage/\pageref*{LastPage}}
+  }
+  \fancyfoot[R]{
+    \raisebox{-5mm}{\o3prmlogo}
+  }
+}
+
+\pagestyle{plain}

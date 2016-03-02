@@ -1,7 +1,7 @@
-% -*- coding: UTF-8 -*- 
-\documentclass[singlespacing,12pt,a4paper]{article}
+% -*- coding: UTF-8 -*-
+\documentclass[12pt,a4paper]{article}
 
-\usepackage{thesis}
+\usepackage{reference}
 
 \title{O3PRM Language Specification}
 \author{Lionel Torti \\ Pierre-Henri Wuillemin \\ Laboratoire d'Informatique de Paris VI - UPMC}
@@ -72,7 +72,7 @@ Each compilation unit is declared in a namespace defined by the path from the
 project's root to the file's name in wich it is declared. Directory separators
 are represented using dots. For example the file
 \verb+fr/lip6/pritners/types.o3prm+ defines the namespace
-\verb+fr.lip6.printers.types+. 
+\verb+fr.lip6.printers.types+.
 
 Namespaces can be used to import all of the compilation units defined in them,
 since many compilation units will need units defined in other files.  In such
@@ -375,9 +375,9 @@ definitions to define values using formulas. Some examples:
 
 \begin{footnotesize}
 \begin{verbatim}
-// An integer parameter 
+// An integer parameter
 int t = 3600;
-// A real parameter 
+// A real parameter
 real lambda default 0.003;
 \end{verbatim}
 \end{footnotesize}
@@ -767,16 +767,16 @@ instanceParameter> ::= <word>"="(<integer>|<float>)
 \end{footnotesize}
 
 % \section{Class inheritance and interfaces}
-% 
+%
 % Class inheritance and interface implementation are two kinds of class
 % specialization available in the O3PRM language.
-% 
+%
 % \subsection*{Class inheritance}
-% 
+%
 % The first form of specialization is called class inheritance. It consists in
 % defining a class, called the subclass, by specializing another class, called
 % the superclass. The syntax to declare a subclass is as follows:
-% 
+%
 % \begin{footnotesize}
 % \begin{verbatim}
 % class MySubClass extends MySuperClass {
@@ -784,26 +784,26 @@ instanceParameter> ::= <word>"="(<integer>|<float>)
 % }
 % \end{verbatim}
 % \end{footnotesize}
-% 
+%
 % A subclass inherits all the reference slots and attributes defined by its
 % superclass (and those inherited by the superclass' superclass). Thus, if we do
 % not want to change properties inherited, we do not need to declare them.
 % However, all inherited elements are considered as encapsulated by the
 % subclass, thus they can be used to define dependencies in the subclass
 % attributes. The following example illustrates this principle:
-% 
+%
 % \begin{footnotesize}
 % \begin{verbatim}
 % class C {
 %   boolean z {[0.3, 0.7]};
 % }
-% 
+%
 % // A superclass
 % class A {
 %   C myRef;
 %   boolean b {[0.2, 0.8]};
 % }
-% 
+%
 % // A subclass of A
 % class B extends A {
 %   t\_state state dependson b, maRef.z
@@ -811,7 +811,7 @@ instanceParameter> ::= <word>"="(<integer>|<float>)
 % }
 % \end{verbatim}
 % \end{footnotesize}
-% 
+%
 % Another important feature of class inheritance is reference slot overloading
 % and attribute overloading. It is possible to:
 % %
@@ -829,9 +829,9 @@ instanceParameter> ::= <word>"="(<integer>|<float>)
 % Specializing a reference slot consists in changing the reference slot range
 % type by a subclass. Finally, either changing an attribute dependencies or its
 % \cpt{} is done by redeclaring the attribute.
-% 
+%
 % \subsection*{Interfaces}
-% 
+%
 % An interface is an abstract class, \ie{} it does not have any probabilistic
 % dependencies. Interfaces are used to define multiple class inheritance: when a
 % class implements an interface it must declare all the reference slots and
@@ -839,45 +839,50 @@ instanceParameter> ::= <word>"="(<integer>|<float>)
 % specialize them. Declaring an interface is similar to declaring a class, but
 % uses the keyword \verb+interface+ and does only defined parameters without any
 % default value. The following is an example of interface declaration:
-% 
+%
 % \begin{footnotesize}
 % \begin{verbatim}
 % interface I {
 %   boolean b;
 % }
-% 
+%
 % interface J {
 %   boolean c;
 % }
-% 
+%
 % class A implements I, J {
 %   bool b {[0.1, 0.9]};
 %   bool c dependson c {[ /* ... */ ]};
 % }
 % \end{verbatim}
 % \end{footnotesize}
-% 
+%
 % Interfaces can be used by references as their range. In such case, when the
 % reference slots encapsulated class is instantiated, only instance of classes
 % implementing the reference slot range can be affected to it. Finally, it is
 % possible to defined subinterfaces using the keyword \verb+extends+:
-% 
+%
 % \begin{footnotesize}
 % \begin{verbatim}
 % interface I {
 %   bool b;
 % }
-% 
+%
 % interface J extends I {
 %   bool c;
 % }
 % \end{verbatim}
 % \end{footnotesize}
-% 
+%
 % Interface inheritance only allows to specialize reference slot or attributes,
 % since there is no probabilistic information in interfaces.
 
-\bibliographystyle{plainnat}
+\nocite{WT2012}
+\nocite{TGW2011}
+\nocite{TW2010}
+\nocite{TWG2010}
+
+\bibliographystyle{apalike}
 \bibliography{o3prm-reference}
 
 \end{document}
