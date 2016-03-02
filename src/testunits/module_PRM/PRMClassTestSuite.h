@@ -644,8 +644,7 @@ namespace gum_tests {
         // Assert
         TS_ASSERT( knGate.isOutputNode( knGate.get( "state" ) ) );
       } catch ( gum::Exception& e ) {
-        GUM_TRACE( e.errorContent() );
-        GUM_TRACE( e.errorCallStack() );
+        TS_FAIL( e.errorContent() );
       }
     }
     /// @}

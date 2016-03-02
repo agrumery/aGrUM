@@ -1646,7 +1646,7 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader<double> reader;
         std::string file =
             GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
-        std::string package = "";
+        std::string package = "fr.base";
         // Act
         TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         // Assert
@@ -1655,6 +1655,26 @@ namespace gum_tests {
           reader.showElegantErrorsAndWarnings();
         }
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+
+        auto sys = &( reader.prm()->system( "fr.base.Work" ) );
+        for ( auto iter : *sys ) {
+          auto inst = iter.second;
+          for ( auto node : inst->type().dag() ) {
+            // TS_ASSERT( inst->exists( node ) );
+            if ( ( not inst->exists( node ) ) and
+                 inst->type().exists( node ) ) {
+              auto elt = &( inst->type().get( node ) );
+              if ( gum::prm::ClassElement<double>::isAttribute( *elt ) or
+                   gum::prm::ClassElement<double>::isAggregate( *elt ) ) {
+
+                GUM_TRACE( inst->type().name()
+                           << "."
+                           << inst->type().get( node ).safeName() );
+              }
+            }
+          }
+        }
+
         delete reader.prm();
       } catch ( gum::Exception& e ) {
         TS_ASSERT( false );

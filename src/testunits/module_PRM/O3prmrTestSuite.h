@@ -423,8 +423,6 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS( si.results().size(), (gum::Size)1 );
 
-        auto result = si.results()[0];
-
       } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }

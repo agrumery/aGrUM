@@ -175,13 +175,13 @@ namespace gum {
                   c_refslot->slotType() ),
               c_refslot->isArray() );
 
-            ref->setId( c_refslot->id() );
-            // Not reserved by an interface
-            if (not __dag.existsNode( ref->id() )) { 
-              __dag.addNode( ref->id() );
-            }
-            __nodeIdMap.insert( ref->id(), ref );
-            __referenceSlots.insert( ref );
+          ref->setId( c_refslot->id() );
+          // Not reserved by an interface
+          if ( not __dag.existsNode( ref->id() ) ) {
+            __dag.addNode( ref->id() );
+          }
+          __nodeIdMap.insert( ref->id(), ref );
+          __referenceSlots.insert( ref );
 
           if ( c.__nameMap[c_refslot->name()] ==
                c.__nameMap[c_refslot->safeName()] ) {
@@ -205,7 +205,7 @@ namespace gum {
           __parameters.insert( param );
 
           param->setId( c_param->id() );
-          __dag.addNode(param->id());
+          __dag.addNode( param->id() );
           __nodeIdMap.insert( param->id(), param );
           __nameMap.insert( param->name(), param );
         }
@@ -227,7 +227,7 @@ namespace gum {
           try {
             __dag.addNode( attr->id() );
           } catch ( gum::Exception& e ) {
-            // Node reserved by an interface 
+            // Node reserved by an interface
             GUM_ASSERT( not __nodeIdMap.exists( attr->id() ) );
           }
           __nodeIdMap.insert( attr->id(), attr );
@@ -293,7 +293,7 @@ namespace gum {
           __bijection->insert( &( c_slotchain->type().variable() ),
                                &( sc->type().variable() ) );
           sc->setId( c_slotchain->id() );
-          __dag.addNode(sc->id());
+          __dag.addNode( sc->id() );
           __nodeIdMap.insert( sc->id(), sc );
           __slotChains.insert( sc );
 
@@ -305,7 +305,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::completeInheritance(const std::string& name) {
+    void Class<GUM_SCALAR>::completeInheritance( const std::string& name ) {
       if ( __super ) {
         auto& elt = this->get( name );
         if ( not( ClassElement<GUM_SCALAR>::isAttribute( elt ) or
@@ -967,6 +967,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::__addCastDescendants( Attribute<GUM_SCALAR>* start,
                                                   Attribute<GUM_SCALAR>* end ) {
+
       Attribute<GUM_SCALAR>* parent = start;
       Attribute<GUM_SCALAR>* child = 0;
 
@@ -974,6 +975,7 @@ namespace gum {
         child = parent->getCastDescendant();
         child->setId( nextNodeId() );
         __nodeIdMap.insert( child->id(), child );
+        __dag.addNode( child->id() );
         // Only use child's safe name when adding to the name map!
         __nameMap.insert( child->safeName(), child );
         __attributes.insert( child );
@@ -1067,7 +1069,9 @@ namespace gum {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given NodeId ("<<id<<")" );
+                   "no ClassElement<GUM_SCALAR> with the given NodeId ("
+                       << id
+                       << ")" );
       }
     }
 
@@ -1078,7 +1082,8 @@ namespace gum {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given name ("<<name<<")" );
+                   "no ClassElement<GUM_SCALAR> with the given name (" << name
+                                                                       << ")" );
       }
     }
 
@@ -1089,7 +1094,8 @@ namespace gum {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given name ("<<name<<")" );
+                   "no ClassElement<GUM_SCALAR> with the given name (" << name
+                                                                       << ")" );
       }
     }
 

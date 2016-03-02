@@ -45,7 +45,6 @@ namespace gum {
                                       Interface<GUM_SCALAR>& super,
                                       bool delayInheritance )
         : ClassElementContainer<GUM_SCALAR>( name )
-        , __dag( super.__dag )
         , __super( &super ) {
       GUM_CONSTRUCTOR( Interface );
       if ( not delayInheritance ) {

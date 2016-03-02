@@ -92,13 +92,13 @@ namespace gum {
           try {
             attr.addParent( get( node ) );
           } catch ( NotFound& ) {
-            SlotChain<GUM_SCALAR>& sc =
-                static_cast<SlotChain<GUM_SCALAR>&>( type().get( node ) );
-            const Set<Instance<GUM_SCALAR>*>& instances =
-                getInstances( sc.id() );
+
+            auto elt = &(type().get( node ));
+            auto sc = static_cast<SlotChain<GUM_SCALAR>*>( elt );
+            const auto& instances = getInstances( sc->id() );
 
             for ( const auto inst : instances ) {
-              attr.addParent( inst->get( sc.lastElt().safeName() ) );
+              attr.addParent( inst->get( sc->lastElt().safeName() ) );
             }
           }
         }
@@ -307,7 +307,7 @@ namespace gum {
     INLINE Attribute<GUM_SCALAR>& Instance<GUM_SCALAR>::get( NodeId id ) {
       try {
         return *( __nodeIdMap[id] );
-      } catch ( NotFound& ) {
+      } catch ( NotFound& e ) {
         GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given NodeId" );
       }
     }
@@ -327,7 +327,7 @@ namespace gum {
     Instance<GUM_SCALAR>::get( const std::string& name ) {
       try {
         return *( __nodeIdMap[type().get( name ).id()] );
-      } catch ( NotFound& ) {
+      } catch ( NotFound& e) {
         GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
       }
     }
@@ -337,7 +337,7 @@ namespace gum {
     Instance<GUM_SCALAR>::get( const std::string& name ) const {
       try {
         return *( __nodeIdMap[type().get( name ).id()] );
-      } catch ( NotFound& ) {
+      } catch ( NotFound& e) {
         GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
       }
     }
