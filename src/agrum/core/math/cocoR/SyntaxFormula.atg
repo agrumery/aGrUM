@@ -26,6 +26,7 @@
 #include <cmath>
 #include <fstream>
 #include <list>
+#include <memory>
 #include <sstream>
 #include <stack>
 #include <string>

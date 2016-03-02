@@ -26,34 +26,6 @@ namespace gum {
   // ===                         Class FormulaPart                          ===
   // ==========================================================================
 
-  INLINE
-  std::string FormulaPart::str() const {
-    std::ostringstream s;
-    switch ( type ) {
-      case token_type::NUMBER: {
-        s << number;
-        break;
-      }
-
-      case token_type::PARENTHESIS:
-      case token_type::OPERATOR: {
-        if ( character == '\0' ) {
-          s << "\\0";
-        } else {
-          s << character;
-        }
-        break;
-      }
-
-      case token_type::FUNCTION: {
-        s << func2str( function );
-        break;
-      }
-
-      default: { GUM_ERROR( OperationNotAllowed, "unknown type" ); }
-    }
-    return s.str();
-  }
 
   INLINE
   bool FormulaPart::isLeftAssociative() const {
@@ -249,48 +221,6 @@ namespace gum {
   // ===                        Class Formula                               ===
   // ==========================================================================
 
-  INLINE
-  double Formula::result() const {
-
-    __parser->Parse();
-
-    std::stack<FormulaPart> stack;
-    if ( __output.empty() ) {
-      GUM_ERROR( OperationNotAllowed, "no output found" );
-    }
-
-    for ( auto item : __output ) {
-
-
-      switch ( item.type ) {
-        case FormulaPart::token_type::NUMBER: {
-          stack.push( item );
-          break;
-        }
-
-        case FormulaPart::token_type::OPERATOR:
-        case FormulaPart::token_type::FUNCTION: {
-          __reduceOperatorOrFunction( item, stack );
-          break;
-        }
-
-        default: {
-          GUM_ERROR( OperationNotAllowed,
-                     "expecting numbers, operators or functions" );
-        }
-      }
-    }
-
-    if ( stack.size() != 1 ) {
-
-      GUM_ERROR( OperationNotAllowed, "too many inputs" );
-
-    } else if ( stack.top().type != FormulaPart::token_type::NUMBER ) {
-
-      GUM_ERROR( OperationNotAllowed, "too many inputs" );
-    }
-    return stack.top().number;
-  }
 
   INLINE
   const std::string& Formula::formula() const { return __formula; }
