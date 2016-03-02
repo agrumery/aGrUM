@@ -4,7 +4,7 @@
 \usepackage{reference}
 
 \title{O3PRM Language Specification}
-\author{Lionel Torti \\ Pierre-Henri Wuillemin \\ Laboratoire d'Informatique de Paris VI - UPMC}
+\author{Lionel Torti -- Pierre-Henri Wuillemin \\ Laboratoire d'Informatique de Paris VI - UPMC}
 
 \begin{document}
 
@@ -14,6 +14,10 @@ The O3PRM language purpose is to model \PRMs{} using a strong \oo{} syntax. This
 document purpose it not to explain \PRMs{} but to provide a complete
 specification of the O3PRM language. Tutorials and examples of \PRMs{} can be
 found on the \href{http://o3prm.lip6.fr/}{O3PRM website}.
+
+{\footnotesize
+\tableofcontents
+}
 
 \section{O3PRM project structure}
 
@@ -48,7 +52,7 @@ class. If the file contains several compilation units, you should use the most
 hight order unit to name the file. For example, if you define types, classes
 and a system in one file, you should use the system's name.
 
-\subsection*{Compilation units}
+\subsection{Compilation units}
 
 There exists four different sorts of compilation units. A compilation unit
 \e{declares} a specific element in the modeling process and can either be: an
@@ -66,7 +70,7 @@ unit can start with a header. Headers are where you declare imports statements.
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Header syntax}
+\subsection{Header syntax}
 
 Each compilation unit is declared in a namespace defined by the path from the
 project's root to the file's name in wich it is declared. Directory separators
@@ -148,7 +152,7 @@ type t_state OK, NOK;
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Subtyping}
+\subsection{Subtyping}
 
 A subtype can be declared using the \verb+extends+ keyword. A subtype
 declaration syntax is:
@@ -183,7 +187,7 @@ is mandatory that the supertype is visible, \ie{}:
 \item or the supertype declaration unit has been imported.
 \end{itemize}
 
-\subsection*{Built-in types}
+\subsection{Built-in types}
 
 The built-in types are: \verb+boolean+, \verb+int+ and \verb+real+.  The
 \verb+boolean+ type is used to represent binary \rvs{} taking the values
@@ -237,7 +241,7 @@ class B extends A {
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Reference slot declaration}
+\subsection{Reference slot declaration}
 
 In the O3PRM language, simple (1 to 1) and complex (1 to N) reference slots are
 declared differently. Simple reference slots can only refer to a single instance
@@ -264,7 +268,7 @@ B[] refB;
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Attribute declaration}
+\subsection{Attribute declaration}
 
 Attributes are declared as follows:
 
@@ -297,7 +301,7 @@ another_type another_name dependson parent_1, parent_2 {
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Raw \cpt{} declaration}
+\subsection{Raw \cpt{} declaration}
 
 When declaring a raw \cpt{}, all values of the \cpt{} must be given. In such
 cases, the value's order is paramount. The declaration used in O3PRM is by
@@ -332,7 +336,7 @@ declared. The syntax of a raw \cpt{} declaration is straightforward:
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Rule based \cpt{} declaration}
+\subsection{Rule based \cpt{} declaration}
 
 Rule based declarations exploit wildcards to reduce the number of parameters
 for \cpt{} with redundant values. Its syntax is:
@@ -358,7 +362,7 @@ boolean X dependson Y, Z {
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Parameters}
+\subsection{Parameters}
 
 Parameters are declared using the following syntax:
 
@@ -384,7 +388,7 @@ real lambda default 0.003;
 
 A parameter value can be set at instantiation.
 
-\subsection*{Formulas}
+\subsection{Formulas}
 
 It is possible to use formulas in place of float numers to define an attribute's CPT.
 The formula must be enclosed between quotes and its syntax is implementation specific.
@@ -401,7 +405,7 @@ class A {
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Interface's abstract attributes}
+\subsection{Interface's abstract attributes}
 
 An abstract attribute in an interface declaration syntax is:
 
@@ -437,7 +441,7 @@ system name {
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Instance declaration}
+\subsection{Instance declaration}
 
 The syntax to declare an instance in a system is:
 
@@ -488,7 +492,7 @@ A_class a_name(a_param=0.001);
 \end{verbatim}
 \end{footnotesize}
 
-\subsection*{Affectation}
+\subsection{Affectation}
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -771,7 +775,7 @@ instanceParameter> ::= <word>"="(<integer>|<float>)
 % Class inheritance and interface implementation are two kinds of class
 % specialization available in the O3PRM language.
 %
-% \subsection*{Class inheritance}
+% \subsection{Class inheritance}
 %
 % The first form of specialization is called class inheritance. It consists in
 % defining a class, called the subclass, by specializing another class, called
@@ -830,7 +834,7 @@ instanceParameter> ::= <word>"="(<integer>|<float>)
 % type by a subclass. Finally, either changing an attribute dependencies or its
 % \cpt{} is done by redeclaring the attribute.
 %
-% \subsection*{Interfaces}
+% \subsection{Interfaces}
 %
 % An interface is an abstract class, \ie{} it does not have any probabilistic
 % dependencies. Interfaces are used to define multiple class inheritance: when a
