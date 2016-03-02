@@ -5,25 +5,17 @@
 
 .PHONY : clean all fig dot pdf
 
-LATEX=pdflatex -shell-escape
+PDFLATEX=pdflatex -shell-escape
 
 all: o3prm-reference.pdf
 
-pdf:
-	cp -f figures-sources/*pdf figures/
-
-full: *.tex dot fig pdf
-	${LATEX} o3prm-reference.tex &&\
-	bibtex o3prm-reference.aux &&\
-	${LATEX} o3prm-reference.tex &&\
-	${LATEX} o3prm-reference.tex
-
-o3prm-reference.pdf: *.tex
-	${LATEX} o3prm-reference.tex &&\
-	mv -f o3prm-reference.pdf $@
+o3prm-reference.pdf: o3prm-reference.tex  o3prm-reference.bib reference.sty clstholi2.cls
+	${PDFLATEX} o3prm-reference.tex 
+	bibtex o3prm-reference.aux 
+	${PDFLATEX} o3prm-reference.tex &&\
+	${PDFLATEX} o3prm-reference.tex
 
 bib: o3prm-reference.bib
-	rm -f o3prm-reference.bbl
 	bibtex o3prm-reference.aux
 
 clean:
