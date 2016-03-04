@@ -100,6 +100,13 @@ namespace gum {
         /// @{
         bool __checkImplementation( O3Class& c );
 
+        bool __checkImplementation(
+            O3Class& c,
+            O3Label& i,
+            HashTable<std::string, O3Attribute*>& attrMap,
+            HashTable<std::string, O3Aggregate*>& aggMap,
+            HashTable<std::string, O3ReferenceSlot*>& refMap );
+
         bool __checkImplementation( O3Label& o3_type,
                                     const Type<GUM_SCALAR>& type );
 

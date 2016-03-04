@@ -114,16 +114,27 @@ namespace gum {
                                        const std::string& s,
                                        ErrorsContainer& errors );
 
-      void O3PRM_CLASS_ILLEGAL_CPT_SIZE( const O3Label& attr,
+      void O3PRM_CLASS_ILLEGAL_CPT_SIZE( const std::string& c,
+                                         const O3Label& attr,
                                          Size found,
                                          Size expected,
                                          ErrorsContainer& errors );
 
-      void O3PRM_CLASS_ILLEGAL_CPT_VALUE( const O3Formula& f,
+      void O3PRM_CLASS_ILLEGAL_CPT_VALUE( const std::string& c,
+                                          const O3Label& attr,
+                                          const O3Formula& f,
                                           ErrorsContainer& errors );
 
-      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1( const O3Label& attr,
+      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1( const std::string& c,
+                                              const O3Label& attr,
+                                              float f,
                                               ErrorsContainer& errors );
+
+      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING( const std::string& c,
+                                                      const O3Label& attr,
+                                                      float f,
+                                                      ErrorsContainer& errors );
+
 
       void O3PRM_CLASS_ILLEGAL_RULE_SIZE( const O3RuleCPT::O3Rule& rule,
                                           size_t found,

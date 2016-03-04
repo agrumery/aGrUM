@@ -179,7 +179,6 @@ namespace gum {
             O3PRM_CLASS_DUPLICATE( c->name(), *__errors );
             return false;
           }
-
         }
 
         return true;
@@ -216,28 +215,32 @@ namespace gum {
       void O3ClassFactory<GUM_SCALAR>::buildImplementations() {
 
         for ( auto& c : __o3_prm->classes() ) {
-          if (__checkImplementation( *c )) {
+          if ( __checkImplementation( *c ) ) {
             __prm->getClass( c->name().label() ).initializeInheritance();
           }
         }
       }
 
+      using AttrMap = HashTable<std::string, O3Attribute*>;
+      using RefMap = HashTable<std::string, O3ReferenceSlot*>;
+      using AggMap = HashTable<std::string, O3Aggregate*>;
+
       template <typename GUM_SCALAR>
       bool O3ClassFactory<GUM_SCALAR>::__checkImplementation( O3Class& c ) {
 
         // Saving attributes names for fast lookup
-        auto attr_map = HashTable<std::string, O3Attribute*>();
+        auto attr_map = AttrMap();
         for ( auto& a : c.attributes() ) {
           attr_map.insert( a->name().label(), a.get() );
         }
 
         // Saving aggregates names for fast lookup
-        auto agg_map = HashTable<std::string, O3Aggregate*>();
+        auto agg_map = AggMap();
         for ( auto& agg : c.aggregates() ) {
           agg_map.insert( agg.name().label(), &agg );
         }
 
-        auto ref_map = HashTable<std::string, O3ReferenceSlot*>();
+        auto ref_map = RefMap();
         for ( auto& ref : c.referenceSlots() ) {
           ref_map.insert( ref.name().label(), &ref );
         }
@@ -247,56 +250,70 @@ namespace gum {
 
           if ( __solver->resolveInterface( i ) ) {
 
-            const auto& real_i = __prm->interface( i.label() );
-
-            auto counter = (Size)0;
-            for ( const auto& a : real_i.attributes() ) {
-
-              if ( attr_map.exists( a->name() ) ) {
-                ++counter;
-
-                if ( not __checkImplementation( attr_map[a->name()]->type(),
-                                                a->type() ) ) {
-                  O3PRM_CLASS_ATTR_IMPLEMENTATION(
-                      c.name(), i, attr_map[a->name()]->name(), *__errors );
-                  return false;
-                }
-              }
-
-              if ( agg_map.exists( a->name() ) ) {
-                ++counter;
-
-                if ( not __checkImplementation(
-                         agg_map[a->name()]->variableType(), a->type() ) ) {
-                  O3PRM_CLASS_AGG_IMPLEMENTATION(
-                      c.name(), i, agg_map[a->name()]->name(), *__errors );
-                  return false;
-                }
-              }
-            }
-
-            if ( counter != real_i.attributes().size() ) {
-              O3PRM_CLASS_MISSING_ATTRIBUTES( c.name(), i, *__errors );
+            if ( not __checkImplementation(
+                     c, i, attr_map, agg_map, ref_map ) ) {
               return false;
-            }
-
-            counter = 0;
-            for ( const auto& r : real_i.referenceSlots() ) {
-
-              if ( ref_map.exists( r->name() ) ) {
-                ++counter;
-
-                if ( not __checkImplementation( ref_map[r->name()]->type(),
-                                                r->slotType() ) ) {
-                  O3PRM_CLASS_REF_IMPLEMENTATION(
-                      c.name(), i, ref_map[r->name()]->name(), *__errors );
-                  return false;
-                }
-              }
             }
           }
         }
 
+        return true;
+      }
+
+      template <typename GUM_SCALAR>
+      bool
+      O3ClassFactory<GUM_SCALAR>::__checkImplementation( O3Class& c,
+                                                         O3Label& i,
+                                                         AttrMap& attr_map,
+                                                         AggMap& agg_map,
+                                                         RefMap& ref_map ) {
+        const auto& real_i = __prm->interface( i.label() );
+
+        auto counter = (Size)0;
+        for ( const auto& a : real_i.attributes() ) {
+
+          if ( attr_map.exists( a->name() ) ) {
+            ++counter;
+
+            if ( not __checkImplementation( attr_map[a->name()]->type(),
+                                            a->type() ) ) {
+              O3PRM_CLASS_ATTR_IMPLEMENTATION(
+                  c.name(), i, attr_map[a->name()]->name(), *__errors );
+              return false;
+            }
+          }
+
+          if ( agg_map.exists( a->name() ) ) {
+            ++counter;
+
+            if ( not __checkImplementation( agg_map[a->name()]->variableType(),
+                                            a->type() ) ) {
+              O3PRM_CLASS_AGG_IMPLEMENTATION(
+                  c.name(), i, agg_map[a->name()]->name(), *__errors );
+              return false;
+            }
+          }
+        }
+
+        if ( counter != real_i.attributes().size() ) {
+          O3PRM_CLASS_MISSING_ATTRIBUTES( c.name(), i, *__errors );
+          return false;
+        }
+
+        counter = 0;
+        for ( const auto& r : real_i.referenceSlots() ) {
+
+          if ( ref_map.exists( r->name() ) ) {
+            ++counter;
+
+            if ( not __checkImplementation( ref_map[r->name()]->type(),
+                                            r->slotType() ) ) {
+              O3PRM_CLASS_REF_IMPLEMENTATION(
+                  c.name(), i, ref_map[r->name()]->name(), *__errors );
+              return false;
+            }
+          }
+        }
         return true;
       }
 
@@ -437,7 +454,6 @@ namespace gum {
                 c.name(), ref.type(), *__errors );
             return false;
           }
-
         }
 
         return true;
@@ -486,7 +502,7 @@ namespace gum {
         if ( c.super().label() != "" ) {
           const auto& super = __prm->getClass( c.super().label() );
 
-          if (not super.exists( attr.name().label() )) {
+          if ( not super.exists( attr.name().label() ) ) {
             return true;
           }
 
@@ -703,23 +719,28 @@ namespace gum {
               auto value = f.formula().result();
               sum += value;
 
-              if ( value < 0 or value > 1 ) {
-                O3PRM_CLASS_ILLEGAL_CPT_VALUE( f, *__errors );
+              if ( value < 0.0 or 1.0 < value ) {
+                O3PRM_CLASS_ILLEGAL_CPT_VALUE(
+                    c.name(), attr.name(), f, *__errors );
                 return false;
               }
 
             } catch ( OperationNotAllowed& ) {
 
-              O3PRM_CLASS_ILLEGAL_CPT_VALUE( f, *__errors );
+              O3PRM_CLASS_ILLEGAL_CPT_VALUE(
+                  c.name(), attr.name(), f, *__errors );
               return false;
             }
           }
 
           // Check that CPT sums to 1
-          if ( std::abs( sum - 1.0f ) > 1e-6 ) {
-
-            O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1( attr.name(), *__errors );
+          if ( std::abs( sum - 1.0f ) > 1e-3 ) {
+            O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(
+                c.name(), attr.name(), sum, *__errors );
             return false;
+          } else if ( std::abs( sum - 1.0f ) > 1e-6 ) {
+            O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(
+                c.name(), attr.name(), sum, *__errors );
           }
         }
 
@@ -746,8 +767,11 @@ namespace gum {
 
         // Check for CPT size
         if ( domainSize != attr.values().size() ) {
-          O3PRM_CLASS_ILLEGAL_CPT_SIZE(
-              attr.name(), attr.values().size(), domainSize, *__errors );
+          O3PRM_CLASS_ILLEGAL_CPT_SIZE( c.name(),
+                                        attr.name(),
+                                        attr.values().size(),
+                                        domainSize,
+                                        *__errors );
           return false;
         }
 
@@ -766,25 +790,36 @@ namespace gum {
 
         // Check that CPT sums to 1
         Size parent_size = domainSize / type->domainSize();
-        auto values = std::vector<float>( parent_size );
+        auto values = std::vector<float>( parent_size, 0.0f );
 
         for ( std::size_t i = 0; i < attr.values().size(); ++i ) {
+          try {
 
-          auto idx = i % parent_size;
-          values[idx] += attr.values()[i].formula().result();
+            auto idx = i % parent_size;
+            auto val = attr.values()[i].formula().result();
+            values[idx] += val;
 
-          if ( values[idx] < 0 or values[idx] > 1 ) {
-            O3PRM_CLASS_ILLEGAL_CPT_VALUE( attr.values()[i], *__errors );
+            if ( val < 0.0 or 1.0 < val ) {
+              O3PRM_CLASS_ILLEGAL_CPT_VALUE(
+                  c.name(), attr.name(), attr.values()[i], *__errors );
+              return false;
+            }
+          } catch ( Exception& e ) {
+            O3PRM_CLASS_ILLEGAL_CPT_VALUE(
+                c.name(), attr.name(), attr.values()[i], *__errors );
             return false;
           }
         }
 
-        if ( not std::all_of(
-                 values.cbegin(),
-                 values.cend(),
-                 []( float f ) { return std::abs( f - 1.0f ) < 1.0e-6; } ) ) {
-          O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1( attr.name(), *__errors );
-          return false;
+        for ( auto f : values ) {
+          if ( std::abs( f - 1.0f ) > 1.0e-3 ) {
+            O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(
+                c.name(), attr.name(), f, *__errors );
+            return false;
+          } else if ( std::abs( f - 1.0f ) > 1.0e-6 ) {
+            O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(
+                c.name(), attr.name(), f, *__errors );
+          }
         }
         return true;
       }

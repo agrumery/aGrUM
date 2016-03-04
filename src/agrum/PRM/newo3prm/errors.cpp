@@ -256,23 +256,28 @@ namespace gum {
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
-      void O3PRM_CLASS_ILLEGAL_CPT_SIZE( const O3Label& attr,
+      void O3PRM_CLASS_ILLEGAL_CPT_SIZE( const std::string& c,
+                                         const O3Label& attr,
                                          Size found,
                                          Size expected,
                                          ErrorsContainer& errors ) {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
         msg << "Class error : "
-            << "Illegal CPT size, expected " << expected << " found " << found;
+            << "Illegal CPT size, expected " << expected << " found " << found
+            << " for attribute " << c << "." << attr.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
-      void O3PRM_CLASS_ILLEGAL_CPT_VALUE( const O3Formula& f,
+      void O3PRM_CLASS_ILLEGAL_CPT_VALUE( const std::string& c,
+                                          const O3Label& attr,
+                                          const O3Formula& f,
                                           ErrorsContainer& errors ) {
         const auto& pos = f.position();
         auto msg = std::stringstream();
         msg << "Class error : "
-            << "Illegal CPT value ";
+            << "Illegal CPT value \"" << f.formula().formula()
+            << "\" in attribute " << c << "." << attr.label();
         try {
           msg << f.formula().result();
         } catch ( ... ) {
@@ -281,13 +286,29 @@ namespace gum {
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
-      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1( const O3Label& attr,
+      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1( const std::string& c,
+                                              const O3Label& attr,
+                                              float f,
                                               ErrorsContainer& errors ) {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
         msg << "Class error : "
-            << "CPT does not sum to 1";
+            << "Attribute " << c << "." << attr.label()
+            << " CPT does not sum to 1, found " << f;
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void
+      O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING( const std::string& c,
+                                                 const O3Label& attr,
+                                                 float f,
+                                                 ErrorsContainer& errors ) {
+        const auto& pos = attr.position();
+        auto msg = std::stringstream();
+        msg << "Class warning : "
+            << "Attribute " << c << "." << attr.label()
+            << " CPT does not sum to 1, found " << f;
+        errors.addWarning( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
       void O3PRM_CLASS_ILLEGAL_RULE_SIZE( const O3RuleCPT::O3Rule& rule,

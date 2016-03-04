@@ -1778,7 +1778,8 @@ namespace gum_tests {
     //  try {
     //    // Arrange
     //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/Build_5M_Test.o3prm" );
+    //    std::string file =
+    //        GET_RESSOURCES_PATH( "o3prm/Build_5M_Performance.o3prm" );
     //    std::string package = "";
     //    // Act
     //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
