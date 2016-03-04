@@ -131,7 +131,6 @@ namespace gum_tests {
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &( bn->variable( i4 ) );
         auto p = p4.projectSum( del_vars );
-
         for ( gum::Instantiation j( p ); !j.end(); ++j )
           TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
       }
@@ -530,11 +529,11 @@ namespace gum_tests {
 
     // Uncomment this to have some outputs.
     void printProba( const gum::Potential<float>& p ) {
-      // gum::Instantiation inst(p);
-      // for (inst.setFirst(); !inst.end(); ++inst) {
-      //  std::cerr << inst<<" : " <<p[inst] << std::endl;
-      //}
-      // std::cerr << std::endl;
+      gum::Instantiation inst( p );
+      for ( inst.setFirst(); !inst.end(); ++inst ) {
+        std::cerr << inst << " : " << p[inst] << std::endl;
+      }
+      std::cerr << std::endl;
     }
   };
 }
