@@ -98,7 +98,7 @@ namespace gum_tests {
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &(bn->variable( i3 ));
-        auto p = p3.projectSum( del_vars );
+        auto p = p3.margSumOut( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
           TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
@@ -114,7 +114,7 @@ namespace gum_tests {
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &( bn->variable( i4 ) );
-        auto p = p4.projectSum( del_vars );
+        auto p = p4.margSumOut( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
           TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
@@ -132,7 +132,7 @@ namespace gum_tests {
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << &( bn->variable( i5 ) );
-        auto p = p5.projectSum( del_vars );
+        auto p = p5.margSumOut( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
           TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );

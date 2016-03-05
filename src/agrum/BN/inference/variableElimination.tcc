@@ -235,15 +235,18 @@ namespace gum {
     if ( factors.size() == 0 ) {
       return;
     } else if ( factors.size() == 1 ) {
-      result = ( *pots.begin() )->projectSum( var_set );
+      result = ( *factors.begin() )->margSumOut( var_set );
     } else {
-      MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb( multPotential );
-      tmp = Comb.combine( factors );
-      result = tmp->projectSum( var_set );
+      MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb( [](
+          const Potential<GUM_SCALAR>& t1, const Potential<GUM_SCALAR>& t2 ) {
+        return new Potential<GUM_SCALAR>( t1 * t2 );
+      } );
+      auto tmp = Comb.combine( factors );
+      result = tmp->margSumOut( var_set );
       delete tmp;
     }
 
-    for ( auto pot : pots ) {
+    for ( auto pot : factors ) {
       pool.erase( const_cast<Potential<GUM_SCALAR>*>( pot ) );
 
       if ( trash.exists( const_cast<Potential<GUM_SCALAR>*>( pot ) ) ) {
@@ -252,6 +255,7 @@ namespace gum {
       }
     }
 
+    auto pot = new Potential<GUM_SCALAR>( result );
     pool.insert( pot );
     trash.insert( pot );
   }

@@ -127,8 +127,9 @@ namespace gum {
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
+    // beforeMerging Faire les marg...In
     Potential<GUM_SCALAR>
-    projectSum( const Set<const DiscreteVariable*>& del_vars ) const;
+    margSumOut( const Set<const DiscreteVariable*>& del_vars ) const;
 
     /**
      * Projection using multiplication as operation (and
@@ -136,7 +137,7 @@ namespace gum {
      * @param del_vars is the set of vars to eliminate
      */
     Potential<GUM_SCALAR>
-    projectProduct( const Set<const DiscreteVariable*>& del_vars ) const;
+    margProdOut( const Set<const DiscreteVariable*>& del_vars ) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
@@ -144,7 +145,7 @@ namespace gum {
      * @param del_vars is the set of vars to eliminate
      */
     Potential<GUM_SCALAR>
-    projectMin( const Set<const DiscreteVariable*>& del_vars ) const;
+    margMinOut( const Set<const DiscreteVariable*>& del_vars ) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
@@ -152,7 +153,7 @@ namespace gum {
      * @param del_vars is the set of vars to eliminate
      */
     Potential<GUM_SCALAR>
-    projectMax( const Set<const DiscreteVariable*>& del_vars ) const;
+    margMaxOut( const Set<const DiscreteVariable*>& del_vars ) const;
 
     /// sum of all elements in the Potential
     GUM_SCALAR sum() const;

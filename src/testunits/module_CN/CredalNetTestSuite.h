@@ -106,6 +106,7 @@ namespace gum_tests {
 
     /// network : A --> C <-- B built manually
     void testCredalNetByLP() {
+      GUM_CHECKPOINT;
       initCNet();
 
       std::vector<gum::NodeId> ids;
@@ -116,6 +117,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( ids[0], 0U );
       TS_ASSERT_EQUALS( ids[1], 1U );
       TS_ASSERT_EQUALS( ids[2], 2U );
+      GUM_CHECKPOINT;
 
       cn->addArc( ids[0], ids[2] );
       cn->addArc( ids[1], ids[2] );
@@ -133,6 +135,7 @@ namespace gum_tests {
       lps[2] = std::vector<gum::credal::lp::LpInterface<double>>( 9 );  // C lps
       lps_sols[2] = std::vector<std::vector<std::vector<double>>>( 9 );
 
+      GUM_CHECKPOINT;
       /// A - intervals ( not a linear - vacuous mixture, i.e. exists i : max
       /// Pxi +
       /// sum_(j != i) min Pxj != 1 )
@@ -152,6 +155,7 @@ namespace gum_tests {
                         {1. / 10, 1. / 2, 2. / 5},
                         {1. / 10, 3. / 10, 3. / 5}};  // A lp solution
 
+      GUM_CHECKPOINT;
       /// B : x1 = x2, x0 >= x1
       A = lps[1][0].addCols( 3 );
       lps[1][0].addRow( A[1] <= A[2] );
@@ -169,6 +173,7 @@ namespace gum_tests {
       lps[2][0].addRow( A[1] <= A[0] + A[2] );
       lps[2][0].addProba();
 
+      GUM_CHECKPOINT;
       lps_sols[2][0] = {{1. / 4, 1. / 2, 1. / 4},
                         {0, 0, 1},
                         {0, 1. / 2, 1. / 2}};  // C lp solution A:0 B:0
@@ -193,6 +198,7 @@ namespace gum_tests {
       lps[2][2].addRow( A[2] <= 0.5 * A[0] + 0.5 * A[1] );
       lps[2][2].addProba();
 
+      GUM_CHECKPOINT;
       lps_sols[2][2] = {{2. / 3, 0, 1. / 3},
                         {0, 2. / 3, 1. / 3}};  // C lp solution A:2 B:0
 
@@ -213,6 +219,7 @@ namespace gum_tests {
       lps[2][4].addRow( 2 * A[1] <= A[0] );
       lps[2][4].addProba();
 
+      GUM_CHECKPOINT;
       lps_sols[2][4] = {{0, 0, 1}};  // C lp solution A:1 B:1
 
       /// C : ins idx = 5, A:2 B:1
@@ -234,6 +241,7 @@ namespace gum_tests {
       lps[2][6].addRow( A[2] - A[1] <= A[0] );
       lps[2][6].addProba();
 
+      GUM_CHECKPOINT;
       lps_sols[2][6] = {{1, 0, 0},
                         {1. / 2, 0, 1. / 2},
                         {0, 1. / 2, 1. / 2},
@@ -259,6 +267,7 @@ namespace gum_tests {
 
       /// compute solutions, check bijection
 
+      GUM_CHECKPOINT;
       for ( const auto& id : ids ) {
         gum::Instantiation ins( cn->instantiation( id ) );
         ins.setFirst();
@@ -274,6 +283,7 @@ namespace gum_tests {
 
           std::vector<bool> checked( sols_size, false );
 
+      GUM_CHECKPOINT;
           for ( const auto& vertex : vertices ) {
             for ( gum::Size sol = 0; sol < sols_size; sol++ ) {
               bool eq = true;
@@ -294,6 +304,7 @@ namespace gum_tests {
             }
           }
 
+      GUM_CHECKPOINT;
           bool r = true;
 
           for ( const auto b : checked ) {
@@ -312,6 +323,7 @@ namespace gum_tests {
         }
       }
 
+      GUM_CHECKPOINT;
       clearCNet();
     }
 

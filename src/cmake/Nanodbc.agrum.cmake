@@ -70,7 +70,7 @@ if (USE_NANODBC)
 			set(USE_NANODBC OFF)
 	    message(STATUS "** aGrUM Notification: Can not find a suitable ODBC driver manager. Nanodbc support is OFF.")
 	  else()
-	    message(STATUS "** aGrUM Notification: Found a suitable ODBC driver manager ")
+	    message(STATUS "** aGrUM Notification: ODBC driver manager found")
 		endif()
 
 	endif(UNIX)

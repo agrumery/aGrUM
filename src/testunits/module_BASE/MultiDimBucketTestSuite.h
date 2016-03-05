@@ -63,7 +63,7 @@ namespace gum_tests {
           del_vars.insert( var );
         }
       }
-      product = result.projectSum( del_vars );
+      product = result.margSumOut( del_vars );
     }
 
     public:
@@ -533,7 +533,7 @@ namespace gum_tests {
           del_vars.insert( var );
         }
       }
-      sep_sr = clique_csr.projectSum( del_vars );
+      sep_sr = clique_csr.margSumOut( del_vars );
       bucket_sr.add( bucket_csr );
 
       {
@@ -589,7 +589,7 @@ namespace gum_tests {
           del_vars.insert( var );
         }
       }
-      marg_w = gum::Potential<double>( tmp.projectSum( del_vars ) );
+      marg_w = gum::Potential<double>( tmp.margSumOut( del_vars ) );
 
       {
         gum::Instantiation i;

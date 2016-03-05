@@ -173,28 +173,28 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectSum(
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margSumOut(
       const Set<const DiscreteVariable*>& del_vars ) const {
     return Potential<GUM_SCALAR>(
         gum::projectSum( *this->content(), del_vars ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectProduct(
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margProdOut(
       const Set<const DiscreteVariable*>& del_vars ) const {
     return Potential<GUM_SCALAR>(
         gum::projectProduct( *this->content(), del_vars ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectMin(
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margMinOut(
       const Set<const DiscreteVariable*>& del_vars ) const {
     return Potential<GUM_SCALAR>(
         gum::projectMin( *this->content(), del_vars ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::projectMax(
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margMaxOut(
       const Set<const DiscreteVariable*>& del_vars ) const {
     return Potential<GUM_SCALAR>(
         gum::projectMax( *this->content(), del_vars ) );

@@ -95,11 +95,10 @@ def _swig_repr(self):
 try:
     _object = object
     _newclass = 1
-except AttributeError:
+except __builtin__.Exception:
     class _object:
         pass
     _newclass = 0
-
 
 try:
     import weakref
@@ -3968,24 +3967,24 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_normalize(self)
 
 
-    def projectSum(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
-        """projectSum(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
-        return _pyAgrum.Potential_double_projectSum(self, del_vars)
+    def margSumOut(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
+        """margSumOut(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
+        return _pyAgrum.Potential_double_margSumOut(self, del_vars)
 
 
-    def projectProduct(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
-        """projectProduct(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
-        return _pyAgrum.Potential_double_projectProduct(self, del_vars)
+    def margProdOut(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
+        """margProdOut(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
+        return _pyAgrum.Potential_double_margProdOut(self, del_vars)
 
 
-    def projectMin(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
-        """projectMin(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
-        return _pyAgrum.Potential_double_projectMin(self, del_vars)
+    def margMinOut(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
+        """margMinOut(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMinOut(self, del_vars)
 
 
-    def projectMax(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
-        """projectMax(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
-        return _pyAgrum.Potential_double_projectMax(self, del_vars)
+    def margMaxOut(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
+        """margMaxOut(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMaxOut(self, del_vars)
 
 
     def sum(self) -> "double":

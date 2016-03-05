@@ -767,7 +767,7 @@ public:
     del_vars.insert(vars[1]);
 
     gum::Potential<float> *t2 =
-        new gum::Potential<float>(t1.projectMax(del_vars));
+        new gum::Potential<float>(t1.margMaxOut(del_vars));
     gum::Potential<float> *t3 = proj(t1, del_vars, 0.0f);
     TS_ASSERT(*t2 == *t3);
 
@@ -775,7 +775,7 @@ public:
     delete t3;
 
     gum::Potential<float> *t4 =
-        new gum::Potential<float>(t1.projectMax(proj_set));
+        new gum::Potential<float>(t1.margMaxOut(proj_set));
     t3 = proj(t1, proj_set, 0.0f);
     TS_ASSERT(*t4 == *t3);
 
@@ -786,7 +786,7 @@ public:
     proj_set.insert(vars[9]);
     proj_set.insert(vars[1]);
     gum::Potential<float> *t5 =
-        new gum::Potential<float>(t1.projectMax(proj_set));
+        new gum::Potential<float>(t1.margMaxOut(proj_set));
     delete t5;
 
     for (unsigned int i = 0; i < vars.size(); ++i)
@@ -882,7 +882,7 @@ public:
     del_vars.insert(vars[1]);
 
     gum::Potential<float *> *t2 =
-        new gum::Potential<float *>(t1->projectMax(del_vars));
+        new gum::Potential<float *>(t1->margMaxOut(del_vars));
     gum::Potential<float *> *t3 = proj(*t1, del_vars, 0.0f);
     TS_ASSERT(equal(*t2, *t3));
 
@@ -890,7 +890,7 @@ public:
     pointerDelete(t3);
 
     gum::Potential<float *> *t4 =
-        new gum::Potential<float *>(t1->projectMax(proj_set));
+        new gum::Potential<float *>(t1->margMaxOut(proj_set));
     t3 = proj(*t1, proj_set, 0.0f);
     TS_ASSERT(equal(*t4, *t3));
 
@@ -901,7 +901,7 @@ public:
     proj_set.insert(vars[9]);
     proj_set.insert(vars[1]);
     gum::Potential<float *> *t5 =
-        new gum::Potential<float *>(t1->projectMax(proj_set));
+        new gum::Potential<float *>(t1->margMaxOut(proj_set));
     pointerDelete(t5);
 
     pointerDelete(t1);
@@ -913,7 +913,7 @@ public:
   static gum::Potential<float> *
   myMax(const gum::Potential<float> &table,
         const gum::Set<const gum::DiscreteVariable *> &del_vars) {
-    return new gum::Potential<float>(table.projectMax(del_vars));
+    return new gum::Potential<float>(table.margMaxOut(del_vars));
   }
 
   void test_MultiDimProjection() {
@@ -946,13 +946,13 @@ public:
     gum::MultiDimProjection<float, gum::Potential> Proj(myMax);
 
     {
-      auto t2 = t1.projectMax(del_vars);
+      auto t2 = t1.margMaxOut(del_vars);
       auto t3 = Proj.project(t1, del_vars);
       TS_ASSERT(t2 == *t3);
       delete t3;
     }
     {
-      auto t2 = t1.projectMax(proj_set);
+      auto t2 = t1.margMaxOut(proj_set);
       auto t3 = Proj.project(t1, proj_set);
       TS_ASSERT(t2 == *t3);
       delete (t3);

@@ -63,7 +63,7 @@ namespace gum_tests {
     public:
     gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float> *e_i1, *e_i4;
+    gum::Potential<float>* e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -140,11 +140,11 @@ namespace gum_tests {
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &(bn->variable(i3));
-        auto p = p3.projectSum( del_vars );
+        del_vars << &( bn->variable( i3 ) );
+        auto p = p3.margSumOut( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
+          TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
       }
 
       const gum::Potential<float>& p4 = bn->cpt( i4 );
@@ -158,32 +158,27 @@ namespace gum_tests {
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
         gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &(bn->variable( i4 ));
-        auto p = p4.projectSum( del_vars);
+        del_vars << &( bn->variable( i4 ) );
+        auto p = p4.margSumOut( del_vars );
 
         for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
+          TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
       }
 
       const gum::Potential<float>& p5 = bn->cpt( i5 );
       TS_ASSERT( p5.nbrDim() == 4 );
-      {
-        // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
-                             0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
-                             0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0};
-        int n = 24;
-        const std::vector<float> v( t, t + n );
-        p5.fillWith( v );
+      p5.fillWith( std::vector<float>{// clang-format off
+              0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
+              0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
+              0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
+      });
 
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &(bn->variable(i5));
-        auto p = p5.projectSum( del_vars );
-
-        for ( gum::Instantiation j( p ); !j.end(); ++j ) {
-          TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
-        }
+      // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
+      gum::Set<const gum::DiscreteVariable*> del_vars;
+      del_vars << &(bn->variable(i5));
+      auto p = p5.margSumOut( del_vars );
+      for ( gum::Instantiation j( p ); !j.end(); ++j ) {
+        TS_ASSERT_DELTA( p.get(j), 1.0, 1e-5 );
       }
     }
 
