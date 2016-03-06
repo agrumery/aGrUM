@@ -17,6 +17,8 @@ interface generator."
 using namespace std;
 
 #include <cmath>
+
+#include "extensions/helpers.h"
 %}
 
 %pythoncode %{
@@ -61,7 +63,6 @@ using namespace std;
 /* extraction of the API for all wrappers */
 //////////////////////////////////////////////////////////////////
 %include "aGrUM_wrap.i"
-
 
 %pythoncode %{
 Potential = Potential_double

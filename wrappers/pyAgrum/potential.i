@@ -5,70 +5,73 @@
 %ignore gum::MultiDimArray;
 
 /* Synchronisation between gum::Potential and numpy array */
-%pythonappend gum::Potential::Potential %{
+%pythonappend gum::Potential<double>::Potential %{
         self._notSync=True
 %}
-%pythonappend gum::Potential::add %{
+%pythonappend gum::Potential<double>::add %{
         self._notSync=True
         return self
 %}
-%pythonappend gum::Potential::remove %{
+%pythonappend gum::Potential<double>::remove %{
         self._notSync=True
 %}
-%pythonappend gum::Potential::set %{
+%pythonappend gum::Potential<double>::set %{
         self._notSync=True
 %}
 
-%extend gum::Potential<double> {
-gum::Potential<double> __add__(const gum::Potential<double>& b) {
-  return gum::operator+(*$self,b);
-}
+%rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margMaxOut(const Set<const DiscreteVariable*>& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margMinOut(const Set<const DiscreteVariable*>& del_vars) const;
 
-gum::Potential<double> __sub__(const gum::Potential<double>& b) {
-  return gum::operator-(*$self,b);
-}
+%extend gum::Potential<double> {   
+    Potential<double>
+    margSumOut( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
+      return self->margSumOut(s);
+    }
+    
+    Potential<double>
+    margProdOut( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
+      return self->margProdOut(s);
+    }
+    
+    Potential<double>
+    margMaxOut( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
+      return self->margMaxOut(s);
+    }
+    
+    Potential<double>
+    margMinOut( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
+      return self->margMinOut(s);
+    }
+    
+    // division for python3
+    gum::Potential<double> __truediv__(const gum::Potential<double>& b) {
+      return *self /b;
+    }
 
-gum::Potential<double> __mul__(const gum::Potential<double>& b) {
-  return gum::operator*(*$self,b);
-}
-
-// division for python3
-gum::Potential<double> __truediv__(const gum::Potential<double>& b) {
-  return gum::operator/(*$self,b);
-}
-
-// division for python2
-gum::Potential<double> __div__(const gum::Potential<double>& b) {
-  return gum::operator/(*$self,b);
-}
+    // division for python2
+    gum::Potential<double> __div__(const gum::Potential<double>& b) {
+      return *self/b;
+    }
 
 
-%pythoncode {
+  %pythoncode {
     
     def variablesSequence(self):
         varlist = []
         for i in range(0, self.nbrDim()):
             varlist.append(self.variable(i))
         return varlist
-
-    def eliminates(self,var):
-        """
-        eliminates a variable in the Potential. Returns the new Potential or self if the variable is not in self.
-        @warning : returns a list with only one scalar if eliminates remove the last variable
-        """
-        if var.name() in self.var_names:
-            q=Potential()
-            for i in range(self.nbrDim()):
-                if self.variable(i)!=var:
-                    q.add(self.variable(i))
-            if q.nbrDim()>0:
-                q.marginalize(self)
-            else:
-                q=[self.sum()]
-            return q
-        else:
-            return self
-}
+  }
 }
 
 // copy: M indicates the modifications
@@ -185,8 +188,6 @@ gum::Potential<double> __div__(const gum::Potential<double>& b) {
 // these void class extensions are rewritten by "shadow" declarations
 %extend gum::Potential<double> {
     void __fill_distrib__() {}
-}
-%extend gum::Potential<double> {
     PyObject * __indexfromdict__(PyObject *id_dict) { return NULL; }
     const char * __str__() { return NULL; }
     PyObject *tolist() { return NULL; }

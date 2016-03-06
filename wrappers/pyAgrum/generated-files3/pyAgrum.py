@@ -3967,26 +3967,6 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_normalize(self)
 
 
-    def margSumOut(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
-        """margSumOut(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
-        return _pyAgrum.Potential_double_margSumOut(self, del_vars)
-
-
-    def margProdOut(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
-        """margProdOut(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
-        return _pyAgrum.Potential_double_margProdOut(self, del_vars)
-
-
-    def margMinOut(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
-        """margMinOut(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
-        return _pyAgrum.Potential_double_margMinOut(self, del_vars)
-
-
-    def margMaxOut(self, del_vars: 'Set< gum::DiscreteVariable const * > const &') -> "gum::Potential< double >":
-        """margMaxOut(Potential_double self, Set< gum::DiscreteVariable const * > const & del_vars) -> Potential_double"""
-        return _pyAgrum.Potential_double_margMaxOut(self, del_vars)
-
-
     def sum(self) -> "double":
         """sum(Potential_double self) -> double"""
         return _pyAgrum.Potential_double_sum(self)
@@ -4005,6 +3985,21 @@ class Potential_double(_object):
     def min(self) -> "double":
         """min(Potential_double self) -> double"""
         return _pyAgrum.Potential_double_min(self)
+
+
+    def __add__(self, p2: 'Potential_double') -> "gum::Potential< double >":
+        """__add__(Potential_double self, Potential_double p2) -> Potential_double"""
+        return _pyAgrum.Potential_double___add__(self, p2)
+
+
+    def __sub__(self, p2: 'Potential_double') -> "gum::Potential< double >":
+        """__sub__(Potential_double self, Potential_double p2) -> Potential_double"""
+        return _pyAgrum.Potential_double___sub__(self, p2)
+
+
+    def __mul__(self, p2: 'Potential_double') -> "gum::Potential< double >":
+        """__mul__(Potential_double self, Potential_double p2) -> Potential_double"""
+        return _pyAgrum.Potential_double___mul__(self, p2)
 
 
     def __iadd__(self, r: 'Potential_double') -> "gum::Potential< double > &":
@@ -4027,28 +4022,24 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___idiv__(self, r)
 
 
-    def __add__(self, *args) -> "gum::Potential< double >":
-        """
-        __add__(Potential_double self, Potential_double p2) -> Potential_double
-        __add__(Potential_double self, Potential_double b) -> Potential_double
-        """
-        return _pyAgrum.Potential_double___add__(self, *args)
+    def margSumOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margSumOut(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margSumOut(self, varnames)
 
 
-    def __sub__(self, *args) -> "gum::Potential< double >":
-        """
-        __sub__(Potential_double self, Potential_double p2) -> Potential_double
-        __sub__(Potential_double self, Potential_double b) -> Potential_double
-        """
-        return _pyAgrum.Potential_double___sub__(self, *args)
+    def margProdOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margProdOut(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margProdOut(self, varnames)
 
 
-    def __mul__(self, *args) -> "gum::Potential< double >":
-        """
-        __mul__(Potential_double self, Potential_double p2) -> Potential_double
-        __mul__(Potential_double self, Potential_double b) -> Potential_double
-        """
-        return _pyAgrum.Potential_double___mul__(self, *args)
+    def margMaxOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margMaxOut(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMaxOut(self, varnames)
+
+
+    def margMinOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margMinOut(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMinOut(self, varnames)
 
 
     def __truediv__(self, b: 'Potential_double') -> "gum::Potential< double >":
@@ -4070,24 +4061,6 @@ class Potential_double(_object):
         for i in range(0, self.nbrDim()):
             varlist.append(self.variable(i))
         return varlist
-
-    def eliminates(self,var):
-        """
-        eliminates a variable in the Potential. Returns the new Potential or self if the variable is not in self.
-        @warning : returns a list with only one scalar if eliminates remove the last variable
-        """
-        if var.name() in self.var_names:
-            q=Potential()
-            for i in range(self.nbrDim()):
-                if self.variable(i)!=var:
-                    q.add(self.variable(i))
-            if q.nbrDim()>0:
-                q.marginalize(self)
-            else:
-                q=[self.sum()]
-            return q
-        else:
-            return self
 
 
     def __fill_distrib__(self):
