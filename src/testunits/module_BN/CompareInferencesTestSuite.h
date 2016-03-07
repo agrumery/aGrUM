@@ -72,7 +72,7 @@ namespace gum_tests {
                0.5, 0.5,
                0.5, 0.5,
                1.0, 0.0} );  // clang-format on
-      bn.cpt( i5 ).fillWith(                           // clang-format off
+      bn.cpt( i5 ).fillWith(  // clang-format off
               {0.3 , 0.6 , 0.1,
                0.5 , 0.4 , 0.1,
                0.4 , 0.5 , 0.1,
@@ -80,24 +80,7 @@ namespace gum_tests {
                0.4 , 0.5 , 0.1,
                0.5 , 0.45, 0.05,
                0.45, 0.5 , 0.05,
-               0.1 , 0.1 , 0.8} );
-      // clang-format on
-    }
-
-    void fill_bn2( gum::BayesNet<double>& bn ) {
-      gum::LabelizedVariable n1( "1", "", 3 ), n2( "2", "", 4 ),
-          n3( "3", "", 3 );
-
-      i1 = bn.add( n1 );
-      i5 = i2 = bn.add( n2 );
-
-      bn.addArc( i1, i2 );
-
-      bn.cpt( i1 ).fillWith( {0.2, 0.7, 0.1} );
-      bn.cpt( i5 ).fillWith(  // clang-format off
-                            {0.1, 0.2, 0.3, 0.4,
-                             0.3, 0.2, 0.2, 0.3,
-                             0.4, 0.3, 0.2, 0.1});  // clang-format on
+               0.1 , 0.1 , 0.8} );                                     // clang-format on
     }
 
     public:
@@ -113,19 +96,25 @@ namespace gum_tests {
     void tearDown() { delete ( bn ); }
 
     void testInferencesWithNoEvidence() {
+      begin_test_waiting();
+
       gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
+      test_waiting();
       inf_ShaShe.makeInference();
 
       gum::LazyPropagation<double> inf_LazyProp( *bn );
+      test_waiting();
       inf_LazyProp.makeInference();
 
       gum::VariableElimination<double> inf_ValElim( *bn );
+      test_waiting();
       inf_ValElim.makeInference();
 
       gum::GibbsInference<double> inf_gibbs( *bn );
       inf_gibbs.setVerbosity( false );
-      inf_gibbs.setEpsilon( 1e-5 );
-      inf_gibbs.setMinEpsilonRate( 1e-5 );
+      inf_gibbs.setEpsilon( 1e-3 );
+      inf_gibbs.setMinEpsilonRate( 1e-3 );
+      test_waiting();
       TS_GUM_ASSERT_THROWS_NOTHING( inf_gibbs.makeInference() );
 
       for ( const auto i : bn->nodes() ) {
@@ -143,7 +132,7 @@ namespace gum_tests {
         for ( I.setFirst(); !I.end(); ++I ) {
           TS_ASSERT_DELTA( marginal_gibbs[I],
                            marginal_ShaShe[I],
-                           5e-3 );  // APPROX INFERENCE
+                           5e-2 );  // APPROX INFERENCE
           TS_ASSERT_DELTA( marginal_LazyProp[I],
                            marginal_ShaShe[I],
                            1e-10 );  // EXACT INFERENCE
@@ -155,83 +144,179 @@ namespace gum_tests {
                            1e-10 );  // EXACT INFERENCE
         }
       }
+      end_test_waiting();
+    }
+
+    void testInferencesWithHardEvidence() {
+      begin_test_waiting();
+      gum::Potential<double> e_i1;
+      e_i1 << bn->variable( i1 );
+      e_i1.fillWith( {1, 0} );
+
+      gum::Potential<double> e_i4;
+      e_i4 << bn->variable( i4 );
+      e_i4.fillWith( {0, 1} );
+
+      gum::List<gum::Potential<double> const*> list_pot;
+      list_pot.insert( &e_i1 );
+      list_pot.insert( &e_i4 );
+
+      gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
+      inf_ShaShe.insertEvidence( list_pot );
+      test_waiting();
+      inf_ShaShe.makeInference();
+
+      gum::LazyPropagation<double> inf_LazyProp( *bn );
+      inf_LazyProp.insertEvidence( list_pot );
+      test_waiting();
+      inf_LazyProp.makeInference();
+
+      gum::VariableElimination<double> inf_VarElim( *bn );
+      inf_VarElim.insertEvidence( list_pot );
+      test_waiting();
+      inf_VarElim.makeInference();
+
+      gum::GibbsInference<double> inf_gibbs( *bn );
+      inf_gibbs.insertEvidence( list_pot );
+      inf_gibbs.setVerbosity( false );
+      inf_gibbs.setEpsilon( 1e-3 );
+      inf_gibbs.setMinEpsilonRate( 1e-3 );
+      test_waiting();
+      TS_GUM_ASSERT_THROWS_NOTHING( inf_gibbs.makeInference() );
+
+      for ( const auto i : bn->nodes() ) {
+        const gum::Potential<double>& marginal_gibbs = inf_gibbs.posterior( i );
+        const gum::Potential<double>& marginal_ShaShe =
+            inf_ShaShe.posterior( i );
+        const gum::Potential<double>& marginal_LazyProp =
+            inf_LazyProp.posterior( i );
+        const gum::Potential<double>& marginal_VarElim =
+            inf_VarElim.posterior( i );
+
+        gum::Instantiation I;
+        I << bn->variable( i );
+
+        for ( I.setFirst(); !I.end(); ++I ) {
+          TS_ASSERT_DELTA( marginal_gibbs[I],
+                           marginal_ShaShe[I],
+                           5e-2 );  // APPROX INFERENCE
+          TS_ASSERT_DELTA( marginal_LazyProp[I],
+                           marginal_ShaShe[I],
+                           1e-10 );  // EXACT INFERENCE
+          TS_ASSERT_DELTA( marginal_LazyProp[I],
+                           marginal_VarElim[I],
+                           1e-10 );  // EXACT INFERENCE
+          TS_ASSERT_DELTA( marginal_ShaShe[I],
+                           marginal_VarElim[I],
+                           1e-10 );  // EXACT INFERENCE
+        }
+      }
+      end_test_waiting();
+    }
+
+    void testInferencesWithSoftEvidence() {
+      begin_test_waiting();
+      gum::Potential<double> e_i1;
+      e_i1 << bn->variable( i1 );
+      e_i1.fillWith( {0.6, 1.5} );
+
+      gum::Potential<double> e_i4;
+      e_i4 << bn->variable( i4 );
+      e_i4.fillWith( {2, 3} );
+
+      gum::List<gum::Potential<double> const*> list_pot;
+      list_pot.insert( &e_i1 );
+      list_pot.insert( &e_i4 );
+
+      gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
+      inf_ShaShe.insertEvidence( list_pot );
+      test_waiting();
+      inf_ShaShe.makeInference();
+
+      gum::LazyPropagation<double> inf_LazyProp( *bn );
+      inf_LazyProp.insertEvidence( list_pot );
+      test_waiting();
+      inf_LazyProp.makeInference();
+
+      gum::VariableElimination<double> inf_VarElim( *bn );
+      inf_VarElim.insertEvidence( list_pot );
+      test_waiting();
+      inf_VarElim.makeInference();
+
+      gum::GibbsInference<double> inf_gibbs( *bn );
+      inf_gibbs.insertEvidence( list_pot );
+      inf_gibbs.setVerbosity( false );
+      inf_gibbs.setEpsilon( 1e-3 );
+      inf_gibbs.setMinEpsilonRate( 1e-3 );
+      test_waiting();
+      TS_GUM_ASSERT_THROWS_NOTHING( inf_gibbs.makeInference() );
+
+      for ( const auto i : bn->nodes() ) {
+        const gum::Potential<double>& marginal_gibbs = inf_gibbs.posterior( i );
+        const gum::Potential<double>& marginal_ShaShe =
+                inf_ShaShe.posterior( i );
+        const gum::Potential<double>& marginal_LazyProp =
+                inf_LazyProp.posterior( i );
+        const gum::Potential<double>& marginal_VarElim =
+                inf_VarElim.posterior( i );
+
+        gum::Instantiation I;
+        I << bn->variable( i );
+
+        for ( I.setFirst(); !I.end(); ++I ) {
+          TS_ASSERT_DELTA( marginal_gibbs[I],
+                           marginal_ShaShe[I],
+                           5e-2 );  // APPROX INFERENCE
+          TS_ASSERT_DELTA( marginal_LazyProp[I],
+                           marginal_ShaShe[I],
+                           1e-10 );  // EXACT INFERENCE
+          TS_ASSERT_DELTA( marginal_LazyProp[I],
+                           marginal_VarElim[I],
+                           1e-10 );  // EXACT INFERENCE
+          TS_ASSERT_DELTA( marginal_ShaShe[I],
+                           marginal_VarElim[I],
+                           1e-10 );  // EXACT INFERENCE
+        }
+      }
+      end_test_waiting();
     }
 
     void testMultipleInference() {
-      gum::BayesNet<float>* bn;
+      gum::BayesNet<float> bn;
       gum::Id c, s, r, w;
-
-      bn = new gum::BayesNet<float>();
 
       gum::LabelizedVariable vc( "c", "cloudy", 2 ), vs( "s", "sprinklet", 2 );
       gum::LabelizedVariable vr( "r", "rain", 2 ), vw( "w", "wet grass", 2 );
 
-      c = bn->add( vc );
-      s = bn->add( vs );
-      r = bn->add( vr );
-      w = bn->add( vw );
+      c = bn.add( vc );
+      s = bn.add( vs );
+      r = bn.add( vr );
+      w = bn.add( vw );
 
-      bn->addArc( c, s );
-      bn->addArc( c, r );
-      bn->addArc( s, w );
-      bn->addArc( r, w );
+      bn.addArc( c, s );
+      bn.addArc( c, r );
+      bn.addArc( s, w );
+      bn.addArc( r, w );
 
-      gum::Potential<float>* e_i1, *e_i4;
-      e_i1 = new gum::Potential<float>();
-      ( *e_i1 ) << bn->variable( c );
-      e_i1->fill( (float)0 );
-      gum::Instantiation inst_1( *e_i1 );
-      inst_1.chgVal( bn->variable( c ), 0 );
-      e_i1->set( inst_1, (float)1 );
+      bn.cpt( c ).fillWith( {0.5, 0.5} );
+      bn.cpt( s ).fillWith( {0.5, 0.5, 0.9, 0.1} );
+      bn.cpt( r ).fillWith( {0.8, 0.2, 0.2, 0.8} );
+      bn.cpt( w ).fillWith( {1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99} );
 
-      e_i4 = new gum::Potential<float>();
-      ( *e_i4 ) << bn->variable( s );
-      e_i4->fill( (float)0 );
-      gum::Instantiation inst_4( *e_i4 );
-      inst_4.chgVal( bn->variable( s ), 1 );
-      e_i4->set( inst_4, (float)1 );
-      bn->cpt( c ).fillWith( {0.5, 0.5} );
+      gum::Potential<float> e_i1;
+      e_i1 << bn.variable( c );
+      e_i1.fillWith( {1, 0} );
 
-      {
-        const float t[4] = {0.5, 0.5, 0.9, 0.1};
-        const std::vector<float> sa( t, t + 4 );
-        bn->cpt( s ).fillWith( sa );
-      }
+      gum::Potential<float> e_i4;
+      e_i4 << bn.variable( s );
+      e_i4.fillWith( {0, 1} );
+
+      gum::List<gum::Potential<float> const*> list_pot;
+      list_pot.insert( &e_i1 );
+      list_pot.insert( &e_i4 );
 
       {
-        const float t[4] = {0.8, 0.2, 0.2, 0.8};
-        const std::vector<float> ra( t, t + 4 );
-        bn->cpt( r ).fillWith( ra );
-      }
-
-      {
-        const float t[8] = {1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99};
-        const std::vector<float> wa( t, t + 8 );
-        bn->cpt( w ).fillWith( wa );
-      }
-
-      gum::List<gum::Potential<float> const*> list_pot =
-          gum::List<gum::Potential<float> const*>();
-      {
-        gum::Potential<float>* pot = new gum::Potential<float>();
-        pot->add( bn->variable( s ) );
-        const float t[2] = {0., 1.};
-        const std::vector<float> sa( t, t + 2 );
-        pot->fillWith( sa );
-        list_pot.insert( pot );
-      }
-
-      {
-        gum::Potential<float>* pot = new gum::Potential<float>();
-        pot->add( bn->variable( c ) );
-        const float t[2] = {1., 0.};
-        const std::vector<float> ca( t, t + 2 );
-        pot->fillWith( ca );
-        list_pot.insert( pot );
-      }
-
-      {
-        gum::GibbsInference<float> inf( *bn );
+        gum::GibbsInference<float> inf( bn );
         inf.setVerbosity( false );
         inf.makeInference();
         {
@@ -255,7 +340,7 @@ namespace gum_tests {
       }
 
       {
-        gum::LazyPropagation<float> inf( *bn );
+        gum::LazyPropagation<float> inf( bn );
         inf.makeInference();
         {
           const gum::Potential<float>& p = inf.posterior( w );
@@ -278,7 +363,7 @@ namespace gum_tests {
       }
 
       {
-        gum::ShaferShenoyInference<float> inf( *bn );
+        gum::ShaferShenoyInference<float> inf( bn );
         inf.makeInference();
         {
           const gum::Potential<float>& p = inf.posterior( w );
@@ -301,7 +386,7 @@ namespace gum_tests {
       }
 
       {
-        gum::VariableElimination<float> inf( *bn );
+        gum::VariableElimination<float> inf( bn );
         inf.makeInference();
         {
           const gum::Potential<float>& p = inf.posterior( w );
@@ -322,13 +407,6 @@ namespace gum_tests {
           TS_ASSERT_DELTA( p[I], 0.918, 1e-7 );
         }
       }
-
-      for ( const auto pot : list_pot )
-        delete pot;
-
-      delete e_i1;
-      delete e_i4;
-      delete bn;
     }
 
     // compare only Lazy and ShaferShenoy on alarm BN

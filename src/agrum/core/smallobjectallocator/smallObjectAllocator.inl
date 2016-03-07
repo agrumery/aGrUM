@@ -22,7 +22,7 @@
  * @file
  * @brief Inlines of gum::SmallObjectAllocator
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
  *
  */
 // ============================================================================
@@ -50,7 +50,7 @@ namespace gum {
       : __chunkSize( GUM_DEFAULT_CHUNK_SIZE )
       , __maxObjectSize( GUM_DEFAULT_MAX_OBJECT_SIZE ) {
     __pool.setKeyUniquenessPolicy( false );
-    GUM_CONSTRUCTOR(SmallObjectAllocator);
+    GUM_CONSTRUCTOR( SmallObjectAllocator );
     nbAllocation = 0;
     nbDeallocation = 0;
   }
@@ -59,12 +59,10 @@ namespace gum {
   // Destructor.
   // ============================================================================
   INLINE SmallObjectAllocator::~SmallObjectAllocator() {
-    GUM_DESTRUCTOR(SmallObjectAllocator)
+    GUM_DESTRUCTOR( SmallObjectAllocator )
 
     GUM_TRACE( "SMALL OBJECT ALLOCATOR STATS : Nb Alloc = "
-               << nbAllocation
-               << " - Nb dealloc = "
-               << nbDeallocation
+               << nbAllocation << " - Nb dealloc = " << nbDeallocation
                << std::endl )
 
     for ( __Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit )
@@ -130,8 +128,6 @@ namespace gum {
 
 #pragma omp critical( soa )
     {
-
-      //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
       __pool[objectSize]->deallocate( pDeallocatedObject );
       nbDeallocation++;
     }

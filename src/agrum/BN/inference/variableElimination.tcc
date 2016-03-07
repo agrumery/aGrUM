@@ -146,13 +146,6 @@ namespace gum {
         __eliminateNode( __eliminationOrder[i], pool, __trash );
       }
     }
-    /* beforeMerge Pourquoi rajouter à nouveau cette évidence?
-     * (elle est déjà ajoutée dans createInitialPool)*/
-    /*try {
-      pool.insert( const_cast<Potential<GUM_SCALAR>*>( __evidences[id] ) );
-    } catch ( NotFound& ) {
-      // No evidence on query
-    }*/
 
     std::vector<Potential<GUM_SCALAR>*> result;
     for ( auto pot : pool ) {

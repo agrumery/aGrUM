@@ -22,7 +22,7 @@
  * @file
  * @brief Headers of gum::FixedAllocator
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_FIXED_ALLOCATOR_H

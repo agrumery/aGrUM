@@ -22,7 +22,7 @@
  * @file
  * @brief Sources of gum::SmallObjectAllocator
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
  *
  */
 // ============================================================================

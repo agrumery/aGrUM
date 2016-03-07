@@ -199,8 +199,6 @@ namespace gum {
      */
     virtual void fillWith(std::initializer_list<GUM_SCALAR> list) const;
 
-    // beforeMerge add fillWith({1,2,3,4})
-
     /// @}
     // =========================================================================
     /// @name Copy methods.
