@@ -1,22 +1,22 @@
-  /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}@lip6.fr                                                  *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it wil be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+/***************************************************************************
+*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+*   {prenom.nom}@lip6.fr                                                  *
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+*   This program is distributed in the hope that it wil be useful,        *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU General Public License for more details.                          *
+*                                                                         *
+*   You should have received a copy of the GNU General Public License     *
+*   along with this program; if not, write to the                         *
+*   Free Software Foundation, Inc.,                                       *
+*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+***************************************************************************/
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -239,7 +239,7 @@ namespace gum_tests {
     }
 
     void testInstantiationsWithBuffer() {
-        gum::MultiDimBucket<double>* bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING( bucket = new gum::MultiDimBucket<double>() );
 
@@ -449,45 +449,19 @@ namespace gum_tests {
       bn->addArc( c, r );
       bn->addArc( s, w );
       bn->addArc( r, w );
-      {
-        const double t[2] = {0.5, 0.5};
-        const std::vector<double> ca( t, t + 2 );
-        bn->cpt( c ).fillWith( ca );
-      }
+      bn->cpt( c ).fillWith( {0.5, 0.5} );
+      bn->cpt( s ).fillWith( {0.5, 0.5, 0.9, 0.1} );
+      bn->cpt( r ).fillWith( {0.8, 0.2, 0.2, 0.8} );
+      bn->cpt( w ).fillWith( {1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99} );
 
-      {
-        const double t[4] = {0.5, 0.5, 0.9, 0.1};
-        const std::vector<double> sa( t, t + 4 );
-        bn->cpt( s ).fillWith( sa );
-      }
-
-      {
-        const double t[4] = {0.8, 0.2, 0.2, 0.8};
-        const std::vector<double> ra( t, t + 4 );
-        bn->cpt( r ).fillWith( ra );
-      }
-
-      {
-        const double t[8] = {1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99};
-        const std::vector<double> wa( t, t + 8 );
-        bn->cpt( w ).fillWith( wa );
-      }
 
       gum::Potential<double>* e_s = new gum::Potential<double>();
-      {
-        e_s->add( bn->variable( s ) );
-        const double t[2] = {0., 1.};
-        const std::vector<double> sa( t, t + 2 );
-        e_s->fillWith( sa );
-      }
+      e_s->add( bn->variable( s ) );
+      e_s->fillWith( {0., 1.} );
 
       gum::Potential<double>* e_c = new gum::Potential<double>();
-      {
-        e_c->add( bn->variable( c ) );
-        const double t[2] = {1., 0.};
-        const std::vector<double> ca( t, t + 2 );
-        e_c->fillWith( ca );
-      }
+      e_c->add( bn->variable( c ) );
+      e_c->fillWith( {1., 0.} );
 
       gum::Potential<double> clique_csr;
       gum::MultiDimBucket<double> bucket_csr;

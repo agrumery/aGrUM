@@ -87,81 +87,6 @@ namespace gum_tests {
       delete e_i4;
     }
 
-    void testFill() {
-      const gum::Potential<float>& p1 = bn->cpt( i1 );
-      TS_ASSERT( p1.nbrDim() == 1 );
-
-      {
-        // FILLING PARAMS
-        p1.fillWith( std::vector<float>{0.2, 0.8} );
-      }
-
-      const gum::Potential<float>& p2 = bn->cpt( i2 );
-      TS_ASSERT( p2.nbrDim() == 1 );
-
-      {
-        // FILLING PARAMS
-        p2.fillWith( std::vector<float>{0.3, 0.7} );
-      }
-
-      const gum::Potential<float>& p3 = bn->cpt( i3 );
-      TS_ASSERT( p3.nbrDim() == 2 );
-      {
-        // FILLING PARAMS
-        p3.fillWith( std::vector<float>{0.1, 0.9, 0.9, 0.1} );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &( bn->variable( i3 ) );
-        auto p = p3.margSumOut( del_vars );
-
-        for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
-      }
-
-      const gum::Potential<float>& p4 = bn->cpt( i4 );
-      TS_ASSERT( p4.nbrDim() == 3 );
-      {
-        // FILLING PARAMS
-        p4.fillWith(
-            std::vector<float>{0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0} );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &( bn->variable( i4 ) );
-        auto p = p4.margSumOut( del_vars );
-        for ( gum::Instantiation j( p ); !j.end(); ++j )
-          TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
-      }
-
-      const gum::Potential<float>& p5 = bn->cpt( i5 );
-      TS_ASSERT( p5.nbrDim() == 4 );
-      {
-        // FILLING PARAMS
-        p5.fillWith( std::vector<float>{
-            // clang-format off
-            0.3,0.6,0.1,
-            0.5,0.5,0.0,
-            0.5,0.5,0.0,
-            1.0,0.0,0.0,
-            0.4,0.6,0.0,
-            0.5,0.5,0.0,
-            0.5,0.5,0.0,
-            0.0,0.0,1.0
-            // clang-format on
-        } );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << &( bn->variable( i5 ) );
-        auto p = p5.margSumOut( del_vars );
-
-        for ( gum::Instantiation j( p ); !j.end(); ++j ) {
-          TS_ASSERT_DELTA( p.get( j ), 1.0, 1e-5 );
-        }
-      }
-    }
-
     // Testing when there is no evidence
     void testMakeInference() {
       fill( *bn );
@@ -501,16 +426,16 @@ namespace gum_tests {
     // Builds a BN to test the inference
     void fill( gum::BayesNet<float>& bn ) {
       // FILLING PARAMS
-      bn.cpt( i1 ).fillWith( std::vector<float>{0.2, 0.8} );
-      bn.cpt( i2 ).fillWith( std::vector<float>{0.3, 0.7} );
-      bn.cpt( i3 ).fillWith( std::vector<float>{0.1, 0.9, 0.9, 0.1} );
-      bn.cpt( i4 ).fillWith( std::vector<float>{// clang-format off
+      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
+      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
+      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn.cpt( i4 ).fillWith( {// clang-format off
                               0.4, 0.6,
                               0.5, 0.5,
                               0.5, 0.5,
                               1.0, 0.0}  // clang-format on
                              );
-      bn.cpt( i5 ).fillWith( std::vector<float>{// clang-format off
+      bn.cpt( i5 ).fillWith( {// clang-format off
                 0.3, 0.6, 0.1,
                 0.5, 0.5, 0.0,
                 0.5, 0.5, 0.0,

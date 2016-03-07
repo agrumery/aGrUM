@@ -71,7 +71,8 @@ namespace gum_tests {
         bn.addArc( bn.idFromName( "v4" ), bn.idFromName( "v5" ) );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
 
@@ -120,7 +121,8 @@ namespace gum_tests {
         gum::SimpleCPTGenerator<float> generator;
         generator.generateCPT( 0, bn.cpt( bn.idFromName( "v5" ) ) );
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -355,9 +357,11 @@ namespace gum_tests {
 
       // propagation in the full BN
       gum::LazyPropagation<float> inf_complete( bn );
+
       gum::Potential<float> ev;
       ev << bn.variable( bn.idFromName( "v3" ) );
-      ev.fillWith( std::vector<float>( {0.0, 1.0} ) );
+      ev.fillWith( {0.0, 1.0} );
+
       gum::List<const gum::Potential<float>*> l{&ev};
       inf_complete.insertEvidence( l );
       inf_complete.makeInference();
@@ -367,9 +371,10 @@ namespace gum_tests {
       // propagation in the fragment
       gum::BayesNetFragment<float> frag( bn );
       frag.installAscendants( bn.idFromName( "v6" ) );  // 1->3->6
+
       gum::Potential<float>* newV3 = new gum::Potential<float>();
       ( *newV3 ) << bn.variable( bn.idFromName( "v3" ) );
-      newV3->fillWith( std::vector<float>( {0.0, 1.0} ) );
+      newV3->fillWith( {0.0, 1.0} );
       frag.installMarginal( frag.idFromName( "v3" ), newV3 );  // 1   3->6
       TS_ASSERT_EQUALS( frag.size(), (gum::Size)3 );
       TS_ASSERT_EQUALS( frag.sizeArcs(), (gum::Size)1 );
@@ -413,7 +418,7 @@ namespace gum_tests {
 
       gum::Potential<float>* newV5 = new gum::Potential<float>();
       ( *newV5 ) << bn.variable( bn.idFromName( "v5" ) );
-      newV5->fillWith( std::vector<float>( {0.0, 0.0, 1.0} ) );
+      newV5->fillWith( {0.0, 0.0, 1.0} );
       frag.installMarginal( frag.idFromName( "v5" ), newV5 );  // 1-->3-->6 5
       TS_ASSERT( frag.checkConsistency() );
       TS_ASSERT_EQUALS( frag.size(), (gum::Size)4 );

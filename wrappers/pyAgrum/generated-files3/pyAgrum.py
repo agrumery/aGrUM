@@ -3869,9 +3869,12 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_fill(self, d)
 
 
-    def fillWith(self, v: 'Vector_double') -> "void":
-        """fillWith(MultiDimContainer_double self, Vector_double v)"""
-        return _pyAgrum.MultiDimContainer_double_fillWith(self, v)
+    def fillWith(self, *args) -> "void":
+        """
+        fillWith(MultiDimContainer_double self, Vector_double v)
+        fillWith(MultiDimContainer_double self, std::initializer_list< double > list)
+        """
+        return _pyAgrum.MultiDimContainer_double_fillWith(self, *args)
 
 
     def copyFrom(self, src: 'MultiDimContainer_double', p_i: 'Instantiation'=None) -> "void":

@@ -165,7 +165,6 @@ namespace gum {
   }
 
   // automation fill with vector.
-
   template <typename GUM_SCALAR>
   void MultiDimContainer<GUM_SCALAR>::fillWith(
       const std::vector<GUM_SCALAR>& v ) const {
@@ -179,6 +178,20 @@ namespace gum {
 
     for ( i.setFirst(); !i.end(); ++i, ++cpt )
       set( i, v[cpt] );
+  }
+
+  template <typename GUM_SCALAR>
+  void MultiDimContainer<GUM_SCALAR>::fillWith(std::initializer_list<GUM_SCALAR> l ) const {
+    if ( domainSize() != l.size() ) {
+      GUM_ERROR( SizeError, "Sizes does not match in fillWith" );
+    }
+
+    Instantiation i( *this );
+    // insert all the elements
+    for ( const auto& elt : l ) {
+      set( i, elt );
+      ++i;
+    }
   }
 
   // copyFrom

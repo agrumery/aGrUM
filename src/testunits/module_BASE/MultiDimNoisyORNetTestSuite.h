@@ -220,51 +220,37 @@ namespace gum_tests {
                         gum::InvalidArc );
 
       const gum::Potential<float>& pOneMoreParent1 = bn.cpt( idOneMoreParent1 );
-      pOneMoreParent1.fillWith( std::vector<float>{0.2, 0.8} );
+      pOneMoreParent1.fillWith( {0.2, 0.8} );
 
       const gum::Potential<float>& pOneMoreParent2 = bn.cpt( idOneMoreParent2 );
-      pOneMoreParent2.fillWith( std::vector<float>{0.3, 0.7} );
+      pOneMoreParent2.fillWith( {0.3, 0.7} );
 
       bn.addArc( idOneMoreParent1, idOneMore );
       bn.addArc( idFever, idOneMore );
       bn.addArc( idOneMoreParent2, idOneMore );
       const gum::Potential<float>& pOneMore = bn.cpt( idOneMore );
-      pOneMore.fillWith( std::vector<float>{0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2} );
+      pOneMore.fillWith(  // clang-format off
+                        {0.1,0.9,
+                         0.8,0.2,
+                         0.1,0.9,
+                         0.8,0.2,
+                         0.1,0.9,
+                         0.8,0.2,
+                         0.1,0.9,
+                         0.8,0.2});  // clang-format on
 
       const gum::Potential<float>& p = bn.cpt( idFever );
 
       gum::Instantiation i( p );
-      float witness[] = {1.0,
-                         0.0,
-                         0.1,
-                         0.9,
-                         0.2,
-                         0.8,
-                         0.02,
-                         0.98,
-                         0.6,
-                         0.4,
-                         0.06,
-                         0.94,
-                         0.12,
-                         0.88,
-                         0.012,
-                         0.988};
+      float witness[] =  // clang-format off
+                        {1.0  ,0.0,
+                         0.1  ,0.9,
+                         0.2  ,0.8,
+                         0.02 ,0.98,
+                         0.6  ,0.4,
+                         0.06 ,0.94,
+                         0.12 ,0.88,
+                         0.012,0.988};  // clang-format on
 
       int j = 0;
 

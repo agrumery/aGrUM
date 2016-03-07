@@ -85,68 +85,14 @@ namespace gum_tests {
       fillTopo( infDiag, idList );
 
       try {
-        const gum::Potential<double>& p1 = infDiag.cpt( idList[4] );
-        {
-          // FILLING PARAMS
-          const double t[4] = {0.2, 0.8, 0.5, 0.5};
-          int n = 4;
-          const std::vector<double> v( t, t + n );
-          p1.fillWith( v );
-        }
+        infDiag.cpt( idList[4] ).fillWith({0.2, 0.8, 0.5, 0.5});
+        infDiag.cpt( idList[5] ).fillWith({0.1, 0.9, 0.9, 0.1});
+        infDiag.cpt( idList[6] ).fillWith({0.35, 0.65, 0.19, 0.81});
+        infDiag.cpt( idList[7] ).fillWith({0.4, 0.6, 0.5, 0.5});
+        infDiag.cpt( idList[8] ).fillWith({0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7});
 
-        const gum::Potential<double>& p2 = infDiag.cpt( idList[5] );
-        {
-          // FILLING PARAMS
-          const double t[4] = {0.1, 0.9, 0.9, 0.1};
-          int n = 4;
-          const std::vector<double> v( t, t + n );
-          p2.fillWith( v );
-        }
-
-        const gum::Potential<double>& p3 = infDiag.cpt( idList[6] );
-        {
-          // FILLING PARAMS
-          const double t[4] = {0.35, 0.65, 0.19, 0.81};
-          int n = 4;
-          const std::vector<double> v( t, t + n );
-          p3.fillWith( v );
-        }
-
-        const gum::Potential<double>& p4 = infDiag.cpt( idList[7] );
-        {
-          // FILLING PARAMS
-          const double t[4] = {0.4, 0.6, 0.5, 0.5};
-          int n = 4;
-          const std::vector<double> v( t, t + n );
-          p4.fillWith( v );
-        }
-
-        const gum::Potential<double>& p5 = infDiag.cpt( idList[8] );
-        {
-          // FILLING PARAMS
-          const double t[8] = {0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7};
-          int n = 8;
-          const std::vector<double> v( t, t + n );
-          p5.fillWith( v );
-        }
-
-        const gum::UtilityTable<double>& u1 = infDiag.utility( idList[9] );
-        {
-          // FILLING PARAMS
-          const double t[4] = {42, 69, 666, 84};
-          int n = 4;
-          const std::vector<double> v( t, t + n );
-          u1.fillWith( v );
-        }
-
-        const gum::UtilityTable<double>& u2 = infDiag.utility( idList[10] );
-        {
-          // FILLING PARAMS
-          const double t[4] = {42, -69, 666, 84};
-          int n = 4;
-          const std::vector<double> v( t, t + n );
-          u2.fillWith( v );
-        }
+        infDiag.utility( idList[9] ).fillWith({42, 69, 666, 84});
+        infDiag.utility( idList[10] ).fillWith({42, -69, 666, 84});
       } catch ( gum::Exception& e ) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;

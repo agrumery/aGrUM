@@ -70,7 +70,8 @@ namespace gum_tests {
         id.addArc( idList[3], idList[5] );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -80,44 +81,17 @@ namespace gum_tests {
       fillTopoOilWildcater( id, idList );
 
       try {
-        const gum::Potential<float>& PO = id.cpt( idList[3] );
-        {
-          // FILLING PARAMS
-          const float t[3] = {0.5, 0.3, 0.2};
-          int n = 3;
-          const std::vector<float> v( t, t + n );
-          PO.fillWith( v );
-        }
-
-        const gum::Potential<float>& PRTO = id.cpt( idList[2] );
-        {
-          // FILLING PARAMS
-          const float t[24] = {0.6, 0.3, 0.1, 0, 0, 0, 0, 1,
-                               0.3, 0.4, 0.3, 0, 0, 0, 0, 1,
-                               0.1, 0.4, 0.5, 0, 0, 0, 0, 1};
-          int n = 24;
-          const std::vector<float> v( t, t + n );
-          PRTO.fillWith( v );
-        }
-
-        const gum::UtilityTable<float>& UTUT = id.utility( idList[4] );
-        {
-          // FILLING PARAMS
-          const float t[2] = {-10, 0};
-          int n = 2;
-          const std::vector<float> v( t, t + n );
-          UTUT.fillWith( v );
-        }
-
-        const gum::UtilityTable<float>& UTUD = id.utility( idList[5] );
-        {
-          // FILLING PARAMS
-          const float t[6] = {-70, 0, 50, 0, 200, 0};
-          int n = 6;
-          const std::vector<float> v( t, t + n );
-          UTUD.fillWith( v );
-        }
-
+        id.cpt( idList[3] ).fillWith( {0.5, 0.3, 0.2} );
+        id.cpt( idList[2] )
+            .fillWith(  // clang-format off
+                              {0.6, 0.3, 0.1, 0,
+                               0  , 0  , 0  , 1,
+                               0.3, 0.4, 0.3, 0,
+                               0  , 0  , 0  , 1,
+                               0.1, 0.4, 0.5, 0,
+                               0  , 0  , 0  , 1}); //clang-format on
+        id.utility( idList[4] ).fillWith({-10, 0});
+        id.utility( idList[5] ).fillWith({-70, 0, 50, 0, 200, 0});
       } catch ( gum::Exception& e ) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -174,96 +148,17 @@ namespace gum_tests {
       fillTopoDecAsia( id, idList );
 
       try {
-        const gum::Potential<float>& PA = id.cpt( idList[9] );
-        {
-          // FILLING PARAMS
-          const float t[2] = {0.01, 0.99};
-          int n = 2;
-          const std::vector<float> v( t, t + n );
-          PA.fillWith( v );
-        }
+        id.cpt( idList[9] ).fillWith({0.01, 0.99});
+        id.cpt( idList[4] ).fillWith({0.1, 0.9, 0.01, 0.99});
+        id.cpt( idList[3] ).fillWith({0.6, 0.4, 0.3, 0.7});
+        id.cpt( idList[2] ).fillWith({0.5, 0.5});
+        id.cpt( idList[6] ).fillWith({0.9, 0.1, 0.7, 0.3, 0.8, 0.2, 0.1, 0.9});
+        id.cpt( idList[8] ).fillWith({0.05, 0.95, 0.01, 0.99});
+        id.cpt( idList[5] ).fillWith({1, 0, 1, 0, 1, 0, 0, 1});
+        id.cpt( idList[7] ).fillWith({0.98, 0.02, 0.5, 0.5, 0.05, 0.95, 0.5, 0.5});
 
-        const gum::Potential<float>& PL = id.cpt( idList[4] );
-        {
-          // FILLING PARAMS
-          const float t[4] = {0.1, 0.9, 0.01, 0.99};
-          int n = 4;
-          const std::vector<float> v( t, t + n );
-          PL.fillWith( v );
-        }
-
-        const gum::Potential<float>& PB = id.cpt( idList[3] );
-        {
-          // FILLING PARAMS
-          const float t[4] = {0.6, 0.4, 0.3, 0.7};
-          int n = 4;
-          const std::vector<float> v( t, t + n );
-          PB.fillWith( v );
-        }
-
-        const gum::Potential<float>& PS = id.cpt( idList[2] );
-        {
-          // FILLING PARAMS
-          const float t[2] = {0.5, 0.5};
-          int n = 2;
-          const std::vector<float> v( t, t + n );
-          PS.fillWith( v );
-        }
-
-        const gum::Potential<float>& PD = id.cpt( idList[6] );
-        {
-          // FILLING PARAMS
-          const float t[8] = {0.9, 0.1, 0.7, 0.3, 0.8, 0.2, 0.1, 0.9};
-          int n = 8;
-          const std::vector<float> v( t, t + n );
-          PD.fillWith( v );
-        }
-
-        const gum::Potential<float>& PTu = id.cpt( idList[8] );
-        {
-          // FILLING PARAMS
-          const float t[4] = {0.05, 0.95, 0.01, 0.99};
-          int n = 4;
-          const std::vector<float> v( t, t + n );
-          PTu.fillWith( v );
-        }
-
-        const gum::Potential<float>& PE = id.cpt( idList[5] );
-        {
-          // FILLING PARAMS
-          const float t[8] = {1, 0, 1, 0, 1, 0, 0, 1};
-          int n = 8;
-          const std::vector<float> v( t, t + n );
-          PE.fillWith( v );
-        }
-
-        const gum::Potential<float>& PPXR = id.cpt( idList[7] );
-        {
-          // FILLING PARAMS
-          const float t[8] = {0.98, 0.02, 0.5, 0.5, 0.05, 0.95, 0.5, 0.5};
-          int n = 8;
-          const std::vector<float> v( t, t + n );
-          PPXR.fillWith( v );
-        }
-
-        const gum::UtilityTable<float>& UTUH = id.utility( idList[10] );
-        {
-          // FILLING PARAMS
-          const float t[8] = {180, 2, 120, 4, 160, 0, 15, 40};
-          int n = 8;
-          const std::vector<float> v( t, t + n );
-          UTUH.fillWith( v );
-        }
-
-        const gum::UtilityTable<float>& UTUTXR = id.utility( idList[11] );
-        {
-          // FILLING PARAMS
-          const float t[4] = {0, 10, 1, 10};
-          int n = 4;
-          const std::vector<float> v( t, t + n );
-          UTUTXR.fillWith( v );
-        }
-
+        id.utility( idList[10] ).fillWith({180, 2, 120, 4, 160, 0, 15, 40});
+        id.utility( idList[11] ).fillWith({0, 10, 1, 10});
       } catch ( gum::Exception& e ) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -536,21 +431,8 @@ namespace gum_tests {
       evidence1->erase( topology->variable( idList[3] ) );
       evidence2->add( topology->variable( idList[3] ) );
 
-      {
-        // FILLING PARAMS
-        const float t[4] = {0.2, 0.3, 0.1, 0.4};
-        int n = 4;
-        const std::vector<float> v( t, t + n );
-        TS_GUM_ASSERT_THROWS_NOTHING( evidence1->fillWith( v ) );
-      }
-
-      {
-        // FILLING PARAMS
-        const float t[3] = {0.2, 0.3, 0.5};
-        int n = 3;
-        const std::vector<float> v( t, t + n );
-        evidence2->fillWith( v );
-      }
+      TS_GUM_ASSERT_THROWS_NOTHING( evidence1->fillWith( {0.2, 0.3, 0.1, 0.4} ) );
+      evidence2->fillWith( {0.2, 0.3, 0.5} );
 
       TS_GUM_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
 

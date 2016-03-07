@@ -64,58 +64,24 @@ namespace gum_tests {
       bn.addArc( i2, i4 );
       bn.addArc( i2, i5 );
 
-      const gum::Potential<double>& p1 = bn.cpt( i1 );
-      {
-        const double t[2] = {0.2, 0.8};
-        int n = 2;
-        const std::vector<double> v( t, t + n );
-        p1.fillWith( v );
-      }
-
-      const gum::Potential<double>& p2 = bn.cpt( i2 );
-      {
-        const double t[2] = {0.3, 0.7};
-        int n = 2;
-        const std::vector<double> v( t, t + n );
-        p2.fillWith( v );
-      }
-
-      const gum::Potential<double>& p3 = bn.cpt( i3 );
-      {
-        const double t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;
-        const std::vector<double> v( t, t + n );
-        p3.fillWith( v );
-      }
-
-      const gum::Potential<double>& p4 = bn.cpt( i4 );
-      {
-        const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 0.75, 0.25};
-        int n = 8;
-        const std::vector<double> v( t, t + n );
-        p4.fillWith( v );
-      }
-
-      const gum::Potential<double>& p5 = bn.cpt( i5 );
-      {
-        //         int n = 16;
-        //
-        //         const double t[16] = {0.4, 0.6,
-        //                               0.5, 0.5,
-        //                               0.5, 0.5,
-        //                               1.0, 0.0,
-        //                               0.4, 0.6,
-        //                               0.5, 0.5,
-        //                               0.5, 0.5,
-        //                               0.0, 1.0,
-        //                              };
-        int n = 24;
-        const double t[24] = {0.3,  0.6,  0.1,  0.5,  0.4,  0.1, 0.4, 0.5,
-                              0.1,  0.9,  0.05, 0.05, 0.4,  0.5, 0.1, 0.5,
-                              0.45, 0.05, 0.45, 0.5,  0.05, 0.1, 0.1, 0.8};
-        const std::vector<double> v( t, t + n );
-        p5.fillWith( v );
-      }
+      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
+      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
+      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn.cpt( i4 ).fillWith(  // clang-format off
+              {0.4, 0.6,
+               0.5, 0.5,
+               0.5, 0.5,
+               1.0, 0.0} );  // clang-format on
+      bn.cpt( i5 ).fillWith(                           // clang-format off
+              {0.3 , 0.6 , 0.1,
+               0.5 , 0.4 , 0.1,
+               0.4 , 0.5 , 0.1,
+               0.9 , 0.05, 0.05,
+               0.4 , 0.5 , 0.1,
+               0.5 , 0.45, 0.05,
+               0.45, 0.5 , 0.05,
+               0.1 , 0.1 , 0.8} );
+      // clang-format on
     }
 
     void fill_bn2( gum::BayesNet<double>& bn ) {
@@ -127,28 +93,11 @@ namespace gum_tests {
 
       bn.addArc( i1, i2 );
 
-      const gum::Potential<double>& p1 = bn.cpt( i1 );
-      {
-        const double t[3] = {0.2, 0.7, 0.1};
-        int n = 3;
-        const std::vector<double> v( t, t + n );
-        p1.fillWith( v );
-      }
-
-      const gum::Potential<double>& p5 = bn.cpt( i5 );
-      {
-        int n = 12;
-        const double t[12] = {
-            0.1, 0.2, 0.3, 0.4, 0.3, 0.2, 0.2, 0.3, 0.4, 0.3, 0.2, 0.1};
-        /*
-        const double t[n] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0,
-        0.0,
-        0.0,
-        0.4, 0.6, 0.0,0.5, 0.5,0.0, 0.5, 0.5,0.0, 0.0, 0.0,1.0
-        };*/
-        const std::vector<double> v( t, t + n );
-        p5.fillWith( v );
-      }
+      bn.cpt( i1 ).fillWith( {0.2, 0.7, 0.1} );
+      bn.cpt( i5 ).fillWith(  // clang-format off
+                            {0.1, 0.2, 0.3, 0.4,
+                             0.3, 0.2, 0.2, 0.3,
+                             0.4, 0.3, 0.2, 0.1});  // clang-format on
     }
 
     public:
@@ -227,7 +176,7 @@ namespace gum_tests {
       bn->addArc( s, w );
       bn->addArc( r, w );
 
-      gum::Potential<float> *e_i1, *e_i4;
+      gum::Potential<float>* e_i1, *e_i4;
       e_i1 = new gum::Potential<float>();
       ( *e_i1 ) << bn->variable( c );
       e_i1->fill( (float)0 );
@@ -241,12 +190,7 @@ namespace gum_tests {
       gum::Instantiation inst_4( *e_i4 );
       inst_4.chgVal( bn->variable( s ), 1 );
       e_i4->set( inst_4, (float)1 );
-
-      {
-        const float t[2] = {0.5, 0.5};
-        const std::vector<float> ca( t, t + 2 );
-        bn->cpt( c ).fillWith( ca );
-      }
+      bn->cpt( c ).fillWith( {0.5, 0.5} );
 
       {
         const float t[4] = {0.5, 0.5, 0.9, 0.1};

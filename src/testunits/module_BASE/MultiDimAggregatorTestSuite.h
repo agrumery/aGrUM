@@ -439,9 +439,6 @@ namespace gum_tests {
       int nbr = 6;  // nbr=nbr of parents
 
       std::string str;
-      const double t[4] = {0.1, 0.1, 0.1, 0.7};
-      int n = 4;
-      const std::vector<double> v( t, t + n );
 
       for ( int i = 0; i <= nbr; i++ ) {
         str = "";
@@ -456,14 +453,14 @@ namespace gum_tests {
         } else {
           idList.insert( bn.add( var ) );
           bn.addArc( idList[i], idList[0] );
-          bn.cpt( idList[i] ).fillWith( v );
+          bn.cpt( idList[i] ).fillWith( {0.1, 0.1, 0.1, 0.7} );
 
           gum::Instantiation i( bn.cpt( idList[0] ) );
 
           gum::Idx res;
 
           for ( i.setFirst(); !i.end(); ++i ) {
-            res = (gum::Idx)10000;  // clearly arbitraty choosen
+            res = (gum::Idx)10000;  // clearly arbitrary chosen
 
             for ( gum::Idx j = 1; j < i.nbrDim(); j++ ) {
               if ( res > i.val( j ) ) res = i.val( j );
