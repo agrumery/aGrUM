@@ -872,7 +872,8 @@ namespace gum {
     void PRMFactory<GUM_SCALAR>::setReferenceSlot( const std::string& l_i,
                                                    const std::string& l_ref,
                                                    const std::string& r_i ) {
-      System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>(
+
+      auto model = static_cast<System<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       std::vector<Instance<GUM_SCALAR>*> lefts;
       std::vector<Instance<GUM_SCALAR>*> rights;
@@ -899,9 +900,12 @@ namespace gum {
 
       for ( const auto l : lefts ) {
         for ( const auto r : rights ) {
-          if ( ( *l ).type().get( l_ref ).elt_type() ==
-               ClassElement<GUM_SCALAR>::prm_refslot ) {
-            ( *l ).add( ( *l ).type().get( l_ref ).id(), *r );
+
+          auto& elt = l->type().get( l_ref );
+          if ( ClassElement<GUM_SCALAR>::isReferenceSlot( elt ) ) {
+
+            l->add( elt.id(), *r );
+
           } else {
             GUM_ERROR( NotFound, "unfound reference slot" );
           }

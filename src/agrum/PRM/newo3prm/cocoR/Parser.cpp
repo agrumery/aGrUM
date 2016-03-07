@@ -598,9 +598,11 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 			auto tmp = narrow( t->val ); 
 			auto tmp_pos = Position( narrow( scanner->filename() ), t->line, t->col ); 
 			if (la->kind == _label || la->kind == _dot || la->kind == 24 /* "[" */) {
+				left_value << "."; 
 				left_value << tmp; 
 				while (la->kind == _dot) {
 					Get();
+					left_value << "."; 
 					Expect(_label);
 					left_value << narrow( t->val ); 
 				}
@@ -624,6 +626,7 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 					ass.leftInstance().position() = pos; 
 					ass.leftReference().label() = tmp; 
 					ass.leftReference().position() = tmp_pos; 
+					ass.index().value() = -1; 
 					Get();
 					LABEL(ass.rightInstance());
 					sys.assignments().push_back( std::move( ass ) ); 
@@ -633,6 +636,7 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 					inc.leftInstance().position() = pos; 
 					inc.leftReference().label() = tmp; 
 					inc.leftReference().position() = tmp_pos; 
+					inc.index().value() = -1; 
 					Get();
 					LABEL(inc.rightInstance());
 					sys.increments().push_back( std::move( inc ) ); 

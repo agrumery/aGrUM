@@ -278,17 +278,15 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::inheritSlotChains() {
       if ( __super ) {
-        const auto& c = super();
         // Copying slot chains
-        for ( const auto c_slotchain : c.__slotChains ) {
+        for ( const auto c_slotchain : __super->__slotChains ) {
           // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
           // chain
-          Sequence<ClassElement<GUM_SCALAR>*> chain( c_slotchain->chain() );
+          auto chain = c_slotchain->chain();
 
           chain.setAtPos( 0, __nameMap[c_slotchain->chain().front()->name()] );
 
-          SlotChain<GUM_SCALAR>* sc =
-              new SlotChain<GUM_SCALAR>( c_slotchain->name(), chain );
+          auto sc = new SlotChain<GUM_SCALAR>( c_slotchain->name(), chain );
           __bijection->insert( &( c_slotchain->type().variable() ),
                                &( sc->type().variable() ) );
           sc->setId( c_slotchain->id() );
@@ -299,7 +297,7 @@ namespace gum {
           __nameMap.insert( sc->name(), sc );
           __nameMap.insert( sc->safeName(), sc );
         }
-        this->_copyIOFlags( c );
+        this->_copyIOFlags( *__super );
       }
     }
 

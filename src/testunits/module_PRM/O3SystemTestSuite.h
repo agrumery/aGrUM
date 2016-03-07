@@ -213,7 +213,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 1| Class error : r.power is not a class";
+      msg << "|6 col 1| Class error : Unknown class r.power";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
     }

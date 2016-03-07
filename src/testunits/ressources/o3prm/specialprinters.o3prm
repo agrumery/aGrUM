@@ -11,8 +11,8 @@ class room {
 class equipment {
   room r;
   state_type state dependson r.power.state {
-    [0.8 , 0.2,
-     0.01, 0.99]
+    [0.8 , 0.01,
+     0.2, 0.99]
   };
 }
 
@@ -26,10 +26,10 @@ class computer extends equipment {
   boolean exists = exists(printers.state, ok);
 
   state_type canprint dependson state, exists {
-    [0.0, 1.0,
-     0.0, 1.0,
-     1.0, 0.0,
-     0.0, 1.0]
+    // OK    | NOK
+    // F | T | F   | T
+    [0.0, 1.0, 0.0, 1.0, // OK
+     1.0, 0.0, 1.0, 0.0] // NOK
   };
 }
 

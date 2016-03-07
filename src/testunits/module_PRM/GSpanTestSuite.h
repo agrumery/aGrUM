@@ -38,11 +38,11 @@ namespace gum_tests {
       __driver->readFile(
           GET_RESSOURCES_PATH( "o3prm/specialprinters.o3prm" ) );
 
-      if ( __driver->prm() != nullptr )
+      if ( __driver->errors() == 0 ) {
         ig = new gum::prm::gspan::InterfaceGraph<double>(
             __driver->prm()->system( "m" ) );
-      else {
-        __driver->showErrorCounts();
+      } else {
+        __driver->showElegantErrorsAndWarnings();
         TS_ASSERT( false );
       }
     }
@@ -50,7 +50,9 @@ namespace gum_tests {
     void local__tearDown() {
       delete ig;
 
-      if ( __driver->prm() != nullptr ) delete __driver->prm();
+      if ( __driver->prm() != nullptr ) {
+        delete __driver->prm();
+      }
 
       delete __driver;
     }
@@ -65,13 +67,17 @@ namespace gum_tests {
     }
 
     void testInterfaceGraph() {
-      local__setUp();
-      TS_ASSERT_EQUALS( ig->graph().size(),
-                        (gum::Size)1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4 );
-      TS_ASSERT_EQUALS( ig->graph().sizeEdges(),
-                        ( gum::Size )( 5 * 2 + 3 * 4 + 4 * 3 ) + 5 + 3 * 3 +
-                            4 * 2 );
-      local__tearDown();
+      try {
+        local__setUp();
+        TS_ASSERT_EQUALS( ig->graph().size(),
+                          (gum::Size)1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4 );
+        TS_ASSERT_EQUALS( ig->graph().sizeEdges(),
+                          ( gum::Size )( 5 * 2 + 3 * 4 + 4 * 3 ) + 5 + 3 * 3 +
+                              4 * 2 );
+        local__tearDown();
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
     }
 
     void testTree() {

@@ -239,7 +239,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 9| Class error : CPT does not sum to 1";
+      msg << "|4 col 9| Class error : Attribute Bar.isWorking CPT does not sum to 1, found 0.4";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
     }
@@ -290,8 +290,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 9| Class error : Illegal CPT size, expected 4 found "
-             "6";
+      msg << "|4 col 9| Class error : Illegal CPT size, expected 4 found 6 for attribute Bar.isWorking";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
     }
@@ -496,7 +495,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 15| Class error : Illegal CPT value 1.1";
+      msg << "|5 col 15| Class error : Illegal CPT value \"110/100\" in attribute Bar.isWorking1.1";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
     }
@@ -546,7 +545,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 6| Class error : Illegal CPT value \"FOO\"";
+      msg << "|6 col 6| Class error : Illegal CPT value \"FOO\" in attribute Bar.isWorking\"FOO\"";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
     }

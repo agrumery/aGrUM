@@ -121,8 +121,6 @@ namespace gum {
             } catch ( FatalError& e ) {
 
               O3PRM_SYSTEM_INSTANTIATION_FAILED( *sys, *__errors );
-              GUM_TRACE_NEWLINE;
-              GUM_SHOWERROR( e );
             }
           }
         }
@@ -136,7 +134,7 @@ namespace gum {
           if ( i.parameters().size() > 0 ) {
 
             auto params = HashTable<std::string, double>();
-            for ( auto& p: i.parameters() ) {
+            for ( auto& p : i.parameters() ) {
               params.insert( p.name().label(), (double)p.value().value() );
             }
             factory.addInstance( i.type().label(), i.name().label(), params );
@@ -166,7 +164,6 @@ namespace gum {
               factory.setReferenceSlot( ass.leftInstance().label(),
                                         ass.leftReference().label(),
                                         ass.rightInstance().label() );
-
             } else {
 
               auto sBuff = std::stringstream();
