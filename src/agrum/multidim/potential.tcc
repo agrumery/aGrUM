@@ -199,5 +199,43 @@ namespace gum {
     return Potential<GUM_SCALAR>(
         gum::projectMax( *this->content(), del_vars ) );
   }
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margSumIn(
+      const Set<const DiscreteVariable*>& kept_vars ) const {
+    return Potential<GUM_SCALAR>(
+        gum::projectSum( *this->content(), _complementVars( kept_vars ) ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margProdIn(
+      const Set<const DiscreteVariable*>& kept_vars ) const {
+    return Potential<GUM_SCALAR>(
+        gum::projectProduct( *this->content(), _complementVars( kept_vars ) ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margMinIn(
+      const Set<const DiscreteVariable*>& kept_vars ) const {
+    return Potential<GUM_SCALAR>(
+        gum::projectMin( *this->content(), _complementVars( kept_vars ) ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margMaxIn(
+      const Set<const DiscreteVariable*>& kept_vars ) const {
+    return Potential<GUM_SCALAR>(
+        gum::projectMax( *this->content(), _complementVars( kept_vars ) ) );
+  }
+
+  template <typename GUM_SCALAR>
+  Set<const DiscreteVariable*> Potential<GUM_SCALAR>::_complementVars(
+      const Set<const DiscreteVariable*>& vars ) const {
+    Set<const DiscreteVariable*> cplt;
+
+    for ( auto x : this->variablesSequence() )
+      if ( !vars.contains( x ) ) cplt.insert( x );
+
+    return cplt;
+  }
 
 } /* namespace gum */

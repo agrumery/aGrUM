@@ -312,7 +312,7 @@ class TestOperators(pyAgrumTestCase):
     p/=q
     self.assertEquals(z.tolist(),p.tolist())
     
-  def testMargOperators(self):
+  def testMargOutOperators(self):
     a,b,c,d=[gum.LabelizedVariable(s,s,3) for s in "abcd"]
     p=gum.Potential()
     p.add(a).add(b)
@@ -341,6 +341,29 @@ class TestOperators(pyAgrumTestCase):
     self.assertEquals(p.margMaxOut(["b"]).tolist(),[7,8,9])
     self.assertEquals(p.margMinOut(["a"]).tolist(),[1,4,7])
     self.assertEquals(p.margMinOut(["b"]).tolist(),[1,2,3])
+    
+  def testMargInOperators(self):
+    a,b,c,d=[gum.LabelizedVariable(s,s,3) for s in "abcd"]
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    q=gum.Potential()
+    q.add(c).add(d)
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    joint=p*q
+    
+    self.assertEquals(joint.margSumIn(['a','b']),joint.margSumOut(['c','d']))
+    self.assertEquals(joint.margSumIn(['b','a']),joint.margSumOut(['c','d']))
+    self.assertEquals(joint.margSumIn(['a','b']),joint.margSumOut(['d','c']))
+    self.assertEquals(joint.margSumIn(['b','a']),joint.margSumOut(['d','c']))
+    
+    self.assertEquals(joint.margProdIn(['a','b']),joint.margProdOut(['c','d']))
+    
+    self.assertEquals(joint.margMaxIn(['a','b']),joint.margMaxOut(['c','d']))
+    
+    self.assertEquals(joint.margMinIn(['a','b']),joint.margMinOut(['c','d']))
 
 
 
@@ -357,4 +380,5 @@ ts.addTest(TestIndexs('testDictIndex'))
 ts.addTest(TestOperators('testSimpleOperators'))
 ts.addTest(TestOperators('testEquality'))
 ts.addTest(TestOperators('testSimpleInPLaceOperators'))
-ts.addTest(TestOperators('testMargOperators'))
+ts.addTest(TestOperators('testMargOutOperators'))
+ts.addTest(TestOperators('testMargInOperators'))

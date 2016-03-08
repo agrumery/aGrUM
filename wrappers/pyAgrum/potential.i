@@ -1,5 +1,3 @@
-// beforeMerg rajouter l'operateur == pour les Potentials
-
 %ignore gum::MultiDimWithOffset;
 %ignore gum::MultiDimImplementation;
 %ignore gum::MultiDimInterface;
@@ -25,6 +23,10 @@
 %rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margMaxOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margMinOut(const Set<const DiscreteVariable*>& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margSumIn(const Set<const DiscreteVariable*>& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margProdIn(const Set<const DiscreteVariable*>& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margMaxIn(const Set<const DiscreteVariable*>& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margMinIn(const Set<const DiscreteVariable*>& kept_vars) const;
 
 %extend gum::Potential<double> {
     Potential<double>
@@ -54,6 +56,34 @@
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margMinOut(s);
     }
+        
+    Potential<double>
+    margSumIn( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
+      return self->margSumIn(s);
+    }
+
+    Potential<double>
+    margProdIn( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
+      return self->margProdIn(s);
+    }
+
+    Potential<double>
+    margMaxIn( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
+      return self->margMaxIn(s);
+    }
+
+    Potential<double>
+    margMinIn( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
+      return self->margMinIn(s);
+    }
 
     // division for python3
     gum::Potential<double> __truediv__(const gum::Potential<double>& b) {
@@ -64,12 +94,12 @@
     gum::Potential<double> __div__(const gum::Potential<double>& b) {
       return *self/b;
     }
-    
+
     // equality
     bool __eq__(const gum::Potential<double>& b) {
       return *self==b;
     }
-    
+
     // non equality
     bool __ne__(const gum::Potential<double>& b) {
       return *self!=b;

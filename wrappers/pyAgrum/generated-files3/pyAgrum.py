@@ -4045,6 +4045,26 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_margMinOut(self, varnames)
 
 
+    def margSumIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margSumIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margSumIn(self, varnames)
+
+
+    def margProdIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margProdIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margProdIn(self, varnames)
+
+
+    def margMaxIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margMaxIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMaxIn(self, varnames)
+
+
+    def margMinIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margMinIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMinIn(self, varnames)
+
+
     def __truediv__(self, b: 'Potential_double') -> "gum::Potential< double >":
         """__truediv__(Potential_double self, Potential_double b) -> Potential_double"""
         return _pyAgrum.Potential_double___truediv__(self, b)

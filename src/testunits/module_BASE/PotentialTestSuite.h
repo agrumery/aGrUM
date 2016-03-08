@@ -156,30 +156,30 @@ namespace gum_tests {
     }
 
     void testEquality() {
-      auto a = gum::LabelizedVariable( "a", "afoo" ,3);
-      auto b = gum::LabelizedVariable( "b", "bfoo" ,3);
-      auto c = gum::LabelizedVariable( "c", "cfoo" ,3);
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+      auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
 
-      gum::Potential<int> p,q,r,t,u;
-      p<<a<<b;
-      p.fillWith({1,2,3,4,5,6,7,8,9});
+      gum::Potential<int> p, q, r, t, u;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
 
-      q<<b<<c; //different dims
-      q.fillWith({1,2,3,4,5,6,7,8,9});
+      q << b << c;  // different dims
+      q.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
 
-      r<<a<<b; //same dims, same data
-      r.fillWith({1,2,3,4,5,6,7,8,9});
+      r << a << b;  // same dims, same data
+      r.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
 
-      t<<a<<b; //same dims,different data
-      t.fillWith({1,2,3,4,0,6,7,8,9});
+      t << a << b;  // same dims,different data
+      t.fillWith( {1, 2, 3, 4, 0, 6, 7, 8, 9} );
 
-      u<<b<<a; //same dims, same data, different order
-      u.fillWith({1,4,7,2,5,8,3,6,9});
+      u << b << a;  // same dims, same data, different order
+      u.fillWith( {1, 4, 7, 2, 5, 8, 3, 6, 9} );
 
-      TS_ASSERT(p!=q);
-      TS_ASSERT(p==r);
-      TS_ASSERT(p!=t);
-      TS_ASSERT(p==u);
+      TS_ASSERT( p != q );
+      TS_ASSERT( p == r );
+      TS_ASSERT( p != t );
+      TS_ASSERT( p == u );
     }
 
     void testOperators() {
@@ -313,6 +313,37 @@ namespace gum_tests {
                         "<b:0> :: 1 /<b:1> :: 4 /<b:2> :: 7" );
       TS_ASSERT_EQUALS( p.margMinOut( {&b} ).toString(),
                         "<a:0> :: 1 /<a:1> :: 2 /<a:2> :: 3" );
+    }
+
+    void testMargInFunctions() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+      auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
+      auto d = gum::LabelizedVariable( "d", "dfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      gum::Potential<float> q;
+      q << c << d;
+      q.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      auto joint = p * q;
+
+      TS_ASSERT(
+          ( joint.margSumOut( {&c, &d} ) == joint.margSumIn( {&a, &b} ) ) );
+      TS_ASSERT(
+          ( joint.margSumOut( {&c, &d} ) == joint.margSumIn( {&b, &a} ) ) );
+
+      TS_ASSERT(
+          ( joint.margProdOut( {&c, &d} ) == joint.margProdIn( {&a, &b} ) ) );
+
+      TS_ASSERT(
+          ( joint.margMinOut( {&c, &d} ) == joint.margMinIn( {&a, &b} ) ) );
+
+      TS_ASSERT(
+          ( joint.margMaxOut( {&c, &d} ) == joint.margMaxIn( {&a, &b} ) ) );
     }
   };
 }

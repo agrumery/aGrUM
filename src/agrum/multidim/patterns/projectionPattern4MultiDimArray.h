@@ -107,25 +107,16 @@ namespace gum {
 
               if ( !need_swapping ) {
                 // Compute the variables that belong to both the projection set
-                // and
-                // table.
+                // and table.
                 // Store the domain size of the Cartesian product of these
-                // variables
-                // (result_domain_size) as well as the domain size of the
-                // Cartesian
-                // product
-                // of the variables of table that do not belong to projection
-                // set,
-                // i.e.,
-                // those variables that belong to table but not to del_vars
-                // (table_alone_domain_size).
+                // variables (result_domain_size) as well as the domain size of
+                // the Cartesian product of the variables of table that do not
+                // belong to projection set, i.e., those variables that belong
+                // to table but not to del_vars (table_alone_domain_size).
                 // In addition, store the number of increments in the
-                // computation
-                // loops at the
-                // end of the function before which the variables of the
-                // projection
-                // set
-                // need be incremented (vector before incr).
+                // computation loops at the end of the function before which
+                // the variables of the projection set need be incremented
+                // (vector before incr).
                 std::vector<Idx> table_and_result_offset;
                 std::vector<Idx> table_and_result_domain;
                 std::vector<Idx> before_incr;
