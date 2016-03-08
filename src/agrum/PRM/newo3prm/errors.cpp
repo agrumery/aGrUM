@@ -35,7 +35,7 @@ namespace gum {
       void O3PRM_TYPE_NOT_FOUND( const O3Label& val, ErrorsContainer& errors ) {
         auto pos = val.position();
         auto msg = std::stringstream();
-        msg << "Type error : "
+        msg << "Error : "
             << "Unknown type " << val.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -45,7 +45,7 @@ namespace gum {
                                  ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Type error : "
+        msg << "Error : "
             << "Ambiguous name " << val.label()
             << ", found more than one elligible types: ";
         for ( std::size_t i = 0; i < matches.size() - 1; ++i ) {
@@ -58,7 +58,7 @@ namespace gum {
       void O3PRM_TYPE_RESERVED( const O3Label& val, ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Type error : "
+        msg << "Error : "
             << "Type name " << val.label() << " is reserved";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -67,7 +67,7 @@ namespace gum {
                                   ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Type error : "
+        msg << "Error : "
             << "Type " << val.label() << " exists already";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -77,7 +77,7 @@ namespace gum {
                                           ErrorsContainer& errors ) {
         const auto& pos = sub_type.position();
         auto msg = std::stringstream();
-        msg << "Type error : "
+        msg << "Error : "
             << "Cyclic inheritance between type " << sub_type.label()
             << " and type " << super_type.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -88,7 +88,7 @@ namespace gum {
                                      ErrorsContainer& errors ) {
         const auto& pos = l.position();
         auto msg = std::stringstream();
-        msg << "Type error : "
+        msg << "Error : "
             << "Unknown label " << l.label() << " in " << type.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -97,7 +97,7 @@ namespace gum {
                                      ErrorsContainer& errors ) {
         const auto& pos = val.name().position();
         auto msg = std::stringstream();
-        msg << "Type error : "
+        msg << "Error : "
             << "Invalid range " << val.start().value() << " -> "
             << val.end().value();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -107,7 +107,7 @@ namespace gum {
                                   ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Unknown class " << val.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
         GUM_ERROR( FatalError, msg.str() );
@@ -118,7 +118,7 @@ namespace gum {
                                   ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Name " << val.label() << " is ambiguous: ";
         for ( std::size_t i = 0; i < matches.size() - 1; ++i ) {
           msg << matches[i] << ", ";
@@ -132,7 +132,7 @@ namespace gum {
         // Raised if duplicate type names
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Class name " << val.label() << " exists already";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -143,7 +143,7 @@ namespace gum {
         // Cyclic inheritance
         const auto& pos = sub.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Cyclic inheritance between class " << sub.label()
             << " and class " << super.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -156,7 +156,7 @@ namespace gum {
                                             ErrorsContainer& errors ) {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Class " << c.label() << " attribute " << attr.label()
             << " does not respect interface " << i.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -168,7 +168,7 @@ namespace gum {
                                            ErrorsContainer& errors ) {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Class " << c.label() << " aggregate " << attr.label()
             << " does not respect interface " << i.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -180,7 +180,7 @@ namespace gum {
                                            ErrorsContainer& errors ) {
         const auto& pos = ref.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Class " << c.label() << " reference " << ref.label()
             << " does not respect interface " << i.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -192,7 +192,7 @@ namespace gum {
                                            ErrorsContainer& errors ) {
         const auto& pos = c.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Class " << c.label() << " does not implement all of interface "
             << i.label() << " attributes";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -202,7 +202,7 @@ namespace gum {
                                             ErrorsContainer& errors ) {
         const auto& pos = ref.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Reference Slot name " << ref.label() << " exists already";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -212,7 +212,7 @@ namespace gum {
                                        ErrorsContainer& errors ) {
         const auto& pos = ref.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Class " << c.label() << " cannot reference itself";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -222,7 +222,7 @@ namespace gum {
                                               ErrorsContainer& errors ) {
         const auto& pos = sub.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Class " << c.label() << " cannot reference subclass "
             << sub.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -232,7 +232,7 @@ namespace gum {
                                          ErrorsContainer& errors ) {
         const auto& pos = parent.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Parent " << parent.label() << " not found";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -241,7 +241,7 @@ namespace gum {
                                        ErrorsContainer& errors ) {
         const auto& pos = parent.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Illegal parent " << parent.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -251,7 +251,7 @@ namespace gum {
                                        ErrorsContainer& errors ) {
         const auto& pos = chain.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Link " << s << " in chain " << chain.label() << " not found";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -263,7 +263,7 @@ namespace gum {
                                          ErrorsContainer& errors ) {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Illegal CPT size, expected " << expected << " found " << found
             << " for attribute " << c << "." << attr.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -275,7 +275,7 @@ namespace gum {
                                           ErrorsContainer& errors ) {
         const auto& pos = f.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Illegal CPT value \"" << f.formula().formula()
             << "\" in attribute " << c << "." << attr.label();
         try {
@@ -292,7 +292,7 @@ namespace gum {
                                               ErrorsContainer& errors ) {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Attribute " << c << "." << attr.label()
             << " CPT does not sum to 1, found " << f;
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -305,7 +305,7 @@ namespace gum {
                                                  ErrorsContainer& errors ) {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
-        msg << "Class warning : "
+        msg << "Warning : "
             << "Attribute " << c << "." << attr.label()
             << " CPT does not sum to 1, found " << f;
         errors.addWarning( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -317,7 +317,7 @@ namespace gum {
                                           ErrorsContainer& errors ) {
         const auto& pos = rule.first.front().position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Expected " << expected << " value(s), found " << found;
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -328,7 +328,7 @@ namespace gum {
                                           ErrorsContainer& errors ) {
         const auto& pos = prnt.position();
         auto msg = std::stringstream();
-        msg << "Aggregate error : "
+        msg << "Error : "
             << "Expected type " << expected << " for parent " << prnt.label()
             << ", found " << found;
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -339,7 +339,7 @@ namespace gum {
                                          ErrorsContainer& errors ) {
         const auto& pos = elt.position();
         auto msg = std::stringstream();
-        msg << "Class error : "
+        msg << "Error : "
             << "Illegal overload of element " << elt.label() << " from class "
             << super.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -351,7 +351,7 @@ namespace gum {
                                        ErrorsContainer& errors ) {
         const auto& pos = agg.position();
         auto msg = std::stringstream();
-        msg << "Aggregate error : "
+        msg << "Error : "
             << "Expected " << expected << " parameters "
             << ", found " << found;
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -362,7 +362,7 @@ namespace gum {
                                                 ErrorsContainer& errors ) {
         const auto& pos = param.position();
         auto msg = std::stringstream();
-        msg << "Aggregate error : "
+        msg << "Error : "
             << "Parameter " << param.label() << " in aggregate " << agg.label()
             << " does not match any expected values";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -372,7 +372,7 @@ namespace gum {
                                           ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Interface error : "
+        msg << "Error : "
             << "Attribute " << val.label() << " can not be an array";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -381,7 +381,7 @@ namespace gum {
                                       ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Interface error : "
+        msg << "Error : "
             << "Interface " << val.label() << " not found";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -391,7 +391,7 @@ namespace gum {
                                       ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Inteface error : "
+        msg << "Error : "
             << "Name " << val.label() << " is ambiguous: ";
         for ( std::size_t i = 0; i < matches.size() - 1; ++i ) {
           msg << matches[i] << ", ";
@@ -404,7 +404,7 @@ namespace gum {
                                       ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Interface error : "
+        msg << "Error : "
             << "Interface name " << val.label() << " exists already";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -413,7 +413,7 @@ namespace gum {
                                               ErrorsContainer& errors ) {
         const auto& pos = elt.type().position();
         auto msg = std::stringstream();
-        msg << "Interface error : "
+        msg << "Error : "
             << "Element " << elt.name().label() << " already exists";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -423,7 +423,7 @@ namespace gum {
                                                ErrorsContainer& errors ) {
         const auto& pos = super.position();
         auto msg = std::stringstream();
-        msg << "Interface error : "
+        msg << "Error : "
             << "Cyclic inheritance between interface " << sub.label()
             << " and interface " << super.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -434,7 +434,7 @@ namespace gum {
                                            ErrorsContainer& errors ) {
         const auto& pos = r.type().position();
         auto msg = std::stringstream();
-        msg << "Reference Slot error : "
+        msg << "Error : "
             << "Interface " << i.name().label() << " cannot reference itself";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -444,7 +444,7 @@ namespace gum {
                                                   ErrorsContainer& errors ) {
         const auto& pos = ref.type().position();
         auto msg = std::stringstream();
-        msg << "Reference Slot error : "
+        msg << "Error : "
             << "Interface " << i.name().label()
             << " cannot reference subinterface " << ref.type().label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -454,7 +454,7 @@ namespace gum {
                                              ErrorsContainer& errors ) {
         const auto& pos = elt.type().position();
         auto msg = std::stringstream();
-        msg << "Reference Slot error : "
+        msg << "Error : "
             << "Illegal overload of element " << elt.name().label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -463,7 +463,7 @@ namespace gum {
                                       ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Reference Slot error : "
+        msg << "Error : "
             << "Reference Slot type " << val.label() << " not found";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -473,7 +473,7 @@ namespace gum {
                                       ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "Reference Slot error : "
+        msg << "Error : "
             << "Name " << val.label() << " is ambiguous: ";
         for ( std::size_t i = 0; i < matches.size() - 1; ++i ) {
           msg << matches[i] << ", ";
@@ -486,7 +486,7 @@ namespace gum {
                                               ErrorsContainer& errors ) {
         const auto& pos = sys.name().position();
         auto msg = std::stringstream();
-        msg << "System error : "
+        msg << "Error : "
             << "Could not instantiate the system, some reference slots must be "
                "unassigned";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
@@ -496,7 +496,7 @@ namespace gum {
                                      ErrorsContainer& errors ) {
         const auto& pos = i.type().position();
         auto msg = std::stringstream();
-        msg << "System error : " << i.type().label() << " is not a class";
+        msg << "Error : " << i.type().label() << " is not a class";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
@@ -504,7 +504,7 @@ namespace gum {
                                             ErrorsContainer& errors ) {
         const auto& pos = i.type().position();
         auto msg = std::stringstream();
-        msg << "System error : "
+        msg << "Error : "
             << "Instance " << i.name().label() << " already exists";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -522,7 +522,7 @@ namespace gum {
                                              ErrorsContainer& errors ) {
         const auto& pos = param.name().position();
         auto msg = std::stringstream();
-        msg << "System error : "
+        msg << "Error : "
             << "Parameter " << param.name().label() << " not found";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -531,7 +531,7 @@ namespace gum {
                                            ErrorsContainer& errors ) {
         const auto& pos = param.value().position();
         auto msg = std::stringstream();
-        msg << "System error : "
+        msg << "Error : "
             << "Parameter " << param.name().label() << " is an integer";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -540,7 +540,7 @@ namespace gum {
                                              ErrorsContainer& errors ) {
         const auto& pos = param.value().position();
         auto msg = std::stringstream();
-        msg << "System error : "
+        msg << "Error : "
             << "Parameter " << param.name().label() << " is a float";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -549,7 +549,7 @@ namespace gum {
                                             ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "System error : "
+        msg << "Error : "
             << "Invalid left expression " << val.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -557,7 +557,7 @@ namespace gum {
                                             ErrorsContainer& errors ) {
         const auto& pos = i.position();
         auto msg = std::stringstream();
-        msg << "System error : "
+        msg << "Error : "
             << "Instance " << i.label() << " not found";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -567,7 +567,7 @@ namespace gum {
                                              ErrorsContainer& errors ) {
         const auto& pos = ref.position();
         auto msg = std::stringstream();
-        msg << " System error : "
+        msg << "Error : "
             << "Reference " << ref.label() << " not found in class " << type;
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -576,7 +576,7 @@ namespace gum {
                                       ErrorsContainer& errors ) {
         const auto& pos = val.position();
         auto msg = std::stringstream();
-        msg << "System error : " << val.label() << " is not an array";
+        msg << "Error : " << val.label() << " is not an array";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 

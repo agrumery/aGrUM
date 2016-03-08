@@ -45,7 +45,7 @@ namespace gum {
 
       std::vector<NodeId> topological_order( const gum::DAG& src );
 
-      std::string clean( const std::string& text );
+      std::string clean( std::string text );
 
       std::string print( const ParseError& err );
 

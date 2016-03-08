@@ -68,7 +68,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 1| Syntax error : invalid declaration";
+      msg << "|1 col 1| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
@@ -87,7 +87,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 11| Syntax error : label expected";
+      msg << "|1 col 11| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
@@ -106,7 +106,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 11| Syntax error : label expected";
+      msg << "|1 col 11| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
@@ -148,7 +148,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 1| Type error : Unknown type t_state";
+      msg << "|2 col 1| Error : Unknown type t_state";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
@@ -173,7 +173,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 1| Syntax error : \"}\" expected";
+      msg << "|2 col 1| Error : \"}\" expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
@@ -194,7 +194,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 6| Syntax error : label expected";
+      msg << "|2 col 6| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
@@ -215,7 +215,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|3 col 1| Syntax error : semicolon expected";
+      msg << "|3 col 1| Error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
@@ -236,7 +236,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 9| Syntax error : label expected";
+      msg << "|2 col 9| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IBar" ) );
@@ -279,7 +279,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|3 col 1| Interface error : Element state already exists";
+      msg << "|3 col 1| Error : Element state already exists";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "IBar" ) );
@@ -365,7 +365,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 24| Interface error : Interface IFooBar not found";
+      msg << "|4 col 24| Error : Interface IFooBar not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IFoo" ) );
@@ -391,7 +391,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 24| Interface error : Interface t_state not found";
+      msg << "|5 col 24| Error : Interface t_state not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT( not prm.isInterface( "IFoo" ) );
@@ -416,7 +416,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 16| Syntax error : \"{\" expected";
+      msg << "|4 col 16| Error : \"{\" expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
     }
@@ -614,7 +614,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 1| Reference Slot error : Interface IFoo cannot reference "
+      msg << "|2 col 1| Error : Interface IFoo cannot reference "
              "itself";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)1 );

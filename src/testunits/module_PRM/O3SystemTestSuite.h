@@ -132,7 +132,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 12| Syntax error : invalid declaration";
+      msg << "|2 col 12| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
     }
@@ -151,7 +151,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 1| Class error : Unknown class FOO";
+      msg << "|2 col 1| Error : Unknown class FOO";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
     }
@@ -170,7 +170,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 8| Syntax error : label expected";
+      msg << "|1 col 8| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
     }
@@ -190,7 +190,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|3 col 1| Syntax error : semicolon expected";
+      msg << "|3 col 1| Error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
     }
@@ -213,7 +213,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 1| Class error : Unknown class r.power";
+      msg << "|6 col 1| Error : Unknown class r.power";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
     }
@@ -239,7 +239,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 8| System error : Could not instantiate the system, some "
+      msg << "|1 col 8| Error : Could not instantiate the system, some "
              "reference slots must be unassigned";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)1 );
@@ -267,7 +267,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 1| System error : Instance p already exists";
+      msg << "|5 col 1| Error : Instance p already exists";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
     }

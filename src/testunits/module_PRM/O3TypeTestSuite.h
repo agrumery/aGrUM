@@ -68,7 +68,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 1| Syntax error : invalid declaration";
+      msg << "|1 col 1| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -85,7 +85,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 21| Syntax error : semicolon expected" << std::endl;
+      msg << "|1 col 21| Error : semicolon expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -102,7 +102,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|2 col 1| Syntax error : semicolon expected" << std::endl;
+      msg << "|2 col 1| Error : semicolon expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -120,7 +120,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 16| Syntax error : comma expected" << std::endl;
+      msg << "|1 col 16| Error : comma expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -137,7 +137,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 17| Syntax error : label expected" << std::endl;
+      msg << "|1 col 17| Error : label expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -154,7 +154,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 6| Syntax error : label expected" << std::endl;
+      msg << "|1 col 6| Error : label expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -171,7 +171,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 14| Syntax error : invalid declaration" << std::endl;
+      msg << "|1 col 14| Error : invalid declaration" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -188,7 +188,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 18| Syntax error : label expected" << std::endl;
+      msg << "|1 col 18| Error : label expected" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -206,7 +206,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|2 col 6| Type error : Type t_state exists already" << std::endl;
+      msg << "|2 col 6| Error : Type t_state exists already" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT( not prm.isType( "t_state" ) );
@@ -253,7 +253,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 21| Syntax error : comma expected";
+      msg << "|1 col 21| Error : comma expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -274,7 +274,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 22| Type error : Unknown type foobar";
+      msg << "|1 col 22| Error : Unknown type foobar";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -295,7 +295,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|2 col 5| Type error : Unknown label vrue in boolean";
+      msg << "|2 col 5| Error : Unknown label vrue in boolean";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -402,7 +402,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 1| Syntax error : invalid declaration";
+      msg << "|1 col 1| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -421,7 +421,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 5| Syntax error : \"(\" expected";
+      msg << "|1 col 5| Error : \"(\" expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -440,7 +440,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 8| Syntax error : comma expected";
+      msg << "|1 col 8| Error : comma expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -459,7 +459,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 12| Syntax error : label expected";
+      msg << "|1 col 12| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -478,7 +478,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 6| Syntax error : integer expected";
+      msg << "|1 col 6| Error : integer expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -497,7 +497,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 10| Syntax error : \")\" expected";
+      msg << "|1 col 10| Error : \")\" expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -516,7 +516,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 6| Syntax error : integer expected";
+      msg << "|1 col 6| Error : integer expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -535,7 +535,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 19| Syntax error : semicolon expected";
+      msg << "|1 col 19| Error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -554,7 +554,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 20| Syntax error : semicolon expected";
+      msg << "|1 col 20| Error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -573,7 +573,7 @@ namespace gum_tests {
       auto line = std::string();
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|1 col 19| Syntax error : semicolon expected";
+      msg << "|1 col 19| Error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 

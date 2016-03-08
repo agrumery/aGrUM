@@ -55,15 +55,15 @@ namespace gum {
         return std::move( order );
       }
 
-      std::string clean( const std::string& text ) {
+      std::string clean( std::string text ) {
         auto match = std::regex( "Syntax error" );
         if ( std::regex_search( text, match ) ) {
-          auto regex = std::regex( "[A-Z_][A-Z_]+" );
-          auto output = std::stringstream();
-          output << std::regex_replace( text, regex, "declaration" );
-          return std::move( output.str() );
+          text = std::regex_replace( text, match, "Error" );
+          auto regex = std::regex{"[A-Z_][A-Z_]+"};
+          text = std::regex_replace( text, regex, "declaration" );
+          return std::move( text );
         }
-        return text;
+        return std::move( text );
       }
 
       std::string print( const ParseError& err ) {
