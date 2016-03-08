@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-pyAgrum is a Python wrapper for the C++ aGrUM library.
+[pyAgrum](https://forge.lip6.fr/projects/pyagrum/wiki)  is a Python wrapper for the C++ [aGrUM](https://agrum.lip6.fr) library.
 It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
 
-The module is a straightforward application of the SWIG interface generator. Custom-written code was added to make the interface more similar to OpenBayes, a free Bayesian Network library for Python.
+The module is generated using the [SWIG](https://www.swig.org) interface generator. Custom-written code was added to make the interface more friendly.
 
-pyAgrum is GPL.
-
-site : https://forge.lip6.fr/projects/pyagrum/wiki
+pyAgrum has [comprehensive API documentation](http://www-desir.lip6.fr/~phw/aGrUM/dev/pdoc/),
+[examples as notebooks](http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/) and a [website](https://forge.lip6.fr/projects/pyagrum/wiki).
 """
 
 # aGrum Licence (GPL)
@@ -33,30 +32,33 @@ __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
 from .functions import *
 
-# selection of imports extracted from dir(pyAgrum)
-from @PYAGRUM_MODULE@ import Arc,Edge,DiGraph,UndiGraph,MixedGraph,DAG,CliqueGraph
-
-from @PYAGRUM_MODULE@ import BayesNet
-from @PYAGRUM_MODULE@ import DiscretizedVariable,LabelizedVariable,RangeVariable,DiscreteVariable
-from @PYAGRUM_MODULE@ import Potential,Instantiation,UtilityTable
-from @PYAGRUM_MODULE@ import BruteForceKL,GibbsKL
-from @PYAGRUM_MODULE@ import GibbsInference,LazyPropagation
-from @PYAGRUM_MODULE@ import PythonApproximationListener,PythonBNListener,PythonLoadListener
-
-from @PYAGRUM_MODULE@ import BNGenerator,IDGenerator,JTGenerator
-from @PYAGRUM_MODULE@ import BNLearner
-
-from @PYAGRUM_MODULE@ import InfluenceDiagram,InfluenceDiagramInference
-
-from @PYAGRUM_MODULE@ import initRandom,randomProba,randomDistribution
-
-from @PYAGRUM_MODULE@ import isOMP,setNumberOfThreads,getNumberOfLogicalProcessors,getMaxNumberOfThreads
-
-from @PYAGRUM_MODULE@ import CredalNet,CNMonteCarloSampling,CNLoopyPropagation
-
-from @PYAGRUM_MODULE@ import PRMexplorer
-
-from @PYAGRUM_MODULE@ import DefaultInLabel,DuplicateElement,DuplicateLabel,EmptyBSTree,EmptySet,GumException,FatalError,FormatNotFound,GraphError,IOError,IdError,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,ReferenceError,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue,UnknownLabelInDatabase
+from @PYAGRUM_MODULE@ import *
 
 # seed is chosen randomly :)
 initRandom(0)
+
+# selection of imports extracted from dir(pyAgrum)
+__all__=[
+  '__version__','__license__','__project_url__',
+  'availableBNExts','availableBNExts','loadBN','saveBN','loadID',
+  
+  'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
+  'BayesNet',
+  'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
+  'Potential','Instantiation','UtilityTable',
+  'BruteForceKL','GibbsKL',
+  'GibbsInference','LazyPropagation',
+  'PythonApproximationListener','PythonBNListener','PythonLoadListener',
+  'BNGenerator','IDGenerator','JTGenerator',
+  'BNLearner',
+  'InfluenceDiagram','InfluenceDiagramInference',
+  
+  'initRandom','randomProba','randomDistribution',
+  'isOMP','setNumberOfThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads',
+  
+  'CredalNet','CNMonteCarloSampling','CNLoopyPropagation',
+  
+  'PRMexplorer',
+  
+  'DefaultInLabel','DuplicateElement','DuplicateLabel','EmptyBSTree','EmptySet','GumException','FatalError','FormatNotFound','GraphError','IOError','IdError','InvalidArc','InvalidArgument','InvalidArgumentsNumber','InvalidDirectedCycle','InvalidEdge','InvalidNode','NoChild','NoNeighbour','NoParent','NotFound','NullElement','OperationNotAllowed','OutOfBounds','OutOfLowerBound','OutOfUpperBound','ReferenceError','SizeError','SyntaxError','UndefinedElement','UndefinedIteratorKey','UndefinedIteratorValue','UnknownLabelInDatabase'
+  ]
