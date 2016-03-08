@@ -144,14 +144,14 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::initializeInheritance() {
       if ( __super ) {
-        const auto& c = super();
-        // Adding implemented interfaces of c, if any
-        if ( c.__implements ) {
+        __super->__addExtension( this );
+        // Adding implemented interfaces, if any
+        if ( __super->__implements ) {
           if ( not __implements ) {
             __implements =
-                new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) );
+                new Set<Interface<GUM_SCALAR>*>( *( __super->__implements ) );
           } else {
-            for ( auto i : *( c.__implements ) ) {
+            for ( auto i : *( __super->__implements ) ) {
               __implements->insert( i );
             }
           }
@@ -166,9 +166,8 @@ namespace gum {
     void Class<GUM_SCALAR>::inheritReferenceSlots() {
       if ( __super ) {
 
-        const auto& c = super();
         // Copying reference slots
-        for ( const auto c_refslot : c.__referenceSlots ) {
+        for ( const auto c_refslot : __super->__referenceSlots ) {
           auto ref = new ReferenceSlot<GUM_SCALAR>(
               c_refslot->name(),
               const_cast<ClassElementContainer<GUM_SCALAR>&>(
@@ -183,8 +182,8 @@ namespace gum {
           __nodeIdMap.insert( ref->id(), ref );
           __referenceSlots.insert( ref );
 
-          if ( c.__nameMap[c_refslot->name()] ==
-               c.__nameMap[c_refslot->safeName()] ) {
+          if ( __super->__nameMap[c_refslot->name()] ==
+               __super->__nameMap[c_refslot->safeName()] ) {
             __nameMap.insert( ref->name(), ref );
           }
 
@@ -196,9 +195,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::inheritParameters() {
       if ( __super ) {
-        const auto& c = super();
         // Copying parameters
-        for ( const auto c_param : c.__parameters ) {
+        for ( const auto c_param : __super->__parameters ) {
           auto param = new Parameter<GUM_SCALAR>(
               c_param->name(), c_param->valueType(), c_param->value() );
 
@@ -215,8 +213,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::inheritAttributes() {
       if ( __super ) {
-        const auto& c = super();
-        for ( const auto c_attr : c.__attributes ) {
+        for ( const auto c_attr : __super->__attributes ) {
           // using multiDimSparse to prevent unecessary memory allocation for
           // large arrays (the potentials are copied latter)
           auto attr = c_attr->newFactory( *this );
@@ -232,8 +229,8 @@ namespace gum {
           __nodeIdMap.insert( attr->id(), attr );
           __attributes.insert( attr );
 
-          if ( c.__nameMap[c_attr->name()] ==
-               c.__nameMap[c_attr->safeName()] ) {
+          if ( __super->__nameMap[c_attr->name()] ==
+               __super->__nameMap[c_attr->safeName()] ) {
             __nameMap.insert( attr->name(), attr );
           }
 
@@ -297,7 +294,6 @@ namespace gum {
           __nameMap.insert( sc->name(), sc );
           __nameMap.insert( sc->safeName(), sc );
         }
-        this->_copyIOFlags( *__super );
       }
     }
 
