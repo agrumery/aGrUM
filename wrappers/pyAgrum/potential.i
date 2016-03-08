@@ -1,3 +1,5 @@
+// beforeMerg rajouter l'operateur == pour les Potentials
+
 %ignore gum::MultiDimWithOffset;
 %ignore gum::MultiDimImplementation;
 %ignore gum::MultiDimInterface;
@@ -24,35 +26,35 @@
 %rename ("$ignore", fullname=1) gum::Potential<double>::margMaxOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margMinOut(const Set<const DiscreteVariable*>& del_vars) const;
 
-%extend gum::Potential<double> {   
+%extend gum::Potential<double> {
     Potential<double>
     margSumOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margSumOut(s);
     }
-    
+
     Potential<double>
     margProdOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margProdOut(s);
     }
-    
+
     Potential<double>
     margMaxOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margMaxOut(s);
     }
-    
+
     Potential<double>
     margMinOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margMinOut(s);
     }
-    
+
     // division for python3
     gum::Potential<double> __truediv__(const gum::Potential<double>& b) {
       return *self /b;
@@ -62,10 +64,20 @@
     gum::Potential<double> __div__(const gum::Potential<double>& b) {
       return *self/b;
     }
+    
+    // equality
+    bool __eq__(const gum::Potential<double>& b) {
+      return *self==b;
+    }
+    
+    // non equality
+    bool __ne__(const gum::Potential<double>& b) {
+      return *self!=b;
+    }
 
 
   %pythoncode {
-    
+
     def variablesSequence(self):
         varlist = []
         for i in range(0, self.nbrDim()):

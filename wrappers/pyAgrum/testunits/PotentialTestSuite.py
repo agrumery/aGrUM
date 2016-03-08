@@ -243,6 +243,41 @@ class TestOperators(pyAgrumTestCase):
     self.assertEqual((p+q).sum(),270)
     self.assertEqual((p+q).max(),18)
   
+  def testEquality(self):
+    a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]    
+    q=gum.Potential()
+    q.add(b).add(c)
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    p=gum.Potential() #same data, difference dims
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    r=gum.Potential() #same data, same dims
+    r.add(a).add(b)
+    r.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    t=gum.Potential() #same dims, different data
+    t.add(a).add(b)
+    t.fillWith([1,2,3,0,5,6,7,8,9])
+    
+    u=gum.Potential() #same dims, same data, different order
+    u.add(b).add(a)
+    u.fillWith([1,4,7,2,5,8,3,6,9])
+    
+    self.assertTrue(p==p)
+    self.assertFalse(p==q)
+    self.assertTrue(p==r)
+    self.assertFalse(p==t)
+    self.assertTrue(p==u)
+        
+    self.assertFalse(p!=p)
+    self.assertTrue(p!=q)
+    self.assertFalse(p!=r)
+    self.assertTrue(p!=t)
+    self.assertFalse(p!=u)
+    
+    
   def testSimpleInPLaceOperators(self):
     a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]    
     q=gum.Potential()
@@ -320,5 +355,6 @@ ts.addTest(TestIndexs('testNumpyIndex'))
 ts.addTest(TestIndexs('testDictIndex'))
 ts.addTest(TestIndexs('testDictIndex'))
 ts.addTest(TestOperators('testSimpleOperators'))
+ts.addTest(TestOperators('testEquality'))
 ts.addTest(TestOperators('testSimpleInPLaceOperators'))
 ts.addTest(TestOperators('testMargOperators'))

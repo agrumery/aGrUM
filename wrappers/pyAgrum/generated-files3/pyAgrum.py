@@ -4058,6 +4058,16 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___div__(self, *args)
 
 
+    def __eq__(self, b: 'Potential_double') -> "bool":
+        """__eq__(Potential_double self, Potential_double b) -> bool"""
+        return _pyAgrum.Potential_double___eq__(self, b)
+
+
+    def __ne__(self, b: 'Potential_double') -> "bool":
+        """__ne__(Potential_double self, Potential_double b) -> bool"""
+        return _pyAgrum.Potential_double___ne__(self, b)
+
+
 
     def variablesSequence(self):
         varlist = []

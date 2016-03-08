@@ -155,6 +155,33 @@ namespace gum_tests {
       }
     }
 
+    void testEquality() {
+      auto a = gum::LabelizedVariable( "a", "afoo" ,3);
+      auto b = gum::LabelizedVariable( "b", "bfoo" ,3);
+      auto c = gum::LabelizedVariable( "c", "cfoo" ,3);
+
+      gum::Potential<int> p,q,r,t,u;
+      p<<a<<b;
+      p.fillWith({1,2,3,4,5,6,7,8,9});
+
+      q<<b<<c; //different dims
+      q.fillWith({1,2,3,4,5,6,7,8,9});
+
+      r<<a<<b; //same dims, same data
+      r.fillWith({1,2,3,4,5,6,7,8,9});
+
+      t<<a<<b; //same dims,different data
+      t.fillWith({1,2,3,4,0,6,7,8,9});
+
+      u<<b<<a; //same dims, same data, different order
+      u.fillWith({1,4,7,2,5,8,3,6,9});
+
+      TS_ASSERT(p!=q);
+      TS_ASSERT(p==r);
+      TS_ASSERT(p!=t);
+      TS_ASSERT(p==u);
+    }
+
     void testOperators() {
       auto a = gum::LabelizedVariable( "a", "afoo" );
       auto b = gum::LabelizedVariable( "b", "bfoo" );
@@ -237,6 +264,55 @@ namespace gum_tests {
                         "<b:1|a:0|c:1> :: 25 /"
                         "<b:0|a:1|c:1> :: 13 /"
                         "<b:1|a:1|c:1> :: 34" );
+    }
+
+    void testMargOutFunctions() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+      auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
+      auto d = gum::LabelizedVariable( "d", "dfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      p.normalize();
+
+      gum::Potential<float> q;
+      q << c << d;
+      q.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      q.normalize();
+
+      TS_ASSERT( p != q );
+
+      gum::Potential<float> r;
+      r << c << d;
+      r.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      TS_ASSERT( q != r );
+      r.normalize();
+      TS_ASSERT( q == r );
+
+      auto joint = p * q;
+
+      auto margAB = joint.margSumOut( {&c, &d} );
+      TS_ASSERT( ( p == margAB ) );
+      auto margCD = joint.margSumOut( {&b, &a} );
+      TS_ASSERT( ( q == margCD ) );
+
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      TS_ASSERT_EQUALS( p.margProdOut( {&a} ).toString(),
+                        "<b:0> :: 6 /<b:1> :: 120 /<b:2> :: 504" );
+      TS_ASSERT_EQUALS( p.margProdOut( {&b} ).toString(),
+                        "<a:0> :: 28 /<a:1> :: 80 /<a:2> :: 162" );
+
+      TS_ASSERT_EQUALS( p.margMaxOut( {&a} ).toString(),
+                        "<b:0> :: 3 /<b:1> :: 6 /<b:2> :: 9" );
+      TS_ASSERT_EQUALS( p.margMaxOut( {&b} ).toString(),
+                        "<a:0> :: 7 /<a:1> :: 8 /<a:2> :: 9" );
+
+      TS_ASSERT_EQUALS( p.margMinOut( {&a} ).toString(),
+                        "<b:0> :: 1 /<b:1> :: 4 /<b:2> :: 7" );
+      TS_ASSERT_EQUALS( p.margMinOut( {&b} ).toString(),
+                        "<a:0> :: 1 /<a:1> :: 2 /<a:2> :: 3" );
     }
   };
 }

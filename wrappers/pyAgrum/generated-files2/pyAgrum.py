@@ -3869,9 +3869,12 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_fill(self, d)
 
 
-    def fillWith(self, v):
-        """fillWith(MultiDimContainer_double self, Vector_double v)"""
-        return _pyAgrum.MultiDimContainer_double_fillWith(self, v)
+    def fillWith(self, *args):
+        """
+        fillWith(MultiDimContainer_double self, Vector_double v)
+        fillWith(MultiDimContainer_double self, std::initializer_list< double > list)
+        """
+        return _pyAgrum.MultiDimContainer_double_fillWith(self, *args)
 
 
     def copyFrom(self, src, p_i=None):
@@ -4053,6 +4056,16 @@ class Potential_double(_object):
         __div__(Potential_double self, Potential_double b) -> Potential_double
         """
         return _pyAgrum.Potential_double___div__(self, *args)
+
+
+    def __eq__(self, b):
+        """__eq__(Potential_double self, Potential_double b) -> bool"""
+        return _pyAgrum.Potential_double___eq__(self, b)
+
+
+    def __ne__(self, b):
+        """__ne__(Potential_double self, Potential_double b) -> bool"""
+        return _pyAgrum.Potential_double___ne__(self, b)
 
 
 
