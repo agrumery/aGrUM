@@ -276,23 +276,31 @@ namespace gum {
     void Class<GUM_SCALAR>::inheritSlotChains() {
       if ( __super ) {
         // Copying slot chains
-        for ( const auto c_slotchain : __super->__slotChains ) {
-          // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
-          // chain
-          auto chain = c_slotchain->chain();
+        for ( const auto c_sc : __super->__slotChains ) {
+          // Because of aggregators, some slotchains may exists already
+          if ( not( __nameMap.exists( c_sc->name() ) and
+                    __nameMap.exists( c_sc->safeName() ) ) ) {
+            // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
+            // chain
+            auto chain = c_sc->chain();
 
-          chain.setAtPos( 0, __nameMap[c_slotchain->chain().front()->name()] );
+            chain.setAtPos( 0, __nameMap[c_sc->chain().front()->name()] );
 
-          auto sc = new SlotChain<GUM_SCALAR>( c_slotchain->name(), chain );
-          __bijection->insert( &( c_slotchain->type().variable() ),
-                               &( sc->type().variable() ) );
-          sc->setId( c_slotchain->id() );
-          __dag.addNode( sc->id() );
-          __nodeIdMap.insert( sc->id(), sc );
-          __slotChains.insert( sc );
+            auto sc = new SlotChain<GUM_SCALAR>( c_sc->name(), chain );
+            __bijection->insert( &( c_sc->type().variable() ),
+                                 &( sc->type().variable() ) );
+            sc->setId( c_sc->id() );
+            __dag.addNode( sc->id() );
+            __nodeIdMap.insert( sc->id(), sc );
+            __slotChains.insert( sc );
 
-          __nameMap.insert( sc->name(), sc );
-          __nameMap.insert( sc->safeName(), sc );
+            if ( not __nameMap.exists( sc->name() ) ) {
+              __nameMap.insert( sc->name(), sc );
+            }
+            if ( not __nameMap.exists( sc->safeName() ) ) {
+              __nameMap.insert( sc->safeName(), sc );
+            }
+          }
         }
       }
     }
