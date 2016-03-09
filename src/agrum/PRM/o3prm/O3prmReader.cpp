@@ -20,20 +20,20 @@
 
 /**
  * @file
- * @brief Implementation for the O3PRMFactory class.
+ * @brief Implementation for the O3prmReader class.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
-#include <agrum/PRM/newo3prm/O3PRMFactory.h>
+#include <agrum/PRM/o3prm/O3prmReader.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
-      template class gum::prm::o3prm::O3PRMFactory<float>;
-      template class gum::prm::o3prm::O3PRMFactory<double>;
+      template class gum::prm::o3prm::O3prmReader<float>;
+      template class gum::prm::o3prm::O3prmReader<double>;
     }
   }
 }

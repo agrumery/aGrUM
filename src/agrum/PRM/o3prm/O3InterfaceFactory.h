@@ -33,10 +33,10 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
-#include <agrum/PRM/newo3prm/utils.h>
-#include <agrum/PRM/newo3prm/O3NameSolver.h>
-#include <agrum/PRM/newo3prm/errors.h>
+#include <agrum/PRM/o3prm/o3prm.h>
+#include <agrum/PRM/o3prm/utils.h>
+#include <agrum/PRM/o3prm/O3NameSolver.h>
+#include <agrum/PRM/o3prm/errors.h>
 
 #ifndef GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
 #define GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
@@ -104,7 +104,7 @@ namespace gum {
   }    // prm
 }  // gum
 
-#include <agrum/PRM/newo3prm/O3InterfaceFactory.tcc>
+#include <agrum/PRM/o3prm/O3InterfaceFactory.tcc>
 
 extern template class gum::prm::o3prm::O3InterfaceFactory<float>;
 extern template class gum::prm::o3prm::O3InterfaceFactory<double>;

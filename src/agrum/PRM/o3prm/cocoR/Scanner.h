@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_prm_newo3prm_COCO_SCANNER_H__)
-#define gum_prm_newo3prm_COCO_SCANNER_H__
+#if !defined(gum_prm_o3prm_COCO_SCANNER_H__)
+#define gum_prm_o3prm_COCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -48,7 +48,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 namespace prm {
-namespace newo3prm {
+namespace o3prm {
 
 
 class Token {

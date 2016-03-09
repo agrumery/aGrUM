@@ -32,15 +32,15 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_prm_newo3prm_COCO_PARSER_H__)
-#define gum_prm_newo3prm_COCO_PARSER_H__
+#if !defined(gum_prm_o3prm_COCO_PARSER_H__)
+#define gum_prm_o3prm_COCO_PARSER_H__
 
 #include <string>
 #include <vector>
 #include <utility>
 #include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
+#include <agrum/PRM/o3prm/o3prm.h>
 
 #include <iostream>
 #include <string>
@@ -49,7 +49,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 namespace prm {
-namespace newo3prm {
+namespace o3prm {
 
 
 class Parser {
@@ -240,7 +240,7 @@ void set_prefix( const std::string& prefix ) {
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
 
-    	void NEWO3PRM();
+    	void O3PRM_UNIT();
 	void IMPORT_UNIT();
 	void UNIT();
 	void TYPE_UNIT();

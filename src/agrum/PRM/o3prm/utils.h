@@ -59,6 +59,6 @@ namespace gum {
   }
 }
 
-#include <agrum/PRM/newo3prm/utils.tcc>
+#include <agrum/PRM/o3prm/utils.tcc>
 
 #endif  // GUM_PRM_O3PRM_O3PRM_H

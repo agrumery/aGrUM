@@ -41,7 +41,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 namespace prm {
-namespace newo3prm {
+namespace o3prm {
 
 
 void Parser::SynErr( int n ) {
@@ -106,7 +106,7 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
   }
 }
 
-void Parser::NEWO3PRM() {
+void Parser::O3PRM_UNIT() {
 		if (la->kind == _import) {
 			IMPORT_UNIT();
 		}
@@ -894,7 +894,7 @@ void Parser::Parse() {
   la = dummyToken = new Token();
   la->val = coco_string_create( L"Dummy Token" );
   Get();
-  	NEWO3PRM();
+  	O3PRM_UNIT();
 
 }
 

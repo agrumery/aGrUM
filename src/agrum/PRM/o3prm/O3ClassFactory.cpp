@@ -26,7 +26,7 @@
  * @author Lionel TORTI
  */
 
-#include <agrum/PRM/newo3prm/O3ClassFactory.h>
+#include <agrum/PRM/o3prm/O3ClassFactory.h>
 
 template class gum::prm::o3prm::O3ClassFactory<float>;
 template class gum::prm::o3prm::O3ClassFactory<double>;

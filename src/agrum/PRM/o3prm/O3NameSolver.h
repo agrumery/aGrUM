@@ -31,9 +31,9 @@
 
 #include <agrum/core/hashTable.h>
 #include <agrum/PRM/PRM.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
-#include <agrum/PRM/newo3prm/utils.h>
-#include <agrum/PRM/newo3prm/errors.h>
+#include <agrum/PRM/o3prm/o3prm.h>
+#include <agrum/PRM/o3prm/utils.h>
+#include <agrum/PRM/o3prm/errors.h>
 
 #ifndef GUM_PRM_O3PRM_O3NAMESOLVER_H
 #define GUM_PRM_O3PRM_O3NAMESOLVER_H

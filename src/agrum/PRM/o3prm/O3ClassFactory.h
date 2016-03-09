@@ -33,9 +33,9 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
-#include <agrum/PRM/newo3prm/utils.h>
-#include <agrum/PRM/newo3prm/O3NameSolver.h>
+#include <agrum/PRM/o3prm/o3prm.h>
+#include <agrum/PRM/o3prm/utils.h>
+#include <agrum/PRM/o3prm/O3NameSolver.h>
 
 #ifndef GUM_PRM_O3PRM_O3CLASS_FACTORY_H
 #define GUM_PRM_O3PRM_O3CLASS_FACTORY_H
@@ -196,7 +196,7 @@ namespace gum {
   }    // prm
 }  // gum
 
-#include <agrum/PRM/newo3prm/O3ClassFactory.tcc>
+#include <agrum/PRM/o3prm/O3ClassFactory.tcc>
 
 extern template class gum::prm::o3prm::O3ClassFactory<float>;
 extern template class gum::prm::o3prm::O3ClassFactory<double>;

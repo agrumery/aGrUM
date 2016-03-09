@@ -9,7 +9,7 @@
 #include <utility>
 #include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
+#include <agrum/PRM/o3prm/o3prm.h>
 
 //##############################################################################
 //
@@ -17,7 +17,7 @@
 //
 //##############################################################################
 
-COMPILER NEWO3PRM
+COMPILER O3PRM_UNIT
 
 private:
 
@@ -201,7 +201,7 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //________________________
-NEWO3PRM = [ IMPORT_UNIT ] UNIT { UNIT }. 
+O3PRM_UNIT = [ IMPORT_UNIT ] UNIT { UNIT }. 
 
 //________________________
 UNIT = 
@@ -917,4 +917,4 @@ ARRAY<O3Integer& size> =
   .
 
 //________________________
-END NEWO3PRM.
+END O3PRM_UNIT.

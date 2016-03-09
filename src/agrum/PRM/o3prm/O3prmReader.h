@@ -34,22 +34,22 @@
 
 #include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
-#include <agrum/PRM/newo3prm/o3prm.h>
+#include <agrum/PRM/o3prm/o3prm.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
       template <typename GUM_SCALAR>
-      class O3PRMFactory {
+      class O3prmReader {
         public:
-        O3PRMFactory( );
-        O3PRMFactory( PRM<GUM_SCALAR>& prm );
-        O3PRMFactory( const O3PRMFactory& src );
-        O3PRMFactory( O3PRMFactory&& src );
-        ~O3PRMFactory();
-        O3PRMFactory& operator=( const O3PRMFactory& src );
-        O3PRMFactory& operator=( O3PRMFactory&& src );
+        O3prmReader( );
+        O3prmReader( PRM<GUM_SCALAR>& prm );
+        O3prmReader( const O3prmReader& src );
+        O3prmReader( O3prmReader&& src );
+        ~O3prmReader();
+        O3prmReader& operator=( const O3prmReader& src );
+        O3prmReader& operator=( O3prmReader&& src );
 
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
@@ -148,10 +148,10 @@ namespace gum {
   } // prm
 } // gum
 
-#include <agrum/PRM/newo3prm/O3PRMFactory.tcc>
+#include <agrum/PRM/o3prm/O3prmReader.tcc>
 
-extern template class gum::prm::o3prm::O3PRMFactory<float>;
-extern template class gum::prm::o3prm::O3PRMFactory<double>;
+extern template class gum::prm::o3prm::O3prmReader<float>;
+extern template class gum::prm::o3prm::O3prmReader<double>;
 
 #endif // GUM_PRM_O3PRM_O3PRM_FACTORY_H
 
