@@ -124,12 +124,11 @@ namespace gum {
     /// normalisation of this do nothing if sum is 0
     Potential<GUM_SCALAR>& normalize() const;
 
-    // beforeMerging Faire les marg...In dans pyAgrum également
     /**
      * Projection using sum as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
-     * @param keep_vars is the set of vars to keep
+     * @param kept_vars is the set of vars to keep
      */
     Potential<GUM_SCALAR>
     margSumOut( const Set<const DiscreteVariable*>& del_vars ) const;
@@ -140,6 +139,7 @@ namespace gum {
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param del_vars is the set of vars to eliminate
+     * @param kept_vars is the set of vars to keep
      */
     Potential<GUM_SCALAR>
     margProdOut( const Set<const DiscreteVariable*>& del_vars ) const;
@@ -150,6 +150,7 @@ namespace gum {
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
+     * @param kept_vars is the set of vars to keep
      */
     Potential<GUM_SCALAR>
     margMinOut( const Set<const DiscreteVariable*>& del_vars ) const;
@@ -160,6 +161,7 @@ namespace gum {
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
+     * @param kept_vars is the set of vars to keep
      */
     Potential<GUM_SCALAR>
     margMaxOut( const Set<const DiscreteVariable*>& del_vars ) const;
