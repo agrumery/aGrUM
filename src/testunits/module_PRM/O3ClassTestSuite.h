@@ -2267,6 +2267,130 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( "", output.str() );
     }
+
+    void testClassWithOverloading() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type state extends boolean OK: true, NOK: false;";
+      input << std::endl;
+      input << "interface Plop { "
+               "boolean state;"
+               "}";
+      input << std::endl;
+      input << "interface SubPlop extends Plop { "
+               "state state;"
+               "}";
+      input << std::endl;
+      input << "class Foo { "
+               "Plop plop;"
+               "boolean state {[ 0.2, 0.8]};"
+               "}";
+      input << std::endl;
+      input << "class Bar extends Foo { "
+               "SubPlop plop;"
+               "state state {[ 0.1, 0.9 ]};"
+               "}";
+      input << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)2 );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)2 );
+      TS_ASSERT( prm.isInterface( "Plop" ) );
+      const auto& plop = prm.interface( "Plop" );
+      TS_ASSERT_EQUALS( plop.attributes().size(), (gum::Size)1 );
+      TS_ASSERT( plop.exists( "state" ) );
+      TS_ASSERT( plop.exists( "(boolean)state" ) );
+
+      TS_ASSERT( prm.isInterface( "SubPlop" ) );
+      const auto& sub_plop = prm.interface( "SubPlop" );
+      TS_ASSERT_EQUALS( sub_plop.attributes().size(), (gum::Size)2 );
+      TS_ASSERT( sub_plop.exists( "state" ) );
+      TS_ASSERT( sub_plop.exists( "(boolean)state" ) );
+      TS_ASSERT( sub_plop.exists( "(state)state" ) );
+
+      TS_ASSERT( prm.isClass( "Foo" ) );
+      const auto& foo = prm.getClass( "Foo" );
+      TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
+      TS_ASSERT( foo.exists( "state" ) );
+      TS_ASSERT( foo.exists( "(boolean)state" ) );
+      TS_ASSERT(
+          gum::prm::ClassElement<double>::isAttribute( foo.get( "state" ) ) );
+      TS_ASSERT(
+          gum::prm::ClassElement<double>::isAttribute( foo.get( "(boolean)state" ) ) );
+      TS_ASSERT_EQUALS( &( foo.get( "state" ) ),
+                        &( foo.get( "(boolean)state" ) ) );
+      TS_ASSERT_EQUALS( foo.referenceSlots().size(), (gum::Size)1 );
+      TS_ASSERT( foo.exists( "plop" ) );
+      TS_ASSERT( gum::prm::ClassElement<double>::isReferenceSlot(
+          foo.get( "plop" ) ) );
+      const auto& ref_plop = static_cast<const gum::prm::ReferenceSlot<double>&>(
+          foo.get( "plop" ) );
+      TS_ASSERT_EQUALS( &( ref_plop.slotType() ), &plop );
+
+      TS_ASSERT( prm.isClass( "Bar" ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT_EQUALS( bar.attributes().size(), (gum::Size)2 );
+      TS_ASSERT( bar.exists( "state" ) );
+      TS_ASSERT( bar.exists( "(boolean)state" ) );
+      TS_ASSERT( bar.exists( "(state)state" ) );
+      TS_ASSERT(
+          gum::prm::ClassElement<double>::isAttribute( bar.get( "state" ) ) );
+      TS_ASSERT(
+          gum::prm::ClassElement<double>::isAttribute( bar.get( "(boolean)state" ) ) );
+      TS_ASSERT(
+          gum::prm::ClassElement<double>::isAttribute( bar.get( "(state)state" ) ) );
+      TS_ASSERT_EQUALS( &( bar.get( "state" ) ),
+                        &( bar.get( "(state)state" ) ) );
+      TS_ASSERT_EQUALS( bar.referenceSlots().size(), (gum::Size)1 );
+      TS_ASSERT( bar.exists( "plop" ) );
+      TS_ASSERT( gum::prm::ClassElement<double>::isReferenceSlot(
+          bar.get( "plop" ) ) );
+      const auto& ref_subplop = static_cast<const gum::prm::ReferenceSlot<double>&>(
+          bar.get( "plop" ) );
+      TS_ASSERT_EQUALS( &( ref_subplop.slotType() ), &sub_plop );
+    }
+
+    void testClassWithOverloadingError1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "type state extends boolean OK: true, NOK: false;";
+      input << std::endl;
+      input << "interface Plop { "
+               "boolean state;"
+               "}";
+      input << std::endl;
+      input << "interface SubPlop { "
+               "state state;"
+               "}";
+      input << std::endl;
+      input << "class Foo { "
+               "Plop plop;"
+               "boolean state {[ 0.2, 0.8]};"
+               "}";
+      input << std::endl;
+      input << "class Bar extends Foo { "
+               "SubPlop plop;"
+               "state state {[ 0.1, 0.9 ]};"
+               "}";
+      input << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3PRMFactory<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|5 col 33| Error : Illegal overload of element plop from class Bar";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
   };
 
 }  // namespace gum_tests

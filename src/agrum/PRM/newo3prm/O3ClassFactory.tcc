@@ -431,8 +431,39 @@ namespace gum {
         // Check for dupplicates
         if ( real_c.exists( ref.name().label() ) ) {
 
-          O3PRM_CLASS_DUPLICATE_REFERENCE( ref.name(), *__errors );
-          return false;
+          const auto& elt = real_c.get( ref.name().label() );
+
+          if ( ClassElement<GUM_SCALAR>::isReferenceSlot( elt ) ) {
+
+            auto slot_type = (ClassElementContainer<GUM_SCALAR>*)nullptr;
+
+            if ( __prm->isInterface( ref.type().label() ) ) {
+
+              slot_type = &( __prm->interface( ref.type().label() ) );
+
+            } else {
+
+              slot_type = &( __prm->getClass( ref.type().label() ) );
+            }
+
+            auto real_ref = static_cast<const ReferenceSlot<GUM_SCALAR>*>( &elt );
+
+            if ( slot_type->name() == real_ref->slotType().name() ) {
+
+              O3PRM_CLASS_DUPLICATE_REFERENCE( ref.name(), *__errors );
+              return false;
+
+            } else if ( not slot_type->isSubTypeOf( real_ref->slotType() ) ) {
+
+              O3PRM_CLASS_ILLEGAL_OVERLOAD( ref.name(), c.name(), *__errors );
+              return false;
+            }
+
+          } else {
+
+            O3PRM_CLASS_DUPLICATE_REFERENCE( ref.name(), *__errors );
+            return false;
+          }
         }
 
         // If class we need to check for illegal references

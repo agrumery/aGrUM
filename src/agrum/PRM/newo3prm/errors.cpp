@@ -335,13 +335,13 @@ namespace gum {
       }
 
       void O3PRM_CLASS_ILLEGAL_OVERLOAD( const O3Label& elt,
-                                         const O3Label& super,
+                                         const O3Label& c,
                                          ErrorsContainer& errors ) {
         const auto& pos = elt.position();
         auto msg = std::stringstream();
         msg << "Error : "
             << "Illegal overload of element " << elt.label() << " from class "
-            << super.label();
+            << c.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 

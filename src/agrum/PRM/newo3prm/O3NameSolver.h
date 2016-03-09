@@ -129,13 +129,45 @@ namespace gum {
             __eltName.insert( name.label(), name.label() );
             return true;
           }
+          // If name exists as is
+          if ( __prm->isInterface( name.label() ) ) {
+            __eltName.insert( name.label(), name.label() );
+            return true;
+          }
+          // If name exists as is
+          if ( __prm->isClass( name.label() ) ) {
+            __eltName.insert( name.label(), name.label() );
+            return true;
+          }
+          // If name exists as is in O3PRM types
+          for ( auto& t : __o3_prm->types() ) {
+            if ( t->name().label() == name.label() ) {
+              __eltName.insert( name.label(), name.label() );
+              return true;
+            }
+          }
+          // If name exists as is in O3PRM interfaces
+          for ( auto& i : __o3_prm->interfaces() ) {
+            if ( i->name().label() == name.label() ) {
+              __eltName.insert( name.label(), name.label() );
+              return true;
+            }
+          }
+          // If name exists as is in O3PRM classes
+          for ( auto& c : __o3_prm->classes() ) {
+            if ( c->name().label() == name.label() ) {
+              __eltName.insert( name.label(), name.label() );
+              return true;
+            }
+          }
 
+          auto lookup = "." + name.label();
           auto found = Set<std::string>();
           auto matches = std::vector<std::string>();
 
           // Trying with types
           for ( auto t : __prm->types() ) {
-            if ( ends_with( t->name(), name.label() ) ) {
+            if ( ends_with( t->name(), lookup ) ) {
               if ( not found.exists( t->name() ) ) {
                 found.insert( t->name() );
                 matches.push_back( t->name() );
@@ -144,7 +176,7 @@ namespace gum {
           }
           // Trying with O3Types
           for ( auto& t : __o3_prm->types() ) {
-            if ( ends_with( t->name().label(), name.label() ) ) {
+            if ( ends_with( t->name().label(), lookup ) ) {
               if ( not found.exists( t->name().label() ) ) {
                 found.insert( t->name().label() );
                 matches.push_back( t->name().label() );
@@ -154,7 +186,7 @@ namespace gum {
 
           // Trying with interfaces
           for ( auto i : __prm->interfaces() ) {
-            if ( ends_with( i->name(), name.label() ) ) {
+            if ( ends_with( i->name(), lookup ) ) {
               if ( not found.exists( i->name() ) ) {
                 found.insert( i->name() );
                 matches.push_back( i->name() );
@@ -163,7 +195,7 @@ namespace gum {
           }
           // Trying with O3Interface
           for ( auto& i : __o3_prm->interfaces() ) {
-            if ( ends_with( i->name().label(), name.label() ) ) {
+            if ( ends_with( i->name().label(), lookup ) ) {
               if ( not found.exists( i->name().label() ) ) {
                 found.insert( i->name().label() );
                 matches.push_back( i->name().label() );
@@ -173,7 +205,7 @@ namespace gum {
 
           // Trying with class
           for ( auto c : __prm->classes() ) {
-            if ( ends_with( c->name(), name.label() ) ) {
+            if ( ends_with( c->name(), lookup ) ) {
               if ( not found.exists( c->name() ) ) {
                 found.insert( c->name() );
                 matches.push_back( c->name() );
@@ -182,7 +214,7 @@ namespace gum {
           }
           // Trying with O3Class
           for ( auto& c : __o3_prm->classes() ) {
-            if ( ends_with( c->name().label(), name.label() ) ) {
+            if ( ends_with( c->name().label(), lookup ) ) {
               if ( not found.exists( c->name().label() ) ) {
                 found.insert( c->name().label() );
                 matches.push_back( c->name().label() );
