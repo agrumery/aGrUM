@@ -73,6 +73,7 @@ namespace gum {
        * Constructor for building a subclass of super.
        * @param name The subclass name.
        * @param super The super Class<GUM_SCALAR> of this.
+       * @param delayInheritance If true, inheritance will be delayed.
        */
       Class( const std::string& name,
              Class<GUM_SCALAR>& super,
@@ -84,6 +85,7 @@ namespace gum {
        * in set.
        * @param name The sub class name.
        * @param set The Set of implemented interfaces.
+       * @param delayInheritance If true, inheritance will be delayed.
        */
       Class( const std::string& name,
              const Set<Interface<GUM_SCALAR>*>& set,
@@ -95,6 +97,7 @@ namespace gum {
        * @param name The sub class name.
        * @param super The super Class<GUM_SCALAR> of this.
        * @param set The Set of implemented interfaces.
+       * @param delayInheritance If true, inheritance will be delayed.
        */
       Class( const std::string& name,
              Class<GUM_SCALAR>& super,

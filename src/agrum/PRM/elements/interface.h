@@ -68,6 +68,7 @@ namespace gum {
        * Constructor for building a subclass of super.
        * @param name The sub-interface name.
        * @param super The super Interface of this.
+       * @param delayInheritance If true, inheritance will be delayed.
        */
       Interface( const std::string& name,
                  Interface& super,

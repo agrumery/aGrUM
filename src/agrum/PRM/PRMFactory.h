@@ -296,6 +296,8 @@ namespace gum {
        * @param c The class name.
        * @param ext The name of the super class of c.
        * @param implements The list of interface implemented by c.
+       * @param delayInheritance If true, the created gum::prm::Class
+       * inheritance will be delayed.
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
@@ -305,6 +307,9 @@ namespace gum {
                   const Set<std::string>* implements = nullptr,
                   bool delayInheritance=false ) override;
 
+      /**
+       * Continue the declaration of a class.
+       */
       virtual void continueClass( const std::string& c ) override;
 
       /**
@@ -330,6 +335,8 @@ namespace gum {
        *
        * @param i The interface name.
        * @param ext The name of the super interface of i.
+       * @param delayInheritance If true, the created gum::prm::Interface
+       * inheritance will be delayed.
        *
        * @throw NotFound Raised if ext does not match any declared
        *                 Interface<GUM_SCALAR>.
@@ -338,6 +345,9 @@ namespace gum {
                                    const std::string& ext = "",
                                    bool delayInheritance = false ) override;
 
+      /**
+       * Continue the declaration of an interface.
+       */
       virtual void continueInterface( const std::string& name ) override;
 
       /**
@@ -362,15 +372,14 @@ namespace gum {
        *
        * Use this method when you must add functions, such as Noisy-Or.
        *
-       * Use this method when you need to add functions, such as Noisy-Or.
-       * The attribute CPT is checked for parents and arcs will be added using
-       * the DiscreteVariable pointers, thus be careful to use those of the
+       * Use this method when you need to add functions, such as Noisy-Or.  The
+       * attribute CPT is checked for parents and arcs will be added using the
+       * DiscreteVariable pointers, thus be careful to use those of the
        * attributes, aggregates and slotchains of the current class.
        * gum::prm::Class<GUM_SCALAR>::insertArc() will be called for each found
-       *parent of
-       * attr, so you should overload
-       *gum::prm::Attribute<GUM_SCALAR>::addParent() to prevent
-       * duplication errors. Such class exists: gum::prm::FuncAttribute .
+       * parent of attr, so you should overload
+       * gum::prm::Attribute<GUM_SCALAR>::addParent() to prevent duplication
+       * errors. Such class exists: gum::prm::FuncAttribute .
        *
        * The pointer is given to the class, so do not worry about deleting it.
        *
@@ -388,6 +397,9 @@ namespace gum {
       virtual void startAttribute( const std::string& type,
                                    const std::string& name ) override;
 
+      /**
+       * Continues the declaration of an attribute.
+       */
       virtual void continueAttribute( const std::string& name ) override;
 
       /**
