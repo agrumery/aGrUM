@@ -28,20 +28,6 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-#include <cstdint>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-
-#include <agrum/PRM/o3prm/O3prm.h>
-#include <agrum/PRM/o3prm/O3SystemFactory.h>
-#include <agrum/PRM/o3prm/O3TypeFactory.h>
-#include <agrum/PRM/o3prm/cocoR/Parser.h>
-#include <agrum/PRM/o3prm/cocoR/Scanner.h>
-#include <agrum/PRM/o3prm/O3ClassFactory.h>
-#include <agrum/PRM/o3prm/O3InterfaceFactory.h>
-#include <agrum/PRM/o3prm/O3NameSolver.h>
-
 namespace gum {
   namespace prm {
     namespace o3prm {

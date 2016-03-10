@@ -33,7 +33,7 @@ namespace gum {
     namespace o3prm {
 
       template <typename GUM_SCALAR>
-      O3ClassFactory<GUM_SCALAR>::O3ClassFactory(
+      INLINE O3ClassFactory<GUM_SCALAR>::O3ClassFactory(
           PRM<GUM_SCALAR>& prm,
           O3PRM& o3_prm,
           O3NameSolver<GUM_SCALAR>& solver,
@@ -46,7 +46,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3ClassFactory<GUM_SCALAR>::O3ClassFactory(
+      INLINE O3ClassFactory<GUM_SCALAR>::O3ClassFactory(
           const O3ClassFactory<GUM_SCALAR>& src )
           : __prm( src.__prm )
           , __o3_prm( src.__o3_prm )
@@ -61,7 +61,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3ClassFactory<GUM_SCALAR>::O3ClassFactory(
+      INLINE O3ClassFactory<GUM_SCALAR>::O3ClassFactory(
           O3ClassFactory<GUM_SCALAR>&& src )
           : __prm( std::move( src.__prm ) )
           , __o3_prm( std::move( src.__o3_prm ) )
@@ -76,12 +76,12 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3ClassFactory<GUM_SCALAR>::~O3ClassFactory() {
+      INLINE O3ClassFactory<GUM_SCALAR>::~O3ClassFactory() {
         GUM_DESTRUCTOR( O3ClassFactory );
       }
 
       template <typename GUM_SCALAR>
-      O3ClassFactory<GUM_SCALAR>& O3ClassFactory<GUM_SCALAR>::
+      INLINE O3ClassFactory<GUM_SCALAR>& O3ClassFactory<GUM_SCALAR>::
       operator=( const O3ClassFactory<GUM_SCALAR>& src ) {
         if ( this == &src ) {
           return *this;
@@ -99,7 +99,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3ClassFactory<GUM_SCALAR>& O3ClassFactory<GUM_SCALAR>::
+      INLINE O3ClassFactory<GUM_SCALAR>& O3ClassFactory<GUM_SCALAR>::
       operator=( O3ClassFactory<GUM_SCALAR>&& src ) {
         if ( this == &src ) {
           return *this;
@@ -117,7 +117,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::buildClasses() {
+      INLINE void O3ClassFactory<GUM_SCALAR>::buildClasses() {
 
         PRMFactory<GUM_SCALAR> factory( __prm );
 
@@ -148,7 +148,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::__setO3ClassCreationOrder() {
+      INLINE void O3ClassFactory<GUM_SCALAR>::__setO3ClassCreationOrder() {
 
         auto topo_order = __dag.topologicalOrder();
 
@@ -158,12 +158,12 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkO3Classes() {
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkO3Classes() {
         return __checkAndAddNodesToDag() and __checkAndAddArcsToDag();
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkAndAddNodesToDag() {
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAndAddNodesToDag() {
 
         for ( auto& c : __o3_prm->classes() ) {
 
@@ -185,7 +185,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkAndAddArcsToDag() {
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAndAddArcsToDag() {
         for ( auto& c : __o3_prm->classes() ) {
 
           if ( c->super().label() != "" ) {
@@ -212,7 +212,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::buildImplementations() {
+      INLINE void O3ClassFactory<GUM_SCALAR>::buildImplementations() {
 
         for ( auto& c : __o3_prm->classes() ) {
           if ( __checkImplementation( *c ) ) {
@@ -226,7 +226,8 @@ namespace gum {
       using AggMap = HashTable<std::string, O3Aggregate*>;
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkImplementation( O3Class& c ) {
+      INLINE bool
+      O3ClassFactory<GUM_SCALAR>::__checkImplementation( O3Class& c ) {
 
         // Saving attributes names for fast lookup
         auto attr_map = AttrMap();
@@ -261,7 +262,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool
+      INLINE bool
       O3ClassFactory<GUM_SCALAR>::__checkImplementation( O3Class& c,
                                                          O3Label& i,
                                                          AttrMap& attr_map,
@@ -318,7 +319,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
           O3Label& o3_type, const Type<GUM_SCALAR>& type ) {
         if ( not __solver->resolveType( o3_type ) ) {
           return false;
@@ -328,7 +329,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
           O3Label& o3_type, const ClassElementContainer<GUM_SCALAR>& type ) {
 
         if ( not __solver->resolveSlotType( o3_type ) ) {
@@ -346,7 +347,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::buildParameters() {
+      INLINE void O3ClassFactory<GUM_SCALAR>::buildParameters() {
 
         PRMFactory<GUM_SCALAR> factory( __prm );
         // Class with a super class must be declared after
@@ -363,7 +364,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::__addParameters(
+      INLINE void O3ClassFactory<GUM_SCALAR>::__addParameters(
           PRMFactory<GUM_SCALAR>& factory, O3Class& c ) {
 
         for ( auto& p : c.parameters() ) {
@@ -388,7 +389,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::buildReferenceSlots() {
+      INLINE void O3ClassFactory<GUM_SCALAR>::buildReferenceSlots() {
 
         // Class with a super class must be declared after
         for ( auto c : __o3Classes ) {
@@ -398,7 +399,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::__addReferenceSlots( O3Class& c ) {
+      INLINE void
+      O3ClassFactory<GUM_SCALAR>::__addReferenceSlots( O3Class& c ) {
 
         PRMFactory<GUM_SCALAR> factory( __prm );
 
@@ -418,7 +420,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool
+      INLINE bool
       O3ClassFactory<GUM_SCALAR>::__checkReferenceSlot( O3Class& c,
                                                         O3ReferenceSlot& ref ) {
 
@@ -446,7 +448,8 @@ namespace gum {
               slot_type = &( __prm->getClass( ref.type().label() ) );
             }
 
-            auto real_ref = static_cast<const ReferenceSlot<GUM_SCALAR>*>( &elt );
+            auto real_ref =
+                static_cast<const ReferenceSlot<GUM_SCALAR>*>( &elt );
 
             if ( slot_type->name() == real_ref->slotType().name() ) {
 
@@ -491,7 +494,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::declareAttributes() {
+      INLINE void O3ClassFactory<GUM_SCALAR>::declareAttributes() {
         // Class with a super class must be declared after
         for ( auto c : __o3Classes ) {
           __prm->getClass( c->name().label() ).inheritAttributes();
@@ -502,7 +505,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::__declareAttribute( O3Class& c ) {
+      INLINE void O3ClassFactory<GUM_SCALAR>::__declareAttribute( O3Class& c ) {
 
         PRMFactory<GUM_SCALAR> factory( __prm );
         factory.continueClass( c.name().label() );
@@ -521,7 +524,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkAttributeForDeclaration(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAttributeForDeclaration(
           O3Class& c, O3Attribute& attr ) {
 
         // Check type
@@ -550,7 +553,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::completeAttributes() {
+      INLINE void O3ClassFactory<GUM_SCALAR>::completeAttributes() {
 
         PRMFactory<GUM_SCALAR> factory( __prm );
 
@@ -597,7 +600,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::__completeAttribute(
+      INLINE void O3ClassFactory<GUM_SCALAR>::__completeAttribute(
           PRMFactory<GUM_SCALAR>& factory, O3Class& c ) {
 
         // Attributes
@@ -648,7 +651,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkAttributeForCompletion(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAttributeForCompletion(
           const O3Class& o3_c, O3Attribute& attr ) {
 
         // Check for parents existence
@@ -674,7 +677,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool
+      INLINE bool
       O3ClassFactory<GUM_SCALAR>::__checkParent( const Class<GUM_SCALAR>& c,
                                                  const O3Label& prnt ) {
         if ( prnt.label().find( '.' ) == std::string::npos ) {
@@ -688,7 +691,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkLocalParent(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkLocalParent(
           const Class<GUM_SCALAR>& c, const O3Label& prnt ) {
 
         if ( not c.exists( prnt.label() ) ) {
@@ -708,7 +711,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkRemoteParent(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkRemoteParent(
           const ClassElementContainer<GUM_SCALAR>& c, const O3Label& prnt ) {
 
         if ( __resolveSlotChain( c, prnt ) == nullptr ) {
@@ -718,7 +721,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool
+      INLINE bool
       O3ClassFactory<GUM_SCALAR>::__checkRuleCPT( const Class<GUM_SCALAR>& c,
                                                   O3RuleCPT& attr ) {
 
@@ -779,7 +782,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool
+      INLINE bool
       O3ClassFactory<GUM_SCALAR>::__checkRawCPT( const Class<GUM_SCALAR>& c,
                                                  O3RawCPT& attr ) {
 
@@ -856,7 +859,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      const ClassElement<GUM_SCALAR>*
+      INLINE const ClassElement<GUM_SCALAR>*
       O3ClassFactory<GUM_SCALAR>::__resolveSlotChain(
           const ClassElementContainer<GUM_SCALAR>& c, const O3Label& chain ) {
 
@@ -897,7 +900,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkSlotChainLink(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkSlotChainLink(
           const ClassElementContainer<GUM_SCALAR>& c,
           const O3Label& chain,
           const std::string& s ) {
@@ -911,7 +914,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::__buildAggregates( O3Class& c ) {
+      INLINE void O3ClassFactory<GUM_SCALAR>::__buildAggregates( O3Class& c ) {
 
         PRMFactory<GUM_SCALAR> factory( __prm );
 
@@ -921,7 +924,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3ClassFactory<GUM_SCALAR>::__addAggregates(
+      INLINE void O3ClassFactory<GUM_SCALAR>::__addAggregates(
           PRMFactory<GUM_SCALAR>& factory, O3Class& c ) {
 
         // Aggregates
@@ -949,8 +952,9 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkAggregate( O3Class& o3class,
-                                                         O3Aggregate& agg ) {
+      INLINE bool
+      O3ClassFactory<GUM_SCALAR>::__checkAggregate( O3Class& o3class,
+                                                    O3Aggregate& agg ) {
 
         if ( not __solver->resolveType( agg.variableType() ) ) {
           return false;
@@ -976,7 +980,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      const Type<GUM_SCALAR>*
+      INLINE const Type<GUM_SCALAR>*
       O3ClassFactory<GUM_SCALAR>::__checkAggParents( O3Class& o3class,
                                                      O3Aggregate& agg ) {
 
@@ -1011,7 +1015,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool
+      INLINE bool
       O3ClassFactory<GUM_SCALAR>::__checkAggTypeLegality( O3Class& o3class,
                                                           O3Aggregate& agg ) {
 
@@ -1034,7 +1038,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkAggParameters(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAggParameters(
           O3Class& o3class, O3Aggregate& agg, const Type<GUM_SCALAR>* t ) {
 
         bool ok = false;
@@ -1088,7 +1092,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool
+      INLINE bool
       O3ClassFactory<GUM_SCALAR>::__checkParametersNumber( O3Aggregate& agg,
                                                            size_t n ) {
 
@@ -1103,7 +1107,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3ClassFactory<GUM_SCALAR>::__checkParameterValue(
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkParameterValue(
           O3Aggregate& agg, const gum::prm::Type<GUM_SCALAR>& t ) {
 
         const auto& param = agg.parameters().front();

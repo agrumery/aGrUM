@@ -29,13 +29,13 @@
 #include <memory>
 #include <string>
 
-#include <agrum/core/set.h>
-#include <agrum/core/hashTable.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
+#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/errors.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/core/set.h>
 
 #ifndef GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
 #define GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
@@ -44,6 +44,15 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      /**
+       * @class O3InterfaceFactory
+       * @headerfile O3InterfaceFactory.h <agrum/PRM/o3prm/O3InterfaceFactory.h>
+       * @ingroup o3prm_group
+       *
+       * @brief Bulds gum::prm:Interface from gum::prm::o3prm::O3Interface.
+       *
+       * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
+       */
       template <typename GUM_SCALAR>
       class O3InterfaceFactory {
 
@@ -96,13 +105,13 @@ namespace gum {
                                                O3InterfaceElement& elt );
 
         bool __checkCyclicReference( O3Interface& i, O3InterfaceElement& elt );
-
       };
 
     }  // o3prm
   }    // prm
 }  // gum
 
+// always include the implementation of the templates
 #include <agrum/PRM/o3prm/O3InterfaceFactory.tcc>
 
 extern template class gum::prm::o3prm::O3InterfaceFactory<float>;

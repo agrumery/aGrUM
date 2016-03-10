@@ -20,15 +20,15 @@
 
 /**
  * @file
- * @brief Headers for parsing function for the O3PRM language.
+ * @brief Headers for the AST of the O3PRM language.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include <agrum/config.h>
 #include <agrum/core/hashTable.h>
@@ -41,6 +41,13 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      /**
+       * @class O3Position
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Position is part of the AST of the O3PRM language.
+       */
       class O3Position {
         public:
         O3Position();
@@ -63,6 +70,13 @@ namespace gum {
         int __column;
       };
 
+      /**
+       * @class O3Formula
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Formula is part of the AST of the O3PRM language.
+       */
       class O3Formula {
         public:
         O3Formula();
@@ -84,6 +98,13 @@ namespace gum {
         std::unique_ptr<Formula> __formula;
       };
 
+      /**
+       * @class O3Float
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Float is part of the AST of the O3PRM language.
+       */
       class O3Float {
         public:
         O3Float();
@@ -105,6 +126,13 @@ namespace gum {
         float __value;
       };
 
+      /**
+       * @class O3Integer
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Integer is part of the AST of the O3PRM language.
+       */
       class O3Integer {
         public:
         O3Integer();
@@ -126,6 +154,13 @@ namespace gum {
         int __value;
       };
 
+      /**
+       * @class O3Label
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Label is part of the AST of the O3PRM language.
+       */
       class O3Label {
         public:
         O3Label();
@@ -149,6 +184,13 @@ namespace gum {
 
       std::ostream& operator<<( std::ostream& o, const O3Label& src );
 
+      /**
+       * @class O3Type
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Type is part of the AST of the O3PRM language.
+       */
       class O3Type {
         public:
         using LabelPair = std::pair<O3Label, O3Label>;
@@ -176,6 +218,13 @@ namespace gum {
         LabelMap __labels;
       };
 
+      /**
+       * @class O3IntType
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3IntType is part of the AST of the O3PRM language.
+       */
       class O3IntType {
         public:
         O3IntType();
@@ -201,6 +250,13 @@ namespace gum {
         O3Integer __end;
       };
 
+      /**
+       * @class O3RealType
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3RealType is part of the AST of the O3PRM language.
+       */
       class O3RealType {
         public:
         O3RealType();
@@ -224,13 +280,21 @@ namespace gum {
         O3Position __pos;
         O3Label __name;
         std::vector<O3Float> __values;
-
       };
 
+      /**
+       * @class O3InterfaceElement
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3InterfaceElement is part of the AST of the O3PRM language.
+       */
       class O3InterfaceElement {
         public:
         O3InterfaceElement();
-        O3InterfaceElement( const O3Label& type, const O3Label& name, bool isArray );
+        O3InterfaceElement( const O3Label& type,
+                            const O3Label& name,
+                            bool isArray );
         O3InterfaceElement( const O3InterfaceElement& src );
         O3InterfaceElement( O3InterfaceElement&& src );
         ~O3InterfaceElement();
@@ -252,6 +316,13 @@ namespace gum {
         bool __isArray;
       };
 
+      /**
+       * @class O3Interface
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Interface is part of the AST of the O3PRM language.
+       */
       class O3Interface {
         public:
         using O3InterfaceElementList = std::vector<O3InterfaceElement>;
@@ -282,6 +353,13 @@ namespace gum {
         std::unique_ptr<O3InterfaceElementList> __elts;
       };
 
+      /**
+       * @class O3Parameter
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Parameter is part of the AST of the O3PRM language.
+       */
       class O3Parameter {
         public:
         enum class Type { INT, FLOAT };
@@ -310,6 +388,13 @@ namespace gum {
         O3Float __value;
       };
 
+      /**
+       * @class O3ReferenceSlot
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3ReferenceSlot is part of the AST of the O3PRM language.
+       */
       class O3ReferenceSlot {
         public:
         O3ReferenceSlot( const O3Label& type,
@@ -332,6 +417,13 @@ namespace gum {
         bool __isArray;
       };
 
+      /**
+       * @class O3Attribute
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Attribute is part of the AST of the O3PRM language.
+       */
       class O3Attribute {
         public:
         using O3LabelList = std::vector<O3Label>;
@@ -357,6 +449,13 @@ namespace gum {
         O3LabelList __parents;
       };
 
+      /**
+       * @class O3RawCPT
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3RawCPT is part of the AST of the O3PRM language.
+       */
       class O3RawCPT : public O3Attribute {
         public:
         using O3FormulaList = std::vector<O3Formula>;
@@ -379,6 +478,13 @@ namespace gum {
         std::unique_ptr<O3FormulaList> __values;
       };
 
+      /**
+       * @class O3RuleCPT
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3RuleCPT is part of the AST of the O3PRM language.
+       */
       class O3RuleCPT : public O3Attribute {
         public:
         using O3LabelList = std::vector<O3Label>;
@@ -404,6 +510,13 @@ namespace gum {
         std::unique_ptr<O3RuleList> __rules;
       };
 
+      /**
+       * @class O3Aggregate
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Aggregate is part of the AST of the O3PRM language.
+       */
       class O3Aggregate {
         public:
         using O3LabelList = std::vector<O3Label>;
@@ -433,6 +546,13 @@ namespace gum {
         O3LabelList __parameters;
       };
 
+      /**
+       * @class O3Class
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Class is part of the AST of the O3PRM language.
+       */
       class O3Class {
         public:
         using O3LabelList = std::vector<O3Label>;
@@ -483,6 +603,13 @@ namespace gum {
         std::unique_ptr<O3AggregateList> __aggs;
       };
 
+      /**
+       * @class O3Assignment
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Assignment is part of the AST of the O3PRM language.
+       */
       class O3Assignment {
         public:
         O3Assignment();
@@ -511,6 +638,13 @@ namespace gum {
         O3Label __rightInstance;
       };
 
+      /**
+       * @class O3Increment
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Increment is part of the AST of the O3PRM language.
+       */
       class O3Increment {
         public:
         O3Increment();
@@ -539,6 +673,14 @@ namespace gum {
         O3Label __rightInstance;
       };
 
+      /**
+       * @class O3InstanceParameter
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3InstanceParameter is part of the AST of the O3PRM
+       * language.
+       */
       class O3InstanceParameter {
         public:
         O3InstanceParameter();
@@ -563,6 +705,13 @@ namespace gum {
         bool __isInteger;
       };
 
+      /**
+       * @class O3Instance
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Instance is part of the AST of the O3PRM language.
+       */
       class O3Instance {
         public:
         using O3InstanceParameterList = std::vector<O3InstanceParameter>;
@@ -593,6 +742,13 @@ namespace gum {
         O3InstanceParameterList __parameters;
       };
 
+      /**
+       * @class O3System
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3System is part of the AST of the O3PRM language.
+       */
       class O3System {
         public:
         using O3InstanceList = std::vector<O3Instance>;
@@ -625,6 +781,13 @@ namespace gum {
         O3IncrementList __increments;
       };
 
+      /**
+       * @class O3Import
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3Import is part of the AST of the O3PRM language.
+       */
       class O3Import {
         public:
         O3Import();
@@ -641,6 +804,13 @@ namespace gum {
         O3Label __import;
       };
 
+      /**
+       * @class O3PRM
+       * @headerfile O3prm.h <agrum/PRM/o3prm/O3prm.h>
+       * @ingroup o3prm_group
+       *
+       * @brief The O3PRM is part of the AST of the O3PRM language.
+       */
       class O3PRM {
         public:
         using O3TypeList = std::vector<std::unique_ptr<O3Type>>;

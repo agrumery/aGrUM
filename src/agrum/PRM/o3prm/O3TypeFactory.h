@@ -29,13 +29,14 @@
 #include <memory>
 #include <string>
 
-#include <agrum/core/set.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
+#include <agrum/PRM/o3prm/O3prm.h>
+#include <agrum/PRM/o3prm/errors.h>
+#include <agrum/core/errorsContainer.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/core/set.h>
 
 #ifndef GUM_PRM_O3PRM_O3TYPE_FACTORY_H
 #define GUM_PRM_O3PRM_O3TYPE_FACTORY_H
@@ -44,6 +45,16 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      /**
+       * @class O3TypeFactory
+       * @headerfile O3TypeFactory.h <agrum/PRM/o3prm/O3TypeFactory.h>
+       * @ingroup o3prm_group
+       *
+       * @brief Builds gum::prm::Type from gum::prm::o3prm::O3Type,
+       * gum::prm::o3prm::O3IntType and gum::prm::o3prm::O3RealType.
+       *
+       * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
+       */
       template <typename GUM_SCALAR>
       class O3TypeFactory {
 
@@ -98,6 +109,7 @@ namespace gum {
   }    // prm
 }  // gum
 
+// always include the implementation of the templates
 #include <agrum/PRM/o3prm/O3TypeFactory.tcc>
 
 extern template class gum::prm::o3prm::O3TypeFactory<float>;

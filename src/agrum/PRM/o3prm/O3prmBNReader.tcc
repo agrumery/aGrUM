@@ -23,10 +23,8 @@
  *
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI
  */
-// to ease Parser
-#include <algorithm>
-#include <string>
 
+// to ease Parser
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 
 namespace gum {

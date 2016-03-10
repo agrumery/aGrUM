@@ -28,6 +28,8 @@
 
 #include <agrum/PRM/o3prm/errors.h>
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 namespace gum {
   namespace prm {
     namespace o3prm {
@@ -594,4 +596,6 @@ namespace gum {
     }  // o3prm
   }    // prm
 }  // gum
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 

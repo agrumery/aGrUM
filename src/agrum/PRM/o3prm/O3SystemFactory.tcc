@@ -33,7 +33,7 @@ namespace gum {
     namespace o3prm {
 
       template <typename GUM_SCALAR>
-      O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
+      INLINE O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
           PRM<GUM_SCALAR>& prm,
           O3PRM& o3_prm,
           O3NameSolver<GUM_SCALAR>& solver,
@@ -46,7 +46,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
+      INLINE O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
           const O3SystemFactory<GUM_SCALAR>& src )
           : __prm( src.__prm )
           , __o3_prm( src.__o3_prm )
@@ -57,7 +57,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
+      INLINE O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
           O3SystemFactory<GUM_SCALAR>&& src )
           : __prm( std::move( src.__prm ) )
           , __o3_prm( std::move( src.__o3_prm ) )
@@ -68,12 +68,12 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3SystemFactory<GUM_SCALAR>::~O3SystemFactory() {
+      INLINE O3SystemFactory<GUM_SCALAR>::~O3SystemFactory() {
         GUM_DESTRUCTOR( O3SystemFactory );
       }
 
       template <typename GUM_SCALAR>
-      O3SystemFactory<GUM_SCALAR>& O3SystemFactory<GUM_SCALAR>::
+      INLINE O3SystemFactory<GUM_SCALAR>& O3SystemFactory<GUM_SCALAR>::
       operator=( const O3SystemFactory<GUM_SCALAR>& src ) {
         if ( this == &src ) {
           return *this;
@@ -86,7 +86,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3SystemFactory<GUM_SCALAR>& O3SystemFactory<GUM_SCALAR>::
+      INLINE O3SystemFactory<GUM_SCALAR>& O3SystemFactory<GUM_SCALAR>::
       operator=( O3SystemFactory<GUM_SCALAR>&& src ) {
         if ( this == &src ) {
           return *this;
@@ -99,7 +99,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3SystemFactory<GUM_SCALAR>::build() {
+      INLINE void O3SystemFactory<GUM_SCALAR>::build() {
         PRMFactory<GUM_SCALAR> factory( __prm );
 
         for ( auto& sys : __o3_prm->systems() ) {
@@ -127,7 +127,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3SystemFactory<GUM_SCALAR>::__addInstances(
+      INLINE void O3SystemFactory<GUM_SCALAR>::__addInstances(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
         for ( auto& i : sys.instances() ) {
 
@@ -152,7 +152,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3SystemFactory<GUM_SCALAR>::__addAssignments(
+      INLINE void O3SystemFactory<GUM_SCALAR>::__addAssignments(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
         const auto& real_sys = __prm->system( sys.name().label() );
 
@@ -188,7 +188,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3SystemFactory<GUM_SCALAR>::__addIncrements(
+      INLINE void O3SystemFactory<GUM_SCALAR>::__addIncrements(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
         const auto& real_sys = __prm->system( sys.name().label() );
         for ( auto& inc : sys.increments() ) {
@@ -225,7 +225,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkSystem( O3System& sys ) {
+      INLINE bool O3SystemFactory<GUM_SCALAR>::__checkSystem( O3System& sys ) {
 
         if ( __checkInstance( sys ) and __checkAssignments( sys ) and
              __checkIncrements( sys ) ) {
@@ -236,7 +236,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkInstance( O3System& sys ) {
+      INLINE bool
+      O3SystemFactory<GUM_SCALAR>::__checkInstance( O3System& sys ) {
 
         for ( auto& i : sys.instances() ) {
 
@@ -263,7 +264,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkParameters(
+      INLINE bool O3SystemFactory<GUM_SCALAR>::__checkParameters(
           const Class<GUM_SCALAR>& type, const O3Instance& inst ) {
 
         for ( const auto& param : inst.parameters() ) {
@@ -307,7 +308,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkAssignments( O3System& sys ) {
+      INLINE bool
+      O3SystemFactory<GUM_SCALAR>::__checkAssignments( O3System& sys ) {
 
         for ( auto& ass : sys.assignments() ) {
 
@@ -355,7 +357,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3SystemFactory<GUM_SCALAR>::__checkIncrements( O3System& sys ) {
+      INLINE bool
+      O3SystemFactory<GUM_SCALAR>::__checkIncrements( O3System& sys ) {
 
         for ( auto& inc : sys.increments() ) {
 

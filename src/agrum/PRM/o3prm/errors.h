@@ -20,21 +20,23 @@
 
 /**
  * @file
- * @brief Macros for error messages.
+ * @brief Functions for error messages.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
 
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
-#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/o3prm/O3prm.h>
+#include <agrum/core/errorsContainer.h>
 
 #ifndef GUM_PRM_O3PRM_ERRORS_H
 #define GUM_PRM_O3PRM_ERRORS_H
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   namespace prm {
@@ -237,6 +239,8 @@ namespace gum {
     }  // o3prm
   }    // prm
 }  // gum
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif  // GUM_PRM_O3PRM_ERRORS_H
 

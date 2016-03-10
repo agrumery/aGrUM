@@ -20,7 +20,7 @@
 
 /**
  * @file
- * @brief Implementation for parsing function for the O3PRM language.
+ * @brief Implementation for the AST of the O3PRM language.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
@@ -289,9 +289,7 @@ namespace gum {
       const std::string& O3Label::label() const { return __label; }
       std::string& O3Label::label() { return __label; }
 
-      O3Type::O3Type(  ) {
-        GUM_CONSTRUCTOR( O3Type );
-      }
+      O3Type::O3Type() { GUM_CONSTRUCTOR( O3Type ); }
 
       O3Type::O3Type( const O3Type& src )
           : __pos( src.__pos )

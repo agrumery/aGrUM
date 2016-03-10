@@ -20,7 +20,7 @@
 
 /**
  * @file
- * @brief Implementation for the O3TypeFactory class.
+ * @brief Headers for the O3prmReader class.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
@@ -29,21 +29,42 @@
 #ifndef GUM_PRM_O3PRM_O3PRM_FACTORY_H
 #define GUM_PRM_O3PRM_O3PRM_FACTORY_H
 
+#include <cstdint>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
-#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/PRM.h>
+#include <agrum/PRM/o3prm/O3ClassFactory.h>
+#include <agrum/PRM/o3prm/O3InterfaceFactory.h>
+#include <agrum/PRM/o3prm/O3NameSolver.h>
+#include <agrum/PRM/o3prm/O3SystemFactory.h>
+#include <agrum/PRM/o3prm/O3TypeFactory.h>
 #include <agrum/PRM/o3prm/O3prm.h>
+#include <agrum/core/errorsContainer.h>
+#include <agrum/PRM/o3prm/cocoR/Parser.h>
+#include <agrum/PRM/o3prm/cocoR/Scanner.h>
 
 namespace gum {
   namespace prm {
     namespace o3prm {
 
+      /**
+       * @class O3prmReader
+       * @headerfile O3prmReader.h <agrum/PRM/o3prm/O3prmReader.h>
+       * @ingroup o3prm_group
+       *
+       * @brief This class read O3PRM files and creates the corresponding
+       * gum::prm::PRM.
+       *
+       * @tparam GUM_SCALAR The scalar type to use with the gum::prm::PRM.
+       */
       template <typename GUM_SCALAR>
       class O3prmReader {
         public:
-        O3prmReader( );
+        O3prmReader();
         O3prmReader( PRM<GUM_SCALAR>& prm );
         O3prmReader( const O3prmReader& src );
         O3prmReader( O3prmReader&& src );
@@ -53,8 +74,7 @@ namespace gum {
 
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
-        int readFile( const std::string& file,
-                      const std::string& module = "" );
+        int readFile( const std::string& file, const std::string& module = "" );
 
         /// With readString method, you must set the current path
         /// to search from import yourself, using addClassPath.
@@ -147,14 +167,15 @@ namespace gum {
         std::string __readStream( std::istream& input );
       };
 
-    } // o3prm
-  } // prm
-} // gum
+    }  // o3prm
+  }    // prm
+}  // gum
 
+// always include the implementation of the templates
 #include <agrum/PRM/o3prm/O3prmReader.tcc>
 
 extern template class gum::prm::o3prm::O3prmReader<float>;
 extern template class gum::prm::o3prm::O3prmReader<double>;
 
-#endif // GUM_PRM_O3PRM_O3PRM_FACTORY_H
+#endif  // GUM_PRM_O3PRM_O3PRM_FACTORY_H
 

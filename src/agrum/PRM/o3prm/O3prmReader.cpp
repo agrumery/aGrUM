@@ -28,12 +28,6 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-namespace gum {
-  namespace prm {
-    namespace o3prm {
+template class gum::prm::o3prm::O3prmReader<float>;
+template class gum::prm::o3prm::O3prmReader<double>;
 
-      template class gum::prm::o3prm::O3prmReader<float>;
-      template class gum::prm::o3prm::O3prmReader<double>;
-    }
-  }
-}

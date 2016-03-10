@@ -28,14 +28,12 @@
 
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
 
-#include <agrum/PRM/o3prm/errors.h>
-
 namespace gum {
   namespace prm {
     namespace o3prm {
 
       template <typename GUM_SCALAR>
-      O3TypeFactory<GUM_SCALAR>::O3TypeFactory(
+      INLINE O3TypeFactory<GUM_SCALAR>::O3TypeFactory(
           PRM<GUM_SCALAR>& prm,
           O3PRM& o3_prm,
           O3NameSolver<GUM_SCALAR>& solver,
@@ -49,7 +47,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3TypeFactory<GUM_SCALAR>::O3TypeFactory(
+      INLINE O3TypeFactory<GUM_SCALAR>::O3TypeFactory(
           const O3TypeFactory<GUM_SCALAR>& src )
           : __prm( src.__prm )
           , __o3_prm( src.__o3_prm )
@@ -60,7 +58,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3TypeFactory<GUM_SCALAR>::O3TypeFactory(
+      INLINE O3TypeFactory<GUM_SCALAR>::O3TypeFactory(
           O3TypeFactory<GUM_SCALAR>&& src )
           : __prm( std::move( src.__prm ) )
           , __o3_prm( std::move( src.__o3_prm ) )
@@ -71,12 +69,12 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3TypeFactory<GUM_SCALAR>::~O3TypeFactory() {
+      INLINE O3TypeFactory<GUM_SCALAR>::~O3TypeFactory() {
         GUM_DESTRUCTOR( O3TypeFactory );
       }
 
       template <typename GUM_SCALAR>
-      O3TypeFactory<GUM_SCALAR>& O3TypeFactory<GUM_SCALAR>::
+      INLINE O3TypeFactory<GUM_SCALAR>& O3TypeFactory<GUM_SCALAR>::
       operator=( const O3TypeFactory<GUM_SCALAR>& src ) {
         if ( this == &src ) {
           return *this;
@@ -90,7 +88,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3TypeFactory<GUM_SCALAR>& O3TypeFactory<GUM_SCALAR>::
+      INLINE O3TypeFactory<GUM_SCALAR>& O3TypeFactory<GUM_SCALAR>::
       operator=( O3TypeFactory<GUM_SCALAR>&& src ) {
         if ( this == &src ) {
           return *this;
@@ -104,7 +102,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3TypeFactory<GUM_SCALAR>::build() {
+      INLINE void O3TypeFactory<GUM_SCALAR>::build() {
 
         if ( __build ) {
           GUM_ERROR( FatalError,
@@ -124,7 +122,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3TypeFactory<GUM_SCALAR>::__buildTypes() {
+      INLINE void O3TypeFactory<GUM_SCALAR>::__buildTypes() {
         if ( __checkO3Types() ) {
 
           __setO3TypeCreationOrder();
@@ -152,7 +150,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3TypeFactory<GUM_SCALAR>::__buildIntTypes() {
+      INLINE void O3TypeFactory<GUM_SCALAR>::__buildIntTypes() {
 
         if ( __checkO3IntTypes() ) {
 
@@ -177,7 +175,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3TypeFactory<GUM_SCALAR>::__buildRealTypes() {
+      INLINE void O3TypeFactory<GUM_SCALAR>::__buildRealTypes() {
 
         if ( __checkO3RealTypes() ) {
 
@@ -199,12 +197,12 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__checkO3RealTypes() {
+      INLINE bool O3TypeFactory<GUM_SCALAR>::__checkO3RealTypes() {
         auto names = gum::Set<std::string>();
         for ( auto& type : __o3_prm->types() ) {
           names.insert( type->name().label() );
         }
-        for (auto& type: __o3_prm->int_types() ) {
+        for ( auto& type : __o3_prm->int_types() ) {
           names.insert( type->name().label() );
         }
 
@@ -231,22 +229,22 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__isPrimitiveType( O3Type& type ) {
+      INLINE bool O3TypeFactory<GUM_SCALAR>::__isPrimitiveType( O3Type& type ) {
         return type.name().label() == "boolean";
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__checkO3Types() {
+      INLINE bool O3TypeFactory<GUM_SCALAR>::__checkO3Types() {
         if ( __addTypes2Dag() ) {
           if ( __addArcs2Dag() ) {
             return true;
           }
         }
-        return  false;
+        return false;
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__addTypes2Dag() {
+      INLINE bool O3TypeFactory<GUM_SCALAR>::__addTypes2Dag() {
 
         // Adding nodes to the type inheritance graph
         for ( auto& type : __o3_prm->types() ) {
@@ -268,7 +266,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__addArcs2Dag() {
+      INLINE bool O3TypeFactory<GUM_SCALAR>::__addArcs2Dag() {
 
         // Adding arcs to the graph inheritance graph
         for ( auto& type : __o3_prm->types() ) {
@@ -305,7 +303,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__checkLabels( O3Type& type ) {
+      INLINE bool O3TypeFactory<GUM_SCALAR>::__checkLabels( O3Type& type ) {
 
         for ( auto& pair : type.labels() ) {
 
@@ -325,7 +323,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3TypeFactory<GUM_SCALAR>::__setO3TypeCreationOrder() {
+      INLINE void O3TypeFactory<GUM_SCALAR>::__setO3TypeCreationOrder() {
 
         auto v = __dag.topologicalOrder();
 
@@ -337,7 +335,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool O3TypeFactory<GUM_SCALAR>::__checkO3IntTypes() {
+      INLINE bool O3TypeFactory<GUM_SCALAR>::__checkO3IntTypes() {
 
         auto names = gum::Set<std::string>();
         for ( auto& type : __o3_prm->types() ) {

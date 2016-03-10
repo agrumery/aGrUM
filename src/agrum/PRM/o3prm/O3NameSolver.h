@@ -26,14 +26,14 @@
  * @author Lionel TORTI
  */
 
-#include <string>
 #include <algorithm>
+#include <string>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/utils_string.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/errors.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/core/utils_string.h>
 
 #ifndef GUM_PRM_O3PRM_O3NAMESOLVER_H
 #define GUM_PRM_O3PRM_O3NAMESOLVER_H
@@ -42,6 +42,15 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      /**
+       * @class O3NameSolver
+       * @headerfile O3NameSolver.h <agrum/PRM/o3prm/O3NameSolver.h>
+       * @ingroup o3prm_group
+       *
+       * @brief Resolves names for the different O3PRM factories.
+       *
+       * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
+       */
       template <typename GUM_SCALAR>
       class O3NameSolver {
 

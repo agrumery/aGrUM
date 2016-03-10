@@ -29,12 +29,12 @@
 #include <memory>
 #include <string>
 
-#include <agrum/core/set.h>
-#include <agrum/core/hashTable.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
+#include <agrum/PRM/o3prm/O3prm.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/core/set.h>
 
 #ifndef GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H
 #define GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H
@@ -43,6 +43,15 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      /**
+       * @class O3SystemFactory
+       * @headerfile O3SystemFactory.h <agrum/PRM/o3prm/O3SystemFactory.h>
+       * @ingroup o3prm_group
+       *
+       * @brief Builds gum::prm::System from gum::prm::o3prm::O3System.
+       *
+       * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
+       */
       template <typename GUM_SCALAR>
       class O3SystemFactory {
 
@@ -91,6 +100,7 @@ namespace gum {
   }    // prm
 }  // gum
 
+// always include the implementation of the templates
 #include <agrum/PRM/o3prm/O3SystemFactory.tcc>
 
 extern template class gum::prm::o3prm::O3SystemFactory<float>;

@@ -27,15 +27,15 @@
  */
 
 #include <memory>
-#include <string>
 #include <regex>
+#include <string>
 
-#include <agrum/core/set.h>
-#include <agrum/core/hashTable.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
+#include <agrum/PRM/o3prm/O3prm.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/core/set.h>
 
 #ifndef GUM_PRM_O3PRM_O3CLASS_FACTORY_H
 #define GUM_PRM_O3PRM_O3CLASS_FACTORY_H
@@ -44,6 +44,15 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      /**
+       * @class O3ClassFactory
+       * @headerfile O3ClassFactory.h <agrum/PRM/o3prm/O3ClassFactory.h>
+       * @ingroup o3prm_group
+       *
+       * @brief Builds gum::prm::Class from gum::prm::o3prm::O3Class.
+       *
+       * @tparam GUM_SCALAR The scalar type used by the gum::prm:PRM.
+       */
       template <typename GUM_SCALAR>
       class O3ClassFactory {
 
@@ -85,7 +94,7 @@ namespace gum {
         DAG __dag;
         std::vector<O3Class*> __o3Classes;
 
-        /// Checking classes
+        /// @name Checking classes
         /// @{
         void __setO3ClassCreationOrder();
 
@@ -96,7 +105,7 @@ namespace gum {
         bool __checkO3Classes();
         /// @}
 
-        /// Checking Implementations
+        /// @name Checking Implementations
         /// @{
         bool __checkImplementation( O3Class& c );
 
@@ -115,13 +124,13 @@ namespace gum {
                                const ClassElementContainer<GUM_SCALAR>& type );
         /// @}
 
-        /// Checking and Adding Paramteters
+        /// @name Checking and Adding Paramteters
         /// @{
         void __addParameters( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
 
         /// @}
 
-        /// Checking and adding Reference Slots
+        /// @name Checking and adding Reference Slots
         /// @{
         void __addReferenceSlots( O3Class& c );
 
@@ -129,7 +138,7 @@ namespace gum {
         bool __checkReferenceSlot( O3Class& c, O3ReferenceSlot& ref );
         /// @}
 
-        /// Checking and adding Attributes
+        /// @name Checking and adding Attributes
         /// @{
         void __declareAttribute( O3Class& c );
 
@@ -155,7 +164,7 @@ namespace gum {
 
         /// @}
 
-        /// Utility methods
+        /// @name Utility methods
         /// @{
         const ClassElement<GUM_SCALAR>*
         __resolveSlotChain( const ClassElementContainer<GUM_SCALAR>& c,
@@ -166,7 +175,7 @@ namespace gum {
                                    const std::string& s );
         /// @}
 
-        /// Checking and adding Aggregates
+        /// @name Checking and adding Aggregates
         /// @{
         void __buildAggregates( O3Class& c );
 
@@ -196,6 +205,7 @@ namespace gum {
   }    // prm
 }  // gum
 
+// always include the implementation of the templates
 #include <agrum/PRM/o3prm/O3ClassFactory.tcc>
 
 extern template class gum::prm::o3prm::O3ClassFactory<float>;
