@@ -142,6 +142,9 @@ namespace gum {
 
         std::vector<const O3Import*> __copyImports();
 
+        std::string __clean( std::string text ) const;
+        std::string __print( const ParseError& err ) const;
+        std::string __readStream( std::istream& input );
       };
 
     } // o3prm

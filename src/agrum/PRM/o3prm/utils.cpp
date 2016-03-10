@@ -55,45 +55,6 @@ namespace gum {
         return std::move( order );
       }
 
-      std::string clean( std::string text ) {
-        auto match = std::regex( "Syntax error" );
-        if ( std::regex_search( text, match ) ) {
-          text = std::regex_replace( text, match, "Error" );
-          auto regex = std::regex{"[A-Z_][A-Z_]+"};
-          text = std::regex_replace( text, regex, "declaration" );
-          return std::move( text );
-        }
-        return std::move( text );
-      }
-
-      std::string print( const ParseError& err ) {
-        std::stringstream s;
-        s << err.filename << "|" << err.line << " col " << err.column << "| "
-          << clean(err.msg);
-        return std::move(s.str());
-      }
-
-      std::string read_stream( std::istream& input ) {
-        if ( input ) {
-          input.seekg( 0, input.end );
-          auto length = input.tellg();
-          input.seekg( 0, input.beg );
-
-          auto str = std::string();
-          str.resize( length, ' ' );
-          auto begin = &*str.begin();
-
-          input.read( begin, length );
-
-          return std::move(str);
-        }
-        GUM_ERROR( OperationNotAllowed, "Could not open file" );
-      }
-
-      bool ends_with( std::string const& value, std::string const& ending ) {
-        if ( ending.size() > value.size() ) return false;
-        return std::equal( ending.rbegin(), ending.rend(), value.rbegin() );
-      }
     }
   }
 }

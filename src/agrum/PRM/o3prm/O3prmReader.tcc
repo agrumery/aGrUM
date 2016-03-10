@@ -47,6 +47,47 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
+      template <typename GUM_SCALAR>
+      INLINE std::string
+      O3prmReader<GUM_SCALAR>::__clean( std::string text ) const {
+        auto match = std::regex( "Syntax error" );
+        if ( std::regex_search( text, match ) ) {
+          text = std::regex_replace( text, match, "Error" );
+          auto regex = std::regex{"[A-Z_][A-Z_]+"};
+          text = std::regex_replace( text, regex, "declaration" );
+          return std::move( text );
+        }
+        return std::move( text );
+      }
+
+      template <typename GUM_SCALAR>
+      INLINE std::string
+      O3prmReader<GUM_SCALAR>::__print( const ParseError& err ) const {
+        std::stringstream s;
+        s << err.filename << "|" << err.line << " col " << err.column << "| "
+          << __clean(err.msg);
+        return std::move(s.str());
+      }
+
+      template <typename GUM_SCALAR>
+      INLINE std::string
+      O3prmReader<GUM_SCALAR>::__readStream( std::istream& input ) {
+        if ( input ) {
+          input.seekg( 0, input.end );
+          auto length = input.tellg();
+          input.seekg( 0, input.beg );
+
+          auto str = std::string();
+          str.resize( length, ' ' );
+          auto begin = &*str.begin();
+
+          input.read( begin, length );
+
+          return std::move(str);
+        }
+        GUM_ERROR( OperationNotAllowed, "Could not open file" );
+      }
+
       using o3prm_scanner = gum::prm::o3prm::Scanner;
       using o3prm_parser = gum::prm::o3prm::Parser;
 
@@ -190,7 +231,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::showElegantErrors( std::ostream& o ) const {
         for ( auto i = 0; i < __errors.count(); ++i ) {
           auto err = __errors.error( i );
-          o << print( err ) << std::endl;
+          o << __print( err ) << std::endl;
         }
       }
 
@@ -199,7 +240,7 @@ namespace gum {
           std::ostream& o ) const {
         for ( auto i = 0; i < __errors.count(); ++i ) {
           auto err = __errors.error( i );
-          o << print( err ) << std::endl;
+          o << __print( err ) << std::endl;
         }
       }
 
@@ -283,7 +324,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__parseStream( std::istream& input,
                                                const std::string& filename,
                                                const std::string& module ) {
-        auto sBuff = read_stream( input );
+        auto sBuff = __readStream( input );
         auto buffer = std::unique_ptr<unsigned char[]>(
             new unsigned char[sBuff.length() + 1] );
         strcpy( (char*)buffer.get(), sBuff.c_str() );

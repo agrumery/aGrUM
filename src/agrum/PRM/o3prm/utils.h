@@ -45,20 +45,8 @@ namespace gum {
 
       std::vector<NodeId> topological_order( const gum::DAG& src );
 
-      std::string clean( std::string text );
-
-      std::string print( const ParseError& err );
-
-      template <typename GUM_SCALAR>
-      bool name_used( const PRM<GUM_SCALAR>& prm, const std::string& name );
-
-      std::string read_stream( std::istream& input );
-
-      bool ends_with( std::string const& value, std::string const& ending );
     }
   }
 }
-
-#include <agrum/PRM/o3prm/utils.tcc>
 
 #endif  // GUM_PRM_O3PRM_O3PRM_H
