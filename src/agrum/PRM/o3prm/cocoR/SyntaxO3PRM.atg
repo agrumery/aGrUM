@@ -21,10 +21,12 @@ COMPILER O3PRM_UNIT
 
 private:
 
-using Position = gum::prm::o3prm::Position;
+using O3Position = gum::prm::o3prm::O3Position;
 
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Float = gum::prm::o3prm::O3Float;
+
+using O3FloatList = std::vector<gum::prm::o3prm::O3Float>;
 
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
@@ -76,29 +78,20 @@ std::string __prefix;
 
 bool __ok (int n) { return errors().error_count == n; }
 
-void __addO3Type( const Position& pos,
-                  const O3Label& name,
-                  const O3Label& super,
-                  const LabelMap& labels ) {
-  auto t = std::unique_ptr<O3Type>( new O3Type( pos, name, super, labels ) );
-  get_prm()->types().push_back( std::move( t ) ); 
+void __addO3Type( O3Type t ) {
+  get_prm()->types().emplace_back( new O3Type{std::move( t )} );
 }
 
-void __addO3IntType( const Position& pos,
-                     const O3Label& name,
-                     const O3Integer& start,
-                     const O3Integer& end ) {
-  auto t = std::unique_ptr<O3IntType>( new O3IntType( pos, name, start, end ) );
-  get_prm()->int_types().push_back( std::move( t ) );
+void __addO3IntType( O3IntType t ) {
+  get_prm()->int_types().emplace_back( new O3IntType{std::move( t )} );
 }
 
-void __addO3Interface( const Position& pos,
-                       const O3Label& name,
-                       const O3Label& super,
-                       const O3InterfaceElementList& elts ) {
-  auto i =
-      std::unique_ptr<O3Interface>( new O3Interface( pos, name, super, elts ) );
-  get_prm()->interfaces().push_back( std::move( i ) );
+void __addO3RealType( O3RealType t ) {
+  get_prm()->real_types().emplace_back( new O3RealType{std::move( t )} );
+}
+
+void __addO3Interface( O3Interface i ) {
+  get_prm()->interfaces().emplace_back( new O3Interface( std::move( i ) ) );
 }
 
 void __addO3Class( O3Class c ) {
@@ -120,7 +113,7 @@ void __split( const O3Label& value, O3Label& left, O3Label& right) {
     right = O3Label( value.position(), value.label() );
   } else {
     left = O3Label( value.position(), value.label().substr( 0, idx ) );
-    auto pos = Position( value.position().file(),
+    auto pos = O3Position( value.position().file(),
                          value.position().line(),
                          value.position().column() + idx );
     right = O3Label( pos, value.label().substr( idx + 1 ) );
@@ -242,7 +235,7 @@ CLASS_DECLARATION<O3Class& c> =
   .
                    
 //________________________
-CLASS<Position& pos> =
+CLASS<O3Position& pos> =
   class
   (. pos.file( narrow( scanner->filename() ) ); .)
   (. pos.line( t->line ); .)
@@ -261,14 +254,14 @@ CLASS_PARAMETER<O3ParameterList& params> =
     (. auto name = O3Label(); .)
     (. auto val = O3Integer(); .)
     int 
-    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
     LABEL<name> default INTEGER<val> ';'
     (. params.push_back( O3Parameter(pos, name, val) ); .)
   |
     (. auto name = O3Label(); .)
     (. auto val = O3Float(); .)
     real
-    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
     LABEL<name> default FLOAT<val> ';'
     (. params.push_back( O3Parameter(pos, name, val) ); .)
   .
@@ -402,16 +395,13 @@ RULE<O3RuleList& rules> =
 //________________________
 INTERFACE_UNIT =
   (. auto n = errors().error_count; .)
-  (. auto pos = Position(); .)
-  (. auto name = O3Label(); .)
-  (. auto super = O3Label(); .)
-  (. auto elts = O3InterfaceElementList(); .)
-  INTERFACE_DECLARATION<pos, name, super, elts >
-  (. if (__ok(n)) { __addO3Interface( pos, name, super, elts ); } .)
+  (. auto i = O3Interface(); .)
+  INTERFACE_DECLARATION<i.position(), i.name(), i.super(), i.elements() >
+  (. if (__ok(n)) { __addO3Interface( std::move( i ) ); } .)
   .
 
 //________________________
-INTERFACE_DECLARATION<Position& pos,
+INTERFACE_DECLARATION<O3Position& pos,
                       O3Label& name,
                       O3Label& super,
                       O3InterfaceElementList& elts> =
@@ -424,7 +414,7 @@ INTERFACE_DECLARATION<Position& pos,
   .
 
 //________________________
-INTERFACE<Position& pos> =
+INTERFACE<O3Position& pos> =
   interface
   (. pos.file( narrow( scanner->filename() ) ); .)
   (. pos.line( t->line ); .)
@@ -433,16 +423,14 @@ INTERFACE<Position& pos> =
 
 //________________________
 INTERFACE_BODY<O3InterfaceElementList& elts> =
-  (. auto type = O3Label(); .)
-  (. auto name = O3Label(); .)
-  (. auto isArray = false; .)
-  CHAIN<type>
+  (. auto elt = O3InterfaceElement(); .)
+  CHAIN<elt.type()>
   [
     '['
     ']'
-    (. isArray = true; .)
-  ] LABEL<name> ';'
-  (. elts.push_back( O3InterfaceElement( type, name, isArray ) ); .)
+    (. elt.isArray() = true; .)
+  ] LABEL<elt.name()> ';'
+  (. elts.push_back( std::move( elt )) ; .)
   .
 
 // ===========================================================================
@@ -452,23 +440,23 @@ INTERFACE_BODY<O3InterfaceElementList& elts> =
 //________________________
 TYPE_UNIT = 
   (. auto n = errors().error_count; .)
-  (. auto pos = Position(); .)
-  (. auto name = O3Label(); .)
   (
-    (. auto super = O3Label(); .)
-    (. auto labels = LabelMap(); .)
-    TYPE_DECLARATION<pos, name, super, labels>
-    (. if ( __ok( n ) ) { __addO3Type( pos, name, super, labels ); } .)
+    (. auto t = O3Type(); .)
+    TYPE_DECLARATION<t.position(), t.name(), t.super(), t.labels()>
+    (. if ( __ok( n ) ) { __addO3Type( std::move(t) ); } .)
   |
-    (. auto start = O3Integer(); .)
-    (. auto end = O3Integer(); .)
-    INT_TYPE_DECLARATION<pos, name, start, end>
-    (. if ( __ok( n ) ) { __addO3IntType( pos, name, start, end ); } .)
+    (. auto t = O3IntType(); .)
+    INT_TYPE_DECLARATION<t.position(), t.name(), t.start(), t.end()>
+    (. if ( __ok( n ) ) { __addO3IntType( std::move( t ) ); } .)
+  |
+    (. auto t= O3RealType(); .)
+    REAL_TYPE_DECLARATION<t.position(), t.name(), t.values()>
+    (. if ( __ok( n ) ) { __addO3RealType( std::move( t ) ); } .)
   )
   .
 
 //________________________
-TYPE_DECLARATION<Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
+TYPE_DECLARATION<O3Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
   TYPE<pos>
   PREFIXED_LABEL<name> 
   (
@@ -480,7 +468,7 @@ TYPE_DECLARATION<Position& pos, O3Label& name, O3Label& super, LabelMap& labels>
   . 
 
 //________________________
-TYPE<Position& pos> = 
+TYPE<O3Position& pos> = 
   type
   (. pos.file( narrow( scanner->filename() ) ); .)
   (. pos.line( t->line ); .)
@@ -488,7 +476,7 @@ TYPE<Position& pos> =
   .
 
 //________________________
-INT_TYPE_DECLARATION<Position& pos, O3Label& name, O3Integer& start, O3Integer& end> =
+INT_TYPE_DECLARATION<O3Position& pos, O3Label& name, O3Integer& start, O3Integer& end> =
   INT<pos>
   '('
   INTEGER<start>
@@ -500,11 +488,41 @@ INT_TYPE_DECLARATION<Position& pos, O3Label& name, O3Integer& start, O3Integer& 
   .
 
 //________________________
-INT<Position& pos> =
+INT<O3Position& pos> =
   int
   (. pos.file( narrow( scanner->filename() ) ); .)
   (. pos.line( t->line ); .)
   (. pos.column( t->col ); .)
+  .
+
+//________________________
+REAL_TYPE_DECLARATION<O3Position& pos, O3Label& name, O3FloatList& values> =
+  REAL<pos>
+  '('
+  FLOAT_LIST<values>
+  ')'
+  LABEL<name>
+  ';'
+  .
+
+//________________________
+REAL<O3Position& pos> =
+  real
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
+  .
+
+//________________________
+FLOAT_LIST<O3FloatList& values> =
+  (. auto val = O3Float(); .)
+  FLOAT_OR_INT<val>
+  (. values.push_back( val ); .)
+  {
+    ','
+    FLOAT_OR_INT<val>
+    (. values.push_back( val ); .)
+  }
   .
 
 //________________________
@@ -577,12 +595,12 @@ SYSTEM_BODY<O3System& sys> =
   (. auto left_value = std::stringstream(); .)
   label
   (. left_value << narrow(t->val); .)
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (
     '.'
     label
     (. auto tmp = narrow( t->val ); .)
-    (. auto tmp_pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. auto tmp_pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
     (
       (. left_value << "."; .)
       (. left_value << tmp; .)
@@ -732,29 +750,42 @@ IMPORT_DECLARATION<O3Import& import> =
 //________________________
 INTEGER_AS_LABEL<O3Label& l> =
   integer
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. l = O3Label( pos, narrow( t->val ) ); .)
   .
 
 //________________________
 INTEGER_AS_FLOAT<O3Float& f> =
   integer
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. f = O3Float( pos, coco_atoi( t->val ) ); .)
   .
 
 //________________________
 INTEGER<O3Integer& i> =
   integer
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. i = O3Integer( pos, coco_atoi( t->val ) ); .)
   .
 
 //________________________
 FLOAT<O3Float& f> =
   float
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. f = O3Float( pos, coco_atof( t->val ) ); .)
+  .
+
+//________________________
+FLOAT_OR_INT<O3Float& f> =
+  (
+    float
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Float( pos, coco_atof( t->val ) ); .)
+  |
+    integer
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Float( pos, coco_atof( t->val ) ); .)
+  )
   .
 
 //________________________
@@ -767,14 +798,14 @@ LABEL_OR_INT<O3Label& l> =
 //________________________
 LABEL<O3Label& l> =
   label 
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. l = O3Label( pos, narrow( t->val ) ); .)
   .
 
 //________________________
 PREFIXED_LABEL<O3Label& l> =
   label 
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. auto label = narrow( t->val ); .)
   (. if (__prefix != "") { label = __prefix + label; } .)
   (. l = O3Label( pos, label ); .)
@@ -800,7 +831,7 @@ IDENTIFIER<O3Label& ident> =
     CAST<s>
   ]
   LINK<s>
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   {
     '.'
     (. s << narrow( t->val ); .)
@@ -836,7 +867,7 @@ LINK<std::stringstream& s> =
 CHAIN<O3Label& ident> =
   (. auto s = std::stringstream(); .)
   label
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. s << narrow( t->val ); .)
   {
     "."
@@ -862,7 +893,7 @@ LABEL_LIST<O3LabelList& list> =
 //________________________
 LABEL_OR_STAR<O3Label& l> =
   ( label | '*' )
-  (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. l = O3Label( pos, narrow( t->val ) ); .)
   .
 
@@ -882,17 +913,17 @@ LABEL_OR_STAR_LIST<O3LabelList& list> =
 FORMULA<O3Formula& f> =
   ( 
     string
-    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
     (. auto value = narrow(t->val); .)
     (. value = value.size() > 2 ? value.substr(1, value.size() - 2) : "" ; .)
     (. f = O3Formula( pos, value ); .)
   |
     float
-    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
     (. f = O3Formula( pos, narrow( t->val ) ); .)
   | 
     integer
-    (. auto pos = Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
     (. f = O3Formula( pos, narrow( t->val ) ); .)
   )
   .

@@ -101,10 +101,12 @@ class Parser {
 
     private:
 
-using Position = gum::prm::o3prm::Position;
+using O3Position = gum::prm::o3prm::O3Position;
 
 using O3Integer = gum::prm::o3prm::O3Integer;
 using O3Float = gum::prm::o3prm::O3Float;
+
+using O3FloatList = std::vector<gum::prm::o3prm::O3Float>;
 
 using O3Label = gum::prm::o3prm::O3Label;
 using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
@@ -156,29 +158,20 @@ std::string __prefix;
 
 bool __ok (int n) { return errors().error_count == n; }
 
-void __addO3Type( const Position& pos,
-                  const O3Label& name,
-                  const O3Label& super,
-                  const LabelMap& labels ) {
-  auto t = std::unique_ptr<O3Type>( new O3Type( pos, name, super, labels ) );
-  get_prm()->types().push_back( std::move( t ) ); 
+void __addO3Type( O3Type t ) {
+  get_prm()->types().emplace_back( new O3Type{std::move( t )} );
 }
 
-void __addO3IntType( const Position& pos,
-                     const O3Label& name,
-                     const O3Integer& start,
-                     const O3Integer& end ) {
-  auto t = std::unique_ptr<O3IntType>( new O3IntType( pos, name, start, end ) );
-  get_prm()->int_types().push_back( std::move( t ) );
+void __addO3IntType( O3IntType t ) {
+  get_prm()->int_types().emplace_back( new O3IntType{std::move( t )} );
 }
 
-void __addO3Interface( const Position& pos,
-                       const O3Label& name,
-                       const O3Label& super,
-                       const O3InterfaceElementList& elts ) {
-  auto i =
-      std::unique_ptr<O3Interface>( new O3Interface( pos, name, super, elts ) );
-  get_prm()->interfaces().push_back( std::move( i ) );
+void __addO3RealType( O3RealType t ) {
+  get_prm()->real_types().emplace_back( new O3RealType{std::move( t )} );
+}
+
+void __addO3Interface( O3Interface i ) {
+  get_prm()->interfaces().emplace_back( new O3Interface( std::move( i ) ) );
 }
 
 void __addO3Class( O3Class c ) {
@@ -200,7 +193,7 @@ void __split( const O3Label& value, O3Label& left, O3Label& right) {
     right = O3Label( value.position(), value.label() );
   } else {
     left = O3Label( value.position(), value.label().substr( 0, idx ) );
-    auto pos = Position( value.position().file(),
+    auto pos = O3Position( value.position().file(),
                          value.position().line(),
                          value.position().column() + idx );
     right = O3Label( pos, value.label().substr( idx + 1 ) );
@@ -248,7 +241,7 @@ void set_prefix( const std::string& prefix ) {
 	void CLASS_UNIT();
 	void SYSTEM_UNIT();
 	void CLASS_DECLARATION(O3Class& c);
-	void CLASS(Position& pos);
+	void CLASS(O3Position& pos);
 	void PREFIXED_LABEL(O3Label& l);
 	void CHAIN(O3Label& ident);
 	void IDENTIFIER_LIST(O3LabelList& list);
@@ -277,18 +270,22 @@ O3AttributeList& elts);
 	void FORMULA_LIST(O3FormulaList& values);
 	void RULE(O3RuleList& rules);
 	void LABEL_OR_STAR_LIST(O3LabelList& list);
-	void INTERFACE_DECLARATION(Position& pos,
+	void INTERFACE_DECLARATION(O3Position& pos,
 O3Label& name,
 O3Label& super,
 O3InterfaceElementList& elts);
-	void INTERFACE(Position& pos);
+	void INTERFACE(O3Position& pos);
 	void INTERFACE_BODY(O3InterfaceElementList& elts);
-	void TYPE_DECLARATION(Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
-	void INT_TYPE_DECLARATION(Position& pos, O3Label& name, O3Integer& start, O3Integer& end);
-	void TYPE(Position& pos);
+	void TYPE_DECLARATION(O3Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
+	void INT_TYPE_DECLARATION(O3Position& pos, O3Label& name, O3Integer& start, O3Integer& end);
+	void REAL_TYPE_DECLARATION(O3Position& pos, O3Label& name, O3FloatList& values);
+	void TYPE(O3Position& pos);
 	void TYPE_VALUE_LIST(LabelMap& labels );
 	void MAP(LabelMap& labels );
-	void INT(Position& pos);
+	void INT(O3Position& pos);
+	void REAL(O3Position& pos);
+	void FLOAT_LIST(O3FloatList& values);
+	void FLOAT_OR_INT(O3Float& f);
 	void SYSTEM_DECLARATION(O3System& s);
 	void SYSTEM_BODY(O3System& sys);
 	void ARRAY(O3Integer& size);

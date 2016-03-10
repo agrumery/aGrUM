@@ -95,11 +95,21 @@ namespace gum {
 
       void O3PRM_TYPE_INVALID_RANGE( const O3IntType& val,
                                      ErrorsContainer& errors ) {
-        const auto& pos = val.name().position();
+        const auto& pos = val.position();
         auto msg = std::stringstream();
         msg << "Error : "
             << "Invalid range " << val.start().value() << " -> "
             << val.end().value();
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
+      void O3PRM_TYPE_INVALID_RANGE( const O3RealType& val,
+                                     ErrorsContainer& errors ) {
+        const auto& pos = val.position();
+        auto msg = std::stringstream();
+        msg << "Error : "
+            << "Found " << val.values().size()
+            << " values in range expected at least 3";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 

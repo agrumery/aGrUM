@@ -118,6 +118,9 @@ namespace gum {
 
         // building int types
         __buildIntTypes();
+
+        // building real types
+        __buildRealTypes();
       }
 
       template <typename GUM_SCALAR>
@@ -171,6 +174,60 @@ namespace gum {
             factory.endDiscreteType();
           }
         }
+      }
+
+      template <typename GUM_SCALAR>
+      void O3TypeFactory<GUM_SCALAR>::__buildRealTypes() {
+
+        if ( __checkO3RealTypes() ) {
+
+          PRMFactory<GUM_SCALAR> factory( __prm );
+          for ( auto type : __o3RealTypes ) {
+
+            factory.startDiscreteType( type->name().label() );
+
+            for ( std::size_t idx = 1; idx < type->values().size(); ++idx ) {
+              auto label = std::stringstream();
+              label << "]" << type->values()[idx - 1].value() << ", "
+                    << type->values()[idx].value() << "]";
+              factory.addLabel( label.str() );
+            }
+
+            factory.endDiscreteType();
+          }
+        }
+      }
+
+      template <typename GUM_SCALAR>
+      bool O3TypeFactory<GUM_SCALAR>::__checkO3RealTypes() {
+        auto names = gum::Set<std::string>();
+        for ( auto& type : __o3_prm->types() ) {
+          names.insert( type->name().label() );
+        }
+        for (auto& type: __o3_prm->int_types() ) {
+          names.insert( type->name().label() );
+        }
+
+        for ( const auto& type : __o3_prm->real_types() ) {
+
+          if ( names.contains( type->name().label() ) ) {
+
+            // Raised if duplicate type names
+            O3PRM_TYPE_DUPPLICATE( type->name(), *__errors );
+            return false;
+
+          } else if ( type->values().size() < 3 ) {
+
+            // Invalid range
+            O3PRM_TYPE_INVALID_RANGE( *type, *__errors );
+            return false;
+
+          } else {
+
+            __o3RealTypes.push_back( type.get() );
+          }
+        }
+        return true;
       }
 
       template <typename GUM_SCALAR>

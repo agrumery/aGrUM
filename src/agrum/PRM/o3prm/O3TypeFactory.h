@@ -75,9 +75,11 @@ namespace gum {
         DAG __dag;
         std::vector<O3Type*> __o3Types;
         std::vector<O3IntType*> __o3IntTypes;
+        std::vector<O3RealType*> __o3RealTypes;
 
         void __buildTypes();
         void __buildIntTypes();
+        void __buildRealTypes();
 
         bool __isPrimitiveType( O3Type& type );
 
@@ -89,6 +91,7 @@ namespace gum {
         void __setO3TypeCreationOrder();
 
         bool __checkO3IntTypes();
+        bool __checkO3RealTypes();
       };
 
     }  // o3prm

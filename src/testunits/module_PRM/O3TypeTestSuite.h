@@ -617,5 +617,95 @@ namespace gum_tests {
       TS_ASSERT( prm.isType( "fr.agrum.t_degraded" ) );
     }
 
+    void testRealType1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "real(0, 90, 180) angle;" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3prmReader<double>(prm);
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)2 );
+      TS_ASSERT( prm.isType( "angle" ) );
+      const auto& angle = prm.type("angle");
+      TS_ASSERT_EQUALS( angle.variable().labels().size(), (gum::Size)2 );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 0 ), "]0, 90]" );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 1 ), "]90, 180]" );
+    }
+
+    void testRealType2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "real(0, 90, 180, 360) angle;" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3prmReader<double>(prm);
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)2 );
+      TS_ASSERT( prm.isType( "angle" ) );
+      const auto& angle = prm.type("angle");
+      TS_ASSERT_EQUALS( angle.variable().labels().size(), (gum::Size)3 );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 0 ), "]0, 90]" );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 1 ), "]90, 180]" );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 2 ), "]180, 360]" );
+    }
+
+    void testRealTypeError1() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "real(0, 90) angle;" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3prmReader<double>(prm);
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 1| Error : Found 2 values in range expected at least 3";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testRealTypeError2() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "real(0) angle;" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3prmReader<double>(prm);
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 1| Error : Found 1 values in range expected at least 3";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testRealTypeError3() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "real(0, plop) angle;" << std::endl;
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3prmReader<double>(prm);
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      auto line = std::string();
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|1 col 9| Error : invalid declaration";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
    };
 }  // namespace gum_tests

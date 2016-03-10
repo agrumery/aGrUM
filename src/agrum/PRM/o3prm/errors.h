@@ -62,6 +62,9 @@ namespace gum {
       void O3PRM_TYPE_INVALID_RANGE( const O3IntType& val,
                                      ErrorsContainer& errors );
 
+      void O3PRM_TYPE_INVALID_RANGE( const O3RealType& val,
+                                     ErrorsContainer& errors );
+
       void O3PRM_CLASS_NOT_FOUND( const O3Label& val, ErrorsContainer& errors );
 
       void O3PRM_CLASS_AMBIGUOUS( const O3Label& val,
