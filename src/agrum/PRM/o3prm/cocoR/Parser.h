@@ -40,7 +40,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <utility>
 #include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/PRM/o3prm/o3prm.h>
+#include <agrum/PRM/o3prm/O3prm.h>
 
 #include <iostream>
 #include <string>

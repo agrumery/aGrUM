@@ -9,7 +9,7 @@
 #include <utility>
 #include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/PRM/o3prm/o3prm.h>
+#include <agrum/PRM/o3prm/O3prm.h>
 
 //##############################################################################
 //

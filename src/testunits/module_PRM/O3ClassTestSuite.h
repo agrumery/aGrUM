@@ -26,7 +26,7 @@
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/utils.h>
-#include <agrum/PRM/o3prm/o3prm.h>
+#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 namespace gum_tests {

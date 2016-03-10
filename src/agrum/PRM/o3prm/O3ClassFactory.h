@@ -33,7 +33,7 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/o3prm/o3prm.h>
+#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/utils.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
 
