@@ -1228,7 +1228,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( class_count,
                           (gum::Size)11 );  // Don't forget param subclasses !
 
-        TS_ASSERT_EQUALS( prm->systems().size(), 1 );
+        TS_ASSERT_EQUALS( prm->systems().size(), (gum::Size)1 );
         gum::prm::System<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(
             sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
