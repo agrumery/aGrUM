@@ -175,8 +175,8 @@ namespace gum {
       template <typename GUM_SCALAR>
       void O3InterfaceFactory<GUM_SCALAR>::__setO3InterfaceCreationOrder() {
 
-        auto topo_order = topological_order( __dag );
-        for ( auto id = topo_order.rbegin(); id != topo_order.rend(); ++id ) {
+        auto topo_order = __dag.topologicalOrder();
+        for ( auto id = topo_order.rbegin(); id != topo_order.rend(); --id ) {
           __o3Interface.push_back( __nodeMap[*id] );
         }
       }

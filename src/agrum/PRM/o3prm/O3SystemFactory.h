@@ -35,7 +35,6 @@
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
-#include <agrum/PRM/o3prm/utils.h>
 
 #ifndef GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H
 #define GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H

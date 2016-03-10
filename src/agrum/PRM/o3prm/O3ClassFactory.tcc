@@ -150,9 +150,9 @@ namespace gum {
       template <typename GUM_SCALAR>
       void O3ClassFactory<GUM_SCALAR>::__setO3ClassCreationOrder() {
 
-        auto topo_order = topological_order( __dag );
+        auto topo_order = __dag.topologicalOrder();
 
-        for ( auto id = topo_order.rbegin(); id != topo_order.rend(); ++id ) {
+        for ( auto id = topo_order.rbegin(); id != topo_order.rend(); --id ) {
           __o3Classes.push_back( __nodeMap[*id] );
         }
       }

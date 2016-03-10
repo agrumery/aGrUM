@@ -25,7 +25,6 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/PRM.h>
-#include <agrum/PRM/o3prm/utils.h>
 #include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 

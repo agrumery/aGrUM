@@ -270,9 +270,9 @@ namespace gum {
       template <typename GUM_SCALAR>
       void O3TypeFactory<GUM_SCALAR>::__setO3TypeCreationOrder() {
 
-        auto v = topological_order( __dag );
+        auto v = __dag.topologicalOrder();
 
-        for ( auto id = v.rbegin(); id != v.rend(); ++id ) {
+        for ( auto id = v.rbegin(); id != v.rend(); --id ) {
           if ( __nodeMap[*id]->name().label() != "boolean" ) {
             __o3Types.push_back( __nodeMap[*id] );
           }

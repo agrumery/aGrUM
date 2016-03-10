@@ -33,7 +33,6 @@
 #include <agrum/core/utils_string.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3prm.h>
-#include <agrum/PRM/o3prm/utils.h>
 #include <agrum/PRM/o3prm/errors.h>
 
 #ifndef GUM_PRM_O3PRM_O3NAMESOLVER_H

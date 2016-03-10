@@ -34,7 +34,6 @@
 #include <sstream>
 
 #include <agrum/PRM/o3prm/O3prm.h>
-#include <agrum/PRM/o3prm/utils.h>
 #include <agrum/PRM/o3prm/O3SystemFactory.h>
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
 #include <agrum/PRM/o3prm/cocoR/Parser.h>
