@@ -36,17 +36,28 @@ namespace gum {
                     Size arcs_size,
                     bool arcs_resize_policy )
       : NodeGraphPart( nodes_size, nodes_resize_policy )
-      , ArcGraphPart( arcs_size, arcs_resize_policy ) {
+      , ArcGraphPart( arcs_size, arcs_resize_policy )
+      , __mutableTopologicalOrder( nullptr ) {
     GUM_CONSTRUCTOR( DiGraph );
   }
 
   DiGraph::DiGraph( const DiGraph& g )
       : NodeGraphPart( g )
-      , ArcGraphPart( g ) {
+      , ArcGraphPart( g )
+      , __mutableTopologicalOrder( nullptr ) {
     GUM_CONS_CPY( DiGraph );
+    if (g.__mutableTopologicalOrder != nullptr) {
+      __mutableTopologicalOrder =
+          new Sequence<NodeId>( *( g.__mutableTopologicalOrder ) );
+    }
   }
 
-  DiGraph::~DiGraph() { GUM_DESTRUCTOR( DiGraph ); }
+  DiGraph::~DiGraph() {
+    GUM_DESTRUCTOR( DiGraph );
+    if (__mutableTopologicalOrder != nullptr) {
+      delete __mutableTopologicalOrder;
+    }
+  }
 
   const std::string DiGraph::toString() const {
     std::string s = NodeGraphPart::toString();
@@ -78,4 +89,52 @@ namespace gum {
     return stream;
   }
 
+  const Sequence<NodeId>& DiGraph::topologicalOrder( bool clear ) const {
+    if ( clear || ( __mutableTopologicalOrder ==
+                    nullptr ) ) {  // we have to call _topologicalOrder
+      if ( __mutableTopologicalOrder == nullptr ) {
+        __mutableTopologicalOrder = new Sequence<NodeId>();
+      } else {
+        // clear is True
+        __mutableTopologicalOrder->clear();
+      }
+
+      __topologicalOrder();
+    }
+
+    return *__mutableTopologicalOrder;
+  }
+
+  void DiGraph::__topologicalOrder() const {
+    auto dag = *this;
+    auto roots = std::vector<NodeId>();
+
+    for ( const auto node : dag.nodes() ) {
+      if ( dag.parents( node ).empty() ) {
+        roots.push_back( node );
+      }
+    }
+
+    while ( roots.size() ) {
+      if ( __mutableTopologicalOrder->exists( roots.back() ) ) {
+        GUM_ERROR( InvalidDirectedCycle,
+                   "cycles prevent the creation of a topological ordering." );
+      }
+      __mutableTopologicalOrder->insert( roots.back() );
+      roots.pop_back();
+
+      while ( dag.children( __mutableTopologicalOrder->back() ).size() ) {
+        auto back = __mutableTopologicalOrder->back();
+        auto child = *( dag.children( back ).begin() );
+        dag.eraseArc( Arc( back, child ) );
+
+        if ( dag.parents( child ).empty() ) {
+          roots.push_back( child );
+        }
+      }
+    }
+
+    GUM_ASSERT( dag.sizeArcs() == ( gum::Size )( 0 ) );
+    GUM_ASSERT( __mutableTopologicalOrder->size() == dag.size() );
+  }
 } /* namespace gum */

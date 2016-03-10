@@ -52,6 +52,16 @@ namespace gum {
       DiGraph::clear();
       NodeGraphPart::operator=( g );
       ArcGraphPart::operator=( g );
+
+      if (__mutableTopologicalOrder != nullptr) {
+        delete __mutableTopologicalOrder;
+        __mutableTopologicalOrder = nullptr;
+      }
+
+      if ( g.__mutableTopologicalOrder != nullptr ) {
+        __mutableTopologicalOrder =
+            new Sequence<NodeId>( *( g.__mutableTopologicalOrder ) );
+      }
     }
 
     return *this;

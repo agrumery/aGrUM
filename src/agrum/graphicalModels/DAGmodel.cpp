@@ -27,7 +27,6 @@
 namespace gum {
   DAGmodel::DAGmodel()
       : __mutableMoralGraph( nullptr )
-      , __mutableTopologicalOrder( nullptr )
       , __propertiesMap( nullptr ) {
     GUM_CONSTRUCTOR( DAGmodel );
   }
@@ -35,7 +34,6 @@ namespace gum {
   DAGmodel::DAGmodel( const DAGmodel& from )
       : _dag( from._dag )
       , __mutableMoralGraph( nullptr )
-      , __mutableTopologicalOrder( nullptr )
       , __propertiesMap( nullptr ) {
     GUM_CONS_CPY( DAGmodel );
 
@@ -57,33 +55,6 @@ namespace gum {
       delete __mutableMoralGraph;
     }
 
-    if ( __mutableTopologicalOrder ) {
-      delete __mutableTopologicalOrder;
-    }
-  }
-
-  void DAGmodel::__topologicalOrder() const {
-    DAG dag = this->dag();
-    std::vector<NodeId> roots;
-
-    for ( const auto node : dag.nodes() )
-      if ( dag.parents( node ).empty() ) roots.push_back( node );
-
-    while ( roots.size() ) {
-      __mutableTopologicalOrder->insert( roots.back() );
-      roots.pop_back();
-
-      while ( dag.children( __mutableTopologicalOrder->back() ).size() ) {
-        NodeId child =
-            *( dag.children( __mutableTopologicalOrder->back() ).begin() );
-        dag.eraseArc( Arc( __mutableTopologicalOrder->back(), child ) );
-
-        if ( dag.parents( child ).empty() ) roots.push_back( child );
-      }
-    }
-
-    GUM_ASSERT( dag.sizeArcs() == ( gum::Size )( 0 ) );
-    GUM_ASSERT( __mutableTopologicalOrder->size() == dag.size() );
   }
 
   void DAGmodel::__moralGraph() const {
@@ -122,11 +93,6 @@ namespace gum {
         __mutableMoralGraph = nullptr;
       }
 
-      if ( __mutableTopologicalOrder ) {
-        delete __mutableTopologicalOrder;
-        __mutableTopologicalOrder = nullptr;
-      }
-
       if ( source.__propertiesMap != 0 ) {
         __propertiesMap = new HashTable<std::string, std::string>(
             *( source.__propertiesMap ) );
@@ -155,18 +121,6 @@ namespace gum {
   }
 
   const Sequence<NodeId>& DAGmodel::topologicalOrder( bool clear ) const {
-    if ( clear || ( __mutableTopologicalOrder ==
-                    nullptr ) ) {  // we have to call _topologicalOrder
-      if ( __mutableTopologicalOrder == nullptr ) {
-        __mutableTopologicalOrder = new Sequence<NodeId>();
-      } else {
-        // clear is True
-        __mutableTopologicalOrder->clear();
-      }
-
-      __topologicalOrder();
-    }
-
-    return *__mutableTopologicalOrder;
+    return this->dag().topologicalOrder( clear );
   }
 }

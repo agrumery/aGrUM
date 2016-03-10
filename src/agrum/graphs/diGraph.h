@@ -30,6 +30,7 @@
 #include <sstream>
 
 #include <agrum/config.h>
+#include <agrum/core/sequence.h>
 
 #include <agrum/graphs/nodeGraphPart.h>
 #include <agrum/graphs/arcGraphPart.h>
@@ -180,6 +181,23 @@ namespace gum {
     /** @param name The graph name in the dot syntax. Default is G.
      * @return Returns a string describing the graph in the dot syntax */
     virtual const std::string toDot( const std::string& name = "G" ) const;
+
+    /**
+     * The topological order stays the same as long as no variable or arcs are
+     * added or erased src the topology.
+     * @param clear If false returns the previously created topology.
+     * @throw InvalidDirectedCycle Raised if this DiGraph contains cycles.
+     */
+    const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
+    /// @}
+
+    private:
+    /// The topology sequence of this Directed Graphical Model.
+    mutable Sequence<NodeId>* __mutableTopologicalOrder;
+
+    /// Returns a topological order of this DAGModel.
+    /// @warning __mutableTopologicalOrder is assumed to be valid and empty
+    void __topologicalOrder() const;
   };
 
   /// for friendly displaying the content of directed graphs
