@@ -76,7 +76,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3NameSolver<GUM_SCALAR>& INLINE O3NameSolver<GUM_SCALAR>::
+      INLINE O3NameSolver<GUM_SCALAR>& O3NameSolver<GUM_SCALAR>::
       operator=( const O3NameSolver<GUM_SCALAR>& src ) {
         if ( this == &src ) {
           return *this;
@@ -93,7 +93,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      O3NameSolver<GUM_SCALAR>& INLINE O3NameSolver<GUM_SCALAR>::
+      INLINE O3NameSolver<GUM_SCALAR>& O3NameSolver<GUM_SCALAR>::
       operator=( O3NameSolver<GUM_SCALAR>&& src ) {
         if ( this == &src ) {
           return *this;
@@ -110,7 +110,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool INLINE
+      INLINE bool
       O3NameSolver<GUM_SCALAR>::resolveClassElement( O3Label& name ) {
         // If empty string, we return an empty string
         if ( name.label() == "" ) {
@@ -239,7 +239,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool INLINE O3NameSolver<GUM_SCALAR>::resolveType( O3Label& name ) {
+      INLINE bool O3NameSolver<GUM_SCALAR>::resolveType( O3Label& name ) {
         // If empty string, we return an empty string
         if ( name.label() == "" ) {
           return true;
@@ -311,7 +311,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool INLINE O3NameSolver<GUM_SCALAR>::resolveInterface( O3Label& name ) {
+      INLINE bool O3NameSolver<GUM_SCALAR>::resolveInterface( O3Label& name ) {
         // If empty string, we return an empty string
         if ( name.label() == "" ) {
           return true;
@@ -383,7 +383,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool INLINE O3NameSolver<GUM_SCALAR>::resolveClass( O3Label& name ) {
+      INLINE bool O3NameSolver<GUM_SCALAR>::resolveClass( O3Label& name ) {
 
         // If empty string, we return an empty string
         if ( name.label() == "" ) {
@@ -456,7 +456,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      bool INLINE O3NameSolver<GUM_SCALAR>::resolveSlotType( O3Label& name ) {
+      INLINE bool O3NameSolver<GUM_SCALAR>::resolveSlotType( O3Label& name ) {
         // If empty string, we return an empty string
         if ( name.label() == "" ) {
           return true;
