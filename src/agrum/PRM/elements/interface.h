@@ -170,32 +170,6 @@ namespace gum {
        */
       NodeId overload( ClassElement<GUM_SCALAR>* elt );
 
-      // /**
-      //  * @brief Remove a ClassElement<GUM_SCALAR> from this
-      //  Class<GUM_SCALAR>.
-      //  *
-      //  * When removing a ClassElement<GUM_SCALAR> it will not be deleted by
-      //  this
-      //  Class<GUM_SCALAR>, thus
-      //  * you should delete it yourself.
-      //  *
-      //  * All dependencies among the removed ClassElement<GUM_SCALAR> and
-      //  ClassElement<GUM_SCALAR> defined
-      //  * in and outside of this class are deleted also. You must update the
-      //  * corresponding CPF yourself.
-      //  *
-      //  * Futhermore if there exists Instance of this Class<GUM_SCALAR> you
-      //  should
-      //  be very
-      //  * careful at what you are doing (for instance do not delete the
-      //  * ClassElement<GUM_SCALAR> before deleting the concerned Instance).
-      //  *
-      //  * @param id The ClassElement<GUM_SCALAR>'s NodeId.
-      //  * @return the pointer over the removed ClassElement<GUM_SCALAR>.
-      //  * @throw NotFound If no ClassElement<GUM_SCALAR> matches id.
-      //  */
-      // ClassElement<GUM_SCALAR>* remove(NodeId id);
-
       /// @}
       // ========================================================================
       /// @name Inheritance methods
