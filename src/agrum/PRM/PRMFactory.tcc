@@ -436,14 +436,21 @@ namespace gum {
 
       } else {
 
-        std::vector<Size> pos( a->cpf().nbrDim(), 0 );
         Instantiation inst( a->cpf() );
-        inst.setFirst();
+        Instantiation jnst;
+        for ( auto idx = inst.variablesSequence().rbegin();
+              idx != inst.variablesSequence().rend();
+              --idx ) {
+          jnst.add( **idx );
+        }
 
-        for ( const auto& elt : array ) {
-          a->cpf().set( inst, elt );
-
-          __incrementByColumn( a, pos, inst );
+        jnst.begin();
+        auto idx = (std::size_t)0;
+        while ( ( not jnst.end() ) and idx < array.size() ) {
+          inst.setVals( jnst );
+          a->cpf().set( inst, array[idx] );
+          jnst.inc();
+          ++idx;
         }
       }
     }
@@ -1850,43 +1857,25 @@ namespace gum {
 
       } else {
 
-        std::vector<Size> pos( a->formulas().nbrDim(), 0 );
         Instantiation inst( a->formulas() );
-        inst.setFirst();
+        Instantiation jnst;
+        for ( auto idx = inst.variablesSequence().rbegin();
+              idx != inst.variablesSequence().rend();
+              --idx ) {
+          jnst.add( **idx );
+        }
 
-        for ( const auto& elt : array ) {
-
-          a->formulas().set( inst, elt );
-          __incrementByColumn( a, pos, inst );
+        jnst.begin();
+        auto idx = (std::size_t)0;
+        while ( ( not jnst.end() ) and idx < array.size() ) {
+          inst.setVals( jnst );
+          a->formulas().set( inst, array[idx] );
+          jnst.inc();
+          ++idx;
         }
 
         // Generate cpf by calling it
         a->cpf();
-      }
-    }
-
-    template <typename GUM_SCALAR>
-    void PRMFactory<GUM_SCALAR>::__incrementByColumn( Attribute<GUM_SCALAR>* a,
-                                                      std::vector<Size>& pos,
-                                                      Instantiation& inst ) {
-
-      for ( size_t idx = pos.size(); idx > 0; --idx ) {
-
-        bool stop = true;
-        ++( pos[idx - 1] );
-
-        if ( pos[idx - 1] ==
-             a->cpf().variablesSequence().atPos( idx - 1 )->domainSize() ) {
-          pos[idx - 1] = 0;
-          stop = false;
-        }
-
-        inst.chgVal( a->cpf().variablesSequence().atPos( idx - 1 ),
-                     pos[idx - 1] );
-
-        if ( stop ) {
-          break;
-        }
       }
     }
 
