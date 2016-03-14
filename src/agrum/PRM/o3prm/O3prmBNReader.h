@@ -26,9 +26,10 @@
  *
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI
  */
-#ifndef O3PRMBNREADER_H
-#define O3PRMBNREADER_H
+#ifndef GUM_PRM_O3PRM_BNREADER_H
+#define GUM_PRM_O3PRM_BNREADER_H
 
+#include <algorithm>
 #include <string>
 #include <regex>
 
@@ -39,6 +40,17 @@
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 namespace gum {
+  /**
+   * @class O3prmBNReader
+   * @headerfile O3prmBNReader.h <agrum/PRM/o3prm/O3prmBNReader.h>
+   * @ingroup o3prm_group
+   *
+   * @brief Read an O3PRM and transform the gum::prm::System into
+   * gum::BayesNet.
+   *
+   * @tparam GUM_SCALAR The scalar type used both for the gum::prm::PRM and the
+   * gum::BayesNet.
+   */
   template <typename GUM_SCALAR>
   class O3prmBNReader : public BNReader<GUM_SCALAR> {
     public:
@@ -104,8 +116,12 @@ namespace gum {
     static std::string __getInstanceName( const std::string& classname );
   };
 
-  extern template class O3prmBNReader<double>;
 }  // gum
 
+// always include the implementation of the templates
 #include <agrum/PRM/o3prm/O3prmBNReader.tcc>
-#endif  // O3PRMBNREADER_H
+
+extern template class gum::O3prmBNReader<float>;
+extern template class gum::O3prmBNReader<double>;
+
+#endif  // GUM_PRM_O3PRM_BNREADER_H

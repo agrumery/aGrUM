@@ -2381,6 +2381,11 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_label(self, indice)
 
 
+    def labels(self) -> "std::vector< std::string,std::allocator< std::string > >":
+        """labels(DiscreteVariable self) -> Vector_string"""
+        return _pyAgrum.DiscreteVariable_labels(self)
+
+
     def numerical(self, indice: 'gum::Idx') -> "double":
         """numerical(DiscreteVariable self, gum::Idx indice) -> double"""
         return _pyAgrum.DiscreteVariable_numerical(self, indice)
@@ -2514,11 +2519,6 @@ class LabelizedVariable(DiscreteVariable):
     def domainSize(self) -> "gum::Size":
         """domainSize(LabelizedVariable self) -> gum::Size"""
         return _pyAgrum.LabelizedVariable_domainSize(self)
-
-
-    def labels(self) -> "gum::Sequence< std::string > const &":
-        """labels(LabelizedVariable self) -> gum::Sequence< std::string > const &"""
-        return _pyAgrum.LabelizedVariable_labels(self)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
@@ -2806,6 +2806,14 @@ class DiGraph(_object):
         toDot(DiGraph self) -> std::string const
         """
         return _pyAgrum.DiGraph_toDot(self, *args)
+
+
+    def topologicalOrder(self, clear: 'bool'=True) -> "gum::Sequence< gum::NodeId > const &":
+        """
+        topologicalOrder(DiGraph self, bool clear=True) -> gum::Sequence< gum::NodeId > const
+        topologicalOrder(DiGraph self) -> gum::Sequence< gum::NodeId > const &
+        """
+        return _pyAgrum.DiGraph_topologicalOrder(self, clear)
 
 
     def ids(self) -> "PyObject *":

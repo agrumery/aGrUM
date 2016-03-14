@@ -28,6 +28,7 @@ namespace gum_tests {
 
   class O3prmBNReaderTestSuite : public CxxTest::TestSuite {
     public:
+
     void testClassWithoutSystem() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
@@ -38,6 +39,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)1 );  // no system
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
     }
+
     void testDoublingClassWithoutSystem() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
@@ -100,7 +102,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           res = reader2.proceed() )  // class plop not existing
       TS_ASSERT_EQUALS( reader2.errors(),
-                        (gum::Size)2 );  // class plop not existing
+                        (gum::Size)1 );  // class plop not existing
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)0 );
     }
 

@@ -38,55 +38,58 @@ namespace gum {
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class( const std::string& name )
         : ClassElementContainer<GUM_SCALAR>( name )
-        , __super( 0 )
-        , __implements( 0 ) {
+        , __super( nullptr )
+        , __implements( nullptr )
+        , __bijection( nullptr ) {
       GUM_CONSTRUCTOR( Class );
     }
 
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class( const std::string& name,
-                              Class<GUM_SCALAR>& super )
+                              Class<GUM_SCALAR>& super,
+                              bool delayInheritance )
         : ClassElementContainer<GUM_SCALAR>( name )
-        , __dag( super.dag() )
         , __super( &super )
-        , __implements( 0 ) {
+        , __implements( nullptr )
+        , __bijection( new Bijection<const DiscreteVariable*,
+                                     const DiscreteVariable*>() ) {
       GUM_CONSTRUCTOR( Class );
-      super.__addExtension( this );
-      __inheritClass( super );
+      if ( not delayInheritance ) {
+        __dag = super.dag();
+        __inheritClass( super );
+      }
     }
 
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class( const std::string& name,
-                              const Set<Interface<GUM_SCALAR>*>& set )
+                              const Set<Interface<GUM_SCALAR>*>& set,
+                              bool delayInheritance )
         : ClassElementContainer<GUM_SCALAR>( name )
-        , __super( 0 )
-        , __implements( new Set<Interface<GUM_SCALAR>*>( set ) ) {
+        , __super( nullptr )
+        , __implements( new Set<Interface<GUM_SCALAR>*>( set ) )
+        , __bijection( nullptr ) {
       GUM_CONSTRUCTOR( Class );
 
-      for ( const auto impl : *__implements ) {
-        impl->__addImplementation( this );
-        // Reserve reference id in DAG
-        for ( auto ref : impl->referenceSlots() ) {
-          __dag.addNode( ref->id() );
-        }
-        // Reserve attribute id in DAG
-        for ( auto attr : impl->attributes() ) {
-          __dag.addNode( attr->id() );
-        }
+      if ( not delayInheritance ) {
+        __implementInterfaces( false );
       }
     }
 
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class( const std::string& name,
                               Class<GUM_SCALAR>& super,
-                              const Set<Interface<GUM_SCALAR>*>& set )
+                              const Set<Interface<GUM_SCALAR>*>& set,
+                              bool delayInheritance )
         : ClassElementContainer<GUM_SCALAR>( name )
-        , __dag( super.dag() )
         , __super( &super )
-        , __implements( nullptr ) {
+        , __implements( nullptr )
+        , __bijection( new Bijection<const DiscreteVariable*,
+                                     const DiscreteVariable*>() ) {
       GUM_CONSTRUCTOR( Class );
-      super.__addExtension( this );
-      __inheritClass( super );
+      if ( not delayInheritance ) {
+        __dag = super.dag();
+        __inheritClass( super );
+      }
 
       // Adding other implementation
       if ( __implements == nullptr ) {  // super has not created __implements
@@ -97,9 +100,18 @@ namespace gum {
         }
       }
 
+      if ( not delayInheritance ) {
+        __implementInterfaces( false );
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::__implementInterfaces( bool delayedInheritance ) {
       for ( const auto impl : *__implements ) {
         impl->__addImplementation( this );
-        if ( not super.isSubTypeOf( *impl ) ) {
+        if ( ( not __super ) or
+             ( __super and not super().isSubTypeOf( *impl ) ) or
+             ( __super and delayedInheritance ) ) {
           // Reserve reference id in DAG
           for ( auto ref : impl->referenceSlots() ) {
             __dag.addNode( ref->id() );
@@ -123,135 +135,334 @@ namespace gum {
       if ( __implements ) {
         delete __implements;
       }
+
+      if ( __bijection ) {
+        delete __bijection;
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::initializeInheritance() {
+      if ( __super ) {
+        __super->__addExtension( this );
+        // Adding implemented interfaces, if any
+        if ( __super->__implements ) {
+          if ( not __implements ) {
+            __implements =
+                new Set<Interface<GUM_SCALAR>*>( *( __super->__implements ) );
+          } else {
+            for ( auto i : *( __super->__implements ) ) {
+              __implements->insert( i );
+            }
+          }
+        }
+      }
+      if ( __implements ) {
+        __implementInterfaces( true );
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::inheritReferenceSlots() {
+      if ( __super ) {
+
+        // Copying reference slots
+        for ( const auto c_refslot : __super->__referenceSlots ) {
+          auto ref = new ReferenceSlot<GUM_SCALAR>(
+              c_refslot->name(),
+              const_cast<ClassElementContainer<GUM_SCALAR>&>(
+                  c_refslot->slotType() ),
+              c_refslot->isArray() );
+
+          ref->setId( c_refslot->id() );
+          // Not reserved by an interface
+          if ( not __dag.existsNode( ref->id() ) ) {
+            __dag.addNode( ref->id() );
+          }
+          __nodeIdMap.insert( ref->id(), ref );
+          __referenceSlots.insert( ref );
+
+          if ( __super->__nameMap[c_refslot->name()] ==
+               __super->__nameMap[c_refslot->safeName()] ) {
+            __nameMap.insert( ref->name(), ref );
+          }
+
+          __nameMap.insert( ref->safeName(), ref );
+        }
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::inheritParameters() {
+      if ( __super ) {
+        // Copying parameters
+        for ( const auto c_param : __super->__parameters ) {
+          auto param = new Parameter<GUM_SCALAR>(
+              c_param->name(), c_param->valueType(), c_param->value() );
+
+          __parameters.insert( param );
+
+          param->setId( c_param->id() );
+          __dag.addNode( param->id() );
+          __nodeIdMap.insert( param->id(), param );
+          __nameMap.insert( param->name(), param );
+        }
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::inheritAttributes() {
+      if ( __super ) {
+        for ( const auto c_attr : __super->__attributes ) {
+          // using multiDimSparse to prevent unecessary memory allocation for
+          // large arrays (the potentials are copied latter)
+          auto attr = c_attr->newFactory( *this );
+
+          __bijection->insert( &( c_attr->type().variable() ),
+                               &( attr->type().variable() ) );
+          attr->setId( c_attr->id() );
+          try {
+            __dag.addNode( attr->id() );
+          } catch ( gum::Exception& e ) {
+            // Node reserved by an interface
+          }
+          __nodeIdMap.insert( attr->id(), attr );
+          __attributes.insert( attr );
+
+          if ( __super->__nameMap[c_attr->name()] ==
+               __super->__nameMap[c_attr->safeName()] ) {
+            __nameMap.insert( attr->name(), attr );
+          }
+
+          __nameMap.insert( attr->safeName(), attr );
+        }
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::inheritAggregates() {
+      if ( __super ) {
+        for ( const auto c_agg : __super->__aggregates ) {
+
+          Aggregate<GUM_SCALAR>* agg = nullptr;
+
+          try {
+            agg = new Aggregate<GUM_SCALAR>( c_agg->name(),
+                                             c_agg->agg_type(),
+                                             c_agg->type(),
+                                             c_agg->label() );
+          } catch ( OperationNotAllowed& ) {
+            agg = new Aggregate<GUM_SCALAR>(
+                c_agg->name(), c_agg->agg_type(), c_agg->type() );
+          }
+
+          __bijection->insert( &( c_agg->type().variable() ),
+                               &( agg->type().variable() ) );
+          agg->setId( c_agg->id() );
+          __dag.addNode( agg->id() );
+          __nodeIdMap.insert( agg->id(), agg );
+          __aggregates.insert( agg );
+
+          if ( __super->__nameMap[c_agg->name()] ==
+               __super->__nameMap[c_agg->safeName()] )
+            __nameMap.insert( agg->name(), agg );
+
+          __nameMap.insert( agg->safeName(), agg );
+        }
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::inheritSlotChains() {
+      if ( __super ) {
+        // Copying slot chains
+        for ( const auto c_sc : __super->__slotChains ) {
+          // Because of aggregators, some slotchains may exists already
+          if ( not( __nameMap.exists( c_sc->name() ) and
+                    __nameMap.exists( c_sc->safeName() ) ) ) {
+            // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
+            // chain
+            auto chain = c_sc->chain();
+
+            chain.setAtPos( 0, __nameMap[c_sc->chain().front()->name()] );
+
+            auto sc = new SlotChain<GUM_SCALAR>( c_sc->name(), chain );
+            __bijection->insert( &( c_sc->type().variable() ),
+                                 &( sc->type().variable() ) );
+            sc->setId( c_sc->id() );
+            __dag.addNode( sc->id() );
+            __nodeIdMap.insert( sc->id(), sc );
+            __slotChains.insert( sc );
+
+            if ( not __nameMap.exists( sc->name() ) ) {
+              __nameMap.insert( sc->name(), sc );
+            }
+            if ( not __nameMap.exists( sc->safeName() ) ) {
+              __nameMap.insert( sc->safeName(), sc );
+            }
+          }
+        }
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void Class<GUM_SCALAR>::completeInheritance( const std::string& name ) {
+      if ( __super ) {
+        auto& elt = this->get( name );
+        if ( not( ClassElement<GUM_SCALAR>::isAttribute( elt ) or
+                  ClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
+          GUM_ERROR( OperationNotAllowed,
+                     "you can only complete inheritance for attributes" );
+        }
+
+        for ( const auto& prnt : super().dag().parents( elt.id() ) ) {
+          this->addArc( super().get( prnt ).safeName(), elt.safeName() );
+        }
+
+        if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
+          auto& attr = static_cast<Attribute<GUM_SCALAR>&>( elt );
+          auto& super_attr =
+              static_cast<const Attribute<GUM_SCALAR>&>( super().get( name ) );
+          attr.copyCpf( *__bijection, super_attr );
+        }
+      }
     }
 
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::__inheritClass( const Class<GUM_SCALAR>& c ) {
-      // Adding implemented interfaces of c, if any
-      if ( c.__implements ) {
-        if ( not __implements ) {
-          __implements = new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) );
-        } else {
-          for ( auto i : *( c.__implements ) ) {
-            __implements->insert( i );
+      if ( __super ) {
+        __super->__addExtension( this );
+        // Adding implemented interfaces of c, if any
+        if ( c.__implements ) {
+          if ( not __implements ) {
+            __implements =
+                new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) );
+          } else {
+            for ( auto i : *( c.__implements ) ) {
+              __implements->insert( i );
+            }
           }
         }
-      }
 
-      // Copying attributes, the bijection's firsts are attributes in this and
-      // its
-      // seconds are attributes
-      // in c.
-      Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
+        // Copying attributes, the bijection's firsts are attributes in this and
+        // its
+        // seconds are attributes
+        // in c.
+        Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
 
-      // Copying parameters
-      for ( const auto c_param : c.__parameters ) {
-        auto param = new Parameter<GUM_SCALAR>(
-            c_param->name(), c_param->valueType(), c_param->value() );
+        // Copying parameters
+        for ( const auto c_param : c.__parameters ) {
+          auto param = new Parameter<GUM_SCALAR>(
+              c_param->name(), c_param->valueType(), c_param->value() );
 
-        __parameters.insert( param );
+          __parameters.insert( param );
 
-        param->setId( c_param->id() );
-        __nodeIdMap.insert( param->id(), param );
-        __nameMap.insert( param->name(), param );
-      }
-
-      // Copying attributes
-      for ( const auto c_attr : c.__attributes ) {
-        // using multiDimSparse to prevent unecessary memory allocation for
-        // large arrays (the potentials are copied latter)
-        auto attr = c_attr->newFactory( *this );
-
-        bij.insert( &( c_attr->type().variable() ),
-                    &( attr->type().variable() ) );
-        attr->setId( c_attr->id() );
-        __nodeIdMap.insert( attr->id(), attr );
-        __attributes.insert( attr );
-
-        if ( c.__nameMap[c_attr->name()] == c.__nameMap[c_attr->safeName()] ) {
-          __nameMap.insert( attr->name(), attr );
+          param->setId( c_param->id() );
+          __nodeIdMap.insert( param->id(), param );
+          __nameMap.insert( param->name(), param );
         }
 
-        __nameMap.insert( attr->safeName(), attr );
-      }
+        // Copying attributes
+        for ( const auto c_attr : c.__attributes ) {
+          // using multiDimSparse to prevent unecessary memory allocation for
+          // large arrays (the potentials are copied latter)
+          auto attr = c_attr->newFactory( *this );
 
-      // Copying aggregates
-      for ( const auto c_agg : c.__aggregates ) {
-        Aggregate<GUM_SCALAR>* agg = nullptr;
+          bij.insert( &( c_attr->type().variable() ),
+                      &( attr->type().variable() ) );
+          attr->setId( c_attr->id() );
+          __nodeIdMap.insert( attr->id(), attr );
+          __attributes.insert( attr );
 
-        try {
-          agg = new Aggregate<GUM_SCALAR>(
-              c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->label() );
-        } catch ( OperationNotAllowed& ) {
-          agg = new Aggregate<GUM_SCALAR>(
-              c_agg->name(), c_agg->agg_type(), c_agg->type() );
+          if ( c.__nameMap[c_attr->name()] ==
+               c.__nameMap[c_attr->safeName()] ) {
+            __nameMap.insert( attr->name(), attr );
+          }
+
+          __nameMap.insert( attr->safeName(), attr );
         }
 
-        bij.insert( &( c_agg->type().variable() ),
-                    &( agg->type().variable() ) );
-        agg->setId( c_agg->id() );
-        __nodeIdMap.insert( agg->id(), agg );
-        __aggregates.insert( agg );
+        // Copying aggregates
+        for ( const auto c_agg : c.__aggregates ) {
+          Aggregate<GUM_SCALAR>* agg = nullptr;
 
-        if ( c.__nameMap[c_agg->name()] == c.__nameMap[c_agg->safeName()] )
-          __nameMap.insert( agg->name(), agg );
+          try {
+            agg = new Aggregate<GUM_SCALAR>( c_agg->name(),
+                                             c_agg->agg_type(),
+                                             c_agg->type(),
+                                             c_agg->label() );
+          } catch ( OperationNotAllowed& ) {
+            agg = new Aggregate<GUM_SCALAR>(
+                c_agg->name(), c_agg->agg_type(), c_agg->type() );
+          }
 
-        __nameMap.insert( agg->safeName(), agg );
-      }
+          bij.insert( &( c_agg->type().variable() ),
+                      &( agg->type().variable() ) );
+          agg->setId( c_agg->id() );
+          __nodeIdMap.insert( agg->id(), agg );
+          __aggregates.insert( agg );
 
-      // Copying reference slots
-      for ( const auto c_refslot : c.__referenceSlots ) {
-        ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR>(
-            c_refslot->name(),
-            const_cast<ClassElementContainer<GUM_SCALAR>&>(
-                c_refslot->slotType() ),
-            c_refslot->isArray() );
+          if ( c.__nameMap[c_agg->name()] == c.__nameMap[c_agg->safeName()] )
+            __nameMap.insert( agg->name(), agg );
 
-        ref->setId( c_refslot->id() );
-        __nodeIdMap.insert( ref->id(), ref );
-        __referenceSlots.insert( ref );
+          __nameMap.insert( agg->safeName(), agg );
+        }
 
-        if ( c.__nameMap[c_refslot->name()] ==
-             c.__nameMap[c_refslot->safeName()] )
-          __nameMap.insert( ref->name(), ref );
+        // Copying reference slots
+        for ( const auto c_refslot : c.__referenceSlots ) {
+          ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR>(
+              c_refslot->name(),
+              const_cast<ClassElementContainer<GUM_SCALAR>&>(
+                  c_refslot->slotType() ),
+              c_refslot->isArray() );
 
-        __nameMap.insert( ref->safeName(), ref );
-      }
+          ref->setId( c_refslot->id() );
+          __nodeIdMap.insert( ref->id(), ref );
+          __referenceSlots.insert( ref );
 
-      // Copying slot chains
-      for ( const auto c_slotchain : c.__slotChains ) {
-        // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
-        // chain
-        Sequence<ClassElement<GUM_SCALAR>*> chain( c_slotchain->chain() );
+          if ( c.__nameMap[c_refslot->name()] ==
+               c.__nameMap[c_refslot->safeName()] )
+            __nameMap.insert( ref->name(), ref );
 
-        chain.setAtPos( 0, __nameMap[c_slotchain->chain().front()->name()] );
+          __nameMap.insert( ref->safeName(), ref );
+        }
 
-        SlotChain<GUM_SCALAR>* sc =
-            new SlotChain<GUM_SCALAR>( c_slotchain->name(), chain );
-        bij.insert( &( c_slotchain->type().variable() ),
-                    &( sc->type().variable() ) );
-        sc->setId( c_slotchain->id() );
-        __nodeIdMap.insert( sc->id(), sc );
-        __slotChains.insert( sc );
+        // Copying slot chains
+        for ( const auto c_slotchain : c.__slotChains ) {
+          // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
+          // chain
+          Sequence<ClassElement<GUM_SCALAR>*> chain( c_slotchain->chain() );
 
-        __nameMap.insert( sc->name(), sc );
-        __nameMap.insert( sc->safeName(), sc );
-      }
+          chain.setAtPos( 0, __nameMap[c_slotchain->chain().front()->name()] );
 
-      // Copying dependencies yield by arcs
-      for ( const auto& arc : c.dag().arcs() ) {
-        __nodeIdMap[arc.tail()]->addChild( *( __nodeIdMap[arc.head()] ) );
-        __nodeIdMap[arc.head()]->addParent( *( __nodeIdMap[arc.tail()] ) );
-      }
+          SlotChain<GUM_SCALAR>* sc =
+              new SlotChain<GUM_SCALAR>( c_slotchain->name(), chain );
+          bij.insert( &( c_slotchain->type().variable() ),
+                      &( sc->type().variable() ) );
+          sc->setId( c_slotchain->id() );
+          __nodeIdMap.insert( sc->id(), sc );
+          __slotChains.insert( sc );
 
-      // Copying the IO flag
-      this->_copyIOFlags( c );
-      // Copying content of CPF
-      Attribute<GUM_SCALAR>* a = 0;
+          __nameMap.insert( sc->name(), sc );
+          __nameMap.insert( sc->safeName(), sc );
+        }
 
-      for ( const auto attr : c.__attributes ) {
-        a = static_cast<Attribute<GUM_SCALAR>*>( __nameMap[attr->safeName()] );
-        a->copyCpf( bij, *attr );
+        // Copying dependencies yield by arcs
+        for ( const auto& arc : c.dag().arcs() ) {
+          __nodeIdMap[arc.tail()]->addChild( *( __nodeIdMap[arc.head()] ) );
+          __nodeIdMap[arc.head()]->addParent( *( __nodeIdMap[arc.tail()] ) );
+        }
+
+        // Copying the IO flag
+        this->_copyIOFlags( c );
+        // Copying content of CPF
+        Attribute<GUM_SCALAR>* a = 0;
+
+        for ( const auto attr : c.__attributes ) {
+          a = static_cast<Attribute<GUM_SCALAR>*>(
+              __nameMap[attr->safeName()] );
+          a->copyCpf( bij, *attr );
+        }
       }
     }
 
@@ -346,16 +557,18 @@ namespace gum {
                    "name already used by another ClassElement<GUM_SCALAR>" );
       }
 
-      elt->setId( __dag.addNode() );
+      elt->setId( nextNodeId() );
+      __dag.addNode( elt->id() );
       __nodeIdMap.insert( elt->id(), elt );
       __nameMap.insert( elt->name(), elt );
 
       try {
         __nameMap.insert( elt->safeName(), elt );
-      } catch ( DuplicateElement& ) {
-        GUM_ASSERT(
-            elt->elt_type() == ClassElement<GUM_SCALAR>::prm_slotchain or
-            elt->elt_type() == ClassElement<GUM_SCALAR>::prm_parameter );
+      } catch ( DuplicateElement& e ) {
+        if ( not( ClassElement<GUM_SCALAR>::isSlotChain( *elt ) or
+                  ClassElement<GUM_SCALAR>::isParameter( *elt ) ) ) {
+          throw e;
+        }
       }
 
       switch ( elt->elt_type() ) {
@@ -391,8 +604,14 @@ namespace gum {
                       &( this->get( i_attr.safeName() ) ) );
                 }
                 // Node must be reserved by constructor
-                GUM_ASSERT( __dag.existsNode( i_attr.id() ) );
-                // Removing unused node and changin to propoer node
+                if ( not __dag.existsNode( i_attr.id() ) ) {
+                  GUM_ERROR( FatalError,
+                             "class " << this->name()
+                                      << " does not respect interface "
+                                      << i->name()
+                                      << " implementation" );
+                }
+                // Removing unused node and changing to proper node
                 if ( attr->id() != i_attr.id() ) {
                   // Update cast descendants
                   for ( auto child : __dag.children( attr->id() ) ) {
@@ -402,7 +621,6 @@ namespace gum {
                 }
                 __nodeIdMap.erase( attr->id() );
                 attr->setId( i_attr.id() );
-                GUM_ASSERT( attr->id() == i_attr.id() );
                 __nodeIdMap.insert( attr->id(), attr );
               }
             }
@@ -436,7 +654,13 @@ namespace gum {
                       &( this->get( i_attr.safeName() ) ) );
                 }
                 // Node must be reserved by constructor
-                GUM_ASSERT( __dag.existsNode( i_attr.id() ) );
+                if ( not __dag.existsNode( i_attr.id() ) ) {
+                  GUM_ERROR( FatalError,
+                             "class " << this->name()
+                                      << " does not respect interface "
+                                      << i->name()
+                                      << " implementation" );
+                }
                 // Removing unused node and changin to propoer node
                 if ( elt->id() != i_attr.id() ) {
                   __dag.eraseNode( elt->id() );
@@ -473,7 +697,13 @@ namespace gum {
                       "ReferenceSlot type does not respect class interface" );
                 }
                 // Node must be reserved by constructor
-                GUM_ASSERT( __dag.exists( i_ref.id() ) );
+                if ( not __dag.exists( i_ref.id() ) ) {
+                  GUM_ERROR( FatalError,
+                             "class " << this->name()
+                                      << " does not respect interface "
+                                      << i->name()
+                                      << " implementation" );
+                }
                 // Removing unused node and changin to propoer node
                 if ( ref->id() != i_ref.id() ) {
                   __dag.eraseNode( ref->id() );
@@ -531,7 +761,8 @@ namespace gum {
           // No interface
         }
         if ( not found ) {
-          child->setId( __dag.addNode() );
+          child->setId( nextNodeId() );
+          __dag.addNode( child->id() );
         }
         __nodeIdMap.insert( child->id(), child );
         // Only use child's safe name when adding to the name map!
@@ -625,7 +856,8 @@ namespace gum {
 
       // Checking if we have to add cast descendant
       if ( overloader->type() != overloaded->type() ) {
-        overloader->setId( __dag.addNode() );
+        overloader->setId( nextNodeId() );
+        __dag.addNode( overloader->id() );
         __nodeIdMap.insert( overloader->id(), overloader );
         __nameMap[overloader->name()] = overloader;
         __nameMap.insert( overloader->safeName(), overloader );
@@ -754,13 +986,15 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::__addCastDescendants( Attribute<GUM_SCALAR>* start,
                                                   Attribute<GUM_SCALAR>* end ) {
+
       Attribute<GUM_SCALAR>* parent = start;
       Attribute<GUM_SCALAR>* child = 0;
 
       while ( parent->type().super() != end->type() ) {
         child = parent->getCastDescendant();
-        child->setId( __dag.addNode() );
+        child->setId( nextNodeId() );
         __nodeIdMap.insert( child->id(), child );
+        __dag.addNode( child->id() );
         // Only use child's safe name when adding to the name map!
         __nameMap.insert( child->safeName(), child );
         __attributes.insert( child );
@@ -854,7 +1088,9 @@ namespace gum {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given NodeId ("<<id<<")" );
+                   "no ClassElement<GUM_SCALAR> with the given NodeId ("
+                       << id
+                       << ")" );
       }
     }
 
@@ -865,7 +1101,8 @@ namespace gum {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given name ("<<name<<")" );
+                   "no ClassElement<GUM_SCALAR> with the given name (" << name
+                                                                       << ")" );
       }
     }
 
@@ -876,7 +1113,8 @@ namespace gum {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> with the given name ("<<name<<")" );
+                   "no ClassElement<GUM_SCALAR> with the given name (" << name
+                                                                       << ")" );
       }
     }
 

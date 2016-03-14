@@ -110,44 +110,44 @@ void Parser::EVAL() {
 		while (StartOf(1)) {
 			expression();
 		}
-		__formula->finalize(); 
+		__formula->__finalize(); 
 }
 
 void Parser::expression() {
 		switch (la->kind) {
 		case _integer: {
 			Get();
-			__formula->push_number((double)coco_atoi(t->val)); 
+			__formula->__push_number((double)coco_atoi(t->val)); 
 			break;
 		}
 		case _float: {
 			Get();
-			__formula->push_number((double)coco_atof(t->val)); 
+			__formula->__push_number((double)coco_atof(t->val)); 
 			break;
 		}
 		case _operator: {
 			Get();
-			__formula->push_operator(narrow(t->val)[0]); 
+			__formula->__push_operator(narrow(t->val)[0]); 
 			break;
 		}
 		case 6 /* "(" */: {
 			Get();
-			__formula->push_leftParenthesis(); 
+			__formula->__push_leftParenthesis(); 
 			break;
 		}
 		case 7 /* ")" */: {
 			Get();
-			__formula->push_rightParenthesis(); 
+			__formula->__push_rightParenthesis(); 
 			break;
 		}
 		case _ident: {
 			Get();
-			__formula->push_identifier(narrow(t->val)); 
+			__formula->__push_identifier(narrow(t->val)); 
 			break;
 		}
 		case 8 /* "," */: {
 			Get();
-			__formula->push_comma(); 
+			__formula->__push_comma(); 
 			break;
 		}
 		default: SynErr(10); break;

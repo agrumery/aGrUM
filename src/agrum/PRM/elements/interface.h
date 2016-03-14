@@ -68,8 +68,11 @@ namespace gum {
        * Constructor for building a subclass of super.
        * @param name The sub-interface name.
        * @param super The super Interface of this.
+       * @param delayInheritance If true, inheritance will be delayed.
        */
-      Interface( const std::string& name, Interface& super );
+      Interface( const std::string& name,
+                 Interface& super,
+                 bool delayInheritance = false );
 
       /// Copy constructor.
       Interface( const Interface& source );
@@ -168,32 +171,6 @@ namespace gum {
        */
       NodeId overload( ClassElement<GUM_SCALAR>* elt );
 
-      // /**
-      //  * @brief Remove a ClassElement<GUM_SCALAR> from this
-      //  Class<GUM_SCALAR>.
-      //  *
-      //  * When removing a ClassElement<GUM_SCALAR> it will not be deleted by
-      //  this
-      //  Class<GUM_SCALAR>, thus
-      //  * you should delete it yourself.
-      //  *
-      //  * All dependencies among the removed ClassElement<GUM_SCALAR> and
-      //  ClassElement<GUM_SCALAR> defined
-      //  * in and outside of this class are deleted also. You must update the
-      //  * corresponding CPF yourself.
-      //  *
-      //  * Futhermore if there exists Instance of this Class<GUM_SCALAR> you
-      //  should
-      //  be very
-      //  * careful at what you are doing (for instance do not delete the
-      //  * ClassElement<GUM_SCALAR> before deleting the concerned Instance).
-      //  *
-      //  * @param id The ClassElement<GUM_SCALAR>'s NodeId.
-      //  * @return the pointer over the removed ClassElement<GUM_SCALAR>.
-      //  * @throw NotFound If no ClassElement<GUM_SCALAR> matches id.
-      //  */
-      // ClassElement<GUM_SCALAR>* remove(NodeId id);
-
       /// @}
       // ========================================================================
       /// @name Inheritance methods
@@ -247,6 +224,12 @@ namespace gum {
        * Returns the set of Class<GUM_SCALAR> implementing this Interface.
        */
       const Set<Class<GUM_SCALAR>*>& implementations() const;
+
+      /**
+       * Inherits from this interface super interface, this should only be done
+       * when this inteface inheritance was delayed.
+       */
+      void inheritInterface();
 
       /// @}
       // ========================================================================

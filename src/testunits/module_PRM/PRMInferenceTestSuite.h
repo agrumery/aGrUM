@@ -47,13 +47,21 @@ namespace gum_tests {
       {
         gum::prm::o3prm::O3prmReader<double> reader;
         reader.readFile( GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ) );
+        reader.showElegantErrorsAndWarnings();
         prm = reader.prm();
+        if ( reader.errors() > 0 ) {
+          GUM_ERROR( gum::FatalError, "could not load ressource file" );
+        }
       }
       {
         gum::prm::o3prm::O3prmReader<double> reader;
         reader.readFile(
             GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) );
+        reader.showElegantErrorsAndWarnings();
         small = reader.prm();
+        if ( reader.errors() > 0 ) {
+          GUM_ERROR( gum::FatalError, "could not load ressource file" );
+        }
       }
     }
 

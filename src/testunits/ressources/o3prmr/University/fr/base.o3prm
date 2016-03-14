@@ -62,7 +62,7 @@ class Professor implements IProfessor {
 
 class Student implements IStudent {
   IRegistration[] registrations;
-  ABC avgGrade = max (registrations.grade, ABC);
+  ABC avgGrade = max (registrations.grade);
   hl intelligence {[0.40, 0.60]};
   hml ranking dependson avgGrade {
     A : 0.70, 0.20, 0.10;
@@ -74,7 +74,7 @@ class Student implements IStudent {
 class Course implements ICourse {
   IRegistration[] registrations;
   IProfessor prof;
-  hl avgsatisfaction = max (registrations.satisfaction, hl);
+  hl avgsatisfaction = max (registrations.satisfaction);
   hml rating dependson avgsatisfaction {
     HIGH : 0.70, 0.20, 0.10;
     LOW  : 0.20, 0.70, 0.10;        

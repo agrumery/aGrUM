@@ -108,6 +108,9 @@ namespace gum {
           case prm_slotchain:
             return "prm_slotchain";
 
+          case prm_parameter:
+            return "prm_parameter";
+
           default:
             return "unknown";
         }

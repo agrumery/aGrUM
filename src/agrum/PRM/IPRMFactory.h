@@ -75,22 +75,29 @@ namespace gum {
       virtual void
       startClass( const std::string& c,
                   const std::string& extends = "",
-                  const Set<std::string>* implements = nullptr ) = 0;
-      virtual void endClass() = 0;
+                  const Set<std::string>* implements = nullptr,
+                  bool delayInheritance = false ) = 0;
+      virtual void continueClass( const std::string& c ) = 0;
+      virtual void endClass( bool checkImplementations = true ) = 0;
       virtual void startInterface( const std::string& i,
-                                   const std::string& extends = "" ) = 0;
+                                   const std::string& extends = "",
+                                   bool delayInheritance = false ) = 0;
+      virtual void continueInterface( const std::string& name ) = 0;
       virtual void addAttribute( const std::string& type,
                                  const std::string& name ) = 0;
       virtual void endInterface() = 0;
       // virtual void addAttribute ( Attribute<GUM_SCALAR>* attr ) =0;
       virtual void startAttribute( const std::string& type,
                                    const std::string& name ) = 0;
+      virtual void continueAttribute( const std::string& name ) = 0;
       virtual void addParent( const std::string& name ) = 0;
       virtual void setRawCPFByFloatLines( const std::vector<float>& array ) = 0;
       virtual void
       setRawCPFByFloatColumns( const std::vector<float>& array ) = 0;
       virtual void setCPFByFloatRule( const std::vector<std::string>& labels,
                                       const std::vector<float>& values ) = 0;
+      virtual void setCPFByRule( const std::vector<std::string>& labels,
+                                 const std::vector<std::string>& values ) =0;
       virtual void
       setRawCPFByColumns( const std::vector<std::string>& array ) = 0;
       virtual void
@@ -102,7 +109,8 @@ namespace gum {
       virtual void addAggregator( const std::string& name,
                                   const std::string& agg_type,
                                   const std::vector<std::string>& chains,
-                                  const std::vector<std::string>& params ) = 0;
+                                  const std::vector<std::string>& params,
+                                  std::string type="" ) = 0;
       virtual void
       addNoisyOrCompound( const std::string& name,
                           const std::vector<std::string>& chains,

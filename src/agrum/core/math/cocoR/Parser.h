@@ -39,6 +39,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <cmath>
 #include <fstream>
 #include <list>
+#include <memory>
 #include <sstream>
 #include <stack>
 #include <string>

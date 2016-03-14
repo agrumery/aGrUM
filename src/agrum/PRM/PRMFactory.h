@@ -296,13 +296,21 @@ namespace gum {
        * @param c The class name.
        * @param ext The name of the super class of c.
        * @param implements The list of interface implemented by c.
+       * @param delayInheritance If true, the created gum::prm::Class
+       * inheritance will be delayed.
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
       startClass( const std::string& c,
                   const std::string& ext = "",
-                  const Set<std::string>* implements = nullptr ) override;
+                  const Set<std::string>* implements = nullptr,
+                  bool delayInheritance=false ) override;
+
+      /**
+       * Continue the declaration of a class.
+       */
+      virtual void continueClass( const std::string& c ) override;
 
       /**
        * Tells the factory that we finished a class declaration.
@@ -311,7 +319,7 @@ namespace gum {
        *respect one of
        *                  it's Interface<GUM_SCALAR>.
        */
-      virtual void endClass() override;
+      virtual void endClass( bool checkImplementations = true ) override;
 
       /// @}
       // ======================================================================
@@ -327,12 +335,20 @@ namespace gum {
        *
        * @param i The interface name.
        * @param ext The name of the super interface of i.
+       * @param delayInheritance If true, the created gum::prm::Interface
+       * inheritance will be delayed.
        *
        * @throw NotFound Raised if ext does not match any declared
        *                 Interface<GUM_SCALAR>.
        */
       virtual void startInterface( const std::string& i,
-                                   const std::string& ext = "" ) override;
+                                   const std::string& ext = "",
+                                   bool delayInheritance = false ) override;
+
+      /**
+       * Continue the declaration of an interface.
+       */
+      virtual void continueInterface( const std::string& name ) override;
 
       /**
        * @brief Add an attribute to an interface.
@@ -356,15 +372,14 @@ namespace gum {
        *
        * Use this method when you must add functions, such as Noisy-Or.
        *
-       * Use this method when you need to add functions, such as Noisy-Or.
-       * The attribute CPT is checked for parents and arcs will be added using
-       * the DiscreteVariable pointers, thus be careful to use those of the
+       * Use this method when you need to add functions, such as Noisy-Or.  The
+       * attribute CPT is checked for parents and arcs will be added using the
+       * DiscreteVariable pointers, thus be careful to use those of the
        * attributes, aggregates and slotchains of the current class.
        * gum::prm::Class<GUM_SCALAR>::insertArc() will be called for each found
-       *parent of
-       * attr, so you should overload
-       *gum::prm::Attribute<GUM_SCALAR>::addParent() to prevent
-       * duplication errors. Such class exists: gum::prm::FuncAttribute .
+       * parent of attr, so you should overload
+       * gum::prm::Attribute<GUM_SCALAR>::addParent() to prevent duplication
+       * errors. Such class exists: gum::prm::FuncAttribute .
        *
        * The pointer is given to the class, so do not worry about deleting it.
        *
@@ -381,6 +396,11 @@ namespace gum {
        */
       virtual void startAttribute( const std::string& type,
                                    const std::string& name ) override;
+
+      /**
+       * Continues the declaration of an attribute.
+       */
+      virtual void continueAttribute( const std::string& name ) override;
 
       /**
        * Tells the factory that we add a parent to the current declared
@@ -414,9 +434,7 @@ namespace gum {
       void setRawCPFByLines( const std::vector<GUM_SCALAR>& array );
 
       /**
-       * @brief Not implemented!
-       *
-       * Gives the factory the CPF in its raw form.
+       * @brief  Gives the factory the CPF in its raw form.
        *
        * The creation of the CPF is left to the factory because we do not know
        * what level of complexity for CPF implementation can be handled by the
@@ -438,7 +456,7 @@ namespace gum {
       void setRawCPFByColumns( const std::vector<GUM_SCALAR>& array );
 
       /**
-       * Fills the CPF using a rule.
+       * @brief Fills the CPF using a rule.
        *
        * The labels vector is filled with one of each parent's labels or
        * with a wildcard ("*"). If a wildcard is used then all values of the
@@ -451,6 +469,127 @@ namespace gum {
        */
       virtual void setCPFByRule( const std::vector<std::string>& labels,
                                  const std::vector<GUM_SCALAR>& values );
+
+      /**
+       * @brief Fills the CPF using a rule and gum::Formula.
+       *
+       * The labels vector is filled with one of each parent's labels or
+       * with a wildcard ("*"). If a wildcard is used then all values of the
+       * corresponding parents are used. The sequence of parents must be the
+       * declaration order used when adding the current attribute's parents.
+       *
+       * @param labels The value of each parents.
+       * @param values The probability values of the current attribute given
+       *               the values in parenst.
+       */
+      virtual void setCPFByRule( const std::vector<std::string>& labels,
+                                 const std::vector<std::string>& values );
+
+      /**
+       * @brief Gives the factory the CPF in its raw form.
+       *
+       * The creation of the CPF is left to the factory because we do not know
+       * what level of complexity for CPF implementation can be handled by the
+       * PRM<GUM_SCALAR> implementation.
+       *
+       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+       * with A, B and C boolean variables ( {f, t}, the order is
+       * important), then the following array is valid:
+       * @code
+       * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
+       *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
+       *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
+       *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
+       * @endcode
+       *
+       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       */
+      virtual void
+      setRawCPFByFloatLines( const std::vector<float>& array ) override;
+
+      /**
+       * @brief Gives the factory the CPF in its raw form.
+       *
+       * The creation of the CPF is left to the factory because we do not know
+       * what level of complexity for CPF implementation can be handled by the
+       * PRM<GUM_SCALAR> implementation.
+       *
+       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+       * with A, B and C boolean variables ( {f, t}, the order is
+       * important), then the following array is valid:
+       * @code
+       * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
+       * [ 0.2,     0.7,     0.5,     0.01,
+       *   0.8,     0.3,     0.5,     0.99]
+       * @endcode
+       *
+       * See PRMFactory::setRawCPFByLines() for more details.
+       *
+       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       */
+      virtual void
+      setRawCPFByFloatColumns( const std::vector<float>& array ) override;
+
+      /**
+       * @brief  Gives the factory the CPF in its raw form use gum::Formula.
+       *
+       * The creation of the CPF is left to the factory because we do not know
+       * what level of complexity for CPF implementation can be handled by the
+       * PRM<GUM_SCALAR> implementation.
+       *
+       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+       * with A, B and C boolean variables ( {f, t}, the order is
+       * important), then the following array is valid:
+       * @code
+       * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
+       * [ 0.2,     0.7,     0.5,     0.01,
+       *   0.8,     0.3,     0.5,     0.99]
+       * @endcode
+       *
+       * See PRMFactory::setRawCPFByLines() for more details.
+       *
+       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       */
+      virtual void
+      setRawCPFByColumns( const std::vector<std::string>& array ) override;
+
+      /**
+       * @brief Gives the factory the CPF in its raw form using gum::Formula.
+       *
+       * The creation of the CPF is left to the factory because we do not know
+       * what level of complexity for CPF implementation can be handled by the
+       * PRM<GUM_SCALAR> implementation.
+       *
+       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+       * with A, B and C boolean variables ( {f, t}, the order is
+       * important), then the following array is valid:
+       * @code
+       * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
+       *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
+       *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
+       *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
+       * @endcode
+       *
+       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       */
+      virtual void
+      setRawCPFByLines( const std::vector<std::string>& array ) override;
+
+      /**
+       * @brief Fills the CPF using a rule.
+       *
+       * The labels vector is filled with one of each parent's labels or
+       * with a wildcard ("*"). If a wildcard is used then all values of the
+       * corresponding parents are used. The sequence of parents must be the
+       * declaration order used when adding the current attribute's parents.
+       *
+       * @param labels The value of each parents.
+       * @param values The probability values of the current attribute given
+       *               the values in parenst.
+       */
+      virtual void
+      setCPFByFloatRule( const std::vector<std::string>& labels,
+                         const std::vector<float>& values ) override;
 
       /**
        * Tells the factory that we finished declaring an attribute.
@@ -497,6 +636,8 @@ namespace gum {
        * @param agg_type The name of the aggregator type of this aggregator.
        * @param chains The set of chains on which this aggregate applies.
        * @param params The list of parameters for this aggregator.
+       * @param type Some aggregators have a user defined type, use this
+       * parameter to define it.
        *
        * @throw OperationNotAllowed Raised if one or more parameters misses or
        * are not correct.
@@ -507,7 +648,8 @@ namespace gum {
       addAggregator( const std::string& name,
                      const std::string& agg_type,
                      const std::vector<std::string>& chains,
-                     const std::vector<std::string>& params ) override;
+                     const std::vector<std::string>& params,
+                     std::string type="" ) override;
 
       /**
        * @brief Add a compound noisy-or as an Attribute<GUM_SCALAR> to the
@@ -637,78 +779,6 @@ namespace gum {
 
       /// @}
 
-      /// @name float input for parameters
-      /// @{
-
-      /**
-       * Gives the factory the CPF in its raw form.
-       *
-       * The creation of the CPF is left to the factory because we do not know
-       * what level of complexity for CPF implementation can be handled by the
-       * PRM<GUM_SCALAR> implementation.
-       *
-       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-       * with A, B and C boolean variables ( {f, t}, the order is
-       * important), then the following array is valid:
-       * @code
-       * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
-       *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
-       *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
-       *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
-       * @endcode
-       *
-       * @throw OperationNotAllowed Raised if the given operation is illegal.
-       */
-      virtual void
-      setRawCPFByFloatLines( const std::vector<float>& array ) override;
-
-      /**
-       * @brief Not implemented!
-       *
-       * Gives the factory the CPF in its raw form.
-       *
-       * The creation of the CPF is left to the factory because we do not know
-       * what level of complexity for CPF implementation can be handled by the
-       * PRM<GUM_SCALAR> implementation.
-       *
-       * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-       * with A, B and C boolean variables ( {f, t}, the order is
-       * important), then the following array is valid:
-       * @code
-       * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
-       * [ 0.2,     0.7,     0.5,     0.01,
-       *   0.8,     0.3,     0.5,     0.99]
-       * @endcode
-       *
-       * See PRMFactory::setRawCPFByLines() for more details.
-       *
-       * @throw OperationNotAllowed Raised if the given operation is illegal.
-       */
-      virtual void
-      setRawCPFByFloatColumns( const std::vector<float>& array ) override;
-
-
-      virtual void
-      setRawCPFByColumns( const std::vector<std::string>& array ) override;
-      virtual void
-      setRawCPFByLines( const std::vector<std::string>& array ) override;
-
-      /**
-       * Fills the CPF using a rule.
-       *
-       * The labels vector is filled with one of each parent's labels or
-       * with a wildcard ("*"). If a wildcard is used then all values of the
-       * corresponding parents are used. The sequence of parents must be the
-       * declaration order used when adding the current attribute's parents.
-       *
-       * @param labels The value of each parents.
-       * @param values The probability values of the current attribute given
-       *               the values in parenst.
-       */
-      virtual void
-      setCPFByFloatRule( const std::vector<std::string>& labels,
-                         const std::vector<float>& values ) override;
-      /// @}
       private:
       /// Decompose a string in v using dots ('.') as delimiters.
       void __fill_sc_in_vector( std::vector<std::string>& v,
@@ -875,10 +945,6 @@ namespace gum {
                                    Instance<GUM_SCALAR>* inst,
                                    ReferenceSlot<GUM_SCALAR>* ref,
                                    SlotChain<GUM_SCALAR>* sc );
-
-      void __incrementByColumn( Attribute<GUM_SCALAR>* a,
-                                std::vector<Size>& pos,
-                                Instantiation& inst );
 
       /// Fill seq with the sequence of instance build using inst as the
       /// instantiation of sc->__class and seeking each instantiation of

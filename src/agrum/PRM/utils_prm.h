@@ -93,6 +93,13 @@ namespace gum {
                         Set<Potential<GUM_SCALAR>*>& pool,
                         Set<Potential<GUM_SCALAR>*>& trash );
 
+
+    /**
+     * @brief Returns the next value of an unique counter for PRM's node id.
+     * @return Returns the next value of an unique counter for PRM's node id.
+     */
+    NodeId nextNodeId();
+
   } /* namespace prm */
 } /* namespace gum */
 

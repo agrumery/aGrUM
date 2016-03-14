@@ -149,23 +149,19 @@ namespace gum {
                                 const EdgeData<GUM_SCALAR>& data );
 
       /**
-       * @class InterfaceGraph interfaceGraph.h
-       *<agrum/PRM/gspan/interfaceGraph.h>
+       * @class InterfaceGraph
+       * @headerfile interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
        *
        * @brief This class represent the interface graph of a given
-       *gum::prm::System<GUM_SCALAR>.
+       * gum::prm::System<GUM_SCALAR>.
        *
        * An interface graph is a labelled graph over the instances of a
-       *gum::prm::System<GUM_SCALAR>,
-       * where there exists an edge between two instance i and j if and only if
-       *their
-       * shared interface is nonempty.
+       * gum::prm::System<GUM_SCALAR>, where there exists an edge between two
+       * instance i and j if and only if their shared interface is nonempty.
        *
        * Labels assigned to edges and nodes in the interface graph are
-       *technically
-       * strings, however since we need a linear oder each label is assigned a
-       *unique
-       * id.
+       * technically strings, however since we need a linear oder each label is
+       * assigned a unique id.
        *
        */
       template <typename GUM_SCALAR>

@@ -25,7 +25,7 @@ type intervalle_K zero, un, deux, trois;
 class k_nGate implements Gate {
 	Event[] inputs ;
 
-	intervalle Nb_true = count(inputs.state, true, intervalle);
+	intervalle Nb_true = count(inputs.state, true);
 
   intervalle_K K {[0.25, 0.25, 0.25, 0.25]};
 

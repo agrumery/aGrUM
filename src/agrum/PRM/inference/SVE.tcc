@@ -720,11 +720,11 @@ namespace gum {
       static std::string dot = ".";
 
       try {
-        __delayedVariablesCounters[i->name() + dot + i->get( id ).safeName()] +=
+        __delayedVariablesCounters[j->name() + dot + j->get( id ).safeName()] +=
             1;
       } catch ( NotFound& ) {
         __delayedVariablesCounters.insert(
-            i->name() + dot + i->get( id ).safeName(), 1 );
+            j->name() + dot + j->get( id ).safeName(), 1 );
       }
     }
 

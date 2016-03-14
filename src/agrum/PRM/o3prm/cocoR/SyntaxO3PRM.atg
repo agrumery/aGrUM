@@ -1,5 +1,3 @@
-
-
 //##############################################################################
 //
 //                               HEADERS
@@ -7,19 +5,11 @@
 //##############################################################################
 
 #include <string>
-#include <sstream>
-#include <algorithm>
-#include <fstream>
-
-#include <agrum/core/utils_dir.h>
+#include <vector>
+#include <utility>
+#include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/PRM/IPRMFactory.h>
-
-#undef TRY
-// Redefine try / catch to add a semantic error when errors are raised.
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorContent()); }
-#define  TRY2(inst,msg) try { inst; } catch (gum::Exception& e) { SemErr(msg+" ("+e.errorContent()+")."); }
-#define  TRY3(inst,msg,error) try { if (!error) {inst;} } catch (gum::Exception& e) { SemErr(msg+" ("+e.errorContent()+")."); error=true; }
+#include <agrum/PRM/o3prm/O3prm.h>
 
 //##############################################################################
 //
@@ -27,274 +17,126 @@
 //
 //##############################################################################
 
-COMPILER O3PRM
+COMPILER O3PRM_UNIT
 
 private:
-    gum::prm::IPRMFactory*       __factory;
-    std::vector<std::string>    __class_path;
-    gum::Set<std::string>       __imports;
-    std::string                 __package;
-    gum::Directory              __current_directory;
 
-    // Convert std::string to wstring.
-    void SemErr(std::string s) {
-      SemErr(widen(s).c_str());
-    }
+using O3Position = gum::prm::o3prm::O3Position;
 
-    // Return true if type is a class or an interface.
-    bool isClassOrInterface(std::string type) {
-      return factory().isClassOrInterface(type);
-    }
+using O3Integer = gum::prm::o3prm::O3Integer;
+using O3Float = gum::prm::o3prm::O3Float;
 
-    void importDirID( std::string dirID ) {
-        std::string dirname = dirID, dirpath;
-        bool dirFound = false;
+using O3FloatList = std::vector<gum::prm::o3prm::O3Float>;
 
-        // Retrieve package
-        std::string package = dirID;
-        if (package.back() == '.') {
-            package = package.substr(0, package.length() - 1);
-        }
+using O3Label = gum::prm::o3prm::O3Label;
+using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
+using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 
-        // Create filename
-        replace(dirname.begin(), dirname.end(), '.', '/');
-        dirname += "/";
+using O3Formula = gum::prm::o3prm::O3Formula;
+using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
 
-        // Search in current directory.
-        if ( __current_directory.isValid() ) {
-            dirpath = __current_directory.absolutePath() + dirname;
-            dirFound = Directory::isDir(dirpath);
-        }
+using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
+using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
 
-        // Search in root package directory.
-        if ( ! dirFound && ! __package.empty() ) {
-            int cpt = std::count(__package.begin(), __package.end(), '.');
-            std::string cd = __current_directory.absolutePath();
-            size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
-            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ ) {
-                index = cd.find_last_of('/', index - 1);
-            }
+using O3Type = gum::prm::o3prm::O3Type;
+using O3IntType = gum::prm::o3prm::O3IntType;
 
-            if ( index != std::string::npos ) {
-                std::string rootDir = cd.substr(0, index+1); // with '/' at end
-                dirpath = rootDir + dirname;
-                dirFound = Directory::isDir(dirpath);
-            }
-        }
+using O3Interface = gum::prm::o3prm::O3Interface;
+using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
+using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
-        // Search filename in each path stored in __class_path
-        if ( ! dirFound ) {
-          for (const auto & path :__class_path) {
-              // Construct complete filePath
-              dirpath = path + dirname;
-              dirFound = Directory::isDir(dirpath);
-              if (dirFound) {
-                break;
-              }
-          }
-        }
+using O3Parameter = gum::prm::o3prm::O3Parameter;
+using O3ParameterList = gum::prm::o3prm::O3Class::O3ParameterList;
 
-        // If it is found, import all files in.
-        if (dirFound) {
-            importDir( dirpath, package );
-        } else { // If import filename has not been found, add an error.
-            SemErr("import not found");
-        }
-    }
+using O3ReferenceSlot = gum::prm::o3prm::O3ReferenceSlot;
+using O3ReferenceSlotList = gum::prm::o3prm::O3Class::O3ReferenceSlotList;
 
-    void importDir( std::string dirpath, std::string package="" ) {
-        // Update current directory
-        Directory oldCurrentDirectory = __current_directory;
-        __current_directory = Directory(dirpath);
+using O3Attribute = gum::prm::o3prm::O3Attribute;
+using O3RawCPT = gum::prm::o3prm::O3RawCPT;
+using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
+using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
-        for ( const auto & entry : __current_directory.entries()) {
-            if (entry[0]== '.') { //"." or ".." or ".svn" or any hidden directories...
-                continue;
-            }
+using O3Aggregate = gum::prm::o3prm::O3Aggregate;
+using O3AggregateList = gum::prm::o3prm::O3Class::O3AggregateList;
 
-            size_t last_dot = entry.find_last_of('.');
+using O3Class = gum::prm::o3prm::O3Class;
 
-            if ( Directory::isDir(dirpath+entry) ) {
-                importDir( dirpath + entry + "/", package + "." + entry );
-            } else if ( entry.substr( last_dot ) == ".o3prm" ) { // if .o3prm
-                if (package.length() > 0) {
-                  package.append(".");
-                }
-                package.append(entry.substr(0, last_dot));
-                factory().addImport(package);
-                importFile( dirpath + entry, package );
-            }
-        }
+using O3System = gum::prm::o3prm::O3System;
+using O3Instance = gum::prm::o3prm::O3Instance;
+using O3InstanceParameter = gum::prm::o3prm::O3InstanceParameter;
+using O3InstanceParameterList = gum::prm::o3prm::O3Instance::O3InstanceParameterList;
+using O3Assignment = gum::prm::o3prm::O3Assignment;
+using O3Increment = gum::prm::o3prm::O3Increment;
 
-        // Reset previous current directory
-        __current_directory = oldCurrentDirectory;
-    }
+using O3Import = gum::prm::o3prm::O3Import;
+using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
 
-    void importFile( std::string filepath, std::string package="" ) {
-        // If we have already import this file, skip it.
-        // (like filepath is always absolute, there is no conflict)
-        if ( __imports.exists( filepath ) ) {
-            return;
-        }
+using O3PRM = gum::prm::o3prm::O3PRM;
 
-        // Remember we have found it.
-        __imports.insert(filepath);
+O3PRM* __prm;
+std::string __prefix;
 
-        // We parse it
-        Scanner s(filepath.c_str());
-        Parser p(&s);
-        p.setFactory(__factory);
-        p.setClassPath(__class_path);
-        p.setImports(__imports);
-        p.setCurrentDirectory( filepath.substr(0, filepath.find_last_of('/')+1) );
+bool __ok (int n) { return errors().error_count == n; }
 
-        if (package.length() > 0) {
-            factory().pushPackage(package);
-            p.Parse();
-            factory().popPackage();
-        } else {
-            p.Parse();
-        }
-
-        // We add file imported in p to file imported here.
-        for (const auto & import : p.getImports()) {
-            if (not __imports.exists(import)) {
-                __imports.insert(import);
-            }
-        }
-
-        // We add warnings and errors to this
-        __errors += p.__errors;
-    }
-
-void import( std::string fileID ) {
-    // If relatif import
-    if (fileID[0] == '.') {
-      std::string current_pck = factory().currentPackage();
-      size_t last_dot = current_pck.find_last_of('.');
-      fileID = current_pck.substr(0, last_dot) + fileID;
-    }
-
-    // Si on inclut un répertoire entier
-    size_t starIndex = fileID.find_last_of('*');
-    if ( starIndex != std::string::npos ) {
-        return importDirID(fileID.substr(0,starIndex-1));
-    }
-
-    std::string package = fileID;
-
-    // Create filename
-    std::string filename = fileID;
-    replace(filename.begin(), filename.end(), '.', '/');
-    filename += ".o3prm";
-
-    // Search in current directory.
-    bool fileFound = false;
-    std::string filepath;
-    if ( __current_directory.isValid() ) {
-        filepath = __current_directory.absolutePath() + filename;
-        std::ifstream file_test;
-        file_test.open(filepath.c_str());
-        if (file_test.is_open()) {
-            file_test.close();
-            fileFound = true;
-        }
-    }
-
-    // Search in root package directory.
-    if ( ! fileFound && ! __package.empty() ) {
-        int cpt = std::count(__package.begin(), __package.end(), '.');
-        std::string cd = __current_directory.absolutePath();
-        size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
-        for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ ) {
-            index = cd.find_last_of('/', index - 1);
-        }
-
-        if ( index != std::string::npos ) {
-            std::string rootDir = cd.substr(0, index+1); // with '/' at end
-            filepath = rootDir + filename;
-            std::ifstream file_test;
-            file_test.open(filepath.c_str());
-            if (file_test.is_open()) {
-                file_test.close();
-                fileFound = true;
-            }
-        }
-    }
-
-    // Search filename in each path stored in __class_path
-    for (const auto & path : __class_path) {
-        // Construct complete filePath
-        filepath = path + filename;
-
-        // We try to open it
-        std::ifstream file_test;
-        file_test.open(filepath.c_str());
-        if (file_test.is_open()) {
-            file_test.close();
-            fileFound = true;
-        }
-    }
-
-    // If it is found, import it.
-    if (fileFound) {
-        importFile( filepath, package );
-        factory().addImport(package);
-    } else {
-        SemErr("import not found");
-    }
+void __addO3Type( O3Type t ) {
+  get_prm()->types().emplace_back( new O3Type{std::move( t )} );
 }
 
-// Set files already import in factory.
-void setImports(const gum::Set<std::string>& imports) {
-    __imports = imports;
+void __addO3IntType( O3IntType t ) {
+  get_prm()->int_types().emplace_back( new O3IntType{std::move( t )} );
 }
 
-// Add these import to this parser.
-void addImports(const gum::Set<std::string>& imports) {
-  for (const auto & import :imports) {
-    addImport(import);
+void __addO3RealType( O3RealType t ) {
+  get_prm()->real_types().emplace_back( new O3RealType{std::move( t )} );
+}
+
+void __addO3Interface( O3Interface i ) {
+  get_prm()->interfaces().emplace_back( new O3Interface( std::move( i ) ) );
+}
+
+void __addO3Class( O3Class c ) {
+  get_prm()->classes().emplace_back( new O3Class( std::move( c ) ) );
+}
+
+void __addO3System( O3System s ) {
+  get_prm()->systems().emplace_back( new O3System( std::move( s ) ) );
+}
+
+void __addO3Import( O3Import i ) {
+  get_prm()->imports().emplace_back( new O3Import( std::move( i ) ) );
+}
+
+void __split( const O3Label& value, O3Label& left, O3Label& right) {
+  auto idx = value.label().find_first_of('.');
+  if ( ( idx == std::string::npos ) or ( idx == value.label().size() - 1 ) ) {
+    left = O3Label( value.position(), value.label() );
+    right = O3Label( value.position(), value.label() );
+  } else {
+    left = O3Label( value.position(), value.label().substr( 0, idx ) );
+    auto pos = O3Position( value.position().file(),
+                         value.position().line(),
+                         value.position().column() + idx );
+    right = O3Label( pos, value.label().substr( idx + 1 ) );
   }
 }
 
 public:
 // Set the parser factory.
-void setFactory(gum::prm::IPRMFactory* f) {
-    __factory = f;
+void set_prm(O3PRM* prm) {
+  __prm = prm;
 }
 
-// Retrieve the factory.
-gum::prm::IPRMFactory& factory() {
-    if (__factory) {
-        return *__factory;
-    }
-    GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
+O3PRM* get_prm() {
+  return __prm;
 }
 
-// Set the paths to search for imports. Must ended with a '/'.
-void setClassPath(const std::vector<std::string>& class_path) {
-    __class_path = class_path;
+// Set the prefix for types, interfaces, classes and systems parsed
+void set_prefix( const std::string& prefix ) {
+  __prefix = prefix;
+  if ( __prefix.size() > 0 and __prefix[__prefix.size() - 1] != '.' ) {
+    __prefix.append( "." );
+  }
 }
-
-// Must be an absolute path
-void setCurrentDirectory( const std::string & cd ) {
-    __current_directory = Directory(cd);
-    if ( ! __current_directory.isValid() )
-        Warning( widen("gum::o3prm::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
-}
-
-// Get files imports.
-const gum::Set<std::string>& getImports() const {
-    return __imports;
-}
-
-// Add this import to this parser.
-void addImport(std::string import) {
-    if (not __imports.exists(import)) {
-        __imports.insert(import);
-    }
-}
-
 
 //##############################################################################
 //
@@ -314,12 +156,13 @@ noQuote2 = ANY - "'" .
 TOKENS
 integer    = ['+'|'-'] digit {digit}.
 float      = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
-word       = letter {(letter | digit)}.
+label      = letter {(letter | digit)}.
 eol        = '\n'.
 dot        = '.'.
 comma      = ','.
 colon      = ':'.
 semicolon  = ';'.
+import     = "import".
 type       = "type".
 class      = "class".
 interface  = "interface".
@@ -328,12 +171,11 @@ system     = "system".
 dependson  = "dependson".
 default    = "default".
 implements = "implements".
-noisyOr    = "noisyOr".
-LEFT_CAST  = "(".
-RIGHT_CAST = ")".
 int        = "int".
 real       = "real".
+inc        =  "+=".
 string     = '"' { noQuote1 } '"' | "'" {noQuote2 } "'" .
+
 
 //________________________
 COMMENTS FROM "/*" TO "*/" NESTED
@@ -352,289 +194,758 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //________________________
-O3PRM = {SYNC Import} {SYNC Unit} . //(. factory().popPackage(); .) .
+O3PRM_UNIT = [ IMPORT_UNIT ] UNIT { UNIT }. 
 
 //________________________
-//Package = (. std::string name; .)
-//    SYNC "package" Ident<name> (. factory().pushPackage(name); __package = name; .)
-//    SYNC ';' .
-
-//________________________
-Import  =                              (. std::string fileID; .)
-    SYNC "import" ImportIdent<fileID>  (. TRY2(import(fileID), "Can not import " + fileID); .)
-    SYNC ';'                           (. factory().addImport(fileID); .)
-    .
-//________________________
-Unit = Type | Interface | Class | System.
-
-//________________________
-Type = SYNC type word                           (. std::string name, extends, l, s; name = narrow(t->val); .)
-       [ extends Ident<extends> ]               (. TRY2(factory().startDiscreteType(name, extends), "Can not create type "+name) .)
-       Label<l> [ ':' Label<s> ]                (. TRY2(factory().addLabel(l, s), "Can not add label "+l) .)
-       {                                        (. s = ""; .)
-         WEAK ',' Label<l> [ ':' Label<s> ]     (. TRY2(factory().addLabel(l, s), "Can not add label "+l) .)
-       }
-       SYNC ';'                                 (. TRY2(factory().endDiscreteType(), "Can not create type "+name) .)
-       .
-
-//________________________
-Interface = SYNC interface word          (. std::string interface, extends; interface = narrow(t->val); .)
-    [ extends Ident<extends> ]
-    SYNC '{'                             (. TRY2(factory().startInterface(interface, extends), "Can not create interface "+interface) .)
-    {                                    (. std::string type; .)
-      Ident<type>
-      AbstractAttributeOrReference<type> 
-    }
-    SYNC '}'                             (. TRY2(factory().endInterface(), "Can not create interface "+interface) .)
-    .
-
-//________________________
-Class = class word                             (. std::string c, super; c = narrow(t->val); .)
-        [ extends Ident<super> ]               (. gum::Set<std::string> set; .)
-        [                                      (. std::string i; .)
-          implements Ident<i>                  (. set.insert(i); .)
-          {
-            ',' Ident<i>                       (. set.insert(i); .)
-          }
-        ]
-        SYNC '{'                               (. TRY2(factory().startClass(c, super, (set.empty()?0:&set)), "Can not create class "+c) .)
-        {                                      
-           Parameter
-           |                                   (. std::string type; .)
-           Ident<type> AttributeOrReference<type>
-        }
-        SYNC '}'                               (. TRY2(factory().endClass(), "Can not create class "+c) .)
-        .
-
-//________________________
-Parameter = IntParameter | RealParameter.
-
-IntParameter =        (. std::string name; float val = 0.0; .)
-  int word            (. name = narrow(t->val); .) 
-  default Number<val> (. TRY2(factory().addParameter("int", name, (double)val), "Can not add parameter " + name); .)
-  ';' 
-  .
-
-RealParameter =        (. std::string name; float val = 0.0; .)
-  real word            (. name = narrow(t->val); .)
-  default Number<val>  (. TRY2(factory().addParameter("real", name, (double)val), "Can not add parameter " + name); .)
-  ';'  
-  .
-
-//________________________
-AttributeOrReference<std::string type> =
-  IF(isClassOrInterface(type))
-    Reference<type>
-  | AttrAggOrFunc<type>
-  .
-
-AbstractAttributeOrReference<std::string type> =
-  IF(isClassOrInterface(type))
-    Reference<type>
-  | AbstractAttribute<type>
-  .
-
-//________________________
-Reference<std::string type> =   (. std::string name; bool array = false; .)
-  [
-    '[' ']'         (. array = true; .)
-  ]
-  word              (. name = narrow(t->val); .)
-  ';'               (. TRY2(factory().addReferenceSlot(type, name, array), "Can not add reference "+name) .)
-  .
-
-//________________________
-AttrAggOrFunc<std::string type> = (. std::string name; .)
-  word                            (. name = narrow(t->val); .)
+UNIT = 
   (
-    Attribute<type, name>
-    | Aggregate<type, name>
-    | Functions<type, name>
+    TYPE_UNIT
+  |
+    INTERFACE_UNIT
+  |
+    CLASS_UNIT
+  |
+    SYSTEM_UNIT
   )
   .
 
-AbstractAttribute<std::string type> = (. std::string name; .)
-  word (. name = narrow(t->val); .)
-  ';'  (. TRY2(factory().startAttribute(type, name), "Can not create attribute " + name); .)
-       (. TRY(factory().endAttribute()); .)
-  .
-
-Attribute<std::string type, std::string name> =
-                                (. std::string p; bool error = false; .)
-                                (. TRY3(factory().startAttribute(type, name), "Can not create attribute "+name,error) .)
-    [ dependson CastIdent<p>    (. TRY3(factory().addParent(p), "Can not add parent "+p,error) .)
-      { ',' CastIdent<p>        (. TRY3(factory().addParent(p), "Can not add parent "+p,error) .)
-      }
-    ] '{'
-    ( '['                       (. std::vector<std::string> cpt; std::string s; .)
-      CPFValue<s>               (. cpt.push_back(s); .)
-      {
-        WEAK ',' CPFValue<s>    (. cpt.push_back(s); .)
-      }
-      ']'                       (. TRY3(factory().setRawCPFByColumns(cpt), "Problem with CPF of "+name,error) .)
-    | CPTRule<error>
-      { CPTRule<error> }
-    ) '}'                       (. TRY3(factory().endAttribute(), "Can not create attribute "+name,error) .)
-    SYNC ';'
-    .
-
-CPFValue<std::string & s> =
-  string    (. s = narrow(t->val); if (s.size() > 2) { s = s.substr(1, s.size()-2); } else { s = ""; } .)
-  | (. float f; .) Number<f> (. s = std::to_string(f); .)
-  .
-
-CPTRule<bool &error> =          (. std::vector<std::string> labels; std::vector<float> values; .)
-                                (. std::string s; float f; .)
-    CPTRuleValue<s>             (. labels.push_back(s); .)
-    { WEAK ',' CPTRuleValue<s>  (. labels.push_back(s); .)
-    } ':' Number<f>             (. values.push_back(f); .)
-    { WEAK ',' Number<f>        (. values.push_back(f); .)
-    } SYNC ';'                  (. TRY3(factory().setCPFByFloatRule(labels, values), std::string("Problem with CPF"), error) .)
-    .
-
-CPTRuleValue<. std::string& s .> =
-    word    (. s = narrow(t->val); .)
-    |  '*'  (. s = "*"; .)
-    .
-
-Aggregate<std::string type, std::string name> =
-                    (. std::string func, s; std::vector<std::string> chains, labels; .)
-    '=' word        (. func = narrow(t->val); .)
-    '(' AggChains<chains> (
-          ')' (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .) 
-        | WEAK ',' AggLabels<labels> { ',' AggLabels<labels> } ')' 
-          (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .)
-        )
-    SYNC ';'
-    .
-
-AggChains<. std::vector<std::string>& chains .> =
-                            (. std::string s; .)
-        CastIdent<s>        (. chains.push_back(s); .)
-      | '['                 (. std::string s; .)
-        CastIdent<s>        (. chains.push_back(s); .)
-        {
-          WEAK ',' CastIdent<s>  (. chains.push_back(s); .)
-        }
-        ']'
-      .
-
-AggLabels<. std::vector<std::string>& labels .> =
-  word              (. labels.push_back(narrow(t->val)); .)
-  | '['
-    word            (. labels.push_back(narrow(t->val)); .)
-    {
-      ',' word      (. labels.push_back(narrow(t->val)); .)
-    }
-    ']'
-  | '{'
-    word            (. labels.push_back(narrow(t->val)); .)
-    {
-    WEAK ',' word   (. labels.push_back(narrow(t->val)); .)
-    }
-    SYNC '}'
-  .
-
-Functions<std::string type, std::string name> =
-                    (. if (type != "boolean") {TRY(throw gum::OperationNotAllowed("noisy-or attributes must be booleans"))} .)
-    '~' noisyOr '(' (. std::vector<std::string> chains, labels; std::vector<float> numbers; float leak = 0.0; .)
-    AggChains<chains> ',' NumberList<numbers> [ ',' Number<leak> [ ',' AggLabels<labels> ] ]
-    ')' SYNC ';'    (. TRY2(factory().addNoisyOrCompound(name, chains, numbers, leak, labels), "Can not add function"+name) .)
-    .
-
-NumberList<. std::vector<float>& numbers .> =
-                            (. float f; .)
-    (  Number<f>            (. numbers.push_back(f); .)
-    | '[' Number<f>         (. numbers.push_back(f); .)
-      { WEAK ',' Number<f>  (. numbers.push_back(f); .)
-      } ']'
-    ).
+// ===========================================================================
+// ===                          CLASS RULES                                ===
+// ===========================================================================
 
 //________________________
-System = system word    (. TRY(factory().startSystem(narrow(t->val))) .)
-    '{'
-    {                   (. std::string l1, r1; .)
-      Ident<l1>
-      (
-        ArrayDecl<l1>
-        | InstanceDecl<l1>
-        | "+=" Ident<r1>    (.
-                              if ( factory().isArrayInCurrentSystem(l1) ) {
-                                  TRY(factory().incArray(l1, r1))
-                              } else {
-                                  TRY(factory().setReferenceSlot(l1, r1))
-                              }
-                          .)
-        | '='  Ident<r1>    (. TRY( factory().setReferenceSlot(l1, r1) ) .)
-      )
-      ';'
-    }
-    SYNC '}'            (. TRY(factory().endSystem()) .)
-         .
-
-ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff << l1; int size = 0; .)
-    '[' [ integer           (. sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); .) 
-     ] ']'
-    (   word                (. TRY(factory().addArray(l1, narrow(t->val), size)) .)
-      | '.' word            (. std::string l2 = narrow(t->val); .)
-        (   "+=" Ident<r1>  (. TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) .)
-          | '='  Ident<r1>  (. TRY( factory().setReferenceSlot(sBuff.str(), l2, r1) ) .)
-        )
-    ) .
-
-InstanceDecl<std::string l1> =
-  word                                    (. std::string r1 = narrow(t->val); gum::HashTable<std::string, double> hash; .)
-  ( '(' InstanceParameters<hash> 
-    [ { WEAK ',' InstanceParameters<hash> } ]
-   ')' | )
-                                          (. TRY(factory().addInstance(l1, r1, hash)) .)
+CLASS_UNIT =
+  (. auto n = errors().error_count; .)
+  (. auto c = O3Class(); .)
+  CLASS_DECLARATION<c>
+  (. if (__ok(n)) { __addO3Class( std::move(c) ); } .)
   .
 
-InstanceParameters<. gum::HashTable<std::string, double> &hash .> =
-  {                 (. std::string name; float val = 0.0; .)
-    word            (. name = narrow(t->val); .)
-    '='
-    Number<val>     (. hash.insert(name, (double) val); .)
+//________________________
+CLASS_DECLARATION<O3Class& c> =
+  CLASS<c.position()>
+  PREFIXED_LABEL<c.name()>
+  [
+    extends CHAIN<c.super()>
+  ]
+  [
+    implements IDENTIFIER_LIST<c.interfaces()>
+  ]
+  '{' { CLASS_BODY<c> } '}'
+  .
+                   
+//________________________
+CLASS<O3Position& pos> =
+  class
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
+  .
+
+//________________________
+CLASS_BODY<O3Class& c> =
+    CLASS_PARAMETER<c.parameters()>
+  |
+    CLASS_ELEMENT<c>
+  .
+
+//________________________
+CLASS_PARAMETER<O3ParameterList& params> =
+    (. auto name = O3Label(); .)
+    (. auto val = O3Integer(); .)
+    int 
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    LABEL<name> default INTEGER<val> ';'
+    (. params.push_back( O3Parameter(pos, name, val) ); .)
+  |
+    (. auto name = O3Label(); .)
+    (. auto val = O3Float(); .)
+    real
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    LABEL<name> default FLOAT<val> ';'
+    (. params.push_back( O3Parameter(pos, name, val) ); .)
+  .
+
+//________________________
+CLASS_ELEMENT<O3Class& c> =
+  (. auto type = O3Label(); .)
+  CHAIN<type>
+  (
+    ARRAY_REFERENCE_SLOT<type, c.referenceSlots()>
+  |
+    NAMED_CLASS_ELEMENT<type, c>
+  )
+  .
+
+//________________________
+ARRAY_REFERENCE_SLOT<O3Label& type, O3ReferenceSlotList& refs> =
+  (. auto isArray = false; .)
+  (. isArray = true; .)
+  (. auto name = O3Label(); .)
+  '['
+  ']'
+  LABEL<name>
+  ';'
+  (. refs.push_back( O3ReferenceSlot( type, name, isArray ) ); .)
+  .
+
+//________________________
+NAMED_CLASS_ELEMENT<O3Label& type, O3Class& c> =
+  (. auto name = O3Label(); .)
+  LABEL<name>
+  ( 
+    REFERENCE_SLOT<type, name, c>
+  | 
+    ATTRIBUTE<type, name, c>
+  |
+    AGGREGATE<type, name, c>
+  )
+  .
+
+//________________________
+REFERENCE_SLOT<O3Label& type, O3Label& name, O3Class& c> =
+    ';'
+    (. c.referenceSlots().push_back( O3ReferenceSlot( type, name, false ) ); .)
+    .
+
+//________________________
+ATTRIBUTE<O3Label& type, O3Label& name, O3Class& c> =
+    (. auto parents = O3LabelList(); .)
+    [
+      dependson
+      IDENTIFIER_LIST<parents> 
+    ]
+    '{'
+        (
+          RAW_CPT<type, name, parents, c.attributes()>
+        |
+          RULE_CPT<type, name, parents, c.attributes()>
+        )
+    '}'
+    ';'
+    .
+
+//________________________
+AGGREGATE<O3Label& type, O3Label& name, O3Class& c> =
+  (. auto agg = O3Aggregate(); .)
+  (. agg.variableType() = type; .)
+  (. agg.name() = name; .)
+  '='
+  LABEL<agg.aggregateType()>
+  '('
+  AGGREGATE_PARENTS<agg.parents()>
+  [
+    ','
+    LABEL_LIST<agg.parameters()> 
+  ]
+  ')'
+  ';'
+  (. c.aggregates().push_back( std::move(agg) ); .)
+  .
+
+//________________________
+AGGREGATE_PARENTS<O3LabelList& parents> =
+    (. auto prnt = O3Label(); .)
+    IDENTIFIER<prnt>
+    (. parents.push_back(prnt); .)
+  |
+    '[' IDENTIFIER_LIST<parents> ']'
+  .
+
+//________________________
+RAW_CPT<const O3Label& type,
+        const O3Label& name,
+        const O3LabelList& parents,
+        O3AttributeList& elts> =
+  (. auto values = O3FormulaList(); .)
+  '['
+    FORMULA_LIST<values>
+  ']'
+  (. auto attr = new O3RawCPT( type, name, parents, values ); .)
+  (. elts.push_back( std::unique_ptr<O3Attribute>(attr) ); .)
+  .
+
+//________________________
+RULE_CPT<const O3Label& type,
+         const O3Label& name,
+         const O3LabelList& parents,
+         O3AttributeList& elts> =
+  (. auto rules = O3RuleList(); .)
+  RULE<rules> { RULE<rules> }
+  (. auto attr = new O3RuleCPT( type, name, parents, std::move(rules) ); .)
+  (. elts.push_back( std::unique_ptr<O3Attribute>( attr ) ); .)
+  .
+
+//________________________
+RULE<O3RuleList& rules> =
+  (. auto labels = O3LabelList(); .)
+  (. auto formulas = O3FormulaList(); .)
+  LABEL_OR_STAR_LIST<labels>
+  ':'
+  FORMULA_LIST<formulas>
+  ';'
+  (. auto rule = O3Rule(std::move(labels), std::move(formulas)); .)
+  (. rules.push_back( std::move(rule) ); .)
+  .
+
+// ===========================================================================
+// ===                        INTERFACE RULES                              ===
+// ===========================================================================
+
+//________________________
+INTERFACE_UNIT =
+  (. auto n = errors().error_count; .)
+  (. auto i = O3Interface(); .)
+  INTERFACE_DECLARATION<i.position(), i.name(), i.super(), i.elements() >
+  (. if (__ok(n)) { __addO3Interface( std::move( i ) ); } .)
+  .
+
+//________________________
+INTERFACE_DECLARATION<O3Position& pos,
+                      O3Label& name,
+                      O3Label& super,
+                      O3InterfaceElementList& elts> =
+  INTERFACE<pos>
+  PREFIXED_LABEL<name>
+  [
+    extends CHAIN<super>
+  ]
+  '{' { INTERFACE_BODY<elts> } '}'
+  .
+
+//________________________
+INTERFACE<O3Position& pos> =
+  interface
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
+  .
+
+//________________________
+INTERFACE_BODY<O3InterfaceElementList& elts> =
+  (. auto elt = O3InterfaceElement(); .)
+  CHAIN<elt.type()>
+  [
+    '['
+    ']'
+    (. elt.isArray() = true; .)
+  ] LABEL<elt.name()> ';'
+  (. elts.push_back( std::move( elt )) ; .)
+  .
+
+// ===========================================================================
+// ===                            TYPE RULES                               ===
+// ===========================================================================
+
+//________________________
+TYPE_UNIT = 
+  (. auto n = errors().error_count; .)
+  (
+    (. auto t = O3Type(); .)
+    TYPE_DECLARATION<t.position(), t.name(), t.super(), t.labels()>
+    (. if ( __ok( n ) ) { __addO3Type( std::move(t) ); } .)
+  |
+    (. auto t = O3IntType(); .)
+    INT_TYPE_DECLARATION<t.position(), t.name(), t.start(), t.end()>
+    (. if ( __ok( n ) ) { __addO3IntType( std::move( t ) ); } .)
+  |
+    (. auto t= O3RealType(); .)
+    REAL_TYPE_DECLARATION<t.position(), t.name(), t.values()>
+    (. if ( __ok( n ) ) { __addO3RealType( std::move( t ) ); } .)
+  )
+  .
+
+//________________________
+TYPE_DECLARATION<O3Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
+  TYPE<pos>
+  PREFIXED_LABEL<name> 
+  (
+    TYPE_VALUE_LIST<labels>
+    |
+    extends CHAIN<super> MAP<labels>
+  )
+  ';'
+  . 
+
+//________________________
+TYPE<O3Position& pos> = 
+  type
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
+  .
+
+//________________________
+INT_TYPE_DECLARATION<O3Position& pos, O3Label& name, O3Integer& start, O3Integer& end> =
+  INT<pos>
+  '('
+  INTEGER<start>
+  ','
+  INTEGER<end>
+  ')'
+  LABEL<name>
+  ';'
+  .
+
+//________________________
+INT<O3Position& pos> =
+  int
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
+  .
+
+//________________________
+REAL_TYPE_DECLARATION<O3Position& pos, O3Label& name, O3FloatList& values> =
+  REAL<pos>
+  '('
+  FLOAT_LIST<values>
+  ')'
+  LABEL<name>
+  ';'
+  .
+
+//________________________
+REAL<O3Position& pos> =
+  real
+  (. pos.file( narrow( scanner->filename() ) ); .)
+  (. pos.line( t->line ); .)
+  (. pos.column( t->col ); .)
+  .
+
+//________________________
+FLOAT_LIST<O3FloatList& values> =
+  (. auto val = O3Float(); .)
+  FLOAT_OR_INT<val>
+  (. values.push_back( val ); .)
+  {
+    ','
+    FLOAT_OR_INT<val>
+    (. values.push_back( val ); .)
   }
   .
 
+//________________________
+MAP< LabelMap& labels > =
+  (. auto first = O3Label(); .)
+  (. auto second = O3Label(); .)
+  (. auto pair = std::pair<O3Label, O3Label>(); .)
+  LABEL<first> ':' LABEL<second>
+  (. pair.first = first; .)
+  (. pair.second = second; .)
+  (. labels.push_back( pair ); .)
+  ','
+  LABEL<first> ':' LABEL<second>
+  (. pair.first = first; .)
+  (. pair.second = second; .)
+  (. labels.push_back( pair ); .)
+  {
+    ','
+    LABEL<first> ':' LABEL<second>
+    (. pair.first = first; .)
+    (. pair.second = second; .)
+    (. labels.push_back( pair ); .)
+  }
+  .
 
 //________________________
-ImportIdent<std::string& s> =               (. std::stringstream sBuff; .)
-                        [
-                          '.'              (. sBuff << "."; .)
-                        ]
-                        word                (. sBuff << narrow(t->val); .)
-                        {
-                          '.' (word | '*')  (. sBuff << "." << narrow(t->val); .)
-                        }                   (. s = sBuff.str(); .)
-                        .
+TYPE_VALUE_LIST< LabelMap& labels > =
+  (. auto l = O3Label(); .)
+  (. auto pair = std::pair<O3Label, O3Label>(); .)
+  LABEL<l>
+  (. pair.first = l; .)
+  (. labels.push_back( pair ); .)
+  ','
+  LABEL<l>
+  (. pair.first = l; .)
+  (. labels.push_back( pair ); .)
+  {
+    ','
+    LABEL<l>
+    (. pair.first = l; .)
+    (. labels.push_back( pair ); .)
+  }
+  .
 
-Ident<std::string& s> =             (. std::stringstream sBuff; .)
-                        word        (. sBuff << narrow(t->val); .)
-                        {
-                          '.' word  (. sBuff << "." << narrow(t->val); .)
-                        }           (. s = sBuff.str(); .)
-                        .
+// ===========================================================================
+// ===                          SYSTEM RULES                               ===
+// ===========================================================================
 
-CastIdent<std::string& s> = (. std::string cast, open(gum::prm::PRMObject::LEFT_CAST()), close(gum::prm::PRMObject::RIGHT_CAST()); std::stringstream sBuff; .)
-                            [ LEFT_CAST Ident<cast> RIGHT_CAST            (. sBuff << open << cast << close; .)
-                            ] word                                        (. sBuff << narrow(t->val); .)
-                            {                                             (. cast = ""; .)
-                              '.'                                         (. sBuff << '.'; .)
-                              [ LEFT_CAST Ident<cast> RIGHT_CAST          (. sBuff << open << cast << close; .)
-                              ] word                                      (. sBuff << narrow(t->val); .)
-                            }                                             (. s = sBuff.str(); .)
-                            .
+//________________________
+SYSTEM_UNIT =
+  (. auto n = errors().error_count; .)
+  (. auto s = O3System(); .)
+  SYSTEM_DECLARATION<s>
+  (. if (__ok(n)) { __addO3System( std::move(s) ); } .)
+  .
 
+//________________________
+SYSTEM_DECLARATION<O3System& s> =
+  system
+  PREFIXED_LABEL<s.name()>
+  '{'
+  {
+    SYSTEM_BODY<s>
+  }
+  '}'
+  .
 
-Label<std::string& s> =   word        (. s = narrow(t->val); .)
-                        |             (. float val; .)
-                          Number<val> (. std::stringstream sBuff; sBuff << val; s = sBuff.str(); .)
-                        .
+//________________________
+SYSTEM_BODY<O3System& sys> =
+  (. auto left_value = std::stringstream(); .)
+  label
+  (. left_value << narrow(t->val); .)
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (
+    '.'
+    label
+    (. auto tmp = narrow( t->val ); .)
+    (. auto tmp_pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (
+      (. left_value << "."; .)
+      (. left_value << tmp; .)
+      {
+        '.' 
+        (. left_value << "."; .)
+        label
+        (. left_value << narrow( t->val ); .)
+      }
+      (. auto inst = O3Instance(); .)
+      (. inst.type().label() = left_value.str(); .)
+      (. inst.type().position() = pos; .)
+      [
+        ARRAY<inst.size()> 
+      ]
+      LABEL<inst.name()>
+      [
+        '('
+        PARAMETER_LIST<inst.parameters()>
+        ')'
+      ]
+      (. sys.instances().push_back( std::move( inst ) ); .)
+    |
+      (
+        (. auto ass = O3Assignment(); .)
+        (. ass.leftInstance().label() = left_value.str(); .)
+        (. ass.leftInstance().position() = pos; .)
+        (. ass.leftReference().label() = tmp; .)
+        (. ass.leftReference().position() = tmp_pos; .)
+        (. ass.index().value() = -1; .)
+        '=' LABEL<ass.rightInstance()>
+        (. sys.assignments().push_back( std::move( ass ) ); .)
+      | 
+        (. auto inc = O3Increment(); .)
+        (. inc.leftInstance().label() = left_value.str(); .)
+        (. inc.leftInstance().position() = pos; .)
+        (. inc.leftReference().label() = tmp; .)
+        (. inc.leftReference().position() = tmp_pos; .)
+        (. inc.index().value() = -1; .)
+        inc LABEL<inc.rightInstance()>
+        (. sys.increments().push_back( std::move( inc ) ); .)
+      )
+    )
+  |
+    (. auto i = O3Integer(); .)
+    ARRAY<i>
+    (
+      (. auto inst = O3Instance(); .)
+      (. inst.type().label() = left_value.str(); .)
+      (. inst.type().position() = pos; .)
+      (. inst.size() = i; .)
+      LABEL<inst.name()>
+      [
+        '('
+        PARAMETER_LIST<inst.parameters()>
+        ')'
+      ]
+      (. sys.instances().push_back( std::move( inst ) ); .)
+    |
+      (. auto ref = O3Label(); .)
+      '.' LABEL<ref> 
+      (
+        (. auto ass = O3Assignment(); .)
+        (. ass.leftInstance().label() = left_value.str(); .)
+        (. ass.index() = i; .)
+        (. ass.leftReference() = ref; .)
+        '=' LABEL<ass.rightInstance()>
+        (. sys.assignments().push_back( std::move( ass ) ); .)
+      | 
+        (. auto inc = O3Increment(); .)
+        (. inc.leftInstance().label() = left_value.str(); .)
+        (. inc.index() = i; .)
+        (. inc.leftReference() = ref; .)
+        inc LABEL<inc.rightInstance()>
+        (. sys.increments().push_back( std::move( inc ) ); .)
+      )
+    )
+  |
+    (. auto inst = O3Instance(); .)
+    (. inst.type().label() = left_value.str(); .)
+    (. inst.type().position() = pos; .)
+    LABEL<inst.name()>
+    [
+      '('
+      PARAMETER_LIST<inst.parameters()>
+      ')'
+    ]
+    (. sys.instances().push_back( std::move( inst ) ); .)
+  )
+  ';'
+  .
 
-Number<float& val> =    integer (. val=coco_atoi(t->val); .)
-                      | float   (. val=coco_atof(t->val); .)
-                      .
+//________________________
+PARAMETER_LIST<O3InstanceParameterList& params> =
+  PARAMETER<params>
+  {
+    ','
+    PARAMETER<params>
+  }
+  .
 
-END O3PRM.
+//________________________
+PARAMETER<O3InstanceParameterList& params> =
+  (. auto p = O3InstanceParameter(); .)
+  LABEL<p.name()>
+  '='
+  (
+    INTEGER_AS_FLOAT<p.value()>
+    (. p.isInteger() = true; .)
+  |
+    FLOAT<p.value()>
+    (. p.isInteger() = false; .)
+  )
+  (. params.push_back( std::move( p ) ); .)
+  .
+
+// ===========================================================================
+// ===                          IMPORT RULES                               ===
+// ===========================================================================
+
+//________________________
+IMPORT_UNIT=
+  IMPORT_BODY
+  {
+    IMPORT_BODY
+  }
+  .
+
+//________________________
+IMPORT_BODY=
+  (. auto i = O3Import(); .)
+  IMPORT_DECLARATION<i>
+  (. __addO3Import( std::move( i ) ); .)
+  .
+
+//________________________
+IMPORT_DECLARATION<O3Import& import> =
+  import
+  CHAIN<import.import()>
+  ';'
+  .
+
+// ===========================================================================
+// ===                         GENERIC RULES                               ===
+// ===========================================================================
+
+//________________________
+INTEGER_AS_LABEL<O3Label& l> =
+  integer
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
+
+//________________________
+INTEGER_AS_FLOAT<O3Float& f> =
+  integer
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. f = O3Float( pos, coco_atoi( t->val ) ); .)
+  .
+
+//________________________
+INTEGER<O3Integer& i> =
+  integer
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. i = O3Integer( pos, coco_atoi( t->val ) ); .)
+  .
+
+//________________________
+FLOAT<O3Float& f> =
+  float
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. f = O3Float( pos, coco_atof( t->val ) ); .)
+  .
+
+//________________________
+FLOAT_OR_INT<O3Float& f> =
+  (
+    float
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Float( pos, coco_atof( t->val ) ); .)
+  |
+    integer
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Float( pos, coco_atof( t->val ) ); .)
+  )
+  .
+
+//________________________
+LABEL_OR_INT<O3Label& l> =
+    LABEL<l>
+  |
+    INTEGER_AS_LABEL<l>
+  .
+
+//________________________
+LABEL<O3Label& l> =
+  label 
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
+
+//________________________
+PREFIXED_LABEL<O3Label& l> =
+  label 
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. auto label = narrow( t->val ); .)
+  (. if (__prefix != "") { label = __prefix + label; } .)
+  (. l = O3Label( pos, label ); .)
+  .
+
+//________________________
+IDENTIFIER_LIST<O3LabelList& list> =
+  (. auto label = O3Label(); .)
+  IDENTIFIER<label>
+  (. list.push_back( label ); .)
+  {
+    ','
+    IDENTIFIER<label> 
+    (. list.push_back( label ); .)
+  }
+  .
+
+//________________________
+IDENTIFIER<O3Label& ident> =
+
+  (. auto s = std::stringstream(); .)
+  [
+    CAST<s>
+  ]
+  LINK<s>
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  {
+    '.'
+    (. s << narrow( t->val ); .)
+    [
+      CAST<s>
+    ]
+    LINK<s>
+  }
+  (. ident = O3Label( pos, s.str() ); .)
+  .
+
+//________________________
+CAST<std::stringstream& s> =
+  '(' 
+  (. s << narrow( t->val ); .)
+  LINK<s> 
+  { 
+    '.' 
+    (. s << narrow( t->val ); .)
+    LINK<s> 
+  } 
+  ')' 
+  (. s << narrow( t->val ); .)
+  .
+
+//________________________
+LINK<std::stringstream& s> = 
+  label
+  (. s << narrow( t->val ); .)
+  .
+
+//________________________
+CHAIN<O3Label& ident> =
+  (. auto s = std::stringstream(); .)
+  label
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. s << narrow( t->val ); .)
+  {
+    "."
+    (. s << narrow( t->val ); .)
+    label 
+    (. s << narrow( t->val ); .)
+  }
+  (. ident = O3Label( pos, s.str() ); .)
+  .
+
+//________________________
+LABEL_LIST<O3LabelList& list> =
+  (. auto label = O3Label(); .)
+  LABEL_OR_INT<label>
+  (. list.push_back( label ); .)
+  {
+    ','
+    LABEL_OR_INT<label> 
+    (. list.push_back( label ); .)
+  }
+  .
+
+//________________________
+LABEL_OR_STAR<O3Label& l> =
+  ( label | '*' )
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. l = O3Label( pos, narrow( t->val ) ); .)
+  .
+
+//________________________
+LABEL_OR_STAR_LIST<O3LabelList& list> =
+  (. auto label = O3Label(); .)
+  LABEL_OR_STAR<label>
+  (. list.push_back( label ); .)
+  {
+    ','
+    LABEL_OR_STAR<label> 
+    (. list.push_back( label ); .)
+  }
+  .
+
+//________________________
+FORMULA<O3Formula& f> =
+  ( 
+    string
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. auto value = narrow(t->val); .)
+    (. value = value.size() > 2 ? value.substr(1, value.size() - 2) : "" ; .)
+    (. f = O3Formula( pos, value ); .)
+  |
+    float
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Formula( pos, narrow( t->val ) ); .)
+  | 
+    integer
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. f = O3Formula( pos, narrow( t->val ) ); .)
+  )
+  .
+
+//________________________
+FORMULA_LIST<O3FormulaList& values> =
+  (. auto f = O3Formula(); .)
+  FORMULA<f>
+  (. values.push_back( f ); .)
+  {
+    ','
+    FORMULA<f>
+    (. values.push_back( f ); .)
+  }
+  .
+
+//________________________
+ARRAY<O3Integer& size> =
+  '['
+  INTEGER<size>
+  ']'
+  .
+
+//________________________
+END O3PRM_UNIT.

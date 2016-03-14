@@ -127,7 +127,7 @@ namespace gum {
         for ( const auto& elt : __nodes ) {
           data = elt.second;
 
-          for ( const auto chain : data->n->type().slotChains() )
+          for ( const auto chain : data->n->type().slotChains() ) {
             for ( const auto inst : data->n->getInstances( chain->id() ) ) {
               u = ( __nodes[__idMap[inst]]->l < data->l )
                       ? __nodes[__idMap[inst]]
@@ -145,6 +145,7 @@ namespace gum {
                 __edges.insert( Edge( __idMap[u->n], __idMap[v->n] ), edge );
               }
             }
+          }
         }
       }
 

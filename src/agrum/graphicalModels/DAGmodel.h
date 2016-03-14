@@ -183,15 +183,8 @@ namespace gum {
     /// @warning __mutableMoralGraph is assumed to be valid and empty
     void __moralGraph() const;
 
-    /// Returns a topological order of this DAGModel.
-    /// @warning __mutableTopologicalOrder is assumed to be valid and empty
-    void __topologicalOrder() const;
-
     /// The moral graph of this Directed Graphical Model.
     mutable UndiGraph* __mutableMoralGraph;
-
-    /// The topology sequence of this Directed Graphical Model.
-    mutable Sequence<NodeId>* __mutableTopologicalOrder;
 
     /// The properties of this Directed Graphical Model.
     /// Initialized using a lazy instantiation.

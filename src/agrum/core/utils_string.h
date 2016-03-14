@@ -49,10 +49,16 @@ namespace gum {
   std::string getUniqueFileName();
 
   /**
-   * @brief Return the lowercase version of str.
-   * @return Return the lowercase version of str.
+   * @brief Returns the lowercase version of str.
+   * @return Returns the lowercase version of str.
    */
   std::string toLower( std::string str );
+
+  /**
+   * @brief Returns true if value ends with ending.
+   * @return Returns true if value ends with ending.
+   */
+  bool endsWith( std::string const& value, std::string const& ending );
 
   /// @}
 } /* namespace gum */

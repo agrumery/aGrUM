@@ -110,5 +110,10 @@ namespace gum {
       v.push_back( path.substr( prev, std::string::npos ) );
     }
 
+    NodeId nextNodeId() {
+      static NodeId id = 0;
+      return ++id;
+    }
+
   } /* namespace prm */
 }

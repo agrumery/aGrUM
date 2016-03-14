@@ -417,11 +417,10 @@ namespace gum {
       virtual void _copyIOFlags( const ClassElementContainer& c );
 
       /// When a ClassElement<GUM_SCALAR> becomes an Output node we must update
-      /// any
-      /// the IO
-      /// flags of every descendant of this ClassElementContainer.
+      /// any the IO flags of every descendant of this ClassElementContainer.
       /// Note that after its declaration, input flags can not be changed and
       /// output flags can only become true.
+      ///
       /// @param elt A ClassElement<GUM_SCALAR>.
       virtual void
       _updateDescendants( const ClassElement<GUM_SCALAR>& elt ) = 0;

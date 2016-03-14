@@ -2381,6 +2381,11 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_label(self, indice)
 
 
+    def labels(self):
+        """labels(DiscreteVariable self) -> Vector_string"""
+        return _pyAgrum.DiscreteVariable_labels(self)
+
+
     def numerical(self, indice):
         """numerical(DiscreteVariable self, gum::Idx indice) -> double"""
         return _pyAgrum.DiscreteVariable_numerical(self, indice)
@@ -2514,11 +2519,6 @@ class LabelizedVariable(DiscreteVariable):
     def domainSize(self):
         """domainSize(LabelizedVariable self) -> gum::Size"""
         return _pyAgrum.LabelizedVariable_domainSize(self)
-
-
-    def labels(self):
-        """labels(LabelizedVariable self) -> gum::Sequence< std::string > const &"""
-        return _pyAgrum.LabelizedVariable_labels(self)
 
 
     def varType(self):

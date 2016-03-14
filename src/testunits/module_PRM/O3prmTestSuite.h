@@ -1082,6 +1082,7 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) ) );
         TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
         TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        reader.showElegantErrorsAndWarnings();
         gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
 
@@ -1208,30 +1209,85 @@ namespace gum_tests {
       }
     }
 
-    void testEasyWriting() {
+    void testImports() {
       try {
         gum::prm::o3prm::O3prmReader<double> reader;
         reader.addClassPath( GET_RESSOURCES_PATH( "o3prmr" ) );
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(
             GET_RESSOURCES_PATH( "o3prmr/systems/MySystem.o3prm" ),
-            "systems" ) );
-
-        TS_ASSERT_EQUALS( reader.errors(), (unsigned int)0 );
-        if ( reader.errors() ) {
-          reader.showElegantErrorsAndWarnings();
-        }
+            "systems.MySystem" ) );
+        TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        reader.showElegantErrorsAndWarnings();
 
         gum::prm::PRM<double>* prm = nullptr;
+
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
         gum::Size class_count = prm->classes().size();
         class_count += prm->interfaces().size();
         TS_ASSERT_EQUALS( class_count,
                           (gum::Size)11 );  // Don't forget param subclasses !
 
+        TS_ASSERT_EQUALS( prm->systems().size(), (gum::Size)1 );
         gum::prm::System<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(
-            sys = &( prm->system( "systems.MySystem" ) ) );
+            sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
         TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
+
+        // Checking that all class DAG are generated
+        for ( auto c : prm->classes() ) {
+          for ( auto node = c->dag().begin(); node != c->dag().end(); ++node ) {
+            TS_ASSERT( c->exists( *node ) );
+            TS_ASSERT_THROWS_NOTHING( c->get( *node ) );
+            for ( auto prnt : c->dag().parents( *node ) ) {
+              TS_ASSERT( c->exists( prnt ) );
+              TS_ASSERT_THROWS_NOTHING( c->get( prnt ) );
+            }
+
+            for ( auto child : c->dag().children( *node ) ) {
+              TS_ASSERT( c->exists( child ) );
+              TS_ASSERT_THROWS_NOTHING( c->get( child ) );
+            }
+          }
+          // checking parameters
+          for ( auto elt : c->parameters() ) {
+            c->dag().exists( elt->id() );
+          }
+          for ( auto elt : c->referenceSlots() ) {
+            c->dag().exists( elt->id() );
+          }
+          for ( auto elt : c->attributes() ) {
+            c->dag().exists( elt->id() );
+          }
+          for ( auto elt : c->aggregates() ) {
+            c->dag().exists( elt->id() );
+          }
+          for ( auto elt : c->slotChains() ) {
+            c->dag().exists( elt->id() );
+          }
+        }
+
+        // Checking that all instances attributes are generated
+        for ( auto i = sys->begin(); i != sys->end(); ++i ) {
+          for ( auto attr = i.val()->begin(); attr != i.val()->end(); ++attr ) {
+            try {
+              auto inst = gum::Instantiation( attr.val()->cpf() );
+              auto sum = 0.0;
+              for ( inst.begin(); not inst.end(); inst.inc() ) {
+                sum += attr.val()->cpf()[inst];
+              }
+              auto card = 1;
+              for ( auto var : attr.val()->cpf().variablesSequence() ) {
+                card *= var->domainSize();
+              }
+              card /= attr.val()->type()->domainSize();
+
+              TS_ASSERT_DELTA( sum / card, 1.0, 1e-6 );
+            } catch ( gum::Exception& e ) {
+              TS_FAIL( e.errorContent() );
+            }
+          }
+        }
 
         if ( prm ) {
           delete prm;
@@ -1502,6 +1558,9 @@ namespace gum_tests {
       // Act & Assert
       TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
       TS_ASSERT_DIFFERS( reader.errors(), (gum::Size)0 );
+      if ( reader.prm() ) {
+        delete reader.prm();
+      }
     }
 
     void testFileNotFoundInResDir() {
@@ -1513,6 +1572,9 @@ namespace gum_tests {
       // Act & Assert
       TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
       TS_ASSERT_DIFFERS( reader.errors(), (gum::Size)0 );
+      if ( reader.prm() ) {
+        delete reader.prm();
+      }
     }
 
     void testAsiaWithErrors() {
@@ -1524,7 +1586,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         // Assert
-        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)2 );
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)1 );
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
         delete reader.prm();
       } catch ( gum::Exception& e ) {
@@ -1584,7 +1646,7 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader<double> reader;
         std::string file =
             GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
-        std::string package = "";
+        std::string package = "fr.base";
         // Act
         TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         // Assert
@@ -1593,6 +1655,26 @@ namespace gum_tests {
           reader.showElegantErrorsAndWarnings();
         }
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+
+        auto sys = &( reader.prm()->system( "fr.base.Work" ) );
+        for ( auto iter : *sys ) {
+          auto inst = iter.second;
+          for ( auto node : inst->type().dag() ) {
+            // TS_ASSERT( inst->exists( node ) );
+            if ( ( not inst->exists( node ) ) and
+                 inst->type().exists( node ) ) {
+              auto elt = &( inst->type().get( node ) );
+              if ( gum::prm::ClassElement<double>::isAttribute( *elt ) or
+                   gum::prm::ClassElement<double>::isAggregate( *elt ) ) {
+
+                GUM_TRACE( inst->type().name()
+                           << "."
+                           << inst->type().get( node ).safeName() );
+              }
+            }
+          }
+        }
+
         delete reader.prm();
       } catch ( gum::Exception& e ) {
         TS_ASSERT( false );
@@ -1691,6 +1773,7 @@ namespace gum_tests {
         GUM_TRACE( e.errorCallStack() );
       }
     }
+
   };
 
 }  // namespace gum_tests

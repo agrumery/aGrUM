@@ -175,6 +175,7 @@ namespace gum {
           }
 
           // Set paths to search from.
+          delete m_reader->prm();
           delete m_reader;
           m_reader = new o3prm::O3prmReader<double>();
 

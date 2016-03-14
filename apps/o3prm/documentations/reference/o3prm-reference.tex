@@ -1,0 +1,892 @@
+% -*- coding: UTF-8 -*-
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{reference}
+
+\title{O3PRM Language Specification}
+\author{Lionel Torti -- Pierre-Henri Wuillemin \\ Laboratoire d'Informatique de Paris VI - UPMC}
+
+\begin{document}
+
+\maketitle
+
+The O3PRM language purpose is to model \PRMs{} using a strong \oo{} syntax. This
+document purpose it not to explain \PRMs{} but to provide a complete
+specification of the O3PRM language. Tutorials and examples of \PRMs{} can be
+found on the \href{http://o3prm.lip6.fr/}{O3PRM website}.
+
+{\footnotesize
+\tableofcontents
+}
+
+\section{O3PRM project structure}
+
+As in Java, the O3PRM language is made of \e{compilation units} that are placed
+in \e{packages}. It is possible to encode in a single file an entire project but
+it is not recommended. A package matches a specific directory and in each file
+we can find at least one compilation unit. The following is a sample O3PRM
+project:
+
+\begin{small}
+\begin{verbatim}
+fr\
+  | lip6\
+  |     | printers\
+  |     | types.o3prm       // types definition
+  |     | powersupply.o3prm // class PowerSupply definition
+  |     | equipment.o3prm   // class Equipment definition
+  |     | room.o3prm        // class Room definition
+  |     | computer.o3prm    // class Computer definition
+  |     | printer.o3prm     // class Printer definition
+  |     | example.o3prm     // system Example definition
+  |     | query.o3prmr      // request query definition
+\end{verbatim}
+\end{small}
+
+File extensions can be used as indicator of the file's compilation unit nature.
+The following extensions are allowed: \verb+.o3prmr+ for queries,  \verb+o3prm+
+for everything else (types, classes, interfaces and systems).  It is good
+pratice to name a file with the compilation unit it holds, for example in
+\verb+computer.o3prm+ should contain the definition for the \verb+Computer+
+class. If the file contains several compilation units, you should use the most
+hight order unit to name the file. For example, if you define types, classes
+and a system in one file, you should use the system's name.
+
+\subsection{Compilation units}
+
+There exists four different sorts of compilation units. A compilation unit
+\e{declares} a specific element in the modeling process and can either be: an
+attribute's type, a class, an interface, a system or a query. Each compilation
+unit can start with a header. Headers are where you declare imports statements.
+
+\begin{footnotesize}
+\begin{verbatim}
+<O3PRM> ::= [<header>] <compilation_unit> [(<compilation_unit>)]
+<header> ::= <import>
+<compilation_unit> ::= <type_unit> |
+                       <class_unit> |
+                       <system_unit> |
+                       <query_unit>
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Header syntax}
+
+Each compilation unit is declared in a namespace defined by the path from the
+project's root to the file's name in wich it is declared. Directory separators
+are represented using dots. For example the file
+\verb+fr/lip6/pritners/types.o3prm+ defines the namespace
+\verb+fr.lip6.printers.types+.
+
+Namespaces can be used to import all of the compilation units defined in them,
+since many compilation units will need units defined in other files.  In such
+cases, we say that a given compilation unit has dependencies which are declered
+using the \verb+import+ keyword. The syntax is:
+
+\begin{footnotesize}
+\begin{verbatim}
+<import> ::= import <path> ";"
+<path> ::= <word> [ ( "." <word> ) ]
+<word> ::= <letter> (<letter> | <digit>)
+<letter> ::= 'A'..'Z' + 'a'..'z'+ '_'
+<integer> ::= <digit> <digit>*
+<float> ::= <integer> "." <integer>
+<digit>  ::= '0'..'9'
+\end{verbatim}
+\end{footnotesize}
+
+An example:
+
+\begin{footnotesize}
+\begin{verbatim}
+import fr.skoob.printers.computer;
+\end{verbatim}
+\end{footnotesize}
+
+The \verb+import+ instruction is made of a module's name.
+
+The O3PRM interpreter should use an environment variable to know wich directory
+to look up for resolving compilations units. It is recommanded that it behaves
+like the \verb+CLASSPATH+ variable used by Java compilators.
+
+Compilation units can be accessed through two names:
+\begin{itemize}
+\item Its simple name, as it is declared (for example \verb+Computer+).
+\item Its full name, defined by its namespace and its declaration (for exampe
+\verb+fr.lip6.printers.Computer+).
+\end{itemize}
+In most case, refering to a compilation unit using its simple name will work,
+you will need full names only to prevent name collision. Name collisions happen
+when two compilation units have the same name but are declared in different
+namespaces. In such sitatuation the O3PRM interpreter cannot resolve the name
+and must raise an interpretation error.
+
+Note that no matter how you refer to a compilation unit (either by its simple
+name or full name) you must always import it's namespace.
+
+\section{Attribute type declaration}
+
+The O3PRM language can only use discrete \rvs{} that are either user-defined or
+one of the three built-in types: \verb+boolean+, \verb+int+ and \verb+real+.
+User-defined types are declared using the keyword \verb+type+:
+
+\begin{footnotesize}
+\begin{verbatim}
+<type_unit> ::= <built_in> | <user_defined>
+<user_defined> ::= <basic_type> | <subtype>
+<basic_type> ::= type <word> <word> "," ( "," <word> )+ ";"
+\end{verbatim}
+\end{footnotesize}
+
+The rule \verb+<basic_type>+ defines a \rv{}'s domain, the first \verb+word+
+is the type's name and the following are the domain label's names. There must
+be at least two labels. The rule \verb+<subtype>+ is explained in the
+next section. Some examples:
+
+\begin{footnotesize}
+\begin{verbatim}
+boolean exists;
+int (0,9) power;
+real (0, 90, 180) angle;
+type t_state OK, NOK;
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Subtyping}
+
+A subtype can be declared using the \verb+extends+ keyword. A subtype
+declaration syntax is:
+
+\begin{footnotesize}
+\begin{verbatim}
+<subtype> ::= type <word> extends <word> <type_spec>
+<type_spec> ::= <word> ":" <word> (<word> ":" <word>)+
+\end{verbatim}
+\end{footnotesize}
+
+The first \verb+<word>+ is the type's name, the second the name of its
+supertype and the rule \verb+<type_spec>+ defines label specializations:
+the first \verb+<word>+ is the subtype's label and the second \verb+<word>+
+is the supertype's label. A example of subtype declaration:
+
+\begin{footnotesize}
+\begin{verbatim}
+type t_degraded extends t_state
+OK: OK,
+DYSFONCTION: NOK,
+DEGRADED: NOK;
+\end{verbatim}
+\end{footnotesize}
+
+In this example, \verb+DYSFONCTION+ and \verb+DEGRADED+ are specializations of
+the label \verb+NOK+ of type \verb+t_state+.  When declaring a subtype, it
+is mandatory that the supertype is visible, \ie{}:
+
+\begin{itemize}
+\item either the supertype was declared in the same file before the subtype;
+\item or the supertype declaration unit has been imported.
+\end{itemize}
+
+\subsection{Built-in types}
+
+The built-in types are: \verb+boolean+, \verb+int+ and \verb+real+.  The
+\verb+boolean+ type is used to represent binary \rvs{} taking the values
+\verb+false+ or \verb+true+. Note that the order used is always \verb+false+
+first and then \verb+true+.  The \verb+int+ must be used to define \rvs{}
+over ranges: \verb+int(0,9) power+ defines a \rv{} power over the domain
+integers from $0$ to $9$.  The \verb+real+ type must be used to define \rvs{}
+discretized over continuous domains. For example, \verb+real(0, 90, 180) angle+
+defines a \rv{} with the two values \verb+[0-90[+, \verb+[90,180[+.
+When defining a \rv{} with the \verb+real+ type there must be at least three
+parameters. The syntax of built-in types is:
+
+\begin{footnotesize}
+\begin{verbatim}
+<built_in> ::=
+  boolean <word> ";" |
+  int "(" <digit>* "," <digit>* ")" <word> ";" |
+  real "(" <digit>* ( "," <digit>* )+ ")" <word> ";"
+\end{verbatim}
+\end{footnotesize}
+
+\newpage
+\section{Class and interface declaration}
+
+Classes and interfaces are declared as follow:
+
+\begin{footnotesize}
+\begin{verbatim}
+<class_unit> ::= <class> | <interface>
+<class> ::= class <word> [ extends <word> ] "{" <class_elt>* "}"
+<class_elt> ::= <reference_slot> | <attribute> | <parameter>
+<interface> ::= interface <word> [ extends <word> ]
+                "{" <interface_elt> "}"
+<interface_elt> ::= <reference_slot> | <abstract_attr>
+\end{verbatim}
+\end{footnotesize}
+
+The first \verb+word+ is the class name and the second (if any) the class
+superclass. An example:
+\begin{footnotesize}
+\begin{verbatim}
+class A {
+  // reference slots and attributes declaration
+}
+
+class B extends A {
+  // This class extends class A
+  // We say that B is a subclass of A
+  // And A the superclass of B.
+}
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Reference slot declaration}
+
+In the O3PRM language, simple (1 to 1) and complex (1 to N) reference slots are
+declared differently. Simple reference slots can only refer to a single instance
+and complex reference are arrays. The syntax for declaring a reference slot is:
+
+\begin{footnotesize}
+\begin{verbatim}
+<reference_slot> ::= <word> [ "[" "]" ] <word> ";"
+\end{verbatim}
+\end{footnotesize}
+
+The first \verb+word+ is the reference slot range's name, we do not called it
+it's \emph{type} since it could be ambiguous with attributes types. If it is
+complex \verb+[ ]+ are added as suffixes to the range's name and the last
+\verb+word+ is the reference slot's name. The following is an example of two
+reference slots declaration:
+
+\begin{footnotesize}
+\begin{verbatim}
+// Simple reference slot
+A refA;
+// Complex reference slot
+B[] refB;
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Attribute declaration}
+
+Attributes are declared as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+<attribute> ::= <word> <word> [ dependson <parents> ]
+                ( <CPT> | <function> ) ";"
+<parents> ::= <path> ( "," <path> )*
+<CPT> ::= "{" ( <raw_CPT> | <rule_CPT> ) "}"
+\end{verbatim}
+\end{footnotesize}
+
+The first \verb+word+ is the attribute's type, the second its name.
+Dependencies are defined as a list of parents separated by commas. Each parent
+is defined by a \verb+<path>+, \ie{} a list of reference slots ending by an
+attribute. We will detail \cpts{} declaration in the next section. Functions
+will be detailed in section \ref{O3PRMFunc}. The following is an example of
+attribute declaration:
+
+\begin{footnotesize}
+\begin{verbatim}
+// An attribute with no parents
+a_type a_name {
+  cpt_declaration
+};
+// An attribute with two parents
+another_type another_name dependson parent_1, parent_2 {
+  cpt_declaration
+};
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Raw \cpt{} declaration}
+
+When declaring a raw \cpt{}, all values of the \cpt{} must be given. In such
+cases, the value's order is paramount. The declaration used in O3PRM is by
+columns, \ie{} each column in the \cpt{} must sum to one. Let us consider the
+boolean attributes $X$, $Y$ and $Z$ such that $X$ depends on $Y$ and $Z$. The
+first value in $X$'s \cpt{} declaration will be the probability
+$P(X=false|Y=false,Z=false)$ and the next value is done by increasing the
+domain of the last attribute by one. In this case, the second value is the
+probability $P(X=false|Y=false,Z=true)$. When the last attribute reached its
+last value, we set it back to its first value and increase the previous
+attribute. For example, the third value of $X$'s \cpt{} would be the
+probability $P(X=false|Y=true,Z=false)$. The following illustrates how we can
+use comments to make raw \cpt{} definitions easier to read.
+
+\begin{footnotesize}
+\begin{verbatim}
+boolean X dependson Y, Z {
+  // Y=       |     false    |     true     |
+  // Z=       | false | true | false | true |
+  /* false */ [ 1.0,    0.3,   1.0,    0.01,
+  /* true  */   0.0,    0.7,   0.0,    0.99 ]
+};
+\end{verbatim}
+\end{footnotesize}
+
+The \cpt{} declaration is dependent on the order in which the parents are
+declared. The syntax of a raw \cpt{} declaration is straightforward:
+
+\begin{footnotesize}
+\begin{verbatim}
+<raw_CPT> ::= "[" <float>+ ( "," <float>+ )+ "]"
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Rule based \cpt{} declaration}
+
+Rule based declarations exploit wildcards to reduce the number of parameters
+for \cpt{} with redundant values. Its syntax is:
+
+\begin{footnotesize}
+\begin{verbatim}
+<rule_CPT> ::= ( <word> ("," <word>)* ":" <float> ";" )+
+\end{verbatim}
+\end{footnotesize}
+
+There is no limit in the number of rules and when two rules overlap the last
+rule takes precedence. The following is an example of rule based declaration
+using the previous example:
+
+\begin{footnotesize}
+\begin{verbatim}
+boolean X dependson Y, Z {
+// Y,     Z:     X=false, X=true
+   *,     false: 1.0,     0.0;
+   true,  true:  0.01,    0.99;
+   false, true:  0.3,     0.7;
+};
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Parameters}
+
+Parameters are declared using the following syntax:
+
+\begin{footnotesize}
+\begin{verbatim}
+<parameter> ::= <int_parameter> | <real_parameter>
+<int_parameter> ::= "int" <word> default <integer> ";"
+<real_parameter> ::= "real" <word> default <float> ";"
+\end{verbatim}
+\end{footnotesize}
+
+Parameters are either real or integers constants. They are used in CPT
+definitions to define values using formulas. Some examples:
+
+\begin{footnotesize}
+\begin{verbatim}
+// An integer parameter
+int t = 3600;
+// A real parameter
+real lambda default 0.003;
+\end{verbatim}
+\end{footnotesize}
+
+A parameter value can be set at instantiation.
+
+\subsection{Formulas}
+
+It is possible to use formulas in place of float numers to define an attribute's CPT.
+The formula must be enclosed between quotes and its syntax is implementation specific.
+For example:
+
+\begin{footnotesize}
+\begin{verbatim}
+class A {
+  int t = 3600;
+  real lambda = 0.003;
+
+  bool state { [ "1 - exp(-lambda*t)", "exp(-lambda*t)" ] };
+}
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Interface's abstract attributes}
+
+An abstract attribute in an interface declaration syntax is:
+
+\begin{footnotesize}
+\begin{verbatim}
+<abstract_attr> ::= <word> <word> ";"
+\end{verbatim}
+\end{footnotesize}
+
+Where the first \verb+<word>+ is the abstract attribute's type and the second
+its name.
+
+\section{System declaration}
+
+A system is declared as follow:
+
+\begin{footnotesize}
+\begin{verbatim}
+<system> ::= system <word> "{" <system_elt>* "}"
+<system_elt> ::= <instance> | <affectation>
+\end{verbatim}
+\end{footnotesize}
+
+The first \verb+word+ is the system's name. A system is composed of instance
+declarations and affectations. Affectations assign an instance to an instance's
+reference slot.  The following illustrates a system declaration:
+
+\begin{footnotesize}
+\begin{verbatim}
+system name {
+  // body
+}
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Instance declaration}
+
+The syntax to declare an instance in a system is:
+
+\begin{footnotesize}
+\begin{verbatim}
+<instance> ::= <word> [ "[" digit* "]" ] <word> ";"
+\end{verbatim}
+\end{footnotesize}
+
+The first \verb+word+ is the instance's class and the second its name.  For
+example, if we have a class \verb%A% we could declare the following instance:
+
+\begin{footnotesize}
+\begin{verbatim}
+A an_instance;
+\end{verbatim}
+\end{footnotesize}
+
+We may want to declare arrays of instances. To do so we need to add \verb+[n]+
+as a suffix to the instance's type, where \verb+n+ is the number of instances
+already added in the array. if \verb+n = 0+ then we can simply write \verb+[]+.
+
+\begin{footnotesize}
+\begin{verbatim}
+// An empty array of instances
+A_class[] a_name;
+// A array of 5 instances
+A_class[5] another_name;
+\end{verbatim}
+\end{footnotesize}
+
+You can also specify values for parameters when instantiating a class. The syntax to do so is:
+
+\begin{footnotesize}
+\begin{verbatim}
+<instance> ::= <word> <word> "(" <parameters> ")" ";"
+<parameters> ::= parameter ("," instanceParameter)*
+<instanceParameter> ::= <word>"="(<integer>|<float>)
+\end{verbatim}
+\end{footnotesize}
+
+An example:
+
+\begin{footnotesize}
+\begin{verbatim}
+// We declare an instance of A_class where a_param equals 0.001
+A_class a_name(a_param=0.001);
+\end{verbatim}
+\end{footnotesize}
+
+\subsection{Affectation}
+
+\begin{footnotesize}
+\begin{verbatim}
+<affectation> ::= <path> += <word> ";" |
+                  <path> = <word> ";"
+\end{verbatim}
+\end{footnotesize}
+
+It is possible to add instances into an array, using the \verb-+=- operator:
+
+\begin{footnotesize}
+\begin{verbatim}
+// Declaring some instances
+A_class x;
+A_class y;
+A_class z;
+// An empty array of instances
+A_class[] array;
+// Adding instances to array
+array += x;
+array += y;
+array += z;
+\end{verbatim}
+\end{footnotesize}
+
+Reference affectation is done using the \verb+=+ operator:
+
+\begin{footnotesize}
+\begin{verbatim}
+class A {
+  boolean X {[0.5, 0.5]};
+}
+
+class B {
+  A myRef;
+}
+
+system S {
+  // declaring two instances
+  A a;
+  B b;
+  // Affecting b's reference to a
+  b.myRef = a;
+}
+\end{verbatim}
+\end{footnotesize}
+
+In the case of multiple references, we can either use the \verb+=+ to affect
+an array or the \verb-+=- operator to add instance one by one:
+
+\begin{footnotesize}
+\begin{verbatim}
+class A {
+  boolean X {[0.5, 0.5]};
+}
+
+class B {
+  A myRef[];
+}
+
+system S1 {
+  // declaring an array of five instances of A.
+  A[5] a;
+  // declaring an instance of B
+  B b;
+  // Affecting b's reference to a
+  b.myRef = a;
+}
+// An alternative declaration
+system S2 {
+  // declaring three instances of A
+  A a1;
+  A a2;
+  A a3;
+  // declaring an instance of B
+  B b;
+  // Affecting b's reference to a
+  b.myRef += a1;
+  b.myRef += a2;
+  b.myRef += a3;
+}
+\end{verbatim}
+\end{footnotesize}
+
+\section{Query unit declaration}
+
+A query unit is defined using the keyword \verb+request+. Its syntax is the
+following:
+
+\begin{footnotesize}
+\begin{verbatim}
+<query_unit> ::= request <word> "{" <query_elt>* "}"
+<query_elt> ::= <observation> | <query>
+<observation> ::= ( <path> = <word> ) |
+                  ( unobserved <path> )
+                  ";"
+<query> ::= "?" <path> ";"
+\end{verbatim}
+\end{footnotesize}
+
+The first \verb+word+ is the query's name.  In a query unit we can alternate
+between observations and queries. An observation observe an attribute with a
+given value. Evidence are affected using the \verb+=+ operator. A query over
+attribute \verb+X+ asks to infer the probability $P(X|\BFe)$ where $\BFe$ is
+evidence over attributes in the system. This is done using the \verb+?+
+operator. The keyword \verb+unobserve+ can be used to remove evidence over an
+attribute.
+
+\begin{footnotesize}
+\begin{verbatim}
+request myQuery {
+  // adding evidence
+  mySystem.anObject.aVariable = true;
+  mySystem.anotherObject.aVariable = 3;
+  mySystem.anotherObject.anotherVariable = false;
+  // asking to infer some probability value given evidence
+  ? mySystem.anObject.anotherVariable;
+  // remove evidence over an attribute
+  unobserve mySystem.anObject.aVariable;
+}
+\end{verbatim}
+\end{footnotesize}
+
+\section{Functions}
+\label{O3PRMFunc}
+
+
+Functions in O3PRM are considered as tools to define attributes \cpts{}. They
+replace the \cpt{} declaration by a specific syntax depending to which family
+the function belongs to. There exit three kinds of functions in O3PRM. The
+first kind contains built-in functions called aggregators. These functions are
+used to quantify information hold in multiple reference slots. The second sort
+contains deterministic functions and the third probabilistic functions. The
+last two sorts of functions are not built-in functions and are implementation
+specific. We only provide a generic syntax to keep uniformity between
+different O3PRM implementations. All functions share the same syntax:
+
+\begin{footnotesize}
+\begin{verbatim}
+<function> ::= ( "=" | "~" ) <word> "(" [ <args> ] ")"
+<args ::= <word> ( "," <word> )*
+\end{verbatim}
+\end{footnotesize}
+
+The use of \verb+=+ is reserved for deterministic functions and \verb+~+ for
+probabilistic functions. There are only four built-in functions in the O3PRM
+language that are deterministic functions called aggregators. There are five
+built-in aggregators in the O3PRM language: \verb+min+, \verb+max+,
+\verb+exists+, \verb+forall+ and \verb+count+.
+
+The \verb+min+ and \verb+max+ functions require a single parameter: a list of
+slot chains pointing to attributes. The attributes must all be of the same
+type or share some common supertype. If the common type is not a int, then the
+type's values order is used to compute the min and max values.
+
+\begin{footnotesize}
+\begin{verbatim}
+class A {
+  // Some declarations
+  int(0,10) myMax = max([chain_1, chain_2, ...]);
+  // Some declarations
+  int(0,10) myMin = max(chain_1);
+}
+\end{verbatim}
+\end{footnotesize}
+
+If there is only one element in the list of slot chains the \verb+[]+ are
+optional. The \verb+exists+ and \verb+forall+ require two parameters: a list
+of slot chains and a value. As for \verb+min+ and \verb+max+, all attributes
+referenced in the slot chains list must share a common type or supertype. The
+value must be a valid value of that common supertype. \verb+exists+ and
+\verb+forall+ attribute type must always be a boolean.
+
+\begin{footnotesize}
+\begin{verbatim}
+class A {
+  // Some declarations
+  boolean myExists = exists([chain_1, chain_2, ...], a_value);
+}
+\end{verbatim}
+\end{footnotesize}
+
+The \verb+count+ aggregator behavior is dependent on it's type wich must be of
+the built-in int type. Then the last value of the aggretors type is interpreted
+as \emph{at least N occurence of ''value''}.
+
+\begin{footnotesize}
+\begin{verbatim}
+
+type int(0, 5) myRange;
+
+class A {
+  myRange myCount = exists([chain_1, chain_2, ...], a_value);
+}
+\end{verbatim}
+\end{footnotesize}
+
+\newpage
+\section{O3PRM BNF}
+
+\begin{footnotesize}
+\begin{verbatim}
+<O3PRM> ::= [<header>] <compilation_unit> [(<compilation_unit>)]
+
+<header> ::= <import>
+<import> ::= import <path> ";"
+
+<compilation_unit> ::= <type_unit> |
+                       <class_unit> |
+                       <system_unit> |
+                       <query_unit>
+
+
+<type_unit> ::= <built_in> | <user_defined>
+<user_defined> ::= <basic_type> | <subtype>
+<basic_type> ::= type <word> <word> "," ( "," <word> )+ ";"
+<subtype> ::= type <word> extends <word> <type_spec>
+<type_spec> ::= <word> ":" <word> (<word> ":" <word>)+
+<built_in> ::=
+  boolean <word> ";" |
+  int "(" <digit>* "," <digit>* ")" <word> ";" |
+  real "(" <digit>* ( "," <digit>* )+ ")" <word> ";"
+
+<class_unit> ::= <class> | <interface>
+<class> ::= class <word> [ extends <word> ] "{" <class_elt>* "}"
+<class_elt> ::= <reference_slot> | <attribute> | <parameter>
+
+<interface> ::= interface <word> [ extends <word> ]
+                "{" <interface_elt> "}"
+<interface_elt> ::= <reference_slot> | <abstract_attr>
+
+<reference_slot> ::= [internal] <word> [ "[" "]" ] <word> ";"
+
+<attribute> ::= <word> <word> [ dependson <parents> ]
+                ( <CPT> | <function> ) ";"
+<parents> ::= <path> ( "," <path> )*
+<abstract_attr> ::= <word> <word> ";"
+
+<CPT> ::= "{" ( <raw_CPT> | <rule_CPT> ) "}"
+<raw_CPT> ::= "[" <float>+ ( "," <float>+ )+ "]"
+<rule_CPT> ::= ( <word> ("," <word>)* ":" <float> ";" )+
+
+<parameter> ::= <int_parameter> | <real_parameter>
+<int_parameter> ::= "int" <word> default <integer> ";"
+<real_parameter> ::= "real" <word> default <float> ";"
+
+<function> ::= ( "=" | " ̃" ) <word> "(" [ <args> ] ")"
+<args ::= <word> ( "," <word> )*
+
+<system> ::= system <word> "{" <system_elt>* "}"
+<system_elt> ::= <instance> | <affectation>
+
+<instance> ::= <word> [ "[" digit* "]" ] <word> ";"
+<instance> ::= <word> <word> "(" <parameters> ")" ";"
+<parameters> ::= instanceParameter ("," instanceParameter)*
+instanceParameter> ::= <word>"="(<integer>|<float>)
+
+<affectation> ::= <path> += <word> ";" |
+                  <path> = <word> ";"
+
+<query_unit> ::= request <word> "{" <query_elt>* "}"
+<query_elt> ::= <observation> | <query>
+<observation> ::= ( <path> = <word> ) |
+                  ( unobserved <path> )
+                  ";"
+<query> ::= "?" <path> ";"
+
+<word> ::= <letter> (<letter> | <digit>)
+<letter> ::= 'A'..'Z' + 'a'..'z'+ '_'
+<integer> ::= <digit> <digit>*
+<float> ::= <integer> "." <integer>
+<digit>  ::= '0'..'9'
+<path> ::= <word> [ ( "." <word> ) ]
+
+\end{verbatim}
+\end{footnotesize}
+
+% \section{Class inheritance and interfaces}
+%
+% Class inheritance and interface implementation are two kinds of class
+% specialization available in the O3PRM language.
+%
+% \subsection{Class inheritance}
+%
+% The first form of specialization is called class inheritance. It consists in
+% defining a class, called the subclass, by specializing another class, called
+% the superclass. The syntax to declare a subclass is as follows:
+%
+% \begin{footnotesize}
+% \begin{verbatim}
+% class MySubClass extends MySuperClass {
+%   // reference slots and attributs declaration
+% }
+% \end{verbatim}
+% \end{footnotesize}
+%
+% A subclass inherits all the reference slots and attributes defined by its
+% superclass (and those inherited by the superclass' superclass). Thus, if we do
+% not want to change properties inherited, we do not need to declare them.
+% However, all inherited elements are considered as encapsulated by the
+% subclass, thus they can be used to define dependencies in the subclass
+% attributes. The following example illustrates this principle:
+%
+% \begin{footnotesize}
+% \begin{verbatim}
+% class C {
+%   boolean z {[0.3, 0.7]};
+% }
+%
+% // A superclass
+% class A {
+%   C myRef;
+%   boolean b {[0.2, 0.8]};
+% }
+%
+% // A subclass of A
+% class B extends A {
+%   t\_state state dependson b, maRef.z
+%   { [ /* ... */ ] };
+% }
+% \end{verbatim}
+% \end{footnotesize}
+%
+% Another important feature of class inheritance is reference slot overloading
+% and attribute overloading. It is possible to:
+% %
+% \begin{itemize}
+% %
+% \item specialize attributes or references slots;
+% %
+% \item changes dependencies of an inherited attribute;
+% %
+% \item changes the \cpt{} of an inherited attribute.
+% %
+% \end{itemize}
+% %
+% Specializing attribute consist in changing that attribute type by a subtype.
+% Specializing a reference slot consists in changing the reference slot range
+% type by a subclass. Finally, either changing an attribute dependencies or its
+% \cpt{} is done by redeclaring the attribute.
+%
+% \subsection{Interfaces}
+%
+% An interface is an abstract class, \ie{} it does not have any probabilistic
+% dependencies. Interfaces are used to define multiple class inheritance: when a
+% class implements an interface it must declare all the reference slots and
+% attributes contained in the implemented interface. Eventually, the class can
+% specialize them. Declaring an interface is similar to declaring a class, but
+% uses the keyword \verb+interface+ and does only defined parameters without any
+% default value. The following is an example of interface declaration:
+%
+% \begin{footnotesize}
+% \begin{verbatim}
+% interface I {
+%   boolean b;
+% }
+%
+% interface J {
+%   boolean c;
+% }
+%
+% class A implements I, J {
+%   bool b {[0.1, 0.9]};
+%   bool c dependson c {[ /* ... */ ]};
+% }
+% \end{verbatim}
+% \end{footnotesize}
+%
+% Interfaces can be used by references as their range. In such case, when the
+% reference slots encapsulated class is instantiated, only instance of classes
+% implementing the reference slot range can be affected to it. Finally, it is
+% possible to defined subinterfaces using the keyword \verb+extends+:
+%
+% \begin{footnotesize}
+% \begin{verbatim}
+% interface I {
+%   bool b;
+% }
+%
+% interface J extends I {
+%   bool c;
+% }
+% \end{verbatim}
+% \end{footnotesize}
+%
+% Interface inheritance only allows to specialize reference slot or attributes,
+% since there is no probabilistic information in interfaces.
+
+\nocite{WT2012}
+\nocite{TGW2011}
+\nocite{TW2010}
+\nocite{TWG2010}
+
+\bibliographystyle{apalike}
+\bibliography{o3prm-reference}
+
+\end{document}

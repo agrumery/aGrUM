@@ -60,7 +60,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     typename ClassElement<GUM_SCALAR>::ClassElementType
     Parameter<GUM_SCALAR>::elt_type() const {
-      return this->prm_parameter;
+      return ClassElement<GUM_SCALAR>::ClassElementType::prm_parameter;
     }
 
     template <typename GUM_SCALAR>

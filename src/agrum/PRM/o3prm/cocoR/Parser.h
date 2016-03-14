@@ -36,19 +36,11 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define gum_prm_o3prm_COCO_PARSER_H__
 
 #include <string>
-#include <sstream>
-#include <algorithm>
-#include <fstream>
-
-#include <agrum/core/utils_dir.h>
+#include <vector>
+#include <utility>
+#include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/PRM/IPRMFactory.h>
-
-#undef TRY
-// Redefine try / catch to add a semantic error when errors are raised.
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorContent()); }
-#define  TRY2(inst,msg) try { inst; } catch (gum::Exception& e) { SemErr(msg+" ("+e.errorContent()+")."); }
-#define  TRY3(inst,msg,error) try { if (!error) {inst;} } catch (gum::Exception& e) { SemErr(msg+" ("+e.errorContent()+")."); error=true; }
+#include <agrum/PRM/o3prm/O3prm.h>
 
 #include <iostream>
 #include <string>
@@ -66,26 +58,25 @@ class Parser {
 		_EOF=0,
 		_integer=1,
 		_float=2,
-		_word=3,
+		_label=3,
 		_eol=4,
 		_dot=5,
 		_comma=6,
 		_colon=7,
 		_semicolon=8,
-		_type=9,
-		_class=10,
-		_interface=11,
-		_extends=12,
-		_system=13,
-		_dependson=14,
-		_default=15,
-		_implements=16,
-		_noisyOr=17,
-		_LEFT_CAST=18,
-		_RIGHT_CAST=19,
-		_int=20,
-		_real=21,
-		_string=22
+		_import=9,
+		_type=10,
+		_class=11,
+		_interface=12,
+		_extends=13,
+		_system=14,
+		_dependson=15,
+		_default=16,
+		_implements=17,
+		_int=18,
+		_real=19,
+		_inc=20,
+		_string=21
 	};
 	int maxT;
 
@@ -109,271 +100,123 @@ class Parser {
     Token* la;      // lookahead token
 
     private:
-    gum::prm::IPRMFactory*       __factory;
-    std::vector<std::string>    __class_path;
-    gum::Set<std::string>       __imports;
-    std::string                 __package;
-    gum::Directory              __current_directory;
 
-    // Convert std::string to wstring.
-    void SemErr(std::string s) {
-      SemErr(widen(s).c_str());
-    }
+using O3Position = gum::prm::o3prm::O3Position;
 
-    // Return true if type is a class or an interface.
-    bool isClassOrInterface(std::string type) {
-      return factory().isClassOrInterface(type);
-    }
+using O3Integer = gum::prm::o3prm::O3Integer;
+using O3Float = gum::prm::o3prm::O3Float;
 
-    void importDirID( std::string dirID ) {
-        std::string dirname = dirID, dirpath;
-        bool dirFound = false;
+using O3FloatList = std::vector<gum::prm::o3prm::O3Float>;
 
-        // Retrieve package
-        std::string package = dirID;
-        if (package.back() == '.') {
-            package = package.substr(0, package.length() - 1);
-        }
+using O3Label = gum::prm::o3prm::O3Label;
+using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
+using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 
-        // Create filename
-        replace(dirname.begin(), dirname.end(), '.', '/');
-        dirname += "/";
+using O3Formula = gum::prm::o3prm::O3Formula;
+using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
 
-        // Search in current directory.
-        if ( __current_directory.isValid() ) {
-            dirpath = __current_directory.absolutePath() + dirname;
-            dirFound = Directory::isDir(dirpath);
-        }
+using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
+using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
 
-        // Search in root package directory.
-        if ( ! dirFound && ! __package.empty() ) {
-            int cpt = std::count(__package.begin(), __package.end(), '.');
-            std::string cd = __current_directory.absolutePath();
-            size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
-            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ ) {
-                index = cd.find_last_of('/', index - 1);
-            }
+using O3Type = gum::prm::o3prm::O3Type;
+using O3IntType = gum::prm::o3prm::O3IntType;
 
-            if ( index != std::string::npos ) {
-                std::string rootDir = cd.substr(0, index+1); // with '/' at end
-                dirpath = rootDir + dirname;
-                dirFound = Directory::isDir(dirpath);
-            }
-        }
+using O3Interface = gum::prm::o3prm::O3Interface;
+using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
+using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
-        // Search filename in each path stored in __class_path
-        if ( ! dirFound ) {
-          for (const auto & path :__class_path) {
-              // Construct complete filePath
-              dirpath = path + dirname;
-              dirFound = Directory::isDir(dirpath);
-              if (dirFound) {
-                break;
-              }
-          }
-        }
+using O3Parameter = gum::prm::o3prm::O3Parameter;
+using O3ParameterList = gum::prm::o3prm::O3Class::O3ParameterList;
 
-        // If it is found, import all files in.
-        if (dirFound) {
-            importDir( dirpath, package );
-        } else { // If import filename has not been found, add an error.
-            SemErr("import not found");
-        }
-    }
+using O3ReferenceSlot = gum::prm::o3prm::O3ReferenceSlot;
+using O3ReferenceSlotList = gum::prm::o3prm::O3Class::O3ReferenceSlotList;
 
-    void importDir( std::string dirpath, std::string package="" ) {
-        // Update current directory
-        Directory oldCurrentDirectory = __current_directory;
-        __current_directory = Directory(dirpath);
+using O3Attribute = gum::prm::o3prm::O3Attribute;
+using O3RawCPT = gum::prm::o3prm::O3RawCPT;
+using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
+using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
-        for ( const auto & entry : __current_directory.entries()) {
-            if (entry[0]== '.') { //"." or ".." or ".svn" or any hidden directories...
-                continue;
-            }
+using O3Aggregate = gum::prm::o3prm::O3Aggregate;
+using O3AggregateList = gum::prm::o3prm::O3Class::O3AggregateList;
 
-            size_t last_dot = entry.find_last_of('.');
+using O3Class = gum::prm::o3prm::O3Class;
 
-            if ( Directory::isDir(dirpath+entry) ) {
-                importDir( dirpath + entry + "/", package + "." + entry );
-            } else if ( entry.substr( last_dot ) == ".o3prm" ) { // if .o3prm
-                if (package.length() > 0) {
-                  package.append(".");
-                }
-                package.append(entry.substr(0, last_dot));
-                factory().addImport(package);
-                importFile( dirpath + entry, package );
-            }
-        }
+using O3System = gum::prm::o3prm::O3System;
+using O3Instance = gum::prm::o3prm::O3Instance;
+using O3InstanceParameter = gum::prm::o3prm::O3InstanceParameter;
+using O3InstanceParameterList = gum::prm::o3prm::O3Instance::O3InstanceParameterList;
+using O3Assignment = gum::prm::o3prm::O3Assignment;
+using O3Increment = gum::prm::o3prm::O3Increment;
 
-        // Reset previous current directory
-        __current_directory = oldCurrentDirectory;
-    }
+using O3Import = gum::prm::o3prm::O3Import;
+using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
 
-    void importFile( std::string filepath, std::string package="" ) {
-        // If we have already import this file, skip it.
-        // (like filepath is always absolute, there is no conflict)
-        if ( __imports.exists( filepath ) ) {
-            return;
-        }
+using O3PRM = gum::prm::o3prm::O3PRM;
 
-        // Remember we have found it.
-        __imports.insert(filepath);
+O3PRM* __prm;
+std::string __prefix;
 
-        // We parse it
-        Scanner s(filepath.c_str());
-        Parser p(&s);
-        p.setFactory(__factory);
-        p.setClassPath(__class_path);
-        p.setImports(__imports);
-        p.setCurrentDirectory( filepath.substr(0, filepath.find_last_of('/')+1) );
+bool __ok (int n) { return errors().error_count == n; }
 
-        if (package.length() > 0) {
-            factory().pushPackage(package);
-            p.Parse();
-            factory().popPackage();
-        } else {
-            p.Parse();
-        }
-
-        // We add file imported in p to file imported here.
-        for (const auto & import : p.getImports()) {
-            if (not __imports.exists(import)) {
-                __imports.insert(import);
-            }
-        }
-
-        // We add warnings and errors to this
-        __errors += p.__errors;
-    }
-
-void import( std::string fileID ) {
-    // If relatif import
-    if (fileID[0] == '.') {
-      std::string current_pck = factory().currentPackage();
-      size_t last_dot = current_pck.find_last_of('.');
-      fileID = current_pck.substr(0, last_dot) + fileID;
-    }
-
-    // Si on inclut un r?(C)pertoire entier
-    size_t starIndex = fileID.find_last_of('*');
-    if ( starIndex != std::string::npos ) {
-        return importDirID(fileID.substr(0,starIndex-1));
-    }
-
-    std::string package = fileID;
-
-    // Create filename
-    std::string filename = fileID;
-    replace(filename.begin(), filename.end(), '.', '/');
-    filename += ".o3prm";
-
-    // Search in current directory.
-    bool fileFound = false;
-    std::string filepath;
-    if ( __current_directory.isValid() ) {
-        filepath = __current_directory.absolutePath() + filename;
-        std::ifstream file_test;
-        file_test.open(filepath.c_str());
-        if (file_test.is_open()) {
-            file_test.close();
-            fileFound = true;
-        }
-    }
-
-    // Search in root package directory.
-    if ( ! fileFound && ! __package.empty() ) {
-        int cpt = std::count(__package.begin(), __package.end(), '.');
-        std::string cd = __current_directory.absolutePath();
-        size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
-        for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ ) {
-            index = cd.find_last_of('/', index - 1);
-        }
-
-        if ( index != std::string::npos ) {
-            std::string rootDir = cd.substr(0, index+1); // with '/' at end
-            filepath = rootDir + filename;
-            std::ifstream file_test;
-            file_test.open(filepath.c_str());
-            if (file_test.is_open()) {
-                file_test.close();
-                fileFound = true;
-            }
-        }
-    }
-
-    // Search filename in each path stored in __class_path
-    for (const auto & path : __class_path) {
-        // Construct complete filePath
-        filepath = path + filename;
-
-        // We try to open it
-        std::ifstream file_test;
-        file_test.open(filepath.c_str());
-        if (file_test.is_open()) {
-            file_test.close();
-            fileFound = true;
-        }
-    }
-
-    // If it is found, import it.
-    if (fileFound) {
-        importFile( filepath, package );
-        factory().addImport(package);
-    } else {
-        SemErr("import not found");
-    }
+void __addO3Type( O3Type t ) {
+  get_prm()->types().emplace_back( new O3Type{std::move( t )} );
 }
 
-// Set files already import in factory.
-void setImports(const gum::Set<std::string>& imports) {
-    __imports = imports;
+void __addO3IntType( O3IntType t ) {
+  get_prm()->int_types().emplace_back( new O3IntType{std::move( t )} );
 }
 
-// Add these import to this parser.
-void addImports(const gum::Set<std::string>& imports) {
-  for (const auto & import :imports) {
-    addImport(import);
+void __addO3RealType( O3RealType t ) {
+  get_prm()->real_types().emplace_back( new O3RealType{std::move( t )} );
+}
+
+void __addO3Interface( O3Interface i ) {
+  get_prm()->interfaces().emplace_back( new O3Interface( std::move( i ) ) );
+}
+
+void __addO3Class( O3Class c ) {
+  get_prm()->classes().emplace_back( new O3Class( std::move( c ) ) );
+}
+
+void __addO3System( O3System s ) {
+  get_prm()->systems().emplace_back( new O3System( std::move( s ) ) );
+}
+
+void __addO3Import( O3Import i ) {
+  get_prm()->imports().emplace_back( new O3Import( std::move( i ) ) );
+}
+
+void __split( const O3Label& value, O3Label& left, O3Label& right) {
+  auto idx = value.label().find_first_of('.');
+  if ( ( idx == std::string::npos ) or ( idx == value.label().size() - 1 ) ) {
+    left = O3Label( value.position(), value.label() );
+    right = O3Label( value.position(), value.label() );
+  } else {
+    left = O3Label( value.position(), value.label().substr( 0, idx ) );
+    auto pos = O3Position( value.position().file(),
+                         value.position().line(),
+                         value.position().column() + idx );
+    right = O3Label( pos, value.label().substr( idx + 1 ) );
   }
 }
 
 public:
 // Set the parser factory.
-void setFactory(gum::prm::IPRMFactory* f) {
-    __factory = f;
+void set_prm(O3PRM* prm) {
+  __prm = prm;
 }
 
-// Retrieve the factory.
-gum::prm::IPRMFactory& factory() {
-    if (__factory) {
-        return *__factory;
-    }
-    GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
+O3PRM* get_prm() {
+  return __prm;
 }
 
-// Set the paths to search for imports. Must ended with a '/'.
-void setClassPath(const std::vector<std::string>& class_path) {
-    __class_path = class_path;
+// Set the prefix for types, interfaces, classes and systems parsed
+void set_prefix( const std::string& prefix ) {
+  __prefix = prefix;
+  if ( __prefix.size() > 0 and __prefix[__prefix.size() - 1] != '.' ) {
+    __prefix.append( "." );
+  }
 }
-
-// Must be an absolute path
-void setCurrentDirectory( const std::string & cd ) {
-    __current_directory = Directory(cd);
-    if ( ! __current_directory.isValid() )
-        Warning( widen("gum::o3prm::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
-}
-
-// Get files imports.
-const gum::Set<std::string>& getImports() const {
-    return __imports;
-}
-
-// Add this import to this parser.
-void addImport(std::string import) {
-    if (not __imports.exists(import)) {
-        __imports.insert(import);
-    }
-}
-
 
 //##############################################################################
 //
@@ -390,38 +233,73 @@ void addImport(std::string import) {
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
 
-    	void O3PRM();
-	void Import();
-	void Unit();
-	void ImportIdent(std::string& s);
-	void Type();
-	void Interface();
-	void Class();
-	void System();
-	void Ident(std::string& s);
-	void Label(std::string& s);
-	void AbstractAttributeOrReference(std::string type);
-	void Parameter();
-	void AttributeOrReference(std::string type);
-	void IntParameter();
-	void RealParameter();
-	void Number(float& val);
-	void Reference(std::string type);
-	void AttrAggOrFunc(std::string type);
-	void AbstractAttribute(std::string type);
-	void Attribute(std::string type, std::string name);
-	void Aggregate(std::string type, std::string name);
-	void Functions(std::string type, std::string name);
-	void CastIdent(std::string& s);
-	void CPFValue(std::string & s);
-	void CPTRule(bool &error);
-	void CPTRuleValue(std::string& s );
-	void AggChains(std::vector<std::string>& chains );
-	void AggLabels(std::vector<std::string>& labels );
-	void NumberList(std::vector<float>& numbers );
-	void ArrayDecl(std::string l1);
-	void InstanceDecl(std::string l1);
-	void InstanceParameters(gum::HashTable<std::string, double> &hash );
+    	void O3PRM_UNIT();
+	void IMPORT_UNIT();
+	void UNIT();
+	void TYPE_UNIT();
+	void INTERFACE_UNIT();
+	void CLASS_UNIT();
+	void SYSTEM_UNIT();
+	void CLASS_DECLARATION(O3Class& c);
+	void CLASS(O3Position& pos);
+	void PREFIXED_LABEL(O3Label& l);
+	void CHAIN(O3Label& ident);
+	void IDENTIFIER_LIST(O3LabelList& list);
+	void CLASS_BODY(O3Class& c);
+	void CLASS_PARAMETER(O3ParameterList& params);
+	void CLASS_ELEMENT(O3Class& c);
+	void LABEL(O3Label& l);
+	void INTEGER(O3Integer& i);
+	void FLOAT(O3Float& f);
+	void ARRAY_REFERENCE_SLOT(O3Label& type, O3ReferenceSlotList& refs);
+	void NAMED_CLASS_ELEMENT(O3Label& type, O3Class& c);
+	void REFERENCE_SLOT(O3Label& type, O3Label& name, O3Class& c);
+	void ATTRIBUTE(O3Label& type, O3Label& name, O3Class& c);
+	void AGGREGATE(O3Label& type, O3Label& name, O3Class& c);
+	void RAW_CPT(const O3Label& type,
+const O3Label& name,
+const O3LabelList& parents,
+O3AttributeList& elts);
+	void RULE_CPT(const O3Label& type,
+const O3Label& name,
+const O3LabelList& parents,
+O3AttributeList& elts);
+	void AGGREGATE_PARENTS(O3LabelList& parents);
+	void LABEL_LIST(O3LabelList& list);
+	void IDENTIFIER(O3Label& ident);
+	void FORMULA_LIST(O3FormulaList& values);
+	void RULE(O3RuleList& rules);
+	void LABEL_OR_STAR_LIST(O3LabelList& list);
+	void INTERFACE_DECLARATION(O3Position& pos,
+O3Label& name,
+O3Label& super,
+O3InterfaceElementList& elts);
+	void INTERFACE(O3Position& pos);
+	void INTERFACE_BODY(O3InterfaceElementList& elts);
+	void TYPE_DECLARATION(O3Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
+	void INT_TYPE_DECLARATION(O3Position& pos, O3Label& name, O3Integer& start, O3Integer& end);
+	void REAL_TYPE_DECLARATION(O3Position& pos, O3Label& name, O3FloatList& values);
+	void TYPE(O3Position& pos);
+	void TYPE_VALUE_LIST(LabelMap& labels );
+	void MAP(LabelMap& labels );
+	void INT(O3Position& pos);
+	void REAL(O3Position& pos);
+	void FLOAT_LIST(O3FloatList& values);
+	void FLOAT_OR_INT(O3Float& f);
+	void SYSTEM_DECLARATION(O3System& s);
+	void SYSTEM_BODY(O3System& sys);
+	void ARRAY(O3Integer& size);
+	void PARAMETER_LIST(O3InstanceParameterList& params);
+	void PARAMETER(O3InstanceParameterList& params);
+	void INTEGER_AS_FLOAT(O3Float& f);
+	void IMPORT_BODY();
+	void IMPORT_DECLARATION(O3Import& import);
+	void INTEGER_AS_LABEL(O3Label& l);
+	void LABEL_OR_INT(O3Label& l);
+	void CAST(std::stringstream& s);
+	void LINK(std::stringstream& s);
+	void LABEL_OR_STAR(O3Label& l);
+	void FORMULA(O3Formula& f);
 
     void Parse();
 

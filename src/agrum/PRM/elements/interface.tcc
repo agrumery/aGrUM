@@ -42,12 +42,14 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Interface<GUM_SCALAR>::Interface( const std::string& name,
-                                      Interface<GUM_SCALAR>& super )
+                                      Interface<GUM_SCALAR>& super,
+                                      bool delayInheritance )
         : ClassElementContainer<GUM_SCALAR>( name )
-        , __dag( super.__dag )
         , __super( &super ) {
       GUM_CONSTRUCTOR( Interface );
-      __inheritInterface( super );
+      if ( not delayInheritance ) {
+        __inheritInterface( super );
+      }
     }
 
     template <typename GUM_SCALAR>
@@ -69,6 +71,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    void Interface<GUM_SCALAR>::inheritInterface() {
+      if (__super != nullptr) {
+        __inheritInterface( *__super );
+      }
+    }
+
+    template <typename GUM_SCALAR>
     void Interface<GUM_SCALAR>::__inheritInterface(
         const Interface<GUM_SCALAR>& i ) {
       // Copying attributes
@@ -79,10 +88,12 @@ namespace gum {
         __nodeIdMap.insert( attr->id(), attr );
         __attributes.insert( attr );
 
-        if ( i.__nameMap[i_attr->name()] == i.__nameMap[i_attr->safeName()] )
+        if ( i.__nameMap[i_attr->name()] == i.__nameMap[i_attr->safeName()] ) {
           __nameMap.insert( attr->name(), attr );
+        }
 
         __nameMap.insert( attr->safeName(), attr );
+        __dag.addNode( attr->id() );
       }
 
       // Copying reference slots
@@ -96,10 +107,12 @@ namespace gum {
         __nodeIdMap.insert( ref->id(), ref );
         __referenceSlots.insert( ref );
 
-        if ( i.__nameMap.exists( ref->name() ) )
+        if ( i.__nameMap.exists( ref->name() ) ) {
           __nameMap.insert( ref->name(), ref );
+        }
 
         __nameMap.insert( ref->safeName(), ref );
+        __dag.addNode( ref->id() );
       }
     }
 
@@ -116,7 +129,8 @@ namespace gum {
         __nameMap.insert( attr->name(), attr );
 
         while ( true ) {
-          attr->setId( __dag.addNode() );
+          attr->setId( nextNodeId() );
+          __dag.addNode( attr->id() );
           __nodeIdMap.insert( attr->id(), attr );
           __nameMap.insert( attr->safeName(), attr );
           __attributes.insert( attr );
@@ -128,7 +142,8 @@ namespace gum {
           }
         }
       } else if ( ClassElement<GUM_SCALAR>::isReferenceSlot( *elt ) ) {
-        elt->setId( __dag.addNode() );
+        elt->setId( nextNodeId() );
+        __dag.addNode( elt->id() );
         __nodeIdMap.insert( elt->id(), elt );
         __referenceSlots.insert(
             static_cast<ReferenceSlot<GUM_SCALAR>*>( elt ) );
@@ -201,7 +216,8 @@ namespace gum {
     void Interface<GUM_SCALAR>::__overloadAttribute(
         Attribute<GUM_SCALAR>* overloader, Attribute<GUM_SCALAR>* overloaded ) {
       if ( overloader->type() != overloaded->type() ) {
-        overloader->setId( __dag.addNode() );
+        overloader->setId( nextNodeId() );
+        __dag.addNode( overloader->id() );
         __nodeIdMap.insert( overloader->id(), overloader );
         __nameMap[overloader->name()] = overloader;
         __nameMap.insert( overloader->safeName(), overloader );
@@ -246,7 +262,8 @@ namespace gum {
 
       while ( parent->type().super() != end->type() ) {
         child = parent->getCastDescendant();
-        child->setId( __dag.addNode() );
+        child->setId( nextNodeId() );
+        __dag.addNode( child->id() );
         __nodeIdMap.insert( child->id(), child );
         // Only use child's safe name when adding to the name map!
         __nameMap.insert( child->safeName(), child );
