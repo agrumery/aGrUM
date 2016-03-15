@@ -2,9 +2,9 @@ import system;
 
 request MyRequest {
     engine SVE;
-    ? system.MySystem.asia.lungCancer;
+    ? system.Asia.asia.lungCancer;
 
-    system.MySystem.asia.positiveXRay = true;
+    system.Asia.asia.positiveXRay = true;
     
-    ? system.MySystem.asia.lungCancer;
+    ? system.Asia.asia.lungCancer;
 }
