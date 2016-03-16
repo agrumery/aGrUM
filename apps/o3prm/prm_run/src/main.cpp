@@ -18,7 +18,6 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -26,14 +25,15 @@
 #include <boost/program_options.hpp>
 
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
-#include <agrum/core/debug.h>
-#include <agrum/core/utils.h>
 
 namespace po = boost::program_options;
 namespace o3prmr = gum::prm::o3prmr;
 
 enum class OutputType { TXT, CSV };
 
+/**
+ * @return Returns the options accepted by prm_run.
+ */
 auto options() {
   int opt;
   po::options_description desc( "usage: prm_run [options] file1 file2 [...]" );
@@ -51,12 +51,20 @@ auto options() {
   return std::move( desc );
 }
 
+/**
+ * @return Returns the positional options accepted by prm_run.
+ */
 auto positional_options() {
   auto p = po::positional_options_description{};
   p.add( "input-file", -1 );
   return std::move( p );
 }
 
+/**
+ * @brief Print inference results in stream in the CSV format.
+ * @param engine The O3PRMR interpreter.
+ * @param output The output stream.
+ */
 void print_results_csv( o3prmr::O3prmrInterpreter& engine,
                         std::ostream& output ) {
   for ( auto result : engine.results() ) {
@@ -68,6 +76,11 @@ void print_results_csv( o3prmr::O3prmrInterpreter& engine,
   }
 }
 
+/**
+ * @brief Print inference results in stream in a textual format.
+ * @param engine The O3PRMR interpreter.
+ * @param output The output stream.
+ */
 void print_results_txt( o3prmr::O3prmrInterpreter& engine,
                         std::ostream& output ) {
   for ( auto result : engine.results() ) {
@@ -78,6 +91,12 @@ void print_results_txt( o3prmr::O3prmrInterpreter& engine,
   }
 }
 
+/**
+ * @brief Prints inference results in the corresponding output_type format.
+ * @param engine The O3PRMR interpreter.
+ * @param output The output stream.
+ * @param output_type The output format, @see OutputType.
+ */
 void print_results( o3prmr::O3prmrInterpreter& engine,
                     std::ostream& output,
                     OutputType output_type ) {
@@ -94,9 +113,15 @@ void print_results( o3prmr::O3prmrInterpreter& engine,
   }
 }
 
-void read_input( o3prmr::O3prmrInterpreter& engine,
-                 const std::string& input,
-                 po::variables_map& vm ) {
+/**
+ * @brief Read input from a file.
+ * @param engine The O3PRMR interpreter.
+ * @param output The input file.
+ * @param vm The options variable map.
+ */
+void read_file( o3prmr::O3prmrInterpreter& engine,
+                const std::string& input,
+                po::variables_map& vm ) {
   auto output_type = OutputType::TXT;
 
   if ( vm.count( "output-type" ) ) {
@@ -122,47 +147,58 @@ void read_input( o3prmr::O3prmrInterpreter& engine,
   }
 }
 
+/**
+ * @brief The prm_run main function.
+ *
+ * If position options are present, this will try to open then and parse them
+ * using the O3PRM interpreter.
+ */
 int main( int argc, char* argv[] ) {
+  try {
 
-  auto desc = options();
-  auto pos = positional_options();
-  auto vm = po::variables_map{};
+    auto desc = options();
+    auto pos = positional_options();
+    auto vm = po::variables_map{};
 
-  po::store( po::command_line_parser( argc, argv )
-                 .options( desc )
-                 .positional( pos )
-                 .run(),
-             vm );
-  po::notify( vm );
+    po::store( po::command_line_parser( argc, argv )
+                   .options( desc )
+                   .positional( pos )
+                   .run(),
+               vm );
+    po::notify( vm );
 
-  if ( vm.count( "help" ) ) {
-    std::cout << desc << std::endl;
-    return 0;
-  }
-
-  auto engine = o3prmr::O3prmrInterpreter{};
-
-  auto path = std::getenv( "PWD" );
-  if ( path != nullptr ) {
-    engine.addPath( path );
-  }
-
-  if ( vm.count( "classpath" ) ) {
-    for ( auto p : vm["classpath"].as<std::vector<std::string>>() ) {
-      engine.addPath( p );
+    if ( vm.count( "help" ) ) {
+      std::cout << desc << std::endl;
+      return EXIT_SUCCESS;
     }
-  }
 
-  if ( vm.count( "syntax" ) ) {
-    engine.setSyntaxMode( true );
-  }
+    auto engine = o3prmr::O3prmrInterpreter{};
 
-  if ( vm.count( "input-file" ) ) {
-    for ( auto input : vm["input-file"].as<std::vector<std::string>>() ) {
-      read_input( engine, input, vm );
+    auto path = std::getenv( "PWD" );
+    if ( path != nullptr ) {
+      engine.addPath( path );
     }
-  }
 
-  return 0;
+    if ( vm.count( "classpath" ) ) {
+      for ( auto p : vm["classpath"].as<std::vector<std::string>>() ) {
+        engine.addPath( p );
+      }
+    }
+
+    if ( vm.count( "syntax" ) ) {
+      engine.setSyntaxMode( true );
+    }
+
+    if ( vm.count( "input-file" ) ) {
+      for ( auto input : vm["input-file"].as<std::vector<std::string>>() ) {
+        read_file( engine, input, vm );
+      }
+    }
+
+    return EXIT_SUCCESS;
+  } catch ( gum::Exception& e ) {
+    std::cerr << "an unknown errore occured" << std::endl;
+    return EXIT_FAILURE;
+  }
 }
 
