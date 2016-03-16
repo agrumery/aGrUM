@@ -82,14 +82,14 @@ namespace gum {
         return *this;
       }
 
+      std::string& O3Position::file() { return __file; }
       const std::string& O3Position::file() const { return __file; }
-      void O3Position::file( const std::string& file ) { __file = file; }
 
+      int& O3Position::line() { return __line; }
       int O3Position::line() const { return __line; }
-      void O3Position::line( int line ) { __line = line; }
 
+      int& O3Position::column() { return __column; }
       int O3Position::column() const { return __column; }
-      void O3Position::column( int column ) { __column = column; }
 
       O3Integer::O3Integer()
           : __pos()
@@ -702,6 +702,8 @@ namespace gum {
         return *__elts;
       }
 
+      O3Attribute::O3Attribute() { GUM_CONSTRUCTOR( O3Attribute ); }
+
       O3Attribute::O3Attribute( const O3Label& type,
                                 const O3Label& name,
                                 const O3LabelList& parents )
@@ -749,9 +751,21 @@ namespace gum {
 
       O3Label& O3Attribute::type() { return __type; }
       const O3Label& O3Attribute::type() const { return __type; }
+
+      O3Label& O3Attribute::name() { return __name; }
       const O3Label& O3Attribute::name() const { return __name; }
+
+      O3Attribute::O3LabelList& O3Attribute::parents() {
+        return __parents;
+      }
       const O3Attribute::O3LabelList& O3Attribute::parents() const {
         return __parents;
+      }
+
+      O3RawCPT::O3RawCPT()
+          : O3Attribute()
+          , __values{new O3FormulaList{}} {
+        GUM_CONSTRUCTOR( O3RawCPT );
       }
 
       O3RawCPT::O3RawCPT( const O3Label& type,
@@ -807,6 +821,12 @@ namespace gum {
       std::unique_ptr<O3Attribute> O3RawCPT::copy() const {
         auto copy = new O3RawCPT( *this );
         return std::move( std::unique_ptr<O3Attribute>( copy ) );
+      }
+
+      O3RuleCPT::O3RuleCPT()
+          : O3Attribute()
+          , __rules{new O3RuleList{}} {
+        GUM_CONSTRUCTOR( O3RuleCPT );
       }
 
       O3RuleCPT::O3RuleCPT( const O3Label& type,
@@ -998,6 +1018,11 @@ namespace gum {
         return *__aggs;
       }
 
+      O3Parameter::O3Parameter()
+          : __type( O3Parameter::Type::NONE ) {
+        GUM_CONSTRUCTOR( O3Parameter );
+      }
+
       O3Parameter::O3Parameter( const O3Position& pos,
                                 const O3Label& name,
                                 const O3Integer& value )
@@ -1058,13 +1083,21 @@ namespace gum {
         return *this;
       }
 
+      O3Parameter::Type& O3Parameter::type() { return __type; }
       O3Parameter::Type O3Parameter::type() const { return __type; }
 
+      O3Position& O3Parameter::position() { return __pos; }
       const O3Position& O3Parameter::position() const { return __pos; }
 
+      O3Label& O3Parameter::name() { return __name; }
       const O3Label& O3Parameter::name() const { return __name; }
 
+      O3Float& O3Parameter::value() { return __value; }
       const O3Float& O3Parameter::value() const { return __value; }
+
+      O3ReferenceSlot::O3ReferenceSlot( ) {
+        GUM_CONSTRUCTOR( O3ReferenceSlot );
+      }
 
       O3ReferenceSlot::O3ReferenceSlot( const O3Label& type,
                                         const O3Label& name,
@@ -1115,8 +1148,10 @@ namespace gum {
       O3Label& O3ReferenceSlot::type() { return __type; }
       const O3Label& O3ReferenceSlot::type() const { return __type; }
 
+      O3Label& O3ReferenceSlot::name() { return __name; }
       const O3Label& O3ReferenceSlot::name() const { return __name; }
 
+      bool& O3ReferenceSlot::isArray() { return __isArray; }
       bool O3ReferenceSlot::isArray() const { return __isArray; }
 
       O3Aggregate::O3Aggregate()

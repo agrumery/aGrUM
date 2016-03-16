@@ -196,9 +196,9 @@ void Parser::CLASS_DECLARATION(O3Class& c) {
 
 void Parser::CLASS(O3Position& pos) {
 		Expect(_class);
-		pos.file( narrow( scanner->filename() ) ); 
-		pos.line( t->line ); 
-		pos.column( t->col ); 
+		pos.file() = narrow( scanner->filename() ); 
+		pos.line() = t->line; 
+		pos.column() = t->col; 
 }
 
 void Parser::PREFIXED_LABEL(O3Label& l) {
@@ -473,9 +473,9 @@ O3InterfaceElementList& elts) {
 
 void Parser::INTERFACE(O3Position& pos) {
 		Expect(_interface);
-		pos.file( narrow( scanner->filename() ) ); 
-		pos.line( t->line ); 
-		pos.column( t->col ); 
+		pos.file() = narrow( scanner->filename() ); 
+		pos.line() = t->line; 
+		pos.column() = t->col; 
 }
 
 void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
@@ -526,9 +526,9 @@ void Parser::REAL_TYPE_DECLARATION(O3Position& pos, O3Label& name, O3FloatList& 
 
 void Parser::TYPE(O3Position& pos) {
 		Expect(_type);
-		pos.file( narrow( scanner->filename() ) ); 
-		pos.line( t->line ); 
-		pos.column( t->col ); 
+		pos.file() = narrow( scanner->filename() ); 
+		pos.line() = t->line; 
+		pos.column() = t->col; 
 }
 
 void Parser::TYPE_VALUE_LIST(LabelMap& labels ) {
@@ -579,16 +579,16 @@ void Parser::MAP(LabelMap& labels ) {
 
 void Parser::INT(O3Position& pos) {
 		Expect(_int);
-		pos.file( narrow( scanner->filename() ) ); 
-		pos.line( t->line ); 
-		pos.column( t->col ); 
+		pos.file() = narrow( scanner->filename() ); 
+		pos.line() = t->line; 
+		pos.column() = t->col; 
 }
 
 void Parser::REAL(O3Position& pos) {
 		Expect(_real);
-		pos.file( narrow( scanner->filename() ) ); 
-		pos.line( t->line ); 
-		pos.column( t->col ); 
+		pos.file() = narrow( scanner->filename() ); 
+		pos.line() = t->line; 
+		pos.column() = t->col; 
 }
 
 void Parser::FLOAT_LIST(O3FloatList& values) {

@@ -237,9 +237,9 @@ CLASS_DECLARATION<O3Class& c> =
 //________________________
 CLASS<O3Position& pos> =
   class
-  (. pos.file( narrow( scanner->filename() ) ); .)
-  (. pos.line( t->line ); .)
-  (. pos.column( t->col ); .)
+  (. pos.file() = narrow( scanner->filename() ); .)
+  (. pos.line() = t->line; .)
+  (. pos.column() = t->col; .)
   .
 
 //________________________
@@ -416,9 +416,9 @@ INTERFACE_DECLARATION<O3Position& pos,
 //________________________
 INTERFACE<O3Position& pos> =
   interface
-  (. pos.file( narrow( scanner->filename() ) ); .)
-  (. pos.line( t->line ); .)
-  (. pos.column( t->col ); .)
+  (. pos.file() = narrow( scanner->filename() ); .)
+  (. pos.line() = t->line; .)
+  (. pos.column() = t->col; .)
   .
 
 //________________________
@@ -470,9 +470,9 @@ TYPE_DECLARATION<O3Position& pos, O3Label& name, O3Label& super, LabelMap& label
 //________________________
 TYPE<O3Position& pos> = 
   type
-  (. pos.file( narrow( scanner->filename() ) ); .)
-  (. pos.line( t->line ); .)
-  (. pos.column( t->col ); .)
+  (. pos.file() = narrow( scanner->filename() ); .)
+  (. pos.line() = t->line; .)
+  (. pos.column() = t->col; .)
   .
 
 //________________________
@@ -490,9 +490,9 @@ INT_TYPE_DECLARATION<O3Position& pos, O3Label& name, O3Integer& start, O3Integer
 //________________________
 INT<O3Position& pos> =
   int
-  (. pos.file( narrow( scanner->filename() ) ); .)
-  (. pos.line( t->line ); .)
-  (. pos.column( t->col ); .)
+  (. pos.file() = narrow( scanner->filename() ); .)
+  (. pos.line() = t->line; .)
+  (. pos.column() = t->col; .)
   .
 
 //________________________
@@ -508,9 +508,9 @@ REAL_TYPE_DECLARATION<O3Position& pos, O3Label& name, O3FloatList& values> =
 //________________________
 REAL<O3Position& pos> =
   real
-  (. pos.file( narrow( scanner->filename() ) ); .)
-  (. pos.line( t->line ); .)
-  (. pos.column( t->col ); .)
+  (. pos.file() = narrow( scanner->filename() ); .)
+  (. pos.line() = t->line; .)
+  (. pos.column() = t->col; .)
   .
 
 //________________________
