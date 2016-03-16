@@ -3,7 +3,7 @@ import aggregates;
 
 request MyRequest {
 
-  engine SVE;
+  engine GRD;
   ?	aggregates.aSys.some_classes[0].color;
   ?	aggregates.aSys.some_classes[1].color;
   ? aggregates.aSys.happy.happy;

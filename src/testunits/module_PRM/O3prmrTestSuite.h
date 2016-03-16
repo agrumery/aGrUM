@@ -76,6 +76,7 @@ namespace gum_tests {
       }
     }
 
+    // ->
     void testInference() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si =
@@ -319,6 +320,7 @@ namespace gum_tests {
       }
     }
 
+    // ->
     void testComplexPrintersGrd() {
       try {
         // Arrange
@@ -344,6 +346,7 @@ namespace gum_tests {
       }
     }
 
+    // ->
     void testADDWithoutSlash() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;

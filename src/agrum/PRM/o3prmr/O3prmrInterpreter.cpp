@@ -954,7 +954,16 @@ namespace gum {
           m_inf = new SVED<double>( *( prm() ), sys );
 
           //
-        } else if ( m_engine == "GRD" ) {
+        } else if ( m_engine == "SVE" ) { 
+
+          m_inf = new SVE<double>( *( prm() ), sys );
+
+        } else {
+
+          if ( m_engine != "GRD" ) {
+            addWarning( "unkown engine '" + m_engine + "', use GRD insteed." );
+          }
+
           BayesNetInference<double>* bn_inf = 0;
           if ( m_bn ) {
             delete m_bn;
@@ -968,27 +977,13 @@ namespace gum {
 
           if ( m_verbose ) m_log << "Finished)" << std::flush;
 
-          if ( m_bn_engine == "VE" ) {
-            bn_inf = new VariableElimination<double>( *m_bn );
-          } else if ( m_bn_engine == "VEBB" ) {
-            bn_inf = new VEWithBB<double>( *m_bn );
-          } else if ( m_bn_engine == "lazy" ) {
-            bn_inf = new LazyPropagation<double>( *m_bn );
-          } else {
-            bn_inf = new ShaferShenoyInference<double>( *m_bn );
-          }
+          bn_inf = new LazyPropagation<double>( *m_bn );
 
           auto grd_inf = new GroundedInference<double>( *( prm() ), sys );
           grd_inf->setBNInference( bn_inf );
           m_inf = grd_inf;
 
-          //
-        } else {
-          if ( m_engine != "SVE" )
-            addWarning( "unkown engine '" + m_engine + "', use SVE insteed." );
-
-          m_inf = new SVE<double>( *( prm() ), sys );
-        }
+        } 
 
         if ( m_verbose ) m_log << "Finished." << std::endl;
       }
