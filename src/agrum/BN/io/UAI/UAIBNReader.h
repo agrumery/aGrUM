@@ -19,96 +19,53 @@
  ***************************************************************************/
 /**
  * @file
- * @brief classe for import of bayes net from a XML file written with BIF Format
+ * @brief classe for import of bayes net from a file with UAI Format
  *
- * Read an bayes net from a XML file with BIF format
- *
- * how to use it :
- * @code
-// OPTIONAL LISTENER CLASS
-class aSimpleListener : public gum::Listener {
-public:
-  void whenProceeding(const void *buffer,int percent, std::string status) {
-  // percent goes from 0 to 100 (whenLoading is called at most once for each
-integer
-between 0 and 100
-    // percent=200 recieved when End Of File.
- }
-};
-// END OF OPTIONAL LISTENER
-
- gum::BayesNet<double> bn;
-
- try {
-  gum::BIFXMLBNReader<double> reader(&bn,std::string(args[1]));
-
-  // OPTIONAL SECTION
-  aSimpleListener asl;
-  GUM_CONNECT( reader, onProceed, asl, aSimpleListener::whenProceing );
-  // END OF OPTIONAL SECTION
-
-  // Not implemented yet section
-  //if (reader.proceed()==0) {
-   //std::cerr<<"Well done !"<<std::endl;
-  //} else {
-   //reader.showElegantErrorsAndWarnings();
-   //reader.showErrorCounts();
-  //}
-  // End not implemented section
-
- } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
-
-  return 0;
-
- * @endcode
+ * Read an bayes net from a file with UAI format
+ * cf. http://www.cs.huji.ac.il/project/PASCAL/fileFormat.php
  *
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
-#ifndef GUM_BIF_XML_BN_READER_H
-#define GUM_BIF_XML_BN_READER_H
 
-#define TIXML_USE_TICPP
+#ifndef GUM_UAIREADER_H
+#define GUM_UAIREADER_H
 
 #include <sstream>
 #include <string>
-#include <list>
 
 #include <agrum/config.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/signal/signaler2.h>
-#include <agrum/core/tinyxml/ticpp/ticpp.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/io/BNReader.h>
 
 namespace gum {
-
   /**
-   * @class BIFXMLBNReader BIFXMLBNReader.h
-   *<agrum/BN/io/BIFXML/BIFXMLBNReader.h>
+   * @class UAIBNReader UAIBNReader.h
+   *<agrum/BN/io/UAI/UAIBNReader.h>
    * @ingroup bn_io
-   * @brief Read an bayes net from an XML file with BIF format.
+   * @brief Read an bayes net from an file with UAI format
    *
-   * This class import an bayes net from an XML files using BIF format
-   * See
-   *http://www-2.cs.cmu.edu/afs/cs/user/fgcozman/www/Research/InterchangeFormat/
+   * This class import an bayes net from an text files using UAI format
+   * cf. http://www.cs.huji.ac.il/project/PASCAL/fileFormat.php
    * for information about this format.
    *
    */
   template <typename GUM_SCALAR>
-  class BIFXMLBNReader : BNReader<GUM_SCALAR> {
+  class UAIBNReader : BNReader<GUM_SCALAR> {
     public:
     /**
      * Constructor
      * A reader is created to reading a defined file.
      * Note that an BN as to be created before and given in parameter.
      */
-    BIFXMLBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filePath );
+    UAIBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filePath );
 
     /**
      * Default destructor.
      */
-    ~BIFXMLBNReader();
+    ~UAIBNReader();
 
     /**
      * Reads the bayes net from the file referenced by filePath  given at the
@@ -117,41 +74,14 @@ namespace gum {
      * @warning XMLBNReader can not give the number of errors.
      */
     virtual int proceed();
-
     /**
      * Signaler used to indicates how many percent of the Xml files have been
      * parsed
      * yet
      */
     typename gum::Signaler2<int, std::string> onProceed;
-
-    private:
-    /**
-     * Parsing xml element containing data on variables
-     */
-    void __parsingVariables( ticpp::Element* parentNetwork );
-
-    /**
-     * fill the diagram
-     */
-    void __fillingBN( ticpp::Element* parentNetwork );
-
-    /**
-     * An handle to the bayes net in which will be load the content of the xml
-     * filePath
-     */
-    BayesNet<GUM_SCALAR>* __bn;
-
-    /**
-     * the path to the xml filePath
-     */
-    std::string __filePath;
   };
+}
 
-  extern template class BIFXMLBNReader<float>;
-  extern template class BIFXMLBNReader<double>;
-} /* namespace gum */
 
-#include <agrum/BN/io/BIFXML/BIFXMLBNReader.tcc>
-
-#endif  // GUM_BIF_XML_BN_READER_H
+#endif  // GUM_UAIBNREADER_H

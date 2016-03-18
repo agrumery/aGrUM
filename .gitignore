@@ -17,6 +17,7 @@ qtcreator-build
 # generated files by testunits
 src/testunits/testList.all
 src/testunits/ressources/BNBIFXMLIO_file.txt
+src/testunits/ressources/BNUAIIO_file.uai
 src/testunits/ressources/ContextualDependenciesCNFWriter_RO_TestFile.cnf
 src/testunits/ressources/ContextualDependenciesCNFWriter_RO_TestFile.cnf.var
 src/testunits/ressources/ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf
