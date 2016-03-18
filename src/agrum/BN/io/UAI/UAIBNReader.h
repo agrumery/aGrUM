@@ -38,6 +38,8 @@
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/signal/signaler2.h>
 #include <agrum/variables/labelizedVariable.h>
+
+#include <agrum/core/errorsContainer.h>
 #include <agrum/BN/io/BNReader.h>
 
 namespace gum {
@@ -73,15 +75,33 @@ namespace gum {
      * @return Returns 0 if no error, 1 if any
      * @warning XMLBNReader can not give the number of errors.
      */
-    virtual int proceed();
+    virtual int proceed() final;
     /**
      * Signaler used to indicates how many percent of the Xml files have been
      * parsed
      * yet
      */
     typename gum::Signaler2<int, std::string> onProceed;
+
+    private:
+    /**
+     * An handle to the bayes net in which will be load the content of the xml
+     * filePath
+     */
+    BayesNet<GUM_SCALAR>* __bn;
+
+    /**
+     * the path to the xml filePath
+     */
+    std::string __filePath;
+
+    /**
+     * Error containers
+     */
+    ErrorsContainer __errors;
   };
 }
 
+#include <agrum/BN/io/UAI/UAIBNReader.tcc>
 
 #endif  // GUM_UAIBNREADER_H
