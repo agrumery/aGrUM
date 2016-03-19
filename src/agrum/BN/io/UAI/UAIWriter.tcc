@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/io/UAI/UAIBNWriter.h>
+#include <agrum/BN/io/UAI/UAIWriter.h>
 
 namespace gum {
 

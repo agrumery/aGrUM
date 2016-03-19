@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 /** @file
  * @brief Outlined implementation of UAIBNReader
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
-#include <agrum/BN/io/UAI/UAIBNReader.h>
+#include <agrum/BN/io/UAI/UAIWriter.h>
 
-template class gum::UAIBNReader<float>;
-template class gum::UAIBNReader<double>;
+template class gum::UAIBNWriter<float>;
+template class gum::UAIBNWriter<double>;

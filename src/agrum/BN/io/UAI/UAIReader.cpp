@@ -18,12 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-/** @file
- * @brief Outlined implementation of UAIBNReader
- *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
- */
-#include <agrum/BN/io/UAI/UAIBNWriter.h>
+#include <agrum/BN/io/UAI/UAIReader.h>
 
-template class gum::UAIBNWriter<float>;
-template class gum::UAIBNWriter<double>;
+template class gum::UAIBNReader<float>;
+template class gum::UAIBNReader<double>;

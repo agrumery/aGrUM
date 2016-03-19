@@ -103,5 +103,5 @@ namespace gum {
   extern template class UAIBNWriter<double>;
 } /* namespace gum */
 
-#include <agrum/BN/io/UAI/UAIBNWriter.tcc>
+#include <agrum/BN/io/UAI/UAIWriter.tcc>
 #endif  // GUM_UAIBNWRITER_H
