@@ -40,7 +40,7 @@ namespace gum {
     try {
       __scanner = new UAI::Scanner( __streamName.c_str() );
       __parser = new UAI::Parser( __scanner );
-      __parser->setFactory( (IBayesNetFactory*)__factory );
+//      __parser->setFactory( (IBayesNetFactory*)__factory );
     } catch ( IOError e ) {
       __ioerror = true;
     }

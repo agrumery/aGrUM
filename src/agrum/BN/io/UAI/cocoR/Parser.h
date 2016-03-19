@@ -35,15 +35,10 @@ Coco/R itself) does not fall under the GNU General Public License.
 #if !defined(gum_UAI_COCO_PARSER_H__)
 #define gum_UAI_COCO_PARSER_H__
 
-#define UAI_TRACE(x) std::cout<<"** "<<x<<std::endl
-#define UAI_WARN(x)  
-//std::cout<<"                  "<<x<<std::endl
 #include <iostream>
+#include <tuple>
 
 #include <agrum/core/cast_unicode.h>
-
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/BN/IBayesNetFactory.h>
 
 #undef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
@@ -63,7 +58,7 @@ class Parser {
 		_EOF=0,
 		_eol=1,
 		_integer=2,
-		_number=3
+		_float=3
 	};
 	int maxT;
 
@@ -86,18 +81,7 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::IBayesNetFactory* __factory;
-
-void setFactory(gum::IBayesNetFactory* f) {
-  __factory=f;
-}
-
-gum::IBayesNetFactory& factory(void) {
-  if (__factory) return *__factory;
-  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning UAI file...");
-}
-
-void SemErr(std::string s) {
+    void SemErr(std::string s) {
   SemErr(widen(s).c_str());
 }
 
@@ -105,12 +89,30 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var, int res) {
-  if ((int) v.size()<res)
-    Warning("Not enough data in probability assignation for node "+var);
-  if ((int) v.size()>res)
-    Warning("Too many data in probability assignation for node "+var);
+using quartet=std::tuple<float,int,int,int>;
+
+/* 
+void checkQuartets() {
+  auto isInt = [] (q)  {return (std::get<0>(q)==-1);};
+  auto hasVal = [] (q) {return (isInt(q))?(std::get<1>(q)):(std::get<0>(q));}
+  
+  for(auto& q : quartets) {
+    std::cout<<isInt(q)?"FLOAT":"INT"
+            <<" "<<hasVal(q)
+            <<"   "<<std::get<2>(q)<<":"<<std::get<3>(q)<<std::endl;
+  }
 }
+*/
+
+void checkQuartets() {
+  for(auto& q : quartets) {
+    std::string s=(std::get<1>(q)==-1)?"FLOAT":"INT";
+    float v=(std::get<1>(q)==-1)?(std::get<0>(q)):(std::get<1>(q));
+    std::cout<<s<<" "<<v<<"   "<<std::get<2>(q)<<":"<<std::get<3>(q)<<std::endl;
+  }
+}
+
+std::vector<quartet> quartets;
 
 //=====================
 
@@ -121,17 +123,9 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
 
-    	void EOLS();
-	void INT(int& val);
-	void FLOAT(float& val);
-	void UNIQUE_INT(int & v);
-	void LISTE_FLOAT(std::vector<float>& v );
-	void LISTE_INT(std::vector<int>& v );
-	void LISTE_PARENTS();
+    	void NUMBER();
+	void LISTE();
 	void UAI();
-	void PREAMBULE();
-	void CPTS();
-	void CPT();
 
     void Parse();
 

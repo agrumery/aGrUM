@@ -57,6 +57,7 @@ namespace gum_tests {
 
       gum::UAIReader<float> reader( net, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
+      reader.showElegantErrorsAndWarnings(std::cout);
 
       if ( net != 0 ) {
         TS_ASSERT( net->empty() );

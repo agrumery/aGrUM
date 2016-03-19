@@ -1,28 +1,12 @@
-#define UAI_TRACE(x) std::cout<<"** "<<x<<std::endl
-#define UAI_WARN(x)  
-//std::cout<<"                  "<<x<<std::endl
 #include <iostream>
+#include <tuple>
 
 #include <agrum/core/cast_unicode.h>
-
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/BN/IBayesNetFactory.h>
 
 #undef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
 
 COMPILER UAI
-
-gum::IBayesNetFactory* __factory;
-
-void setFactory(gum::IBayesNetFactory* f) {
-  __factory=f;
-}
-
-gum::IBayesNetFactory& factory(void) {
-  if (__factory) return *__factory;
-  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning UAI file...");
-}
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
@@ -32,12 +16,30 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var, int res) {
-  if ((int) v.size()<res)
-    Warning("Not enough data in probability assignation for node "+var);
-  if ((int) v.size()>res)
-    Warning("Too many data in probability assignation for node "+var);
+using quartet=std::tuple<float,int,int,int>;
+
+/* 
+void checkQuartets() {
+  auto isInt = [] (q)  {return (std::get<0>(q)==-1);};
+  auto hasVal = [] (q) {return (isInt(q))?(std::get<1>(q)):(std::get<0>(q));}
+  
+  for(auto& q : quartets) {
+    std::cout<<isInt(q)?"FLOAT":"INT"
+            <<" "<<hasVal(q)
+            <<"   "<<std::get<2>(q)<<":"<<std::get<3>(q)<<std::endl;
+  }
 }
+*/
+
+void checkQuartets() {
+  for(auto& q : quartets) {
+    std::string s=(std::get<1>(q)==-1)?"FLOAT":"INT";
+    float v=(std::get<1>(q)==-1)?(std::get<0>(q)):(std::get<1>(q));
+    std::cout<<s<<" "<<v<<"   "<<std::get<2>(q)<<":"<<std::get<3>(q)<<std::endl;
+  }
+}
+
+std::vector<quartet> quartets;
 
 //=====================
 CHARACTERS
@@ -47,7 +49,7 @@ CHARACTERS
 TOKENS
   eol    = '\n'.
   integer = digit { digit }.              /* integer part */
-  number = (
+  float = (
             [ "+" | "-" ] digit { digit }"." digit { digit }              /* digits after the mandatory point */
             [ ( "E" | "e" ) [ "+" | "-" ] digit { digit } ]                 /* optional exponent part */
            |
@@ -58,85 +60,26 @@ TOKENS
 
 
 //=====================
-//COMMENTS FROM "#" TO '\n'
+COMMENTS FROM "#" TO '\n'
 
-IGNORE '\t'+'\r'
+IGNORE '\t'+'\r'+'\n'
 
 //=====================
 PRODUCTIONS
 
-EOLS = eol { eol}.
-
-INT<int& val> = integer (. UAI_WARN("INT "<<coco_string_create_char(t->val));val=coco_atoi(t->val); .).
-
-FLOAT<float& val> =
-  number  (. UAI_WARN("FLOAT "<<coco_string_create_char(t->val));val=coco_atof(t->val); .)
+NUMBER =
+  float  (. quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col)); .)
   |
-  integer (. UAI_WARN("FLOAT "<<coco_string_create_char(t->val));val=coco_atoi(t->val); .)
+  integer (. quartets.push_back(std::make_tuple(-1.0             ,coco_atoi(t->val),t->line,t->col)); .)
 .
 
-
-UNIQUE_INT<int & v> = (. int val; .)
-    INT<val> (. UAI_WARN("Unique "<<val);v=val; .)
-    EOLS
-.
-
-LISTE_FLOAT<. std::vector<float>& v .> =   (. float value; .)
-  FLOAT<value>                             (. UAI_WARN("pushing X "<<value);v.push_back(value); .)
-  FLOAT<value>                             (. UAI_WARN("pushing Y "<<value);v.push_back(value); .)
-  {
-  FLOAT<value>                            (. UAI_WARN("pushing Z "<<value);v.push_back(value); .)
-  }
-  EOLS
+LISTE = 
+  NUMBER
+  [LISTE]
   .
   
-
-LISTE_INT<. std::vector<int>& v .> =   (. int v1,v2,v3; .)
-  INT<v1>                            (. UAI_WARN("pushing A "<<v1);v.push_back(v1); .)
-  INT<v2>                            (. UAI_WARN("pushing B "<<v2);v.push_back(v2); .)
-  {
-  INT<v3>                            (. UAI_WARN("pushing C "<<v3);v.push_back(v3); .)
-  }
-  EOLS
-.
-
-
-LISTE_PARENTS = (. std::vector<int> v; .) 
-  LISTE_INT<v> (. UAI_TRACE("parents :"<<v);v.clear(); .)
-  {
-  LISTE_INT<v> (. UAI_TRACE("parents :"<<v);v.clear(); .)
-  }
-.
-
-//==============
-UAI =
-    EOLS
-    "BAYES" "\n" (. UAI_TRACE("BAYES found"); .)
-    EOLS
-    PREAMBULE
-    CPTS
-.
-
-PREAMBULE = (. int val; std::vector<int> v;std::vector<int > vv; .)
-    UNIQUE_INT<val> (. UAI_TRACE("nbr de var :"<<val); .)
-    LISTE_INT<v> (. UAI_TRACE("domains :"<<v); .)
-    UNIQUE_INT<val> (. UAI_TRACE("nbr de pot :"<<val); .)
-    LISTE_PARENTS
-.
-
-CPTS =
-    CPT
-    {CPT}
-.
-
-CPT = (. int val;std::vector<float> vv; .)
-    UNIQUE_INT<val> (. UAI_TRACE("nbr de params "<<val);vv.clear(); .)
-    LISTE_FLOAT<vv> 
-    { 
-      LISTE_FLOAT<vv> 
-    }                   (. UAI_TRACE("probas :"<<vv); .)
-.
-
+UAI = "BAYES" LISTE (. checkQuartets(); .).
+  
 
 END UAI.
 

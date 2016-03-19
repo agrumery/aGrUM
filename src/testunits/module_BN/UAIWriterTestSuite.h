@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class UAIBNWriterTestSuite : public CxxTest::TestSuite {
+  class UAIWriterTestSuite : public CxxTest::TestSuite {
   public:
     gum::BayesNet<double>* bn;
     gum::Id i1, i2, i3, i4, i5;
@@ -70,20 +70,20 @@ namespace gum_tests {
     void tearDown() { delete bn; }
 
     void testConstuctor() {
-      gum::UAIBNWriter<double>* writer = nullptr;
+      gum::UAIWriter<double>* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING( writer =
-                                            new gum::UAIBNWriter<double>() );
+                                            new gum::UAIWriter<double>() );
       delete writer;
     }
 
     void testWriter_ostream() {
-      gum::UAIBNWriter<double> writer;
+      gum::UAIWriter<double> writer;
       // Uncomment this to check the ouput
       //TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
     void testWriter_string() {
-      gum::UAIBNWriter<double> writer;
+      gum::UAIWriter<double> writer;
       std::string file = GET_RESSOURCES_PATH( "BNUAIIO_file.uai" );
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 

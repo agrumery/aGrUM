@@ -105,108 +105,27 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
   }
 }
 
-void Parser::EOLS() {
-		Expect(_eol);
-		while (la->kind == _eol) {
+void Parser::NUMBER() {
+		if (la->kind == _float) {
 			Get();
-		}
-}
-
-void Parser::INT(int& val) {
-		Expect(_integer);
-		UAI_WARN("INT "<<coco_string_create_char(t->val));val=coco_atoi(t->val); 
-}
-
-void Parser::FLOAT(float& val) {
-		if (la->kind == _number) {
-			Get();
-			UAI_WARN("FLOAT "<<coco_string_create_char(t->val));val=coco_atof(t->val); 
+			quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col)); 
 		} else if (la->kind == _integer) {
 			Get();
-			UAI_WARN("FLOAT "<<coco_string_create_char(t->val));val=coco_atoi(t->val); 
+			quartets.push_back(std::make_tuple(-1.0             ,coco_atoi(t->val),t->line,t->col)); 
 		} else SynErr(6);
 }
 
-void Parser::UNIQUE_INT(int & v) {
-		int val; 
-		INT(val);
-		UAI_WARN("Unique "<<val);v=val; 
-		EOLS();
-}
-
-void Parser::LISTE_FLOAT(std::vector<float>& v ) {
-		float value; 
-		FLOAT(value);
-		UAI_WARN("pushing X "<<value);v.push_back(value); 
-		FLOAT(value);
-		UAI_WARN("pushing Y "<<value);v.push_back(value); 
-		while (la->kind == _integer || la->kind == _number) {
-			FLOAT(value);
-			UAI_WARN("pushing Z "<<value);v.push_back(value); 
-		}
-		EOLS();
-}
-
-void Parser::LISTE_INT(std::vector<int>& v ) {
-		int v1,v2,v3; 
-		INT(v1);
-		UAI_WARN("pushing A "<<v1);v.push_back(v1); 
-		INT(v2);
-		UAI_WARN("pushing B "<<v2);v.push_back(v2); 
-		while (la->kind == _integer) {
-			INT(v3);
-			UAI_WARN("pushing C "<<v3);v.push_back(v3); 
-		}
-		EOLS();
-}
-
-void Parser::LISTE_PARENTS() {
-		std::vector<int> v; 
-		LISTE_INT(v);
-		UAI_TRACE("parents :"<<v);v.clear(); 
-		while (la->kind == _integer) {
-			LISTE_INT(v);
-			UAI_TRACE("parents :"<<v);v.clear(); 
+void Parser::LISTE() {
+		NUMBER();
+		if (la->kind == _integer || la->kind == _float) {
+			LISTE();
 		}
 }
 
 void Parser::UAI() {
-		EOLS();
 		Expect(4 /* "BAYES" */);
-		Expect(_eol);
-		UAI_TRACE("BAYES found"); 
-		EOLS();
-		PREAMBULE();
-		CPTS();
-}
-
-void Parser::PREAMBULE() {
-		int val; std::vector<int> v;std::vector<int > vv; 
-		UNIQUE_INT(val);
-		UAI_TRACE("nbr de var :"<<val); 
-		LISTE_INT(v);
-		UAI_TRACE("domains :"<<v); 
-		UNIQUE_INT(val);
-		UAI_TRACE("nbr de pot :"<<val); 
-		LISTE_PARENTS();
-}
-
-void Parser::CPTS() {
-		CPT();
-		while (la->kind == _integer) {
-			CPT();
-		}
-}
-
-void Parser::CPT() {
-		int val;std::vector<float> vv; 
-		UNIQUE_INT(val);
-		UAI_TRACE("nbr de params "<<val);vv.clear(); 
-		LISTE_FLOAT(vv);
-		while (la->kind == _integer || la->kind == _number) {
-			LISTE_FLOAT(vv);
-		}
-		UAI_TRACE("probas :"<<vv); 
+		LISTE();
+		checkQuartets(); 
 }
 
 
@@ -352,10 +271,10 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
       			case 0: s = coco_string_create(L"EOF expected"); break;
 			case 1: s = coco_string_create(L"eol expected"); break;
 			case 2: s = coco_string_create(L"integer expected"); break;
-			case 3: s = coco_string_create(L"number expected"); break;
+			case 3: s = coco_string_create(L"float expected"); break;
 			case 4: s = coco_string_create(L"\"BAYES\" expected"); break;
 			case 5: s = coco_string_create(L"??? expected"); break;
-			case 6: s = coco_string_create(L"invalid FLOAT"); break;
+			case 6: s = coco_string_create(L"invalid NUMBER"); break;
 
 
     default: {
