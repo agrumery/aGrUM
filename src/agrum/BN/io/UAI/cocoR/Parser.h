@@ -35,6 +35,9 @@ Coco/R itself) does not fall under the GNU General Public License.
 #if !defined(gum_UAI_COCO_PARSER_H__)
 #define gum_UAI_COCO_PARSER_H__
 
+#define UAI_TRACE(x) std::cout<<"** "<<x<<std::endl
+#define UAI_WARN(x)  
+//std::cout<<"                  "<<x<<std::endl
 #include <iostream>
 
 #include <agrum/core/cast_unicode.h>
@@ -58,8 +61,9 @@ class Parser {
   private:
     	enum {
 		_EOF=0,
-		_integer=1,
-		_number=2
+		_eol=1,
+		_integer=2,
+		_number=3
 	};
 	int maxT;
 
@@ -108,8 +112,6 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
     Warning("Too many data in probability assignation for node "+var);
 }
 
-
-
 //=====================
 
     Parser( Scanner* scanner );
@@ -119,15 +121,13 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
 
-    	void EOL();
-	void EOLS();
+    	void EOLS();
 	void INT(int& val);
 	void FLOAT(float& val);
-	void FORCED_LISTE_FLOAT(std::vector<float>& v );
-	void FORCED_LISTE_INT(std::vector<int>& v );
-	void LLISTE_INT(std::vector<std::vector<int> >& vv );
-	void LLISTE_FLOAT(std::vector<std::vector<float> >& vv );
 	void UNIQUE_INT(int & v);
+	void LISTE_FLOAT(std::vector<float>& v );
+	void LISTE_INT(std::vector<int>& v );
+	void LISTE_PARENTS();
 	void UAI();
 	void PREAMBULE();
 	void CPTS();

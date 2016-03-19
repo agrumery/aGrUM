@@ -1,4 +1,6 @@
-
+#define UAI_TRACE(x) std::cout<<"** "<<x<<std::endl
+#define UAI_WARN(x)  
+//std::cout<<"                  "<<x<<std::endl
 #include <iostream>
 
 #include <agrum/core/cast_unicode.h>
@@ -37,20 +39,14 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
     Warning("Too many data in probability assignation for node "+var);
 }
 
-
-
 //=====================
 CHARACTERS
-  letter = 'A'..'Z' + 'a'..'z'+ '_' .
-  odd_letter = letter - 'e' - 'E'.
-  nextletter = letter + '.' .
   digit  = '0'..'9'.
-  //'\n' = '\n'.
 
 //=====================
 TOKENS
+  eol    = '\n'.
   integer = digit { digit }.              /* integer part */
-
   number = (
             [ "+" | "-" ] digit { digit }"." digit { digit }              /* digits after the mandatory point */
             [ ( "E" | "e" ) [ "+" | "-" ] digit { digit } ]                 /* optional exponent part */
@@ -62,124 +58,83 @@ TOKENS
 
 
 //=====================
-COMMENTS FROM "#" TO '\n'
+//COMMENTS FROM "#" TO '\n'
 
-IGNORE '\t'
+IGNORE '\t'+'\r'
 
 //=====================
 PRODUCTIONS
 
-EOL = ('\r' | '\n').
-EOLS = {EOL}.
+EOLS = eol { eol}.
 
-INT<int& val> = integer (. /*std::cout<<"INT FOUND : "<<coco_string_create_char(t->val)<<std::endl;*/val=coco_atoi(t->val); .).
+INT<int& val> = integer (. UAI_WARN("INT "<<coco_string_create_char(t->val));val=coco_atoi(t->val); .).
 
 FLOAT<float& val> =
-  number  (. /*std::cout<<"FLOAT FOUND : "<<coco_string_create_char(t->val)<<std::endl;*/val=coco_atof(t->val); .)
+  number  (. UAI_WARN("FLOAT "<<coco_string_create_char(t->val));val=coco_atof(t->val); .)
   |
-  integer (. /*std::cout<<"INT (for float) FOUND : "<<coco_string_create_char(t->val)<<std::endl;*/val=coco_atoi(t->val); .)
+  integer (. UAI_WARN("FLOAT "<<coco_string_create_char(t->val));val=coco_atoi(t->val); .)
 .
 
-FORCED_LISTE_FLOAT<. std::vector<float>& v .> =   (. float value; .)
-  FLOAT<value>                            (. v.push_back(value); .)
-  FLOAT<value>                            (. v.push_back(value); .)
-  {FLOAT<value>}                            (. v.push_back(value); .)
-  '\n'
-.
-
-
-FORCED_LISTE_INT<. std::vector<int>& v .> =   (. int value; .)
-  INT<value>                            (. v.push_back(value); .)
-  INT<value>                            (. v.push_back(value); .)
-  {INT<value>}                            (. v.push_back(value); .)
-  '\n'
-.
-
-
-LLISTE_INT<. std::vector<std::vector<int> >& vv .> = (. std::vector<int> v; .)
-    FORCED_LISTE_INT<v> (. vv.push_back(v); .)
-    [LLIST_INT<vv>]
-.
-
-LLISTE_FLOAT<. std::vector<std::vector<float> >& vv .> = (. std::vector<float> v; .)
-    FORCED_LISTE_FLOAT<v> (. vv.push_back(v); .)
-    [LLIST_FLOAT<vv>]
-.
-
-
-
-/*
-
-LISTE_FLOAT<. std::vector<float>& v .> =   (. float value; .)
-  FLOAT<value>                            (. v.push_back(value); .)
-  LISTE_FLOAT2<v>
-  '\n'
-.
-
-LISTE_FLOAT2<. std::vector<float>& v .> =   (. float value; .)
-  FLOAT<value>                            (. v.push_back(value); .)
-  [LISTE_FLOAT2<v>]
-.
-
-
-
-LISTE_INT<. std::vector<int>& v .> =   (. int value; .)
-  INT<value>                            (. v.push_back(value); .)
-  LISTE_INT2<v>
-  '\n'
-.
-
-LISTE_INT2<. std::vector<int>& v .> =   (. int value; .)
-  INT<value>                            (. v.push_back(value); .)
-  [LISTE_INT2<v>]
-.
-
-L_LISTE_INT<. std::vector<std::vector<int> >& vv .> = (. std::vector<int> v; .)
-    LISTE_INT<v> (. vv.push_back(v); .)
-    [ L_LISTE_INT<vv>]
-.
-
-L_LISTE_FLOAT<. std::vector<std::vector<float> >& vv .> = (. std::vector<float> v; .)
-    LISTE_FLOAT<v> (. vv.push_back(v); .)
-    [ L_LISTE_FLOAT<vv>]
-.
-*/
 
 UNIQUE_INT<int & v> = (. int val; .)
-    INT<val> (. v=val; .)
-    '\n'
+    INT<val> (. UAI_WARN("Unique "<<val);v=val; .)
+    EOLS
+.
+
+LISTE_FLOAT<. std::vector<float>& v .> =   (. float value; .)
+  FLOAT<value>                             (. UAI_WARN("pushing X "<<value);v.push_back(value); .)
+  FLOAT<value>                             (. UAI_WARN("pushing Y "<<value);v.push_back(value); .)
+  {
+  FLOAT<value>                            (. UAI_WARN("pushing Z "<<value);v.push_back(value); .)
+  }
+  EOLS
+  .
+  
+
+LISTE_INT<. std::vector<int>& v .> =   (. int v1,v2,v3; .)
+  INT<v1>                            (. UAI_WARN("pushing A "<<v1);v.push_back(v1); .)
+  INT<v2>                            (. UAI_WARN("pushing B "<<v2);v.push_back(v2); .)
+  {
+  INT<v3>                            (. UAI_WARN("pushing C "<<v3);v.push_back(v3); .)
+  }
+  EOLS
+.
+
+
+LISTE_PARENTS = (. std::vector<int> v; .) 
+  LISTE_INT<v> (. UAI_TRACE("parents :"<<v);v.clear(); .)
+  {
+  LISTE_INT<v> (. UAI_TRACE("parents :"<<v);v.clear(); .)
+  }
 .
 
 //==============
 UAI =
     EOLS
-    "BAYES" "\n" (. std::cout<<"bien parti"<<std::endl; .)
+    "BAYES" "\n" (. UAI_TRACE("BAYES found"); .)
     EOLS
     PREAMBULE
-    EOLS
     CPTS
 .
 
-PREAMBULE = (. int val; std::vector<int> v;std::vector<std::vector<int> > vv; .)
-    UNIQUE_INT<val> (. std::cout<<"nbr de var :"<<val<<std::endl; .)
-    EOLS
-    FORCED_LISTE_INT<v> (. std::cout<<"domains :"<<v<<std::endl; .)
-    EOLS
-    UNIQUE_INT<val> (. std::cout<<"nbr de pot :"<<val<<std::endl; .)
-    EOLS
-    LLISTE_INT<vv> (. std::cout<<"parents :"<<vv<<std::endl; .)
+PREAMBULE = (. int val; std::vector<int> v;std::vector<int > vv; .)
+    UNIQUE_INT<val> (. UAI_TRACE("nbr de var :"<<val); .)
+    LISTE_INT<v> (. UAI_TRACE("domains :"<<v); .)
+    UNIQUE_INT<val> (. UAI_TRACE("nbr de pot :"<<val); .)
+    LISTE_PARENTS
 .
 
 CPTS =
     CPT
-    EOLS
-    [CPTS]
+    {CPT}
 .
 
-CPT = (. int val;std::vector<std::vector<float> > vv; .)
-    UNIQUE_INT<val> (. std::cout<<"nbr de params "<<val<<std::endl; .)
-    EOLS
-    LLISTE_FLOAT<vv> (. std::cout<<"probas :"<<vv<<std::endl; .)
+CPT = (. int val;std::vector<float> vv; .)
+    UNIQUE_INT<val> (. UAI_TRACE("nbr de params "<<val);vv.clear(); .)
+    LISTE_FLOAT<vv> 
+    { 
+      LISTE_FLOAT<vv> 
+    }                   (. UAI_TRACE("probas :"<<vv); .)
 .
 
 

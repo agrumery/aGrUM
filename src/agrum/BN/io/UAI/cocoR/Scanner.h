@@ -242,8 +242,7 @@ class Scanner {
     void Init();
     void NextCh();
     void AddCh();
-    	bool Comment0();
-
+    
     Token* NextToken();
 
   public:
