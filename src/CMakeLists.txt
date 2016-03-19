@@ -35,7 +35,7 @@ if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 
-MESSAGE(WARNING "${AGRUM_BN_SOURCES}")
+buildFileListsWithModules()
 
 include_directories(BEFORE ${AGRUM_BINARY_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR})

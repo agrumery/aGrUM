@@ -1,14 +1,17 @@
 
+#include <iostream>
+
 #include <agrum/core/cast_unicode.h>
 
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/BN/IBayesNetFactory.h>
 
 #undef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
 
-COMPILER UAIBN
+COMPILER UAI
 
-gum::IBayesNet* __factory;
+gum::IBayesNetFactory* __factory;
 
 void setFactory(gum::IBayesNetFactory* f) {
   __factory=f;
@@ -16,7 +19,7 @@ void setFactory(gum::IBayesNetFactory* f) {
 
 gum::IBayesNetFactory& factory(void) {
   if (__factory) return *__factory;
-  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...");
+  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning UAI file...");
 }
 
 void SemErr(std::string s) {
@@ -42,8 +45,7 @@ CHARACTERS
   odd_letter = letter - 'e' - 'E'.
   nextletter = letter + '.' .
   digit  = '0'..'9'.
-
-  eol = '\n'.
+  //'\n' = '\n'.
 
 //=====================
 TOKENS
@@ -60,14 +62,14 @@ TOKENS
 
 
 //=====================
-COMMENTS FROM "%" TO eol
+COMMENTS FROM "#" TO '\n'
 
 IGNORE '\r' + '\t'
 
 //=====================
 PRODUCTIONS
 
-EOLS = | eol [EOLS].
+EOLS = '\n' {'\n'}.
 
 INT<int& val> = integer (. val=coco_atoi(t->val); .).
 
@@ -79,32 +81,40 @@ FLOAT<float& val> =
 
 LISTE_FLOAT<. std::vector<float>& v .> =   (. float value; .)
   FLOAT<value>                            (. v.push_back(value); .)
+  LISTE_FLOAT2<v>
+  '\n'
+.
+
+LISTE_FLOAT2<. std::vector<float>& v .> =   (. float value; .)
   FLOAT<value>                            (. v.push_back(value); .)
-  [ LISTE_FLOAT<v>]
-  eol
+  [LISTE_FLOAT2<v>]
 .
 
 LISTE_INT<. std::vector<int>& v .> =   (. int value; .)
   INT<value>                            (. v.push_back(value); .)
-  INT<value>                            (. v.push_back(value); .)
-  [ LISTE_INT<v>]
-  eol
+  LISTE_INT2<v>
+  '\n'
 .
 
-L_LISTE_INT<. std::vector<std::vector<int>>& vv .> = (. std::vector<std::vector<int>> v; .)
-    LISTE_INT<v> (. vv.push_back(v) .)
+LISTE_INT2<. std::vector<int>& v .> =   (. int value; .)
+  INT<value>                            (. v.push_back(value); .)
+  [LISTE_INT2<v>]
+.
+
+L_LISTE_INT<. std::vector<std::vector<int> >& vv .> = (. std::vector<int> v; .)
+    LISTE_INT<v> (. vv.push_back(v); .)
     EOLS
     [ L_LISTE_INT<vv>]
-    .
+.
 
-L_LISTE_FLOAT<. std::vector<std::vector<float>>& vv .> = (. std::vector<std::vector<float>> v; .)
-    LISTE_FLOAT<v> (. vv.push_back(v) .)
+L_LISTE_FLOAT<. std::vector<std::vector<float> >& vv .> = (. std::vector<float> v; .)
+    LISTE_FLOAT<v> (. vv.push_back(v); .)
     EOLS
     [ L_LISTE_FLOAT<vv>]
-    .
+.
 
 //==============
-UAIBN =
+UAI =
     EOLS
     "BAYES" (. std::cout<<"bien parti"<<std::endl; .)
     EOLS
@@ -112,202 +122,32 @@ UAIBN =
     EOLS
     CPTS
     EOLS
-    .
+.
 
-PREAMBULE =
+PREAMBULE = (. int val; std::vector<int> v;std::vector<std::vector<int> > vv; .)
     INT<val> (. std::cout<<"nbr de var :"<<val<<std::endl; .)
     EOLS
-    LIST_INT<v> (. std::cout<<"domains :"<<v<<std::endl; .)
+    LISTE_INT<v> (. std::cout<<"domains :"<<v<<std::endl; .)
     EOLS
     INT<val> (. std::cout<<"nbr de pot :"<<val<<std::endl; .)
     EOLS
-    L_LIST_INT<vv> (. std::cout<<"parents :"<<vv<<std::endl; .)
-    .
+    L_LISTE_INT<vv> (. std::cout<<"parents :"<<vv<<std::endl; .)
+.
 
 CPTS =
     CPT
     EOLS
     [CPTS]
-    .
+.
 
-CPT =
-    INT<val> (. std::cout<<"nbr de floats "<<val<<std::end; .)
+CPT = (. int val;std::vector<std::vector<float> > vv; .)
+    INT<val> (. std::cout<<"nbr de floats "<<val<<std::endl; .)
     EOLS
-    L_LIST_FLOAT<vv> (. std::cout<<"probas :"<<vv<<std::endl; .)
-    .
-
-
-
-
-
-
-
-
-
-
-(.
-           	 	factory().startNetworkDeclaration();
-          	.)
-  "net"
-  			(.
-            std::string prop,val;
-            std::vector<std::string> vals;
-      .)
-  '{'
-			{
-      IDENT<prop>
-        '='
-          {
-            IDENT<val>  (. factory().addNetworkProperty(prop,val); .)
-          |
-            STRING<val> (. factory().addNetworkProperty(prop,val); .)
-          |
-          LIST<vals> (.
-              std::string merge;
-              merge="(";
-              for(Size i=0;i<vals.size();i++) {
-                if (i>0) merge+=",";
-                merge+=vals[i];
-              }
-              merge+=')';
-              factory().addNetworkProperty(prop,merge);
-          .)
-          }
-        ';'
-      }
-	'}' (.  factory().endNetworkDeclaration(); .)
-  {NODE}
-  {POTENTIAL}
-.
-
-//==============
-NODE =	(.
-			std::string var;
-		.)
-
-	"node" IDENT<var> (.
-      std::string prop;
-      std::string val;
-      std::vector<std::string> vals;
-      bool labels_done=false;;
-
-      TRY( factory().startVariableDeclaration());
-      TRY( factory().variableName(var));
-      .)
-	'{'
-      {
-      IDENT<prop>
-        '='
-          {
-            IDENT<val>
-          |
-            STRING<val>
-          |
-          LIST<vals> (.
-              if (prop=="states") {
-                if (labels_done) SemErr("Several labels lists for "+var);
-                labels_done=true;
-                for(Size  i=0;i<vals.size();i++) {
-                  TRY(factory().addModality(vals[i]));
-                }
-              }
-          .)
-          }
-        ';'
-      }
-	'}' (.TRY(factory().endVariableDeclaration()); .)
-.
-
-//==============
-PARENTS_DEFINITION<.std::string& name,std::vector<std::string>& var_seq.> = (.std::vector<std::string> parents;.)
-  '('
-  IDENT<name> (.
-    TRY(factory().startParentsDeclaration(name));
-     var_seq.clear();
-  .)
-  [
-    '|'
-    [
-    PURE_LIST<parents> (.
-        for (Size i=parents.size();i>=1;--i){
-            TRY(factory().variableId(parents[i-1]));
-            TRY(factory().addParent(parents[i-1]));
-        }
-
-        for(Size i=0;i<parents.size();i++) {
-          var_seq.push_back(parents[i]);
-        }
-    .)
-    ]
-  ]
-  ')' (.
-        var_seq.push_back(name);
-        TRY(factory().endParentsDeclaration());
-      .)
+    L_LISTE_FLOAT<vv> (. std::cout<<"probas :"<<vv<<std::endl; .)
 .
 
 
-//==============
-FLOAT<float& val> =
-  number  (. val=coco_atof(t->val); .)
-  |
-  integer (. val=coco_atoi(t->val); .)
-.
 
-//==============
-FLOAT_LIST<. std::vector<float>& v .>  (. float value; .) =
-  FLOAT<value>                (. v.push_back(value); .)
-  {
-  FLOAT<value>      (. v.push_back(value); .)
-  }
-.
 
-//==============
-FLOAT_NESTED_LIST<. std::vector<float>& v .>=
-  '('
-    (
-    FLOAT_NESTED_LIST<v>
-    { FLOAT_NESTED_LIST<v> }
-    |
-    FLOAT_LIST<v>
-    )
-    ')'
-.
+END UAI.
 
-RAW_DATA<. std::string& variable,std::vector<std::string>& var_seq .> = (. std::vector<float> probas;.)
-"data" '='
-  FLOAT_NESTED_LIST<probas> (.
-    TRY(factory().startRawProbabilityDeclaration(variable));
-        gum::Size s=(gum::Size)0;
-        TRY(s=factory().cptDomainSize(factory().variableId(variable)));
-        if ((Size)probas.size()<(Size)s) {
-          Warning("Not enough data for cpt of node "+variable);
-        }
-        if ((Size)probas.size()>(Size)s) {
-          Warning("Too many data for cpt of node "+variable);
-        }
-        TRY(factory().rawConditionalTable(var_seq,probas));
-        TRY(factory().endRawProbabilityDeclaration());
-  .)
-  ';'
-.
-
-EXPERIENCE = (.std::vector<std::string> vals;std::string val; .)
-  "experience" '=' GARBAGE_NESTED_LIST ';'
-.
-
-//==============
-POTENTIAL  (.
-  std::string variable;
-  std::vector<float> probas;
-  std::vector<std::string> var_seq;
-.) =
-  "potential"
-  PARENTS_DEFINITION<variable,var_seq>
-  '{'
-   RAW_DATA<variable,var_seq>
-  [EXPERIENCE]
-  '}'
-.
-
-END Net.

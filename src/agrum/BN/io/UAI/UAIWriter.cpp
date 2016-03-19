@@ -25,5 +25,5 @@
  */
 #include <agrum/BN/io/UAI/UAIWriter.h>
 
-template class gum::UAIBNWriter<float>;
-template class gum::UAIBNWriter<double>;
+template class gum::UAIWriter<float>;
+template class gum::UAIWriter<double>;

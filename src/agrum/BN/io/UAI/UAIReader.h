@@ -24,6 +24,7 @@
 #include <string>
 #include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/BayesNetFactory.h>
 #include <agrum/BN/io/BNReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -42,11 +43,11 @@ namespace gum {
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
-   * Every class used to read the content of a Bayesian UAIBNwork from a stream,
-   * or a file must be a subclass of UAIBNReader.
+   * Every class used to read the content of a Bayesian Network from a stream,
+   * or a file must be a subclass of UAIReader.
    */
   template <typename GUM_SCALAR>
-  class UAIBNReader : public BNReader<GUM_SCALAR> {
+  class UAIReader : public BNReader<GUM_SCALAR> {
 
     public:
     /**
@@ -58,12 +59,12 @@ namespace gum {
     * create/destroy
     * the BN from inside the reader.
      */
-    UAIBNReader( BayesUAIBN<GUM_SCALAR>* bn, const std::string& filename );
+    UAIReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
 
     /**
      * Default destructor.
      */
-    ~UAIBNReader();
+    ~UAIReader();
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists
@@ -112,8 +113,8 @@ namespace gum {
     /// @}
 
     protected:
-    BayesUAIBN<GUM_SCALAR>* __bn;
-    BayesUAIBNFactory<GUM_SCALAR>* __factory;
+    BayesNet<GUM_SCALAR>* __bn;
+    BayesNetFactory<GUM_SCALAR>* __factory;
     UAI::Scanner* __scanner;
     UAI::Parser* __parser;
 
@@ -126,8 +127,8 @@ namespace gum {
     bool __ioerror;
   };
 
-  extern template class UAIBNReader<float>;
-  extern template class UAIBNReader<double>;
+  extern template class UAIReader<float>;
+  extern template class UAIReader<double>;
 } /* namespace gum */
 
 #include "UAIReader.tcc"

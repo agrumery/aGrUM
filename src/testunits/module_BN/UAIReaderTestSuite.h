@@ -37,15 +37,15 @@
 
 namespace gum_tests {
 
-  class UAIBNReaderTestSuite : public CxxTest::TestSuite {
+  class UAIReaderTestSuite : public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH( "BNUAIReader_file1.uai" );
       gum::BayesNet<float> net;
 
-      gum::UAIBNReader<float>* reader = 0;
+      gum::UAIReader<float>* reader = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          reader = new gum::UAIBNReader<float>( &net, file ) );
+          reader = new gum::UAIReader<float>( &net, file ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete reader );
     }
 
@@ -55,7 +55,7 @@ namespace gum_tests {
 
       TS_ASSERT( net != 0 );
 
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
       if ( net != 0 ) {
@@ -66,7 +66,7 @@ namespace gum_tests {
     void /*test*/Read_file2_float() {
       std::string file = GET_RESSOURCES_PATH( "BNUAIReader_file2.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       int isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
@@ -119,7 +119,7 @@ namespace gum_tests {
       // from Charniak, Bayesian Networks Without Tears, AI Magazine, 1991
       std::string file = GET_RESSOURCES_PATH( "dog.uai" );
       gum::BayesNet<double>* net = new gum::BayesNet<double>();
-      gum::UAIBNReader<double> reader( net, file );
+      gum::UAIReader<double> reader( net, file );
 
       int isOK = false;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
@@ -142,7 +142,7 @@ namespace gum_tests {
     void /*test*/Read_file2_double() {
       std::string file = GET_RESSOURCES_PATH( "BNUAIReader_file2.uai" );
       gum::BayesNet<double>* net = new gum::BayesNet<double>();
-      gum::UAIBNReader<double> reader( net, file );
+      gum::UAIReader<double> reader( net, file );
 
       int isOK = false;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
@@ -207,7 +207,7 @@ namespace gum_tests {
     void /*test*/Read_file3() {
       std::string file = GET_RESSOURCES_PATH( "BNUAIReader_file3.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       int isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
@@ -547,7 +547,7 @@ namespace gum_tests {
     void /*test*/Alarm() {
       std::string file = GET_RESSOURCES_PATH( "alarm.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       int isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
@@ -696,8 +696,8 @@ namespace gum_tests {
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::UAIBNReader<float> reader( net, file ) );
-      gum::UAIBNReader<float> reader( net, file );
+          gum::UAIReader<float> reader( net, file ) );
+      gum::UAIReader<float> reader( net, file );
       TS_ASSERT_THROWS( reader.proceed(), gum::IOError );
 
       if ( net ) delete net;
@@ -706,7 +706,7 @@ namespace gum_tests {
     void Carpo() {  // Carpo is not correct as a xmlbif file
       std::string file = GET_RESSOURCES_PATH( "carpo.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
@@ -716,7 +716,7 @@ namespace gum_tests {
     void /*test*/Diabetes() {
       std::string file = GET_RESSOURCES_PATH( "Diabetes.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
@@ -726,7 +726,7 @@ namespace gum_tests {
     void /*test*/Hailfinder() {
       std::string file = GET_RESSOURCES_PATH( "hailfinder.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
@@ -736,7 +736,7 @@ namespace gum_tests {
     void /*test*/Insurance() {
       std::string file = GET_RESSOURCES_PATH( "insurance.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
@@ -746,7 +746,7 @@ namespace gum_tests {
     void /*test*/Link() {
       std::string file = GET_RESSOURCES_PATH( "Link.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
@@ -756,7 +756,7 @@ namespace gum_tests {
     void /*test*/Mildew() {
       std::string file = GET_RESSOURCES_PATH( "Mildew.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
@@ -766,7 +766,7 @@ namespace gum_tests {
     void /*test*/Munin1() {
       std::string file = GET_RESSOURCES_PATH( "Munin1.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
@@ -776,7 +776,7 @@ namespace gum_tests {
     void /*test*/Pigs() {
       std::string file = GET_RESSOURCES_PATH( "Pigs.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
@@ -786,7 +786,7 @@ namespace gum_tests {
     void /*test*/Water() {
       std::string file = GET_RESSOURCES_PATH( "Water.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
-      gum::UAIBNReader<float> reader( net, file );
+      gum::UAIReader<float> reader( net, file );
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 

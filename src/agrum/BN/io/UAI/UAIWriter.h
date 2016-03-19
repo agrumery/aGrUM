@@ -26,8 +26,8 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_UAIBNWRITER_H
-#define GUM_UAIBNWRITER_H
+#ifndef GUM_UAIWRITER_H
+#define GUM_UAIWRITER_H
 
 
 #include <fstream>
@@ -40,8 +40,8 @@
 
 namespace gum {
   /**
-   * @class UAIBNWriter UAIBNWriter.h
-   *<agrum/BN/io/UAI/UAIBNWriter.h>
+   * @class UAIWriter UAIWriter.h
+   *<agrum/BN/io/UAI/UAIWriter.h>
    * @ingroup bn_io
    * @brief Writes an bayes net in a text file with UAI format
    *
@@ -51,7 +51,7 @@ namespace gum {
    *
    */
   template <typename GUM_SCALAR>
-  class UAIBNWriter : public BNWriter<GUM_SCALAR> {
+  class UAIWriter : public BNWriter<GUM_SCALAR> {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -61,12 +61,12 @@ namespace gum {
     /**
      * Default constructor.
      */
-    UAIBNWriter();
+    UAIWriter();
 
     /**
      * Destructor.
      */
-    virtual ~UAIBNWriter();
+    virtual ~UAIWriter();
 
     /// @}
 
@@ -99,9 +99,9 @@ namespace gum {
     std::string __cptBloc( const IBayesNet<GUM_SCALAR>& bn, NodeId node );
   };
 
-  extern template class UAIBNWriter<float>;
-  extern template class UAIBNWriter<double>;
+  extern template class UAIWriter<float>;
+  extern template class UAIWriter<double>;
 } /* namespace gum */
 
 #include <agrum/BN/io/UAI/UAIWriter.tcc>
-#endif  // GUM_UAIBNWRITER_H
+#endif  // GUM_UAIWRITER_H

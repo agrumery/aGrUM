@@ -28,16 +28,16 @@ namespace gum {
    * Default constructor.
    */
   template <typename GUM_SCALAR>
-  INLINE UAIBNWriter<GUM_SCALAR>::UAIBNWriter() {
-    GUM_CONSTRUCTOR( UAIBNWriter );
+  INLINE UAIWriter<GUM_SCALAR>::UAIWriter() {
+    GUM_CONSTRUCTOR( UAIWriter );
   }
 
   /*
    * Destructor.
    */
   template <typename GUM_SCALAR>
-  INLINE UAIBNWriter<GUM_SCALAR>::~UAIBNWriter() {
-    GUM_DESTRUCTOR( UAIBNWriter );
+  INLINE UAIWriter<GUM_SCALAR>::~UAIWriter() {
+    GUM_DESTRUCTOR( UAIWriter );
   }
 
   /*
@@ -49,7 +49,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE void
-  UAIBNWriter<GUM_SCALAR>::write( std::ostream& output,
+  UAIWriter<GUM_SCALAR>::write( std::ostream& output,
                                   const IBayesNet<GUM_SCALAR>& bn ) {
     if ( !output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
@@ -80,7 +80,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE void
-  UAIBNWriter<GUM_SCALAR>::write( std::string filePath,
+  UAIWriter<GUM_SCALAR>::write( std::string filePath,
                                   const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
@@ -95,7 +95,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE std::string
-  UAIBNWriter<GUM_SCALAR>::__preambule( const IBayesNet<GUM_SCALAR>& bn ) {
+  UAIWriter<GUM_SCALAR>::__preambule( const IBayesNet<GUM_SCALAR>& bn ) {
     std::stringstream str;
 
     str << "BAYES" << std::endl;
@@ -122,7 +122,7 @@ namespace gum {
   }
   template <typename GUM_SCALAR>
   INLINE std::string
-  UAIBNWriter<GUM_SCALAR>::__cptBloc( const IBayesNet<GUM_SCALAR>& bn,
+  UAIWriter<GUM_SCALAR>::__cptBloc( const IBayesNet<GUM_SCALAR>& bn,
                                       NodeId node ) {
     std::stringstream str;
 
