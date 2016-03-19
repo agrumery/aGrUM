@@ -105,10 +105,17 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
   }
 }
 
-void Parser::EOLS() {
-		Expect(3 /* "\n" */);
-		while (la->kind == 3 /* "\n" */) {
+void Parser::EOL() {
+		if (la->kind == 3 /* "\r" */) {
 			Get();
+		} else if (la->kind == 4 /* "\n" */) {
+			Get();
+		} else SynErr(7);
+}
+
+void Parser::EOLS() {
+		while (la->kind == 3 /* "\r" */ || la->kind == 4 /* "\n" */) {
+			EOL();
 		}
 }
 
@@ -124,86 +131,85 @@ void Parser::FLOAT(float& val) {
 		} else if (la->kind == _integer) {
 			Get();
 			val=coco_atoi(t->val); 
-		} else SynErr(6);
+		} else SynErr(8);
 }
 
-void Parser::LISTE_FLOAT(std::vector<float>& v ) {
+void Parser::FORCED_LISTE_FLOAT(std::vector<float>& v ) {
 		float value; 
 		FLOAT(value);
 		v.push_back(value); 
-		LISTE_FLOAT2(v);
-		Expect(3 /* "\n" */);
-}
-
-void Parser::LISTE_FLOAT2(std::vector<float>& v ) {
-		float value; 
 		FLOAT(value);
 		v.push_back(value); 
-		if (la->kind == _integer || la->kind == _number) {
-			LISTE_FLOAT2(v);
+		while (la->kind == _integer || la->kind == _number) {
+			FLOAT(value);
 		}
+		v.push_back(value); 
+		Expect(4 /* "\n" */);
 }
 
-void Parser::LISTE_INT(std::vector<int>& v ) {
+void Parser::FORCED_LISTE_INT(std::vector<int>& v ) {
 		int value; 
 		INT(value);
 		v.push_back(value); 
-		LISTE_INT2(v);
-		Expect(3 /* "\n" */);
-}
-
-void Parser::LISTE_INT2(std::vector<int>& v ) {
-		int value; 
 		INT(value);
 		v.push_back(value); 
-		if (la->kind == _integer) {
-			LISTE_INT2(v);
+		while (la->kind == _integer) {
+			INT(value);
 		}
+		v.push_back(value); 
+		Expect(4 /* "\n" */);
 }
 
-void Parser::L_LISTE_INT(std::vector<std::vector<int> >& vv ) {
+void Parser::LLISTE_INT(std::vector<std::vector<int> >& vv ) {
 		std::vector<int> v; 
-		LISTE_INT(v);
+		FORCED_LISTE_INT(v);
 		vv.push_back(v); 
-		EOLS();
-		if (la->kind == _integer) {
-			L_LISTE_INT(vv);
+		while (la->kind == _integer) {
+			FORCED_LISTE_INT(v);
 		}
+		vv.push_back(v); 
 }
 
-void Parser::L_LISTE_FLOAT(std::vector<std::vector<float> >& vv ) {
+void Parser::LLISTE_FLOAT(std::vector<std::vector<float> >& vv ) {
 		std::vector<float> v; 
-		LISTE_FLOAT(v);
+		FORCED_LISTE_FLOAT(v);
 		vv.push_back(v); 
-		EOLS();
-		if (la->kind == _integer || la->kind == _number) {
-			L_LISTE_FLOAT(vv);
+		while (la->kind == _integer || la->kind == _number) {
+			FORCED_LISTE_FLOAT(v);
 		}
+		vv.push_back(v); 
+}
+
+void Parser::UNIQUE_INT(int & v) {
+		int val; 
+		INT(val);
+		v=val; 
+		Expect(4 /* "\n" */);
 }
 
 void Parser::UAI() {
 		EOLS();
-		Expect(4 /* "BAYES" */);
+		Expect(5 /* "BAYES" */);
+		Expect(4 /* "\n" */);
 		std::cout<<"bien parti"<<std::endl; 
 		EOLS();
 		PREAMBULE();
 		EOLS();
 		CPTS();
-		EOLS();
 }
 
 void Parser::PREAMBULE() {
 		int val; std::vector<int> v;std::vector<std::vector<int> > vv; 
-		INT(val);
+		UNIQUE_INT(val);
 		std::cout<<"nbr de var :"<<val<<std::endl; 
 		EOLS();
-		LISTE_INT(v);
+		FORCED_LISTE_INT(v);
 		std::cout<<"domains :"<<v<<std::endl; 
 		EOLS();
-		INT(val);
+		UNIQUE_INT(val);
 		std::cout<<"nbr de pot :"<<val<<std::endl; 
 		EOLS();
-		L_LISTE_INT(vv);
+		LLISTE_INT(vv);
 		std::cout<<"parents :"<<vv<<std::endl; 
 }
 
@@ -217,10 +223,10 @@ void Parser::CPTS() {
 
 void Parser::CPT() {
 		int val;std::vector<std::vector<float> > vv; 
-		INT(val);
-		std::cout<<"nbr de floats "<<val<<std::endl; 
+		UNIQUE_INT(val);
+		std::cout<<"nbr de params "<<val<<std::endl; 
 		EOLS();
-		L_LISTE_FLOAT(vv);
+		LLISTE_FLOAT(vv);
 		std::cout<<"probas :"<<vv<<std::endl; 
 }
 
@@ -323,7 +329,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 5;
+  	maxT = 6;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -337,8 +343,8 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[1][7] = {
-		{T,x,x,x, x,x,x}
+  	static bool set[1][8] = {
+		{T,x,x,x, x,x,x,x}
 	};
 
 
@@ -367,10 +373,12 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
       			case 0: s = coco_string_create(L"EOF expected"); break;
 			case 1: s = coco_string_create(L"integer expected"); break;
 			case 2: s = coco_string_create(L"number expected"); break;
-			case 3: s = coco_string_create(L"\"\\n\" expected"); break;
-			case 4: s = coco_string_create(L"\"BAYES\" expected"); break;
-			case 5: s = coco_string_create(L"??? expected"); break;
-			case 6: s = coco_string_create(L"invalid FLOAT"); break;
+			case 3: s = coco_string_create(L"\"\\r\" expected"); break;
+			case 4: s = coco_string_create(L"\"\\n\" expected"); break;
+			case 5: s = coco_string_create(L"\"BAYES\" expected"); break;
+			case 6: s = coco_string_create(L"??? expected"); break;
+			case 7: s = coco_string_create(L"invalid EOL"); break;
+			case 8: s = coco_string_create(L"invalid FLOAT"); break;
 
 
     default: {

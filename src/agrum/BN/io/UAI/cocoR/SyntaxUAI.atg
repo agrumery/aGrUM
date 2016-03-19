@@ -64,20 +64,51 @@ TOKENS
 //=====================
 COMMENTS FROM "#" TO '\n'
 
-IGNORE '\r' + '\t'
+IGNORE '\t'
 
 //=====================
 PRODUCTIONS
 
-EOLS = '\n' {'\n'}.
+EOL = ('\r' | '\n').
+EOLS = {EOL}.
 
-INT<int& val> = integer (. val=coco_atoi(t->val); .).
+INT<int& val> = integer (. /*std::cout<<"INT FOUND : "<<coco_string_create_char(t->val)<<std::endl;*/val=coco_atoi(t->val); .).
 
 FLOAT<float& val> =
-  number  (. val=coco_atof(t->val); .)
+  number  (. /*std::cout<<"FLOAT FOUND : "<<coco_string_create_char(t->val)<<std::endl;*/val=coco_atof(t->val); .)
   |
-  integer (. val=coco_atoi(t->val); .)
+  integer (. /*std::cout<<"INT (for float) FOUND : "<<coco_string_create_char(t->val)<<std::endl;*/val=coco_atoi(t->val); .)
 .
+
+FORCED_LISTE_FLOAT<. std::vector<float>& v .> =   (. float value; .)
+  FLOAT<value>                            (. v.push_back(value); .)
+  FLOAT<value>                            (. v.push_back(value); .)
+  {FLOAT<value>}                            (. v.push_back(value); .)
+  '\n'
+.
+
+
+FORCED_LISTE_INT<. std::vector<int>& v .> =   (. int value; .)
+  INT<value>                            (. v.push_back(value); .)
+  INT<value>                            (. v.push_back(value); .)
+  {INT<value>}                            (. v.push_back(value); .)
+  '\n'
+.
+
+
+LLISTE_INT<. std::vector<std::vector<int> >& vv .> = (. std::vector<int> v; .)
+    FORCED_LISTE_INT<v> (. vv.push_back(v); .)
+    [LLIST_INT<vv>]
+.
+
+LLISTE_FLOAT<. std::vector<std::vector<float> >& vv .> = (. std::vector<float> v; .)
+    FORCED_LISTE_FLOAT<v> (. vv.push_back(v); .)
+    [LLIST_FLOAT<vv>]
+.
+
+
+
+/*
 
 LISTE_FLOAT<. std::vector<float>& v .> =   (. float value; .)
   FLOAT<value>                            (. v.push_back(value); .)
@@ -89,6 +120,8 @@ LISTE_FLOAT2<. std::vector<float>& v .> =   (. float value; .)
   FLOAT<value>                            (. v.push_back(value); .)
   [LISTE_FLOAT2<v>]
 .
+
+
 
 LISTE_INT<. std::vector<int>& v .> =   (. int value; .)
   INT<value>                            (. v.push_back(value); .)
@@ -103,35 +136,38 @@ LISTE_INT2<. std::vector<int>& v .> =   (. int value; .)
 
 L_LISTE_INT<. std::vector<std::vector<int> >& vv .> = (. std::vector<int> v; .)
     LISTE_INT<v> (. vv.push_back(v); .)
-    EOLS
     [ L_LISTE_INT<vv>]
 .
 
 L_LISTE_FLOAT<. std::vector<std::vector<float> >& vv .> = (. std::vector<float> v; .)
     LISTE_FLOAT<v> (. vv.push_back(v); .)
-    EOLS
     [ L_LISTE_FLOAT<vv>]
+.
+*/
+
+UNIQUE_INT<int & v> = (. int val; .)
+    INT<val> (. v=val; .)
+    '\n'
 .
 
 //==============
 UAI =
     EOLS
-    "BAYES" (. std::cout<<"bien parti"<<std::endl; .)
+    "BAYES" "\n" (. std::cout<<"bien parti"<<std::endl; .)
     EOLS
     PREAMBULE
     EOLS
     CPTS
-    EOLS
 .
 
 PREAMBULE = (. int val; std::vector<int> v;std::vector<std::vector<int> > vv; .)
-    INT<val> (. std::cout<<"nbr de var :"<<val<<std::endl; .)
+    UNIQUE_INT<val> (. std::cout<<"nbr de var :"<<val<<std::endl; .)
     EOLS
-    LISTE_INT<v> (. std::cout<<"domains :"<<v<<std::endl; .)
+    FORCED_LISTE_INT<v> (. std::cout<<"domains :"<<v<<std::endl; .)
     EOLS
-    INT<val> (. std::cout<<"nbr de pot :"<<val<<std::endl; .)
+    UNIQUE_INT<val> (. std::cout<<"nbr de pot :"<<val<<std::endl; .)
     EOLS
-    L_LISTE_INT<vv> (. std::cout<<"parents :"<<vv<<std::endl; .)
+    LLISTE_INT<vv> (. std::cout<<"parents :"<<vv<<std::endl; .)
 .
 
 CPTS =
@@ -141,12 +177,10 @@ CPTS =
 .
 
 CPT = (. int val;std::vector<std::vector<float> > vv; .)
-    INT<val> (. std::cout<<"nbr de floats "<<val<<std::endl; .)
+    UNIQUE_INT<val> (. std::cout<<"nbr de params "<<val<<std::endl; .)
     EOLS
-    L_LISTE_FLOAT<vv> (. std::cout<<"probas :"<<vv<<std::endl; .)
+    LLISTE_FLOAT<vv> (. std::cout<<"probas :"<<vv<<std::endl; .)
 .
-
-
 
 
 END UAI.

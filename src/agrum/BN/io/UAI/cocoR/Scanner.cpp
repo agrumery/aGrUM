@@ -315,14 +315,15 @@ void Scanner::Init() {
   percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 5;
-	noSym = 5;
+  	maxT = 6;
+	noSym = 6;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 9);
 	for (i = 43; i <= 43; ++i) start.set(i, 10);
 	for (i = 45; i <= 45; ++i) start.set(i, 10);
-	start.set(10, 12);
-	start.set(66, 13);
+	start.set(13, 12);
+	start.set(10, 13);
+	start.set(66, 14);
 		start.set(Buffer::EoF, -1);
 
 
@@ -476,7 +477,7 @@ void Scanner::AppendVal( Token* t ) {
 
 Token* Scanner::NextToken() {
   while ( ch == ' ' ||
-          			ch == 9 || ch == 13
+          			ch == 9
         ) NextCh();
 
   	if ((ch == L'#' && Comment0())) return NextToken();
@@ -558,23 +559,25 @@ case_0:
 		case 12:
 			{t->kind = 3; break;}
 		case 13:
-			if (ch == L'A') {AddCh(); goto case_14;}
-			else {goto case_0;}
+			{t->kind = 4; break;}
 		case 14:
-			case_14:
-			if (ch == L'Y') {AddCh(); goto case_15;}
+			if (ch == L'A') {AddCh(); goto case_15;}
 			else {goto case_0;}
 		case 15:
 			case_15:
-			if (ch == L'E') {AddCh(); goto case_16;}
+			if (ch == L'Y') {AddCh(); goto case_16;}
 			else {goto case_0;}
 		case 16:
 			case_16:
-			if (ch == L'S') {AddCh(); goto case_17;}
+			if (ch == L'E') {AddCh(); goto case_17;}
 			else {goto case_0;}
 		case 17:
 			case_17:
-			{t->kind = 4; break;}
+			if (ch == L'S') {AddCh(); goto case_18;}
+			else {goto case_0;}
+		case 18:
+			case_18:
+			{t->kind = 5; break;}
 
   }
 

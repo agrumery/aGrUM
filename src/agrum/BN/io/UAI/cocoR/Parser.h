@@ -119,15 +119,15 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
 
-    	void EOLS();
+    	void EOL();
+	void EOLS();
 	void INT(int& val);
 	void FLOAT(float& val);
-	void LISTE_FLOAT(std::vector<float>& v );
-	void LISTE_FLOAT2(std::vector<float>& v );
-	void LISTE_INT(std::vector<int>& v );
-	void LISTE_INT2(std::vector<int>& v );
-	void L_LISTE_INT(std::vector<std::vector<int> >& vv );
-	void L_LISTE_FLOAT(std::vector<std::vector<float> >& vv );
+	void FORCED_LISTE_FLOAT(std::vector<float>& v );
+	void FORCED_LISTE_INT(std::vector<int>& v );
+	void LLISTE_INT(std::vector<std::vector<int> >& vv );
+	void LLISTE_FLOAT(std::vector<std::vector<float> >& vv );
+	void UNIQUE_INT(int & v);
 	void UAI();
 	void PREAMBULE();
 	void CPTS();
