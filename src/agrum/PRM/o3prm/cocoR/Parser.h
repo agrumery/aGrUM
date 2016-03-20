@@ -232,6 +232,7 @@ void set_prefix( const std::string& prefix ) {
     void SynErr( const std::wstring& filename,int line, int col, int n );
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
+    ErrorsContainer& errors();
 
     	void O3PRM_UNIT();
 	void IMPORT_UNIT();

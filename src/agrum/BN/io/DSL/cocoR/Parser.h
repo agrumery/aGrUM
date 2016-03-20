@@ -119,6 +119,7 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
     void SynErr( const std::wstring& filename,int line, int col, int n );
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
+    ErrorsContainer& errors();
 
     	void DSL();
 	void IDENT(std::string& name);

@@ -89,30 +89,11 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-using quartet=std::tuple<float,int,int,int>;
+std::vector<std::tuple<float,int,int,int>> quartets;
 
-/* 
-void checkQuartets() {
-  auto isInt = [] (q)  {return (std::get<0>(q)==-1);};
-  auto hasVal = [] (q) {return (isInt(q))?(std::get<1>(q)):(std::get<0>(q));}
-  
-  for(auto& q : quartets) {
-    std::cout<<isInt(q)?"FLOAT":"INT"
-            <<" "<<hasVal(q)
-            <<"   "<<std::get<2>(q)<<":"<<std::get<3>(q)<<std::endl;
-  }
+decltype(quartets) getQuartets() {
+  return quartets;
 }
-*/
-
-void checkQuartets() {
-  for(auto& q : quartets) {
-    std::string s=(std::get<1>(q)==-1)?"FLOAT":"INT";
-    float v=(std::get<1>(q)==-1)?(std::get<0>(q)):(std::get<1>(q));
-    std::cout<<s<<" "<<v<<"   "<<std::get<2>(q)<<":"<<std::get<3>(q)<<std::endl;
-  }
-}
-
-std::vector<quartet> quartets;
 
 //=====================
 
@@ -122,6 +103,7 @@ std::vector<quartet> quartets;
     void SynErr( const std::wstring& filename,int line, int col, int n );
     void Warning( const wchar_t* msg );
     const ErrorsContainer& errors() const;
+    ErrorsContainer& errors();
 
     	void NUMBER();
 	void LISTE();

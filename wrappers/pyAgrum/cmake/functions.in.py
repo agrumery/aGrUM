@@ -37,7 +37,7 @@ def availableBNExts():
     """
     return the list of suffix for supported BN file formats.
     """
-    return "bif|dsl|net|bifxml|o3prm"
+    return "bif|dsl|net|bifxml|o3prm|uai"
 
 def loadBN(s,listeners=None,verbose=True,**opts):
     """
@@ -56,8 +56,10 @@ def loadBN(s,listeners=None,verbose=True,**opts):
         warns=bn.loadNET(s,listeners)
     elif extension=="O3PRM":
         warns=bn.loadPRM(s,opts.get('system',''),opts.get('classpath',''),listeners)
+    elif extension=="UAI":
+        warns=bn.loadUAI(s,listeners)
     else:
-        raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
+        raise Exception("extension "+s.split('.')[-1]+" unknown. Please use among "+availableBNExts())
 
     if verbose:
       print(warns)
@@ -78,6 +80,8 @@ def saveBN(bn,s):
         bn.saveDSL(s)
     elif extension=="NET":
         bn.saveNET(s)
+    elif extension=="UAI":
+        bn.saveUAI(s)
     else:
         raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 

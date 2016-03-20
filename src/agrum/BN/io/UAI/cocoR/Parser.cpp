@@ -53,6 +53,9 @@ void Parser::SynErr( int n ) {
 const ErrorsContainer& Parser::errors( void ) const {
   return __errors;
 }
+ErrorsContainer& Parser::errors( void ) {
+  return __errors;
+}
 
 void Parser::Get() {
   for ( ;; ) {
@@ -125,7 +128,6 @@ void Parser::LISTE() {
 void Parser::UAI() {
 		Expect(4 /* "BAYES" */);
 		LISTE();
-		checkQuartets(); 
 }
 
 

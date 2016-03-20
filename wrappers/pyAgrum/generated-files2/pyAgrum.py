@@ -95,10 +95,11 @@ def _swig_repr(self):
 try:
     _object = object
     _newclass = 1
-except __builtin__.Exception:
+except AttributeError:
     class _object:
         pass
     _newclass = 0
+
 
 try:
     import weakref
@@ -2804,6 +2805,14 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_toDot(self, *args)
 
 
+    def topologicalOrder(self, clear=True):
+        """
+        topologicalOrder(DiGraph self, bool clear=True) -> gum::Sequence< gum::NodeId > const
+        topologicalOrder(DiGraph self) -> gum::Sequence< gum::NodeId > const &
+        """
+        return _pyAgrum.DiGraph_topologicalOrder(self, clear)
+
+
     def ids(self):
         """ids(DiGraph self) -> PyObject *"""
         return _pyAgrum.DiGraph_ids(self)
@@ -4830,6 +4839,19 @@ class BayesNet_double(IBayesNet_double):
     def saveBIFXML(self, name):
         """saveBIFXML(BayesNet_double self, std::string name)"""
         return _pyAgrum.BayesNet_double_saveBIFXML(self, name)
+
+
+    def loadUAI(self, *args):
+        """
+        loadUAI(BayesNet_double self, std::string name, PyObject * l) -> std::string
+        loadUAI(BayesNet_double self, std::string name) -> std::string
+        """
+        return _pyAgrum.BayesNet_double_loadUAI(self, *args)
+
+
+    def saveUAI(self, name):
+        """saveUAI(BayesNet_double self, std::string name)"""
+        return _pyAgrum.BayesNet_double_saveUAI(self, name)
 
 BayesNet_double_swigregister = _pyAgrum.BayesNet_double_swigregister
 BayesNet_double_swigregister(BayesNet_double)

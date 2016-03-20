@@ -70,6 +70,8 @@
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
+#include <agrum/BN/io/UAI/UAIReader.h>
+#include <agrum/BN/io/UAI/UAIWriter.h>
 
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/approximations/approximationScheme.h>

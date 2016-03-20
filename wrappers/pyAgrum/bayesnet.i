@@ -192,7 +192,7 @@
 
       try {
           gum::O3prmBNReader<GUM_SCALAR> reader(self,name,system,classpath);
-          
+
           auto nbErr=reader.proceed();
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
@@ -229,6 +229,37 @@
 
   void saveBIFXML(std::string name) {
       gum::BIFXMLBNWriter<GUM_SCALAR> writer;
+      writer.write( name, *self );
+  };
+
+  std::string loadUAI(std::string name, PyObject *l=(PyObject*)0)
+  {
+      std::stringstream stream;
+      std::vector<PythonLoadListener> py_listener;
+
+      try {
+          gum::UAIReader<GUM_SCALAR> reader(self,name);
+          int l_size=__fillLoadListeners(py_listener,l);
+          for(int i=0 ; i<l_size ; i++) {
+              GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
+          }
+
+          auto nbErr=reader.proceed();
+          reader.showElegantErrorsAndWarnings(stream);
+          if (nbErr>0) {
+              reader.showErrorCounts(stream);
+              GUM_ERROR(gum::FatalError,stream.str());
+          } else {
+              return stream.str();
+          }
+      } catch (gum::IOError& e) {
+        throw(e);
+      }
+      return "";
+  };
+
+  void saveUAI(std::string name) {
+      gum::UAIWriter<GUM_SCALAR> writer;
       writer.write( name, *self );
   };
 }

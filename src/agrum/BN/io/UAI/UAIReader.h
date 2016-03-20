@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef NETREADER_H
-#define NETREADER_H
+#ifndef UAIREADER_H
+#define UAIREADER_H
 
 #include <iostream>
 #include <string>
@@ -81,6 +81,8 @@ namespace gum {
     /// @return the number of detected errors
     /// @throws IOError if file not exists
     int proceed( void );
+    
+    void buildFromQuartets(std::vector<std::tuple<float,int,int,int>> quartets);
 
     /// @{
     /// publishing Errors API
@@ -125,6 +127,10 @@ namespace gum {
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
     bool __ioerror;
+    
+    void __addFatalError(int lig,int col,const std::string& s); // throw an exception
+    void __addError(int lig,int col,const std::string& s);
+    void __addWarning(int lig,int col,const std::string& s);
   };
 
   extern template class UAIReader<float>;
@@ -133,4 +139,4 @@ namespace gum {
 
 #include "UAIReader.tcc"
 
-#endif  // NETREADER_H
+#endif  // UAIREADER_H
