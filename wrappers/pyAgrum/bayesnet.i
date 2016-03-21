@@ -216,8 +216,8 @@
           gum::BIFXMLBNReader<GUM_SCALAR> reader(self,name);
 
           int isOK=reader.proceed();// for BIFXML, proceed() returns 0 or 1
-          if (isOK==0) {
-              GUM_ERROR(gum::FatalError,"Errors found");
+          if (isOK==1) {
+              GUM_ERROR(gum::FatalError,"Errors found in XML file");
           } else {
               return "";
           }

@@ -270,7 +270,11 @@ class TestLoadBN(BayesNetTestCase):
         self.assertEqual(bn.size(),8)
 
     def testUAILoad(self):
-        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/BNUAIReader_file2.uai'),[],verbose=False) # verbose=False : don't want to see the warnings
+        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/uai/BNUAIReader_file2.uai'),[],verbose=False) # verbose=False : don't want to see the warnings
+        self.assertEqual(bn.size(),5)
+
+    def testBIXMLLoad(self):
+        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/uai/dog.bifxml'),[],verbose=False) # verbose=False : don't want to see the warnings
         self.assertEqual(bn.size(),5)
 
 
@@ -294,3 +298,4 @@ ts.addTest(TestLoadBN('testTupleDSLLoad'))
 ts.addTest(TestLoadBN('testTupleDSLLoad'))
 ts.addTest(TestLoadBN('testO3PRMLoad'))
 ts.addTest(TestLoadBN('testUAILoad'))
+ts.addTest(TestLoadBN('testBIFXMLLoad'))
