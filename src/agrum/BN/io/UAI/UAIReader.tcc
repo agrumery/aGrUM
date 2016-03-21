@@ -20,8 +20,6 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/io/UAI/UAIReader.h>
-
 namespace gum {
 
   template <typename GUM_SCALAR>
@@ -102,23 +100,20 @@ namespace gum {
   }
 
 template <typename GUM_SCALAR>
-void UAIReader<GUM_SCALAR>::buildFromQuartets(std::vector<std::tuple<float,int,int,int>> quartets) {    
-  GUM_TRACE_VAR(quartets);
+void UAIReader<GUM_SCALAR>::buildFromQuartets(std::vector<std::tuple<float,int,int,int>> quartets) { 
   Idx current;
+  Size max=quartets.size();
+  if (max==0) {
+    __addWarning(1,1,"Empty BayesNet");
+    return;
+  }
   
   auto isInt = [&] () ->bool {return (std::get<0>(quartets[current])==-1);};
   auto lig = [&] () ->int {return std::get<2>(quartets[current]);};
   auto col = [&] () ->int {return std::get<3>(quartets[current]);};
   
   auto getInt = [&] () -> int {if (! isInt()) this->__addFatalError(lig(),col(),"int expected");return std::get<1>(quartets[current]);};
-  auto getVal = [&] () -> GUM_SCALAR {return (isInt())?(std::get<1>(quartets[current])):(std::get<0>(quartets[current]));};
-    
-  Size max=quartets.size();  
-  if (max==0) {
-    __addWarning(lig(),col(),"Empty BayesNet");
-    return;
-  }
-  
+  auto getVal = [&] () -> GUM_SCALAR {return (isInt())?(std::get<1>(quartets[current])):(std::get<0>(quartets[current]));};  
   auto incCurrent = [&] () {current+=1;if (current>=max) this->__addFatalError(lig(),col(),"Not enough data in UAI file");};
   
   current=0;

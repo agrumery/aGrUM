@@ -6,6 +6,8 @@
 #undef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
 
+$checkEOF=true
+
 COMPILER UAI
 
 void SemErr(std::string s) {

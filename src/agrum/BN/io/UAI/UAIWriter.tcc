@@ -114,7 +114,7 @@ namespace gum {
       for ( auto k : p.variablesSequence() ) {
         str << bn.idFromName(k->name()) << " ";
       }
-      str << std::endl;
+      str << "  # "<<bn.variable(node).name()<< std::endl;
     }
     str << std::endl;
 
