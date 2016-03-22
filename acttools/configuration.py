@@ -71,6 +71,7 @@ def initParams():
     cfg.default['dry_run']=False
     cfg.default['coverage']=False
     cfg.default['withSQL']=True
+    cfg.default['noForwardDeclaration']=False
 
     cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
     cfg.modes=set("debug release".split())
@@ -97,17 +98,17 @@ def configureOptions(current):
     cfg.parser=OptionParser(usage=us,description="Compilation tools for aGrUM and wrappers",
                         version="%prog v"+cfg.numversion)
     cfg.parser.add_option("", "--no-fun",
-                                        help="No fancy output parser",
+                                        help="no fancy output parser.",
                                         action="store_true",
                                         dest="no_fun",
                                         default=False)
     cfg.parser.add_option("-v", "--verbose",
-                                        help="more message on what is happening",
+                                        help="more message on what is happening.",
                                         action="store_true",
                                         dest="verbose",
                                         default=current['verbose'])
     cfg.parser.add_option("-q", "--quiet",
-                                        help="please be quiet",
+                                        help="please be quiet.",
                                         action="store_false",
                                         dest="verbose",
                                         default=current['verbose'])
@@ -121,13 +122,18 @@ def configureOptions(current):
                                         action="store_false",
                                         dest="withSQL",
                                         default=current['withSQL'])
+    cfg.parser.add_option("", "--noForwardDeclaration",
+                                        help="no forward declaration of template classes.",
+                                        action="store_true",
+                                        dest="noForwardDeclaration",
+                                        default=current['noForwardDeclaration'])
     cfg.parser.add_option("", "--fixed_seed",
-                                        help="Random seed is fixed once for all. Hence random algorithms should be time-normalized.",
+                                        help="random seed is fixed once for all. Hence random algorithms should be time-normalized.",
                                         action="store_true",
                                         dest="fixed_seed",
                                         default=False)
     cfg.parser.add_option("", "--stats",
-                                        help="Consolidation on "+str(cfg.nbr_tests_for_stats)+" runs.",
+                                        help="consolidation on "+str(cfg.nbr_tests_for_stats)+" runs.",
                                         action="store_true",
                                         dest="stats",
                                         default=False)
@@ -137,43 +143,43 @@ def configureOptions(current):
                                         dest="oneByOne",
                                         default=False)
     cfg.parser.add_option("-d", "--destination",
-                                        help="destination folder when installing",
+                                        help="destination folder when installing.",
                                         metavar="FOLDER",
                                         dest="destination",
                                         default=current['destination'])
     cfg.parser.add_option("-j", "--jobs",
-                                        help="number of jobs",
+                                        help="number of jobs.",
                                         type='int',
                                         dest="jobs",
                                         default=current['jobs'])
     cfg.parser.add_option("-t","--tests",
-                                        help="tests management : {show|all|test1+test2+test3}",
+                                        help="tests management : {show|all|test1+test2+test3}.",
                                         metavar="TESTS-COMMAND",
                                         dest="tests",
                                         default=current['tests'])
     cfg.parser.add_option("-m","--modules",
-                                        help="module management : {show|all|module1+module2+module3}",
+                                        help="module management : {show|all|module1+module2+module3}.",
                                         metavar="MODULES-COMMAND",
                                         dest="modules",
                                         default=current['modules'])
     cfg.parser.add_option("", "--static_lib",
-                                        help="build static library",
+                                        help="build static library.",
                                         action="store_true",
                                         dest="static_lib",
                                         default=False)
     cfg.parser.add_option("", "--python",
-                                        help="{2|3}",
+                                        help="defines against wich version of python to build: {2|3}.",
                                         type="choice",
                                         choices=["2", "3"],
                                         dest="python",
                                         default="3")
     cfg.parser.add_option("", "--dry-run",
-                                        help="dry run",
+                                        help="dry run and prints cmake invocation with the current options.",
                                         action="store_true",
                                         dest="dry_run",
                                         default=False)
     cfg.parser.add_option("", "--coverage",
-                                        help="build with code coverage options enable (debug only)",
+                                        help="build with code coverage options enable (debug only).",
                                         action="store_true",
                                         dest="coverage",
                                         default=False)
