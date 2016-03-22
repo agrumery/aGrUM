@@ -27,4 +27,7 @@
 
 #include <agrum/core/binTreeNode4AVL.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::BinTreeNode4AVL<int>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

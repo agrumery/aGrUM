@@ -20,5 +20,7 @@
 
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::ContextualDependenciesCNFWriter<float>;
 template class gum::ContextualDependenciesCNFWriter<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

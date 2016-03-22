@@ -103,8 +103,10 @@ namespace gum {
 // always include the implementation of the templates
 #include <agrum/PRM/o3prm/O3SystemFactory.tcc>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 extern template class gum::prm::o3prm::O3SystemFactory<float>;
 extern template class gum::prm::o3prm::O3SystemFactory<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
 #endif  // GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H
 

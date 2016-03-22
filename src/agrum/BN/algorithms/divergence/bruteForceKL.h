@@ -95,8 +95,10 @@ namespace gum {
     using KL<GUM_SCALAR>::_errorQP;
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class BruteForceKL<float>;
   extern template class BruteForceKL<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 }  // namespace gum
 
 #include <agrum/BN/algorithms/divergence/bruteForceKL.tcc>

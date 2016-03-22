@@ -168,8 +168,10 @@ namespace gum {
     virtual bool __checkConditions();
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class MaxInducedWidthMCBayesNetGenerator<float>;
   extern template class MaxInducedWidthMCBayesNetGenerator<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 } /*namespace gum*/
 
 #include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator.tcc>

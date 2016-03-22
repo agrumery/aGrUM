@@ -25,5 +25,8 @@
  */
 #include <agrum/multidim/aggregators/min.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::aggregator::Min<float>;
 template class gum::aggregator::Min<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

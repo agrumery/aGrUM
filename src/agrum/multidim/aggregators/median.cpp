@@ -25,5 +25,8 @@
  */
 #include <agrum/multidim/aggregators/median.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::aggregator::Median<float>;
 template class gum::aggregator::Median<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

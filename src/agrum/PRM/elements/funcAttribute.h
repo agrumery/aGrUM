@@ -86,7 +86,10 @@ namespace gum {
       virtual void _setCpf( Potential<GUM_SCALAR>* cpf );
     };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
+    extern template class FuncAttribute<float>;
     extern template class FuncAttribute<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
   } /* namespace prm */
 }  // namespace gum

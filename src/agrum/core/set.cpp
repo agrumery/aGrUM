@@ -99,8 +99,11 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::Set<int>;
 template class gum::Set<long>;
 template class gum::Set<float>;
 template class gum::Set<double>;
 template class gum::Set<std::string>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

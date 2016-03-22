@@ -26,7 +26,10 @@
 
 #include <agrum/core/heap.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::Heap<int>;
 template class gum::Heap<long>;
 template class gum::Heap<float>;
 template class gum::Heap<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

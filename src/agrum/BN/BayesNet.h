@@ -566,8 +566,10 @@ namespace gum {
   std::ostream& operator<<( std::ostream& output,
                             const BayesNet<GUM_SCALAR>& map );
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class BayesNet<float>;
   extern template class BayesNet<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 } /* namespace gum */
 
 #include <agrum/BN/BayesNet.tcc>

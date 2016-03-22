@@ -27,5 +27,8 @@
 // to help IDE parser
 #include <agrum/core/multiPriorityQueue.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::MultiPriorityQueue<std::string>;
 template class gum::MultiPriorityQueue<int, int>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

@@ -310,8 +310,10 @@ namespace gum {
     void __illegalStateError( const std::string& s );
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class FMDPFactory<float>;
   extern template class FMDPFactory<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 } /* namespace gum */
 
 

@@ -188,6 +188,7 @@ namespace gum {
 
 } /* namespace gum */
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 extern template class gum::HashFunc<
     std::tuple<gum::learning::IdSet<std::allocator<unsigned int>>>>;
 extern template class gum::HashFunc<
@@ -197,6 +198,7 @@ extern template class gum::HashFunc<
     std::tuple<gum::learning::IdSet<std::allocator<unsigned int>>,
                unsigned int,
                unsigned int>>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
 
 // always include the template implementation

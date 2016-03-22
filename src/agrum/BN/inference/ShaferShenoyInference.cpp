@@ -20,5 +20,7 @@
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::ShaferShenoyInference<float>;
 template class gum::ShaferShenoyInference<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

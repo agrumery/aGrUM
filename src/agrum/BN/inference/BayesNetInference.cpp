@@ -19,5 +19,7 @@
  ***************************************************************************/
 #include <agrum/BN/inference/BayesNetInference.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::BayesNetInference<float>;
 template class gum::BayesNetInference<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

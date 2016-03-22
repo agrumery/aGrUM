@@ -37,37 +37,39 @@ namespace gum {
 
       // LabelData
 
-      INLINE
       LabelData::LabelData()
           : id( 0 ) {
         GUM_CONSTRUCTOR( LabelData );
       }
 
-      INLINE
       LabelData::LabelData( const LabelData& from )
           : id( from.id )
           , l( from.l ) {
         GUM_CONS_CPY( LabelData );
       }
 
-      INLINE
       LabelData::~LabelData() { GUM_DESTRUCTOR( LabelData ); }
 
-      INLINE
       bool LabelData::operator==( const LabelData& from ) const {
         return ( id == from.id ) and ( l == from.l ) and
                ( tree_width == from.tree_width );
       }
 
-      INLINE
       bool LabelData::operator!=( const LabelData& from ) const {
         return ( id != from.id ) and ( l != from.l ) and
                ( tree_width != from.tree_width );
       }
 
+#ifndef GUM_NO_FORWARD_DECLARATION
+      template class NodeData<float>;
+      template class EdgeData<float>;
+      template class InterfaceGraph<float>;
+
       template class NodeData<double>;
       template class EdgeData<double>;
       template class InterfaceGraph<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
     } /* namespace gspan */
   }   /* namespace prm */
 } /* namespace gum */

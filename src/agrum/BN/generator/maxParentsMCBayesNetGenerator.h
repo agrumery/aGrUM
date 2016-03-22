@@ -181,8 +181,10 @@ namespace gum {
     virtual bool __checkConditions();
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class MaxParentsMCBayesNetGenerator<float>;
   extern template class MaxParentsMCBayesNetGenerator<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 } /*namespace gum*/
 
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.tcc>

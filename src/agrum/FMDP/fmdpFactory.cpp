@@ -20,5 +20,7 @@
 
 #include <agrum/FMDP/fmdpFactory.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::FMDPFactory<float>;
 template class gum::FMDPFactory<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

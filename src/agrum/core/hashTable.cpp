@@ -105,7 +105,10 @@ namespace gum {
 
 } /* namespace gum */
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::HashTable<int, int>;
 template class gum::HashTable<int, std::string>;
 template class gum::HashTable<std::string, std::string>;
 template class gum::HashTable<std::string, int>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

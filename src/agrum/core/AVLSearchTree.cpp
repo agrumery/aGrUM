@@ -27,4 +27,7 @@
 
 #include <agrum/core/AVLSearchTree.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::AVLSearchTree<int>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

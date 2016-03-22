@@ -128,9 +128,11 @@ namespace gum {
 
 }  // end of gum namespace
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 extern template class gum::Rational<float>;
 extern template class gum::Rational<double>;
 extern template class gum::Rational<long double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
 // Always include template implementation in header file
 #include <agrum/core/math/rational.tcc>

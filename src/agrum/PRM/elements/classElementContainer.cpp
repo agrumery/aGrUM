@@ -30,7 +30,10 @@
 namespace gum {
   namespace prm {
 
+#ifndef GUM_NO_FORWARD_DECLARATION
+    template class ClassElementContainer<float>;
     template class ClassElementContainer<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
   } /* namespace prm */
 } /* namespace gum */

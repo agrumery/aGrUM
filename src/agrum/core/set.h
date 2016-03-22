@@ -1151,11 +1151,13 @@ namespace gum {
 
 } /* namespace gum */
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 extern template class gum::Set<int>;
 extern template class gum::Set<long>;
 extern template class gum::Set<float>;
 extern template class gum::Set<double>;
 extern template class gum::Set<std::string>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
 // always include the implementation of the templates
 #include <agrum/core/set.tcc>

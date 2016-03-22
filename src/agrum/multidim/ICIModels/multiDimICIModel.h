@@ -157,8 +157,11 @@ namespace gum {
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class MultiDimICIModel<float>;
   extern template class MultiDimICIModel<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/multidim/ICIModels/multiDimICIModel.tcc>

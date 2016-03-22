@@ -148,8 +148,10 @@ namespace gum {
     std::string __filePath;
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class BIFXMLBNReader<float>;
   extern template class BIFXMLBNReader<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 } /* namespace gum */
 
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.tcc>

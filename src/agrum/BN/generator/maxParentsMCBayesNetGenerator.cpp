@@ -26,5 +26,7 @@
 
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::MaxParentsMCBayesNetGenerator<float>;
 template class gum::MaxParentsMCBayesNetGenerator<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

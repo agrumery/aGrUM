@@ -26,4 +26,7 @@
 
 #include <agrum/learning/scores_and_tests/independenceTest.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::learning::IndependenceTest<>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

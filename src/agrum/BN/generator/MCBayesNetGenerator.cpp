@@ -26,5 +26,7 @@
 
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::MCBayesNetGenerator<float>;
 template class gum::MCBayesNetGenerator<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

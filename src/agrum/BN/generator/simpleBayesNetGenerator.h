@@ -92,8 +92,10 @@ namespace gum {
     /// @}
   }; /* class SimpleBayesNetGenerator */
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class SimpleBayesNetGenerator<float>;
   extern template class SimpleBayesNetGenerator<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
 } /* namespace gum */
 

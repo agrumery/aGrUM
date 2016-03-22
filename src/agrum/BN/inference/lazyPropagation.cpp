@@ -20,5 +20,7 @@
 
 #include <agrum/BN/inference/lazyPropagation.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::LazyPropagation<float>;
 template class gum::LazyPropagation<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

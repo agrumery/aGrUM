@@ -382,10 +382,12 @@ namespace gum {
 
 } /* namespace gum */
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 extern template class gum::Heap<int>;
 extern template class gum::Heap<long>;
 extern template class gum::Heap<float>;
 extern template class gum::Heap<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
 // always include the implementation of the templates
 #include <agrum/core/heap.tcc>

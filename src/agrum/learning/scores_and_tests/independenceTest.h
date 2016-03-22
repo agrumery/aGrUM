@@ -310,7 +310,9 @@ namespace gum {
 
 } /* namespace gum */
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 extern template class gum::learning::IndependenceTest<>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/independenceTest.tcc>

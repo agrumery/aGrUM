@@ -318,7 +318,11 @@ namespace gum {
                               HashTable<ClassElement<GUM_SCALAR>*, Size>& y );
       };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
+      extern template class DFSTree<float>;
       extern template class DFSTree<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
     } /* namespace gspan */
   }   /* namespace prm */
 } /* namespace gum */

@@ -126,8 +126,10 @@ namespace gum {
 
     void __fillRequisiteNode( NodeId id, Set<NodeId>& requisite_nodes );
   };
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class VEWithBB<float>;
   extern template class VEWithBB<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 } /* namespace gum */
 
 #include <agrum/BN/inference/VEWithBB.tcc>

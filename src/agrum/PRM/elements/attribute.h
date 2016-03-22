@@ -172,7 +172,10 @@ namespace gum {
       virtual void _type( Type<GUM_SCALAR>* t ) = 0;
     };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
+    extern template class Attribute<float>;
     extern template class Attribute<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
   } /* namespace prm */
 }  // namespace gum

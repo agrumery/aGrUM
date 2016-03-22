@@ -77,8 +77,11 @@ namespace gum {
                          bool& stop_iteration ) const;
     };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
     extern template class Min<float>;
     extern template class Min<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
   }  // aggregator
 }  // gum
 

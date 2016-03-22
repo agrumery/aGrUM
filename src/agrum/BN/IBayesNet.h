@@ -184,8 +184,10 @@ namespace gum {
     std::string toString( void ) const;
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class IBayesNet<float>;
   extern template class IBayesNet<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template <typename GUM_SCALAR>

@@ -26,5 +26,7 @@
 
 #include <agrum/core/binSearchTree.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::BinSearchTree<int>;
+#endif // GUM_NO_FORWARD_DECLARATION
 

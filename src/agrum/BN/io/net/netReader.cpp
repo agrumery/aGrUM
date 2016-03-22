@@ -20,5 +20,7 @@
 
 #include <agrum/BN/io/net/netReader.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::NetReader<float>;
 template class gum::NetReader<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

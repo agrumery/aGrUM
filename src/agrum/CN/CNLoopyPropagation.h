@@ -382,8 +382,10 @@ namespace gum {
       };
     };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
     extern template class CNLoopyPropagation<float>;
     extern template class CNLoopyPropagation<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
   }
 }
 

@@ -133,8 +133,10 @@ namespace gum {
     void __addWarning(int lig,int col,const std::string& s);
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class UAIReader<float>;
   extern template class UAIReader<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 } /* namespace gum */
 
 #include "UAIReader.tcc"

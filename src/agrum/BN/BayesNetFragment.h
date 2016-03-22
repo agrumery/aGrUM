@@ -272,8 +272,10 @@ namespace gum {
     void _uninstallCPT( NodeId id ) noexcept;
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
   extern template class BayesNetFragment<float>;
   extern template class BayesNetFragment<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 }  // namespace gum
 
 #include <agrum/BN/BayesNetFragment.tcc>

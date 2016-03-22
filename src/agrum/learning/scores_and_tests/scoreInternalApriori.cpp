@@ -26,6 +26,7 @@
 
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::learning::ScoreInternalApriori<>;
-
+#endif // GUM_NO_FORWARD_DECLARATION
 

@@ -26,5 +26,7 @@
 
 #include <agrum/CN/varMod2BNsMap.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::credal::VarMod2BNsMap<float>;
 template class gum::credal::VarMod2BNsMap<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

@@ -20,5 +20,7 @@
 
 #include <agrum/BN/BayesNet.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::BayesNet<float>;
 template class gum::BayesNet<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

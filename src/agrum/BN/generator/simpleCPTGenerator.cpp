@@ -25,5 +25,7 @@
  */
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::SimpleCPTGenerator<float>;
 template class gum::SimpleCPTGenerator<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

@@ -20,5 +20,7 @@
 
 #include <agrum/BN/IBayesNet.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::IBayesNet<float>;
 template class gum::IBayesNet<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

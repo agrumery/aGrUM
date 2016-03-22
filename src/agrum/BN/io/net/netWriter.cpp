@@ -20,5 +20,7 @@
 
 #include <agrum/BN/io/net/netWriter.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::NetWriter<float>;
 template class gum::NetWriter<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

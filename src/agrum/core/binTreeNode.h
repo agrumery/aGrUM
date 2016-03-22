@@ -330,7 +330,9 @@ namespace gum {
 
 } /* namespace gum */
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 extern template class gum::BinTreeNode<int>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
 // always include the implementation of the templates
 #include <agrum/core/binTreeNode.tcc>

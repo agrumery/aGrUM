@@ -25,7 +25,10 @@
  */
 #include <agrum/core/refPtr.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::RefPtr<int>;
 template class gum::RefPtr<long>;
 template class gum::RefPtr<float>;
 template class gum::RefPtr<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

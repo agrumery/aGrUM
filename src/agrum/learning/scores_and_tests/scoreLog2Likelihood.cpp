@@ -26,5 +26,7 @@
 
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::learning::ScoreLog2Likelihood<>;
+#endif // GUM_NO_FORWARD_DECLARATION
 

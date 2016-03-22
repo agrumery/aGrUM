@@ -26,5 +26,7 @@
 
 #include <agrum/CN/credalNet.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::credal::CredalNet<float>;
 template class gum::credal::CredalNet<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

@@ -27,5 +27,11 @@
 #include <agrum/PRM/PRM.h>
 
 namespace gum {
-  namespace prm {} /* namespace prm */
+  namespace prm {
+
+#ifndef GUM_NO_FORWARD_DECLARATION
+  template class PRM<float>;
+  template class PRM<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+  } /* namespace prm */
 } /* namespace gum */

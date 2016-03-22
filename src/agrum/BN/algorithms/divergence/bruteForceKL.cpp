@@ -27,5 +27,7 @@
 #include <cmath>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::BruteForceKL<float>;
 template class gum::BruteForceKL<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

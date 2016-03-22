@@ -131,7 +131,10 @@ namespace gum {
       List<const Potential<GUM_SCALAR>*> __obs;
     };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
+    extern template class GroundedInference<float>;
     extern template class GroundedInference<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
   } /* namespace prm */
 } /* namespace gum */

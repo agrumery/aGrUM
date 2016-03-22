@@ -95,8 +95,11 @@ namespace gum {
       Idx __value;
     };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
     extern template class Median<float>;
     extern template class Median<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
   }  // aggregator
 }  // gum
 

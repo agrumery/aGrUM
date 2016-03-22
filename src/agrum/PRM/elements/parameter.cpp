@@ -29,6 +29,11 @@
 
 namespace gum {
   namespace prm {
+
+#ifndef GUM_NO_FORWARD_DECLARATION
+    template class Parameter<float>;
     template class Parameter<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
   } /* namespace prm */
 } /* namespace gum */

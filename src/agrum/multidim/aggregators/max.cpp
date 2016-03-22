@@ -25,5 +25,8 @@
  */
 #include <agrum/multidim/aggregators/max.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::aggregator::Max<float>;
 template class gum::aggregator::Max<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+

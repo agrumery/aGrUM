@@ -130,8 +130,10 @@ namespace gum {
       bool _repetitiveInd;
     };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
     extern template class CNMonteCarloSampling<float, LazyPropagation<float>>;
     extern template class CNMonteCarloSampling<double, LazyPropagation<double>>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
   }  // namespace cn
 }

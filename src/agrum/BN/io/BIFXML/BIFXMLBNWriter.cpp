@@ -25,5 +25,7 @@
  */
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::BIFXMLBNWriter<float>;
 template class gum::BIFXMLBNWriter<double>;
+#endif // GUM_NO_FORWARD_DECLARATION

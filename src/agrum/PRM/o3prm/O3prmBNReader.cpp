@@ -26,6 +26,8 @@
 
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 
+#ifndef GUM_NO_FORWARD_DECLARATION
 template class gum::O3prmBNReader<float>;
 template class gum::O3prmBNReader<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 
