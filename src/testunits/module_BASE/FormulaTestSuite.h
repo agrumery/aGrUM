@@ -301,9 +301,6 @@ namespace gum_tests {
     void testScientificNotation() {
       try {
         // Arrange
-        double lambda = 0.001;
-        double t = 2;
-        double unused = 10;
         std::string eq = "3.72663E-06";
         double expected = 3.72663E-06;
         gum::Formula formula( eq );
