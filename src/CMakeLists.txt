@@ -49,11 +49,6 @@ set_target_properties (${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 target_link_libraries( ${LIBAGRUM} ${ODBC_LIBRARIES} )
 
-if(NO_FORWARD_DECLARATION)
-  message(STATUS "** aGrUM Notification: no forward declerarion of template classes")
-  set(CMAKE_CXX_FLAGS " -DNO_FORWARD_DECLARATION ${CMAKE_CXX_FLAGS}")
-endif(NO_FORWARD_DECLARATION)
-
 if (GUM_COVERAGE)
   set_target_properties( ${LIBAGRUM} PROPERTIES COMPILE_FLAGS " --coverage" )
   target_link_libraries( ${LIBAGRUM} "gcov" )

@@ -122,6 +122,11 @@ def configureOptions(current):
                                         action="store_false",
                                         dest="withSQL",
                                         default=current['withSQL'])
+    cfg.parser.add_option("", "--forwardDeclaration",
+                                        help="forward declaration of template classes.",
+                                        action="store_false",
+                                        dest="noForwardDeclaration",
+                                        default=current['noForwardDeclaration'])
     cfg.parser.add_option("", "--noForwardDeclaration",
                                         help="no forward declaration of template classes.",
                                         action="store_true",
