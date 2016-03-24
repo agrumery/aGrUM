@@ -95,11 +95,10 @@ def _swig_repr(self):
 try:
     _object = object
     _newclass = 1
-except AttributeError:
+except __builtin__.Exception:
     class _object:
         pass
     _newclass = 0
-
 
 try:
     import weakref
@@ -4267,7 +4266,13 @@ class Potential_double(_object):
 
     def fillWith(self, v):
         """fillWith(Potential_double self, Vector_double v)"""
-        return _pyAgrum.Potential_double_fillWith(self, v)
+        val = _pyAgrum.Potential_double_fillWith(self, v)
+
+        self._notSync=True
+        return self
+
+
+        return val
 
 
     def fill(self, d):
@@ -4998,16 +5003,6 @@ class BayesNetInference_double(_object):
         return val
 
 
-    def insertEvidence(self, pot_list):
-        """insertEvidence(BayesNetInference_double self, gum::List< gum::Potential< double > const * > const & pot_list)"""
-        return _pyAgrum.BayesNetInference_double_insertEvidence(self, pot_list)
-
-
-    def addHardEvidence(self, id, val):
-        """addHardEvidence(BayesNetInference_double self, gum::NodeId const id, gum::Idx const val)"""
-        return _pyAgrum.BayesNetInference_double_addHardEvidence(self, id, val)
-
-
     def eraseEvidence(self, e):
         """eraseEvidence(BayesNetInference_double self, Potential_double e)"""
         return _pyAgrum.BayesNetInference_double_eraseEvidence(self, e)
@@ -5024,63 +5019,70 @@ class BayesNetInference_double(_object):
 
 
     def setEvidence(self, evidces):
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
         bn = self.bn()
-
-
+        if isinstance(evidces, dict):
     # set evidences
-        self.list_pot = []
-        try:
-          items=evidces.iteritems()
-        except AttributeError:
-          items=evidces.items()
+            self.list_pot = []
+            try:
+              items=evidces.iteritems()
+            except AttributeError:
+              items=evidces.items()
 
-        for var_name, evidce in items:
-            pot = Potential_double()
+            for var_name, evidce in items:
+                pot = Potential_double()
 
-            if isinstance(var_name, int):
-                var = bn.variable(var_name)
-            elif isinstance(var_name, str):
-                var = bn.variableFromName(var_name)
-            else:
-                raise TypeError('values of the dict must be int or string')
+                if isinstance(var_name, int):
+                    var = bn.variable(var_name)
+                elif isinstance(var_name, str):
+                    var = bn.variableFromName(var_name)
+                else:
+                    raise TypeError('values of the dict must be int or string')
 
-            pot.add(var)
-            if isinstance(evidce, (int, float, str)):
-                pot[:] = 0
+                pot.add(var)
+                if isinstance(evidce, (int, float, str)):
+                    pot[:] = 0
     # determine the var type
-                try:
-                    cast_var = var.toLabelizedVar()
-                    if isinstance(evidce, int):
-                        index = evidce
-                    elif isinstance(evidce, str):
-                        index = cast_var[evidce]
-                    else:
-                        raise TypeError('values of the dict must be int or string')
-                except RuntimeError:
                     try:
-                        cast_var = var.toRangeVar()
+                        cast_var = var.toLabelizedVar()
                         if isinstance(evidce, int):
-                            index = cast_var[str(evidce)]
+                            index = evidce
                         elif isinstance(evidce, str):
                             index = cast_var[evidce]
                         else:
                             raise TypeError('values of the dict must be int or string')
                     except RuntimeError:
-                        cast_var = var.toDiscretizedVar()
-                        if isinstance(evidce, float):
-                            index = cast_var.index(evidce)
-                        elif isinstance(evidce, str):
-                            index = cast_var.index(float(evidce))
-                        else:
-                            raise TypeError('values of the dict must be float or string')
-                pot[index] = 1
-            elif isinstance(evidce, (list, tuple)):
-                pot[:] = evidce
-            else:
-                raise TypeError('dict values must be number, string or sequence')
-            self.list_pot.append(pot)
+                        try:
+                            cast_var = var.toRangeVar()
+                            if isinstance(evidce, int):
+                                index = cast_var[str(evidce)]
+                            elif isinstance(evidce, str):
+                                index = cast_var[evidce]
+                            else:
+                                raise TypeError('values of the dict must be int or string')
+                        except RuntimeError:
+                            cast_var = var.toDiscretizedVar()
+                            if isinstance(evidce, float):
+                                index = cast_var.index(evidce)
+                            elif isinstance(evidce, str):
+                                index = cast_var.index(float(evidce))
+                            else:
+                                raise TypeError('values of the dict must be float or string')
+                    pot[index] = 1
+                elif isinstance(evidce, (list, tuple)):
+                    pot[:] = evidce
+                else:
+                    raise TypeError('dict values must be number, string or sequence')
+                self.list_pot.append(pot)
+        else:
+            try:
+                l=list()
+                for p in evidces:
+                    if not isinstance(p,Potential):
+                        raise TypeError('setEvidence parameter must be an iterable of Potentials')
+                    l.append(p)
+                self.list_pot=l
+            except TypeError:
+                raise TypeError("setEvidence parameter must be a dict or an iterable of Potentials, not %s"%(type(evidces)))
 
         self.eraseAllEvidence()
         self._setEvidence(self.list_pot)
@@ -5123,11 +5125,6 @@ class LazyPropagation_double(BayesNetInference_double):
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_LazyPropagation_double
     __del__ = lambda self: None
-
-    def insertEvidence(self, arg2):
-        """insertEvidence(LazyPropagation_double self, gum::List< gum::Potential< double > const * > const & arg2)"""
-        return _pyAgrum.LazyPropagation_double_insertEvidence(self, arg2)
-
 
     def eraseAllEvidence(self):
         """eraseAllEvidence(LazyPropagation_double self)"""
@@ -5210,11 +5207,6 @@ class LazyPropagation_double(BayesNetInference_double):
         """
         return _pyAgrum.LazyPropagation_double_joint(self, *args)
 
-
-    def addHardEvidence(self, id, val):
-        """addHardEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx val)"""
-        return _pyAgrum.LazyPropagation_double_addHardEvidence(self, id, val)
-
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
@@ -5246,11 +5238,6 @@ class GibbsInference_double(BayesNetInference_double):
         return _pyAgrum.GibbsInference_double_makeInference(self)
 
 
-    def insertEvidence(self, pot_list):
-        """insertEvidence(GibbsInference_double self, gum::List< gum::Potential< double > const * > const & pot_list)"""
-        return _pyAgrum.GibbsInference_double_insertEvidence(self, pot_list)
-
-
     def eraseEvidence(self, e):
         """eraseEvidence(GibbsInference_double self, Potential_double e)"""
         return _pyAgrum.GibbsInference_double_eraseEvidence(self, e)
@@ -5269,11 +5256,6 @@ class GibbsInference_double(BayesNetInference_double):
     def isInferenceRequired(self):
         """isInferenceRequired(GibbsInference_double self) -> bool"""
         return _pyAgrum.GibbsInference_double_isInferenceRequired(self)
-
-
-    def addHardEvidence(self, id, val):
-        """addHardEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx val)"""
-        return _pyAgrum.GibbsInference_double_addHardEvidence(self, id, val)
 
 
     def setVerbosity(self, v):
@@ -6310,11 +6292,6 @@ class InfluenceDiagramInference_double(_object):
     def displayResult(self):
         """displayResult(InfluenceDiagramInference_double self) -> std::string"""
         return _pyAgrum.InfluenceDiagramInference_double_displayResult(self)
-
-
-    def insertEvidence(self, evidenceList):
-        """insertEvidence(InfluenceDiagramInference_double self, gum::List< gum::Potential< double > const * > const & evidenceList)"""
-        return _pyAgrum.InfluenceDiagramInference_double_insertEvidence(self, evidenceList)
 
 
     def eraseEvidence(self, evidence):
