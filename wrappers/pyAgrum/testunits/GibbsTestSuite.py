@@ -115,18 +115,8 @@ class TestDictFeature(GibbsTestCase):
         ie2.setEvidence({'s': 'no', 'w': 'yes'})
         ie2.makeInference()
         result2 = ie2.posterior(self.r).tolist()
-        
-        ie3 = gum.GibbsInference(self.bn)
-        ie3.setVerbosity(True)
-        ie3.setEpsilon(0.0001)
-        ie3.setMinEpsilonRate(0.0001)
-        ie3.addHardEvidence(self.s,0) # 'no'
-        ie3.addHardEvidence(self.w,1) # 'yes'
-        ie3.makeInference()
-        result3 = ie3.posterior(self.r).tolist()
-        
+      
         self.assertListsAlmostEqual(result, result2)
-        self.assertListsAlmostEqual(result, result3)
 
 
     def testDictOfLabelsWithId(self):

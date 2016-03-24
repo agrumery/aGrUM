@@ -242,6 +242,10 @@ class TestOperators(pyAgrumTestCase):
  
     self.assertEqual((p+q).sum(),270)
     self.assertEqual((p+q).max(),18)
+    
+    # test on fillWith returning potential
+    p.fillWith([1,2,3,4,5,6,7,8,9]).normalize()
+    self.assertEqual(p.tolist(),[[0.022222222222222223, 0.044444444444444446, 0.06666666666666667], [0.08888888888888889, 0.1111111111111111, 0.13333333333333333], [0.15555555555555556, 0.17777777777777778, 0.2]])
   
   def testEquality(self):
     a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]    

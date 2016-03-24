@@ -100,14 +100,7 @@ class TestDictFeature(LazyPropagationTestCase):
         ie2.makeInference()
         result2 = ie2.posterior(self.r)
 
-        ie3= gum.LazyPropagation(self.bn)
-        ie3.addHardEvidence(self.bn.idFromName('s'),0)
-        ie3.addHardEvidence(self.bn.idFromName('w'),1)
-        ie3.makeInference()
-        result3 = ie3.posterior(self.r)
-
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
-        self.assertListsAlmostEqual(result.tolist(), result3.tolist())
 
     def testDictOfLabelsWithId(self):
         ie = gum.LazyPropagation(self.bn)
@@ -120,14 +113,7 @@ class TestDictFeature(LazyPropagationTestCase):
         ie2.makeInference()
         result2 = ie2.posterior(self.r)
 
-        ie3 = gum.LazyPropagation(self.bn)
-        ie3.addHardEvidence(self.s,0) # 'no'
-        ie3.addHardEvidence(self.w,1) # 'yes'
-        ie3.makeInference()
-        result3 = ie3.posterior(self.r)
-
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
-        self.assertListsAlmostEqual(result.tolist(), result3.tolist())
 
 
     def testWithDifferentVariables(self):

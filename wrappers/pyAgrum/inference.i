@@ -1,4 +1,6 @@
-%ignore *::insertEvidence();
+%ignore *::insertEvidence;
+%ignore *::addHardEvidence;
+%ignore *::addHardEvidence;
 
 %pythonappend gum::BayesNetInference::posterior %{
         val.__fill_distrib__()
@@ -8,63 +10,70 @@
 // copy: M indicates the modifications
 %feature("shadow") gum::BayesNetInference<double>::setEvidence %{
 def setEvidence(self, evidces):
-    if not isinstance(evidces, dict):
-        raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
     bn = self.bn()
+    if isinstance(evidces, dict):
+        # set evidences
+        self.list_pot = []
+        try:
+          items=evidces.iteritems()
+        except AttributeError:
+          items=evidces.items()
 
+        for var_name, evidce in items:
+            pot = Potential_double()
 
-    # set evidences
-    self.list_pot = []
-    try:
-      items=evidces.iteritems()
-    except AttributeError:
-      items=evidces.items()
+            if isinstance(var_name, int):
+                var = bn.variable(var_name)
+            elif isinstance(var_name, str):
+                var = bn.variableFromName(var_name)
+            else:
+                raise TypeError('values of the dict must be int or string')
 
-    for var_name, evidce in items:
-        pot = Potential_double()
-
-        if isinstance(var_name, int):
-            var = bn.variable(var_name)
-        elif isinstance(var_name, str):
-            var = bn.variableFromName(var_name)
-        else:
-            raise TypeError('values of the dict must be int or string')
-
-        pot.add(var)
-        if isinstance(evidce, (int, float, str)):
-            pot[:] = 0
-            # determine the var type
-            try:
-                cast_var = var.toLabelizedVar()
-                if isinstance(evidce, int):
-                    index = evidce
-                elif isinstance(evidce, str):
-                    index = cast_var[evidce]
-                else:
-                    raise TypeError('values of the dict must be int or string')
-            except RuntimeError:
+            pot.add(var)
+            if isinstance(evidce, (int, float, str)):
+                pot[:] = 0
+                # determine the var type
                 try:
-                    cast_var = var.toRangeVar()
+                    cast_var = var.toLabelizedVar()
                     if isinstance(evidce, int):
-                        index = cast_var[str(evidce)]
+                        index = evidce
                     elif isinstance(evidce, str):
                         index = cast_var[evidce]
                     else:
                         raise TypeError('values of the dict must be int or string')
                 except RuntimeError:
-                    cast_var = var.toDiscretizedVar()
-                    if isinstance(evidce, float):
-                        index = cast_var.index(evidce)
-                    elif isinstance(evidce, str):
-                        index = cast_var.index(float(evidce))
-                    else:
-                        raise TypeError('values of the dict must be float or string')
-            pot[index] = 1
-        elif isinstance(evidce, (list, tuple)):
-            pot[:] = evidce
-        else:
-            raise TypeError('dict values must be number, string or sequence')
-        self.list_pot.append(pot)
+                    try:
+                        cast_var = var.toRangeVar()
+                        if isinstance(evidce, int):
+                            index = cast_var[str(evidce)]
+                        elif isinstance(evidce, str):
+                            index = cast_var[evidce]
+                        else:
+                            raise TypeError('values of the dict must be int or string')
+                    except RuntimeError:
+                        cast_var = var.toDiscretizedVar()
+                        if isinstance(evidce, float):
+                            index = cast_var.index(evidce)
+                        elif isinstance(evidce, str):
+                            index = cast_var.index(float(evidce))
+                        else:
+                            raise TypeError('values of the dict must be float or string')
+                pot[index] = 1
+            elif isinstance(evidce, (list, tuple)):
+                pot[:] = evidce
+            else:
+                raise TypeError('dict values must be number, string or sequence')
+            self.list_pot.append(pot)
+    else:
+        try:
+            l=list()
+            for p in evidces:
+                if not isinstance(p,Potential):
+                    raise TypeError('setEvidence parameter must be an iterable of Potentials')
+                l.append(p)
+            self.list_pot=l
+        except TypeError:
+            raise TypeError("setEvidence parameter must be a dict or an iterable of Potentials, not %s"%(type(evidces)))
 
     self.eraseAllEvidence()
     self._setEvidence(self.list_pot)

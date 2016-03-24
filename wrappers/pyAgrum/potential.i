@@ -4,6 +4,7 @@
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
 
+
 /* Synchronisation between gum::Potential and numpy array */
 %pythonappend gum::Potential<double>::Potential %{
         self._notSync=True
@@ -19,9 +20,11 @@
         self._notSync=True
 %}
 
-// beforeMerge ignore insertEvidence et addHardEvidence
-// beforeMerge fillWith return self
-// beforeMerge setEvidence avec une liste de Potential
+
+%pythonappend gum::Potential<double>::fillWith %{
+        self._notSync=True
+        return self
+%}
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
