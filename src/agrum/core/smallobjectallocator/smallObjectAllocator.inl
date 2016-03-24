@@ -22,7 +22,7 @@
  * @file
  * @brief Inlines of gum::SmallObjectAllocator
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
  *
  */
 // ============================================================================
@@ -51,7 +51,7 @@ namespace gum {
       : __chunkSize( GUM_DEFAULT_CHUNK_SIZE )
       , __maxObjectSize( GUM_DEFAULT_MAX_OBJECT_SIZE ) {
     __pool.setKeyUniquenessPolicy( false );
-    GUM_CONSTRUCTOR(SmallObjectAllocator);
+    GUM_CONSTRUCTOR( SmallObjectAllocator );
     nbAllocation = 0;
     nbDeallocation = 0;
   }

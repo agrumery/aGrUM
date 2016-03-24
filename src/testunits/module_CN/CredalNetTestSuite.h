@@ -258,7 +258,6 @@ namespace gum_tests {
                         {0, 3. / 5, 2. / 5}};  // C lp solution A:2 B:2
 
       /// compute solutions, check bijection
-
       for ( const auto& id : ids ) {
         gum::Instantiation ins( cn->instantiation( id ) );
         ins.setFirst();

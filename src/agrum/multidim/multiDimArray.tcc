@@ -55,6 +55,17 @@ namespace gum {
     // no need to unregister all slaves as it will be done by MultiDimWithOffset
   }
 
+  template <typename GUM_SCALAR>
+  void MultiDimArray<GUM_SCALAR>::copyFrom(
+      const MultiDimContainer<GUM_SCALAR>& src ) const {
+    auto mda = dynamic_cast<const MultiDimArray<GUM_SCALAR>*>( &src );
+
+    if ( mda == nullptr ) {
+      MultiDimContainer<GUM_SCALAR>::copyFrom( src );
+    } else {
+      _values = mda->_values;
+    }
+  }
   // data access operator
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR&
@@ -198,6 +209,4 @@ namespace gum {
                                                 const DiscreteVariable* y ) {
     MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
   }
-
 } /* namespace gum */
-

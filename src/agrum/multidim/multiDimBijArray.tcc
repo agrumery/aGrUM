@@ -147,6 +147,13 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
+  INLINE void MultiDimBijArray<GUM_SCALAR>::fillWith(
+      std::initializer_list<GUM_SCALAR> l ) const {
+    GUM_ERROR( OperationNotAllowed,
+               "MultiDimBijArray<GUM_SCALAR> are read only." );
+  }
+
+  template <typename GUM_SCALAR>
   INLINE GUM_SCALAR&
   MultiDimBijArray<GUM_SCALAR>::_get( const Instantiation& i ) const {
     GUM_ERROR( OperationNotAllowed,

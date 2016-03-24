@@ -19,7 +19,10 @@ namespace gum_tests {
     std::flush( std::cout );
   }
 
-  void test_waiting( int s ) {
+  void test_waiting( int s=-1 ) {
+    static int ss=0;
+
+    if (s==-1) s=ss++;
     std::cout << backst << waiter[s % 4];
     std::flush( std::cout );
   }

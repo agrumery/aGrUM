@@ -10,6 +10,10 @@ if (NOT DEFINED CMAKE_BUILD_TYPE)
   set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 endif ()
 
+if (NOT DEFINED GUM_RANDOMSEED)
+  set(GUM_RANDOMSEED 0)
+endif()
+
 project (agrum)
 cmake_minimum_required (VERSION 2.8)
 

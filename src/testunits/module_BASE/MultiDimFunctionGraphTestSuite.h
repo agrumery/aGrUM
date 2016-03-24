@@ -392,6 +392,9 @@ namespace gum_tests {
       TS_ASSERT_THROWS(functionGraph->fillWith(v),
                         gum::OperationNotAllowed);
 
+      TS_ASSERT_THROWS(functionGraph->fillWith({1,2,3}),
+                       gum::OperationNotAllowed);
+
 
       // *********************************************************************
       // Test get(), [], and value access

@@ -30,19 +30,12 @@
 #include <agrum/multidim/operators/completeProjections4MultiDim.h>
 #include <agrum/multidim/partialInstantiation4MultiDim.h>
 
-// to ease IDE parsers
 #include <agrum/multidim/multiDimDecorator.h>
 
 namespace gum {
-
-  // constructor
-
+  // instrumental and non-API function
   template <typename GUM_SCALAR>
-  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
-      MultiDimImplementation<GUM_SCALAR>* aContent )
-      : _content( aContent ) {
-    GUM_CONSTRUCTOR( MultiDimDecorator );
-
+  static void ___initPotentialOperators() {
     static bool first = true;
 
     if ( first ) {
@@ -65,19 +58,86 @@ namespace gum {
       inst.init();
     }
   }
+  // constructors
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      MultiDimImplementation<GUM_SCALAR>* aContent )
+      : _content( aContent ) {
+    ___initPotentialOperators<GUM_SCALAR>();
+    GUM_CONSTRUCTOR( MultiDimDecorator );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      const MultiDimDecorator<GUM_SCALAR>& from )
+      : MultiDimContainer<GUM_SCALAR>( from ) {
+    GUM_CONS_CPY( MultiDimDecorator );
+    ___initPotentialOperators<GUM_SCALAR>();
+    content()->copy( from.content() );
+  }
+
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
+  operator=( MultiDimDecorator<GUM_SCALAR>&& from ) {
+    MultiDimContainer<GUM_SCALAR>::operator=(
+        std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) );
+    GUM_OP_MOV( MultiDimDecorator );
+
+    if ( this != &from ) {
+      auto tmp = _content;
+      _content = from._content;
+      if ( tmp != nullptr ) delete ( tmp );
+      from._content = nullptr;
+    }
+
+    return *this;
+  }
+
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      MultiDimDecorator<GUM_SCALAR>&& from )
+      : MultiDimContainer<GUM_SCALAR>(
+            std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
+    GUM_CONS_MOV( MultiDimDecorator );
+
+    if ( this != &from ) {
+      auto tmp = _content;
+      _content = from._content;
+      if ( tmp != nullptr ) {
+        delete ( tmp );
+      }
+
+      from._content = nullptr;
+    }
+  }
+
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
+  operator=( const MultiDimDecorator<GUM_SCALAR>& from ) {
+    GUM_OP_CPY( MultiDimDecorator );
+    ___initPotentialOperators<GUM_SCALAR>();
+    MultiDimContainer<GUM_SCALAR>::operator=( from );
+    MultiDimDecorator<GUM_SCALAR>::content()->copy( *from.content() );
+    return *this;
+  }
+
 
   // destructor
 
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>::~MultiDimDecorator() {
-    if ( _content ) {
-      delete _content;
+    if ( _content != nullptr ) {
+      delete ( _content );
     }
 
     GUM_DESTRUCTOR( MultiDimDecorator );
   }
 
-  // return a data, given a Insantiation - final method
+  // return a data, given a Instantiation - final method
 
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR&
@@ -234,22 +294,6 @@ namespace gum {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->nbrDim();
   }
 
-  // In order to insure the deref. for decorators, we need to virtualize the
-  // access to master pointer
-  template <typename GUM_SCALAR>
-  INLINE MultiDimImplementation<GUM_SCALAR>&
-  MultiDimDecorator<GUM_SCALAR>::getMasterRef( void ) {
-    return *_content;
-  }
-
-  // In order to insure the deref. for decorators, we need to virtualize the
-  // access to master pointer
-  template <typename GUM_SCALAR>
-  INLINE const MultiDimImplementation<GUM_SCALAR>&
-  MultiDimDecorator<GUM_SCALAR>::getMasterRef( void ) const {
-    return *_content;
-  }
-
   // protected access to _content
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>*
@@ -322,7 +366,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void MultiDimDecorator<GUM_SCALAR>::_swapContent(
       MultiDimImplementation<GUM_SCALAR>* aContent ) const {
-    if ( aContent != 0 ) {
+    if ( aContent != nullptr ) {
       // TODO : frees all slave instantiations
       // TODO : control the dimensions ?
       MultiDimImplementation<GUM_SCALAR>* tmp = _content;

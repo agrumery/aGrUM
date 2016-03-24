@@ -329,65 +329,24 @@ namespace gum_tests {
     private:
     // Builds a BN to test the inference
     void fill( gum::BayesNet<double>& bn ) {
-      const gum::Potential<double>& p1 = bn.cpt( i1 );
-      {
-        // FILLING PARAMS
-        const double t[2] = {0.5, 0.5};
-        int n = 2;
-        const std::vector<double> v( t, t + n );
-        p1.fillWith( v );
-      }
+      bn.cpt( i1 ).fillWith( {0.5, 0.5} );
+      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
+      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn.cpt( i4 ).fillWith( // clang-format off
+                             {0.4, 0.6,
+                              0.5, 0.5,
+                              0.5, 0.5,
+                              1.0, 0.0});// clang-format on
+      bn.cpt( i5 ).fillWith( // clang-format off
+                             {1.0,0.0,
+                              0.0,1.0,
+                              0.0,1.0,
+                              0.0,1.0,
+                              0.0,1.0,
+                              0.0,1.0,
+                              0.0,1.0,
+                              0.0,1.0});// clang-format on
 
-      const gum::Potential<double>& p2 = bn.cpt( i2 );
-      {
-        // FILLING PARAMS
-        const double t[2] = {0.3, 0.7};
-        int n = 2;
-        const std::vector<double> v( t, t + n );
-        p2.fillWith( v );
-      }
-
-      const gum::Potential<double>& p3 = bn.cpt( i3 );
-      {
-        // FILLING PARAMS
-        const double t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;
-        const std::vector<double> v( t, t + n );
-        p3.fillWith( v );
-      }
-
-      const gum::Potential<double>& p4 = bn.cpt( i4 );
-      {
-        // FILLING PARAMS
-        const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;
-        const std::vector<double> v( t, t + n );
-        p4.fillWith( v );
-      }
-
-      const gum::Potential<double>& p5 = bn.cpt( i5 );
-      {
-        // FILLING PARAMS
-        const double t[16] = {1.0,
-                              0.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0,
-                              0.0,
-                              1.0};
-        int n = 16;
-        const std::vector<double> v( t, t + n );
-        p5.fillWith( v );
-      }
     }
   };
 }

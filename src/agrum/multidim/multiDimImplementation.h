@@ -39,7 +39,8 @@ namespace gum {
   // ===========================================================================
   /**
    * @class MultiDimImplementation
-   * @headerfile multiDimImplementation.h <agrum/multidim/multiDimImplementation.h>
+   * @headerfile multiDimImplementation.h
+   *<agrum/multidim/multiDimImplementation.h>
    * @ingroup multidim_group
    *
    * @brief Abstract base class for all multi dimensionnal implementations
@@ -151,10 +152,11 @@ namespace gum {
 
     virtual void erase( const DiscreteVariable& v );
 
-    virtual const Sequence<const DiscreteVariable*>& variablesSequence( void ) const;
+    virtual const Sequence<const DiscreteVariable*>&
+    variablesSequence( void ) const;
 
     virtual const DiscreteVariable& variable( Idx i ) const;
- 
+
     virtual Idx pos( const DiscreteVariable& v ) const;
 
     virtual bool contains( const DiscreteVariable& v ) const;
@@ -170,10 +172,6 @@ namespace gum {
     virtual bool registerSlave( Instantiation& i );
 
     virtual bool unregisterSlave( Instantiation& i );
-
-    virtual MultiDimAdressable& getMasterRef( void );
-
-    virtual const MultiDimAdressable& getMasterRef( void ) const;
 
     /// @}
     // =========================================================================
@@ -254,6 +252,16 @@ namespace gum {
 
     /// @}
 
+    /**
+     * @brief Returns the implementation for this object (may be *this).
+     */
+    virtual const MultiDimImplementation<GUM_SCALAR>* content() const final;
+
+    /**
+     * @brief Returns the implementation for this object (may be *this).
+     */
+    virtual MultiDimImplementation<GUM_SCALAR>* content() final;
+
     private:
     /// List of discrete variables (dimensions).
     Sequence<const DiscreteVariable*> __vars;
@@ -261,10 +269,10 @@ namespace gum {
     /// List of instantiations of the tuples (sequences) of variables.
     List<Instantiation*> __slaveInstantiations;
 
-    /// Used to represent in wich change method this MultiDimImplementation is.
+    /// Used to represent in which change method this MultiDimImplementation is.
     enum class __InternalChangeMethod : char { DIRECT_CHANGE, MULTIPLE_CHANGE };
 
-    /// Used to represent in wich change state this MultiDimImplementation is.
+    /// Used to represent in which change state this MultiDimImplementation is.
     enum class __InternalChangeState : char { NO_CHANGE, NOT_COMMITTED_CHANGE };
 
     /// The current change method.
@@ -287,7 +295,8 @@ namespace gum {
    * @ingroup multidim_group
    */
   template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream&, const MultiDimImplementation<GUM_SCALAR>& );
+  std::ostream& operator<<( std::ostream&,
+                            const MultiDimImplementation<GUM_SCALAR>& );
 
 } /* namespace gum */
 

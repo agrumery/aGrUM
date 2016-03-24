@@ -47,7 +47,7 @@ namespace gum_tests {
     public:
     gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float> *e_i1, *e_i4;
+    gum::Potential<float>* e_i1, *e_i4;
 
     float __epsilon{1e-6};
 
@@ -342,22 +342,14 @@ namespace gum_tests {
       }
 
       gum::LazyPropagation<float> inf5( bn );
-      inf5.setFindRelevantPotentialsType(
-          gum::LazyPropagation<
-              float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION );
+      inf5.setFindRelevantPotentialsType( gum::LazyPropagation<
+          float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION );
       TS_ASSERT_THROWS_NOTHING( inf5.insertEvidence( evidences ) );
       TS_ASSERT_THROWS_NOTHING( inf5.makeInference() );
       for ( auto node : bn.dag() ) {
         TS_ASSERT_THROWS_NOTHING( inf5.posterior( node ) );
         TS_ASSERT(
             equalPotentials( inf1.posterior( node ), inf5.posterior( node ) ) );
-      }
-
-      for ( auto node : bn.dag() ) {
-        inf1.clearInference();
-        TS_ASSERT_THROWS_NOTHING( inf1.posterior( node ) );
-        TS_ASSERT(
-            equalPotentials( inf1.posterior( node ), inf2.posterior( node ) ) );
       }
 
       for ( auto pot : evidences )
@@ -553,53 +545,23 @@ namespace gum_tests {
     private:
     // Builds a BN to test the inference
     void fill( gum::BayesNet<float>& bn ) {
-      const gum::Potential<float>& p1 = bn.cpt( i1 );
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;
-        const std::vector<float> v( t, t + n );
-        p1.fillWith( v );
-      }
-
-      const gum::Potential<float>& p2 = bn.cpt( i2 );
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;
-        const std::vector<float> v( t, t + n );
-        p2.fillWith( v );
-      }
-
-      const gum::Potential<float>& p3 = bn.cpt( i3 );
-      {
-        // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;
-        const std::vector<float> v( t, t + n );
-        p3.fillWith( v );
-      }
-
-      const gum::Potential<float>& p4 = bn.cpt( i4 );
-      {
-        // FILLING PARAMS
-        const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;
-        const std::vector<float> v( t, t + n );
-        p4.fillWith( v );
-      }
-
-      const gum::Potential<float>& p5 = bn.cpt( i5 );
-      {
-        // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
-                             0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
-                             0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0};
-        int n = 24;
-        const std::vector<float> v( t, t + n );
-        p5.fillWith( v );
-        // printProba(p5);
-      }
+      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
+      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
+      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn.cpt( i4 ).fillWith(  // clang-format off
+                  {0.4, 0.6,
+                   0.5, 0.5,
+                   0.5, 0.5,
+                   1.0, 0.0} );  // clang-format on
+      bn.cpt( i5 ).fillWith(  // clang-format off
+                  {0.3, 0.6, 0.1,
+                   0.5, 0.5, 0.0,
+                   0.5, 0.5, 0.0,
+                   1.0, 0.0, 0.0,
+                   0.4, 0.6, 0.0,
+                   0.5, 0.5, 0.0,
+                   0.5, 0.5, 0.0,
+                   0.0, 0.0, 1.0} );                                     // clang-format on
     }
 
     // Uncomment this to have some outputs.

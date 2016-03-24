@@ -30,12 +30,17 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <initializer_list>
 
 #include <agrum/config.h>
 
 #include <agrum/multidim/multiDimAdressable.h>
 
 namespace gum {
+  // needed for content()
+  template <typename GUM_SCALAR>
+  class MultiDimImplementation;
+
   // ==========================================================================
   // ===                             GUM_MULTI_DIM                          ===
   // ==========================================================================
@@ -98,6 +103,13 @@ namespace gum {
      * @param src The MultiDimContainer to copy.
      */
     MultiDimContainer( const MultiDimContainer<GUM_SCALAR>& src );
+    MultiDimContainer& operator=( const MultiDimContainer<GUM_SCALAR>& src );
+
+    /**
+     * @brief Class move constructor.
+     */
+    MultiDimContainer( MultiDimContainer<GUM_SCALAR>&& );
+    MultiDimContainer& operator=( MultiDimContainer<GUM_SCALAR>&& src );
 
     /**
      * @brief Destructor.
@@ -171,6 +183,26 @@ namespace gum {
      */
     virtual void fillWith( const std::vector<GUM_SCALAR>& v ) const;
 
+    /**
+     * @brief Automatically fills this MultiDimContainer with the values in
+     * l.
+     *
+     * The order used to fill this MultiDimContainer is the same as with an
+     * instantiation over it.
+     * @code
+     * Size cpt = 0;
+     * Instantiation i( *this );
+     * for (i.setFirst(); !i.end(); ++i, ++cpt) {
+     *   set(i, v[cpt]);
+     * }
+     * @endcode
+     *
+     * @param l contains the data.
+     * @throw SizeError Raised if l size's does not matches this
+     * MultiDimContainer domain size.
+     */
+    virtual void fillWith( std::initializer_list<GUM_SCALAR> list ) const;
+
     /// @}
     // =========================================================================
     /// @name Copy methods.
@@ -190,8 +222,37 @@ namespace gum {
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      */
+    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                           Instantiation* p_i = (Instantiation*)0 ) const;
+                           Instantiation* p_i ) const;
+
+    // beforeMerge dedicated copyFrom for MultiDimArray
+    // beforeMerge check move operator when p=p1+p2
+
+    /**
+     * @brief Returns the implementation for this object (may be *this).
+     */
+    virtual const MultiDimImplementation<GUM_SCALAR>* content() const = 0;
+
+    /**
+     * @brief Returns the implementation for this object (may be *this).
+     */
+    virtual MultiDimImplementation<GUM_SCALAR>* content() = 0;
+
+    /**
+     * @brief In order to insure the dereference for decorators, we need to
+     * virtualize the access to master pointer.
+     * @return Returns the ref to content as MultiDimAdressable&
+    */
+    virtual MultiDimAdressable& getMasterRef( void );
+
+    /**
+     * @brief In order to insure the dereference for decorators, we need to
+     * virtualize the access to master pointer.
+     * @return Returns the master of this MultiDimAdressable.
+    */
+    virtual const MultiDimAdressable& getMasterRef( void ) const;
+
 
     /**
      * @brief Removes all variables in this MultiDimContainer and copy the

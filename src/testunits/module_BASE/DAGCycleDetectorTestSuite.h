@@ -20,7 +20,6 @@
 
 #include <iostream>
 #include <chrono>
-#include <random>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
@@ -31,10 +30,9 @@
 namespace gum_tests {
 
   class DAGCycleDetectorTestSuite : public CxxTest::TestSuite {
-    private:
-    std::default_random_engine generator{gum::randomGeneratorSeed()};
 
     gum::DAG __createDAG( unsigned int nb_nodes, unsigned int nb_arcs ) {
+      std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAG dag;
       for ( unsigned int i = 0; i < nb_nodes; ++i ) {
         dag.addNode( i );
@@ -60,6 +58,7 @@ namespace gum_tests {
         std::vector<gum::DAGCycleDetector::Change>& changes,
         std::vector<gum::DAGCycleDetector::Change>& del_add_changes,
         unsigned int length ) {
+      std::default_random_engine generator = gum::getRandomGenerator();
       std::uniform_int_distribution<int> distrib_type( 0, 2 );
       std::uniform_int_distribution<int> distrib_node( 0, g.size() - 1 );
       std::uniform_int_distribution<int> distrib_arc( 0, g.size() * g.size() );
@@ -271,6 +270,7 @@ namespace gum_tests {
     }
 
     void testRandom() {
+      std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAGCycleDetector detector;
       std::vector<gum::DAGCycleDetector::Change> changes;
       std::vector<gum::DAGCycleDetector::Change> del_add_changes;

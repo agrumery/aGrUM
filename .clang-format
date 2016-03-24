@@ -32,6 +32,9 @@ PointerAlignment: Left
 AlignAfterOpenBracket: true
 AlignEscapedNewlinesLeft: true
 AlignTrailingComments: true
+#for clang-format-3.9
+#AlignConsecutiveAssignments: true
+#AlignConsecutiveDeclarations: true
 
 BinPackArguments: false
 BinPackParameters: false

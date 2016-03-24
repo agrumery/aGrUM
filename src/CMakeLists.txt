@@ -24,6 +24,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in" "${AGRUM_BINARY_D
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include(CocoR.agrum)
 if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+     message(STATUS "** aGrUM notification: Coco/R targets")
      CocoRTarget(core/math/cocoR SyntaxFormula gum:formula BASE)
      CocoRTarget(BN/io/UAI/cocoR SyntaxUAI gum:UAI BN)
      CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF BN)
@@ -35,6 +36,7 @@ if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 
+#collect all source files 
 buildFileListsWithModules()
 
 include_directories(BEFORE ${AGRUM_BINARY_DIR})

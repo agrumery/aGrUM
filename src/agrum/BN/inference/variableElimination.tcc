@@ -139,7 +139,7 @@ namespace gum {
       NodeId id, Potential<GUM_SCALAR>& marginal ) {
     __computeEliminationOrder();
     __createInitialPool();
-    Set<Potential<GUM_SCALAR>*> pool(__pool);
+    Set<Potential<GUM_SCALAR>*> pool( __pool );
 
     for ( size_t i = 0; i < __eliminationOrder.size(); ++i ) {
       if ( __eliminationOrder[i] != id ) {
@@ -147,31 +147,25 @@ namespace gum {
       }
     }
 
-    try {
-      pool.insert( const_cast<Potential<GUM_SCALAR>*>( __evidences[id] ) );
-    } catch ( NotFound& ) {
-      // No evidence on query
-    }
-
     std::vector<Potential<GUM_SCALAR>*> result;
-    for (auto pot: pool) {
-      if ( pot->contains( this->bn().variable(id) ) ) {
+    for ( auto pot : pool ) {
+      if ( pot->contains( this->bn().variable( id ) ) ) {
         result.push_back( pot );
       }
     }
 
-    while (result.size() > 1) {
-      auto &p1 = *(result.back());
+    while ( result.size() > 1 ) {
+      auto& p1 = *( result.back() );
       result.pop_back();
-      auto &p2 = *(result.back());
+      auto& p2 = *( result.back() );
       result.pop_back();
-      auto mult = new Potential<GUM_SCALAR>(p1 * p2);
+      auto mult = new Potential<GUM_SCALAR>( p1 * p2 );
       result.push_back( mult );
       __trash.insert( mult );
     }
 
     // Copy result in marginal
-    marginal = *(result.back());
+    marginal = *( result.back() );
     marginal.normalize();
 
     // Cleaning up the mess
@@ -221,42 +215,42 @@ namespace gum {
       Set<Potential<GUM_SCALAR>*>& pool,
       Set<Potential<GUM_SCALAR>*>& trash ) {
     // THIS IS A (TEMPLATIZED) COPY OF prm::eliminateNode
-    {
-      const gum::DiscreteVariable* var = &( this->bn().variable( id ) );
+    const gum::DiscreteVariable* var = &( this->bn().variable( id ) );
 
-      Potential<GUM_SCALAR>* pot = 0;
-      Potential<GUM_SCALAR>* tmp = 0;
-      Set<const DiscreteVariable*> var_set;
-      var_set.insert( var );
-      Set<const Potential<GUM_SCALAR>*> pots;
+    Potential<GUM_SCALAR> result;
+    Set<const DiscreteVariable*> var_set;
+    var_set.insert( var );
+    Set<const Potential<GUM_SCALAR>*> factors;
 
-      for ( auto pot : pool )
-        if ( pot->contains( *var ) ) pots.insert( pot );
+    for ( auto pot : pool )
+      if ( pot->contains( *var ) ) factors.insert( pot );
 
-      if ( pots.size() == 0 ) {
-        return;
-      } else if ( pots.size() == 1 ) {
-        pot =
-            new Potential<GUM_SCALAR>( projectSum( **pots.begin(), var_set ) );
-      } else {
-        MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb( multPotential );
-        tmp = Comb.combine( pots );
-        pot = new Potential<GUM_SCALAR>( projectSum( *tmp, var_set ) );
-        delete tmp;
-      }
-
-      for ( auto pot : pots ) {
-        pool.erase( const_cast<Potential<GUM_SCALAR>*>( pot ) );
-
-        if ( trash.exists( const_cast<Potential<GUM_SCALAR>*>( pot ) ) ) {
-          trash.erase( const_cast<Potential<GUM_SCALAR>*>( pot ) );
-          delete const_cast<Potential<GUM_SCALAR>*>( pot );
-        }
-      }
-
-      pool.insert( pot );
-      trash.insert( pot );
+    if ( factors.size() == 0 ) {
+      return;
+    } else if ( factors.size() == 1 ) {
+      result = ( *factors.begin() )->margSumOut( var_set );
+    } else {
+      MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb( [](
+          const Potential<GUM_SCALAR>& t1, const Potential<GUM_SCALAR>& t2 ) {
+        return new Potential<GUM_SCALAR>( t1 * t2 );
+      } );
+      auto tmp = Comb.combine( factors );
+      result = tmp->margSumOut( var_set );
+      delete tmp;
     }
+
+    for ( auto pot : factors ) {
+      pool.erase( const_cast<Potential<GUM_SCALAR>*>( pot ) );
+
+      if ( trash.exists( const_cast<Potential<GUM_SCALAR>*>( pot ) ) ) {
+        trash.erase( const_cast<Potential<GUM_SCALAR>*>( pot ) );
+        delete const_cast<Potential<GUM_SCALAR>*>( pot );
+      }
+    }
+
+    auto pot = new Potential<GUM_SCALAR>( result );
+    pool.insert( pot );
+    trash.insert( pot );
   }
 
 } /* namespace gum */

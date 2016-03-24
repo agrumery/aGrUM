@@ -19,10 +19,10 @@ installdebug:
 	$(ACT) install debug aGrUM 
 
 test:
-	$(ACT) test release 
+	$(ACT) test release aGrUM
 
 testdebug:
-	$(ACT) test debug 
+	$(ACT) test debug aGrUM
 
 testall:
 	$(ACT) test release -t all -m all 
@@ -37,7 +37,10 @@ rundebug:
 	$(ACT) run debug 
 
 pyAgrum:
-	$(ACT) wrapper pyAgrum 
+	$(ACT) install release pyAgrum 
+
+testpyAgrum:
+	$(ACT) install test pyAgrum 
 
 clean:
 	$(ACT) clean

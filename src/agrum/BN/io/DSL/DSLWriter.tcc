@@ -151,14 +151,10 @@ namespace gum {
     oss << "\t\t\tPROBABILITIES = (";
     i = 0;
 
-    for ( Instantiation iter = bn.cpt( id ).getMasterRef();
-          i < bn.cpt( id ).domainSize();
-          ++iter ) {
+    Instantiation iter( *bn.cpt( id ).content() );
+    for ( iter.setFirst(); i < bn.cpt( id ).domainSize(); ++iter,++i ) {
       if ( i != 0 ) oss << ", ";
-
       oss << bn.cpt( id )[iter];
-
-      i++;
     }
 
     oss << ");\n";

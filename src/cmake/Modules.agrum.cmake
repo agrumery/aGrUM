@@ -7,7 +7,7 @@ foreach(OPTION ${MODULES})
 endforeach()
 
 ############### DEPENDENCIES BETWEEN OPTIONS ################
-message(STATUS "** aGrUM Notification: Checking dependencies :")
+message(STATUS "** aGrUM Notification: Checking dependencies ...")
 set(CHECK_DEPS 1)
 while ( ${CHECK_DEPS} EQUAL 1)
   set(CHECK_DEPS 0)
@@ -86,9 +86,9 @@ set(AGRUM_INLINES ${AGRUM_BASE_INLINES})
 set(AGRUM_TEMPLATES ${AGRUM_BASE_TEMPLATES})
 
 if(BUILD_ALL)
-  message(STATUS "** aGrUM Notification: Building all :")
+  message(STATUS "** aGrUM Notification: Building all")
 else()
-  message(STATUS "** aGrUM Notification: Building specific modules :")
+  message(STATUS "** aGrUM Notification: Building specific modules")
 endif()
 
 #this macro has to be executed when recolt of module file lists is finished (after CocoR targets for instance)
@@ -105,4 +105,3 @@ macro(buildFileListsWithModules)
     endif()
   endforeach()
 endmacro(buildFileListsWithModules)
-

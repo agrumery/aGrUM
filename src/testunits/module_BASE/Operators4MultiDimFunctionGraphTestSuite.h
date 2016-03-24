@@ -190,7 +190,6 @@ namespace gum_tests {
         double lowLimit = -100,
         double highLimit = 100 ) {
 
-      srand( time( NULL ) );
       gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList );
 
       return gene.generate();

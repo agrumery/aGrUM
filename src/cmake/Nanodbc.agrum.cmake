@@ -11,6 +11,7 @@ set(NANODBC_ENABLE_LIBCXX "Use libc++ if available." ON) # ON)
 
 
 if(USE_NANODBC)
+	INCLUDE (CheckIncludeFileCXX)
 	CHECK_INCLUDE_FILE_CXX("sql.h" HAVE_SQLHEADER)
 	IF(NOT HAVE_SQLHEADER)
 		set(USE_NANODBC OFF)
@@ -70,7 +71,7 @@ if (USE_NANODBC)
 			set(USE_NANODBC OFF)
 	    message(STATUS "** aGrUM Notification: Can not find a suitable ODBC driver manager. Nanodbc support is OFF.")
 	  else()
-	    message(STATUS "** aGrUM Notification: Found a suitable ODBC driver manager ")
+	    message(STATUS "** aGrUM Notification: ODBC driver manager found")
 		endif()
 
 	endif(UNIX)

@@ -170,7 +170,6 @@ class TestIndexs(PotentialTestCase):
 
         self.assertListsAlmostEqual(list3[:,0].tolist(), list3[:,0,:].tolist())
 
-
     def testDictIndex(self):
         bn = gum.BayesNet()
         id_list = []
@@ -205,6 +204,168 @@ class TestIndexs(PotentialTestCase):
 
         self.assertListsAlmostEqual(list2.toarray(), np.array([[0.1, 0.6],[0.9,0.4]]))
 
+class TestOperators(pyAgrumTestCase):        
+  def testSimpleOperators(self):
+    a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    q=gum.Potential()
+    q.add(b).add(c)
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    self.assertEqual((p+q).var_names,['a','c','b'])
+    self.assertEqual((q+p).var_names,['c','a','b'])
+    self.assertEqual((p+q).tolist(), [[[2.0, 6.0, 10.0], [5.0, 9.0, 13.0], [8.0, 12.0, 16.0]], [[3.0, 7.0, 11.0], [6.0, 10.0, 14.0], [9.0, 13.0, 17.0]], [[4.0, 8.0, 12.0], [7.0, 11.0, 15.0], [10.0, 14.0, 18.0]]])    
+    self.assertEqual((q+p).tolist(), [[[2.0, 6.0, 10.0], [3.0, 7.0, 11.0], [4.0, 8.0, 12.0]], [[5.0, 9.0, 13.0], [6.0, 10.0, 14.0], [7.0, 11.0, 15.0]], [[8.0, 12.0, 16.0], [9.0, 13.0, 17.0], [10.0, 14.0, 18.0]]])
+        
+    self.assertEqual((p-q).var_names,['a','c','b'])
+    self.assertEqual((q-p).var_names,['c','a','b'])
+    self.assertEqual((p-q).tolist(),[[[0.0, 2.0, 4.0], [-3.0, -1.0, 1.0], [-6.0, -4.0, -2.0]], [[1.0, 3.0, 5.0], [-2.0, 0.0, 2.0], [-5.0, -3.0, -1.0]], [[2.0, 4.0, 6.0], [-1.0, 1.0, 3.0], [-4.0, -2.0, 0.0]]])    
+    self.assertEqual((q-p).tolist(),[[[0.0, -2.0, -4.0], [-1.0, -3.0, -5.0], [-2.0, -4.0, -6.0]], [[3.0, 1.0, -1.0], [2.0, 0.0, -2.0], [1.0, -1.0, -3.0]], [[6.0, 4.0, 2.0], [5.0, 3.0, 1.0], [4.0, 2.0, 0.0]]])
+    
+    self.assertEqual((p*q).var_names,['a','c','b'])
+    self.assertEqual((q*p).var_names,['c','a','b'])    
+    self.assertEqual((p*q).tolist(),[[[1.0, 8.0, 21.0], [4.0, 20.0, 42.0], [7.0, 32.0, 63.0]], [[2.0, 10.0, 24.0], [8.0, 25.0, 48.0], [14.0, 40.0, 72.0]], [[3.0, 12.0, 27.0], [12.0, 30.0, 54.0], [21.0, 48.0, 81.0]]])    
+    self.assertEqual((q*p).tolist(),[[[1.0, 8.0, 21.0], [2.0, 10.0, 24.0], [3.0, 12.0, 27.0]], [[4.0, 20.0, 42.0], [8.0, 25.0, 48.0], [12.0, 30.0, 54.0]], [[7.0, 32.0, 63.0], [14.0, 40.0, 72.0], [21.0, 48.0, 81.0]]])
+    
+    
+    self.assertEqual((p/q).var_names,['a','c','b'])
+    self.assertEqual((q/p).var_names,['c','a','b'])    
+    self.assertEqual((p/q).tolist(),[[[1.0, 2.0, 2.3333333333333335], [0.25, 0.8, 1.1666666666666667], [0.14285714285714285, 0.5, 0.7777777777777778]], [[2.0, 2.5, 2.6666666666666665], [0.5, 1.0, 1.3333333333333333], [0.2857142857142857, 0.625, 0.8888888888888888]], [[3.0, 3.0, 3.0], [0.75, 1.2, 1.5], [0.42857142857142855, 0.75, 1.0]]])    
+    self.assertEqual((q/p).tolist(),[[[1.0, 0.5, 0.42857142857142855], [0.5, 0.4, 0.375], [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]], [[4.0, 1.25, 0.8571428571428571], [2.0, 1.0, 0.75], [1.3333333333333333, 0.8333333333333334, 0.6666666666666666]], [[7.0, 2.0, 1.2857142857142858], [3.5, 1.6, 1.125], [2.3333333333333335, 1.3333333333333333, 1.0]]])
+    
+    z=p*q-p/q
+    self.assertEqual(z.var_names,['a','c','b'])
+    self.assertEqual(z.tolist(),[[[0.0, 6.0, 18.666666666666668], [3.75, 19.2, 40.833333333333336], [6.857142857142857, 31.5, 62.22222222222222]], [[0.0, 7.5, 21.333333333333332], [7.5, 24.0, 46.666666666666664], [13.714285714285714, 39.375, 71.11111111111111]], [[0.0, 9.0, 24.0], [11.25, 28.8, 52.5], [20.571428571428573, 47.25, 80.0]]])
+ 
+    self.assertEqual((p+q).sum(),270)
+    self.assertEqual((p+q).max(),18)
+  
+  def testEquality(self):
+    a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]    
+    q=gum.Potential()
+    q.add(b).add(c)
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    p=gum.Potential() #same data, difference dims
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    r=gum.Potential() #same data, same dims
+    r.add(a).add(b)
+    r.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    t=gum.Potential() #same dims, different data
+    t.add(a).add(b)
+    t.fillWith([1,2,3,0,5,6,7,8,9])
+    
+    u=gum.Potential() #same dims, same data, different order
+    u.add(b).add(a)
+    u.fillWith([1,4,7,2,5,8,3,6,9])
+    
+    self.assertTrue(p==p)
+    self.assertFalse(p==q)
+    self.assertTrue(p==r)
+    self.assertFalse(p==t)
+    self.assertTrue(p==u)
+        
+    self.assertFalse(p!=p)
+    self.assertTrue(p!=q)
+    self.assertFalse(p!=r)
+    self.assertTrue(p!=t)
+    self.assertFalse(p!=u)
+    
+    
+  def testSimpleInPLaceOperators(self):
+    a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]    
+    q=gum.Potential()
+    q.add(b).add(c)
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])    
+    z=p+q
+    p+=q
+    self.assertEquals(z.tolist(),p.tolist())
+    
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])    
+    z=p-q
+    p-=q
+    self.assertEquals(z.tolist(),p.tolist())
+    
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])    
+    z=p*q
+    p*=q
+    self.assertEquals(z.tolist(),p.tolist())
+    
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])    
+    z=p/q
+    p/=q
+    self.assertEquals(z.tolist(),p.tolist())
+    
+  def testMargOutOperators(self):
+    a,b,c,d=[gum.LabelizedVariable(s,s,3) for s in "abcd"]
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])
+    p.normalize()
+    
+    q=gum.Potential()
+    q.add(c).add(d)
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    q.normalize()
+    
+    joint=p*q
+    
+    margAB=joint.margSumOut(["c","d"])
+    self.assertEquals(margAB.var_names,p.var_names)
+    self.assertEquals(margAB.tolist(),p.tolist())
+    
+    margCD=joint.margSumOut(["b","a","x"]) # note the vars in a different order and with one not present in the potential
+    self.assertEquals(margCD.var_names,q.var_names)
+    self.assertEquals(margCD.tolist(),q.tolist())
+    
+    p.fillWith([1,2,3,4,5,6,7,8,9])
+    self.assertEquals(p.margProdOut(["a"]).tolist(),[6,120,504])
+    self.assertEquals(p.margProdOut(["b"]).tolist(),[28,80,162])
+    self.assertEquals(p.margMaxOut(["a"]).tolist(),[3,6,9])
+    self.assertEquals(p.margMaxOut(["b"]).tolist(),[7,8,9])
+    self.assertEquals(p.margMinOut(["a"]).tolist(),[1,4,7])
+    self.assertEquals(p.margMinOut(["b"]).tolist(),[1,2,3])
+    
+  def testMargInOperators(self):
+    a,b,c,d=[gum.LabelizedVariable(s,s,3) for s in "abcd"]
+    p=gum.Potential()
+    p.add(a).add(b)
+    p.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    q=gum.Potential()
+    q.add(c).add(d)
+    q.fillWith([1,2,3,4,5,6,7,8,9])
+    
+    joint=p*q
+    
+    self.assertEquals(joint.margSumIn(['a','b']),joint.margSumOut(['c','d']))
+    self.assertEquals(joint.margSumIn(['b','a']),joint.margSumOut(['c','d']))
+    self.assertEquals(joint.margSumIn(['a','b']),joint.margSumOut(['d','c']))
+    self.assertEquals(joint.margSumIn(['b','a']),joint.margSumOut(['d','c']))
+    
+    self.assertEquals(joint.margProdIn(['a','b']),joint.margProdOut(['c','d']))
+    
+    self.assertEquals(joint.margMaxIn(['a','b']),joint.margMaxOut(['c','d']))
+    
+    self.assertEquals(joint.margMinIn(['a','b']),joint.margMinOut(['c','d']))
+
+
 
 
 ts = unittest.TestSuite()
@@ -215,3 +376,9 @@ ts.addTest(TestInsertions('testWithInstantiation'))
 ts.addTest(TestInsertions('testCopyConstructor'))
 ts.addTest(TestIndexs('testNumpyIndex'))
 ts.addTest(TestIndexs('testDictIndex'))
+ts.addTest(TestIndexs('testDictIndex'))
+ts.addTest(TestOperators('testSimpleOperators'))
+ts.addTest(TestOperators('testEquality'))
+ts.addTest(TestOperators('testSimpleInPLaceOperators'))
+ts.addTest(TestOperators('testMargOutOperators'))
+ts.addTest(TestOperators('testMargInOperators'))

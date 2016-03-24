@@ -24,12 +24,12 @@
  * MultiDimProjection is a generic wrapper designed to project efficiently a
  * multidimensional object over a subset of its variables.
  *
- * By multidimensional objects, we mean of course MultiDimDecorators,
- * MultiDimImplementations, but also more complex objects such as, for instance,
- * pairs of MultiDimDecorators the first one of which being a utility function
-*and
+ * By multidimensional objects, we mean of course MultiDimImplementations,
+ * but also more complex objects such as, for instance,
+ * pairs of MultiDimImplementations the first one of which being a utility function
+ * and
  * the second one being a table of instantiations (useful, e.g., for computing
-* MPE's) but this can also be a pair (Utility,Potential) for the inference in
+ * MPE's) but this can also be a pair (Utility,Potential) for the inference in
  * an Influence Diagram.
  *
  * To be quite generic, the MultiDimProjection takes in argument the function
@@ -73,7 +73,8 @@
 namespace gum {
 
   template <typename GUM_SCALAR, template <typename> class TABLE>
-  class MultiDimProjection {
+  class
+  MultiDimProjection {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

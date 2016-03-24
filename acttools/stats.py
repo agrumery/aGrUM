@@ -24,6 +24,8 @@
 from __future__ import print_function
 import sys
 import glob
+from math import sqrt
+from time import localtime
 from subprocess import PIPE, Popen, STDOUT,call
 
 from .configuration import cfg
@@ -32,7 +34,6 @@ from .utils import safe_cd
 from .invocation import getInvocation
 from .builder import getCmake,getMake,getPost
 
-from math import sqrt
 
 def simple_stats(n,s,s2):
   return (s/n),sqrt(s2/n-pow(s/n,2))
@@ -70,7 +71,7 @@ def profileAgrum(current):
   notif("[{0} runs] (please be patient) ...".format(cfg.nbr_tests_for_stats))
   sdt=0
   sdt2=0
-  print("--   n :     time       mean        stdev")
+  print("--   n :     duration   mean      stdev   final time")
   for i in range(cfg.nbr_tests_for_stats):
     proc=Popen(po,shell=True,stdout=PIPE,stderr=STDOUT)
 
@@ -83,7 +84,7 @@ def profileAgrum(current):
     sdt+=dt
     sdt2+=dt*dt
     mean,stdev=simple_stats(i+1,sdt,sdt2)
-    notif(" {0:2} : [{1:10.3f}] [{2:10.3f}] [{3:10.3f}]".format(i,dt,mean,stdev)) #sdt/(i+1),sdt2/(i+1)))
+    notif(" {0:2} : [{1:10.3f}] [{2:10.3f}] [{3:10.3f}]   {4}:{5}".format(i,dt,mean,stdev,localtime().tm_hour,localtime().tm_min)) #sdt/(i+1),sdt2/(i+1)))
 
   safe_cd(current,"..")
   safe_cd(current,"..")

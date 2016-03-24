@@ -1,10 +1,10 @@
-project(HOWTO_BUILD_SIMPLE_BN)
+project(OPERATIONS_WITH_POTENTIAL)
 cmake_minimum_required(VERSION 2.8)
 # classical options 
 # -DCMAKE_BUILD_TYPE=DEBUG|RELEASE 
 # -G "MinGW Makefiles" 
 
-include("${HOWTO_BUILD_SIMPLE_BN_SOURCE_DIR}/../config.txt")
+include("${OPERATIONS_WITH_POTENTIAL_SOURCE_DIR}/../config.txt")
 if (NOT DEFINED aGrUM_DIR)
   set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 endif ()
@@ -30,10 +30,10 @@ else ()
   message(STATUS  "default version : ${CMAKE_BUILD_TYPE}")
 endif()
 
-file(GLOB HOWTO_BUILD_SIMPLE_BN_SOURCE ${HOWTO_BUILD_SIMPLE_BN_SOURCE_DIR}/*.cpp)
-file(GLOB HOWTO_BUILD_SIMPLE_BN_INCLUDE ${HOWTO_BUILD_SIMPLE_BN_SOURCE_DIR}/*.h)
+file(GLOB OPERATIONS_WITH_POTENTIAL_SOURCE ${OPERATIONS_WITH_POTENTIAL_SOURCE_DIR}/*.cpp)
+file(GLOB OPERATIONS_WITH_POTENTIAL_INCLUDE ${OPERATIONS_WITH_POTENTIAL_SOURCE_DIR}/*.h)
 
-add_executable (buildSimpleBN ${HOWTO_BUILD_SIMPLE_BN_SOURCE})
-target_link_libraries(buildSimpleBN ${AGRUM_LIBRARIES_${CMAKE_BUILD_TYPE}})
-install (TARGETS buildSimpleBN DESTINATION bin)
+add_executable (operationsWithPotentials ${OPERATIONS_WITH_POTENTIAL_SOURCE})
+target_link_libraries(operationsWithPotentials ${AGRUM_LIBRARIES_${CMAKE_BUILD_TYPE}})
+install (TARGETS operationsWithPotentials DESTINATION bin)
 

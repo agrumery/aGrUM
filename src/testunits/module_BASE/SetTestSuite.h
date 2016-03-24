@@ -559,6 +559,12 @@ namespace gum_tests {
       TS_ASSERT( iter7 == t1.begin() + 3 );
     }
 
+    void testInitializerList() {
+      gum::Set<int> t{1};
+      TS_ASSERT_EQUALS( t.size(), 1u );
+      TS_ASSERT_EQUALS(t.toString(),"{1}");
+    }
+
     private:
     template <typename Alloc = std::allocator<int>>
     void fill( gum::Set<int, Alloc>& set ) {

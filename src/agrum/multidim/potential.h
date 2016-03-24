@@ -1,3 +1,5 @@
+//@beforeMerge working on setEvidence in pyAgrum
+
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -71,32 +73,32 @@ namespace gum {
      * @brief Creates an potential around aContent.
      * @param aContent The implementation of this Potential.
      */
-    explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent );
-
-    /**
-     * @brief Copy constructor.
-     * @param src The Potential to copy.
-     */
-    explicit Potential( const Potential<GUM_SCALAR>& src );
+    Potential( MultiDimImplementation<GUM_SCALAR>* aContent );
 
     /**
      * @brief Copy constructor.
      *
      * The newly created Potential share the variables and the values
-     * from src, but no instantiation is associated to it.
+     * from src, but no instantiation is associated to it. It allows to force
+     * the chosen implementation and to copy the data from src.
      *
      * @param aContent The implementation to use in this Potential.
      * @param src The MultiDimContainer to copy.
      */
-    explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
-                        const MultiDimContainer<GUM_SCALAR>& src );
+    Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
+               const MultiDimContainer<GUM_SCALAR>& src );
+    /**
+     * @brief Copy constructor & assignment
+     */
+    Potential( const Potential<GUM_SCALAR>& src );
+    Potential<GUM_SCALAR>& operator=( const Potential<GUM_SCALAR>& src );
 
     /**
-     * @brief Copy operator.
-     *
-     * @param src The Potential to copy.
-     */
-    Potential<GUM_SCALAR>& operator=( const Potential<GUM_SCALAR>& src );
+     * move constructor & assignement
+     **/
+    Potential( Potential<GUM_SCALAR>&& from );
+    Potential<GUM_SCALAR>& operator=( Potential<GUM_SCALAR>&& src );
+
 
     /**
      * @brief Destructor.
@@ -122,18 +124,117 @@ namespace gum {
     /// normalisation of this do nothing if sum is 0
     Potential<GUM_SCALAR>& normalize() const;
 
-    /// sum of all elements in this
-    const GUM_SCALAR sum() const;
+    /**
+     * Projection using sum as operation (and implementation-optimized
+     * operations)
+     * @param del_vars is the set of vars to eliminate
+     * @param kept_vars is the set of vars to keep
+     */
+    Potential<GUM_SCALAR>
+    margSumOut( const Set<const DiscreteVariable*>& del_vars ) const;
+    Potential<GUM_SCALAR>
+    margSumIn( const Set<const DiscreteVariable*>& kept_vars ) const;
+
+    /**
+     * Projection using multiplication as operation (and
+     * implementation-optimized operations)
+     * @param del_vars is the set of vars to eliminate
+     * @param kept_vars is the set of vars to keep
+     */
+    Potential<GUM_SCALAR>
+    margProdOut( const Set<const DiscreteVariable*>& del_vars ) const;
+    Potential<GUM_SCALAR>
+    margProdIn( const Set<const DiscreteVariable*>& kept_vars ) const;
+
+    /**
+     * Projection using min as operation (and implementation-optimized
+     * operations)
+     * @param del_vars is the set of vars to eliminate
+     * @param kept_vars is the set of vars to keep
+     */
+    Potential<GUM_SCALAR>
+    margMinOut( const Set<const DiscreteVariable*>& del_vars ) const;
+    Potential<GUM_SCALAR>
+    margMinIn( const Set<const DiscreteVariable*>& kept_vars ) const;
+
+    /**
+     * Projection using max as operation (and implementation-optimized
+     * operations)
+     * @param del_vars is the set of vars to eliminate
+     * @param kept_vars is the set of vars to keep
+     */
+    Potential<GUM_SCALAR>
+    margMaxOut( const Set<const DiscreteVariable*>& del_vars ) const;
+    Potential<GUM_SCALAR>
+    margMaxIn( const Set<const DiscreteVariable*>& kept_vars ) const;
+
+
+    /// sum of all elements in the Potential
+    GUM_SCALAR sum() const;
+    /// product of all elements in the Potential
+    GUM_SCALAR product() const;
+    /// max of all elements in the Potential
+    GUM_SCALAR max() const;
+    /// min of all elements in the Potential
+    GUM_SCALAR min() const;
+
+    ///@}
+
+    // ========================================================================
+    /// @name Potential algebra operators
+    // ========================================================================
+    ///@{
+
+
+    /// the function to be used to add two Potentials
+    Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p2 ) const {
+      return Potential<GUM_SCALAR>( *this->content() + *p2.content() );
+    }
+
+    /// the function to be used to subtract two Potentials
+    Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p2 ) const {
+      return Potential<GUM_SCALAR>( *this->content() - *p2.content() );
+    }
+
+    /// the function to be used to multiply two Potentials
+    Potential<GUM_SCALAR> operator*( const Potential<GUM_SCALAR>& p2 ) const {
+      return Potential<GUM_SCALAR>( *this->content() * *p2.content() );
+    }
+
+    /// the function to be used to divide two Potentials
+    Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p2 ) const {
+      return Potential<GUM_SCALAR>( *this->content() / *p2.content() );
+    }
+
+    Potential<GUM_SCALAR>& operator+=( const Potential<GUM_SCALAR>& r ) {
+      *this = *this + r;
+      return *this;
+    }
+
+    Potential<GUM_SCALAR>& operator*=( const Potential<GUM_SCALAR>& r ) {
+      *this = *this* r;
+      return *this;
+    }
+
+    Potential<GUM_SCALAR>& operator-=( const Potential<GUM_SCALAR>& r ) {
+      *this = *this - r;
+      return *this;
+    }
+
+    Potential<GUM_SCALAR>& operator/=( const Potential<GUM_SCALAR>& r ) {
+      *this = *this / r;
+      return *this;
+    }
     ///@}
 
     protected:
-
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+
+    Set<const DiscreteVariable*>
+    _complementVars( const Set<const DiscreteVariable*>& del_vars ) const;
   };
 
 } /* namespace gum */
 
 #include <agrum/multidim/potential.tcc>
-
 #endif /* GUM_POTENTIAL_H */
-

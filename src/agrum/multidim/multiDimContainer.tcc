@@ -26,12 +26,17 @@
 
 #include <agrum/config.h>
 
-#include <agrum/multidim/multiDimContainer.h>
 
 namespace gum {
 
-  // Default constructor
+  template <typename GUM_SCALAR>
+  INLINE MultiDimContainer<GUM_SCALAR>::MultiDimContainer(
+      MultiDimContainer<GUM_SCALAR>&& from )
+      : MultiDimAdressable( std::forward<const MultiDimAdressable&&>( from ) ) {
+    GUM_CONS_MOV( MultiDimContainer );
+  }
 
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>::MultiDimContainer()
       : MultiDimAdressable() {
@@ -39,12 +44,24 @@ namespace gum {
   }
 
   // Copy constructor
-
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>::MultiDimContainer(
       const MultiDimContainer<GUM_SCALAR>& src )
       : MultiDimAdressable( src ) {
     GUM_CONS_CPY( MultiDimContainer );
+  }
+  template <typename GUM_SCALAR>
+  INLINE MultiDimContainer<GUM_SCALAR>& MultiDimContainer<GUM_SCALAR>::
+  operator=( const MultiDimContainer<GUM_SCALAR>& from ) {
+    MultiDimAdressable::operator=( from );
+    return *this;
+  }
+  template <typename GUM_SCALAR>
+  INLINE MultiDimContainer<GUM_SCALAR>& MultiDimContainer<GUM_SCALAR>::
+  operator=( MultiDimContainer<GUM_SCALAR>&& from ) {
+    GUM_OP_MOV( MultiDimContainer );
+    MultiDimAdressable::operator=( std::forward<MultiDimAdressable&&>( from ) );
+    return *this;
   }
 
   // destructor
@@ -85,19 +102,23 @@ namespace gum {
   const std::string MultiDimContainer<GUM_SCALAR>::toString() const {
     // we create a new instantiation and iterate over it to display the whole
     // content of the array
+    if ( this->nbrDim() == 0 ) {
+      return "[]";
+    }
+
     std::stringstream ss;
-    Instantiation myinst( const_cast<MultiDimContainer*>( this ) );
+    Instantiation inst( const_cast<MultiDimContainer*>( this ) );
 
     bool first = true;
 
-    for ( myinst.setFirst(); !myinst.end(); ++myinst ) {
+    for ( inst.setFirst(); !inst.end(); ++inst ) {
+
       if ( !first ) {
         ss << " /";
       }
-
       first = false;
 
-      ss << myinst << " :: " << get( myinst );
+      ss << inst << " :: " << get( inst );
     }
 
     return ss.str();
@@ -145,7 +166,6 @@ namespace gum {
   }
 
   // automation fill with vector.
-
   template <typename GUM_SCALAR>
   void MultiDimContainer<GUM_SCALAR>::fillWith(
       const std::vector<GUM_SCALAR>& v ) const {
@@ -161,28 +181,55 @@ namespace gum {
       set( i, v[cpt] );
   }
 
+  template <typename GUM_SCALAR>
+  void MultiDimContainer<GUM_SCALAR>::fillWith(
+      std::initializer_list<GUM_SCALAR> l ) const {
+    if ( domainSize() != l.size() ) {
+      GUM_ERROR( SizeError, "Sizes does not match in fillWith" );
+    }
+
+    Instantiation i( *this );
+    // insert all the elements
+    for ( const auto& elt : l ) {
+      set( i, elt );
+      ++i;
+    }
+  }
+
   // copyFrom
 
   template <typename GUM_SCALAR>
   void MultiDimContainer<GUM_SCALAR>::copyFrom(
       const MultiDimContainer<GUM_SCALAR>& src, Instantiation* p_i ) const {
+
+    if ( p_i == nullptr ) {
+      copyFrom( src );
+    }
+
     if ( src.domainSize() != domainSize() ) {
-      GUM_ERROR( OperationNotAllowed, "Domain size do not fit" );
+      GUM_ERROR( OperationNotAllowed, "Domain sizes do not fit" );
+    }
+
+    Instantiation i_dest( *this );
+    Instantiation i_src( src );
+    for ( i_dest.setFirst(), i_src.setFirst(); !i_dest.end();
+          i_dest.incIn( *p_i ), ++i_src ) {
+      set( i_dest, src[i_src] );
+    }
+  }
+  template <typename GUM_SCALAR>
+  void MultiDimContainer<GUM_SCALAR>::copyFrom(
+      const MultiDimContainer<GUM_SCALAR>& src ) const {
+    if ( src.domainSize() != domainSize() ) {
+      GUM_ERROR( OperationNotAllowed, "Domain sizes do not fit" );
     }
 
     Instantiation i_dest( *this );
     Instantiation i_src( src );
 
-    if ( p_i == (Instantiation*)0 ) {
-      for ( i_dest.setFirst(), i_src.setFirst(); !i_dest.end();
-            ++i_dest, ++i_src ) {
-        set( i_dest, src[i_src] );
-      }
-    } else {
-      for ( i_dest.setFirst(), i_src.setFirst(); !i_dest.end();
-            i_dest.incIn( *p_i ), ++i_src ) {
-        set( i_dest, src[i_src] );
-      }
+    for ( i_dest.setFirst(), i_src.setFirst(); !i_dest.end();
+          ++i_dest, ++i_src ) {
+      set( i_dest, src[i_src] );
     }
   }
 
@@ -204,8 +251,19 @@ namespace gum {
     }
 
     this->endMultipleChanges();
-
     this->copyFrom( src );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE MultiDimAdressable&
+  MultiDimContainer<GUM_SCALAR>::getMasterRef( void ) {
+    return static_cast<MultiDimAdressable&>( *content() );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE const MultiDimAdressable&
+  MultiDimContainer<GUM_SCALAR>::getMasterRef( void ) const {
+    return static_cast<const MultiDimAdressable&>( *content() );
   }
 
   // display the content of an array

@@ -60,7 +60,8 @@ namespace gum_tests {
         bn.addArc( idList[1], idList[4] );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -70,44 +71,33 @@ namespace gum_tests {
 
       try {
 
-        bn.cpt( idList[0] ).fillWith( std::vector<float>{0.2, 0.8} );
+        bn.cpt( idList[0] ).fillWith( {0.2, 0.8} );
 
-        bn.cpt( idList[1] ).fillWith( std::vector<float>{0.3, 0.7} );
+        bn.cpt( idList[1] ).fillWith( {0.3, 0.7} );
 
-        bn.cpt( idList[2] ).fillWith( std::vector<float>{0.1, 0.9, 0.9, 0.1} );
+        bn.cpt( idList[2] ).fillWith( {0.1, 0.9, 0.9, 0.1} );
 
         bn.cpt( idList[3] )
-            .fillWith(
-                std::vector<float>{0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0} );
+            .fillWith(  // clang-format off
+                           {0.4, 0.6,
+                            0.5, 0.5,
+                            0.5, 0.5,
+                            1.0, 0.0} );  // clang-format on
 
         bn.cpt( idList[4] )
-            .fillWith( std::vector<float>{0.3,
-                                          0.6,
-                                          0.1,
-                                          0.5,
-                                          0.5,
-                                          0.0,
-                                          0.5,
-                                          0.5,
-                                          0.0,
-                                          1.0,
-                                          0.0,
-                                          0.0,
-                                          0.4,
-                                          0.6,
-                                          0.0,
-                                          0.5,
-                                          0.5,
-                                          0.0,
-                                          0.5,
-                                          0.5,
-                                          0.0,
-                                          0.0,
-                                          0.0,
-                                          1.0} );
+            .fillWith(  // clang-format off
+                      {0.3,0.6,0.1,
+                       0.5,0.5,0.0,
+                       0.5,0.5,0.0,
+                       1.0,0.0,0.0,
+                       0.4,0.6,0.0,
+                       0.5,0.5,0.0,
+                       0.5,0.5,0.0,
+                       0.0,0.0,1.0} );  // clang-format on
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -131,7 +121,7 @@ namespace gum_tests {
     }
 
     public:
-    gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
+    gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
 
     void setUp() {
       var1 = new gum::LabelizedVariable( "var1", "1", 2 );
@@ -777,9 +767,8 @@ namespace gum_tests {
       fill( bn, idList );
 
       TS_ASSERT_EQUALS( bn.variable( 0 ).toString(), "var1<0,1>" );
-      TS_ASSERT_THROWS_NOTHING(
-          dynamic_cast<const gum::LabelizedVariable&>( bn.variable( 0 ) )
-              .changeLabel( 0, "x" ) );
+      TS_ASSERT_THROWS_NOTHING( dynamic_cast<const gum::LabelizedVariable&>(
+                                    bn.variable( 0 ) ).changeLabel( 0, "x" ) );
       TS_ASSERT_EQUALS( bn.variable( 0 ).toString(), "var1<x,1>" );
     }
   };

@@ -154,5 +154,196 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( P1.copy( P2 ) );
       }
     }
+
+    void testEquality() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+      auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
+
+      gum::Potential<int> p, q, r, t, u;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      q << b << c;  // different dims
+      q.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      r << a << b;  // same dims, same data
+      r.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      t << a << b;  // same dims,different data
+      t.fillWith( {1, 2, 3, 4, 0, 6, 7, 8, 9} );
+
+      u << b << a;  // same dims, same data, different order
+      u.fillWith( {1, 4, 7, 2, 5, 8, 3, 6, 9} );
+
+      TS_ASSERT( p != q );
+      TS_ASSERT( p == r );
+      TS_ASSERT( p != t );
+      TS_ASSERT( p == u );
+    }
+
+    void testOperators() {
+      auto a = gum::LabelizedVariable( "a", "afoo" );
+      auto b = gum::LabelizedVariable( "b", "bfoo" );
+      auto c = gum::LabelizedVariable( "c", "cfoo" );
+
+      gum::Potential<int> p1;
+      p1 << a << b;
+      p1.fillWith( {1, 2, 3, 4} );
+
+      gum::Potential<int> p2;
+      p2 << b << c;
+      p2.fillWith( {5, 6, 7, 8} );
+
+      auto p = p1;
+
+      // just checking memory allocation (what else ?)
+      auto pA = p1 * p2;
+      TS_ASSERT_EQUALS( pA.toString(),
+                        "<b:0|c:0|a:0> :: 5 /"
+                        "<b:1|c:0|a:0> :: 18 /"
+                        "<b:0|c:1|a:0> :: 7 /"
+                        "<b:1|c:1|a:0> :: 24 /"
+                        "<b:0|c:0|a:1> :: 10 /"
+                        "<b:1|c:0|a:1> :: 24 /"
+                        "<b:0|c:1|a:1> :: 14 /"
+                        "<b:1|c:1|a:1> :: 32" );
+
+      auto pB = p1 + p2;
+      TS_ASSERT_EQUALS( pB.toString(),
+                        "<b:0|c:0|a:0> :: 6 /"
+                        "<b:1|c:0|a:0> :: 9 /"
+                        "<b:0|c:1|a:0> :: 8 /"
+                        "<b:1|c:1|a:0> :: 11 /"
+                        "<b:0|c:0|a:1> :: 7 /"
+                        "<b:1|c:0|a:1> :: 10 /"
+                        "<b:0|c:1|a:1> :: 9 /"
+                        "<b:1|c:1|a:1> :: 12" );
+
+      auto pC = p2 / p1;
+      TS_ASSERT_EQUALS( pC.toString(),
+                        "<b:0|a:0|c:0> :: 5 /"
+                        "<b:1|a:0|c:0> :: 2 /"
+                        "<b:0|a:1|c:0> :: 2 /"
+                        "<b:1|a:1|c:0> :: 1 /"
+                        "<b:0|a:0|c:1> :: 7 /"
+                        "<b:1|a:0|c:1> :: 2 /"
+                        "<b:0|a:1|c:1> :: 3 /"
+                        "<b:1|a:1|c:1> :: 2" );
+
+      auto pD = p2 - p1;
+      TS_ASSERT_EQUALS( pD.toString(),
+                        "<b:0|a:0|c:0> :: 4 /"
+                        "<b:1|a:0|c:0> :: 3 /"
+                        "<b:0|a:1|c:0> :: 3 /"
+                        "<b:1|a:1|c:0> :: 2 /"
+                        "<b:0|a:0|c:1> :: 6 /"
+                        "<b:1|a:0|c:1> :: 5 /"
+                        "<b:0|a:1|c:1> :: 5 /"
+                        "<b:1|a:1|c:1> :: 4" );
+
+      TS_ASSERT_EQUALS( ( ( p1 * p2 ) - ( p2 / p1 ) + p1 ).toString(),
+                        "<b:0|a:0|c:0> :: 1 /"
+                        "<b:1|a:0|c:0> :: 19 /"
+                        "<b:0|a:1|c:0> :: 10 /"
+                        "<b:1|a:1|c:0> :: 27 /"
+                        "<b:0|a:0|c:1> :: 1 /"
+                        "<b:1|a:0|c:1> :: 25 /"
+                        "<b:0|a:1|c:1> :: 13 /"
+                        "<b:1|a:1|c:1> :: 34" );
+
+      p = p1 * p2;
+      p -= ( p2 / p1 );
+      p += p1;
+      TS_ASSERT_EQUALS( p.toString(),
+                        "<b:0|a:0|c:0> :: 1 /"
+                        "<b:1|a:0|c:0> :: 19 /"
+                        "<b:0|a:1|c:0> :: 10 /"
+                        "<b:1|a:1|c:0> :: 27 /"
+                        "<b:0|a:0|c:1> :: 1 /"
+                        "<b:1|a:0|c:1> :: 25 /"
+                        "<b:0|a:1|c:1> :: 13 /"
+                        "<b:1|a:1|c:1> :: 34" );
+    }
+
+    void testMargOutFunctions() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+      auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
+      auto d = gum::LabelizedVariable( "d", "dfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      p.normalize();
+
+      gum::Potential<float> q;
+      q << c << d;
+      q.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      q.normalize();
+
+      TS_ASSERT( p != q );
+
+      gum::Potential<float> r;
+      r << c << d;
+      r.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      TS_ASSERT( q != r );
+      r.normalize();
+      TS_ASSERT( q == r );
+
+      auto joint = p * q;
+
+      auto margAB = joint.margSumOut( {&c, &d} );
+      TS_ASSERT( ( p == margAB ) );
+      auto margCD = joint.margSumOut( {&b, &a} );
+      TS_ASSERT( ( q == margCD ) );
+
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      TS_ASSERT_EQUALS( p.margProdOut( {&a} ).toString(),
+                        "<b:0> :: 6 /<b:1> :: 120 /<b:2> :: 504" );
+      TS_ASSERT_EQUALS( p.margProdOut( {&b} ).toString(),
+                        "<a:0> :: 28 /<a:1> :: 80 /<a:2> :: 162" );
+
+      TS_ASSERT_EQUALS( p.margMaxOut( {&a} ).toString(),
+                        "<b:0> :: 3 /<b:1> :: 6 /<b:2> :: 9" );
+      TS_ASSERT_EQUALS( p.margMaxOut( {&b} ).toString(),
+                        "<a:0> :: 7 /<a:1> :: 8 /<a:2> :: 9" );
+
+      TS_ASSERT_EQUALS( p.margMinOut( {&a} ).toString(),
+                        "<b:0> :: 1 /<b:1> :: 4 /<b:2> :: 7" );
+      TS_ASSERT_EQUALS( p.margMinOut( {&b} ).toString(),
+                        "<a:0> :: 1 /<a:1> :: 2 /<a:2> :: 3" );
+    }
+
+    void testMargInFunctions() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+      auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
+      auto d = gum::LabelizedVariable( "d", "dfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      gum::Potential<float> q;
+      q << c << d;
+      q.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      auto joint = p * q;
+
+      TS_ASSERT(
+          ( joint.margSumOut( {&c, &d} ) == joint.margSumIn( {&a, &b} ) ) );
+      TS_ASSERT(
+          ( joint.margSumOut( {&c, &d} ) == joint.margSumIn( {&b, &a} ) ) );
+
+      TS_ASSERT(
+          ( joint.margProdOut( {&c, &d} ) == joint.margProdIn( {&a, &b} ) ) );
+
+      TS_ASSERT(
+          ( joint.margMinOut( {&c, &d} ) == joint.margMinIn( {&a, &b} ) ) );
+
+      TS_ASSERT(
+          ( joint.margMaxOut( {&c, &d} ) == joint.margMaxIn( {&a, &b} ) ) );
+    }
   };
 }

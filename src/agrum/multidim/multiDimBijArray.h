@@ -28,6 +28,8 @@
 #ifndef GUM_MULTIDIMBIJARRAY_H
 #define GUM_MULTIDIMBIJARRAY_H
 
+#include <initializer_list>
+
 #include <agrum/core/bijection.h>
 
 #include <agrum/multidim/multiDimWithOffset.h>
@@ -48,7 +50,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   class MultiDimBijArray : public MultiDimWithOffset<GUM_SCALAR> {
     public:
-    using VarBijection = Bijection<const DiscreteVariable*, const DiscreteVariable*>;
+    using VarBijection =
+        Bijection<const DiscreteVariable*, const DiscreteVariable*>;
 
     // =========================================================================
     /// @name Constructors / Destructors
@@ -140,10 +143,17 @@ namespace gum {
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
     virtual void fillWith( const std::vector<GUM_SCALAR>& v ) const;
+    /**
+     * This will raise an exception: you can't change the variables in a
+     * MultiDimBijArray.
+     * @param v The variable not added.
+     * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
+     */
+    virtual void fillWith( std::initializer_list<GUM_SCALAR> l ) const;
 
     /// @}
     // ========================================================================
-    /// @name Inherited methods 
+    /// @name Inherited methods
     // ========================================================================
     /// @{
 

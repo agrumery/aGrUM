@@ -64,7 +64,33 @@ namespace gum {
      * @brief Class constructor.
      * @param aContent The implementation used by this MultiDimDecorator.
      */
-    MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent );
+    MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent = nullptr );
+
+    /**
+     * @brief copy constructor & assignment
+     */
+    MultiDimDecorator( const MultiDimDecorator<GUM_SCALAR>& from );
+    MultiDimDecorator<GUM_SCALAR>& operator=( const MultiDimDecorator& from );
+
+    /**
+     * @brief Copy constructor.
+     *
+     * The newly created Potential share the variables and the values
+     * from src, but no instantiation is associated to it. It allows to force
+     * the chosen implementation and to copy the data from src.
+     *
+     * @param aContent The implementation to use in this Potential.
+     * @param src The MultiDimContainer to copy.
+     */
+    /*MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent,
+                       const MultiDimContainer<GUM_SCALAR>& src );*/
+
+
+    /**
+     * @brief Class move constructor & assignment
+     */
+    MultiDimDecorator( MultiDimDecorator<GUM_SCALAR>&& );
+    MultiDimDecorator<GUM_SCALAR>& operator=( MultiDimDecorator&& from );
 
     /**
      * @brief Class destructor.
@@ -77,17 +103,17 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual Idx nbrDim() const /* final */;
+    virtual Idx nbrDim() const final;
 
-    virtual Size domainSize() const;
+    virtual Size domainSize() const final;
 
-    virtual void add( const DiscreteVariable& v );
+    virtual void add( const DiscreteVariable& v ) final;
 
-    virtual void erase( const DiscreteVariable& var );
+    virtual void erase( const DiscreteVariable& var ) final;
 
     virtual const Sequence<const DiscreteVariable*>& variablesSequence() const
-        /* final */;
-
+        final;
+    /// beforeMerge continuer à rajouter les final ici
     virtual const DiscreteVariable& variable( Idx ) const;
 
     virtual Idx pos( const DiscreteVariable& var ) const;
@@ -107,9 +133,9 @@ namespace gum {
     virtual bool registerSlave( Instantiation& i );
 
     virtual void changeNotification( Instantiation& i,
-                             const DiscreteVariable* const var,
-                             const Idx& oldval,
-                             const Idx& newval );
+                                     const DiscreteVariable* const var,
+                                     const Idx& oldval,
+                                     const Idx& newval );
 
     virtual void setChangeNotification( Instantiation& i );
 
@@ -122,10 +148,11 @@ namespace gum {
     virtual void setDecNotification( Instantiation& i );
 
     virtual void notifyChange() const /* final */;
+    /*
+        virtual MultiDimImplementation<GUM_SCALAR>& getMasterRef( void );
 
-    virtual MultiDimImplementation<GUM_SCALAR>& getMasterRef( void );
-
-    virtual const MultiDimImplementation<GUM_SCALAR>& getMasterRef( void ) const;
+        virtual const MultiDimImplementation<GUM_SCALAR>&
+        getMasterRef( void ) const;*/
 
     /// @}
     // =========================================================================
@@ -154,7 +181,7 @@ namespace gum {
     virtual void beginMultipleChanges( void );
 
     virtual void endMultipleChanges( void );
-    
+
     virtual void endMultipleChanges( const GUM_SCALAR& );
 
     virtual const std::string toString( const Instantiation* i ) const;
@@ -185,16 +212,14 @@ namespace gum {
                                                   const GUM_SCALAR ) ) const;
 
     /**
-     * @brief Returns the implementation used by this MultiDimDecorator.
-     * @return Returns the implementation used by this MultiDimDecorator.
+     * @brief Returns the implementation for this object (may be *this).
      */
-    const MultiDimImplementation<GUM_SCALAR>* content() const;
+    virtual const MultiDimImplementation<GUM_SCALAR>* content() const final;
 
     /**
-     * @brief Returns the implementation used by this MultiDimDecorator.
-     * @return Returns the implementation used by this MultiDimDecorator.
+     * @brief Returns the implementation for this object (may be *this).
      */
-    MultiDimImplementation<GUM_SCALAR>* content();
+    virtual MultiDimImplementation<GUM_SCALAR>* content() final;
 
     /// @}
     protected:

@@ -175,7 +175,6 @@ namespace gum_tests {
 //      gum::SmallObjectAllocator* soa =
 //          new gum::SmallObjectAllocator( 16384, 24 * sizeof( gum::Idx ) );
 
-//      srand( time( NULL ) );
 //      std::vector<gum::Idx> vectorSize;
 //      std::vector<gum::Idx> adsv;
 //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i ) {

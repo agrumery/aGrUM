@@ -2233,19 +2233,23 @@ def randomProba() -> "double":
     """randomProba() -> double"""
     return _pyAgrum.randomProba()
 
-def initRandom(init: 'unsigned int'=0) -> "void":
+def randomGeneratorSeed() -> "unsigned int":
+    """randomGeneratorSeed() -> unsigned int"""
+    return _pyAgrum.randomGeneratorSeed()
+
+def initRandom(seed: 'unsigned int'=0) -> "void":
     """
-    initRandom(unsigned int init=0)
+    initRandom(unsigned int seed=0)
     initRandom()
     """
-    return _pyAgrum.initRandom(init)
+    return _pyAgrum.initRandom(seed)
 
-def randomGeneratorSeed(seed: 'unsigned int'=0) -> "unsigned int &":
+def getRandomGenerator(seed: 'unsigned int'=0) -> "std::default_random_engine":
     """
-    randomGeneratorSeed(unsigned int seed=0) -> unsigned int
-    randomGeneratorSeed() -> unsigned int &
+    getRandomGenerator(unsigned int seed=0) -> std::default_random_engine
+    getRandomGenerator() -> std::default_random_engine
     """
-    return _pyAgrum.randomGeneratorSeed(seed)
+    return _pyAgrum.getRandomGenerator(seed)
 
 def isOMP() -> "bool":
     """isOMP() -> bool"""
@@ -3874,17 +3878,36 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_fill(self, d)
 
 
-    def fillWith(self, v: 'Vector_double') -> "void":
-        """fillWith(MultiDimContainer_double self, Vector_double v)"""
-        return _pyAgrum.MultiDimContainer_double_fillWith(self, v)
+    def fillWith(self, *args) -> "void":
+        """
+        fillWith(MultiDimContainer_double self, Vector_double v)
+        fillWith(MultiDimContainer_double self, std::initializer_list< double > list)
+        """
+        return _pyAgrum.MultiDimContainer_double_fillWith(self, *args)
 
 
     def copyFrom(self, *args) -> "void":
         """
-        copyFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation p_i)
         copyFrom(MultiDimContainer_double self, MultiDimContainer_double src)
+        copyFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation p_i)
         """
         return _pyAgrum.MultiDimContainer_double_copyFrom(self, *args)
+
+
+    def content(self, *args) -> "gum::MultiDimImplementation< double > *":
+        """
+        content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > const
+        content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > *
+        """
+        return _pyAgrum.MultiDimContainer_double_content(self, *args)
+
+
+    def getMasterRef(self, *args) -> "gum::MultiDimAdressable const &":
+        """
+        getMasterRef(MultiDimContainer_double self) -> MultiDimAdressable
+        getMasterRef(MultiDimContainer_double self) -> MultiDimAdressable
+        """
+        return _pyAgrum.MultiDimContainer_double_getMasterRef(self, *args)
 
 
     def copy(self, src: 'MultiDimContainer_double') -> "void":
@@ -3945,8 +3968,9 @@ class Potential_double(_object):
         """
         __init__(gum::Potential<(double)> self) -> Potential_double
         __init__(gum::Potential<(double)> self, gum::MultiDimImplementation< double > * aContent) -> Potential_double
-        __init__(gum::Potential<(double)> self, Potential_double src) -> Potential_double
         __init__(gum::Potential<(double)> self, gum::MultiDimImplementation< double > * aContent, MultiDimContainer_double src) -> Potential_double
+        __init__(gum::Potential<(double)> self, Potential_double src) -> Potential_double
+        __init__(gum::Potential<(double)> self, Potential_double arg2) -> Potential_double
         """
         this = _pyAgrum.new_Potential_double(*args)
         try:
@@ -3971,9 +3995,123 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_normalize(self)
 
 
-    def sum(self) -> "double const":
-        """sum(Potential_double self) -> double const"""
+    def sum(self) -> "double":
+        """sum(Potential_double self) -> double"""
         return _pyAgrum.Potential_double_sum(self)
+
+
+    def product(self) -> "double":
+        """product(Potential_double self) -> double"""
+        return _pyAgrum.Potential_double_product(self)
+
+
+    def max(self) -> "double":
+        """max(Potential_double self) -> double"""
+        return _pyAgrum.Potential_double_max(self)
+
+
+    def min(self) -> "double":
+        """min(Potential_double self) -> double"""
+        return _pyAgrum.Potential_double_min(self)
+
+
+    def __add__(self, p2: 'Potential_double') -> "gum::Potential< double >":
+        """__add__(Potential_double self, Potential_double p2) -> Potential_double"""
+        return _pyAgrum.Potential_double___add__(self, p2)
+
+
+    def __sub__(self, p2: 'Potential_double') -> "gum::Potential< double >":
+        """__sub__(Potential_double self, Potential_double p2) -> Potential_double"""
+        return _pyAgrum.Potential_double___sub__(self, p2)
+
+
+    def __mul__(self, p2: 'Potential_double') -> "gum::Potential< double >":
+        """__mul__(Potential_double self, Potential_double p2) -> Potential_double"""
+        return _pyAgrum.Potential_double___mul__(self, p2)
+
+
+    def __iadd__(self, r: 'Potential_double') -> "gum::Potential< double > &":
+        """__iadd__(Potential_double self, Potential_double r) -> Potential_double"""
+        return _pyAgrum.Potential_double___iadd__(self, r)
+
+
+    def __imul__(self, r: 'Potential_double') -> "gum::Potential< double > &":
+        """__imul__(Potential_double self, Potential_double r) -> Potential_double"""
+        return _pyAgrum.Potential_double___imul__(self, r)
+
+
+    def __isub__(self, r: 'Potential_double') -> "gum::Potential< double > &":
+        """__isub__(Potential_double self, Potential_double r) -> Potential_double"""
+        return _pyAgrum.Potential_double___isub__(self, r)
+
+
+    def __idiv__(self, r: 'Potential_double') -> "gum::Potential< double > &":
+        """__idiv__(Potential_double self, Potential_double r) -> Potential_double"""
+        return _pyAgrum.Potential_double___idiv__(self, r)
+
+
+    def margSumOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margSumOut(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margSumOut(self, varnames)
+
+
+    def margProdOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margProdOut(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margProdOut(self, varnames)
+
+
+    def margMaxOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margMaxOut(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMaxOut(self, varnames)
+
+
+    def margMinOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margMinOut(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMinOut(self, varnames)
+
+
+    def margSumIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margSumIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margSumIn(self, varnames)
+
+
+    def margProdIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margProdIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margProdIn(self, varnames)
+
+
+    def margMaxIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margMaxIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMaxIn(self, varnames)
+
+
+    def margMinIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
+        """margMinIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMinIn(self, varnames)
+
+
+    def __truediv__(self, b: 'Potential_double') -> "gum::Potential< double >":
+        """__truediv__(Potential_double self, Potential_double b) -> Potential_double"""
+        return _pyAgrum.Potential_double___truediv__(self, b)
+
+
+    def __div__(self, *args) -> "gum::Potential< double >":
+        """
+        __div__(Potential_double self, Potential_double p2) -> Potential_double
+        __div__(Potential_double self, Potential_double b) -> Potential_double
+        """
+        return _pyAgrum.Potential_double___div__(self, *args)
+
+
+    def __eq__(self, b: 'Potential_double') -> "bool":
+        """__eq__(Potential_double self, Potential_double b) -> bool"""
+        return _pyAgrum.Potential_double___eq__(self, b)
+
+
+    def __ne__(self, b: 'Potential_double') -> "bool":
+        """__ne__(Potential_double self, Potential_double b) -> bool"""
+        return _pyAgrum.Potential_double___ne__(self, b)
+
 
 
     def variablesSequence(self):
@@ -3981,32 +4119,6 @@ class Potential_double(_object):
         for i in range(0, self.nbrDim()):
             varlist.append(self.variable(i))
         return varlist
-
-    def __mul__(self,p2):
-        """
-        return self * p2
-        """
-        p=Potential()
-        p.multiplicate(self,p2)
-        return p
-
-    def eliminates(self,var):
-        """
-        eliminates a variable in the Potential. Returns the new Potential or self if the variable is not in self.
-        @warning : returns a list with only one scalar if eliminates remove the last variable
-        """
-        if var.name() in self.var_names:
-            q=Potential()
-            for i in range(self.nbrDim()):
-                if self.variable(i)!=var:
-                    q.add(self.variable(i))
-            if q.nbrDim()>0:
-                q.marginalize(self)
-            else:
-                q=[self.sum()]
-            return q
-        else:
-            return self
 
 
     def __fill_distrib__(self):
@@ -4178,6 +4290,7 @@ class Potential_double(_object):
         val = _pyAgrum.Potential_double_add(self, v)
 
         self._notSync=True
+        return self
 
 
         return val

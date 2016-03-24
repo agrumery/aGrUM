@@ -29,7 +29,6 @@
 
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/instantiation.h>
 
 namespace gum {
@@ -43,7 +42,7 @@ namespace gum {
    * projection function stores in the instantation the values of the
    * variables that led to the max (hence, the argmax).
    * @warning In practice, do not use this function but rather operator/function
-   * projectMax on multiDimDecorators. This operator will take care to
+   * projectMax on MultiDimImplementation. This operator will take care to
    * select this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
   GUM_SCALAR projectMaxMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
@@ -73,7 +72,7 @@ namespace gum {
    * projection function stores in the instantation the values of the
    * variables that led to the min (hence, the argmin).
    * @warning In practice, do not use this function but rather operator/function
-   * projectMin on multiDimDecorators. This operator will take care to
+   * projectMin on MultiDimImplementation. This operator will take care to
    * select this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
   GUM_SCALAR projectMinMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
@@ -106,7 +105,7 @@ namespace gum {
    * than 0 will induce more computations and thus will slow down the
    * projection.
    * @warning In practice, do not use this function but rather operator/function
-   * projectSum on multiDimDecorators. This operator will take care to
+   * projectSum on MultiDimImplementation. This operator will take care to
    * select this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
   GUM_SCALAR projectSumMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
@@ -139,7 +138,7 @@ namespace gum {
    * than 0 will induce more computations and thus will slow down the
    * projection.
    * @warning In practice, do not use this function but rather operator/function
-   * projectProduct on multiDimDecorators. This operator will take care to
+   * projectProduct on MultiDimImplementation. This operator will take care to
    * select this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
   GUM_SCALAR
@@ -161,17 +160,9 @@ namespace gum {
       const MultiDimImplementation<GUM_SCALAR*>* table,
       Instantiation* instantiation = 0 );
 
-  // the operators that should be used to select appropriately the functions
-  // to project multiDimDecorators
-
   /// the function to be used to project a MultiDimImplementation using a Max
   template <typename GUM_SCALAR>
   GUM_SCALAR projectMax( const MultiDimImplementation<GUM_SCALAR>& table,
-                         Instantiation* instantiation = 0 );
-
-  /// the function to be used to project a MultiDimDecorator using a Max
-  template <typename GUM_SCALAR>
-  GUM_SCALAR projectMax( const MultiDimDecorator<GUM_SCALAR>&,
                          Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimImplementation using a Min
@@ -179,30 +170,15 @@ namespace gum {
   GUM_SCALAR projectMin( const MultiDimImplementation<GUM_SCALAR>& table,
                          Instantiation* instantiation = 0 );
 
-  /// the function to be used to project a MultiDimDecorator using a Min
-  template <typename GUM_SCALAR>
-  GUM_SCALAR projectMin( const MultiDimDecorator<GUM_SCALAR>&,
-                         Instantiation* instantiation = 0 );
-
   /// the function to be used to project a MultiDimImplementation using a sum
   template <typename GUM_SCALAR>
   GUM_SCALAR projectSum( const MultiDimImplementation<GUM_SCALAR>& table,
-                         Instantiation* instantiation = 0 );
-
-  /// the function to be used to project a MultiDimDecorator using a sum
-  template <typename GUM_SCALAR>
-  GUM_SCALAR projectSum( const MultiDimDecorator<GUM_SCALAR>&,
                          Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimImplementation using a
   /// Product
   template <typename GUM_SCALAR>
   GUM_SCALAR projectProduct( const MultiDimImplementation<GUM_SCALAR>& table,
-                             Instantiation* instantiation = 0 );
-
-  /// the function to be used to project a MultiDimDecorator using a Product
-  template <typename GUM_SCALAR>
-  GUM_SCALAR projectProduct( const MultiDimDecorator<GUM_SCALAR>&,
                              Instantiation* instantiation = 0 );
 
   //

@@ -9,11 +9,11 @@ if (_SUPPORT_WARNING_FLAGS)
   set (CMAKE_CXX_FLAGS "${WARNING_FLAGS} ${CMAKE_CXX_FLAGS}")
 endif ()
 
-find_package (CXX11)
-if (CXX11_FOUND)
-  set (AGRUM_CXX_FLAGS "${CXX11_FLAGS} ${AGRUM_CXX_FLAGS}" )
+find_package (CXX14)
+if (CXX14_FOUND)
+  set (AGRUM_CXX_FLAGS "${CXX14_FLAGS} ${AGRUM_CXX_FLAGS}" )
 else ()
-  message(FATAL_ERROR "** aGrUM error: aGrUM is now using C++11. Please find a compiler (for instance GCC) C++11 compliant")
+  message(FATAL_ERROR "** aGrUM error: aGrUM is now using C++14. Please find a compiler (for instance GCC) C++14 compliant")
 endif ()
 
 if(MINGW)
@@ -40,9 +40,9 @@ set(CMAKE_CXX_FLAGS_RELEASE "${AGRUM_OPTIMIZATION} -DNDEBUG ${AGRUM_INLINING_POL
 set(CMAKE_C_FLAGS_RELEASE "${AGRUM_OPTIMIZATION} -DNDEBUG ${AGRUM_INLINING_POLICY}")
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "DEBUG")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
-  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
-  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -pg")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg -ggdb")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg -ggdb")
+  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -pg -ggdb")
 endif ()
 
 if(WIN32)

@@ -111,7 +111,7 @@ namespace gum {
     GUM_ERROR( OperationNotAllowed,
                "Function Graph can't be edited so "
                "easily.\nMultiDimFunctionGraphManager "
-               "provides the framework to editate a "
+               "provides the framework to edit a "
                "Function Graph." )
   }
 
@@ -121,7 +121,7 @@ namespace gum {
     GUM_ERROR( OperationNotAllowed,
                "Function Graph can't be edited so "
                "easily.\nMultiDimFunctionGraphManager "
-               "provides the framework to editate a "
+               "provides the framework to edit a "
                "Function Graph." )
   }
 
@@ -131,8 +131,17 @@ namespace gum {
     GUM_ERROR( OperationNotAllowed,
                "Function Graph can't be edited so "
                "easily.\nMultiDimFunctionGraphManager "
-               "provides the framework to editate a "
+               "provides the framework to editaa "
                "Function Graph." )
+  }
+  template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::fillWith(
+          std::initializer_list<GUM_SCALAR> l ) const {
+    GUM_ERROR( OperationNotAllowed,
+               "Function Graph can't be edited so "
+                       "easily.\nMultiDimFunctionGraphManager "
+                       "provides the framework to edit a "
+                       "Function Graph." )
   }
 
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>

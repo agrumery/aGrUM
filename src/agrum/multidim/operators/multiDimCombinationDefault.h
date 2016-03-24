@@ -29,10 +29,10 @@
  * determines itself in which order the objects should be combined. As such, the
  * combination operation to perform should thus be COMMUTATIVE and ASSOCIATIVE.
  *
- * By multidimensional objects, we mean of course MultiDimDecorators,
- * MultiDimImplementations, but also more complex objects such as, for instance,
- * pairs of MultiDimDecorators the first one of which being a utility function
- *and
+ * By multidimensional objects, we mean of course MultiDimImplementations,
+ * but also more complex objects such as, for instance,
+ * pairs of MultiDimImplementations the first one of which being a utility function
+ * and
  * the second one being a table of instantiations (useful, e.g., for computing
  * MPE's) but this can also be a pair (Utility,Potential) for the inference in
  * an Influence Diagram. Actually, the important point for a multidimensional

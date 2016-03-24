@@ -29,7 +29,6 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/core/timer.h>
 
 namespace gum {
@@ -44,7 +43,8 @@ namespace gum {
    * @return function add2MultiDimArrays allocates on the heap the
    * new T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator+ on
-   * multiDimDecorators. This operator will take care to select this function
+   * multiDimImplementations. This operator will take care to select this
+   * function
    * if it is appropriate for your addition. */
   template <typename T>
   MultiDimArray<T>* add2MultiDimArrays( const MultiDimArray<T>* t1,
@@ -85,7 +85,8 @@ namespace gum {
    * @return function subtract2MultiDimArrays allocates on the heap the new
    * T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator- on
-   * multiDimDecorators. This operator will take care to select this function
+   * multiDimImplementations. This operator will take care to select this
+   * function
    * if it is appropriate for your subtraction. */
   template <typename T>
   MultiDimArray<T>* subtract2MultiDimArrays( const MultiDimArray<T>* t1,
@@ -126,7 +127,8 @@ namespace gum {
    * @return function multiply2MultiDimArrays allocates on the heap the new
    * T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator* on
-   * multiDimDecorators. This operator will take care to select this function
+   * multiDimImplementations. This operator will take care to select this
+   * function
    * if it is appropriate for your multiplication. */
   template <typename T>
   MultiDimArray<T>* multiply2MultiDimArrays( const MultiDimArray<T>* t1,
@@ -167,7 +169,8 @@ namespace gum {
    * @return function divide2MultiDimArrays allocates on the heap the new
    * T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator/ on
-   * multiDimDecorators. This operator will take care to select this function
+   * multiDimImplementations. This operator will take care to select this
+   * function
    * if it is appropriate for your division. */
   template <typename T>
   MultiDimArray<T>* divide2MultiDimArrays( const MultiDimArray<T>* t1,
@@ -245,49 +248,25 @@ namespace gum {
   //                            const MultiDimImplementation<T>* t2,
   //                            const T (*f) ( const T&, const T&) );
 
-
-  // the operators that should be used to select appropriately the functions
-  // to combine multiDimDecorators
-
   /// the function to be used to add two MultiDimImplementations
   template <typename T>
   MultiDimImplementation<T>* operator+( const MultiDimImplementation<T>&,
                                         const MultiDimImplementation<T>& );
-
-  /// the function to be used to add two MultiDimDecorators
-  template <typename T>
-  MultiDimImplementation<T>* operator+( const MultiDimDecorator<T>&,
-                                        const MultiDimDecorator<T>& );
 
   /// the function to be used to subtract two MultiDimImplementations
   template <typename T>
   MultiDimImplementation<T>* operator-( const MultiDimImplementation<T>&,
                                         const MultiDimImplementation<T>& );
 
-  /// the function to be used to subtract two MultiDimDecorators
-  template <typename T>
-  MultiDimImplementation<T>* operator-( const MultiDimDecorator<T>&,
-                                        const MultiDimDecorator<T>& );
-
   /// the function to be used to multiply two MultiDimImplementations
   template <typename T>
   MultiDimImplementation<T>* operator*( const MultiDimImplementation<T>&,
                                         const MultiDimImplementation<T>& );
 
-  /// the function to be used to multiply two MultiDimDecorators
-  template <typename T>
-  MultiDimImplementation<T>* operator*( const MultiDimDecorator<T>&,
-                                        const MultiDimDecorator<T>& );
-
   /// the function to be used to divide two MultiDimImplementations
   template <typename T>
   MultiDimImplementation<T>* operator/( const MultiDimImplementation<T>&,
                                         const MultiDimImplementation<T>& );
-
-  /// the function to be used to divide two MultiDimDecorators
-  template <typename T>
-  MultiDimImplementation<T>* operator/( const MultiDimDecorator<T>&,
-                                        const MultiDimDecorator<T>& );
 
   //
   // DO NOT FORGET TO REGISTER YOUR BINARY FUNCTIONS AT THE END OF FILE

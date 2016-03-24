@@ -22,7 +22,7 @@
  * @file
  * @brief Headers of gum::SmallObjectAllocator
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_SMALL_OBJECT_ALLOCATOR_H

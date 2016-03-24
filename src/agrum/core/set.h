@@ -200,7 +200,7 @@ namespace gum {
      * @brief Initializer list constructor.
      * @param list The initializer list.
      */
-    explicit Set( std::initializer_list<Key> list );
+    Set( std::initializer_list<Key> list );
 
     /**
      * @brief Copy constructor.

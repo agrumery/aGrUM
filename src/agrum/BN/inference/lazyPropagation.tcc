@@ -53,7 +53,7 @@ namespace gum {
   INLINE static Potential<GUM_SCALAR>*
   LPNewprojPotential( const Potential<GUM_SCALAR>& t1,
                       const Set<const DiscreteVariable*>& del_vars ) {
-    return new Potential<GUM_SCALAR>( projectSum( t1, del_vars ) );
+    return new Potential<GUM_SCALAR>( t1.margSumOut( del_vars ) );
   }
 
 
