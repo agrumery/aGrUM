@@ -142,8 +142,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var,
-                                           NodeId id ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var, NodeId id ) {
     MultiDimArray<GUM_SCALAR>* ptr = new MultiDimArray<GUM_SCALAR>();
     NodeId res = 0;
 
@@ -295,15 +295,15 @@ namespace gum {
     // update the conditional distributions of head and tail
     Set<const DiscreteVariable*> del_vars;
     del_vars << &( variable( tail ) );
-    Potential<GUM_SCALAR> new_cpt_head=prod.margSumOut( del_vars );
+    Potential<GUM_SCALAR> new_cpt_head = prod.margSumOut( del_vars );
     Potential<GUM_SCALAR>& cpt_head =
         const_cast<Potential<GUM_SCALAR>&>( cpt( head ) );
-    cpt_head = std::move(new_cpt_head);
+    cpt_head = std::move( new_cpt_head );
 
     Potential<GUM_SCALAR> new_cpt_tail{prod / cpt_head};
     Potential<GUM_SCALAR>& cpt_tail =
         const_cast<Potential<GUM_SCALAR>&>( cpt( tail ) );
-    cpt_tail = std::move(new_cpt_tail);
+    cpt_tail = std::move( new_cpt_tail );
   }
 
   template <typename GUM_SCALAR>
@@ -316,51 +316,55 @@ namespace gum {
   // Aggregators
   //=============================================
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addAMPLITUDE( const DiscreteVariable& var ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addAMPLITUDE( const DiscreteVariable& var ) {
     return add( var, new aggregator::Amplitude<GUM_SCALAR>() );
   }
 
   template <typename GUM_SCALAR>
   INLINE NodeId BayesNet<GUM_SCALAR>::addAND( const DiscreteVariable& var ) {
     if ( var.domainSize() > 2 )
-    GUM_ERROR( SizeError, "an AND has to be boolean" );
+      GUM_ERROR( SizeError, "an AND has to be boolean" );
 
     return add( var, new aggregator::And<GUM_SCALAR>() );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addCOUNT( const DiscreteVariable& var ,Idx value) {
-    return add( var, new aggregator::Count<GUM_SCALAR>(value) );
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addCOUNT( const DiscreteVariable& var, Idx value ) {
+    return add( var, new aggregator::Count<GUM_SCALAR>( value ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addEXISTS( const DiscreteVariable& var,Idx value ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addEXISTS( const DiscreteVariable& var, Idx value ) {
     if ( var.domainSize() > 2 )
-    GUM_ERROR( SizeError, "an EXISTS has to be boolean" );
+      GUM_ERROR( SizeError, "an EXISTS has to be boolean" );
 
-    return add( var, new aggregator::Exists<GUM_SCALAR>(value) );
+    return add( var, new aggregator::Exists<GUM_SCALAR>( value ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addFORALL( const DiscreteVariable& var,Idx value ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addFORALL( const DiscreteVariable& var, Idx value ) {
     if ( var.domainSize() > 2 )
-    GUM_ERROR( SizeError, "an EXISTS has to be boolean" );
+      GUM_ERROR( SizeError, "an EXISTS has to be boolean" );
 
-    return add( var, new aggregator::Forall<GUM_SCALAR>(value) );
+    return add( var, new aggregator::Forall<GUM_SCALAR>( value ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addMAX( const DiscreteVariable& var) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addMAX( const DiscreteVariable& var ) {
     return add( var, new aggregator::Max<GUM_SCALAR>() );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addMEDIAN( const DiscreteVariable& var) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addMEDIAN( const DiscreteVariable& var ) {
     return add( var, new aggregator::Median<GUM_SCALAR>() );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addMIN( const DiscreteVariable& var) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addMIN( const DiscreteVariable& var ) {
     return add( var, new aggregator::Min<GUM_SCALAR>() );
   }
 
@@ -383,21 +387,24 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyORCompound(
-      const DiscreteVariable& var, GUM_SCALAR external_weight ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addNoisyORCompound( const DiscreteVariable& var,
+                                            GUM_SCALAR external_weight ) {
     return add( var,
                 new MultiDimNoisyORCompound<GUM_SCALAR>( external_weight ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyORNet(
-      const DiscreteVariable& var, GUM_SCALAR external_weight ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addNoisyORNet( const DiscreteVariable& var,
+                                       GUM_SCALAR external_weight ) {
     return add( var, new MultiDimNoisyORNet<GUM_SCALAR>( external_weight ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyAND(
-      const DiscreteVariable& var, GUM_SCALAR external_weight ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addNoisyAND( const DiscreteVariable& var,
+                                     GUM_SCALAR external_weight ) {
     return add( var, new MultiDimNoisyAND<GUM_SCALAR>( external_weight ) );
   }
 
@@ -429,15 +436,19 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyORCompound(
-      const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addNoisyORCompound( const DiscreteVariable& var,
+                                            GUM_SCALAR external_weight,
+                                            NodeId id ) {
     return add(
         var, new MultiDimNoisyORCompound<GUM_SCALAR>( external_weight ), id );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyORNet(
-      const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id ) {
+  INLINE NodeId
+  BayesNet<GUM_SCALAR>::addNoisyORNet( const DiscreteVariable& var,
+                                       GUM_SCALAR external_weight,
+                                       NodeId id ) {
     return add(
         var, new MultiDimNoisyORNet<GUM_SCALAR>( external_weight ), id );
   }
@@ -446,10 +457,9 @@ namespace gum {
   void BayesNet<GUM_SCALAR>::addWeightedArc( NodeId tail,
                                              NodeId head,
                                              GUM_SCALAR causalWeight ) {
-    const MultiDimAdressable& content = cpt( head ).getMasterRef();
-
     const MultiDimICIModel<GUM_SCALAR>* CImodel =
-        dynamic_cast<const MultiDimICIModel<GUM_SCALAR>*>( &content );
+        dynamic_cast<const MultiDimICIModel<GUM_SCALAR>*>(
+            cpt( head ).content() );
 
     if ( CImodel != 0 ) {
       // or is OK
@@ -505,11 +515,11 @@ namespace gum {
     for ( auto src : source.__probaMap ) {
       // First we build the node's CPT
       copy_array = new Potential<GUM_SCALAR>();
-
+      copy_array->beginMultipleChanges();
       for ( gum::Idx i = 0; i < src.second->nbrDim(); i++ ) {
         ( *copy_array ) << variableFromName( src.second->variable( i ).name() );
       }
-
+      copy_array->endMultipleChanges();
       copy_array->copyFrom( *( src.second ) );
 
       // We add the CPT to the CPT's hashmap
@@ -523,11 +533,11 @@ namespace gum {
       generateCPT( node );
   }
   template <typename GUM_SCALAR>
-  INLINE void BayesNet<GUM_SCALAR>::generateCPT(NodeId node) {
+  INLINE void BayesNet<GUM_SCALAR>::generateCPT( NodeId node ) {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
     generator.generateCPT( cpt( node ).pos( variable( node ) ), cpt( node ) );
-    }
+  }
 
   template <typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::changePotential( NodeId id,
@@ -543,10 +553,7 @@ namespace gum {
       if ( &cpt( id ).variable( i ) != &( newPot->variable( i ) ) ) {
         GUM_ERROR( OperationNotAllowed,
                    "cannot exchange potentials because, for variable with id "
-                       << id
-                       << ", dimension "
-                       << i
-                       << " differs. " );
+                       << id << ", dimension " << i << " differs. " );
       }
     }
 

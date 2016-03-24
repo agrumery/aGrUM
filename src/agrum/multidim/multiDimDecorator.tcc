@@ -68,16 +68,14 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimDecorator );
   }
 
-    template <typename GUM_SCALAR>
-    INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
-            const MultiDimDecorator<GUM_SCALAR>& from )
-            : MultiDimContainer<GUM_SCALAR>( from ) {
-      GUM_CONS_CPY( MultiDimDecorator );
-      ___initPotentialOperators<GUM_SCALAR>();
-      MultiDimDecorator<GUM_SCALAR>::content()->copy(
-              dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
-                      from.getMasterRef() ) );
-    }
+  template <typename GUM_SCALAR>
+  INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
+      const MultiDimDecorator<GUM_SCALAR>& from )
+      : MultiDimContainer<GUM_SCALAR>( from ) {
+    GUM_CONS_CPY( MultiDimDecorator );
+    ___initPotentialOperators<GUM_SCALAR>();
+    content()->copy( from.content() );
+  }
 
 
   template <typename GUM_SCALAR>
@@ -117,15 +115,13 @@ namespace gum {
   }
 
 
-
   template <typename GUM_SCALAR>
   INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
   operator=( const MultiDimDecorator<GUM_SCALAR>& from ) {
+    GUM_OP_CPY( MultiDimDecorator );
     ___initPotentialOperators<GUM_SCALAR>();
     MultiDimContainer<GUM_SCALAR>::operator=( from );
-    MultiDimDecorator<GUM_SCALAR>::content()->copy(
-        dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>(
-            from.getMasterRef() ) );
+    MultiDimDecorator<GUM_SCALAR>::content()->copy( *from.content() );
     return *this;
   }
 
@@ -296,22 +292,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Idx MultiDimDecorator<GUM_SCALAR>::nbrDim() const {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->nbrDim();
-  }
-
-  // In order to insure the deref. for decorators, we need to virtualize the
-  // access to master pointer
-  template <typename GUM_SCALAR>
-  INLINE MultiDimImplementation<GUM_SCALAR>&
-  MultiDimDecorator<GUM_SCALAR>::getMasterRef( void ) {
-    return *_content;
-  }
-
-  // In order to insure the deref. for decorators, we need to virtualize the
-  // access to master pointer
-  template <typename GUM_SCALAR>
-  INLINE const MultiDimImplementation<GUM_SCALAR>&
-  MultiDimDecorator<GUM_SCALAR>::getMasterRef( void ) const {
-    return *_content;
   }
 
   // protected access to _content

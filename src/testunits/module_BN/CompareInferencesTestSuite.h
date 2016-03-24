@@ -96,55 +96,60 @@ namespace gum_tests {
     void tearDown() { delete ( bn ); }
 
     void testInferencesWithNoEvidence() {
-      begin_test_waiting();
+      try {
+        begin_test_waiting();
 
-      gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
-      test_waiting();
-      inf_ShaShe.makeInference();
+        gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
+        test_waiting();
+        inf_ShaShe.makeInference();
 
-      gum::LazyPropagation<double> inf_LazyProp( *bn );
-      test_waiting();
-      inf_LazyProp.makeInference();
+        gum::LazyPropagation<double> inf_LazyProp( *bn );
+        test_waiting();
+        inf_LazyProp.makeInference();
 
-      gum::VariableElimination<double> inf_ValElim( *bn );
-      test_waiting();
-      inf_ValElim.makeInference();
+        gum::VariableElimination<double> inf_ValElim( *bn );
+        test_waiting();
+        inf_ValElim.makeInference();
 
-      gum::GibbsInference<double> inf_gibbs( *bn );
-      inf_gibbs.setVerbosity( false );
-      inf_gibbs.setEpsilon( 1e-3 );
-      inf_gibbs.setMinEpsilonRate( 1e-3 );
-      test_waiting();
-      TS_GUM_ASSERT_THROWS_NOTHING( inf_gibbs.makeInference() );
+        gum::GibbsInference<double> inf_gibbs( *bn );
+        inf_gibbs.setVerbosity( false );
+        inf_gibbs.setEpsilon( 1e-3 );
+        inf_gibbs.setMinEpsilonRate( 1e-3 );
+        test_waiting();
+        TS_GUM_ASSERT_THROWS_NOTHING( inf_gibbs.makeInference() );
 
-      for ( const auto i : bn->nodes() ) {
-        const gum::Potential<double>& marginal_gibbs = inf_gibbs.posterior( i );
-        const gum::Potential<double>& marginal_ShaShe =
-            inf_ShaShe.posterior( i );
-        const gum::Potential<double>& marginal_LazyProp =
-            inf_LazyProp.posterior( i );
-        const gum::Potential<double>& marginal_ValElim =
-            inf_ValElim.posterior( i );
+        for ( const auto i : bn->nodes() ) {
+          const gum::Potential<double>& marginal_gibbs =
+              inf_gibbs.posterior( i );
+          const gum::Potential<double>& marginal_ShaShe =
+              inf_ShaShe.posterior( i );
+          const gum::Potential<double>& marginal_LazyProp =
+              inf_LazyProp.posterior( i );
+          const gum::Potential<double>& marginal_ValElim =
+              inf_ValElim.posterior( i );
 
-        gum::Instantiation I;
-        I << bn->variable( i );
+          gum::Instantiation I;
+          I << bn->variable( i );
 
-        for ( I.setFirst(); !I.end(); ++I ) {
-          TS_ASSERT_DELTA( marginal_gibbs[I],
-                           marginal_ShaShe[I],
-                           5e-2 );  // APPROX INFERENCE
-          TS_ASSERT_DELTA( marginal_LazyProp[I],
-                           marginal_ShaShe[I],
-                           1e-10 );  // EXACT INFERENCE
-          TS_ASSERT_DELTA( marginal_LazyProp[I],
-                           marginal_ValElim[I],
-                           1e-10 );  // EXACT INFERENCE
-          TS_ASSERT_DELTA( marginal_ShaShe[I],
-                           marginal_ValElim[I],
-                           1e-10 );  // EXACT INFERENCE
+          for ( I.setFirst(); !I.end(); ++I ) {
+            TS_ASSERT_DELTA( marginal_gibbs[I],
+                             marginal_ShaShe[I],
+                             5e-2 );  // APPROX INFERENCE
+            TS_ASSERT_DELTA( marginal_LazyProp[I],
+                             marginal_ShaShe[I],
+                             1e-10 );  // EXACT INFERENCE
+            TS_ASSERT_DELTA( marginal_LazyProp[I],
+                             marginal_ValElim[I],
+                             1e-10 );  // EXACT INFERENCE
+            TS_ASSERT_DELTA( marginal_ShaShe[I],
+                             marginal_ValElim[I],
+                             1e-10 );  // EXACT INFERENCE
+          }
         }
+        end_test_waiting();
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
       }
-      end_test_waiting();
     }
 
     void testInferencesWithHardEvidence() {
@@ -254,11 +259,11 @@ namespace gum_tests {
       for ( const auto i : bn->nodes() ) {
         const gum::Potential<double>& marginal_gibbs = inf_gibbs.posterior( i );
         const gum::Potential<double>& marginal_ShaShe =
-                inf_ShaShe.posterior( i );
+            inf_ShaShe.posterior( i );
         const gum::Potential<double>& marginal_LazyProp =
-                inf_LazyProp.posterior( i );
+            inf_LazyProp.posterior( i );
         const gum::Potential<double>& marginal_VarElim =
-                inf_VarElim.posterior( i );
+            inf_VarElim.posterior( i );
 
         gum::Instantiation I;
         I << bn->variable( i );
@@ -437,7 +442,6 @@ namespace gum_tests {
         for ( const auto node : net->nodes() ) {
           gum::Instantiation I;
           I << net->variable( node );
-
           for ( I.setFirst(); !I.end(); ++I ) {
             TS_ASSERT_DELTA( infLazy.posterior( node )[I],
                              infSS.posterior( node )[I],

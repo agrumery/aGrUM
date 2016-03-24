@@ -34,7 +34,7 @@
 namespace gum {
 
   INLINE
-  MultiDimAdressable::MultiDimAdressable( const MultiDimAdressable&& from )
+  MultiDimAdressable::MultiDimAdressable( MultiDimAdressable&& from )
       : MultiDimInterface( std::forward<const MultiDimInterface&&>( from ) ) {
     GUM_CONS_MOV( MultiDimAdressable );
   }
@@ -52,12 +52,16 @@ namespace gum {
     GUM_DESTRUCTOR( MultiDimAdressable );
   }
 
-  INLINE MultiDimAdressable& MultiDimAdressable::operator=(const MultiDimAdressable& from) {
-    MultiDimInterface::operator=(from);
+  INLINE MultiDimAdressable& MultiDimAdressable::
+  operator=( const MultiDimAdressable& from ) {
+    GUM_OP_CPY( MultiDimAdressable );
+    MultiDimInterface::operator=( from );
     return *this;
   }
-  INLINE MultiDimAdressable& MultiDimAdressable::operator=(MultiDimAdressable&& from) {
-    MultiDimInterface::operator=(std::forward<MultiDimInterface&&>(from));
+  INLINE MultiDimAdressable& MultiDimAdressable::
+  operator=( MultiDimAdressable&& from ) {
+    GUM_OP_MOV( MultiDimAdressable );
+    MultiDimInterface::operator=( std::forward<MultiDimInterface&&>( from ) );
     return *this;
   }
 

@@ -69,13 +69,13 @@ namespace gum {
      * @brief Copy constructor.
      */
     MultiDimAdressable( const MultiDimAdressable& from );
-    MultiDimAdressable& operator=(const MultiDimAdressable& from );
+    MultiDimAdressable& operator=( const MultiDimAdressable& from );
 
     /**
      * @brief Class move constructor.
      */
-    MultiDimAdressable( const MultiDimAdressable&& );
-    MultiDimAdressable& operator=(MultiDimAdressable&& from );
+    MultiDimAdressable( MultiDimAdressable&& );
+    MultiDimAdressable& operator=( MultiDimAdressable&& from );
 
 
     /**
@@ -88,6 +88,19 @@ namespace gum {
     /// @name Slave management and extension due to slave management
     // =======================================================================
     /// @{
+    /**
+    * @brief In order to insure the dereference for decorators, we need to
+    * virtualize the access to master pointer.
+    * @return Returns the master of this MultiDimAdressable.
+    */
+    virtual MultiDimAdressable& getMasterRef( void ) = 0;
+
+    /**
+     * @brief In order to insure the dereference for decorators, we need to
+     * virtualize the access to master pointer.
+     * @return Returns the master of this MultiDimAdressable.
+    */
+    virtual const MultiDimAdressable& getMasterRef( void ) const = 0;
 
     /**
      * @brief Register i as a slave of this MultiDimAdressable.
@@ -144,20 +157,6 @@ namespace gum {
      * @param i The Instantiation to listen.
      */
     virtual void setChangeNotification( Instantiation& i ) = 0;
-
-    /**
-     * @brief In order to insure the dereference for decorators, we need to
-     * virtualize the access to master pointer.
-     * @return Returns the master of this MultiDimAdressable.
-     */
-    virtual MultiDimAdressable& getMasterRef( void ) = 0;
-
-    /**
-     * @brief In order to insure the dereference for decorators, we need to
-     * virtualize the access to master pointer.
-     * @return Returns the master of this MultiDimAdressable.
-     */
-    virtual const MultiDimAdressable& getMasterRef( void ) const = 0;
 
     /**
      * @brief Return a string representation of internal data about i in this.

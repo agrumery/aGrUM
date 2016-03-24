@@ -2808,6 +2808,14 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_toDot(self, *args)
 
 
+    def topologicalOrder(self, clear=True):
+        """
+        topologicalOrder(DiGraph self, bool clear=True) -> gum::Sequence< gum::NodeId > const
+        topologicalOrder(DiGraph self) -> gum::Sequence< gum::NodeId > const &
+        """
+        return _pyAgrum.DiGraph_topologicalOrder(self, clear)
+
+
     def ids(self):
         """ids(DiGraph self) -> PyObject *"""
         return _pyAgrum.DiGraph_ids(self)
@@ -3877,12 +3885,28 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_fillWith(self, *args)
 
 
-    def copyFrom(self, src, p_i=None):
+    def copyFrom(self, *args):
         """
-        copyFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation p_i=None)
         copyFrom(MultiDimContainer_double self, MultiDimContainer_double src)
+        copyFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation p_i)
         """
-        return _pyAgrum.MultiDimContainer_double_copyFrom(self, src, p_i)
+        return _pyAgrum.MultiDimContainer_double_copyFrom(self, *args)
+
+
+    def content(self, *args):
+        """
+        content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > const
+        content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > *
+        """
+        return _pyAgrum.MultiDimContainer_double_content(self, *args)
+
+
+    def getMasterRef(self, *args):
+        """
+        getMasterRef(MultiDimContainer_double self) -> MultiDimAdressable
+        getMasterRef(MultiDimContainer_double self) -> MultiDimAdressable
+        """
+        return _pyAgrum.MultiDimContainer_double_getMasterRef(self, *args)
 
 
     def copy(self, src):
@@ -4043,6 +4067,26 @@ class Potential_double(_object):
     def margMinOut(self, varnames):
         """margMinOut(Potential_double self, PyObject * varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margMinOut(self, varnames)
+
+
+    def margSumIn(self, varnames):
+        """margSumIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margSumIn(self, varnames)
+
+
+    def margProdIn(self, varnames):
+        """margProdIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margProdIn(self, varnames)
+
+
+    def margMaxIn(self, varnames):
+        """margMaxIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMaxIn(self, varnames)
+
+
+    def margMinIn(self, varnames):
+        """margMinIn(Potential_double self, PyObject * varnames) -> Potential_double"""
+        return _pyAgrum.Potential_double_margMinIn(self, varnames)
 
 
     def __truediv__(self, b):

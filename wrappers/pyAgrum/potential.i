@@ -19,6 +19,10 @@
         self._notSync=True
 %}
 
+// beforeMerge ignore insertEvidence et addHardEvidence
+// beforeMerge fillWith return self
+// beforeMerge setEvidence avec une liste de Potential
+
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margMaxOut(const Set<const DiscreteVariable*>& del_vars) const;
@@ -56,7 +60,7 @@
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margMinOut(s);
     }
-        
+
     Potential<double>
     margSumIn( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;

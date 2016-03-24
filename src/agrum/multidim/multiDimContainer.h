@@ -37,6 +37,10 @@
 #include <agrum/multidim/multiDimAdressable.h>
 
 namespace gum {
+  // needed for content()
+  template <typename GUM_SCALAR>
+  class MultiDimImplementation;
+
   // ==========================================================================
   // ===                             GUM_MULTI_DIM                          ===
   // ==========================================================================
@@ -104,7 +108,7 @@ namespace gum {
     /**
      * @brief Class move constructor.
      */
-    MultiDimContainer( const MultiDimContainer<GUM_SCALAR>&& );
+    MultiDimContainer( MultiDimContainer<GUM_SCALAR>&& );
     MultiDimContainer& operator=( MultiDimContainer<GUM_SCALAR>&& src );
 
     /**
@@ -197,7 +201,7 @@ namespace gum {
      * @throw SizeError Raised if l size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void fillWith(std::initializer_list<GUM_SCALAR> list) const;
+    virtual void fillWith( std::initializer_list<GUM_SCALAR> list ) const;
 
     /// @}
     // =========================================================================
@@ -218,10 +222,37 @@ namespace gum {
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      */
+    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                           Instantiation* p_i = nullptr ) const;
+                           Instantiation* p_i ) const;
+
     // beforeMerge dedicated copyFrom for MultiDimArray
     // beforeMerge check move operator when p=p1+p2
+
+    /**
+     * @brief Returns the implementation for this object (may be *this).
+     */
+    virtual const MultiDimImplementation<GUM_SCALAR>* content() const = 0;
+
+    /**
+     * @brief Returns the implementation for this object (may be *this).
+     */
+    virtual MultiDimImplementation<GUM_SCALAR>* content() = 0;
+
+    /**
+     * @brief In order to insure the dereference for decorators, we need to
+     * virtualize the access to master pointer.
+     * @return Returns the ref to content as MultiDimAdressable&
+    */
+    virtual MultiDimAdressable& getMasterRef( void );
+
+    /**
+     * @brief In order to insure the dereference for decorators, we need to
+     * virtualize the access to master pointer.
+     * @return Returns the master of this MultiDimAdressable.
+    */
+    virtual const MultiDimAdressable& getMasterRef( void ) const;
+
 
     /**
      * @brief Removes all variables in this MultiDimContainer and copy the

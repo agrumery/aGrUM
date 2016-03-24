@@ -106,7 +106,6 @@ namespace gum_tests {
 
     /// network : A --> C <-- B built manually
     void testCredalNetByLP() {
-      GUM_CHECKPOINT;
       initCNet();
 
       std::vector<gum::NodeId> ids;
@@ -121,7 +120,6 @@ namespace gum_tests {
       cn->addArc( ids[0], ids[2] );
       cn->addArc( ids[1], ids[2] );
 
-      GUM_CHECKPOINT;
       /// hardcoded lps to check solutions
       std::vector<std::vector<gum::credal::lp::LpInterface<double>>> lps( 3 );
       std::vector<std::vector<std::vector<std::vector<double>>>> lps_sols( 3 );

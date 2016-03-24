@@ -3885,12 +3885,28 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_fillWith(self, *args)
 
 
-    def copyFrom(self, src: 'MultiDimContainer_double', p_i: 'Instantiation'=None) -> "void":
+    def copyFrom(self, *args) -> "void":
         """
-        copyFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation p_i=None)
         copyFrom(MultiDimContainer_double self, MultiDimContainer_double src)
+        copyFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation p_i)
         """
-        return _pyAgrum.MultiDimContainer_double_copyFrom(self, src, p_i)
+        return _pyAgrum.MultiDimContainer_double_copyFrom(self, *args)
+
+
+    def content(self, *args) -> "gum::MultiDimImplementation< double > *":
+        """
+        content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > const
+        content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > *
+        """
+        return _pyAgrum.MultiDimContainer_double_content(self, *args)
+
+
+    def getMasterRef(self, *args) -> "gum::MultiDimAdressable const &":
+        """
+        getMasterRef(MultiDimContainer_double self) -> MultiDimAdressable
+        getMasterRef(MultiDimContainer_double self) -> MultiDimAdressable
+        """
+        return _pyAgrum.MultiDimContainer_double_getMasterRef(self, *args)
 
 
     def copy(self, src: 'MultiDimContainer_double') -> "void":

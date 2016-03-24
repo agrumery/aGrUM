@@ -351,7 +351,6 @@ namespace gum_tests {
     void testRelevantForRelevantReasonning() {
       // an inference for all the bn with an hard evidence and an inference for
       // the right fragment with a local CPT should be the same
-
       gum::BayesNet<float> bn;
       fill( bn );
 
@@ -365,6 +364,12 @@ namespace gum_tests {
       gum::List<const gum::Potential<float>*> l{&ev};
       inf_complete.insertEvidence( l );
       inf_complete.makeInference();
+
+      try {
+        auto p = inf_complete.posterior( bn.idFromName( "v6" ) );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
       const gum::Potential<float>& p1 =
           inf_complete.posterior( bn.idFromName( "v6" ) );
 

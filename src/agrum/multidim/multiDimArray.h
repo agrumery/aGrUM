@@ -97,6 +97,8 @@ namespace gum {
     // =========================================================================
     /// @{
 
+    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src) const;
+
     virtual void add( const DiscreteVariable& v );
 
     virtual void erase( const DiscreteVariable& v );

@@ -301,11 +301,10 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void
-      startClass( const std::string& c,
-                  const std::string& ext = "",
-                  const Set<std::string>* implements = nullptr,
-                  bool delayInheritance=false ) override;
+      virtual void startClass( const std::string& c,
+                               const std::string& ext = "",
+                               const Set<std::string>* implements = nullptr,
+                               bool delayInheritance = false ) override;
 
       /**
        * Continue the declaration of a class.
@@ -465,7 +464,7 @@ namespace gum {
        *
        * @param labels The value of each parents.
        * @param values The probability values of the current attribute given
-       *               the values in parenst.
+       *               the values in parents.
        */
       virtual void setCPFByRule( const std::vector<std::string>& labels,
                                  const std::vector<GUM_SCALAR>& values );
@@ -480,10 +479,11 @@ namespace gum {
        *
        * @param labels The value of each parents.
        * @param values The probability values of the current attribute given
-       *               the values in parenst.
+       *               the values in parents.
        */
-      virtual void setCPFByRule( const std::vector<std::string>& labels,
-                                 const std::vector<std::string>& values );
+      virtual void
+      setCPFByRule( const std::vector<std::string>& labels,
+                    const std::vector<std::string>& values ) override;
 
       /**
        * @brief Gives the factory the CPF in its raw form.
@@ -644,12 +644,11 @@ namespace gum {
        * @throw WrongType Raised if the aggregator's type or one or more of the
        * chains are not of the good type.
        */
-      virtual void
-      addAggregator( const std::string& name,
-                     const std::string& agg_type,
-                     const std::vector<std::string>& chains,
-                     const std::vector<std::string>& params,
-                     std::string type="" ) override;
+      virtual void addAggregator( const std::string& name,
+                                  const std::string& agg_type,
+                                  const std::vector<std::string>& chains,
+                                  const std::vector<std::string>& params,
+                                  std::string type = "" ) override;
 
       /**
        * @brief Add a compound noisy-or as an Attribute<GUM_SCALAR> to the
