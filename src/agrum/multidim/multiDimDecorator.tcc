@@ -381,4 +381,5 @@ namespace gum {
     return content()->toString();
   }
 
+  //@todo force GUM_SCALAR to be double-castable (to be able to use fabs,etc.)
 } /* namespace gum */

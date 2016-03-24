@@ -111,16 +111,15 @@ namespace gum {
 
     virtual void erase( const DiscreteVariable& var ) final;
 
-    virtual const Sequence<const DiscreteVariable*>& variablesSequence() const
-        final;
-    /// beforeMerge continuer à rajouter les final ici
-    virtual const DiscreteVariable& variable( Idx ) const;
+    virtual const Sequence<const DiscreteVariable*>&
+    variablesSequence() const final;
+    virtual const DiscreteVariable& variable( Idx ) const final;
 
-    virtual Idx pos( const DiscreteVariable& var ) const;
+    virtual Idx pos( const DiscreteVariable& var ) const final;
 
-    virtual bool contains( const DiscreteVariable& var ) const;
+    virtual bool contains( const DiscreteVariable& var ) const final;
 
-    virtual bool empty() const;
+    virtual bool empty() const final;
 
     /// @}
     // ========================================================================
@@ -128,31 +127,26 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual bool unregisterSlave( Instantiation& i );
+    virtual bool unregisterSlave( Instantiation& i ) final;
 
-    virtual bool registerSlave( Instantiation& i );
+    virtual bool registerSlave( Instantiation& i ) final;
 
     virtual void changeNotification( Instantiation& i,
                                      const DiscreteVariable* const var,
                                      const Idx& oldval,
-                                     const Idx& newval );
+                                     const Idx& newval ) final;
 
-    virtual void setChangeNotification( Instantiation& i );
+    virtual void setChangeNotification( Instantiation& i ) final;
 
-    virtual void setFirstNotification( Instantiation& i );
+    virtual void setFirstNotification( Instantiation& i ) final;
 
-    virtual void setLastNotification( Instantiation& i );
+    virtual void setLastNotification( Instantiation& i ) final;
 
-    virtual void setIncNotification( Instantiation& i );
+    virtual void setIncNotification( Instantiation& i ) final;
 
-    virtual void setDecNotification( Instantiation& i );
+    virtual void setDecNotification( Instantiation& i ) final;
 
-    virtual void notifyChange() const /* final */;
-    /*
-        virtual MultiDimImplementation<GUM_SCALAR>& getMasterRef( void );
-
-        virtual const MultiDimImplementation<GUM_SCALAR>&
-        getMasterRef( void ) const;*/
+    virtual void notifyChange() const final;
 
     /// @}
     // =========================================================================
@@ -165,24 +159,25 @@ namespace gum {
      *
      * Calls _get as a r-value.
      */
-    virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
+    virtual void set( const Instantiation& i,
+                      const GUM_SCALAR& value ) const final;
 
     /**
      * @brief Default implementation of MultiDimContainer::get().
      *
      * Calls _get as a l-value.
      */
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual GUM_SCALAR get( const Instantiation& i ) const final;
 
-    virtual void fill( const GUM_SCALAR& d ) const;
+    virtual void fill( const GUM_SCALAR& d ) const final;
 
     virtual MultiDimDecorator<GUM_SCALAR>* newFactory() const = 0;
 
-    virtual void beginMultipleChanges( void );
+    virtual void beginMultipleChanges( void ) final;
 
-    virtual void endMultipleChanges( void );
+    virtual void endMultipleChanges( void ) final;
 
-    virtual void endMultipleChanges( const GUM_SCALAR& );
+    virtual void endMultipleChanges( const GUM_SCALAR& ) final;
 
     virtual const std::string toString( const Instantiation* i ) const;
 
@@ -194,6 +189,7 @@ namespace gum {
     // =========================================================================
     /// @{
 
+
     /**
      * @brief Perform an homothety on a multiDim container.
      * @param alpha The ratio.
@@ -201,15 +197,15 @@ namespace gum {
      */
     virtual void homothetic( GUM_SCALAR alpha,
                              GUM_SCALAR ( *mul )( const GUM_SCALAR,
-                                                  const GUM_SCALAR ) );
+                                                  const GUM_SCALAR ) ) final;
 
     /**
      * @brief Iterate add on each element of a multiDim container.
      * @param add The chosen folded operation.
      * @return Returns the sum of values contains in the multiDim.
      */
-    virtual GUM_SCALAR fold( GUM_SCALAR ( *add )( const GUM_SCALAR,
-                                                  const GUM_SCALAR ) ) const;
+    virtual GUM_SCALAR fold(
+        GUM_SCALAR ( *add )( const GUM_SCALAR, const GUM_SCALAR ) ) const final;
 
     /**
      * @brief Returns the implementation for this object (may be *this).

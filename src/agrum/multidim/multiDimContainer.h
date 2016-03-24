@@ -103,12 +103,14 @@ namespace gum {
      * @param src The MultiDimContainer to copy.
      */
     MultiDimContainer( const MultiDimContainer<GUM_SCALAR>& src );
+
     MultiDimContainer& operator=( const MultiDimContainer<GUM_SCALAR>& src );
 
     /**
      * @brief Class move constructor.
      */
     MultiDimContainer( MultiDimContainer<GUM_SCALAR>&& );
+
     MultiDimContainer& operator=( MultiDimContainer<GUM_SCALAR>&& src );
 
     /**
@@ -223,15 +225,13 @@ namespace gum {
      * size than this MultiDimContainer.
      */
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
+
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
                            Instantiation* p_i ) const;
 
-    // beforeMerge dedicated copyFrom for MultiDimArray
-    // beforeMerge check move operator when p=p1+p2
-
     /**
-     * @brief Returns the implementation for this object (may be *this).
-     */
+    * @brief Returns the implementation for this object (may be *this).
+    */
     virtual const MultiDimImplementation<GUM_SCALAR>* content() const = 0;
 
     /**
@@ -313,6 +313,7 @@ namespace gum {
      * @return Returns true if this MultiDimContainer is different of p.
      */
     bool operator!=( const MultiDimContainer<GUM_SCALAR>& p ) const;
+
 
     /// @}
     // =========================================================================
