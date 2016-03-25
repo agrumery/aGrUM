@@ -28,8 +28,8 @@
 namespace gum {
 
 
-  extern template class UtilityTable<float>;
-  extern template class UtilityTable<double>;
+  template class UtilityTable<float>;
+  template class UtilityTable<double>;
 
 
 } // namespace gum
