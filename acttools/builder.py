@@ -20,6 +20,7 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
+import platform
 from .configuration import cfg
 from .utils import trace,setifyString,safe_cd,critic
 from .multijobs import execCde
@@ -77,6 +78,12 @@ def getCmake(current,target):
       line+=" -DBUILD_PYTHON=OFF"
     else:
       line+=" -DBUILD_PYTHON=ON"
+
+    if platform.system() == "Windows":
+      if current["mvsc"]:
+        line += ' -G "Visual Studio 14 2015"'
+      else:
+        line += ' -G "MinGW Makefiles"'
 
     return line
 

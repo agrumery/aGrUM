@@ -72,6 +72,7 @@ def initParams():
     cfg.default['coverage']=False
     cfg.default['withSQL']=True
     cfg.default['noForwardDeclaration']=False
+    cfg.default['mvsc']=False
 
     cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
     cfg.modes=set("debug release".split())
@@ -187,6 +188,11 @@ def configureOptions(current):
                                         help="build with code coverage options enable (debug only).",
                                         action="store_true",
                                         dest="coverage",
+                                        default=False)
+    cfg.parser.add_option("", "--mvsc",
+                                        help="use Microsoft Visual Studio C++ compiler (Windows only).",
+                                        action="store_true",
+                                        dest="mvsc",
                                         default=False)
 
 def configureColors(no_fun=False):
