@@ -294,6 +294,14 @@ namespace gum {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->nbrDim();
   }
 
+  template <typename GUM_SCALAR>
+  void MultiDimDecorator<GUM_SCALAR>::apply(
+      std::function<GUM_SCALAR( GUM_SCALAR )> f ) const {
+    _content->apply( f );
+  }
+
+
+
   // protected access to _content
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>*
@@ -329,38 +337,6 @@ namespace gum {
   INLINE void
   MultiDimDecorator<GUM_SCALAR>::endMultipleChanges( const GUM_SCALAR& x ) {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->endMultipleChanges( x );
-  }
-
-  // Perform an homothety on a multiDim container
-  template <typename GUM_SCALAR>
-  INLINE void MultiDimDecorator<GUM_SCALAR>::homothetic(
-      const GUM_SCALAR alpha,
-      GUM_SCALAR ( *mul )( const GUM_SCALAR, const GUM_SCALAR ) ) {
-    Instantiation i( this );
-    i.setFirst();
-
-    while ( !i.end() ) {
-      set( i, mul( alpha, get( i ) ) );
-      ++i;
-    }
-  }
-
-  // iterate add on each element of a multiDim container
-  template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR MultiDimDecorator<GUM_SCALAR>::fold(
-      GUM_SCALAR ( *add )( const GUM_SCALAR, const GUM_SCALAR ) ) const {
-    Instantiation i( this );
-    GUM_SCALAR res;
-    i.setFirst();
-    res = get( i );
-    ++i;
-
-    while ( !i.end() ) {
-      res = add( res, get( i ) );
-      ++i;
-    }
-
-    return res;
   }
 
   template <typename GUM_SCALAR>

@@ -24,6 +24,7 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
+#include <algorithm>
 #include <agrum/config.h>
 
 
@@ -196,7 +197,14 @@ namespace gum {
     }
   }
 
-  // copyFrom
+  template <typename GUM_SCALAR>
+  void MultiDimContainer<GUM_SCALAR>::apply(
+      std::function<GUM_SCALAR( GUM_SCALAR )> f ) const {
+    Instantiation i( *this );
+    for ( i.setFirst(); !i.end(); ++i ) {
+      set( i, f( get( i ) ) );
+    }
+  }
 
   template <typename GUM_SCALAR>
   void MultiDimContainer<GUM_SCALAR>::copyFrom(

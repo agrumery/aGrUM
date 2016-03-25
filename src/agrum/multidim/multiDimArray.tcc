@@ -66,6 +66,14 @@ namespace gum {
       _values = mda->_values;
     }
   }
+
+  template <typename GUM_SCALAR>
+  void MultiDimArray<GUM_SCALAR>::apply(
+      std::function<GUM_SCALAR( GUM_SCALAR )> f ) const {
+    std::transform( _values.begin(), _values.end(), _values.begin(), f );
+  }
+
+
   // data access operator
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR&

@@ -345,5 +345,27 @@ namespace gum_tests {
       TS_ASSERT(
           ( joint.margMaxOut( {&c, &d} ) == joint.margMaxIn( {&a, &b} ) ) );
     }
+
+    void testAbsPotential() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 2 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 2 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {0, 1, 2, 3} );
+
+      gum::Potential<float> q;
+      q << a << b;
+      q.fillWith( {0, 3, 0, 3} );
+
+      TS_ASSERT_EQUALS( ( p - q ).abs().toString(),
+                        "<a:0|b:0> :: 0 /<a:1|b:0> :: 2 /"
+                        "<a:0|b:1> :: 2 /<a:1|b:1> :: 0" );
+      TS_ASSERT_EQUALS( ( q - p ).abs().toString(),
+                        "<a:0|b:0> :: 0 /<a:1|b:0> :: 2 /"
+                        "<a:0|b:1> :: 2 /<a:1|b:1> :: 0" );
+      TS_ASSERT_EQUALS( ( q - p ).abs().max(), 2 );
+      TS_ASSERT_EQUALS( ( q - p ).abs().min(), 0 );
+    }
   };
 }

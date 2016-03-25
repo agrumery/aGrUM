@@ -27,6 +27,7 @@
 #ifndef GUM_MULTIDIM_CONTAINER_H
 #define GUM_MULTIDIM_CONTAINER_H
 
+#include <functional>
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -313,6 +314,12 @@ namespace gum {
      * @return Returns true if this MultiDimContainer is different of p.
      */
     bool operator!=( const MultiDimContainer<GUM_SCALAR>& p ) const;
+
+    /**
+     * @brief Apply a function on every element of the container
+     * @param f the function to apply
+     */
+    virtual void apply( std::function<GUM_SCALAR(GUM_SCALAR)> f ) const;
 
 
     /// @}

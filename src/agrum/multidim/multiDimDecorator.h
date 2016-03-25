@@ -171,6 +171,12 @@ namespace gum {
 
     virtual void fill( const GUM_SCALAR& d ) const final;
 
+    /**
+     * @brief Apply a function on every element of the container
+     * @param f the function to apply
+     */
+    virtual void apply( std::function<GUM_SCALAR( GUM_SCALAR )> f ) const final;
+
     virtual MultiDimDecorator<GUM_SCALAR>* newFactory() const = 0;
 
     virtual void beginMultipleChanges( void ) final;
@@ -189,23 +195,6 @@ namespace gum {
     // =========================================================================
     /// @{
 
-
-    /**
-     * @brief Perform an homothety on a multiDim container.
-     * @param alpha The ratio.
-     * @param mul The chosen mult operation.
-     */
-    virtual void homothetic( GUM_SCALAR alpha,
-                             GUM_SCALAR ( *mul )( const GUM_SCALAR,
-                                                  const GUM_SCALAR ) ) final;
-
-    /**
-     * @brief Iterate add on each element of a multiDim container.
-     * @param add The chosen folded operation.
-     * @return Returns the sum of values contains in the multiDim.
-     */
-    virtual GUM_SCALAR fold(
-        GUM_SCALAR ( *add )( const GUM_SCALAR, const GUM_SCALAR ) ) const final;
 
     /**
      * @brief Returns the implementation for this object (may be *this).

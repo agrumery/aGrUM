@@ -178,6 +178,11 @@ namespace gum {
     /// min of all elements in the Potential
     GUM_SCALAR min() const;
 
+    /**
+     * @brief Apply abs on every element of the container
+     */
+    const Potential<GUM_SCALAR>& abs() const;
+
     ///@}
 
     // ========================================================================

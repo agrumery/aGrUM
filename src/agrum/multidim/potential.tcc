@@ -151,6 +151,17 @@ namespace gum {
     return gum::projectMin( *this->content() );
   }
 
+  template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::abs() const {
+    this->content()->apply( []( GUM_SCALAR x ) {
+      if ( x >= 0 )
+        return x;
+      else
+        return -x;
+    } );
+    return *this;
+  }
+
   // normalisation of this
   // do nothing is sum is 0
   template <typename GUM_SCALAR>
