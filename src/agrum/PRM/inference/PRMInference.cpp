@@ -30,10 +30,10 @@
 namespace gum {
   namespace prm {
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     template class PRMInference<float>;
     template class PRMInference<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 } /* namespace gum */

@@ -110,10 +110,10 @@ namespace gum {
   };
 }
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 extern template class gum::ExactPolicy<float>;
 extern template class gum::ExactPolicy<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 // Always include inlined implementation of template class
 #include <agrum/core/approximations/exactPolicy.tcc>

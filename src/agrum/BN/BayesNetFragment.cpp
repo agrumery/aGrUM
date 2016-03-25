@@ -26,7 +26,7 @@
 
 #include <agrum/BN/BayesNetFragment.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::BayesNetFragment<float>;
 template class gum::BayesNetFragment<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

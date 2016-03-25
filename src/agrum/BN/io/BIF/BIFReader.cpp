@@ -20,7 +20,7 @@
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::BIFReader<float>;
 template class gum::BIFReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

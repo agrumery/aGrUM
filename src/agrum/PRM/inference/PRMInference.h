@@ -240,10 +240,10 @@ namespace gum {
       /// @}
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class PRMInference<float>;
     extern template class PRMInference<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 } /* namespace gum */

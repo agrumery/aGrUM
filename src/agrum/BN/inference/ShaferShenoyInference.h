@@ -274,10 +274,10 @@ namespace gum {
   };
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class ShaferShenoyInference<float>;
   extern template class ShaferShenoyInference<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/BN/inference/ShaferShenoyInference.tcc>

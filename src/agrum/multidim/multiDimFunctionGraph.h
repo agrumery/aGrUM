@@ -391,10 +391,10 @@ namespace gum {
     friend class MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>;
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class MultiDimFunctionGraph<float>;
   extern template class MultiDimFunctionGraph<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 }
 

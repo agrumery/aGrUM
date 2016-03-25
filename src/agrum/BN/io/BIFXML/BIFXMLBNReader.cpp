@@ -24,7 +24,7 @@
  */
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::BIFXMLBNReader<float>;
 template class gum::BIFXMLBNReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

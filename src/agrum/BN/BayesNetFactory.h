@@ -447,10 +447,10 @@ namespace gum {
                       List<const DiscreteVariable*>& varList );
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class BayesNetFactory<float>;
   extern template class BayesNetFactory<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/BN/BayesNetFactory.tcc>

@@ -25,8 +25,8 @@
  */
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::aggregator::MultiDimAggregator<float>;
 template class gum::aggregator::MultiDimAggregator<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

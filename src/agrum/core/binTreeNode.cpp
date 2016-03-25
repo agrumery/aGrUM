@@ -27,7 +27,7 @@
 
 #include <agrum/core/binTreeNode.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::BinTreeNode<int>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

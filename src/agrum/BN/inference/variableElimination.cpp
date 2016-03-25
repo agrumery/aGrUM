@@ -20,7 +20,7 @@
 
 #include <agrum/BN/inference/variableElimination.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::VariableElimination<float>;
 template class gum::VariableElimination<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

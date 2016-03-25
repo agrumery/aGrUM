@@ -25,8 +25,8 @@
  */
 #include <agrum/multidim/aggregators/count.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::aggregator::Count<float>;
 template class gum::aggregator::Count<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

@@ -24,7 +24,7 @@
  */
 #include <agrum/BN/io/BNReader.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::BNReader<float>;
 template class gum::BNReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

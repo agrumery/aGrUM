@@ -151,10 +151,10 @@ namespace gum {
     List<const Potential<GUM_SCALAR>*> __garbages;
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class BayesNetInference<float>;
   extern template class BayesNetInference<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 } /* namespace gum */
 

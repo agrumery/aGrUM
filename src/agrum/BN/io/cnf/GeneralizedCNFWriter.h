@@ -92,10 +92,10 @@ namespace gum {
     virtual void write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class GeneralizedCNFWriter<float>;
   extern template class GeneralizedCNFWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/GeneralizedCNFWriter.tcc>

@@ -26,7 +26,7 @@
 
 #include <agrum/learning/scores_and_tests/indepTestChi2.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::learning::IndepTestChi2<>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

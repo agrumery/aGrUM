@@ -20,7 +20,7 @@
 
 #include <agrum/BN/inference/GibbsInference.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::GibbsInference<float>;
 template class gum::GibbsInference<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

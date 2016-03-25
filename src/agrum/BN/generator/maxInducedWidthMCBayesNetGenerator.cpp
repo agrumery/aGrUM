@@ -26,7 +26,7 @@
 
 #include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::MaxInducedWidthMCBayesNetGenerator<float>;
 template class gum::MaxInducedWidthMCBayesNetGenerator<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

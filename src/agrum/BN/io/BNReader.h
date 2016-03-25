@@ -72,10 +72,10 @@ namespace gum {
     virtual int proceed() = 0;
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class BNReader<float>;
   extern template class BNReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/BN/io/BNReader.tcc>

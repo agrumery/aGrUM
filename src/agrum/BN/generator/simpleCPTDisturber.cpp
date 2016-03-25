@@ -26,7 +26,7 @@
  */
 #include <agrum/BN/generator/simpleCPTDisturber.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::SimpleCPTDisturber<float>;
 template class gum::SimpleCPTDisturber<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

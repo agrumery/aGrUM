@@ -125,10 +125,10 @@ namespace gum {
     bool __ioerror;
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class DSLReader<float>;
   extern template class DSLReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include "DSLReader.tcc"

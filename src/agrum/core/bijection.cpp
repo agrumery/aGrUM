@@ -99,8 +99,8 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::Bijection<int, int>;
 template class gum::Bijection<std::string, std::string>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

@@ -641,9 +641,9 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 extern template class gum::BinSearchTree<int>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 // always include the template implementations
 #include <agrum/core/binSearchTree.tcc>

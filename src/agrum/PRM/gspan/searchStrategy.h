@@ -294,7 +294,7 @@ namespace gum {
         HashTable<const Pattern*, double> __map;
       };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
       extern template class SearchStrategy<float>;
       extern template class FrequenceSearch<float>;
       extern template class StrictSearch<float>;
@@ -303,7 +303,7 @@ namespace gum {
       extern template class FrequenceSearch<double>;
       extern template class StrictSearch<double>;
       extern template class TreeWidthSearch<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
     } /* namespace gspan */
   }   /* namespace prm */

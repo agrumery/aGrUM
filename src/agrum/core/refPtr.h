@@ -345,12 +345,12 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 extern template class gum::RefPtr<int>;
 extern template class gum::RefPtr<long>;
 extern template class gum::RefPtr<float>;
 extern template class gum::RefPtr<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 // always include the .tcc as it contains only templates
 #include <agrum/core/refPtr.tcc>

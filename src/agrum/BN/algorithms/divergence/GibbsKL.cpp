@@ -27,7 +27,7 @@
 #include <cmath>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::GibbsKL<float>;
 template class gum::GibbsKL<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

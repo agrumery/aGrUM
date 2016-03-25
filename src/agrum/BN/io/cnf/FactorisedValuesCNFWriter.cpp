@@ -20,7 +20,7 @@
 
 #include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::FactorisedValuesCNFWriter<float>;
 template class gum::FactorisedValuesCNFWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

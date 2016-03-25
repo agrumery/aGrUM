@@ -97,10 +97,10 @@ namespace gum {
       std::ostream& operator<<( std::ostream& out,
                                 const EdgeGrowth<GUM_SCALAR>& edge );
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
       extern template class EdgeGrowth<float>;
       extern template class EdgeGrowth<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
     } /* namespace gspan */
   }   /* namespace prm */

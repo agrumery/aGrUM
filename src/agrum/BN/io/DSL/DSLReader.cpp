@@ -20,7 +20,7 @@
 
 #include <agrum/BN/io/DSL/DSLReader.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::DSLReader<float>;
 template class gum::DSLReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

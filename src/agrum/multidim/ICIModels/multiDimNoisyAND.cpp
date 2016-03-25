@@ -22,8 +22,8 @@
 #ifdef GUM_NO_INLINE
 #endif /* GUM_NO_INLINE */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::MultiDimNoisyAND<float>;
 template class gum::MultiDimNoisyAND<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

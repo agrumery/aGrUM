@@ -379,10 +379,10 @@ namespace gum {
       std::string info() const;
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class StructuredInference<float>;
     extern template class StructuredInference<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 } /* namespace gum */

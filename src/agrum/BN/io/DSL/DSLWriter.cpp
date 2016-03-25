@@ -20,7 +20,7 @@
 
 #include <agrum/BN/io/DSL/DSLWriter.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::DSLWriter<float>;
 template class gum::DSLWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

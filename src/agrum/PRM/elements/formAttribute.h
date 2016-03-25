@@ -123,10 +123,10 @@ namespace gum {
       void __fillCpf() const;
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class FormAttribute<float>;
     extern template class FormAttribute<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 }  // namespace gum

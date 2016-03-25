@@ -26,9 +26,9 @@
 
 #include <agrum/CN/multipleInferenceEngine.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::credal::
     MultipleInferenceEngine<float, gum::LazyPropagation<float>>;
 template class gum::credal::
     MultipleInferenceEngine<double, gum::LazyPropagation<double>>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

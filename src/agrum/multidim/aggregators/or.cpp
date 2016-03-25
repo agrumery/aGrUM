@@ -25,8 +25,8 @@
  */
 #include <agrum/multidim/aggregators/or.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::aggregator::Or<float>;
 template class gum::aggregator::Or<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

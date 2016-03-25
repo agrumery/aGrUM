@@ -164,10 +164,10 @@ namespace gum {
       /// @}
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class ReferenceSlot<float>;
     extern template class ReferenceSlot<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 }  // namespace gum

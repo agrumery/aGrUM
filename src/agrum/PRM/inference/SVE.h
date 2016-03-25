@@ -205,10 +205,10 @@ namespace gum {
       /// @}
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class SVE<float>;
     extern template class SVE<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 } /* namespace gum */

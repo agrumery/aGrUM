@@ -20,7 +20,7 @@
 
 #include <agrum/BN/io/cnf/CNFWriter.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::CNFWriter<float>;
 template class gum::CNFWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

@@ -26,7 +26,7 @@
 
 #include <agrum/CN/inferenceEngine.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::credal::InferenceEngine<float>;
 template class gum::credal::InferenceEngine<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

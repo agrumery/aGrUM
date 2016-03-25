@@ -60,7 +60,7 @@ namespace gum {
                ( tree_width != from.tree_width );
       }
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
       template class NodeData<float>;
       template class EdgeData<float>;
       template class InterfaceGraph<float>;
@@ -68,7 +68,7 @@ namespace gum {
       template class NodeData<double>;
       template class EdgeData<double>;
       template class InterfaceGraph<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
     } /* namespace gspan */
   }   /* namespace prm */

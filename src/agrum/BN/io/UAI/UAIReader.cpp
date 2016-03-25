@@ -20,7 +20,7 @@
 
 #include <agrum/BN/io/UAI/UAIReader.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::UAIReader<float>;
 template class gum::UAIReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

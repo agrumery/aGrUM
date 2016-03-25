@@ -29,10 +29,10 @@
 namespace gum {
   namespace prm {
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     template class ClassBayesNet<float>;
     template class ClassBayesNet<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 } /* namespace gum */

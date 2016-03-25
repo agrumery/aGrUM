@@ -24,7 +24,7 @@
  */
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::SimpleBayesNetGenerator<float>;
 template class gum::SimpleBayesNetGenerator<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

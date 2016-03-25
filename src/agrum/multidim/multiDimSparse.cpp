@@ -28,10 +28,10 @@
 
 namespace gum {
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   template class MultiDimSparse<float>;
   template class MultiDimSparse<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 } // namespace gum
 

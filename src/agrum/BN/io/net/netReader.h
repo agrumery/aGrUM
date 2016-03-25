@@ -126,10 +126,10 @@ namespace gum {
     bool __ioerror;
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class NetReader<float>;
   extern template class NetReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include "netReader.tcc"

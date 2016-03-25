@@ -26,7 +26,7 @@
 
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::learning::ScoreBDeu<>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

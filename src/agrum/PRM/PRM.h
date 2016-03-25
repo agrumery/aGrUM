@@ -229,10 +229,10 @@ namespace gum {
       /// @}
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class PRM<float>;
     extern template class PRM<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 } /* namespace gum */

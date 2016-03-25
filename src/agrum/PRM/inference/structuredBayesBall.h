@@ -161,10 +161,10 @@ namespace gum {
       HashTable<std::string, std::pair<Set<NodeId>*, Size>> __reqMap;
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class StructuredBayesBall<float>;
     extern template class StructuredBayesBall<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 } /* namespace gum */

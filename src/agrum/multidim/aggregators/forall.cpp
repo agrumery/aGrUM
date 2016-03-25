@@ -25,8 +25,8 @@
  */
 #include <agrum/multidim/aggregators/forall.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::aggregator::Forall<float>;
 template class gum::aggregator::Forall<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

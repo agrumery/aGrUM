@@ -87,10 +87,10 @@ namespace gum {
       Idx __value;
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class Count<float>;
     extern template class Count<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   }  // aggregator
 }  // gum

@@ -25,7 +25,7 @@
  */
 #include <agrum/BN/io/UAI/UAIWriter.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::UAIWriter<float>;
 template class gum::UAIWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

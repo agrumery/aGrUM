@@ -26,9 +26,9 @@
 
 #include <agrum/core/math/rational.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::Rational<float>;
 template class gum::Rational<double>;
 template class gum::Rational<long double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

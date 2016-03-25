@@ -2943,12 +2943,12 @@ namespace gum {
 
 }  // namespace gum
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 extern template class gum::HashTable<int, int>;
 extern template class gum::HashTable<int, std::string>;
 extern template class gum::HashTable<std::string, std::string>;
 extern template class gum::HashTable<std::string, int>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 // always include the implementation of the templates
 #include <agrum/core/hashTable.tcc>

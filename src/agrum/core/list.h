@@ -2525,11 +2525,11 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 extern template class gum::List<bool>;
 extern template class gum::List<int>;
 extern template class gum::List<unsigned int>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 // always include the implementation of the templates
 #include <agrum/core/list.tcc>

@@ -25,8 +25,8 @@
 
 #include <agrum/multidim/potential.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::Potential<float>;
 template class gum::Potential<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

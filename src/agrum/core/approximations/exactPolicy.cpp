@@ -27,8 +27,8 @@
 
 #include <agrum/core/approximations/exactPolicy.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::ExactPolicy<float>;
 template class gum::ExactPolicy<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

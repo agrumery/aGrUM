@@ -25,8 +25,8 @@
  */
 #include <agrum/multidim/aggregators/amplitude.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::aggregator::Amplitude<float>;
 template class gum::aggregator::Amplitude<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

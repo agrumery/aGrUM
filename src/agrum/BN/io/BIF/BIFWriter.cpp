@@ -20,7 +20,7 @@
 
 #include <agrum/BN/io/BIF/BIFWriter.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::BIFWriter<float>;
 template class gum::BIFWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

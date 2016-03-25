@@ -81,10 +81,10 @@ namespace gum {
 
 } /* namespace gum */
   
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::List<bool>;
 template class gum::List<int>;
 template class gum::List<unsigned int>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

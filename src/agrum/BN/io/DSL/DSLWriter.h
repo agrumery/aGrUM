@@ -87,10 +87,10 @@ namespace gum {
                                 const DiscreteVariable& var );
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class gum::DSLWriter<float>;
   extern template class gum::DSLWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include "DSLWriter.tcc"

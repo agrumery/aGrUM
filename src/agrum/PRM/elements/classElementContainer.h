@@ -430,10 +430,10 @@ namespace gum {
       HashTable<std::string, std::pair<bool, bool>> __IOFlags;
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class ClassElementContainer<float>;
     extern template class ClassElementContainer<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 }  // namespace gum

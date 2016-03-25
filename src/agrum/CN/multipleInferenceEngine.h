@@ -227,12 +227,12 @@ namespace gum {
       /// @}
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class MultipleInferenceEngine<double,
                                                   gum::LazyPropagation<double>>;
     extern template class MultipleInferenceEngine<float,
                                                   gum::LazyPropagation<float>>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
   }  // end of namespace
 }
 

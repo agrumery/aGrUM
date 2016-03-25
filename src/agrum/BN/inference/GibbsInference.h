@@ -112,10 +112,10 @@ namespace gum {
     double __updateStats_with_err( Size nbr );
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class GibbsInference<float>;
   extern template class GibbsInference<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 } /* namespace gum */
 

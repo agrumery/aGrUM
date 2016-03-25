@@ -20,7 +20,7 @@
 
 #include <agrum/BN/inference/VEWithBB.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::VEWithBB<float>;
 template class gum::VEWithBB<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

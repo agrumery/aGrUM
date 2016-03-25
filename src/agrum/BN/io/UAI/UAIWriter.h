@@ -99,10 +99,10 @@ namespace gum {
     std::string __cptBloc( const IBayesNet<GUM_SCALAR>& bn, NodeId node );
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class UAIWriter<float>;
   extern template class UAIWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/BN/io/UAI/UAIWriter.tcc>

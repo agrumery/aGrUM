@@ -20,7 +20,7 @@
 
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::FMDPDatReader<float>;
 template class gum::FMDPDatReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+

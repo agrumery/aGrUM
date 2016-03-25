@@ -118,10 +118,10 @@ namespace gum {
     /// @}
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class MultiDimLogit<float>;
   extern template class MultiDimLogit<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   /// For friendly displaying the content of the array.
   template <typename GUM_SCALAR>

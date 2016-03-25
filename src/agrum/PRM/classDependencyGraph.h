@@ -137,10 +137,10 @@ namespace gum {
       NodeMap __node_map;
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class ClassDependencyGraph<float>;
     extern template class ClassDependencyGraph<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
   } /* namespace prm */
 } /* namespace gum */
 

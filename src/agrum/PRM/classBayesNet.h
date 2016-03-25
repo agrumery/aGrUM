@@ -148,10 +148,10 @@ namespace gum {
       void __init( const Class<GUM_SCALAR>& c );
     };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
     extern template class ClassBayesNet<float>;
     extern template class ClassBayesNet<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
   } /* namespace prm */
 } /* namespace gum */

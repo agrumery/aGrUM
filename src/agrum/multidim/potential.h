@@ -234,10 +234,10 @@ namespace gum {
     _complementVars( const Set<const DiscreteVariable*>& del_vars ) const;
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class Potential<float>;
   extern template class Potential<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 } /* namespace gum */
 

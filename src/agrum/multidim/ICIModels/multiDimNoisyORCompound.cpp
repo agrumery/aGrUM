@@ -23,8 +23,8 @@
 #ifdef GUM_NO_INLINE
 #endif /* GUM_NO_INLINE */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::MultiDimNoisyORCompound<float>;
 template class gum::MultiDimNoisyORCompound<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

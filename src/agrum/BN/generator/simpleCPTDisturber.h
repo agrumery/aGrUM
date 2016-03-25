@@ -93,10 +93,10 @@ namespace gum {
                                  GUM_SCALAR variation );
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class SimpleCPTDisturber<float>;
   extern template class SimpleCPTDisturber<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/BN/generator/simpleCPTDisturber.tcc>

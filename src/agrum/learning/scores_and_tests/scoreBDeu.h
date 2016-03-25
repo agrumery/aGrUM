@@ -245,9 +245,9 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 extern template class gum::learning::ScoreBDeu<>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 /// always include the template implementation
 #include <agrum/learning/scores_and_tests/scoreBDeu.tcc>

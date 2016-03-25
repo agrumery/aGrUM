@@ -288,7 +288,7 @@ namespace gum {
                       HashTable<std::string, LabelData*>& label_map );
       };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
       extern template class NodeData<float>;
       extern template class EdgeData<float>;
       extern template class InterfaceGraph<float>;
@@ -296,7 +296,7 @@ namespace gum {
       extern template class NodeData<double>;
       extern template class EdgeData<double>;
       extern template class InterfaceGraph<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
     } /* namespace gspan */
   }   /* namespace prm */

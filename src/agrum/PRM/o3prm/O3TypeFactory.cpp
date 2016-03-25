@@ -28,8 +28,8 @@
 
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::prm::o3prm::O3TypeFactory<float>;
 template class gum::prm::o3prm::O3TypeFactory<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

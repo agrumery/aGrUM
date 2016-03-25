@@ -119,10 +119,10 @@ namespace gum {
                                       const IBayesNet<GUM_SCALAR>& infdiag );
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class BIFXMLBNWriter<float>;
   extern template class BIFXMLBNWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.tcc>

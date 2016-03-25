@@ -271,7 +271,7 @@ namespace gum {
         O3prmrContext& operator+=( const O3prmrContext& c );
       };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
       extern template class ObserveCommand<float>;
       extern template class UnobserveCommand<float>;
       extern template class QueryCommand<float>;
@@ -283,7 +283,7 @@ namespace gum {
       extern template class QueryCommand<double>;
       extern template class O3prmrSession<double>;
       extern template class O3prmrContext<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
     }  // namespace o3prmr
   }    // namespace prm

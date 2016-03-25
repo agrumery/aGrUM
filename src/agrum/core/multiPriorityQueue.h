@@ -490,10 +490,10 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 extern template class gum::MultiPriorityQueue<std::string>;
 extern template class gum::MultiPriorityQueue<int, int>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 // always include the implementation of the templates
 #include <agrum/core/multiPriorityQueue.tcc>

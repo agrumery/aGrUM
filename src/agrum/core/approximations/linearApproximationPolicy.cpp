@@ -27,8 +27,8 @@
 
 #include <agrum/core/approximations/linearApproximationPolicy.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::LinearApproximationPolicy<float>;
 template class gum::LinearApproximationPolicy<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

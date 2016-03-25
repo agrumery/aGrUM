@@ -28,8 +28,8 @@
 
 #include <agrum/PRM/o3prm/O3NameSolver.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::prm::o3prm::O3NameSolver<float>;
 template class gum::prm::o3prm::O3NameSolver<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 

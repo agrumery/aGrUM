@@ -182,10 +182,10 @@ namespace gum {
     bool __ioerror;
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class BIFReader<float>;
   extern template class BIFReader<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 }  // namespace gum
 
 #include <agrum/BN/io/BIF/BIFReader.tcc>

@@ -1938,10 +1938,10 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 extern template class gum::Bijection<int, int>;
 extern template class gum::Bijection<std::string, std::string>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
 // always include the template implementations
 #include <agrum/core/bijection.tcc>

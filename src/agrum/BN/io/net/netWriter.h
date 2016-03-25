@@ -104,10 +104,10 @@ namespace gum {
     // Returns the modalities labels of the variables in varsSeq
   };
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
   extern template class NetWriter<float>;
   extern template class NetWriter<double>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/BN/io/net/netWriter.tcc>

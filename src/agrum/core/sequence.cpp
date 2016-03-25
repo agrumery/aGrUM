@@ -27,11 +27,11 @@
 
 #include <agrum/core/sequence.h>
 
-#ifndef GUM_NO_FORWARD_DECLARATION
+
 template class gum::Sequence<int>;
 template class gum::Sequence<long>;
 template class gum::Sequence<float>;
 template class gum::Sequence<double>;
 template class gum::Sequence<std::string>;
-#endif // GUM_NO_FORWARD_DECLARATION
+
 
