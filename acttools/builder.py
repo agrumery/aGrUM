@@ -43,11 +43,6 @@ def getCmake(current,target):
     else:
         line+=" -DUSE_NANODBC=OFF"
 
-    if current["noForwardDeclaration"]==True:
-        line+=" -DNO_FORWARD_DECLARATION=ON"
-    else:
-        line+=" -DNO_FORWARD_DECLARATION=OFF"
-
     line+=" -DCMAKE_INSTALL_PREFIX="+current["destination"]
 
     if current["verbose"]:

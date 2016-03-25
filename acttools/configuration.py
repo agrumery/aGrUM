@@ -71,7 +71,6 @@ def initParams():
     cfg.default['dry_run']=False
     cfg.default['coverage']=False
     cfg.default['withSQL']=True
-    cfg.default['noForwardDeclaration']=False
     cfg.default['mvsc']=False
 
     cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
@@ -123,16 +122,6 @@ def configureOptions(current):
                                         action="store_false",
                                         dest="withSQL",
                                         default=current['withSQL'])
-    cfg.parser.add_option("", "--forwardDeclaration",
-                                        help="forward declaration of template classes.",
-                                        action="store_false",
-                                        dest="noForwardDeclaration",
-                                        default=current['noForwardDeclaration'])
-    cfg.parser.add_option("", "--noForwardDeclaration",
-                                        help="no forward declaration of template classes.",
-                                        action="store_true",
-                                        dest="noForwardDeclaration",
-                                        default=current['noForwardDeclaration'])
     cfg.parser.add_option("", "--fixed_seed",
                                         help="random seed is fixed once for all. Hence random algorithms should be time-normalized.",
                                         action="store_true",
