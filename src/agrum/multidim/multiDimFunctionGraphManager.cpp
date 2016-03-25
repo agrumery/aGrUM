@@ -27,3 +27,4 @@
  */
 
 #include <agrum/multidim/multiDimFunctionGraphManager.h>
+

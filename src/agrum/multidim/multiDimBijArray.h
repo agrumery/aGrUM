@@ -181,6 +181,11 @@ namespace gum {
     /// The class name.
     std::string __name;
   };
+
+#ifndef GUM_NO_FORWARD_DECLARATION
+  extern template class MultiDimBijArray<float>;
+  extern template class MultiDimBijArray<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
 }  // namespace gum
 
 #include <agrum/multidim/multiDimBijArray.tcc>

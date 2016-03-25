@@ -27,3 +27,11 @@
 
 #include <agrum/multidim/multiDimBucket.h>
 
+namespace gum {
+#ifndef GUM_NO_FORWARD_DECLARATION
+  template class MultiDimBucket<float>;
+  template class MultiDimBucket<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
+} // namespace gum
+

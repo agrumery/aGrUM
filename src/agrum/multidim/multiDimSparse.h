@@ -131,6 +131,11 @@ namespace gum {
     /// @}
   };
 
+#ifndef GUM_NO_FORWARD_DECLARATION
+  extern template class MultiDimSparse<float>;
+  extern template class MultiDimSparse<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
 } /* namespace gum */
 
 #include <agrum/multidim/multiDimSparse.tcc>

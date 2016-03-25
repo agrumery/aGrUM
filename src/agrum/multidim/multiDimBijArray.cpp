@@ -27,3 +27,12 @@
 
 #include <agrum/multidim/multiDimBijArray.h>
 
+namespace gum {
+
+#ifndef GUM_NO_FORWARD_DECLARATION
+  template class MultiDimBijArray<float>;
+  template class MultiDimBijArray<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
+} // namespace gum
+

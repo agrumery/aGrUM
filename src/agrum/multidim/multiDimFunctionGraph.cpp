@@ -27,3 +27,11 @@
 
 #include <agrum/multidim/multiDimFunctionGraph.h>
 
+namespace gum {
+
+#ifndef GUM_NO_FORWARD_DECLARATION
+    template class MultiDimFunctionGraph<float>;
+    template class MultiDimFunctionGraph<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
+} // namespace gum

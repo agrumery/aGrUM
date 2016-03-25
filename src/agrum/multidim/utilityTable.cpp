@@ -24,3 +24,13 @@
  * @author Jean-Philippe DUBUS
  */
 #include <agrum/multidim/utilityTable.h>
+
+namespace gum {
+
+#ifndef GUM_NO_FORWARD_DECLARATION
+  extern template class UtilityTable<float>;
+  extern template class UtilityTable<double>;
+#endif // GUM_NO_FORWARD_DECLARATION
+
+} // namespace gum
+
