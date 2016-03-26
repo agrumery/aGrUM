@@ -142,14 +142,14 @@ namespace gum {
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void fillWith( const std::vector<GUM_SCALAR>& v ) const;
+    virtual void populate( const std::vector<GUM_SCALAR>& v ) const;
     /**
      * This will raise an exception: you can't change the variables in a
      * MultiDimBijArray.
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void fillWith( std::initializer_list<GUM_SCALAR> l ) const;
+    virtual void populate( std::initializer_list<GUM_SCALAR> l ) const;
 
     /// @}
     // ========================================================================

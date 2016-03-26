@@ -369,7 +369,7 @@ namespace gum_tests {
 
 
       // *********************************************************************
-      // Test set(), fill() and fillWith()
+      // Test set(), fill() and populate()
       // *********************************************************************
       gum::Instantiation inst(*functionGraph);
 
@@ -383,16 +383,16 @@ namespace gum_tests {
       for (float i = 0; i < 128; i++)
         v.push_back(i);
 
-      TS_ASSERT_THROWS(functionGraph->fillWith(v),
+      TS_ASSERT_THROWS(functionGraph->populate(v),
                         gum::OperationNotAllowed);
 
       for (float i = 128; i < 256; i++)
         v.push_back(i);
 
-      TS_ASSERT_THROWS(functionGraph->fillWith(v),
+      TS_ASSERT_THROWS(functionGraph->populate(v),
                         gum::OperationNotAllowed);
 
-      TS_ASSERT_THROWS(functionGraph->fillWith({1,2,3}),
+      TS_ASSERT_THROWS(functionGraph->populate({1,2,3}),
                        gum::OperationNotAllowed);
 
 

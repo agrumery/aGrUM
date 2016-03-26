@@ -295,11 +295,22 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
+  void MultiDimDecorator<GUM_SCALAR>::populate(
+      const std::vector<GUM_SCALAR>& v ) const {
+    _content->populate( v );
+  }
+
+  template <typename GUM_SCALAR>
+  void MultiDimDecorator<GUM_SCALAR>::populate(
+      std::initializer_list<GUM_SCALAR> list ) const {
+    _content->populate( list );
+  }
+
+  template <typename GUM_SCALAR>
   void MultiDimDecorator<GUM_SCALAR>::apply(
       std::function<GUM_SCALAR( GUM_SCALAR )> f ) const {
     _content->apply( f );
   }
-
 
 
   // protected access to _content

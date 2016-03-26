@@ -544,7 +544,7 @@ namespace gum {
     void PRMFactory<GUM_SCALAR>::setCPFByRule(
         const std::vector<std::string>& parents,
         const std::vector<std::string>& values ) {
-      
+
       auto a = static_cast<Attribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
@@ -1891,7 +1891,7 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
       }
 
-      a->formulas().fillWith( array );
+      a->formulas().populate( array );
 
       /// Generate CPF
       a->cpf();

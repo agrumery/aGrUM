@@ -47,7 +47,7 @@ namespace gum {
     for ( Size i = 0; i < ut.domainSize(); ++i )
       v.push_back( (float)rand() * 1000 );
 
-    ut.fillWith( v );
+    ut.populate( v );
   }
 
   // Generates a UT using doubles.
@@ -60,7 +60,7 @@ namespace gum {
     for ( Size i = 0; i < ut.domainSize(); ++i )
       v.push_back( (double)rand() * 1000 );
 
-    ut.fillWith( v );
+    ut.populate( v );
   }
 
 } /* namespace gum */

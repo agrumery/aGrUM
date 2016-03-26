@@ -221,11 +221,11 @@ namespace gum {
         // Filling tables
         if ( __infdiag->isChanceNode( currentVarId ) ) {
           const Potential<GUM_SCALAR>* table = &__infdiag->cpt( currentVarId );
-          table->fillWith( tablevector );
+          table->populate( tablevector );
         } else if ( __infdiag->isUtilityNode( currentVarId ) ) {
           const UtilityTable<GUM_SCALAR>* table =
               &__infdiag->utility( currentVarId );
-          table->fillWith( tablevector );
+          table->populate( tablevector );
         }
       }
 

@@ -152,8 +152,23 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>&
+  Potential<GUM_SCALAR>::fillWith( const std::vector<GUM_SCALAR>& v ) const {
+    this->populate( v );
+    return *this;
+  }
+
+
+  template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::fillWith(
+      std::initializer_list<GUM_SCALAR> list ) const {
+    this->populate( list );
+    return *this;
+  }
+
+  template <typename GUM_SCALAR>
   INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::abs() const {
-    this->content()->apply( []( GUM_SCALAR x ) {
+    this->apply( []( GUM_SCALAR x ) {
       if ( x >= 0 )
         return x;
       else
@@ -161,23 +176,16 @@ namespace gum {
     } );
     return *this;
   }
-
   // normalisation of this
   // do nothing is sum is 0
   template <typename GUM_SCALAR>
-  INLINE Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::normalize() const {
+  INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::normalize() const {
     GUM_SCALAR s = sum();
 
     if ( s != (GUM_SCALAR)0 ) {
-      Instantiation i( this->_content );
-
-      for ( i.setFirst(); !i.end(); ++i )
-        this->set( i, this->get( i ) / s );
+      this->apply( [s]( GUM_SCALAR x ) { return x / s; } );
     }
-
-    // a const method should return a const ref BUT WE NEED t return a non const
-    // ref
-    return const_cast<Potential<GUM_SCALAR>&>( *this );
+    return *this;
   }
 
   template <typename GUM_SCALAR>

@@ -121,9 +121,6 @@ namespace gum {
     // ========================================================================
     ///@{
 
-    /// normalisation of this do nothing if sum is 0
-    Potential<GUM_SCALAR>& normalize() const;
-
     /**
      * Projection using sum as operation (and implementation-optimized
      * operations)
@@ -179,9 +176,35 @@ namespace gum {
     GUM_SCALAR min() const;
 
     /**
+     * @brief Automatically fills the potential with the values in
+     * v.
+     *
+     * @param v Vector of values.
+     * @throw SizeError Raised if v size's does not matches this
+     * MultiDimContainer domain size.
+     */
+    const Potential<GUM_SCALAR>&
+    fillWith( const std::vector<GUM_SCALAR>& v ) const;
+
+    /**
+     * @brief Automatically fills this MultiDimContainer with the values in
+     * l.
+     *
+     * @param l contains the data.
+     * @throw SizeError Raised if l size's does not matches this
+     * MultiDimContainer domain size.
+     */
+    const Potential<GUM_SCALAR>&
+    fillWith( std::initializer_list<GUM_SCALAR> list ) const;
+    /**
      * @brief Apply abs on every element of the container
      */
     const Potential<GUM_SCALAR>& abs() const;
+
+    /**
+     * @brief normalisation of this do nothing if sum is 0
+     */
+    const Potential<GUM_SCALAR>& normalize() const;
 
     ///@}
 

@@ -3,6 +3,7 @@
 %ignore gum::MultiDimInterface;
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
+%ignore gum::Potential<double>::populate;
 
 
 /* Synchronisation between gum::Potential and numpy array */
@@ -21,9 +22,18 @@
 %}
 
 
+
+%pythonappend gum::Potential<double>::abs %{
+        self._notSync=True
+        #return self
+%}
+%pythonappend gum::Potential<double>::normalize %{
+        self._notSync=True
+        #return self
+%}
 %pythonappend gum::Potential<double>::fillWith %{
         self._notSync=True
-        return self
+        #return self
 %}
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
@@ -214,7 +224,7 @@
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
 %}
 
 

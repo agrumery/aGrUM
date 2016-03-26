@@ -33,8 +33,8 @@
     return self->gum::MultiDimDecorator<double>::variable(i);
   }
 
-  void fillWith ( const std::vector< double >& v ) const {
-    self->gum::MultiDimDecorator<double>::fillWith(v);
+  void populate ( const std::vector< double >& v ) const {
+    self->gum::MultiDimDecorator<double>::populate(v);
   }
 
   void fill ( const double& d ) const {

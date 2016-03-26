@@ -184,7 +184,7 @@ namespace gum {
      * @throw SizeError Raised if v size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void fillWith( const std::vector<GUM_SCALAR>& v ) const;
+    virtual void populate( const std::vector<GUM_SCALAR>& v ) const;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the values in
@@ -204,7 +204,7 @@ namespace gum {
      * @throw SizeError Raised if l size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void fillWith( std::initializer_list<GUM_SCALAR> list ) const;
+    virtual void populate( std::initializer_list<GUM_SCALAR> list ) const;
 
     /// @}
     // =========================================================================

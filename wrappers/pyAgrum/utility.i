@@ -150,7 +150,7 @@ s/Potential/UtilityTable/g
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
 %}
 
 

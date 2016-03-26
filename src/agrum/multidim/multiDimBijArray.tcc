@@ -140,14 +140,14 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimBijArray<GUM_SCALAR>::fillWith(
+  INLINE void MultiDimBijArray<GUM_SCALAR>::populate(
       const std::vector<GUM_SCALAR>& v ) const {
     GUM_ERROR( OperationNotAllowed,
                "MultiDimBijArray<GUM_SCALAR> are read only." );
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimBijArray<GUM_SCALAR>::fillWith(
+  INLINE void MultiDimBijArray<GUM_SCALAR>::populate(
       std::initializer_list<GUM_SCALAR> l ) const {
     GUM_ERROR( OperationNotAllowed,
                "MultiDimBijArray<GUM_SCALAR> are read only." );

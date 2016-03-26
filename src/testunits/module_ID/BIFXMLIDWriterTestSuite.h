@@ -85,14 +85,14 @@ namespace gum_tests {
       fillTopo( infDiag, idList );
 
       try {
-        infDiag.cpt( idList[4] ).fillWith({0.2, 0.8, 0.5, 0.5});
-        infDiag.cpt( idList[5] ).fillWith({0.1, 0.9, 0.9, 0.1});
-        infDiag.cpt( idList[6] ).fillWith({0.35, 0.65, 0.19, 0.81});
-        infDiag.cpt( idList[7] ).fillWith({0.4, 0.6, 0.5, 0.5});
-        infDiag.cpt( idList[8] ).fillWith({0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7});
+        infDiag.cpt( idList[4] ).populate({0.2, 0.8, 0.5, 0.5});
+        infDiag.cpt( idList[5] ).populate({0.1, 0.9, 0.9, 0.1});
+        infDiag.cpt( idList[6] ).populate({0.35, 0.65, 0.19, 0.81});
+        infDiag.cpt( idList[7] ).populate({0.4, 0.6, 0.5, 0.5});
+        infDiag.cpt( idList[8] ).populate({0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7});
 
-        infDiag.utility( idList[9] ).fillWith({42, 69, 666, 84});
-        infDiag.utility( idList[10] ).fillWith({42, -69, 666, 84});
+        infDiag.utility( idList[9] ).populate({42, 69, 666, 84});
+        infDiag.utility( idList[10] ).populate({42, -69, 666, 84});
       } catch ( gum::Exception& e ) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;

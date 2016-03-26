@@ -137,12 +137,12 @@ namespace gum {
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void fillWith( const std::vector<GUM_SCALAR>& v ) const;
+    virtual void populate( const std::vector<GUM_SCALAR>& v ) const;
     /**
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void fillWith( std::initializer_list<GUM_SCALAR> v ) const;
+    virtual void populate( std::initializer_list<GUM_SCALAR> v ) const;
 
     /**
      * @warning This will raise an OperationNotAllowed as MultiDimFunctionGraph

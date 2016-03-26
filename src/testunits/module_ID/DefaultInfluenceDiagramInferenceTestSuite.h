@@ -76,22 +76,22 @@ namespace gum_tests {
       }
     }
 
-    void fillwithOilWildcater( gum::InfluenceDiagram<float>& id,
+    void populateOilWildcater( gum::InfluenceDiagram<float>& id,
                                gum::List<gum::NodeId>& idList ) {
       fillTopoOilWildcater( id, idList );
 
       try {
-        id.cpt( idList[3] ).fillWith( {0.5, 0.3, 0.2} );
+        id.cpt( idList[3] ).populate( {0.5, 0.3, 0.2} );
         id.cpt( idList[2] )
-            .fillWith(  // clang-format off
+            .populate(  // clang-format off
                               {0.6, 0.3, 0.1, 0,
                                0  , 0  , 0  , 1,
                                0.3, 0.4, 0.3, 0,
                                0  , 0  , 0  , 1,
                                0.1, 0.4, 0.5, 0,
                                0  , 0  , 0  , 1}); //clang-format on
-        id.utility( idList[4] ).fillWith({-10, 0});
-        id.utility( idList[5] ).fillWith({-70, 0, 50, 0, 200, 0});
+        id.utility( idList[4] ).populate({-10, 0});
+        id.utility( idList[5] ).populate({-70, 0, 50, 0, 200, 0});
       } catch ( gum::Exception& e ) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -143,22 +143,22 @@ namespace gum_tests {
       }
     }
 
-    void fillwithDecAsia( gum::InfluenceDiagram<float>& id,
+    void populateDecAsia( gum::InfluenceDiagram<float>& id,
                           gum::List<gum::NodeId>& idList ) {
       fillTopoDecAsia( id, idList );
 
       try {
-        id.cpt( idList[9] ).fillWith({0.01, 0.99});
-        id.cpt( idList[4] ).fillWith({0.1, 0.9, 0.01, 0.99});
-        id.cpt( idList[3] ).fillWith({0.6, 0.4, 0.3, 0.7});
-        id.cpt( idList[2] ).fillWith({0.5, 0.5});
-        id.cpt( idList[6] ).fillWith({0.9, 0.1, 0.7, 0.3, 0.8, 0.2, 0.1, 0.9});
-        id.cpt( idList[8] ).fillWith({0.05, 0.95, 0.01, 0.99});
-        id.cpt( idList[5] ).fillWith({1, 0, 1, 0, 1, 0, 0, 1});
-        id.cpt( idList[7] ).fillWith({0.98, 0.02, 0.5, 0.5, 0.05, 0.95, 0.5, 0.5});
+        id.cpt( idList[9] ).populate({0.01, 0.99});
+        id.cpt( idList[4] ).populate({0.1, 0.9, 0.01, 0.99});
+        id.cpt( idList[3] ).populate({0.6, 0.4, 0.3, 0.7});
+        id.cpt( idList[2] ).populate({0.5, 0.5});
+        id.cpt( idList[6] ).populate({0.9, 0.1, 0.7, 0.3, 0.8, 0.2, 0.1, 0.9});
+        id.cpt( idList[8] ).populate({0.05, 0.95, 0.01, 0.99});
+        id.cpt( idList[5] ).populate({1, 0, 1, 0, 1, 0, 0, 1});
+        id.cpt( idList[7] ).populate({0.98, 0.02, 0.5, 0.5, 0.05, 0.95, 0.5, 0.5});
 
-        id.utility( idList[10] ).fillWith({180, 2, 120, 4, 160, 0, 15, 40});
-        id.utility( idList[11] ).fillWith({0, 10, 1, 10});
+        id.utility( idList[10] ).populate({180, 2, 120, 4, 160, 0, 15, 40});
+        id.utility( idList[11] ).populate({0, 10, 1, 10});
       } catch ( gum::Exception& e ) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -277,7 +277,7 @@ namespace gum_tests {
       gum::List<gum::NodeId> idList;
       TS_GUM_ASSERT_THROWS_NOTHING( topology =
                                         new gum::InfluenceDiagram<float>() );
-      TS_GUM_ASSERT_THROWS_NOTHING( fillwithDecAsia( *topology, idList ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( populateDecAsia( *topology, idList ) );
 
       gum::InfluenceDiagramInference<float>* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -369,7 +369,7 @@ namespace gum_tests {
       gum::InfluenceDiagram<float>* topology = nullptr;
       gum::List<gum::NodeId> idList;
       topology = new gum::InfluenceDiagram<float>();
-      fillwithOilWildcater( *topology, idList );
+      populateOilWildcater( *topology, idList );
 
       gum::InfluenceDiagramInference<float>* dIDI = nullptr;
       dIDI = new gum::InfluenceDiagramInference<float>( *topology );
@@ -384,7 +384,7 @@ namespace gum_tests {
       gum::InfluenceDiagram<float>* topology = nullptr;
       gum::List<gum::NodeId> idList;
       topology = new gum::InfluenceDiagram<float>();
-      fillwithDecAsia( *topology, idList );
+      populateDecAsia( *topology, idList );
       gum::NullStream devnull;
 
       gum::InfluenceDiagramInference<float>* dIDI = nullptr;
@@ -413,7 +413,7 @@ namespace gum_tests {
       gum::InfluenceDiagram<float>* topology =
           new gum::InfluenceDiagram<float>();
       gum::List<gum::NodeId> idList;
-      fillwithOilWildcater( *topology, idList );
+      populateOilWildcater( *topology, idList );
 
       gum::Potential<float>* evidence1 = new gum::Potential<float>();
       gum::Potential<float>* evidence2 = new gum::Potential<float>();
@@ -431,8 +431,8 @@ namespace gum_tests {
       evidence1->erase( topology->variable( idList[3] ) );
       evidence2->add( topology->variable( idList[3] ) );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( evidence1->fillWith( {0.2, 0.3, 0.1, 0.4} ) );
-      evidence2->fillWith( {0.2, 0.3, 0.5} );
+      TS_GUM_ASSERT_THROWS_NOTHING( evidence1->populate( {0.2, 0.3, 0.1, 0.4} ) );
+      evidence2->populate( {0.2, 0.3, 0.5} );
 
       TS_GUM_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
 

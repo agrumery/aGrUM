@@ -126,7 +126,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-  INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::fillWith(
+  INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::populate(
       const std::vector<GUM_SCALAR>& v ) const {
     GUM_ERROR( OperationNotAllowed,
                "Function Graph can't be edited so "
@@ -135,7 +135,7 @@ namespace gum {
                "Function Graph." )
   }
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-  INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::fillWith(
+  INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::populate(
           std::initializer_list<GUM_SCALAR> l ) const {
     GUM_ERROR( OperationNotAllowed,
                "Function Graph can't be edited so "

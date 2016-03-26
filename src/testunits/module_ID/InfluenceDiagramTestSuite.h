@@ -96,7 +96,7 @@ namespace gum_tests {
           const float t[4] = {0.2, 0.8, 0.5, 0.5};
           int n = 4;
           const std::vector<float> v( t, t + n );
-          p1.fillWith( v );
+          p1.populate( v );
         }
 
         const gum::Potential<float>& p2 = id.cpt( idList[5] );
@@ -105,7 +105,7 @@ namespace gum_tests {
           const float t[4] = {0.1, 0.9, 0.9, 0.1};
           int n = 4;
           const std::vector<float> v( t, t + n );
-          p2.fillWith( v );
+          p2.populate( v );
         }
 
         const gum::Potential<float>& p3 = id.cpt( idList[6] );
@@ -114,7 +114,7 @@ namespace gum_tests {
           const float t[4] = {0.35, 0.65, 0.19, 0.81};
           int n = 4;
           const std::vector<float> v( t, t + n );
-          p3.fillWith( v );
+          p3.populate( v );
         }
 
         const gum::Potential<float>& p4 = id.cpt( idList[7] );
@@ -123,7 +123,7 @@ namespace gum_tests {
           const float t[4] = {0.4, 0.6, 0.5, 0.5};
           int n = 4;
           const std::vector<float> v( t, t + n );
-          p4.fillWith( v );
+          p4.populate( v );
         }
 
         const gum::Potential<float>& p5 = id.cpt( idList[8] );
@@ -132,7 +132,7 @@ namespace gum_tests {
           const float t[8] = {0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7};
           int n = 8;
           const std::vector<float> v( t, t + n );
-          p5.fillWith( v );
+          p5.populate( v );
         }
 
         const gum::UtilityTable<float>& u1 = id.utility( idList[9] );
@@ -141,7 +141,7 @@ namespace gum_tests {
           const float t[4] = {42, 69, 666, 84};
           int n = 4;
           const std::vector<float> v( t, t + n );
-          u1.fillWith( v );
+          u1.populate( v );
         }
 
         const gum::UtilityTable<float>& u2 = id.utility( idList[10] );
@@ -150,7 +150,7 @@ namespace gum_tests {
           const float t[4] = {42, -69, 666, 84};
           int n = 4;
           const std::vector<float> v( t, t + n );
-          u2.fillWith( v );
+          u2.populate( v );
         }
       } catch ( gum::Exception& e ) {
         std::cerr << std::endl << e.errorContent() << std::endl;

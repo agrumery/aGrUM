@@ -67,19 +67,23 @@ class TestInsertions(PotentialTestCase):
         self.assertTrue(pot.empty())
 
 
-    def testDimentionIncreasing(self):
+    def testDimensionIncreasing(self):
         bn = gum.BayesNet()
         id_list = []
         self.fillBN(bn, id_list)
-        list3 = bn.cpt(id_list[3])
-        list3[:] = [ [ [ 1,  0     ], [ 0.1 ,  0.9   ] ], \
-                     [ [ 0.1,  0.9 ], [ 0.01 ,  0.99 ] ] ]
-
+        print("0")
+        list3 = bn.cpt(id_list[3]).fillWith([ 1,   0   ,
+                                              0.1 ,0.9 ,
+                                              0.1 ,0.9 ,
+                                              0.01,0.99 ] )
+        print("1")
         addvar = gum.LabelizedVariable("d", "rosée", 4)
         addvar_id = bn.add(addvar)
         bn.addArc(addvar_id, id_list[3])
+        print("2")
 
         list3 = bn.cpt(id_list[3])
+        print("3")
         self.assertEqual(list3.var_names, ['d', 'r', 's', 'w'])
         list3[0,:,:,:] = \
                 [ [ [0.99, 0.1], [0.1, 0] ], [ [0.01, 0.9], [0.9, 1] ] ]
@@ -384,15 +388,15 @@ class TestOperators(pyAgrumTestCase):
 ts = unittest.TestSuite()
 ts.addTest(TestInsertions('testVariableInsertion'))
 ts.addTest(TestInsertions('testVariableDeletion'))
-ts.addTest(TestInsertions('testDimentionIncreasing'))
-ts.addTest(TestInsertions('testWithInstantiation'))
-ts.addTest(TestInsertions('testCopyConstructor'))
-ts.addTest(TestIndexs('testNumpyIndex'))
-ts.addTest(TestIndexs('testDictIndex'))
-ts.addTest(TestIndexs('testDictIndex'))
-ts.addTest(TestOperators('testSimpleOperators'))
-ts.addTest(TestOperators('testEquality'))
-ts.addTest(TestOperators('testSimpleInPLaceOperators'))
-ts.addTest(TestOperators('testMargOutOperators'))
-ts.addTest(TestOperators('testMargInOperators'))
-ts.addTest(TestOperators('testAbsPotential'))
+ts.addTest(TestInsertions('testDimensionIncreasing'))
+#ts.addTest(TestInsertions('testWithInstantiation'))
+#ts.addTest(TestInsertions('testCopyConstructor'))
+#ts.addTest(TestIndexs('testNumpyIndex'))
+#ts.addTest(TestIndexs('testDictIndex'))
+#ts.addTest(TestIndexs('testDictIndex'))
+#ts.addTest(TestOperators('testSimpleOperators'))
+#ts.addTest(TestOperators('testEquality'))
+#ts.addTest(TestOperators('testSimpleInPLaceOperators'))
+#ts.addTest(TestOperators('testMargOutOperators'))
+#ts.addTest(TestOperators('testMargInOperators'))
+#ts.addTest(TestOperators('testAbsPotential'))

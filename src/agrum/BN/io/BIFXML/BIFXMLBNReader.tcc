@@ -212,8 +212,7 @@ namespace gum {
       std::vector<GUM_SCALAR> tablevector( tablelist.begin(), tablelist.end() );
 
       // Filling tables
-      const Potential<GUM_SCALAR>* table = &__bn->cpt( currentVarId );
-      table->fillWith( tablevector );
+      __bn->cpt( currentVarId ).fillWith( tablevector );
 
       // Emitting progress.
       std::string status =
