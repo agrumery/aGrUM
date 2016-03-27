@@ -2826,6 +2826,16 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_arcs(self)
 
 
+    def parents(self, id: 'gum::NodeId') -> "PyObject *":
+        """parents(DiGraph self, gum::NodeId id) -> PyObject *"""
+        return _pyAgrum.DiGraph_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId') -> "PyObject *":
+        """children(DiGraph self, gum::NodeId id) -> PyObject *"""
+        return _pyAgrum.DiGraph_children(self, id)
+
+
     def addNode(self, *args) -> "void":
         """
         addNode(DiGraph self) -> gum::NodeId
@@ -3150,6 +3160,11 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph_empty(self)
 
 
+    def addEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
+        """addEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
+
+
     def eraseEdge(self, edge: 'Edge') -> "void":
         """eraseEdge(MixedGraph self, Edge edge)"""
         return _pyAgrum.MixedGraph_eraseEdge(self, edge)
@@ -3176,6 +3191,11 @@ class MixedGraph(UndiGraph, DiGraph):
     def eraseNeighbours(self, id: 'gum::NodeId const') -> "void":
         """eraseNeighbours(MixedGraph self, gum::NodeId const id)"""
         return _pyAgrum.MixedGraph_eraseNeighbours(self, id)
+
+
+    def addArc(self, tail: 'gum::NodeId const', head: 'gum::NodeId const') -> "void":
+        """addArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head)"""
+        return _pyAgrum.MixedGraph_addArc(self, tail, head)
 
 
     def eraseArc(self, arc: 'Arc') -> "void":

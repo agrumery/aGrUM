@@ -1,10 +1,3 @@
-%ignore *::insertArc;
-%ignore *::insertEdge;
-%ignore *::insertNode;
-/*
-%ignore gum::CliqueGraph::addNode(const gum::NodeId,const gum::NodeSet&);
-*/
-
 %define ADD_IDS_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
   PyObject *ids() {
@@ -28,6 +21,24 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 
     for ( auto arc : self->arcs()) {
       PyList_Append(q,Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+    }
+
+    return q;
+  };
+  PyObject *parents(gum::NodeId id) {
+    PyObject* q=PySet_New(0);
+
+    for ( auto node : self->parents(id)) {
+      PySet_Add(q,PyInt_FromLong(node));
+    }
+
+    return q;
+  };
+  PyObject *children(gum::NodeId id) {
+    PyObject* q=PySet_New(0);
+
+    for ( auto node : self->children(id)) {
+      PySet_Add(q,PyInt_FromLong(node));
     }
 
     return q;

@@ -31,7 +31,7 @@
 
 namespace gum {
 
-  // diamond structure require to explicitely initialize NodeGraphPart
+  // diamond structure require to explicitly initialize NodeGraphPart
   DAG::DAG( Size nodes_size,
             bool nodes_resize_policy,
             Size arcs_size,
@@ -42,7 +42,7 @@ namespace gum {
     GUM_CONSTRUCTOR( DAG );
   }
 
-  // diamond structure require to explicitely initialize NodeGraphPart
+  // diamond structure require to explicitly initialize NodeGraphPart
   DAG::DAG( const DAG& g )
       : NodeGraphPart( g )
       , DiGraph( g ) {

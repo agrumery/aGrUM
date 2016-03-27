@@ -147,6 +147,7 @@ ADD_NODEGRAPHPART_API(gum::MixedGraph)
 
 %define ADD_EDGEGRAPHPART_API(classname)
 %extend classname {
+  using gum::EdgeGraphPart::addEdge;
   using gum::EdgeGraphPart::eraseEdge;
   using gum::EdgeGraphPart::existsEdge;
   using gum::EdgeGraphPart::eraseParents;
@@ -161,6 +162,7 @@ ADD_EDGEGRAPHPART_API(gum::MixedGraph)
 
 %define ADD_ARCGRAPHPART_API(classname)
 %extend classname {
+  using gum::ArcGraphPart::addArc;
   using gum::ArcGraphPart::eraseArc;
   using gum::ArcGraphPart::existsArc;
   using gum::ArcGraphPart::eraseParents;
