@@ -9,10 +9,6 @@
 %pythonappend gum::Potential<double>::Potential %{
         self._notSync=True
 %}
-%pythonappend gum::Potential<double>::add %{
-        self._notSync=True
-        return self
-%}
 %pythonappend gum::Potential<double>::remove %{
         self._notSync=True
 %}
@@ -21,6 +17,10 @@
 %}
 
 
+%pythonappend gum::Potential<double>::add %{
+        self._notSync=True
+        return self
+%}
 %pythonappend gum::Potential<double>::abs %{
         self._notSync=True
         return self
@@ -30,6 +30,10 @@
         return self
 %}
 %pythonappend gum::Potential<double>::fillWith %{
+        self._notSync=True
+        return self
+%}
+%pythonappend gum::Potential<double>::sq %{
         self._notSync=True
         return self
 %}

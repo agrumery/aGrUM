@@ -379,6 +379,17 @@ class TestOperators(pyAgrumTestCase):
     self.assertEquals((q-p).abs().tolist(),[[0,2],[2,0]])
     self.assertEquals((q-p).abs().max(),2)
     self.assertEquals((q-p).abs().min(),0)
+    
+  def testSqPotential(self):
+    a,b=[gum.LabelizedVariable(s,s,2) for s in "ab"]
+
+    p=gum.Potential().add(a).add(b).fillWith([0,1,2,3])
+    q=gum.Potential().add(a).add(b).fillWith([0,3,0,3])
+    
+    self.assertEquals((p-q).sq().tolist(),[[0,4],[4,0]])
+    self.assertEquals((q-p).sq().tolist(),[[0,4],[4,0]])
+    self.assertEquals((q-p).sq().max(),4)
+    self.assertEquals((q-p).sq().min(),0)
 
 
 
@@ -398,3 +409,4 @@ ts.addTest(TestOperators('testSimpleInPLaceOperators'))
 ts.addTest(TestOperators('testMargOutOperators'))
 ts.addTest(TestOperators('testMargInOperators'))
 ts.addTest(TestOperators('testAbsPotential'))
+ts.addTest(TestOperators('testSqPotential'))

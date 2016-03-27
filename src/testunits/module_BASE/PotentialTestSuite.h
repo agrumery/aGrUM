@@ -367,5 +367,27 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( ( q - p ).abs().max(), 2 );
       TS_ASSERT_EQUALS( ( q - p ).abs().min(), 0 );
     }
+
+    void testSqPotential() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 2 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 2 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {0, 1, 2, 3} );
+
+      gum::Potential<float> q;
+      q << a << b;
+      q.fillWith( {0, 3, 0, 3} );
+
+      TS_ASSERT_EQUALS( ( p - q ).sq().toString(),
+                        "<a:0|b:0> :: 0 /<a:1|b:0> :: 4 /"
+                        "<a:0|b:1> :: 4 /<a:1|b:1> :: 0" );
+      TS_ASSERT_EQUALS( ( q - p ).sq().toString(),
+                        "<a:0|b:0> :: 0 /<a:1|b:0> :: 4 /"
+                        "<a:0|b:1> :: 4 /<a:1|b:1> :: 0" );
+      TS_ASSERT_EQUALS( ( q - p ).sq().max(), 4 );
+      TS_ASSERT_EQUALS( ( q - p ).sq().min(), 0 );
+    }
   };
 }

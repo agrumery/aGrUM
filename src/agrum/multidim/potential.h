@@ -206,6 +206,11 @@ namespace gum {
      */
     const Potential<GUM_SCALAR>& normalize() const;
 
+    /**
+     * @brief apply $x^2$ on every element of the container
+     */
+    const Potential<GUM_SCALAR>& sq() const;
+
     ///@}
 
     // ========================================================================

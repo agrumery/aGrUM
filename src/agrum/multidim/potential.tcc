@@ -167,6 +167,12 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::sq() const {
+    this->apply( []( GUM_SCALAR x ) { return x * x; } );
+    return *this;
+  }
+
+  template <typename GUM_SCALAR>
   INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::abs() const {
     this->apply( []( GUM_SCALAR x ) {
       if ( x >= 0 )
@@ -176,6 +182,7 @@ namespace gum {
     } );
     return *this;
   }
+
   // normalisation of this
   // do nothing is sum is 0
   template <typename GUM_SCALAR>
