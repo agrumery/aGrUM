@@ -3877,12 +3877,12 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_fill(self, d)
 
 
-    def fillWith(self, *args):
+    def populate(self, *args):
         """
-        fillWith(MultiDimContainer_double self, Vector_double v)
-        fillWith(MultiDimContainer_double self, std::initializer_list< double > list)
+        populate(MultiDimContainer_double self, Vector_double v)
+        populate(MultiDimContainer_double self, std::initializer_list< double > list)
         """
-        return _pyAgrum.MultiDimContainer_double_fillWith(self, *args)
+        return _pyAgrum.MultiDimContainer_double_populate(self, *args)
 
 
     def copyFrom(self, *args):
@@ -3939,6 +3939,11 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double___ne__(self, p)
 
 
+    def apply(self, f):
+        """apply(MultiDimContainer_double self, std::function< double (double) > f)"""
+        return _pyAgrum.MultiDimContainer_double_apply(self, f)
+
+
     def beginMultipleChanges(self):
         """beginMultipleChanges(MultiDimContainer_double self)"""
         return _pyAgrum.MultiDimContainer_double_beginMultipleChanges(self)
@@ -3989,11 +3994,6 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_newFactory(self)
 
 
-    def normalize(self):
-        """normalize(Potential_double self) -> Potential_double"""
-        return _pyAgrum.Potential_double_normalize(self)
-
-
     def sum(self):
         """sum(Potential_double self) -> double"""
         return _pyAgrum.Potential_double_sum(self)
@@ -4012,6 +4012,39 @@ class Potential_double(_object):
     def min(self):
         """min(Potential_double self) -> double"""
         return _pyAgrum.Potential_double_min(self)
+
+
+    def fillWith(self, v):
+        """fillWith(Potential_double self, Vector_double v) -> Potential_double"""
+        val = _pyAgrum.Potential_double_fillWith(self, v)
+
+        self._notSync=True
+        return self
+
+
+        return val
+
+
+    def abs(self):
+        """abs(Potential_double self) -> Potential_double"""
+        val = _pyAgrum.Potential_double_abs(self)
+
+        self._notSync=True
+        return self
+
+
+        return val
+
+
+    def normalize(self):
+        """normalize(Potential_double self) -> Potential_double"""
+        val = _pyAgrum.Potential_double_normalize(self)
+
+        self._notSync=True
+        return self
+
+
+        return val
 
 
     def __add__(self, p2):
@@ -4206,7 +4239,7 @@ class Potential_double(_object):
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
 
 
 
@@ -4264,15 +4297,9 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_variable(self, i)
 
 
-    def fillWith(self, v):
-        """fillWith(Potential_double self, Vector_double v)"""
-        val = _pyAgrum.Potential_double_fillWith(self, v)
-
-        self._notSync=True
-        return self
-
-
-        return val
+    def populate(self, v):
+        """populate(Potential_double self, Vector_double v)"""
+        return _pyAgrum.Potential_double_populate(self, v)
 
 
     def fill(self, d):
@@ -4452,7 +4479,7 @@ class UtilityTable_double(_object):
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
 
 
 
@@ -4510,9 +4537,9 @@ class UtilityTable_double(_object):
         return _pyAgrum.UtilityTable_double_variable(self, i)
 
 
-    def fillWith(self, v):
-        """fillWith(UtilityTable_double self, Vector_double v)"""
-        return _pyAgrum.UtilityTable_double_fillWith(self, v)
+    def populate(self, v):
+        """populate(UtilityTable_double self, Vector_double v)"""
+        return _pyAgrum.UtilityTable_double_populate(self, v)
 
 
     def fill(self, d):

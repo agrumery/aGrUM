@@ -4014,15 +4014,12 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_min(self)
 
 
-    def fillWith(self, *args) -> "gum::Potential< double > const &":
-        """
-        fillWith(Potential_double self, Vector_double v) -> Potential_double
-        fillWith(Potential_double self, std::initializer_list< double > list) -> Potential_double
-        """
-        val = _pyAgrum.Potential_double_fillWith(self, *args)
+    def fillWith(self, v: 'Vector_double') -> "gum::Potential< double > const &":
+        """fillWith(Potential_double self, Vector_double v) -> Potential_double"""
+        val = _pyAgrum.Potential_double_fillWith(self, v)
 
         self._notSync=True
-        #return self
+        return self
 
 
         return val
@@ -4033,7 +4030,7 @@ class Potential_double(_object):
         val = _pyAgrum.Potential_double_abs(self)
 
         self._notSync=True
-        #return self
+        return self
 
 
         return val
@@ -4044,7 +4041,7 @@ class Potential_double(_object):
         val = _pyAgrum.Potential_double_normalize(self)
 
         self._notSync=True
-        #return self
+        return self
 
 
         return val
@@ -4298,6 +4295,11 @@ class Potential_double(_object):
     def variable(self, i: 'gum::Idx') -> "gum::DiscreteVariable const &":
         """variable(Potential_double self, gum::Idx i) -> DiscreteVariable"""
         return _pyAgrum.Potential_double_variable(self, i)
+
+
+    def populate(self, v: 'Vector_double') -> "void":
+        """populate(Potential_double self, Vector_double v)"""
+        return _pyAgrum.Potential_double_populate(self, v)
 
 
     def fill(self, d: 'double const &') -> "void":

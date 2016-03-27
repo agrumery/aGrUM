@@ -3,8 +3,7 @@
 %ignore gum::MultiDimInterface;
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
-%ignore gum::Potential<double>::populate;
-
+%ignore gum::Potential<double>::fillWith(std::initializer_list< double >) const;
 
 /* Synchronisation between gum::Potential and numpy array */
 %pythonappend gum::Potential<double>::Potential %{
@@ -22,18 +21,17 @@
 %}
 
 
-
 %pythonappend gum::Potential<double>::abs %{
         self._notSync=True
-        #return self
+        return self
 %}
 %pythonappend gum::Potential<double>::normalize %{
         self._notSync=True
-        #return self
+        return self
 %}
 %pythonappend gum::Potential<double>::fillWith %{
         self._notSync=True
-        #return self
+        return self
 %}
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
