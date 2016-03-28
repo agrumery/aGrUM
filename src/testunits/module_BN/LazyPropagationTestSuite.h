@@ -176,7 +176,6 @@ namespace gum_tests {
       gum::LazyPropagation<float> inf2( *bn );
       gum::ShaferShenoyInference<float> inf2X( *bn );
 
-      /* addHardEvidece : memore leak */
       TS_ASSERT_THROWS_NOTHING( inf2.addHardEvidence( i1, 0 ) );
       TS_ASSERT_THROWS_NOTHING( inf2.addHardEvidence( i4, 1 ) );
       TS_ASSERT_THROWS_NOTHING( inf2X.addHardEvidence( i1, 0 ) );
@@ -238,6 +237,45 @@ namespace gum_tests {
                         gum::OperationNotAllowed );
 
       //@TODO : test computations and not only good behaviour
+    }
+
+    void testEvidenceProbability() {
+      fill( *bn );
+      gum::LazyPropagation<float> inf( *bn );
+      inf.makeInference();
+      auto p = inf.posterior( 0 );
+      auto I = gum::Instantiation( p );
+      auto proba = p.get( I );
+
+      inf.addHardEvidence( 0, 0 );
+      inf.makeInference();
+      auto proba2 = inf.evidenceProbability();
+
+      TS_ASSERT_DELTA( proba, proba2, 1e-5 );
+    }
+
+    void testEvidenceProbabilityAsia() {
+      std::string file = GET_RESSOURCES_PATH( "asia.bif" );
+      gum::BayesNet<float> bn;
+      gum::BIFReader<float> reader( &bn, file );
+      int nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_ASSERT( nbrErr == 0 );
+      TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
+
+      auto id = bn.idFromName( "lung_cancer?" );
+
+      gum::LazyPropagation<float> inf( bn );
+      inf.makeInference();
+      auto p = inf.posterior( id );
+      auto I = gum::Instantiation( p );
+      auto proba = p.get( I );
+
+      inf.addHardEvidence( id, 0 );
+      inf.makeInference();
+      auto proba2 = inf.evidenceProbability();
+
+      TS_ASSERT_DELTA( proba, proba2, 1e-5 );
     }
 
     void testAsia() {
