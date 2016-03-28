@@ -207,6 +207,19 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
+  GUM_SCALAR MultiDimContainer<GUM_SCALAR>::reduce(
+      std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
+      GUM_SCALAR base ) const {
+    GUM_SCALAR tmp = base;
+    Instantiation i( *this );
+    for ( i.setFirst(); !i.end(); ++i ) {
+      tmp = f( tmp, get( i ) );
+    }
+    return tmp;
+  }
+
+
+  template <typename GUM_SCALAR>
   void MultiDimContainer<GUM_SCALAR>::copyFrom(
       const MultiDimContainer<GUM_SCALAR>& src, Instantiation* p_i ) const {
 

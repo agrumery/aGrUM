@@ -2826,6 +2826,16 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_arcs(self)
 
 
+    def parents(self, id):
+        """parents(DiGraph self, gum::NodeId id) -> PyObject *"""
+        return _pyAgrum.DiGraph_parents(self, id)
+
+
+    def children(self, id):
+        """children(DiGraph self, gum::NodeId id) -> PyObject *"""
+        return _pyAgrum.DiGraph_children(self, id)
+
+
     def addNode(self, *args):
         """
         addNode(DiGraph self) -> gum::NodeId
@@ -3150,6 +3160,11 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph_empty(self)
 
 
+    def addEdge(self, n1, n2):
+        """addEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
+
+
     def eraseEdge(self, edge):
         """eraseEdge(MixedGraph self, Edge edge)"""
         return _pyAgrum.MixedGraph_eraseEdge(self, edge)
@@ -3176,6 +3191,11 @@ class MixedGraph(UndiGraph, DiGraph):
     def eraseNeighbours(self, id):
         """eraseNeighbours(MixedGraph self, gum::NodeId const id)"""
         return _pyAgrum.MixedGraph_eraseNeighbours(self, id)
+
+
+    def addArc(self, tail, head):
+        """addArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head)"""
+        return _pyAgrum.MixedGraph_addArc(self, tail, head)
 
 
     def eraseArc(self, arc):
@@ -3944,6 +3964,11 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_apply(self, f)
 
 
+    def reduce(self, f, base):
+        """reduce(MultiDimContainer_double self, std::function< double (double,double) > f, double base) -> double"""
+        return _pyAgrum.MultiDimContainer_double_reduce(self, f, base)
+
+
     def beginMultipleChanges(self):
         """beginMultipleChanges(MultiDimContainer_double self)"""
         return _pyAgrum.MultiDimContainer_double_beginMultipleChanges(self)
@@ -4012,6 +4037,11 @@ class Potential_double(_object):
     def min(self):
         """min(Potential_double self) -> double"""
         return _pyAgrum.Potential_double_min(self)
+
+
+    def entropy(self):
+        """entropy(Potential_double self) -> double"""
+        return _pyAgrum.Potential_double_entropy(self)
 
 
     def fillWith(self, v):

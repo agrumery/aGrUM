@@ -3964,6 +3964,11 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_apply(self, f)
 
 
+    def reduce(self, f: 'std::function< double (double,double) >', base: 'double') -> "double":
+        """reduce(MultiDimContainer_double self, std::function< double (double,double) > f, double base) -> double"""
+        return _pyAgrum.MultiDimContainer_double_reduce(self, f, base)
+
+
     def beginMultipleChanges(self) -> "void":
         """beginMultipleChanges(MultiDimContainer_double self)"""
         return _pyAgrum.MultiDimContainer_double_beginMultipleChanges(self)
@@ -4032,6 +4037,11 @@ class Potential_double(_object):
     def min(self) -> "double":
         """min(Potential_double self) -> double"""
         return _pyAgrum.Potential_double_min(self)
+
+
+    def entropy(self) -> "double":
+        """entropy(Potential_double self) -> double"""
+        return _pyAgrum.Potential_double_entropy(self)
 
 
     def fillWith(self, v: 'Vector_double') -> "gum::Potential< double > const &":

@@ -377,17 +377,26 @@ namespace gum_tests {
       p.fillWith( {0, 1, 2, 3} );
 
       gum::Potential<float> q;
-      q << a << b;
-      q.fillWith( {0, 3, 0, 3} );
+      q << b << a;
+      q.fillWith( {0, 0, 3, 3} );
 
       TS_ASSERT_EQUALS( ( p - q ).sq().toString(),
                         "<a:0|b:0> :: 0 /<a:1|b:0> :: 4 /"
                         "<a:0|b:1> :: 4 /<a:1|b:1> :: 0" );
       TS_ASSERT_EQUALS( ( q - p ).sq().toString(),
-                        "<a:0|b:0> :: 0 /<a:1|b:0> :: 4 /"
-                        "<a:0|b:1> :: 4 /<a:1|b:1> :: 0" );
+                        "<b:0|a:0> :: 0 /<b:1|a:0> :: 4 /"
+                        "<b:0|a:1> :: 4 /<b:1|a:1> :: 0" );
       TS_ASSERT_EQUALS( ( q - p ).sq().max(), 4 );
       TS_ASSERT_EQUALS( ( q - p ).sq().min(), 0 );
+    }
+
+    void testEntropyPotential() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 2 );
+      gum::Potential<float> p;
+      p.add( a );
+      TS_ASSERT_EQUALS( p.fillWith( {0, 1} ).entropy(), 0.0 );
+      TS_ASSERT_EQUALS( p.fillWith( {1, 0} ).entropy(), 0.0 );
+      TS_ASSERT_EQUALS( p.fillWith( {0.5, 0.5} ).entropy(), 1.0 );
     }
   };
 }

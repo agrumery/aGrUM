@@ -1170,21 +1170,8 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template <typename GUM_SCALAR>
-  GUM_SCALAR LazyPropagation<GUM_SCALAR>::H( NodeId X ) {
-    const Potential<GUM_SCALAR>& pX = this->posterior( X );
-
-    Instantiation i( pX );
-    GUM_SCALAR res = (GUM_SCALAR)0;
-
-    for ( i.setFirst(); !i.end(); ++i ) {
-      GUM_SCALAR a = pX[i];
-
-      if ( a > (GUM_SCALAR)0 ) {
-        res += a * log2( a );
-      }
-    }
-
-    return -res;
+  INLINE GUM_SCALAR LazyPropagation<GUM_SCALAR>::H( NodeId X ) {
+    return this->posterior( X ).entropy();
   }
 
   /** Mutual information between X and Y

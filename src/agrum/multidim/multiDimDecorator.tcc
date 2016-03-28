@@ -312,6 +312,12 @@ namespace gum {
     _content->apply( f );
   }
 
+  template <typename GUM_SCALAR>
+  GUM_SCALAR MultiDimDecorator<GUM_SCALAR>::reduce(
+      std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
+      GUM_SCALAR base ) const {
+    return _content->reduce( f, base );
+  }
 
   // protected access to _content
   template <typename GUM_SCALAR>

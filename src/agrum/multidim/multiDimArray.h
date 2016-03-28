@@ -105,6 +105,15 @@ namespace gum {
      */
     virtual void apply( std::function<GUM_SCALAR( GUM_SCALAR )> f ) const;
 
+    /**
+     * @brief compute lfold for this container
+     * @param f the function to apply
+     * @param base the initial value
+     */
+    virtual GUM_SCALAR
+    reduce( std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
+            GUM_SCALAR base ) const;
+
     virtual void add( const DiscreteVariable& v );
 
     virtual void erase( const DiscreteVariable& v );

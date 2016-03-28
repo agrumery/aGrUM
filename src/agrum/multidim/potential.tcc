@@ -150,6 +150,13 @@ namespace gum {
   INLINE GUM_SCALAR Potential<GUM_SCALAR>::min() const {
     return gum::projectMin( *this->content() );
   }
+  // entropy of this
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR Potential<GUM_SCALAR>::entropy() const {
+    return this->reduce( []( GUM_SCALAR z, GUM_SCALAR p ) {
+      return ( p == 0.0 ) ? z : ( z - p * log2( p ) );
+    }, 0.0 );
+  }
 
   template <typename GUM_SCALAR>
   INLINE const Potential<GUM_SCALAR>&

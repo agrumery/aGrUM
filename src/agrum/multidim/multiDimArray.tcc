@@ -73,6 +73,13 @@ namespace gum {
     std::transform( _values.begin(), _values.end(), _values.begin(), f );
   }
 
+  template <typename GUM_SCALAR>
+  GUM_SCALAR MultiDimArray<GUM_SCALAR>::reduce(
+      std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
+      GUM_SCALAR base ) const {
+    return std::accumulate( _values.begin(), _values.end(), base, f );
+  }
+
 
   // data access operator
   template <typename GUM_SCALAR>

@@ -217,6 +217,15 @@ namespace gum {
      */
     virtual void apply( std::function<GUM_SCALAR( GUM_SCALAR )> f ) const final;
 
+    /**
+     * @brief compute lfold for this container
+     * @param f the function to apply
+     * @param base the initial value
+     */
+    virtual GUM_SCALAR
+    reduce( std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
+            GUM_SCALAR base ) const final;
+
     virtual MultiDimDecorator<GUM_SCALAR>* newFactory() const = 0;
 
     virtual void beginMultipleChanges( void ) final;

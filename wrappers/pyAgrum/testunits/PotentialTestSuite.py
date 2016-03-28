@@ -390,6 +390,14 @@ class TestOperators(pyAgrumTestCase):
     self.assertEquals((q-p).sq().tolist(),[[0,4],[4,0]])
     self.assertEquals((q-p).sq().max(),4)
     self.assertEquals((q-p).sq().min(),0)
+    
+  def testEntropyPotential(self):
+    a=gum.LabelizedVariable("a","a",2)
+    p=gum.Potential().add(a)
+    
+    self.assertEquals(p.fillWith([0,1]).entropy(),0.0)
+    self.assertEquals(p.fillWith([1,0]).entropy(),0.0)
+    self.assertEquals(p.fillWith([0.5,0.5]).entropy(),1.0)
 
 
 
@@ -410,3 +418,4 @@ ts.addTest(TestOperators('testMargOutOperators'))
 ts.addTest(TestOperators('testMargInOperators'))
 ts.addTest(TestOperators('testAbsPotential'))
 ts.addTest(TestOperators('testSqPotential'))
+ts.addTest(TestOperators('testEntropyPotential'))

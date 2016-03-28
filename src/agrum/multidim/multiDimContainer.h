@@ -319,7 +319,16 @@ namespace gum {
      * @brief Apply a function on every element of the container
      * @param f the function to apply
      */
-    virtual void apply( std::function<GUM_SCALAR(GUM_SCALAR)> f ) const;
+    virtual void apply( std::function<GUM_SCALAR( GUM_SCALAR )> f ) const;
+
+    /**
+     * @brief compute lfold for this container
+     * @param f the function to apply
+     * @param base the initial value
+     */
+    virtual GUM_SCALAR
+    reduce( std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
+            GUM_SCALAR base ) const;
 
 
     /// @}

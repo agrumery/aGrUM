@@ -174,6 +174,8 @@ namespace gum {
     GUM_SCALAR max() const;
     /// min of all elements in the Potential
     GUM_SCALAR min() const;
+    /// entropy of the Potential
+    GUM_SCALAR entropy() const;
 
     /**
      * @brief Automatically fills the potential with the values in
