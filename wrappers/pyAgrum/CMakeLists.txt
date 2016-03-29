@@ -14,18 +14,16 @@ if (FOR_PYTHON2) # we use 3 by default
 	set(PYTHON_EXECUTABLE "python.exe")
   else(WIN32)
 	set(PYTHON_EXECUTABLE "python2")
+	find_package(PythonInterp REQUIRED)
   endif(WIN32)
-
-  find_package(PythonInterp REQUIRED)
 else (FOR_PYTHON2)
   # hackish
   if(WIN32)
 	set(PYTHON_EXECUTABLE "python.exe")
   else(WIN32)
 	set(PYTHON_EXECUTABLE "python3")
+	find_package(PythonInterp 3 REQUIRED)
   endif(WIN32)
-
-  find_package(PythonInterp 3 REQUIRED)
 endif (FOR_PYTHON2)
 
 execute_process(
