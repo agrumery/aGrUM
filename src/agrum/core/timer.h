@@ -27,7 +27,12 @@
 #define GUM_TIMER_H
 
 #include <ctime>
+
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#else
+#include <agrum/core/mvsc/time.h>
+#endif
 
 #include <agrum/config.h>
 

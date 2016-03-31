@@ -496,6 +496,9 @@ namespace gum {
 
     /// value for __holes configuration
     Size __holes_size;
+	
+    /** @brief the id below which NodeIds may belong to the NodeGraphPart */
+    NodeId __boundVal;
 
     /// value for __holes configuration
     bool __holes_resize_policy;
@@ -503,8 +506,6 @@ namespace gum {
     /// the end iterator (used to speed-up parsings of the NodeGraphPart)
     NodeGraphPartIteratorSafe __endIteratorSafe;
 
-    /** @brief the id below which NodeIds may belong to the NodeGraphPart */
-    NodeId __bound;
   };
 
   /// for friendly displaying the content of node set

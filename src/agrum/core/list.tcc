@@ -54,7 +54,7 @@ namespace gum {
   // emplace constructor
   template <typename Val>
   template <typename... Args>
-  INLINE ListBucket<Val>::ListBucket( ListBucket<Val>::Emplace, Args&&... args )
+  INLINE ListBucket<Val>::ListBucket( typename ListBucket<Val>::Emplace, Args&&... args )
       : __val( std::forward<Args>( args )... ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListBucket );
@@ -369,7 +369,7 @@ namespace gum {
 
   // basic constructor
   template <typename Val>
-  INLINE ListIterator<Val>::ListIterator() noexcept : ListConstIterator<Val>{} {
+  INLINE ListIterator<Val>::ListIterator() noexcept : ListConstIterator<Val>() {
     GUM_CONSTRUCTOR( ListIterator );
   }
 
@@ -378,7 +378,7 @@ namespace gum {
   template <typename Alloc>
   INLINE
   ListIterator<Val>::ListIterator( const List<Val, Alloc>& theList ) noexcept
-      : ListConstIterator<Val>{theList} {
+      : ListConstIterator<Val>(theList) {
     GUM_CONSTRUCTOR( ListIterator );
   }
 
@@ -386,7 +386,7 @@ namespace gum {
   template <typename Val>
   INLINE
   ListIterator<Val>::ListIterator( const ListIterator<Val>& src ) noexcept
-      : ListConstIterator<Val>{src} {
+      : ListConstIterator<Val>(src) {
     GUM_CONS_CPY( ListIterator );
   }
 
@@ -402,7 +402,7 @@ namespace gum {
   template <typename Val>
   INLINE ListIterator<Val>::ListIterator( const List<Val>& theList,
                                           unsigned int ind_elt )
-      : ListConstIterator<Val>{theList, ind_elt} {
+      : ListConstIterator<Val>(theList, ind_elt) {
     GUM_CONSTRUCTOR( ListIterator );
   }
 
@@ -1005,7 +1005,7 @@ namespace gum {
   // basic constructor
   template <typename Val>
   INLINE ListIteratorSafe<Val>::ListIteratorSafe() noexcept
-      : ListConstIteratorSafe<Val>{} {
+      : ListConstIteratorSafe<Val>() {
     GUM_CONSTRUCTOR( ListIteratorSafe );
   }
 
@@ -1014,7 +1014,7 @@ namespace gum {
   template <typename Alloc>
   INLINE
   ListIteratorSafe<Val>::ListIteratorSafe( const List<Val, Alloc>& theList )
-      : ListConstIteratorSafe<Val>{theList} {
+      : ListConstIteratorSafe<Val>(theList) {
     GUM_CONSTRUCTOR( ListIteratorSafe );
   }
 
@@ -1022,7 +1022,7 @@ namespace gum {
   template <typename Val>
   INLINE
   ListIteratorSafe<Val>::ListIteratorSafe( const ListIteratorSafe<Val>& src )
-      : ListConstIteratorSafe<Val>{src} {
+      : ListConstIteratorSafe<Val>(src) {
     GUM_CONS_CPY( ListIteratorSafe );
   }
 
@@ -1033,14 +1033,14 @@ namespace gum {
   INLINE
   ListIteratorSafe<Val>::ListIteratorSafe( const List<Val, Alloc>& theList,
                                            unsigned int ind_elt )
-      : ListConstIteratorSafe<Val>{theList, ind_elt} {
+      : ListConstIteratorSafe<Val>(theList, ind_elt) {
     GUM_CONSTRUCTOR( ListIteratorSafe );
   }
 
   // move constructor
   template <typename Val>
   INLINE ListIteratorSafe<Val>::ListIteratorSafe( ListIteratorSafe<Val>&& src )
-      : ListConstIteratorSafe<Val>{std::move( src )} {
+      : ListConstIteratorSafe<Val>(std::move( src )) {
     GUM_CONS_MOV( ListIteratorSafe );
   }
 

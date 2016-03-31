@@ -231,7 +231,7 @@ namespace gum {
     if ( __holes && ( !__holes->empty() ) )
       next = *( __holes->begin() );
     else  // in other case
-      next = __bound;
+      next = __boundVal;
 
     return next;
   }
@@ -258,8 +258,8 @@ namespace gum {
       newNode = *( __holes->begin() );
       __eraseHole( newNode );
     } else {
-      newNode = __bound;
-      ++__bound;
+      newNode = __boundVal;
+      ++__boundVal;
       __updateEndIteratorSafe();
     }
 
@@ -269,13 +269,13 @@ namespace gum {
   }
 
   INLINE Size NodeGraphPart::sizeNodes() const {
-    return ( __holes ) ? ( __bound - __holes->size() ) : __bound;
+    return ( __holes ) ? ( __boundVal - __holes->size() ) : __boundVal;
   }
 
   INLINE Size NodeGraphPart::size() const { return sizeNodes(); }
 
   INLINE bool NodeGraphPart::existsNode( const NodeId node ) const {
-    if ( node >= __bound ) return false;
+    if ( node >= __boundVal ) return false;
 
     return ( !__inHoles( node ) );
   }
@@ -296,7 +296,7 @@ namespace gum {
 
   INLINE bool NodeGraphPart::empty() const { return emptyNodes(); }
 
-  INLINE NodeId NodeGraphPart::bound() const { return __bound; }
+  INLINE NodeId NodeGraphPart::bound() const { return __boundVal; }
 
   INLINE void NodeGraphPart::clearNodes() { __clearNodes(); }
 
@@ -314,7 +314,7 @@ namespace gum {
   }
 
   INLINE void NodeGraphPart::__updateEndIteratorSafe() {
-    __endIteratorSafe._setPos( __bound );
+    __endIteratorSafe._setPos( __boundVal );
   }
 
   INLINE const NodeGraphPartIteratorSafe& NodeGraphPart::endSafe() const
@@ -333,7 +333,7 @@ namespace gum {
   }
 
   INLINE bool NodeGraphPart::operator==( const NodeGraphPart& p ) const {
-    if ( __bound != p.__bound ) return false;
+    if ( __boundVal != p.__boundVal ) return false;
 
     if ( __holes )
       if ( p.__holes )
@@ -354,7 +354,7 @@ namespace gum {
     NodeSet son( sizeNodes() );
 
     if ( !empty() ) {
-      for ( NodeId n = 0; n < __bound; ++n ) {
+      for ( NodeId n = 0; n < __boundVal; ++n ) {
         if ( !__inHoles( n ) ) son.insert( n );
       }
     }

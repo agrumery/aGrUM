@@ -272,7 +272,7 @@ namespace gum {
   INLINE NodeId BayesNetFactory<GUM_SCALAR>::endVariableDeclaration() {
     if ( state() != factory_state::VARIABLE ) {
       __illegalStateError( "endVariableDeclaration" );
-    } else if ( __foo_flag and ( __stringBag.size() > 3 ) ) {
+    } else if ( __foo_flag && ( __stringBag.size() > 3 ) ) {
       LabelizedVariable* var = new LabelizedVariable(
           __stringBag[0], ( __bar_flag ) ? __stringBag[1] : "", 0 );
 

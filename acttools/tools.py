@@ -32,9 +32,9 @@ def is_tool(prog):
     progw=prog+".exe"
     for dir in os.environ['PATH'].split(os.pathsep):
         if os.path.exists(os.path.join(dir, prog)):
-            return os.path.join(dir, prog)
+            return prog #os.path.join(dir, prog)
         if os.path.exists(os.path.join(dir, progw)):
-            return os.path.join(dir, progw)
+            return progw #os.path.join(dir, progw)
     return None
 
 
@@ -49,16 +49,15 @@ def check_tools():
     		else:
     			exe_python2=exe_py
 
-    if not is_tool("cmake"):
+    
+    exe_cmake=is_tool("cmake")
+    if exe_cmake is None:
       critic("No <cmake> utility found. Exit")
-    exe_cmake="cmake"
 
-    if is_tool("make"):
-      exe_make='make '
-    elif is_tool("mingw32-make.exe"):
-      exe_make='mingw32-make.exe '
-      exe_cmake+=' -G "MinGW Makefiles" '
-    else:
+    exe_make=is_tool("mingw32-make.exe")
+    if exe_make is None:
+      exe_make=is_tool("make")
+    if exe_make is None:
       critic("No <make> utility found. Exit")
 
     exe_clangformat=None

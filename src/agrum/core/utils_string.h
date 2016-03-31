@@ -34,7 +34,6 @@
 #include <agrum/config.h>
 
 #ifndef HAVE_MKSTEMP  // mainly windows
-#warning "No mkstemp"
 #include <io.h>
 #endif
 

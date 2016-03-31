@@ -66,8 +66,26 @@ execute_process(
   set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libPython${PYTHON_COMPLETE_VERSION}.dylib")
   set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
  else()
-   find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
-endif()
+   if (WIN32)
+	   #execute_process(
+	#	 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+	#	 OUTPUT_VARIABLE PYTHON_LOCAL_PATH
+	#	 OUTPUT_STRIP_TRAILING_WHITESPACE
+	#   )
+	#   execute_process(
+#		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+	#	OUTPUT_VARIABLE PYTHON_LIBPATH
+#		 OUTPUT_STRIP_TRAILING_WHITESPACE
+#	   )
+	  #set(PYTHON_LIBRARY "c:/Python27/libs/python${PYTHON_COMPLETE_VERSION}.lib")
+	  #set(PYTHON_LIBRARY "c:/Python27/libs/libpython27.a")
+	  #set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
+	  #
+	  find_package(PythonLibs)
+   else()
+	find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
+   endif()
+ endif()
 
 if (${PYTHON_VERSION} EQUAL "2")
   #change in module naming from inside module between python2 and python3

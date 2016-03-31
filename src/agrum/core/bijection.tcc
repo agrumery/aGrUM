@@ -1178,7 +1178,7 @@ namespace gum {
                                 T2,
                                 Alloc,
                                 std::is_scalar<T1>::value &&
-                                    std::is_scalar<T2>::value>{list} {
+                                    std::is_scalar<T2>::value>(list) {
     GUM_CONSTRUCTOR( Bijection );
   }
 

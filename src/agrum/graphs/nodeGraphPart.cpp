@@ -36,7 +36,7 @@ namespace gum {
       : __holes_size( holes_size )
       , __holes_resize_policy( holes_resize_policy )
       , __endIteratorSafe( *this )
-      , __bound( 0 ) {
+      , __boundVal( 0 ) {
     __holes = 0;
     GUM_CONSTRUCTOR( NodeGraphPart );
     __updateEndIteratorSafe();
@@ -46,7 +46,7 @@ namespace gum {
       : __holes_size( s.__holes_size )
       , __holes_resize_policy( s.__holes_resize_policy )
       , __endIteratorSafe( *this )
-      , __bound( s.__bound ) {
+      , __boundVal( s.__boundVal ) {
     __holes = 0;
 
     if ( s.__holes ) __holes = new NodeSet( *s.__holes );
@@ -69,7 +69,7 @@ namespace gum {
 
     if ( s.__holes ) __holes = new NodeSet( *s.__holes );
 
-    __bound = s.__bound;
+    __boundVal = s.__boundVal;
 
     __updateEndIteratorSafe();
   }
@@ -78,16 +78,16 @@ namespace gum {
   void NodeGraphPart::__addHole( NodeId node ) {
 
     // we assume that the node exists
-    if ( node + 1 == __bound ) {
+    if ( node + 1 == __boundVal ) {
       // we remove the max : no new hole and maybe a bunch of holes to remove
-      --__bound;
+      --__boundVal;
 
       if ( __holes ) {
-        while ( __holes->contains( __bound - 1 ) ) {
+        while ( __holes->contains( __boundVal - 1 ) ) {
           // a bunch of holes to remove. We do not use inHoles for optimisation
           // :
           // not to repeat the test if (__holes) each time
-          __holes->erase( --__bound );
+          __holes->erase( --__boundVal );
         }
 
         if ( __holes->empty() ) {
@@ -109,7 +109,7 @@ namespace gum {
     bool first = true;
     s << "{";
 
-    for ( NodeId id = 0; id < __bound; ++id ) {
+    for ( NodeId id = 0; id < __boundVal; ++id ) {
       if ( __inHoles( id ) ) continue;
 
       if ( first ) {
@@ -132,15 +132,15 @@ namespace gum {
   }
 
   void NodeGraphPart::addNode( const NodeId id ) {
-    if ( id >= __bound ) {
-      if ( id > __bound ) {  // we have to add holes
+    if ( id >= __boundVal ) {
+      if ( id > __boundVal ) {  // we have to add holes
         if ( !__holes ) __holes = new NodeSet();
 
-        for ( NodeId i = __bound; i < id; ++i )
+        for ( NodeId i = __boundVal; i < id; ++i )
           __holes->insert( i );
       }
 
-      __bound = id + 1;
+      __boundVal = id + 1;
 
       __updateEndIteratorSafe();
     } else {
@@ -155,8 +155,8 @@ namespace gum {
   }
 
   void NodeGraphPart::__clearNodes( void ) {
-    NodeId bound = __bound;
-    __bound = 0;
+    NodeId bound = __boundVal;
+    __boundVal = 0;
 
     if ( onNodeDeleted.hasListener() ) {
       for ( NodeId n = 0; n < bound; ++n ) {

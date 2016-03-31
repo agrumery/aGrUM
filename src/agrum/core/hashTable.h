@@ -27,6 +27,8 @@
 #ifndef GUM_HASHTABLE_H
 #define GUM_HASHTABLE_H
 
+#include <limits>
+
 #include <iostream>
 #include <utility>
 #include <cstddef>

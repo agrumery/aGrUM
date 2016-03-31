@@ -2228,7 +2228,7 @@ namespace gum {
   template <typename Alloc>
   INLINE HashTableIterator<Key, Val>::HashTableIterator(
       const HashTable<Key, Val, Alloc>& tab ) noexcept
-      : HashTableConstIterator<Key, Val>{tab} {
+      : HashTableConstIterator<Key, Val>(tab) {
     GUM_CONSTRUCTOR( HashTableIterator );
   }
 
