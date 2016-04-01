@@ -190,6 +190,7 @@ namespace gum {
           best_node = node;
         }
       } catch ( NotFound& ) {
+		  found = false;
       }
 
     if ( !found ) {

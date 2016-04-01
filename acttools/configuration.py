@@ -203,4 +203,4 @@ def configureOutputs(options):
   configureColors(options.no_fun)
 
 def configureTools():
-    (cfg.python2,cfg.python3,cfg.cmake,cfg.make,cfg.clangformat)=check_tools()
+    (cfg.python2,cfg.python3,cfg.cmake,cfg.make,cfg.clangformat,cfg.msbuild)=check_tools()

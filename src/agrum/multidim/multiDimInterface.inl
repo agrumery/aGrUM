@@ -59,7 +59,7 @@ namespace gum {
   INLINE
   void MultiDimInterface::swap( const DiscreteVariable& x,
                                 const DiscreteVariable& y ) {
-    if ( not contains( x ) ) {
+    if ( ! contains( x ) ) {
       GUM_ERROR( NotFound, "could not find the variable" );
     }
 

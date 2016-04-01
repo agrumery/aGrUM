@@ -87,7 +87,7 @@ namespace gum {
     }
 
     for ( const auto& elt : __clique_prop ) {
-      if ( not( elt.second->isCollected ) ) {
+      if ( !( elt.second->isCollected ) ) {
         __collectFromClique( elt.first );
         __diffuseFromClique( elt.first );
       }
@@ -131,7 +131,7 @@ namespace gum {
 
     Instantiation inst( posterior );
 
-    for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+    for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
       posterior.set( inst, bucket.get( inst ) );
     }
 
@@ -156,7 +156,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void ShaferShenoyInference<GUM_SCALAR>::eraseEvidence(
       const Potential<GUM_SCALAR>* e ) {
-    if ( not( e->variablesSequence().size() != 1 ) ) {
+    if ( !( e->variablesSequence().size() != 1 ) ) {
       __clique_prop[__node2CliqueMap[this->bn().nodeId( e->variable( 0 ) )]]
           ->removeEvidence( e->variable( 0 ) );
       __removeDiffusedMessages(
@@ -268,7 +268,7 @@ namespace gum {
       __removeDiffusedMessages( current );
       __sendMessage( current, source );
       return true;
-    } else if ( not __messageExists( current, source ) ) {
+    } else if ( ! __messageExists( current, source ) ) {
       // There is new evidence (or first call)
       __sendMessage( current, source );
       return true;
@@ -303,7 +303,7 @@ namespace gum {
                                                      bool recompute ) {
     for ( const auto nei : __getNeighbours( current ) )
       if ( nei != source ) {
-        if ( recompute or ( not __messageExists( current, nei ) ) ) {
+        if ( recompute || ( ! __messageExists( current, nei ) ) ) {
           // New evidence or first call
           __sendMessage( current, nei );
           __diffuse( current, nei, true );
@@ -459,7 +459,7 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed, msg.str() );
     }
 
-    if ( not __potential->variablesSequence().exists(
+    if ( ! __potential->variablesSequence().exists(
              evidence.variablesSequence().atPos( 0 ) ) ) {
       std::stringstream msg;
       msg << ": " << evidence.variablesSequence().atPos( 0 )->name();

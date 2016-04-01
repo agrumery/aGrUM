@@ -238,7 +238,7 @@ namespace gum_tests {
         for ( unsigned int i = 0; i < 10; ++i ) {
           try {
             tree.erase( vect[i + j] );
-          } catch ( gum::NotFound& e ) {
+          } catch ( gum::NotFound& ) {
           }
 
           TS_ASSERT( tree.checkAVLStructure() == true );

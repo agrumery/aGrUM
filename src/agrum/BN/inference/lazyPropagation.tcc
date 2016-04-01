@@ -1158,7 +1158,7 @@ namespace gum {
     try {
       __aPosterioriJoint( nodes, *res );
       res->normalize();
-    } catch ( OperationNotAllowed& e ) {
+    } catch ( OperationNotAllowed& ) {
       delete ( res );
       throw;
     }

@@ -90,7 +90,7 @@ namespace gum {
       if ( newHighLimit < newVal ) newHighLimit = newVal;
 
       if ( newLowLimit > newVal ) newLowLimit = newVal;
-    } catch ( const std::bad_cast& e ) {
+    } catch ( const std::bad_cast& ) {
     }
   }
 

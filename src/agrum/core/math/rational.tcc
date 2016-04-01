@@ -224,7 +224,7 @@ namespace gum {
     }  /// end of while
 
     if ( a.size() < 2 || q.back() == denMax || p.back() == denMax ) {
-      numerator = ( number > 0 ) ? p.back() : -p.back();
+      numerator = ( (number > 0 ) ? 1:-1)*p.back();
       denominator = q.back();
       return;
     }

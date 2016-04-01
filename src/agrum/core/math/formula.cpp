@@ -34,7 +34,7 @@ namespace gum {
   void print_stack( std::stack<FormulaPart> s ) {
     std::cout << std::endl;
     std::list<FormulaPart> l;
-    while ( not s.empty() ) {
+    while ( ! s.empty() ) {
       l.push_front( s.top() );
       s.pop();
     }

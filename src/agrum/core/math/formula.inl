@@ -54,7 +54,7 @@ namespace gum {
       case '_': {
         return false;
       }
-      default: { return not isLeftAssociative(); }
+      default: { return ! isLeftAssociative(); }
     }
   }
 
@@ -237,17 +237,17 @@ namespace gum {
   INLINE
   bool Formula::__popOperator( FormulaPart o ) {
 
-    if ( __stack.empty() or
+    if ( __stack.empty() ||
          __stack.top().type != FormulaPart::token_type::OPERATOR ) {
       return false;
     }
 
-    if ( o.isLeftAssociative() and
+    if ( o.isLeftAssociative() &&
          o.precedence() <= __stack.top().precedence() ) {
       return true;
     }
 
-    if ( o.isRightAssociative() and
+    if ( o.isRightAssociative() &&
          o.precedence() < __stack.top().precedence() ) {
       return true;
     }
@@ -280,7 +280,7 @@ namespace gum {
       }
 
       case FormulaPart::token_type::PARENTHESIS: {
-        return o == '-' and __last_token.character == '(';
+        return (o == '-')&& (__last_token.character == '(');
       }
 
       default: { return false; }
@@ -316,7 +316,7 @@ namespace gum {
   INLINE
   void Formula::__push_rightParenthesis() {
 
-    while ( ( not __stack.empty() ) and ( __stack.top().character != '(' ) ) {
+    while ( ( ! __stack.empty() ) && ( __stack.top().character != '(' ) ) {
       __push_output( __stack.top() );
       __stack.pop();
     }
@@ -343,7 +343,7 @@ namespace gum {
   INLINE
   void Formula::__finalize() {
 
-    while ( not __stack.empty() ) {
+    while ( ! __stack.empty() ) {
 
       if ( __stack.top().character == '(' ) {
 
@@ -428,12 +428,12 @@ namespace gum {
 
   INLINE
   void Formula::__push_comma() {
-    while ( ( not __stack.empty() ) and ( __stack.top().character != '(' ) ) {
+    while ( ( ! __stack.empty() ) && ( __stack.top().character != '(' ) ) {
       __push_output( __stack.top() );
       __stack.pop();
     }
 
-    if ( __stack.empty() or __stack.top().character != '(' ) {
+    if ( __stack.empty() || __stack.top().character != '(' ) {
       GUM_ERROR( OperationNotAllowed, "expecting a '('" );
     }
 

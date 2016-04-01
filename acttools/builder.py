@@ -22,7 +22,7 @@
 #***************************************************************************
 import platform
 from .configuration import cfg
-from .utils import trace,setifyString,safe_cd,critic
+from .utils import trace,setifyString,safe_cd,critic,notif
 from .multijobs import execCde
 
 def getCmake(current,target):
@@ -75,7 +75,7 @@ def getCmake(current,target):
       line+=" -DBUILD_PYTHON=ON"
 
     if platform.system() == "Windows":
-      if current["mvsc"]:
+      if current["mvsc"]:			
         line += ' -G "Visual Studio 14 2015"'
       else:
         line += ' -G "MinGW Makefiles"'
@@ -87,30 +87,36 @@ def buildCmake(current,target):
   execFromLine(current,line)
 
 def getMake(current,target):
-  line=cfg.make
+	if current["mvsc"]:
+		if cfg.msbuild is None:
+			warning("MsBuild not found")
+		else:
+			line=cfg.msbuild+" ALL_BUILD.vcxproj"
+	else:
+	  line=cfg.make
 
-  if current["action"]=="test":
-    if target =="aGrUM":
-      line+=" gumTest"
-    elif target!= "pyAgrum":
-      critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
-  elif current["action"]=="install":
-    line+=" install"
-  elif current["action"]=="uninstall":
-    line+=" uninstall"
-  elif current["action"]=="lib":
-    pass
-  elif current["action"]=="doc":
-    line+=" doc"
-  else:
-    critic("Action '"+current["action"]+"' not treated for now")
+	  if current["action"]=="test":
+		if target =="aGrUM":
+		  line+=" gumTest"
+		elif target!= "pyAgrum":
+		  critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
+	  elif current["action"]=="install":
+		line+=" install"
+	  elif current["action"]=="uninstall":
+		line+=" uninstall"
+	  elif current["action"]=="lib":
+		pass
+	  elif current["action"]=="doc":
+		line+=" doc"
+	  else:
+		critic("Action '"+current["action"]+"' not treated for now")
 
-  line+=" -j "+str(current["jobs"])
+	  line+=" -j "+str(current["jobs"])
 
-  if target=="pyAgrum":
-    line+=" -C wrappers/pyAgrum"
+	  if target=="pyAgrum":
+		line+=" -C wrappers/pyAgrum"
 
-  return line
+	return line
 
 def buildMake(current,target):
   line=getMake(current,target)

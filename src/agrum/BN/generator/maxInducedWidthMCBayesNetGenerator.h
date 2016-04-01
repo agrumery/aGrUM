@@ -34,8 +34,17 @@
 
 #include <sstream>
 
+#ifdef  HAVE_DIRENT_H
 #include <dirent.h>
+#else
+#include <agrum/core/mvsc/dirent.h>
+#endif
+
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#else
+#include <agrum/core/mvsc/time.h>
+#endif
 
 #include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>

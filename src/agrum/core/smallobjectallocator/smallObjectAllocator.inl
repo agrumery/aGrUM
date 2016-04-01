@@ -92,8 +92,10 @@ namespace gum {
       //
       if ( !__pool.exists( objectSize ) ) {
         // Calcul du nombre de block par chunk pour des objets de cette taille
-        std::size_t numBlocks = __chunkSize / objectSize;
-        if ( numBlocks > UCHAR_MAX ) numBlocks = UCHAR_MAX;
+        std::size_t nb = __chunkSize / objectSize;
+		if (nb > UCHAR_MAX) nb = UCHAR_MAX;
+		unsigned char numBlocks = static_cast<unsigned char>(nb);
+
         FixedAllocator* newFa = new FixedAllocator( objectSize, numBlocks );
         __pool.set( objectSize, newFa );
       }

@@ -101,9 +101,9 @@ namespace gum {
     // @todo : optimisation with a always up-to-date value associated to each
     // instantiation
     virtual void changeNotification( gum::Instantiation&,
-                                     const gum::DiscreteVariable*,
+                                     const gum::DiscreteVariable* const,
                                      const gum::Idx&,
-                                     const gum::Idx& ){};
+                                     const gum::Idx& ) override {};
 
     virtual void setFirstNotification( gum::Instantiation& ){};
 

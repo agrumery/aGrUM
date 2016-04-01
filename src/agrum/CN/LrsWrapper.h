@@ -30,7 +30,12 @@
 #define __LRSWrapper_WRAPPER__H__
 
 #include <cmath>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#else
+#include <agrum/core/mvsc/unistd.h>
+#endif
+
 #include <fcntl.h>
 #include <cstdio>
 #include <vector>

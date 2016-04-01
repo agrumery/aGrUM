@@ -566,7 +566,7 @@ namespace gum_tests {
       // It's parent
       TS_ASSERT( idMap.exists( "LVFAILURE" ) );
 
-      if ( idMap.exists( "HISTORY" ) and idMap.exists( "LVFAILURE" ) ) {
+      if ( idMap.exists( "HISTORY" ) && idMap.exists( "LVFAILURE" ) ) {
         const gum::DiscreteVariable& history =
             net->variable( idMap["HISTORY"] );
 
@@ -624,7 +624,7 @@ namespace gum_tests {
       // It's Children
       TS_ASSERT( idMap.exists( "HRBP" ) );
 
-      if ( idMap.exists( "ERRLOWOUTPUT" ) and idMap.exists( "HRBP" ) ) {
+      if ( idMap.exists( "ERRLOWOUTPUT" ) && idMap.exists( "HRBP" ) ) {
         const gum::DiscreteVariable& errlowoutput =
             net->variable( idMap["ERRLOWOUTPUT"] );
 
@@ -663,7 +663,7 @@ namespace gum_tests {
 
       TS_ASSERT( idMap.exists( "LVFAILURE" ) );
 
-      if ( idMap.exists( "LVEDVOLUME" ) and idMap.exists( "HYPOVOLEMIA" ) and
+      if ( idMap.exists( "LVEDVOLUME" ) && idMap.exists( "HYPOVOLEMIA" ) and
            idMap.exists( "LVFAILURE" ) ) {
         const gum::DiscreteVariable& lvedvolume =
             net->variable( idMap["LVEDVOLUME"] );

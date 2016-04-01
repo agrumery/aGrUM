@@ -107,14 +107,14 @@ namespace gum {
           continue;
         }
 
-        if ( not marks[node].first ) {
+        if ( ! marks[node].first ) {
           marks[node].first = true;  // top marked
           for ( const auto par : dag.parents( node ) ) {
             nodes_to_visit.insert( std::pair<NodeId, bool>( par, true ) );
           }
         }
 
-        if ( not marks[node].second ) {
+        if ( ! marks[node].second ) {
           marks[node].second = true;  // bottom marked
           for ( const auto chi : dag.children( node ) ) {
             nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );
@@ -125,7 +125,7 @@ namespace gum {
 
         const bool is_hard_evidence = hardEvidence.exists( node );
         const bool is_evidence =
-            is_hard_evidence or softEvidence.exists( node );
+            is_hard_evidence || softEvidence.exists( node );
 
         if ( is_evidence && !marks[node].first ) {
           marks[node].first = true;

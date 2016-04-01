@@ -254,7 +254,7 @@ namespace gum {
       DiscreteVariable* __var;
 
       /// The super type of this, if any.
-      Type* __super;
+      Type* __superType;
 
       /// A vector in which the i-th element is the Idx of the super
       /// type's label for the i-th label of this.

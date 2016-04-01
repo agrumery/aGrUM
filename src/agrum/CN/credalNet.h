@@ -29,7 +29,13 @@
 
 #include <vector>
 #include <iostream>
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#else
+#include <agrum/core/mvsc/unistd.h>
+#endif
+
 //#include <sys/wait.h>
 #include <fcntl.h>
 #include <sys/stat.h>

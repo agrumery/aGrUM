@@ -91,7 +91,7 @@ namespace gum {
      * @throw FatalError Raised if the state of the factory prevents it to die
      *                   peacefully.
      */
-    virtual ~BayesNetFactory();
+    virtual ~BayesNetFactory() ;
 
     /// @}
     // ==========================================================================

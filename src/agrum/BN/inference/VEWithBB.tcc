@@ -71,7 +71,7 @@ namespace gum {
       size_t count = 0;
       Instantiation i( *pot );
 
-      for ( i.setFirst(); not i.end(); i.inc() ) {
+      for ( i.setFirst(); ! i.end(); i.inc() ) {
         if ( pot->get( i ) == (GUM_SCALAR)1 ) {
           ++count;
         }
@@ -175,7 +175,7 @@ namespace gum {
     Instantiation i( posterior );
     Instantiation j( bucket );
 
-    for ( i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc() ) {
+    for ( i.setFirst(), j.setFirst(); ! i.end(); i.inc(), j.inc() ) {
       posterior.set( i, bucket.get( j ) );
     }
 

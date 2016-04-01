@@ -34,7 +34,7 @@ namespace gum {
   INLINE
   SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::SimpleBayesNetGenerator(
       Size nbrNodes, Size maxArcs, Size maxModality )
-      : IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>(
+      : IBayesNetGenerator<typename GUM_SCALAR, typename ICPTGenerator>(
             nbrNodes, maxArcs, maxModality ) {
     GUM_CONSTRUCTOR( SimpleBayesNetGenerator );
   }

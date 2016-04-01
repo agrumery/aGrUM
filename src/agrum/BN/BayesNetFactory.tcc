@@ -117,7 +117,7 @@ namespace gum {
   BayesNetFactory<GUM_SCALAR>::variableId( const std::string& name ) const {
     try {
       return __varNameMap[name];
-    } catch ( NotFound& e ) {
+    } catch ( NotFound& ) {
       GUM_ERROR( NotFound, name );
     }
   }

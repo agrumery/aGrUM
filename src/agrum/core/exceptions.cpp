@@ -23,9 +23,9 @@
 #include <string.h>
 
 #ifndef NDEBUG
-#ifndef __MINGW32__
+#ifdef HAVE_EXECINFO_H
 #include <execinfo.h>
-#endif  //__MINGW32__
+#endif  //HAVE_EXECINFO_H
 #endif  // NDEBUG
 
 #include <agrum/config.h>
@@ -51,7 +51,7 @@ namespace gum {
       : _msg( aMsg )
       , _type( aType ) {
 #ifndef NDEBUG
-#ifndef __MINGW32__
+#ifdef HAVE_EXECINFO_H
 #define callStackDepth 20
     void* array[callStackDepth];
     size_t size;
@@ -67,11 +67,11 @@ namespace gum {
 
     free( strings );
     _callstack = stream.str();
-#else   //__MINGW32__
-    _callstack = "Callstack only in linux debug mode";
-#endif  //__MINGW32__
+#else   //HAVE_EXECINFO_H
+    _callstack = "Callstack only in linux debug mode when execinfo.h available";
+#endif  //HAVE_EXECINFO_H
 #else   // NDEBUG
-    _callstack = "Callstack only in linux debug mode";
+    _callstack = "Callstack only in linux debug mod ewhen execinfo.h available";
 #endif  // NDEBUG
   }
 

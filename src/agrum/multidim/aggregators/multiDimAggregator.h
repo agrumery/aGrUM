@@ -110,9 +110,9 @@ namespace gum {
       const std::string toString( void ) const;
 
       virtual void changeNotification( gum::Instantiation&,
-                                       const gum::DiscreteVariable*,
+                                       const gum::DiscreteVariable* const,
                                        const gum::Idx&,
-                                       const gum::Idx& ){};
+                                       const gum::Idx& ) override {};
 
       virtual void setFirstNotification( gum::Instantiation& ){};
 
