@@ -188,7 +188,7 @@ void __addO3Import( O3Import i ) {
 
 void __split( const O3Label& value, O3Label& left, O3Label& right) {
   auto idx = value.label().find_first_of('.');
-  if ( ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
+  if ( ( idx == std::string::npos ) or ( idx == value.label().size() - 1 ) ) {
     left = O3Label( value.position(), value.label() );
     right = O3Label( value.position(), value.label() );
   } else {
@@ -273,7 +273,7 @@ O3AttributeList& elts);
 	void LABEL_OR_STAR_LIST(O3LabelList& list);
 	void INTERFACE_DECLARATION(O3Position& pos,
 O3Label& name,
-O3Label& super,
+O3Label& superLabel,
 O3InterfaceElementList& elts);
 	void INTERFACE(O3Position& pos);
 	void INTERFACE_BODY(O3InterfaceElementList& elts);

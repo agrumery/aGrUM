@@ -23,14 +23,15 @@
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
+
+#include <agrum/config.h>
+
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <algorithm>
-
-#include <agrum/config.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

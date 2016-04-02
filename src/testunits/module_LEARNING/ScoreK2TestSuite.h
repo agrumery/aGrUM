@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <iostream>
+#include <cmath>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
@@ -72,24 +73,27 @@ namespace gum_tests {
 
       unsigned int id1 = score.addNodeSet( 3 );
       unsigned int id2 = score.addNodeSet( 1 );
-      TS_ASSERT( fabs( score.score( id1 ) + 996.781 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) + 3030.73 ) <= 0.01 );
+      
+      TS_ASSERT_DELTA(score.score( id1 ), -996.781,0.05);
+      
+      TS_ASSERT_DELTA(score.score( id1 ), -996.781 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id2 ), -3030.73 ,  0.05 );
 
       score.clear();
       id1 = score.addNodeSet( 0 );
       id2 = score.addNodeSet( 2 );
-      TS_ASSERT( fabs( score.score( id1 ) + 10006.1 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) + 9935.8 ) <= 0.01 );
+      TS_ASSERT_DELTA(score.score( id1 ), -10006.1 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id2 ), -9935.8 ,  0.05 );
 
       score.clear();
       id1 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
       id2 = score.addNodeSet( 1, std::vector<unsigned int>{4} );
-      TS_ASSERT( fabs( score.score( id1 ) + 991.062 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) + 3030.55 ) <= 0.01 );
+      TS_ASSERT_DELTA(score.score( id1 ), -991.062 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id2 ), -3030.55 ,  0.05 );
 
       score.clear();
       id1 = score.addNodeSet( 3, std::vector<unsigned int>{1, 2} );
-      TS_ASSERT( fabs( score.score( id1 ) + 1014.4 ) <= 0.01 );
+      TS_ASSERT_DELTA(score.score( id1 ), -1014.4 ,  0.05 );
 
       unsigned int id3, id4, id5, id6, id7;
       score.clear();
@@ -100,13 +104,14 @@ namespace gum_tests {
       id5 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
       id6 = score.addNodeSet( 2 );
       id7 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
-      TS_ASSERT( fabs( score.score( id1 ) + 996.781 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) + 3030.73 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id3 ) + 1014.4 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id4 ) + 9935.8 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id5 ) + 991.062 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id6 ) + 9935.8 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id7 ) + 991.062 ) <= 0.01 );
+      
+      TS_ASSERT_DELTA(score.score( id1 ), -996.781 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id2 ), -3030.73 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id3 ), -1014.4 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id4 ), -9935.8 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id5 ), -991.062 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id6 ), -9935.8 ,  0.05 );
+      TS_ASSERT_DELTA(score.score( id7 ), -991.062 ,  0.05 );
     }
 
     void test_cache() {
@@ -135,13 +140,13 @@ namespace gum_tests {
         id5 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
         id6 = score.addNodeSet( 2 );
         id7 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
-        TS_ASSERT( fabs( score.score( id1 ) + 996.781 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id2 ) + 3030.73 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id3 ) + 1014.4 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id4 ) + 9935.8 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id5 ) + 991.062 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id6 ) + 9935.8 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id7 ) + 991.062 ) <= 0.01 );
+        TS_ASSERT_DELTA(score.score( id1 ), -996.781 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id2 ), -3030.73 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id3 ), -1014.4 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id4 ), -9935.8 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id5 ), -991.062 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id6 ), -9935.8 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id7 ), -991.062 ,  0.05 );
       }
     }
 
@@ -170,13 +175,13 @@ namespace gum_tests {
         id5 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
         id6 = score.addNodeSet( 2 );
         id7 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
-        TS_ASSERT( fabs( score.score( id1 ) + 996.781 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id2 ) + 3030.73 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id3 ) + 1014.4 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id4 ) + 9935.8 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id5 ) + 991.062 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id6 ) + 9935.8 ) <= 0.01 );
-        TS_ASSERT( fabs( score.score( id7 ) + 991.062 ) <= 0.01 );
+        TS_ASSERT_DELTA(score.score( id1 ), -996.781 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id2 ), -3030.73 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id3 ), -1014.4 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id4 ), -9935.8 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id5 ), -991.062 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id6 ), -9935.8 ,  0.05 );
+        TS_ASSERT_DELTA(score.score( id7 ), -991.062 ,  0.05 );
       }
     }
   };

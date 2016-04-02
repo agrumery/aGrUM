@@ -63,7 +63,7 @@ namespace gum {
                                      Idx iteration,
                                      Idx p,
                                      Idx q )
-      : MCBayesNetGenerator<typename GUM_SCALAR, typename ICPTGenerator, typename ICPTDisturber>(
+      : MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>(
             bayesNet, iteration, p, q ) {
     _maxParents = maxParents;
     GUM_CONSTRUCTOR( MaxParentsMCBayesNetGenerator );
@@ -82,16 +82,12 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
-  bool MaxParentsMCBayesNetGenerator<typename GUM_SCALAR,
-    class ICPTGenerator,
-    class ICPTDisturber>::__checkConditions() {
+  bool MaxParentsMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::__checkConditions() {
     for ( auto node : this->_bayesNet.nodes() )
       if ( this->_bayesNet.dag().parents( node ).size() > _maxParents )
         return false;
 
-    return MCBayesNetGenerator<typename GUM_SCALAR,
-      typename ICPTGenerator,
-      typename ICPTDisturber>::__checkConditions();
+    return MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::__checkConditions();
   }
 
   template <typename GUM_SCALAR,

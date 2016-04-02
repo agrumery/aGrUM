@@ -27,6 +27,8 @@
 #ifndef GUM_MC_BAYES_NET_GENERATOR
 #define GUM_MC_BAYES_NET_GENERATOR
 
+#include <agrum/config.h>
+
 #include <set>
 #include <vector>
 #include <iostream>
@@ -46,7 +48,6 @@
 #include <agrum/core/mvsc/time.h>
 #endif
 
-#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>

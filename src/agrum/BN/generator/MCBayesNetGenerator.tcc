@@ -77,7 +77,7 @@ namespace gum {
                            Size iteration,
                            Idx p,
                            Idx q )
-      : IBayesNetGenerator<GUM_SCALAR, ICPTGenerator<GUM_SCALAR>>(
+      : IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>(
             bayesNet.size(),
             ( Size )( bayesNet.sizeArcs() * 1.1 ),
             getMaxModality( bayesNet ) )
@@ -105,22 +105,22 @@ namespace gum {
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
   void
-  MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator<GUM_SCALAR>, ICPTDisturber<GUM_SCALAR>>::generateBN(
+  MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::generateBN(
       BayesNet<GUM_SCALAR>& bayesNet ) {
 
     Idx iteration = _iteration;
 
     // IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = bayesNet;
-    __createTre( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator<GUM_SCALAR>>::_nbrNodes );
-    __transformPoly( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator<GUM_SCALAR>>::_nbrNodes /
+    __createTree( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes );
+    __transformPoly( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes /
                      2 );
-    _bayesNettemp = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator<GUM_SCALAR>>::_bayesNet;
+    _bayesNettemp = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet;
     __PMMx_poly();
 
-    IBayesNetGenerator<GUM_SCALAR, ICPTGenerator<GUM_SCALAR>>::fillCPT();
+    IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::fillCPT();
     _iteration = iteration;
 
-    bayesNet = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator<GUM_SCALAR>>::_bayesNet;
+    bayesNet = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet;
   }
 
   // density represent de

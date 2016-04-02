@@ -106,9 +106,9 @@ namespace gum {
 
           for ( auto i : __o3Interface ) {
 
-            if ( __solver->resolveInterface( i->super() ) ) {
+            if ( __solver->resolveInterface( i->superLabel() ) ) {
               factory.startInterface(
-                  i->name().label(), i->super().label(), true );
+                  i->name().label(), i->superLabel().label(), true );
               factory.endInterface();
             }
           }
@@ -148,13 +148,13 @@ namespace gum {
         // Adding arcs to the graph inheritance graph
         for ( auto& i : __o3_prm->interfaces() ) {
 
-          if ( i->super().label() != "" ) {
+          if ( i->superLabel().label() != "" ) {
 
-            if ( not __solver->resolveInterface( i->super() ) ) {
+            if ( not __solver->resolveInterface( i->superLabel() ) ) {
               return false;
             }
 
-            auto head = __nameMap[i->super().label()];
+            auto head = __nameMap[i->superLabel().label()];
             auto tail = __nameMap[i->name().label()];
 
             try {
@@ -164,7 +164,7 @@ namespace gum {
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
               O3PRM_INTERFACE_CYCLIC_INHERITANCE(
-                  i->name(), i->super(), *__errors );
+                  i->name(), i->superLabel(), *__errors );
               return false;
             }
           }

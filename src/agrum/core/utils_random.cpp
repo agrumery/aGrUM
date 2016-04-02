@@ -36,7 +36,7 @@ namespace gum {
 
   // returns the aGrUM's seed used by the std::generators
   unsigned int randomGeneratorSeed() {
-    return unsigned int(( GUM_RANDOMSEED == 0 )
+    return (unsigned int)(( GUM_RANDOMSEED == 0 )
                ? std::chrono::system_clock::now().time_since_epoch().count()
                : GUM_RANDOMSEED);
   }

@@ -21,11 +21,13 @@
  * @brief Class for generating bayesian networks using MC algorithm
  * cf. [Ide and Cozman, 2002]
  *
- * @author Ariele MAESANO
+ * @author Ariele MAESANO and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
 #define GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
+
+#include <agrum/config.h>
 
 #include <set>
 #include <vector>
@@ -46,7 +48,6 @@
 #include <agrum/core/mvsc/time.h>
 #endif
 
-#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/generator/simpleCPTDisturber.h>

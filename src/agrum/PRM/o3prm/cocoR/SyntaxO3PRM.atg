@@ -226,7 +226,7 @@ CLASS_DECLARATION<O3Class& c> =
   CLASS<c.position()>
   PREFIXED_LABEL<c.name()>
   [
-    extends CHAIN<c.super()>
+    extends CHAIN<c.superLabel()>
   ]
   [
     implements IDENTIFIER_LIST<c.interfaces()>
@@ -396,19 +396,19 @@ RULE<O3RuleList& rules> =
 INTERFACE_UNIT =
   (. auto n = errors().error_count; .)
   (. auto i = O3Interface(); .)
-  INTERFACE_DECLARATION<i.position(), i.name(), i.super(), i.elements() >
+  INTERFACE_DECLARATION<i.position(), i.name(), i.superLabel(), i.elements() >
   (. if (__ok(n)) { __addO3Interface( std::move( i ) ); } .)
   .
 
 //________________________
 INTERFACE_DECLARATION<O3Position& pos,
                       O3Label& name,
-                      O3Label& super,
+                      O3Label& superLabel,
                       O3InterfaceElementList& elts> =
   INTERFACE<pos>
   PREFIXED_LABEL<name>
   [
-    extends CHAIN<super>
+    extends CHAIN<superLabel>
   ]
   '{' { INTERFACE_BODY<elts> } '}'
   .
@@ -442,7 +442,7 @@ TYPE_UNIT =
   (. auto n = errors().error_count; .)
   (
     (. auto t = O3Type(); .)
-    TYPE_DECLARATION<t.position(), t.name(), t.super(), t.labels()>
+    TYPE_DECLARATION<t.position(), t.name(), t.superLabel(), t.labels()>
     (. if ( __ok( n ) ) { __addO3Type( std::move(t) ); } .)
   |
     (. auto t = O3IntType(); .)

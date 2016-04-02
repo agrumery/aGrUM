@@ -49,6 +49,7 @@
 
 #cmakedefine HAVE_MKSTEMP 1
 #cmakedefine HAVE_DIRENT_H 1
+#cmakedefine HAVE_UNISTD_H 1
 #cmakedefine HAVE_SYS_TIME_H 1
 
 #define GUM_AT_LEAST(x,y,z) (GUM_MAJOR_VERSION>x || (GUM_MAJOR_VERSION>=x && \

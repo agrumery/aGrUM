@@ -44,11 +44,11 @@ namespace gum {
             __checkStack( 1, PRMObject::PRMType::TYPE ) );
         LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
 
-        if ( not var ) {
+        if ( ! var ) {
           GUM_ERROR(
               FatalError,
               "the current type's variable is not a LabelizedVariable." );
-        } else if ( t->__super ) {
+        } else if ( t->__superType ) {
           GUM_ERROR( OperationNotAllowed, "current type is a subtype." );
         }
 
@@ -63,18 +63,18 @@ namespace gum {
             __checkStack( 1, PRMObject::PRMType::TYPE ) );
         LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
 
-        if ( not var ) {
+        if ( ! var ) {
           GUM_ERROR(
               FatalError,
               "the current type's variable is not a LabelizedVariable." );
-        } else if ( not t->__super ) {
+        } else if ( ! t->__superType ) {
           GUM_ERROR( OperationNotAllowed, "current type is not a subtype." );
         }
 
         bool found = false;
 
-        for ( Idx i = 0; i < t->__super->__var->domainSize(); ++i ) {
-          if ( t->__super->__var->label( i ) == extends ) {
+        for ( Idx i = 0; i < t->__superType->__var->domainSize(); ++i ) {
+          if ( t->__superType->__var->label( i ) == extends ) {
             try {
               var->addLabel( l );
             } catch ( DuplicateElement& ) {
@@ -89,7 +89,7 @@ namespace gum {
           }
         }
 
-        if ( not found ) {
+        if ( ! found ) {
           GUM_ERROR( NotFound, "inexistent label in super type." );
         }
       }
@@ -122,13 +122,13 @@ namespace gum {
         mother = __retrieveClass( extends );
       }
 
-      if ( ( extends == "" ) and impl.empty() ) {
+      if ( ( extends == "" ) && impl.empty() ) {
         c = new Class<GUM_SCALAR>( real_name );
-      } else if ( ( extends != "" ) and impl.empty() ) {
+      } else if ( ( extends != "" ) && impl.empty() ) {
         c = new Class<GUM_SCALAR>( real_name, *mother, delayInheritance);
-      } else if ( ( extends == "" ) and ( not impl.empty() ) ) {
+      } else if ( ( extends == "" ) && ( ! impl.empty() ) ) {
         c = new Class<GUM_SCALAR>( real_name, impl, delayInheritance );
-      } else if ( ( extends != "" ) and ( not impl.empty() ) ) {
+      } else if ( ( extends != "" ) && ( ! impl.empty() ) ) {
         c = new Class<GUM_SCALAR>( real_name, *mother, impl, delayInheritance );
       }
 
@@ -178,7 +178,7 @@ namespace gum {
                        ( c->get( name ).elt_type() ==
                          ClassElement<GUM_SCALAR>::prm_aggregate ) ) {
 
-                    if ( not c->get( name ).type().isSubTypeOf(
+                    if ( ! c->get( name ).type().isSubTypeOf(
                              i->get( name ).type() ) ) {
 
                       std::stringstream msg;
@@ -208,7 +208,7 @@ namespace gum {
                         static_cast<const ReferenceSlot<GUM_SCALAR>&>(
                             c->get( name ) );
 
-                    if ( not ref_this.slotType().isSubTypeOf(
+                    if ( ! ref_this.slotType().isSubTypeOf(
                              ref_i.slotType() ) ) {
 
                       std::stringstream msg;
@@ -282,7 +282,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::continueInterface( const std::string& name ) {
       std::string real_name = __addPrefix( name );
-      if ( not __prm->__interfaceMap.exists( real_name ) ) {
+      if ( ! __prm->__interfaceMap.exists( real_name ) ) {
         std::stringstream msg;
         msg << "\"" << real_name << "\" not found.";
         GUM_ERROR( DuplicateElement, msg.str() );
@@ -367,7 +367,7 @@ namespace gum {
           std::string msg =
               "found no ClassElement<GUM_SCALAR> with the given name ";
           GUM_ERROR( NotFound, msg + name );
-        } else if ( not sc->isMultiple() ) {
+        } else if ( ! sc->isMultiple() ) {
           c->add( sc );
           c->addArc( sc->name(), a->name() );
         } else {
@@ -446,7 +446,7 @@ namespace gum {
 
         jnst.begin();
         auto idx = (std::size_t)0;
-        while ( ( not jnst.end() ) and idx < array.size() ) {
+        while ( ( ! jnst.end() ) && idx < array.size() ) {
           inst.setVals( jnst );
           a->cpf().set( inst, array[idx] );
           jnst.inc();
@@ -517,7 +517,7 @@ namespace gum {
               }
             }
 
-            if ( not found ) {
+            if ( ! found ) {
               std::string msg = "could not find label ";
               GUM_ERROR( NotFound, msg + parents[i] );
             }
@@ -530,7 +530,7 @@ namespace gum {
         for ( Size i = 0; i < form->type()->domainSize(); ++i ) {
           inst.chgVal( form->type().variable(), i );
 
-          for ( inst.setFirstIn( knst ); not inst.end(); inst.incIn( knst ) ) {
+          for ( inst.setFirstIn( knst ); ! inst.end(); inst.incIn( knst ) ) {
             form->formulas().set( inst, std::to_string( values[i] ) );
           }
         }
@@ -583,7 +583,7 @@ namespace gum {
               }
             }
 
-            if ( not found ) {
+            if ( ! found ) {
               std::string msg = "could not find label ";
               GUM_ERROR( NotFound, msg + parents[i] );
             }
@@ -596,7 +596,7 @@ namespace gum {
         for ( Size i = 0; i < form->type()->domainSize(); ++i ) {
           inst.chgVal( form->type().variable(), i );
 
-          for ( inst.setFirstIn( knst ); not inst.end(); inst.incIn( knst ) ) {
+          for ( inst.setFirstIn( knst ); ! inst.end(); inst.incIn( knst ) ) {
             form->formulas().set( inst, values[i]  );
           }
         }
@@ -1045,7 +1045,7 @@ namespace gum {
 
             // Loop guard
             if ( current->isSubType() ) {
-              current = &( current->super() );
+              current = &( current->superType() );
             } else {
               current = 0;
             }
@@ -1110,7 +1110,7 @@ namespace gum {
           // descendant
           std::string safe_name = parent->cast( *common_type );
 
-          if ( not c->exists( safe_name ) ) {
+          if ( ! c->exists( safe_name ) ) {
             if ( ClassElement<GUM_SCALAR>::isSlotChain( *parent ) ) {
               parents[idx] = __buildSlotChain( c, safe_name );
               c->add( parents[idx] );
@@ -1145,7 +1145,7 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed, "invalid parameters for a noisy or" );
       }
 
-      if ( not labels.empty() ) {
+      if ( ! labels.empty() ) {
         GUM_ERROR( OperationNotAllowed,
                    "labels definitions not handle for noisy-or" );
       }
@@ -1196,7 +1196,7 @@ namespace gum {
 
 
       // Looking for the type using all declared namespaces
-      if ( not __namespaces.empty() ) {
+      if ( ! __namespaces.empty() ) {
         auto ns_list = __namespaces.back();
         for ( gum::Size i = 0; i < ns_list->size(); ++i ) {
           std::string ns = ( *ns_list )[i];
@@ -1250,7 +1250,7 @@ namespace gum {
       }
 
       // Looking for the class using all declared namespaces
-      if ( not __namespaces.empty() ) {
+      if ( ! __namespaces.empty() ) {
         auto ns_list = __namespaces.back();
         for ( gum::Size i = 0; i < ns_list->size(); ++i ) {
           std::string ns = ( *ns_list )[i];
@@ -1305,7 +1305,7 @@ namespace gum {
       }
 
       // Looking for the interface using all declared namespaces
-      if ( not __namespaces.empty() ) {
+      if ( ! __namespaces.empty() ) {
         auto ns_list = __namespaces.back();
         // for( const auto & ns : *(__namespaces.top()) ) {
         for ( gum::Size i = 0; i < ns_list->size(); ++i ) {
@@ -1350,7 +1350,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE PRMFactory<GUM_SCALAR>::~PRMFactory() {
       GUM_DESTRUCTOR( PRMFactory );
-      while ( not __namespaces.empty() ) {
+      while ( ! __namespaces.empty() ) {
         auto ns = __namespaces.back();
         __namespaces.pop_back();
         delete ns;
@@ -1420,7 +1420,7 @@ namespace gum {
         __stack.push_back( t );
       } else {
         auto t = new Type<GUM_SCALAR>( LabelizedVariable( real_name, "", 0 ) );
-        t->__super = __retrieveType( super );
+        t->__superType = __retrieveType( super );
         t->__label_map = new std::vector<Idx>();
         __stack.push_back( t );
       }
@@ -1431,7 +1431,7 @@ namespace gum {
       Type<GUM_SCALAR>* t = static_cast<Type<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::TYPE ) );
 
-      if ( not t->__isValid() ) {
+      if ( ! t->__isValid() ) {
         GUM_ERROR( OperationNotAllowed, "current type is not a valid subtype" );
       } else if ( t->variable().domainSize() < 2 ) {
         GUM_ERROR( OperationNotAllowed,
@@ -1487,7 +1487,7 @@ namespace gum {
           c->overload( a );
         }
       } catch ( Exception& e ) {
-        if ( a != nullptr and ( not c->exists( a->id() ) ) ) {
+        if ( a != nullptr && ( ! c->exists( a->id() ) ) ) {
           delete a;
         }
       }
@@ -1499,11 +1499,11 @@ namespace gum {
     INLINE void
     PRMFactory<GUM_SCALAR>::continueAttribute( const std::string& name ) {
       ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
-      if ( not c->exists( name ) ) {
+      if ( ! c->exists( name ) ) {
         GUM_ERROR( NotFound, name << "not found" );
       }
       auto& a = c->get( name );
-      if ( not ClassElement<GUM_SCALAR>::isAttribute( a ) ) {
+      if ( ! ClassElement<GUM_SCALAR>::isAttribute( a ) ) {
         GUM_ERROR( OperationNotAllowed, name << " not an attribute" );
       }
       __stack.push_back( &a );
@@ -1581,7 +1581,7 @@ namespace gum {
         // Adding all parameters to my_params
         for ( const auto& p : c->parameters() ) {
 
-          if ( not my_params.exists( p->name() ) ) {
+          if ( ! my_params.exists( p->name() ) ) {
             my_params.insert( p->name(), p->value() );
           }
         }
@@ -1657,7 +1657,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE std::string
     PRMFactory<GUM_SCALAR>::__addPrefix( const std::string& str ) const {
-      if ( not __packages.empty() ) {
+      if ( ! __packages.empty() ) {
         std::string full_name = __packages.back();
         full_name.append( "." );
         full_name.append( str );
@@ -1732,7 +1732,7 @@ namespace gum {
 
       while ( current->isSubType() ) {
         ++depth;
-        current = &( current->super() );
+        current = &( current->superType() );
       }
 
       return depth;
@@ -1748,7 +1748,7 @@ namespace gum {
     INLINE std::string PRMFactory<GUM_SCALAR>::popPackage() {
       std::string plop = currentPackage();
 
-      if ( not __packages.empty() ) {
+      if ( ! __packages.empty() ) {
         std::string s = __packages.back();
         __packages.pop_back();
 
@@ -1867,7 +1867,7 @@ namespace gum {
 
         jnst.begin();
         auto idx = (std::size_t)0;
-        while ( ( not jnst.end() ) and idx < array.size() ) {
+        while ( ( ! jnst.end() ) && idx < array.size() ) {
           inst.setVals( jnst );
           a->formulas().set( inst, array[idx] );
           jnst.inc();

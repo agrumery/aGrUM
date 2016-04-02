@@ -138,9 +138,9 @@ namespace gum {
             }
 
             // Adding the class
-            if ( __solver->resolveClass( c->super() ) ) {
+            if ( __solver->resolveClass( c->superLabel() ) ) {
               factory.startClass(
-                  c->name().label(), c->super().label(), &implements, true );
+                  c->name().label(), c->superLabel().label(), &implements, true );
               factory.endClass( false );
             }
           }
@@ -188,13 +188,13 @@ namespace gum {
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAndAddArcsToDag() {
         for ( auto& c : __o3_prm->classes() ) {
 
-          if ( c->super().label() != "" ) {
+          if ( c->superLabel().label() != "" ) {
 
-            if ( not __solver->resolveClass( c->super() ) ) {
+            if ( not __solver->resolveClass( c->superLabel() ) ) {
               return false;
             }
 
-            auto head = __nameMap[c->super().label()];
+            auto head = __nameMap[c->superLabel().label()];
             auto tail = __nameMap[c->name().label()];
 
             try {
@@ -202,7 +202,7 @@ namespace gum {
               __dag.addArc( tail, head );
             } catch ( InvalidDirectedCycle& e ) {
               // Cyclic inheritance
-              O3PRM_CLASS_CYLIC_INHERITANCE( c->name(), c->super(), *__errors );
+              O3PRM_CLASS_CYLIC_INHERITANCE( c->name(), c->superLabel(), *__errors );
               return false;
             }
           }
@@ -533,8 +533,8 @@ namespace gum {
         }
 
         // Checking type legality if overload
-        if ( c.super().label() != "" ) {
-          const auto& super = __prm->getClass( c.super().label() );
+        if ( c.superLabel().label() != "" ) {
+          const auto& super = __prm->getClass( c.superLabel().label() );
 
           if ( not super.exists( attr.name().label() ) ) {
             return true;
@@ -545,7 +545,7 @@ namespace gum {
 
           if ( not type.isSubTypeOf( super_type ) ) {
 
-            O3PRM_CLASS_ILLEGAL_OVERLOAD( attr.name(), c.super(), *__errors );
+            O3PRM_CLASS_ILLEGAL_OVERLOAD( attr.name(), c.superLabel(), *__errors );
             return false;
           }
         }
@@ -565,9 +565,9 @@ namespace gum {
 
           __completeAttribute( factory, *c );
 
-          if ( c->super().label() != "" ) {
+          if ( c->superLabel().label() != "" ) {
 
-            auto& super = __prm->getClass( c->super().label() );
+            auto& super = __prm->getClass( c->superLabel().label() );
             auto to_complete = Set<std::string>();
 
             for ( auto a : super.attributes() ) {
@@ -1019,9 +1019,9 @@ namespace gum {
       O3ClassFactory<GUM_SCALAR>::__checkAggTypeLegality( O3Class& o3class,
                                                           O3Aggregate& agg ) {
 
-        if ( __prm->isClass( o3class.super().label() ) ) {
+        if ( __prm->isClass( o3class.superLabel().label() ) ) {
 
-          const auto& super = __prm->getClass( o3class.super().label() );
+          const auto& super = __prm->getClass( o3class.superLabel().label() );
           const auto& agg_type = __prm->type( agg.variableType().label() );
 
           if ( super.exists( agg.name().label() ) and
@@ -1029,7 +1029,7 @@ namespace gum {
                    super.get( agg.name().label() ).type() ) ) {
 
             O3PRM_CLASS_ILLEGAL_OVERLOAD(
-                agg.name(), o3class.super(), *__errors );
+                agg.name(), o3class.superLabel(), *__errors );
             return false;
           }
         }

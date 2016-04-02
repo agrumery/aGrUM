@@ -33,7 +33,7 @@ namespace gum {
     Type<GUM_SCALAR>::Type( const DiscreteVariable& var )
         : PRMObject( var.name() )
         , __var( var.clone() )
-        , _superType( 0 )
+        , __superType( 0 )
         , __label_map( 0 ) {
       GUM_CONSTRUCTOR( Type );
     }
@@ -44,7 +44,7 @@ namespace gum {
                             const DiscreteVariable& var )
         : PRMObject( var.name() )
         , __var( var.clone() )
-        , _superType( &super_type )
+        , __superType( &super_type )
         , __label_map( new std::vector<Idx>( label_map ) ) {
       GUM_CONSTRUCTOR( Type );
 
@@ -59,11 +59,11 @@ namespace gum {
     Type<GUM_SCALAR>::Type( const Type<GUM_SCALAR>& from )
         : PRMObject( from )
         , __var( from.__var->clone() )
-        , _superType( from._superType )
+        , __superType( from.__superType )
         , __label_map( 0 ) {
       GUM_CONS_CPY( Type );
 
-      if ( _superType ) {
+      if ( __superType ) {
         __label_map = new std::vector<Idx>( from.label_map() );
       }
     }
@@ -81,8 +81,8 @@ namespace gum {
     bool Type<GUM_SCALAR>::isSubTypeOf( const Type<GUM_SCALAR>& super ) const {
       if ( ( *this ) == super ) {
         return true;
-      } else if ( _superType ) {
-        return _superType->isSubTypeOf( super );
+      } else if ( __superType ) {
+        return __superType->isSubTypeOf( super );
       } else {
         return false;
       }
@@ -90,13 +90,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool Type<GUM_SCALAR>::__isValid() const {
-      if ( not _superType ) {
+      if ( not __superType ) {
         return __var->domainSize() > 1;
       }
 
       if ( __label_map->size() == __var->domainSize() ) {
         for ( size_t i = 0; i < __label_map->size(); ++i ) {
-          if ( __label_map->at( i ) >= ( **_superType ).domainSize() ) {
+          if ( __label_map->at( i ) >= ( **__superType ).domainSize() ) {
             return false;
           }
         }
@@ -108,9 +108,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR>& Type<GUM_SCALAR>::super() {
-      if ( _superType ) {
-        return *_superType;
+    INLINE Type<GUM_SCALAR>& Type<GUM_SCALAR>::superType() {
+      if ( __superType ) {
+        return *__superType;
       } else {
         GUM_ERROR( NotFound, "No super type for this type." );
       }
@@ -157,9 +157,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR>& Type<GUM_SCALAR>::super() const {
-      if ( _superType ) {
-        return *_superType;
+    INLINE const Type<GUM_SCALAR>& Type<GUM_SCALAR>::superType() const {
+      if ( __superType ) {
+        return *__superType;
       } else {
         GUM_ERROR( NotFound, "No super type for this type." );
       }
@@ -168,7 +168,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void Type<GUM_SCALAR>::setSuper( Type<GUM_SCALAR>& t ) {
       try {
-        if ( t != super() ) {
+        if ( t != superType() ) {
           GUM_ERROR( WrongType,
                      "The given type is not a valid super type for this Type" );
         }
@@ -176,7 +176,7 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed, "This Type has no super Type" );
       }
 
-      _superType = &t;
+      __superType = &t;
     }
 
     template <typename GUM_SCALAR>
@@ -190,7 +190,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool Type<GUM_SCALAR>::isSubType() const {
-      return _superType;
+      return __superType;
     }
 
     template <typename GUM_SCALAR>

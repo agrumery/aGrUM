@@ -27,6 +27,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
+#include <agrum/config.h>
+
 #include <vector>
 #include <iostream>
 
@@ -49,7 +51,6 @@
 
 #include <utility>  /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
-#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>

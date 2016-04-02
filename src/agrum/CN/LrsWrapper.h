@@ -29,6 +29,8 @@
 #ifndef __LRSWrapper_WRAPPER__H__
 #define __LRSWrapper_WRAPPER__H__
 
+#include <agrum/config.h>
+
 #include <cmath>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -43,7 +45,6 @@
 #include <fstream>
 #include <chrono>
 
-#include <agrum/core/exceptions.h>
 #include <agrum/core/math/rational.h>
 
 // we force MP (not long or GMP)

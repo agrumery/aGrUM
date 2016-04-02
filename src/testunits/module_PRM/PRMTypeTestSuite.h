@@ -280,7 +280,7 @@ namespace gum_tests {
       Type state{boolean, map, *__state};
       Type* super = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING( super = &( state.super() ) );
+      TS_ASSERT_THROWS_NOTHING( super = &( state.superType() ) );
       // Act & Assert
       TS_ASSERT_EQUALS( *super, boolean );
     }
@@ -295,7 +295,7 @@ namespace gum_tests {
       const auto& dummy = state;
       Type const* super = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING( super = &( dummy.super() ) );
+      TS_ASSERT_THROWS_NOTHING( super = &( dummy.superType() ) );
       // Act & Assert
       TS_ASSERT_EQUALS( *super, boolean );
     }
@@ -304,7 +304,7 @@ namespace gum_tests {
       // Arrange
       Type boolean{*__boolean};
       // Act & Assert
-      TS_ASSERT_THROWS( boolean.super(), gum::NotFound );
+      TS_ASSERT_THROWS( boolean.superType(), gum::NotFound );
     }
 
     void testSetSuper() {
@@ -318,10 +318,10 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING( state.setSuper( boolean_bis ) );
       // Assert
-      TS_ASSERT_EQUALS( state.super(), boolean );
-      TS_ASSERT_EQUALS( state.super(), boolean_bis );
-      TS_ASSERT_DIFFERS( &( state.super() ), &boolean );
-      TS_ASSERT_EQUALS( &( state.super() ), &boolean_bis );
+      TS_ASSERT_EQUALS( state.superType(), boolean );
+      TS_ASSERT_EQUALS( state.superType(), boolean_bis );
+      TS_ASSERT_DIFFERS( &( state.superType() ), &boolean );
+      TS_ASSERT_EQUALS( &( state.superType() ), &boolean_bis );
     }
 
     void testSetSuperWrongtype() {

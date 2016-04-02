@@ -33,6 +33,8 @@
 #include <string>
 #include <vector>
 
+#include <agrum/config.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #else
@@ -45,7 +47,6 @@
 #include <agrum/core/mvsc/dirent.h>
 #endif
 
-#include <agrum/config.h>
 
 namespace gum {
 

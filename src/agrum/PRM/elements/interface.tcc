@@ -47,7 +47,7 @@ namespace gum {
         : ClassElementContainer<GUM_SCALAR>( name )
         , __superInterface( &super ) {
       GUM_CONSTRUCTOR( Interface );
-      if ( not delayInheritance ) {
+      if ( ! delayInheritance ) {
         __inheritInterface( super );
       }
     }
@@ -161,7 +161,7 @@ namespace gum {
     NodeId
     Interface<GUM_SCALAR>::overload( ClassElement<GUM_SCALAR>* overloader ) {
       try {
-        if ( not super().exists( overloader->name() ) ) {
+        if ( ! super().exists( overloader->name() ) ) {
           GUM_ERROR( OperationNotAllowed,
                      "found no ClassElement<GUM_SCALAR> to overload" );
         }
@@ -174,7 +174,7 @@ namespace gum {
       if ( overloaded == overloader ) {
         GUM_ERROR( DuplicateElement, "dupplicate ClassElement" );
       }
-      if ( not __checkOverloadLegality( overloaded, overloader ) ) {
+      if ( ! __checkOverloadLegality( overloaded, overloader ) ) {
         GUM_ERROR( OperationNotAllowed, "illegal overload" );
       }
 
@@ -199,7 +199,7 @@ namespace gum {
 
         case ClassElement<GUM_SCALAR>::prm_aggregate:
         case ClassElement<GUM_SCALAR>::prm_slotchain: {
-          auto msg = "element can not be overloaded";
+          auto msg = "element can ! be overloaded";
           GUM_ERROR( OperationNotAllowed, msg );
           break;
         }
@@ -260,7 +260,7 @@ namespace gum {
       Attribute<GUM_SCALAR>* parent = start;
       Attribute<GUM_SCALAR>* child = 0;
 
-      while ( parent->type().super() != end->type() ) {
+      while ( parent->type().superType() != end->type() ) {
         child = parent->getCastDescendant();
         child->setId( nextNodeId() );
         __dag.addNode( child->id() );
@@ -268,7 +268,7 @@ namespace gum {
         // Only use child's safe name when adding to the name map!
         __nameMap.insert( child->safeName(), child );
         __attributes.insert( child );
-        // Do not use Class<GUM_SCALAR>::insertArc(), child's CPF is already
+        // Do ! use Class<GUM_SCALAR>::insertArc(), child's CPF is already
         // initialized properly
         parent = child;
       }
@@ -285,7 +285,7 @@ namespace gum {
       }
 
       if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-        if ( not overloader->type().isSubTypeOf( overloaded->type() ) ) {
+        if ( ! overloader->type().isSubTypeOf( overloaded->type() ) ) {
           return false;
         }
       } else if ( overloaded->elt_type() ==
@@ -294,7 +294,7 @@ namespace gum {
             static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloader );
         auto ref_overloaded =
             static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloaded );
-        if ( not ref_overloader->slotType().isSubTypeOf(
+        if ( ! ref_overloader->slotType().isSubTypeOf(
                  ref_overloaded->slotType() ) ) {
           return false;
         }
@@ -341,7 +341,7 @@ namespace gum {
       //  ClassElementContainer<GUM_SCALAR>* c =
       //      reinterpret_cast<ClassElementContainer<GUM_SCALAR>*>( impl );
 
-      //  if ( not c->isOutputNode( elt ) ) c->setOutputNode( elt, true );
+      //  if ( ! c->isOutputNode( elt ) ) c->setOutputNode( elt, true );
       //}
     }
 
@@ -372,7 +372,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void Interface<GUM_SCALAR>::addArc( const std::string& tail,
                                                const std::string& head ) {
-      GUM_ERROR( OperationNotAllowed, "an Interface does not have arcs" );
+      GUM_ERROR( OperationNotAllowed, "an Interface does ! have arcs" );
     }
 
     template <typename GUM_SCALAR>
@@ -380,7 +380,7 @@ namespace gum {
       if ( __superInterface )
         return *__superInterface;
       else
-        GUM_ERROR( NotFound, "this Interface is not a sub interface" );
+        GUM_ERROR( NotFound, "this Interface is ! a sub interface" );
     }
 
     template <typename GUM_SCALAR>
@@ -388,7 +388,7 @@ namespace gum {
       if ( __superInterface )
         return *__superInterface;
       else
-        GUM_ERROR( NotFound, "this Interface is not a sub interface" );
+        GUM_ERROR( NotFound, "this Interface is ! a sub interface" );
     }
 
     template <typename GUM_SCALAR>
@@ -525,7 +525,7 @@ namespace gum {
     INLINE bool Interface<GUM_SCALAR>::isOutputNode(
         const ClassElement<GUM_SCALAR>& elt ) const {
       try {
-        if ( not this->_getIOFlag( elt ).second ) {
+        if ( ! this->_getIOFlag( elt ).second ) {
 
           for ( auto i : __implementations ) {
             if ( i->isOutputNode( elt ) ) {
@@ -533,7 +533,7 @@ namespace gum {
             }
           }
 
-          if ( __superInterface and __superInterface->isOutputNode( elt ) ) {
+          if ( __superInterface && __superInterface->isOutputNode( elt ) ) {
             return true;
           }
 

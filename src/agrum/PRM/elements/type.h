@@ -196,18 +196,18 @@ namespace gum {
        * Returns the super type of this type.
        * @throw NotFound Raised if this type has no super type.
        */
-      Type& super();
+      Type& superType();
 
       /**
        * Returns the super type of this type.
        * @throw NotFound Raised if this type has no super type.
        */
-      const Type& super() const;
+      const Type& superType() const;
 
       /**
        * @brief Changes the Type of this Type super.
        *
-       * You can only change this Type super only if t and this->super() are
+       * You can only change this Type super only if t and this->superType() are
        * equal. Thus you should use this method only if you want to change the
        * DiscreteVariable pointer of this Type super.
        *

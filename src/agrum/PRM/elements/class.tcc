@@ -110,7 +110,7 @@ namespace gum {
       for ( const auto impl : *__implements ) {
         impl->__addImplementation( this );
         if ( ( ! __superClass ) ||
-             ( __superClass && n!super().isSubTypeOf( *impl ) ) ||
+             ( __superClass && !super().isSubTypeOf( *impl ) ) ||
              ( __superClass && delayedInheritance ) ) {
           // Reserve reference id in DAG
           for ( auto ref : impl->referenceSlots() ) {
@@ -990,7 +990,7 @@ namespace gum {
       Attribute<GUM_SCALAR>* parent = start;
       Attribute<GUM_SCALAR>* child = 0;
 
-      while ( parent->type().super() != end->type() ) {
+      while ( parent->type().superType() != end->type() ) {
         child = parent->getCastDescendant();
         child->setId( nextNodeId() );
         __nodeIdMap.insert( child->id(), child );

@@ -175,7 +175,7 @@ namespace gum {
       ScalarAttribute<GUM_SCALAR>* cast = 0;
 
       try {
-        cast = new ScalarAttribute<GUM_SCALAR>( this->name(), type().super() );
+        cast = new ScalarAttribute<GUM_SCALAR>( this->name(), type().superType() );
       } catch ( NotFound& ) {
         GUM_ERROR( OperationNotAllowed,
                    "this ScalarAttribute can not have cast descendant" );
