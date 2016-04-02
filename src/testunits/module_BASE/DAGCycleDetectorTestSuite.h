@@ -73,13 +73,13 @@ namespace gum_tests {
 
         switch ( chgt_type ) {
           case 0: {  // deletions
-            float nb_arcs = gg.sizeArcs();
+            float nb_arcs = (float)gg.sizeArcs();
             if ( !nb_arcs ) {
               ++length;
               break;
             }
             nb_arcs /= g.size() * g.size();
-            unsigned int nb_del_arc = distrib_arc( generator ) * nb_arcs;
+            gum::Size nb_del_arc = (gum::Size)(distrib_arc( generator ) * nb_arcs);
             if ( nb_del_arc >= gg.sizeArcs() ) nb_del_arc = gg.sizeArcs() - 1;
             for ( auto iter = gg.arcs().begin(); iter != gg.arcs().end();
                   ++iter, --nb_del_arc ) {
@@ -108,13 +108,13 @@ namespace gum_tests {
           } break;
 
           case 2: {  // reversal
-            float nb_arcs = gg.sizeArcs();
+            float nb_arcs = float(gg.sizeArcs());
             if ( !nb_arcs ) {
               ++length;
               break;
             }
             nb_arcs /= g.size() * g.size();
-            unsigned int nb_del_arc = distrib_arc( generator ) * nb_arcs;
+            gum::Size nb_del_arc = gum::Size(distrib_arc( generator ) * nb_arcs);
             if ( nb_del_arc >= gg.sizeArcs() ) nb_del_arc = gg.sizeArcs() - 1;
             for ( auto iter = gg.arcs().begin(); iter != gg.arcs().end();
                   ++iter, --nb_del_arc ) {

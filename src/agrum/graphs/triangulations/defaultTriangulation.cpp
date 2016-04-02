@@ -64,8 +64,8 @@ namespace gum {
   /// default constructor: initialize the triangulation for an empty graph
 
   DefaultTriangulation::DefaultTriangulation( bool minimality,
-                                              double theRatio,
-                                              double theThreshold )
+                                              float theRatio,
+                                              float theThreshold )
       : UnconstrainedTriangulation( DefaultEliminationSequenceStrategy(),
                                     DefaultJunctionTreeStrategy(),
                                     minimality )

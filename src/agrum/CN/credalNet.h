@@ -49,6 +49,7 @@
 
 #include <utility>  /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
+#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
@@ -68,7 +69,7 @@ namespace gum {
      * @class CredalNet credalNet.h <agrum/CN/credalNet.h>
      * @brief Class template representing a Credal Network.
      * @ingroup cn_group
-     * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+     * @tparam GUM_SCALAR A floating type ( float, GUM_SCALAR, long GUM_SCALAR ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
     template <typename GUM_SCALAR>
@@ -435,7 +436,7 @@ namespace gum {
 
       // PH void vacants ( int &result ) const;
       // PH void notVacants ( int &result ) const;
-      // PH void averageVertices ( double &result ) const;
+      // PH void averageVertices ( GUM_SCALAR &result ) const;
 
       /**
        * @return Returns the string representation of this CredalNet, i.e. it's
@@ -505,19 +506,19 @@ namespace gum {
        * @return Returns a constant reference to the lowest perturbation of the
        * BayesNet provided as input for this CredalNet.
        */
-      const double& epsilonMin() const;
+      const GUM_SCALAR& epsilonMin() const;
 
       /**
        * @return Returns a constant reference to the highest perturbation of the
        * BayesNet provided as input for this CredalNet.
        */
-      const double& epsilonMax() const;
+      const GUM_SCALAR& epsilonMax() const;
 
       /**
        * @return Returns a constant reference to the average perturbation of the
        * BayesNet provided as input for this CredalNet.
        */
-      const double& epsilonMean() const;
+      const GUM_SCALAR& epsilonMean() const;
 
       /**
        * @return Returns \c TRUE if this CredalNet is separately and interval
@@ -563,39 +564,39 @@ namespace gum {
       protected:
       private:
       /** @brief 1e6 by default, used by __fracC as precision. */
-      double __precisionC;  // = 1e6;
+      GUM_SCALAR __precisionC;  // = 1e6;
       /** @brief 5 by default, used by __fracC as number of decimals. */
-      double __deltaC;  // = 5;
+      GUM_SCALAR __deltaC;  // = 5;
 
       /** @brief The lowest perturbation of the BayesNet provided as input for
        * this
        * CredalNet. */
-      double __epsilonMin;
+      GUM_SCALAR __epsilonMin;
       /** @brief The highest perturbation of the BayesNet provided as input for
        * this
        * CredalNet. */
-      double __epsilonMax;
+      GUM_SCALAR __epsilonMax;
       /** @brief The average perturbation of the BayesNet provided as input for
        * this
        * CredalNet. */
-      double __epsilonMoy;
+      GUM_SCALAR __epsilonMoy;
 
       /** @brief Value under which a decimal number is considered to be zero
        * when
        * computing redundant vertices. */
-      double __epsRedund;  //= 1e-6;
+      GUM_SCALAR __epsRedund;  //= 1e-6;
 
       /** @brief Value under which a decimal number is considered to be zero
        * when
        * using __farey. */
-      double __epsF;  // = 1e-6;
+      GUM_SCALAR __epsF;  // = 1e-6;
       /** @brief Highest possible denominator allowed when using __farey. A
        * value too
        * high may lead to lrs being unable to find vertices. */
-      double __denMax;  // = 1e6; // beware LRS
+      GUM_SCALAR __denMax;  // = 1e6; // beware LRS
 
       /** @brief Precision used by __frac. */
-      int __precision;  // = 1e6; // beware LRS
+      GUM_SCALAR __precision;  // = 1e6; // beware LRS
 
       /** @brief \c TRUE if this CredalNet is separately and interval specified,
        * \c

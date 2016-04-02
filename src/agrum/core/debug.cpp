@@ -45,26 +45,20 @@ namespace gum {
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& __sizeof() {
-#if defined( _MT ) || defined( __MT__ ) || defined( _PTHREAD )
-#warning "This function is not thread-safe ! (but only in debug mode)"
-#endif
+	// This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* sizeOf = new DEBUG_MAP();
       return *sizeOf;
     }
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& __creation() {
-#if defined( _MT ) || defined( __MT__ ) || defined( _PTHREAD )
-#warning "This function is not thread-safe ! (but only in debug mode)"
-#endif
+	// @todo This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* creation = new DEBUG_MAP();
       return *creation;
     }
 
     static DEBUG_MAP& __deletion() {
-#if defined( _MT ) || defined( __MT__ ) || defined( _PTHREAD )
-#warning "This function is not thread-safe ! (but only in debug mode)"
-#endif
+	// @todo This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* deletion = new DEBUG_MAP();
       return *deletion;
     }

@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include <iostream>
 #include <string>
+#include <cmath>
+
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -95,9 +97,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( proba_1.domainSize(), (gum::Size)2 );
         gum::Instantiation inst_1( proba_1 );
         inst_1.setFirst();
-        TS_ASSERT( abs( ( proba_1[inst_1] - 0.2 ) ) < 0.001 );
+        TS_ASSERT( abs( ( proba_1[inst_1] - 0.2f ) ) < 0.001f );
         inst_1.setLast();
-        TS_ASSERT( abs( ( proba_1[inst_1] - 0.8 ) ) < 0.001 );
+        TS_ASSERT( abs( ( proba_1[inst_1] - 0.8f ) ) < 0.001f );
 
         const gum::DiscreteVariable& var_2 = net->variable( node_2 );
         TS_ASSERT_EQUALS( var_2.name(), "n2" );
@@ -106,9 +108,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( proba_2.domainSize(), (gum::Size)2 );
         gum::Instantiation inst_2( proba_2 );
         inst_2.setFirst();
-        TS_ASSERT( abs( ( proba_2[inst_2] - 0.3 ) ) < 0.001 );
+        TS_ASSERT( abs( ( proba_2[inst_2] - 0.3f ) ) < 0.001f );
         inst_2.setLast();
-        TS_ASSERT( abs( ( proba_2[inst_2] - 0.7 ) ) < 0.001 );
+        TS_ASSERT( abs( ( proba_2[inst_2] - 0.7f ) ) < 0.001f );
 
         delete net;
       }
@@ -220,7 +222,7 @@ namespace gum_tests {
       // It's parent
       TS_ASSERT( idMap.exists( "LVFAILURE" ) );
 
-      if ( idMap.exists( "HISTORY" ) and idMap.exists( "LVFAILURE" ) ) {
+      if ( idMap.exists( "HISTORY" ) && idMap.exists( "LVFAILURE" ) ) {
         const gum::DiscreteVariable& history =
             net->variable( idMap["HISTORY"] );
         TS_ASSERT_EQUALS( history.domainSize(), (gum::Size)2 );
@@ -236,19 +238,19 @@ namespace gum_tests {
         // (TRUE | TRUE)
         historyInst.chgVal( history, 0 );
         historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 0 );
-        TS_ASSERT( abs( historyCPT[historyInst] - 0.9 ) < 0.0001 );
+        TS_ASSERT( abs( historyCPT[historyInst] - 0.9f ) < 0.0001f );
         // (FALSE | TRUE)
         historyInst.chgVal( history, 1 );
         historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 0 );
-        TS_ASSERT( abs( historyCPT[historyInst] - 0.1 ) < 0.0001 );
+        TS_ASSERT( abs( historyCPT[historyInst] - 0.1f ) < 0.0001f );
         // (TRUE | FALSE)
         historyInst.chgVal( history, 0 );
         historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 1 );
-        TS_ASSERT( abs( historyCPT[historyInst] - 0.01 ) < 0.0001 );
+        TS_ASSERT( abs( historyCPT[historyInst] - 0.01f ) < 0.0001f );
         // (FALSE | FALSE)
         historyInst.chgVal( history, 1 );
         historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 1 );
-        TS_ASSERT( abs( historyCPT[historyInst] - 0.99 ) < 0.0001 );
+        TS_ASSERT( abs( historyCPT[historyInst] - 0.99f ) < 0.0001f );
       }
 
       // The node wich we'll test
@@ -256,7 +258,7 @@ namespace gum_tests {
       // It's Children
       TS_ASSERT( idMap.exists( "HRBP" ) );
 
-      if ( idMap.exists( "ERRLOWOUTPUT" ) and idMap.exists( "HRBP" ) ) {
+      if ( idMap.exists( "ERRLOWOUTPUT" ) && idMap.exists( "HRBP" ) ) {
         const gum::DiscreteVariable& errlowoutput =
             net->variable( idMap["ERRLOWOUTPUT"] );
         TS_ASSERT_EQUALS( errlowoutput.domainSize(), (gum::Size)2 );
@@ -270,9 +272,9 @@ namespace gum_tests {
         TS_ASSERT( errlowoutputCPT.contains( errlowoutput ) );
         gum::Instantiation errlowoutputInst( errlowoutputCPT );
         errlowoutputInst.chgVal( errlowoutput, 0 );
-        TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.05 ) < 0.001 );
+        TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.05f ) < 0.001f );
         errlowoutputInst.chgVal( errlowoutput, 1 );
-        TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.95 ) < 0.001 );
+        TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.95f ) < 0.001f );
       }
 
       // The nide wich we'll test
@@ -281,7 +283,7 @@ namespace gum_tests {
       TS_ASSERT( idMap.exists( "HYPOVOLEMIA" ) );
       TS_ASSERT( idMap.exists( "LVFAILURE" ) );
 
-      if ( idMap.exists( "LVEDVOLUME" ) and idMap.exists( "HYPOVOLEMIA" ) and
+      if ( idMap.exists( "LVEDVOLUME" ) && idMap.exists( "HYPOVOLEMIA" ) &&
            idMap.exists( "LVFAILURE" ) ) {
         const gum::DiscreteVariable& lvedvolume =
             net->variable( idMap["LVEDVOLUME"] );
@@ -303,42 +305,42 @@ namespace gum_tests {
         var_inst << lvedvolume;
         inst.chgVal( hypovolemia, 0 );
         inst.chgVal( lvfailure, 0 );
-        float array_1[] = {0.95, 0.04, 0.01};
+        float array_1[] = {0.95f , 0.04f , 0.01f };
         size_t i = 0;
 
         for ( inst.setFirstIn( var_inst ); !inst.end();
               inst.incIn( var_inst ), ++i ) {
-          TS_ASSERT_DELTA( cpt[inst], array_1[i], 0.001 );
+          TS_ASSERT_DELTA( cpt[inst], array_1[i], 0.001f );
         }
 
         inst.chgVal( hypovolemia, 1 );
         inst.chgVal( lvfailure, 0 );
-        float array_2[] = {0.98, 0.01, 0.01};
+        float array_2[] = {0.98f , 0.01f , 0.01f };
         i = 0;
 
         for ( inst.setFirstIn( var_inst ); !inst.end();
               inst.incIn( var_inst ), ++i ) {
-          TS_ASSERT_DELTA( cpt[inst], array_2[i], 0.001 );
+          TS_ASSERT_DELTA( cpt[inst], array_2[i], 0.001f );
         }
 
         inst.chgVal( hypovolemia, 0 );
         inst.chgVal( lvfailure, 1 );
-        float array_3[] = {0.01, 0.09, 0.9};
+        float array_3[] = {0.01f , 0.09f , 0.9f };
         i = 0;
 
         for ( inst.setFirstIn( var_inst ); !inst.end();
               inst.incIn( var_inst ), ++i ) {
-          TS_ASSERT_DELTA( cpt[inst], array_3[i], 0.001 );
+          TS_ASSERT_DELTA( cpt[inst], array_3[i], 0.001f );
         }
 
         inst.chgVal( hypovolemia, 1 );
         inst.chgVal( lvfailure, 1 );
-        float array_4[] = {0.05, 0.9, 0.05};
+        float array_4[] = {0.05f , 0.9f , 0.05f };
         i = 0;
 
         for ( inst.setFirstIn( var_inst ); !inst.end();
               inst.incIn( var_inst ), ++i ) {
-          TS_ASSERT_DELTA( cpt[inst], array_4[i], 0.001 );
+          TS_ASSERT_DELTA( cpt[inst], array_4[i], 0.001f );
         }
       }
 
@@ -475,13 +477,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
       if ( net ) delete net;
-    }
-
-    private:
-    float abs( float d ) {
-      if ( d < 0 ) return ( d * (float)-1 );
-
-      return d;
     }
   };
 }

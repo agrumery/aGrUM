@@ -147,7 +147,7 @@ namespace gum {
         p = strtok( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back( atof( p ) );
+          values.push_back( GUM_SCALAR(atof( p )) );
           p = strtok( nullptr, " " );
         }  // end of : line
 
@@ -290,7 +290,7 @@ namespace gum {
         p = strtok( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back( atof( p ) );
+          values.push_back( GUM_SCALAR(atof( p ) ));
           p = strtok( nullptr, " " );
         }  // end of : line
 
@@ -1028,11 +1028,11 @@ namespace gum {
         GUM_SCALAR delta;
 
         /// int tId = getThreadNumber();
-        auto nsize = _marginalMin.size();
+        int nsize = _marginalMin.size();
 
 #pragma omp for
 
-        for ( Size i = 0; i < nsize; i++ ) {
+        for ( int i = 0; i < nsize; i++ ) {
           auto dSize = _marginalMin[i].size();
 
           for ( Size j = 0; j < dSize; j++ ) {

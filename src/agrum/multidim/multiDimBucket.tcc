@@ -430,7 +430,7 @@ namespace gum {
     try {
       __allVariables.insert( var );
       __allVarsInst.add( *var );
-    } catch ( DuplicateElement& e ) {
+    } catch ( DuplicateElement& ) {
       // Nothing to do then!
     }
   }

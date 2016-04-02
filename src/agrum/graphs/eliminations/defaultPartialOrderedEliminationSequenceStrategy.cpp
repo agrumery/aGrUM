@@ -139,7 +139,7 @@ namespace gum {
         __log_modalities.resize( __graph->sizeNodes() / 2 );
 
         for ( const auto node : graph->nodes() )
-          __log_modalities.insert( node, std::log( ( *modal )[node] ) );
+          __log_modalities.insert( node, std::logf( float(( *modal )[node] ) ));
 
         // creation du simplicial set
         __simplicial_set = new SimplicialSet( __graph,
@@ -180,18 +180,20 @@ namespace gum {
     float min_score = 0;
     NodeId best_node = 0;
 
-    for ( const auto node : __nodeset )
-      try {
-        float score = possibleNodes.priority( node );
+	for (const auto node : __nodeset) {
+		try {
+			float score = possibleNodes.priority(node);
 
-        if ( !found || ( score < min_score ) ) {
-          found = true;
-          min_score = score;
-          best_node = node;
-        }
-      } catch ( NotFound& ) {
-		  found = false;
-      }
+			if (!found || (score < min_score)) {
+				found = true;
+				min_score = score;
+				best_node = node;
+			}
+		}
+		catch (NotFound&) {
+			found = false;
+		}
+	}
 
     if ( !found ) {
       GUM_ERROR( NotFound, "no possible node to eliminate" );

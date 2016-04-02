@@ -258,11 +258,11 @@ namespace gum {
 #pragma omp parallel
       {
         int threadId = getThreadNumber();
-        auto nsize = _workingSet[threadId]->size();
+        long nsize = long( _workingSet[threadId]->size());
 
 #pragma omp for
 
-        for ( Size i = 0; i < nsize; i++ ) {
+        for ( long i = 0; i < nsize; i++ ) {
           Size dSize = _l_marginalMin[threadId][i].size();
 
           for ( Size j = 0; j < dSize; j++ ) {
@@ -291,11 +291,11 @@ namespace gum {
         GUM_SCALAR delta;
 
         int tId = getThreadNumber();
-        Size nsize = _workingSet[tId]->size();
+        long nsize = long(_workingSet[tId]->size());
 
 #pragma omp for
 
-        for ( Size i = 0; i < nsize; i++ ) {
+        for ( long i = 0; i < nsize; i++ ) {
           Size dSize = _l_marginalMin[tId][i].size();
 
           for ( Size j = 0; j < dSize; j++ ) {
@@ -330,11 +330,11 @@ namespace gum {
 #pragma omp parallel
       {
         int threadId = getThreadNumber();
-        Size nsize = _workingSet[threadId]->size();
+        long nsize = long(_workingSet[threadId]->size());
 
 #pragma omp for
 
-        for ( Size i = 0; i < nsize; i++ ) {
+        for ( long i = 0; i < nsize; i++ ) {
           Size dSize = _l_marginalMin[threadId][i].size();
 
           for ( Size j = 0; j < dSize; j++ ) {
@@ -362,11 +362,11 @@ namespace gum {
 #pragma omp parallel
       {
         int threadId = getThreadNumber();
-        Size nsize = _workingSet[threadId]->size();
+        long nsize = long(_workingSet[threadId]->size());
 
 #pragma omp for
 
-        for ( Size i = 0; i < nsize; i++ ) {
+        for ( long i = 0; i < nsize; i++ ) {
           Size tsize = _l_marginalMin.size();
           Size dSize = _l_marginalMin[threadId][i].size();
 
@@ -402,11 +402,11 @@ namespace gum {
           int threadId = getThreadNumber();
 
           if ( !this->_l_modal[threadId].empty() ) {
-            Size nsize = _workingSet[threadId]->size();
+            long nsize = long(_workingSet[threadId]->size());
 
 #pragma omp for
 
-            for ( Size i = 0; i < nsize; i++ ) {
+            for ( long i = 0; i < nsize; i++ ) {
               std::string var_name =
                   _workingSet[threadId]->variable( i ).name();
               auto delim = var_name.find_first_of( "_" );
@@ -442,11 +442,11 @@ namespace gum {
         int threadId = getThreadNumber();
 
         if ( !this->_l_modal[threadId].empty() ) {
-          Size nsize = _workingSet[threadId]->size();
+          long nsize = long(_workingSet[threadId]->size());
 
 #pragma omp for
 
-          for ( Size i = 0; i < nsize; i++ ) {
+          for ( long i = 0; i < nsize; i++ ) {
             std::string var_name = _workingSet[threadId]->variable( i ).name();
             auto delim = var_name.find_first_of( "_" );
             std::string time_step =
@@ -473,10 +473,10 @@ namespace gum {
     void MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_optFusion() {
       typedef std::vector<bool> dBN;
 
-      Size nsize = _workingSet[0]->size();
+      long nsize = long(_workingSet[0]->size());
 
       // no parallel insert in hash-tables (OptBN)
-      for ( Size i = 0; i < nsize; i++ ) {
+      for ( long i = 0; i < nsize; i++ ) {
 
         // we don't store anything for observed variables
         if ( __infE::_evidence.exists( i ) ) continue;

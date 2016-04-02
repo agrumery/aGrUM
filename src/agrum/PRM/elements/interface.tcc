@@ -36,7 +36,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     Interface<GUM_SCALAR>::Interface( const std::string& name )
         : ClassElementContainer<GUM_SCALAR>( name )
-        , __super( 0 ) {
+        , __superInterface( 0 ) {
       GUM_CONSTRUCTOR( Interface );
     }
 
@@ -45,7 +45,7 @@ namespace gum {
                                       Interface<GUM_SCALAR>& super,
                                       bool delayInheritance )
         : ClassElementContainer<GUM_SCALAR>( name )
-        , __super( &super ) {
+        , __superInterface( &super ) {
       GUM_CONSTRUCTOR( Interface );
       if ( not delayInheritance ) {
         __inheritInterface( super );
@@ -56,7 +56,7 @@ namespace gum {
     Interface<GUM_SCALAR>::Interface( const Interface<GUM_SCALAR>& source )
         : ClassElementContainer<GUM_SCALAR>( source.name() )
         , __dag( source.__dag )
-        , __super( source.__super ) {
+        , __superInterface( source.__superInterface ) {
       GUM_CONS_CPY( Interface );
       GUM_ERROR( FatalError, "don't copy an interface" );
     }
@@ -72,8 +72,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Interface<GUM_SCALAR>::inheritInterface() {
-      if (__super != nullptr) {
-        __inheritInterface( *__super );
+      if (__superInterface != nullptr) {
+        __inheritInterface( *__superInterface );
       }
     }
 
@@ -318,7 +318,7 @@ namespace gum {
           while ( current != 0 ) {
             if ( current == &( cec ) ) return true;
 
-            current = current->__super;
+            current = current->__superInterface;
           }
 
           return false;
@@ -377,16 +377,16 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Interface<GUM_SCALAR>& Interface<GUM_SCALAR>::super() {
-      if ( __super )
-        return *__super;
+      if ( __superInterface )
+        return *__superInterface;
       else
         GUM_ERROR( NotFound, "this Interface is not a sub interface" );
     }
 
     template <typename GUM_SCALAR>
     INLINE const Interface<GUM_SCALAR>& Interface<GUM_SCALAR>::super() const {
-      if ( __super )
-        return *__super;
+      if ( __superInterface )
+        return *__superInterface;
       else
         GUM_ERROR( NotFound, "this Interface is not a sub interface" );
     }
@@ -533,7 +533,7 @@ namespace gum {
             }
           }
 
-          if ( __super and __super->isOutputNode( elt ) ) {
+          if ( __superInterface and __superInterface->isOutputNode( elt ) ) {
             return true;
           }
 

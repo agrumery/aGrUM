@@ -80,7 +80,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the state of source is not NONE or
      *                            NETWORK.
      */
-    BayesNetFactory( const BayesNetFactory<GUM_SCALAR>& source );
+    BayesNetFactory( const BayesNetFactory<GUM_SCALAR>& source ) ;
 
     /**
      * @brief Destructor.
@@ -104,7 +104,7 @@ namespace gum {
      * @throw OperationNotAllowed Raise if the state of the factory is different
      *                            than NONE.
      */
-    BayesNet<GUM_SCALAR>* bayesNet();
+    BayesNet<GUM_SCALAR>* bayesNet() ;
 
     /** short-cut accessor for a DiscreveVariable in the BN */
     const DiscreteVariable& varInBN( NodeId id );
@@ -114,7 +114,7 @@ namespace gum {
 
     /// Returns the NodeId of a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    NodeId variableId( const std::string& name ) const;
+    NodeId variableId( const std::string& name ) const ;
 
     /// Returns a constant reference on a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.

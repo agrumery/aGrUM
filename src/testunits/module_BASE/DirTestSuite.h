@@ -23,7 +23,12 @@
 
 #include <iostream>
 #include <string>
+
+#ifdef HAVE_DIRENT_H
 #include <dirent.h>
+#else
+#include <agrum/core/mvsc/dirent.h>
+#endif //HAVE_DIRENT_H
 
 #include <agrum/core/utils.h>
 namespace gum_tests {

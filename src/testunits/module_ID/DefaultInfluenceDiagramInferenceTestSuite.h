@@ -81,14 +81,14 @@ namespace gum_tests {
       fillTopoOilWildcater( id, idList );
 
       try {
-        id.cpt( idList[3] ).populate( {0.5, 0.3, 0.2} );
+        id.cpt( idList[3] ).populate( {0.5f, 0.3f, 0.2f} );
         id.cpt( idList[2] )
             .populate(  // clang-format off
-                              {0.6, 0.3, 0.1, 0,
+                              {0.6f, 0.3f, 0.1f, 0,
                                0  , 0  , 0  , 1,
-                               0.3, 0.4, 0.3, 0,
+                               0.3f, 0.4f, 0.3f, 0,
                                0  , 0  , 0  , 1,
-                               0.1, 0.4, 0.5, 0,
+                               0.1f, 0.4f, 0.5f, 0,
                                0  , 0  , 0  , 1}); //clang-format on
         id.utility( idList[4] ).populate({-10, 0});
         id.utility( idList[5] ).populate({-70, 0, 50, 0, 200, 0});
@@ -148,14 +148,14 @@ namespace gum_tests {
       fillTopoDecAsia( id, idList );
 
       try {
-        id.cpt( idList[9] ).populate({0.01, 0.99});
-        id.cpt( idList[4] ).populate({0.1, 0.9, 0.01, 0.99});
-        id.cpt( idList[3] ).populate({0.6, 0.4, 0.3, 0.7});
-        id.cpt( idList[2] ).populate({0.5, 0.5});
-        id.cpt( idList[6] ).populate({0.9, 0.1, 0.7, 0.3, 0.8, 0.2, 0.1, 0.9});
-        id.cpt( idList[8] ).populate({0.05, 0.95, 0.01, 0.99});
+        id.cpt( idList[9] ).populate({0.01f, 0.99f});
+        id.cpt( idList[4] ).populate({0.1f, 0.9f, 0.01f, 0.99f});
+        id.cpt( idList[3] ).populate({0.6f, 0.4f, 0.3f, 0.7f});
+        id.cpt( idList[2] ).populate({0.5f, 0.5f});
+        id.cpt( idList[6] ).populate({0.9f, 0.1f, 0.7f, 0.3f, 0.8f, 0.2f, 0.1f, 0.9f});
+        id.cpt( idList[8] ).populate({0.05f, 0.95f, 0.01f, 0.99f});
         id.cpt( idList[5] ).populate({1, 0, 1, 0, 1, 0, 0, 1});
-        id.cpt( idList[7] ).populate({0.98, 0.02, 0.5, 0.5, 0.05, 0.95, 0.5, 0.5});
+        id.cpt( idList[7] ).populate({0.98f, 0.02f, 0.5f, 0.5f, 0.05f, 0.95f, 0.5f, 0.5f});
 
         id.utility( idList[10] ).populate({180, 2, 120, 4, 160, 0, 15, 40});
         id.utility( idList[11] ).populate({0, 10, 1, 10});
@@ -431,8 +431,8 @@ namespace gum_tests {
       evidence1->erase( topology->variable( idList[3] ) );
       evidence2->add( topology->variable( idList[3] ) );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( evidence1->populate( {0.2, 0.3, 0.1, 0.4} ) );
-      evidence2->populate( {0.2, 0.3, 0.5} );
+      TS_GUM_ASSERT_THROWS_NOTHING( evidence1->populate( {0.2f, 0.3f, 0.1f, 0.4f} ) );
+      evidence2->populate( {0.2f, 0.3f, 0.5f} );
 
       TS_GUM_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
 

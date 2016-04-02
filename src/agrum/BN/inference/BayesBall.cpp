@@ -88,7 +88,7 @@ namespace gum {
 
         const bool is_hard_evidence = hardEvidence.exists( node );
         const bool is_evidence =
-            is_hard_evidence or softEvidence.exists( node );
+            is_hard_evidence || softEvidence.exists( node );
 
         if ( is_evidence && !marks[node].first ) {
           marks[node].first = true;

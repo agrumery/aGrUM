@@ -86,8 +86,8 @@ namespace gum {
     /// default constructor: initialize the triangulation for an empty graph
 
     explicit DefaultTriangulation( bool minimality = false,
-                                   double theRatio = GUM_QUASI_RATIO,
-                                   double theThreshold = GUM_WEIGHT_THRESHOLD );
+                                   float theRatio = GUM_QUASI_RATIO,
+                                   float theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
 

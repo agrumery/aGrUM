@@ -67,16 +67,16 @@ namespace gum {
      * @param time The time.
      */
     virtual void whenProgress( const void* src,
-                               Size pourcent,
-                               double error,
-                               double time ) = 0;
+                               const Size pourcent,
+                               const double error,
+                               const double time ) = 0;
 
     /**
      * @brief When it stops.
      * @param src The signal source.
      * @param message A message.
      */
-    virtual void whenStop( const void* src, std::string message ) = 0;
+    virtual void whenStop( const void* src, const std::string message ) = 0;
 
     protected:
     /**

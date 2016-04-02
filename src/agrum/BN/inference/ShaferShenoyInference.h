@@ -168,7 +168,7 @@ namespace gum {
     void __buildCliquesTables();
 
     /// Add the evidences to the clique's table
-    void __addEvidences();
+    //void __addEvidences();
 
     /// Starting collect w.r.t. a clique
     void __collectFromClique( NodeId source );

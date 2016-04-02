@@ -1,6 +1,7 @@
 #include <time.h>
 #include <windows.h> 
-
+#ifndef GUM_TIME_H
+#define GUM_TIME_H
 const __int64 GUM_DELTA_EPOCH_IN_MICROSECS= 11644473600000000;
 
 int gettimeofday(struct timeval *tv/*in*/, void *tz/*in*/)
@@ -33,3 +34,4 @@ int gettimeofday(struct timeval *tv/*in*/, void *tz/*in*/)
 
   return 0;
 }
+#endif //GUM_TIME_H

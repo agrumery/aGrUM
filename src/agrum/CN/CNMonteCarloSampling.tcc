@@ -70,7 +70,7 @@ namespace gum {
         do {
           eps = 0;
 
-          auto iters = ( remaining < psize ) ? remaining : psize;
+          int iters = ( remaining < psize ) ? remaining : psize;
 
 #pragma omp parallel for
 
@@ -99,7 +99,7 @@ namespace gum {
 // less overheads with high periodSize
 #pragma omp parallel for
 
-          for ( decltype( psize ) iter = 0; iter < psize; iter++ ) {
+          for ( int iter = 0; iter < int(psize); iter++ ) {
             __threadInference();
             __threadUpdate();
           }  // end of : parallel periodSize

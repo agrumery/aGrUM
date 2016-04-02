@@ -82,7 +82,7 @@ namespace gum {
       }
 
       Instantiation inst( *( copy->__formulas ) ), jnst( *__formulas );
-      for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+      for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
             inst.inc(), jnst.inc() ) {
         copy->__formulas->set( inst, __formulas->get( jnst ) );
       }
@@ -109,25 +109,25 @@ namespace gum {
 
         Instantiation inst( __formulas ), jnst( src.__formulas );
 
-        for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+        for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
               inst.inc(), jnst.inc() ) {
           __formulas->set( inst, src.__formulas->get( jnst ) );
         }
 
-        GUM_ASSERT( inst.end() and jnst.end() );
+        GUM_ASSERT( inst.end() && jnst.end() );
 
       } else {
 
         Instantiation inst( __formulas ), jnst( source.cpf() );
 
-        for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+        for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
               inst.inc(), jnst.inc() ) {
 
           auto val = std::to_string( source.cpf().get( jnst ) );
           __formulas->set( inst, val );
         }
 
-        GUM_ASSERT( inst.end() and jnst.end() );
+        GUM_ASSERT( inst.end() && jnst.end() );
       }
 
       if ( __cpf ) {
@@ -136,7 +136,7 @@ namespace gum {
       }
 
       GUM_ASSERT( __formulas->contains( __type->variable() ) );
-      GUM_ASSERT( not __formulas->contains( source.type().variable() ) );
+      GUM_ASSERT(!__formulas->contains( source.type().variable() ) );
     }
 
     template <typename GUM_SCALAR>
@@ -209,7 +209,7 @@ namespace gum {
       DiscreteVariable& cast_var = cast->type().variable();
       Instantiation inst( cast->cpf() );
 
-      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+      for ( inst.setFirst();!inst.end(); inst.inc() ) {
         if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
           cast->cpf().set( inst, 1 );
         } else {
@@ -249,7 +249,7 @@ namespace gum {
 
       Instantiation inst( __formulas );
 
-      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
         auto my_pos = inst.pos( subtype.variable() );
         if ( subtype.label_map()[my_pos] == inst.pos( type().variable() ) ) {
           __formulas->set( inst, "1" );
@@ -296,7 +296,7 @@ namespace gum {
         Instantiation inst( __formulas );
         Instantiation jnst( __cpf );
 
-        for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+        for ( inst.begin(), jnst.begin(); !( inst.end() ||jnst.end() );
               inst.inc(), jnst.inc() ) {
 
           // With CPT defined using rules, empty values can appear
@@ -314,7 +314,7 @@ namespace gum {
           __cpf->set( jnst, f.result() );
         }
 
-        GUM_ASSERT( inst.end() and jnst.end() );
+        GUM_ASSERT( inst.end() && jnst.end() );
 
       } catch ( Exception& e ) {
         GUM_ERROR( NotFound, "undefined value in cpt" );
@@ -347,7 +347,7 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed,
                    "Cannot swap types with difference domain size" );
       }
-      if ( not __formulas->contains( old_type.variable() ) ) {
+      if (!__formulas->contains( old_type.variable() ) ) {
         GUM_ERROR( NotFound, "could not find variable " + old_type.name() );
       }
 
@@ -365,7 +365,7 @@ namespace gum {
 
       Instantiation inst( __formulas ), jnst( old );
 
-      for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+      for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
             inst.inc(), jnst.inc() ) {
         __formulas->set( inst, old->get( jnst ) );
       }
@@ -377,9 +377,9 @@ namespace gum {
         __cpf = 0;
       }
 
-      GUM_ASSERT( inst.end() and jnst.end() );
+      GUM_ASSERT( inst.end() && jnst.end() );
       GUM_ASSERT( __formulas->contains( __type->variable() ) );
-      GUM_ASSERT( not __formulas->contains( new_type.variable() ) );
+      GUM_ASSERT(!__formulas->contains( new_type.variable() ) );
       GUM_ASSERT( __formulas->contains( new_type.variable() ) );
     }
 
@@ -409,7 +409,7 @@ namespace gum {
 
       Instantiation inst( __formulas ), jnst( old );
 
-      for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+      for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
             inst.inc(), jnst.inc() ) {
         __formulas->set( inst, old->get( jnst ) );
       }
@@ -424,7 +424,7 @@ namespace gum {
       }
 
       GUM_ASSERT( __formulas->contains( __type->variable() ) );
-      GUM_ASSERT( inst.end() and jnst.end() );
+      GUM_ASSERT( inst.end() && jnst.end() );
     }
 
   } /* namespace prm */

@@ -82,10 +82,11 @@ namespace gum {
     if ( __parents != 0 ) delete __parents;
 
     if ( __impl != 0 ) {
-      GUM_ERROR( FatalError,
-                 "Implementation defined for a variable but not used. "
+      //@todo better than throwing an exception from inside a destructor but still ...
+      std::cerr<<"[BN factory] Implementation defined for a variable but not used. "
                  "You should call endVariableDeclaration() before "
-                 "deleting me." );
+                 "deleting me."<<std::endl;
+      exit(1000);
     }
   }
 

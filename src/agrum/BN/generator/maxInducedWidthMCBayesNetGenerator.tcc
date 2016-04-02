@@ -63,7 +63,7 @@ namespace gum {
                                           Idx iteration,
                                           Idx p,
                                           Idx q )
-      : MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>(
+      : MCBayesNetGenerator<typename GUM_SCALAR, class ICPTGenerator<GUM_SCALAR>,class ICPTDisturber<GUM_SCALAR>>(
             bayesNet, iteration, p, q ) {
     _maxlog10InducedWidth = maxInducedWidth;
     GUM_CONSTRUCTOR( MaxInducedWidthMCBayesNetGenerator );

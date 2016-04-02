@@ -26,7 +26,7 @@
 
 namespace gum {
 
-  ALWAYS_INLINE float GammaLog2::gammaLog2( float x ) const {
+  ALWAYS_INLINE double GammaLog2::gammaLog2( double x ) const {
     if ( x <= 0 )
       GUM_ERROR( OutOfBounds,
                  "log2(gamma()) should be called with a positive argument" );
@@ -34,23 +34,23 @@ namespace gum {
     // if x is small, use precomputed values
     if ( x < 50 ) {
       if ( __requires_precision ) {
-        unsigned int index = x * 100;
+        unsigned int index = int(x * 100);
         return __small_values[index] +
                ( __small_values[index + 1] - __small_values[index] ) *
-                   ( x * 100 - index );
+                   double( x * 100 - index );
       } else {
-        unsigned int index = x * 100 + 0.5;
+        unsigned int index = int(x * 100 + 0.5);
         return __small_values[index];
       }
     }
 
     // returns the approximation by the stirling formula
-    return ( __log_sqrt_2pi + ( x - 0.5f ) * logf( x ) - x +
-             logf( 1.0f + 1.0f / ( 12 * x ) ) ) *
+    return ( __log_sqrt_2pi + ( x - 0.5f ) * log( x ) - x +
+             log( 1.0 + 1.0 / ( 12 * x ) ) ) *
            __1log2;
   }
 
-  ALWAYS_INLINE float GammaLog2::operator()( float x ) const {
+  ALWAYS_INLINE double GammaLog2::operator()( double x ) const {
     return gammaLog2( x );
   }
 

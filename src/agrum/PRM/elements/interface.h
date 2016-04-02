@@ -331,7 +331,7 @@ namespace gum {
       /// elements defined in
       ///        this.
       /// Note that this is first searched for gum::ClassElement<GUM_SCALAR>.
-      Interface* __super;
+      Interface* __superInterface;
 
       /// The set of Class<GUM_SCALAR> which implements this Interface.
       Set<Class<GUM_SCALAR>*> __implementations;

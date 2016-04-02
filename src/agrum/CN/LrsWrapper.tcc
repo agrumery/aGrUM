@@ -328,7 +328,7 @@ namespace gum {
       std::vector<GUM_SCALAR> vertex( __card );
 
       for ( decltype( vtx ) i = 1; i <= vtx; i++ ) {
-        vertex[( i - 1 ) % __card] = ( Num[i - 1] * 1.0 / Den[i - 1] );
+        vertex[( i - 1 ) % __card] = GUM_SCALAR( Num[i - 1] * 1.0 / Den[i - 1] );
 
         if ( i % __card == 0 ) {
           __output.push_back( vertex );

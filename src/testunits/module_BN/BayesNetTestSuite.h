@@ -71,29 +71,29 @@ namespace gum_tests {
 
       try {
 
-        bn.cpt( idList[0] ).fillWith( {0.2, 0.8} );
+        bn.cpt( idList[0] ).fillWith( {0.2f, 0.8f} );
 
-        bn.cpt( idList[1] ).fillWith( {0.3, 0.7} );
+        bn.cpt( idList[1] ).fillWith( {0.3f, 0.7f} );
 
-        bn.cpt( idList[2] ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+        bn.cpt( idList[2] ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
 
         bn.cpt( idList[3] )
             .fillWith(  // clang-format off
-                           {0.4, 0.6,
-                            0.5, 0.5,
-                            0.5, 0.5,
-                            1.0, 0.0} );  // clang-format on
+                           {0.4f, 0.6f,
+                            0.5f, 0.5f,
+                            0.5f, 0.5f,
+                            1.0f, 0.0f} );  // clang-format on
 
         bn.cpt( idList[4] )
             .fillWith(  // clang-format off
-                      {0.3,0.6,0.1,
-                       0.5,0.5,0.0,
-                       0.5,0.5,0.0,
-                       1.0,0.0,0.0,
-                       0.4,0.6,0.0,
-                       0.5,0.5,0.0,
-                       0.5,0.5,0.0,
-                       0.0,0.0,1.0} );  // clang-format on
+                      {0.3f,0.6f,0.1f,
+                       0.5f,0.5f,0.0f,
+                       0.5f,0.5f,0.0f,
+                       1.0f,0.0f,0.0f,
+                       0.4f,0.6f,0.0f,
+                       0.5f,0.5f,0.0f,
+                       0.5f,0.5f,0.0f,
+                       0.0f,0.0f,1.0f} );  // clang-format on
 
       } catch ( gum::Exception& e ) {
         std::cerr << std::endl
@@ -753,7 +753,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( bn.reverseArc( gum::Arc( 3, 5 ) ), gum::InvalidArc );
       TS_ASSERT_THROWS( bn.reverseArc( gum::Arc( 2, 4 ) ), gum::InvalidArc );
 
-      float epsilon = 1e-5;
+      float epsilon = 1e-5f;
       unsigned int j;
 
       for ( j = 0, i.setFirst(); !i.end(); i.inc(), ++j ) {

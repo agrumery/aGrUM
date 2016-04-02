@@ -26,7 +26,7 @@
 #ifndef GUM_GAMMA_LOG2_H
 #define GUM_GAMMA_LOG2_H
 
-#define _USE_MATH_DEFINES // for Visual C+°
+#define _USE_MATH_DEFINES // for Visual C++
 #include <cmath>
 
 #include <limits>
@@ -82,7 +82,7 @@ namespace gum {
      * @brief Returns log2 ( gamma (x) ) for x > 0.
      * @throws OutOfBounds Raised if raised if x <= 0.
      */
-    float operator()( float x ) const;
+    double operator()( double x ) const;
 
     /**
      * @brief Sets whether we need more precision for small values.
@@ -98,11 +98,11 @@ namespace gum {
 
     /**
      * @brief Returns log2 ( gamma (x) ) for x >= 0.
-     * @param x A positive float.
+     * @param x A positive double.
      * @return Returns log2 ( gamma (x) ) for x >= 0.
      * @throws OutOfBounds Raised if x <= 0.
      */
-    float gammaLog2( float x ) const;
+    double gammaLog2( double x ) const;
 
     /// @}
 
@@ -111,13 +111,13 @@ namespace gum {
     bool __requires_precision{false};
 
     /// The value of 1 / std::log(2).
-    static constexpr float __1log2{M_LOG2E};
+    static constexpr double __1log2{M_LOG2E};
 
     /// The value of std::log ( std::sqrt(2pi) ).
-    static constexpr float __log_sqrt_2pi{GUM_LOG_SQRT_2PI};
+    static constexpr double __log_sqrt_2pi{GUM_LOG_SQRT_2PI};
 
     /// The 5000 values from 0 to 50 by step of 1/100.
-    static const std::vector<float> __small_values;
+    static const std::vector<double> __small_values;
   };
 
 } /* namespace gum */

@@ -41,10 +41,10 @@ namespace gum_tests {
         : gum::ApproximationSchemeListener( sch )
         , __nbr( 0 )
         , __mess( "" ){};
-    void whenProgress( const void* buffer, gum::Size a, double b, double c ) {
+    void whenProgress( const void* buffer, const gum::Size a, double b, double c ) {
       __nbr++;
     }
-    void whenStop( const void* buffer, std::string s ) { __mess = s; }
+    void whenStop( const void* buffer, const std::string s ) { __mess = s; }
 
     int getNbr() { return __nbr; }
     std::string getMess() { return __mess; }

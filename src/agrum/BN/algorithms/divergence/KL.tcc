@@ -144,16 +144,14 @@ namespace gum {
             vq[vp.label( i )];
             vp[vq.label( i )];
 
-          } catch ( OutOfBounds& e ) {
-
+          } catch ( OutOfBounds& ) {
             GUM_ERROR(
                 OperationNotAllowed,
                 "KL : the 2 BNs are not compatible F(not the same labels for " +
                     vp.name() + ")" );
           }
         }
-      } catch ( NotFound& e ) {
-
+      } catch ( NotFound& ) {
         GUM_ERROR( OperationNotAllowed,
                    "KL : the 2 BNs are not compatible (not the same vars : " +
                        vp.name() + ")" );

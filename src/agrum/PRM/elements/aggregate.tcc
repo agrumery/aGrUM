@@ -183,7 +183,7 @@ namespace gum {
       DiscreteVariable& cast_var = cast->type().variable();
       Instantiation inst( cast->cpf() );
 
-      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
         if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
           cast->cpf().set( inst, 1 );
         } else {

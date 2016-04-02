@@ -65,7 +65,7 @@ namespace gum {
      * @param confidence_proba The confidence probability.
      */
     Chi2( const std::vector<unsigned int>& var_modalities,
-          float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
+          double confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
 
     /**
      * @brief Class destructor.
@@ -93,7 +93,7 @@ namespace gum {
     * @param pair A pair of variables ids.
     * @return Returns the critical values.
     */
-    float criticalValue( const std::pair<unsigned int, unsigned int>& pair );
+    double criticalValue( const std::pair<unsigned long, unsigned int>& pair );
 
     /**
      * @brief Computes the critical value according to the number of degrees of
@@ -102,7 +102,7 @@ namespace gum {
      * @param var2 The second variable id.
      * @return Returns the critical value.
      */
-    float criticalValue( unsigned int var1, unsigned int var2 );
+    double criticalValue( unsigned int var1, unsigned int var2 );
 
     /**
      * @brief Returns the number of degrees of freedom.
@@ -124,7 +124,7 @@ namespace gum {
      * @brief Modifies the confidence probability.
      * @param new_proba The new confidence probability
      */
-    void setConfidenceProba( float new_proba );
+    void setConfidenceProba( double new_proba );
 
     /// @}
 
@@ -133,13 +133,13 @@ namespace gum {
     const std::vector<unsigned int>& __modalities;
 
     /// The confidence probability used for critical values.
-    float __confidence_proba;
+    double __confidence_proba;
 
     /// The domain size of the conditioning nodes.
     unsigned long __conditioning_size;
 
     /// A set of already computed critical values.
-    HashTable<unsigned int, float> __critical_values;
+    HashTable<unsigned long, double> __critical_values;
 
     /**
      * @brief Computes the critical value of a given chi2 test (used by the

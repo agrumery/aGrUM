@@ -35,9 +35,9 @@
 #include <sstream>
 #include <string>
 
+#include <agrum/config.h>
 #include <agrum/BN/io/cnf/CNFWriter.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/config.h>
 #include <agrum/core/approximations/approximationPolicy.h>
 
 namespace gum {

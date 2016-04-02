@@ -54,8 +54,8 @@ namespace gum {
   }
 
   // computes the critical value according to the number of degrees of freedom
-  ALWAYS_INLINE float
-  Chi2::criticalValue( const std::pair<unsigned int, unsigned int>& pair ) {
+  ALWAYS_INLINE double
+  Chi2::criticalValue( const std::pair<unsigned long, unsigned int>& pair ) {
     unsigned long DF = degreesOfFreedom( pair );
 
     // try to see if the threshold is not already in cache
@@ -64,14 +64,14 @@ namespace gum {
     } catch ( const Exception& ) {
       // here we have to compute the threshold of the chi2
       // we use Gary Perlman's algorithm
-      float value = __criticalValue( __confidence_proba, DF );
+      double value = __criticalValue( __confidence_proba, DF );
       __critical_values.insert( DF, value );
       return value;
     }
   }
 
   // computes the critical value according to the number of degrees of freedom
-  ALWAYS_INLINE float Chi2::criticalValue( unsigned int var1,
+  ALWAYS_INLINE double Chi2::criticalValue( unsigned int var1,
                                            unsigned int var2 ) {
     unsigned long DF = degreesOfFreedom( var1, var2 );
 
@@ -81,14 +81,14 @@ namespace gum {
     } catch ( const Exception& ) {
       // here we have to compute the threshold of the chi2
       // we use Gary Perlman's algorithm
-      float value = __criticalValue( __confidence_proba, DF );
+      double value = __criticalValue( __confidence_proba, DF );
       __critical_values.insert( DF, value );
       return value;
     }
   }
 
   // modifies the confidence proba
-  INLINE void Chi2::setConfidenceProba( float new_proba ) {
+  INLINE void Chi2::setConfidenceProba( double new_proba ) {
     // if we did not change the confidence proba, do nothing
     if ( __confidence_proba == new_proba ) return;
 

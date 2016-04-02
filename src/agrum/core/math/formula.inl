@@ -467,13 +467,13 @@ namespace gum {
 
       __push_function( ident );
 
-    } catch ( OperationNotAllowed& error ) {
+    } catch ( OperationNotAllowed&  ) {
 
       try {
 
         __push_variable( ident );
 
-      } catch ( OperationNotAllowed& error ) {
+      } catch ( OperationNotAllowed&  ) {
 
         GUM_ERROR( OperationNotAllowed, "unknown identifier" );
       }
