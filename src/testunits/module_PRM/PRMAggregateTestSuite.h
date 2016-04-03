@@ -43,22 +43,22 @@ namespace gum_tests {
     typedef gum::prm::PRMAggregate<double> PRMAggregate;
     typedef gum::prm::PRMAggregate<double>::AggregateType AggType;
     ClassElementTestSuiteAbstract* __classEltTestSuite;
-    gum::prm::Type<double>* __boolean;
-    gum::prm::Type<double>* __state;
+    gum::prm::PRMType<double>* __boolean;
+    gum::prm::PRMType<double>* __state;
     std::vector<AggType>* __types;
     gum::prm::PRMClass<double>* __class;
 
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract;
-      __boolean = gum::prm::Type<double>::boolean();
+      __boolean = gum::prm::PRMType<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );
       state.addLabel( "NOK" );
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      __state = new gum::prm::Type<double>{*__boolean, map, state};
+      __state = new gum::prm::PRMType<double>{*__boolean, map, state};
       __types = new std::vector<AggType>{AggType::MIN,
                                          AggType::MAX,
                                          AggType::COUNT,
@@ -84,7 +84,7 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
+      gum::prm::PRMType<double> type{var};
       PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
       bool expected = false;
       // Act & Assert
@@ -96,7 +96,7 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
+      gum::prm::PRMType<double> type{var};
       PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
       bool expected = false;
       // Act & Assert
@@ -108,7 +108,7 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
+      gum::prm::PRMType<double> type{var};
       PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
       bool expected = false;
       // Act & Assert
@@ -120,7 +120,7 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
+      gum::prm::PRMType<double> type{var};
       PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
       // Act & Assert
       __classEltTestSuite->testSetNodeId( agg );
@@ -131,7 +131,7 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
+      gum::prm::PRMType<double> type{var};
       PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
       // Act & Assert
       __classEltTestSuite->test_obj_type( agg );
@@ -142,7 +142,7 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
+      gum::prm::PRMType<double> type{var};
       PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
 
       // Act & Assert
@@ -154,7 +154,7 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
+      gum::prm::PRMType<double> type{var};
       PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, type, 0};
 
       // Act & Assert
@@ -177,8 +177,8 @@ namespace gum_tests {
       map.push_back( 1 );
       map.push_back( 0 );
 
-      gum::prm::Type<double> boolean{boolean_var};
-      gum::prm::Type<double> state{boolean, map, state_var};
+      gum::prm::PRMType<double> boolean{boolean_var};
+      gum::prm::PRMType<double> state{boolean, map, state_var};
       PRMAggregate agg{"my_agg", PRMAggregate::AggregateType::FORALL, state, 0};
 
       // Act & Assert

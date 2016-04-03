@@ -166,12 +166,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::type() {
+    INLINE PRMType<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::type() {
       return __chain->back()->type();
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::type() const {
+    INLINE const PRMType<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::type() const {
       return __chain->back()->type();
     }
 

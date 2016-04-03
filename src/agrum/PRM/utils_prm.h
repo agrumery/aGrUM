@@ -40,7 +40,7 @@
 namespace gum {
   namespace prm {
 
-    /// Type for real numbers
+    /// PRMType for real numbers
     typedef float prm_float;
 
     /// Decompose a string in a vector of strings using "." as separators.

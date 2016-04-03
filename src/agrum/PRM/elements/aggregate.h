@@ -125,7 +125,7 @@ namespace gum {
        */
       PRMAggregate( const std::string& name,
                  AggregateType aggType,
-                 const Type<GUM_SCALAR>& rvType );
+                 const PRMType<GUM_SCALAR>& rvType );
 
       /**
        * Default constructor.
@@ -137,7 +137,7 @@ namespace gum {
        */
       PRMAggregate( const std::string& name,
                  AggregateType aggType,
-                 const Type<GUM_SCALAR>& rvType,
+                 const PRMType<GUM_SCALAR>& rvType,
                  Idx label );
 
       /// Destructor.
@@ -170,10 +170,10 @@ namespace gum {
       virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
 
       /// See gum::PRMClassElement::type().
-      virtual Type<GUM_SCALAR>& type();
+      virtual PRMType<GUM_SCALAR>& type();
 
       /// See gum::PRMClassElement::type().
-      virtual const Type<GUM_SCALAR>& type() const;
+      virtual const PRMType<GUM_SCALAR>& type() const;
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
@@ -224,7 +224,7 @@ namespace gum {
 
       /// The random variable type of this aggregate
       /// It is deleted with the aggregate.
-      Type<GUM_SCALAR>* __type;
+      PRMType<GUM_SCALAR>* __type;
 
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.

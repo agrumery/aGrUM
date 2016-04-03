@@ -50,7 +50,7 @@ namespace gum {
        * @headerfile O3TypeFactory.h <agrum/PRM/o3prm/O3TypeFactory.h>
        * @ingroup o3prm_group
        *
-       * @brief Builds gum::prm::Type from gum::prm::o3prm::O3Type,
+       * @brief Builds gum::prm::PRMType from gum::prm::o3prm::O3Type,
        * gum::prm::o3prm::O3IntType and gum::prm::o3prm::O3RealType.
        *
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.

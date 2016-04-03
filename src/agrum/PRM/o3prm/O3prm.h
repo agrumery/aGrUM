@@ -381,7 +381,7 @@ namespace gum {
        */
       class O3Parameter {
         public:
-        enum class Type { NONE, INT, FLOAT };
+        enum class PRMType { NONE, INT, FLOAT };
 
         O3Parameter();
         O3Parameter( const O3Position& pos,
@@ -397,8 +397,8 @@ namespace gum {
         O3Parameter& operator=( const O3Parameter& src );
         O3Parameter& operator=( O3Parameter&& src );
 
-        Type& type();
-        Type type() const;
+        PRMType& type();
+        PRMType type() const;
 
         O3Position& position();
         const O3Position& position() const;
@@ -410,7 +410,7 @@ namespace gum {
         const O3Float& value() const;
 
         private:
-        Type __type;
+        PRMType __type;
         O3Position __pos;
         O3Label __name;
         O3Float __value;

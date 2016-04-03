@@ -51,7 +51,7 @@ namespace gum {
      * Built-in copies (copy constructor and copy operator) are illegal due to
      * various problems raised by redondant information.
      *
-     * @see PRM PRMFactory Class PRMClassElement Type<GUM_SCALAR> Potential
+     * @see PRM PRMFactory Class PRMClassElement PRMType<GUM_SCALAR> Potential
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
@@ -87,10 +87,10 @@ namespace gum {
       elt_type() const = 0;
 
       /// See gum::PRMClassElement::type().
-      virtual Type<GUM_SCALAR>& type() = 0;
+      virtual PRMType<GUM_SCALAR>& type() = 0;
 
       /// See gum::PRMClassElement::type().
-      virtual const Type<GUM_SCALAR>& type() const = 0;
+      virtual const PRMType<GUM_SCALAR>& type() const = 0;
 
       /// See gum::PRMClassElement::cpf().
       virtual const Potential<GUM_SCALAR>& cpf() const = 0;
@@ -127,24 +127,24 @@ namespace gum {
        * a proper cast descendant.
        *
        * Furthermore it is necessary to change the DiscreteVariable used
-       * by this PRMAttribute's super Type<GUM_SCALAR> in order to have the same
+       * by this PRMAttribute's super PRMType<GUM_SCALAR> in order to have the same
        *pointers in
-       * both super Type<GUM_SCALAR> (i.e. this->type().super().variable()) and
+       * both super PRMType<GUM_SCALAR> (i.e. this->type().super().variable()) and
        *the
        * cast descendant CPF (i.e. attr->cpf()).
        *
-       * This can only be done if attr Type<GUM_SCALAR> is a direct subtype of
+       * This can only be done if attr PRMType<GUM_SCALAR> is a direct subtype of
        *this
-       * PRMAttribute Type<GUM_SCALAR> (i.e. this->type().super() == attr->type()).
+       * PRMAttribute PRMType<GUM_SCALAR> (i.e. this->type().super() == attr->type()).
        *
        * @param attr The PRMAttribute which is transformed to be this PRMAttribute
        *             cast descendant.
        *
        * @throw OperationNotAllowed Raised if this PRMAttribute can not have any
        *                            cast descendant.
-       * @throw TypeError Raised if attr's Type<GUM_SCALAR> is not a direct
+       * @throw TypeError Raised if attr's PRMType<GUM_SCALAR> is not a direct
        *descendant of
-       *                  this PRMAttribute's Type<GUM_SCALAR>.
+       *                  this PRMAttribute's PRMType<GUM_SCALAR>.
        */
       virtual void setAsCastDescendant( PRMAttribute<GUM_SCALAR>* attr ) = 0;
 
@@ -153,11 +153,11 @@ namespace gum {
        * with type
        *        subtype.
        */
-      virtual void becomeCastDescendant( Type<GUM_SCALAR>& subtype ) = 0;
+      virtual void becomeCastDescendant( PRMType<GUM_SCALAR>& subtype ) = 0;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap( const Type<GUM_SCALAR>& old_type,
-                         const Type<GUM_SCALAR>& new_type ) = 0;
+      virtual void swap( const PRMType<GUM_SCALAR>& old_type,
+                         const PRMType<GUM_SCALAR>& new_type ) = 0;
 
       /// Set this as overload of source (necessayr to preserver internal
       /// pointers for MultiDims).
@@ -168,8 +168,8 @@ namespace gum {
       protected:
       PRMAttribute( const PRMAttribute<GUM_SCALAR>& source );
 
-      virtual Type<GUM_SCALAR>* _type() = 0;
-      virtual void _type( Type<GUM_SCALAR>* t ) = 0;
+      virtual PRMType<GUM_SCALAR>* _type() = 0;
+      virtual void _type( PRMType<GUM_SCALAR>* t ) = 0;
     };
 
 

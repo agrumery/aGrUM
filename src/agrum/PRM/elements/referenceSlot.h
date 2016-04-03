@@ -118,11 +118,11 @@ namespace gum {
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::type().
-      virtual Type<GUM_SCALAR>& type();
+      virtual PRMType<GUM_SCALAR>& type();
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::type().
-      virtual const Type<GUM_SCALAR>& type() const;
+      virtual const PRMType<GUM_SCALAR>& type() const;
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::cpf().

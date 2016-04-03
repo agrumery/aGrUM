@@ -63,7 +63,7 @@ namespace gum {
        *             it will be deleted after the call of ~PRMFuncAttribute.
        */
       PRMFuncAttribute( const std::string& name,
-                     const Type<GUM_SCALAR>& type,
+                     const PRMType<GUM_SCALAR>& type,
                      MultiDimImplementation<GUM_SCALAR>* impl =
                          new MultiDimArray<GUM_SCALAR>() );
 

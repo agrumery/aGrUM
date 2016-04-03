@@ -1019,14 +1019,14 @@ namespace gum {
       }
 
       O3Parameter::O3Parameter()
-          : __type( O3Parameter::Type::NONE ) {
+          : __type( O3Parameter::PRMType::NONE ) {
         GUM_CONSTRUCTOR( O3Parameter );
       }
 
       O3Parameter::O3Parameter( const O3Position& pos,
                                 const O3Label& name,
                                 const O3Integer& value )
-          : __type( O3Parameter::Type::INT )
+          : __type( O3Parameter::PRMType::INT )
           , __pos( pos )
           , __name( name )
           , __value( O3Float( value.position(), (float)value.value() ) ) {
@@ -1036,7 +1036,7 @@ namespace gum {
       O3Parameter::O3Parameter( const O3Position& pos,
                                 const O3Label& name,
                                 const O3Float& value )
-          : __type( O3Parameter::Type::FLOAT )
+          : __type( O3Parameter::PRMType::FLOAT )
           , __pos( pos )
           , __name( name )
           , __value( value ) {
@@ -1083,8 +1083,8 @@ namespace gum {
         return *this;
       }
 
-      O3Parameter::Type& O3Parameter::type() { return __type; }
-      O3Parameter::Type O3Parameter::type() const { return __type; }
+      O3Parameter::PRMType& O3Parameter::type() { return __type; }
+      O3Parameter::PRMType O3Parameter::type() const { return __type; }
 
       O3Position& O3Parameter::position() { return __pos; }
       const O3Position& O3Parameter::position() const { return __pos; }

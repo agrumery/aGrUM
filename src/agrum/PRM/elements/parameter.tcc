@@ -80,12 +80,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Type<GUM_SCALAR>& PRMParameter<GUM_SCALAR>::type() {
+    PRMType<GUM_SCALAR>& PRMParameter<GUM_SCALAR>::type() {
       GUM_ERROR( OperationNotAllowed, "Parameters do not have a type" );
     }
 
     template <typename GUM_SCALAR>
-    const Type<GUM_SCALAR>& PRMParameter<GUM_SCALAR>::type() const {
+    const PRMType<GUM_SCALAR>& PRMParameter<GUM_SCALAR>::type() const {
       GUM_ERROR( OperationNotAllowed, "Parameters do not have a type" );
     }
 

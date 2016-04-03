@@ -69,7 +69,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::string
-    PRMClassElement<GUM_SCALAR>::cast( const Type<GUM_SCALAR>& t ) const {
+    PRMClassElement<GUM_SCALAR>::cast( const PRMType<GUM_SCALAR>& t ) const {
       if ( type().isSubTypeOf( t ) ) {
         return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() +
                name();

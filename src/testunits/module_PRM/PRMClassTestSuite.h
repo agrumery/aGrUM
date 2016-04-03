@@ -37,25 +37,25 @@ namespace gum_tests {
     private:
     typedef gum::prm::PRMClass<double> PRMClass;
     typedef gum::prm::PRMInterface<double> PRMInterface;
-    typedef gum::prm::Type<double> Type;
+    typedef gum::prm::PRMType<double> PRMType;
     typedef gum::prm::PRMAggregate<double> PRMAggregate;
     typedef gum::prm::PRMScalarAttribute<double> PRMAttribute;
     typedef gum::prm::PRMReferenceSlot<double> Reference;
     typedef gum::prm::PRMSlotChain<double> PRMSlotChain;
 
-    Type* __boolean;
-    Type* __state;
+    PRMType* __boolean;
+    PRMType* __state;
 
     public:
     void setUp() {
-      __boolean = gum::prm::Type<double>::boolean();
+      __boolean = gum::prm::PRMType<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );
       state.addLabel( "NOK" );
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      __state = new Type( *__boolean, map, state );
+      __state = new PRMType( *__boolean, map, state );
     }
 
     void tearDown() {
@@ -275,7 +275,7 @@ namespace gum_tests {
       c.add( attr );
       PRMClass sub_c( "sub_c", c );
       gum::LabelizedVariable var( "foo", "bar", 2 );
-      gum::prm::Type<double> type( var );
+      gum::prm::PRMType<double> type( var );
       PRMAttribute* bttr = new PRMAttribute( "attr", type );
       // Act & Assert
       TS_ASSERT_THROWS( sub_c.overload( bttr ), gum::OperationNotAllowed );
@@ -320,7 +320,7 @@ namespace gum_tests {
     void testOverloadAttributeWithSeveralCastDescendants() {
       // Arrange
       int size = 10;
-      std::vector<Type*> types;
+      std::vector<PRMType*> types;
       types.push_back( __boolean );
       std::vector<gum::Idx> map;
       map.push_back( 1 );
@@ -331,7 +331,7 @@ namespace gum_tests {
         sbuff << "type_" << i;
         auto name = sbuff.str();
         auto var = gum::LabelizedVariable( name, "", 2 );
-        auto t = new Type( super, map, var );
+        auto t = new PRMType( super, map, var );
         types.push_back( t );
       }
       PRMClass c( "class" );
@@ -380,7 +380,7 @@ namespace gum_tests {
     void testOverloadAttributeWithSeveralCastDescendantsDuplicate() {
       // Arrange
       int size = 10;
-      std::vector<Type*> types;
+      std::vector<PRMType*> types;
       types.push_back( __boolean );
       std::vector<gum::Idx> map;
       map.push_back( 1 );
@@ -391,7 +391,7 @@ namespace gum_tests {
         sbuff << "type_" << i;
         auto name = sbuff.str();
         auto var = gum::LabelizedVariable( name, "", 2 );
-        auto t = new Type( super, map, var );
+        auto t = new PRMType( super, map, var );
         types.push_back( t );
       }
       PRMClass c( "class" );
@@ -623,7 +623,7 @@ namespace gum_tests {
         PRMClass knGate( "k_nGate", impl );
         auto kn_inputs = new Reference( "inputs", event, true );
         knGate.add( kn_inputs );
-        Type intervalle( gum::LabelizedVariable( "intervalle", "", 6 ) );
+        PRMType intervalle( gum::LabelizedVariable( "intervalle", "", 6 ) );
         auto nb_true = new PRMAggregate(
             "Nb_true", PRMAggregate::AggregateType::COUNT, *__boolean, 1 );
         knGate.add( nb_true );
@@ -632,7 +632,7 @@ namespace gum_tests {
         auto kn_chain = new PRMSlotChain( "inputs.state", kn_seq );
         knGate.add( kn_chain );
         knGate.addArc( "inputs.state", "Nb_true" );
-        Type intervalle_k( gum::LabelizedVariable( "intervalle_K", "", 4 ) );
+        PRMType intervalle_k( gum::LabelizedVariable( "intervalle_K", "", 4 ) );
         auto k = new PRMAttribute( "K", intervalle_k );
         knGate.add( k );
         std::vector<double> k_values{0.25, 0.25, 0.25, 0.25};

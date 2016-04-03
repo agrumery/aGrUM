@@ -182,20 +182,20 @@ namespace gum {
       /// @{
 
       /**
-       * Return a reference over the gum::Type of this class element.
+       * Return a reference over the gum::PRMType of this class element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
        *                            any gum::Potential (like a
        * gum::PRMReferenceSlot).
        */
-      virtual Type<GUM_SCALAR>& type() = 0;
+      virtual PRMType<GUM_SCALAR>& type() = 0;
 
       /**
-       * Return a constant reference over the gum::Type of this class element.
+       * Return a constant reference over the gum::PRMType of this class element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
        *                            any gum::Potential (like a
        * gum::PRMReferenceSlot).
        */
-      virtual const Type<GUM_SCALAR>& type() const = 0;
+      virtual const PRMType<GUM_SCALAR>& type() const = 0;
 
       /**
        * @brief Returns a proper cast descendant of this PRMAttribute.
@@ -228,12 +228,12 @@ namespace gum {
       const std::string& safeName() const;
 
       /**
-       * @brief Returns the name of the cast descendant with Type t of this
+       * @brief Returns the name of the cast descendant with PRMType t of this
        *        PRMClassElement.
        * @param t The type in which we want to cast this PRMClassElement.
        * @throw OperationNotAllowed If the cast is impossible.
        */
-      virtual std::string cast( const Type<GUM_SCALAR>& t ) const;
+      virtual std::string cast( const PRMType<GUM_SCALAR>& t ) const;
 
       // /**
       //  * Return a reference over the gum::Potential of this class element.

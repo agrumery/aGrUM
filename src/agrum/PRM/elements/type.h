@@ -44,7 +44,7 @@ namespace gum {
     class PRMFactory;
 
     /**
-     * @class Type
+     * @class PRMType
      * @brief This is a decoration of the DiscreteVariable class.
      * The name of the DiscreteVariable will be the name of the type (i.e. of
      * the PRMObject).
@@ -55,11 +55,11 @@ namespace gum {
      * to create a new instance of a type for each PRMAttribute.
      */
     template <typename GUM_SCALAR>
-    class Type : public PRMObject {
+    class PRMType : public PRMObject {
 
       public:
       // ==========================================================================
-      /// @name Friends of Type
+      /// @name Friends of PRMType
       // ==========================================================================
       /// @{
 
@@ -72,11 +72,11 @@ namespace gum {
       /// @{
 
       /// Returns a pointer on type boolean.
-      static Type* boolean() {
+      static PRMType* boolean() {
         LabelizedVariable var( "boolean", "Boolean variable", 0 );
         var.addLabel( "false" );
         var.addLabel( "true" );
-        return new Type( var );
+        return new PRMType( var );
       }
 
       /// @}
@@ -89,14 +89,14 @@ namespace gum {
        * Default Constructor.
        * A copy is made of var.
        */
-      Type( const DiscreteVariable& var );
+      PRMType( const DiscreteVariable& var );
 
       /**
        * Sub type constructor.
        * A copy is made of var.
        * @throw OperationNotAllowed Raised if label_map is invalid.
        */
-      Type( Type& super_type,
+      PRMType( PRMType& super_type,
             const std::vector<Idx>& label_map,
             const DiscreteVariable& var );
 
@@ -104,12 +104,12 @@ namespace gum {
        * Copy constructor.
        * The DiscreteVariable is copied.
        */
-      Type( const Type& from );
+      PRMType( const PRMType& from );
 
       /**
        * Destructor.
        */
-      virtual ~Type();
+      virtual ~PRMType();
 
       /// @}
       // ==========================================================================
@@ -185,41 +185,41 @@ namespace gum {
        * Note that two types that are equal are also subtypes,
        * if a == b then a.isSubTypeOf(b) == b.isSubTypeOf(a) == true.
        */
-      bool isSubTypeOf( const Type& super ) const;
+      bool isSubTypeOf( const PRMType& super ) const;
 
       /**
        * Returns true if this is a super type of t.
        */
-      bool isSuperTypeOf( const Type& t ) const;
+      bool isSuperTypeOf( const PRMType& t ) const;
 
       /**
        * Returns the super type of this type.
        * @throw NotFound Raised if this type has no super type.
        */
-      Type& superType();
+      PRMType& superType();
 
       /**
        * Returns the super type of this type.
        * @throw NotFound Raised if this type has no super type.
        */
-      const Type& superType() const;
+      const PRMType& superType() const;
 
       /**
-       * @brief Changes the Type of this Type super.
+       * @brief Changes the PRMType of this PRMType super.
        *
-       * You can only change this Type super only if t and this->superType() are
+       * You can only change this PRMType super only if t and this->superType() are
        * equal. Thus you should use this method only if you want to change the
-       * DiscreteVariable pointer of this Type super.
+       * DiscreteVariable pointer of this PRMType super.
        *
-       * This is useful to maintain consistence between PRMAttribute's Type and
+       * This is useful to maintain consistence between PRMAttribute's PRMType and
        * their CPF.
        *
-       * @param t The Type to replace this Type super.
+       * @param t The PRMType to replace this PRMType super.
        *
-       * @throw OperationNotAllowed If this Type has no super.
-       * @throw TypeError If t is not equal to this Type super.
+       * @throw OperationNotAllowed If this PRMType has no super.
+       * @throw TypeError If t is not equal to this PRMType super.
        */
-      void setSuper( Type& t );
+      void setSuper( PRMType& t );
 
       /**
        * Returns the vector in which the i-th element is the Idx of the super
@@ -239,7 +239,7 @@ namespace gum {
       /**
        * Copy operator. Not implemented.
        */
-      Type& operator=( const Type& from );
+      PRMType& operator=( const PRMType& from );
 
       /// @}
       // ==========================================================================
@@ -254,7 +254,7 @@ namespace gum {
       DiscreteVariable* __var;
 
       /// The super type of this, if any.
-      Type* __superType;
+      PRMType* __superType;
 
       /// A vector in which the i-th element is the Idx of the super
       /// type's label for the i-th label of this.
@@ -264,8 +264,8 @@ namespace gum {
     };
 
 
-    extern template class Type<float>;
-    extern template class Type<double>;
+    extern template class PRMType<float>;
+    extern template class PRMType<double>;
 
 
   } /* namespace prm */

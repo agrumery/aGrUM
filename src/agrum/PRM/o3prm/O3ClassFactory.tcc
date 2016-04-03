@@ -320,7 +320,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
-          O3Label& o3_type, const Type<GUM_SCALAR>& type ) {
+          O3Label& o3_type, const PRMType<GUM_SCALAR>& type ) {
         if ( not __solver->resolveType( o3_type ) ) {
           return false;
         }
@@ -371,13 +371,13 @@ namespace gum {
 
           switch ( p.type() ) {
 
-            case O3Parameter::Type::INT: {
+            case O3Parameter::PRMType::INT: {
               factory.addParameter(
                   "int", p.name().label(), p.value().value() );
               break;
             }
 
-            case O3Parameter::Type::FLOAT: {
+            case O3Parameter::PRMType::FLOAT: {
               factory.addParameter(
                   "real", p.name().label(), p.value().value() );
               break;
@@ -980,12 +980,12 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE const Type<GUM_SCALAR>*
+      INLINE const PRMType<GUM_SCALAR>*
       O3ClassFactory<GUM_SCALAR>::__checkAggParents( O3Class& o3class,
                                                      O3Aggregate& agg ) {
 
         const auto& c = __prm->getClass( o3class.name().label() );
-        auto t = (const Type<GUM_SCALAR>*)nullptr;
+        auto t = (const PRMType<GUM_SCALAR>*)nullptr;
 
         for ( const auto& prnt : agg.parents() ) {
 
@@ -1039,7 +1039,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAggParameters(
-          O3Class& o3class, O3Aggregate& agg, const Type<GUM_SCALAR>* t ) {
+          O3Class& o3class, O3Aggregate& agg, const PRMType<GUM_SCALAR>* t ) {
 
         bool ok = false;
 
@@ -1108,7 +1108,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkParameterValue(
-          O3Aggregate& agg, const gum::prm::Type<GUM_SCALAR>& t ) {
+          O3Aggregate& agg, const gum::prm::PRMType<GUM_SCALAR>& t ) {
 
         const auto& param = agg.parameters().front();
         bool found = false;

@@ -43,10 +43,10 @@ namespace gum {
     template <typename GUM_SCALAR>
     PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
                                       AggregateType aggType,
-                                      const Type<GUM_SCALAR>& rvType )
+                                      const PRMType<GUM_SCALAR>& rvType )
         : PRMClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
-        , __type( new Type<GUM_SCALAR>( rvType ) )
+        , __type( new PRMType<GUM_SCALAR>( rvType ) )
         , __label( nullptr ) {
       GUM_CONSTRUCTOR( PRMAggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
@@ -56,11 +56,11 @@ namespace gum {
     template <typename GUM_SCALAR>
     PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
                                       AggregateType aggType,
-                                      const Type<GUM_SCALAR>& rvType,
+                                      const PRMType<GUM_SCALAR>& rvType,
                                       Idx label )
         : PRMClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
-        , __type( new Type<GUM_SCALAR>( rvType ) )
+        , __type( new PRMType<GUM_SCALAR>( rvType ) )
         , __label( new Idx( label ) ) {
       GUM_CONSTRUCTOR( PRMAggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
@@ -78,7 +78,7 @@ namespace gum {
     PRMAggregate<GUM_SCALAR>::PRMAggregate( const PRMAggregate<GUM_SCALAR>& source )
         : PRMClassElement<GUM_SCALAR>( source )
         , __agg_type( source.__agg_type )
-        , __type( new Type<GUM_SCALAR>( source.type() ) )
+        , __type( new PRMType<GUM_SCALAR>( source.type() ) )
         , __label( source.__label ) {
       GUM_CONS_CPY( PRMAggregate );
       GUM_ERROR( FatalError,
@@ -110,12 +110,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::type() {
+    INLINE PRMType<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::type() {
       return *__type;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::type() const {
+    INLINE const PRMType<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::type() const {
       return *__type;
     }
 

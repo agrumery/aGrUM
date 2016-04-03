@@ -90,12 +90,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR>& PRMReferenceSlot<GUM_SCALAR>::type() {
+    INLINE PRMType<GUM_SCALAR>& PRMReferenceSlot<GUM_SCALAR>::type() {
       GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR>& PRMReferenceSlot<GUM_SCALAR>::type() const {
+    INLINE const PRMType<GUM_SCALAR>& PRMReferenceSlot<GUM_SCALAR>::type() const {
       GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
     }
 

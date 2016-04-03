@@ -80,10 +80,10 @@ namespace gum {
       ParameterType valueType() const;
 
       /// See gum::PRMClassElement::type().
-      virtual Type<GUM_SCALAR>& type();
+      virtual PRMType<GUM_SCALAR>& type();
 
       /// See gum::PRMClassElement::type().
-      virtual const Type<GUM_SCALAR>& type() const;
+      virtual const PRMType<GUM_SCALAR>& type() const;
 
       /// See gum::PRMClassElement::cpf().
       virtual Potential<GUM_SCALAR>& cpf();

@@ -38,7 +38,7 @@ namespace gum {
      * @class PRMFormAttribute formAttribute.h <agrum/PRM/elements/formAttribute.h>
      * @brief PRMFormAttribute is a member of a Class in a PRM.
      *
-     * @see PRM PRMFactory Class PRMClassElement Type<GUM_SCALAR> Potential
+     * @see PRM PRMFactory Class PRMClassElement PRMType<GUM_SCALAR> Potential
      *PRMAttribute
      * @ingroup prm_group
      */
@@ -47,7 +47,7 @@ namespace gum {
       public:
       PRMFormAttribute( const PRMClass<GUM_SCALAR>& c,
                      const std::string& name,
-                     const Type<GUM_SCALAR>& type,
+                     const PRMType<GUM_SCALAR>& type,
                      MultiDimImplementation<std::string>* impl =
                          new MultiDimArray<std::string>() );
 
@@ -72,10 +72,10 @@ namespace gum {
       elt_type() const;
 
       /// See gum::prm::PRMAttribute.
-      virtual Type<GUM_SCALAR>& type();
+      virtual PRMType<GUM_SCALAR>& type();
 
       /// See gum::prm::PRMAttribute.
-      virtual const Type<GUM_SCALAR>& type() const;
+      virtual const PRMType<GUM_SCALAR>& type() const;
 
       /// See gum::prm::PRMAttribute.
       virtual const Potential<GUM_SCALAR>& cpf() const;
@@ -91,25 +91,25 @@ namespace gum {
 
       /// See gum::prm::PRMAttribute.
       virtual void setAsCastDescendant( PRMAttribute<GUM_SCALAR>* attr );
-      virtual void becomeCastDescendant( Type<GUM_SCALAR>& subtype );
+      virtual void becomeCastDescendant( PRMType<GUM_SCALAR>& subtype );
 
       virtual MultiDimImplementation<std::string>& formulas();
       virtual const MultiDimImplementation<std::string>& formulas() const;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap( const Type<GUM_SCALAR>& old_type,
-                         const Type<GUM_SCALAR>& new_type );
+      virtual void swap( const PRMType<GUM_SCALAR>& old_type,
+                         const PRMType<GUM_SCALAR>& new_type );
 
       protected:
-      virtual Type<GUM_SCALAR>* _type();
-      virtual void _type( Type<GUM_SCALAR>* t );
+      virtual PRMType<GUM_SCALAR>* _type();
+      virtual void _type( PRMType<GUM_SCALAR>* t );
 
       private:
       PRMFormAttribute( const PRMFormAttribute& source );
       PRMFormAttribute& operator=( const PRMFormAttribute& source );
 
       /// The random variable type of this attribute
-      Type<GUM_SCALAR>* __type;
+      PRMType<GUM_SCALAR>* __type;
 
       /// A pointer on the Potential of this attribute
       mutable Potential<GUM_SCALAR>* __cpf;

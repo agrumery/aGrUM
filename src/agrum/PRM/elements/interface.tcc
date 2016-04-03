@@ -230,7 +230,7 @@ namespace gum {
         __nameMap[overloader->safeName()] = overloader;
         __attributes.erase( overloaded );
         __attributes.insert( overloader );
-        // Swapping types, ugly but necessary to preserve the Type<GUM_SCALAR>
+        // Swapping types, ugly but necessary to preserve the PRMType<GUM_SCALAR>
         // pointer of overloaded
         overloader->overload( overloaded );
         delete overloaded;

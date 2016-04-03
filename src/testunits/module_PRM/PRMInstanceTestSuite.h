@@ -38,7 +38,7 @@ namespace gum_tests {
     typedef gum::prm::PRMInstance<double> PRMInstance;
     typedef gum::prm::PRMClass<double> PRMClass;
     typedef gum::prm::PRMInterface<double> PRMInterface;
-    typedef gum::prm::Type<double> Type;
+    typedef gum::prm::PRMType<double> PRMType;
     typedef gum::prm::PRMScalarAttribute<double> PRMAttribute;
     typedef gum::prm::PRMReferenceSlot<double> Reference;
     typedef gum::prm::PRMSlotChain<double> PRMSlotChain;
@@ -46,21 +46,21 @@ namespace gum_tests {
     typedef gum::Bijection<const gum::DiscreteVariable*,
                            const gum::DiscreteVariable*> Bijection;
 
-    Type* __boolean;
-    Type* __state;
+    PRMType* __boolean;
+    PRMType* __state;
     PRMClass* __classA;
     PRMClass* __classB;
 
     public:
     void setUp() {
-      __boolean = gum::prm::Type<double>::boolean();
+      __boolean = gum::prm::PRMType<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );
       state.addLabel( "NOK" );
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      __state = new Type( *__boolean, map, state );
+      __state = new PRMType( *__boolean, map, state );
 
       __classA = new PRMClass( "A" );
       __classA->add( new PRMAttribute( "a", *__boolean ) );

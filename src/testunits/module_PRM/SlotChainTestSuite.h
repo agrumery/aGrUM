@@ -42,8 +42,8 @@ namespace gum_tests {
     gum::prm::PRMClass<double>* __A;
     gum::prm::PRMClass<double>* __B;
     gum::prm::PRMClass<double>* __C;
-    gum::prm::Type<double>* __boolean;
-    gum::prm::Type<double>* __state;
+    gum::prm::PRMType<double>* __boolean;
+    gum::prm::PRMType<double>* __state;
     gum::Sequence<gum::prm::PRMClassElement<double>*>* __booleanChain;
     gum::Sequence<gum::prm::PRMClassElement<double>*>* __stateChain;
 
@@ -68,7 +68,7 @@ namespace gum_tests {
       __refK = new gum::prm::PRMReferenceSlot<double>( "refK", *__C, true );
       __B->add( __refK );
 
-      __boolean = gum::prm::Type<double>::boolean();
+      __boolean = gum::prm::PRMType<double>::boolean();
       __boolAttr =
           new gum::prm::PRMScalarAttribute<double>( "myBool", *__boolean );
       __C->add( __boolAttr );
@@ -79,7 +79,7 @@ namespace gum_tests {
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      __state = new gum::prm::Type<double>( *__boolean, map, state );
+      __state = new gum::prm::PRMType<double>( *__boolean, map, state );
       __stateAttr =
           new gum::prm::PRMScalarAttribute<double>( "myState", *__state );
       __C->add( __stateAttr );

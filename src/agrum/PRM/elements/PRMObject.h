@@ -59,7 +59,7 @@ namespace gum {
 
       /**
        * Enumeration of the different types of objects handled by a PRM.
-       * The "all" type is used to tell that we want any kind of Type
+       * The "all" type is used to tell that we want any kind of PRMType
        * (useful with iterators for example). No PRMObject will ever have
        * "all" as type.
        */
@@ -196,12 +196,12 @@ namespace gum {
       /// @}
     };
 
-    /// For printing Type easily.
+    /// For printing PRMType easily.
     std::ostream& operator<<( std::ostream& out, PRMObject::prm_type obj_type );
 
     // list of declarations of PRMObjects
     template <typename GUM_SCALAR>
-    class Type;
+    class PRMType;
     template <typename GUM_SCALAR>
     class PRMClassElement;
     template <typename GUM_SCALAR>

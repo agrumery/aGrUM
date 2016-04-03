@@ -159,7 +159,7 @@ namespace gum {
        *its
        * CPF. You can also overload an PRMAttribute with an PRMAggregate, as long as
        *their
-       * respective Type allow it.
+       * respective PRMType allow it.
        *
        * @param elt The PRMClassElement<GUM_SCALAR> overloading an inherited
        *            PRMClassElement<GUM_SCALAR> in this PRMClassElementContainer.

@@ -132,10 +132,10 @@ namespace gum {
       elt_type() const;
 
       /// This is similar to the following call: this->lastElt().type()
-      virtual Type<GUM_SCALAR>& type();
+      virtual PRMType<GUM_SCALAR>& type();
 
       /// This is similar to the following call: this->lastElt().type()
-      virtual const Type<GUM_SCALAR>& type() const;
+      virtual const PRMType<GUM_SCALAR>& type() const;
 
       // /// This is similar to the following call: this->lastElt().cpf()
       // virtual Potential<GUM_SCALAR>& cpf();

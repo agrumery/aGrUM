@@ -40,10 +40,10 @@ namespace gum {
     PRMFormAttribute<GUM_SCALAR>::PRMFormAttribute(
         const PRMClass<GUM_SCALAR>& c,
         const std::string& name,
-        const Type<GUM_SCALAR>& type,
+        const PRMType<GUM_SCALAR>& type,
         MultiDimImplementation<std::string>* impl )
         : PRMAttribute<GUM_SCALAR>( name )
-        , __type( new Type<GUM_SCALAR>( type ) )
+        , __type( new PRMType<GUM_SCALAR>( type ) )
         , __cpf( 0 )
         , __formulas( impl )
         , __class( &c ) {
@@ -146,12 +146,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Type<GUM_SCALAR>& PRMFormAttribute<GUM_SCALAR>::type() {
+    PRMType<GUM_SCALAR>& PRMFormAttribute<GUM_SCALAR>::type() {
       return *__type;
     }
 
     template <typename GUM_SCALAR>
-    const Type<GUM_SCALAR>& PRMFormAttribute<GUM_SCALAR>::type() const {
+    const PRMType<GUM_SCALAR>& PRMFormAttribute<GUM_SCALAR>::type() const {
       return *__type;
     }
 
@@ -240,7 +240,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMFormAttribute<GUM_SCALAR>::becomeCastDescendant(
-        Type<GUM_SCALAR>& subtype ) {
+        PRMType<GUM_SCALAR>& subtype ) {
       delete __formulas;
 
       __formulas = new MultiDimArray<std::string>();
@@ -338,8 +338,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void PRMFormAttribute<GUM_SCALAR>::swap( const Type<GUM_SCALAR>& old_type,
-                                          const Type<GUM_SCALAR>& new_type ) {
+    void PRMFormAttribute<GUM_SCALAR>::swap( const PRMType<GUM_SCALAR>& old_type,
+                                          const PRMType<GUM_SCALAR>& new_type ) {
       if ( &( old_type ) == __type ) {
         GUM_ERROR( OperationNotAllowed, "Cannot swap attribute own type" );
       }
@@ -384,12 +384,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Type<GUM_SCALAR>* PRMFormAttribute<GUM_SCALAR>::_type() {
+    PRMType<GUM_SCALAR>* PRMFormAttribute<GUM_SCALAR>::_type() {
       return __type;
     }
 
     template <typename GUM_SCALAR>
-    void PRMFormAttribute<GUM_SCALAR>::_type( Type<GUM_SCALAR>* t ) {
+    void PRMFormAttribute<GUM_SCALAR>::_type( PRMType<GUM_SCALAR>* t ) {
 
       if ( __type->variable().domainSize() != t->variable().domainSize() ) {
         GUM_ERROR( OperationNotAllowed,

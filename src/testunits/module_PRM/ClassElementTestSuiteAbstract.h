@@ -104,7 +104,7 @@ namespace gum_tests {
     void testCast_NotAllowed( const ClassElt& elt ) {
       // Arrange
       gum::LabelizedVariable foo{"foo", "A dummy variable"};
-      gum::prm::Type<double> bar{foo};
+      gum::prm::PRMType<double> bar{foo};
       // Assert
       try {
         TS_ASSERT_THROWS( elt.cast( bar ), gum::OperationNotAllowed );
@@ -112,7 +112,7 @@ namespace gum_tests {
       }
     }
 
-    void testCast( const ClassElt& elt, const gum::prm::Type<double>& type ) {
+    void testCast( const ClassElt& elt, const gum::prm::PRMType<double>& type ) {
       try {
         // Arrange
         auto expected = gum::prm::PRMObject::LEFT_CAST() + type.name() +
