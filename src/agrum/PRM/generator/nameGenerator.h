@@ -69,7 +69,7 @@ namespace gum {
       /// @{
 
       /// Returns the next name w.r.t. the given Type.
-      std::string nextName( PRMObject::PRMType type );
+      std::string nextName( PRMObject::prm_type type );
 
       /// @}
       private:

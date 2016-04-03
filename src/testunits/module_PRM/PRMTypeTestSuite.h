@@ -206,7 +206,7 @@ namespace gum_tests {
     void testObjType() {
       // Arrange
       Type boolean{*__boolean};
-      auto expected = gum::prm::PRMObject::PRMType::TYPE;
+      auto expected = gum::prm::PRMObject::prm_type::TYPE;
       // Act
       auto actual = boolean.obj_type();
       // Assert

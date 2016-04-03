@@ -397,8 +397,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMObject::PRMType PRMSystem<GUM_SCALAR>::obj_type() const {
-      return PRMObject::PRMType::SYSTEM;
+    INLINE PRMObject::prm_type PRMSystem<GUM_SCALAR>::obj_type() const {
+      return PRMObject::prm_type::SYSTEM;
     }
 
     template <typename GUM_SCALAR>

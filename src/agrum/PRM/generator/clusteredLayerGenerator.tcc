@@ -46,7 +46,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     std::string ClusteredLayerGenerator<GUM_SCALAR>::__generateType(
         PRMFactory<GUM_SCALAR>& factory ) {
-      std::string name = this->_name_gen.nextName( PRMObject::PRMType::TYPE );
+      std::string name = this->_name_gen.nextName( PRMObject::prm_type::TYPE );
       factory.startDiscreteType( name );
 
       for ( Size i = 0; i < __domain_size; ++i ) {
@@ -66,23 +66,23 @@ namespace gum {
         std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
       for ( Size lvl = 0; lvl < __layers.size(); ++lvl ) {
         l.push_back( ClusteredLayerGenerator<GUM_SCALAR>::MyData() );
-        l[lvl].i = this->_name_gen.nextName( PRMObject::PRMType::INTERFACE );
+        l[lvl].i = this->_name_gen.nextName( PRMObject::prm_type::INTERFACE );
         f.startInterface( l[lvl].i );
 
         for ( Size a = 0; a < __layers[lvl].a; ++a ) {
           l[lvl].a.push_back(
-              this->_name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
+              this->_name_gen.nextName( PRMObject::prm_type::CLASS_ELT ) );
           f.addAttribute( type, l[lvl].a.back() );
         }
 
         if ( lvl ) {
           for ( Size g = 0; g < __layers[lvl].g; ++g ) {
             l[lvl].g.push_back(
-                this->_name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
+                this->_name_gen.nextName( PRMObject::prm_type::CLASS_ELT ) );
             f.addAttribute( "boolean", l[lvl].g.back() );
           }
 
-          l[lvl].r = this->_name_gen.nextName( PRMObject::PRMType::CLASS_ELT );
+          l[lvl].r = this->_name_gen.nextName( PRMObject::prm_type::CLASS_ELT );
           f.addReferenceSlot( l[lvl - 1].i, l[lvl].r, true );
         }
 
@@ -132,10 +132,10 @@ namespace gum {
           __generateClass( f, type, l, lvl, i );
           first = l[lvl].c.back();
           v->push_back( first );
-          v->push_back( this->_name_gen.nextName( PRMObject::PRMType::CLASS ) );
+          v->push_back( this->_name_gen.nextName( PRMObject::prm_type::CLASS ) );
           f.startClass( v->back() );
           v->push_back(
-              this->_name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
+              this->_name_gen.nextName( PRMObject::prm_type::CLASS_ELT ) );
           f.addReferenceSlot( first, v->back(), true );
           DAG dag;
           Bijection<std::string, NodeId> names;
@@ -197,11 +197,11 @@ namespace gum {
             first = l[lvl].c.back();
             v->push_back( first );
             v->push_back(
-                this->_name_gen.nextName( PRMObject::PRMType::CLASS ) );
+                this->_name_gen.nextName( PRMObject::prm_type::CLASS ) );
             second = v->back();
             f.startClass( second );
             v->push_back(
-                this->_name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
+                this->_name_gen.nextName( PRMObject::prm_type::CLASS_ELT ) );
             f.addReferenceSlot( first, v->back(), true );
             DAG dag;
             Bijection<std::string, NodeId> names;
@@ -254,11 +254,11 @@ namespace gum {
           }
           {
             v->push_back(
-                this->_name_gen.nextName( PRMObject::PRMType::CLASS ) );
+                this->_name_gen.nextName( PRMObject::prm_type::CLASS ) );
             third = v->back();
             f.startClass( third );
             v->push_back(
-                this->_name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
+                this->_name_gen.nextName( PRMObject::prm_type::CLASS_ELT ) );
             f.addReferenceSlot( second, v->back(), true );
             DAG dag;
             Bijection<std::string, NodeId> names;
@@ -328,7 +328,7 @@ namespace gum {
       Size size = 0;
       GUM_SCALAR sum = 0.0;
       l[lvl].c.push_back(
-          this->_name_gen.nextName( PRMObject::PRMType::CLASS ) );
+          this->_name_gen.nextName( PRMObject::prm_type::CLASS ) );
       f.startClass( l[lvl].c.back(), "", &i );
 
       if ( lvl ) f.addReferenceSlot( l[lvl - 1].i, l[lvl].r, true );
@@ -443,7 +443,7 @@ namespace gum {
         PRMFactory<GUM_SCALAR>& factory,
         std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
       factory.startSystem(
-          this->_name_gen.nextName( PRMObject::PRMType::SYSTEM ) );
+          this->_name_gen.nextName( PRMObject::prm_type::SYSTEM ) );
       std::vector<std::vector<std::string>> o( __layers.size() );
       std::string name, c, first, second, third;
       std::vector<std::string>* v = 0;
@@ -461,10 +461,10 @@ namespace gum {
             switch ( v->size() ) {
               case 3: {
                 first =
-                    this->_name_gen.nextName( PRMObject::PRMType::INSTANCE );
+                    this->_name_gen.nextName( PRMObject::prm_type::INSTANCE );
                 factory.addInstance( c, first );
                 second =
-                    this->_name_gen.nextName( PRMObject::PRMType::INSTANCE );
+                    this->_name_gen.nextName( PRMObject::prm_type::INSTANCE );
                 factory.addInstance( v->at( 1 ), second );
                 std::stringstream chain;
                 chain << second << "." << v->at( 2 );
@@ -474,16 +474,16 @@ namespace gum {
 
               case 5: {
                 first =
-                    this->_name_gen.nextName( PRMObject::PRMType::INSTANCE );
+                    this->_name_gen.nextName( PRMObject::prm_type::INSTANCE );
                 factory.addInstance( c, first );
                 second =
-                    this->_name_gen.nextName( PRMObject::PRMType::INSTANCE );
+                    this->_name_gen.nextName( PRMObject::prm_type::INSTANCE );
                 factory.addInstance( v->at( 1 ), second );
                 std::stringstream chain_1, chain_2;
                 chain_1 << second << "." << v->at( 2 );
                 factory.setReferenceSlot( chain_1.str(), first );
                 third =
-                    this->_name_gen.nextName( PRMObject::PRMType::INSTANCE );
+                    this->_name_gen.nextName( PRMObject::prm_type::INSTANCE );
                 factory.addInstance( v->at( 3 ), third );
                 chain_2 << third << "." << v->at( 4 );
                 factory.setReferenceSlot( chain_2.str(), second );
@@ -499,7 +499,7 @@ namespace gum {
             // delete v;
             name = first;
           } else {
-            name = this->_name_gen.nextName( PRMObject::PRMType::INSTANCE );
+            name = this->_name_gen.nextName( PRMObject::prm_type::INSTANCE );
             factory.addInstance( c, name );
           }
 

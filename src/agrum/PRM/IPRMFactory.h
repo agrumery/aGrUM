@@ -55,7 +55,7 @@ namespace gum {
       virtual ~IPRMFactory(){};
 
       // virtual PRM<GUM_SCALAR>* prm() const=0;
-      virtual PRMObject::PRMType currentType() const = 0;
+      virtual PRMObject::prm_type currentType() const = 0;
       virtual PRMObject* getCurrent() = 0;
       virtual const PRMObject* getCurrent() const = 0;
       virtual PRMObject* closeCurrent() = 0;

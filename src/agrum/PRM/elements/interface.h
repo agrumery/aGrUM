@@ -87,7 +87,7 @@ namespace gum {
       /// @{
 
       /// Implementation of pure virtual method of PRMObject.
-      virtual typename PRMObject::PRMType obj_type() const;
+      virtual typename PRMObject::prm_type obj_type() const;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(NodeId).
       virtual PRMClassElement<GUM_SCALAR>& get( NodeId id );

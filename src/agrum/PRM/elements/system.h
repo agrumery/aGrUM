@@ -97,7 +97,7 @@ namespace gum {
       /// @{
 
       /// Returns the PRM type of this object.
-      virtual PRMObject::PRMType obj_type() const;
+      virtual PRMObject::prm_type obj_type() const;
 
       /// Returns the number of PRMInstance in this PRMSystem.
       Size size() const;

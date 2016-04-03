@@ -92,7 +92,7 @@ namespace gum {
       /**
        * Returns the PRM type of this object.
        */
-      virtual PRMType obj_type() const;
+      virtual prm_type obj_type() const;
 
       /**
        * Returns the type of this instance

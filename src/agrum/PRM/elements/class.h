@@ -120,7 +120,7 @@ namespace gum {
       virtual ~PRMClass();
 
       /// Implementation of pure virtual method of PRMObject.
-      virtual PRMObject::PRMType obj_type() const;
+      virtual PRMObject::prm_type obj_type() const;
       /// @}
       // ========================================================================
       /// @name Graphical operator

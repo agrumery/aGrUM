@@ -101,7 +101,7 @@ namespace gum_tests {
     void testObjType() {
       // Arrange
       PRMInstance i( "i", *__classA );
-      auto expected = PRMObject::PRMType::INSTANCE;
+      auto expected = PRMObject::prm_type::INSTANCE;
       // Act
       auto actual = i.obj_type();
       // Assert

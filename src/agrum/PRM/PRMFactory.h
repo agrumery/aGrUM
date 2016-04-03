@@ -114,7 +114,7 @@ namespace gum {
        * @return Returns the PRMObject type of the object begin built.
        * @throw NotFound if no type is being built.
        */
-      virtual PRMObject::PRMType currentType() const override;
+      virtual PRMObject::prm_type currentType() const override;
 
       /**
        * @return the current PRMObject being built by this factory.
@@ -796,7 +796,7 @@ namespace gum {
       /// @throw FactoryInvalidState Raised if the stack isn't consistent with
       /// the
       //                             current declaration.
-      PRMObject* __checkStack( Idx i, PRMObject::PRMType obj_type );
+      PRMObject* __checkStack( Idx i, PRMObject::prm_type obj_type );
 
       PRMClassElement<GUM_SCALAR>* __checkStack(
           Idx i, typename PRMClassElement<GUM_SCALAR>::ClassElementType obj_type );

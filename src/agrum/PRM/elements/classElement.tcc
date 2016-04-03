@@ -53,8 +53,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMObject::PRMType PRMClassElement<GUM_SCALAR>::obj_type() const {
-      return PRMType::CLASS_ELT;
+    INLINE PRMObject::prm_type PRMClassElement<GUM_SCALAR>::obj_type() const {
+      return prm_type::CLASS_ELT;
     }
 
     template <typename GUM_SCALAR>

@@ -49,37 +49,37 @@ namespace gum {
     }
 
     INLINE
-    std::string NameGenerator::nextName( PRMObject::PRMType type ) {
+    std::string NameGenerator::nextName( PRMObject::prm_type type ) {
       std::stringstream s;
 
       switch ( type ) {
-        case PRMObject::PRMType::ALL:
-        case PRMObject::PRMType::CLASS: {
+        case PRMObject::prm_type::ALL:
+        case PRMObject::prm_type::CLASS: {
           s << "class_" << ++( __counters[0] );
           break;
         }
 
-        case PRMObject::PRMType::INTERFACE: {
+        case PRMObject::prm_type::INTERFACE: {
           s << "iface_" << ++( __counters[0] );
           break;
         }
 
-        case PRMObject::PRMType::SYSTEM: {
+        case PRMObject::prm_type::SYSTEM: {
           s << "sys_" << ++( __counters[0] );
           break;
         }
 
-        case PRMObject::PRMType::TYPE: {
+        case PRMObject::prm_type::TYPE: {
           s << "type_" << ++( __counters[0] );
           break;
         }
 
-        case PRMObject::PRMType::CLASS_ELT: {
+        case PRMObject::prm_type::CLASS_ELT: {
           s << "elt_" << ++( __counters[1] );
           break;
         }
 
-        case PRMObject::PRMType::INSTANCE: {
+        case PRMObject::prm_type::INSTANCE: {
           s << "inst_" << ++( __counters[2] );
           break;
         }

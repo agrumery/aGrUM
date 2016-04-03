@@ -470,7 +470,7 @@ namespace gum {
     bool PRMClass<GUM_SCALAR>::isSubTypeOf(
         const PRMClassElementContainer<GUM_SCALAR>& cec ) const {
       switch ( cec.obj_type() ) {
-        case PRMObject::PRMType::CLASS: {
+        case PRMObject::prm_type::CLASS: {
           const PRMClass<GUM_SCALAR>* current = this;
 
           while ( current != 0 ) {
@@ -482,7 +482,7 @@ namespace gum {
           return false;
         }
 
-        case PRMObject::PRMType::INTERFACE: {
+        case PRMObject::prm_type::INTERFACE: {
           if ( __implements != nullptr ) {
             const PRMInterface<GUM_SCALAR>& i =
                 static_cast<const PRMInterface<GUM_SCALAR>&>( cec );
@@ -1057,8 +1057,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename PRMObject::PRMType PRMClass<GUM_SCALAR>::obj_type() const {
-      return PRMObject::PRMType::CLASS;
+    INLINE typename PRMObject::prm_type PRMClass<GUM_SCALAR>::obj_type() const {
+      return PRMObject::prm_type::CLASS;
     }
 
     template <typename GUM_SCALAR>

@@ -75,7 +75,7 @@ namespace gum_tests {
 
     void test_obj_type( const ClassElt& elt ) {
       // Arrange
-      auto expected = gum::prm::PRMObject::PRMType::CLASS_ELT;
+      auto expected = gum::prm::PRMObject::prm_type::CLASS_ELT;
       // Act
       auto actual = elt.obj_type();
       // Assert
