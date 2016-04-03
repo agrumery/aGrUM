@@ -197,7 +197,7 @@ namespace gum {
       if ( __superClass ) {
         // Copying parameters
         for ( const auto c_param : __superClass->__parameters ) {
-          auto param = new Parameter<GUM_SCALAR>(
+          auto param = new PRMParameter<GUM_SCALAR>(
               c_param->name(), c_param->valueType(), c_param->value() );
 
           __parameters.insert( param );
@@ -352,7 +352,7 @@ namespace gum {
 
         // Copying parameters
         for ( const auto c_param : c.__parameters ) {
-          auto param = new Parameter<GUM_SCALAR>(
+          auto param = new PRMParameter<GUM_SCALAR>(
               c_param->name(), c_param->valueType(), c_param->value() );
 
           __parameters.insert( param );
@@ -725,7 +725,7 @@ namespace gum {
         }
 
         case PRMClassElement<GUM_SCALAR>::prm_parameter: {
-          __parameters.insert( static_cast<Parameter<GUM_SCALAR>*>( elt ) );
+          __parameters.insert( static_cast<PRMParameter<GUM_SCALAR>*>( elt ) );
           break;
         }
 
@@ -834,9 +834,9 @@ namespace gum {
 
         case PRMClassElement<GUM_SCALAR>::prm_parameter: {
           auto overloaded_param =
-              static_cast<Parameter<GUM_SCALAR>*>( overloaded );
+              static_cast<PRMParameter<GUM_SCALAR>*>( overloaded );
           auto overloader_param =
-              static_cast<Parameter<GUM_SCALAR>*>( overloader );
+              static_cast<PRMParameter<GUM_SCALAR>*>( overloader );
           __overloadParameter( overloader_param, overloaded_param );
           break;
         }
@@ -973,7 +973,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMClass<GUM_SCALAR>::__overloadParameter(
-        Parameter<GUM_SCALAR>* overloader, Parameter<GUM_SCALAR>* overloaded ) {
+        PRMParameter<GUM_SCALAR>* overloader, PRMParameter<GUM_SCALAR>* overloaded ) {
       overloader->setId( overloaded->id() );
       __nodeIdMap[overloader->id()] = overloader;
       __nameMap[overloader->name()] = overloader;
@@ -1125,7 +1125,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Parameter<GUM_SCALAR>*>&
+    INLINE const Set<PRMParameter<GUM_SCALAR>*>&
     PRMClass<GUM_SCALAR>::parameters() const {
       return __parameters;
     }
@@ -1143,9 +1143,9 @@ namespace gum {
     };
 
     template <typename GUM_SCALAR>
-    INLINE HashTable<std::string, const Parameter<GUM_SCALAR>*>
+    INLINE HashTable<std::string, const PRMParameter<GUM_SCALAR>*>
     PRMClass<GUM_SCALAR>::scope() const {
-      HashTable<std::string, const Parameter<GUM_SCALAR>*> params;
+      HashTable<std::string, const PRMParameter<GUM_SCALAR>*> params;
       Set<const PRMClass<GUM_SCALAR>*> visited;
       visited.insert( this );
 
@@ -1291,9 +1291,9 @@ namespace gum {
 
         case PRMClassElement<GUM_SCALAR>::prm_parameter: {
           auto overloaded_param =
-              static_cast<const Parameter<GUM_SCALAR>*>( overloaded );
+              static_cast<const PRMParameter<GUM_SCALAR>*>( overloaded );
           auto overloader_param =
-              static_cast<const Parameter<GUM_SCALAR>*>( overloader );
+              static_cast<const PRMParameter<GUM_SCALAR>*>( overloader );
 
           return overloaded_param->valueType() == overloader_param->valueType();
           break;

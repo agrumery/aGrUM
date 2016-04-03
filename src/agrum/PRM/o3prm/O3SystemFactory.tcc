@@ -280,12 +280,12 @@ namespace gum {
             return false;
           }
 
-          const auto& type_param = static_cast<const Parameter<GUM_SCALAR>&>(
+          const auto& type_param = static_cast<const PRMParameter<GUM_SCALAR>&>(
               type.get( param.name().label() ) );
 
           switch ( type_param.valueType() ) {
 
-            case Parameter<GUM_SCALAR>::ParameterType::INT: {
+            case PRMParameter<GUM_SCALAR>::ParameterType::INT: {
               if ( not param.isInteger() ) {
                 O3PRM_SYSTEM_PARAMETER_NOT_INT( param, *__errors );
                 return false;
@@ -293,7 +293,7 @@ namespace gum {
               break;
             }
 
-            case Parameter<GUM_SCALAR>::ParameterType::REAL: {
+            case PRMParameter<GUM_SCALAR>::ParameterType::REAL: {
               if ( param.isInteger() ) {
                 O3PRM_SYSTEM_PARAMETER_NOT_FLOAT( param, *__errors );
                 return false;

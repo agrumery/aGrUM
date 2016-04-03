@@ -136,7 +136,7 @@ namespace gum {
         return elt.elt_type() == prm_slotchain;
       }
 
-      /// Return true if obj is of type Parameter
+      /// Return true if obj is of type PRMParameter
       static INLINE bool isParameter( const PRMClassElement& elt ) {
         return elt.elt_type() == prm_parameter;
       }

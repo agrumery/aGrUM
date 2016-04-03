@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::Parameter
+ * @brief Source implementation of gum::PRMParameter
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class Parameter<float>;
-    template class Parameter<double>;
+    template class PRMParameter<float>;
+    template class PRMParameter<double>;
 
 
   } /* namespace prm */

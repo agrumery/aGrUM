@@ -187,13 +187,13 @@ namespace gum {
        * Returns the set of parameters of this Class<GUM_SCALAR>.
        * @return Returns the set of parameters of this Class<GUM_SCALAR>.
        */
-      const Set<Parameter<GUM_SCALAR>*>& parameters() const;
+      const Set<PRMParameter<GUM_SCALAR>*>& parameters() const;
 
       /**
        * Returns all the parameters in the scope of this class.
        * &return all the parameters in the scope of this class.
        */
-      HashTable<std::string, const Parameter<GUM_SCALAR>*> scope() const;
+      HashTable<std::string, const PRMParameter<GUM_SCALAR>*> scope() const;
 
       /**
        * Returns the set of PRMAggregate<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -354,7 +354,7 @@ namespace gum {
       Set<SlotChain<GUM_SCALAR>*> __slotChains;
 
       /// The Set of parameters in this Class<GUM_SCALAR>.
-      Set<Parameter<GUM_SCALAR>*> __parameters;
+      Set<PRMParameter<GUM_SCALAR>*> __parameters;
 
       /// Recursively adds cast descendant of attr in this Class<GUM_SCALAR>.
       void __addCastDescendants( PRMClassElement<GUM_SCALAR>* attr );
@@ -428,8 +428,8 @@ namespace gum {
                                 ReferenceSlot<GUM_SCALAR>* overloaded );
 
       /// Overloads a parameter.
-      void __overloadParameter( Parameter<GUM_SCALAR>* overloader,
-                                Parameter<GUM_SCALAR>* overloaded );
+      void __overloadParameter( PRMParameter<GUM_SCALAR>* overloader,
+                                PRMParameter<GUM_SCALAR>* overloaded );
 
       /// @}
     };

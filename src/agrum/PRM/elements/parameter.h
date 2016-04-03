@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::Parameter.
+ * @brief Headers of gum::PRMParameter.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -33,14 +33,14 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class Parameter parameter.h <agrum/PRM/parameter.h>
-     * @brief Parameter is a member of a Class in a PRM.
+     * @class PRMParameter parameter.h <agrum/PRM/parameter.h>
+     * @brief PRMParameter is a member of a Class in a PRM.
      *
      * @see PRM PRMFactory Class PRMClassElement
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class Parameter : public PRMClassElement<GUM_SCALAR> {
+    class PRMParameter : public PRMClassElement<GUM_SCALAR> {
       public:
       enum ParameterType { INT, REAL };
 
@@ -56,12 +56,12 @@ namespace gum {
        * @param type
        * @param value
        */
-      Parameter( const std::string& name,
+      PRMParameter( const std::string& name,
                  ParameterType type,
                  GUM_SCALAR value );
 
       /// Destructor.
-      virtual ~Parameter();
+      virtual ~PRMParameter();
 
       /// @}
       // ========================================================================
@@ -104,10 +104,10 @@ namespace gum {
       /// @}
       protected:
       /// Copy constructor. Don't use it.
-      Parameter( const Parameter<GUM_SCALAR>& source );
+      PRMParameter( const PRMParameter<GUM_SCALAR>& source );
 
       /// Copy operator. Don't use it.
-      Parameter& operator=( const Parameter<GUM_SCALAR>& from );
+      PRMParameter& operator=( const PRMParameter<GUM_SCALAR>& from );
 
       private:
       // ========================================================================
@@ -123,8 +123,8 @@ namespace gum {
     };
 
 
-    extern template class Parameter<float>;
-    extern template class Parameter<double>;
+    extern template class PRMParameter<float>;
+    extern template class PRMParameter<double>;
 
 
   } /* namespace prm */

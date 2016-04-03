@@ -613,16 +613,16 @@ namespace gum {
       auto c = static_cast<PRMClass<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::CLASS ) );
 
-      Parameter<GUM_SCALAR>* p = 0;
+      PRMParameter<GUM_SCALAR>* p = 0;
       if ( type == "int" ) {
-        p = new Parameter<GUM_SCALAR>(
+        p = new PRMParameter<GUM_SCALAR>(
             name,
-            Parameter<GUM_SCALAR>::ParameterType::INT,
+            PRMParameter<GUM_SCALAR>::ParameterType::INT,
             (GUM_SCALAR)value );
       } else if ( type == "real" ) {
-        p = new Parameter<GUM_SCALAR>(
+        p = new PRMParameter<GUM_SCALAR>(
             name,
-            Parameter<GUM_SCALAR>::ParameterType::REAL,
+            PRMParameter<GUM_SCALAR>::ParameterType::REAL,
             (GUM_SCALAR)value );
       }
 
@@ -1609,9 +1609,9 @@ namespace gum {
           // Update inherited parameters
           for ( auto p : my_params ) {
 
-            auto type = static_cast<Parameter<GUM_SCALAR>&>( c->get( p.first ) )
+            auto type = static_cast<PRMParameter<GUM_SCALAR>&>( c->get( p.first ) )
                             .valueType();
-            if ( type == Parameter<GUM_SCALAR>::ParameterType::INT ) {
+            if ( type == PRMParameter<GUM_SCALAR>::ParameterType::INT ) {
 
               addParameter( "int", p.first, p.second );
 

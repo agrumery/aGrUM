@@ -48,8 +48,8 @@ namespace gum_tests {
         const auto& elt = c.get( "lambda" );
         TS_ASSERT( gum::prm::PRMClassElement<double>::isParameter( elt ) );
         const auto& lambda =
-            static_cast<const gum::prm::Parameter<double>&>( elt );
-        TS_ASSERT( lambda.valueType() == gum::prm::Parameter<double>::REAL );
+            static_cast<const gum::prm::PRMParameter<double>&>( elt );
+        TS_ASSERT( lambda.valueType() == gum::prm::PRMParameter<double>::REAL );
         TS_ASSERT( lambda.value() == 0.001 );
 
         delete prm;
@@ -90,8 +90,8 @@ namespace gum_tests {
         const auto& elt = c.get( "lambda" );
         TS_ASSERT( gum::prm::PRMClassElement<double>::isParameter( elt ) );
         const auto& lambda =
-            static_cast<const gum::prm::Parameter<double>&>( elt );
-        TS_ASSERT( lambda.valueType() == gum::prm::Parameter<double>::REAL );
+            static_cast<const gum::prm::PRMParameter<double>&>( elt );
+        TS_ASSERT( lambda.valueType() == gum::prm::PRMParameter<double>::REAL );
         TS_ASSERT( lambda.value() == 0.001 );
 
         delete prm;
