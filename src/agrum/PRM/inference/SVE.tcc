@@ -688,7 +688,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE Potential<GUM_SCALAR>*
     SVE<GUM_SCALAR>::__getAggPotential( const Instance<GUM_SCALAR>* i,
-                                        const Aggregate<GUM_SCALAR>* agg ) {
+                                        const PRMAggregate<GUM_SCALAR>* agg ) {
       return &(
           const_cast<Potential<GUM_SCALAR>&>( i->get( agg->id() ).cpf() ) );
     }

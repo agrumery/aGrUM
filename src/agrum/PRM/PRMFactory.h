@@ -167,7 +167,7 @@ namespace gum {
        *
        * The vector elts must only contains ClassElement<GUM_SCALAR> with a
        *Type<GUM_SCALAR>, i.e.
-       * Attribute<GUM_SCALAR>, Aggregate and SlotChain<GUM_SCALAR>. If not, a
+       * Attribute<GUM_SCALAR>, PRMAggregate and SlotChain<GUM_SCALAR>. If not, a
        *WrongClassElement is
        * raised.
        *
@@ -629,7 +629,7 @@ namespace gum {
        * If at least one parent of an aggregator is a SlotChain<GUM_SCALAR>,
        * then all of it's parents must be SlotChain<GUM_SCALAR>. When an
        * aggregator parents are only composed of Attribute<GUM_SCALAR> and
-       * Aggregate, then it is directly added as an Attribute<GUM_SCALAR> to
+       * PRMAggregate, then it is directly added as an Attribute<GUM_SCALAR> to
        * it's Class<GUM_SCALAR>.
        *
        * @param name The name of this aggregator.
@@ -860,17 +860,17 @@ namespace gum {
       __buildSlotChain( ClassElementContainer<GUM_SCALAR>* start,
                         const std::string& name );
 
-      /// @brief Retrieve inputs for an Aggregate.
+      /// @brief Retrieve inputs for an PRMAggregate.
       ///
-      /// The vector chains contains names of the Aggregate inputs. If a name
+      /// The vector chains contains names of the PRMAggregate inputs. If a name
       /// does not match an existing ClassElement<GUM_SCALAR> in c, then a call
       /// to
       /// PRMFactory::__buildSlotChains() is made. Such created
       /// SlotChain<GUM_SCALAR> are
       /// added to c.
       ///
-      /// @param c The class in which the Aggregate is defined.
-      /// @param chains Vector of the Aggregate inputs names.
+      /// @param c The class in which the PRMAggregate is defined.
+      /// @param chains Vector of the PRMAggregate inputs names.
       /// @param inputs Vector filled with the ClassElement<GUM_SCALAR> matching
       /// the names
       ///               in chains.
@@ -888,7 +888,7 @@ namespace gum {
       ///
       /// The vector elts must only contains ClassElement<GUM_SCALAR> with a
       /// Type<GUM_SCALAR>, i.e.
-      /// Attribute<GUM_SCALAR>, Aggregate and SlotChain<GUM_SCALAR>. If not a
+      /// Attribute<GUM_SCALAR>, PRMAggregate and SlotChain<GUM_SCALAR>. If not a
       /// WrongClassElement is
       /// raised.
       ///

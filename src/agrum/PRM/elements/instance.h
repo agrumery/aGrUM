@@ -71,7 +71,7 @@ namespace gum {
        *
        * When you create an Instance<GUM_SCALAR> all
        *gum::prm::Attribute<GUM_SCALAR> in it's type are
-       * added, except for gum::prm::Aggregate<GUM_SCALAR> and parameters which
+       * added, except for gum::prm::PRMAggregate<GUM_SCALAR> and parameters which
        *are
        * instantiated.
        *
@@ -119,7 +119,7 @@ namespace gum {
       /**
        * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
        *
-       * Recall that Aggregate<GUM_SCALAR> are instantiated as
+       * Recall that PRMAggregate<GUM_SCALAR> are instantiated as
        *Attribute<GUM_SCALAR>
        * when an Instance<GUM_SCALAR> is created. Thus any random variable
        *contained
@@ -145,7 +145,7 @@ namespace gum {
       /**
        * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
        *
-       * Recall that Aggregate<GUM_SCALAR> are instantiated has
+       * Recall that PRMAggregate<GUM_SCALAR> are instantiated has
        *Attribute<GUM_SCALAR>
        * when an Instance<GUM_SCALAR> is created. Thus any random variable
        *contained
@@ -445,7 +445,7 @@ namespace gum {
       /// @{
 
       /// Used at construction to instantiate aggregates.
-      void __copyAggregates( Aggregate<GUM_SCALAR>* source );
+      void __copyAggregates( PRMAggregate<GUM_SCALAR>* source );
 
       /// Used at construction to instantiate attributes.
       /// @param source An attribute in __type.
@@ -524,7 +524,7 @@ namespace gum {
       Class<GUM_SCALAR>* __type;
 
       /// The gum::prm::Attribute<GUM_SCALAR> and
-      /// gum::prm::Aggregate<GUM_SCALAR> of this Instance<GUM_SCALAR>.
+      /// gum::prm::PRMAggregate<GUM_SCALAR> of this Instance<GUM_SCALAR>.
       NodeProperty<Attribute<GUM_SCALAR>*> __nodeIdMap;
 
       /// Mapping between the gum::prm::ReferenceSlot and

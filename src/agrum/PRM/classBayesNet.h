@@ -40,7 +40,7 @@ namespace gum {
      * @brief This class decorates a gum::prm::Class<GUM_SCALAR> has an
      *IBaseBayesNet.
      *
-     * This class filters Attribute and Aggregate in a way it can be interpreted
+     * This class filters Attribute and PRMAggregate in a way it can be interpreted
      *as
      * a IBayesNet. SlotChains and ReferenceSlot are not represented.
      *
@@ -85,15 +85,15 @@ namespace gum {
       /**
        * @brief Returns the CPT of a node in this ClassBayesNet<GUM_SCALAR>.
        *
-       * If the node is an Aggregate, this will raise an OperationNotAllowed
-       * since Aggregate's CPT are define at instantiation only.
+       * If the node is an PRMAggregate, this will raise an OperationNotAllowed
+       * since PRMAggregate's CPT are define at instantiation only.
        *
        * @param varId a variable id.
        * @return the Potential of varId.
        *
        * @throw NotFound raised if varId does not match any variable in this
        *                 IBayesNet.
-       * @throw OperationNotAllowed raised if varId is an Aggregate.
+       * @throw OperationNotAllowed raised if varId is an PRMAggregate.
        */
       virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 

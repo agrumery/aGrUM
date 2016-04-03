@@ -646,7 +646,7 @@ namespace gum {
 
       if ( chains.size() == 0 ) {
         GUM_ERROR( OperationNotAllowed,
-                   "an Aggregate<GUM_SCALAR> requires at least one parent" );
+                   "an PRMAggregate<GUM_SCALAR> requires at least one parent" );
       }
 
       // Retrieving the parents of the aggregate
@@ -668,11 +668,11 @@ namespace gum {
       }
 
       // Different treatments for different types of aggregate.
-      Aggregate<GUM_SCALAR>* agg = 0;
+      PRMAggregate<GUM_SCALAR>* agg = 0;
 
-      switch ( Aggregate<GUM_SCALAR>::str2enum( agg_type ) ) {
-        case Aggregate<GUM_SCALAR>::AggregateType::OR:
-        case Aggregate<GUM_SCALAR>::AggregateType::AND: {
+      switch ( PRMAggregate<GUM_SCALAR>::str2enum( agg_type ) ) {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::OR:
+        case PRMAggregate<GUM_SCALAR>::AggregateType::AND: {
           if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
             GUM_ERROR( WrongType, "expected booleans" );
           }
@@ -680,16 +680,16 @@ namespace gum {
             GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
           }
 
-          agg = new Aggregate<GUM_SCALAR>(
+          agg = new PRMAggregate<GUM_SCALAR>(
               name,
-              Aggregate<GUM_SCALAR>::str2enum( agg_type ),
+              PRMAggregate<GUM_SCALAR>::str2enum( agg_type ),
               inputs.front()->type() );
 
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
-        case Aggregate<GUM_SCALAR>::AggregateType::FORALL: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::EXISTS:
+        case PRMAggregate<GUM_SCALAR>::AggregateType::FORALL: {
           if ( params.size() != 1 ) {
             GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
           }
@@ -709,10 +709,10 @@ namespace gum {
             GUM_ERROR( NotFound, "could not find label" );
           }
 
-          // Creating and adding the Aggregate<GUM_SCALAR>
-          agg = new Aggregate<GUM_SCALAR>(
+          // Creating and adding the PRMAggregate<GUM_SCALAR>
+          agg = new PRMAggregate<GUM_SCALAR>(
               name,
-              Aggregate<GUM_SCALAR>::str2enum( agg_type ),
+              PRMAggregate<GUM_SCALAR>::str2enum( agg_type ),
               *( __retrieveType( "boolean" ) ),
               label_idx );
           agg->label();
@@ -720,24 +720,24 @@ namespace gum {
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::MEDIAN:
-        case Aggregate<GUM_SCALAR>::AggregateType::AMPLITUDE:
-        case Aggregate<GUM_SCALAR>::AggregateType::MIN:
-        case Aggregate<GUM_SCALAR>::AggregateType::MAX: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::MEDIAN:
+        case PRMAggregate<GUM_SCALAR>::AggregateType::AMPLITUDE:
+        case PRMAggregate<GUM_SCALAR>::AggregateType::MIN:
+        case PRMAggregate<GUM_SCALAR>::AggregateType::MAX: {
           if ( params.size() != 0 ) {
             GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
           }
 
           auto output_type = __retrieveType(type );
 
-          // Creating and adding the Aggregate<GUM_SCALAR>
-          agg = new Aggregate<GUM_SCALAR>(
-              name, Aggregate<GUM_SCALAR>::str2enum( agg_type ), *output_type );
+          // Creating and adding the PRMAggregate<GUM_SCALAR>
+          agg = new PRMAggregate<GUM_SCALAR>(
+              name, PRMAggregate<GUM_SCALAR>::str2enum( agg_type ), *output_type );
 
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::COUNT: {
           if ( params.size() != 1 ) {
             GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
           }
@@ -759,10 +759,10 @@ namespace gum {
 
           auto output_type = __retrieveType( type );
 
-          // Creating and adding the Aggregate<GUM_SCALAR>
-          agg = new Aggregate<GUM_SCALAR>(
+          // Creating and adding the PRMAggregate<GUM_SCALAR>
+          agg = new PRMAggregate<GUM_SCALAR>(
               name,
-              Aggregate<GUM_SCALAR>::str2enum( agg_type ),
+              PRMAggregate<GUM_SCALAR>::str2enum( agg_type ),
               *output_type,
               label_idx );
 

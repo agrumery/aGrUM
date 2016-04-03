@@ -126,7 +126,7 @@ namespace gum {
         return elt.elt_type() == prm_attribute;
       }
 
-      /// Return true if obj is of type Aggregate
+      /// Return true if obj is of type PRMAggregate
       static INLINE bool isAggregate( const ClassElement& elt ) {
         return elt.elt_type() == prm_aggregate;
       }
@@ -219,7 +219,7 @@ namespace gum {
        * @brief Returns the safe name of this ClassElement, if any.
        *
        * This will only work if this ClassElement is an Attribute or an
-       *Aggregate.
+       *PRMAggregate.
        * @return Returns the safe name of this ClassElement.
        *
        * @throw NotFound& Raised if this ClassElement does not have any safe

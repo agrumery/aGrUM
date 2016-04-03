@@ -38,7 +38,7 @@ namespace gum_tests {
     typedef gum::prm::Class<double> Class;
     typedef gum::prm::Interface<double> Interface;
     typedef gum::prm::Type<double> Type;
-    typedef gum::prm::Aggregate<double> Aggregate;
+    typedef gum::prm::PRMAggregate<double> PRMAggregate;
     typedef gum::prm::ScalarAttribute<double> Attribute;
     typedef gum::prm::ReferenceSlot<double> Reference;
     typedef gum::prm::SlotChain<double> SlotChain;
@@ -599,8 +599,8 @@ namespace gum_tests {
         Class orGate( "OrGate", impl );
         auto or_inputs = new Reference( "inputs", event, true );
         orGate.add( or_inputs );
-        auto or_state = new Aggregate(
-            "state", Aggregate::AggregateType::EXISTS, *__boolean, 1 );
+        auto or_state = new PRMAggregate(
+            "state", PRMAggregate::AggregateType::EXISTS, *__boolean, 1 );
         orGate.add( or_state );
         gum::Sequence<gum::prm::ClassElement<double>*> or_seq;
         or_seq << &( orGate.get( "inputs" ) ) << &( event.get( "state" ) );
@@ -611,8 +611,8 @@ namespace gum_tests {
         Class andGate( "AndGate", impl );
         auto and_inputs = new Reference( "inputs", event, true );
         andGate.add( and_inputs );
-        auto and_state = new Aggregate(
-            "state", Aggregate::AggregateType::FORALL, *__boolean, 1 );
+        auto and_state = new PRMAggregate(
+            "state", PRMAggregate::AggregateType::FORALL, *__boolean, 1 );
         andGate.add( and_state );
         gum::Sequence<gum::prm::ClassElement<double>*> and_seq;
         and_seq << and_inputs << &( event.get( "state" ) );
@@ -624,8 +624,8 @@ namespace gum_tests {
         auto kn_inputs = new Reference( "inputs", event, true );
         knGate.add( kn_inputs );
         Type intervalle( gum::LabelizedVariable( "intervalle", "", 6 ) );
-        auto nb_true = new Aggregate(
-            "Nb_true", Aggregate::AggregateType::COUNT, *__boolean, 1 );
+        auto nb_true = new PRMAggregate(
+            "Nb_true", PRMAggregate::AggregateType::COUNT, *__boolean, 1 );
         knGate.add( nb_true );
         gum::Sequence<gum::prm::ClassElement<double>*> kn_seq;
         kn_seq << kn_inputs << &( event.get( "state" ) );

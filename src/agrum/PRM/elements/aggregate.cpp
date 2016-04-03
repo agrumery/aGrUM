@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::Aggregate
+ * @brief Source implementation of gum::PRMAggregate
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class Aggregate<float>;
-    template class Aggregate<double>;
+    template class PRMAggregate<float>;
+    template class PRMAggregate<double>;
 
   } /* namespace prm */
 } /* namespace gum */

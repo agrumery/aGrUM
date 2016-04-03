@@ -244,15 +244,15 @@ namespace gum {
       if ( __superClass ) {
         for ( const auto c_agg : __superClass->__aggregates ) {
 
-          Aggregate<GUM_SCALAR>* agg = nullptr;
+          PRMAggregate<GUM_SCALAR>* agg = nullptr;
 
           try {
-            agg = new Aggregate<GUM_SCALAR>( c_agg->name(),
+            agg = new PRMAggregate<GUM_SCALAR>( c_agg->name(),
                                              c_agg->agg_type(),
                                              c_agg->type(),
                                              c_agg->label() );
           } catch ( OperationNotAllowed& ) {
-            agg = new Aggregate<GUM_SCALAR>(
+            agg = new PRMAggregate<GUM_SCALAR>(
                 c_agg->name(), c_agg->agg_type(), c_agg->type() );
           }
 
@@ -384,15 +384,15 @@ namespace gum {
 
         // Copying aggregates
         for ( const auto c_agg : c.__aggregates ) {
-          Aggregate<GUM_SCALAR>* agg = nullptr;
+          PRMAggregate<GUM_SCALAR>* agg = nullptr;
 
           try {
-            agg = new Aggregate<GUM_SCALAR>( c_agg->name(),
+            agg = new PRMAggregate<GUM_SCALAR>( c_agg->name(),
                                              c_agg->agg_type(),
                                              c_agg->type(),
                                              c_agg->label() );
           } catch ( OperationNotAllowed& ) {
-            agg = new Aggregate<GUM_SCALAR>(
+            agg = new PRMAggregate<GUM_SCALAR>(
                 c_agg->name(), c_agg->agg_type(), c_agg->type() );
           }
 
@@ -632,7 +632,7 @@ namespace gum {
         }
 
         case ClassElement<GUM_SCALAR>::prm_aggregate: {
-          __aggregates.insert( static_cast<Aggregate<GUM_SCALAR>*>( elt ) );
+          __aggregates.insert( static_cast<PRMAggregate<GUM_SCALAR>*>( elt ) );
           __addCastDescendants( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
           try {
             for ( auto i : implements() ) {
@@ -810,7 +810,7 @@ namespace gum {
 
         case ClassElement<GUM_SCALAR>::prm_aggregate: {
           __overloadAggregate(
-              static_cast<Aggregate<GUM_SCALAR>*>( overloader ), overloaded );
+              static_cast<PRMAggregate<GUM_SCALAR>*>( overloader ), overloaded );
           __addIOInterfaceFlags( overloader );
           break;
         }
@@ -1186,7 +1186,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Aggregate<GUM_SCALAR>*>&
+    INLINE const Set<PRMAggregate<GUM_SCALAR>*>&
     Class<GUM_SCALAR>::aggregates() const {
       return __aggregates;
     }
@@ -1249,7 +1249,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void Class<GUM_SCALAR>::__overloadAggregate(
-        Aggregate<GUM_SCALAR>* overloader,
+        PRMAggregate<GUM_SCALAR>* overloader,
         ClassElement<GUM_SCALAR>* overloaded ) {
       __nameMap.insert( overloader->safeName(), overloader );
       __aggregates.insert( overloader );

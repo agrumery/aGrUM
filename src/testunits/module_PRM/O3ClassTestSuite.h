@@ -1032,9 +1032,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::OR );
+                        gum::prm::PRMAggregate<double>::AggregateType::OR );
     }
 
     void testOrAggregateArray() {
@@ -1079,9 +1079,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::OR );
+                        gum::prm::PRMAggregate<double>::AggregateType::OR );
     }
 
     void testAndAggregate() {
@@ -1124,9 +1124,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::AND );
+                        gum::prm::PRMAggregate<double>::AggregateType::AND );
     }
 
     void testAndAggregateArray() {
@@ -1171,9 +1171,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::AND );
+                        gum::prm::PRMAggregate<double>::AggregateType::AND );
     }
 
     void testForAllAggregate() {
@@ -1217,9 +1217,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::FORALL );
+                        gum::prm::PRMAggregate<double>::AggregateType::FORALL );
     }
 
     void testForAllAggregateArray() {
@@ -1265,9 +1265,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::FORALL );
+                        gum::prm::PRMAggregate<double>::AggregateType::FORALL );
     }
 
     void testExistsAggregate() {
@@ -1311,9 +1311,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::EXISTS );
+                        gum::prm::PRMAggregate<double>::AggregateType::EXISTS );
     }
 
     void testExistsAggregateArray() {
@@ -1359,9 +1359,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::EXISTS );
+                        gum::prm::PRMAggregate<double>::AggregateType::EXISTS );
     }
 
     void testMinAggregate() {
@@ -1405,9 +1405,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::MIN );
+                        gum::prm::PRMAggregate<double>::AggregateType::MIN );
     }
 
     void testMinAggregateArray() {
@@ -1453,9 +1453,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::MIN );
+                        gum::prm::PRMAggregate<double>::AggregateType::MIN );
     }
 
     void testMaxAggregate() {
@@ -1499,9 +1499,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::MAX );
+                        gum::prm::PRMAggregate<double>::AggregateType::MAX );
     }
 
     void testMaxAggregateArray() {
@@ -1547,9 +1547,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::MAX );
+                        gum::prm::PRMAggregate<double>::AggregateType::MAX );
     }
 
     void testMedianAggregate() {
@@ -1593,9 +1593,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::MEDIAN );
+                        gum::prm::PRMAggregate<double>::AggregateType::MEDIAN );
     }
 
     void testMedianAggregateArray() {
@@ -1641,9 +1641,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::MEDIAN );
+                        gum::prm::PRMAggregate<double>::AggregateType::MEDIAN );
     }
 
     void testAmplitudeAggregate() {
@@ -1687,9 +1687,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::AMPLITUDE );
+                        gum::prm::PRMAggregate<double>::AggregateType::AMPLITUDE );
     }
 
     void testAmplitudeAggregateArray() {
@@ -1735,9 +1735,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::AMPLITUDE );
+                        gum::prm::PRMAggregate<double>::AggregateType::AMPLITUDE );
     }
 
     void testCountAggregate() {
@@ -1781,9 +1781,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::COUNT );
+                        gum::prm::PRMAggregate<double>::AggregateType::COUNT );
     }
 
     void testCountAggregateArray() {
@@ -1829,9 +1829,9 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::ClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
-          static_cast<const gum::prm::Aggregate<double>&>( isWorking );
+          static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
       TS_ASSERT_EQUALS( agg.agg_type(),
-                        gum::prm::Aggregate<double>::AggregateType::COUNT );
+                        gum::prm::PRMAggregate<double>::AggregateType::COUNT );
     }
 
     void testOrAggregateWithErrors1() {

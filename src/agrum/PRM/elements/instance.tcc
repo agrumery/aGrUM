@@ -84,7 +84,7 @@ namespace gum {
         __copyAttributeCPF( __nodeIdMap[( *attr ).id()] );
       }
 
-      // For Aggregate<GUM_SCALAR> we add parents
+      // For PRMAggregate<GUM_SCALAR> we add parents
       for ( const auto agg : type().aggregates() ) {
         Attribute<GUM_SCALAR>& attr = get( agg->safeName() );
 
@@ -231,7 +231,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void
-    Instance<GUM_SCALAR>::__copyAggregates( Aggregate<GUM_SCALAR>* source ) {
+    Instance<GUM_SCALAR>::__copyAggregates( PRMAggregate<GUM_SCALAR>* source ) {
       auto attr = new ScalarAttribute<GUM_SCALAR>(
           source->name(), source->type(), source->buildImpl() );
       GUM_ASSERT( &( attr->type().variable() ) !=

@@ -54,9 +54,9 @@ namespace gum {
      *        the last gum::prm::ClassElement<GUM_SCALAR> an gum::prm::Attribute
      *or
      *an
-     *        gum::prm::Aggregate.
+     *        gum::prm::PRMAggregate.
      *
-     * A SlotChain behaves as an gum::prm::Attribute or an gum::prm::Aggregate
+     * A SlotChain behaves as an gum::prm::Attribute or an gum::prm::PRMAggregate
      * (depending the gum::prm::ClassElement<GUM_SCALAR> type of it's last
      *element)
      *regarding
@@ -76,7 +76,7 @@ namespace gum {
       /** @brief Default constructor.
        *
        * Chain's n-1 first elements must be ReferenceSlot and the last element
-       * must either be an Attribute or an Aggregate.
+       * must either be an Attribute or an PRMAggregate.
        *
        * Warning: the last element in chain is copied !
        *
@@ -95,7 +95,7 @@ namespace gum {
       /** @brief Tweak constructor.
        *
        * Chain's n-1 first elements must be ReferenceSlot and the last element
-       * must either be an Attribute or an Aggregate.
+       * must either be an Attribute or an PRMAggregate.
        *
        * Warning: the last element in chain is copied !
        *
@@ -156,11 +156,11 @@ namespace gum {
       const ClassElementContainer<GUM_SCALAR>& end() const;
 
       /// Returns the last element of the slot chain, typically this is an
-      /// gum::Attribute or a gum::Aggregate.
+      /// gum::Attribute or a gum::PRMAggregate.
       ClassElement<GUM_SCALAR>& lastElt();
 
       /// Returns the last element of the slot chain, typically this is an
-      /// gum::Attribute or a gum::Aggregate.
+      /// gum::Attribute or a gum::PRMAggregate.
       const ClassElement<GUM_SCALAR>& lastElt() const;
 
       /// Return the sequence representing the chain of elements in this

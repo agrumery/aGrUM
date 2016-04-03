@@ -118,9 +118,9 @@ namespace gum {
         }
 
         case ClassElement<GUM_SCALAR>::prm_aggregate: {
-          const Aggregate<GUM_SCALAR>* c_agg =
-              static_cast<const Aggregate<GUM_SCALAR>*>( __chain->back() );
-          Aggregate<GUM_SCALAR>* agg = new Aggregate<GUM_SCALAR>(
+          const PRMAggregate<GUM_SCALAR>* c_agg =
+              static_cast<const PRMAggregate<GUM_SCALAR>*>( __chain->back() );
+          PRMAggregate<GUM_SCALAR>* agg = new PRMAggregate<GUM_SCALAR>(
               c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->id() );
           new_elt = agg;
           break;

@@ -197,7 +197,7 @@ namespace gum {
 
       Potential<GUM_SCALAR>*
       __getAggPotential( const Instance<GUM_SCALAR>* i,
-                         const Aggregate<GUM_SCALAR>* agg );
+                         const PRMAggregate<GUM_SCALAR>* agg );
 
       void __initLiftedNodes( const Class<GUM_SCALAR>& c );
       std::string __trim( const std::string& s );

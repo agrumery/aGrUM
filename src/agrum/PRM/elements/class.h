@@ -196,11 +196,11 @@ namespace gum {
       HashTable<std::string, const Parameter<GUM_SCALAR>*> scope() const;
 
       /**
-       * Returns the set of Aggregate<GUM_SCALAR> of this Class<GUM_SCALAR>.
-       * @return Returns the set of Aggregate<GUM_SCALAR> of this
+       * Returns the set of PRMAggregate<GUM_SCALAR> of this Class<GUM_SCALAR>.
+       * @return Returns the set of PRMAggregate<GUM_SCALAR> of this
        * Class<GUM_SCALAR>.
        */
-      const Set<Aggregate<GUM_SCALAR>*>& aggregates() const;
+      const Set<PRMAggregate<GUM_SCALAR>*>& aggregates() const;
 
       /**
        * Returns the set of ReferenceSlot<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -348,7 +348,7 @@ namespace gum {
       Set<ReferenceSlot<GUM_SCALAR>*> __referenceSlots;
 
       /// The sequence of aggregate.
-      Set<Aggregate<GUM_SCALAR>*> __aggregates;
+      Set<PRMAggregate<GUM_SCALAR>*> __aggregates;
 
       /// The set of gum::SlotChain<GUM_SCALAR>s
       Set<SlotChain<GUM_SCALAR>*> __slotChains;
@@ -420,7 +420,7 @@ namespace gum {
                                 Attribute<GUM_SCALAR>* overloaded );
 
       /// Overloads an aggregate.
-      void __overloadAggregate( Aggregate<GUM_SCALAR>* overloader,
+      void __overloadAggregate( PRMAggregate<GUM_SCALAR>* overloader,
                                 ClassElement<GUM_SCALAR>* overloaded );
 
       /// Overloads a reference slot.

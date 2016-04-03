@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::Aggregate.
+ * @brief Headers of gum::PRMAggregate.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -36,10 +36,10 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class gum::Aggregate aggregate.h <agrum/PRM/elements/aggregate.h>
+     * @class gum::PRMAggregate aggregate.h <agrum/PRM/elements/aggregate.h>
      * @brief Defines an aggregate in a PRM.
      *
-     * An Aggregate is defined by its type, and by the slot chain on which it
+     * An PRMAggregate is defined by its type, and by the slot chain on which it
      * is applied.
      *
      * The name of an aggregate is always of the form:
@@ -54,7 +54,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class Aggregate : public ClassElement<GUM_SCALAR> {
+    class PRMAggregate : public ClassElement<GUM_SCALAR> {
       friend class Class<GUM_SCALAR>;
 
       public:
@@ -123,7 +123,7 @@ namespace gum {
        * @param rvType The random variable type of this aggregate, which is
        * copied.
        */
-      Aggregate( const std::string& name,
+      PRMAggregate( const std::string& name,
                  AggregateType aggType,
                  const Type<GUM_SCALAR>& rvType );
 
@@ -135,13 +135,13 @@ namespace gum {
        * copied.
        * @param label The index of the label on which this aggregate applies.
        */
-      Aggregate( const std::string& name,
+      PRMAggregate( const std::string& name,
                  AggregateType aggType,
                  const Type<GUM_SCALAR>& rvType,
                  Idx label );
 
       /// Destructor.
-      virtual ~Aggregate();
+      virtual ~PRMAggregate();
 
       /// @}
       // ========================================================================
@@ -193,7 +193,7 @@ namespace gum {
 
       /**
        * Returns a pointer over an empty gum::MultiDimImplementation of the good
-       * type for this Aggregate.
+       * type for this PRMAggregate.
        *
        * This should be use when manipulating instantiations of aggregates.
        */
@@ -208,10 +208,10 @@ namespace gum {
       /// @{
 
       /// Copy constructor. Don't use it.
-      Aggregate( const Aggregate& source );
+      PRMAggregate( const PRMAggregate& source );
 
       /// Copy operator. Don't use it.
-      Aggregate& operator=( const Aggregate& source );
+      PRMAggregate& operator=( const PRMAggregate& source );
 
       /// @}
       // ========================================================================
@@ -235,8 +235,8 @@ namespace gum {
     };
 
 
-    extern template class Aggregate<float>;
-    extern template class Aggregate<double>;
+    extern template class PRMAggregate<float>;
+    extern template class PRMAggregate<double>;
 
   } /* namespace prm */
 }  // namespace gum

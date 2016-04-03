@@ -131,8 +131,8 @@ namespace gum {
       const Set<Attribute<GUM_SCALAR>*>& attributes() const;
 
       /**
-       * Returns the set of Aggregate of this Class<GUM_SCALAR>.
-       * @return Returns the set of Aggregate of this Class<GUM_SCALAR>.
+       * Returns the set of PRMAggregate of this Class<GUM_SCALAR>.
+       * @return Returns the set of PRMAggregate of this Class<GUM_SCALAR>.
        */
       const Set<ReferenceSlot<GUM_SCALAR>*>& referenceSlots() const;
 

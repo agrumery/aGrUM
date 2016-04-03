@@ -138,7 +138,7 @@ namespace gum {
         const Instance<GUM_SCALAR>& instance,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( const auto node : instance.type().dag() ) {
-        // Working a Class<GUM_SCALAR> level because Aggregate<GUM_SCALAR> are
+        // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR> are
         // instantiated as Attribute<GUM_SCALAR> in an Instance<GUM_SCALAR>
         switch ( instance.type().get( node ).elt_type() ) {
           case ClassElement<GUM_SCALAR>::prm_attribute: {
@@ -182,47 +182,47 @@ namespace gum {
         factory.addModality( agg_var.label( i ) );
       }
 
-      const Aggregate<GUM_SCALAR>& agg =
-          static_cast<const Aggregate<GUM_SCALAR>&>( elt );
+      const PRMAggregate<GUM_SCALAR>& agg =
+          static_cast<const PRMAggregate<GUM_SCALAR>&>( elt );
 
       switch ( agg.agg_type() ) {
-        case Aggregate<GUM_SCALAR>::AggregateType::MIN: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::MIN: {
           factory.setVariableCPTImplementation(
               new aggregator::Min<GUM_SCALAR>() );
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::MAX: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::MAX: {
           factory.setVariableCPTImplementation(
               new aggregator::Max<GUM_SCALAR>() );
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::EXISTS: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::EXISTS: {
           factory.setVariableCPTImplementation(
               new aggregator::Exists<GUM_SCALAR>( agg.label() ) );
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::FORALL: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::FORALL: {
           factory.setVariableCPTImplementation(
               new aggregator::Forall<GUM_SCALAR>( agg.label() ) );
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::COUNT: {
           factory.setVariableCPTImplementation(
               new aggregator::Count<GUM_SCALAR>( agg.label() ) );
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::MEDIAN: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::MEDIAN: {
           factory.setVariableCPTImplementation(
               new aggregator::Median<GUM_SCALAR>() );
           break;
         }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::AMPLITUDE: {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::AMPLITUDE: {
           factory.setVariableCPTImplementation(
               new aggregator::Amplitude<GUM_SCALAR>() );
           break;

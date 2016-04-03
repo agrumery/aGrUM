@@ -1043,23 +1043,23 @@ namespace gum {
 
         bool ok = false;
 
-        switch ( gum::prm::Aggregate<GUM_SCALAR>::str2enum(
+        switch ( gum::prm::PRMAggregate<GUM_SCALAR>::str2enum(
             agg.aggregateType().label() ) ) {
 
-          case Aggregate<GUM_SCALAR>::AggregateType::MIN:
-          case Aggregate<GUM_SCALAR>::AggregateType::MAX:
-          case Aggregate<GUM_SCALAR>::AggregateType::AMPLITUDE:
-          case Aggregate<GUM_SCALAR>::AggregateType::MEDIAN:
-          case Aggregate<GUM_SCALAR>::AggregateType::OR:
-          case Aggregate<GUM_SCALAR>::AggregateType::AND: {
+          case PRMAggregate<GUM_SCALAR>::AggregateType::MIN:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::MAX:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::AMPLITUDE:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::MEDIAN:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::OR:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::AND: {
 
             ok = __checkParametersNumber( agg, 0 );
             break;
           }
 
-          case Aggregate<GUM_SCALAR>::AggregateType::FORALL:
-          case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
-          case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
+          case PRMAggregate<GUM_SCALAR>::AggregateType::FORALL:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::EXISTS:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::COUNT: {
 
             ok = __checkParametersNumber( agg, 1 );
             break;
@@ -1073,12 +1073,12 @@ namespace gum {
         }
 
         // Checking parameters type
-        switch ( gum::prm::Aggregate<GUM_SCALAR>::str2enum(
+        switch ( gum::prm::PRMAggregate<GUM_SCALAR>::str2enum(
             agg.aggregateType().label() ) ) {
 
-          case Aggregate<GUM_SCALAR>::AggregateType::FORALL:
-          case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
-          case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
+          case PRMAggregate<GUM_SCALAR>::AggregateType::FORALL:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::EXISTS:
+          case PRMAggregate<GUM_SCALAR>::AggregateType::COUNT: {
 
             ok = __checkParameterValue( agg, *t );
             break;

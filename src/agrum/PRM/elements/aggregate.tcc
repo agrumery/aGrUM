@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of gum::Aggregate
+ * @brief Inline implementation of gum::PRMAggregate
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -41,20 +41,20 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR>::Aggregate( const std::string& name,
+    PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
                                       AggregateType aggType,
                                       const Type<GUM_SCALAR>& rvType )
         : ClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new Type<GUM_SCALAR>( rvType ) )
         , __label( nullptr ) {
-      GUM_CONSTRUCTOR( Aggregate );
+      GUM_CONSTRUCTOR( PRMAggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
     }
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR>::Aggregate( const std::string& name,
+    PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
                                       AggregateType aggType,
                                       const Type<GUM_SCALAR>& rvType,
                                       Idx label )
@@ -62,76 +62,76 @@ namespace gum {
         , __agg_type( aggType )
         , __type( new Type<GUM_SCALAR>( rvType ) )
         , __label( new Idx( label ) ) {
-      GUM_CONSTRUCTOR( Aggregate );
+      GUM_CONSTRUCTOR( PRMAggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
     }
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR>::~Aggregate() {
-      GUM_DESTRUCTOR( Aggregate );
+    PRMAggregate<GUM_SCALAR>::~PRMAggregate() {
+      GUM_DESTRUCTOR( PRMAggregate );
       delete __type;
       if ( __label ) delete __label;
     }
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR>::Aggregate( const Aggregate<GUM_SCALAR>& source )
+    PRMAggregate<GUM_SCALAR>::PRMAggregate( const PRMAggregate<GUM_SCALAR>& source )
         : ClassElement<GUM_SCALAR>( source )
         , __agg_type( source.__agg_type )
         , __type( new Type<GUM_SCALAR>( source.type() ) )
         , __label( source.__label ) {
-      GUM_CONS_CPY( Aggregate );
+      GUM_CONS_CPY( PRMAggregate );
       GUM_ERROR( FatalError,
-                 "illegal call to gum::Aggregate copy constructor." );
+                 "illegal call to gum::PRMAggregate copy constructor." );
     }
 
     template <typename GUM_SCALAR>
-    Aggregate<GUM_SCALAR>& Aggregate<GUM_SCALAR>::
-    operator=( const Aggregate<GUM_SCALAR>& source ) {
-      GUM_ERROR( FatalError, "illegal call to gum::Aggregate copy operator." );
+    PRMAggregate<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::
+    operator=( const PRMAggregate<GUM_SCALAR>& source ) {
+      GUM_ERROR( FatalError, "illegal call to gum::PRMAggregate copy operator." );
     }
 
     template <typename GUM_SCALAR>
     INLINE typename ClassElement<GUM_SCALAR>::ClassElementType
-    Aggregate<GUM_SCALAR>::elt_type() const {
+    PRMAggregate<GUM_SCALAR>::elt_type() const {
       return this->prm_aggregate;
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename Aggregate<GUM_SCALAR>::AggregateType
-    Aggregate<GUM_SCALAR>::agg_type() const {
+    INLINE typename PRMAggregate<GUM_SCALAR>::AggregateType
+    PRMAggregate<GUM_SCALAR>::agg_type() const {
       return __agg_type;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Aggregate<GUM_SCALAR>::label() const {
+    INLINE Idx PRMAggregate<GUM_SCALAR>::label() const {
       if ( __label ) return *__label;
       GUM_ERROR( OperationNotAllowed, "no label defined for this aggregate" );
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR>& Aggregate<GUM_SCALAR>::type() {
+    INLINE Type<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::type() {
       return *__type;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR>& Aggregate<GUM_SCALAR>::type() const {
+    INLINE const Type<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::type() const {
       return *__type;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Potential<GUM_SCALAR>& Aggregate<GUM_SCALAR>::cpf() {
+    INLINE Potential<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::cpf() {
       GUM_ERROR( OperationNotAllowed, "This is an aggregate." );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Potential<GUM_SCALAR>& Aggregate<GUM_SCALAR>::cpf() const {
+    INLINE const Potential<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::cpf() const {
       GUM_ERROR( OperationNotAllowed, "This is an aggregate." );
     }
 
     template <typename GUM_SCALAR>
     INLINE MultiDimImplementation<GUM_SCALAR>*
-    Aggregate<GUM_SCALAR>::buildImpl() const {
+    PRMAggregate<GUM_SCALAR>::buildImpl() const {
       switch ( agg_type() ) {
         case AggregateType::MIN:
           return new aggregator::Min<GUM_SCALAR>();
@@ -160,22 +160,22 @@ namespace gum {
     // See gum::ClassElement<GUM_SCALAR>::_addParent().
     template <typename GUM_SCALAR>
     INLINE void
-    Aggregate<GUM_SCALAR>::addParent( const ClassElement<GUM_SCALAR>& elt ) {}
+    PRMAggregate<GUM_SCALAR>::addParent( const ClassElement<GUM_SCALAR>& elt ) {}
 
     // See gum::ClassElement<GUM_SCALAR>::_addChild().
     template <typename GUM_SCALAR>
     INLINE void
-    Aggregate<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {}
+    PRMAggregate<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>* Aggregate<GUM_SCALAR>::getCastDescendant() const {
+    Attribute<GUM_SCALAR>* PRMAggregate<GUM_SCALAR>::getCastDescendant() const {
       ScalarAttribute<GUM_SCALAR>* cast = 0;
 
       try {
         cast = new ScalarAttribute<GUM_SCALAR>( this->name(), type().superType() );
       } catch ( NotFound& ) {
         GUM_ERROR( OperationNotAllowed,
-                   "this Aggregate can not have cast descendant" );
+                   "this PRMAggregate can not have cast descendant" );
       }
 
       cast->addParent( *this );
