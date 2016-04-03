@@ -42,7 +42,7 @@ namespace gum {
      * @class PRMInterface interface.h <agrum/PRM/interface.h>
      * @brief An PRMInterface is implemented by a Class<GUM_SCALAR> and defines a
      *set of
-     *        ReferenceSlot<GUM_SCALAR> and PRMAttribute<GUM_SCALAR> which the
+     *        PRMReferenceSlot<GUM_SCALAR> and PRMAttribute<GUM_SCALAR> which the
      *implementing Class<GUM_SCALAR> must contain.
      *
      * @see PRM Class<GUM_SCALAR> PRMClassElement<GUM_SCALAR>
@@ -134,7 +134,7 @@ namespace gum {
        * Returns the set of PRMAggregate of this Class<GUM_SCALAR>.
        * @return Returns the set of PRMAggregate of this Class<GUM_SCALAR>.
        */
-      const Set<ReferenceSlot<GUM_SCALAR>*>& referenceSlots() const;
+      const Set<PRMReferenceSlot<GUM_SCALAR>*>& referenceSlots() const;
 
       /// See
       /// gum::prm::PRMClassElementContainer<GUM_SCALAR>::add(PRMClassElement<GUM_SCALAR>*).
@@ -318,8 +318,8 @@ namespace gum {
       /// The sequence of PRMAttribute<GUM_SCALAR>s.
       Set<PRMAttribute<GUM_SCALAR>*> __attributes;
 
-      /// The sequence of ReferenceSlot<GUM_SCALAR>.
-      Set<ReferenceSlot<GUM_SCALAR>*> __referenceSlots;
+      /// The sequence of PRMReferenceSlot<GUM_SCALAR>.
+      Set<PRMReferenceSlot<GUM_SCALAR>*> __referenceSlots;
 
       /// @}
       // ========================================================================
@@ -356,8 +356,8 @@ namespace gum {
       void __overloadAttribute( PRMAttribute<GUM_SCALAR>* overloader,
                                 PRMAttribute<GUM_SCALAR>* overloaded );
 
-      void __overloadReferenceSlot( ReferenceSlot<GUM_SCALAR>* overloader,
-                                    ReferenceSlot<GUM_SCALAR>* overloaded );
+      void __overloadReferenceSlot( PRMReferenceSlot<GUM_SCALAR>* overloader,
+                                    PRMReferenceSlot<GUM_SCALAR>* overloaded );
 
       void __addCastDescendants( PRMAttribute<GUM_SCALAR>* start,
                                  PRMAttribute<GUM_SCALAR>* end );

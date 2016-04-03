@@ -87,7 +87,7 @@ namespace gum_tests {
       std::string expected;
       if ( ClassElt::isReferenceSlot( elt ) ) {
         expected = gum::prm::PRMObject::LEFT_CAST() +
-                   static_cast<const gum::prm::ReferenceSlot<double>&>( elt )
+                   static_cast<const gum::prm::PRMReferenceSlot<double>&>( elt )
                        .slotType()
                        .name() +
                    gum::prm::PRMObject::RIGHT_CAST() + elt.name();

@@ -449,7 +449,7 @@ namespace gum {
             }
 
             auto real_ref =
-                static_cast<const ReferenceSlot<GUM_SCALAR>*>( &elt );
+                static_cast<const PRMReferenceSlot<GUM_SCALAR>*>( &elt );
 
             if ( slot_type->name() == real_ref->slotType().name() ) {
 
@@ -884,7 +884,7 @@ namespace gum {
           } else {
             // should be a reference slot
 
-            auto ref = dynamic_cast<const ReferenceSlot<GUM_SCALAR>*>( elt );
+            auto ref = dynamic_cast<const PRMReferenceSlot<GUM_SCALAR>*>( elt );
             if ( ref ) {
               current = &( ref->slotType() );
               // Links are seperated by dots, so we need to skip the next one

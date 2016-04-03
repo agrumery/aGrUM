@@ -61,7 +61,7 @@ namespace gum {
                                      const std::string& ref_name ) {
       PRMInstance<GUM_SCALAR>* u = nullptr;
       PRMInstance<GUM_SCALAR>* v = nullptr;
-      ReferenceSlot<GUM_SCALAR>* ref = nullptr;
+      PRMReferenceSlot<GUM_SCALAR>* ref = nullptr;
 
       try {
         u = __nameMap[u_name];
@@ -74,7 +74,7 @@ namespace gum {
         PRMClassElement<GUM_SCALAR>& elt = u->type().get( ref_name );
 
         if ( elt.elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) {
-          ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( &elt );
+          ref = static_cast<PRMReferenceSlot<GUM_SCALAR>*>( &elt );
         } else {
           GUM_ERROR( WrongClassElement,
                      "the given name does not match a "

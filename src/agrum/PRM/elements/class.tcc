@@ -168,7 +168,7 @@ namespace gum {
 
         // Copying reference slots
         for ( const auto c_refslot : __superClass->__referenceSlots ) {
-          auto ref = new ReferenceSlot<GUM_SCALAR>(
+          auto ref = new PRMReferenceSlot<GUM_SCALAR>(
               c_refslot->name(),
               const_cast<PRMClassElementContainer<GUM_SCALAR>&>(
                   c_refslot->slotType() ),
@@ -280,7 +280,7 @@ namespace gum {
           // Because of aggregators, some slotchains may exists already
           if ( !( __nameMap.exists( c_sc->name() ) &&
                     __nameMap.exists( c_sc->safeName() ) ) ) {
-            // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
+            // We just need to change the first PRMReferenceSlot<GUM_SCALAR> in the
             // chain
             auto chain = c_sc->chain();
 
@@ -410,7 +410,7 @@ namespace gum {
 
         // Copying reference slots
         for ( const auto c_refslot : c.__referenceSlots ) {
-          ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR>(
+          PRMReferenceSlot<GUM_SCALAR>* ref = new PRMReferenceSlot<GUM_SCALAR>(
               c_refslot->name(),
               const_cast<PRMClassElementContainer<GUM_SCALAR>&>(
                   c_refslot->slotType() ),
@@ -429,7 +429,7 @@ namespace gum {
 
         // Copying slot chains
         for ( const auto c_slotchain : c.__slotChains ) {
-          // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
+          // We just need to change the first PRMReferenceSlot<GUM_SCALAR> in the
           // chain
           Sequence<PRMClassElement<GUM_SCALAR>*> chain( c_slotchain->chain() );
 
@@ -678,8 +678,8 @@ namespace gum {
         }
 
         case PRMClassElement<GUM_SCALAR>::prm_refslot: {
-          ReferenceSlot<GUM_SCALAR>* ref =
-              static_cast<ReferenceSlot<GUM_SCALAR>*>( elt );
+          PRMReferenceSlot<GUM_SCALAR>* ref =
+              static_cast<PRMReferenceSlot<GUM_SCALAR>*>( elt );
           __referenceSlots.insert( ref );
           // Updating ref's id if ref implements an interface
           try {
@@ -690,7 +690,7 @@ namespace gum {
                   GUM_ERROR( OperationNotAllowed,
                              "Class does not respect it's interface" );
                 }
-                auto& i_ref = static_cast<ReferenceSlot<GUM_SCALAR>&>( i_elt );
+                auto& i_ref = static_cast<PRMReferenceSlot<GUM_SCALAR>&>( i_elt );
                 if ( ! ref->slotType().isSubTypeOf( i_ref.slotType() ) ) {
                   GUM_ERROR(
                       OperationNotAllowed,
@@ -817,11 +817,11 @@ namespace gum {
 
         case PRMClassElement<GUM_SCALAR>::prm_refslot: {
           // __checkOverloadLegality guaranties that overloaded is a
-          // ReferenceSlot<GUM_SCALAR>
+          // PRMReferenceSlot<GUM_SCALAR>
           auto overloader_ref =
-              static_cast<ReferenceSlot<GUM_SCALAR>*>( overloader );
+              static_cast<PRMReferenceSlot<GUM_SCALAR>*>( overloader );
           auto overloaded_ref =
-              static_cast<ReferenceSlot<GUM_SCALAR>*>( overloaded );
+              static_cast<PRMReferenceSlot<GUM_SCALAR>*>( overloaded );
           __overloadReference( overloader_ref, overloaded_ref );
           break;
         }
@@ -877,8 +877,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMClass<GUM_SCALAR>::__overloadReference(
-        ReferenceSlot<GUM_SCALAR>* overloader,
-        ReferenceSlot<GUM_SCALAR>* overloaded ) {
+        PRMReferenceSlot<GUM_SCALAR>* overloader,
+        PRMReferenceSlot<GUM_SCALAR>* overloaded ) {
       // Adding overloading reference
       overloader->setId( overloaded->id() );
       __nodeIdMap[overloader->id()] = overloader;
@@ -886,7 +886,7 @@ namespace gum {
       __nameMap.insert( overloader->safeName(), overloader );
       __referenceSlots.insert( overloader );
       SlotChain<GUM_SCALAR>* sc = 0;
-      ReferenceSlot<GUM_SCALAR>* ref = 0;
+      PRMReferenceSlot<GUM_SCALAR>* ref = 0;
       PRMClassElement<GUM_SCALAR>* next = 0;
       std::vector<SlotChain<GUM_SCALAR> *> toRemove, toAdd;
 
@@ -903,7 +903,7 @@ namespace gum {
           auto elt = ++( slotchain->chain().begin() );
 
           while ( elt != slotchain->chain().end() ) {
-            ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( seq.back() );
+            ref = static_cast<PRMReferenceSlot<GUM_SCALAR>*>( seq.back() );
             next = &( ref->slotType().get( ( *elt )->name() ) );
             seq.insert( next );
             ++elt;
@@ -915,7 +915,7 @@ namespace gum {
           // with the correct type
           if ( seq.back()->type() != slotchain->lastElt().type() ) {
             seq.erase( seq.back() );
-            seq.insert( &( static_cast<ReferenceSlot<GUM_SCALAR>*>( seq.back() )
+            seq.insert( &( static_cast<PRMReferenceSlot<GUM_SCALAR>*>( seq.back() )
                                ->slotType()
                                .get( slotchain->lastElt().safeName() ) ) );
             std::string sc_name;
@@ -965,7 +965,7 @@ namespace gum {
         __slotChains.insert( sc );
       }
 
-      // Removing overloaded ReferenceSlot<GUM_SCALAR>
+      // Removing overloaded PRMReferenceSlot<GUM_SCALAR>
       __referenceSlots.erase( overloaded );
       __nameMap.erase( overloaded->safeName() );
       delete overloaded;
@@ -1136,7 +1136,7 @@ namespace gum {
       std::string prefix;
       const PRMClass<GUM_SCALAR>* c;
 
-      ParamScopeData( std::string s, const ReferenceSlot<GUM_SCALAR>& ref ) {
+      ParamScopeData( std::string s, const PRMReferenceSlot<GUM_SCALAR>& ref ) {
         prefix = s + ref.name() + ".";
         c = static_cast<const PRMClass<GUM_SCALAR>*>( &( ref.slotType() ) );
       }
@@ -1192,7 +1192,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<ReferenceSlot<GUM_SCALAR>*>&
+    INLINE const Set<PRMReferenceSlot<GUM_SCALAR>*>&
     PRMClass<GUM_SCALAR>::referenceSlots() const {
       return __referenceSlots;
     }
@@ -1276,10 +1276,10 @@ namespace gum {
         case PRMClassElement<GUM_SCALAR>::prm_refslot: {
 
           const auto& new_slot_type =
-              static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloader )
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>*>( overloader )
                   ->slotType();
           const auto& old_slot_type =
-              static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloaded )
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>*>( overloaded )
                   ->slotType();
 
           if ( ! new_slot_type.isSubTypeOf( old_slot_type ) ) {

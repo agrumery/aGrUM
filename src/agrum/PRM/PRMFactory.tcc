@@ -201,11 +201,11 @@ namespace gum {
                   if ( c->get( name ).elt_type() ==
                        PRMClassElement<GUM_SCALAR>::prm_refslot ) {
 
-                    const ReferenceSlot<GUM_SCALAR>& ref_i =
-                        static_cast<const ReferenceSlot<GUM_SCALAR>&>(
+                    const PRMReferenceSlot<GUM_SCALAR>& ref_i =
+                        static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
                             i->get( name ) );
-                    const ReferenceSlot<GUM_SCALAR>& ref_this =
-                        static_cast<const ReferenceSlot<GUM_SCALAR>&>(
+                    const PRMReferenceSlot<GUM_SCALAR>& ref_this =
+                        static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
                             c->get( name ) );
 
                     if ( ! ref_this.slotType().isSubTypeOf(
@@ -821,8 +821,8 @@ namespace gum {
         }
       }
 
-      ReferenceSlot<GUM_SCALAR>* ref =
-          new ReferenceSlot<GUM_SCALAR>( name, *slotType, isArray );
+      PRMReferenceSlot<GUM_SCALAR>* ref =
+          new PRMReferenceSlot<GUM_SCALAR>( name, *slotType, isArray );
 
       try {
         owner->add( ref );
@@ -926,14 +926,14 @@ namespace gum {
       std::vector<std::string> v;
       decomposePath( name, v );
       PRMClassElementContainer<GUM_SCALAR>* current = start;
-      ReferenceSlot<GUM_SCALAR>* ref = 0;
+      PRMReferenceSlot<GUM_SCALAR>* ref = 0;
       Sequence<PRMClassElement<GUM_SCALAR>*> elts;
 
       for ( size_t i = 0; i < v.size(); ++i ) {
         try {
           switch ( current->get( v[i] ).elt_type() ) {
             case PRMClassElement<GUM_SCALAR>::prm_refslot:
-              ref = &( static_cast<ReferenceSlot<GUM_SCALAR>&>(
+              ref = &( static_cast<PRMReferenceSlot<GUM_SCALAR>&>(
                   current->get( v[i] ) ) );
               elts.insert( ref );
               current = &( /*const_cast<PRMClassElementContainer<GUM_SCALAR>&>*/ (

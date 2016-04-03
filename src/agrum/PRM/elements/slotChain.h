@@ -50,7 +50,7 @@ namespace gum {
      *gum::prm::PRMClassElement<GUM_SCALAR>
      *where
      *        the n-1 first gum::prm::PRMClassElement<GUM_SCALAR> are
-     *gum::prm::ReferenceSlot and
+     *gum::prm::PRMReferenceSlot and
      *        the last gum::prm::PRMClassElement<GUM_SCALAR> an gum::prm::PRMAttribute
      *or
      *an
@@ -75,7 +75,7 @@ namespace gum {
 
       /** @brief Default constructor.
        *
-       * Chain's n-1 first elements must be ReferenceSlot and the last element
+       * Chain's n-1 first elements must be PRMReferenceSlot and the last element
        * must either be an PRMAttribute or an PRMAggregate.
        *
        * Warning: the last element in chain is copied !
@@ -94,7 +94,7 @@ namespace gum {
 
       /** @brief Tweak constructor.
        *
-       * Chain's n-1 first elements must be ReferenceSlot and the last element
+       * Chain's n-1 first elements must be PRMReferenceSlot and the last element
        * must either be an PRMAttribute or an PRMAggregate.
        *
        * Warning: the last element in chain is copied !

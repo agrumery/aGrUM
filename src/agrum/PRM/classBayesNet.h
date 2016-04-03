@@ -42,7 +42,7 @@ namespace gum {
      *
      * This class filters PRMAttribute and PRMAggregate in a way it can be interpreted
      *as
-     * a IBayesNet. SlotChains and ReferenceSlot are not represented.
+     * a IBayesNet. SlotChains and PRMReferenceSlot are not represented.
      *
      * Remember that a ClassBayesNet<GUM_SCALAR> does not contain input nodes
      *parents

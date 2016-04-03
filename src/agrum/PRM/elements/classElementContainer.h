@@ -152,7 +152,7 @@ namespace gum {
        * You can only overload inherited PRMClassElement<GUM_SCALAR> and only if
        *elt is
        * a subtype of the inherited PRMClassElement<GUM_SCALAR>. Thus you can only
-       * overload ReferenceSlot and PRMAttribute. In the case of PRMAttribute you can
+       * overload PRMReferenceSlot and PRMAttribute. In the case of PRMAttribute you can
        * overload an inherited PRMAttribute even if they are of the same type: this
        *is
        * useful when you want to redefine the dependencies of an PRMAttribute or

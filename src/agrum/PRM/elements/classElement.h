@@ -116,7 +116,7 @@ namespace gum {
         }
       }
 
-      /// Returns true if obj_ptr is of type ReferenceSlot.
+      /// Returns true if obj_ptr is of type PRMReferenceSlot.
       static INLINE bool isReferenceSlot( const PRMClassElement& elt ) {
         return elt.elt_type() == prm_refslot;
       }
@@ -185,7 +185,7 @@ namespace gum {
        * Return a reference over the gum::Type of this class element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
        *                            any gum::Potential (like a
-       * gum::ReferenceSlot).
+       * gum::PRMReferenceSlot).
        */
       virtual Type<GUM_SCALAR>& type() = 0;
 
@@ -193,7 +193,7 @@ namespace gum {
        * Return a constant reference over the gum::Type of this class element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
        *                            any gum::Potential (like a
-       * gum::ReferenceSlot).
+       * gum::PRMReferenceSlot).
        */
       virtual const Type<GUM_SCALAR>& type() const = 0;
 
@@ -239,7 +239,7 @@ namespace gum {
       //  * Return a reference over the gum::Potential of this class element.
       //  * @throw OperationNotAllowed Raised if this class element doesn't have
       //  *                            any gum::Potential (like a
-      //  gum::ReferenceSlot).
+      //  gum::PRMReferenceSlot).
       //  */
       // virtual Potential<GUM_SCALAR>& cpf() = 0;
 
@@ -248,7 +248,7 @@ namespace gum {
        * element.
        * @throw OperationNotAllowed Raised if the class element doesn't have
        *                            any gum::Potential (like a
-       * gum::ReferenceSlot).
+       * gum::PRMReferenceSlot).
        */
       virtual const Potential<GUM_SCALAR>& cpf() const = 0;
 

@@ -216,20 +216,20 @@ namespace gum {
       /// @{
 
       /**
-       * @brief Add an PRMInstance<GUM_SCALAR> to a given ReferenceSlot,
+       * @brief Add an PRMInstance<GUM_SCALAR> to a given PRMReferenceSlot,
        *SlotChain<GUM_SCALAR> or
        *        output node.
        *
        * Three type of nodes can be associated with an PRMInstance<GUM_SCALAR>.
        *When an PRMInstance<GUM_SCALAR>
-       * is associated with a ReferenceSlot, it represents an arc in the
+       * is associated with a PRMReferenceSlot, it represents an arc in the
        * relational skeleton. For a SlotChain<GUM_SCALAR>, it is a placeholder
        *of referenced
        * PRMClassElement by this PRMInstance<GUM_SCALAR>. Finally, for an output node
        *it indicates
        * that an PRMInstance<GUM_SCALAR> has an PRMClassElement referring it.
        *
-       * @param id The NodeId of a ReferenceSlot of this PRMInstance<GUM_SCALAR>.
+       * @param id The NodeId of a PRMReferenceSlot of this PRMInstance<GUM_SCALAR>.
        * @param instance The instance added as references by id in this
        *PRMInstance<GUM_SCALAR>.
        *
@@ -243,14 +243,14 @@ namespace gum {
       void add( NodeId id, PRMInstance<GUM_SCALAR>& instance );
 
       /**
-       * @brief Fast access to the first instance in a ReferenceSlot or
+       * @brief Fast access to the first instance in a PRMReferenceSlot or
        *SlotChain<GUM_SCALAR>.
        *
        * This is equivalent to **(this->getInstance(id).begin()) and should be
        *use
-       * when dealing with non multiple ReferenceSlot or SlotChain<GUM_SCALAR>.
+       * when dealing with non multiple PRMReferenceSlot or SlotChain<GUM_SCALAR>.
        *
-       * @param id The NodeId of a ReferenceSlot or SlotChain<GUM_SCALAR> in
+       * @param id The NodeId of a PRMReferenceSlot or SlotChain<GUM_SCALAR> in
        *this PRMInstance<GUM_SCALAR>.
        *
        * @throw NotFound Raised if there is no PRMClassElement given id.
@@ -262,7 +262,7 @@ namespace gum {
       /**
        * @brief Returns the Set of PRMInstance<GUM_SCALAR> referenced by id.
        *
-       * @param id The NodeId of a ReferenceSlot or SlotChain<GUM_SCALAR> in
+       * @param id The NodeId of a PRMReferenceSlot or SlotChain<GUM_SCALAR> in
        *this.
        * @return Returns the Set of PRMInstance<GUM_SCALAR> referenced by id.
        *
@@ -324,7 +324,7 @@ namespace gum {
       const const_iterator& end() const;
 
       /**
-       * Nested class to iterate over ReferenceSlot and SlotChain<GUM_SCALAR>
+       * Nested class to iterate over PRMReferenceSlot and SlotChain<GUM_SCALAR>
        * instantiations.
        */
       class RefIterator {
@@ -357,22 +357,22 @@ namespace gum {
       /**
        * Returns an iterator at the beginning of the set of PRMInstance<GUM_SCALAR>
        *associated
-       * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>.
+       * to a given gum::prm::PRMReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>.
        *
-       * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>
+       * @param id A gum::prm::PRMReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>
        *in this
        *           PRMInstance<GUM_SCALAR> type.
        *
        * @throw NotFound Raised if no gum::prm::PRMClassElement in this
        *PRMInstance<GUM_SCALAR>
        *                 type matches id.
-       * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
+       * @throw WrongClassElement Raised if id is neither a PRMReferenceSlot or
        *                          SlotChain<GUM_SCALAR>.
        */
       RefIterator begin( NodeId id );
 
       /**
-       * Nested class to iterate over ReferenceSlot and SlotChain<GUM_SCALAR>
+       * Nested class to iterate over PRMReferenceSlot and SlotChain<GUM_SCALAR>
        * instantiations.
        */
       class RefConstIterator {
@@ -404,16 +404,16 @@ namespace gum {
       /**
        * Returns an iterator at the beginning of the set of PRMInstance<GUM_SCALAR>
        *associated
-       * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>.
+       * to a given gum::prm::PRMReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>.
        *
-       * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>
+       * @param id A gum::prm::PRMReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>
        *in this
        *           PRMInstance<GUM_SCALAR> type.
        *
        * @throw NotFound Raised if no gum::prm::PRMClassElement in this
        *PRMInstance<GUM_SCALAR>
        * type matches id.
-       * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
+       * @throw WrongClassElement Raised if id is neither a PRMReferenceSlot or
        * SlotChain<GUM_SCALAR>.
        */
       RefConstIterator begin( NodeId id ) const;
@@ -454,12 +454,12 @@ namespace gum {
       /**
        * @brief Add i as the inverse instantiation of name.
        *
-       * @param name Either an inverse ReferenceSlot or an inverse
+       * @param name Either an inverse PRMReferenceSlot or an inverse
        *SlotChain<GUM_SCALAR>.
        * @param i An inverse PRMInstance<GUM_SCALAR> added to name.
        *
        * @throw NotFound Raised if name does not match any PRMClassElement in this.
-       * @throw WrongClassElement Raised if name is not a ReferenceSlot nor a
+       * @throw WrongClassElement Raised if name is not a PRMReferenceSlot nor a
        *                          SlotChain<GUM_SCALAR>.
        * @throw TypeError Raised if i is not a valid subtype for name.
        */
@@ -527,7 +527,7 @@ namespace gum {
       /// gum::prm::PRMAggregate<GUM_SCALAR> of this PRMInstance<GUM_SCALAR>.
       NodeProperty<PRMAttribute<GUM_SCALAR>*> __nodeIdMap;
 
-      /// Mapping between the gum::prm::ReferenceSlot and
+      /// Mapping between the gum::prm::PRMReferenceSlot and
       /// gum::prm::SlotChain<GUM_SCALAR> in
       /// __type / and the PRMInstance<GUM_SCALAR> associated with it.
       NodeProperty<Set<PRMInstance<GUM_SCALAR>*>*> __referenceMap;

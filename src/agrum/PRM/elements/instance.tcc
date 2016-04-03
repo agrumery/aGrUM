@@ -163,8 +163,8 @@ namespace gum {
 
       switch ( elt->elt_type() ) {
         case PRMClassElement<GUM_SCALAR>::prm_refslot: {
-          ReferenceSlot<GUM_SCALAR>* ref =
-              static_cast<ReferenceSlot<GUM_SCALAR>*>( elt );
+          PRMReferenceSlot<GUM_SCALAR>* ref =
+              static_cast<PRMReferenceSlot<GUM_SCALAR>*>( elt );
 
           // Checking if instance's type is legal
           if ( not instance.type().isSubTypeOf( ref->slotType() ) ) {
@@ -175,7 +175,7 @@ namespace gum {
 
           // Checking the reference's size limit
           if ( __referenceMap.exists( id ) and
-               ( not static_cast<ReferenceSlot<GUM_SCALAR>&>( type().get( id ) )
+               ( not static_cast<PRMReferenceSlot<GUM_SCALAR>&>( type().get( id ) )
                          .isArray() ) and
                ( __referenceMap[id]->size() == 1 ) ) {
             GUM_ERROR( OutOfUpperBound,

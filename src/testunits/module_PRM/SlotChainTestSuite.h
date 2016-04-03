@@ -48,9 +48,9 @@ namespace gum_tests {
     gum::Sequence<gum::prm::PRMClassElement<double>*>* __stateChain;
 
     // these will be dispodes by their repsective class
-    gum::prm::ReferenceSlot<double>* __refI;
-    gum::prm::ReferenceSlot<double>* __refJ;
-    gum::prm::ReferenceSlot<double>* __refK;
+    gum::prm::PRMReferenceSlot<double>* __refI;
+    gum::prm::PRMReferenceSlot<double>* __refJ;
+    gum::prm::PRMReferenceSlot<double>* __refK;
     gum::prm::PRMAttribute<double>* __boolAttr;
     gum::prm::PRMAttribute<double>* __stateAttr;
 
@@ -61,11 +61,11 @@ namespace gum_tests {
       __B = new gum::prm::PRMClass<double>( "B" );
       __C = new gum::prm::PRMClass<double>( "C" );
 
-      __refI = new gum::prm::ReferenceSlot<double>( "refA", *__B );
+      __refI = new gum::prm::PRMReferenceSlot<double>( "refA", *__B );
       __A->add( __refI );
-      __refJ = new gum::prm::ReferenceSlot<double>( "refB", *__C );
+      __refJ = new gum::prm::PRMReferenceSlot<double>( "refB", *__C );
       __B->add( __refJ );
-      __refK = new gum::prm::ReferenceSlot<double>( "refK", *__C, true );
+      __refK = new gum::prm::PRMReferenceSlot<double>( "refK", *__C, true );
       __B->add( __refK );
 
       __boolean = gum::prm::Type<double>::boolean();

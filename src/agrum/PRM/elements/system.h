@@ -286,7 +286,7 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// @brief Method which ground ReferenceSlot of an PRMInstance and add arcs
+      /// @brief Method which ground PRMReferenceSlot of an PRMInstance and add arcs
       ///        in the IBayesNet.
       /// @param instance The PRMInstance grounded by this method.
       /// @param factory  The factory used to build the grounded IBayesNet.

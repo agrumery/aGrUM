@@ -52,7 +52,7 @@ namespace gum {
         } else {
           __isMultiple =
               __isMultiple or
-              static_cast<ReferenceSlot<GUM_SCALAR>*>( __chain->atPos( i ) )
+              static_cast<PRMReferenceSlot<GUM_SCALAR>*>( __chain->atPos( i ) )
                   ->isArray();
         }
       }
@@ -84,7 +84,7 @@ namespace gum {
       //  } else {
       //    __isMultiple =
       //        __isMultiple or
-      //        static_cast<ReferenceSlot<GUM_SCALAR>
+      //        static_cast<PRMReferenceSlot<GUM_SCALAR>
       //        *>(__chain->atPos(i))->isArray();
       //  }
       //}
@@ -182,7 +182,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE PRMClassElementContainer<GUM_SCALAR>& SlotChain<GUM_SCALAR>::end() {
-      return static_cast<ReferenceSlot<GUM_SCALAR>*>(
+      return static_cast<PRMReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
           ->slotType();
     }
@@ -190,7 +190,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE const PRMClassElementContainer<GUM_SCALAR>&
     SlotChain<GUM_SCALAR>::end() const {
-      return static_cast<ReferenceSlot<GUM_SCALAR>*>(
+      return static_cast<PRMReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
           ->slotType();
     }

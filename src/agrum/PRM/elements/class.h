@@ -203,11 +203,11 @@ namespace gum {
       const Set<PRMAggregate<GUM_SCALAR>*>& aggregates() const;
 
       /**
-       * Returns the set of ReferenceSlot<GUM_SCALAR> of this Class<GUM_SCALAR>.
-       * @return Returns the set of ReferenceSlot<GUM_SCALAR> of this
+       * Returns the set of PRMReferenceSlot<GUM_SCALAR> of this Class<GUM_SCALAR>.
+       * @return Returns the set of PRMReferenceSlot<GUM_SCALAR> of this
        * Class<GUM_SCALAR>.
        */
-      const Set<ReferenceSlot<GUM_SCALAR>*>& referenceSlots() const;
+      const Set<PRMReferenceSlot<GUM_SCALAR>*>& referenceSlots() const;
 
       /**
        * Returns the set of SlotChain<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -344,8 +344,8 @@ namespace gum {
       /// The sequence of PRMAttribute<GUM_SCALAR>s.
       Set<PRMAttribute<GUM_SCALAR>*> __attributes;
 
-      /// The sequence of ReferenceSlot<GUM_SCALAR>.
-      Set<ReferenceSlot<GUM_SCALAR>*> __referenceSlots;
+      /// The sequence of PRMReferenceSlot<GUM_SCALAR>.
+      Set<PRMReferenceSlot<GUM_SCALAR>*> __referenceSlots;
 
       /// The sequence of aggregate.
       Set<PRMAggregate<GUM_SCALAR>*> __aggregates;
@@ -424,8 +424,8 @@ namespace gum {
                                 PRMClassElement<GUM_SCALAR>* overloaded );
 
       /// Overloads a reference slot.
-      void __overloadReference( ReferenceSlot<GUM_SCALAR>* overloader,
-                                ReferenceSlot<GUM_SCALAR>* overloaded );
+      void __overloadReference( PRMReferenceSlot<GUM_SCALAR>* overloader,
+                                PRMReferenceSlot<GUM_SCALAR>* overloaded );
 
       /// Overloads a parameter.
       void __overloadParameter( PRMParameter<GUM_SCALAR>* overloader,

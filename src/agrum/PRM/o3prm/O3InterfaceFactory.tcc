@@ -294,7 +294,7 @@ namespace gum {
       O3InterfaceFactory<GUM_SCALAR>::__checkReferenceOverloadLegality(
           O3Interface& i, O3InterfaceElement& elt ) {
         const auto& real_i = __prm->interface( i.name().label() );
-        const auto& real_elt = static_cast<const ReferenceSlot<GUM_SCALAR>&>(
+        const auto& real_elt = static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
             real_i.get( elt.name().label() ) );
 
         auto sub_type = (const PRMClassElementContainer<GUM_SCALAR>*)nullptr;

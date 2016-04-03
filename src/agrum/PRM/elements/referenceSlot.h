@@ -33,17 +33,17 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class ReferenceSlot referenceSlot.h <agrum/PRM/referenceSlot.h>
-     * @brief A ReferenceSlot represent a relation between two
+     * @class PRMReferenceSlot referenceSlot.h <agrum/PRM/referenceSlot.h>
+     * @brief A PRMReferenceSlot represent a relation between two
      *        PRMClassElementContainer.
      *
      * A reference slot is a relation between two PRMClassElementContainer in a
      *PRM. A
-     * ReferenceSlot is considered as an element of a PRMClassElementContainer
+     * PRMReferenceSlot is considered as an element of a PRMClassElementContainer
      *which
      * slot type is a PRMClassElementContainer.
      *
-     * A ReferenceSlot is defined by it's slot type (i.e. it's range), it's
+     * A PRMReferenceSlot is defined by it's slot type (i.e. it's range), it's
      * PRMClassElementContainer (it's domain), it's name and if it is a multiple
      * reference (the isArray() flag).
      *
@@ -52,7 +52,7 @@ namespace gum {
      */
     // ==========================================================================
     template <typename GUM_SCALAR>
-    class ReferenceSlot : public PRMClassElement<GUM_SCALAR> {
+    class PRMReferenceSlot : public PRMClassElement<GUM_SCALAR> {
       public:
       // ========================================================================
       /// @name Protected constructors & destructor.
@@ -66,14 +66,14 @@ namespace gum {
        * @param type The type of this reference slot.
        * @param isArray Determine if this reference slot is multiple or not.
        */
-      ReferenceSlot( const std::string& name,
+      PRMReferenceSlot( const std::string& name,
                      PRMClassElementContainer<GUM_SCALAR>& type,
                      bool isArray = false );
 
       /**
        * Destructor.
        */
-      virtual ~ReferenceSlot();
+      virtual ~PRMReferenceSlot();
 
       /// @}
       // ========================================================================
@@ -112,7 +112,7 @@ namespace gum {
 
       /// @}
       // ========================================================================
-      /// @name Not allowed operations on a ReferenceSlot.
+      /// @name Not allowed operations on a PRMReferenceSlot.
       // ========================================================================
       /// @{
 
@@ -144,10 +144,10 @@ namespace gum {
       // @{
 
       /// Copy constructor. Don't use it.
-      ReferenceSlot( const ReferenceSlot& source );
+      PRMReferenceSlot( const PRMReferenceSlot& source );
 
       /// Copy operator. Don't use it.
-      ReferenceSlot& operator=( const ReferenceSlot& from );
+      PRMReferenceSlot& operator=( const PRMReferenceSlot& from );
 
       /// @}
       // ========================================================================
@@ -155,7 +155,7 @@ namespace gum {
       // ========================================================================
       // @{
 
-      /// The type of this ReferenceSlot.
+      /// The type of this PRMReferenceSlot.
       PRMClassElementContainer<GUM_SCALAR>& __slotType;
 
       /// Flag indicating if this slot is an array.
@@ -165,8 +165,8 @@ namespace gum {
     };
 
 
-    extern template class ReferenceSlot<float>;
-    extern template class ReferenceSlot<double>;
+    extern template class PRMReferenceSlot<float>;
+    extern template class PRMReferenceSlot<double>;
 
 
   } /* namespace prm */

@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::ReferenceSlot
+ * @brief Source implementation of gum::PRMReferenceSlot
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -33,8 +33,8 @@ namespace gum {
   namespace prm {
 
 
-    template class ReferenceSlot<float>;
-    template class ReferenceSlot<double>;
+    template class PRMReferenceSlot<float>;
+    template class PRMReferenceSlot<double>;
 
 
   } /* namespace prm */

@@ -668,7 +668,7 @@ namespace gum_tests {
       TS_ASSERT( foo.exists( "plop" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           foo.get( "plop" ) ) );
-      const auto& ref_plop = static_cast<const gum::prm::ReferenceSlot<double>&>(
+      const auto& ref_plop = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
           foo.get( "plop" ) );
       TS_ASSERT_EQUALS( &( ref_plop.slotType() ), &plop );
 
@@ -678,7 +678,7 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "plop" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "plop" ) ) );
-      const auto& ref_subplop = static_cast<const gum::prm::ReferenceSlot<double>&>(
+      const auto& ref_subplop = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
           bar.get( "plop" ) );
       TS_ASSERT_EQUALS( &( ref_subplop.slotType() ), &sub_plop );
     }

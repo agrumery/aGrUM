@@ -337,7 +337,7 @@ namespace gum {
           }
 
           const auto& real_ref =
-              static_cast<const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
 
           if ( real_ref.isArray() and
                __nameMap[ass.rightInstance().label()]->size().value() == 0 ) {
@@ -386,7 +386,7 @@ namespace gum {
           }
 
           const auto& real_ref =
-              static_cast<const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
 
           if ( not real_ref.isArray() ) {
 

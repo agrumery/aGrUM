@@ -681,7 +681,7 @@ namespace gum {
                           const std::vector<std::string>& label ) override;
       /// @}
       // ======================================================================
-      /// @name ReferenceSlot<GUM_SCALAR> construction methods.
+      /// @name PRMReferenceSlot<GUM_SCALAR> construction methods.
       // ======================================================================
       /// @{
 
@@ -942,7 +942,7 @@ namespace gum {
       /// Instantiate a slot chain in the given instance
       void __instantiateSlotChain( System<GUM_SCALAR>* model,
                                    PRMInstance<GUM_SCALAR>* inst,
-                                   ReferenceSlot<GUM_SCALAR>* ref,
+                                   PRMReferenceSlot<GUM_SCALAR>* ref,
                                    SlotChain<GUM_SCALAR>* sc );
 
       /// Fill seq with the sequence of instance build using inst as the
