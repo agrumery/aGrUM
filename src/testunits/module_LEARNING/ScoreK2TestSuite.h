@@ -74,8 +74,11 @@ namespace gum_tests {
       unsigned int id1 = score.addNodeSet( 3 );
       unsigned int id2 = score.addNodeSet( 1 );
       
+      TS_ASSERT_DELTA(score.score( id1 ), -996.781,0.01);
       TS_ASSERT_DELTA(score.score( id1 ), -996.781,0.05);
       
+      TS_ASSERT_DELTA(score.score( id1 ), -996.781 ,  0.01 );
+      TS_ASSERT_DELTA(score.score( id2 ), -3030.73 ,  0.01 );
       TS_ASSERT_DELTA(score.score( id1 ), -996.781 ,  0.05 );
       TS_ASSERT_DELTA(score.score( id2 ), -3030.73 ,  0.05 );
 
