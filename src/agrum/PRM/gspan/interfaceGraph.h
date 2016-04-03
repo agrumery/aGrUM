@@ -151,10 +151,10 @@ namespace gum {
        * @headerfile interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
        *
        * @brief This class represent the interface graph of a given
-       * gum::prm::System<GUM_SCALAR>.
+       * gum::prm::PRMSystem<GUM_SCALAR>.
        *
        * An interface graph is a labelled graph over the instances of a
-       * gum::prm::System<GUM_SCALAR>, where there exists an edge between two
+       * gum::prm::PRMSystem<GUM_SCALAR>, where there exists an edge between two
        * instance i and j if and only if their shared interface is nonempty.
        *
        * Labels assigned to edges and nodes in the interface graph are
@@ -168,7 +168,7 @@ namespace gum {
 
         public:
         /// Default constructor.
-        InterfaceGraph( const System<GUM_SCALAR>& sys );
+        InterfaceGraph( const PRMSystem<GUM_SCALAR>& sys );
 
         /// Copy constructor, proceeds with a shallow copy so for friends only.
         InterfaceGraph( const InterfaceGraph& source );
@@ -242,9 +242,9 @@ namespace gum {
         const EdgeData<GUM_SCALAR>& edge( NodeId u, NodeId v ) const;
 
         private:
-        /// The gum::prm::System<GUM_SCALAR> represented by this interface
+        /// The gum::prm::PRMSystem<GUM_SCALAR> represented by this interface
         /// graph.
-        const System<GUM_SCALAR>* __sys;
+        const PRMSystem<GUM_SCALAR>* __sys;
 
         /// The interface graph.
         UndiGraph __graph;

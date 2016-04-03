@@ -102,7 +102,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       InterfaceGraph<GUM_SCALAR>::InterfaceGraph(
-          const System<GUM_SCALAR>& sys )
+          const PRMSystem<GUM_SCALAR>& sys )
           : __sys( &sys )
           , __labels( new Bijection<Idx, LabelData*>() )
           , __counter( 0 )

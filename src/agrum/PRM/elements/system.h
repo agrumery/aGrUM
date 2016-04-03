@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of System.
+ * @brief Headers of PRMSystem.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -43,12 +43,12 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class System system.h <agrum/PRM/system.h>
-     * @brief A System is a container of PRMInstance and describe a relational
+     * @class PRMSystem system.h <agrum/PRM/system.h>
+     * @brief A PRMSystem is a container of PRMInstance and describe a relational
      *        skeleton.
      */
     template <typename GUM_SCALAR>
-    class System : public PRMObject {
+    class PRMSystem : public PRMObject {
       public:
       // ========================================================================
       /// @name Constructors & destructor.
@@ -56,10 +56,10 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      System( const std::string& name );
+      PRMSystem( const std::string& name );
 
       /// Destructor.
-      virtual ~System();
+      virtual ~PRMSystem();
 
       /// @}
       // ========================================================================
@@ -67,7 +67,7 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// Returns the relation skeleton of this System.
+      /// Returns the relation skeleton of this PRMSystem.
       const DiGraph& skeleton() const;
 
       /**
@@ -99,15 +99,15 @@ namespace gum {
       /// Returns the PRM type of this object.
       virtual PRMObject::PRMType obj_type() const;
 
-      /// Returns the number of PRMInstance in this System.
+      /// Returns the number of PRMInstance in this PRMSystem.
       Size size() const;
 
-      /// Retruns true either if name is an instance or an array in this System.
+      /// Retruns true either if name is an instance or an array in this PRMSystem.
       bool exists( const std::string& name ) const;
 
       /// Returns true if the given Class<GUM_SCALAR> has at least one PRMInstance
       /// in this
-      /// System.
+      /// PRMSystem.
       bool isInstantiated( const PRMClass<GUM_SCALAR>& c ) const;
 
       /// Returns true if an PRMInstance with the given name exists.
@@ -122,7 +122,7 @@ namespace gum {
        */
       void groundedBN( BayesNetFactory<GUM_SCALAR>& factory ) const;
 
-      /// Instantiate all the PRMInstance in this System.
+      /// Instantiate all the PRMInstance in this PRMSystem.
       void instantiate();
 
       /// @}
@@ -197,17 +197,17 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// Iterator over the PRMInstance of this System.
+      /// Iterator over the PRMInstance of this PRMSystem.
       typedef typename NodeProperty<PRMInstance<GUM_SCALAR>*>::iterator iterator;
 
       /// Returns an iterator over the instances in this system.
       iterator begin();
 
       /// Returns a iterator at the end of the set of PRMInstance
-      /// in this System.
+      /// in this PRMSystem.
       const iterator& end();
 
-      /// Constant Iterator over the PRMInstance of this System.
+      /// Constant Iterator over the PRMInstance of this PRMSystem.
       typedef typename NodeProperty<PRMInstance<GUM_SCALAR>*>::const_iterator
           const_iterator;
 
@@ -215,10 +215,10 @@ namespace gum {
       const_iterator begin() const;
 
       /// Returns a constant iterator at the end of the set of PRMInstance
-      /// in this System.
+      /// in this PRMSystem.
       const const_iterator& end() const;
 
-      /// Iterator over the PRMInstance in an array in this System.
+      /// Iterator over the PRMInstance in an array in this PRMSystem.
       typedef typename Sequence<PRMInstance<GUM_SCALAR>*>::iterator array_iterator;
 
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
@@ -231,7 +231,7 @@ namespace gum {
       /// @throw NotFound Raised if no array matches a.
       const array_iterator& end( const std::string& a );
 
-      /// Iterator over the PRMInstance in an array in this System.
+      /// Iterator over the PRMInstance in an array in this PRMSystem.
       typedef typename Sequence<PRMInstance<GUM_SCALAR>*>::const_iterator
           const_array_iterator;
 
@@ -248,21 +248,21 @@ namespace gum {
       /// @}
       private:
       /// Copy constructor. Don't use it.
-      System( const System& from );
+      PRMSystem( const PRMSystem& from );
 
       /// Copy operator. Don't use it.
-      System& operator=( const System& from );
+      PRMSystem& operator=( const PRMSystem& from );
 
       // ========================================================================
       /// @name Private PRMInstance handling methods and members.
       // ========================================================================
       /// @{
 
-      /// The relational skeleton of this System.
+      /// The relational skeleton of this PRMSystem.
       DiGraph __skeleton;
 
       /// The maping between PRMInstance and their NodeId in the relational
-      /// skeleton of this System.
+      /// skeleton of this PRMSystem.
       NodeProperty<PRMInstance<GUM_SCALAR>*> __nodeIdMap;
 
       /// The mapping between PRMInstance and their names.
@@ -323,8 +323,8 @@ namespace gum {
     };
 
 
-    extern template class System<float>;
-    extern template class System<double>;
+    extern template class PRMSystem<float>;
+    extern template class PRMSystem<double>;
 
 
   } /* namespace prm */

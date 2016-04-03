@@ -449,7 +449,7 @@ namespace gum {
           const std::string right_val = command->rightValue;
 
           // Contruct the pair (instance,attribut)
-          const System<double>& sys = system( left_val );
+          const PRMSystem<double>& sys = system( left_val );
           const PRMInstance<double>& instance =
               sys.get( findInstanceName( left_val, sys ) );
           const PRMAttribute<double>& attr =
@@ -498,7 +498,7 @@ namespace gum {
           std::string name = command->value;
 
           // Contruct the pair (instance,attribut)
-          const System<double>& sys = system( name );
+          const PRMSystem<double>& sys = system( name );
           const PRMInstance<double>& instance =
               sys.get( findInstanceName( name, sys ) );
           const PRMAttribute<double>& attr =
@@ -525,7 +525,7 @@ namespace gum {
           std::string name = command->value;
 
           // Contruct the pair (instance,attribut)
-          const System<double>& sys = system( name );
+          const PRMSystem<double>& sys = system( name );
           const PRMInstance<double>& instance =
               sys.get( findInstanceName( name, sys ) );
           const PRMAttribute<double>& attr =
@@ -755,7 +755,7 @@ namespace gum {
 
       std::string
       O3prmrInterpreter::findInstanceName( std::string& s,
-                                           const System<double>& sys ) {
+                                           const PRMSystem<double>& sys ) {
         // We have found system before, so 's' has been stripped.
         size_t dot = s.find_first_of( '.' );
         std::string name = s.substr( 0, dot );
@@ -779,7 +779,7 @@ namespace gum {
       }
 
       // After this method, ident doesn't contains the system name anymore.
-      const System<double>& O3prmrInterpreter::system( std::string& ident ) {
+      const PRMSystem<double>& O3prmrInterpreter::system( std::string& ident ) {
         try {
           return prm()->system( findSystemName( ident ) );
         } catch ( const std::string& ) {
@@ -938,7 +938,7 @@ namespace gum {
       }
 
       ///
-      void O3prmrInterpreter::generateInfEngine( const System<double>& sys ) {
+      void O3prmrInterpreter::generateInfEngine( const PRMSystem<double>& sys ) {
         if ( m_verbose )
           m_log << "# Building the inference engine... " << std::flush;
 

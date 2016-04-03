@@ -142,7 +142,7 @@ namespace gum {
 
         std::string leftValue;
         std::string rightValue;
-        const System<GUM_SCALAR>* system;
+        const PRMSystem<GUM_SCALAR>* system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
         Potential<GUM_SCALAR> potentiel;
 
@@ -157,7 +157,7 @@ namespace gum {
       class UnobserveCommand : public O3prmrCommand {
         public:
         std::string value;
-        const System<GUM_SCALAR>* system;
+        const PRMSystem<GUM_SCALAR>* system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
 
         UnobserveCommand( int line, const std::string& value )
@@ -184,7 +184,7 @@ namespace gum {
         }
 
         std::string value;
-        const System<GUM_SCALAR>* system;
+        const PRMSystem<GUM_SCALAR>* system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
 
         RequestType type() const { return RequestType::Query; }
@@ -201,7 +201,7 @@ namespace gum {
         std::string m_name;
         /// A sequence of commands.
         std::vector<O3prmrCommand*> m_commands;
-        std::map<const System<GUM_SCALAR>*, PRMInference<GUM_SCALAR>*>
+        std::map<const PRMSystem<GUM_SCALAR>*, PRMInference<GUM_SCALAR>*>
             m_infEngineMap;
 
         public:

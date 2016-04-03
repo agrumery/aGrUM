@@ -835,7 +835,7 @@ namespace gum {
     void PRMFactory<GUM_SCALAR>::addArray( const std::string& type,
                                            const std::string& name,
                                            Size size ) {
-      System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>(
+      PRMSystem<GUM_SCALAR>* model = static_cast<PRMSystem<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       PRMClass<GUM_SCALAR>* c = __retrieveClass( type );
       PRMInstance<GUM_SCALAR>* inst = 0;
@@ -861,7 +861,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::incArray( const std::string& l_i,
                                            const std::string& r_i ) {
-      System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>(
+      PRMSystem<GUM_SCALAR>* model = static_cast<PRMSystem<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
 
       if ( model->isArray( l_i ) ) {
@@ -880,7 +880,7 @@ namespace gum {
                                                    const std::string& l_ref,
                                                    const std::string& r_i ) {
 
-      auto model = static_cast<System<GUM_SCALAR>*>(
+      auto model = static_cast<PRMSystem<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       std::vector<PRMInstance<GUM_SCALAR>*> lefts;
       std::vector<PRMInstance<GUM_SCALAR>*> rights;
@@ -1522,7 +1522,7 @@ namespace gum {
         msg << "\"" << name << "\" is already used.";
         GUM_ERROR( DuplicateElement, msg.str() );
       }
-      System<GUM_SCALAR>* model = new System<GUM_SCALAR>( __addPrefix( name ) );
+      PRMSystem<GUM_SCALAR>* model = new PRMSystem<GUM_SCALAR>( __addPrefix( name ) );
       __stack.push_back( model );
       __prm->__systemMap.insert( model->name(), model );
       __prm->__systems.insert( model );
@@ -1531,7 +1531,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::endSystem() {
       try {
-        System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>(
+        PRMSystem<GUM_SCALAR>* model = static_cast<PRMSystem<GUM_SCALAR>*>(
             __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
         __stack.pop_back();
         model->instantiate();
@@ -1640,7 +1640,7 @@ namespace gum {
       PRMInstance<GUM_SCALAR>* i = 0;
       try {
 
-        auto s = static_cast<System<GUM_SCALAR>*>(
+        auto s = static_cast<PRMSystem<GUM_SCALAR>*>(
             __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
         i = new PRMInstance<GUM_SCALAR>( name, *type );
         s->add( i );
@@ -1834,8 +1834,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     bool PRMFactory<GUM_SCALAR>::isArrayInCurrentSystem(
         const std::string& name ) const {
-      const System<GUM_SCALAR>* system =
-          static_cast<const System<GUM_SCALAR>*>( getCurrent() );
+      const PRMSystem<GUM_SCALAR>* system =
+          static_cast<const PRMSystem<GUM_SCALAR>*>( getCurrent() );
       return ( system && system->isArray( name ) );
     }
 

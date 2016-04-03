@@ -95,7 +95,7 @@ namespace gum {
                            __filename,
                            0 );
           __errors.add( warn );
-          gum::prm::System<GUM_SCALAR> s( "S_" + __entityName );
+          gum::prm::PRMSystem<GUM_SCALAR> s( "S_" + __entityName );
           auto i = new gum::prm::PRMInstance<GUM_SCALAR>(
               __getInstanceName( __entityName ),
               prm->getClass( __entityName ) );
@@ -151,7 +151,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void
-  O3prmBNReader<GUM_SCALAR>::__generateBN( prm::System<GUM_SCALAR>& system ) {
+  O3prmBNReader<GUM_SCALAR>::__generateBN( prm::PRMSystem<GUM_SCALAR>& system ) {
     system.instantiate();
     BayesNetFactory<GUM_SCALAR> factory( __bn );
     system.groundedBN( factory );

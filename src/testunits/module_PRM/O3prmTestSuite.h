@@ -1108,7 +1108,7 @@ namespace gum_tests {
 
         gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        gum::prm::System<double>* sys = 0;
+        gum::prm::PRMSystem<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
         gum::prm::PRMClass<double>& Power = prm->getClass( "PowerSupply" );
         gum::prm::PRMClass<double>& Room = prm->getClass( "Room" );
@@ -1175,10 +1175,10 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
         gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        gum::prm::System<double>* sys = 0;
+        gum::prm::PRMSystem<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
 
-        for ( gum::prm::System<double>::iterator iter = sys->begin();
+        for ( gum::prm::PRMSystem<double>::iterator iter = sys->begin();
               iter != sys->end();
               ++iter ) {
           for ( gum::prm::PRMInstance<double>::iterator jter =
@@ -1229,7 +1229,7 @@ namespace gum_tests {
                           (gum::Size)11 );  // Don't forget param subclasses !
 
         TS_ASSERT_EQUALS( prm->systems().size(), (gum::Size)1 );
-        gum::prm::System<double>* sys = 0;
+        gum::prm::PRMSystem<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(
             sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
         TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
@@ -1462,7 +1462,7 @@ namespace gum_tests {
         reader.readFile( file, package );
         auto prm = reader.prm();
         auto& asia = prm->getClass( "Asia" );
-        gum::prm::System<double> sys( "Asia" );
+        gum::prm::PRMSystem<double> sys( "Asia" );
         auto i = new gum::prm::PRMInstance<double>( "asia", asia );
         sys.add( i );
         sys.instantiate();

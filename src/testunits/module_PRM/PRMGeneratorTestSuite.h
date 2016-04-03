@@ -125,7 +125,7 @@ namespace gum_tests {
       }
 
       // testing instances
-      const gum::prm::System<double>& sys = **( prm->systems().begin() );
+      const gum::prm::PRMSystem<double>& sys = **( prm->systems().begin() );
       TS_ASSERT_EQUALS( sys.size(), (gum::Size)100 );
 
       if ( prm ) delete prm;
@@ -207,7 +207,7 @@ namespace gum_tests {
       }
 
       // testing instances
-      const gum::prm::System<double>& sys = **( prm->systems().begin() );
+      const gum::prm::PRMSystem<double>& sys = **( prm->systems().begin() );
       TS_ASSERT( sys.size() > (gum::Size)100 );
 
       if ( prm ) delete prm;

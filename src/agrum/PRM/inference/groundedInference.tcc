@@ -84,7 +84,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE GroundedInference<GUM_SCALAR>::GroundedInference(
-        const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& system )
+        const PRM<GUM_SCALAR>& prm, const PRMSystem<GUM_SCALAR>& system )
         : PRMInference<GUM_SCALAR>( prm, system )
         , __inf( 0 ) {
       GUM_CONSTRUCTOR( GroundedInference );

@@ -48,13 +48,13 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    class System;
+    class PRMSystem;
     template <typename GUM_SCALAR>
     class PRMFactory;
     /**
      * @class PRM PRM.h <agrum/PRM/PRM.h>
      * @brief This class represents a Probabilistic Relational
-     *System<GUM_SCALAR>.
+     *PRMSystem<GUM_SCALAR>.
      *
      * @ingroup prm_group
      */
@@ -103,8 +103,8 @@ namespace gum {
       bool isInterface( const std::string name ) const;
 
       /**
-       * @param name The name of a possible System<GUM_SCALAR> in this PRM.
-       * @return Returns true if name names a System<GUM_SCALAR> in this PRM.
+       * @param name The name of a possible PRMSystem<GUM_SCALAR> in this PRM.
+       * @return Returns true if name names a PRMSystem<GUM_SCALAR> in this PRM.
        */
       bool isSystem( const std::string name ) const;
 
@@ -160,21 +160,21 @@ namespace gum {
       const Set<PRMInterface<GUM_SCALAR>*>& interfaces() const;
 
       /**
-       * Returns a constant reference on a System<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no model is found with the given name.
        */
-      System<GUM_SCALAR>& system( const std::string& name );
+      PRMSystem<GUM_SCALAR>& system( const std::string& name );
 
       /**
-       * Returns a constant reference on a System<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no model is found with the given name.
        */
-      const System<GUM_SCALAR>& system( const std::string& name ) const;
+      const PRMSystem<GUM_SCALAR>& system( const std::string& name ) const;
 
       /**
        * Returns the Set of all Systems in this PRM.
        */
-      const Set<System<GUM_SCALAR>*>& systems() const;
+      const Set<PRMSystem<GUM_SCALAR>*>& systems() const;
 
       /// @}
       private:
@@ -221,10 +221,10 @@ namespace gum {
       Set<Type<GUM_SCALAR>*> __types;
 
       /// Mapping of all Systems given their name.
-      HashTable<std::string, System<GUM_SCALAR>*> __systemMap;
+      HashTable<std::string, PRMSystem<GUM_SCALAR>*> __systemMap;
 
       /// Set of all Systems in this PRM.
-      Set<System<GUM_SCALAR>*> __systems;
+      Set<PRMSystem<GUM_SCALAR>*> __systems;
 
       /// @}
     };

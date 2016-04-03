@@ -520,7 +520,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE SVED<GUM_SCALAR>::SVED( const PRM<GUM_SCALAR>& prm,
-                                   const System<GUM_SCALAR>& model )
+                                   const PRMSystem<GUM_SCALAR>& model )
         : PRMInference<GUM_SCALAR>( prm, model )
         , __class_elim_order( 0 )
         , __bb( *this ) {

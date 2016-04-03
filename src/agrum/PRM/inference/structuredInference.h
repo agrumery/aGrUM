@@ -67,7 +67,7 @@ namespace gum {
 
       /// Default constructor.
       StructuredInference( const PRM<GUM_SCALAR>& prm,
-                           const System<GUM_SCALAR>& system,
+                           const PRMSystem<GUM_SCALAR>& system,
                            gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
       /// Copy constructor.

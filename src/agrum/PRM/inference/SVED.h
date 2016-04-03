@@ -64,7 +64,7 @@ namespace gum {
       /// @{
 
       /// Default Constructor.
-      SVED( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& model );
+      SVED( const PRM<GUM_SCALAR>& prm, const PRMSystem<GUM_SCALAR>& model );
 
       /// Default Constructor.
       SVED( const PRM<GUM_SCALAR>& prm, const std::string& model );

@@ -359,7 +359,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE
     GSpan<GUM_SCALAR>::GSpan( const PRM<GUM_SCALAR>& prm,
-                              const System<GUM_SCALAR>& sys,
+                              const PRMSystem<GUM_SCALAR>& sys,
                               gspan::SearchStrategy<GUM_SCALAR>* strategy )
         : __graph( new gspan::InterfaceGraph<GUM_SCALAR>( sys ) )
         , __tree( *__graph, strategy )

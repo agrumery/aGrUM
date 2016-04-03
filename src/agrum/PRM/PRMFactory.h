@@ -922,7 +922,7 @@ namespace gum {
 
       /// @}
       // ======================================================================
-      ///  @name Private methods handling System<GUM_SCALAR> and
+      ///  @name Private methods handling PRMSystem<GUM_SCALAR> and
       ///  PRMInstance<GUM_SCALAR> creation.
       // ======================================================================
       /// @{
@@ -933,14 +933,14 @@ namespace gum {
       /// Builds all PRMSlotChain<GUM_SCALAR><PRMInstance<GUM_SCALAR>> in the given
       /// model.
       /// @throw OperationNotAllowed If reference slots are left un affected
-      void __buildSlotChains( System<GUM_SCALAR>* model );
+      void __buildSlotChains( PRMSystem<GUM_SCALAR>* model );
 
       /// Builds all Aggregates CPF in the given model.
       /// This must be called after all the slot chains have been generated.
-      void __buildAggregateCPF( System<GUM_SCALAR>* model );
+      void __buildAggregateCPF( PRMSystem<GUM_SCALAR>* model );
 
       /// Instantiate a slot chain in the given instance
-      void __instantiateSlotChain( System<GUM_SCALAR>* model,
+      void __instantiateSlotChain( PRMSystem<GUM_SCALAR>* model,
                                    PRMInstance<GUM_SCALAR>* inst,
                                    PRMReferenceSlot<GUM_SCALAR>* ref,
                                    PRMSlotChain<GUM_SCALAR>* sc );

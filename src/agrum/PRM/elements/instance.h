@@ -44,7 +44,7 @@ namespace gum {
      *
      * @brief An PRMInstance<GUM_SCALAR> is a Bayesian Network fragment defined by
      *a Class<GUM_SCALAR> and
-     *        used in a System.
+     *        used in a PRMSystem.
      *
      * Before using an PRMInstance<GUM_SCALAR> for inference YOU MUST call
      * PRMInstance<GUM_SCALAR>::instantiateSlotChains() and

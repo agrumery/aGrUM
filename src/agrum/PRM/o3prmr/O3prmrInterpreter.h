@@ -152,12 +152,12 @@ namespace gum {
 
         std::string findSystemName( std::string& s );
         std::string findInstanceName( std::string& s,
-                                      const gum::prm::System<double>& sys );
+                                      const gum::prm::PRMSystem<double>& sys );
         std::string
         findAttributeName( const std::string& s,
                            const gum::prm::PRMInstance<double>& instance );
-        const System<double>& system( std::string& ident );
-        void generateInfEngine( const gum::prm::System<double>& sys );
+        const PRMSystem<double>& system( std::string& ident );
+        void generateInfEngine( const gum::prm::PRMSystem<double>& sys );
 
         void addError( std::string msg );
         void addWarning( std::string msg );

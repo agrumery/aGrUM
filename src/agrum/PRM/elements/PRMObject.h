@@ -221,7 +221,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class PRMInstance;
     template <typename GUM_SCALAR>
-    class System;
+    class PRMSystem;
 
   } /* namespace prm */
 } /* namespace gum */

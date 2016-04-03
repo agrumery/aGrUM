@@ -48,7 +48,7 @@ namespace gum {
      * @class GSpan gspan.h <agrum/PRM/gspan.h>
      *
      * @brief This class discovers pattern in a PRM<GUM_SCALAR>'s
-     *System<GUM_SCALAR>
+     *PRMSystem<GUM_SCALAR>
      *to speed up structured
      *        inference.
      *
@@ -75,13 +75,13 @@ namespace gum {
       /**
        * Default constructor.
        * @param prm The PRM<GUM_SCALAR> used by this class.
-       * @param sys The System<GUM_SCALAR> on which this class searches for
+       * @param sys The PRMSystem<GUM_SCALAR> on which this class searches for
        * patterns.
        * @param strategy The search strategy used for pattern mining, the
        *                 default strategy is gspan::FrequenceSearch.
        */
       GSpan( const PRM<GUM_SCALAR>& prm,
-             const System<GUM_SCALAR>& sys,
+             const PRMSystem<GUM_SCALAR>& sys,
              gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
       /// Destructor.
@@ -140,7 +140,7 @@ namespace gum {
 
       /**
        * @brief This will methods will discover repeated patterns in the
-       *        System<GUM_SCALAR> assigned to this class.
+       *        PRMSystem<GUM_SCALAR> assigned to this class.
        *
        * The results are saved in a vector of Patterns which can be obtained
        * by calling GSpan::patterns().

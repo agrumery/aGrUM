@@ -65,7 +65,7 @@ namespace gum {
       /// @{
 
       /// Default Constructor.
-      SVE( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& system );
+      SVE( const PRM<GUM_SCALAR>& prm, const PRMSystem<GUM_SCALAR>& system );
 
       /// Destructor.
       ~SVE();

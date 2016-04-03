@@ -139,19 +139,19 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE System<GUM_SCALAR>&
+    INLINE PRMSystem<GUM_SCALAR>&
     PRM<GUM_SCALAR>::system( const std::string& name ) {
       return *( __systemMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const System<GUM_SCALAR>&
+    INLINE const PRMSystem<GUM_SCALAR>&
     PRM<GUM_SCALAR>::system( const std::string& name ) const {
       return *( __systemMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<System<GUM_SCALAR>*>& PRM<GUM_SCALAR>::systems() const {
+    INLINE const Set<PRMSystem<GUM_SCALAR>*>& PRM<GUM_SCALAR>::systems() const {
       return __systems;
     }
 

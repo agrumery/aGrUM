@@ -32,10 +32,10 @@ namespace gum_tests {
     private:
     gum::prm::PRM<double>* prm;
     gum::prm::PRMInference<double>* prm_inf;
-    gum::prm::System<double>* sys;
+    gum::prm::PRMSystem<double>* sys;
     gum::prm::PRM<double>* small;
     gum::prm::PRMInference<double>* small_inf;
-    gum::prm::System<double>* small_sys;
+    gum::prm::PRMSystem<double>* small_sys;
 
     public:
     void setUp() {
@@ -128,7 +128,7 @@ namespace gum_tests {
             TS_GUM_ASSERT_THROWS_NOTHING(
                 bb->compute( i.val(), ( *( a.val() ) ).id() ) );
 
-            for ( gum::prm::System<double>::iterator j = small_sys->begin();
+            for ( gum::prm::PRMSystem<double>::iterator j = small_sys->begin();
                   j != small_sys->end();
                   ++j ) {
               if ( ( j.val() ) != ( i.val() ) ) {
@@ -157,7 +157,7 @@ namespace gum_tests {
     //         gum::prm::StructuredBayesBall<double>* bb = 0;
     //         TS_GUM_ASSERT_THROWS_NOTHING(bb = new
     //         gum::prm::StructuredBayesBall<double>(*prm_inf));
-    //         for (gum::prm::System<double>::iterator i = sys->begin(); i !=
+    //         for (gum::prm::PRMSystem<double>::iterator i = sys->begin(); i !=
     //         sys->end(); ++i) {
     //           for (gum::prm::PRMInstance::iterator a = (**i).begin(); a !=
     //           (**i).end(); ++a) {
@@ -177,7 +177,7 @@ namespace gum_tests {
     //             }
     //           }
     //         }
-    //         for (gum::prm::System<double>::iterator i = sys->begin(); i !=
+    //         for (gum::prm::PRMSystem<double>::iterator i = sys->begin(); i !=
     //         sys->end(); ++i) {
     //           for (gum::prm::PRMInstance::iterator a = (**i).begin(); a !=
     //           (**i).end(); ++a) {

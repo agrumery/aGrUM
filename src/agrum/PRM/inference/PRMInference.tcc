@@ -138,7 +138,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE
     PRMInference<GUM_SCALAR>::PRMInference( const PRM<GUM_SCALAR>& prm,
-                                            const System<GUM_SCALAR>& system )
+                                            const PRMSystem<GUM_SCALAR>& system )
         : _prm( &prm )
         , _sys( &system ) {
       GUM_CONSTRUCTOR( PRMInference );

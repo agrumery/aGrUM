@@ -48,7 +48,7 @@ namespace gum {
        * @headerfile O3SystemFactory.h <agrum/PRM/o3prm/O3SystemFactory.h>
        * @ingroup o3prm_group
        *
-       * @brief Builds gum::prm::System from gum::prm::o3prm::O3System.
+       * @brief Builds gum::prm::PRMSystem from gum::prm::o3prm::O3System.
        *
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
        */

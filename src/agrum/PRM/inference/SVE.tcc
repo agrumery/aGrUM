@@ -60,7 +60,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    std::string __print_system__( const System<GUM_SCALAR>& s ) {
+    std::string __print_system__( const PRMSystem<GUM_SCALAR>& s ) {
       std::stringstream str;
       for ( auto i : s ) {
         str << __print_instance__( *( i.second ) ) << std::endl;
@@ -642,7 +642,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE SVE<GUM_SCALAR>::SVE( const PRM<GUM_SCALAR>& prm,
-                                 const System<GUM_SCALAR>& system )
+                                 const PRMSystem<GUM_SCALAR>& system )
         : PRMInference<GUM_SCALAR>( prm, system )
         , __class_elim_order( 0 ) {
       GUM_CONSTRUCTOR( SVE );

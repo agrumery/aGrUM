@@ -32,7 +32,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     StructuredInference<GUM_SCALAR>::StructuredInference(
         const PRM<GUM_SCALAR>& prm,
-        const System<GUM_SCALAR>& system,
+        const PRMSystem<GUM_SCALAR>& system,
         gspan::SearchStrategy<GUM_SCALAR>* strategy )
         : PRMInference<GUM_SCALAR>( prm, system )
         , __gspan( 0 )

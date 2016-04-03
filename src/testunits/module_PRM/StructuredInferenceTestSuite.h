@@ -97,10 +97,10 @@ namespace gum_tests {
     }
 
     const gum::prm::PRMInstance<double>&
-    pickInstance( const gum::prm::System<double>& sys ) {
+    pickInstance( const gum::prm::PRMSystem<double>& sys ) {
       gum::Sequence<const gum::prm::PRMInstance<double>*> seq;
 
-      for ( gum::prm::System<double>::const_iterator iter = sys.begin();
+      for ( gum::prm::PRMSystem<double>::const_iterator iter = sys.begin();
             iter != sys.end();
             ++iter )
         seq.insert( iter.val() );
@@ -130,7 +130,7 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys =
+        gum::prm::PRMSystem<double>& sys =
             prm->system( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
@@ -162,7 +162,7 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys =
+        gum::prm::PRMSystem<double>& sys =
             prm->system( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
@@ -194,7 +194,7 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys =
+        gum::prm::PRMSystem<double>& sys =
             prm->system( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
@@ -227,7 +227,7 @@ namespace gum_tests {
     //    generator.setMaxParents( 5 );
 
     //    gum::prm::PRM<double>* prm = generator.generate();
-    //    gum::prm::System<double>& sys = prm->system( ( **(
+    //    gum::prm::PRMSystem<double>& sys = prm->system( ( **(
     //    prm->systems().begin() ) ).name() );
 
     //    gum::prm::gspan::FrequenceSearch<double>* search = new

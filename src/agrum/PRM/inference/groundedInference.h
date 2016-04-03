@@ -50,7 +50,7 @@ namespace gum {
 
       /// Default constructor.
       GroundedInference( const PRM<GUM_SCALAR>& prm,
-                         const System<GUM_SCALAR>& system );
+                         const PRMSystem<GUM_SCALAR>& system );
 
       /// Destructor.
       virtual ~GroundedInference();

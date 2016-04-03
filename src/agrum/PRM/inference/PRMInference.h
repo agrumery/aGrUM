@@ -69,7 +69,7 @@ namespace gum {
 
       /// Default constructor.
       PRMInference( const PRM<GUM_SCALAR>& prm,
-                    const System<GUM_SCALAR>& system );
+                    const PRMSystem<GUM_SCALAR>& system );
 
       /// Copy constructor.
       PRMInference( const PRMInference& source );
@@ -213,7 +213,7 @@ namespace gum {
       PRM<GUM_SCALAR> const* _prm;
 
       /// The Model on which inference is done.
-      System<GUM_SCALAR> const* _sys;
+      PRMSystem<GUM_SCALAR> const* _sys;
 
       /// @}
 

@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of System.
+ * @brief Inline implementation of PRMSystem.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -36,14 +36,14 @@
 namespace gum {
   namespace prm {
     template <typename GUM_SCALAR>
-    System<GUM_SCALAR>::System( const std::string& name )
+    PRMSystem<GUM_SCALAR>::PRMSystem( const std::string& name )
         : PRMObject( name ) {
-      GUM_CONSTRUCTOR( System );
+      GUM_CONSTRUCTOR( PRMSystem );
     }
 
     template <typename GUM_SCALAR>
-    System<GUM_SCALAR>::~System() {
-      GUM_DESTRUCTOR( System );
+    PRMSystem<GUM_SCALAR>::~PRMSystem() {
+      GUM_DESTRUCTOR( PRMSystem );
 
       for ( const auto& elt : *this )
         delete elt.second;
@@ -56,7 +56,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::addArc( const std::string& u_name,
+    void PRMSystem<GUM_SCALAR>::addArc( const std::string& u_name,
                                      const std::string& v_name,
                                      const std::string& ref_name ) {
       PRMInstance<GUM_SCALAR>* u = nullptr;
@@ -91,7 +91,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    NodeId System<GUM_SCALAR>::add( PRMInstance<GUM_SCALAR>* i ) {
+    NodeId PRMSystem<GUM_SCALAR>::add( PRMInstance<GUM_SCALAR>* i ) {
       if ( __nameMap.exists( i->name() ) ) {
         GUM_ERROR(
             DuplicateElement,
@@ -114,27 +114,27 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::groundedBN(
+    void PRMSystem<GUM_SCALAR>::groundedBN(
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       factory.startNetworkDeclaration();
       factory.addNetworkProperty( "name", name() );
       factory.endNetworkDeclaration();
 
       // Adding nodes
-      for ( System<GUM_SCALAR>::const_iterator iter = begin(); iter != end();
+      for ( PRMSystem<GUM_SCALAR>::const_iterator iter = begin(); iter != end();
             ++iter ) {
         __groundAttr( *( iter.val() ), factory );
       }
 
       // Adding arcs and filling CPTs
-      for ( System<GUM_SCALAR>::const_iterator iter = begin(); iter != end();
+      for ( PRMSystem<GUM_SCALAR>::const_iterator iter = begin(); iter != end();
             ++iter ) {
         __groundRef( *( iter.val() ), factory );
       }
     }
 
     template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::__groundAttr(
+    void PRMSystem<GUM_SCALAR>::__groundAttr(
         const PRMInstance<GUM_SCALAR>& instance,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( const auto node : instance.type().dag() ) {
@@ -170,7 +170,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::__groundAgg(
+    void PRMSystem<GUM_SCALAR>::__groundAgg(
         const PRMClassElement<GUM_SCALAR>& elt,
         const std::string& name,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
@@ -238,7 +238,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::__groundRef(
+    void PRMSystem<GUM_SCALAR>::__groundRef(
         const PRMInstance<GUM_SCALAR>& instance,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( const auto& elt : instance ) {
@@ -292,7 +292,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::__groundPotential(
+    void PRMSystem<GUM_SCALAR>::__groundPotential(
         const PRMInstance<GUM_SCALAR>& instance,
         const PRMAttribute<GUM_SCALAR>& attr,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
@@ -354,18 +354,18 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE NodeId System<GUM_SCALAR>::add( const std::string& array,
+    INLINE NodeId PRMSystem<GUM_SCALAR>::add( const std::string& array,
                                            PRMInstance<GUM_SCALAR>& i ) {
       return add( array, &i );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const DiGraph& System<GUM_SCALAR>::skeleton() const {
+    INLINE const DiGraph& PRMSystem<GUM_SCALAR>::skeleton() const {
       return __skeleton;
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMInstance<GUM_SCALAR>& System<GUM_SCALAR>::get( NodeId id ) {
+    INLINE PRMInstance<GUM_SCALAR>& PRMSystem<GUM_SCALAR>::get( NodeId id ) {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
@@ -376,7 +376,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const PRMInstance<GUM_SCALAR>&
-    System<GUM_SCALAR>::get( NodeId id ) const {
+    PRMSystem<GUM_SCALAR>::get( NodeId id ) const {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
@@ -387,7 +387,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE NodeId
-    System<GUM_SCALAR>::get( const PRMInstance<GUM_SCALAR>& i ) const {
+    PRMSystem<GUM_SCALAR>::get( const PRMInstance<GUM_SCALAR>& i ) const {
       try {
         return __nodeIdMap.keyByVal( const_cast<PRMInstance<GUM_SCALAR>*>( &i ) );
       } catch ( NotFound& ) {
@@ -397,34 +397,34 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMObject::PRMType System<GUM_SCALAR>::obj_type() const {
+    INLINE PRMObject::PRMType PRMSystem<GUM_SCALAR>::obj_type() const {
       return PRMObject::PRMType::SYSTEM;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Size System<GUM_SCALAR>::size() const {
+    INLINE Size PRMSystem<GUM_SCALAR>::size() const {
       return __nodeIdMap.size();
     }
 
     template <typename GUM_SCALAR>
     INLINE bool
-    System<GUM_SCALAR>::isInstantiated( const PRMClass<GUM_SCALAR>& c ) const {
+    PRMSystem<GUM_SCALAR>::isInstantiated( const PRMClass<GUM_SCALAR>& c ) const {
       return __instanceMap.exists( const_cast<PRMClass<GUM_SCALAR>*>( &c ) );
     }
 
     template <typename GUM_SCALAR>
     INLINE bool
-    System<GUM_SCALAR>::isInstance( const std::string& name ) const {
+    PRMSystem<GUM_SCALAR>::isInstance( const std::string& name ) const {
       return __nameMap.exists( name );
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool System<GUM_SCALAR>::isArray( const std::string& name ) const {
+    INLINE bool PRMSystem<GUM_SCALAR>::isArray( const std::string& name ) const {
       return __arrayMap.exists( name );
     }
 
     template <typename GUM_SCALAR>
-    INLINE void System<GUM_SCALAR>::instantiate() {
+    INLINE void PRMSystem<GUM_SCALAR>::instantiate() {
       for ( auto iter = begin(); iter != end(); ++iter ) {
         ( *( iter.val() ) ).instantiate();
       }
@@ -432,7 +432,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE PRMInstance<GUM_SCALAR>&
-    System<GUM_SCALAR>::get( const std::string& name ) {
+    PRMSystem<GUM_SCALAR>::get( const std::string& name ) {
       try {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
@@ -443,7 +443,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const PRMInstance<GUM_SCALAR>&
-    System<GUM_SCALAR>::get( const std::string& name ) const {
+    PRMSystem<GUM_SCALAR>::get( const std::string& name ) const {
       try {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
@@ -454,7 +454,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const Set<PRMInstance<GUM_SCALAR>*>&
-    System<GUM_SCALAR>::get( const PRMClass<GUM_SCALAR>& type ) const {
+    PRMSystem<GUM_SCALAR>::get( const PRMClass<GUM_SCALAR>& type ) const {
       try {
         return *( __instanceMap[const_cast<PRMClass<GUM_SCALAR>*>( &type )] );
       } catch ( NotFound& ) {
@@ -466,7 +466,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const Sequence<PRMInstance<GUM_SCALAR>*>&
-    System<GUM_SCALAR>::getArray( const std::string& name ) const {
+    PRMSystem<GUM_SCALAR>::getArray( const std::string& name ) const {
       try {
         return *( __arrayMap[name].second );
       } catch ( NotFound& ) {
@@ -476,7 +476,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE PRMClassElementContainer<GUM_SCALAR>&
-    System<GUM_SCALAR>::getArrayType( const std::string& name ) {
+    PRMSystem<GUM_SCALAR>::getArrayType( const std::string& name ) {
       try {
         return *( __arrayMap[name].first );
       } catch ( NotFound& ) {
@@ -486,7 +486,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const PRMClassElementContainer<GUM_SCALAR>&
-    System<GUM_SCALAR>::getArrayType( const std::string& name ) const {
+    PRMSystem<GUM_SCALAR>::getArrayType( const std::string& name ) const {
       try {
         return *( __arrayMap[name].first );
       } catch ( NotFound& ) {
@@ -495,7 +495,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE NodeId System<GUM_SCALAR>::add( const std::string& array,
+    INLINE NodeId PRMSystem<GUM_SCALAR>::add( const std::string& array,
                                            PRMInstance<GUM_SCALAR>* i ) {
       try {
         if ( i->type().isSubTypeOf( *( __arrayMap[array].first ) ) ) {
@@ -514,7 +514,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void
-    System<GUM_SCALAR>::addArray( const std::string& array,
+    PRMSystem<GUM_SCALAR>::addArray( const std::string& array,
                                   PRMClassElementContainer<GUM_SCALAR>& type ) {
       if ( __arrayMap.exists( array ) ) {
         GUM_ERROR( DuplicateElement,
@@ -522,36 +522,36 @@ namespace gum {
       }
 
       __arrayMap.insert( array,
-                         System<GUM_SCALAR>::model_pair(
+                         PRMSystem<GUM_SCALAR>::model_pair(
                              &type, new Sequence<PRMInstance<GUM_SCALAR>*>() ) );
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename System<GUM_SCALAR>::iterator System<GUM_SCALAR>::begin() {
+    INLINE typename PRMSystem<GUM_SCALAR>::iterator PRMSystem<GUM_SCALAR>::begin() {
       return __nodeIdMap.begin();
     }
 
     template <typename GUM_SCALAR>
-    INLINE const typename System<GUM_SCALAR>::iterator&
-    System<GUM_SCALAR>::end() {
+    INLINE const typename PRMSystem<GUM_SCALAR>::iterator&
+    PRMSystem<GUM_SCALAR>::end() {
       return __nodeIdMap.end();
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename System<GUM_SCALAR>::const_iterator
-    System<GUM_SCALAR>::begin() const {
+    INLINE typename PRMSystem<GUM_SCALAR>::const_iterator
+    PRMSystem<GUM_SCALAR>::begin() const {
       return __nodeIdMap.begin();
     }
 
     template <typename GUM_SCALAR>
-    INLINE const typename System<GUM_SCALAR>::const_iterator&
-    System<GUM_SCALAR>::end() const {
+    INLINE const typename PRMSystem<GUM_SCALAR>::const_iterator&
+    PRMSystem<GUM_SCALAR>::end() const {
       return __nodeIdMap.end();
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename System<GUM_SCALAR>::array_iterator
-    System<GUM_SCALAR>::begin( const std::string& a ) {
+    INLINE typename PRMSystem<GUM_SCALAR>::array_iterator
+    PRMSystem<GUM_SCALAR>::begin( const std::string& a ) {
       try {
         return __arrayMap[a].second->begin();
       } catch ( NotFound& ) {
@@ -560,8 +560,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const typename System<GUM_SCALAR>::array_iterator&
-    System<GUM_SCALAR>::end( const std::string& a ) {
+    INLINE const typename PRMSystem<GUM_SCALAR>::array_iterator&
+    PRMSystem<GUM_SCALAR>::end( const std::string& a ) {
       try {
         return __arrayMap[a].second->end();
       } catch ( NotFound& ) {
@@ -570,8 +570,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename System<GUM_SCALAR>::const_array_iterator
-    System<GUM_SCALAR>::begin( const std::string& a ) const {
+    INLINE typename PRMSystem<GUM_SCALAR>::const_array_iterator
+    PRMSystem<GUM_SCALAR>::begin( const std::string& a ) const {
       try {
         return __arrayMap[a].second->begin();
       } catch ( NotFound& ) {
@@ -580,8 +580,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const typename System<GUM_SCALAR>::const_array_iterator&
-    System<GUM_SCALAR>::end( const std::string& a ) const {
+    INLINE const typename PRMSystem<GUM_SCALAR>::const_array_iterator&
+    PRMSystem<GUM_SCALAR>::end( const std::string& a ) const {
       try {
         return __arrayMap[a].second->end();
       } catch ( NotFound& ) {
@@ -590,7 +590,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool System<GUM_SCALAR>::exists( const std::string& name ) const {
+    INLINE bool PRMSystem<GUM_SCALAR>::exists( const std::string& name ) const {
       return __nameMap.exists( name ) or __arrayMap.exists( name );
     }
 

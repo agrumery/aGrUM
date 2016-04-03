@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
  * @file
- * @brief Implementation of System.
+ * @brief Implementation of PRMSystem.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class System<float>;
-    template class System<double>;
+    template class PRMSystem<float>;
+    template class PRMSystem<double>;
 
 
   } /* namespace prm */

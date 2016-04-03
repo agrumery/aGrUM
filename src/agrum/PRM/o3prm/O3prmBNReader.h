@@ -45,7 +45,7 @@ namespace gum {
    * @headerfile O3prmBNReader.h <agrum/PRM/o3prm/O3prmBNReader.h>
    * @ingroup o3prm_group
    *
-   * @brief Read an O3PRM and transform the gum::prm::System into
+   * @brief Read an O3PRM and transform the gum::prm::PRMSystem into
    * gum::BayesNet.
    *
    * @tparam GUM_SCALAR The scalar type used both for the gum::prm::PRM and the
@@ -108,7 +108,7 @@ namespace gum {
     BayesNet<GUM_SCALAR>* __bn;
     ErrorsContainer __errors;
 
-    void __generateBN( prm::System<GUM_SCALAR>& system );
+    void __generateBN( prm::PRMSystem<GUM_SCALAR>& system );
     static std::string __getVariableName( const std::string& path,
                                           const std::string& type,
                                           const std::string& name );
