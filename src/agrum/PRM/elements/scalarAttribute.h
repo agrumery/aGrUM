@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::ScalarAttribute.
+ * @brief Headers of gum::PRMScalarAttribute.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -33,11 +33,11 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class ScalarAttribute scalarAttribute.h
+     * @class PRMScalarAttribute scalarAttribute.h
      *<agrum/PRM/elements/scalarAttribute.h>
-     * @brief ScalarAttribute is a member of a Class in a PRM.
+     * @brief PRMScalarAttribute is a member of a Class in a PRM.
      *
-     * A ScalarAttribute is defined by its name, its containing class, its type
+     * A PRMScalarAttribute is defined by its name, its containing class, its type
      *and
      * by a Conditional Probability Function (aka CPF but represented by a
      * Potential).
@@ -56,7 +56,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class ScalarAttribute : public PRMAttribute<GUM_SCALAR> {
+    class PRMScalarAttribute : public PRMAttribute<GUM_SCALAR> {
 
       public:
       // ========================================================================
@@ -75,13 +75,13 @@ namespace gum {
        * of this PRMAttribute.
        *             it will be deleted after the call of ~PRMAttribute.
        */
-      ScalarAttribute( const std::string& name,
+      PRMScalarAttribute( const std::string& name,
                        const Type<GUM_SCALAR>& type,
                        MultiDimImplementation<GUM_SCALAR>* impl =
                            new MultiDimArray<GUM_SCALAR>() );
 
       /// Destructor.
-      virtual ~ScalarAttribute();
+      virtual ~PRMScalarAttribute();
 
       /// @}
       // ========================================================================
@@ -129,10 +129,10 @@ namespace gum {
       /// @}
       protected:
       /// Copy constructor. Don't use it.
-      ScalarAttribute( const ScalarAttribute& source );
+      PRMScalarAttribute( const PRMScalarAttribute& source );
 
       /// Copy operator. Don't use it.
-      ScalarAttribute& operator=( const ScalarAttribute& from );
+      PRMScalarAttribute& operator=( const PRMScalarAttribute& from );
 
       virtual Type<GUM_SCALAR>* _type();
       virtual void _type( Type<GUM_SCALAR>* t );
@@ -153,8 +153,8 @@ namespace gum {
     };
 
 
-    extern template class ScalarAttribute<float>;
-    extern template class ScalarAttribute<double>;
+    extern template class PRMScalarAttribute<float>;
+    extern template class PRMScalarAttribute<double>;
 
 
   } /* namespace prm */

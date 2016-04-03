@@ -232,7 +232,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void
     PRMInstance<GUM_SCALAR>::__copyAggregates( PRMAggregate<GUM_SCALAR>* source ) {
-      auto attr = new ScalarAttribute<GUM_SCALAR>(
+      auto attr = new PRMScalarAttribute<GUM_SCALAR>(
           source->name(), source->type(), source->buildImpl() );
       GUM_ASSERT( &( attr->type().variable() ) !=
                   &( source->type().variable() ) );
@@ -246,7 +246,7 @@ namespace gum {
     INLINE void
     PRMInstance<GUM_SCALAR>::__copyAttribute( PRMAttribute<GUM_SCALAR>* source ) {
       auto attr =
-          new ScalarAttribute<GUM_SCALAR>( source->name(), source->type() );
+          new PRMScalarAttribute<GUM_SCALAR>( source->name(), source->type() );
       GUM_ASSERT( &( attr->type().variable() ) !=
                   &( source->type().variable() ) );
       // The potential is copied when instantiate() is called

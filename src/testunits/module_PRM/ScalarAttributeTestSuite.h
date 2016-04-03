@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class ScalarAttributeTestSuite : public CxxTest::TestSuite {
     private:
-    typedef gum::prm::ScalarAttribute<double> PRMAttribute;
+    typedef gum::prm::PRMScalarAttribute<double> PRMAttribute;
     ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;

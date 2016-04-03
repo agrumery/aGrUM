@@ -783,7 +783,7 @@ namespace gum {
           }
         } else {
           // Inner aggregators can be directly used as attributes
-          auto attr = new ScalarAttribute<GUM_SCALAR>(
+          auto attr = new PRMScalarAttribute<GUM_SCALAR>(
               agg->name(), agg->type(), agg->buildImpl() );
 
           try {
@@ -1126,7 +1126,7 @@ namespace gum {
       if ( numbers.size() == 1 ) {
         auto impl = new gum::MultiDimNoisyORCompound<GUM_SCALAR>(
             leak, numbers.front() );
-        auto attr = new ScalarAttribute<GUM_SCALAR>(
+        auto attr = new PRMScalarAttribute<GUM_SCALAR>(
             name, retrieveType( "boolean" ), impl );
         addAttribute( attr );
       } else if ( numbers.size() == parents.size() ) {
@@ -1475,7 +1475,7 @@ namespace gum {
 
       } else {
 
-        a = new ScalarAttribute<GUM_SCALAR>( name, *__retrieveType( type ) );
+        a = new PRMScalarAttribute<GUM_SCALAR>( name, *__retrieveType( type ) );
       }
 
       std::string dot = ".";

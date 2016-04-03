@@ -70,7 +70,7 @@ namespace gum_tests {
 
       __boolean = gum::prm::Type<double>::boolean();
       __boolAttr =
-          new gum::prm::ScalarAttribute<double>( "myBool", *__boolean );
+          new gum::prm::PRMScalarAttribute<double>( "myBool", *__boolean );
       __C->add( __boolAttr );
 
       gum::LabelizedVariable state{"state", "A state variable", 0};
@@ -81,7 +81,7 @@ namespace gum_tests {
       map.push_back( 0 );
       __state = new gum::prm::Type<double>( *__boolean, map, state );
       __stateAttr =
-          new gum::prm::ScalarAttribute<double>( "myState", *__state );
+          new gum::prm::PRMScalarAttribute<double>( "myState", *__state );
       __C->add( __stateAttr );
 
       __booleanChain = new gum::Sequence<gum::prm::PRMClassElement<double>*>();
@@ -293,7 +293,7 @@ namespace gum_tests {
     /// @{
     void testAddParentCheckChild() {
       // Arrange
-      gum::prm::ScalarAttribute<double> parent( "attr", *__boolean );
+      gum::prm::PRMScalarAttribute<double> parent( "attr", *__boolean );
       SlotChain child( "child", *__booleanChain );
       auto before = child.cpf().variablesSequence().size();
       // Act
@@ -306,7 +306,7 @@ namespace gum_tests {
 
     void testAddParentDupplicateError() {
       // Arrange
-      gum::prm::ScalarAttribute<double> parent( "attr", *__boolean );
+      gum::prm::PRMScalarAttribute<double> parent( "attr", *__boolean );
       SlotChain child( "child", *__booleanChain );
       child.addParent( parent );
       auto before = child.cpf().variablesSequence().size();
@@ -321,7 +321,7 @@ namespace gum_tests {
     void testAddChild() {
       // Arrange
       SlotChain parent( "simple", *__booleanChain );
-      gum::prm::ScalarAttribute<double> child( "attr", *__boolean );
+      gum::prm::PRMScalarAttribute<double> child( "attr", *__boolean );
       auto before = parent.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );

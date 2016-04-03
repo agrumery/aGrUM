@@ -83,7 +83,7 @@ namespace gum {
       // Copying attributes
       for ( const auto i_attr : i.__attributes ) {
         auto attr =
-            new ScalarAttribute<GUM_SCALAR>( i_attr->name(), i_attr->type() );
+            new PRMScalarAttribute<GUM_SCALAR>( i_attr->name(), i_attr->type() );
         attr->setId( i_attr->id() );
         __nodeIdMap.insert( attr->id(), attr );
         __attributes.insert( attr );

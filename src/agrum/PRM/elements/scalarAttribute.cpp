@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::ScalarAttribute
+ * @brief Source implementation of gum::PRMScalarAttribute
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class ScalarAttribute<float>;
-    template class ScalarAttribute<double>;
+    template class PRMScalarAttribute<float>;
+    template class PRMScalarAttribute<double>;
 
 
   } /* namespace prm */

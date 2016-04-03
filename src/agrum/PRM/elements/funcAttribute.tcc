@@ -34,7 +34,7 @@ namespace gum {
         const std::string& name,
         const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl )
-        : ScalarAttribute<GUM_SCALAR>( name, type, impl ) {
+        : PRMScalarAttribute<GUM_SCALAR>( name, type, impl ) {
       std::stringstream str;
       str << "In FuncAttribute(" << name << ", " << type.name() << ", " << impl
           << ")";
@@ -58,7 +58,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE PRMFuncAttribute<GUM_SCALAR>::PRMFuncAttribute(
         const PRMFuncAttribute<GUM_SCALAR>& source )
-        : ScalarAttribute<GUM_SCALAR>( source ) {
+        : PRMScalarAttribute<GUM_SCALAR>( source ) {
       GUM_CONS_CPY( PRMFuncAttribute );
       GUM_ERROR( FatalError, "illegal call to copy constructor" );
     }

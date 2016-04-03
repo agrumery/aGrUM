@@ -48,7 +48,7 @@ namespace gum {
      * See gum::prm::PRMFactory::addAttribute(PRMAttribute*) for more details.
      */
     template <typename GUM_SCALAR>
-    class PRMFuncAttribute : public ScalarAttribute<GUM_SCALAR> {
+    class PRMFuncAttribute : public PRMScalarAttribute<GUM_SCALAR> {
       public:
       /**
        * @brief Constructor used by gum::Class.

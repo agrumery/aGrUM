@@ -208,7 +208,7 @@ namespace gum_tests {
     /// @{
     void testAddParentCheckChild() {
       // Arrange
-      gum::prm::ScalarAttribute<double> parent( "attr", *__boolean );
+      gum::prm::PRMScalarAttribute<double> parent( "attr", *__boolean );
       PRMReferenceSlot child( "child", *__A );
       auto before = parent.cpf().variablesSequence().size();
       // Act
@@ -221,7 +221,7 @@ namespace gum_tests {
     void testAddChild() {
       // Arrange
       PRMReferenceSlot parent( "simple", *__A );
-      gum::prm::ScalarAttribute<double> child( "attr", *__boolean );
+      gum::prm::PRMScalarAttribute<double> child( "attr", *__boolean );
       auto before = child.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );
