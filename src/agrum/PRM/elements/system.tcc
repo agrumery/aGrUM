@@ -59,8 +59,8 @@ namespace gum {
     void System<GUM_SCALAR>::addArc( const std::string& u_name,
                                      const std::string& v_name,
                                      const std::string& ref_name ) {
-      Instance<GUM_SCALAR>* u = nullptr;
-      Instance<GUM_SCALAR>* v = nullptr;
+      PRMInstance<GUM_SCALAR>* u = nullptr;
+      PRMInstance<GUM_SCALAR>* v = nullptr;
       ReferenceSlot<GUM_SCALAR>* ref = nullptr;
 
       try {
@@ -91,7 +91,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    NodeId System<GUM_SCALAR>::add( Instance<GUM_SCALAR>* i ) {
+    NodeId System<GUM_SCALAR>::add( PRMInstance<GUM_SCALAR>* i ) {
       if ( __nameMap.exists( i->name() ) ) {
         GUM_ERROR(
             DuplicateElement,
@@ -106,7 +106,7 @@ namespace gum {
         __instanceMap[&( i->type() )]->insert( i );
       } catch ( NotFound& ) {
         __instanceMap.insert( &( i->type() ),
-                              new Set<Instance<GUM_SCALAR>*>() );
+                              new Set<PRMInstance<GUM_SCALAR>*>() );
         __instanceMap[&( i->type() )]->insert( i );
       }
 
@@ -135,11 +135,11 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::__groundAttr(
-        const Instance<GUM_SCALAR>& instance,
+        const PRMInstance<GUM_SCALAR>& instance,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( const auto node : instance.type().dag() ) {
         // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR> are
-        // instantiated as PRMAttribute<GUM_SCALAR> in an Instance<GUM_SCALAR>
+        // instantiated as PRMAttribute<GUM_SCALAR> in an PRMInstance<GUM_SCALAR>
         switch ( instance.type().get( node ).elt_type() ) {
           case PRMClassElement<GUM_SCALAR>::prm_attribute: {
             // TODO: make a special case for noisy-or
@@ -239,7 +239,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::__groundRef(
-        const Instance<GUM_SCALAR>& instance,
+        const PRMInstance<GUM_SCALAR>& instance,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( const auto& elt : instance ) {
         std::stringstream elt_name;
@@ -293,7 +293,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::__groundPotential(
-        const Instance<GUM_SCALAR>& instance,
+        const PRMInstance<GUM_SCALAR>& instance,
         const PRMAttribute<GUM_SCALAR>& attr,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
@@ -355,7 +355,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE NodeId System<GUM_SCALAR>::add( const std::string& array,
-                                           Instance<GUM_SCALAR>& i ) {
+                                           PRMInstance<GUM_SCALAR>& i ) {
       return add( array, &i );
     }
 
@@ -365,7 +365,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Instance<GUM_SCALAR>& System<GUM_SCALAR>::get( NodeId id ) {
+    INLINE PRMInstance<GUM_SCALAR>& System<GUM_SCALAR>::get( NodeId id ) {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
@@ -375,7 +375,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Instance<GUM_SCALAR>&
+    INLINE const PRMInstance<GUM_SCALAR>&
     System<GUM_SCALAR>::get( NodeId id ) const {
       try {
         return *( __nodeIdMap[id] );
@@ -387,9 +387,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE NodeId
-    System<GUM_SCALAR>::get( const Instance<GUM_SCALAR>& i ) const {
+    System<GUM_SCALAR>::get( const PRMInstance<GUM_SCALAR>& i ) const {
       try {
-        return __nodeIdMap.keyByVal( const_cast<Instance<GUM_SCALAR>*>( &i ) );
+        return __nodeIdMap.keyByVal( const_cast<PRMInstance<GUM_SCALAR>*>( &i ) );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
                    "found no Instance<GUM_SCALAR> matching the given id" );
@@ -431,7 +431,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Instance<GUM_SCALAR>&
+    INLINE PRMInstance<GUM_SCALAR>&
     System<GUM_SCALAR>::get( const std::string& name ) {
       try {
         return *( __nameMap[name] );
@@ -442,7 +442,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Instance<GUM_SCALAR>&
+    INLINE const PRMInstance<GUM_SCALAR>&
     System<GUM_SCALAR>::get( const std::string& name ) const {
       try {
         return *( __nameMap[name] );
@@ -453,7 +453,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Instance<GUM_SCALAR>*>&
+    INLINE const Set<PRMInstance<GUM_SCALAR>*>&
     System<GUM_SCALAR>::get( const PRMClass<GUM_SCALAR>& type ) const {
       try {
         return *( __instanceMap[const_cast<PRMClass<GUM_SCALAR>*>( &type )] );
@@ -465,7 +465,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Sequence<Instance<GUM_SCALAR>*>&
+    INLINE const Sequence<PRMInstance<GUM_SCALAR>*>&
     System<GUM_SCALAR>::getArray( const std::string& name ) const {
       try {
         return *( __arrayMap[name].second );
@@ -496,7 +496,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE NodeId System<GUM_SCALAR>::add( const std::string& array,
-                                           Instance<GUM_SCALAR>* i ) {
+                                           PRMInstance<GUM_SCALAR>* i ) {
       try {
         if ( i->type().isSubTypeOf( *( __arrayMap[array].first ) ) ) {
           NodeId id = add( i );
@@ -523,7 +523,7 @@ namespace gum {
 
       __arrayMap.insert( array,
                          System<GUM_SCALAR>::model_pair(
-                             &type, new Sequence<Instance<GUM_SCALAR>*>() ) );
+                             &type, new Sequence<PRMInstance<GUM_SCALAR>*>() ) );
     }
 
     template <typename GUM_SCALAR>

@@ -229,16 +229,16 @@ namespace gum {
           NodeSet outputs;
         };
         std::string __dot;
-        std::string __str( const Instance<GUM_SCALAR>* i,
+        std::string __str( const PRMInstance<GUM_SCALAR>* i,
                            const PRMAttribute<GUM_SCALAR>* a ) const;
-        std::string __str( const Instance<GUM_SCALAR>* i,
+        std::string __str( const PRMInstance<GUM_SCALAR>* i,
                            const PRMAttribute<GUM_SCALAR>& a ) const;
-        std::string __str( const Instance<GUM_SCALAR>* i,
+        std::string __str( const PRMInstance<GUM_SCALAR>* i,
                            const SlotChain<GUM_SCALAR>& a ) const;
         void
         __buildPatternGraph( StrictSearch<GUM_SCALAR>::PData& data,
                              Set<Potential<GUM_SCALAR>*>& pool,
-                             const Sequence<Instance<GUM_SCALAR>*>& match );
+                             const Sequence<PRMInstance<GUM_SCALAR>*>& match );
         std::pair<Size, Size>
         __elimination_cost( StrictSearch<GUM_SCALAR>::PData& data,
                             Set<Potential<GUM_SCALAR>*>& pool );

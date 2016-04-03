@@ -77,8 +77,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void EdgeGrowth<GUM_SCALAR>::insert( Instance<GUM_SCALAR>* u,
-                                           Instance<GUM_SCALAR>* v ) {
+      void EdgeGrowth<GUM_SCALAR>::insert( PRMInstance<GUM_SCALAR>* u,
+                                           PRMInstance<GUM_SCALAR>* v ) {
         NodeId id = iso_graph.addNode();
         degree_list->push_back( id );
 

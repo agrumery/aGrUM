@@ -345,25 +345,25 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE NodeId
-      InterfaceGraph<GUM_SCALAR>::id( const Instance<GUM_SCALAR>& i ) const {
-        return __idMap[const_cast<Instance<GUM_SCALAR>*>( &i )];
+      InterfaceGraph<GUM_SCALAR>::id( const PRMInstance<GUM_SCALAR>& i ) const {
+        return __idMap[const_cast<PRMInstance<GUM_SCALAR>*>( &i )];
       }
 
       template <typename GUM_SCALAR>
       INLINE NodeId
-      InterfaceGraph<GUM_SCALAR>::id( const Instance<GUM_SCALAR>* i ) const {
-        return __idMap[const_cast<Instance<GUM_SCALAR>*>( i )];
+      InterfaceGraph<GUM_SCALAR>::id( const PRMInstance<GUM_SCALAR>* i ) const {
+        return __idMap[const_cast<PRMInstance<GUM_SCALAR>*>( i )];
       }
 
       template <typename GUM_SCALAR>
       INLINE NodeData<GUM_SCALAR>&
-      InterfaceGraph<GUM_SCALAR>::node( const Instance<GUM_SCALAR>* i ) {
+      InterfaceGraph<GUM_SCALAR>::node( const PRMInstance<GUM_SCALAR>* i ) {
         return node( id( i ) );
       }
 
       template <typename GUM_SCALAR>
       INLINE const NodeData<GUM_SCALAR>&
-      InterfaceGraph<GUM_SCALAR>::node( const Instance<GUM_SCALAR>* i ) const {
+      InterfaceGraph<GUM_SCALAR>::node( const PRMInstance<GUM_SCALAR>* i ) const {
         return node( id( i ) );
       }
 

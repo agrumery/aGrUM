@@ -42,8 +42,8 @@ namespace gum {
           __subgraph_mining( graph, p );
 
           for ( const auto node : __tree.iso_graph( p ).nodes() ) {
-            Instance<GUM_SCALAR>* u = __tree.iso_map( p, node ).atPos( 0 );
-            Instance<GUM_SCALAR>* v = __tree.iso_map( p, node ).atPos( 1 );
+            PRMInstance<GUM_SCALAR>* u = __tree.iso_map( p, node ).atPos( 0 );
+            PRMInstance<GUM_SCALAR>* v = __tree.iso_map( p, node ).atPos( 1 );
             graph.graph().eraseEdge( Edge( graph.id( u ), graph.id( v ) ) );
           }
         }
@@ -111,9 +111,9 @@ namespace gum {
       HashTable<std::string, gspan::EdgeGrowth<GUM_SCALAR>*>* edge_count =
           nullptr;
       gspan::EdgeGrowth<GUM_SCALAR>* edge_growth = nullptr;
-      Sequence<Instance<GUM_SCALAR>*>* seq = nullptr;
-      Instance<GUM_SCALAR>* current = nullptr;
-      Instance<GUM_SCALAR>* neighbor = nullptr;
+      Sequence<PRMInstance<GUM_SCALAR>*>* seq = nullptr;
+      PRMInstance<GUM_SCALAR>* current = nullptr;
+      PRMInstance<GUM_SCALAR>* neighbor = nullptr;
 
       // Neighbor_id is the neighbor's id in the interface graph and
       // neighbor_node
@@ -260,7 +260,7 @@ namespace gum {
         // __chosen
         GSpan<GUM_SCALAR>::MatchedInstances* matches =
             new GSpan<GUM_SCALAR>::MatchedInstances();
-        Sequence<Instance<GUM_SCALAR>*>* match = nullptr;
+        Sequence<PRMInstance<GUM_SCALAR>*>* match = nullptr;
 
         for ( const auto node :
               tree().max_indep_set( *( __patterns.front() ) ) ) {

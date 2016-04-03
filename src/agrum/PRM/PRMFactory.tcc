@@ -838,7 +838,7 @@ namespace gum {
       System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       PRMClass<GUM_SCALAR>* c = __retrieveClass( type );
-      Instance<GUM_SCALAR>* inst = 0;
+      PRMInstance<GUM_SCALAR>* inst = 0;
 
       try {
         model->addArray( name, *c );
@@ -846,7 +846,7 @@ namespace gum {
         for ( Size i = 0; i < size; ++i ) {
           std::stringstream elt_name;
           elt_name << name << "[" << i << "]";
-          inst = new Instance<GUM_SCALAR>( elt_name.str(), *c );
+          inst = new PRMInstance<GUM_SCALAR>( elt_name.str(), *c );
           model->add( name, inst );
         }
       } catch ( TypeError& e ) {
@@ -882,8 +882,8 @@ namespace gum {
 
       auto model = static_cast<System<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
-      std::vector<Instance<GUM_SCALAR>*> lefts;
-      std::vector<Instance<GUM_SCALAR>*> rights;
+      std::vector<PRMInstance<GUM_SCALAR>*> lefts;
+      std::vector<PRMInstance<GUM_SCALAR>*> rights;
 
       if ( model->isInstance( l_i ) ) {
         lefts.push_back( &( model->get( l_i ) ) );
@@ -1637,12 +1637,12 @@ namespace gum {
     INLINE void
     PRMFactory<GUM_SCALAR>::__addInstance( PRMClass<GUM_SCALAR>* type,
                                            const std::string& name ) {
-      Instance<GUM_SCALAR>* i = 0;
+      PRMInstance<GUM_SCALAR>* i = 0;
       try {
 
         auto s = static_cast<System<GUM_SCALAR>*>(
             __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
-        i = new Instance<GUM_SCALAR>( name, *type );
+        i = new PRMInstance<GUM_SCALAR>( name, *type );
         s->add( i );
 
       } catch ( OperationNotAllowed& e ) {

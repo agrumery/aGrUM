@@ -112,7 +112,7 @@ namespace gum {
         return obj.obj_type() == PRMType::INTERFACE;
       }
 
-      /// Returns true if obj_ptr is of type Instance.
+      /// Returns true if obj_ptr is of type PRMInstance.
       static INLINE bool isInstance( const PRMObject& obj ) {
         return obj.obj_type() == PRMType::INSTANCE;
       }
@@ -219,7 +219,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class PRMClass;
     template <typename GUM_SCALAR>
-    class Instance;
+    class PRMInstance;
     template <typename GUM_SCALAR>
     class System;
 

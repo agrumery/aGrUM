@@ -1181,7 +1181,7 @@ namespace gum_tests {
         for ( gum::prm::System<double>::iterator iter = sys->begin();
               iter != sys->end();
               ++iter ) {
-          for ( gum::prm::Instance<double>::iterator jter =
+          for ( gum::prm::PRMInstance<double>::iterator jter =
                     ( *( iter.val() ) ).begin();
                 jter != ( *( iter.val() ) ).end();
                 ++jter ) {
@@ -1463,7 +1463,7 @@ namespace gum_tests {
         auto prm = reader.prm();
         auto& asia = prm->getClass( "Asia" );
         gum::prm::System<double> sys( "Asia" );
-        auto i = new gum::prm::Instance<double>( "asia", asia );
+        auto i = new gum::prm::PRMInstance<double>( "asia", asia );
         sys.add( i );
         sys.instantiate();
         auto bn = new gum::BayesNet<double>( "Asia" );

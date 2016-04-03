@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::prm::Instance
+ * @brief Source implementation of gum::prm::PRMInstance
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class Instance<float>;
-    template class Instance<double>;
+    template class PRMInstance<float>;
+    template class PRMInstance<double>;
 
 
   } /* namespace prm */

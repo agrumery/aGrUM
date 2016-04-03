@@ -92,7 +92,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     typename PRMInference<GUM_SCALAR>::EMap&
-    PRMInference<GUM_SCALAR>::__EMap( const Instance<GUM_SCALAR>* i ) {
+    PRMInference<GUM_SCALAR>::__EMap( const PRMInstance<GUM_SCALAR>* i ) {
       if ( __evidences.exists( i ) ) {
         return *( __evidences[i] );
       } else {
@@ -152,7 +152,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE typename PRMInference<GUM_SCALAR>::EMap&
-    PRMInference<GUM_SCALAR>::evidence( const Instance<GUM_SCALAR>& i ) {
+    PRMInference<GUM_SCALAR>::evidence( const PRMInstance<GUM_SCALAR>& i ) {
       try {
         return *( __evidences[&i] );
       } catch ( NotFound& ) {
@@ -162,7 +162,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const typename PRMInference<GUM_SCALAR>::EMap&
-    PRMInference<GUM_SCALAR>::evidence( const Instance<GUM_SCALAR>& i ) const {
+    PRMInference<GUM_SCALAR>::evidence( const PRMInstance<GUM_SCALAR>& i ) const {
       try {
         return *( __evidences[&i] );
       } catch ( NotFound& ) {
@@ -172,7 +172,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE typename PRMInference<GUM_SCALAR>::EMap&
-    PRMInference<GUM_SCALAR>::evidence( const Instance<GUM_SCALAR>* i ) {
+    PRMInference<GUM_SCALAR>::evidence( const PRMInstance<GUM_SCALAR>* i ) {
       try {
         return *( __evidences[i] );
       } catch ( NotFound& ) {
@@ -182,7 +182,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const typename PRMInference<GUM_SCALAR>::EMap&
-    PRMInference<GUM_SCALAR>::evidence( const Instance<GUM_SCALAR>* i ) const {
+    PRMInference<GUM_SCALAR>::evidence( const PRMInstance<GUM_SCALAR>* i ) const {
       try {
         return *( __evidences[i] );
       } catch ( NotFound& ) {
@@ -192,13 +192,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMInference<GUM_SCALAR>::hasEvidence(
-        const Instance<GUM_SCALAR>& i ) const {
+        const PRMInstance<GUM_SCALAR>& i ) const {
       return __evidences.exists( &i );
     }
 
     template <typename GUM_SCALAR>
     INLINE bool PRMInference<GUM_SCALAR>::hasEvidence(
-        const Instance<GUM_SCALAR>* i ) const {
+        const PRMInstance<GUM_SCALAR>* i ) const {
       return __evidences.exists( i );
     }
 

@@ -32,7 +32,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       double SearchStrategy<GUM_SCALAR>::_computeCost( const Pattern& p ) {
         double cost = 0;
-        const Sequence<Instance<GUM_SCALAR>*>& seq =
+        const Sequence<PRMInstance<GUM_SCALAR>*>& seq =
             *( this->_tree->data( p ).iso_map.begin().val() );
         Sequence<PRMClassElement<GUM_SCALAR>*> input_set;
 
@@ -64,7 +64,7 @@ namespace gum {
       void StrictSearch<GUM_SCALAR>::__buildPatternGraph(
           StrictSearch<GUM_SCALAR>::PData& data,
           Set<Potential<GUM_SCALAR>*>& pool,
-          const Sequence<Instance<GUM_SCALAR>*>& match ) {
+          const Sequence<PRMInstance<GUM_SCALAR>*>& match ) {
         for ( const auto inst : match ) {
           for ( const auto& elt : *inst ) {
             // Adding the node
@@ -124,7 +124,7 @@ namespace gum {
 
             // Referring PRMAttribute<GUM_SCALAR>
             if ( inst->hasRefAttr( elt.second->id() ) ) {
-              const std::vector<std::pair<Instance<GUM_SCALAR>*, std::string>>&
+              const std::vector<std::pair<PRMInstance<GUM_SCALAR>*, std::string>>&
                   ref_attr = inst->getRefAttr( elt.second->id() );
 
               for ( auto pair = ref_attr.begin(); pair != ref_attr.end();
@@ -381,21 +381,21 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE std::string
-      StrictSearch<GUM_SCALAR>::__str( const Instance<GUM_SCALAR>* i,
+      StrictSearch<GUM_SCALAR>::__str( const PRMInstance<GUM_SCALAR>* i,
                                        const PRMAttribute<GUM_SCALAR>* a ) const {
         return i->name() + __dot + a->safeName();
       }
 
       template <typename GUM_SCALAR>
       INLINE std::string
-      StrictSearch<GUM_SCALAR>::__str( const Instance<GUM_SCALAR>* i,
+      StrictSearch<GUM_SCALAR>::__str( const PRMInstance<GUM_SCALAR>* i,
                                        const PRMAttribute<GUM_SCALAR>& a ) const {
         return i->name() + __dot + a.safeName();
       }
 
       template <typename GUM_SCALAR>
       INLINE std::string
-      StrictSearch<GUM_SCALAR>::__str( const Instance<GUM_SCALAR>* i,
+      StrictSearch<GUM_SCALAR>::__str( const PRMInstance<GUM_SCALAR>* i,
                                        const SlotChain<GUM_SCALAR>& a ) const {
         return i->name() + __dot + a.lastElt().safeName();
       }

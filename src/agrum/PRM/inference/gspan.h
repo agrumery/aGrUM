@@ -57,7 +57,7 @@ namespace gum {
      *be used to
      * speed up structured inference as it will discover repeated patterns
      *including
-     * more than one Instance<GUM_SCALAR>.
+     * more than one PRMInstance<GUM_SCALAR>.
      *
      * This algorithm proceeds in three main steps represented by the private
      * methods GSpan::__sortNodesAndEdges(), GSpan::__subgraph_mining() and
@@ -164,7 +164,7 @@ namespace gum {
       const std::vector<gspan::Pattern*>& patterns() const;
 
       /// Code alias.
-      typedef Set<Sequence<Instance<GUM_SCALAR>*>*> MatchedInstances;
+      typedef Set<Sequence<PRMInstance<GUM_SCALAR>*>*> MatchedInstances;
 
       /**
        * Returns a mapping between patterns and the sequence of instance in the
@@ -235,7 +235,7 @@ namespace gum {
       HashTable<gspan::Pattern*, MatchedInstances*> __matched_instances;
 
       /// Contains all instance which belongs to a discovered and used pattern.
-      Set<Instance<GUM_SCALAR>*> __chosen;
+      Set<PRMInstance<GUM_SCALAR>*> __chosen;
 
       /// @}
       // ========================================================================
@@ -267,7 +267,7 @@ namespace gum {
       // /// Returns the cost of an instance.
       // /// @param i An instance.
       // /// @return the cost of an instance.
-      // double __instance_cost(Instance<GUM_SCALAR>* i) const;
+      // double __instance_cost(PRMInstance<GUM_SCALAR>* i) const;
 
       /// Print an iso map. For debug purpose.
       void __printIsoMap( gspan::Pattern& p );

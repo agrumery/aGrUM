@@ -726,7 +726,7 @@ namespace gum {
 
       /**
        * Creates an array with the given number of instances of the given type.
-       * Instance<GUM_SCALAR> are name using "name" as prefix and adding the
+       * PRMInstance<GUM_SCALAR> are name using "name" as prefix and adding the
        * suffix "[i]",
        * with "i" being the position of the instance in the array.
        */
@@ -923,14 +923,14 @@ namespace gum {
       /// @}
       // ======================================================================
       ///  @name Private methods handling System<GUM_SCALAR> and
-      ///  Instance<GUM_SCALAR> creation.
+      ///  PRMInstance<GUM_SCALAR> creation.
       // ======================================================================
       /// @{
 
       /// Adds a instance to the current model.
       void __addInstance( PRMClass<GUM_SCALAR>* type, const std::string& name );
 
-      /// Builds all SlotChain<GUM_SCALAR><Instance<GUM_SCALAR>> in the given
+      /// Builds all SlotChain<GUM_SCALAR><PRMInstance<GUM_SCALAR>> in the given
       /// model.
       /// @throw OperationNotAllowed If reference slots are left un affected
       void __buildSlotChains( System<GUM_SCALAR>* model );
@@ -941,7 +941,7 @@ namespace gum {
 
       /// Instantiate a slot chain in the given instance
       void __instantiateSlotChain( System<GUM_SCALAR>* model,
-                                   Instance<GUM_SCALAR>* inst,
+                                   PRMInstance<GUM_SCALAR>* inst,
                                    ReferenceSlot<GUM_SCALAR>* ref,
                                    SlotChain<GUM_SCALAR>* sc );
 
@@ -950,8 +950,8 @@ namespace gum {
       /// reference in sc.
       /// @¶eturn Returns the name of the corresponding SlotChain<GUM_SCALAR>.
       std::string
-      __retrieveInstanceSequence( Instance<GUM_SCALAR>* inst,
-                                  Sequence<Instance<GUM_SCALAR>*>& seq,
+      __retrieveInstanceSequence( PRMInstance<GUM_SCALAR>* inst,
+                                  Sequence<PRMInstance<GUM_SCALAR>*>& seq,
                                   SlotChain<GUM_SCALAR>* sc );
 
       /// @}

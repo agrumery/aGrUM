@@ -39,17 +39,17 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void SVED<GUM_SCALAR>::__eliminateNodes( const Instance<GUM_SCALAR>* query,
+    void SVED<GUM_SCALAR>::__eliminateNodes( const PRMInstance<GUM_SCALAR>* query,
                                              NodeId node,
                                              BucketSet& pool,
                                              BucketSet& trash ) {
-      Set<const Instance<GUM_SCALAR>*> ignore;
+      Set<const PRMInstance<GUM_SCALAR>*> ignore;
       ignore.insert( query );
       // Extracting required attributes and slotchains
       Set<NodeId>& attr_set = __getAttrSet( query );
       Set<NodeId>& sc_set = __getSCSet( query );
       // Downward elimination
-      List<const Instance<GUM_SCALAR>*> elim_list;
+      List<const PRMInstance<GUM_SCALAR>*> elim_list;
 
       for ( const auto attr : attr_set ) {
         try {
@@ -83,7 +83,7 @@ namespace gum {
 
       inf.eliminateNodes( elim_order, pool, trash );
       // Eliminating instance in elim_list
-      List<const Instance<GUM_SCALAR>*> tmp_list;
+      List<const PRMInstance<GUM_SCALAR>*> tmp_list;
       __reduceElimList( query, elim_list, tmp_list, ignore, pool, trash );
 
       while ( not elim_list.empty() ) {
@@ -108,18 +108,18 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::__eliminateNodesDownward(
-        const Instance<GUM_SCALAR>* from,
-        const Instance<GUM_SCALAR>* i,
+        const PRMInstance<GUM_SCALAR>* from,
+        const PRMInstance<GUM_SCALAR>* i,
         BucketSet& pool,
         BucketSet& trash,
-        List<const Instance<GUM_SCALAR>*>& elim_list,
-        Set<const Instance<GUM_SCALAR>*>& ignore ) {
+        List<const PRMInstance<GUM_SCALAR>*>& elim_list,
+        Set<const PRMInstance<GUM_SCALAR>*>& ignore ) {
       ignore.insert( i );
       // Extracting required attributes and slotchains
       Set<NodeId>& attr_set = __getAttrSet( i );
       Set<NodeId>& sc_set = __getSCSet( i );
       // Calling elimination over child instance
-      List<const Instance<GUM_SCALAR>*> my_list;
+      List<const PRMInstance<GUM_SCALAR>*> my_list;
 
       for ( const auto attr : attr_set ) {
         try {
@@ -178,11 +178,11 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::__eliminateNodesUpward(
-        const Instance<GUM_SCALAR>* i,
+        const PRMInstance<GUM_SCALAR>* i,
         BucketSet& pool,
         BucketSet& trash,
-        List<const Instance<GUM_SCALAR>*>& elim_list,
-        Set<const Instance<GUM_SCALAR>*>& ignore ) {
+        List<const PRMInstance<GUM_SCALAR>*>& elim_list,
+        Set<const PRMInstance<GUM_SCALAR>*>& ignore ) {
       ignore.insert( i );
       // Extracting required attributes and slotchains
       Set<NodeId>& attr_set = __getAttrSet( i );
@@ -223,7 +223,7 @@ namespace gum {
       }
 
       // Eliminating instance in elim_list
-      List<const Instance<GUM_SCALAR>*> tmp_list;
+      List<const PRMInstance<GUM_SCALAR>*> tmp_list;
 
       while ( not elim_list.empty() ) {
         if ( __checkElimOrder( i, elim_list.front() ) ) {
@@ -247,7 +247,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::__eliminateNodesWithEvidence(
-        const Instance<GUM_SCALAR>* i, BucketSet& pool, BucketSet& trash ) {
+        const PRMInstance<GUM_SCALAR>* i, BucketSet& pool, BucketSet& trash ) {
       // Adding required evidences
       for ( const auto& elt : this->evidence( i ) )
         if ( __bb.requisiteNodes( i ).exists( elt.first ) )
@@ -269,7 +269,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void SVED<GUM_SCALAR>::__insertLiftedNodes( const Instance<GUM_SCALAR>* i,
+    void SVED<GUM_SCALAR>::__insertLiftedNodes( const PRMInstance<GUM_SCALAR>* i,
                                                 BucketSet& pool,
                                                 BucketSet& trash ) {
       BucketSet* lifted_pool = nullptr;
@@ -290,7 +290,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void SVED<GUM_SCALAR>::__initLiftedNodes( const Instance<GUM_SCALAR>* i,
+    void SVED<GUM_SCALAR>::__initLiftedNodes( const PRMInstance<GUM_SCALAR>* i,
                                               BucketSet& trash ) {
       PRMClass<GUM_SCALAR>& c = const_cast<PRMClass<GUM_SCALAR>&>( i->type() );
       BucketSet* lifted_pool = new BucketSet();
@@ -432,7 +432,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::_marginal( const Chain& chain,
                                       Potential<GUM_SCALAR>& m ) {
-      const Instance<GUM_SCALAR>* i = chain.first;
+      const PRMInstance<GUM_SCALAR>* i = chain.first;
       const PRMAttribute<GUM_SCALAR>* elt = chain.second;
       SVED<GUM_SCALAR>::BucketSet pool, trash;
       __bb.compute( i, elt->id() );
@@ -488,7 +488,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void SVED<GUM_SCALAR>::__initReqSets( const Instance<GUM_SCALAR>* i ) {
+    void SVED<GUM_SCALAR>::__initReqSets( const PRMInstance<GUM_SCALAR>* i ) {
       Set<NodeId>* attr_set = new Set<NodeId>();
       Set<NodeId>* sc_set = new Set<NodeId>();
 
@@ -538,7 +538,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void
-    SVED<GUM_SCALAR>::__insertEvidence( const Instance<GUM_SCALAR>* i,
+    SVED<GUM_SCALAR>::__insertEvidence( const PRMInstance<GUM_SCALAR>* i,
                                         BucketSet& pool ) {
       for ( const auto& elt : this->evidence( i ) )
         pool.insert( const_cast<Potential<GUM_SCALAR>*>( elt.second ) );
@@ -561,8 +561,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool
-    SVED<GUM_SCALAR>::__checkElimOrder( const Instance<GUM_SCALAR>* first,
-                                        const Instance<GUM_SCALAR>* second ) {
+    SVED<GUM_SCALAR>::__checkElimOrder( const PRMInstance<GUM_SCALAR>* first,
+                                        const PRMInstance<GUM_SCALAR>* second ) {
       if ( __class_elim_order == 0 ) {
         __initElimOrder();
       }
@@ -575,7 +575,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Potential<GUM_SCALAR>*
-    SVED<GUM_SCALAR>::__getAggPotential( const Instance<GUM_SCALAR>* i,
+    SVED<GUM_SCALAR>::__getAggPotential( const PRMInstance<GUM_SCALAR>* i,
                                          const PRMAggregate<GUM_SCALAR>* agg ) {
       return &( const_cast<Potential<GUM_SCALAR>&>(
           i->get( agg->safeName() ).cpf() ) );
@@ -595,7 +595,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Set<NodeId>&
-    SVED<GUM_SCALAR>::__getAttrSet( const Instance<GUM_SCALAR>* i ) {
+    SVED<GUM_SCALAR>::__getAttrSet( const PRMInstance<GUM_SCALAR>* i ) {
       try {
         return *( __req_set[&( __bb.requisiteNodes( i ) )].first );
       } catch ( NotFound& ) {
@@ -606,7 +606,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Set<NodeId>&
-    SVED<GUM_SCALAR>::__getSCSet( const Instance<GUM_SCALAR>* i ) {
+    SVED<GUM_SCALAR>::__getSCSet( const PRMInstance<GUM_SCALAR>* i ) {
       try {
         return *( __req_set[&( __bb.requisiteNodes( i ) )].second );
       } catch ( NotFound& ) {
@@ -617,10 +617,10 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void SVED<GUM_SCALAR>::__reduceElimList(
-        const Instance<GUM_SCALAR>* i,
-        List<const Instance<GUM_SCALAR>*>& elim_list,
-        List<const Instance<GUM_SCALAR>*>& reduced_list,
-        Set<const Instance<GUM_SCALAR>*>& ignore,
+        const PRMInstance<GUM_SCALAR>* i,
+        List<const PRMInstance<GUM_SCALAR>*>& elim_list,
+        List<const PRMInstance<GUM_SCALAR>*>& reduced_list,
+        Set<const PRMInstance<GUM_SCALAR>*>& ignore,
         BucketSet& pool,
         BucketSet& trash ) {
       while ( not elim_list.empty() ) {

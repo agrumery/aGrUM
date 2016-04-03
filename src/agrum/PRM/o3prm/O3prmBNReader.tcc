@@ -96,7 +96,7 @@ namespace gum {
                            0 );
           __errors.add( warn );
           gum::prm::System<GUM_SCALAR> s( "S_" + __entityName );
-          auto i = new gum::prm::Instance<GUM_SCALAR>(
+          auto i = new gum::prm::PRMInstance<GUM_SCALAR>(
               __getInstanceName( __entityName ),
               prm->getClass( __entityName ) );
           s.add( i );

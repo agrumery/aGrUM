@@ -103,7 +103,7 @@ namespace gum {
           /// The isomorphism graph of the pattern.
           UndiGraph iso_graph;
           /// The instances matching p in the interface graph.
-          NodeProperty<Sequence<Instance<GUM_SCALAR>*>*> iso_map;
+          NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*> iso_map;
           /// The maximal independent set of p.
           Set<NodeId> max_indep_set;
           /// The cost of this Pattern
@@ -187,7 +187,7 @@ namespace gum {
          *
          * The isomorphism graph is a undirected graph in which each node
          *represents
-         * a set of Instance<GUM_SCALAR> matching p in the interface graph.
+         * a set of PRMInstance<GUM_SCALAR> matching p in the interface graph.
          *
          * If there exists an edge between two nodes in the isomorphism graph,
          *then
@@ -224,7 +224,7 @@ namespace gum {
          *
          * @throw NotFound Raised if p or node does not exists.
          */
-        Sequence<Instance<GUM_SCALAR>*>& iso_map( const Pattern& p,
+        Sequence<PRMInstance<GUM_SCALAR>*>& iso_map( const Pattern& p,
                                                   NodeId node );
 
         /**
@@ -298,8 +298,8 @@ namespace gum {
 
         /// Check if an instance match is redundant.
         bool
-        __is_new_seq( Sequence<Instance<GUM_SCALAR>*>& seq,
-                      NodeProperty<Sequence<Instance<GUM_SCALAR>*>*>& iso_map );
+        __is_new_seq( Sequence<PRMInstance<GUM_SCALAR>*>& seq,
+                      NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& iso_map );
 
         /// This initialize the DSFTree with a new root.
         /// @param p A Pattern.

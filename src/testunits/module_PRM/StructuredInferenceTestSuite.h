@@ -96,9 +96,9 @@ namespace gum_tests {
       }
     }
 
-    const gum::prm::Instance<double>&
+    const gum::prm::PRMInstance<double>&
     pickInstance( const gum::prm::System<double>& sys ) {
-      gum::Sequence<const gum::prm::Instance<double>*> seq;
+      gum::Sequence<const gum::prm::PRMInstance<double>*> seq;
 
       for ( gum::prm::System<double>::const_iterator iter = sys.begin();
             iter != sys.end();
@@ -109,10 +109,10 @@ namespace gum_tests {
     }
 
     const gum::prm::PRMAttribute<double>&
-    pickAttribute( const gum::prm::Instance<double>& i ) {
+    pickAttribute( const gum::prm::PRMInstance<double>& i ) {
       gum::Sequence<const gum::prm::PRMAttribute<double>*> seq;
 
-      for ( gum::prm::Instance<double>::const_iterator iter = i.begin();
+      for ( gum::prm::PRMInstance<double>::const_iterator iter = i.begin();
             iter != i.end();
             ++iter )
         seq.insert( iter.val() );
@@ -134,7 +134,7 @@ namespace gum_tests {
             prm->system( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::PRMInstance<double>& i = pickInstance( sys );
         const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
@@ -166,7 +166,7 @@ namespace gum_tests {
             prm->system( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::PRMInstance<double>& i = pickInstance( sys );
         const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
@@ -198,7 +198,7 @@ namespace gum_tests {
             prm->system( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::PRMInstance<double>& i = pickInstance( sys );
         const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
@@ -235,7 +235,7 @@ namespace gum_tests {
     //    gum::prm::StructuredInference<double> inf( *prm, sys, search );
 
     //    inf.setPatternMining( true );
-    //    const gum::prm::Instance<double>& i = pickInstance( sys );
+    //    const gum::prm::PRMInstance<double>& i = pickInstance( sys );
     //    const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
     //    gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a
     //    );

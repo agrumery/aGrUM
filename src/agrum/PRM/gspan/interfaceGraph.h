@@ -87,7 +87,7 @@ namespace gum {
         /// Destructor.
         ~NodeData<GUM_SCALAR>();
         /// The instance represented by this node.
-        Instance<GUM_SCALAR>* n;
+        PRMInstance<GUM_SCALAR>* n;
         /// The label of this node.
         LabelData* l;
         /// Equality operator.
@@ -121,11 +121,11 @@ namespace gum {
         /// Destructor.
         ~EdgeData();
         /// One of the two instance represented by this edge.
-        Instance<GUM_SCALAR>* u;
+        PRMInstance<GUM_SCALAR>* u;
         /// The label data of u.
         LabelData* l_u;
         /// The other instance represented by thus edge
-        Instance<GUM_SCALAR>* v;
+        PRMInstance<GUM_SCALAR>* v;
         /// The label data of v.
         LabelData* l_v;
         /// The labal data of this edge.
@@ -212,18 +212,18 @@ namespace gum {
         LabelData* label( Idx id );
 
         /// Returns the id of i in this interface graph
-        NodeId id( const Instance<GUM_SCALAR>& i ) const;
+        NodeId id( const PRMInstance<GUM_SCALAR>& i ) const;
 
         /// Returns the id of i in this interface graph
-        NodeId id( const Instance<GUM_SCALAR>* i ) const;
+        NodeId id( const PRMInstance<GUM_SCALAR>* i ) const;
 
         /// Returns data about a node.
         /// @throw NotFound
-        NodeData<GUM_SCALAR>& node( const Instance<GUM_SCALAR>* i );
+        NodeData<GUM_SCALAR>& node( const PRMInstance<GUM_SCALAR>* i );
 
         /// Returns data about a node.
         /// @throw NotFound
-        const NodeData<GUM_SCALAR>& node( const Instance<GUM_SCALAR>* i ) const;
+        const NodeData<GUM_SCALAR>& node( const PRMInstance<GUM_SCALAR>* i ) const;
 
         /// Returns data about a node.
         /// @throw NotFound
@@ -252,8 +252,8 @@ namespace gum {
         /// Data associated with a node in __graph.
         NodeProperty<NodeData<GUM_SCALAR>*> __nodes;
 
-        /// Mapping between Instance<GUM_SCALAR> dans their NodeId in __graph.
-        HashTable<Instance<GUM_SCALAR>*, NodeId> __idMap;
+        /// Mapping between PRMInstance<GUM_SCALAR> dans their NodeId in __graph.
+        HashTable<PRMInstance<GUM_SCALAR>*, NodeId> __idMap;
 
         /// Data associated with edges in __graph.
         EdgeProperty<EdgeData<GUM_SCALAR>*> __edges;

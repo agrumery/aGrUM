@@ -48,7 +48,7 @@ namespace gum {
     class PRMInference {
       public:
       /// Code alias.
-      typedef std::pair<const Instance<GUM_SCALAR>*,
+      typedef std::pair<const PRMInstance<GUM_SCALAR>*,
                         const PRMAttribute<GUM_SCALAR>*> Chain;
 
       /// Code alias.
@@ -130,25 +130,25 @@ namespace gum {
 
       /// Returns EMap of evidences over i.
       /// @throw NotFound if i has no evidence.
-      EMap& evidence( const Instance<GUM_SCALAR>& i );
+      EMap& evidence( const PRMInstance<GUM_SCALAR>& i );
 
       /// Returns EMap of evidences over i.
       /// @throw NotFound if i has no evidence.
-      EMap& evidence( const Instance<GUM_SCALAR>* i );
+      EMap& evidence( const PRMInstance<GUM_SCALAR>* i );
 
       /// Returns EMap of evidences over i.
       /// @throw NotFound if i has no evidence.
-      const EMap& evidence( const Instance<GUM_SCALAR>& i ) const;
+      const EMap& evidence( const PRMInstance<GUM_SCALAR>& i ) const;
 
       /// Returns EMap of evidences over i.
       /// @throw NotFound if i has no evidence.
-      const EMap& evidence( const Instance<GUM_SCALAR>* i ) const;
+      const EMap& evidence( const PRMInstance<GUM_SCALAR>* i ) const;
 
       /// Returns true if i has evidence.
-      bool hasEvidence( const Instance<GUM_SCALAR>& i ) const;
+      bool hasEvidence( const PRMInstance<GUM_SCALAR>& i ) const;
 
       /// Returns EMap of evidences over i.
-      bool hasEvidence( const Instance<GUM_SCALAR>* i ) const;
+      bool hasEvidence( const PRMInstance<GUM_SCALAR>* i ) const;
 
       /// Returns true if i has evidence on PRMAttribute<GUM_SCALAR> a.
       bool hasEvidence( const Chain& chain ) const;
@@ -202,7 +202,7 @@ namespace gum {
                               Potential<GUM_SCALAR>& m ) = 0;
 
       /// @brief Generic method to compute the marginal of given element.
-      /// @param queries Set of pairs of Instance<GUM_SCALAR> and
+      /// @param queries Set of pairs of PRMInstance<GUM_SCALAR> and
       /// PRMAttribute<GUM_SCALAR>.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
@@ -224,18 +224,18 @@ namespace gum {
       /// @{
 
       /// Code alias.
-      typedef typename HashTable<const Instance<GUM_SCALAR>*,
+      typedef typename HashTable<const PRMInstance<GUM_SCALAR>*,
                                  EMap*>::iterator_safe EvidenceIterator;
       /// Code alias.
       typedef
-          typename HashTable<const Instance<GUM_SCALAR>*,
+          typename HashTable<const PRMInstance<GUM_SCALAR>*,
                              EMap*>::const_iterator_safe EvidenceConstIterator;
 
-      /// Mapping of evidence over Instance<GUM_SCALAR>'s nodes.
-      HashTable<const Instance<GUM_SCALAR>*, EMap*> __evidences;
+      /// Mapping of evidence over PRMInstance<GUM_SCALAR>'s nodes.
+      HashTable<const PRMInstance<GUM_SCALAR>*, EMap*> __evidences;
 
       /// Private getter over __evidences, if necessary creates an EMap for i.
-      EMap& __EMap( const Instance<GUM_SCALAR>* i );
+      EMap& __EMap( const PRMInstance<GUM_SCALAR>* i );
 
       /// @}
     };

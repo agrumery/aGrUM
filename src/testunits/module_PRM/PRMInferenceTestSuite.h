@@ -83,7 +83,7 @@ namespace gum_tests {
                                         new gum::prm::GroundedInference<double>(
                                             *prm, prm->system( "aSys" ) ) );
       TS_GUM_ASSERT_THROWS_NOTHING( g_ve->setBNInference( ve ) );
-      const gum::prm::Instance<double>& instance =
+      const gum::prm::PRMInstance<double>& instance =
           prm->system( "aSys" ).get( "c1" );
       const gum::prm::PRMAttribute<double>& attribute =
           instance.get( "can_print" );
@@ -116,7 +116,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( g_ve->setBNInference( ve ) );
       // Building query
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "c" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -131,7 +131,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( m.get( i ), 0.399168, 1e-6 );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "p" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "equipState" );
@@ -146,7 +146,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( m.get( i ), 0.50104, 1e-6 );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "powState" );
@@ -176,7 +176,7 @@ namespace gum_tests {
                                                   small->system( "microSys" ) );
         g_ve.setBNInference( ve );
 
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "c" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -195,7 +195,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( m.get( i ), n.get( j ), 1e-6 );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "p" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "equipState" );
@@ -210,7 +210,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( m.get( i ), 0.50104, 1e-6 );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "powState" );
@@ -232,7 +232,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( sved = new gum::prm::SVED<double>(
                                         *small, small->system( "microSys" ) ) );
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "c" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -247,7 +247,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( m.get( i ), 0.399168, 1e-6 );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "p" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "equipState" );
@@ -262,7 +262,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( m.get( i ), 0.50104, 1e-6 );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "powState" );
@@ -285,7 +285,7 @@ namespace gum_tests {
           inf = new gum::prm::StructuredInference<double>(
               *small, small->system( "microSys" ) ) );
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "c" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -300,7 +300,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( m.get( i ), 0.399168, 1e-6 );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "p" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "equipState" );
@@ -315,7 +315,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( m.get( i ), 0.50104, 1e-6 );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             small->system( "microSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "powState" );
@@ -367,7 +367,7 @@ namespace gum_tests {
 
         try {
           size_t pos = bn.variableNodeMap().name( node ).find_first_of( '.' );
-          const gum::prm::Instance<double>& instance =
+          const gum::prm::PRMInstance<double>& instance =
               prm->system( "aSys" )
                   .get( bn.variableNodeMap().name( node ).substr( 0, pos ) );
           const gum::prm::PRMAttribute<double>& attribute = instance.get(
@@ -450,7 +450,7 @@ namespace gum_tests {
       gum::prm::StructuredBayesBall<double>* bb = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
           bb = new gum::prm::StructuredBayesBall<double>( sve ) );
-      gum::prm::Instance<double>& i = prm->system( "aSys" ).get( "pow" );
+      gum::prm::PRMInstance<double>& i = prm->system( "aSys" ).get( "pow" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           bb->compute( i, i.get( "(t_state)state" ).id() ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete bb );
@@ -471,7 +471,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( g_ve->setBNInference( ve ) );
       // Adding evidence
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
@@ -488,7 +488,7 @@ namespace gum_tests {
         TS_ASSERT( g_ve->hasEvidence( chain.first ) );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -506,7 +506,7 @@ namespace gum_tests {
       }
       // making a first inference with evidence
       {
-        const gum::prm::Instance<double>& q_i =
+        const gum::prm::PRMInstance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
@@ -521,7 +521,7 @@ namespace gum_tests {
       }
       // Removing evidences
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -530,7 +530,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( g_ve->removeEvidence( chain ) );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
@@ -540,7 +540,7 @@ namespace gum_tests {
       }
       // Inference without evidences
       {
-        const gum::prm::Instance<double>& q_i =
+        const gum::prm::PRMInstance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
@@ -562,7 +562,7 @@ namespace gum_tests {
           g_ve = new gum::prm::SVE<double>( *prm, prm->system( "aSys" ) ) );
       // Adding evidence
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
@@ -579,7 +579,7 @@ namespace gum_tests {
         TS_ASSERT( g_ve->hasEvidence( chain.first ) );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -597,7 +597,7 @@ namespace gum_tests {
       }
       // making a first inference with evidence
       {
-        const gum::prm::Instance<double>& q_i =
+        const gum::prm::PRMInstance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
@@ -613,7 +613,7 @@ namespace gum_tests {
       }
       // Removing evidences
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -622,7 +622,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( g_ve->removeEvidence( chain ) );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
@@ -632,7 +632,7 @@ namespace gum_tests {
       }
       // Inference without evidences
       {
-        const gum::prm::Instance<double>& q_i =
+        const gum::prm::PRMInstance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
@@ -670,7 +670,7 @@ namespace gum_tests {
     void __testEvidencenSioux3( gum::prm::PRMInference<double>* g_ve ) {
       // Adding evidence
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
@@ -687,7 +687,7 @@ namespace gum_tests {
         TS_ASSERT( g_ve->hasEvidence( chain.first ) );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -705,7 +705,7 @@ namespace gum_tests {
       }
       // making a first inference with evidence
       {
-        const gum::prm::Instance<double>& q_i =
+        const gum::prm::PRMInstance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
@@ -720,7 +720,7 @@ namespace gum_tests {
       }
       // Removing evidences
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
@@ -729,7 +729,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( g_ve->removeEvidence( chain ) );
       }
       {
-        const gum::prm::Instance<double>& instance =
+        const gum::prm::PRMInstance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
         const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
@@ -739,7 +739,7 @@ namespace gum_tests {
       }
       // Inference without evidences
       {
-        const gum::prm::Instance<double>& q_i =
+        const gum::prm::PRMInstance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
         const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =

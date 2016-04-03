@@ -192,7 +192,7 @@ namespace gum {
         /// Returns the set of queried nodes given all the matches of pattern
         inline NodeSet& queries() { return __partial_order[3]; }
         // We use the first match for computations
-        // inline const Sequence<Instance<GUM_SCALAR>*>& match() const { return
+        // inline const Sequence<PRMInstance<GUM_SCALAR>*>& match() const { return
         // **(matches.begin());}
         // Remove any empty set in partial_order
         const List<NodeSet>* partial_order();
@@ -218,7 +218,7 @@ namespace gum {
         /// The partial order used of variable elimination.
         List<NodeSet> partial_order;
         /// The Set of Instances reduces at class level.
-        Set<const Instance<GUM_SCALAR>*> instances;
+        Set<const PRMInstance<GUM_SCALAR>*> instances;
         /// The potential pool obtained by C elimination of inner nodes.
         Set<Potential<GUM_SCALAR>*> pool;
         /// Default constructor.
@@ -248,7 +248,7 @@ namespace gum {
       /// Mapping between a Pattern's match and its potential pool after inner
       /// variables
       /// were eliminated.
-      HashTable<const Sequence<Instance<GUM_SCALAR>*>*,
+      HashTable<const Sequence<PRMInstance<GUM_SCALAR>*>*,
                 Set<Potential<GUM_SCALAR>*>*> __elim_map;
 
       /// Mapping between a Class<GUM_SCALAR> and data about instances reduced
@@ -263,7 +263,7 @@ namespace gum {
       HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*> __outputs;
 
       /// This keeps track of reduced instances.
-      Set<const Instance<GUM_SCALAR>*> __reducedInstances;
+      Set<const PRMInstance<GUM_SCALAR>*> __reducedInstances;
 
       /// The query
       typename PRMInference<GUM_SCALAR>::Chain __query;
@@ -313,12 +313,12 @@ namespace gum {
       /// data.pattern (aka data.match) is used.
       void __buildPatternGraph( PData& data,
                                 Set<Potential<GUM_SCALAR>*>& pool,
-                                const Sequence<Instance<GUM_SCALAR>*>& match );
+                                const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       void
       __insertNodeInElimLists( StructuredInference::PData& data,
-                               const Sequence<Instance<GUM_SCALAR>*>& match,
-                               Instance<GUM_SCALAR>* inst,
+                               const Sequence<PRMInstance<GUM_SCALAR>*>& match,
+                               PRMInstance<GUM_SCALAR>* inst,
                                PRMAttribute<GUM_SCALAR>* attr,
                                NodeId id,
                                std::pair<Idx, std::string>& v );
@@ -338,20 +338,20 @@ namespace gum {
       Set<Potential<GUM_SCALAR>*>*
       __eliminateObservedNodes( StructuredInference::PData& data,
                                 const Set<Potential<GUM_SCALAR>*>& pool,
-                                const Sequence<Instance<GUM_SCALAR>*>& match,
+                                const Sequence<PRMInstance<GUM_SCALAR>*>& match,
                                 const std::vector<NodeId>& elim_order );
 
       Set<Potential<GUM_SCALAR>*>* __eliminateObservedNodesInSource(
           StructuredInference::PData& data,
           const Set<Potential<GUM_SCALAR>*>& pool,
-          const Sequence<Instance<GUM_SCALAR>*>& match,
+          const Sequence<PRMInstance<GUM_SCALAR>*>& match,
           const std::vector<NodeId>& elim_order );
 
       /// Translate a given Potential Set into one w.r.t. variables in match.
       Set<Potential<GUM_SCALAR>*>*
       __translatePotSet( StructuredInference::PData& data,
                          const Set<Potential<GUM_SCALAR>*>& pool,
-                         const Sequence<Instance<GUM_SCALAR>*>& match );
+                         const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       /// Unreduce the match containing the query.
       void __unreduceMatchWithQuery();
@@ -359,11 +359,11 @@ namespace gum {
       std::vector<NodeId>* __getClassOutputs( const PRMClass<GUM_SCALAR>* c );
       /// Used to create strings
       std::string __dot;
-      std::string __str( const Instance<GUM_SCALAR>* i,
+      std::string __str( const PRMInstance<GUM_SCALAR>* i,
                          const PRMAttribute<GUM_SCALAR>* a ) const;
-      std::string __str( const Instance<GUM_SCALAR>* i,
+      std::string __str( const PRMInstance<GUM_SCALAR>* i,
                          const PRMAttribute<GUM_SCALAR>& a ) const;
-      std::string __str( const Instance<GUM_SCALAR>* i,
+      std::string __str( const PRMInstance<GUM_SCALAR>* i,
                          const SlotChain<GUM_SCALAR>& a ) const;
 
       public:

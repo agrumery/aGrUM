@@ -100,7 +100,7 @@ namespace gum_tests {
 
     void testInstanceAccess() {
       gum::prm::InstanceBayesNet<double>* bn = 0;
-      gum::prm::Instance<double>& i = prm->system( "aSys" ).get( "c1" );
+      gum::prm::PRMInstance<double>& i = prm->system( "aSys" ).get( "c1" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           bn = new gum::prm::InstanceBayesNet<double>( i ) );
       TS_ASSERT_EQUALS( bn->size(), i.size() );
@@ -142,7 +142,7 @@ namespace gum_tests {
         wount++;
         std::string var = bn.variable( node ).name();
         size_t pos = var.find_first_of( '.' );
-        gum::prm::Instance<double>& instance = sys.get( var.substr( 0, pos ) );
+        gum::prm::PRMInstance<double>& instance = sys.get( var.substr( 0, pos ) );
         gum::prm::PRMAttribute<double>& attr =
             instance.get( var.substr( pos + 1 ) );
         TS_ASSERT_DIFFERS( bn.cpt( node ).nbrDim(), (gum::Size)0 );
@@ -171,7 +171,7 @@ namespace gum_tests {
       for ( gum::prm::System<double>::iterator iter = sys.begin();
             iter != sys.end();
             ++iter ) {
-        for ( gum::prm::Instance<double>::iterator jter =
+        for ( gum::prm::PRMInstance<double>::iterator jter =
                   ( *( iter.val() ) ).begin();
               jter != ( *( iter.val() ) ).end();
               ++jter ) {

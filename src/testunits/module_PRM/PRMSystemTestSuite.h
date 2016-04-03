@@ -37,7 +37,7 @@ namespace gum_tests {
   class PRMSystemTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::System<double> System;
-    typedef gum::prm::Instance<double> Instance;
+    typedef gum::prm::PRMInstance<double> PRMInstance;
     typedef gum::prm::PRMClass<double> PRMClass;
     typedef gum::prm::Type<double> Type;
     typedef gum::prm::ScalarAttribute<double> PRMAttribute;
@@ -160,7 +160,7 @@ namespace gum_tests {
     void testAddInstance() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       // Act
       TS_ASSERT_THROWS_NOTHING( sys.add( inst ) );
       // Assert
@@ -172,7 +172,7 @@ namespace gum_tests {
     void testInstantiate() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       // Act
       TS_ASSERT_THROWS_NOTHING( sys.instantiate() );
@@ -188,7 +188,7 @@ namespace gum_tests {
       auto bn = new gum::BayesNet<double>( "asia" );
       {
         System sys( "asia" );
-        auto inst = new Instance( "asia", *__asia );
+        auto inst = new PRMInstance( "asia", *__asia );
         sys.add( inst );
         sys.instantiate();
         gum::BayesNetFactory<double> factory( bn );
@@ -210,7 +210,7 @@ namespace gum_tests {
     void testGroundBNAfterDelete() {
       // Arrange
       System* sys = new System( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys->add( inst );
       sys->instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -235,7 +235,7 @@ namespace gum_tests {
     void testVisitToAsiaId() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -250,7 +250,7 @@ namespace gum_tests {
     void testVisitToAsia() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -275,7 +275,7 @@ namespace gum_tests {
     void testTuberculosis() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -300,7 +300,7 @@ namespace gum_tests {
     void testSmoking() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -325,7 +325,7 @@ namespace gum_tests {
     void testLungCancer() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -350,7 +350,7 @@ namespace gum_tests {
     void testBronchitis() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -375,7 +375,7 @@ namespace gum_tests {
     void testTubOrCancer() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -400,7 +400,7 @@ namespace gum_tests {
     void testPositiveXRay() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -425,7 +425,7 @@ namespace gum_tests {
     void testDyspnea() {
       // Arrange
       System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );

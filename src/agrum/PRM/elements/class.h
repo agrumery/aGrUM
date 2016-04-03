@@ -49,7 +49,7 @@ namespace gum {
      * @class Class<GUM_SCALAR> class.h <agrum/PRM/class.h>
      * @brief A Class<GUM_SCALAR> is an object of a PRM representing a fragment
      *of a
-     *        Bayesian Network which can be instantiated in Instance.
+     *        Bayesian Network which can be instantiated in PRMInstance.
      *
      * @see PRM Class<GUM_SCALAR> PRMClassElement<GUM_SCALAR>
      * @ingroup prm_group

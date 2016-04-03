@@ -163,9 +163,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( si->warnings(), 0 );
 
         // Unobserve correctly
-        const gum::prm::Instance<double>& c1 =
+        const gum::prm::PRMInstance<double>& c1 =
             si->prm()->system( "systems.MySystem.MySystem" ).get( "c1" );
-        const gum::prm::Instance<double>& c2 =
+        const gum::prm::PRMInstance<double>& c2 =
             si->prm()->system( "systems.MySystem.MySystem" ).get( "c2" );
 
         TS_ASSERT( !si->inference()->hasEvidence(
@@ -201,9 +201,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( si->errors(), 0 );
         TS_ASSERT_EQUALS( si->warnings(), 0 );
 
-        const gum::prm::Instance<double>& c1 =
+        const gum::prm::PRMInstance<double>& c1 =
             si->prm()->system( "systems.MySystem.MySystem" ).get( "c1" );
-        const gum::prm::Instance<double>& c2 =
+        const gum::prm::PRMInstance<double>& c2 =
             si->prm()->system( "systems.MySystem.MySystem" ).get( "c2" );
 
         TS_ASSERT( !si->inference()->hasEvidence(

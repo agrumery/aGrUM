@@ -159,7 +159,7 @@ namespace gum_tests {
     //         gum::prm::StructuredBayesBall<double>(*prm_inf));
     //         for (gum::prm::System<double>::iterator i = sys->begin(); i !=
     //         sys->end(); ++i) {
-    //           for (gum::prm::Instance::iterator a = (**i).begin(); a !=
+    //           for (gum::prm::PRMInstance::iterator a = (**i).begin(); a !=
     //           (**i).end(); ++a) {
     //             if ( (**i).type().dag().children((**a).id()).empty() and (not
     //             (**i).hasRefAttr((**a).id())) ) {
@@ -179,15 +179,15 @@ namespace gum_tests {
     //         }
     //         for (gum::prm::System<double>::iterator i = sys->begin(); i !=
     //         sys->end(); ++i) {
-    //           for (gum::prm::Instance::iterator a = (**i).begin(); a !=
+    //           for (gum::prm::PRMInstance::iterator a = (**i).begin(); a !=
     //           (**i).end(); ++a) {
     //             if ((**i).type().dag().parents((**a).id()).empty()) {
     //               TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(*i, (**a).id()));
-    //               std::vector<gum::prm::Instance*> stack;
+    //               std::vector<gum::prm::PRMInstance*> stack;
     //               stack.push_back(*i);
     //               gum::Size count = 0;
     //               while (not stack.empty()) {
-    //                 gum::prm::Instance* inst = stack.back();
+    //                 gum::prm::PRMInstance* inst = stack.back();
     //                 stack.pop_back();
     //                 TS_ASSERT(bb->exists(inst));
     //                 if (not bb->exists(inst)) {
@@ -196,9 +196,9 @@ namespace gum_tests {
     //                   GUM_TRACE((**i).name() + dot + (**a).safeName());
     //                 }
     //                 count += inst->size();
-    //                 for (gum::prm::Instance::InvRefIterator iter =
+    //                 for (gum::prm::PRMInstance::InvRefIterator iter =
     //                 inst->beginInvRef(); iter != inst->endInvRef(); ++iter) {
-    //                   typedef std::vector< std::pair<gum::prm::Instance*,
+    //                   typedef std::vector< std::pair<gum::prm::PRMInstance*,
     //                   std::string> >::iterator Iter;
     //                   for (Iter jter = (**iter).begin(); jter !=
     //                   (**iter).end();

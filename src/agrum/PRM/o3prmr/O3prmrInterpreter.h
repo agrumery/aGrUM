@@ -155,7 +155,7 @@ namespace gum {
                                       const gum::prm::System<double>& sys );
         std::string
         findAttributeName( const std::string& s,
-                           const gum::prm::Instance<double>& instance );
+                           const gum::prm::PRMInstance<double>& instance );
         const System<double>& system( std::string& ident );
         void generateInfEngine( const gum::prm::System<double>& sys );
 

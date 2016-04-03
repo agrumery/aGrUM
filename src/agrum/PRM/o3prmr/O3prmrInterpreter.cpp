@@ -450,7 +450,7 @@ namespace gum {
 
           // Contruct the pair (instance,attribut)
           const System<double>& sys = system( left_val );
-          const Instance<double>& instance =
+          const PRMInstance<double>& instance =
               sys.get( findInstanceName( left_val, sys ) );
           const PRMAttribute<double>& attr =
               instance.get( findAttributeName( left_val, instance ) );
@@ -499,7 +499,7 @@ namespace gum {
 
           // Contruct the pair (instance,attribut)
           const System<double>& sys = system( name );
-          const Instance<double>& instance =
+          const PRMInstance<double>& instance =
               sys.get( findInstanceName( name, sys ) );
           const PRMAttribute<double>& attr =
               instance.get( findAttributeName( name, instance ) );
@@ -526,7 +526,7 @@ namespace gum {
 
           // Contruct the pair (instance,attribut)
           const System<double>& sys = system( name );
-          const Instance<double>& instance =
+          const PRMInstance<double>& instance =
               sys.get( findInstanceName( name, sys ) );
           const PRMAttribute<double>& attr =
               instance.get( findAttributeName( name, instance ) );
@@ -770,7 +770,7 @@ namespace gum {
 
       std::string
       O3prmrInterpreter::findAttributeName( const std::string& s,
-                                            const Instance<double>& instance ) {
+                                            const PRMInstance<double>& instance ) {
         if ( !instance.exists( s ) )
           throw "'" + s + "' is not an attribute of instance '" +
               instance.name() + "'.";
