@@ -246,7 +246,7 @@ namespace gum_tests {
 
     void testAddParent() {
       // Arrange
-      gum::prm::FormAttribute<double> parent( *__class, "attr", *__boolean );
+      gum::prm::PRMFormAttribute<double> parent( *__class, "attr", *__boolean );
       PRMAggregate child( "my_agg", AggType::MIN, *__boolean );
       auto before = parent.cpf().variablesSequence().size();
       // Act
@@ -259,7 +259,7 @@ namespace gum_tests {
 
     void testAddChild() {
       // Arrange
-      gum::prm::FormAttribute<double> child( *__class, "attr", *__boolean );
+      gum::prm::PRMFormAttribute<double> child( *__class, "attr", *__boolean );
       PRMAggregate parent( "my_agg", AggType::MIN, *__boolean );
       auto before = child.cpf().variablesSequence().size();
       // Act

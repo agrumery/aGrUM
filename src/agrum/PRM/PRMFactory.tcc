@@ -490,8 +490,8 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed, "wrong number of values" );
       }
 
-      if ( dynamic_cast<FormAttribute<GUM_SCALAR>*>( a ) ) {
-        auto form = static_cast<FormAttribute<GUM_SCALAR>*>( a );
+      if ( dynamic_cast<PRMFormAttribute<GUM_SCALAR>*>( a ) ) {
+        auto form = static_cast<PRMFormAttribute<GUM_SCALAR>*>( a );
         // jnst holds parents with a specific value (not "*")
         // knst holds parents without a specific value ("*")
         Instantiation jnst, knst;
@@ -556,8 +556,8 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed, "wrong number of values" );
       }
 
-      if ( dynamic_cast<FormAttribute<GUM_SCALAR>*>( a ) ) {
-        auto form = static_cast<FormAttribute<GUM_SCALAR>*>( a );
+      if ( dynamic_cast<PRMFormAttribute<GUM_SCALAR>*>( a ) ) {
+        auto form = static_cast<PRMFormAttribute<GUM_SCALAR>*>( a );
         // jnst holds parents with a specific value (not "*")
         // knst holds parents without a specific value ("*")
         Instantiation jnst, knst;
@@ -1468,7 +1468,7 @@ namespace gum {
 
       if ( PRMObject::isClass( *c ) ) {
 
-        a = new FormAttribute<GUM_SCALAR>(
+        a = new PRMFormAttribute<GUM_SCALAR>(
             static_cast<PRMClass<GUM_SCALAR>&>( *c ),
             name,
             *__retrieveType( type ) );
@@ -1844,7 +1844,7 @@ namespace gum {
         const std::vector<std::string>& array ) {
       __checkStack( 2, PRMObject::PRMType::CLASS );
 
-      auto a = static_cast<FormAttribute<GUM_SCALAR>*>(
+      auto a = static_cast<PRMFormAttribute<GUM_SCALAR>*>(
           __checkStack( 1, PRMClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( a->formulas().domainSize() != array.size() ) {
@@ -1884,7 +1884,7 @@ namespace gum {
         const std::vector<std::string>& array ) {
       __checkStack( 2, PRMObject::PRMType::CLASS );
 
-      auto a = static_cast<FormAttribute<GUM_SCALAR>*>(
+      auto a = static_cast<PRMFormAttribute<GUM_SCALAR>*>(
           __checkStack( 1, PRMClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( a->formulas().domainSize() != array.size() ) {

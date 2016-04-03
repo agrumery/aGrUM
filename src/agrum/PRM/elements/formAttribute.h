@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::FormAttribute.
+ * @brief Headers of gum::PRMFormAttribute.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -35,23 +35,23 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class FormAttribute formAttribute.h <agrum/PRM/elements/formAttribute.h>
-     * @brief FormAttribute is a member of a Class in a PRM.
+     * @class PRMFormAttribute formAttribute.h <agrum/PRM/elements/formAttribute.h>
+     * @brief PRMFormAttribute is a member of a Class in a PRM.
      *
      * @see PRM PRMFactory Class PRMClassElement Type<GUM_SCALAR> Potential
      *PRMAttribute
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class FormAttribute : public PRMAttribute<GUM_SCALAR> {
+    class PRMFormAttribute : public PRMAttribute<GUM_SCALAR> {
       public:
-      FormAttribute( const PRMClass<GUM_SCALAR>& c,
+      PRMFormAttribute( const PRMClass<GUM_SCALAR>& c,
                      const std::string& name,
                      const Type<GUM_SCALAR>& type,
                      MultiDimImplementation<std::string>* impl =
                          new MultiDimArray<std::string>() );
 
-      virtual ~FormAttribute();
+      virtual ~PRMFormAttribute();
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute<GUM_SCALAR>*
@@ -105,8 +105,8 @@ namespace gum {
       virtual void _type( Type<GUM_SCALAR>* t );
 
       private:
-      FormAttribute( const FormAttribute& source );
-      FormAttribute& operator=( const FormAttribute& source );
+      PRMFormAttribute( const PRMFormAttribute& source );
+      PRMFormAttribute& operator=( const PRMFormAttribute& source );
 
       /// The random variable type of this attribute
       Type<GUM_SCALAR>* __type;
@@ -124,8 +124,8 @@ namespace gum {
     };
 
 
-    extern template class FormAttribute<float>;
-    extern template class FormAttribute<double>;
+    extern template class PRMFormAttribute<float>;
+    extern template class PRMFormAttribute<double>;
 
 
   } /* namespace prm */

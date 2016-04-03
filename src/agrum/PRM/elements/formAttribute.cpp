@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::FormAttribute
+ * @brief Source implementation of gum::PRMFormAttribute
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class FormAttribute<float>;
-    template class FormAttribute<double>;
+    template class PRMFormAttribute<float>;
+    template class PRMFormAttribute<double>;
 
 
   } /* namespace prm */
