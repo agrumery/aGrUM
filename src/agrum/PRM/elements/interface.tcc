@@ -393,7 +393,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void
-    Interface<GUM_SCALAR>::__addImplementation( Class<GUM_SCALAR>* c ) {
+    Interface<GUM_SCALAR>::__addImplementation( PRMClass<GUM_SCALAR>* c ) {
       __implementations.insert( c );
     }
 
@@ -497,12 +497,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Set<Class<GUM_SCALAR>*>& Interface<GUM_SCALAR>::implementations() {
+    INLINE Set<PRMClass<GUM_SCALAR>*>& Interface<GUM_SCALAR>::implementations() {
       return __implementations;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Class<GUM_SCALAR>*>&
+    INLINE const Set<PRMClass<GUM_SCALAR>*>&
     Interface<GUM_SCALAR>::implementations() const {
       return __implementations;
     }

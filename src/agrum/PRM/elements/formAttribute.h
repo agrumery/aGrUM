@@ -45,7 +45,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class FormAttribute : public PRMAttribute<GUM_SCALAR> {
       public:
-      FormAttribute( const Class<GUM_SCALAR>& c,
+      FormAttribute( const PRMClass<GUM_SCALAR>& c,
                      const std::string& name,
                      const Type<GUM_SCALAR>& type,
                      MultiDimImplementation<std::string>* impl =
@@ -55,7 +55,7 @@ namespace gum {
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute<GUM_SCALAR>*
-      newFactory( const Class<GUM_SCALAR>& c ) const;
+      newFactory( const PRMClass<GUM_SCALAR>& c ) const;
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute<GUM_SCALAR>*
@@ -118,7 +118,7 @@ namespace gum {
       MultiDimImplementation<std::string>* __formulas;
 
       /// A pointe toward the class of this attribute
-      const Class<GUM_SCALAR>* __class;
+      const PRMClass<GUM_SCALAR>* __class;
 
       void __fillCpf() const;
     };

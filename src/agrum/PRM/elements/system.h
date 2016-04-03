@@ -108,7 +108,7 @@ namespace gum {
       /// Returns true if the given Class<GUM_SCALAR> has at least one Instance
       /// in this
       /// System.
-      bool isInstantiated( const Class<GUM_SCALAR>& c ) const;
+      bool isInstantiated( const PRMClass<GUM_SCALAR>& c ) const;
 
       /// Returns true if an Instance with the given name exists.
       bool isInstance( const std::string& name ) const;
@@ -142,7 +142,7 @@ namespace gum {
       /// Returns the sequence of all instances of the given type
       /// @throw NotFound Raised if there is instantiation of type.
       const Set<Instance<GUM_SCALAR>*>&
-      get( const Class<GUM_SCALAR>& type ) const;
+      get( const PRMClass<GUM_SCALAR>& type ) const;
 
       /// Add an Instance to this system.
       /// @throw DuplicateElement Raised if an Instance with the same name
@@ -269,7 +269,7 @@ namespace gum {
       HashTable<std::string, Instance<GUM_SCALAR>*> __nameMap;
 
       /// Mapping between a class and all it's Instance in this system
-      HashTable<Class<GUM_SCALAR>*, Set<Instance<GUM_SCALAR>*>*> __instanceMap;
+      HashTable<PRMClass<GUM_SCALAR>*, Set<Instance<GUM_SCALAR>*>*> __instanceMap;
 
       /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
       /// instantiation.

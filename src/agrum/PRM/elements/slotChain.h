@@ -39,7 +39,7 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    class Class;
+    class PRMClass;
     template <typename GUM_SCALAR>
     class PRMAttribute;
 

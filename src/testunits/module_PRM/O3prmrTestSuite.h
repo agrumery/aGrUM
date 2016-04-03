@@ -254,7 +254,7 @@ namespace gum_tests {
         si->interpretFile(
             GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
         auto prm = si->prm();
-        gum::prm::Class<double> const* asia = nullptr;
+        gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia.Asia" ) ) );
         // Assert

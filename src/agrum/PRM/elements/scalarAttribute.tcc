@@ -71,7 +71,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMAttribute<GUM_SCALAR>* ScalarAttribute<GUM_SCALAR>::newFactory(
-        const Class<GUM_SCALAR>& c ) const {
+        const PRMClass<GUM_SCALAR>& c ) const {
       auto impl = static_cast<MultiDimImplementation<GUM_SCALAR>*>(
           this->cpf().content()->newFactory() );
       return new ScalarAttribute<GUM_SCALAR>(

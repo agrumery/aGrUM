@@ -32,7 +32,7 @@ namespace gum {
   namespace prm {
     template <typename GUM_SCALAR>
     Instance<GUM_SCALAR>::Instance( const std::string& name,
-                                    Class<GUM_SCALAR>& type )
+                                    PRMClass<GUM_SCALAR>& type )
         : PRMObject( name )
         , __instantiated( false )
         , __type( &type ) {
@@ -268,7 +268,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE Instance<GUM_SCALAR>& /**/
         Instance<GUM_SCALAR>::
-        operator=( const Class<GUM_SCALAR>& from ) {
+        operator=( const PRMClass<GUM_SCALAR>& from ) {
       GUM_ERROR( FatalError, "do not copy Instance" );
     }
 
@@ -278,12 +278,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Class<GUM_SCALAR>& Instance<GUM_SCALAR>::type() {
+    INLINE PRMClass<GUM_SCALAR>& Instance<GUM_SCALAR>::type() {
       return *__type;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Class<GUM_SCALAR>& Instance<GUM_SCALAR>::type() const {
+    INLINE const PRMClass<GUM_SCALAR>& Instance<GUM_SCALAR>::type() const {
       return *__type;
     }
 

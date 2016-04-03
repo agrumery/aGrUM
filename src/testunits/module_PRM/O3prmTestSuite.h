@@ -134,7 +134,7 @@ namespace gum_tests {
             reader.readFile( GET_RESSOURCES_PATH( "o3prm/printers.o3prm" ) ) );
         gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "PowerSupply" ) );
-        gum::prm::Class<double>& c = prm->getClass( "PowerSupply" );
+        gum::prm::PRMClass<double>& c = prm->getClass( "PowerSupply" );
         TS_ASSERT_EQUALS( c.attributes().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), (gum::Size)0 );
         TS_ASSERT_EQUALS( c.aggregates().size(), (gum::Size)0 );
@@ -152,7 +152,7 @@ namespace gum_tests {
             reader.readFile( GET_RESSOURCES_PATH( "o3prm/printers.o3prm" ) ) );
         gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Room" ) );
-        gum::prm::Class<double>& c = prm->getClass( "Room" );
+        gum::prm::PRMClass<double>& c = prm->getClass( "Room" );
         TS_ASSERT_EQUALS( c.attributes().size(), (gum::Size)0 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( c.aggregates().size(), (gum::Size)0 );
@@ -170,7 +170,7 @@ namespace gum_tests {
             reader.readFile( GET_RESSOURCES_PATH( "o3prm/printers.o3prm" ) ) );
         gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Equipment" ) );
-        gum::prm::Class<double>& c = prm->getClass( "Equipment" );
+        gum::prm::PRMClass<double>& c = prm->getClass( "Equipment" );
         TS_ASSERT_EQUALS( c.attributes().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( c.aggregates().size(), (gum::Size)0 );
@@ -188,7 +188,7 @@ namespace gum_tests {
             reader.readFile( GET_RESSOURCES_PATH( "o3prm/printers.o3prm" ) ) );
         gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Printer" ) );
-        gum::prm::Class<double>& c = prm->getClass( "Printer" );
+        gum::prm::PRMClass<double>& c = prm->getClass( "Printer" );
         TS_ASSERT_EQUALS( c.attributes().size(), (gum::Size)3 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( c.aggregates().size(), (gum::Size)0 );
@@ -206,7 +206,7 @@ namespace gum_tests {
             reader.readFile( GET_RESSOURCES_PATH( "o3prm/printers.o3prm" ) ) );
         gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Computer" ) );
-        gum::prm::Class<double>& c = prm->getClass( "Computer" );
+        gum::prm::PRMClass<double>& c = prm->getClass( "Computer" );
         TS_ASSERT_EQUALS( c.attributes().size(), (gum::Size)2 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), (gum::Size)2 );
         TS_ASSERT_EQUALS( c.aggregates().size(), (gum::Size)1 );
@@ -262,15 +262,15 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
         // Classes
-        gum::prm::Class<double>& PowerSupply =
+        gum::prm::PRMClass<double>& PowerSupply =
             prm->getClass( "fr.lip6.printers.PowerSupply" );
-        gum::prm::Class<double>& Room =
+        gum::prm::PRMClass<double>& Room =
             prm->getClass( "fr.lip6.printers.Room" );
-        gum::prm::Class<double>& BWPrinter =
+        gum::prm::PRMClass<double>& BWPrinter =
             prm->getClass( "fr.lip6.printers.BWPrinter" );
-        gum::prm::Class<double>& ColorPrinter =
+        gum::prm::PRMClass<double>& ColorPrinter =
             prm->getClass( "fr.lip6.printers.ColorPrinter" );
-        gum::prm::Class<double>& Computer =
+        gum::prm::PRMClass<double>& Computer =
             prm->getClass( "fr.lip6.printers.Computer" );
         // Interfaces
         gum::prm::Interface<double>& Equipment =
@@ -348,15 +348,15 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
         // Classes
-        gum::prm::Class<double>& PowerSupply =
+        gum::prm::PRMClass<double>& PowerSupply =
             prm->getClass( "fr.lip6.printers.PowerSupply" );
-        gum::prm::Class<double>& Room =
+        gum::prm::PRMClass<double>& Room =
             prm->getClass( "fr.lip6.printers.Room" );
-        gum::prm::Class<double>& BWPrinter =
+        gum::prm::PRMClass<double>& BWPrinter =
             prm->getClass( "fr.lip6.printers.BWPrinter" );
-        gum::prm::Class<double>& ColorPrinter =
+        gum::prm::PRMClass<double>& ColorPrinter =
             prm->getClass( "fr.lip6.printers.ColorPrinter" );
-        gum::prm::Class<double>& Computer =
+        gum::prm::PRMClass<double>& Computer =
             prm->getClass( "fr.lip6.printers.Computer" );
         // Interfaces
         gum::prm::Interface<double>& Equipment =
@@ -434,7 +434,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
         // Classes
-        gum::prm::Class<double>& PowerSupply =
+        gum::prm::PRMClass<double>& PowerSupply =
             prm->getClass( "fr.lip6.printers.PowerSupply" );
         TS_ASSERT_EQUALS( PowerSupply.attributes().size(), (gum::Size)2 );
         TS_ASSERT_EQUALS( PowerSupply.dag().sizeArcs(), (gum::Size)1 );
@@ -483,7 +483,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
-        gum::prm::Class<double>& Room =
+        gum::prm::PRMClass<double>& Room =
             prm->getClass( "fr.lip6.printers.Room" );
         TS_ASSERT_EQUALS( Room.attributes().size(), (gum::Size)0 );
         TS_ASSERT_EQUALS( Room.referenceSlots().size(), (gum::Size)1 );
@@ -1004,7 +1004,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
-        gum::prm::Class<double>& Computer =
+        gum::prm::PRMClass<double>& Computer =
             prm->getClass( "fr.lip6.printers.Computer" );
         TS_ASSERT_EQUALS( Computer.attributes().size(), (gum::Size)6 );
         TS_ASSERT_EQUALS( Computer.referenceSlots().size(), (gum::Size)2 );
@@ -1040,7 +1040,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
-        gum::prm::Class<double>& SafeComputer =
+        gum::prm::PRMClass<double>& SafeComputer =
             prm->getClass( "fr.lip6.printers.SafeComputer" );
         TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)5 );
         TS_ASSERT_EQUALS( SafeComputer.referenceSlots().size(), (gum::Size)2 );
@@ -1110,11 +1110,11 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
         gum::prm::System<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
-        gum::prm::Class<double>& Power = prm->getClass( "PowerSupply" );
-        gum::prm::Class<double>& Room = prm->getClass( "Room" );
-        gum::prm::Class<double>& BWPrinter = prm->getClass( "BWPrinter" );
-        gum::prm::Class<double>& ColorPrinter = prm->getClass( "ColorPrinter" );
-        gum::prm::Class<double>& Computer = prm->getClass( "Computer" );
+        gum::prm::PRMClass<double>& Power = prm->getClass( "PowerSupply" );
+        gum::prm::PRMClass<double>& Room = prm->getClass( "Room" );
+        gum::prm::PRMClass<double>& BWPrinter = prm->getClass( "BWPrinter" );
+        gum::prm::PRMClass<double>& ColorPrinter = prm->getClass( "ColorPrinter" );
+        gum::prm::PRMClass<double>& Computer = prm->getClass( "Computer" );
         try {
           sys->get( Power ).size();
         } catch ( gum::Exception& e ) {
@@ -1304,7 +1304,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
-        gum::prm::Class<double>& ParamClass =
+        gum::prm::PRMClass<double>& ParamClass =
             prm->getClass( "fr.lip6.printers.ParamClass" );
         TS_ASSERT_EQUALS( ParamClass.attributes().size(), (gum::Size)9 );
         TS_ASSERT_EQUALS( ParamClass.referenceSlots().size(), (gum::Size)1 );
@@ -1441,7 +1441,7 @@ namespace gum_tests {
         std::string package = "";
         reader.readFile( file, package );
         auto prm = reader.prm();
-        gum::prm::Class<double> const* asia = nullptr;
+        gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia" ) ) );
         // Assert
@@ -1489,7 +1489,7 @@ namespace gum_tests {
         std::string package = "";
         reader.readFile( file, package );
         auto prm = reader.prm();
-        gum::prm::Class<double> const* asia = nullptr;
+        gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "VisitAsia" ) ) );
         // Assert
@@ -1510,7 +1510,7 @@ namespace gum_tests {
         std::string package = "";
         reader.readFile( file, package );
         auto prm = reader.prm();
-        gum::prm::Class<double> const* asia = nullptr;
+        gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia" ) ) );
         // Assert

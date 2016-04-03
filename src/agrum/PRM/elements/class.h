@@ -55,7 +55,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class Class : public ClassElementContainer<GUM_SCALAR> {
+    class PRMClass : public ClassElementContainer<GUM_SCALAR> {
 
       friend class Interface<GUM_SCALAR>;
 
@@ -67,7 +67,7 @@ namespace gum {
        * Default constructor.
        * @param name The class name.
        */
-      Class( const std::string& name );
+      PRMClass( const std::string& name );
 
       /**
        * Constructor for building a subclass of super.
@@ -75,8 +75,8 @@ namespace gum {
        * @param super The super Class<GUM_SCALAR> of this.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      Class( const std::string& name,
-             Class<GUM_SCALAR>& super,
+      PRMClass( const std::string& name,
+             PRMClass<GUM_SCALAR>& super,
              bool delayInheritance = false );
 
       /**
@@ -87,7 +87,7 @@ namespace gum {
        * @param set The Set of implemented interfaces.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      Class( const std::string& name,
+      PRMClass( const std::string& name,
              const Set<Interface<GUM_SCALAR>*>& set,
              bool delayInheritance = false );
 
@@ -99,25 +99,25 @@ namespace gum {
        * @param set The Set of implemented interfaces.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      Class( const std::string& name,
-             Class<GUM_SCALAR>& super,
+      PRMClass( const std::string& name,
+             PRMClass<GUM_SCALAR>& super,
              const Set<Interface<GUM_SCALAR>*>& set,
              bool delayInheritance = false );
 
       /// Copy constructor.
-      Class( const Class<GUM_SCALAR>& source ) = delete;
+      PRMClass( const PRMClass<GUM_SCALAR>& source ) = delete;
 
       /// Move constructor.
-      Class( const Class<GUM_SCALAR>&& source ) = delete;
+      PRMClass( const PRMClass<GUM_SCALAR>&& source ) = delete;
 
       /// Copy operator. Don't use it.
-      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& source ) = delete;
+      PRMClass<GUM_SCALAR>& operator=( const PRMClass<GUM_SCALAR>& source ) = delete;
 
       /// Move operator. Don't use it.
-      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>&& source ) = delete;
+      PRMClass<GUM_SCALAR>& operator=( const PRMClass<GUM_SCALAR>&& source ) = delete;
 
       /// Destructor.
-      virtual ~Class();
+      virtual ~PRMClass();
 
       /// Implementation of pure virtual method of PRMObject.
       virtual PRMObject::PRMType obj_type() const;
@@ -249,7 +249,7 @@ namespace gum {
        * @return Returns the super Class<GUM_SCALAR> of this Class<GUM_SCALAR>.
        * @throw NotFound Raised if this has no super Class<GUM_SCALAR>.
        */
-      const Class<GUM_SCALAR>& super() const;
+      const PRMClass<GUM_SCALAR>& super() const;
 
       /**
        * @brief Returns the Set of Interface<GUM_SCALAR> implemented by this
@@ -263,7 +263,7 @@ namespace gum {
 
       /// Returns the set of Class@<GUM_SCALAR@> which are direct
       /// sub-Class@<GUM_SCALAR@> of this Class@<GUM_SCALAR@>.
-      const Set<Class<GUM_SCALAR>*>& extensions() const;
+      const Set<PRMClass<GUM_SCALAR>*>& extensions() const;
 
       /// @}
       // ========================================================================
@@ -374,7 +374,7 @@ namespace gum {
       /// elements defined in
       ///        this.
       /// Note that this is first searched for gum::ClassElement<GUM_SCALAR>.
-      Class<GUM_SCALAR>* __superClass;
+      PRMClass<GUM_SCALAR>* __superClass;
 
       /// The Set of implemented interface of this.
       Set<Interface<GUM_SCALAR>*>* __implements;
@@ -382,7 +382,7 @@ namespace gum {
       /// The set of Class<GUM_SCALAR> which are extension of this
       /// Class<GUM_SCALAR> (i.e. direct
       /// subtypes).
-      Set<Class<GUM_SCALAR>*> __extensions;
+      Set<PRMClass<GUM_SCALAR>*> __extensions;
 
       /// The bijection between variables in super and variables in this
       /// The bijection's firsts are attributes in this and its seconds are
@@ -391,7 +391,7 @@ namespace gum {
 
 
       /// Proceed with the copy when this inherits c.
-      void __inheritClass( const Class<GUM_SCALAR>& c );
+      void __inheritClass( const PRMClass<GUM_SCALAR>& c );
    
       /// Proceed with the implementation of interfaces
       void __implementInterfaces(bool delayInheritance);
@@ -408,7 +408,7 @@ namespace gum {
       /// @throw DuplicateElement Raised if c is already a
       /// sub-Class@<GUM_SCALAR@>
       /// of this.
-      void __addExtension( Class<GUM_SCALAR>* c );
+      void __addExtension( PRMClass<GUM_SCALAR>* c );
 
       /// Return true of overloaded can be overload by overloader.
       bool
@@ -435,8 +435,8 @@ namespace gum {
     };
 
 
-    extern template class Class<float>;
-    extern template class Class<double>;
+    extern template class PRMClass<float>;
+    extern template class PRMClass<double>;
 
   } /* namespace prm */
 }  // namespace gum

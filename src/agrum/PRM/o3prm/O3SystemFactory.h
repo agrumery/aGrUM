@@ -88,7 +88,7 @@ namespace gum {
 
         bool __checkIncrements( O3System& sys );
 
-        bool __checkParameters( const Class<GUM_SCALAR>& type,
+        bool __checkParameters( const PRMClass<GUM_SCALAR>& type,
                                 const O3Instance& inst );
 
         bool __checkInstance( O3System& sys );

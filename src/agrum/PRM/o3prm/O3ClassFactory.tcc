@@ -678,7 +678,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool
-      O3ClassFactory<GUM_SCALAR>::__checkParent( const Class<GUM_SCALAR>& c,
+      O3ClassFactory<GUM_SCALAR>::__checkParent( const PRMClass<GUM_SCALAR>& c,
                                                  const O3Label& prnt ) {
         if ( prnt.label().find( '.' ) == std::string::npos ) {
 
@@ -692,7 +692,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkLocalParent(
-          const Class<GUM_SCALAR>& c, const O3Label& prnt ) {
+          const PRMClass<GUM_SCALAR>& c, const O3Label& prnt ) {
 
         if ( not c.exists( prnt.label() ) ) {
           O3PRM_CLASS_PARENT_NOT_FOUND( prnt, *__errors );
@@ -722,7 +722,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool
-      O3ClassFactory<GUM_SCALAR>::__checkRuleCPT( const Class<GUM_SCALAR>& c,
+      O3ClassFactory<GUM_SCALAR>::__checkRuleCPT( const PRMClass<GUM_SCALAR>& c,
                                                   O3RuleCPT& attr ) {
 
         const auto& scope = c.scope();
@@ -783,7 +783,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool
-      O3ClassFactory<GUM_SCALAR>::__checkRawCPT( const Class<GUM_SCALAR>& c,
+      O3ClassFactory<GUM_SCALAR>::__checkRawCPT( const PRMClass<GUM_SCALAR>& c,
                                                  O3RawCPT& attr ) {
 
         const auto& type = __prm->type( attr.type().label() );

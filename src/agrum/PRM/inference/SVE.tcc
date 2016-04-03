@@ -501,7 +501,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void SVE<GUM_SCALAR>::__initLiftedNodes( const Class<GUM_SCALAR>& c ) {
+    void SVE<GUM_SCALAR>::__initLiftedNodes( const PRMClass<GUM_SCALAR>& c ) {
       BucketSet* lifted_pool = new BucketSet();
       __lifted_pools.insert( &c, lifted_pool );
       NodeSet inners, outers;
@@ -658,7 +658,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::vector<NodeId>&
-    SVE<GUM_SCALAR>::__getElimOrder( const Class<GUM_SCALAR>& c ) {
+    SVE<GUM_SCALAR>::__getElimOrder( const PRMClass<GUM_SCALAR>& c ) {
       return *( __elim_orders[&c] );
     }
 

@@ -116,7 +116,7 @@ namespace gum {
       typedef typename Set<MultiDimArray<GUM_SCALAR>*>::iterator_safe
           ArraySetIterator;
 
-      HashTable<const Class<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
+      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
 
       /// The Set<NodeId> returned by StructuredBayesBall<GUM_SCALAR> is unique
       /// for
@@ -173,7 +173,7 @@ namespace gum {
 
       void __insertEvidence( const Instance<GUM_SCALAR>* i, BucketSet& pool );
 
-      std::vector<NodeId>& __getElimOrder( const Class<GUM_SCALAR>& c );
+      std::vector<NodeId>& __getElimOrder( const PRMClass<GUM_SCALAR>& c );
 
       Potential<GUM_SCALAR>*
       __getAggPotential( const Instance<GUM_SCALAR>* i,

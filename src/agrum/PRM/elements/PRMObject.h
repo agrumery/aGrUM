@@ -217,7 +217,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class ReferenceSlot;
     template <typename GUM_SCALAR>
-    class Class;
+    class PRMClass;
     template <typename GUM_SCALAR>
     class Instance;
     template <typename GUM_SCALAR>

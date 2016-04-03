@@ -129,18 +129,18 @@ namespace gum {
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      Class<GUM_SCALAR>& getClass( const std::string& name );
+      PRMClass<GUM_SCALAR>& getClass( const std::string& name );
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const Class<GUM_SCALAR>& getClass( const std::string& name ) const;
+      const PRMClass<GUM_SCALAR>& getClass( const std::string& name ) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
        */
-      const Set<Class<GUM_SCALAR>*>& classes() const;
+      const Set<PRMClass<GUM_SCALAR>*>& classes() const;
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
@@ -203,10 +203,10 @@ namespace gum {
       /// @{
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
-      HashTable<std::string, Class<GUM_SCALAR>*> __classMap;
+      HashTable<std::string, PRMClass<GUM_SCALAR>*> __classMap;
 
       /// Set of all Class<GUM_SCALAR> in this PRM.
-      Set<Class<GUM_SCALAR>*> __classes;
+      Set<PRMClass<GUM_SCALAR>*> __classes;
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
       HashTable<std::string, Interface<GUM_SCALAR>*> __interfaceMap;

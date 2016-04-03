@@ -265,7 +265,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3SystemFactory<GUM_SCALAR>::__checkParameters(
-          const Class<GUM_SCALAR>& type, const O3Instance& inst ) {
+          const PRMClass<GUM_SCALAR>& type, const O3Instance& inst ) {
 
         for ( const auto& param : inst.parameters() ) {
 

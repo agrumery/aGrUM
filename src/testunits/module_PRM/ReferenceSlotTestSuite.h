@@ -38,15 +38,15 @@ namespace gum_tests {
     private:
     typedef gum::prm::ReferenceSlot<double> ReferenceSlot;
     ClassElementTestSuiteAbstract* __classEltTestSuite;
-    gum::prm::Class<double>* __A;
-    gum::prm::Class<double>* __B;
+    gum::prm::PRMClass<double>* __A;
+    gum::prm::PRMClass<double>* __B;
     gum::prm::Type<double>* __boolean;
 
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract();
-      __A = new gum::prm::Class<double>( "A" );
-      __B = new gum::prm::Class<double>( "B" );
+      __A = new gum::prm::PRMClass<double>( "A" );
+      __B = new gum::prm::PRMClass<double>( "B" );
       __boolean = gum::prm::Type<double>::boolean();
     }
 

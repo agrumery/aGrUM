@@ -149,18 +149,18 @@ namespace gum {
         bool __checkAttributeForCompletion( const O3Class& o3_c,
                                             O3Attribute& attr );
 
-        bool __checkParent( const Class<GUM_SCALAR>& c, const O3Label& prnt );
+        bool __checkParent( const PRMClass<GUM_SCALAR>& c, const O3Label& prnt );
 
-        bool __checkLocalParent( const Class<GUM_SCALAR>& c,
+        bool __checkLocalParent( const PRMClass<GUM_SCALAR>& c,
                                  const O3Label& prnt );
 
         bool __checkRemoteParent( const ClassElementContainer<GUM_SCALAR>& c,
                                   const O3Label& prnt );
 
 
-        bool __checkRawCPT( const Class<GUM_SCALAR>& c, O3RawCPT& attr );
+        bool __checkRawCPT( const PRMClass<GUM_SCALAR>& c, O3RawCPT& attr );
 
-        bool __checkRuleCPT( const Class<GUM_SCALAR>& c, O3RuleCPT& attr );
+        bool __checkRuleCPT( const PRMClass<GUM_SCALAR>& c, O3RuleCPT& attr );
 
         /// @}
 

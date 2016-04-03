@@ -40,7 +40,7 @@ namespace gum_tests {
     ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;
-    gum::prm::Class<double>* __class;
+    gum::prm::PRMClass<double>* __class;
 
     public:
     void setUp() {
@@ -53,7 +53,7 @@ namespace gum_tests {
       map.push_back( 1 );
       map.push_back( 0 );
       __state = new gum::prm::Type<double>{*__boolean, map, state};
-      __class = new gum::prm::Class<double>( "dummy" );
+      __class = new gum::prm::PRMClass<double>( "dummy" );
     }
 
     void tearDown() {

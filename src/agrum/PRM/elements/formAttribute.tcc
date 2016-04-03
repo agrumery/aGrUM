@@ -38,7 +38,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     FormAttribute<GUM_SCALAR>::FormAttribute(
-        const Class<GUM_SCALAR>& c,
+        const PRMClass<GUM_SCALAR>& c,
         const std::string& name,
         const Type<GUM_SCALAR>& type,
         MultiDimImplementation<std::string>* impl )
@@ -63,7 +63,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMAttribute<GUM_SCALAR>*
-    FormAttribute<GUM_SCALAR>::newFactory( const Class<GUM_SCALAR>& c ) const {
+    FormAttribute<GUM_SCALAR>::newFactory( const PRMClass<GUM_SCALAR>& c ) const {
       auto impl = static_cast<MultiDimImplementation<std::string>*>(
           this->__formulas->newFactory() );
       return new FormAttribute( c, this->name(), this->type(), impl );

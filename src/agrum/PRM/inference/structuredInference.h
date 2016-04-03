@@ -210,7 +210,7 @@ namespace gum {
       /// Private structure to represent data about a Class<GUM_SCALAR>.
       struct CData {
         /// The class about what this data is about.
-        const Class<GUM_SCALAR>& c;
+        const PRMClass<GUM_SCALAR>& c;
         /// The class moral graph. NodeId matches those in c.
         UndiGraph moral_graph;
         /// The class variables modalities.
@@ -222,7 +222,7 @@ namespace gum {
         /// The potential pool obtained by C elimination of inner nodes.
         Set<Potential<GUM_SCALAR>*> pool;
         /// Default constructor.
-        CData( const Class<GUM_SCALAR>& c );
+        CData( const PRMClass<GUM_SCALAR>& c );
         /// Destructor.
         ~CData();
         /// Returns the set of inner nodes.
@@ -255,12 +255,12 @@ namespace gum {
       /// using
       /// only Class<GUM_SCALAR> level
       /// information.
-      HashTable<const Class<GUM_SCALAR>*, CData*> __cdata_map;
+      HashTable<const PRMClass<GUM_SCALAR>*, CData*> __cdata_map;
 
       /// Keeping track of create potentials to delete them after inference.
       Set<Potential<GUM_SCALAR>*> __trash;
 
-      HashTable<const Class<GUM_SCALAR>*, std::vector<NodeId>*> __outputs;
+      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*> __outputs;
 
       /// This keeps track of reduced instances.
       Set<const Instance<GUM_SCALAR>*> __reducedInstances;
@@ -356,7 +356,7 @@ namespace gum {
       /// Unreduce the match containing the query.
       void __unreduceMatchWithQuery();
 
-      std::vector<NodeId>* __getClassOutputs( const Class<GUM_SCALAR>* c );
+      std::vector<NodeId>* __getClassOutputs( const PRMClass<GUM_SCALAR>* c );
       /// Used to create strings
       std::string __dot;
       std::string __str( const Instance<GUM_SCALAR>* i,

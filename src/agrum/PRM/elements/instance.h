@@ -78,7 +78,7 @@ namespace gum {
        * However neither of their children or parents are updated (i.e.
        * DiscreteVariable pointers are inconsistent).
        */
-      Instance<GUM_SCALAR>( const std::string& name, Class<GUM_SCALAR>& type );
+      Instance<GUM_SCALAR>( const std::string& name, PRMClass<GUM_SCALAR>& type );
 
       /// Destructor.
       virtual ~Instance<GUM_SCALAR>();
@@ -97,12 +97,12 @@ namespace gum {
       /**
        * Returns the type of this instance
        */
-      Class<GUM_SCALAR>& type();
+      PRMClass<GUM_SCALAR>& type();
 
       /**
        * Returns the type of this instance
        */
-      const Class<GUM_SCALAR>& type() const;
+      const PRMClass<GUM_SCALAR>& type() const;
 
       /**
        * Returns true if id matches an PRMAttribute<GUM_SCALAR> in this
@@ -437,7 +437,7 @@ namespace gum {
       Instance<GUM_SCALAR>( const Instance<GUM_SCALAR>& source );
 
       /// Copy operator. Don't use it.
-      Instance<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& from );
+      Instance<GUM_SCALAR>& operator=( const PRMClass<GUM_SCALAR>& from );
 
       // ========================================================================
       /// @name Private instantiation methods.
@@ -521,7 +521,7 @@ namespace gum {
       bool __instantiated;
 
       /// The type of this Instance<GUM_SCALAR>.
-      Class<GUM_SCALAR>* __type;
+      PRMClass<GUM_SCALAR>* __type;
 
       /// The gum::prm::PRMAttribute<GUM_SCALAR> and
       /// gum::prm::PRMAggregate<GUM_SCALAR> of this Instance<GUM_SCALAR>.

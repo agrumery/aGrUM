@@ -149,7 +149,7 @@ namespace gum {
        * @return the Class<GUM_SCALAR> with the given name.
        * @throw NotFound if no Class<GUM_SCALAR> matches the given name.
        */
-      Class<GUM_SCALAR>& retrieveClass( const std::string& name );
+      PRMClass<GUM_SCALAR>& retrieveClass( const std::string& name );
 
       /**
        * @brief Returns a reference over a Type<GUM_SCALAR> given its name.
@@ -832,7 +832,7 @@ namespace gum {
       /// add the current prefix) or global (no prefix needed).
       /// @throw NotFound If no class matching the name is found.
       /// @see PRMFactory::__retrieveType
-      Class<GUM_SCALAR>* __retrieveClass( const std::string& name ) const;
+      PRMClass<GUM_SCALAR>* __retrieveClass( const std::string& name ) const;
 
       /// Returns a pointer on an interface given it's name. Used when building
       /// models, meaning that the interface name can either be local (need to
@@ -879,7 +879,7 @@ namespace gum {
       /// @throw NotFound Raised if a name in chains does not match a legal
       ///                 SlotChain<GUM_SCALAR> or an existing
       ///                 ClassElement<GUM_SCALAR> in c.
-      bool __retrieveInputs( Class<GUM_SCALAR>* c,
+      bool __retrieveInputs( PRMClass<GUM_SCALAR>* c,
                              const std::vector<std::string>& chains,
                              std::vector<ClassElement<GUM_SCALAR>*>& inputs );
 
@@ -918,7 +918,7 @@ namespace gum {
       int __typeDepth( const Type<GUM_SCALAR>* t );
 
       /// Check if c implements correctly all his interfaces.
-      void __checkInterfaceImplementation( Class<GUM_SCALAR>* c );
+      void __checkInterfaceImplementation( PRMClass<GUM_SCALAR>* c );
 
       /// @}
       // ======================================================================
@@ -928,7 +928,7 @@ namespace gum {
       /// @{
 
       /// Adds a instance to the current model.
-      void __addInstance( Class<GUM_SCALAR>* type, const std::string& name );
+      void __addInstance( PRMClass<GUM_SCALAR>* type, const std::string& name );
 
       /// Builds all SlotChain<GUM_SCALAR><Instance<GUM_SCALAR>> in the given
       /// model.

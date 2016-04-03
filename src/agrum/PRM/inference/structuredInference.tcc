@@ -890,7 +890,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     StructuredInference<GUM_SCALAR>::CData::CData(
-        const Class<GUM_SCALAR>& a_class )
+        const PRMClass<GUM_SCALAR>& a_class )
         : c( a_class )
         , __elim_order( 0 ) {
       GUM_CONSTRUCTOR( StructuredInference<GUM_SCALAR>::CData );

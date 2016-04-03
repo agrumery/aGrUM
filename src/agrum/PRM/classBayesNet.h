@@ -64,7 +64,7 @@ namespace gum {
       /// Default constructor.
       /// @param c The Class<GUM_SCALAR> decorated by this
       /// ClassBayesNet<GUM_SCALAR>.
-      ClassBayesNet<GUM_SCALAR>( const Class<GUM_SCALAR>& c );
+      ClassBayesNet<GUM_SCALAR>( const PRMClass<GUM_SCALAR>& c );
 
       /// Copy constructor.
       ClassBayesNet<GUM_SCALAR>( const ClassBayesNet<GUM_SCALAR>& from );
@@ -141,11 +141,11 @@ namespace gum {
       const ClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 
       /// The ClassElementContainer decorated by this.
-      const Class<GUM_SCALAR>* __class;
+      const PRMClass<GUM_SCALAR>* __class;
 
       mutable NodeProperty<Size> __modalities;
 
-      void __init( const Class<GUM_SCALAR>& c );
+      void __init( const PRMClass<GUM_SCALAR>& c );
     };
 
 

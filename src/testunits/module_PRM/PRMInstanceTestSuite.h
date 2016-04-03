@@ -36,7 +36,7 @@ namespace gum_tests {
   class PRMInstanceTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::Instance<double> Instance;
-    typedef gum::prm::Class<double> Class;
+    typedef gum::prm::PRMClass<double> PRMClass;
     typedef gum::prm::Interface<double> Interface;
     typedef gum::prm::Type<double> Type;
     typedef gum::prm::ScalarAttribute<double> PRMAttribute;
@@ -48,8 +48,8 @@ namespace gum_tests {
 
     Type* __boolean;
     Type* __state;
-    Class* __classA;
-    Class* __classB;
+    PRMClass* __classA;
+    PRMClass* __classB;
 
     public:
     void setUp() {
@@ -62,12 +62,12 @@ namespace gum_tests {
       map.push_back( 0 );
       __state = new Type( *__boolean, map, state );
 
-      __classA = new Class( "A" );
+      __classA = new PRMClass( "A" );
       __classA->add( new PRMAttribute( "a", *__boolean ) );
       __classA->add( new PRMAttribute( "b", *__state ) );
       __classA->addArc( "a", "b" );
 
-      __classB = new Class( "B" );
+      __classB = new PRMClass( "B" );
       __classB->add( new PRMAttribute( "a", *__boolean ) );
       __classB->add( new PRMAttribute( "b", *__state ) );
       __classB->addArc( "a", "b" );

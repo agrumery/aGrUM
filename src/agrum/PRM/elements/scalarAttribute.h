@@ -90,7 +90,7 @@ namespace gum {
       /// @{
 
       virtual PRMAttribute<GUM_SCALAR>*
-      newFactory( const Class<GUM_SCALAR>& c ) const;
+      newFactory( const PRMClass<GUM_SCALAR>& c ) const;
       virtual PRMAttribute<GUM_SCALAR>*
       copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
           const;

@@ -408,8 +408,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool
-    System<GUM_SCALAR>::isInstantiated( const Class<GUM_SCALAR>& c ) const {
-      return __instanceMap.exists( const_cast<Class<GUM_SCALAR>*>( &c ) );
+    System<GUM_SCALAR>::isInstantiated( const PRMClass<GUM_SCALAR>& c ) const {
+      return __instanceMap.exists( const_cast<PRMClass<GUM_SCALAR>*>( &c ) );
     }
 
     template <typename GUM_SCALAR>
@@ -454,9 +454,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const Set<Instance<GUM_SCALAR>*>&
-    System<GUM_SCALAR>::get( const Class<GUM_SCALAR>& type ) const {
+    System<GUM_SCALAR>::get( const PRMClass<GUM_SCALAR>& type ) const {
       try {
-        return *( __instanceMap[const_cast<Class<GUM_SCALAR>*>( &type )] );
+        return *( __instanceMap[const_cast<PRMClass<GUM_SCALAR>*>( &type )] );
       } catch ( NotFound& ) {
         GUM_ERROR(
             NotFound,

@@ -108,9 +108,9 @@ namespace gum_tests {
       }
 
       // testing classes
-      const gum::Set<gum::prm::Class<double>*>& c_set = prm->classes();
+      const gum::Set<gum::prm::PRMClass<double>*>& c_set = prm->classes();
 
-      for ( gum::Set<gum::prm::Class<double>*>::const_iterator c =
+      for ( gum::Set<gum::prm::PRMClass<double>*>::const_iterator c =
                 c_set.begin();
             c != c_set.end();
             ++c ) {
@@ -190,9 +190,9 @@ namespace gum_tests {
       }
 
       // testing classes
-      const gum::Set<gum::prm::Class<double>*>& c_set = prm->classes();
+      const gum::Set<gum::prm::PRMClass<double>*>& c_set = prm->classes();
 
-      for ( gum::Set<gum::prm::Class<double>*>::const_iterator c =
+      for ( gum::Set<gum::prm::PRMClass<double>*>::const_iterator c =
                 c_set.begin();
             c != c_set.end();
             ++c ) {

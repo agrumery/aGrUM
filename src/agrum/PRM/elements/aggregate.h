@@ -55,7 +55,7 @@ namespace gum {
      */
     template <typename GUM_SCALAR>
     class PRMAggregate : public ClassElement<GUM_SCALAR> {
-      friend class Class<GUM_SCALAR>;
+      friend class PRMClass<GUM_SCALAR>;
 
       public:
       // ========================================================================

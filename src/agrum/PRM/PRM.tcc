@@ -104,19 +104,19 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Class<GUM_SCALAR>&
+    INLINE PRMClass<GUM_SCALAR>&
     PRM<GUM_SCALAR>::getClass( const std::string& name ) {
       return *( __classMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Class<GUM_SCALAR>&
+    INLINE const PRMClass<GUM_SCALAR>&
     PRM<GUM_SCALAR>::getClass( const std::string& name ) const {
       return *( __classMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Class<GUM_SCALAR>*>& PRM<GUM_SCALAR>::classes() const {
+    INLINE const Set<PRMClass<GUM_SCALAR>*>& PRM<GUM_SCALAR>::classes() const {
       return __classes;
     }
 

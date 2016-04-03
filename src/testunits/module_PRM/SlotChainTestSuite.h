@@ -39,9 +39,9 @@ namespace gum_tests {
     private:
     typedef gum::prm::SlotChain<double> SlotChain;
     ClassElementTestSuiteAbstract* __classEltTestSuite;
-    gum::prm::Class<double>* __A;
-    gum::prm::Class<double>* __B;
-    gum::prm::Class<double>* __C;
+    gum::prm::PRMClass<double>* __A;
+    gum::prm::PRMClass<double>* __B;
+    gum::prm::PRMClass<double>* __C;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;
     gum::Sequence<gum::prm::ClassElement<double>*>* __booleanChain;
@@ -57,9 +57,9 @@ namespace gum_tests {
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract();
-      __A = new gum::prm::Class<double>( "A" );
-      __B = new gum::prm::Class<double>( "B" );
-      __C = new gum::prm::Class<double>( "C" );
+      __A = new gum::prm::PRMClass<double>( "A" );
+      __B = new gum::prm::PRMClass<double>( "B" );
+      __C = new gum::prm::PRMClass<double>( "C" );
 
       __refI = new gum::prm::ReferenceSlot<double>( "refA", *__B );
       __A->add( __refI );

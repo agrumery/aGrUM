@@ -77,7 +77,7 @@ namespace gum_tests {
     }
 
     void testClassAccess() {
-      gum::prm::Class<double>& c = prm->getClass( "SafeComputer" );
+      gum::prm::PRMClass<double>& c = prm->getClass( "SafeComputer" );
       gum::prm::ClassBayesNet<double>* bn = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::ClassBayesNet<double>(
                                         prm->getClass( "SafeComputer" ) ) );

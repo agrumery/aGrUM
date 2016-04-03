@@ -292,7 +292,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::__initLiftedNodes( const Instance<GUM_SCALAR>* i,
                                               BucketSet& trash ) {
-      Class<GUM_SCALAR>& c = const_cast<Class<GUM_SCALAR>&>( i->type() );
+      PRMClass<GUM_SCALAR>& c = const_cast<PRMClass<GUM_SCALAR>&>( i->type() );
       BucketSet* lifted_pool = new BucketSet();
       __lifted_pools.insert( &( __bb.requisiteNodes( i ) ), lifted_pool );
 
@@ -546,7 +546,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::vector<NodeId>&
-    SVED<GUM_SCALAR>::__getElimOrder( const Class<GUM_SCALAR>& c ) {
+    SVED<GUM_SCALAR>::__getElimOrder( const PRMClass<GUM_SCALAR>& c ) {
       return *( __elim_orders[&c] );
     }
 

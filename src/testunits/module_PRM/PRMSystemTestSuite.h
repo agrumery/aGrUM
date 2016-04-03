@@ -38,21 +38,21 @@ namespace gum_tests {
     private:
     typedef gum::prm::System<double> System;
     typedef gum::prm::Instance<double> Instance;
-    typedef gum::prm::Class<double> Class;
+    typedef gum::prm::PRMClass<double> PRMClass;
     typedef gum::prm::Type<double> Type;
     typedef gum::prm::ScalarAttribute<double> PRMAttribute;
     typedef gum::prm::ReferenceSlot<double> Reference;
     typedef gum::prm::SlotChain<double> SlotChain;
 
     Type* __boolean;
-    Class* __asia;
+    PRMClass* __asia;
     gum::HashTable<std::string, gum::NodeId>* __nodeMap;
 
     public:
     void setUp() {
       __boolean = Type::boolean();
       __nodeMap = new gum::HashTable<std::string, gum::NodeId>();
-      __asia = new Class( "asia" );
+      __asia = new PRMClass( "asia" );
       __buildAsiaBN();
     }
 

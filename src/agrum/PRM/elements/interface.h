@@ -50,7 +50,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class Interface : public ClassElementContainer<GUM_SCALAR> {
       // ========================================================================
-      friend class Class<GUM_SCALAR>;
+      friend class PRMClass<GUM_SCALAR>;
       // ========================================================================
       public:
       // ========================================================================
@@ -218,12 +218,12 @@ namespace gum {
       /**
        * Returns the set of Class<GUM_SCALAR> implementing this Interface.
        */
-      Set<Class<GUM_SCALAR>*>& implementations();
+      Set<PRMClass<GUM_SCALAR>*>& implementations();
 
       /**
        * Returns the set of Class<GUM_SCALAR> implementing this Interface.
        */
-      const Set<Class<GUM_SCALAR>*>& implementations() const;
+      const Set<PRMClass<GUM_SCALAR>*>& implementations() const;
 
       /**
        * Inherits from this interface super interface, this should only be done
@@ -334,12 +334,12 @@ namespace gum {
       Interface* __superInterface;
 
       /// The set of Class<GUM_SCALAR> which implements this Interface.
-      Set<Class<GUM_SCALAR>*> __implementations;
+      Set<PRMClass<GUM_SCALAR>*> __implementations;
 
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
       /// this Interface.
-      void __addImplementation( Class<GUM_SCALAR>* c );
+      void __addImplementation( PRMClass<GUM_SCALAR>* c );
 
       /// The set of Class<GUM_SCALAR> which implements this Interface.
       Set<Interface*> __extensions;

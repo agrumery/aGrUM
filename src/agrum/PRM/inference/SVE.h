@@ -114,9 +114,9 @@ namespace gum {
       typedef typename Set<MultiDimArray<GUM_SCALAR>*>::iterator_safe
           ArraySetIterator;
 
-      HashTable<const Class<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
+      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
 
-      HashTable<const Class<GUM_SCALAR>*, BucketSet*> __lifted_pools;
+      HashTable<const PRMClass<GUM_SCALAR>*, BucketSet*> __lifted_pools;
 
       Sequence<std::string>* __class_elim_order;
 
@@ -193,13 +193,13 @@ namespace gum {
                                  const Instance<GUM_SCALAR>* j,
                                  NodeId id );
 
-      std::vector<NodeId>& __getElimOrder( const Class<GUM_SCALAR>& c );
+      std::vector<NodeId>& __getElimOrder( const PRMClass<GUM_SCALAR>& c );
 
       Potential<GUM_SCALAR>*
       __getAggPotential( const Instance<GUM_SCALAR>* i,
                          const PRMAggregate<GUM_SCALAR>* agg );
 
-      void __initLiftedNodes( const Class<GUM_SCALAR>& c );
+      void __initLiftedNodes( const PRMClass<GUM_SCALAR>& c );
       std::string __trim( const std::string& s );
 
       /// @}

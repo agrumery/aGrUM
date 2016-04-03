@@ -46,7 +46,7 @@ namespace gum_tests {
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;
     std::vector<AggType>* __types;
-    gum::prm::Class<double>* __class;
+    gum::prm::PRMClass<double>* __class;
 
     public:
     void setUp() {
@@ -66,7 +66,7 @@ namespace gum_tests {
                                          AggType::FORALL,
                                          AggType::OR,
                                          AggType::AND};
-      __class = new gum::prm::Class<double>( "dummy" );
+      __class = new gum::prm::PRMClass<double>( "dummy" );
     }
 
     void tearDown() {
