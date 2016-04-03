@@ -62,11 +62,11 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMClass<GUM_SCALAR>::PRMClass( const std::string& name,
-                              const Set<Interface<GUM_SCALAR>*>& set,
+                              const Set<PRMInterface<GUM_SCALAR>*>& set,
                               bool delayInheritance )
         : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superClass( nullptr )
-        , __implements( new Set<Interface<GUM_SCALAR>*>( set ) )
+        , __implements( new Set<PRMInterface<GUM_SCALAR>*>( set ) )
         , __bijection( nullptr ) {
       GUM_CONSTRUCTOR( PRMClass );
 
@@ -78,7 +78,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     PRMClass<GUM_SCALAR>::PRMClass( const std::string& name,
                               PRMClass<GUM_SCALAR>& super,
-                              const Set<Interface<GUM_SCALAR>*>& set,
+                              const Set<PRMInterface<GUM_SCALAR>*>& set,
                               bool delayInheritance )
         : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superClass( &super )
@@ -93,7 +93,7 @@ namespace gum {
 
       // Adding other implementation
       if ( __implements == nullptr ) {  // super has not created __implements
-        __implements = new Set<Interface<GUM_SCALAR>*>( set );
+        __implements = new Set<PRMInterface<GUM_SCALAR>*>( set );
       } else {  // we just add the new implementations
         for ( const auto elt : set ) {
           __implements->insert( elt );
@@ -149,7 +149,7 @@ namespace gum {
         if ( __superClass->__implements ) {
           if ( ! __implements ) {
             __implements =
-                new Set<Interface<GUM_SCALAR>*>( *( __superClass->__implements ) );
+                new Set<PRMInterface<GUM_SCALAR>*>( *( __superClass->__implements ) );
           } else {
             for ( auto i : *( __superClass->__implements ) ) {
               __implements->insert( i );
@@ -336,7 +336,7 @@ namespace gum {
         if ( c.__implements ) {
           if ( ! __implements ) {
             __implements =
-                new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) );
+                new Set<PRMInterface<GUM_SCALAR>*>( *( c.__implements ) );
           } else {
             for ( auto i : *( c.__implements ) ) {
               __implements->insert( i );
@@ -484,11 +484,11 @@ namespace gum {
 
         case PRMObject::PRMType::INTERFACE: {
           if ( __implements != nullptr ) {
-            const Interface<GUM_SCALAR>& i =
-                static_cast<const Interface<GUM_SCALAR>&>( cec );
+            const PRMInterface<GUM_SCALAR>& i =
+                static_cast<const PRMInterface<GUM_SCALAR>&>( cec );
 
             if ( __implements->exists(
-                     const_cast<Interface<GUM_SCALAR>*>( &i ) ) )
+                     const_cast<PRMInterface<GUM_SCALAR>*>( &i ) ) )
               return true;
 
             for ( const auto impl : *__implements )
@@ -1024,7 +1024,7 @@ namespace gum {
       // We only add IO Flags if elt matches is required by and interface
       if ( __implements != nullptr ) {
         for ( const auto impl : *__implements ) {
-          Interface<GUM_SCALAR>* super = impl;
+          PRMInterface<GUM_SCALAR>* super = impl;
           while ( super ) {
             // If the attribute is defined in an interface, we set it as an
             // OutputNode
@@ -1213,7 +1213,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Interface<GUM_SCALAR>*>&
+    INLINE const Set<PRMInterface<GUM_SCALAR>*>&
     PRMClass<GUM_SCALAR>::implements() const {
       if ( __implements ) {
         return *__implements;

@@ -43,7 +43,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class PRMClass;
     template <typename GUM_SCALAR>
-    class Interface;
+    class PRMInterface;
     class PRMClassElementContainterIterator;
     class PRMClassElementContainterConstIterator;
 
@@ -385,7 +385,7 @@ namespace gum {
       /// DAG.
       virtual DAG& _dag() = 0;
 
-      /// Fills set with all the subtypes of this Interface, this includes
+      /// Fills set with all the subtypes of this PRMInterface, this includes
       /// extensions
       /// and implementations.
       virtual void _findAllSubtypes( Set<PRMClassElementContainer*>& set ) = 0;

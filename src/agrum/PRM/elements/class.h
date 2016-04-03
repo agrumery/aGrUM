@@ -57,7 +57,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class PRMClass : public PRMClassElementContainer<GUM_SCALAR> {
 
-      friend class Interface<GUM_SCALAR>;
+      friend class PRMInterface<GUM_SCALAR>;
 
       public:
       /// @name Constructors & destructor.
@@ -88,7 +88,7 @@ namespace gum {
        * @param delayInheritance If true, inheritance will be delayed.
        */
       PRMClass( const std::string& name,
-             const Set<Interface<GUM_SCALAR>*>& set,
+             const Set<PRMInterface<GUM_SCALAR>*>& set,
              bool delayInheritance = false );
 
       /**
@@ -101,7 +101,7 @@ namespace gum {
        */
       PRMClass( const std::string& name,
              PRMClass<GUM_SCALAR>& super,
-             const Set<Interface<GUM_SCALAR>*>& set,
+             const Set<PRMInterface<GUM_SCALAR>*>& set,
              bool delayInheritance = false );
 
       /// Copy constructor.
@@ -230,7 +230,7 @@ namespace gum {
        * equal or there exists a superclass of this Class<GUM_SCALAR> which is
        *equal to cec.
        *
-       * If cec is an Interface<GUM_SCALAR> then this Class<GUM_SCALAR> is a
+       * If cec is an PRMInterface<GUM_SCALAR> then this Class<GUM_SCALAR> is a
        *subclass of cec if it
        * implements cec or if there exists a superclass of this
        *Class<GUM_SCALAR> which
@@ -252,14 +252,14 @@ namespace gum {
       const PRMClass<GUM_SCALAR>& super() const;
 
       /**
-       * @brief Returns the Set of Interface<GUM_SCALAR> implemented by this
+       * @brief Returns the Set of PRMInterface<GUM_SCALAR> implemented by this
        * Class<GUM_SCALAR>.
-       * @return Returns the Set of Interface<GUM_SCALAR> implemented by this
+       * @return Returns the Set of PRMInterface<GUM_SCALAR> implemented by this
        * Class<GUM_SCALAR>.
        * @throw NotFound Raised if this Class<GUM_SCALAR> doesn't implement any
-       * Interface<GUM_SCALAR>.
+       * PRMInterface<GUM_SCALAR>.
        */
-      const Set<Interface<GUM_SCALAR>*>& implements() const;
+      const Set<PRMInterface<GUM_SCALAR>*>& implements() const;
 
       /// Returns the set of Class@<GUM_SCALAR@> which are direct
       /// sub-Class@<GUM_SCALAR@> of this Class@<GUM_SCALAR@>.
@@ -303,7 +303,7 @@ namespace gum {
       /// returns a constant reference over this interface's dag.
       virtual const DAG& _dag() const;
 
-      /// Returns a non constant reference over this Interface<GUM_SCALAR>'s
+      /// Returns a non constant reference over this PRMInterface<GUM_SCALAR>'s
       /// DAG.
       virtual DAG& _dag();
 
@@ -377,7 +377,7 @@ namespace gum {
       PRMClass<GUM_SCALAR>* __superClass;
 
       /// The Set of implemented interface of this.
-      Set<Interface<GUM_SCALAR>*>* __implements;
+      Set<PRMInterface<GUM_SCALAR>*>* __implements;
 
       /// The set of Class<GUM_SCALAR> which are extension of this
       /// Class<GUM_SCALAR> (i.e. direct

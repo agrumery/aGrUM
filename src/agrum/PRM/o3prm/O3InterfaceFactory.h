@@ -49,7 +49,7 @@ namespace gum {
        * @headerfile O3InterfaceFactory.h <agrum/PRM/o3prm/O3InterfaceFactory.h>
        * @ingroup o3prm_group
        *
-       * @brief Bulds gum::prm:Interface from gum::prm::o3prm::O3Interface.
+       * @brief Bulds gum::prm:PRMInterface from gum::prm::o3prm::O3Interface.
        *
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
        */

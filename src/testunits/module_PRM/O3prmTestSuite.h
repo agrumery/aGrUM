@@ -273,9 +273,9 @@ namespace gum_tests {
         gum::prm::PRMClass<double>& Computer =
             prm->getClass( "fr.lip6.printers.Computer" );
         // Interfaces
-        gum::prm::Interface<double>& Equipment =
+        gum::prm::PRMInterface<double>& Equipment =
             prm->interface( "fr.lip6.printers.Equipment" );
-        gum::prm::Interface<double>& Printer =
+        gum::prm::PRMInterface<double>& Printer =
             prm->interface( "fr.lip6.printers.Printer" );
         // Testing PowerSupply
         TS_ASSERT( PowerSupply.isSubTypeOf( PowerSupply ) );
@@ -359,9 +359,9 @@ namespace gum_tests {
         gum::prm::PRMClass<double>& Computer =
             prm->getClass( "fr.lip6.printers.Computer" );
         // Interfaces
-        gum::prm::Interface<double>& Equipment =
+        gum::prm::PRMInterface<double>& Equipment =
             prm->interface( "fr.lip6.printers.Equipment" );
-        gum::prm::Interface<double>& Printer =
+        gum::prm::PRMInterface<double>& Printer =
             prm->interface( "fr.lip6.printers.Printer" );
         // Testing PowerSupply
         TS_ASSERT( PowerSupply.isSuperTypeOf( PowerSupply ) );
@@ -503,7 +503,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
-        gum::prm::Interface<double>& Equipment =
+        gum::prm::PRMInterface<double>& Equipment =
             prm->interface( "fr.lip6.printers.Equipment" );
         TS_ASSERT_EQUALS( Equipment.referenceSlots().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( Equipment.attributes().size(), (gum::Size)3 );
@@ -562,7 +562,7 @@ namespace gum_tests {
         gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING(
             prm->interface( "fr.lip6.printers.Printer" ) );
-        gum::prm::Interface<double>& Printer =
+        gum::prm::PRMInterface<double>& Printer =
             prm->interface( "fr.lip6.printers.Printer" );
         TS_ASSERT_EQUALS( Printer.referenceSlots().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( Printer.attributes().size(), (gum::Size)5 );
@@ -1719,7 +1719,7 @@ namespace gum_tests {
               }
             }
           } catch ( gum::NotFound& e ) {
-            // No Interface
+            // No PRMInterface
           }
         }
 

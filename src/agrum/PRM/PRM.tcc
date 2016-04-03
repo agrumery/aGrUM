@@ -121,19 +121,19 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Interface<GUM_SCALAR>&
+    INLINE PRMInterface<GUM_SCALAR>&
     PRM<GUM_SCALAR>::interface( const std::string& name ) {
       return *__interfaceMap[name];
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Interface<GUM_SCALAR>&
+    INLINE const PRMInterface<GUM_SCALAR>&
     PRM<GUM_SCALAR>::interface( const std::string& name ) const {
       return *__interfaceMap[name];
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Interface<GUM_SCALAR>*>&
+    INLINE const Set<PRMInterface<GUM_SCALAR>*>&
     PRM<GUM_SCALAR>::interfaces() const {
       return __interfaces;
     }

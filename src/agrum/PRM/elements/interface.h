@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::prm::Interface.
+ * @brief Headers of gum::prm::PRMInterface.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -39,8 +39,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class Interface interface.h <agrum/PRM/interface.h>
-     * @brief An Interface is implemented by a Class<GUM_SCALAR> and defines a
+     * @class PRMInterface interface.h <agrum/PRM/interface.h>
+     * @brief An PRMInterface is implemented by a Class<GUM_SCALAR> and defines a
      *set of
      *        ReferenceSlot<GUM_SCALAR> and PRMAttribute<GUM_SCALAR> which the
      *implementing Class<GUM_SCALAR> must contain.
@@ -48,7 +48,7 @@ namespace gum {
      * @see PRM Class<GUM_SCALAR> PRMClassElement<GUM_SCALAR>
      */
     template <typename GUM_SCALAR>
-    class Interface : public PRMClassElementContainer<GUM_SCALAR> {
+    class PRMInterface : public PRMClassElementContainer<GUM_SCALAR> {
       // ========================================================================
       friend class PRMClass<GUM_SCALAR>;
       // ========================================================================
@@ -62,23 +62,23 @@ namespace gum {
        * Default constructor.
        * @param name The interface name.
        */
-      Interface( const std::string& name );
+      PRMInterface( const std::string& name );
 
       /**
        * Constructor for building a subclass of super.
        * @param name The sub-interface name.
-       * @param super The super Interface of this.
+       * @param super The super PRMInterface of this.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      Interface( const std::string& name,
-                 Interface& super,
+      PRMInterface( const std::string& name,
+                 PRMInterface& super,
                  bool delayInheritance = false );
 
       /// Copy constructor.
-      Interface( const Interface& source );
+      PRMInterface( const PRMInterface& source );
 
       /// Destructor.
-      virtual ~Interface();
+      virtual ~PRMInterface();
 
       /// @}
       // ========================================================================
@@ -156,7 +156,7 @@ namespace gum {
        *a subtype
        * of the inherited PRMClassElement<GUM_SCALAR>. You do not define
        *dependencies in
-       *an Interface
+       *an PRMInterface
        * so it is useless to overload an PRMAttribute<GUM_SCALAR> with another
        *sharing
        *the same type,
@@ -178,50 +178,50 @@ namespace gum {
       /// @{
 
       /**
-       * @brief Test if this Interface is a sub Interface of cec.
+       * @brief Test if this PRMInterface is a sub PRMInterface of cec.
        *
-       * Interface can not be a sub Interface of a Class<GUM_SCALAR>, so if cec
+       * PRMInterface can not be a sub PRMInterface of a Class<GUM_SCALAR>, so if cec
        *is a
        *Class<GUM_SCALAR>
        * this method will return false.
        *
-       * If cec is an Interface then this Interface is a sub Interface of cec if
+       * If cec is an PRMInterface then this PRMInterface is a sub PRMInterface of cec if
        *they
        *are
-       * equal or there exists a super Interface of this Interface which is
+       * equal or there exists a super PRMInterface of this PRMInterface which is
        *equal to
        *cec.
        *
        * @param cec The PRMClassElementContainer<GUM_SCALAR> for which we determine
        *if
        *this
-       *            Interface is a sub Interface of it.
+       *            PRMInterface is a sub PRMInterface of it.
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
       virtual bool
       isSubTypeOf( const PRMClassElementContainer<GUM_SCALAR>& cec ) const;
 
       /**
-       * @brief Returns the superInterface of this Interface.
-       * @return Returns the super Interface of this Interface.
-       * @throw NotFound Raised if this has no super Interface.
+       * @brief Returns the superInterface of this PRMInterface.
+       * @return Returns the super PRMInterface of this PRMInterface.
+       * @throw NotFound Raised if this has no super PRMInterface.
        */
-      Interface& super();
+      PRMInterface& super();
 
       /**
-       * @brief Returns the superInterface of this Interface.
-       * @return Returns the super Interface of this Interface.
-       * @throw NotFound Raised if this has no super Interface.
+       * @brief Returns the superInterface of this PRMInterface.
+       * @return Returns the super PRMInterface of this PRMInterface.
+       * @throw NotFound Raised if this has no super PRMInterface.
        */
-      const Interface& super() const;
+      const PRMInterface& super() const;
 
       /**
-       * Returns the set of Class<GUM_SCALAR> implementing this Interface.
+       * Returns the set of Class<GUM_SCALAR> implementing this PRMInterface.
        */
       Set<PRMClass<GUM_SCALAR>*>& implementations();
 
       /**
-       * Returns the set of Class<GUM_SCALAR> implementing this Interface.
+       * Returns the set of Class<GUM_SCALAR> implementing this PRMInterface.
        */
       const Set<PRMClass<GUM_SCALAR>*>& implementations() const;
 
@@ -270,13 +270,13 @@ namespace gum {
 
       /// @}
       protected:
-      /// Returns a constant reference over this Interface's DAG.
+      /// Returns a constant reference over this PRMInterface's DAG.
       const DAG& _dag() const;
 
-      /// Returns a non constant reference over this Interface's DAG.
+      /// Returns a non constant reference over this PRMInterface's DAG.
       DAG& _dag();
 
-      /// Fills set with all the subtypes of this Interface, this includes
+      /// Fills set with all the subtypes of this PRMInterface, this includes
       /// extensions
       /// and implementations.
       void _findAllSubtypes( Set<PRMClassElementContainer<GUM_SCALAR>*>& set );
@@ -287,10 +287,10 @@ namespace gum {
 
       private:
       /// Copy operator. Don't use it.
-      Interface& operator=( const Interface& source );
+      PRMInterface& operator=( const PRMInterface& source );
 
       /// Proceed with the copy of i in this.
-      void __inheritInterface( const Interface& i );
+      void __inheritInterface( const PRMInterface& i );
 
       // ========================================================================
       /// @name Graphical model members
@@ -331,23 +331,23 @@ namespace gum {
       /// elements defined in
       ///        this.
       /// Note that this is first searched for gum::PRMClassElement<GUM_SCALAR>.
-      Interface* __superInterface;
+      PRMInterface* __superInterface;
 
-      /// The set of Class<GUM_SCALAR> which implements this Interface.
+      /// The set of Class<GUM_SCALAR> which implements this PRMInterface.
       Set<PRMClass<GUM_SCALAR>*> __implementations;
 
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
-      /// this Interface.
+      /// this PRMInterface.
       void __addImplementation( PRMClass<GUM_SCALAR>* c );
 
-      /// The set of Class<GUM_SCALAR> which implements this Interface.
-      Set<Interface*> __extensions;
+      /// The set of Class<GUM_SCALAR> which implements this PRMInterface.
+      Set<PRMInterface*> __extensions;
 
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
-      /// this Interface.
-      void __addExtension( Interface* c );
+      /// this PRMInterface.
+      void __addExtension( PRMInterface* c );
 
       bool
       __checkOverloadLegality( const PRMClassElement<GUM_SCALAR>* overloaded,
@@ -366,8 +366,8 @@ namespace gum {
     };
 
 
-    extern template class Interface<float>;
-    extern template class Interface<double>;
+    extern template class PRMInterface<float>;
+    extern template class PRMInterface<double>;
 
 
   } /* namespace prm */

@@ -97,8 +97,8 @@ namespace gum {
       bool isClass( const std::string name ) const;
 
       /**
-       * @param name The name of a possible Interface<GUM_SCALAR> in this PRM.
-       * @return Returns true if name names a Interface<GUM_SCALAR> in this PRM.
+       * @param name The name of a possible PRMInterface<GUM_SCALAR> in this PRM.
+       * @return Returns true if name names a PRMInterface<GUM_SCALAR> in this PRM.
        */
       bool isInterface( const std::string name ) const;
 
@@ -146,18 +146,18 @@ namespace gum {
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      Interface<GUM_SCALAR>& interface( const std::string& name );
+      PRMInterface<GUM_SCALAR>& interface( const std::string& name );
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const Interface<GUM_SCALAR>& interface( const std::string& name ) const;
+      const PRMInterface<GUM_SCALAR>& interface( const std::string& name ) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
        */
-      const Set<Interface<GUM_SCALAR>*>& interfaces() const;
+      const Set<PRMInterface<GUM_SCALAR>*>& interfaces() const;
 
       /**
        * Returns a constant reference on a System<GUM_SCALAR> given it's name.
@@ -209,10 +209,10 @@ namespace gum {
       Set<PRMClass<GUM_SCALAR>*> __classes;
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
-      HashTable<std::string, Interface<GUM_SCALAR>*> __interfaceMap;
+      HashTable<std::string, PRMInterface<GUM_SCALAR>*> __interfaceMap;
 
       /// Set of all Class<GUM_SCALAR> in this PRM.
-      Set<Interface<GUM_SCALAR>*> __interfaces;
+      Set<PRMInterface<GUM_SCALAR>*> __interfaces;
 
       /// Mapping of all Type<GUM_SCALAR> given their name.
       HashTable<std::string, Type<GUM_SCALAR>*> __typeMap;

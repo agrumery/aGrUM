@@ -1984,7 +1984,7 @@ namespace gum_tests {
       const auto& bar = prm.getClass( "Bar" );
       TS_ASSERT( foo.isSuperTypeOf( bar ) );
       TS_ASSERT( bar.implements().contains(
-          const_cast<gum::prm::Interface<double>*>( &foo ) ) );
+          const_cast<gum::prm::PRMInterface<double>*>( &foo ) ) );
       TS_ASSERT_EQUALS( bar.parameters().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( bar.referenceSlots().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( bar.slotChains().size(), (gum::Size)0 );
@@ -2015,7 +2015,7 @@ namespace gum_tests {
       const auto& bar = prm.getClass( "Bar" );
       TS_ASSERT( foo.isSuperTypeOf( bar ) );
       TS_ASSERT( bar.implements().contains(
-          const_cast<gum::prm::Interface<double>*>( &foo ) ) );
+          const_cast<gum::prm::PRMInterface<double>*>( &foo ) ) );
       TS_ASSERT_EQUALS( bar.parameters().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( bar.referenceSlots().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( bar.slotChains().size(), (gum::Size)0 );
@@ -2052,13 +2052,13 @@ namespace gum_tests {
       const auto& foo = prm.getClass( "Foo" );
       TS_ASSERT( ifoo.isSuperTypeOf( foo ) );
       TS_ASSERT( foo.implements().contains(
-          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+          const_cast<gum::prm::PRMInterface<double>*>( &ifoo ) ) );
       const auto& bar = prm.getClass( "Bar" );
       TS_ASSERT( ifoo.isSuperTypeOf( bar ) );
       TS_ASSERT( foo.isSuperTypeOf( bar ) );
       TS_ASSERT_EQUALS( &( bar.super() ), &( foo ) );
       TS_ASSERT( bar.implements().contains(
-          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+          const_cast<gum::prm::PRMInterface<double>*>( &ifoo ) ) );
     }
 
     void testInheritanceError1() {
@@ -2206,13 +2206,13 @@ namespace gum_tests {
       const auto& foo = prm.getClass( "Foo" );
       TS_ASSERT( ifoo.isSuperTypeOf( foo ) );
       TS_ASSERT( foo.implements().contains(
-          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+          const_cast<gum::prm::PRMInterface<double>*>( &ifoo ) ) );
       const auto& bar = prm.getClass( "Bar" );
       TS_ASSERT( ifoo.isSuperTypeOf( bar ) );
       TS_ASSERT( foo.isSuperTypeOf( bar ) );
       TS_ASSERT_EQUALS( &( bar.super() ), &( foo ) );
       TS_ASSERT( bar.implements().contains(
-          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+          const_cast<gum::prm::PRMInterface<double>*>( &ifoo ) ) );
     }
 
     void testOrderDoesNotMatter2() {
@@ -2245,13 +2245,13 @@ namespace gum_tests {
       const auto& foo = prm.getClass( "Foo" );
       TS_ASSERT( ifoo.isSuperTypeOf( foo ) );
       TS_ASSERT( foo.implements().contains(
-          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+          const_cast<gum::prm::PRMInterface<double>*>( &ifoo ) ) );
       const auto& bar = prm.getClass( "Bar" );
       TS_ASSERT( ifoo.isSuperTypeOf( bar ) );
       TS_ASSERT( foo.isSuperTypeOf( bar ) );
       TS_ASSERT_EQUALS( &( bar.super() ), &( foo ) );
       TS_ASSERT( bar.implements().contains(
-          const_cast<gum::prm::Interface<double>*>( &ifoo ) ) );
+          const_cast<gum::prm::PRMInterface<double>*>( &ifoo ) ) );
     }
 
     void testPrinters() {

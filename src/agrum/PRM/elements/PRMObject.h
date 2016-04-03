@@ -107,7 +107,7 @@ namespace gum {
         return obj.obj_type() == PRMType::CLASS;
       }
 
-      /// Returns true if obj_ptr is of type Interface.
+      /// Returns true if obj_ptr is of type PRMInterface.
       static INLINE bool isInterface( const PRMObject& obj ) {
         return obj.obj_type() == PRMType::INTERFACE;
       }
@@ -209,7 +209,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class PRMAggregate;
     template <typename GUM_SCALAR>
-    class Interface;
+    class PRMInterface;
     template <typename GUM_SCALAR>
     class PRMAttribute;
     template <typename GUM_SCALAR>

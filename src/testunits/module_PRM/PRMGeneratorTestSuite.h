@@ -69,11 +69,11 @@ namespace gum_tests {
       gum::prm::PRM<double>* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
       // testing interfaces
-      const gum::Set<gum::prm::Interface<double>*>& i_set = prm->interfaces();
+      const gum::Set<gum::prm::PRMInterface<double>*>& i_set = prm->interfaces();
       TS_ASSERT_EQUALS( i_set.size(), (gum::Size)10 );
 
       for ( auto iter = i_set.begin(); iter != i_set.end(); ++iter ) {
-        const gum::prm::Interface<double>& i = **iter;
+        const gum::prm::PRMInterface<double>& i = **iter;
 
         if ( i.referenceSlots().size() ) {
           TS_ASSERT_EQUALS( i.referenceSlots().size(), (gum::Size)1 );
@@ -148,14 +148,14 @@ namespace gum_tests {
       gum::prm::PRM<double>* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
       // testing interfaces
-      const gum::Set<gum::prm::Interface<double>*>& i_set = prm->interfaces();
+      const gum::Set<gum::prm::PRMInterface<double>*>& i_set = prm->interfaces();
       TS_ASSERT_EQUALS( i_set.size(), (gum::Size)10 );
 
-      for ( gum::Set<gum::prm::Interface<double>*>::const_iterator iter =
+      for ( gum::Set<gum::prm::PRMInterface<double>*>::const_iterator iter =
                 i_set.begin();
             iter != i_set.end();
             ++iter ) {
-        const gum::prm::Interface<double>& i = **iter;
+        const gum::prm::PRMInterface<double>& i = **iter;
 
         if ( i.referenceSlots().size() ) {
           TS_ASSERT_EQUALS( i.referenceSlots().size(), (gum::Size)1 );

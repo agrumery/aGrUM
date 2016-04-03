@@ -110,7 +110,7 @@ namespace gum {
       }
       PRMClass<GUM_SCALAR>* c = 0;
       PRMClass<GUM_SCALAR>* mother = 0;
-      Set<Interface<GUM_SCALAR>*> impl;
+      Set<PRMInterface<GUM_SCALAR>*> impl;
 
       if ( implements != 0 ) {
         for ( const auto& imp : *implements ) {
@@ -246,7 +246,7 @@ namespace gum {
           }
         }
       } catch ( NotFound& ) {
-        // this Class<GUM_SCALAR> does not implement any Interface<GUM_SCALAR>
+        // this Class<GUM_SCALAR> does not implement any PRMInterface<GUM_SCALAR>
       }
     }
 
@@ -261,17 +261,17 @@ namespace gum {
         msg << "\"" << real_name << "\" is already used.";
         GUM_ERROR( DuplicateElement, msg.str() );
       }
-      Interface<GUM_SCALAR>* i = 0;
-      Interface<GUM_SCALAR>* super = 0;
+      PRMInterface<GUM_SCALAR>* i = 0;
+      PRMInterface<GUM_SCALAR>* super = 0;
 
       if ( extends != "" ) {
         super = __retrieveInterface( extends );
       }
 
       if ( super != 0 ) {
-        i = new Interface<GUM_SCALAR>( real_name, *super, delayInheritance );
+        i = new PRMInterface<GUM_SCALAR>( real_name, *super, delayInheritance );
       } else {
-        i = new Interface<GUM_SCALAR>( real_name );
+        i = new PRMInterface<GUM_SCALAR>( real_name );
       }
 
       __prm->__interfaceMap.insert( i->name(), i );
@@ -288,7 +288,7 @@ namespace gum {
         GUM_ERROR( DuplicateElement, msg.str() );
       }
 
-      Interface<GUM_SCALAR>* i = __retrieveInterface( real_name );
+      PRMInterface<GUM_SCALAR>* i = __retrieveInterface( real_name );
       __stack.push_back( i );
     }
 
@@ -1278,10 +1278,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Interface<GUM_SCALAR>* PRMFactory<GUM_SCALAR>::__retrieveInterface(
+    PRMInterface<GUM_SCALAR>* PRMFactory<GUM_SCALAR>::__retrieveInterface(
         const std::string& name ) const {
 
-      Interface<GUM_SCALAR>* interface = 0;
+      PRMInterface<GUM_SCALAR>* interface = 0;
       std::string full_name;
 
       // Looking for the type using its name

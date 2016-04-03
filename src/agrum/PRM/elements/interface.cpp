@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::prm::Interface
+ * @brief Headers of gum::prm::PRMInterface
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class Interface<float>;
-    template class Interface<double>;
+    template class PRMInterface<float>;
+    template class PRMInterface<double>;
 
 
   } /* namespace prm */

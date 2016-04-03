@@ -316,13 +316,13 @@ namespace gum {
        *
        * @throw TypeError Raised if the current Class<GUM_SCALAR> does not
        *respect one of
-       *                  it's Interface<GUM_SCALAR>.
+       *                  it's PRMInterface<GUM_SCALAR>.
        */
       virtual void endClass( bool checkImplementations = true ) override;
 
       /// @}
       // ======================================================================
-      /// @name Interface<GUM_SCALAR> construction models.
+      /// @name PRMInterface<GUM_SCALAR> construction models.
       // ======================================================================
       /// @{
 
@@ -334,11 +334,11 @@ namespace gum {
        *
        * @param i The interface name.
        * @param ext The name of the super interface of i.
-       * @param delayInheritance If true, the created gum::prm::Interface
+       * @param delayInheritance If true, the created gum::prm::PRMInterface
        * inheritance will be delayed.
        *
        * @throw NotFound Raised if ext does not match any declared
-       *                 Interface<GUM_SCALAR>.
+       *                 PRMInterface<GUM_SCALAR>.
        */
       virtual void startInterface( const std::string& i,
                                    const std::string& ext = "",
@@ -839,7 +839,7 @@ namespace gum {
       /// add the current prefix) or global (no prefix needed).
       /// @throw NotFound If no class matching the name is found.
       /// @see PRMFactory::__retrieveType
-      Interface<GUM_SCALAR>*
+      PRMInterface<GUM_SCALAR>*
       __retrieveInterface( const std::string& name ) const;
 
       /// @}

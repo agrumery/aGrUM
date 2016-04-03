@@ -36,7 +36,7 @@ namespace gum_tests {
   class PRMClassTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMClass<double> PRMClass;
-    typedef gum::prm::Interface<double> Interface;
+    typedef gum::prm::PRMInterface<double> PRMInterface;
     typedef gum::prm::Type<double> Type;
     typedef gum::prm::PRMAggregate<double> PRMAggregate;
     typedef gum::prm::ScalarAttribute<double> PRMAttribute;
@@ -111,14 +111,14 @@ namespace gum_tests {
       auto a = new PRMAttribute( "a", *__boolean );
       toRef.add( a );
       auto ref = new Reference( "rho", toRef );
-      Interface i( "i" );
+      PRMInterface i( "i" );
       auto b = new PRMAttribute( "b", *__boolean );
       auto c = new PRMAttribute( "c", *__boolean );
       i.add( ref );
       i.add( b );
       i.add( c );
       PRMClass* subclass = nullptr;
-      gum::Set<Interface*> set;
+      gum::Set<PRMInterface*> set;
       set << &i;
       // Act
       TS_ASSERT_THROWS_NOTHING( subclass = new PRMClass( "subclass", set ) );
@@ -586,14 +586,14 @@ namespace gum_tests {
       try {
         // Arrange
         // Event
-        Interface event( "Event" );
+        PRMInterface event( "Event" );
         auto e_state = new PRMAttribute( "state", *__boolean );
         event.add( e_state );
         // Gate
-        Interface gate( "Gate", event );
+        PRMInterface gate( "Gate", event );
         auto g_inputs = new Reference( "inputs", event, true );
         gate.add( g_inputs );
-        gum::Set<gum::prm::Interface<double>*> impl;
+        gum::Set<gum::prm::PRMInterface<double>*> impl;
         impl << &gate;
         // OrGate
         PRMClass orGate( "OrGate", impl );

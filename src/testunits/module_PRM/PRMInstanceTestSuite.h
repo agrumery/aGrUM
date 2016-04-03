@@ -37,7 +37,7 @@ namespace gum_tests {
     private:
     typedef gum::prm::PRMInstance<double> PRMInstance;
     typedef gum::prm::PRMClass<double> PRMClass;
-    typedef gum::prm::Interface<double> Interface;
+    typedef gum::prm::PRMInterface<double> PRMInterface;
     typedef gum::prm::Type<double> Type;
     typedef gum::prm::ScalarAttribute<double> PRMAttribute;
     typedef gum::prm::ReferenceSlot<double> Reference;
