@@ -85,7 +85,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( g_ve->setBNInference( ve ) );
       const gum::prm::Instance<double>& instance =
           prm->system( "aSys" ).get( "c1" );
-      const gum::prm::Attribute<double>& attribute =
+      const gum::prm::PRMAttribute<double>& attribute =
           instance.get( "can_print" );
       gum::Potential<double> e;
       e.add( attribute.type().variable() );
@@ -118,7 +118,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "c" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -133,7 +133,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "p" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "equipState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -148,7 +148,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "powState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -178,7 +178,7 @@ namespace gum_tests {
 
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "c" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -197,7 +197,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "p" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "equipState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -212,7 +212,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "powState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -234,7 +234,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "c" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -249,7 +249,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "p" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "equipState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -264,7 +264,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "powState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -287,7 +287,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "c" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -302,7 +302,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "p" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "equipState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -317,7 +317,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "powState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -370,7 +370,7 @@ namespace gum_tests {
           const gum::prm::Instance<double>& instance =
               prm->system( "aSys" )
                   .get( bn.variableNodeMap().name( node ).substr( 0, pos ) );
-          const gum::prm::Attribute<double>& attribute = instance.get(
+          const gum::prm::PRMAttribute<double>& attribute = instance.get(
               bn.variableNodeMap().name( node ).substr( pos + 1 ) );
           gum::prm::PRMInference<double>::Chain chain =
               std::make_pair( &instance, &attribute );
@@ -473,7 +473,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
         gum::Potential<double> e;
         e.add( attribute.type().variable() );
@@ -490,7 +490,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::Potential<double> e;
         e.add( attribute.type().variable() );
@@ -508,7 +508,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& q_a = q_i.get( "state" );
+        const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
             std::make_pair( &q_i, &q_a );
         gum::Potential<double> m;
@@ -523,7 +523,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -532,7 +532,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -542,7 +542,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& q_a = q_i.get( "state" );
+        const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
             std::make_pair( &q_i, &q_a );
         gum::Potential<double> m;
@@ -564,7 +564,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
         gum::Potential<double> e;
         e.add( attribute.type().variable() );
@@ -581,7 +581,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::Potential<double> e;
         e.add( attribute.type().variable() );
@@ -599,7 +599,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& q_a = q_i.get( "state" );
+        const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
             std::make_pair( &q_i, &q_a );
         gum::Potential<double> m;
@@ -615,7 +615,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -624,7 +624,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -634,7 +634,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& q_a = q_i.get( "state" );
+        const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
             std::make_pair( &q_i, &q_a );
         gum::Potential<double> m;
@@ -672,7 +672,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
         gum::Potential<double> e;
         e.add( attribute.type().variable() );
@@ -689,7 +689,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::Potential<double> e;
         e.add( attribute.type().variable() );
@@ -707,7 +707,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& q_a = q_i.get( "state" );
+        const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
             std::make_pair( &q_i, &q_a );
         gum::Potential<double> m;
@@ -722,7 +722,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "c1" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "can_print" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -731,7 +731,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& instance =
             prm->system( "aSys" ).get( "bw_printers[0]" );
-        const gum::prm::Attribute<double>& attribute =
+        const gum::prm::PRMAttribute<double>& attribute =
             instance.get( "(t_degraded)equipState" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
@@ -741,7 +741,7 @@ namespace gum_tests {
       {
         const gum::prm::Instance<double>& q_i =
             prm->system( "aSys" ).get( "pow" );
-        const gum::prm::Attribute<double>& q_a = q_i.get( "state" );
+        const gum::prm::PRMAttribute<double>& q_a = q_i.get( "state" );
         gum::prm::PRMInference<double>::Chain q_chain =
             std::make_pair( &q_i, &q_a );
         gum::Potential<double> m;

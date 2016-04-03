@@ -110,7 +110,7 @@ namespace gum {
                  Potential<GUM_SCALAR>& m );
 
       /// @brief Generic method to compute the marginal of given element.
-      /// @param queries Set of pairs of Instance and Attribute.
+      /// @param queries Set of pairs of Instance and PRMAttribute.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
       virtual void _joint(

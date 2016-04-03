@@ -304,11 +304,11 @@ namespace gum {
       /// grounded
       ///        Bayesian Network.
       /// @param instance The Instance currently grounded.
-      /// @param attr     The Attribute<GUM_SCALAR> for which the Potential is
+      /// @param attr     The PRMAttribute<GUM_SCALAR> for which the Potential is
       /// grounded.
       /// @param factory  The factory used to build the grounded IBayesNet.
       void __groundPotential( const Instance<GUM_SCALAR>& instance,
-                              const Attribute<GUM_SCALAR>& attr,
+                              const PRMAttribute<GUM_SCALAR>& attr,
                               BayesNetFactory<GUM_SCALAR>& factory ) const;
 
       /// @brief Ground an aggregator with the given name in the grounded

@@ -40,7 +40,7 @@ namespace gum_tests {
     typedef gum::prm::Instance<double> Instance;
     typedef gum::prm::Class<double> Class;
     typedef gum::prm::Type<double> Type;
-    typedef gum::prm::ScalarAttribute<double> Attribute;
+    typedef gum::prm::ScalarAttribute<double> PRMAttribute;
     typedef gum::prm::ReferenceSlot<double> Reference;
     typedef gum::prm::SlotChain<double> SlotChain;
 
@@ -75,7 +75,7 @@ namespace gum_tests {
 
     void __visitToAsia() {
       std::string name = "visitToAsia";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       std::vector<double> values{0.99, 0.01};
       attr->cpf().fillWith( values );
@@ -84,7 +84,7 @@ namespace gum_tests {
 
     void __tuberculosis() {
       std::string name = "tuberculosis";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "visitToAsia", "tuberculosis" );
       std::vector<double> values{0.99, 0.95, 0.01, 0.05};
@@ -94,7 +94,7 @@ namespace gum_tests {
 
     void __smoking() {
       std::string name = "smoking";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       std::vector<double> values{0.50, 0.50};
       attr->cpf().fillWith( values );
@@ -103,7 +103,7 @@ namespace gum_tests {
 
     void __lungCancer() {
       std::string name = "lungCancer";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "smoking", "lungCancer" );
       std::vector<double> values{0.99, 0.90, 0.01, 0.10};
@@ -113,7 +113,7 @@ namespace gum_tests {
 
     void __bronchitis() {
       std::string name = "bronchitis";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "smoking", "bronchitis" );
       std::vector<double> values{0.70, 0.40, 0.30, 0.60};
@@ -123,7 +123,7 @@ namespace gum_tests {
 
     void __tubOrCancer() {
       std::string name = "tubOrCancer";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "tuberculosis", "tubOrCancer" );
       __asia->addArc( "lungCancer", "tubOrCancer" );
@@ -134,7 +134,7 @@ namespace gum_tests {
 
     void __positiveXRay() {
       std::string name = "positiveXRay";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "tubOrCancer", "positiveXRay" );
       std::vector<double> values{0.95, 0.02, 0.05, 0.98};
@@ -144,7 +144,7 @@ namespace gum_tests {
 
     void __dyspnea() {
       std::string name = "dyspnea";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "tubOrCancer", "dyspnea" );
       __asia->addArc( "bronchitis", "dyspnea" );

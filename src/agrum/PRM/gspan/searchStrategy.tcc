@@ -122,7 +122,7 @@ namespace gum {
               }
             }
 
-            // Referring Attribute<GUM_SCALAR>
+            // Referring PRMAttribute<GUM_SCALAR>
             if ( inst->hasRefAttr( elt.second->id() ) ) {
               const std::vector<std::pair<Instance<GUM_SCALAR>*, std::string>>&
                   ref_attr = inst->getRefAttr( elt.second->id() );
@@ -382,14 +382,14 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE std::string
       StrictSearch<GUM_SCALAR>::__str( const Instance<GUM_SCALAR>* i,
-                                       const Attribute<GUM_SCALAR>* a ) const {
+                                       const PRMAttribute<GUM_SCALAR>* a ) const {
         return i->name() + __dot + a->safeName();
       }
 
       template <typename GUM_SCALAR>
       INLINE std::string
       StrictSearch<GUM_SCALAR>::__str( const Instance<GUM_SCALAR>* i,
-                                       const Attribute<GUM_SCALAR>& a ) const {
+                                       const PRMAttribute<GUM_SCALAR>& a ) const {
         return i->name() + __dot + a.safeName();
       }
 

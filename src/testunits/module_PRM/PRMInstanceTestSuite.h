@@ -39,7 +39,7 @@ namespace gum_tests {
     typedef gum::prm::Class<double> Class;
     typedef gum::prm::Interface<double> Interface;
     typedef gum::prm::Type<double> Type;
-    typedef gum::prm::ScalarAttribute<double> Attribute;
+    typedef gum::prm::ScalarAttribute<double> PRMAttribute;
     typedef gum::prm::ReferenceSlot<double> Reference;
     typedef gum::prm::SlotChain<double> SlotChain;
     typedef gum::prm::PRMObject PRMObject;
@@ -63,13 +63,13 @@ namespace gum_tests {
       __state = new Type( *__boolean, map, state );
 
       __classA = new Class( "A" );
-      __classA->add( new Attribute( "a", *__boolean ) );
-      __classA->add( new Attribute( "b", *__state ) );
+      __classA->add( new PRMAttribute( "a", *__boolean ) );
+      __classA->add( new PRMAttribute( "b", *__state ) );
       __classA->addArc( "a", "b" );
 
       __classB = new Class( "B" );
-      __classB->add( new Attribute( "a", *__boolean ) );
-      __classB->add( new Attribute( "b", *__state ) );
+      __classB->add( new PRMAttribute( "a", *__boolean ) );
+      __classB->add( new PRMAttribute( "b", *__state ) );
       __classB->addArc( "a", "b" );
       __classB->add( new Reference( "rho", *__classA ) );
       gum::Sequence<gum::prm::ClassElement<double>*> seq;
@@ -173,7 +173,7 @@ namespace gum_tests {
     void testGetByName() {
       // Arrange
       Instance i( "i", *__classA );
-      gum::prm::Attribute<double>* attr = nullptr;
+      gum::prm::PRMAttribute<double>* attr = nullptr;
       auto& class_attr = __classA->get( "a" );
       // Act
       TS_ASSERT_THROWS_NOTHING( attr = &( i.get( "a" ) ) );
@@ -190,7 +190,7 @@ namespace gum_tests {
       // Arrange
       Instance i( "i", *__classA );
       const auto& const_i = i;
-      gum::prm::Attribute<double> const* attr = nullptr;
+      gum::prm::PRMAttribute<double> const* attr = nullptr;
       const auto& class_attr = __classA->get( "a" );
       // Act
       TS_ASSERT_THROWS_NOTHING( attr = &( const_i.get( "a" ) ) );
@@ -221,7 +221,7 @@ namespace gum_tests {
     void testGetById() {
       // Arrange
       Instance i( "i", *__classA );
-      gum::prm::Attribute<double>* attr = nullptr;
+      gum::prm::PRMAttribute<double>* attr = nullptr;
       auto& class_attr = __classA->get( "a" );
       // Act
       TS_ASSERT_THROWS_NOTHING( attr = &( i.get( class_attr.id() ) ) );
@@ -238,7 +238,7 @@ namespace gum_tests {
       // Arrange
       Instance i( "i", *__classA );
       const auto& const_i = i;
-      gum::prm::Attribute<double> const* attr = nullptr;
+      gum::prm::PRMAttribute<double> const* attr = nullptr;
       const auto& class_attr = __classA->get( "a" );
       // Act
       TS_ASSERT_THROWS_NOTHING( attr = &( const_i.get( class_attr.id() ) ) );

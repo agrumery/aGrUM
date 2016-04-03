@@ -157,7 +157,7 @@ namespace gum {
         }
 
         default: {
-          // We shouldn't reach any other ClassElement<GUM_DATA> than Attribute
+          // We shouldn't reach any other ClassElement<GUM_DATA> than PRMAttribute
           // or
           // SlotChain<GUM_SCALAR>.
           GUM_ERROR( FatalError, "This case is impossible." );
@@ -176,7 +176,7 @@ namespace gum {
         marks[i]->insert( n, std::pair<bool, bool>( false, false ) );
       }
 
-      // Concerns only Attribute (because of the hard evidence)
+      // Concerns only PRMAttribute (because of the hard evidence)
       if ( ( __isHardEvidence( i, n ) ) and
            ( not __getMark( marks, i, n ).first ) ) {
         __getMark( marks, i, n ).first = true;

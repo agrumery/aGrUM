@@ -107,11 +107,11 @@ namespace gum {
       /// @}
       private:
       /// Mapping between DiscreteVariable and their NodeId
-      HashTable<const DiscreteVariable*, const Attribute<GUM_SCALAR>*>
+      HashTable<const DiscreteVariable*, const PRMAttribute<GUM_SCALAR>*>
           __varNodeMap;
 
       /// Private getter with type checking in case the id is not a formal
-      /// Attribute<GUM_SCALAR>.
+      /// PRMAttribute<GUM_SCALAR>.
       /// @throw NotFound Raised if id is not a formal attribute.
       const ClassElement<GUM_SCALAR>& __get( NodeId id ) const;
 

@@ -177,7 +177,7 @@ namespace gum {
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
-       * Attribute,
+       * PRMAttribute,
        *        so this will raise an OperationNotAllowed exception.
        * See gum::ClassElement::cpf().
        */
@@ -185,7 +185,7 @@ namespace gum {
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
-       * Attribute,
+       * PRMAttribute,
        *        so this will raise an OperationNotAllowed exception.
        * See gum::ClassElement::cpf().
        */
@@ -199,7 +199,7 @@ namespace gum {
        */
       MultiDimImplementation<GUM_SCALAR>* buildImpl() const;
 
-      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
+      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
       /// @}
       private:
       // ========================================================================

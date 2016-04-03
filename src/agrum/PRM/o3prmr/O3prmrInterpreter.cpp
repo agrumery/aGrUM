@@ -452,7 +452,7 @@ namespace gum {
           const System<double>& sys = system( left_val );
           const Instance<double>& instance =
               sys.get( findInstanceName( left_val, sys ) );
-          const Attribute<double>& attr =
+          const PRMAttribute<double>& attr =
               instance.get( findAttributeName( left_val, instance ) );
           typename PRMInference<double>::Chain chain =
               std::make_pair( &instance, &attr );
@@ -501,7 +501,7 @@ namespace gum {
           const System<double>& sys = system( name );
           const Instance<double>& instance =
               sys.get( findInstanceName( name, sys ) );
-          const Attribute<double>& attr =
+          const PRMAttribute<double>& attr =
               instance.get( findAttributeName( name, instance ) );
           // PRMInference<double>::Chain chain = std::make_pair(&instance,
           // &attr);
@@ -528,7 +528,7 @@ namespace gum {
           const System<double>& sys = system( name );
           const Instance<double>& instance =
               sys.get( findInstanceName( name, sys ) );
-          const Attribute<double>& attr =
+          const PRMAttribute<double>& attr =
               instance.get( findAttributeName( name, instance ) );
           // PRMInference<double>::Chain chain = std::make_pair(&instance,
           // &attr);
@@ -894,7 +894,7 @@ namespace gum {
         result.time = t;
 
         Instantiation j( m );
-        const Attribute<double>& attr = *( command->chain.second );
+        const PRMAttribute<double>& attr = *( command->chain.second );
 
         for ( j.setFirst(); not j.end(); j.inc() ) {
           // auto label_value = j.val ( attr.type().variable() );

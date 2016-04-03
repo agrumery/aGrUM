@@ -139,7 +139,7 @@ namespace gum {
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( const auto node : instance.type().dag() ) {
         // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR> are
-        // instantiated as Attribute<GUM_SCALAR> in an Instance<GUM_SCALAR>
+        // instantiated as PRMAttribute<GUM_SCALAR> in an Instance<GUM_SCALAR>
         switch ( instance.type().get( node ).elt_type() ) {
           case ClassElement<GUM_SCALAR>::prm_attribute: {
             // TODO: make a special case for noisy-or
@@ -294,7 +294,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::__groundPotential(
         const Instance<GUM_SCALAR>& instance,
-        const Attribute<GUM_SCALAR>& attr,
+        const PRMAttribute<GUM_SCALAR>& attr,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
       std::stringstream var_name;

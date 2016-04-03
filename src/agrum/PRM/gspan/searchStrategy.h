@@ -230,9 +230,9 @@ namespace gum {
         };
         std::string __dot;
         std::string __str( const Instance<GUM_SCALAR>* i,
-                           const Attribute<GUM_SCALAR>* a ) const;
+                           const PRMAttribute<GUM_SCALAR>* a ) const;
         std::string __str( const Instance<GUM_SCALAR>* i,
-                           const Attribute<GUM_SCALAR>& a ) const;
+                           const PRMAttribute<GUM_SCALAR>& a ) const;
         std::string __str( const Instance<GUM_SCALAR>* i,
                            const SlotChain<GUM_SCALAR>& a ) const;
         void

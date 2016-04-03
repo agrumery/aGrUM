@@ -305,7 +305,7 @@ namespace gum {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
         msg << "Error : "
-            << "Attribute " << c << "." << attr.label()
+            << "PRMAttribute " << c << "." << attr.label()
             << " CPT does not sum to 1, found " << f;
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -318,7 +318,7 @@ namespace gum {
         const auto& pos = attr.position();
         auto msg = std::stringstream();
         msg << "Warning : "
-            << "Attribute " << c << "." << attr.label()
+            << "PRMAttribute " << c << "." << attr.label()
             << " CPT does not sum to 1, found " << f;
         errors.addWarning( msg.str(), pos.file(), pos.line(), pos.column() );
       }
@@ -385,7 +385,7 @@ namespace gum {
         const auto& pos = val.position();
         auto msg = std::stringstream();
         msg << "Error : "
-            << "Attribute " << val.label() << " can not be an array";
+            << "PRMAttribute " << val.label() << " can not be an array";
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 

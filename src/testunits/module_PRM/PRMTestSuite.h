@@ -143,7 +143,7 @@ namespace gum_tests {
         std::string var = bn.variable( node ).name();
         size_t pos = var.find_first_of( '.' );
         gum::prm::Instance<double>& instance = sys.get( var.substr( 0, pos ) );
-        gum::prm::Attribute<double>& attr =
+        gum::prm::PRMAttribute<double>& attr =
             instance.get( var.substr( pos + 1 ) );
         TS_ASSERT_DIFFERS( bn.cpt( node ).nbrDim(), (gum::Size)0 );
 

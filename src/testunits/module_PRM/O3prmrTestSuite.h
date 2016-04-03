@@ -227,7 +227,7 @@ namespace gum_tests {
         const gum::Potential<double>* p = e[c1.get( "equipState" ).id()];
 
         gum::Instantiation j( *p );
-        const gum::prm::Attribute<double>& c2_equipState =
+        const gum::prm::PRMAttribute<double>& c2_equipState =
             c2.get( "equipState" );
 
         for ( j.setFirst(); !j.end(); j.inc() ) {

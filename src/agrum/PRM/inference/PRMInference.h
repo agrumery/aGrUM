@@ -49,7 +49,7 @@ namespace gum {
       public:
       /// Code alias.
       typedef std::pair<const Instance<GUM_SCALAR>*,
-                        const Attribute<GUM_SCALAR>*> Chain;
+                        const PRMAttribute<GUM_SCALAR>*> Chain;
 
       /// Code alias.
       typedef NodeProperty<const Potential<GUM_SCALAR>*> EMap;
@@ -104,7 +104,7 @@ namespace gum {
        * @param m An empty CPF which will be filed by the marginal of chain.
        * @throw NotFound Raised if chain is invalid.
        * @throw WrongType Raised if chain does not point to an
-       *Attribute<GUM_SCALAR>.
+       *PRMAttribute<GUM_SCALAR>.
        * @throw OperationNotAllowed Raise if m is not empty.
        */
       void marginal( const Chain& chain, Potential<GUM_SCALAR>& m );
@@ -150,10 +150,10 @@ namespace gum {
       /// Returns EMap of evidences over i.
       bool hasEvidence( const Instance<GUM_SCALAR>* i ) const;
 
-      /// Returns true if i has evidence on Attribute<GUM_SCALAR> a.
+      /// Returns true if i has evidence on PRMAttribute<GUM_SCALAR> a.
       bool hasEvidence( const Chain& chain ) const;
 
-      /// Returns true if i has evidence on Attribute<GUM_SCALAR> a.
+      /// Returns true if i has evidence on PRMAttribute<GUM_SCALAR> a.
       bool hasEvidence() const;
 
       /// Add an evidence to the given instance's elt.
@@ -168,7 +168,7 @@ namespace gum {
       /// @param chain The variable being observed.
       ///
       /// @throw NotFound Raised if the given names are not found.
-      /// @throw WrongType Raised if the elt is not an Attribute<GUM_SCALAR>.
+      /// @throw WrongType Raised if the elt is not an PRMAttribute<GUM_SCALAR>.
       void removeEvidence( const Chain& chain );
 
       /// Remove all evidences.
@@ -203,7 +203,7 @@ namespace gum {
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param queries Set of pairs of Instance<GUM_SCALAR> and
-      /// Attribute<GUM_SCALAR>.
+      /// PRMAttribute<GUM_SCALAR>.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
       virtual void _joint( const std::vector<Chain>& queries,

@@ -101,7 +101,7 @@ namespace gum {
       switch ( __chain->back()->elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
           auto old_attr =
-              static_cast<const Attribute<GUM_SCALAR>*>( __chain->back() );
+              static_cast<const PRMAttribute<GUM_SCALAR>*>( __chain->back() );
 
           Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
           for ( auto iter = old_attr->cpf().begin();
@@ -231,7 +231,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Attribute<GUM_SCALAR>*
+    INLINE PRMAttribute<GUM_SCALAR>*
     SlotChain<GUM_SCALAR>::getCastDescendant() const {
       GUM_ERROR( OperationNotAllowed, "This is a slotchain" );
     }

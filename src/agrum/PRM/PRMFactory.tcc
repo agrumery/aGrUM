@@ -293,7 +293,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void PRMFactory<GUM_SCALAR>::addAttribute( Attribute<GUM_SCALAR>* attr ) {
+    void PRMFactory<GUM_SCALAR>::addAttribute( PRMAttribute<GUM_SCALAR>* attr ) {
       Class<GUM_SCALAR>* c = static_cast<Class<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::CLASS ) );
       c->add( attr );
@@ -323,7 +323,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::addParent( const std::string& name ) {
       // Retrieving pointers
-      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>(
+      PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
       ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 2 );
 
@@ -374,7 +374,7 @@ namespace gum {
           delete sc;
           GUM_ERROR( OperationNotAllowed,
                      "Impossible to add a multiple reference slot as"
-                     " direct parent of an Attribute<GUM_SCALAR>." );
+                     " direct parent of an PRMAttribute<GUM_SCALAR>." );
         }
       }
     }
@@ -382,7 +382,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::setRawCPFByFloatLines(
         const std::vector<float>& array ) {
-      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>(
+      PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
       __checkStack( 2, PRMObject::PRMType::CLASS );
 
@@ -396,7 +396,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::setRawCPFByLines(
         const std::vector<GUM_SCALAR>& array ) {
-      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>(
+      PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
       __checkStack( 2, PRMObject::PRMType::CLASS );
 
@@ -409,7 +409,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::setRawCPFByFloatColumns(
         const std::vector<float>& array ) {
-      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>(
+      PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( a->cpf().domainSize() != array.size() ) {
@@ -423,7 +423,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::setRawCPFByColumns(
         const std::vector<GUM_SCALAR>& array ) {
-      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>(
+      PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( a->cpf().domainSize() != array.size() ) {
@@ -459,7 +459,7 @@ namespace gum {
     void PRMFactory<GUM_SCALAR>::setCPFByFloatRule(
         const std::vector<std::string>& parents,
         const std::vector<float>& values ) {
-      auto a = static_cast<Attribute<GUM_SCALAR>*>(
+      auto a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( ( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
@@ -479,7 +479,7 @@ namespace gum {
         const std::vector<std::string>& parents,
         const std::vector<GUM_SCALAR>& values ) {
 
-      auto a = static_cast<Attribute<GUM_SCALAR>*>(
+      auto a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( ( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
@@ -545,7 +545,7 @@ namespace gum {
         const std::vector<std::string>& parents,
         const std::vector<std::string>& values ) {
 
-      auto a = static_cast<Attribute<GUM_SCALAR>*>(
+      auto a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( ( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
@@ -1464,7 +1464,7 @@ namespace gum {
     PRMFactory<GUM_SCALAR>::startAttribute( const std::string& type,
                                             const std::string& name ) {
       ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
-      Attribute<GUM_SCALAR>* a = nullptr;
+      PRMAttribute<GUM_SCALAR>* a = nullptr;
 
       if ( PRMObject::isClass( *c ) ) {
 

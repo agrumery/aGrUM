@@ -326,7 +326,7 @@ namespace gum {
         StructuredInference<GUM_SCALAR>::PData& data,
         const Sequence<Instance<GUM_SCALAR>*>& match,
         Instance<GUM_SCALAR>* inst,
-        Attribute<GUM_SCALAR>* attr,
+        PRMAttribute<GUM_SCALAR>* attr,
         NodeId id,
         std::pair<Idx, std::string>& v ) {
       if ( ( *inst ).hasRefAttr( ( *inst ).get( v.second ).id() ) ) {
@@ -1019,13 +1019,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::string StructuredInference<GUM_SCALAR>::__str(
-        const Instance<GUM_SCALAR>* i, const Attribute<GUM_SCALAR>* a ) const {
+        const Instance<GUM_SCALAR>* i, const PRMAttribute<GUM_SCALAR>* a ) const {
       return i->name() + __dot + a->safeName();
     }
 
     template <typename GUM_SCALAR>
     INLINE std::string StructuredInference<GUM_SCALAR>::__str(
-        const Instance<GUM_SCALAR>* i, const Attribute<GUM_SCALAR>& a ) const {
+        const Instance<GUM_SCALAR>* i, const PRMAttribute<GUM_SCALAR>& a ) const {
       return i->name() + __dot + a.safeName();
     }
 

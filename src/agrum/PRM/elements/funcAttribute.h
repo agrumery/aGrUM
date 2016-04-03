@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::Attribute.
+ * @brief Headers of gum::PRMAttribute.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -45,7 +45,7 @@ namespace gum {
      *yourself and
      * populate it with the attribute's parents.
      *
-     * See gum::prm::PRMFactory::addAttribute(Attribute*) for more details.
+     * See gum::prm::PRMFactory::addAttribute(PRMAttribute*) for more details.
      */
     template <typename GUM_SCALAR>
     class FuncAttribute : public ScalarAttribute<GUM_SCALAR> {

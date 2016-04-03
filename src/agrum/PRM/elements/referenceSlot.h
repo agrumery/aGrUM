@@ -134,7 +134,7 @@ namespace gum {
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::ClassElement::getCastDescendant().
-      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
+      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
 
       /// @}
       private:

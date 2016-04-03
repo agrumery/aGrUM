@@ -86,7 +86,7 @@ namespace gum {
       virtual void addAttribute( const std::string& type,
                                  const std::string& name ) = 0;
       virtual void endInterface() = 0;
-      // virtual void addAttribute ( Attribute<GUM_SCALAR>* attr ) =0;
+      // virtual void addAttribute ( PRMAttribute<GUM_SCALAR>* attr ) =0;
       virtual void startAttribute( const std::string& type,
                                    const std::string& name ) = 0;
       virtual void continueAttribute( const std::string& name ) = 0;

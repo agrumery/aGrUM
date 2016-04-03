@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::Attribute.
+ * @brief Headers of gum::PRMAttribute.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -34,10 +34,10 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class Attribute attribute.h <agrum/PRM/attribute.h>
-     * @brief Attribute is a member of a Class in a PRM.
+     * @class PRMAttribute attribute.h <agrum/PRM/attribute.h>
+     * @brief PRMAttribute is a member of a Class in a PRM.
      *
-     * A Attribute is defined by its name, its containing class, its type and
+     * A PRMAttribute is defined by its name, its containing class, its type and
      * by a Conditional Probability Function (aka CPF but represented by a
      *Potential).
      *
@@ -55,17 +55,17 @@ namespace gum {
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class Attribute : public ClassElement<GUM_SCALAR> {
+    class PRMAttribute : public ClassElement<GUM_SCALAR> {
 
       public:
       // ========================================================================
       /// @name Constructors & destructor
       // ========================================================================
       /// @{
-      Attribute( const std::string& name );
+      PRMAttribute( const std::string& name );
 
       /// Destructor.
-      virtual ~Attribute();
+      virtual ~PRMAttribute();
 
       /// @}
       // ========================================================================
@@ -73,14 +73,14 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      virtual Attribute* newFactory( const Class<GUM_SCALAR>& c ) const = 0;
-      virtual Attribute*
+      virtual PRMAttribute* newFactory( const Class<GUM_SCALAR>& c ) const = 0;
+      virtual PRMAttribute*
       copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
           const = 0;
 
       virtual void copyCpf( const Bijection<const DiscreteVariable*,
                                             const DiscreteVariable*>& bif,
-                            const Attribute<GUM_SCALAR>& source ) = 0;
+                            const PRMAttribute<GUM_SCALAR>& source ) = 0;
 
       /// See gum::ClassElement::elt_type().
       virtual typename ClassElement<GUM_SCALAR>::ClassElementType
@@ -102,32 +102,32 @@ namespace gum {
       virtual void addChild( const ClassElement<GUM_SCALAR>& elt ) = 0;
 
       /**
-       * @brief Returns a proper cast descendant of this Attribute.
+       * @brief Returns a proper cast descendant of this PRMAttribute.
        *
-       * A cast descendant is an Attribute depending on this one which
+       * A cast descendant is an PRMAttribute depending on this one which
        * cast it in this->type().super().
        *
-       * The pointer is not deleted by this Attribute, so delete it yourself
+       * The pointer is not deleted by this PRMAttribute, so delete it yourself
        * after use.
        *
        * A new cast descendant is created for each call of this method.
        *
-       * @return The cast descendant of this Attribute.
+       * @return The cast descendant of this PRMAttribute.
        *
        * @throw OperationNotAllowed Raised if it is not possible to create a
-       *                            cast descendant for this Attribute.
+       *                            cast descendant for this PRMAttribute.
        */
-      virtual Attribute<GUM_SCALAR>* getCastDescendant() const = 0;
+      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const = 0;
 
       /**
-       * @brief Define attr as a cast descendant of this Attribute.
+       * @brief Define attr as a cast descendant of this PRMAttribute.
        *
-       * When overloading an inherited Attribute using of subtype of it,
-       * it is necessary to change the inherited Attribute CPF to make it
+       * When overloading an inherited PRMAttribute using of subtype of it,
+       * it is necessary to change the inherited PRMAttribute CPF to make it
        * a proper cast descendant.
        *
        * Furthermore it is necessary to change the DiscreteVariable used
-       * by this Attribute's super Type<GUM_SCALAR> in order to have the same
+       * by this PRMAttribute's super Type<GUM_SCALAR> in order to have the same
        *pointers in
        * both super Type<GUM_SCALAR> (i.e. this->type().super().variable()) and
        *the
@@ -135,18 +135,18 @@ namespace gum {
        *
        * This can only be done if attr Type<GUM_SCALAR> is a direct subtype of
        *this
-       * Attribute Type<GUM_SCALAR> (i.e. this->type().super() == attr->type()).
+       * PRMAttribute Type<GUM_SCALAR> (i.e. this->type().super() == attr->type()).
        *
-       * @param attr The Attribute which is transformed to be this Attribute
+       * @param attr The PRMAttribute which is transformed to be this PRMAttribute
        *             cast descendant.
        *
-       * @throw OperationNotAllowed Raised if this Attribute can not have any
+       * @throw OperationNotAllowed Raised if this PRMAttribute can not have any
        *                            cast descendant.
        * @throw TypeError Raised if attr's Type<GUM_SCALAR> is not a direct
        *descendant of
-       *                  this Attribute's Type<GUM_SCALAR>.
+       *                  this PRMAttribute's Type<GUM_SCALAR>.
        */
-      virtual void setAsCastDescendant( Attribute<GUM_SCALAR>* attr ) = 0;
+      virtual void setAsCastDescendant( PRMAttribute<GUM_SCALAR>* attr ) = 0;
 
       /**
        * @brief Change this attribute to be a cast descendant of a an attribute
@@ -161,20 +161,20 @@ namespace gum {
 
       /// Set this as overload of source (necessayr to preserver internal
       /// pointers for MultiDims).
-      virtual void overload( Attribute<GUM_SCALAR>* source );
+      virtual void overload( PRMAttribute<GUM_SCALAR>* source );
 
       /// @}
 
       protected:
-      Attribute( const Attribute<GUM_SCALAR>& source );
+      PRMAttribute( const PRMAttribute<GUM_SCALAR>& source );
 
       virtual Type<GUM_SCALAR>* _type() = 0;
       virtual void _type( Type<GUM_SCALAR>* t ) = 0;
     };
 
 
-    extern template class Attribute<float>;
-    extern template class Attribute<double>;
+    extern template class PRMAttribute<float>;
+    extern template class PRMAttribute<double>;
 
 
   } /* namespace prm */

@@ -52,7 +52,7 @@ namespace gum {
      * tests will be based on the types names.
      *
      * Since MultiDim use pointers to handle DiscreteVariables, it is necessary
-     * to create a new instance of a type for each Attribute.
+     * to create a new instance of a type for each PRMAttribute.
      */
     template <typename GUM_SCALAR>
     class Type : public PRMObject {
@@ -211,7 +211,7 @@ namespace gum {
        * equal. Thus you should use this method only if you want to change the
        * DiscreteVariable pointer of this Type super.
        *
-       * This is useful to maintain consistence between Attribute's Type and
+       * This is useful to maintain consistence between PRMAttribute's Type and
        * their CPF.
        *
        * @param t The Type to replace this Type super.

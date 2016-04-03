@@ -110,7 +110,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Attribute<GUM_SCALAR>*
+    INLINE PRMAttribute<GUM_SCALAR>*
     ReferenceSlot<GUM_SCALAR>::getCastDescendant() const {
       GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
     }

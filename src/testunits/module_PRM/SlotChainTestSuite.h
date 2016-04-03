@@ -51,8 +51,8 @@ namespace gum_tests {
     gum::prm::ReferenceSlot<double>* __refI;
     gum::prm::ReferenceSlot<double>* __refJ;
     gum::prm::ReferenceSlot<double>* __refK;
-    gum::prm::Attribute<double>* __boolAttr;
-    gum::prm::Attribute<double>* __stateAttr;
+    gum::prm::PRMAttribute<double>* __boolAttr;
+    gum::prm::PRMAttribute<double>* __stateAttr;
 
     public:
     void setUp() {

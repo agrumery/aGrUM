@@ -70,7 +70,7 @@ namespace gum {
        * @brief Default constructor of an Instance<GUM_SCALAR>.
        *
        * When you create an Instance<GUM_SCALAR> all
-       *gum::prm::Attribute<GUM_SCALAR> in it's type are
+       *gum::prm::PRMAttribute<GUM_SCALAR> in it's type are
        * added, except for gum::prm::PRMAggregate<GUM_SCALAR> and parameters which
        *are
        * instantiated.
@@ -105,58 +105,58 @@ namespace gum {
       const Class<GUM_SCALAR>& type() const;
 
       /**
-       * Returns true if id matches an Attribute<GUM_SCALAR> in this
+       * Returns true if id matches an PRMAttribute<GUM_SCALAR> in this
        * Instance<GUM_SCALAR>.
        */
       bool exists( NodeId id ) const;
 
       /**
-       * Returns true if name matches an Attribute<GUM_SCALAR> in this
+       * Returns true if name matches an PRMAttribute<GUM_SCALAR> in this
        * Instance<GUM_SCALAR>.
        */
       bool exists( const std::string& name ) const;
 
       /**
-       * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
+       * @brief Getter on an PRMAttribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
        *
        * Recall that PRMAggregate<GUM_SCALAR> are instantiated as
-       *Attribute<GUM_SCALAR>
+       *PRMAttribute<GUM_SCALAR>
        * when an Instance<GUM_SCALAR> is created. Thus any random variable
        *contained
-       * in this Instance<GUM_SCALAR> is mapped to an Attribute<GUM_SCALAR>.
+       * in this Instance<GUM_SCALAR> is mapped to an PRMAttribute<GUM_SCALAR>.
        *
-       * @param id The Attribute<GUM_SCALAR> id.
-       * @return Returns a constant reference on an Attribute<GUM_SCALAR>.
+       * @param id The PRMAttribute<GUM_SCALAR> id.
+       * @return Returns a constant reference on an PRMAttribute<GUM_SCALAR>.
        *
-       * @throw NotFound Raised if no Attribute<GUM_SCALAR> matches name.
+       * @throw NotFound Raised if no PRMAttribute<GUM_SCALAR> matches name.
        */
-      Attribute<GUM_SCALAR>& get( NodeId id );
+      PRMAttribute<GUM_SCALAR>& get( NodeId id );
 
       /**
-       * @brief Given a name returns the related Attribute<GUM_SCALAR>.
+       * @brief Given a name returns the related PRMAttribute<GUM_SCALAR>.
        *
-       * @param name The Attribute<GUM_SCALAR>'s name.
-       * @return Returns a reference over the Attribute<GUM_SCALAR>.
+       * @param name The PRMAttribute<GUM_SCALAR>'s name.
+       * @return Returns a reference over the PRMAttribute<GUM_SCALAR>.
        *
-       * @throw NotFound Raised if there is no Attribute<GUM_SCALAR> named n.
+       * @throw NotFound Raised if there is no PRMAttribute<GUM_SCALAR> named n.
        */
-      Attribute<GUM_SCALAR>& get( const std::string& name );
+      PRMAttribute<GUM_SCALAR>& get( const std::string& name );
 
       /**
-       * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
+       * @brief Getter on an PRMAttribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
        *
        * Recall that PRMAggregate<GUM_SCALAR> are instantiated has
-       *Attribute<GUM_SCALAR>
+       *PRMAttribute<GUM_SCALAR>
        * when an Instance<GUM_SCALAR> is created. Thus any random variable
        *contained
-       * in this Instance<GUM_SCALAR> is mapped to an Attribute<GUM_SCALAR>.
+       * in this Instance<GUM_SCALAR> is mapped to an PRMAttribute<GUM_SCALAR>.
        *
-       * @param id The Attribute<GUM_SCALAR> id.
-       * @return Returns a constant reference on an Attribute<GUM_SCALAR>.
+       * @param id The PRMAttribute<GUM_SCALAR> id.
+       * @return Returns a constant reference on an PRMAttribute<GUM_SCALAR>.
        *
-       * @throw NotFound Raised if no Attribute<GUM_SCALAR> matches name.
+       * @throw NotFound Raised if no PRMAttribute<GUM_SCALAR> matches name.
        */
-      const Attribute<GUM_SCALAR>& get( NodeId id ) const;
+      const PRMAttribute<GUM_SCALAR>& get( NodeId id ) const;
 
       /**
        * @brief Given a name returns the related ClassElement.
@@ -166,7 +166,7 @@ namespace gum {
        *
        * @throw NotFound Raised if there is no ClassElement named n.
        */
-      const Attribute<GUM_SCALAR>& get( const std::string& name ) const;
+      const PRMAttribute<GUM_SCALAR>& get( const std::string& name ) const;
 
       /**
        * Returns the number of attributes in this Instance<GUM_SCALAR>.
@@ -271,10 +271,10 @@ namespace gum {
       const Set<Instance<GUM_SCALAR>*>& getInstances( NodeId id ) const;
 
       /**
-       * Returns true if id has at least one referring Attribute<GUM_SCALAR>.
+       * Returns true if id has at least one referring PRMAttribute<GUM_SCALAR>.
        * @param id A NodeId.
        * @return returns true if is has at least one referring
-       * Attribute<GUM_SCALAR>.
+       * PRMAttribute<GUM_SCALAR>.
        */
       bool hasRefAttr( NodeId id ) const;
 
@@ -296,31 +296,31 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// Alias to iterate over the gum::prm::Attribute<GUM_SCALAR> in this
+      /// Alias to iterate over the gum::prm::PRMAttribute<GUM_SCALAR> in this
       /// Instance<GUM_SCALAR>.
-      typedef typename NodeProperty<Attribute<GUM_SCALAR>*>::iterator iterator;
+      typedef typename NodeProperty<PRMAttribute<GUM_SCALAR>*>::iterator iterator;
 
       /// Returns an iterator at the begining of the list of
-      /// gum::prm::Attribute<GUM_SCALAR> in
+      /// gum::prm::PRMAttribute<GUM_SCALAR> in
       /// this Instance<GUM_SCALAR>.
       iterator begin();
 
       /// Returns a reference over the iterator at the end of the list of
-      /// gum::prm::Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
+      /// gum::prm::PRMAttribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
       const iterator& end();
 
-      /// Alias to iterate over the gum::prm::Attribute<GUM_SCALAR> in this
+      /// Alias to iterate over the gum::prm::PRMAttribute<GUM_SCALAR> in this
       /// Instance<GUM_SCALAR>.
-      typedef typename NodeProperty<Attribute<GUM_SCALAR>*>::const_iterator
+      typedef typename NodeProperty<PRMAttribute<GUM_SCALAR>*>::const_iterator
           const_iterator;
 
       /// Returns an iterator at the beginning of the list of
-      /// gum::prm::Attribute<GUM_SCALAR> in
+      /// gum::prm::PRMAttribute<GUM_SCALAR> in
       /// this Instance<GUM_SCALAR>.
       const_iterator begin() const;
 
       /// Returns a reference over the iterator at the end of the list of
-      /// gum::prm::Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
+      /// gum::prm::PRMAttribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
       const const_iterator& end() const;
 
       /**
@@ -449,7 +449,7 @@ namespace gum {
 
       /// Used at construction to instantiate attributes.
       /// @param source An attribute in __type.
-      void __copyAttribute( Attribute<GUM_SCALAR>* source );
+      void __copyAttribute( PRMAttribute<GUM_SCALAR>* source );
 
       /**
        * @brief Add i as the inverse instantiation of name.
@@ -497,12 +497,12 @@ namespace gum {
       /// @throw NotFound Raised if a reference in sc is not instantiated.
       void __instantiateSlotChain( SlotChain<GUM_SCALAR>* sc );
 
-      /// @brief Copy the content of an Attribute<GUM_SCALAR> from its
+      /// @brief Copy the content of an PRMAttribute<GUM_SCALAR> from its
       /// Class<GUM_SCALAR> counterpart.
-      /// @param attr An Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
+      /// @param attr An PRMAttribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
       /// @throw OperationNotAllowed If the MultiDimImplementation is of an
       /// unknown type.
-      void __copyAttributeCPF( Attribute<GUM_SCALAR>* attr );
+      void __copyAttributeCPF( PRMAttribute<GUM_SCALAR>* attr );
 
       /// @brief Add this as a referring instance over the attribute pointed by
       /// sc in i.
@@ -523,9 +523,9 @@ namespace gum {
       /// The type of this Instance<GUM_SCALAR>.
       Class<GUM_SCALAR>* __type;
 
-      /// The gum::prm::Attribute<GUM_SCALAR> and
+      /// The gum::prm::PRMAttribute<GUM_SCALAR> and
       /// gum::prm::PRMAggregate<GUM_SCALAR> of this Instance<GUM_SCALAR>.
-      NodeProperty<Attribute<GUM_SCALAR>*> __nodeIdMap;
+      NodeProperty<PRMAttribute<GUM_SCALAR>*> __nodeIdMap;
 
       /// Mapping between the gum::prm::ReferenceSlot and
       /// gum::prm::SlotChain<GUM_SCALAR> in

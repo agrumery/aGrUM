@@ -168,7 +168,7 @@ namespace gum {
     PRMAggregate<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>* PRMAggregate<GUM_SCALAR>::getCastDescendant() const {
+    PRMAttribute<GUM_SCALAR>* PRMAggregate<GUM_SCALAR>::getCastDescendant() const {
       ScalarAttribute<GUM_SCALAR>* cast = 0;
 
       try {

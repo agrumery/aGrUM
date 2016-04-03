@@ -167,7 +167,7 @@ namespace gum {
        *
        * The vector elts must only contains ClassElement<GUM_SCALAR> with a
        *Type<GUM_SCALAR>, i.e.
-       * Attribute<GUM_SCALAR>, PRMAggregate and SlotChain<GUM_SCALAR>. If not, a
+       * PRMAttribute<GUM_SCALAR>, PRMAggregate and SlotChain<GUM_SCALAR>. If not, a
        *WrongClassElement is
        * raised.
        *
@@ -377,7 +377,7 @@ namespace gum {
        * attributes, aggregates and slotchains of the current class.
        * gum::prm::Class<GUM_SCALAR>::insertArc() will be called for each found
        * parent of attr, so you should overload
-       * gum::prm::Attribute<GUM_SCALAR>::addParent() to prevent duplication
+       * gum::prm::PRMAttribute<GUM_SCALAR>::addParent() to prevent duplication
        * errors. Such class exists: gum::prm::FuncAttribute .
        *
        * The pointer is given to the class, so do not worry about deleting it.
@@ -387,7 +387,7 @@ namespace gum {
        * @throw NotFound Raised if one of the DiscreteVariable in attr CPT does
        *                 not match any ClassElement<GUM_SCALAR> in this.
        */
-      virtual void addAttribute( Attribute<GUM_SCALAR>* attr );
+      virtual void addAttribute( PRMAttribute<GUM_SCALAR>* attr );
 
       /**
        * Tells the factory that we start an attribute declaration.
@@ -606,8 +606,8 @@ namespace gum {
       /**
        * Add a parameter to the current class with a default value.
        *
-       * A parameter with a default value is an Attribute<GUM_SCALAR> (aka
-       *mutable Attribute<GUM_SCALAR>)
+       * A parameter with a default value is an PRMAttribute<GUM_SCALAR> (aka
+       *mutable PRMAttribute<GUM_SCALAR>)
        * with no parents and with a CPF filled with 1.
        *
        * @param type The type of this parameter.
@@ -628,8 +628,8 @@ namespace gum {
        *
        * If at least one parent of an aggregator is a SlotChain<GUM_SCALAR>,
        * then all of it's parents must be SlotChain<GUM_SCALAR>. When an
-       * aggregator parents are only composed of Attribute<GUM_SCALAR> and
-       * PRMAggregate, then it is directly added as an Attribute<GUM_SCALAR> to
+       * aggregator parents are only composed of PRMAttribute<GUM_SCALAR> and
+       * PRMAggregate, then it is directly added as an PRMAttribute<GUM_SCALAR> to
        * it's Class<GUM_SCALAR>.
        *
        * @param name The name of this aggregator.
@@ -651,12 +651,12 @@ namespace gum {
                                   std::string type = "" ) override;
 
       /**
-       * @brief Add a compound noisy-or as an Attribute<GUM_SCALAR> to the
+       * @brief Add a compound noisy-or as an PRMAttribute<GUM_SCALAR> to the
        *current Class<GUM_SCALAR>.
        *
        * The type of a noisy-or must be a boolean.
        *
-       * @param name the name of the Attribute<GUM_SCALAR> added as a noisy-or.
+       * @param name the name of the PRMAttribute<GUM_SCALAR> added as a noisy-or.
        * @param chains the list of parents of the noisy-or.
        * @param numbers the list of weights for each parent. Can consist of only
        *                one value which will be applied to all the parents.
@@ -888,7 +888,7 @@ namespace gum {
       ///
       /// The vector elts must only contains ClassElement<GUM_SCALAR> with a
       /// Type<GUM_SCALAR>, i.e.
-      /// Attribute<GUM_SCALAR>, PRMAggregate and SlotChain<GUM_SCALAR>. If not a
+      /// PRMAttribute<GUM_SCALAR>, PRMAggregate and SlotChain<GUM_SCALAR>. If not a
       /// WrongClassElement is
       /// raised.
       ///

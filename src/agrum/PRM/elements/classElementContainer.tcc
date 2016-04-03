@@ -91,7 +91,7 @@ namespace gum {
         }
       } else {
         GUM_ERROR( WrongClassElement,
-                   "given id is not an Attribute or an PRMAggregate" );
+                   "given id is not an PRMAttribute or an PRMAggregate" );
       }
     }
 
@@ -115,7 +115,7 @@ namespace gum {
       } else {
         GUM_ERROR( WrongClassElement,
                    "given ClassElement<GUM_SCALAR> is not an "
-                   "Attribute or an PRMAggregate" );
+                   "PRMAttribute or an PRMAggregate" );
       }
     }
 

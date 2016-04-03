@@ -99,7 +99,7 @@ namespace gum {
 
       /// @brief Raise a gum::OperationNotAllowed
       /// See gum::ClassElement::getCastDescendant()
-      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
+      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
 
       /// @}
       protected:

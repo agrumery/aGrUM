@@ -320,9 +320,9 @@ namespace gum {
         }
 
         if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
-          auto& attr = static_cast<Attribute<GUM_SCALAR>&>( elt );
+          auto& attr = static_cast<PRMAttribute<GUM_SCALAR>&>( elt );
           auto& super_attr =
-              static_cast<const Attribute<GUM_SCALAR>&>( super().get( name ) );
+              static_cast<const PRMAttribute<GUM_SCALAR>&>( super().get( name ) );
           attr.copyCpf( *__bijection, super_attr );
         }
       }
@@ -456,10 +456,10 @@ namespace gum {
         // Copying the IO flag
         this->_copyIOFlags( c );
         // Copying content of CPF
-        Attribute<GUM_SCALAR>* a = 0;
+        PRMAttribute<GUM_SCALAR>* a = 0;
 
         for ( const auto attr : c.__attributes ) {
-          a = static_cast<Attribute<GUM_SCALAR>*>(
+          a = static_cast<PRMAttribute<GUM_SCALAR>*>(
               __nameMap[attr->safeName()] );
           a->copyCpf( bij, *attr );
         }
@@ -573,8 +573,8 @@ namespace gum {
 
       switch ( elt->elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
-          __attributes.insert( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
-          __addCastDescendants( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
+          __attributes.insert( static_cast<PRMAttribute<GUM_SCALAR>*>( elt ) );
+          __addCastDescendants( static_cast<PRMAttribute<GUM_SCALAR>*>( elt ) );
 
           // Update attribute or cast descendant id to respect implemented
           // interface
@@ -586,21 +586,21 @@ namespace gum {
                   GUM_ERROR( OperationNotAllowed,
                              "Class does not respect it's interface" );
                 }
-                auto attr = static_cast<Attribute<GUM_SCALAR>*>( elt );
-                auto& i_attr = static_cast<Attribute<GUM_SCALAR>&>(
+                auto attr = static_cast<PRMAttribute<GUM_SCALAR>*>( elt );
+                auto& i_attr = static_cast<PRMAttribute<GUM_SCALAR>&>(
                     i->get( attr->name() ) );
                 if ( ! attr->type().isSubTypeOf( i_attr.type() ) ) {
                   GUM_ERROR(
                       OperationNotAllowed,
-                      "Attribute type does not respect class interface" );
+                      "PRMAttribute type does not respect class interface" );
                 }
                 if ( attr->type() != i_attr.type() ) {
                   if ( ! this->exists( i_attr.safeName() ) ) {
                     GUM_ERROR(
                         OperationNotAllowed,
-                        "Attribute type does not respect class interface" );
+                        "PRMAttribute type does not respect class interface" );
                   }
-                  attr = static_cast<Attribute<GUM_SCALAR>*>(
+                  attr = static_cast<PRMAttribute<GUM_SCALAR>*>(
                       &( this->get( i_attr.safeName() ) ) );
                 }
                 // Node must be reserved by constructor
@@ -633,7 +633,7 @@ namespace gum {
 
         case ClassElement<GUM_SCALAR>::prm_aggregate: {
           __aggregates.insert( static_cast<PRMAggregate<GUM_SCALAR>*>( elt ) );
-          __addCastDescendants( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
+          __addCastDescendants( static_cast<PRMAttribute<GUM_SCALAR>*>( elt ) );
           try {
             for ( auto i : implements() ) {
               if ( i->exists( elt->name() ) ) {
@@ -642,12 +642,12 @@ namespace gum {
                   GUM_ERROR( OperationNotAllowed,
                              "Class does not respect it's interface" );
                 }
-                auto& i_attr = static_cast<Attribute<GUM_SCALAR>&>(
+                auto& i_attr = static_cast<PRMAttribute<GUM_SCALAR>&>(
                     i->get( elt->name() ) );
                 if ( ! elt->type().isSubTypeOf( i_attr.type() ) ) {
                   GUM_ERROR(
                       OperationNotAllowed,
-                      "Attribute type does not respect class interface" );
+                      "PRMAttribute type does not respect class interface" );
                 }
                 if ( elt->type() != i_attr.type() ) {
                   elt = static_cast<ClassElement<GUM_SCALAR>*>(
@@ -742,7 +742,7 @@ namespace gum {
     Class<GUM_SCALAR>::__addCastDescendants( ClassElement<GUM_SCALAR>* attr ) {
 
       auto parent = attr;
-      Attribute<GUM_SCALAR>* child = 0;
+      PRMAttribute<GUM_SCALAR>* child = 0;
 
       while ( parent->type().isSubType() ) {
         child = parent->getCastDescendant();
@@ -800,9 +800,9 @@ namespace gum {
       switch ( overloader->elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
           auto overloader_attr =
-              static_cast<Attribute<GUM_SCALAR>*>( overloader );
+              static_cast<PRMAttribute<GUM_SCALAR>*>( overloader );
           auto overloaded_attr =
-              static_cast<Attribute<GUM_SCALAR>*>( overloaded );
+              static_cast<PRMAttribute<GUM_SCALAR>*>( overloaded );
           __overloadAttribute( overloader_attr, overloaded_attr );
           __addIOInterfaceFlags( overloader );
           break;
@@ -851,7 +851,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::__overloadAttribute(
-        Attribute<GUM_SCALAR>* overloader, Attribute<GUM_SCALAR>* overloaded ) {
+        PRMAttribute<GUM_SCALAR>* overloader, PRMAttribute<GUM_SCALAR>* overloaded ) {
       __dag.eraseParents( overloaded->id() );
 
       // Checking if we have to add cast descendant
@@ -932,7 +932,7 @@ namespace gum {
             for ( const auto child : this->dag().children( sc->id() ) ) {
               auto& elt = get( child );
               if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
-                auto& attr = static_cast<Attribute<GUM_SCALAR>&>( elt );
+                auto& attr = static_cast<PRMAttribute<GUM_SCALAR>&>( elt );
                 auto& old_type = slotchain->lastElt().type().variable();
                 auto& new_type = sc->lastElt().type().variable();
                 attr.swap( old_type, new_type );
@@ -984,11 +984,11 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::__addCastDescendants( Attribute<GUM_SCALAR>* start,
-                                                  Attribute<GUM_SCALAR>* end ) {
+    void Class<GUM_SCALAR>::__addCastDescendants( PRMAttribute<GUM_SCALAR>* start,
+                                                  PRMAttribute<GUM_SCALAR>* end ) {
 
-      Attribute<GUM_SCALAR>* parent = start;
-      Attribute<GUM_SCALAR>* child = 0;
+      PRMAttribute<GUM_SCALAR>* parent = start;
+      PRMAttribute<GUM_SCALAR>* child = 0;
 
       while ( parent->type().superType() != end->type() ) {
         child = parent->getCastDescendant();
@@ -1119,7 +1119,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Attribute<GUM_SCALAR>*>&
+    INLINE const Set<PRMAttribute<GUM_SCALAR>*>&
     Class<GUM_SCALAR>::attributes() const {
       return __attributes;
     }

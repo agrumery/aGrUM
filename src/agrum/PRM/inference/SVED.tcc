@@ -433,7 +433,7 @@ namespace gum {
     void SVED<GUM_SCALAR>::_marginal( const Chain& chain,
                                       Potential<GUM_SCALAR>& m ) {
       const Instance<GUM_SCALAR>* i = chain.first;
-      const Attribute<GUM_SCALAR>* elt = chain.second;
+      const PRMAttribute<GUM_SCALAR>* elt = chain.second;
       SVED<GUM_SCALAR>::BucketSet pool, trash;
       __bb.compute( i, elt->id() );
       __eliminateNodes( i, elt->id(), pool, trash );
@@ -508,7 +508,7 @@ namespace gum {
           default: {
             GUM_ERROR( FatalError,
                        "There should not be elements other"
-                       " than Attribute<GUM_SCALAR> and SlotChain." );
+                       " than PRMAttribute<GUM_SCALAR> and SlotChain." );
           }
         }
       }

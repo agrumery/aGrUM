@@ -211,7 +211,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class Interface;
     template <typename GUM_SCALAR>
-    class Attribute;
+    class PRMAttribute;
     template <typename GUM_SCALAR>
     class SlotChain;
     template <typename GUM_SCALAR>

@@ -109,7 +109,7 @@ namespace gum {
         if ( ( p.nbrDim() != 1 ) or
              ( not p.contains( chain.second->type().variable() ) ) )
           GUM_ERROR( OperationNotAllowed,
-                     "illegal evidence for the given Attribute." );
+                     "illegal evidence for the given PRMAttribute." );
 
         Potential<GUM_SCALAR>* e = new Potential<GUM_SCALAR>();
         e->add( chain.second->type().variable() );
@@ -130,7 +130,7 @@ namespace gum {
         _evidenceAdded( chain );
       } else {
         GUM_ERROR( NotFound,
-                   "the given Attribute does not belong to this "
+                   "the given PRMAttribute does not belong to this "
                    "Instance<GUM_SCALAR>." );
       }
     }

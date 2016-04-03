@@ -31,7 +31,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     std::string __print_attribute__( const Instance<GUM_SCALAR>& i,
-                                     const Attribute<GUM_SCALAR>& a ) {
+                                     const PRMAttribute<GUM_SCALAR>& a ) {
       std::stringstream s;
       const auto& class_a = i.type().get( a.safeName() );
       s << &( a.type().variable() ) << " - ";
@@ -603,7 +603,7 @@ namespace gum {
     void SVE<GUM_SCALAR>::_marginal( const Chain& chain,
                                      Potential<GUM_SCALAR>& m ) {
       const Instance<GUM_SCALAR>* i = chain.first;
-      const Attribute<GUM_SCALAR>* elt = chain.second;
+      const PRMAttribute<GUM_SCALAR>* elt = chain.second;
       SVE<GUM_SCALAR>::BucketSet pool, trash;
 
       __eliminateNodes( i, elt->id(), pool, trash );

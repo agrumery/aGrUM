@@ -149,13 +149,13 @@ namespace gum {
       /**
        * @brief Return true if the attribute named safe_name is a cast
        * descendant.
-       * Cast descendant are automatically added Attribute<GUM_SCALAR> for type
+       * Cast descendant are automatically added PRMAttribute<GUM_SCALAR> for type
        * casting.
-       * @param safe_name The safe name of an Attribute<GUM_SCALAR> of this
+       * @param safe_name The safe name of an PRMAttribute<GUM_SCALAR> of this
        * class.
        * @return true if safe_name is a cast descendant.
        * @throw NotFound Raised if safe_name does not name an
-       * Attribute<GUM_SCALAR> in this Class<GUM_SCALAR>.
+       * PRMAttribute<GUM_SCALAR> in this Class<GUM_SCALAR>.
        */
       bool isCastDescendant( const std::string& safe_name ) const;
 
@@ -177,11 +177,11 @@ namespace gum {
       virtual void addArc( const std::string& tail, const std::string& head );
 
       /**
-       * Returns the set of Attribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
-       * @return Returns the set of Attribute<GUM_SCALAR> of this
+       * Returns the set of PRMAttribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
+       * @return Returns the set of PRMAttribute<GUM_SCALAR> of this
        * Class<GUM_SCALAR>.
        */
-      const Set<Attribute<GUM_SCALAR>*>& attributes() const;
+      const Set<PRMAttribute<GUM_SCALAR>*>& attributes() const;
 
       /**
        * Returns the set of parameters of this Class<GUM_SCALAR>.
@@ -341,8 +341,8 @@ namespace gum {
       /// Used for fast access to a member given it's name
       HashTable<std::string, ClassElement<GUM_SCALAR>*> __nameMap;
 
-      /// The sequence of Attribute<GUM_SCALAR>s.
-      Set<Attribute<GUM_SCALAR>*> __attributes;
+      /// The sequence of PRMAttribute<GUM_SCALAR>s.
+      Set<PRMAttribute<GUM_SCALAR>*> __attributes;
 
       /// The sequence of ReferenceSlot<GUM_SCALAR>.
       Set<ReferenceSlot<GUM_SCALAR>*> __referenceSlots;
@@ -361,8 +361,8 @@ namespace gum {
 
       /// Recursively adds cast descendant from start to end in this
       /// Class<GUM_SCALAR>.
-      void __addCastDescendants( Attribute<GUM_SCALAR>* start,
-                                 Attribute<GUM_SCALAR>* end );
+      void __addCastDescendants( PRMAttribute<GUM_SCALAR>* start,
+                                 PRMAttribute<GUM_SCALAR>* end );
 
       /// @}
       // ========================================================================
@@ -416,8 +416,8 @@ namespace gum {
                                const ClassElement<GUM_SCALAR>* overloader );
 
       /// Overloads an attribute.
-      void __overloadAttribute( Attribute<GUM_SCALAR>* overloader,
-                                Attribute<GUM_SCALAR>* overloaded );
+      void __overloadAttribute( PRMAttribute<GUM_SCALAR>* overloader,
+                                PRMAttribute<GUM_SCALAR>* overloaded );
 
       /// Overloads an aggregate.
       void __overloadAggregate( PRMAggregate<GUM_SCALAR>* overloader,

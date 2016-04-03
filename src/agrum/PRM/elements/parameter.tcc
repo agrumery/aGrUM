@@ -112,7 +112,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>* Parameter<GUM_SCALAR>::getCastDescendant() const {
+    PRMAttribute<GUM_SCALAR>* Parameter<GUM_SCALAR>::getCastDescendant() const {
       GUM_ERROR( OperationNotAllowed, "Parameters can have cast descendants" );
     }
 

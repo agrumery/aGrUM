@@ -42,7 +42,7 @@ namespace gum {
         const std::string& name,
         const Type<GUM_SCALAR>& type,
         MultiDimImplementation<std::string>* impl )
-        : Attribute<GUM_SCALAR>( name )
+        : PRMAttribute<GUM_SCALAR>( name )
         , __type( new Type<GUM_SCALAR>( type ) )
         , __cpf( 0 )
         , __formulas( impl )
@@ -62,7 +62,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>*
+    PRMAttribute<GUM_SCALAR>*
     FormAttribute<GUM_SCALAR>::newFactory( const Class<GUM_SCALAR>& c ) const {
       auto impl = static_cast<MultiDimImplementation<std::string>*>(
           this->__formulas->newFactory() );
@@ -70,7 +70,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>* FormAttribute<GUM_SCALAR>::copy(
+    PRMAttribute<GUM_SCALAR>* FormAttribute<GUM_SCALAR>::copy(
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
         const {
       auto copy =
@@ -94,7 +94,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void FormAttribute<GUM_SCALAR>::copyCpf(
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const Attribute<GUM_SCALAR>& source ) {
+        const PRMAttribute<GUM_SCALAR>& source ) {
 
       delete __formulas;
       __formulas = new MultiDimArray<std::string>();
@@ -192,7 +192,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>*
+    PRMAttribute<GUM_SCALAR>*
     FormAttribute<GUM_SCALAR>::getCastDescendant() const {
       ScalarAttribute<GUM_SCALAR>* cast = 0;
 
@@ -223,7 +223,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void FormAttribute<GUM_SCALAR>::setAsCastDescendant(
-        Attribute<GUM_SCALAR>* cast ) {
+        PRMAttribute<GUM_SCALAR>* cast ) {
       try {
         type().setSuper( cast->type() );
       } catch ( OperationNotAllowed& ) {
@@ -266,7 +266,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     FormAttribute<GUM_SCALAR>::FormAttribute( const FormAttribute& source )
-        : Attribute<GUM_SCALAR>( source.name() ) {
+        : PRMAttribute<GUM_SCALAR>( source.name() ) {
       GUM_CONS_CPY( FormAttribute );
       GUM_ERROR( OperationNotAllowed, "Cannot copy FormAttribute" );
     }

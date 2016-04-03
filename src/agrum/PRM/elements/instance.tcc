@@ -86,7 +86,7 @@ namespace gum {
 
       // For PRMAggregate<GUM_SCALAR> we add parents
       for ( const auto agg : type().aggregates() ) {
-        Attribute<GUM_SCALAR>& attr = get( agg->safeName() );
+        PRMAttribute<GUM_SCALAR>& attr = get( agg->safeName() );
 
         for ( const auto node : type().dag().parents( agg->id() ) ) {
           try {
@@ -244,7 +244,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void
-    Instance<GUM_SCALAR>::__copyAttribute( Attribute<GUM_SCALAR>* source ) {
+    Instance<GUM_SCALAR>::__copyAttribute( PRMAttribute<GUM_SCALAR>* source ) {
       auto attr =
           new ScalarAttribute<GUM_SCALAR>( source->name(), source->type() );
       GUM_ASSERT( &( attr->type().variable() ) !=
@@ -298,41 +298,41 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Attribute<GUM_SCALAR>& Instance<GUM_SCALAR>::get( NodeId id ) {
+    INLINE PRMAttribute<GUM_SCALAR>& Instance<GUM_SCALAR>::get( NodeId id ) {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& e ) {
-        GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given NodeId" );
+        GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId" );
       }
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Attribute<GUM_SCALAR>&
+    INLINE const PRMAttribute<GUM_SCALAR>&
     Instance<GUM_SCALAR>::get( NodeId id ) const {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given NodeId" );
+        GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId" );
       }
     }
 
     template <typename GUM_SCALAR>
-    INLINE Attribute<GUM_SCALAR>&
+    INLINE PRMAttribute<GUM_SCALAR>&
     Instance<GUM_SCALAR>::get( const std::string& name ) {
       try {
         return *( __nodeIdMap[type().get( name ).id()] );
       } catch ( NotFound& e) {
-        GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
+        GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given name" );
       }
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Attribute<GUM_SCALAR>&
+    INLINE const PRMAttribute<GUM_SCALAR>&
     Instance<GUM_SCALAR>::get( const std::string& name ) const {
       try {
         return *( __nodeIdMap[type().get( name ).id()] );
       } catch ( NotFound& e) {
-        GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
+        GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given name" );
       }
     }
 
@@ -612,8 +612,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void
-    Instance<GUM_SCALAR>::__copyAttributeCPF( Attribute<GUM_SCALAR>* attr ) {
-      const auto& type_attr = static_cast<const Attribute<GUM_SCALAR>&>(
+    Instance<GUM_SCALAR>::__copyAttributeCPF( PRMAttribute<GUM_SCALAR>* attr ) {
+      const auto& type_attr = static_cast<const PRMAttribute<GUM_SCALAR>&>(
           type().get( attr->safeName() ) );
       attr->copyCpf( bijection(), type_attr );
       GUM_ASSERT( attr->cpf().contains( attr->type().variable() ) );

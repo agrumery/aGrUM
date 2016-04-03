@@ -41,7 +41,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class Class;
     template <typename GUM_SCALAR>
-    class Attribute;
+    class PRMAttribute;
 
     /**
      * @class SlotChain slotChain.h <agrum/PRM/slotChain.h>
@@ -51,12 +51,12 @@ namespace gum {
      *where
      *        the n-1 first gum::prm::ClassElement<GUM_SCALAR> are
      *gum::prm::ReferenceSlot and
-     *        the last gum::prm::ClassElement<GUM_SCALAR> an gum::prm::Attribute
+     *        the last gum::prm::ClassElement<GUM_SCALAR> an gum::prm::PRMAttribute
      *or
      *an
      *        gum::prm::PRMAggregate.
      *
-     * A SlotChain behaves as an gum::prm::Attribute or an gum::prm::PRMAggregate
+     * A SlotChain behaves as an gum::prm::PRMAttribute or an gum::prm::PRMAggregate
      * (depending the gum::prm::ClassElement<GUM_SCALAR> type of it's last
      *element)
      *regarding
@@ -76,7 +76,7 @@ namespace gum {
       /** @brief Default constructor.
        *
        * Chain's n-1 first elements must be ReferenceSlot and the last element
-       * must either be an Attribute or an PRMAggregate.
+       * must either be an PRMAttribute or an PRMAggregate.
        *
        * Warning: the last element in chain is copied !
        *
@@ -95,7 +95,7 @@ namespace gum {
       /** @brief Tweak constructor.
        *
        * Chain's n-1 first elements must be ReferenceSlot and the last element
-       * must either be an Attribute or an PRMAggregate.
+       * must either be an PRMAttribute or an PRMAggregate.
        *
        * Warning: the last element in chain is copied !
        *
@@ -156,11 +156,11 @@ namespace gum {
       const ClassElementContainer<GUM_SCALAR>& end() const;
 
       /// Returns the last element of the slot chain, typically this is an
-      /// gum::Attribute or a gum::PRMAggregate.
+      /// gum::PRMAttribute or a gum::PRMAggregate.
       ClassElement<GUM_SCALAR>& lastElt();
 
       /// Returns the last element of the slot chain, typically this is an
-      /// gum::Attribute or a gum::PRMAggregate.
+      /// gum::PRMAttribute or a gum::PRMAggregate.
       const ClassElement<GUM_SCALAR>& lastElt() const;
 
       /// Return the sequence representing the chain of elements in this
@@ -179,7 +179,7 @@ namespace gum {
 
       /// @brief Raise a gum::OperationNotAllowed exception
       /// See gum::ClassElement<GUM_SCALAR>::getCastDescendant()
-      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
+      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
       /// @}
       private:
       /// Copy operator. Don't use it.

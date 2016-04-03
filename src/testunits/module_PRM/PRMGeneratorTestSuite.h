@@ -85,9 +85,9 @@ namespace gum_tests {
 
         gum::Size six = 0;
         gum::Size two = 0;
-        const gum::Set<gum::prm::Attribute<double>*>& attr = i.attributes();
+        const gum::Set<gum::prm::PRMAttribute<double>*>& attr = i.attributes();
 
-        for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a =
+        for ( gum::Set<gum::prm::PRMAttribute<double>*>::const_iterator a =
                   attr.begin();
               a != attr.end();
               ++a ) {
@@ -116,7 +116,7 @@ namespace gum_tests {
             ++c ) {
         TS_ASSERT_EQUALS( ( **c ).attributes().size(), (gum::Size)30 );
 
-        for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a =
+        for ( gum::Set<gum::prm::PRMAttribute<double>*>::const_iterator a =
                   ( **c ).attributes().begin();
               a != ( **c ).attributes().end();
               ++a ) {
@@ -167,9 +167,9 @@ namespace gum_tests {
 
         gum::Size six = 0;
         gum::Size two = 0;
-        const gum::Set<gum::prm::Attribute<double>*>& attr = i.attributes();
+        const gum::Set<gum::prm::PRMAttribute<double>*>& attr = i.attributes();
 
-        for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a =
+        for ( gum::Set<gum::prm::PRMAttribute<double>*>::const_iterator a =
                   attr.begin();
               a != attr.end();
               ++a ) {
@@ -198,7 +198,7 @@ namespace gum_tests {
             ++c ) {
         TS_ASSERT_EQUALS( ( **c ).attributes().size(), (gum::Size)30 );
 
-        for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a =
+        for ( gum::Set<gum::prm::PRMAttribute<double>*>::const_iterator a =
                   ( **c ).attributes().begin();
               a != ( **c ).attributes().end();
               ++a ) {

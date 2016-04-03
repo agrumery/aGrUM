@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::Attribute
+ * @brief Source implementation of gum::PRMAttribute
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -30,8 +30,8 @@
 namespace gum {
   namespace prm {
 
-    template class Attribute<float>;
-    template class Attribute<double>;
+    template class PRMAttribute<float>;
+    template class PRMAttribute<double>;
 
   } /* namespace prm */
 } /* namespace gum */

@@ -108,9 +108,9 @@ namespace gum_tests {
       return *( seq.atPos( std::rand() % seq.size() ) );
     }
 
-    const gum::prm::Attribute<double>&
+    const gum::prm::PRMAttribute<double>&
     pickAttribute( const gum::prm::Instance<double>& i ) {
-      gum::Sequence<const gum::prm::Attribute<double>*> seq;
+      gum::Sequence<const gum::prm::PRMAttribute<double>*> seq;
 
       for ( gum::prm::Instance<double>::const_iterator iter = i.begin();
             iter != i.end();
@@ -135,7 +135,7 @@ namespace gum_tests {
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
         const gum::prm::Instance<double>& i = pickInstance( sys );
-        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
@@ -167,7 +167,7 @@ namespace gum_tests {
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
         const gum::prm::Instance<double>& i = pickInstance( sys );
-        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
@@ -199,7 +199,7 @@ namespace gum_tests {
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
         const gum::prm::Instance<double>& i = pickInstance( sys );
-        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
@@ -236,7 +236,7 @@ namespace gum_tests {
 
     //    inf.setPatternMining( true );
     //    const gum::prm::Instance<double>& i = pickInstance( sys );
-    //    const gum::prm::Attribute<double>& a = pickAttribute( i );
+    //    const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
     //    gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a
     //    );
     //    gum::Potential<double> m;

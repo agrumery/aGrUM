@@ -1355,7 +1355,7 @@ namespace gum_tests {
         auto& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
 
         const auto& hasInk =
-            static_cast<gum::prm::Attribute<double>&>( ParamClass["hasInk"] );
+            static_cast<gum::prm::PRMAttribute<double>&>( ParamClass["hasInk"] );
 
         gum::Instantiation inst( hasInk.cpf() );
         std::vector<double> values;
@@ -1384,7 +1384,7 @@ namespace gum_tests {
         auto& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
 
         const auto& hasPaper =
-            static_cast<gum::prm::Attribute<double>&>( ParamClass["hasPaper"] );
+            static_cast<gum::prm::PRMAttribute<double>&>( ParamClass["hasPaper"] );
 
         gum::Instantiation inst( hasPaper.cpf() );
         std::vector<double> values;

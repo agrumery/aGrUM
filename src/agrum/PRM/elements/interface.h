@@ -42,7 +42,7 @@ namespace gum {
      * @class Interface interface.h <agrum/PRM/interface.h>
      * @brief An Interface is implemented by a Class<GUM_SCALAR> and defines a
      *set of
-     *        ReferenceSlot<GUM_SCALAR> and Attribute<GUM_SCALAR> which the
+     *        ReferenceSlot<GUM_SCALAR> and PRMAttribute<GUM_SCALAR> which the
      *implementing Class<GUM_SCALAR> must contain.
      *
      * @see PRM Class<GUM_SCALAR> ClassElement<GUM_SCALAR>
@@ -124,11 +124,11 @@ namespace gum {
       get( const std::string& name ) const;
 
       /**
-       * Returns the set of Attribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
-       * @return Returns the set of Attribute<GUM_SCALAR> of this
+       * Returns the set of PRMAttribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
+       * @return Returns the set of PRMAttribute<GUM_SCALAR> of this
        * Class<GUM_SCALAR>.
        */
-      const Set<Attribute<GUM_SCALAR>*>& attributes() const;
+      const Set<PRMAttribute<GUM_SCALAR>*>& attributes() const;
 
       /**
        * Returns the set of PRMAggregate of this Class<GUM_SCALAR>.
@@ -157,7 +157,7 @@ namespace gum {
        * of the inherited ClassElement<GUM_SCALAR>. You do not define
        *dependencies in
        *an Interface
-       * so it is useless to overload an Attribute<GUM_SCALAR> with another
+       * so it is useless to overload an PRMAttribute<GUM_SCALAR> with another
        *sharing
        *the same type,
        * and if tried it will raise an OperationNotAllowed exception.
@@ -315,8 +315,8 @@ namespace gum {
       /// Used for fast access to a member given it's name.
       HashTable<std::string, ClassElement<GUM_SCALAR>*> __nameMap;
 
-      /// The sequence of Attribute<GUM_SCALAR>s.
-      Set<Attribute<GUM_SCALAR>*> __attributes;
+      /// The sequence of PRMAttribute<GUM_SCALAR>s.
+      Set<PRMAttribute<GUM_SCALAR>*> __attributes;
 
       /// The sequence of ReferenceSlot<GUM_SCALAR>.
       Set<ReferenceSlot<GUM_SCALAR>*> __referenceSlots;
@@ -353,14 +353,14 @@ namespace gum {
       __checkOverloadLegality( const ClassElement<GUM_SCALAR>* overloaded,
                                const ClassElement<GUM_SCALAR>* overloader );
 
-      void __overloadAttribute( Attribute<GUM_SCALAR>* overloader,
-                                Attribute<GUM_SCALAR>* overloaded );
+      void __overloadAttribute( PRMAttribute<GUM_SCALAR>* overloader,
+                                PRMAttribute<GUM_SCALAR>* overloaded );
 
       void __overloadReferenceSlot( ReferenceSlot<GUM_SCALAR>* overloader,
                                     ReferenceSlot<GUM_SCALAR>* overloaded );
 
-      void __addCastDescendants( Attribute<GUM_SCALAR>* start,
-                                 Attribute<GUM_SCALAR>* end );
+      void __addCastDescendants( PRMAttribute<GUM_SCALAR>* start,
+                                 PRMAttribute<GUM_SCALAR>* end );
 
       /// @}
     };

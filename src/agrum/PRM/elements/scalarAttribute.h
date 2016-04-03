@@ -56,7 +56,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class ScalarAttribute : public Attribute<GUM_SCALAR> {
+    class ScalarAttribute : public PRMAttribute<GUM_SCALAR> {
 
       public:
       // ========================================================================
@@ -66,14 +66,14 @@ namespace gum {
 
       /**
        * @brief Constructor used by gum::Class.
-       * This will create an Attribute with only one variable: type and with the
+       * This will create an PRMAttribute with only one variable: type and with the
        * given
        * implementation.
-       * @param name The name of this Attribute.
-       * @param type The type of this Attribute, it is copied.
+       * @param name The name of this PRMAttribute.
+       * @param type The type of this PRMAttribute, it is copied.
        * @param impl The MultiDimImplementation used by the internal Potential
-       * of this Attribute.
-       *             it will be deleted after the call of ~Attribute.
+       * of this PRMAttribute.
+       *             it will be deleted after the call of ~PRMAttribute.
        */
       ScalarAttribute( const std::string& name,
                        const Type<GUM_SCALAR>& type,
@@ -89,15 +89,15 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      virtual Attribute<GUM_SCALAR>*
+      virtual PRMAttribute<GUM_SCALAR>*
       newFactory( const Class<GUM_SCALAR>& c ) const;
-      virtual Attribute<GUM_SCALAR>*
+      virtual PRMAttribute<GUM_SCALAR>*
       copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
           const;
 
       virtual void copyCpf( const Bijection<const DiscreteVariable*,
                                             const DiscreteVariable*>& bif,
-                            const Attribute<GUM_SCALAR>& source );
+                            const PRMAttribute<GUM_SCALAR>& source );
 
       /// See gum::ClassElement::elt_type().
       virtual typename ClassElement<GUM_SCALAR>::ClassElementType
@@ -118,8 +118,8 @@ namespace gum {
       /// See gum::ClassElement::_addChild().
       virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
-      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
-      virtual void setAsCastDescendant( Attribute<GUM_SCALAR>* attr );
+      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
+      virtual void setAsCastDescendant( PRMAttribute<GUM_SCALAR>* attr );
       virtual void becomeCastDescendant( Type<GUM_SCALAR>& subtype );
 
       /// Swap old_type with new_type in the ClassElement cpt.

@@ -40,7 +40,7 @@ namespace gum {
      * @brief This class decorates a gum::prm::Class<GUM_SCALAR> has an
      *IBaseBayesNet.
      *
-     * This class filters Attribute and PRMAggregate in a way it can be interpreted
+     * This class filters PRMAttribute and PRMAggregate in a way it can be interpreted
      *as
      * a IBayesNet. SlotChains and ReferenceSlot are not represented.
      *
@@ -131,12 +131,12 @@ namespace gum {
           __varNodeMap;
 
       /// Private getter with type checking in case the id is not a formal
-      /// Attribute.
+      /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
       const ClassElement<GUM_SCALAR>& __get( NodeId id ) const;
 
       /// Private getter with type checking in case the id is not a formal
-      /// Attribute.
+      /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
       const ClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 

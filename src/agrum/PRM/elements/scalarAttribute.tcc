@@ -39,7 +39,7 @@ namespace gum {
         const std::string& name,
         const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl )
-        : Attribute<GUM_SCALAR>( name )
+        : PRMAttribute<GUM_SCALAR>( name )
         , __type( new Type<GUM_SCALAR>( type ) )
         , __cpf( new Potential<GUM_SCALAR>( impl ) ) {
       GUM_CONSTRUCTOR( ScalarAttribute );
@@ -52,7 +52,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     ScalarAttribute<GUM_SCALAR>::ScalarAttribute(
         const ScalarAttribute<GUM_SCALAR>& source )
-        : Attribute<GUM_SCALAR>( source )
+        : PRMAttribute<GUM_SCALAR>( source )
         , __type( 0 )
         , __cpf( 0 ) {
       GUM_CONS_CPY( ScalarAttribute );
@@ -70,7 +70,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>* ScalarAttribute<GUM_SCALAR>::newFactory(
+    PRMAttribute<GUM_SCALAR>* ScalarAttribute<GUM_SCALAR>::newFactory(
         const Class<GUM_SCALAR>& c ) const {
       auto impl = static_cast<MultiDimImplementation<GUM_SCALAR>*>(
           this->cpf().content()->newFactory() );
@@ -79,7 +79,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>* ScalarAttribute<GUM_SCALAR>::copy(
+    PRMAttribute<GUM_SCALAR>* ScalarAttribute<GUM_SCALAR>::copy(
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
         const {
       auto copy = new ScalarAttribute<GUM_SCALAR>( this->name(), this->type() );
@@ -97,7 +97,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void ScalarAttribute<GUM_SCALAR>::copyCpf(
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const Attribute<GUM_SCALAR>& source ) {
+        const PRMAttribute<GUM_SCALAR>& source ) {
 
       delete __cpf;
       __cpf = new Potential<GUM_SCALAR>();
@@ -170,7 +170,7 @@ namespace gum {
         const ClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>*
+    PRMAttribute<GUM_SCALAR>*
     ScalarAttribute<GUM_SCALAR>::getCastDescendant() const {
       ScalarAttribute<GUM_SCALAR>* cast = 0;
 
@@ -199,7 +199,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void ScalarAttribute<GUM_SCALAR>::setAsCastDescendant(
-        Attribute<GUM_SCALAR>* cast ) {
+        PRMAttribute<GUM_SCALAR>* cast ) {
       try {
         type().setSuper( cast->type() );
       } catch ( OperationNotAllowed& ) {

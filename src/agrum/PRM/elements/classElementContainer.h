@@ -125,7 +125,7 @@ namespace gum {
        * If you want to overload an inherited ClassElement<GUM_SCALAR> call
        * Class::overload().
        *
-       * When adding an Attribute or an PRMAggregate its type safe name is
+       * When adding an PRMAttribute or an PRMAggregate its type safe name is
        * automatically added, the syntax is \<type\>name. So you can either use
        * its type safe name or its real name. See the ref prm_typ_inh "type
        * inheritance section" for further details.
@@ -152,12 +152,12 @@ namespace gum {
        * You can only overload inherited ClassElement<GUM_SCALAR> and only if
        *elt is
        * a subtype of the inherited ClassElement<GUM_SCALAR>. Thus you can only
-       * overload ReferenceSlot and Attribute. In the case of Attribute you can
-       * overload an inherited Attribute even if they are of the same type: this
+       * overload ReferenceSlot and PRMAttribute. In the case of PRMAttribute you can
+       * overload an inherited PRMAttribute even if they are of the same type: this
        *is
-       * useful when you want to redefine the dependencies of an Attribute or
+       * useful when you want to redefine the dependencies of an PRMAttribute or
        *its
-       * CPF. You can also overload an Attribute with an PRMAggregate, as long as
+       * CPF. You can also overload an PRMAttribute with an PRMAggregate, as long as
        *their
        * respective Type allow it.
        *
@@ -178,7 +178,7 @@ namespace gum {
       /**
        * @brief Returns true if the node is an input node.
        *
-       * Attribute or PRMAggregate can either be input, output, both
+       * PRMAttribute or PRMAggregate can either be input, output, both
        * or internal nodes.
        *
        * By defaut, attributes and aggregates are inner nodes.
@@ -191,7 +191,7 @@ namespace gum {
       /**
        * @brief Set the input flag value of id at b.
        *
-       * Attribute or PRMAggregate can either be input, output, both
+       * PRMAttribute or PRMAggregate can either be input, output, both
        * or internal nodes.
        *
        * By defaut, attributes and aggregates are inner nodes.
@@ -202,7 +202,7 @@ namespace gum {
        * @throw NotFound Raised if id does'nt match any ClassElement<GUM_SCALAR>
        *in
        *this.
-       * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
+       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
        *                          an PRMAggregate.
        */
       virtual void setInputNode( const ClassElement<GUM_SCALAR>& elt, bool b );
@@ -210,7 +210,7 @@ namespace gum {
       /**
        * @brief Returns true if the node is an output node.
        *
-       * Attribute or PRMAggregate can either be input, output, both
+       * PRMAttribute or PRMAggregate can either be input, output, both
        * or internal nodes.
        *
        * By defaut, attributes and aggregates are inner nodes.
@@ -224,7 +224,7 @@ namespace gum {
       /**
        * @brief Set the output flag value of id at b.
        *
-       * Attribute or PRMAggregate can either be input, output, both
+       * PRMAttribute or PRMAggregate can either be input, output, both
        * or internal nodes.
        *
        * By defaut, attributes and aggregates are inner nodes.
@@ -235,7 +235,7 @@ namespace gum {
        * @throw NotFound Raised if id does'nt match any ClassElement<GUM_SCALAR>
        *in
        *this.
-       * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
+       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
        *                          an PRMAggregate.
        */
       virtual void setOutputNode( const ClassElement<GUM_SCALAR>& elt, bool b );
@@ -243,7 +243,7 @@ namespace gum {
       /**
        * @brief Returns true if the node is an inner node.
        *
-       * Attribute or PRMAggregate can either be input, output, both
+       * PRMAttribute or PRMAggregate can either be input, output, both
        * or internal nodes.
        *
        * By defaut, attributes and aggregates are inner nodes.
@@ -254,7 +254,7 @@ namespace gum {
        * @throw NotFound Raised if NodeId does'nt match any
        *ClassElement<GUM_SCALAR>
        *in this.
-       * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
+       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
        *                          an PRMAggregate.
        */
       virtual bool isInnerNode( const ClassElement<GUM_SCALAR>& elt ) const;

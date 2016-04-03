@@ -238,7 +238,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 9| Error : Attribute Bar.isWorking CPT does not sum to 1, "
+      msg << "|4 col 9| Error : PRMAttribute Bar.isWorking CPT does not sum to 1, "
              "found 0.4";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );

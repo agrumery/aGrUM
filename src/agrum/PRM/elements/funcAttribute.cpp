@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::Attribute
+ * @brief Source implementation of gum::PRMAttribute
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *

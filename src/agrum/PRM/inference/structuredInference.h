@@ -319,7 +319,7 @@ namespace gum {
       __insertNodeInElimLists( StructuredInference::PData& data,
                                const Sequence<Instance<GUM_SCALAR>*>& match,
                                Instance<GUM_SCALAR>* inst,
-                               Attribute<GUM_SCALAR>* attr,
+                               PRMAttribute<GUM_SCALAR>* attr,
                                NodeId id,
                                std::pair<Idx, std::string>& v );
 
@@ -360,9 +360,9 @@ namespace gum {
       /// Used to create strings
       std::string __dot;
       std::string __str( const Instance<GUM_SCALAR>* i,
-                         const Attribute<GUM_SCALAR>* a ) const;
+                         const PRMAttribute<GUM_SCALAR>* a ) const;
       std::string __str( const Instance<GUM_SCALAR>* i,
-                         const Attribute<GUM_SCALAR>& a ) const;
+                         const PRMAttribute<GUM_SCALAR>& a ) const;
       std::string __str( const Instance<GUM_SCALAR>* i,
                          const SlotChain<GUM_SCALAR>& a ) const;
 

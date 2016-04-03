@@ -124,8 +124,8 @@ namespace gum {
       }
 
       if ( ClassElement<GUM_SCALAR>::isAttribute( *elt ) ) {
-        Attribute<GUM_SCALAR>* attr =
-            static_cast<Attribute<GUM_SCALAR>*>( elt );
+        PRMAttribute<GUM_SCALAR>* attr =
+            static_cast<PRMAttribute<GUM_SCALAR>*>( elt );
         __nameMap.insert( attr->name(), attr );
 
         while ( true ) {
@@ -181,9 +181,9 @@ namespace gum {
       switch ( overloader->elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
           auto attr_overloader =
-              static_cast<Attribute<GUM_SCALAR>*>( overloader );
+              static_cast<PRMAttribute<GUM_SCALAR>*>( overloader );
           auto attr_overloaded =
-              static_cast<Attribute<GUM_SCALAR>*>( overloaded );
+              static_cast<PRMAttribute<GUM_SCALAR>*>( overloaded );
           __overloadAttribute( attr_overloader, attr_overloaded );
           break;
         }
@@ -214,7 +214,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Interface<GUM_SCALAR>::__overloadAttribute(
-        Attribute<GUM_SCALAR>* overloader, Attribute<GUM_SCALAR>* overloaded ) {
+        PRMAttribute<GUM_SCALAR>* overloader, PRMAttribute<GUM_SCALAR>* overloaded ) {
       if ( overloader->type() != overloaded->type() ) {
         overloader->setId( nextNodeId() );
         __dag.addNode( overloader->id() );
@@ -255,10 +255,10 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void
-    Interface<GUM_SCALAR>::__addCastDescendants( Attribute<GUM_SCALAR>* start,
-                                                 Attribute<GUM_SCALAR>* end ) {
-      Attribute<GUM_SCALAR>* parent = start;
-      Attribute<GUM_SCALAR>* child = 0;
+    Interface<GUM_SCALAR>::__addCastDescendants( PRMAttribute<GUM_SCALAR>* start,
+                                                 PRMAttribute<GUM_SCALAR>* end ) {
+      PRMAttribute<GUM_SCALAR>* parent = start;
+      PRMAttribute<GUM_SCALAR>* child = 0;
 
       while ( parent->type().superType() != end->type() ) {
         child = parent->getCastDescendant();
@@ -485,7 +485,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Attribute<GUM_SCALAR>*>&
+    INLINE const Set<PRMAttribute<GUM_SCALAR>*>&
     Interface<GUM_SCALAR>::attributes() const {
       return __attributes;
     }

@@ -34,7 +34,7 @@ namespace gum {
       for ( const auto node : i.type().dag().nodes() ) {
         try {
           // Adding the attribute
-          const Attribute<GUM_SCALAR>& attr = i.get( node );
+          const PRMAttribute<GUM_SCALAR>& attr = i.get( node );
           this->_dag.addNode( attr.id() );
           __varNodeMap.insert( &( attr.type().variable() ), &attr );
         } catch ( NotFound& ) {

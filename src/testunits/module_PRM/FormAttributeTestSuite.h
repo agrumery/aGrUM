@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class FormAttributeTestSuite : public CxxTest::TestSuite {
     private:
-    typedef gum::prm::FormAttribute<double> Attribute;
+    typedef gum::prm::FormAttribute<double> PRMAttribute;
     ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;
@@ -71,7 +71,7 @@ namespace gum_tests {
       var.addLabel( "False" );
       var.addLabel( "True" );
       gum::prm::Type<double> type{var};
-      Attribute attr( *__class, "my_attr", type );
+      PRMAttribute attr( *__class, "my_attr", type );
       bool expected = false;
       // Act & Assert
       __classEltTestSuite->testIsReferenceSlot( attr, expected );
@@ -83,7 +83,7 @@ namespace gum_tests {
       var.addLabel( "False" );
       var.addLabel( "True" );
       gum::prm::Type<double> type{var};
-      Attribute attr( *__class, "my_attr", type );
+      PRMAttribute attr( *__class, "my_attr", type );
       bool expected = true;
       // Act & Assert
       __classEltTestSuite->testIsAttribute( attr, expected );
@@ -95,7 +95,7 @@ namespace gum_tests {
       var.addLabel( "False" );
       var.addLabel( "True" );
       gum::prm::Type<double> type{var};
-      Attribute attr( *__class, "my_attr", type );
+      PRMAttribute attr( *__class, "my_attr", type );
       bool expected = false;
       // Act & Assert
       __classEltTestSuite->testIsSlotChain( attr, expected );
@@ -107,7 +107,7 @@ namespace gum_tests {
       var.addLabel( "False" );
       var.addLabel( "True" );
       gum::prm::Type<double> type{var};
-      Attribute attr( *__class, "my_attr", type );
+      PRMAttribute attr( *__class, "my_attr", type );
       // Act & Assert
       __classEltTestSuite->testSetNodeId( attr );
     }
@@ -118,7 +118,7 @@ namespace gum_tests {
       var.addLabel( "False" );
       var.addLabel( "True" );
       gum::prm::Type<double> type{var};
-      Attribute attr( *__class, "my_attr", type );
+      PRMAttribute attr( *__class, "my_attr", type );
       // Act & Assert
       __classEltTestSuite->test_obj_type( attr );
     }
@@ -129,7 +129,7 @@ namespace gum_tests {
       var.addLabel( "False" );
       var.addLabel( "True" );
       gum::prm::Type<double> type{var};
-      Attribute attr( *__class, "my_attr", type );
+      PRMAttribute attr( *__class, "my_attr", type );
 
       // Act & Assert
       __classEltTestSuite->testSafeName( attr );
@@ -141,7 +141,7 @@ namespace gum_tests {
       var.addLabel( "False" );
       var.addLabel( "True" );
       gum::prm::Type<double> type{var};
-      Attribute attr( *__class, "my_attr", type );
+      PRMAttribute attr( *__class, "my_attr", type );
 
       // Act & Assert
       __classEltTestSuite->testCast_NotAllowed( attr );
@@ -165,7 +165,7 @@ namespace gum_tests {
 
       gum::prm::Type<double> boolean{boolean_var};
       gum::prm::Type<double> state{boolean, map, state_var};
-      Attribute attr( *__class, "my_attr", state );
+      PRMAttribute attr( *__class, "my_attr", state );
 
       // Act & Assert
       __classEltTestSuite->testCast( attr, boolean );
@@ -177,10 +177,10 @@ namespace gum_tests {
     void testClassConstructor() {
       // Arrange
       std::string name = "my_state";
-      Attribute* attr = nullptr;
+      PRMAttribute* attr = nullptr;
       // Act & Assert
       try {
-        attr = new Attribute( *__class, name, *__boolean );
+        attr = new PRMAttribute( *__class, name, *__boolean );
       } catch ( ... ) {  // TS_ASSERT_THROWS_NOTHING does not work
         TS_FAIL( "Exception raised." );
       }
@@ -192,7 +192,7 @@ namespace gum_tests {
     /// @{
     void testType() {
       // Arrange
-      Attribute attr( *__class, "attr", *__boolean );
+      PRMAttribute attr( *__class, "attr", *__boolean );
       auto& expected = *__boolean;
       // Act
       auto& actual = attr.type();
@@ -203,7 +203,7 @@ namespace gum_tests {
 
     void testTypeConst() {
       // Arrange
-      Attribute attr( *__class, "attr", *__boolean );
+      PRMAttribute attr( *__class, "attr", *__boolean );
       const auto& attr_const = attr;
       const auto& expected = *__boolean;
       // Act
@@ -215,7 +215,7 @@ namespace gum_tests {
 
     void testCpf() {
       // Arrange
-      Attribute attr( *__class, "attr", *__boolean );
+      PRMAttribute attr( *__class, "attr", *__boolean );
       gum::Potential<double> expected;
       expected << attr.type().variable();
       // Act
@@ -233,7 +233,7 @@ namespace gum_tests {
 
     void testCpfConst() {
       // Arrange
-      Attribute attr( *__class, "attr", *__boolean );
+      PRMAttribute attr( *__class, "attr", *__boolean );
       const auto& attr_const = attr;
       gum::Potential<double> expected;
       expected << attr.type().variable();
@@ -256,8 +256,8 @@ namespace gum_tests {
     /// @{
     void testAddParentCheckChild() {
       // Arrange
-      Attribute parent( *__class, "attr", *__boolean );
-      Attribute child( *__class, "attr", *__boolean );
+      PRMAttribute parent( *__class, "attr", *__boolean );
+      PRMAttribute child( *__class, "attr", *__boolean );
       auto before = child.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
@@ -269,8 +269,8 @@ namespace gum_tests {
 
     void testAddParentDupplicateError() {
       // Arrange
-      Attribute parent( *__class, "attr", *__boolean );
-      Attribute child( *__class, "attr", *__boolean );
+      PRMAttribute parent( *__class, "attr", *__boolean );
+      PRMAttribute child( *__class, "attr", *__boolean );
       child.addParent( parent );
       auto before = child.cpf().variablesSequence().size();
       // Act
@@ -283,8 +283,8 @@ namespace gum_tests {
 
     void testAddChild() {
       // Arrange
-      Attribute parent( *__class, "attr", *__boolean );
-      Attribute child( *__class, "attr", *__boolean );
+      PRMAttribute parent( *__class, "attr", *__boolean );
+      PRMAttribute child( *__class, "attr", *__boolean );
       auto before = parent.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );
@@ -299,8 +299,8 @@ namespace gum_tests {
     /// @{
     void testGetCastDescendant() {
       // Arrange
-      Attribute state( *__class, "state", *__state );
-      gum::prm::Attribute<double>* cast = nullptr;
+      PRMAttribute state( *__class, "state", *__state );
+      gum::prm::PRMAttribute<double>* cast = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( cast = state.getCastDescendant() );
       // Assert
@@ -315,8 +315,8 @@ namespace gum_tests {
 
     void testSetAsCastDescendant() {
       // Arrange
-      Attribute boolean( *__class, "boolean", *__boolean );
-      Attribute state( *__class, "state", *__state );
+      PRMAttribute boolean( *__class, "boolean", *__boolean );
+      PRMAttribute state( *__class, "state", *__state );
       auto before = boolean.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( state.setAsCastDescendant( &boolean ) );
@@ -327,8 +327,8 @@ namespace gum_tests {
 
     void testSetAsCastDescendantOperationNotAllowed() {
       // Arrange
-      Attribute boolean( *__class, "boolean", *__boolean );
-      Attribute boolean_bis( *__class, "boolean", *__boolean );
+      PRMAttribute boolean( *__class, "boolean", *__boolean );
+      PRMAttribute boolean_bis( *__class, "boolean", *__boolean );
       auto before = boolean.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS( boolean_bis.setAsCastDescendant( &boolean ),
@@ -341,8 +341,8 @@ namespace gum_tests {
     void testSetAsCastDescendantTypeError() {
       // Arrange
       gum::LabelizedVariable foovar{"Foo", "Bar", 5};
-      Attribute foo( *__class, "foobar", foovar );
-      Attribute state( *__class, "state", *__state );
+      PRMAttribute foo( *__class, "foobar", foovar );
+      PRMAttribute state( *__class, "state", *__state );
       auto before = foo.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS( state.setAsCastDescendant( &foo ), gum::WrongType );
