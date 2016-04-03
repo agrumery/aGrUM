@@ -34,9 +34,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     SlotChain<GUM_SCALAR>::SlotChain(
         const std::string& name,
-        const Sequence<ClassElement<GUM_SCALAR>*>& chain )
-        : ClassElement<GUM_SCALAR>( name )
-        , __chain( new Sequence<ClassElement<GUM_SCALAR>*>( chain ) )
+        const Sequence<PRMClassElement<GUM_SCALAR>*>& chain )
+        : PRMClassElement<GUM_SCALAR>( name )
+        , __chain( new Sequence<PRMClassElement<GUM_SCALAR>*>( chain ) )
         , __isMultiple( false ) {
       GUM_CONSTRUCTOR( SlotChain );
 
@@ -47,7 +47,7 @@ namespace gum {
 
       for ( Size i = 0; i < __chain->size() - 1; ++i ) {
         if ( __chain->atPos( i )->elt_type() !=
-             ClassElement<GUM_SCALAR>::prm_refslot ) {
+             PRMClassElement<GUM_SCALAR>::prm_refslot ) {
           GUM_ERROR( WrongClassElement, "illegal ClassElement in chain" );
         } else {
           __isMultiple =
@@ -67,20 +67,20 @@ namespace gum {
     // happened)
     template <typename GUM_SCALAR>
     SlotChain<GUM_SCALAR>::SlotChain(
-        Sequence<ClassElement<GUM_SCALAR>*>* chain, const std::string& name )
+        Sequence<PRMClassElement<GUM_SCALAR>*>* chain, const std::string& name )
         : SlotChain( name, *chain ) {
       // No need to
       // GUM_CONSTRUCTOR(SlotChain);
 
       // if (__chain->size() < 2) {
       //  GUM_ERROR(OperationNotAllowed,
-      //            "chain must containt at least two ClassElement");
+      //            "chain must containt at least two PRMClassElement");
       //}
 
       // for (Size i = 0; i < __chain->size() - 1; ++i) {
       //  if (not(__chain->atPos(i)->elt_type() !=
-      //          ClassElement<GUM_SCALAR>::prm_refslot)) {
-      //    GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
+      //          PRMClassElement<GUM_SCALAR>::prm_refslot)) {
+      //    GUM_ERROR(WrongClassElement, "illegal PRMClassElement in chain");
       //  } else {
       //    __isMultiple =
       //        __isMultiple or
@@ -96,10 +96,10 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void SlotChain<GUM_SCALAR>::__copyLastElt() {
-      ClassElement<GUM_SCALAR>* new_elt = 0;
+      PRMClassElement<GUM_SCALAR>* new_elt = 0;
 
       switch ( __chain->back()->elt_type() ) {
-        case ClassElement<GUM_SCALAR>::prm_attribute: {
+        case PRMClassElement<GUM_SCALAR>::prm_attribute: {
           auto old_attr =
               static_cast<const PRMAttribute<GUM_SCALAR>*>( __chain->back() );
 
@@ -117,7 +117,7 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_aggregate: {
+        case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
           const PRMAggregate<GUM_SCALAR>* c_agg =
               static_cast<const PRMAggregate<GUM_SCALAR>*>( __chain->back() );
           PRMAggregate<GUM_SCALAR>* agg = new PRMAggregate<GUM_SCALAR>(
@@ -144,8 +144,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     SlotChain<GUM_SCALAR>::SlotChain( const SlotChain<GUM_SCALAR>& source )
-        : ClassElement<GUM_SCALAR>( source.name() )
-        , __chain( new Sequence<ClassElement<GUM_SCALAR>*>( source.chain() ) )
+        : PRMClassElement<GUM_SCALAR>( source.name() )
+        , __chain( new Sequence<PRMClassElement<GUM_SCALAR>*>( source.chain() ) )
         , __isMultiple( source.isMultiple() ) {
       GUM_CONS_CPY( SlotChain );
       __copyLastElt();
@@ -160,7 +160,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename ClassElement<GUM_SCALAR>::ClassElementType
+    INLINE typename PRMClassElement<GUM_SCALAR>::ClassElementType
     SlotChain<GUM_SCALAR>::elt_type() const {
       return this->prm_slotchain;
     }
@@ -196,34 +196,34 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElement<GUM_SCALAR>& SlotChain<GUM_SCALAR>::lastElt() {
+    INLINE PRMClassElement<GUM_SCALAR>& SlotChain<GUM_SCALAR>::lastElt() {
       return *( __chain->back() );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>&
+    INLINE const PRMClassElement<GUM_SCALAR>&
     SlotChain<GUM_SCALAR>::lastElt() const {
       return *( __chain->back() );
     }
 
     template <typename GUM_SCALAR>
-    INLINE Sequence<ClassElement<GUM_SCALAR>*>& SlotChain<GUM_SCALAR>::chain() {
+    INLINE Sequence<PRMClassElement<GUM_SCALAR>*>& SlotChain<GUM_SCALAR>::chain() {
       return *__chain;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Sequence<ClassElement<GUM_SCALAR>*>&
+    INLINE const Sequence<PRMClassElement<GUM_SCALAR>*>&
     SlotChain<GUM_SCALAR>::chain() const {
       return *__chain;
     }
 
     template <typename GUM_SCALAR>
     INLINE void
-    SlotChain<GUM_SCALAR>::addParent( const ClassElement<GUM_SCALAR>& elt ) {}
+    SlotChain<GUM_SCALAR>::addParent( const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     INLINE void
-    SlotChain<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {}
+    SlotChain<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     INLINE bool SlotChain<GUM_SCALAR>::isMultiple() const {

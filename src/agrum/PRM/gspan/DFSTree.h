@@ -111,7 +111,7 @@ namespace gum {
           /// The gain of this Pattern
           Size gain;
           // /// The different sub_patterns of p given the iso_map.
-          // Sequence< HashTable<ClassElement<GUM_SCALAR>*, Size>* >
+          // Sequence< HashTable<PRMClassElement<GUM_SCALAR>*, Size>* >
           // sub_patterns;
           // /// The mapping between an iso_map and the given sub pattern.
           // HashTable<NodeId, Idx> sub_patterns_map;
@@ -314,8 +314,8 @@ namespace gum {
         void __find_sub_pattern( Pattern& p, NodeId iso_map );
 
         // Used by __find_sub_pattern.
-        bool __test_equality( HashTable<ClassElement<GUM_SCALAR>*, Size>& x,
-                              HashTable<ClassElement<GUM_SCALAR>*, Size>& y );
+        bool __test_equality( HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,
+                              HashTable<PRMClassElement<GUM_SCALAR>*, Size>& y );
       };
 
 

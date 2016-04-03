@@ -38,7 +38,7 @@ namespace gum {
      * @class FormAttribute formAttribute.h <agrum/PRM/elements/formAttribute.h>
      * @brief FormAttribute is a member of a Class in a PRM.
      *
-     * @see PRM PRMFactory Class ClassElement Type<GUM_SCALAR> Potential
+     * @see PRM PRMFactory Class PRMClassElement Type<GUM_SCALAR> Potential
      *PRMAttribute
      * @ingroup prm_group
      */
@@ -68,7 +68,7 @@ namespace gum {
                             const PRMAttribute<GUM_SCALAR>& source );
 
       /// See gum::prm::PRMAttribute.
-      virtual typename ClassElement<GUM_SCALAR>::ClassElementType
+      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
       elt_type() const;
 
       /// See gum::prm::PRMAttribute.
@@ -81,10 +81,10 @@ namespace gum {
       virtual const Potential<GUM_SCALAR>& cpf() const;
 
       /// See gum::prm::PRMAttribute.
-      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
+      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
 
       /// See gum::prm::PRMAttribute.
-      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
+      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
@@ -96,7 +96,7 @@ namespace gum {
       virtual MultiDimImplementation<std::string>& formulas();
       virtual const MultiDimImplementation<std::string>& formulas() const;
 
-      /// Swap old_type with new_type in the ClassElement cpt.
+      /// Swap old_type with new_type in the PRMClassElement cpt.
       virtual void swap( const Type<GUM_SCALAR>& old_type,
                          const Type<GUM_SCALAR>& new_type );
 

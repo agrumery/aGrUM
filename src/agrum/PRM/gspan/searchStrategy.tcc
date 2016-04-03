@@ -34,7 +34,7 @@ namespace gum {
         double cost = 0;
         const Sequence<Instance<GUM_SCALAR>*>& seq =
             *( this->_tree->data( p ).iso_map.begin().val() );
-        Sequence<ClassElement<GUM_SCALAR>*> input_set;
+        Sequence<PRMClassElement<GUM_SCALAR>*> input_set;
 
         for ( const auto inst : seq ) {
           for ( const auto input : inst->type().slotChains() )
@@ -96,15 +96,15 @@ namespace gum {
             for ( const auto par :
                   inst->type().dag().parents( elt.second->id() ) ) {
               switch ( inst->type().get( par ).elt_type() ) {
-                case ClassElement<GUM_SCALAR>::prm_attribute:
-                case ClassElement<GUM_SCALAR>::prm_aggregate: {
+                case PRMClassElement<GUM_SCALAR>::prm_attribute:
+                case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
                   data.graph.addEdge(
                       node,
                       data.node2attr.first( __str( inst, inst->get( par ) ) ) );
                   break;
                 }
 
-                case ClassElement<GUM_SCALAR>::prm_slotchain: {
+                case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
                   for ( const auto inst2 : inst->getInstances( par ) )
                     if ( match.exists( inst2 ) )
                       data.graph.addEdge(

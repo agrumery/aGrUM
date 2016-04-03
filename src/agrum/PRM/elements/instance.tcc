@@ -152,7 +152,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Instance<GUM_SCALAR>::add( NodeId id,
                                     Instance<GUM_SCALAR>& instance ) {
-      ClassElement<GUM_SCALAR>* elt = 0;
+      PRMClassElement<GUM_SCALAR>* elt = 0;
 
       try {
         elt = &( type().get( id ) );
@@ -162,7 +162,7 @@ namespace gum {
       }
 
       switch ( elt->elt_type() ) {
-        case ClassElement<GUM_SCALAR>::prm_refslot: {
+        case PRMClassElement<GUM_SCALAR>::prm_refslot: {
           ReferenceSlot<GUM_SCALAR>* ref =
               static_cast<ReferenceSlot<GUM_SCALAR>*>( elt );
 
@@ -185,7 +185,7 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_slotchain: {
+        case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
           SlotChain<GUM_SCALAR>& sc =
               static_cast<SlotChain<GUM_SCALAR>&>( type().get( id ) );
 

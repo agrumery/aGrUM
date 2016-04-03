@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::ClassElement
+ * @brief Source implementation of gum::PRMClassElement
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class ClassElement<float>;
-    template class ClassElement<double>;
+    template class PRMClassElement<float>;
+    template class PRMClassElement<double>;
 
 
   } /* namespace prm */

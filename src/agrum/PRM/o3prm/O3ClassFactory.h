@@ -166,7 +166,7 @@ namespace gum {
 
         /// @name Utility methods
         /// @{
-        const ClassElement<GUM_SCALAR>*
+        const PRMClassElement<GUM_SCALAR>*
         __resolveSlotChain( const ClassElementContainer<GUM_SCALAR>& c,
                             const O3Label& chain );
 

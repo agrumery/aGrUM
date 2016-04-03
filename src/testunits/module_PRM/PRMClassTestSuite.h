@@ -27,9 +27,9 @@
 #include <agrum/PRM/elements/class.h>
 
 /**
- * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 
@@ -79,7 +79,7 @@ namespace gum_tests {
       auto a = new PRMAttribute( "a", *__boolean );
       toRef.add( a );
       auto ref = new Reference( "rho", toRef );
-      gum::Sequence<gum::prm::ClassElement<double>*> seq;
+      gum::Sequence<gum::prm::PRMClassElement<double>*> seq;
       seq << ref << a;
       auto chain = new SlotChain( "rho.a", seq );
       PRMClass super( "super" );
@@ -471,7 +471,7 @@ namespace gum_tests {
       c_2.add( ref_2 );
       PRMAttribute* attr = new PRMAttribute( "attr", *__boolean );
       c_3.add( attr );
-      gum::Sequence<gum::prm::ClassElement<double>*> seq;
+      gum::Sequence<gum::prm::PRMClassElement<double>*> seq;
       seq.insert( ref_1 );
       seq.insert( ref_2 );
       seq.insert( attr );
@@ -602,7 +602,7 @@ namespace gum_tests {
         auto or_state = new PRMAggregate(
             "state", PRMAggregate::AggregateType::EXISTS, *__boolean, 1 );
         orGate.add( or_state );
-        gum::Sequence<gum::prm::ClassElement<double>*> or_seq;
+        gum::Sequence<gum::prm::PRMClassElement<double>*> or_seq;
         or_seq << &( orGate.get( "inputs" ) ) << &( event.get( "state" ) );
         auto or_chain = new SlotChain( "inputs.state", or_seq );
         orGate.add( or_chain );
@@ -614,7 +614,7 @@ namespace gum_tests {
         auto and_state = new PRMAggregate(
             "state", PRMAggregate::AggregateType::FORALL, *__boolean, 1 );
         andGate.add( and_state );
-        gum::Sequence<gum::prm::ClassElement<double>*> and_seq;
+        gum::Sequence<gum::prm::PRMClassElement<double>*> and_seq;
         and_seq << and_inputs << &( event.get( "state" ) );
         auto and_chain = new SlotChain( "inputs.state", and_seq );
         andGate.add( and_chain );
@@ -627,7 +627,7 @@ namespace gum_tests {
         auto nb_true = new PRMAggregate(
             "Nb_true", PRMAggregate::AggregateType::COUNT, *__boolean, 1 );
         knGate.add( nb_true );
-        gum::Sequence<gum::prm::ClassElement<double>*> kn_seq;
+        gum::Sequence<gum::prm::PRMClassElement<double>*> kn_seq;
         kn_seq << kn_inputs << &( event.get( "state" ) );
         auto kn_chain = new SlotChain( "inputs.state", kn_seq );
         knGate.add( kn_chain );

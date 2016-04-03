@@ -51,7 +51,7 @@ namespace gum {
      * @class ClassElementContainer classElementContainer.h
      *<agrum/PRM/classElementContainer.h>
      * @brief Abstract class for classes containing
-     *gum::ClassElement<GUM_SCALAR>.
+     *gum::PRMClassElement<GUM_SCALAR>.
      *
      * To print a ClassElementContainer you can use the following operator:
      * gum::operator<<(std::ostream&, const ClassElementContainer&) which print
@@ -78,16 +78,16 @@ namespace gum {
 
       /// @}
       // ========================================================================
-      /// @name Getters on the gum::ClassElement<GUM_SCALAR>.
+      /// @name Getters on the gum::PRMClassElement<GUM_SCALAR>.
       // ========================================================================
       /// @{
 
       /**
        * Returns true if elt belongs to this ClassElementContainer.
-       * @param elt A ClassElement<GUM_SCALAR>.
+       * @param elt A PRMClassElement<GUM_SCALAR>.
        * @return true if elt beglons to this ClassElementContainer.
        */
-      virtual bool belongsTo( const ClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool belongsTo( const PRMClassElement<GUM_SCALAR>& elt ) const;
 
       /**
        * Returns true if a member with the given name exists in this
@@ -102,7 +102,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual ClassElement<GUM_SCALAR>& get( const std::string& name ) = 0;
+      virtual PRMClassElement<GUM_SCALAR>& get( const std::string& name ) = 0;
 
       /**
        * Constant getter on a member of this ClassElementContainer.
@@ -110,11 +110,11 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const ClassElement<GUM_SCALAR>&
+      virtual const PRMClassElement<GUM_SCALAR>&
       get( const std::string& name ) const = 0;
 
       /**
-       * @brief Add a ClassElement<GUM_SCALAR> to this ClassElementContainer.
+       * @brief Add a PRMClassElement<GUM_SCALAR> to this ClassElementContainer.
        *
        * The pointer is "given" to this class, which will delete it when
        * ~Class() is called.
@@ -122,7 +122,7 @@ namespace gum {
        * The NodeId of elt is defined when it is added to this, discarding any
        * previous value.
        *
-       * If you want to overload an inherited ClassElement<GUM_SCALAR> call
+       * If you want to overload an inherited PRMClassElement<GUM_SCALAR> call
        * Class::overload().
        *
        * When adding an PRMAttribute or an PRMAggregate its type safe name is
@@ -130,28 +130,28 @@ namespace gum {
        * its type safe name or its real name. See the ref prm_typ_inh "type
        * inheritance section" for further details.
        *
-       * @param elt The ClassElement<GUM_SCALAR> added to this Class.
+       * @param elt The PRMClassElement<GUM_SCALAR> added to this Class.
        * @return Returns the NodeId assigned to elt.
        *
        * @throw DuplicateElement Raised if elt's name is already used in this
        *class.
        */
-      virtual NodeId add( ClassElement<GUM_SCALAR>* elt ) = 0;
+      virtual NodeId add( PRMClassElement<GUM_SCALAR>* elt ) = 0;
 
       /**
-       * @brief Add a ClassElement<GUM_SCALAR> which overload an inherited
-       *ClassElement<GUM_SCALAR>.
+       * @brief Add a PRMClassElement<GUM_SCALAR> which overload an inherited
+       *PRMClassElement<GUM_SCALAR>.
        *
        * The pointer is "given" to this class, which will delete it when
        * ~ClassElementContainer() is called.
        *
        * The NodeId of elt is defined when it is added to this, discarding any
        * previous value. There is no guaranty that elt will have the same NodeId
-       * than the ClassElement<GUM_SCALAR> it overloaded.
+       * than the PRMClassElement<GUM_SCALAR> it overloaded.
        *
-       * You can only overload inherited ClassElement<GUM_SCALAR> and only if
+       * You can only overload inherited PRMClassElement<GUM_SCALAR> and only if
        *elt is
-       * a subtype of the inherited ClassElement<GUM_SCALAR>. Thus you can only
+       * a subtype of the inherited PRMClassElement<GUM_SCALAR>. Thus you can only
        * overload ReferenceSlot and PRMAttribute. In the case of PRMAttribute you can
        * overload an inherited PRMAttribute even if they are of the same type: this
        *is
@@ -161,16 +161,16 @@ namespace gum {
        *their
        * respective Type allow it.
        *
-       * @param elt The ClassElement<GUM_SCALAR> overloading an inherited
-       *            ClassElement<GUM_SCALAR> in this ClassElementContainer.
+       * @param elt The PRMClassElement<GUM_SCALAR> overloading an inherited
+       *            PRMClassElement<GUM_SCALAR> in this ClassElementContainer.
        * @return the NodeId assigned to elt.
        *
        * @throw OperationNotAllowed Raised if  overloading is illegal.
        */
-      virtual NodeId overload( ClassElement<GUM_SCALAR>* elt ) = 0;
+      virtual NodeId overload( PRMClassElement<GUM_SCALAR>* elt ) = 0;
 
       /**
-       * Add an arc between two ClassElement<GUM_SCALAR>.
+       * Add an arc between two PRMClassElement<GUM_SCALAR>.
        */
       virtual void addArc( const std::string& tail,
                            const std::string& head ) = 0;
@@ -183,10 +183,10 @@ namespace gum {
        *
        * By defaut, attributes and aggregates are inner nodes.
        *
-       * @param elt A ClassElement<GUM_SCALAR>.
+       * @param elt A PRMClassElement<GUM_SCALAR>.
        * @return Returns true if id is an input node.
        */
-      virtual bool isInputNode( const ClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool isInputNode( const PRMClassElement<GUM_SCALAR>& elt ) const;
 
       /**
        * @brief Set the input flag value of id at b.
@@ -196,16 +196,16 @@ namespace gum {
        *
        * By defaut, attributes and aggregates are inner nodes.
        *
-       * @param elt A ClassElement<GUM_SCALAR>.
+       * @param elt A PRMClassElement<GUM_SCALAR>.
        * @param b The flag value.
        *
-       * @throw NotFound Raised if id does'nt match any ClassElement<GUM_SCALAR>
+       * @throw NotFound Raised if id does'nt match any PRMClassElement<GUM_SCALAR>
        *in
        *this.
        * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
        *                          an PRMAggregate.
        */
-      virtual void setInputNode( const ClassElement<GUM_SCALAR>& elt, bool b );
+      virtual void setInputNode( const PRMClassElement<GUM_SCALAR>& elt, bool b );
 
       /**
        * @brief Returns true if the node is an output node.
@@ -215,11 +215,11 @@ namespace gum {
        *
        * By defaut, attributes and aggregates are inner nodes.
        *
-       * @param elt A ClassElement<GUM_SCALAR>.
+       * @param elt A PRMClassElement<GUM_SCALAR>.
        * @return Returns true if id is an input node.
        */
       virtual bool
-      isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const = 0;
+      isOutputNode( const PRMClassElement<GUM_SCALAR>& elt ) const = 0;
 
       /**
        * @brief Set the output flag value of id at b.
@@ -229,16 +229,16 @@ namespace gum {
        *
        * By defaut, attributes and aggregates are inner nodes.
        *
-       * @param elt A ClassElement<GUM_SCALAR>.
+       * @param elt A PRMClassElement<GUM_SCALAR>.
        * @param b The flag value.
        *
-       * @throw NotFound Raised if id does'nt match any ClassElement<GUM_SCALAR>
+       * @throw NotFound Raised if id does'nt match any PRMClassElement<GUM_SCALAR>
        *in
        *this.
        * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
        *                          an PRMAggregate.
        */
-      virtual void setOutputNode( const ClassElement<GUM_SCALAR>& elt, bool b );
+      virtual void setOutputNode( const PRMClassElement<GUM_SCALAR>& elt, bool b );
 
       /**
        * @brief Returns true if the node is an inner node.
@@ -248,16 +248,16 @@ namespace gum {
        *
        * By defaut, attributes and aggregates are inner nodes.
        *
-       * @param elt A ClassElement<GUM_SCALAR>.
+       * @param elt A PRMClassElement<GUM_SCALAR>.
        * @return true if elt is an inner node.
        *
        * @throw NotFound Raised if NodeId does'nt match any
-       *ClassElement<GUM_SCALAR>
+       *PRMClassElement<GUM_SCALAR>
        *in this.
        * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
        *                          an PRMAggregate.
        */
-      virtual bool isInnerNode( const ClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool isInnerNode( const PRMClassElement<GUM_SCALAR>& elt ) const;
       /// @}
       // ========================================================================
       /// @name Graphical operator
@@ -267,9 +267,9 @@ namespace gum {
       /**
        * @brief Returns the gum::DAG of this ClassElementContainer.
        *
-       * Be very careful when using NodeId with ClassElement<GUM_SCALAR>: there
+       * Be very careful when using NodeId with PRMClassElement<GUM_SCALAR>: there
        *is no
-       * guarantee that an inherited ClassElement<GUM_SCALAR> will have the same
+       * guarantee that an inherited PRMClassElement<GUM_SCALAR> will have the same
        * NodeId
        * than its superclass counterpart.
        *
@@ -285,7 +285,7 @@ namespace gum {
        * ClassElementContainer or
        * in the ClassElementContainer hierarchy.
        * @param id A NodeId.
-       * @return true if id matches a ClassElement<GUM_SCALAR>.
+       * @return true if id matches a PRMClassElement<GUM_SCALAR>.
        */
       virtual bool exists( NodeId id ) const;
 
@@ -295,7 +295,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual ClassElement<GUM_SCALAR>& get( NodeId id ) = 0;
+      virtual PRMClassElement<GUM_SCALAR>& get( NodeId id ) = 0;
 
       /**
        * Constant getter on a member of this ClassElementContainer.
@@ -303,7 +303,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const ClassElement<GUM_SCALAR>& get( NodeId id ) const = 0;
+      virtual const PRMClassElement<GUM_SCALAR>& get( NodeId id ) const = 0;
 
       /// @}
       // ========================================================================
@@ -317,7 +317,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual ClassElement<GUM_SCALAR>& operator[]( NodeId id ) = 0;
+      virtual PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) = 0;
 
       /**
        * Constant getter on a member of this ClassElementContainer.
@@ -325,7 +325,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const ClassElement<GUM_SCALAR>& operator[]( NodeId id ) const = 0;
+      virtual const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const = 0;
 
       /**
        * Getter on a member of this ClassElementContainer.
@@ -333,7 +333,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual ClassElement<GUM_SCALAR>&
+      virtual PRMClassElement<GUM_SCALAR>&
       operator[]( const std::string& name ) = 0;
 
       /**
@@ -342,7 +342,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const ClassElement<GUM_SCALAR>&
+      virtual const PRMClassElement<GUM_SCALAR>&
       operator[]( const std::string& name ) const = 0;
 
       /// @}
@@ -390,40 +390,40 @@ namespace gum {
       /// and implementations.
       virtual void _findAllSubtypes( Set<ClassElementContainer*>& set ) = 0;
 
-      /// Returns the IO flags of a ClassElement<GUM_SCALAR>.
-      /// @param elt The ClassElement<GUM_SCALAR>.
+      /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
+      /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
       virtual std::pair<bool, bool>&
-      _getIOFlag( const ClassElement<GUM_SCALAR>& elt );
+      _getIOFlag( const PRMClassElement<GUM_SCALAR>& elt );
 
-      /// Returns the IO flags of a ClassElement<GUM_SCALAR>.
-      /// @param elt The ClassElement<GUM_SCALAR>.
+      /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
+      /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
       virtual const std::pair<bool, bool>&
-      _getIOFlag( const ClassElement<GUM_SCALAR>& elt ) const;
+      _getIOFlag( const PRMClassElement<GUM_SCALAR>& elt ) const;
 
-      /// Defines the IO flags of a ClassElement<GUM_SCALAR>.
-      /// @param elt The ClassElement<GUM_SCALAR>.
+      /// Defines the IO flags of a PRMClassElement<GUM_SCALAR>.
+      /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @param flags The IO flags of elt. Overwrite any existing flags.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
-      virtual void _setIOFlag( const ClassElement<GUM_SCALAR>& elt,
+      virtual void _setIOFlag( const PRMClassElement<GUM_SCALAR>& elt,
                                const std::pair<bool, bool>& flags );
 
       /// Copy the IO Flags of c in this ClassElementContainer.
       /// @param c A ClassElementContainer.
       virtual void _copyIOFlags( const ClassElementContainer& c );
 
-      /// When a ClassElement<GUM_SCALAR> becomes an Output node we must update
+      /// When a PRMClassElement<GUM_SCALAR> becomes an Output node we must update
       /// any the IO flags of every descendant of this ClassElementContainer.
       /// Note that after its declaration, input flags can not be changed and
       /// output flags can only become true.
       ///
-      /// @param elt A ClassElement<GUM_SCALAR>.
+      /// @param elt A PRMClassElement<GUM_SCALAR>.
       virtual void
-      _updateDescendants( const ClassElement<GUM_SCALAR>& elt ) = 0;
+      _updateDescendants( const PRMClassElement<GUM_SCALAR>& elt ) = 0;
 
       private:
       /// input / output flags, useful when inheriting or copying.

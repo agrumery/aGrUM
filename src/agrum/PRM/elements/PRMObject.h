@@ -203,7 +203,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class Type;
     template <typename GUM_SCALAR>
-    class ClassElement;
+    class PRMClassElement;
     template <typename GUM_SCALAR>
     class ClassElementContainer;
     template <typename GUM_SCALAR>

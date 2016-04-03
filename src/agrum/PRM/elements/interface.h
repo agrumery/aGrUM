@@ -45,7 +45,7 @@ namespace gum {
      *        ReferenceSlot<GUM_SCALAR> and PRMAttribute<GUM_SCALAR> which the
      *implementing Class<GUM_SCALAR> must contain.
      *
-     * @see PRM Class<GUM_SCALAR> ClassElement<GUM_SCALAR>
+     * @see PRM Class<GUM_SCALAR> PRMClassElement<GUM_SCALAR>
      */
     template <typename GUM_SCALAR>
     class Interface : public ClassElementContainer<GUM_SCALAR> {
@@ -90,10 +90,10 @@ namespace gum {
       virtual typename PRMObject::PRMType obj_type() const;
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
-      virtual ClassElement<GUM_SCALAR>& get( NodeId id );
+      virtual PRMClassElement<GUM_SCALAR>& get( NodeId id );
 
       /// Se gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
-      virtual const ClassElement<GUM_SCALAR>& get( NodeId id ) const;
+      virtual const PRMClassElement<GUM_SCALAR>& get( NodeId id ) const;
 
       /**
        * @brief An Interfance doesn't have any arc, this will raise an
@@ -108,19 +108,19 @@ namespace gum {
 
       /// @}
       // ========================================================================
-      /// @name ClassElement<GUM_SCALAR> getters and setters
+      /// @name PRMClassElement<GUM_SCALAR> getters and setters
       // ========================================================================
       /// @{
 
-      virtual bool isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool isOutputNode( const PRMClassElement<GUM_SCALAR>& elt ) const;
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      virtual ClassElement<GUM_SCALAR>& get( const std::string& name );
+      virtual PRMClassElement<GUM_SCALAR>& get( const std::string& name );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      virtual const ClassElement<GUM_SCALAR>&
+      virtual const PRMClassElement<GUM_SCALAR>&
       get( const std::string& name ) const;
 
       /**
@@ -137,24 +137,24 @@ namespace gum {
       const Set<ReferenceSlot<GUM_SCALAR>*>& referenceSlots() const;
 
       /// See
-      /// gum::prm::ClassElementContainer<GUM_SCALAR>::add(ClassElement<GUM_SCALAR>*).
-      NodeId add( ClassElement<GUM_SCALAR>* elt );
+      /// gum::prm::ClassElementContainer<GUM_SCALAR>::add(PRMClassElement<GUM_SCALAR>*).
+      NodeId add( PRMClassElement<GUM_SCALAR>* elt );
 
       /**
-       * @brief Add a new ClassElement<GUM_SCALAR> which overload an inherited
-       *ClassElement<GUM_SCALAR>.
+       * @brief Add a new PRMClassElement<GUM_SCALAR> which overload an inherited
+       *PRMClassElement<GUM_SCALAR>.
        *
        * The pointer is "given" to this class, which will delete it when
        * ~Class<GUM_SCALAR>() is called.
        *
        * The NodeId of elt is defined when it is added to this, discarding any
        * previous value. There is no garanty that elt will have the same NodeId
-       * than the ClassElement<GUM_SCALAR> it overloaded.
+       * than the PRMClassElement<GUM_SCALAR> it overloaded.
        *
-       * You can only overload inherited ClassElement<GUM_SCALAR> and only if
+       * You can only overload inherited PRMClassElement<GUM_SCALAR> and only if
        *elt is
        *a subtype
-       * of the inherited ClassElement<GUM_SCALAR>. You do not define
+       * of the inherited PRMClassElement<GUM_SCALAR>. You do not define
        *dependencies in
        *an Interface
        * so it is useless to overload an PRMAttribute<GUM_SCALAR> with another
@@ -162,14 +162,14 @@ namespace gum {
        *the same type,
        * and if tried it will raise an OperationNotAllowed exception.
        *
-       * @param elt The new ClassElement<GUM_SCALAR> overloading an inherited
-       *ClassElement<GUM_SCALAR> in this.
+       * @param elt The new PRMClassElement<GUM_SCALAR> overloading an inherited
+       *PRMClassElement<GUM_SCALAR> in this.
        * @return the NodeId assigned to elt.
-       * @throw NotFound Raised if no overloaded ClassElement<GUM_SCALAR> is
+       * @throw NotFound Raised if no overloaded PRMClassElement<GUM_SCALAR> is
        *found.
        * @throw OperationNotAllowed Raised if the overloading is impossible.
        */
-      NodeId overload( ClassElement<GUM_SCALAR>* elt );
+      NodeId overload( PRMClassElement<GUM_SCALAR>* elt );
 
       /// @}
       // ========================================================================
@@ -238,18 +238,18 @@ namespace gum {
       /// @{
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      ClassElement<GUM_SCALAR>& operator[]( NodeId id );
+      PRMClassElement<GUM_SCALAR>& operator[]( NodeId id );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      const ClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
+      const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      ClassElement<GUM_SCALAR>& operator[]( const std::string& name );
+      PRMClassElement<GUM_SCALAR>& operator[]( const std::string& name );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      const ClassElement<GUM_SCALAR>&
+      const PRMClassElement<GUM_SCALAR>&
       operator[]( const std::string& name ) const;
 
       /// @}
@@ -258,12 +258,12 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::iterator
+      typedef typename NodeProperty<PRMClassElement<GUM_SCALAR>*>::iterator
           ClassEltIterator;
       ClassEltIterator begin();
       const ClassEltIterator& end();
 
-      typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::const_iterator
+      typedef typename NodeProperty<PRMClassElement<GUM_SCALAR>*>::const_iterator
           const_ClassEltIterator;
       const_ClassEltIterator begin() const;
       const const_ClassEltIterator& end() const;
@@ -282,8 +282,8 @@ namespace gum {
       void _findAllSubtypes( Set<ClassElementContainer<GUM_SCALAR>*>& set );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const
-      /// ClassElement<GUM_SCALAR>&).
-      void _updateDescendants( const ClassElement<GUM_SCALAR>& elt );
+      /// PRMClassElement<GUM_SCALAR>&).
+      void _updateDescendants( const PRMClassElement<GUM_SCALAR>& elt );
 
       private:
       /// Copy operator. Don't use it.
@@ -303,17 +303,17 @@ namespace gum {
 
       /// Mapping between node's id and their name (being an attribute or a
       /// slot). Used for fast access to a member given it's node id.
-      NodeProperty<ClassElement<GUM_SCALAR>*> __nodeIdMap;
+      NodeProperty<PRMClassElement<GUM_SCALAR>*> __nodeIdMap;
 
       /// @}
       // ========================================================================
-      /// @name ClassElement<GUM_SCALAR> members
+      /// @name PRMClassElement<GUM_SCALAR> members
       // ========================================================================
       /// @{
 
       /// Mapping between a member's name and itself.
       /// Used for fast access to a member given it's name.
-      HashTable<std::string, ClassElement<GUM_SCALAR>*> __nameMap;
+      HashTable<std::string, PRMClassElement<GUM_SCALAR>*> __nameMap;
 
       /// The sequence of PRMAttribute<GUM_SCALAR>s.
       Set<PRMAttribute<GUM_SCALAR>*> __attributes;
@@ -330,7 +330,7 @@ namespace gum {
       /// @brief The alternate ClassElementContainer<GUM_SCALAR> searched for
       /// elements defined in
       ///        this.
-      /// Note that this is first searched for gum::ClassElement<GUM_SCALAR>.
+      /// Note that this is first searched for gum::PRMClassElement<GUM_SCALAR>.
       Interface* __superInterface;
 
       /// The set of Class<GUM_SCALAR> which implements this Interface.
@@ -350,8 +350,8 @@ namespace gum {
       void __addExtension( Interface* c );
 
       bool
-      __checkOverloadLegality( const ClassElement<GUM_SCALAR>* overloaded,
-                               const ClassElement<GUM_SCALAR>* overloader );
+      __checkOverloadLegality( const PRMClassElement<GUM_SCALAR>* overloaded,
+                               const PRMClassElement<GUM_SCALAR>* overloader );
 
       void __overloadAttribute( PRMAttribute<GUM_SCALAR>* overloader,
                                 PRMAttribute<GUM_SCALAR>* overloaded );

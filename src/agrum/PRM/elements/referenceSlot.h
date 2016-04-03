@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::ClassElement.
+ * @brief Headers of gum::PRMClassElement.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -47,12 +47,12 @@ namespace gum {
      * ClassElementContainer (it's domain), it's name and if it is a multiple
      * reference (the isArray() flag).
      *
-     * @see PRM PRMFactory ClassElementContainer ClassElement
+     * @see PRM PRMFactory ClassElementContainer PRMClassElement
      * @ingroup prm_group
      */
     // ==========================================================================
     template <typename GUM_SCALAR>
-    class ReferenceSlot : public ClassElement<GUM_SCALAR> {
+    class ReferenceSlot : public PRMClassElement<GUM_SCALAR> {
       public:
       // ========================================================================
       /// @name Protected constructors & destructor.
@@ -84,7 +84,7 @@ namespace gum {
       /**
        * Implementation of the pure virtual method of PRMObject.
        */
-      virtual typename ClassElement<GUM_SCALAR>::ClassElementType
+      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
       elt_type() const;
 
       /**
@@ -104,11 +104,11 @@ namespace gum {
        */
       bool isArray() const;
 
-      /// See gum::ClassElement::addParent().
-      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement::addParent().
+      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
 
-      /// See gum::ClassElement::addChild().
-      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement::addChild().
+      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
 
       /// @}
       // ========================================================================
@@ -117,23 +117,23 @@ namespace gum {
       /// @{
 
       /// @brief Raise an OperationNotAllowed.
-      /// See gum::ClassElement::type().
+      /// See gum::PRMClassElement::type().
       virtual Type<GUM_SCALAR>& type();
 
       /// @brief Raise an OperationNotAllowed.
-      /// See gum::ClassElement::type().
+      /// See gum::PRMClassElement::type().
       virtual const Type<GUM_SCALAR>& type() const;
 
       /// @brief Raise an OperationNotAllowed.
-      /// See gum::ClassElement::cpf().
+      /// See gum::PRMClassElement::cpf().
       virtual Potential<GUM_SCALAR>& cpf();
 
       /// @brief Raise an OperationNotAllowed.
-      /// See gum::ClassElement::cpf().
+      /// See gum::PRMClassElement::cpf().
       virtual const Potential<GUM_SCALAR>& cpf() const;
 
       /// @brief Raise an OperationNotAllowed.
-      /// See gum::ClassElement::getCastDescendant().
+      /// See gum::PRMClassElement::getCastDescendant().
       virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
 
       /// @}

@@ -28,9 +28,9 @@
 #include <agrum/PRM/elements/system.h>
 
 /**
- * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 

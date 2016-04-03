@@ -63,7 +63,7 @@ namespace gum {
       // Class<GUM_SCALAR>& retrieveClass ( const std::string& name )=0;
       // Type<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
       // Type<GUM_SCALAR>& retrieveCommonType ( const
-      // std::vector<ClassElement<GUM_SCALAR>*>& elts )=0;
+      // std::vector<PRMClassElement<GUM_SCALAR>*>& elts )=0;
       virtual void pushPackage( const std::string& name ) = 0;
       virtual std::string popPackage() = 0;
       virtual void addImport( const std::string& name ) = 0;

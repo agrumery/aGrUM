@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::ClassElement.
+ * @brief Headers of gum::PRMClassElement.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -42,7 +42,7 @@ namespace gum {
     class PRMAttribute;
 
     /**
-     * @class ClassElement classElement.h <agrum/PRM/classElement.h>
+     * @class PRMClassElement classElement.h <agrum/PRM/classElement.h>
      * @brief Abstract class representing an element of PRM class.
      *
      * All class elements are nodes in the class's DAG and a unique name in
@@ -52,7 +52,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class ClassElement : public PRMObject {
+    class PRMClassElement : public PRMObject {
       public:
       // ========================================================================
       /// @name Constructor & Destructor.
@@ -60,25 +60,25 @@ namespace gum {
       /// @{
 
       /**
-       * @brief Default constructor of a ClassElement.
+       * @brief Default constructor of a PRMClassElement.
        *
-       * The ClassElement will automatically add itself to c.
+       * The PRMClassElement will automatically add itself to c.
        *
        * @param name The name of this element, must be unique in it's class.
        * @throw DupplicateElement Raised if c contains already an element with
        *                          the same name.
        */
-      ClassElement( const std::string& name );
+      PRMClassElement( const std::string& name );
 
       /**
        * Copy constructor.
        */
-      ClassElement( const ClassElement& source );
+      PRMClassElement( const PRMClassElement& source );
 
       /**
        * Destructor of this class.
        */
-      virtual ~ClassElement();
+      virtual ~PRMClassElement();
 
       /// @}
       // ========================================================================
@@ -117,27 +117,27 @@ namespace gum {
       }
 
       /// Returns true if obj_ptr is of type ReferenceSlot.
-      static INLINE bool isReferenceSlot( const ClassElement& elt ) {
+      static INLINE bool isReferenceSlot( const PRMClassElement& elt ) {
         return elt.elt_type() == prm_refslot;
       }
 
       /// Returns true if obj_ptr is of type PRMAttribute.
-      static INLINE bool isAttribute( const ClassElement& elt ) {
+      static INLINE bool isAttribute( const PRMClassElement& elt ) {
         return elt.elt_type() == prm_attribute;
       }
 
       /// Return true if obj is of type PRMAggregate
-      static INLINE bool isAggregate( const ClassElement& elt ) {
+      static INLINE bool isAggregate( const PRMClassElement& elt ) {
         return elt.elt_type() == prm_aggregate;
       }
 
       /// Return true if obj is of type SlotChain
-      static INLINE bool isSlotChain( const ClassElement& elt ) {
+      static INLINE bool isSlotChain( const PRMClassElement& elt ) {
         return elt.elt_type() == prm_slotchain;
       }
 
       /// Return true if obj is of type Parameter
-      static INLINE bool isParameter( const ClassElement& elt ) {
+      static INLINE bool isParameter( const PRMClassElement& elt ) {
         return elt.elt_type() == prm_parameter;
       }
 
@@ -159,7 +159,7 @@ namespace gum {
        * This method is called by gum::Class when en parent is added
        * to this elememnt.
        */
-      virtual void addParent( const ClassElement& elt ) = 0;
+      virtual void addParent( const PRMClassElement& elt ) = 0;
 
       /**
        * @brief Add a child to this element.
@@ -167,7 +167,7 @@ namespace gum {
        * This methos is called by gum::Class when a child is added
        * to this element.
        */
-      virtual void addChild( const ClassElement& elt ) = 0;
+      virtual void addChild( const PRMClassElement& elt ) = 0;
 
       /// @see gum::PRMObject::obj_type().
       virtual typename PRMObject::PRMType obj_type() const;
@@ -216,21 +216,21 @@ namespace gum {
       virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const = 0;
 
       /**
-       * @brief Returns the safe name of this ClassElement, if any.
+       * @brief Returns the safe name of this PRMClassElement, if any.
        *
-       * This will only work if this ClassElement is an PRMAttribute or an
+       * This will only work if this PRMClassElement is an PRMAttribute or an
        *PRMAggregate.
-       * @return Returns the safe name of this ClassElement.
+       * @return Returns the safe name of this PRMClassElement.
        *
-       * @throw NotFound& Raised if this ClassElement does not have any safe
+       * @throw NotFound& Raised if this PRMClassElement does not have any safe
        *name.
        */
       const std::string& safeName() const;
 
       /**
        * @brief Returns the name of the cast descendant with Type t of this
-       *        ClassElement.
-       * @param t The type in which we want to cast this ClassElement.
+       *        PRMClassElement.
+       * @param t The type in which we want to cast this PRMClassElement.
        * @throw OperationNotAllowed If the cast is impossible.
        */
       virtual std::string cast( const Type<GUM_SCALAR>& t ) const;
@@ -254,7 +254,7 @@ namespace gum {
 
       /// @}
       protected:
-      /// The safe name of this ClassElement.
+      /// The safe name of this PRMClassElement.
       std::string _safeName;
 
       private:
@@ -263,8 +263,8 @@ namespace gum {
     };
 
 
-    extern template class ClassElement<float>;
-    extern template class ClassElement<double>;
+    extern template class PRMClassElement<float>;
+    extern template class PRMClassElement<double>;
 
   } /* namespace prm */
 }  // namespace gum

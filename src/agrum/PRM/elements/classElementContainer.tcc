@@ -68,7 +68,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::isInputNode(
-        const ClassElement<GUM_SCALAR>& elt ) const {
+        const PRMClassElement<GUM_SCALAR>& elt ) const {
       try {
         return _getIOFlag( elt ).first;
       } catch ( NotFound& ) {
@@ -78,12 +78,12 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void ClassElementContainer<GUM_SCALAR>::setInputNode(
-        const ClassElement<GUM_SCALAR>& elt, bool b ) {
+        const PRMClassElement<GUM_SCALAR>& elt, bool b ) {
       if ( not exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound,
                    ": <" + elt.safeName() + "> is not in <" + name() + ">" );
-      } else if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) or
-                  ClassElement<GUM_SCALAR>::isAggregate( elt ) ) {
+      } else if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) or
+                  PRMClassElement<GUM_SCALAR>::isAggregate( elt ) ) {
         try {
           _getIOFlag( elt ).first = b;
         } catch ( NotFound& ) {
@@ -97,12 +97,12 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void ClassElementContainer<GUM_SCALAR>::setOutputNode(
-        const ClassElement<GUM_SCALAR>& elt, bool b ) {
+        const PRMClassElement<GUM_SCALAR>& elt, bool b ) {
       if ( not exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound,
                    "<" + elt.safeName() + "> is not in <" + name() + ">" );
-      } else if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) or
-                  ClassElement<GUM_SCALAR>::isAggregate( elt ) ) {
+      } else if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) or
+                  PRMClassElement<GUM_SCALAR>::isAggregate( elt ) ) {
         try {
           _getIOFlag( elt ).second = b;
         } catch ( NotFound& ) {
@@ -121,7 +121,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::isInnerNode(
-        const ClassElement<GUM_SCALAR>& elt ) const {
+        const PRMClassElement<GUM_SCALAR>& elt ) const {
       try {
         return not( _getIOFlag( elt ).first or _getIOFlag( elt ).second );
       } catch ( NotFound& ) {
@@ -137,7 +137,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::pair<bool, bool>& ClassElementContainer<GUM_SCALAR>::_getIOFlag(
-        const ClassElement<GUM_SCALAR>& elt ) {
+        const PRMClassElement<GUM_SCALAR>& elt ) {
       try {
         return __IOFlags[elt.safeName()];
       } catch ( NotFound& ) {
@@ -149,7 +149,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE const std::pair<bool, bool>&
     ClassElementContainer<GUM_SCALAR>::_getIOFlag(
-        const ClassElement<GUM_SCALAR>& elt ) const {
+        const PRMClassElement<GUM_SCALAR>& elt ) const {
       try {
         return __IOFlags[elt.safeName()];
       } catch ( NotFound& ) {
@@ -160,7 +160,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void ClassElementContainer<GUM_SCALAR>::_setIOFlag(
-        const ClassElement<GUM_SCALAR>& elt,
+        const PRMClassElement<GUM_SCALAR>& elt,
         const std::pair<bool, bool>& flags ) {
       try {
         __IOFlags[elt.safeName()] = flags;
@@ -187,7 +187,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::belongsTo(
-        const ClassElement<GUM_SCALAR>& elt ) const {
+        const PRMClassElement<GUM_SCALAR>& elt ) const {
       try {
         return &elt == &( get( elt.safeName() ) );
       } catch ( NotFound& ) {

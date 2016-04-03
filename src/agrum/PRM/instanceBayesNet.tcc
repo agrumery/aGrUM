@@ -124,13 +124,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>&
+    INLINE const PRMClassElement<GUM_SCALAR>&
     InstanceBayesNet<GUM_SCALAR>::__get( NodeId id ) const {
       return __inst->get( id );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>&
+    INLINE const PRMClassElement<GUM_SCALAR>&
     InstanceBayesNet<GUM_SCALAR>::__get( const std::string& name ) const {
       try {
         return __inst->get( name );

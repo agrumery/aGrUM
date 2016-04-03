@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of gum::ClassElement
+ * @brief Inline implementation of gum::PRMClassElement
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -30,46 +30,46 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    ClassElement<GUM_SCALAR>::ClassElement( const std::string& name )
+    PRMClassElement<GUM_SCALAR>::PRMClassElement( const std::string& name )
         : PRMObject( name ) {
-      GUM_CONSTRUCTOR( ClassElement );
+      GUM_CONSTRUCTOR( PRMClassElement );
     }
 
     template <typename GUM_SCALAR>
-    ClassElement<GUM_SCALAR>::ClassElement( const ClassElement& source )
+    PRMClassElement<GUM_SCALAR>::PRMClassElement( const PRMClassElement& source )
         : PRMObject( source.name() )
         , __id( source.id() ) {
-      GUM_CONS_CPY( ClassElement );
+      GUM_CONS_CPY( PRMClassElement );
     }
 
     template <typename GUM_SCALAR>
-    ClassElement<GUM_SCALAR>::~ClassElement() {
-      GUM_DESTRUCTOR( ClassElement );
+    PRMClassElement<GUM_SCALAR>::~PRMClassElement() {
+      GUM_DESTRUCTOR( PRMClassElement );
     }
 
     template <typename GUM_SCALAR>
-    INLINE NodeId ClassElement<GUM_SCALAR>::id() const {
+    INLINE NodeId PRMClassElement<GUM_SCALAR>::id() const {
       return __id;
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMObject::PRMType ClassElement<GUM_SCALAR>::obj_type() const {
+    INLINE PRMObject::PRMType PRMClassElement<GUM_SCALAR>::obj_type() const {
       return PRMType::CLASS_ELT;
     }
 
     template <typename GUM_SCALAR>
-    INLINE void ClassElement<GUM_SCALAR>::setId( NodeId id ) {
+    INLINE void PRMClassElement<GUM_SCALAR>::setId( NodeId id ) {
       __id = id;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const std::string& ClassElement<GUM_SCALAR>::safeName() const {
+    INLINE const std::string& PRMClassElement<GUM_SCALAR>::safeName() const {
       return _safeName;
     }
 
     template <typename GUM_SCALAR>
     INLINE std::string
-    ClassElement<GUM_SCALAR>::cast( const Type<GUM_SCALAR>& t ) const {
+    PRMClassElement<GUM_SCALAR>::cast( const Type<GUM_SCALAR>& t ) const {
       if ( type().isSubTypeOf( t ) ) {
         return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() +
                name();

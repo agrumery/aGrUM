@@ -47,26 +47,26 @@ namespace gum {
      * @class SlotChain slotChain.h <agrum/PRM/slotChain.h>
      *
      * @brief A SlotChain represents a sequence of
-     *gum::prm::ClassElement<GUM_SCALAR>
+     *gum::prm::PRMClassElement<GUM_SCALAR>
      *where
-     *        the n-1 first gum::prm::ClassElement<GUM_SCALAR> are
+     *        the n-1 first gum::prm::PRMClassElement<GUM_SCALAR> are
      *gum::prm::ReferenceSlot and
-     *        the last gum::prm::ClassElement<GUM_SCALAR> an gum::prm::PRMAttribute
+     *        the last gum::prm::PRMClassElement<GUM_SCALAR> an gum::prm::PRMAttribute
      *or
      *an
      *        gum::prm::PRMAggregate.
      *
      * A SlotChain behaves as an gum::prm::PRMAttribute or an gum::prm::PRMAggregate
-     * (depending the gum::prm::ClassElement<GUM_SCALAR> type of it's last
+     * (depending the gum::prm::PRMClassElement<GUM_SCALAR> type of it's last
      *element)
      *regarding
-     * the following methods: gum::prm::ClassElement<GUM_SCALAR>::type() and
-     * gum::prm::ClassElement<GUM_SCALAR>::cpf().
+     * the following methods: gum::prm::PRMClassElement<GUM_SCALAR>::type() and
+     * gum::prm::PRMClassElement<GUM_SCALAR>::cpf().
      *
      */
     // ==========================================================================
     template <typename GUM_SCALAR>
-    class SlotChain : public ClassElement<GUM_SCALAR> {
+    class SlotChain : public PRMClassElement<GUM_SCALAR> {
       public:
       // ========================================================================
       /// @name Constructors & destructor
@@ -81,16 +81,16 @@ namespace gum {
        * Warning: the last element in chain is copied !
        *
        * @param name The name of this SlotChain.
-       * @param chain The chain of gum::prm::ClassElement<GUM_SCALAR> in this
+       * @param chain The chain of gum::prm::PRMClassElement<GUM_SCALAR> in this
        *SlotChain.
        *
        * @throw OperationNotAllowed Raised if the chain contains less than two
-       *        ClassElement<GUM_SCALAR>.
+       *        PRMClassElement<GUM_SCALAR>.
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
-       *ClassElement<GUM_SCALAR>.
+       *PRMClassElement<GUM_SCALAR>.
        */
       SlotChain( const std::string& name,
-                 const Sequence<ClassElement<GUM_SCALAR>*>& chain );
+                 const Sequence<PRMClassElement<GUM_SCALAR>*>& chain );
 
       /** @brief Tweak constructor.
        *
@@ -104,11 +104,11 @@ namespace gum {
        *              when SlotChain::~SlotChain() is called.
        *
        * @throw OperationNotAllowed Raised if the chain contains less than two
-       *        ClassElement<GUM_SCALAR>.
+       *        PRMClassElement<GUM_SCALAR>.
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
-       *ClassElement<GUM_SCALAR>.
+       *PRMClassElement<GUM_SCALAR>.
        */
-      SlotChain( Sequence<ClassElement<GUM_SCALAR>*>* chain,
+      SlotChain( Sequence<PRMClassElement<GUM_SCALAR>*>* chain,
                  const std::string& name );
 
       /**
@@ -127,8 +127,8 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// See gum::ClassElement<GUM_SCALAR>::elt_type().
-      virtual typename ClassElement<GUM_SCALAR>::ClassElementType
+      /// See gum::PRMClassElement<GUM_SCALAR>::elt_type().
+      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
       elt_type() const;
 
       /// This is similar to the following call: this->lastElt().type()
@@ -147,38 +147,38 @@ namespace gum {
       /// reference slot.
       bool isMultiple() const;
 
-      /// Returns the ClassElement<GUM_SCALAR>Container over which this slot
+      /// Returns the PRMClassElement<GUM_SCALAR>Container over which this slot
       /// chain ends.
       ClassElementContainer<GUM_SCALAR>& end();
 
-      /// Returns the ClassElement<GUM_SCALAR>Container over which this slot
+      /// Returns the PRMClassElement<GUM_SCALAR>Container over which this slot
       /// chain ends.
       const ClassElementContainer<GUM_SCALAR>& end() const;
 
       /// Returns the last element of the slot chain, typically this is an
       /// gum::PRMAttribute or a gum::PRMAggregate.
-      ClassElement<GUM_SCALAR>& lastElt();
+      PRMClassElement<GUM_SCALAR>& lastElt();
 
       /// Returns the last element of the slot chain, typically this is an
       /// gum::PRMAttribute or a gum::PRMAggregate.
-      const ClassElement<GUM_SCALAR>& lastElt() const;
+      const PRMClassElement<GUM_SCALAR>& lastElt() const;
 
       /// Return the sequence representing the chain of elements in this
       /// SlotChain.
-      Sequence<ClassElement<GUM_SCALAR>*>& chain();
+      Sequence<PRMClassElement<GUM_SCALAR>*>& chain();
 
       /// Return the sequence representing the chain of elements in this
       /// SlotChain.
-      const Sequence<ClassElement<GUM_SCALAR>*>& chain() const;
+      const Sequence<PRMClassElement<GUM_SCALAR>*>& chain() const;
 
-      /// See gum::ClassElement<GUM_SCALAR>::_addParent().
-      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement<GUM_SCALAR>::_addParent().
+      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
 
-      /// See gum::ClassElement<GUM_SCALAR>::_addChild().
-      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement<GUM_SCALAR>::_addChild().
+      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
 
       /// @brief Raise a gum::OperationNotAllowed exception
-      /// See gum::ClassElement<GUM_SCALAR>::getCastDescendant()
+      /// See gum::PRMClassElement<GUM_SCALAR>::getCastDescendant()
       virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
       /// @}
       private:
@@ -190,8 +190,8 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// The sequence of ClassElement<GUM_SCALAR> composing the slot chain
-      Sequence<ClassElement<GUM_SCALAR>*>* __chain;
+      /// The sequence of PRMClassElement<GUM_SCALAR> composing the slot chain
+      Sequence<PRMClassElement<GUM_SCALAR>*>* __chain;
 
       /// Flag indicating if this slot chain is multiple or not.
       bool __isMultiple;

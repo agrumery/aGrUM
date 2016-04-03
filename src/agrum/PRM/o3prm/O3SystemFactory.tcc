@@ -274,7 +274,7 @@ namespace gum {
             return false;
           }
 
-          if ( not ClassElement<GUM_SCALAR>::isParameter(
+          if ( not PRMClassElement<GUM_SCALAR>::isParameter(
                    type.get( param.name().label() ) ) ) {
             O3PRM_SYSTEM_NOT_A_PARAMETER( param, *__errors );
             return false;
@@ -328,7 +328,7 @@ namespace gum {
           const auto& ref = ass.leftReference().label();
 
           if ( not( type.exists( ass.leftReference().label() ) and
-                    ClassElement<GUM_SCALAR>::isReferenceSlot(
+                    PRMClassElement<GUM_SCALAR>::isReferenceSlot(
                         type.get( ref ) ) ) ) {
 
             O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
@@ -377,7 +377,7 @@ namespace gum {
           const auto& ref = inc.leftReference().label();
 
           if ( not( type.exists( inc.leftReference().label() ) and
-                    ClassElement<GUM_SCALAR>::isReferenceSlot(
+                    PRMClassElement<GUM_SCALAR>::isReferenceSlot(
                         type.get( ref ) ) ) ) {
 
             O3PRM_SYSTEM_REFERENCE_NOT_FOUND(

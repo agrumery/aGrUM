@@ -33,7 +33,7 @@ namespace gum {
         const std::string& name,
         ClassElementContainer<GUM_SCALAR>& type,
         bool isArray )
-        : ClassElement<GUM_SCALAR>( name )
+        : PRMClassElement<GUM_SCALAR>( name )
         , __slotType( type )
         , __isArray( isArray ) {
       GUM_CONSTRUCTOR( ReferenceSlot );
@@ -50,7 +50,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     ReferenceSlot<GUM_SCALAR>::ReferenceSlot(
         const ReferenceSlot<GUM_SCALAR>& source )
-        : ClassElement<GUM_SCALAR>( source )
+        : PRMClassElement<GUM_SCALAR>( source )
         , __slotType( source.__slotType )
         , __isArray( source.__isArray ) {
       GUM_CONS_CPY( ReferenceSlot );
@@ -67,7 +67,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename ClassElement<GUM_SCALAR>::ClassElementType
+    INLINE typename PRMClassElement<GUM_SCALAR>::ClassElementType
     ReferenceSlot<GUM_SCALAR>::elt_type() const {
       return this->prm_refslot;
     }
@@ -118,11 +118,11 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void ReferenceSlot<GUM_SCALAR>::addParent(
-        const ClassElement<GUM_SCALAR>& elt ) {}
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     INLINE void
-    ReferenceSlot<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {
+    ReferenceSlot<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {
     }
 
   } /* namespace prm */

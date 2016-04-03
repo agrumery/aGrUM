@@ -316,7 +316,7 @@ namespace gum {
       /// @param elt     The aggregator grounded.
       /// @param name    The aggregator's name in the grounded IBayesNet.
       /// @param factory The factory used to build the grounded IBayesNet.
-      void __groundAgg( const ClassElement<GUM_SCALAR>& elt,
+      void __groundAgg( const PRMClassElement<GUM_SCALAR>& elt,
                         const std::string& name,
                         BayesNetFactory<GUM_SCALAR>& factory ) const;
       /// @}

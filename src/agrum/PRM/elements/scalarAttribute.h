@@ -52,7 +52,7 @@ namespace gum {
      * Built-in copies (copy constructor and copy operator) are illegal due to
      * various problems raised by redondant information.
      *
-     * @see PRM PRMFactory Class ClassElement Type<GUM_SCALAR> Potential
+     * @see PRM PRMFactory Class PRMClassElement Type<GUM_SCALAR> Potential
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
@@ -99,30 +99,30 @@ namespace gum {
                                             const DiscreteVariable*>& bif,
                             const PRMAttribute<GUM_SCALAR>& source );
 
-      /// See gum::ClassElement::elt_type().
-      virtual typename ClassElement<GUM_SCALAR>::ClassElementType
+      /// See gum::PRMClassElement::elt_type().
+      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
       elt_type() const;
 
-      /// See gum::ClassElement::type().
+      /// See gum::PRMClassElement::type().
       virtual Type<GUM_SCALAR>& type();
 
-      /// See gum::ClassElement::type().
+      /// See gum::PRMClassElement::type().
       virtual const Type<GUM_SCALAR>& type() const;
 
-      /// See gum::ClassElement::cpf().
+      /// See gum::PRMClassElement::cpf().
       virtual const Potential<GUM_SCALAR>& cpf() const;
 
-      /// See gum::ClassElement::_addParent().
-      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement::_addParent().
+      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
 
-      /// See gum::ClassElement::_addChild().
-      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement::_addChild().
+      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
 
       virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
       virtual void setAsCastDescendant( PRMAttribute<GUM_SCALAR>* attr );
       virtual void becomeCastDescendant( Type<GUM_SCALAR>& subtype );
 
-      /// Swap old_type with new_type in the ClassElement cpt.
+      /// Swap old_type with new_type in the PRMClassElement cpt.
       virtual void swap( const Type<GUM_SCALAR>& old_type,
                          const Type<GUM_SCALAR>& new_type );
 

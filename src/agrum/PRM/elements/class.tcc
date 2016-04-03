@@ -309,8 +309,8 @@ namespace gum {
     void PRMClass<GUM_SCALAR>::completeInheritance( const std::string& name ) {
       if ( __superClass ) {
         auto& elt = this->get( name );
-        if ( !( ClassElement<GUM_SCALAR>::isAttribute( elt ) ||
-                  ClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
+        if ( !( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ||
+                  PRMClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
           GUM_ERROR( OperationNotAllowed,
                      "you can only complete inheritance for attributes" );
         }
@@ -319,7 +319,7 @@ namespace gum {
           this->addArc( super().get( prnt ).safeName(), elt.safeName() );
         }
 
-        if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
+        if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
           auto& attr = static_cast<PRMAttribute<GUM_SCALAR>&>( elt );
           auto& super_attr =
               static_cast<const PRMAttribute<GUM_SCALAR>&>( super().get( name ) );
@@ -431,7 +431,7 @@ namespace gum {
         for ( const auto c_slotchain : c.__slotChains ) {
           // We just need to change the first ReferenceSlot<GUM_SCALAR> in the
           // chain
-          Sequence<ClassElement<GUM_SCALAR>*> chain( c_slotchain->chain() );
+          Sequence<PRMClassElement<GUM_SCALAR>*> chain( c_slotchain->chain() );
 
           chain.setAtPos( 0, __nameMap[c_slotchain->chain().front()->name()] );
 
@@ -507,8 +507,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     void PRMClass<GUM_SCALAR>::addArc( const std::string& tail_name,
                                     const std::string& head_name ) {
-      ClassElement<GUM_SCALAR>* tail = 0;
-      ClassElement<GUM_SCALAR>* head = 0;
+      PRMClassElement<GUM_SCALAR>* tail = 0;
+      PRMClassElement<GUM_SCALAR>* head = 0;
 
       try {
         tail = __nameMap[tail_name];
@@ -518,15 +518,15 @@ namespace gum {
                    "tail and/or head of arc does not exists in this Class" );
       }
 
-      if ( ( tail->elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) or
-           ( head->elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) ) {
+      if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) or
+           ( head->elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) ) {
         GUM_ERROR(
             OperationNotAllowed,
             "a ReferenceSlot<GUM_SCALAR> can not on neither side of an arc" );
       }
 
-      if ( ( tail->elt_type() == ClassElement<GUM_SCALAR>::prm_slotchain ) and
-           ( head->elt_type() == ClassElement<GUM_SCALAR>::prm_slotchain ) ) {
+      if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) and
+           ( head->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) ) {
         GUM_ERROR(
             OperationNotAllowed,
             "illegal insertion of an arc between two SlotChain<GUM_SCALAR>" );
@@ -542,7 +542,7 @@ namespace gum {
       get( head->id() ).addParent( get( tail->id() ) );
 
       // Defining input / output nodes
-      if ( tail->elt_type() == ClassElement<GUM_SCALAR>::prm_slotchain ) {
+      if ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) {
         SlotChain<GUM_SCALAR>* sc = static_cast<SlotChain<GUM_SCALAR>*>( tail );
         this->setInputNode( *head, true );
         sc->end().setOutputNode( sc->end().get( sc->lastElt().safeName() ),
@@ -551,7 +551,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    NodeId PRMClass<GUM_SCALAR>::add( ClassElement<GUM_SCALAR>* elt ) {
+    NodeId PRMClass<GUM_SCALAR>::add( PRMClassElement<GUM_SCALAR>* elt ) {
       if ( __nameMap.exists( elt->name() ) ) {
         GUM_ERROR( DuplicateElement,
                    "name already used by another ClassElement<GUM_SCALAR>" );
@@ -565,14 +565,14 @@ namespace gum {
       try {
         __nameMap.insert( elt->safeName(), elt );
       } catch ( DuplicateElement& e ) {
-        if ( !( ClassElement<GUM_SCALAR>::isSlotChain( *elt ) or
-                  ClassElement<GUM_SCALAR>::isParameter( *elt ) ) ) {
+        if ( !( PRMClassElement<GUM_SCALAR>::isSlotChain( *elt ) or
+                  PRMClassElement<GUM_SCALAR>::isParameter( *elt ) ) ) {
           throw e;
         }
       }
 
       switch ( elt->elt_type() ) {
-        case ClassElement<GUM_SCALAR>::prm_attribute: {
+        case PRMClassElement<GUM_SCALAR>::prm_attribute: {
           __attributes.insert( static_cast<PRMAttribute<GUM_SCALAR>*>( elt ) );
           __addCastDescendants( static_cast<PRMAttribute<GUM_SCALAR>*>( elt ) );
 
@@ -581,7 +581,7 @@ namespace gum {
           try {
             for ( auto i : implements() ) {
               if ( i->exists( elt->name() ) ) {
-                if ( ! ClassElement<GUM_SCALAR>::isAttribute(
+                if ( ! PRMClassElement<GUM_SCALAR>::isAttribute(
                          i->get( elt->name() ) ) ) {
                   GUM_ERROR( OperationNotAllowed,
                              "Class does not respect it's interface" );
@@ -631,13 +631,13 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_aggregate: {
+        case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
           __aggregates.insert( static_cast<PRMAggregate<GUM_SCALAR>*>( elt ) );
           __addCastDescendants( static_cast<PRMAttribute<GUM_SCALAR>*>( elt ) );
           try {
             for ( auto i : implements() ) {
               if ( i->exists( elt->name() ) ) {
-                if ( ! ClassElement<GUM_SCALAR>::isAttribute(
+                if ( ! PRMClassElement<GUM_SCALAR>::isAttribute(
                          i->get( elt->name() ) ) ) {
                   GUM_ERROR( OperationNotAllowed,
                              "Class does not respect it's interface" );
@@ -650,7 +650,7 @@ namespace gum {
                       "PRMAttribute type does not respect class interface" );
                 }
                 if ( elt->type() != i_attr.type() ) {
-                  elt = static_cast<ClassElement<GUM_SCALAR>*>(
+                  elt = static_cast<PRMClassElement<GUM_SCALAR>*>(
                       &( this->get( i_attr.safeName() ) ) );
                 }
                 // Node must be reserved by constructor
@@ -677,7 +677,7 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_refslot: {
+        case PRMClassElement<GUM_SCALAR>::prm_refslot: {
           ReferenceSlot<GUM_SCALAR>* ref =
               static_cast<ReferenceSlot<GUM_SCALAR>*>( elt );
           __referenceSlots.insert( ref );
@@ -719,12 +719,12 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_slotchain: {
+        case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
           __slotChains.insert( static_cast<SlotChain<GUM_SCALAR>*>( elt ) );
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_parameter: {
+        case PRMClassElement<GUM_SCALAR>::prm_parameter: {
           __parameters.insert( static_cast<Parameter<GUM_SCALAR>*>( elt ) );
           break;
         }
@@ -739,7 +739,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void
-    PRMClass<GUM_SCALAR>::__addCastDescendants( ClassElement<GUM_SCALAR>* attr ) {
+    PRMClass<GUM_SCALAR>::__addCastDescendants( PRMClassElement<GUM_SCALAR>* attr ) {
 
       auto parent = attr;
       PRMAttribute<GUM_SCALAR>* child = 0;
@@ -777,7 +777,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    NodeId PRMClass<GUM_SCALAR>::overload( ClassElement<GUM_SCALAR>* overloader ) {
+    NodeId PRMClass<GUM_SCALAR>::overload( PRMClassElement<GUM_SCALAR>* overloader ) {
       try {
         if ( ! super().exists( overloader->name() ) ) {
           GUM_ERROR( OperationNotAllowed,
@@ -788,7 +788,7 @@ namespace gum {
                    "overload is possible only with subclasses" );
       }
 
-      ClassElement<GUM_SCALAR>* overloaded = __nameMap[overloader->name()];
+      PRMClassElement<GUM_SCALAR>* overloaded = __nameMap[overloader->name()];
       if ( overloaded == overloader ) {
         GUM_ERROR( DuplicateElement, "dupplicate ClassElement" );
       }
@@ -798,7 +798,7 @@ namespace gum {
       }
 
       switch ( overloader->elt_type() ) {
-        case ClassElement<GUM_SCALAR>::prm_attribute: {
+        case PRMClassElement<GUM_SCALAR>::prm_attribute: {
           auto overloader_attr =
               static_cast<PRMAttribute<GUM_SCALAR>*>( overloader );
           auto overloaded_attr =
@@ -808,14 +808,14 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_aggregate: {
+        case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
           __overloadAggregate(
               static_cast<PRMAggregate<GUM_SCALAR>*>( overloader ), overloaded );
           __addIOInterfaceFlags( overloader );
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_refslot: {
+        case PRMClassElement<GUM_SCALAR>::prm_refslot: {
           // __checkOverloadLegality guaranties that overloaded is a
           // ReferenceSlot<GUM_SCALAR>
           auto overloader_ref =
@@ -826,13 +826,13 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_slotchain: {
+        case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
           GUM_ERROR( OperationNotAllowed,
                      "SlotChain<GUM_SCALAR> can not be overloaded" );
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_parameter: {
+        case PRMClassElement<GUM_SCALAR>::prm_parameter: {
           auto overloaded_param =
               static_cast<Parameter<GUM_SCALAR>*>( overloaded );
           auto overloader_param =
@@ -887,7 +887,7 @@ namespace gum {
       __referenceSlots.insert( overloader );
       SlotChain<GUM_SCALAR>* sc = 0;
       ReferenceSlot<GUM_SCALAR>* ref = 0;
-      ClassElement<GUM_SCALAR>* next = 0;
+      PRMClassElement<GUM_SCALAR>* next = 0;
       std::vector<SlotChain<GUM_SCALAR> *> toRemove, toAdd;
 
       // Updating SlotChain<GUM_SCALAR> which started with overloaded
@@ -897,7 +897,7 @@ namespace gum {
         // names to it's safename version: ref.attr is replaced by
         // ref.(type)attr.
         if ( ( slotchain->chain().atPos( 0 ) == overloaded ) ) {
-          Sequence<ClassElement<GUM_SCALAR>*> seq;
+          Sequence<PRMClassElement<GUM_SCALAR>*> seq;
           seq.insert( overloader );
 
           auto elt = ++( slotchain->chain().begin() );
@@ -931,7 +931,7 @@ namespace gum {
 
             for ( const auto child : this->dag().children( sc->id() ) ) {
               auto& elt = get( child );
-              if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
+              if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
                 auto& attr = static_cast<PRMAttribute<GUM_SCALAR>&>( elt );
                 auto& old_type = slotchain->lastElt().type().variable();
                 auto& new_type = sc->lastElt().type().variable();
@@ -1020,7 +1020,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void
-    PRMClass<GUM_SCALAR>::__addIOInterfaceFlags( ClassElement<GUM_SCALAR>* elt ) {
+    PRMClass<GUM_SCALAR>::__addIOInterfaceFlags( PRMClassElement<GUM_SCALAR>* elt ) {
       // We only add IO Flags if elt matches is required by and interface
       if ( __implements != nullptr ) {
         for ( const auto impl : *__implements ) {
@@ -1047,7 +1047,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMClass<GUM_SCALAR>::_updateDescendants(
-        const ClassElement<GUM_SCALAR>& elt ) {
+        const PRMClassElement<GUM_SCALAR>& elt ) {
       // for ( const auto ext : __extensions ) {
       //  // We test to prevent unnecessary recursive call from iter
       //  if ( !ext->isOutputNode( elt ) ) {
@@ -1072,7 +1072,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::get( NodeId id ) {
+    INLINE PRMClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::get( NodeId id ) {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
@@ -1082,7 +1082,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>&
+    INLINE const PRMClassElement<GUM_SCALAR>&
     PRMClass<GUM_SCALAR>::get( NodeId id ) const {
       try {
         return *( __nodeIdMap[id] );
@@ -1095,7 +1095,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElement<GUM_SCALAR>&
+    INLINE PRMClassElement<GUM_SCALAR>&
     PRMClass<GUM_SCALAR>::get( const std::string& name ) {
       try {
         return *( __nameMap[name] );
@@ -1107,7 +1107,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>&
+    INLINE const PRMClassElement<GUM_SCALAR>&
     PRMClass<GUM_SCALAR>::get( const std::string& name ) const {
       try {
         return *( __nameMap[name] );
@@ -1224,25 +1224,25 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::
+    INLINE PRMClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::
     operator[]( NodeId id ) {
       return get( id );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::
+    INLINE const PRMClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::
     operator[]( NodeId id ) const {
       return get( id );
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::
+    INLINE PRMClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::
     operator[]( const std::string& name ) {
       return get( name );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::
+    INLINE const PRMClassElement<GUM_SCALAR>& PRMClass<GUM_SCALAR>::
     operator[]( const std::string& name ) const {
       return get( name );
     }
@@ -1250,15 +1250,15 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMClass<GUM_SCALAR>::__overloadAggregate(
         PRMAggregate<GUM_SCALAR>* overloader,
-        ClassElement<GUM_SCALAR>* overloaded ) {
+        PRMClassElement<GUM_SCALAR>* overloaded ) {
       __nameMap.insert( overloader->safeName(), overloader );
       __aggregates.insert( overloader );
     }
 
     template <typename GUM_SCALAR>
     INLINE bool PRMClass<GUM_SCALAR>::__checkOverloadLegality(
-        const ClassElement<GUM_SCALAR>* overloaded,
-        const ClassElement<GUM_SCALAR>* overloader ) {
+        const PRMClassElement<GUM_SCALAR>* overloaded,
+        const PRMClassElement<GUM_SCALAR>* overloader ) {
 
       if ( overloaded->elt_type() != overloader->elt_type() ) {
         return false;
@@ -1266,14 +1266,14 @@ namespace gum {
 
       switch ( overloaded->elt_type() ) {
 
-        case ClassElement<GUM_SCALAR>::prm_attribute: {
+        case PRMClassElement<GUM_SCALAR>::prm_attribute: {
           if ( ! overloader->type().isSubTypeOf( overloaded->type() ) ) {
             return false;
           }
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_refslot: {
+        case PRMClassElement<GUM_SCALAR>::prm_refslot: {
 
           const auto& new_slot_type =
               static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloader )
@@ -1289,7 +1289,7 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_parameter: {
+        case PRMClassElement<GUM_SCALAR>::prm_parameter: {
           auto overloaded_param =
               static_cast<const Parameter<GUM_SCALAR>*>( overloaded );
           auto overloader_param =
@@ -1318,7 +1318,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE bool
     PRMClass<GUM_SCALAR>::isCastDescendant( const std::string& safe_name ) const {
-      const ClassElement<GUM_SCALAR>& elt = get( safe_name );
+      const PRMClassElement<GUM_SCALAR>& elt = get( safe_name );
 
       try {
         return elt.type().name() == get( elt.name() ).type().name();
@@ -1329,7 +1329,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMClass<GUM_SCALAR>::isOutputNode(
-        const ClassElement<GUM_SCALAR>& elt ) const {
+        const PRMClassElement<GUM_SCALAR>& elt ) const {
       try {
         if ( ! this->_getIOFlag( elt ).second ) {
 

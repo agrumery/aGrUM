@@ -51,7 +51,7 @@ namespace gum {
      *of a
      *        Bayesian Network which can be instantiated in Instance.
      *
-     * @see PRM Class<GUM_SCALAR> ClassElement<GUM_SCALAR>
+     * @see PRM Class<GUM_SCALAR> PRMClassElement<GUM_SCALAR>
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
@@ -128,14 +128,14 @@ namespace gum {
       /// @{
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
-      ClassElement<GUM_SCALAR>& get( NodeId id );
+      PRMClassElement<GUM_SCALAR>& get( NodeId id );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
-      const ClassElement<GUM_SCALAR>& get( NodeId id ) const;
+      const PRMClassElement<GUM_SCALAR>& get( NodeId id ) const;
 
       /// @}
       // ========================================================================
-      /// @name ClassElement<GUM_SCALAR> getters and setters
+      /// @name PRMClassElement<GUM_SCALAR> getters and setters
       // ========================================================================
       /// @{
 
@@ -144,7 +144,7 @@ namespace gum {
        * @param elt A node of this class.
        * @return Returns true if elt is an output node.
        */
-      virtual bool isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool isOutputNode( const PRMClassElement<GUM_SCALAR>& elt ) const;
 
       /**
        * @brief Return true if the attribute named safe_name is a cast
@@ -161,17 +161,17 @@ namespace gum {
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      ClassElement<GUM_SCALAR>& get( const std::string& name );
+      PRMClassElement<GUM_SCALAR>& get( const std::string& name );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      const ClassElement<GUM_SCALAR>& get( const std::string& name ) const;
+      const PRMClassElement<GUM_SCALAR>& get( const std::string& name ) const;
 
-      /// See gum::prm::add(ClassElement<GUM_SCALAR>*).
-      virtual NodeId add( ClassElement<GUM_SCALAR>* elt );
+      /// See gum::prm::add(PRMClassElement<GUM_SCALAR>*).
+      virtual NodeId add( PRMClassElement<GUM_SCALAR>* elt );
 
-      /// See gum::prm::overload(ClassElement<GUM_SCALAR>*).
-      virtual NodeId overload( ClassElement<GUM_SCALAR>* elt );
+      /// See gum::prm::overload(PRMClassElement<GUM_SCALAR>*).
+      virtual NodeId overload( PRMClassElement<GUM_SCALAR>* elt );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::addArc().
       virtual void addArc( const std::string& tail, const std::string& head );
@@ -272,18 +272,18 @@ namespace gum {
       /// @{
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      ClassElement<GUM_SCALAR>& operator[]( NodeId id );
+      PRMClassElement<GUM_SCALAR>& operator[]( NodeId id );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      const ClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
+      const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      ClassElement<GUM_SCALAR>& operator[]( const std::string& name );
+      PRMClassElement<GUM_SCALAR>& operator[]( const std::string& name );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      const ClassElement<GUM_SCALAR>&
+      const PRMClassElement<GUM_SCALAR>&
       operator[]( const std::string& name ) const;
 
       /// @}
@@ -311,8 +311,8 @@ namespace gum {
       void _findAllSubtypes( Set<ClassElementContainer<GUM_SCALAR>*>& set );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const
-      /// ClassElement<GUM_SCALAR>&).
-      void _updateDescendants( const ClassElement<GUM_SCALAR>& elt );
+      /// PRMClassElement<GUM_SCALAR>&).
+      void _updateDescendants( const PRMClassElement<GUM_SCALAR>& elt );
 
       private:
       /// Proceed with the copy of c in this.
@@ -329,17 +329,17 @@ namespace gum {
 
       /// Mapping between node's id and their name (being an attribute or a
       /// slot). Used for fast access to a member given it's node id.
-      NodeProperty<ClassElement<GUM_SCALAR>*> __nodeIdMap;
+      NodeProperty<PRMClassElement<GUM_SCALAR>*> __nodeIdMap;
 
       /// @}
       // ========================================================================
-      /// @name ClassElement<GUM_SCALAR> members
+      /// @name PRMClassElement<GUM_SCALAR> members
       // ========================================================================
       /// @{
 
       /// Mapping between a member's name and itself.
       /// Used for fast access to a member given it's name
-      HashTable<std::string, ClassElement<GUM_SCALAR>*> __nameMap;
+      HashTable<std::string, PRMClassElement<GUM_SCALAR>*> __nameMap;
 
       /// The sequence of PRMAttribute<GUM_SCALAR>s.
       Set<PRMAttribute<GUM_SCALAR>*> __attributes;
@@ -357,7 +357,7 @@ namespace gum {
       Set<Parameter<GUM_SCALAR>*> __parameters;
 
       /// Recursively adds cast descendant of attr in this Class<GUM_SCALAR>.
-      void __addCastDescendants( ClassElement<GUM_SCALAR>* attr );
+      void __addCastDescendants( PRMClassElement<GUM_SCALAR>* attr );
 
       /// Recursively adds cast descendant from start to end in this
       /// Class<GUM_SCALAR>.
@@ -373,7 +373,7 @@ namespace gum {
       /// @brief The alternate ClassElementContainer<GUM_SCALAR> searched for
       /// elements defined in
       ///        this.
-      /// Note that this is first searched for gum::ClassElement<GUM_SCALAR>.
+      /// Note that this is first searched for gum::PRMClassElement<GUM_SCALAR>.
       PRMClass<GUM_SCALAR>* __superClass;
 
       /// The Set of implemented interface of this.
@@ -398,7 +398,7 @@ namespace gum {
 
       /// Check if elt is present in an implementation. If it is, its IO flags
       /// are updated.
-      void __addIOInterfaceFlags( ClassElement<GUM_SCALAR>* elt );
+      void __addIOInterfaceFlags( PRMClassElement<GUM_SCALAR>* elt );
 
       /// This method is called when a sub-Class@<GUM_SCALAR@> of this
       /// Class@<GUM_SCALAR@> is created.
@@ -412,8 +412,8 @@ namespace gum {
 
       /// Return true of overloaded can be overload by overloader.
       bool
-      __checkOverloadLegality( const ClassElement<GUM_SCALAR>* overloaded,
-                               const ClassElement<GUM_SCALAR>* overloader );
+      __checkOverloadLegality( const PRMClassElement<GUM_SCALAR>* overloaded,
+                               const PRMClassElement<GUM_SCALAR>* overloader );
 
       /// Overloads an attribute.
       void __overloadAttribute( PRMAttribute<GUM_SCALAR>* overloader,
@@ -421,7 +421,7 @@ namespace gum {
 
       /// Overloads an aggregate.
       void __overloadAggregate( PRMAggregate<GUM_SCALAR>* overloader,
-                                ClassElement<GUM_SCALAR>* overloaded );
+                                PRMClassElement<GUM_SCALAR>* overloaded );
 
       /// Overloads a reference slot.
       void __overloadReference( ReferenceSlot<GUM_SCALAR>* overloader,

@@ -71,9 +71,9 @@ namespace gum {
       }
 
       try {
-        ClassElement<GUM_SCALAR>& elt = u->type().get( ref_name );
+        PRMClassElement<GUM_SCALAR>& elt = u->type().get( ref_name );
 
-        if ( elt.elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) {
+        if ( elt.elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) {
           ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( &elt );
         } else {
           GUM_ERROR( WrongClassElement,
@@ -141,7 +141,7 @@ namespace gum {
         // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR> are
         // instantiated as PRMAttribute<GUM_SCALAR> in an Instance<GUM_SCALAR>
         switch ( instance.type().get( node ).elt_type() ) {
-          case ClassElement<GUM_SCALAR>::prm_attribute: {
+          case PRMClassElement<GUM_SCALAR>::prm_attribute: {
             // TODO: make a special case for noisy-or
             std::stringstream elt_name;
             elt_name << instance.name() << "."
@@ -154,7 +154,7 @@ namespace gum {
             break;
           }
 
-          case ClassElement<GUM_SCALAR>::prm_aggregate: {
+          case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
             std::stringstream elt_name;
             elt_name << instance.name() << "."
                      << instance.type().get( node ).safeName();
@@ -171,7 +171,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::__groundAgg(
-        const ClassElement<GUM_SCALAR>& elt,
+        const PRMClassElement<GUM_SCALAR>& elt,
         const std::string& name,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       factory.startVariableDeclaration();
@@ -249,8 +249,8 @@ namespace gum {
         for ( const auto par :
               instance.type().dag().parents( elt.second->id() ) ) {
           switch ( instance.type().get( par ).elt_type() ) {
-            case ClassElement<GUM_SCALAR>::prm_aggregate:
-            case ClassElement<GUM_SCALAR>::prm_attribute: {
+            case PRMClassElement<GUM_SCALAR>::prm_aggregate:
+            case PRMClassElement<GUM_SCALAR>::prm_attribute: {
               std::stringstream parent_name;
               parent_name << instance.name() << "."
                           << instance.get( par ).safeName();
@@ -258,7 +258,7 @@ namespace gum {
               break;
             }
 
-            case ClassElement<GUM_SCALAR>::prm_slotchain: {
+            case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
               std::string parent_name =
                   static_cast<const SlotChain<GUM_SCALAR>&>(
                       instance.type().get( par ) )
@@ -285,7 +285,7 @@ namespace gum {
         // Checking if we need to ground the Potential (only for class level
         // attributes since
         // aggregates Potentials are generated)
-        if ( ClassElement<GUM_SCALAR>::isAttribute(
+        if ( PRMClassElement<GUM_SCALAR>::isAttribute(
                  instance.type().get( elt.second->safeName() ) ) )
           __groundPotential( instance, *elt.second, factory );
       }
@@ -304,8 +304,8 @@ namespace gum {
 
       for ( const auto parent : instance.type().dag().parents( attr.id() ) ) {
         switch ( instance.type().get( parent ).elt_type() ) {
-          case ClassElement<GUM_SCALAR>::prm_aggregate:
-          case ClassElement<GUM_SCALAR>::prm_attribute: {
+          case PRMClassElement<GUM_SCALAR>::prm_aggregate:
+          case PRMClassElement<GUM_SCALAR>::prm_attribute: {
             std::stringstream parent_name;
             parent_name << instance.name() << "."
                         << instance.get( parent ).safeName();
@@ -314,7 +314,7 @@ namespace gum {
             break;
           }
 
-          case ClassElement<GUM_SCALAR>::prm_slotchain: {
+          case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
             std::stringstream parent_name;
             const SlotChain<GUM_SCALAR>& sc =
                 static_cast<const SlotChain<GUM_SCALAR>&>(

@@ -79,7 +79,7 @@ namespace gum {
     StructuredBayesBall<GUM_SCALAR>::__compute( const Instance<GUM_SCALAR>* i,
                                                 NodeId n ) {
       __clean();
-      /// Key = instance.ClassElement<GUM_DATA>
+      /// Key = instance.PRMClassElement<GUM_DATA>
       /// pair = <upper mark, lower mark>
       StructuredBayesBall<GUM_SCALAR>::InstanceMap marks;
       __fromChild( i, n, marks );
@@ -102,7 +102,7 @@ namespace gum {
 
       // Sending message to parents
       switch ( i->type().get( n ).elt_type() ) {
-        case ClassElement<GUM_SCALAR>::prm_slotchain: {
+        case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
           if ( not __getMark( marks, i, n ).first ) {
             __getMark( marks, i, n ).first = true;
 
@@ -123,8 +123,8 @@ namespace gum {
           break;
         }
 
-        case ClassElement<GUM_SCALAR>::prm_aggregate:
-        case ClassElement<GUM_SCALAR>::prm_attribute: {
+        case PRMClassElement<GUM_SCALAR>::prm_aggregate:
+        case PRMClassElement<GUM_SCALAR>::prm_attribute: {
           if ( not __getMark( marks, i, n ).first ) {
             __getMark( marks, i, n ).first = true;
 
@@ -157,7 +157,7 @@ namespace gum {
         }
 
         default: {
-          // We shouldn't reach any other ClassElement<GUM_DATA> than PRMAttribute
+          // We shouldn't reach any other PRMClassElement<GUM_DATA> than PRMAttribute
           // or
           // SlotChain<GUM_SCALAR>.
           GUM_ERROR( FatalError, "This case is impossible." );

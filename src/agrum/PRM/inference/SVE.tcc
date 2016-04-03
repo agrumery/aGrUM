@@ -507,7 +507,7 @@ namespace gum {
       NodeSet inners, outers;
 
       for ( const auto node : c.dag().nodes() )
-        if ( ClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) ) {
+        if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) ) {
           if ( c.isOutputNode( c.get( node ) ) )
             outers.insert( node );
           else if ( not outers.exists( node ) )
@@ -515,14 +515,14 @@ namespace gum {
 
           lifted_pool->insert(
               const_cast<Potential<GUM_SCALAR>*>( &( c.get( node ).cpf() ) ) );
-        } else if ( ClassElement<GUM_SCALAR>::isAggregate( c.get( node ) ) ) {
+        } else if ( PRMClassElement<GUM_SCALAR>::isAggregate( c.get( node ) ) ) {
           outers.insert( node );
 
           // We need to put in the output_elim_order aggregator's parents which
           // are
           // innner nodes
           for ( const auto par : c.dag().parents( node ) )
-            if ( ClassElement<GUM_SCALAR>::isAttribute( c.get( par ) ) and
+            if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( par ) ) and
                  c.isInnerNode( c.get( par ) ) ) {
               inners.erase( par );
               outers.insert( par );

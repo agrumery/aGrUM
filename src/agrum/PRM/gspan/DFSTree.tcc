@@ -354,15 +354,15 @@ namespace gum {
                                                     NodeId iso_map ) {
         // PatternData& data = *(__data[&p]);
         // Sequence<Instance<GUM_SCALAR>*>& seq = *(data.iso_map[iso_map]);
-        // HashTable<ClassElement<GUM_SCALAR>*, Size>* elt_map = new
-        // HashTable<ClassElement<GUM_SCALAR>*, Size>();
-        // ClassElement<GUM_SCALAR>* elt = 0;
+        // HashTable<PRMClassElement<GUM_SCALAR>*, Size>* elt_map = new
+        // HashTable<PRMClassElement<GUM_SCALAR>*, Size>();
+        // PRMClassElement<GUM_SCALAR>* elt = 0;
         // for (Sequence<Instance<GUM_SCALAR>*>::iterator iter = seq.begin();
         // iter !=
         // seq.end(); ++iter) {
         //   for (Set<SlotChain*>::iterator sc = (*iter)->slotChains().begin();
         //        sc != (*iter)->slotChains().end(); ++sc) {
-        //     elt = const_cast<ClassElement<GUM_SCALAR>*>(&((*sc)->lastElt()));
+        //     elt = const_cast<PRMClassElement<GUM_SCALAR>*>(&((*sc)->lastElt()));
         //     if (not elt_map->exists(elt)) {
         //       elt_map->insert(elt, 0);
         //     }
@@ -378,7 +378,7 @@ namespace gum {
         //     }
         //   }
         // }
-        // typedef Sequence< HashTable<ClassElement<GUM_SCALAR>*, Size>*
+        // typedef Sequence< HashTable<PRMClassElement<GUM_SCALAR>*, Size>*
         // >::iterator
         // SubPatIter;
         // for (SubPatIter iter = data.sub_patterns.begin(); iter !=
@@ -401,8 +401,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool DFSTree<GUM_SCALAR>::__test_equality(
-          HashTable<ClassElement<GUM_SCALAR>*, Size>& x,
-          HashTable<ClassElement<GUM_SCALAR>*, Size>& y ) {
+          HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,
+          HashTable<PRMClassElement<GUM_SCALAR>*, Size>& y ) {
 
         try {
           for ( const auto& elt : x )
@@ -579,7 +579,7 @@ namespace gum {
       }
 
       // template<typename GUM_SCALAR> INLINE
-      // Sequence< HashTable<ClassElement<GUM_SCALAR>*, Size>* >&
+      // Sequence< HashTable<PRMClassElement<GUM_SCALAR>*, Size>* >&
       // DFSTree<GUM_SCALAR>::sub_patterns(const Pattern& p) {
       //   return __data[const_cast<Pattern*>(&p)]->sub_patterns;
       // }

@@ -147,7 +147,7 @@ namespace gum_tests {
             instance.get( var.substr( pos + 1 ) );
         TS_ASSERT_DIFFERS( bn.cpt( node ).nbrDim(), (gum::Size)0 );
 
-        if ( gum::prm::ClassElement<double>::isAggregate(
+        if ( gum::prm::PRMClassElement<double>::isAggregate(
                  instance.type().get( attr.id() ) ) ) {
           TS_ASSERT_DIFFERS( attr.cpf().nbrDim(), (gum::Size)1 );
         }

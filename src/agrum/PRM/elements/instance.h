@@ -55,7 +55,7 @@ namespace gum {
      *reference
      * in the current system.
      *
-     * @see Class<GUM_SCALAR> PRM ClassElement @ingroup prm_group
+     * @see Class<GUM_SCALAR> PRM PRMClassElement @ingroup prm_group
      */
     template <typename GUM_SCALAR>
     class Instance : public PRMObject {
@@ -159,12 +159,12 @@ namespace gum {
       const PRMAttribute<GUM_SCALAR>& get( NodeId id ) const;
 
       /**
-       * @brief Given a name returns the related ClassElement.
+       * @brief Given a name returns the related PRMClassElement.
        *
-       * @param name The ClassElement's name.
-       * @return Returns a constant reference over the ClassElement.
+       * @param name The PRMClassElement's name.
+       * @return Returns a constant reference over the PRMClassElement.
        *
-       * @throw NotFound Raised if there is no ClassElement named n.
+       * @throw NotFound Raised if there is no PRMClassElement named n.
        */
       const PRMAttribute<GUM_SCALAR>& get( const std::string& name ) const;
 
@@ -225,20 +225,20 @@ namespace gum {
        * is associated with a ReferenceSlot, it represents an arc in the
        * relational skeleton. For a SlotChain<GUM_SCALAR>, it is a placeholder
        *of referenced
-       * ClassElement by this Instance<GUM_SCALAR>. Finally, for an output node
+       * PRMClassElement by this Instance<GUM_SCALAR>. Finally, for an output node
        *it indicates
-       * that an Instance<GUM_SCALAR> has an ClassElement referring it.
+       * that an Instance<GUM_SCALAR> has an PRMClassElement referring it.
        *
        * @param id The NodeId of a ReferenceSlot of this Instance<GUM_SCALAR>.
        * @param instance The instance added as references by id in this
        *Instance<GUM_SCALAR>.
        *
-       * @throw WrongClassElement Raised if id is not a valid ClassElement.
+       * @throw WrongClassElement Raised if id is not a valid PRMClassElement.
        * @throw OutOfUpperBound Raised if no more Instance<GUM_SCALAR> can be
        *added to id.
        * @throw TypeError Raised if instance's type isn't compatible with the
        *                  reference's type.
-       * @throw NotFound If there is no ClassElement given id.
+       * @throw NotFound If there is no PRMClassElement given id.
        */
       void add( NodeId id, Instance<GUM_SCALAR>& instance );
 
@@ -253,7 +253,7 @@ namespace gum {
        * @param id The NodeId of a ReferenceSlot or SlotChain<GUM_SCALAR> in
        *this Instance<GUM_SCALAR>.
        *
-       * @throw NotFound Raised if there is no ClassElement given id.
+       * @throw NotFound Raised if there is no PRMClassElement given id.
        * @throw UndefinedElement Raised if no Instance<GUM_SCALAR> are
        *referenced by id.
        */
@@ -266,7 +266,7 @@ namespace gum {
        *this.
        * @return Returns the Set of Instance<GUM_SCALAR> referenced by id.
        *
-       * @throw NotFound If there is no ClassElement given id.
+       * @throw NotFound If there is no PRMClassElement given id.
        */
       const Set<Instance<GUM_SCALAR>*>& getInstances( NodeId id ) const;
 
@@ -363,7 +363,7 @@ namespace gum {
        *in this
        *           Instance<GUM_SCALAR> type.
        *
-       * @throw NotFound Raised if no gum::prm::ClassElement in this
+       * @throw NotFound Raised if no gum::prm::PRMClassElement in this
        *Instance<GUM_SCALAR>
        *                 type matches id.
        * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
@@ -410,7 +410,7 @@ namespace gum {
        *in this
        *           Instance<GUM_SCALAR> type.
        *
-       * @throw NotFound Raised if no gum::prm::ClassElement in this
+       * @throw NotFound Raised if no gum::prm::PRMClassElement in this
        *Instance<GUM_SCALAR>
        * type matches id.
        * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
@@ -458,7 +458,7 @@ namespace gum {
        *SlotChain<GUM_SCALAR>.
        * @param i An inverse Instance<GUM_SCALAR> added to name.
        *
-       * @throw NotFound Raised if name does not match any ClassElement in this.
+       * @throw NotFound Raised if name does not match any PRMClassElement in this.
        * @throw WrongClassElement Raised if name is not a ReferenceSlot nor a
        *                          SlotChain<GUM_SCALAR>.
        * @throw TypeError Raised if i is not a valid subtype for name.

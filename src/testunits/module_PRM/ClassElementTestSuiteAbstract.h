@@ -28,14 +28,14 @@
 #include <agrum/PRM/elements/classElement.h>
 
 /*
- * This class is used to test gum::prm::ClassElement, since it is an abstract
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstract
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 
   class ClassElementTestSuiteAbstract {
-    typedef gum::prm::ClassElement<double> ClassElt;
+    typedef gum::prm::PRMClassElement<double> ClassElt;
 
     public:
     void testIsReferenceSlot( const ClassElt& elt, bool expected ) {

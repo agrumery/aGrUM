@@ -54,7 +54,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class PRMAggregate : public ClassElement<GUM_SCALAR> {
+    class PRMAggregate : public PRMClassElement<GUM_SCALAR> {
       friend class PRMClass<GUM_SCALAR>;
 
       public:
@@ -149,8 +149,8 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// See gum::ClassElement::elt_type().
-      virtual typename ClassElement<GUM_SCALAR>::ClassElementType
+      /// See gum::PRMClassElement::elt_type().
+      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
       elt_type() const;
 
       /// Returns the aggregate of *this.
@@ -163,23 +163,23 @@ namespace gum {
        */
       Idx label() const;
 
-      /// See gum::ClassElement::_addParent().
-      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement::_addParent().
+      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
 
-      /// See gum::ClassElement::_addChild().
-      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement::_addChild().
+      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
 
-      /// See gum::ClassElement::type().
+      /// See gum::PRMClassElement::type().
       virtual Type<GUM_SCALAR>& type();
 
-      /// See gum::ClassElement::type().
+      /// See gum::PRMClassElement::type().
       virtual const Type<GUM_SCALAR>& type() const;
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
        * PRMAttribute,
        *        so this will raise an OperationNotAllowed exception.
-       * See gum::ClassElement::cpf().
+       * See gum::PRMClassElement::cpf().
        */
       virtual Potential<GUM_SCALAR>& cpf();
 
@@ -187,7 +187,7 @@ namespace gum {
        * @brief Aggregates don't have Potential until they are instantiated as
        * PRMAttribute,
        *        so this will raise an OperationNotAllowed exception.
-       * See gum::ClassElement::cpf().
+       * See gum::PRMClassElement::cpf().
        */
       virtual const Potential<GUM_SCALAR>& cpf() const;
 

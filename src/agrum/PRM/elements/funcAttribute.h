@@ -35,8 +35,8 @@ namespace gum {
 
     /**
      * @class FuncAttribute funcAttribute.h <agrum/PRM/elements/funcAttribute.h>
-     * @brief This class overload gum::prm::ClassElement::_addParent() and
-     *        gum::prm::ClassElement::_addChild with empty methods.
+     * @brief This class overload gum::prm::PRMClassElement::_addParent() and
+     *        gum::prm::PRMClassElement::_addChild with empty methods.
      *
      * This class should be used when dealing with functions such as Noisy-Or
      *which
@@ -70,11 +70,11 @@ namespace gum {
       /// Destructor.
       virtual ~FuncAttribute();
 
-      /// See gum::ClassElement::_addParent().
-      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement::_addParent().
+      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
 
-      /// See gum::ClassElement::_addChild().
-      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::PRMClassElement::_addChild().
+      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
 
       protected:
       /// Copy constructor. Don't use it.

@@ -1142,7 +1142,7 @@ namespace gum_tests {
               GUM_TRACE( sBuff.str() );
             }
 
-            if ( gum::prm::ClassElement<double>::isAggregate(
+            if ( gum::prm::PRMClassElement<double>::isAggregate(
                      ( *( iter.val() ) )
                          .type()
                          .get( ( *( jter.val() ) ).id() ) ) ) {
@@ -1664,8 +1664,8 @@ namespace gum_tests {
             if ( ( not inst->exists( node ) ) and
                  inst->type().exists( node ) ) {
               auto elt = &( inst->type().get( node ) );
-              if ( gum::prm::ClassElement<double>::isAttribute( *elt ) or
-                   gum::prm::ClassElement<double>::isAggregate( *elt ) ) {
+              if ( gum::prm::PRMClassElement<double>::isAttribute( *elt ) or
+                   gum::prm::PRMClassElement<double>::isAggregate( *elt ) ) {
 
                 GUM_TRACE( inst->type().name()
                            << "."

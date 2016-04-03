@@ -140,7 +140,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    typename ClassElement<GUM_SCALAR>::ClassElementType
+    typename PRMClassElement<GUM_SCALAR>::ClassElementType
     FormAttribute<GUM_SCALAR>::elt_type() const {
       return this->prm_attribute;
     }
@@ -165,7 +165,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void FormAttribute<GUM_SCALAR>::addParent(
-        const ClassElement<GUM_SCALAR>& elt ) {
+        const PRMClassElement<GUM_SCALAR>& elt ) {
       try {
         if ( __cpf ) {
           delete __cpf;
@@ -188,7 +188,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void
-    FormAttribute<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {
+    FormAttribute<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {
     }
 
     template <typename GUM_SCALAR>

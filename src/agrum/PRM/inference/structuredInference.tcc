@@ -898,14 +898,14 @@ namespace gum {
       // First step we add Attributes and Aggregators
       for ( const auto node : c.dag().nodes() ) {
         switch ( c.get( node ).elt_type() ) {
-          case ClassElement<GUM_SCALAR>::prm_attribute: {
+          case PRMClassElement<GUM_SCALAR>::prm_attribute: {
             pool.insert( &(
                 const_cast<Potential<GUM_SCALAR>&>( c.get( node ).cpf() ) ) );
             // break omited : We want to execute the next block
             // for attributes
           }
 
-          case ClassElement<GUM_SCALAR>::prm_aggregate: {
+          case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
             moral_graph.addNode( node );
             mods.insert( node, c.get( node ).type()->domainSize() );
             break;
@@ -922,15 +922,15 @@ namespace gum {
 
         // Adding edges and marrying parents
         for ( auto tail = parents.begin(); tail != parents.end(); ++tail ) {
-          if ( ClassElement<GUM_SCALAR>::isAttribute( c.get( *tail ) ) or
-               ClassElement<GUM_SCALAR>::isAggregate( c.get( *tail ) ) ) {
+          if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( *tail ) ) or
+               PRMClassElement<GUM_SCALAR>::isAggregate( c.get( *tail ) ) ) {
             moral_graph.addEdge( *tail, node );
             NodeSet::const_iterator marry = tail;
             ++marry;
 
             while ( marry != parents.end() ) {
-              if ( ClassElement<GUM_SCALAR>::isAttribute( c.get( *marry ) ) or
-                   ClassElement<GUM_SCALAR>::isAggregate( c.get( *marry ) ) )
+              if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( *marry ) ) or
+                   PRMClassElement<GUM_SCALAR>::isAggregate( c.get( *marry ) ) )
                 moral_graph.addEdge( *tail, *marry );
 
               ++marry;
@@ -940,7 +940,7 @@ namespace gum {
 
         // Adding nodes to the partial ordering
         switch ( c.get( node ).elt_type() ) {
-          case ClassElement<GUM_SCALAR>::prm_aggregate: {
+          case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
             if ( c.isOutputNode( c.get( node ) ) )
               outputs().insert( node );
             else
@@ -953,8 +953,8 @@ namespace gum {
               const auto& prnt = c.get( par );
 
               if ( ( not c.isOutputNode( prnt ) ) and
-                   ( ClassElement<GUM_SCALAR>::isAttribute( prnt ) or
-                     ClassElement<GUM_SCALAR>::isAggregate( prnt ) ) ) {
+                   ( PRMClassElement<GUM_SCALAR>::isAttribute( prnt ) or
+                     PRMClassElement<GUM_SCALAR>::isAggregate( prnt ) ) ) {
                 inners().erase( prnt.id() );
                 aggregators().insert( prnt.id() );
               }
@@ -963,7 +963,7 @@ namespace gum {
             break;
           }
 
-          case ClassElement<GUM_SCALAR>::prm_attribute: {
+          case PRMClassElement<GUM_SCALAR>::prm_attribute: {
             pool.insert( const_cast<Potential<GUM_SCALAR>*>(
                 &( c.get( node ).cpf() ) ) );
 

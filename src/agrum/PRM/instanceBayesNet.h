@@ -113,9 +113,9 @@ namespace gum {
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute<GUM_SCALAR>.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const ClassElement<GUM_SCALAR>& __get( NodeId id ) const;
+      const PRMClassElement<GUM_SCALAR>& __get( NodeId id ) const;
 
-      const ClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
+      const PRMClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 
       /// The ClassElementContainer decorated by this.
       const Instance<GUM_SCALAR>* __inst;

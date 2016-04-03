@@ -44,7 +44,7 @@ namespace gum {
     PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
                                       AggregateType aggType,
                                       const Type<GUM_SCALAR>& rvType )
-        : ClassElement<GUM_SCALAR>( name )
+        : PRMClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new Type<GUM_SCALAR>( rvType ) )
         , __label( nullptr ) {
@@ -58,7 +58,7 @@ namespace gum {
                                       AggregateType aggType,
                                       const Type<GUM_SCALAR>& rvType,
                                       Idx label )
-        : ClassElement<GUM_SCALAR>( name )
+        : PRMClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new Type<GUM_SCALAR>( rvType ) )
         , __label( new Idx( label ) ) {
@@ -76,7 +76,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMAggregate<GUM_SCALAR>::PRMAggregate( const PRMAggregate<GUM_SCALAR>& source )
-        : ClassElement<GUM_SCALAR>( source )
+        : PRMClassElement<GUM_SCALAR>( source )
         , __agg_type( source.__agg_type )
         , __type( new Type<GUM_SCALAR>( source.type() ) )
         , __label( source.__label ) {
@@ -92,7 +92,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename ClassElement<GUM_SCALAR>::ClassElementType
+    INLINE typename PRMClassElement<GUM_SCALAR>::ClassElementType
     PRMAggregate<GUM_SCALAR>::elt_type() const {
       return this->prm_aggregate;
     }
@@ -157,15 +157,15 @@ namespace gum {
       return nullptr;
     }
 
-    // See gum::ClassElement<GUM_SCALAR>::_addParent().
+    // See gum::PRMClassElement<GUM_SCALAR>::_addParent().
     template <typename GUM_SCALAR>
     INLINE void
-    PRMAggregate<GUM_SCALAR>::addParent( const ClassElement<GUM_SCALAR>& elt ) {}
+    PRMAggregate<GUM_SCALAR>::addParent( const PRMClassElement<GUM_SCALAR>& elt ) {}
 
-    // See gum::ClassElement<GUM_SCALAR>::_addChild().
+    // See gum::PRMClassElement<GUM_SCALAR>::_addChild().
     template <typename GUM_SCALAR>
     INLINE void
-    PRMAggregate<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {}
+    PRMAggregate<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     PRMAttribute<GUM_SCALAR>* PRMAggregate<GUM_SCALAR>::getCastDescendant() const {

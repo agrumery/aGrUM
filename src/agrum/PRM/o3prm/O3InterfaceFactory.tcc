@@ -254,11 +254,11 @@ namespace gum {
         const auto& real_i = __prm->interface( i.name().label() );
         const auto& real_elt = real_i.get( elt.name().label() );
 
-        if ( ClassElement<GUM_SCALAR>::isAttribute( real_elt ) ) {
+        if ( PRMClassElement<GUM_SCALAR>::isAttribute( real_elt ) ) {
           return __checkAttributeOverloadLegality( i, elt );
         }
 
-        if ( ClassElement<GUM_SCALAR>::isReferenceSlot( real_elt ) ) {
+        if ( PRMClassElement<GUM_SCALAR>::isReferenceSlot( real_elt ) ) {
           return __checkReferenceOverloadLegality( i, elt );
         }
 

@@ -36,11 +36,11 @@ namespace gum {
      * @class Parameter parameter.h <agrum/PRM/parameter.h>
      * @brief Parameter is a member of a Class in a PRM.
      *
-     * @see PRM PRMFactory Class ClassElement
+     * @see PRM PRMFactory Class PRMClassElement
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class Parameter : public ClassElement<GUM_SCALAR> {
+    class Parameter : public PRMClassElement<GUM_SCALAR> {
       public:
       enum ParameterType { INT, REAL };
 
@@ -69,8 +69,8 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// See gum::ClassElement::elt_type().
-      virtual typename ClassElement<GUM_SCALAR>::ClassElementType
+      /// See gum::PRMClassElement::elt_type().
+      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
       elt_type() const;
 
       GUM_SCALAR value() const;
@@ -79,26 +79,26 @@ namespace gum {
 
       ParameterType valueType() const;
 
-      /// See gum::ClassElement::type().
+      /// See gum::PRMClassElement::type().
       virtual Type<GUM_SCALAR>& type();
 
-      /// See gum::ClassElement::type().
+      /// See gum::PRMClassElement::type().
       virtual const Type<GUM_SCALAR>& type() const;
 
-      /// See gum::ClassElement::cpf().
+      /// See gum::PRMClassElement::cpf().
       virtual Potential<GUM_SCALAR>& cpf();
 
-      /// See gum::ClassElement::cpf().
+      /// See gum::PRMClassElement::cpf().
       virtual const Potential<GUM_SCALAR>& cpf() const;
 
-      /// See gum::ClassElement::addParent().
-      void addParent( const gum::prm::ClassElement<GUM_SCALAR>& );
+      /// See gum::PRMClassElement::addParent().
+      void addParent( const gum::prm::PRMClassElement<GUM_SCALAR>& );
 
-      /// See gum::ClassElement::addChild().
-      void addChild( const gum::prm::ClassElement<GUM_SCALAR>& );
+      /// See gum::PRMClassElement::addChild().
+      void addChild( const gum::prm::PRMClassElement<GUM_SCALAR>& );
 
       /// @brief Raise a gum::OperationNotAllowed
-      /// See gum::ClassElement::getCastDescendant()
+      /// See gum::PRMClassElement::getCastDescendant()
       virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
 
       /// @}

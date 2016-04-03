@@ -435,7 +435,7 @@ namespace gum {
 
           const auto& elt = real_c.get( ref.name().label() );
 
-          if ( ClassElement<GUM_SCALAR>::isReferenceSlot( elt ) ) {
+          if ( PRMClassElement<GUM_SCALAR>::isReferenceSlot( elt ) ) {
 
             auto slot_type = (ClassElementContainer<GUM_SCALAR>*)nullptr;
 
@@ -700,9 +700,9 @@ namespace gum {
         }
 
         const auto& elt = c.get( prnt.label() );
-        if ( not( gum::prm::ClassElement<GUM_SCALAR>::isAttribute( elt ) or
-                  gum::prm::ClassElement<GUM_SCALAR>::isSlotChain( elt ) or
-                  gum::prm::ClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
+        if ( not( gum::prm::PRMClassElement<GUM_SCALAR>::isAttribute( elt ) or
+                  gum::prm::PRMClassElement<GUM_SCALAR>::isSlotChain( elt ) or
+                  gum::prm::PRMClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
           O3PRM_CLASS_ILLEGAL_PARENT( prnt, *__errors );
           return false;
         }
@@ -859,7 +859,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE const ClassElement<GUM_SCALAR>*
+      INLINE const PRMClassElement<GUM_SCALAR>*
       O3ClassFactory<GUM_SCALAR>::__resolveSlotChain(
           const ClassElementContainer<GUM_SCALAR>& c, const O3Label& chain ) {
 

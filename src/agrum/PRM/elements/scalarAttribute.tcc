@@ -126,7 +126,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename ClassElement<GUM_SCALAR>::ClassElementType
+    INLINE typename PRMClassElement<GUM_SCALAR>::ClassElementType
     ScalarAttribute<GUM_SCALAR>::elt_type() const {
       return this->prm_attribute;
     }
@@ -149,7 +149,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void ScalarAttribute<GUM_SCALAR>::addParent(
-        const ClassElement<GUM_SCALAR>& elt ) {
+        const PRMClassElement<GUM_SCALAR>& elt ) {
       try {
         __cpf->add( elt.type().variable() );
       } catch ( DuplicateElement& ) {
@@ -164,10 +164,10 @@ namespace gum {
       }
     }
 
-    // See gum::ClassElement<GUM_SCALAR>::_addChild().
+    // See gum::PRMClassElement<GUM_SCALAR>::_addChild().
     template <typename GUM_SCALAR>
     INLINE void ScalarAttribute<GUM_SCALAR>::addChild(
-        const ClassElement<GUM_SCALAR>& elt ) {}
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     PRMAttribute<GUM_SCALAR>*

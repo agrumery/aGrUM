@@ -29,9 +29,9 @@
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
- * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 
@@ -44,8 +44,8 @@ namespace gum_tests {
     gum::prm::PRMClass<double>* __C;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;
-    gum::Sequence<gum::prm::ClassElement<double>*>* __booleanChain;
-    gum::Sequence<gum::prm::ClassElement<double>*>* __stateChain;
+    gum::Sequence<gum::prm::PRMClassElement<double>*>* __booleanChain;
+    gum::Sequence<gum::prm::PRMClassElement<double>*>* __stateChain;
 
     // these will be dispodes by their repsective class
     gum::prm::ReferenceSlot<double>* __refI;
@@ -84,12 +84,12 @@ namespace gum_tests {
           new gum::prm::ScalarAttribute<double>( "myState", *__state );
       __C->add( __stateAttr );
 
-      __booleanChain = new gum::Sequence<gum::prm::ClassElement<double>*>();
+      __booleanChain = new gum::Sequence<gum::prm::PRMClassElement<double>*>();
       __booleanChain->insert( __refI );
       __booleanChain->insert( __refJ );
       __booleanChain->insert( __boolAttr );
 
-      __stateChain = new gum::Sequence<gum::prm::ClassElement<double>*>();
+      __stateChain = new gum::Sequence<gum::prm::PRMClassElement<double>*>();
       __stateChain->insert( __refI );
       __stateChain->insert( __refK );
       __stateChain->insert( __stateAttr );
@@ -106,7 +106,7 @@ namespace gum_tests {
       delete __stateChain;
     }
 
-    /// ClassElement Tests
+    /// PRMClassElement Tests
     /// @{
     void testIsReferenceSlot() {
       // Arrange
@@ -219,7 +219,7 @@ namespace gum_tests {
     void testLastEltSimple() {
       // Arrange
       SlotChain simple( "simple", *__booleanChain );
-      gum::prm::ClassElement<double>* elt = nullptr;
+      gum::prm::PRMClassElement<double>* elt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( elt = &( simple.lastElt() ) );
       // Assert
@@ -230,7 +230,7 @@ namespace gum_tests {
       // Arrange
       SlotChain simple( "simple", *__booleanChain );
       const auto& const_simple = simple;
-      gum::prm::ClassElement<double> const* elt = nullptr;
+      gum::prm::PRMClassElement<double> const* elt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( elt = &( const_simple.lastElt() ) );
       // Assert
@@ -240,7 +240,7 @@ namespace gum_tests {
     void testChain() {
       // Arrange
       SlotChain simple( "simple", *__booleanChain );
-      gum::Sequence<gum::prm::ClassElement<double>*> const* chain = nullptr;
+      gum::Sequence<gum::prm::PRMClassElement<double>*> const* chain = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( chain = &( simple.chain() ) );
       // ASSERT

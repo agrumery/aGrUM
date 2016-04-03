@@ -297,7 +297,7 @@ namespace gum {
       __lifted_pools.insert( &( __bb.requisiteNodes( i ) ), lifted_pool );
 
       for ( const auto node : __bb.requisiteNodes( i ) )
-        if ( ClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) )
+        if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) )
           lifted_pool->insert(
               const_cast<Potential<GUM_SCALAR>*>( &( c.get( node ).cpf() ) ) );
 
@@ -305,12 +305,12 @@ namespace gum {
 
       for ( const auto& elt : *i ) {
         if ( __bb.requisiteNodes( *i ).exists( elt.first ) ) {
-          if ( ClassElement<GUM_SCALAR>::isAttribute( c.get( elt.first ) ) ) {
+          if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( elt.first ) ) ) {
             if ( c.isOutputNode( c.get( elt.first ) ) )
               outers.insert( elt.first );
             else if ( not outers.exists( elt.first ) )
               inners.insert( elt.first );
-          } else if ( ClassElement<GUM_SCALAR>::isAggregate(
+          } else if ( PRMClassElement<GUM_SCALAR>::isAggregate(
                           c.get( elt.first ) ) ) {
             outers.insert( elt.first );
 
@@ -318,7 +318,7 @@ namespace gum {
             // which are
             // innner nodes
             for ( const auto par : c.dag().parents( elt.first ) )
-              if ( ClassElement<GUM_SCALAR>::isAttribute(
+              if ( PRMClassElement<GUM_SCALAR>::isAttribute(
                        i->type().get( par ) ) and
                    i->type().isInnerNode( i->type().get( par ) ) and
                    __bb.requisiteNodes( i ).exists( par ) ) {
@@ -494,13 +494,13 @@ namespace gum {
 
       for ( const auto node : __bb.requisiteNodes( i ) ) {
         switch ( i->type().get( node ).elt_type() ) {
-          case ClassElement<GUM_SCALAR>::prm_aggregate:
-          case ClassElement<GUM_SCALAR>::prm_attribute: {
+          case PRMClassElement<GUM_SCALAR>::prm_aggregate:
+          case PRMClassElement<GUM_SCALAR>::prm_attribute: {
             attr_set->insert( node );
             break;
           }
 
-          case ClassElement<GUM_SCALAR>::prm_slotchain: {
+          case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
             sc_set->insert( node );
             break;
           }

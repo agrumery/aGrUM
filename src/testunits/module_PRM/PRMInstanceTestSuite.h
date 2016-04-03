@@ -27,9 +27,9 @@
 #include <agrum/PRM/elements/instance.h>
 
 /**
- * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 
@@ -72,7 +72,7 @@ namespace gum_tests {
       __classB->add( new PRMAttribute( "b", *__state ) );
       __classB->addArc( "a", "b" );
       __classB->add( new Reference( "rho", *__classA ) );
-      gum::Sequence<gum::prm::ClassElement<double>*> seq;
+      gum::Sequence<gum::prm::PRMClassElement<double>*> seq;
       seq << &( __classB->get( "rho" ) ) << &( __classA->get( "a" ) );
       __classB->add( new SlotChain( "rho.a", seq ) );
       __classB->addArc( "rho.a", "b" );
