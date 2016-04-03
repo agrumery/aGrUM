@@ -39,7 +39,7 @@ namespace gum_tests {
     typedef gum::prm::Type<double> Type;
     typedef gum::prm::PRMScalarAttribute<double> PRMAttribute;
     typedef gum::prm::PRMReferenceSlot<double> Reference;
-    typedef gum::prm::SlotChain<double> SlotChain;
+    typedef gum::prm::PRMSlotChain<double> PRMSlotChain;
 
     Type* __boolean;
     Type* __state;

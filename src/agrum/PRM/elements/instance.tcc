@@ -94,7 +94,7 @@ namespace gum {
           } catch ( NotFound& ) {
 
             auto elt = &(type().get( node ));
-            auto sc = static_cast<SlotChain<GUM_SCALAR>*>( elt );
+            auto sc = static_cast<PRMSlotChain<GUM_SCALAR>*>( elt );
             const auto& instances = getInstances( sc->id() );
 
             for ( const auto inst : instances ) {
@@ -107,7 +107,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void
-    PRMInstance<GUM_SCALAR>::__instantiateSlotChain( SlotChain<GUM_SCALAR>* sc ) {
+    PRMInstance<GUM_SCALAR>::__instantiateSlotChain( PRMSlotChain<GUM_SCALAR>* sc ) {
       auto first_id = sc->chain()[0]->id();
       auto set =
           new Set<PRMInstance<GUM_SCALAR>*>( *( __referenceMap[first_id] ) );
@@ -186,8 +186,8 @@ namespace gum {
         }
 
         case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
-          SlotChain<GUM_SCALAR>& sc =
-              static_cast<SlotChain<GUM_SCALAR>&>( type().get( id ) );
+          PRMSlotChain<GUM_SCALAR>& sc =
+              static_cast<PRMSlotChain<GUM_SCALAR>&>( type().get( id ) );
 
           // Checking if instance's type is legal
           if ( not instance.type().isSubTypeOf( sc.end() ) ) {
@@ -199,7 +199,7 @@ namespace gum {
 
           // Checking the reference's size limit
           if ( __referenceMap.exists( id ) and
-               ( not static_cast<SlotChain<GUM_SCALAR>&>( type().get( id ) )
+               ( not static_cast<PRMSlotChain<GUM_SCALAR>&>( type().get( id ) )
                          .isMultiple() ) and
                ( __referenceMap[id]->size() == 1 ) ) {
             GUM_ERROR( OutOfUpperBound,
@@ -338,7 +338,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void
-    PRMInstance<GUM_SCALAR>::__addReferingInstance( SlotChain<GUM_SCALAR>* sc,
+    PRMInstance<GUM_SCALAR>::__addReferingInstance( PRMSlotChain<GUM_SCALAR>* sc,
                                                  PRMInstance<GUM_SCALAR>* i ) {
       NodeId id = i->get( sc->lastElt().safeName() ).id();
       std::string name = sc->lastElt().safeName();

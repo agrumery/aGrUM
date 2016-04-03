@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::SlotChain
+ * @brief Source implementation of gum::PRMSlotChain
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
@@ -31,8 +31,8 @@ namespace gum {
   namespace prm {
 
 
-    template class SlotChain<float>;
-    template class SlotChain<double>;
+    template class PRMSlotChain<float>;
+    template class PRMSlotChain<double>;
 
 
   } /* namespace prm */

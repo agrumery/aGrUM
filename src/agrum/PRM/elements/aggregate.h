@@ -50,7 +50,7 @@ namespace gum {
      * An aggregate in a PRM is used to summarized information about n-ary
      * relations.
      *
-     * @see PRM PRMFactory Class SlotChain
+     * @see PRM PRMFactory Class PRMSlotChain
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>

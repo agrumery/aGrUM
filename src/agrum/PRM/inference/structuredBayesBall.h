@@ -120,7 +120,7 @@ namespace gum {
       std::pair<bool, bool>&
       __getMark( InstanceMap& marks, const PRMInstance<GUM_SCALAR>* i, NodeId n );
       /// Code alias
-      const SlotChain<GUM_SCALAR>& __getSC( const PRMInstance<GUM_SCALAR>* i,
+      const PRMSlotChain<GUM_SCALAR>& __getSC( const PRMInstance<GUM_SCALAR>* i,
                                             NodeId n );
 
       /// Cleans this before a new computation.

@@ -339,7 +339,7 @@ namespace gum {
           }
 
           case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
-            if ( static_cast<SlotChain<GUM_SCALAR>&>( elt ).isMultiple() ) {
+            if ( static_cast<PRMSlotChain<GUM_SCALAR>&>( elt ).isMultiple() ) {
               GUM_ERROR( OperationNotAllowed,
                          "can not add a multiple slot chain to an attribute" );
             }
@@ -361,7 +361,7 @@ namespace gum {
         }
       } catch ( NotFound& ) {
         // Check if name is a slot chain
-        SlotChain<GUM_SCALAR>* sc = __buildSlotChain( c, name );
+        PRMSlotChain<GUM_SCALAR>* sc = __buildSlotChain( c, name );
 
         if ( sc == 0 ) {
           std::string msg =
@@ -921,7 +921,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>* PRMFactory<GUM_SCALAR>::__buildSlotChain(
+    PRMSlotChain<GUM_SCALAR>* PRMFactory<GUM_SCALAR>::__buildSlotChain(
         PRMClassElementContainer<GUM_SCALAR>* start, const std::string& name ) {
       std::vector<std::string> v;
       decomposePath( name, v );
@@ -961,7 +961,7 @@ namespace gum {
 
       current->setOutputNode( *( elts.back() ), true );
 
-      return new SlotChain<GUM_SCALAR>( name, elts );
+      return new PRMSlotChain<GUM_SCALAR>( name, elts );
     }
 
     template <typename GUM_SCALAR>
@@ -996,8 +996,8 @@ namespace gum {
       for ( const auto& elt : inputs ) {
         if ( ( *elt ).type() != ( *t ) ) {
           if ( PRMClassElement<GUM_SCALAR>::isSlotChain( *elt ) ) {
-            SlotChain<GUM_SCALAR>* sc =
-                static_cast<SlotChain<GUM_SCALAR>*>( elt );
+            PRMSlotChain<GUM_SCALAR>* sc =
+                static_cast<PRMSlotChain<GUM_SCALAR>*>( elt );
             std::stringstream name;
 
             for ( Size idx = 0; idx < sc->chain().size() - 1; ++idx ) {

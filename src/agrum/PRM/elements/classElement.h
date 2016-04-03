@@ -131,7 +131,7 @@ namespace gum {
         return elt.elt_type() == prm_aggregate;
       }
 
-      /// Return true if obj is of type SlotChain
+      /// Return true if obj is of type PRMSlotChain
       static INLINE bool isSlotChain( const PRMClassElement& elt ) {
         return elt.elt_type() == prm_slotchain;
       }

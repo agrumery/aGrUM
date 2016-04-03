@@ -210,11 +210,11 @@ namespace gum {
       const Set<PRMReferenceSlot<GUM_SCALAR>*>& referenceSlots() const;
 
       /**
-       * Returns the set of SlotChain<GUM_SCALAR> of this Class<GUM_SCALAR>.
-       * @return Returns the set of SlotChain<GUM_SCALAR> of this
+       * Returns the set of PRMSlotChain<GUM_SCALAR> of this Class<GUM_SCALAR>.
+       * @return Returns the set of PRMSlotChain<GUM_SCALAR> of this
        * Class<GUM_SCALAR>.
        */
-      const Set<SlotChain<GUM_SCALAR>*>& slotChains() const;
+      const Set<PRMSlotChain<GUM_SCALAR>*>& slotChains() const;
 
       /// @}
       // ========================================================================
@@ -350,8 +350,8 @@ namespace gum {
       /// The sequence of aggregate.
       Set<PRMAggregate<GUM_SCALAR>*> __aggregates;
 
-      /// The set of gum::SlotChain<GUM_SCALAR>s
-      Set<SlotChain<GUM_SCALAR>*> __slotChains;
+      /// The set of gum::PRMSlotChain<GUM_SCALAR>s
+      Set<PRMSlotChain<GUM_SCALAR>*> __slotChains;
 
       /// The Set of parameters in this Class<GUM_SCALAR>.
       Set<PRMParameter<GUM_SCALAR>*> __parameters;

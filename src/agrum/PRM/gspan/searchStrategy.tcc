@@ -111,7 +111,7 @@ namespace gum {
                           node,
                           data.node2attr.first(
                               __str( inst2,
-                                     static_cast<const SlotChain<GUM_SCALAR>&>(
+                                     static_cast<const PRMSlotChain<GUM_SCALAR>&>(
                                          inst->type().get( par ) ) ) ) );
 
                   break;
@@ -396,7 +396,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE std::string
       StrictSearch<GUM_SCALAR>::__str( const PRMInstance<GUM_SCALAR>* i,
-                                       const SlotChain<GUM_SCALAR>& a ) const {
+                                       const PRMSlotChain<GUM_SCALAR>& a ) const {
         return i->name() + __dot + a.lastElt().safeName();
       }
 

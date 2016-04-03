@@ -41,7 +41,7 @@ namespace gum_tests {
     typedef gum::prm::PRMAggregate<double> PRMAggregate;
     typedef gum::prm::PRMScalarAttribute<double> PRMAttribute;
     typedef gum::prm::PRMReferenceSlot<double> Reference;
-    typedef gum::prm::SlotChain<double> SlotChain;
+    typedef gum::prm::PRMSlotChain<double> PRMSlotChain;
 
     Type* __boolean;
     Type* __state;
@@ -81,7 +81,7 @@ namespace gum_tests {
       auto ref = new Reference( "rho", toRef );
       gum::Sequence<gum::prm::PRMClassElement<double>*> seq;
       seq << ref << a;
-      auto chain = new SlotChain( "rho.a", seq );
+      auto chain = new PRMSlotChain( "rho.a", seq );
       PRMClass super( "super" );
       auto b = new PRMAttribute( "b", *__boolean );
       auto b_id = super.add( b );
@@ -475,10 +475,10 @@ namespace gum_tests {
       seq.insert( ref_1 );
       seq.insert( ref_2 );
       seq.insert( attr );
-      SlotChain* chain = new SlotChain( "ref_1.ref_2.attr", seq );
+      PRMSlotChain* chain = new PRMSlotChain( "ref_1.ref_2.attr", seq );
       c_1.add( chain );
       PRMClass c_4( "c_4", c_1 );
-      SlotChain* chain_copy = new SlotChain( "ref_1.ref_2.attr", seq );
+      PRMSlotChain* chain_copy = new PRMSlotChain( "ref_1.ref_2.attr", seq );
       // Act
       TS_ASSERT_THROWS( c_4.overload( chain_copy ), gum::OperationNotAllowed );
       // Assert
@@ -604,7 +604,7 @@ namespace gum_tests {
         orGate.add( or_state );
         gum::Sequence<gum::prm::PRMClassElement<double>*> or_seq;
         or_seq << &( orGate.get( "inputs" ) ) << &( event.get( "state" ) );
-        auto or_chain = new SlotChain( "inputs.state", or_seq );
+        auto or_chain = new PRMSlotChain( "inputs.state", or_seq );
         orGate.add( or_chain );
         orGate.addArc( "inputs.state", "state" );
         // AndGate
@@ -616,7 +616,7 @@ namespace gum_tests {
         andGate.add( and_state );
         gum::Sequence<gum::prm::PRMClassElement<double>*> and_seq;
         and_seq << and_inputs << &( event.get( "state" ) );
-        auto and_chain = new SlotChain( "inputs.state", and_seq );
+        auto and_chain = new PRMSlotChain( "inputs.state", and_seq );
         andGate.add( and_chain );
         andGate.addArc( "inputs.state", "state" );
         // KNGate
@@ -629,7 +629,7 @@ namespace gum_tests {
         knGate.add( nb_true );
         gum::Sequence<gum::prm::PRMClassElement<double>*> kn_seq;
         kn_seq << kn_inputs << &( event.get( "state" ) );
-        auto kn_chain = new SlotChain( "inputs.state", kn_seq );
+        auto kn_chain = new PRMSlotChain( "inputs.state", kn_seq );
         knGate.add( kn_chain );
         knGate.addArc( "inputs.state", "Nb_true" );
         Type intervalle_k( gum::LabelizedVariable( "intervalle_K", "", 4 ) );

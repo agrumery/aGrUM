@@ -364,7 +364,7 @@ namespace gum {
       std::string __str( const PRMInstance<GUM_SCALAR>* i,
                          const PRMAttribute<GUM_SCALAR>& a ) const;
       std::string __str( const PRMInstance<GUM_SCALAR>* i,
-                         const SlotChain<GUM_SCALAR>& a ) const;
+                         const PRMSlotChain<GUM_SCALAR>& a ) const;
 
       public:
       // For bench/debug purpose.

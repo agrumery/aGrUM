@@ -1031,7 +1031,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::string StructuredInference<GUM_SCALAR>::__str(
-        const PRMInstance<GUM_SCALAR>* i, const SlotChain<GUM_SCALAR>& a ) const {
+        const PRMInstance<GUM_SCALAR>* i, const PRMSlotChain<GUM_SCALAR>& a ) const {
       return i->name() + __dot + a.lastElt().safeName();
     }
 

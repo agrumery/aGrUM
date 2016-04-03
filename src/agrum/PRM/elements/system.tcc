@@ -260,7 +260,7 @@ namespace gum {
 
             case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
               std::string parent_name =
-                  static_cast<const SlotChain<GUM_SCALAR>&>(
+                  static_cast<const PRMSlotChain<GUM_SCALAR>&>(
                       instance.type().get( par ) )
                       .lastElt()
                       .safeName();
@@ -316,8 +316,8 @@ namespace gum {
 
           case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
             std::stringstream parent_name;
-            const SlotChain<GUM_SCALAR>& sc =
-                static_cast<const SlotChain<GUM_SCALAR>&>(
+            const PRMSlotChain<GUM_SCALAR>& sc =
+                static_cast<const PRMSlotChain<GUM_SCALAR>&>(
                     instance.type().get( parent ) );
             parent_name << instance.getInstance( sc.id() ).name() << "."
                         << sc.lastElt().safeName();

@@ -41,7 +41,7 @@ namespace gum_tests {
     typedef gum::prm::Type<double> Type;
     typedef gum::prm::PRMScalarAttribute<double> PRMAttribute;
     typedef gum::prm::PRMReferenceSlot<double> Reference;
-    typedef gum::prm::SlotChain<double> SlotChain;
+    typedef gum::prm::PRMSlotChain<double> PRMSlotChain;
     typedef gum::prm::PRMObject PRMObject;
     typedef gum::Bijection<const gum::DiscreteVariable*,
                            const gum::DiscreteVariable*> Bijection;
@@ -74,7 +74,7 @@ namespace gum_tests {
       __classB->add( new Reference( "rho", *__classA ) );
       gum::Sequence<gum::prm::PRMClassElement<double>*> seq;
       seq << &( __classB->get( "rho" ) ) << &( __classA->get( "a" ) );
-      __classB->add( new SlotChain( "rho.a", seq ) );
+      __classB->add( new PRMSlotChain( "rho.a", seq ) );
       __classB->addArc( "rho.a", "b" );
     }
 

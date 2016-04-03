@@ -286,7 +286,7 @@ namespace gum {
 
             chain.setAtPos( 0, __nameMap[c_sc->chain().front()->name()] );
 
-            auto sc = new SlotChain<GUM_SCALAR>( c_sc->name(), chain );
+            auto sc = new PRMSlotChain<GUM_SCALAR>( c_sc->name(), chain );
             __bijection->insert( &( c_sc->type().variable() ),
                                  &( sc->type().variable() ) );
             sc->setId( c_sc->id() );
@@ -435,8 +435,8 @@ namespace gum {
 
           chain.setAtPos( 0, __nameMap[c_slotchain->chain().front()->name()] );
 
-          SlotChain<GUM_SCALAR>* sc =
-              new SlotChain<GUM_SCALAR>( c_slotchain->name(), chain );
+          PRMSlotChain<GUM_SCALAR>* sc =
+              new PRMSlotChain<GUM_SCALAR>( c_slotchain->name(), chain );
           bij.insert( &( c_slotchain->type().variable() ),
                       &( sc->type().variable() ) );
           sc->setId( c_slotchain->id() );
@@ -543,7 +543,7 @@ namespace gum {
 
       // Defining input / output nodes
       if ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) {
-        SlotChain<GUM_SCALAR>* sc = static_cast<SlotChain<GUM_SCALAR>*>( tail );
+        PRMSlotChain<GUM_SCALAR>* sc = static_cast<PRMSlotChain<GUM_SCALAR>*>( tail );
         this->setInputNode( *head, true );
         sc->end().setOutputNode( sc->end().get( sc->lastElt().safeName() ),
                                  true );
@@ -720,7 +720,7 @@ namespace gum {
         }
 
         case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
-          __slotChains.insert( static_cast<SlotChain<GUM_SCALAR>*>( elt ) );
+          __slotChains.insert( static_cast<PRMSlotChain<GUM_SCALAR>*>( elt ) );
           break;
         }
 
@@ -885,12 +885,12 @@ namespace gum {
       __nameMap[overloader->name()] = overloader;
       __nameMap.insert( overloader->safeName(), overloader );
       __referenceSlots.insert( overloader );
-      SlotChain<GUM_SCALAR>* sc = 0;
+      PRMSlotChain<GUM_SCALAR>* sc = 0;
       PRMReferenceSlot<GUM_SCALAR>* ref = 0;
       PRMClassElement<GUM_SCALAR>* next = 0;
-      std::vector<SlotChain<GUM_SCALAR> *> toRemove, toAdd;
+      std::vector<PRMSlotChain<GUM_SCALAR> *> toRemove, toAdd;
 
-      // Updating SlotChain<GUM_SCALAR> which started with overloaded
+      // Updating PRMSlotChain<GUM_SCALAR> which started with overloaded
       for ( const auto slotchain : __slotChains ) {
         // If the attribute pointed by this slotchain is overloaded, we need to
         // change the slotchain
@@ -926,7 +926,7 @@ namespace gum {
             }
 
             sc_name += seq.back()->safeName();
-            sc = new SlotChain<GUM_SCALAR>( sc_name, seq );
+            sc = new PRMSlotChain<GUM_SCALAR>( sc_name, seq );
             sc->setId( slotchain->id() );
 
             for ( const auto child : this->dag().children( sc->id() ) ) {
@@ -1198,7 +1198,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<SlotChain<GUM_SCALAR>*>&
+    INLINE const Set<PRMSlotChain<GUM_SCALAR>*>&
     PRMClass<GUM_SCALAR>::slotChains() const {
       return __slotChains;
     }

@@ -159,7 +159,7 @@ namespace gum {
         default: {
           // We shouldn't reach any other PRMClassElement<GUM_DATA> than PRMAttribute
           // or
-          // SlotChain<GUM_SCALAR>.
+          // PRMSlotChain<GUM_SCALAR>.
           GUM_ERROR( FatalError, "This case is impossible." );
         }
       }
@@ -345,10 +345,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const SlotChain<GUM_SCALAR>&
+    INLINE const PRMSlotChain<GUM_SCALAR>&
     StructuredBayesBall<GUM_SCALAR>::__getSC( const PRMInstance<GUM_SCALAR>* i,
                                               NodeId n ) {
-      return static_cast<const SlotChain<GUM_SCALAR>&>( i->type().get( n ) );
+      return static_cast<const PRMSlotChain<GUM_SCALAR>&>( i->type().get( n ) );
     }
 
     template <typename GUM_SCALAR>

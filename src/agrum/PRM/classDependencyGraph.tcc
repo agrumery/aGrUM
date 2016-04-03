@@ -76,8 +76,8 @@ namespace gum {
         HashTable<const PRMClassElement<GUM_SCALAR>*, NodeId>& map ) {
       switch ( c.get( node ).elt_type() ) {
         case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
-          const SlotChain<GUM_SCALAR>& sc =
-              static_cast<const SlotChain<GUM_SCALAR>&>( c.get( node ) );
+          const PRMSlotChain<GUM_SCALAR>& sc =
+              static_cast<const PRMSlotChain<GUM_SCALAR>&>( c.get( node ) );
 
           for ( const auto chi : c.dag().children( node ) )
             __graph.addArc( ( *( __node_map[&( sc.end() )] ) )[&(

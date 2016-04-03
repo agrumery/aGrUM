@@ -360,7 +360,7 @@ namespace gum {
         // for (Sequence<PRMInstance<GUM_SCALAR>*>::iterator iter = seq.begin();
         // iter !=
         // seq.end(); ++iter) {
-        //   for (Set<SlotChain*>::iterator sc = (*iter)->slotChains().begin();
+        //   for (Set<PRMSlotChain*>::iterator sc = (*iter)->slotChains().begin();
         //        sc != (*iter)->slotChains().end(); ++sc) {
         //     elt = const_cast<PRMClassElement<GUM_SCALAR>*>(&((*sc)->lastElt()));
         //     if (not elt_map->exists(elt)) {

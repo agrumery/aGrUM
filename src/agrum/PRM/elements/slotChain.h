@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::SlotChain.
+ * @brief Headers of gum::PRMSlotChain.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -44,9 +44,9 @@ namespace gum {
     class PRMAttribute;
 
     /**
-     * @class SlotChain slotChain.h <agrum/PRM/slotChain.h>
+     * @class PRMSlotChain slotChain.h <agrum/PRM/slotChain.h>
      *
-     * @brief A SlotChain represents a sequence of
+     * @brief A PRMSlotChain represents a sequence of
      *gum::prm::PRMClassElement<GUM_SCALAR>
      *where
      *        the n-1 first gum::prm::PRMClassElement<GUM_SCALAR> are
@@ -56,7 +56,7 @@ namespace gum {
      *an
      *        gum::prm::PRMAggregate.
      *
-     * A SlotChain behaves as an gum::prm::PRMAttribute or an gum::prm::PRMAggregate
+     * A PRMSlotChain behaves as an gum::prm::PRMAttribute or an gum::prm::PRMAggregate
      * (depending the gum::prm::PRMClassElement<GUM_SCALAR> type of it's last
      *element)
      *regarding
@@ -66,7 +66,7 @@ namespace gum {
      */
     // ==========================================================================
     template <typename GUM_SCALAR>
-    class SlotChain : public PRMClassElement<GUM_SCALAR> {
+    class PRMSlotChain : public PRMClassElement<GUM_SCALAR> {
       public:
       // ========================================================================
       /// @name Constructors & destructor
@@ -80,16 +80,16 @@ namespace gum {
        *
        * Warning: the last element in chain is copied !
        *
-       * @param name The name of this SlotChain.
+       * @param name The name of this PRMSlotChain.
        * @param chain The chain of gum::prm::PRMClassElement<GUM_SCALAR> in this
-       *SlotChain.
+       *PRMSlotChain.
        *
        * @throw OperationNotAllowed Raised if the chain contains less than two
        *        PRMClassElement<GUM_SCALAR>.
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
        *PRMClassElement<GUM_SCALAR>.
        */
-      SlotChain( const std::string& name,
+      PRMSlotChain( const std::string& name,
                  const Sequence<PRMClassElement<GUM_SCALAR>*>& chain );
 
       /** @brief Tweak constructor.
@@ -99,16 +99,16 @@ namespace gum {
        *
        * Warning: the last element in chain is copied !
        *
-       * @param name The name of this SlotChain.
-       * @param chain The chain given to this SlotChain, it is deleted
-       *              when SlotChain::~SlotChain() is called.
+       * @param name The name of this PRMSlotChain.
+       * @param chain The chain given to this PRMSlotChain, it is deleted
+       *              when PRMSlotChain::~PRMSlotChain() is called.
        *
        * @throw OperationNotAllowed Raised if the chain contains less than two
        *        PRMClassElement<GUM_SCALAR>.
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
        *PRMClassElement<GUM_SCALAR>.
        */
-      SlotChain( Sequence<PRMClassElement<GUM_SCALAR>*>* chain,
+      PRMSlotChain( Sequence<PRMClassElement<GUM_SCALAR>*>* chain,
                  const std::string& name );
 
       /**
@@ -116,10 +116,10 @@ namespace gum {
        *
        * This creates a copy of the slot chain.
        */
-      SlotChain( const SlotChain& source );
+      PRMSlotChain( const PRMSlotChain& source );
 
       /// Destructor.
-      virtual ~SlotChain();
+      virtual ~PRMSlotChain();
 
       /// @}
       // ========================================================================
@@ -164,11 +164,11 @@ namespace gum {
       const PRMClassElement<GUM_SCALAR>& lastElt() const;
 
       /// Return the sequence representing the chain of elements in this
-      /// SlotChain.
+      /// PRMSlotChain.
       Sequence<PRMClassElement<GUM_SCALAR>*>& chain();
 
       /// Return the sequence representing the chain of elements in this
-      /// SlotChain.
+      /// PRMSlotChain.
       const Sequence<PRMClassElement<GUM_SCALAR>*>& chain() const;
 
       /// See gum::PRMClassElement<GUM_SCALAR>::_addParent().
@@ -183,10 +183,10 @@ namespace gum {
       /// @}
       private:
       /// Copy operator. Don't use it.
-      SlotChain& operator=( const SlotChain& source );
+      PRMSlotChain& operator=( const PRMSlotChain& source );
 
       // ========================================================================
-      /// @name Private members of SlotChain.
+      /// @name Private members of PRMSlotChain.
       // ========================================================================
       /// @{
 
@@ -204,8 +204,8 @@ namespace gum {
     };
 
 
-    extern template class SlotChain<float>;
-    extern template class SlotChain<double>;
+    extern template class PRMSlotChain<float>;
+    extern template class PRMSlotChain<double>;
 
 
   } /* namespace prm */

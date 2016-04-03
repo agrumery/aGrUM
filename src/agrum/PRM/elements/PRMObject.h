@@ -213,7 +213,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class PRMAttribute;
     template <typename GUM_SCALAR>
-    class SlotChain;
+    class PRMSlotChain;
     template <typename GUM_SCALAR>
     class PRMReferenceSlot;
     template <typename GUM_SCALAR>

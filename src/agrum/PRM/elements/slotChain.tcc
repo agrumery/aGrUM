@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of gum::SlotChain<GUM_SCALAR>
+ * @brief Inline implementation of gum::PRMSlotChain<GUM_SCALAR>
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -32,13 +32,13 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>::SlotChain(
+    PRMSlotChain<GUM_SCALAR>::PRMSlotChain(
         const std::string& name,
         const Sequence<PRMClassElement<GUM_SCALAR>*>& chain )
         : PRMClassElement<GUM_SCALAR>( name )
         , __chain( new Sequence<PRMClassElement<GUM_SCALAR>*>( chain ) )
         , __isMultiple( false ) {
-      GUM_CONSTRUCTOR( SlotChain );
+      GUM_CONSTRUCTOR( PRMSlotChain );
 
       if ( __chain->size() < 2 ) {
         GUM_ERROR( OperationNotAllowed,
@@ -66,11 +66,11 @@ namespace gum {
     // Parameters are inverse to prevent unwanted constructors calls (it
     // happened)
     template <typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>::SlotChain(
+    PRMSlotChain<GUM_SCALAR>::PRMSlotChain(
         Sequence<PRMClassElement<GUM_SCALAR>*>* chain, const std::string& name )
-        : SlotChain( name, *chain ) {
+        : PRMSlotChain( name, *chain ) {
       // No need to
-      // GUM_CONSTRUCTOR(SlotChain);
+      // GUM_CONSTRUCTOR(PRMSlotChain);
 
       // if (__chain->size() < 2) {
       //  GUM_ERROR(OperationNotAllowed,
@@ -95,7 +95,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void SlotChain<GUM_SCALAR>::__copyLastElt() {
+    void PRMSlotChain<GUM_SCALAR>::__copyLastElt() {
       PRMClassElement<GUM_SCALAR>* new_elt = 0;
 
       switch ( __chain->back()->elt_type() ) {
@@ -136,24 +136,24 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>::~SlotChain() {
-      GUM_DESTRUCTOR( SlotChain );
+    PRMSlotChain<GUM_SCALAR>::~PRMSlotChain() {
+      GUM_DESTRUCTOR( PRMSlotChain );
       delete __chain->back();
       delete __chain;
     }
 
     template <typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>::SlotChain( const SlotChain<GUM_SCALAR>& source )
+    PRMSlotChain<GUM_SCALAR>::PRMSlotChain( const PRMSlotChain<GUM_SCALAR>& source )
         : PRMClassElement<GUM_SCALAR>( source.name() )
         , __chain( new Sequence<PRMClassElement<GUM_SCALAR>*>( source.chain() ) )
         , __isMultiple( source.isMultiple() ) {
-      GUM_CONS_CPY( SlotChain );
+      GUM_CONS_CPY( PRMSlotChain );
       __copyLastElt();
     }
 
     template <typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>& SlotChain<GUM_SCALAR>::
-    operator=( const SlotChain<GUM_SCALAR>& source ) {
+    PRMSlotChain<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::
+    operator=( const PRMSlotChain<GUM_SCALAR>& source ) {
       GUM_ERROR(
           FatalError,
           "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor." );
@@ -161,27 +161,27 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE typename PRMClassElement<GUM_SCALAR>::ClassElementType
-    SlotChain<GUM_SCALAR>::elt_type() const {
+    PRMSlotChain<GUM_SCALAR>::elt_type() const {
       return this->prm_slotchain;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR>& SlotChain<GUM_SCALAR>::type() {
+    INLINE Type<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::type() {
       return __chain->back()->type();
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR>& SlotChain<GUM_SCALAR>::type() const {
+    INLINE const Type<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::type() const {
       return __chain->back()->type();
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Potential<GUM_SCALAR>& SlotChain<GUM_SCALAR>::cpf() const {
+    INLINE const Potential<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::cpf() const {
       return __chain->back()->cpf();
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMClassElementContainer<GUM_SCALAR>& SlotChain<GUM_SCALAR>::end() {
+    INLINE PRMClassElementContainer<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::end() {
       return static_cast<PRMReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
           ->slotType();
@@ -189,50 +189,50 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const PRMClassElementContainer<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::end() const {
+    PRMSlotChain<GUM_SCALAR>::end() const {
       return static_cast<PRMReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
           ->slotType();
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMClassElement<GUM_SCALAR>& SlotChain<GUM_SCALAR>::lastElt() {
+    INLINE PRMClassElement<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::lastElt() {
       return *( __chain->back() );
     }
 
     template <typename GUM_SCALAR>
     INLINE const PRMClassElement<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::lastElt() const {
+    PRMSlotChain<GUM_SCALAR>::lastElt() const {
       return *( __chain->back() );
     }
 
     template <typename GUM_SCALAR>
-    INLINE Sequence<PRMClassElement<GUM_SCALAR>*>& SlotChain<GUM_SCALAR>::chain() {
+    INLINE Sequence<PRMClassElement<GUM_SCALAR>*>& PRMSlotChain<GUM_SCALAR>::chain() {
       return *__chain;
     }
 
     template <typename GUM_SCALAR>
     INLINE const Sequence<PRMClassElement<GUM_SCALAR>*>&
-    SlotChain<GUM_SCALAR>::chain() const {
+    PRMSlotChain<GUM_SCALAR>::chain() const {
       return *__chain;
     }
 
     template <typename GUM_SCALAR>
     INLINE void
-    SlotChain<GUM_SCALAR>::addParent( const PRMClassElement<GUM_SCALAR>& elt ) {}
+    PRMSlotChain<GUM_SCALAR>::addParent( const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     INLINE void
-    SlotChain<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {}
+    PRMSlotChain<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    INLINE bool SlotChain<GUM_SCALAR>::isMultiple() const {
+    INLINE bool PRMSlotChain<GUM_SCALAR>::isMultiple() const {
       return __isMultiple;
     }
 
     template <typename GUM_SCALAR>
     INLINE PRMAttribute<GUM_SCALAR>*
-    SlotChain<GUM_SCALAR>::getCastDescendant() const {
+    PRMSlotChain<GUM_SCALAR>::getCastDescendant() const {
       GUM_ERROR( OperationNotAllowed, "This is a slotchain" );
     }
 
