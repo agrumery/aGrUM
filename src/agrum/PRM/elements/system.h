@@ -162,12 +162,12 @@ namespace gum {
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
-      ClassElementContainer<GUM_SCALAR>&
+      PRMClassElementContainer<GUM_SCALAR>&
       getArrayType( const std::string& name );
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
-      const ClassElementContainer<GUM_SCALAR>&
+      const PRMClassElementContainer<GUM_SCALAR>&
       getArrayType( const std::string& name ) const;
 
       /// @brief Add an Instance to an array in this system.
@@ -189,7 +189,7 @@ namespace gum {
       /// @throw DuplicateElement Raised if an existing array with the same name
       ///                         already exists.
       void addArray( const std::string& array,
-                     ClassElementContainer<GUM_SCALAR>& type );
+                     PRMClassElementContainer<GUM_SCALAR>& type );
 
       /// @}
       // ========================================================================
@@ -273,7 +273,7 @@ namespace gum {
 
       /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
       /// instantiation.
-      typedef std::pair<ClassElementContainer<GUM_SCALAR>*,
+      typedef std::pair<PRMClassElementContainer<GUM_SCALAR>*,
                         Sequence<Instance<GUM_SCALAR>*>*> model_pair;
 
       /// Mapping between arrays and their name. The first element of the pair

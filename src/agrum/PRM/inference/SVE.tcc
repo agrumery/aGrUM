@@ -558,7 +558,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void SVE<GUM_SCALAR>::__initElimOrder() {
       ClassDependencyGraph<GUM_SCALAR> cdg( *( this->_prm ) );
-      Sequence<const ClassElementContainer<GUM_SCALAR>*> class_elim_order;
+      Sequence<const PRMClassElementContainer<GUM_SCALAR>*> class_elim_order;
       std::list<NodeId> l;
 
       for ( const auto node : cdg.dag().nodes() ) {

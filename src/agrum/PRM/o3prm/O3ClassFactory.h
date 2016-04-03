@@ -121,7 +121,7 @@ namespace gum {
 
         bool
         __checkImplementation( O3Label& o3_type,
-                               const ClassElementContainer<GUM_SCALAR>& type );
+                               const PRMClassElementContainer<GUM_SCALAR>& type );
         /// @}
 
         /// @name Checking and Adding Paramteters
@@ -154,7 +154,7 @@ namespace gum {
         bool __checkLocalParent( const PRMClass<GUM_SCALAR>& c,
                                  const O3Label& prnt );
 
-        bool __checkRemoteParent( const ClassElementContainer<GUM_SCALAR>& c,
+        bool __checkRemoteParent( const PRMClassElementContainer<GUM_SCALAR>& c,
                                   const O3Label& prnt );
 
 
@@ -167,10 +167,10 @@ namespace gum {
         /// @name Utility methods
         /// @{
         const PRMClassElement<GUM_SCALAR>*
-        __resolveSlotChain( const ClassElementContainer<GUM_SCALAR>& c,
+        __resolveSlotChain( const PRMClassElementContainer<GUM_SCALAR>& c,
                             const O3Label& chain );
 
-        bool __checkSlotChainLink( const ClassElementContainer<GUM_SCALAR>& c,
+        bool __checkSlotChainLink( const PRMClassElementContainer<GUM_SCALAR>& c,
                                    const O3Label& chain,
                                    const std::string& s );
         /// @}

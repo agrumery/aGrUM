@@ -205,7 +205,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class PRMClassElement;
     template <typename GUM_SCALAR>
-    class ClassElementContainer;
+    class PRMClassElementContainer;
     template <typename GUM_SCALAR>
     class PRMAggregate;
     template <typename GUM_SCALAR>

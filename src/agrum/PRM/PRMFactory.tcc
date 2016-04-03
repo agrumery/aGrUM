@@ -325,7 +325,7 @@ namespace gum {
       // Retrieving pointers
       PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
           __checkStack( 1, PRMClassElement<GUM_SCALAR>::prm_attribute ) );
-      ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 2 );
+      PRMClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 2 );
 
       try {
         PRMClassElement<GUM_SCALAR>& elt = c->get( name );
@@ -808,8 +808,8 @@ namespace gum {
     void PRMFactory<GUM_SCALAR>::addReferenceSlot( const std::string& type,
                                                    const std::string& name,
                                                    bool isArray ) {
-      ClassElementContainer<GUM_SCALAR>* owner = __checkStackContainter( 1 );
-      ClassElementContainer<GUM_SCALAR>* slotType = 0;
+      PRMClassElementContainer<GUM_SCALAR>* owner = __checkStackContainter( 1 );
+      PRMClassElementContainer<GUM_SCALAR>* slotType = 0;
 
       try {
         slotType = __retrieveClass( type );
@@ -922,10 +922,10 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     SlotChain<GUM_SCALAR>* PRMFactory<GUM_SCALAR>::__buildSlotChain(
-        ClassElementContainer<GUM_SCALAR>* start, const std::string& name ) {
+        PRMClassElementContainer<GUM_SCALAR>* start, const std::string& name ) {
       std::vector<std::string> v;
       decomposePath( name, v );
-      ClassElementContainer<GUM_SCALAR>* current = start;
+      PRMClassElementContainer<GUM_SCALAR>* current = start;
       ReferenceSlot<GUM_SCALAR>* ref = 0;
       Sequence<PRMClassElement<GUM_SCALAR>*> elts;
 
@@ -936,7 +936,7 @@ namespace gum {
               ref = &( static_cast<ReferenceSlot<GUM_SCALAR>&>(
                   current->get( v[i] ) ) );
               elts.insert( ref );
-              current = &( /*const_cast<ClassElementContainer<GUM_SCALAR>&>*/ (
+              current = &( /*const_cast<PRMClassElementContainer<GUM_SCALAR>&>*/ (
                   ref->slotType() ) );
               break;
 
@@ -1463,7 +1463,7 @@ namespace gum {
     INLINE void
     PRMFactory<GUM_SCALAR>::startAttribute( const std::string& type,
                                             const std::string& name ) {
-      ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
+      PRMClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
       PRMAttribute<GUM_SCALAR>* a = nullptr;
 
       if ( PRMObject::isClass( *c ) ) {
@@ -1498,7 +1498,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void
     PRMFactory<GUM_SCALAR>::continueAttribute( const std::string& name ) {
-      ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
+      PRMClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
       if ( ! c->exists( name ) ) {
         GUM_ERROR( NotFound, name << "not found" );
       }
@@ -1685,7 +1685,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElementContainer<GUM_SCALAR>*
+    INLINE PRMClassElementContainer<GUM_SCALAR>*
     PRMFactory<GUM_SCALAR>::__checkStackContainter( Idx i ) {
       // Don't forget that Idx are unsigned int
       if ( __stack.size() - i > __stack.size() ) {
@@ -1696,7 +1696,7 @@ namespace gum {
 
       if ( ( obj->obj_type() == PRMObject::PRMType::CLASS ) ||
            ( obj->obj_type() == PRMObject::PRMType::INTERFACE ) ) {
-        return static_cast<ClassElementContainer<GUM_SCALAR>*>( obj );
+        return static_cast<PRMClassElementContainer<GUM_SCALAR>*>( obj );
       } else {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
       }

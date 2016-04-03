@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::prm::ClassElementContainer.
+ * @brief Headers of gum::prm::PRMClassElementContainer.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -44,25 +44,25 @@ namespace gum {
     class PRMClass;
     template <typename GUM_SCALAR>
     class Interface;
-    class ClassElementContainterIterator;
-    class ClassElementContainterConstIterator;
+    class PRMClassElementContainterIterator;
+    class PRMClassElementContainterConstIterator;
 
     /**
-     * @class ClassElementContainer classElementContainer.h
+     * @class PRMClassElementContainer classElementContainer.h
      *<agrum/PRM/classElementContainer.h>
      * @brief Abstract class for classes containing
      *gum::PRMClassElement<GUM_SCALAR>.
      *
-     * To print a ClassElementContainer you can use the following operator:
-     * gum::operator<<(std::ostream&, const ClassElementContainer&) which print
-     * the ClassElementContainer in the graphviz-dot format.
+     * To print a PRMClassElementContainer you can use the following operator:
+     * gum::operator<<(std::ostream&, const PRMClassElementContainer&) which print
+     * the PRMClassElementContainer in the graphviz-dot format.
      *
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class ClassElementContainer : public PRMObject {
-      friend class ClassElementContainterIterator;
-      friend class ClassElementContainterConstIterator;
+    class PRMClassElementContainer : public PRMObject {
+      friend class PRMClassElementContainterIterator;
+      friend class PRMClassElementContainterConstIterator;
 
       public:
       // ========================================================================
@@ -71,10 +71,10 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      ClassElementContainer( const std::string& name );
+      PRMClassElementContainer( const std::string& name );
 
       /// Destructor.
-      virtual ~ClassElementContainer();
+      virtual ~PRMClassElementContainer();
 
       /// @}
       // ========================================================================
@@ -83,21 +83,21 @@ namespace gum {
       /// @{
 
       /**
-       * Returns true if elt belongs to this ClassElementContainer.
+       * Returns true if elt belongs to this PRMClassElementContainer.
        * @param elt A PRMClassElement<GUM_SCALAR>.
-       * @return true if elt beglons to this ClassElementContainer.
+       * @return true if elt beglons to this PRMClassElementContainer.
        */
       virtual bool belongsTo( const PRMClassElement<GUM_SCALAR>& elt ) const;
 
       /**
        * Returns true if a member with the given name exists in this
-       * ClassElementContainer or
-       * in the ClassElementContainer hierarchy.
+       * PRMClassElementContainer or
+       * in the PRMClassElementContainer hierarchy.
        */
       virtual bool exists( const std::string& name ) const;
 
       /**
-       * Getter on a member of this ClassElementContainer.
+       * Getter on a member of this PRMClassElementContainer.
        * @param name The member's name.
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
@@ -105,7 +105,7 @@ namespace gum {
       virtual PRMClassElement<GUM_SCALAR>& get( const std::string& name ) = 0;
 
       /**
-       * Constant getter on a member of this ClassElementContainer.
+       * Constant getter on a member of this PRMClassElementContainer.
        * @param name The member's name.
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
@@ -114,7 +114,7 @@ namespace gum {
       get( const std::string& name ) const = 0;
 
       /**
-       * @brief Add a PRMClassElement<GUM_SCALAR> to this ClassElementContainer.
+       * @brief Add a PRMClassElement<GUM_SCALAR> to this PRMClassElementContainer.
        *
        * The pointer is "given" to this class, which will delete it when
        * ~Class() is called.
@@ -143,7 +143,7 @@ namespace gum {
        *PRMClassElement<GUM_SCALAR>.
        *
        * The pointer is "given" to this class, which will delete it when
-       * ~ClassElementContainer() is called.
+       * ~PRMClassElementContainer() is called.
        *
        * The NodeId of elt is defined when it is added to this, discarding any
        * previous value. There is no guaranty that elt will have the same NodeId
@@ -162,7 +162,7 @@ namespace gum {
        * respective Type allow it.
        *
        * @param elt The PRMClassElement<GUM_SCALAR> overloading an inherited
-       *            PRMClassElement<GUM_SCALAR> in this ClassElementContainer.
+       *            PRMClassElement<GUM_SCALAR> in this PRMClassElementContainer.
        * @return the NodeId assigned to elt.
        *
        * @throw OperationNotAllowed Raised if  overloading is illegal.
@@ -265,7 +265,7 @@ namespace gum {
       /// @{
 
       /**
-       * @brief Returns the gum::DAG of this ClassElementContainer.
+       * @brief Returns the gum::DAG of this PRMClassElementContainer.
        *
        * Be very careful when using NodeId with PRMClassElement<GUM_SCALAR>: there
        *is no
@@ -276,21 +276,21 @@ namespace gum {
        * When dealing with different classes and interfaces ALWAYS use safe-name
        * as identifier.
        *
-       * @return the DAG of this ClassElementContainer.
+       * @return the DAG of this PRMClassElementContainer.
        */
       virtual const DAG& dag() const;
 
       /**
        * Returns true if a member with the given id exists in this
-       * ClassElementContainer or
-       * in the ClassElementContainer hierarchy.
+       * PRMClassElementContainer or
+       * in the PRMClassElementContainer hierarchy.
        * @param id A NodeId.
        * @return true if id matches a PRMClassElement<GUM_SCALAR>.
        */
       virtual bool exists( NodeId id ) const;
 
       /**
-       * Getter on a member of this ClassElementContainer.
+       * Getter on a member of this PRMClassElementContainer.
        * @param id The member's id.
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
@@ -298,7 +298,7 @@ namespace gum {
       virtual PRMClassElement<GUM_SCALAR>& get( NodeId id ) = 0;
 
       /**
-       * Constant getter on a member of this ClassElementContainer.
+       * Constant getter on a member of this PRMClassElementContainer.
        * @param id The member's id.
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
@@ -312,7 +312,7 @@ namespace gum {
       /// @{
 
       /**
-       * Getter on a member of this ClassElementContainer.
+       * Getter on a member of this PRMClassElementContainer.
        * @param id The member's id.
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
@@ -320,7 +320,7 @@ namespace gum {
       virtual PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) = 0;
 
       /**
-       * Constant getter on a member of this ClassElementContainer.
+       * Constant getter on a member of this PRMClassElementContainer.
        * @param id The member's id.
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
@@ -328,7 +328,7 @@ namespace gum {
       virtual const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const = 0;
 
       /**
-       * Getter on a member of this ClassElementContainer.
+       * Getter on a member of this PRMClassElementContainer.
        * @param name The member's name.
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
@@ -337,7 +337,7 @@ namespace gum {
       operator[]( const std::string& name ) = 0;
 
       /**
-       * Constant getter on a member of this ClassElementContainer.
+       * Constant getter on a member of this PRMClassElementContainer.
        * @param name The member's name.
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
@@ -352,43 +352,43 @@ namespace gum {
       /// @{
 
       /**
-       * @brief Test if this ClassElementContainer is a subtype of cec.
+       * @brief Test if this PRMClassElementContainer is a subtype of cec.
        *
        * @param cec
-       * @return return true if this ClassElementContainer is a subtype of cec.
+       * @return return true if this PRMClassElementContainer is a subtype of cec.
        */
-      virtual bool isSubTypeOf( const ClassElementContainer& cec ) const = 0;
+      virtual bool isSubTypeOf( const PRMClassElementContainer& cec ) const = 0;
 
       /**
-       * @brief Test if this ClassElementContainer is a super type of cec.
+       * @brief Test if this PRMClassElementContainer is a super type of cec.
        *
        * This returns cec.isSubTypeOf(*this).
        *
        * @param cec
-       * @return return true if this ClassElementContainer is a super type of
+       * @return return true if this PRMClassElementContainer is a super type of
        *cec.
        */
-      virtual bool isSuperTypeOf( const ClassElementContainer& cec ) const;
+      virtual bool isSuperTypeOf( const PRMClassElementContainer& cec ) const;
 
       /// @}
 
       protected:
       /// Copy operator. Don't use it.
-      ClassElementContainer& operator=( const ClassElementContainer& source );
+      PRMClassElementContainer& operator=( const PRMClassElementContainer& source );
 
       /// Copy constructor. Don't use it.
-      ClassElementContainer( const ClassElementContainer& source );
+      PRMClassElementContainer( const PRMClassElementContainer& source );
 
       virtual const DAG& _dag() const = 0;
 
-      /// Returns a non constant reference over this ClassElementContainer's
+      /// Returns a non constant reference over this PRMClassElementContainer's
       /// DAG.
       virtual DAG& _dag() = 0;
 
       /// Fills set with all the subtypes of this Interface, this includes
       /// extensions
       /// and implementations.
-      virtual void _findAllSubtypes( Set<ClassElementContainer*>& set ) = 0;
+      virtual void _findAllSubtypes( Set<PRMClassElementContainer*>& set ) = 0;
 
       /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
@@ -412,12 +412,12 @@ namespace gum {
       virtual void _setIOFlag( const PRMClassElement<GUM_SCALAR>& elt,
                                const std::pair<bool, bool>& flags );
 
-      /// Copy the IO Flags of c in this ClassElementContainer.
-      /// @param c A ClassElementContainer.
-      virtual void _copyIOFlags( const ClassElementContainer& c );
+      /// Copy the IO Flags of c in this PRMClassElementContainer.
+      /// @param c A PRMClassElementContainer.
+      virtual void _copyIOFlags( const PRMClassElementContainer& c );
 
       /// When a PRMClassElement<GUM_SCALAR> becomes an Output node we must update
-      /// any the IO flags of every descendant of this ClassElementContainer.
+      /// any the IO flags of every descendant of this PRMClassElementContainer.
       /// Note that after its declaration, input flags can not be changed and
       /// output flags can only become true.
       ///
@@ -431,19 +431,19 @@ namespace gum {
     };
 
 
-    extern template class ClassElementContainer<float>;
-    extern template class ClassElementContainer<double>;
+    extern template class PRMClassElementContainer<float>;
+    extern template class PRMClassElementContainer<double>;
 
 
   } /* namespace prm */
 }  // namespace gum
 
-/// @brief An << operator for ClassElementContainer.
+/// @brief An << operator for PRMClassElementContainer.
 /// Output in the graphviz-dot format.
 template <typename GUM_SCALAR>
 std::ostream&
 operator<<( std::ostream& output,
-            const gum::prm::ClassElementContainer<GUM_SCALAR>& container );
+            const gum::prm::PRMClassElementContainer<GUM_SCALAR>& container );
 
 #include <agrum/PRM/elements/classElementContainer.tcc>
 

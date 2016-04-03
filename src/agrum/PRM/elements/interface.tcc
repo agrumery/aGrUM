@@ -35,7 +35,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Interface<GUM_SCALAR>::Interface( const std::string& name )
-        : ClassElementContainer<GUM_SCALAR>( name )
+        : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superInterface( 0 ) {
       GUM_CONSTRUCTOR( Interface );
     }
@@ -44,7 +44,7 @@ namespace gum {
     Interface<GUM_SCALAR>::Interface( const std::string& name,
                                       Interface<GUM_SCALAR>& super,
                                       bool delayInheritance )
-        : ClassElementContainer<GUM_SCALAR>( name )
+        : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superInterface( &super ) {
       GUM_CONSTRUCTOR( Interface );
       if ( ! delayInheritance ) {
@@ -54,7 +54,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Interface<GUM_SCALAR>::Interface( const Interface<GUM_SCALAR>& source )
-        : ClassElementContainer<GUM_SCALAR>( source.name() )
+        : PRMClassElementContainer<GUM_SCALAR>( source.name() )
         , __dag( source.__dag )
         , __superInterface( source.__superInterface ) {
       GUM_CONS_CPY( Interface );
@@ -100,7 +100,7 @@ namespace gum {
       for ( const auto i_ref : i.__referenceSlots ) {
         auto ref = new ReferenceSlot<GUM_SCALAR>(
             i_ref->name(),
-            const_cast<ClassElementContainer<GUM_SCALAR>&>( i_ref->slotType() ),
+            const_cast<PRMClassElementContainer<GUM_SCALAR>&>( i_ref->slotType() ),
             i_ref->isArray() );
 
         ref->setId( i_ref->id() );
@@ -306,7 +306,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool Interface<GUM_SCALAR>::isSubTypeOf(
-        const ClassElementContainer<GUM_SCALAR>& cec ) const {
+        const PRMClassElementContainer<GUM_SCALAR>& cec ) const {
       switch ( cec.obj_type() ) {
         case PRMClassElement<GUM_SCALAR>::PRMType::CLASS: {
           return false;
@@ -338,8 +338,8 @@ namespace gum {
 
       // for ( const auto impl : __implementations ) {
       //  // Because of cyclic dependencies we must use a reinterpret cast.
-      //  ClassElementContainer<GUM_SCALAR>* c =
-      //      reinterpret_cast<ClassElementContainer<GUM_SCALAR>*>( impl );
+      //  PRMClassElementContainer<GUM_SCALAR>* c =
+      //      reinterpret_cast<PRMClassElementContainer<GUM_SCALAR>*>( impl );
 
       //  if ( ! c->isOutputNode( elt ) ) c->setOutputNode( elt, true );
       //}
@@ -509,7 +509,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Interface<GUM_SCALAR>::_findAllSubtypes(
-        Set<ClassElementContainer<GUM_SCALAR>*>& set ) {
+        Set<PRMClassElementContainer<GUM_SCALAR>*>& set ) {
       for ( const auto impl : __implementations ) {
         set.insert( impl );
         impl->_findAllSubtypes( set );

@@ -37,7 +37,7 @@ namespace gum {
   namespace prm {
     template <typename GUM_SCALAR>
     PRMClass<GUM_SCALAR>::PRMClass( const std::string& name )
-        : ClassElementContainer<GUM_SCALAR>( name )
+        : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superClass( nullptr )
         , __implements( nullptr )
         , __bijection( nullptr ) {
@@ -48,7 +48,7 @@ namespace gum {
     PRMClass<GUM_SCALAR>::PRMClass( const std::string& name,
                               PRMClass<GUM_SCALAR>& super,
                               bool delayInheritance )
-        : ClassElementContainer<GUM_SCALAR>( name )
+        : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superClass( &super )
         , __implements( nullptr )
         , __bijection( new Bijection<const DiscreteVariable*,
@@ -64,7 +64,7 @@ namespace gum {
     PRMClass<GUM_SCALAR>::PRMClass( const std::string& name,
                               const Set<Interface<GUM_SCALAR>*>& set,
                               bool delayInheritance )
-        : ClassElementContainer<GUM_SCALAR>( name )
+        : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superClass( nullptr )
         , __implements( new Set<Interface<GUM_SCALAR>*>( set ) )
         , __bijection( nullptr ) {
@@ -80,7 +80,7 @@ namespace gum {
                               PRMClass<GUM_SCALAR>& super,
                               const Set<Interface<GUM_SCALAR>*>& set,
                               bool delayInheritance )
-        : ClassElementContainer<GUM_SCALAR>( name )
+        : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superClass( &super )
         , __implements( nullptr )
         , __bijection( new Bijection<const DiscreteVariable*,
@@ -170,7 +170,7 @@ namespace gum {
         for ( const auto c_refslot : __superClass->__referenceSlots ) {
           auto ref = new ReferenceSlot<GUM_SCALAR>(
               c_refslot->name(),
-              const_cast<ClassElementContainer<GUM_SCALAR>&>(
+              const_cast<PRMClassElementContainer<GUM_SCALAR>&>(
                   c_refslot->slotType() ),
               c_refslot->isArray() );
 
@@ -412,7 +412,7 @@ namespace gum {
         for ( const auto c_refslot : c.__referenceSlots ) {
           ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR>(
               c_refslot->name(),
-              const_cast<ClassElementContainer<GUM_SCALAR>&>(
+              const_cast<PRMClassElementContainer<GUM_SCALAR>&>(
                   c_refslot->slotType() ),
               c_refslot->isArray() );
 
@@ -468,7 +468,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool PRMClass<GUM_SCALAR>::isSubTypeOf(
-        const ClassElementContainer<GUM_SCALAR>& cec ) const {
+        const PRMClassElementContainer<GUM_SCALAR>& cec ) const {
       switch ( cec.obj_type() ) {
         case PRMObject::PRMType::CLASS: {
           const PRMClass<GUM_SCALAR>* current = this;
@@ -1011,7 +1011,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMClass<GUM_SCALAR>::_findAllSubtypes(
-        Set<ClassElementContainer<GUM_SCALAR>*>& set ) {
+        Set<PRMClassElementContainer<GUM_SCALAR>*>& set ) {
       for ( const auto ext : __extensions ) {
         set.insert( ext );
         ext->_findAllSubtypes( set );

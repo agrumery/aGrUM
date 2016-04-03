@@ -801,7 +801,7 @@ namespace gum {
       PRMClassElement<GUM_SCALAR>* __checkStack(
           Idx i, typename PRMClassElement<GUM_SCALAR>::ClassElementType obj_type );
 
-      ClassElementContainer<GUM_SCALAR>* __checkStackContainter( Idx i );
+      PRMClassElementContainer<GUM_SCALAR>* __checkStackContainter( Idx i );
 
       /// @}
       // ======================================================================
@@ -857,7 +857,7 @@ namespace gum {
       ///         be built.
       ///
       SlotChain<GUM_SCALAR>*
-      __buildSlotChain( ClassElementContainer<GUM_SCALAR>* start,
+      __buildSlotChain( PRMClassElementContainer<GUM_SCALAR>* start,
                         const std::string& name );
 
       /// @brief Retrieve inputs for an PRMAggregate.

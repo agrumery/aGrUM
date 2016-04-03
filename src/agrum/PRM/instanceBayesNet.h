@@ -117,7 +117,7 @@ namespace gum {
 
       const PRMClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 
-      /// The ClassElementContainer decorated by this.
+      /// The PRMClassElementContainer decorated by this.
       const Instance<GUM_SCALAR>* __inst;
 
       mutable NodeProperty<Size> __modalities;

@@ -55,7 +55,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
-    class PRMClass : public ClassElementContainer<GUM_SCALAR> {
+    class PRMClass : public PRMClassElementContainer<GUM_SCALAR> {
 
       friend class Interface<GUM_SCALAR>;
 
@@ -127,10 +127,10 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(NodeId).
       PRMClassElement<GUM_SCALAR>& get( NodeId id );
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(NodeId).
       const PRMClassElement<GUM_SCALAR>& get( NodeId id ) const;
 
       /// @}
@@ -159,11 +159,11 @@ namespace gum {
        */
       bool isCastDescendant( const std::string& safe_name ) const;
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
       PRMClassElement<GUM_SCALAR>& get( const std::string& name );
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
       const PRMClassElement<GUM_SCALAR>& get( const std::string& name ) const;
 
@@ -173,7 +173,7 @@ namespace gum {
       /// See gum::prm::overload(PRMClassElement<GUM_SCALAR>*).
       virtual NodeId overload( PRMClassElement<GUM_SCALAR>* elt );
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::addArc().
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::addArc().
       virtual void addArc( const std::string& tail, const std::string& head );
 
       /**
@@ -236,13 +236,13 @@ namespace gum {
        *Class<GUM_SCALAR> which
        * implements cec.
        *
-       * @param cec The ClassElementContainer<GUM_SCALAR> for which we determine
+       * @param cec The PRMClassElementContainer<GUM_SCALAR> for which we determine
        *if this
        *            Class<GUM_SCALAR> is a subclass of it.
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
       virtual bool
-      isSubTypeOf( const ClassElementContainer<GUM_SCALAR>& cec ) const;
+      isSubTypeOf( const PRMClassElementContainer<GUM_SCALAR>& cec ) const;
 
       /**
        * @brief Returns the super Class<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -271,17 +271,17 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
       PRMClassElement<GUM_SCALAR>& operator[]( NodeId id );
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
       const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
       PRMClassElement<GUM_SCALAR>& operator[]( const std::string& name );
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
       const PRMClassElement<GUM_SCALAR>&
       operator[]( const std::string& name ) const;
@@ -308,9 +308,9 @@ namespace gum {
       virtual DAG& _dag();
 
       /// Fills set with all the subtypes of this Class<GUM_SCALAR>.
-      void _findAllSubtypes( Set<ClassElementContainer<GUM_SCALAR>*>& set );
+      void _findAllSubtypes( Set<PRMClassElementContainer<GUM_SCALAR>*>& set );
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const
+      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>(const
       /// PRMClassElement<GUM_SCALAR>&).
       void _updateDescendants( const PRMClassElement<GUM_SCALAR>& elt );
 
@@ -370,7 +370,7 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// @brief The alternate ClassElementContainer<GUM_SCALAR> searched for
+      /// @brief The alternate PRMClassElementContainer<GUM_SCALAR> searched for
       /// elements defined in
       ///        this.
       /// Note that this is first searched for gum::PRMClassElement<GUM_SCALAR>.

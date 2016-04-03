@@ -297,7 +297,7 @@ namespace gum {
         const auto& real_elt = static_cast<const ReferenceSlot<GUM_SCALAR>&>(
             real_i.get( elt.name().label() ) );
 
-        auto sub_type = (const ClassElementContainer<GUM_SCALAR>*)nullptr;
+        auto sub_type = (const PRMClassElementContainer<GUM_SCALAR>*)nullptr;
 
         if ( __prm->isClass( elt.type().label() ) ) {
           sub_type = &( __prm->getClass( elt.type().label() ) );
@@ -327,7 +327,7 @@ namespace gum {
         if ( __prm->isInterface( elt.type().label() ) or
              __prm->isClass( elt.type().label() ) ) {
 
-          auto ref_type = (const ClassElementContainer<GUM_SCALAR>*)nullptr;
+          auto ref_type = (const PRMClassElementContainer<GUM_SCALAR>*)nullptr;
 
           if ( __prm->isInterface( elt.type().label() ) ) {
             ref_type = &( __prm->interface( elt.type().label() ) );

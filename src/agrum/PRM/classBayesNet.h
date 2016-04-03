@@ -140,7 +140,7 @@ namespace gum {
       /// @throw NotFound Raised if id is not a formal attribute.
       const PRMClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 
-      /// The ClassElementContainer decorated by this.
+      /// The PRMClassElementContainer decorated by this.
       const PRMClass<GUM_SCALAR>* __class;
 
       mutable NodeProperty<Size> __modalities;

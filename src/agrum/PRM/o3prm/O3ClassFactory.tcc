@@ -330,7 +330,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
-          O3Label& o3_type, const ClassElementContainer<GUM_SCALAR>& type ) {
+          O3Label& o3_type, const PRMClassElementContainer<GUM_SCALAR>& type ) {
 
         if ( not __solver->resolveSlotType( o3_type ) ) {
           return false;
@@ -437,7 +437,7 @@ namespace gum {
 
           if ( PRMClassElement<GUM_SCALAR>::isReferenceSlot( elt ) ) {
 
-            auto slot_type = (ClassElementContainer<GUM_SCALAR>*)nullptr;
+            auto slot_type = (PRMClassElementContainer<GUM_SCALAR>*)nullptr;
 
             if ( __prm->isInterface( ref.type().label() ) ) {
 
@@ -712,7 +712,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkRemoteParent(
-          const ClassElementContainer<GUM_SCALAR>& c, const O3Label& prnt ) {
+          const PRMClassElementContainer<GUM_SCALAR>& c, const O3Label& prnt ) {
 
         if ( __resolveSlotChain( c, prnt ) == nullptr ) {
           return false;
@@ -861,7 +861,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE const PRMClassElement<GUM_SCALAR>*
       O3ClassFactory<GUM_SCALAR>::__resolveSlotChain(
-          const ClassElementContainer<GUM_SCALAR>& c, const O3Label& chain ) {
+          const PRMClassElementContainer<GUM_SCALAR>& c, const O3Label& chain ) {
 
         auto link_regex = std::regex( R"d((\([\w\.]*\))?\w+)d" );
         auto s = chain.label();
@@ -901,7 +901,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkSlotChainLink(
-          const ClassElementContainer<GUM_SCALAR>& c,
+          const PRMClassElementContainer<GUM_SCALAR>& c,
           const O3Label& chain,
           const std::string& s ) {
 

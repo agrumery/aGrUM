@@ -45,7 +45,7 @@ namespace gum {
 
       public:
       /// Association between a class element and it's holding class.
-      typedef std::pair<const ClassElementContainer<GUM_SCALAR>*,
+      typedef std::pair<const PRMClassElementContainer<GUM_SCALAR>*,
                         const PRMClassElement<GUM_SCALAR>*> EltPair;
 
       // ========================================================================
@@ -87,7 +87,7 @@ namespace gum {
       /// because
       /// inherited PRMClassElement<GUM_SCALAR> are shared in the inheritance
       /// hierarchy.
-      NodeId get( const ClassElementContainer<GUM_SCALAR>& c,
+      NodeId get( const PRMClassElementContainer<GUM_SCALAR>& c,
                   const PRMClassElement<GUM_SCALAR>& elt ) const;
 
       /// Returns a mapping between the ClassDependencyGraph<GUM_SCALAR>'s nodes
@@ -102,11 +102,11 @@ namespace gum {
       void __buildGraph( const PRM<GUM_SCALAR>& prm );
 
       /// Add nodes in __graph while updating consequently all the mappings.
-      void __addNode( const ClassElementContainer<GUM_SCALAR>* c,
+      void __addNode( const PRMClassElementContainer<GUM_SCALAR>* c,
                       const PRMClassElement<GUM_SCALAR>& elt );
 
       /// Add arcs in __graph.
-      void __addArcs( const ClassElementContainer<GUM_SCALAR>& c,
+      void __addArcs( const PRMClassElementContainer<GUM_SCALAR>& c,
                       NodeId node,
                       HashTable<const PRMClassElement<GUM_SCALAR>*, NodeId>& map );
 
@@ -127,7 +127,7 @@ namespace gum {
       NodeProperty<EltPair*> __elt_map;
 
       /// Code shortcut.
-      typedef HashTable<const ClassElementContainer<GUM_SCALAR>*,
+      typedef HashTable<const PRMClassElementContainer<GUM_SCALAR>*,
                         HashTable<const PRMClassElement<GUM_SCALAR>*, NodeId>*>
           NodeMap;
 

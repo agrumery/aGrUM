@@ -35,19 +35,19 @@ namespace gum {
     /**
      * @class ReferenceSlot referenceSlot.h <agrum/PRM/referenceSlot.h>
      * @brief A ReferenceSlot represent a relation between two
-     *        ClassElementContainer.
+     *        PRMClassElementContainer.
      *
-     * A reference slot is a relation between two ClassElementContainer in a
+     * A reference slot is a relation between two PRMClassElementContainer in a
      *PRM. A
-     * ReferenceSlot is considered as an element of a ClassElementContainer
+     * ReferenceSlot is considered as an element of a PRMClassElementContainer
      *which
-     * slot type is a ClassElementContainer.
+     * slot type is a PRMClassElementContainer.
      *
      * A ReferenceSlot is defined by it's slot type (i.e. it's range), it's
-     * ClassElementContainer (it's domain), it's name and if it is a multiple
+     * PRMClassElementContainer (it's domain), it's name and if it is a multiple
      * reference (the isArray() flag).
      *
-     * @see PRM PRMFactory ClassElementContainer PRMClassElement
+     * @see PRM PRMFactory PRMClassElementContainer PRMClassElement
      * @ingroup prm_group
      */
     // ==========================================================================
@@ -67,7 +67,7 @@ namespace gum {
        * @param isArray Determine if this reference slot is multiple or not.
        */
       ReferenceSlot( const std::string& name,
-                     ClassElementContainer<GUM_SCALAR>& type,
+                     PRMClassElementContainer<GUM_SCALAR>& type,
                      bool isArray = false );
 
       /**
@@ -88,16 +88,16 @@ namespace gum {
       elt_type() const;
 
       /**
-       * Returns the type of this slot, which is a ClassElementContainer
+       * Returns the type of this slot, which is a PRMClassElementContainer
        * (it is not the type of PRMObject).
        */
-      ClassElementContainer<GUM_SCALAR>& slotType();
+      PRMClassElementContainer<GUM_SCALAR>& slotType();
 
       /**
-       * Returns the type of this slot, which is a ClassElementContainer
+       * Returns the type of this slot, which is a PRMClassElementContainer
        * (it is not the type of PRMObject).
        */
-      const ClassElementContainer<GUM_SCALAR>& slotType() const;
+      const PRMClassElementContainer<GUM_SCALAR>& slotType() const;
 
       /**
        * Returns true if this reference slot is an array.
@@ -156,7 +156,7 @@ namespace gum {
       // @{
 
       /// The type of this ReferenceSlot.
-      ClassElementContainer<GUM_SCALAR>& __slotType;
+      PRMClassElementContainer<GUM_SCALAR>& __slotType;
 
       /// Flag indicating if this slot is an array.
       bool __isArray;

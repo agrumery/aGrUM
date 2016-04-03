@@ -31,7 +31,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     ReferenceSlot<GUM_SCALAR>::ReferenceSlot(
         const std::string& name,
-        ClassElementContainer<GUM_SCALAR>& type,
+        PRMClassElementContainer<GUM_SCALAR>& type,
         bool isArray )
         : PRMClassElement<GUM_SCALAR>( name )
         , __slotType( type )
@@ -73,13 +73,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElementContainer<GUM_SCALAR>&
+    INLINE PRMClassElementContainer<GUM_SCALAR>&
     ReferenceSlot<GUM_SCALAR>::slotType() {
       return __slotType;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElementContainer<GUM_SCALAR>&
+    INLINE const PRMClassElementContainer<GUM_SCALAR>&
     ReferenceSlot<GUM_SCALAR>::slotType() const {
       return __slotType;
     }

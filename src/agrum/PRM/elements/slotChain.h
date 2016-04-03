@@ -149,11 +149,11 @@ namespace gum {
 
       /// Returns the PRMClassElement<GUM_SCALAR>Container over which this slot
       /// chain ends.
-      ClassElementContainer<GUM_SCALAR>& end();
+      PRMClassElementContainer<GUM_SCALAR>& end();
 
       /// Returns the PRMClassElement<GUM_SCALAR>Container over which this slot
       /// chain ends.
-      const ClassElementContainer<GUM_SCALAR>& end() const;
+      const PRMClassElementContainer<GUM_SCALAR>& end() const;
 
       /// Returns the last element of the slot chain, typically this is an
       /// gum::PRMAttribute or a gum::PRMAggregate.

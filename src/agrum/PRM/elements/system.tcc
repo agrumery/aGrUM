@@ -475,7 +475,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElementContainer<GUM_SCALAR>&
+    INLINE PRMClassElementContainer<GUM_SCALAR>&
     System<GUM_SCALAR>::getArrayType( const std::string& name ) {
       try {
         return *( __arrayMap[name].first );
@@ -485,7 +485,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElementContainer<GUM_SCALAR>&
+    INLINE const PRMClassElementContainer<GUM_SCALAR>&
     System<GUM_SCALAR>::getArrayType( const std::string& name ) const {
       try {
         return *( __arrayMap[name].first );
@@ -515,7 +515,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void
     System<GUM_SCALAR>::addArray( const std::string& array,
-                                  ClassElementContainer<GUM_SCALAR>& type ) {
+                                  PRMClassElementContainer<GUM_SCALAR>& type ) {
       if ( __arrayMap.exists( array ) ) {
         GUM_ERROR( DuplicateElement,
                    "an array with the same is already in this System" );

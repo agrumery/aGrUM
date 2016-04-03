@@ -181,14 +181,14 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElementContainer<GUM_SCALAR>& SlotChain<GUM_SCALAR>::end() {
+    INLINE PRMClassElementContainer<GUM_SCALAR>& SlotChain<GUM_SCALAR>::end() {
       return static_cast<ReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
           ->slotType();
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElementContainer<GUM_SCALAR>&
+    INLINE const PRMClassElementContainer<GUM_SCALAR>&
     SlotChain<GUM_SCALAR>::end() const {
       return static_cast<ReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
