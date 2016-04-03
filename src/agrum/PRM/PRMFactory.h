@@ -378,7 +378,7 @@ namespace gum {
        * gum::prm::Class<GUM_SCALAR>::insertArc() will be called for each found
        * parent of attr, so you should overload
        * gum::prm::PRMAttribute<GUM_SCALAR>::addParent() to prevent duplication
-       * errors. Such class exists: gum::prm::FuncAttribute .
+       * errors. Such class exists: gum::prm::PRMFuncAttribute .
        *
        * The pointer is given to the class, so do not worry about deleting it.
        *

@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class FuncAttributeTestSuite : public CxxTest::TestSuite {
     private:
-    typedef gum::prm::FuncAttribute<double> PRMAttribute;
+    typedef gum::prm::PRMFuncAttribute<double> PRMAttribute;
     ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;

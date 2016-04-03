@@ -1132,8 +1132,8 @@ namespace gum {
       } else if ( numbers.size() == parents.size() ) {
         gum::MultiDimNoisyORCompound<GUM_SCALAR>* noisy =
             new gum::MultiDimNoisyORCompound<GUM_SCALAR>( leak );
-        gum::prm::FuncAttribute<GUM_SCALAR>* attr =
-            new gum::prm::FuncAttribute<GUM_SCALAR>(
+        gum::prm::PRMFuncAttribute<GUM_SCALAR>* attr =
+            new gum::prm::PRMFuncAttribute<GUM_SCALAR>(
                 name, retrieveType( "boolean" ), noisy );
 
         for ( size_t idx = 0; idx < numbers.size(); ++idx ) {

@@ -34,7 +34,7 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class FuncAttribute funcAttribute.h <agrum/PRM/elements/funcAttribute.h>
+     * @class PRMFuncAttribute funcAttribute.h <agrum/PRM/elements/funcAttribute.h>
      * @brief This class overload gum::prm::PRMClassElement::_addParent() and
      *        gum::prm::PRMClassElement::_addChild with empty methods.
      *
@@ -48,27 +48,27 @@ namespace gum {
      * See gum::prm::PRMFactory::addAttribute(PRMAttribute*) for more details.
      */
     template <typename GUM_SCALAR>
-    class FuncAttribute : public ScalarAttribute<GUM_SCALAR> {
+    class PRMFuncAttribute : public ScalarAttribute<GUM_SCALAR> {
       public:
       /**
        * @brief Constructor used by gum::Class.
-       * This will create an FuncAttribute with only one variable: type and with
+       * This will create an PRMFuncAttribute with only one variable: type and with
        *the given
        * implementation.
        *
-       * @param name The name of this FuncAttribute.
-       * @param type The type of this FuncAttribute, it is copied.
+       * @param name The name of this PRMFuncAttribute.
+       * @param type The type of this PRMFuncAttribute, it is copied.
        * @param impl The MultiDimImplementation used by the internal Potential
-       *of this FuncAttribute.
-       *             it will be deleted after the call of ~FuncAttribute.
+       *of this PRMFuncAttribute.
+       *             it will be deleted after the call of ~PRMFuncAttribute.
        */
-      FuncAttribute( const std::string& name,
+      PRMFuncAttribute( const std::string& name,
                      const Type<GUM_SCALAR>& type,
                      MultiDimImplementation<GUM_SCALAR>* impl =
                          new MultiDimArray<GUM_SCALAR>() );
 
       /// Destructor.
-      virtual ~FuncAttribute();
+      virtual ~PRMFuncAttribute();
 
       /// See gum::PRMClassElement::_addParent().
       virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
@@ -78,17 +78,17 @@ namespace gum {
 
       protected:
       /// Copy constructor. Don't use it.
-      FuncAttribute( const FuncAttribute& source );
+      PRMFuncAttribute( const PRMFuncAttribute& source );
 
       /// Copy operator. Don't use it.
-      FuncAttribute& operator=( const FuncAttribute& from );
+      PRMFuncAttribute& operator=( const PRMFuncAttribute& from );
 
       virtual void _setCpf( Potential<GUM_SCALAR>* cpf );
     };
 
 
-    extern template class FuncAttribute<float>;
-    extern template class FuncAttribute<double>;
+    extern template class PRMFuncAttribute<float>;
+    extern template class PRMFuncAttribute<double>;
 
 
   } /* namespace prm */
