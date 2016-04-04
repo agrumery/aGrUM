@@ -18,6 +18,9 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include <unistd.h>
+#define GetCurrentDir getcwd
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -174,8 +177,9 @@ int main( int argc, char* argv[] ) {
 
     auto engine = o3prmr::O3prmrInterpreter{};
 
-    auto path = std::getenv( "PWD" );
-    if ( path != nullptr ) {
+    char* buffer;
+    if ( (buffer = getcwd( NULL, 0 ) ) != NULL ) {
+      auto path = std::string( buffer );
       engine.addPath( path );
     }
 
