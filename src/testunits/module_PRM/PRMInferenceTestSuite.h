@@ -397,7 +397,7 @@ namespace gum_tests {
           std::string foo = instance.name() + dot + attribute.safeName();
 
           for ( inst.setFirst(), jnst.setFirst();
-                not( inst.end() or jnst.end() );
+                !( inst.end() || jnst.end() );
                 inst.inc(), jnst.inc() ) {
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_ss.nbrDim() );
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_sve.nbrDim() );
@@ -418,7 +418,7 @@ namespace gum_tests {
 
           bool zero = true;
 
-          for ( jnst.setFirst(); not jnst.end(); jnst.inc() ) {
+          for ( jnst.setFirst(); ! jnst.end(); jnst.inc() ) {
             if ( m_sved.get( jnst ) != (double)0.0 ) {
               zero = false;
               break;

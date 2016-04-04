@@ -74,26 +74,26 @@ namespace gum {
 
       INLINE
       bool EdgeCode::operator==( const EdgeCode& code ) const {
-        return ( ( i == code.i ) and ( j == code.j ) and ( l_i == code.l_i ) and
-                 ( l_ij == code.l_ij ) and ( l_j == code.l_j ) );
+        return ( ( i == code.i ) && ( j == code.j ) && ( l_i == code.l_i ) &&
+                 ( l_ij == code.l_ij ) && ( l_j == code.l_j ) );
       }
 
       INLINE
       bool EdgeCode::operator!=( const EdgeCode& code ) const {
-        return ( ( i != code.i ) or ( j != code.j ) or ( l_i != code.l_i ) or
-                 ( l_ij != code.l_ij ) or ( l_j != code.l_j ) );
+        return ( ( i != code.i ) || ( j != code.j ) || ( l_i != code.l_i ) ||
+                 ( l_ij != code.l_ij ) || ( l_j != code.l_j ) );
       }
 
       INLINE
       bool EdgeCode::operator<( const EdgeCode& code ) const {
-        if ( ( i == code.i ) and ( j == code.j ) ) {
-          return ( l_i < code.l_i ) or
-                 ( ( l_i == code.l_i ) and ( l_ij < code.l_ij ) ) or
-                 ( ( l_i == code.l_i ) and ( l_ij == code.l_ij ) and
+        if ( ( i == code.i ) && ( j == code.j ) ) {
+          return ( l_i < code.l_i ) ||
+                 ( ( l_i == code.l_i ) && ( l_ij < code.l_ij ) ) ||
+                 ( ( l_i == code.l_i ) && ( l_ij == code.l_ij ) &&
                    ( l_j < code.l_j ) );
         } else {
-          return ( ( i == code.i ) and ( j < code.j ) ) or
-                 ( ( i < code.j ) and ( j == code.i ) );
+          return ( ( i == code.i ) && ( j < code.j ) ) ||
+                 ( ( i < code.j ) && ( j == code.i ) );
         }
       }
 

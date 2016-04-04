@@ -52,13 +52,13 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE bool NodeData<GUM_SCALAR>::
       operator==( const NodeData<GUM_SCALAR>& from ) const {
-        return ( n == from.n ) and ( l == from.l );
+        return ( n == from.n ) && ( l == from.l );
       }
 
       template <typename GUM_SCALAR>
       INLINE bool NodeData<GUM_SCALAR>::
       operator!=( const NodeData<GUM_SCALAR>& from ) const {
-        return ( n != from.n ) and ( l != from.l );
+        return ( n != from.n ) && ( l != from.l );
       }
 
       // EdgeData<GUM_SCALAR>
@@ -87,15 +87,15 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE bool EdgeData<GUM_SCALAR>::
       operator==( const EdgeData<GUM_SCALAR>& from ) const {
-        return ( u == from.u ) and ( l_u == from.l_u ) and ( v == from.v ) and
-               ( l_v == from.l_v ) and ( l == from.l );
+        return ( u == from.u ) && ( l_u == from.l_u ) && ( v == from.v ) &&
+               ( l_v == from.l_v ) && ( l == from.l );
       }
 
       template <typename GUM_SCALAR>
       INLINE bool EdgeData<GUM_SCALAR>::
       operator!=( const EdgeData<GUM_SCALAR>& from ) const {
-        return ( u != from.u ) and ( l_u != from.l_u ) and ( v != from.v ) and
-               ( l_v != from.l_v ) and ( l != from.l );
+        return ( u != from.u ) && ( l_u != from.l_u ) && ( v != from.v ) &&
+               ( l_v != from.l_v ) && ( l != from.l );
       }
 
       // InterfaceGraph
@@ -134,7 +134,7 @@ namespace gum {
                       : data;
               v = ( u != data ) ? data : __nodes[__idMap[inst]];
 
-              if ( not __graph.existsEdge( __idMap[u->n], __idMap[v->n] ) ) {
+              if ( ! __graph.existsEdge( __idMap[u->n], __idMap[v->n] ) ) {
                 EdgeData<GUM_SCALAR>* edge = new EdgeData<GUM_SCALAR>();
                 edge->u = u->n;
                 edge->l_u = u->l;
@@ -230,7 +230,7 @@ namespace gum {
         }
 
         // Label is ready
-        if ( not label_map.exists( sBuff.str() ) ) {
+        if ( ! label_map.exists( sBuff.str() ) ) {
           LabelData* label = new LabelData();
           label_map.insert( sBuff.str(), label );
           label->id = ++__counter;
@@ -270,7 +270,7 @@ namespace gum {
           }
 
         // Label is ready
-        if ( not label_map.exists( sBuff.str() ) ) {
+        if ( ! label_map.exists( sBuff.str() ) ) {
           LabelData* label = new LabelData();
           label_map.insert( sBuff.str(), label );
           label->id = ++__counter;

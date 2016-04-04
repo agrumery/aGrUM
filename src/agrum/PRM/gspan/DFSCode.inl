@@ -93,7 +93,7 @@ namespace gum {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
-        for ( ; ( iter != codes.end() ) and ( jter != from.codes.end() );
+        for ( ; ( iter != codes.end() ) && ( jter != from.codes.end() );
               ++iter, ++jter ) {
           if ( ( **iter ) != ( **jter ) ) {
             EdgeCode& alpha = **iter;
@@ -105,7 +105,7 @@ namespace gum {
               } else if ( alpha.j < beta.j ) {
                 // beta is a backward edge
                 return true;
-              } else if ( ( alpha.j == beta.j ) and
+              } else if ( ( alpha.j == beta.j ) &&
                           ( alpha.l_ij < beta.l_ij ) ) {
                 return true;
               }
@@ -145,7 +145,7 @@ namespace gum {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
-        for ( ; ( iter != codes.end() ) and ( jter != from.codes.end() );
+        for ( ; ( iter != codes.end() ) && ( jter != from.codes.end() );
               ++iter, ++jter ) {
           if ( ( **iter ) != ( **jter ) ) {
             return ( **iter ) < ( **jter );
@@ -157,7 +157,7 @@ namespace gum {
             //   } else if ( alpha.j < beta.j ) {
             //     // beta is a backward edge
             //     return true;
-            //   } else if ( (alpha.j == beta.j) and (alpha.l_ij < beta.l_ij) )
+            //   } else if ( (alpha.j == beta.j) && (alpha.l_ij < beta.l_ij) )
             //   {
             //     return true;
             //   }

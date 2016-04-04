@@ -48,7 +48,7 @@ namespace gum {
         , __label_map( new std::vector<Idx>( label_map ) ) {
       GUM_CONSTRUCTOR( PRMType );
 
-      if ( not __isValid() ) {
+      if ( ! __isValid() ) {
         delete __label_map;
         __label_map = 0;
         GUM_ERROR( OperationNotAllowed, "Invalid label map." );
@@ -90,7 +90,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool PRMType<GUM_SCALAR>::__isValid() const {
-      if ( not __superType ) {
+      if ( ! __superType ) {
         return __var->domainSize() > 1;
       }
 

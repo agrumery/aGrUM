@@ -225,7 +225,7 @@ namespace gum_tests {
         const gum::Potential<double>* cpt = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( node ) ) );
         gum::Instantiation inst( *cpt );
-        for ( inst.begin(); not inst.end(); inst.inc() ) {
+        for ( inst.begin(); ! inst.end(); inst.inc() ) {
           TS_GUM_ASSERT_THROWS_NOTHING( cpt->get( inst ) );
         }
       }
@@ -265,7 +265,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -290,7 +290,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -315,7 +315,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -340,7 +340,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -365,7 +365,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -390,7 +390,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -415,7 +415,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -440,7 +440,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }

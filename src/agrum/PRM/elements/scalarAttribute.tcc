@@ -9,7 +9,7 @@
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   MERCHANTABILITY || FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
@@ -84,7 +84,7 @@ namespace gum {
         const {
       auto copy = new PRMScalarAttribute<GUM_SCALAR>( this->name(), this->type() );
 
-      if ( not bij.existsFirst( &( type().variable() ) ) ) {
+      if ( ! bij.existsFirst( &( type().variable() ) ) ) {
         bij.insert( &( type().variable() ), &( copy->type().variable() ) );
       }
 
@@ -108,14 +108,14 @@ namespace gum {
 
       Instantiation inst( *__cpf ), jnst( source.cpf() );
 
-      for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+      for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
             inst.inc(), jnst.inc() ) {
         __cpf->set( inst, source.cpf().get( jnst ) );
       }
 
-      GUM_ASSERT( inst.end() and jnst.end() );
+      GUM_ASSERT( inst.end() && jnst.end() );
       GUM_ASSERT( __cpf->contains( __type->variable() ) );
-      GUM_ASSERT( not __cpf->contains( source.type().variable() ) );
+      GUM_ASSERT( ! __cpf->contains( source.type().variable() ) );
     }
 
     template <typename GUM_SCALAR>
@@ -186,7 +186,7 @@ namespace gum {
       DiscreteVariable& cast_var = cast->type().variable();
       Instantiation inst( cast->cpf() );
 
-      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
         if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
           cast->cpf().set( inst, 1 );
         } else {
@@ -223,7 +223,7 @@ namespace gum {
 
       Instantiation inst( *__cpf );
 
-      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
         auto my_pos = inst.pos( subtype.variable() );
         if ( subtype.label_map()[my_pos] == inst.pos( type().variable() ) ) {
           __cpf->set( inst, 1 );
@@ -243,7 +243,7 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed,
                    "Cannot swap types with difference domain size" );
       }
-      if ( not __cpf->contains( old_type.variable() ) ) {
+      if ( ! __cpf->contains( old_type.variable() ) ) {
         GUM_ERROR( NotFound, "could not find variable " + old_type.name() );
       }
 
@@ -261,17 +261,17 @@ namespace gum {
 
       Instantiation inst( __cpf ), jnst( old );
 
-      for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+      for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
             inst.inc(), jnst.inc() ) {
         __cpf->set( inst, old->get( jnst ) );
       }
 
       delete old;
 
-      GUM_ASSERT( inst.end() and jnst.end() );
+      GUM_ASSERT( inst.end() && jnst.end() );
       GUM_ASSERT( __cpf->contains( __type->variable() ) );
       GUM_ASSERT( __cpf->contains( new_type.variable() ) );
-      GUM_ASSERT( not __cpf->contains( old_type.variable() ) );
+      GUM_ASSERT( ! __cpf->contains( old_type.variable() ) );
     }
 
     template <typename GUM_SCALAR>
@@ -300,7 +300,7 @@ namespace gum {
 
       Instantiation inst( __cpf ), jnst( old );
 
-      for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+      for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
             inst.inc(), jnst.inc() ) {
         __cpf->set( inst, old->get( jnst ) );
       }
@@ -310,7 +310,7 @@ namespace gum {
       __type = t;
 
       GUM_ASSERT( __cpf->contains( __type->variable() ) );
-      GUM_ASSERT( inst.end() and jnst.end() );
+      GUM_ASSERT( inst.end() && jnst.end() );
     }
 
   } /* namespace prm */

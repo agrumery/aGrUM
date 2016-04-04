@@ -159,7 +159,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkO3Classes() {
-        return __checkAndAddNodesToDag() and __checkAndAddArcsToDag();
+        return __checkAndAddNodesToDag() && __checkAndAddArcsToDag();
       }
 
       template <typename GUM_SCALAR>
@@ -190,7 +190,7 @@ namespace gum {
 
           if ( c->superLabel().label() != "" ) {
 
-            if ( not __solver->resolveClass( c->superLabel() ) ) {
+            if ( ! __solver->resolveClass( c->superLabel() ) ) {
               return false;
             }
 
@@ -251,7 +251,7 @@ namespace gum {
 
           if ( __solver->resolveInterface( i ) ) {
 
-            if ( not __checkImplementation(
+            if ( ! __checkImplementation(
                      c, i, attr_map, agg_map, ref_map ) ) {
               return false;
             }
@@ -276,7 +276,7 @@ namespace gum {
           if ( attr_map.exists( a->name() ) ) {
             ++counter;
 
-            if ( not __checkImplementation( attr_map[a->name()]->type(),
+            if ( ! __checkImplementation( attr_map[a->name()]->type(),
                                             a->type() ) ) {
               O3PRM_CLASS_ATTR_IMPLEMENTATION(
                   c.name(), i, attr_map[a->name()]->name(), *__errors );
@@ -287,7 +287,7 @@ namespace gum {
           if ( agg_map.exists( a->name() ) ) {
             ++counter;
 
-            if ( not __checkImplementation( agg_map[a->name()]->variableType(),
+            if ( ! __checkImplementation( agg_map[a->name()]->variableType(),
                                             a->type() ) ) {
               O3PRM_CLASS_AGG_IMPLEMENTATION(
                   c.name(), i, agg_map[a->name()]->name(), *__errors );
@@ -307,7 +307,7 @@ namespace gum {
           if ( ref_map.exists( r->name() ) ) {
             ++counter;
 
-            if ( not __checkImplementation( ref_map[r->name()]->type(),
+            if ( ! __checkImplementation( ref_map[r->name()]->type(),
                                             r->slotType() ) ) {
               O3PRM_CLASS_REF_IMPLEMENTATION(
                   c.name(), i, ref_map[r->name()]->name(), *__errors );
@@ -321,7 +321,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
           O3Label& o3_type, const PRMType<GUM_SCALAR>& type ) {
-        if ( not __solver->resolveType( o3_type ) ) {
+        if ( ! __solver->resolveType( o3_type ) ) {
           return false;
         }
 
@@ -332,7 +332,7 @@ namespace gum {
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkImplementation(
           O3Label& o3_type, const PRMClassElementContainer<GUM_SCALAR>& type ) {
 
-        if ( not __solver->resolveSlotType( o3_type ) ) {
+        if ( ! __solver->resolveSlotType( o3_type ) ) {
           return false;
         }
 
@@ -424,7 +424,7 @@ namespace gum {
       O3ClassFactory<GUM_SCALAR>::__checkReferenceSlot( O3Class& c,
                                                         O3ReferenceSlot& ref ) {
 
-        if ( not __solver->resolveSlotType( ref.type() ) ) {
+        if ( ! __solver->resolveSlotType( ref.type() ) ) {
           return false;
         }
 
@@ -456,7 +456,7 @@ namespace gum {
               O3PRM_CLASS_DUPLICATE_REFERENCE( ref.name(), *__errors );
               return false;
 
-            } else if ( not slot_type->isSubTypeOf( real_ref->slotType() ) ) {
+            } else if ( ! slot_type->isSubTypeOf( real_ref->slotType() ) ) {
 
               O3PRM_CLASS_ILLEGAL_OVERLOAD( ref.name(), c.name(), *__errors );
               return false;
@@ -528,7 +528,7 @@ namespace gum {
           O3Class& c, O3Attribute& attr ) {
 
         // Check type
-        if ( not __solver->resolveType( attr.type() ) ) {
+        if ( ! __solver->resolveType( attr.type() ) ) {
           return false;
         }
 
@@ -536,14 +536,14 @@ namespace gum {
         if ( c.superLabel().label() != "" ) {
           const auto& super = __prm->getClass( c.superLabel().label() );
 
-          if ( not super.exists( attr.name().label() ) ) {
+          if ( ! super.exists( attr.name().label() ) ) {
             return true;
           }
 
           const auto& super_type = super.get( attr.name().label() ).type();
           const auto& type = __prm->type( attr.type().label() );
 
-          if ( not type.isSubTypeOf( super_type ) ) {
+          if ( ! type.isSubTypeOf( super_type ) ) {
 
             O3PRM_CLASS_ILLEGAL_OVERLOAD( attr.name(), c.superLabel(), *__errors );
             return false;
@@ -657,7 +657,7 @@ namespace gum {
         // Check for parents existence
         const auto& c = __prm->getClass( o3_c.name().label() );
         for ( auto& prnt : attr.parents() ) {
-          if ( not __checkParent( c, prnt ) ) {
+          if ( ! __checkParent( c, prnt ) ) {
             return false;
           }
         }
@@ -694,14 +694,14 @@ namespace gum {
       INLINE bool O3ClassFactory<GUM_SCALAR>::__checkLocalParent(
           const PRMClass<GUM_SCALAR>& c, const O3Label& prnt ) {
 
-        if ( not c.exists( prnt.label() ) ) {
+        if ( ! c.exists( prnt.label() ) ) {
           O3PRM_CLASS_PARENT_NOT_FOUND( prnt, *__errors );
           return false;
         }
 
         const auto& elt = c.get( prnt.label() );
-        if ( not( gum::prm::PRMClassElement<GUM_SCALAR>::isAttribute( elt ) or
-                  gum::prm::PRMClassElement<GUM_SCALAR>::isSlotChain( elt ) or
+        if ( !( gum::prm::PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ||
+                  gum::prm::PRMClassElement<GUM_SCALAR>::isSlotChain( elt ) ||
                   gum::prm::PRMClassElement<GUM_SCALAR>::isAggregate( elt ) ) ) {
           O3PRM_CLASS_ILLEGAL_PARENT( prnt, *__errors );
           return false;
@@ -753,7 +753,7 @@ namespace gum {
               auto value = f.formula().result();
               sum += value;
 
-              if ( value < 0.0 or 1.0 < value ) {
+              if ( value < 0.0 || 1.0 < value ) {
                 O3PRM_CLASS_ILLEGAL_CPT_VALUE(
                     c.name(), attr.name(), f, *__errors );
                 return false;
@@ -833,7 +833,7 @@ namespace gum {
             auto val = attr.values()[i].formula().result();
             values[idx] += val;
 
-            if ( val < 0.0 or 1.0 < val ) {
+            if ( val < 0.0 || 1.0 < val ) {
               O3PRM_CLASS_ILLEGAL_CPT_VALUE(
                   c.name(), attr.name(), attr.values()[i], *__errors );
               return false;
@@ -871,7 +871,7 @@ namespace gum {
         while ( std::regex_search( s, match, link_regex ) ) {
           auto link = match[0];
 
-          if ( not __checkSlotChainLink( *current, chain, link ) ) {
+          if ( ! __checkSlotChainLink( *current, chain, link ) ) {
             return nullptr;
           }
 
@@ -905,7 +905,7 @@ namespace gum {
           const O3Label& chain,
           const std::string& s ) {
 
-        if ( not c.exists( s ) ) {
+        if ( ! c.exists( s ) ) {
 
           O3PRM_CLASS_LINK_NOT_FOUND( chain, s, *__errors );
           return false;
@@ -956,7 +956,7 @@ namespace gum {
       O3ClassFactory<GUM_SCALAR>::__checkAggregate( O3Class& o3class,
                                                     O3Aggregate& agg ) {
 
-        if ( not __solver->resolveType( agg.variableType() ) ) {
+        if ( ! __solver->resolveType( agg.variableType() ) ) {
           return false;
         }
 
@@ -967,12 +967,12 @@ namespace gum {
         }
 
         // Checking type legality if overload
-        if ( not __checkAggTypeLegality( o3class, agg ) ) {
+        if ( ! __checkAggTypeLegality( o3class, agg ) ) {
           return false;
         }
 
         // Checking parameters numbers
-        if ( not __checkAggParameters( o3class, agg, t ) ) {
+        if ( ! __checkAggParameters( o3class, agg, t ) ) {
           return false;
         }
 
@@ -1024,8 +1024,8 @@ namespace gum {
           const auto& super = __prm->getClass( o3class.superLabel().label() );
           const auto& agg_type = __prm->type( agg.variableType().label() );
 
-          if ( super.exists( agg.name().label() ) and
-               not agg_type.isSubTypeOf(
+          if ( super.exists( agg.name().label() ) &&
+               ! agg_type.isSubTypeOf(
                    super.get( agg.name().label() ).type() ) ) {
 
             O3PRM_CLASS_ILLEGAL_OVERLOAD(
@@ -1068,7 +1068,7 @@ namespace gum {
           default: { GUM_ERROR( FatalError, "unknown aggregate type" ); }
         }
 
-        if ( not ok ) {
+        if ( ! ok ) {
           return false;
         }
 
@@ -1119,7 +1119,7 @@ namespace gum {
           }
         }
 
-        if ( not found ) {
+        if ( ! found ) {
           O3PRM_CLASS_AGG_PARAMETER_NOT_FOUND( agg.name(), param, *__errors );
           return false;
         }

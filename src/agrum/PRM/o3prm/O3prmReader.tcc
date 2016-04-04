@@ -327,7 +327,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__parseImport( const O3Import& i,
                                                const std::string& module ) {
 
-        if ( not __imported.exists( i.import().label() ) ) {
+        if ( ! __imported.exists( i.import().label() ) ) {
           __imported.insert( i.import().label() );
 
           auto module_path = module;
@@ -372,7 +372,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__copyImports() {
         auto copy = std::vector<const O3Import*>();
         for ( const auto& i : __o3_prm->imports() ) {
-          if ( not __imported.exists( i->import().label() ) ) {
+          if ( ! __imported.exists( i->import().label() ) ) {
             copy.push_back( i.get() );
           }
         }
@@ -383,7 +383,7 @@ namespace gum {
       INLINE void O3prmReader<GUM_SCALAR>::__readStream(
           std::istream& input, const std::string& file, std::string module ) {
 
-        if ( module.size() > 0 and module.back() != '.' ) {
+        if ( module.size() > 0 && module.back() != '.' ) {
           module.append( "." );
         }
 

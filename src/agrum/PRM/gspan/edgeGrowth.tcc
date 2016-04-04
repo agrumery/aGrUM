@@ -83,8 +83,8 @@ namespace gum {
         degree_list->push_back( id );
 
         for ( const auto& elt : matches ) {
-          if ( ( elt.second.first == u ) or ( elt.second.second == u ) or
-               ( elt.second.first == v ) or ( elt.second.second == v ) ) {
+          if ( ( elt.second.first == u ) || ( elt.second.second == u ) ||
+               ( elt.second.first == v ) || ( elt.second.second == v ) ) {
             iso_graph.addEdge( elt.first, id );
           }
         }

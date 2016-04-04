@@ -58,7 +58,7 @@ namespace gum {
           Instantiation inst( e );
           Size count = 0;
 
-          for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+          for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
             if ( ( e->get( inst ) == (GUM_SCALAR)1.0 ) )
               ++count;
             else if ( e->get( inst ) != (GUM_SCALAR)0.0 )
@@ -92,18 +92,18 @@ namespace gum {
     template <typename GUM_SCALAR>
     void StructuredBayesBall<GUM_SCALAR>::__fromChild(
         const PRMInstance<GUM_SCALAR>* i, NodeId n, InstanceMap& marks ) {
-      if ( not marks.exists( i ) ) {
+      if ( ! marks.exists( i ) ) {
         marks.insert( i, new StructuredBayesBall<GUM_SCALAR>::MarkMap() );
       }
 
-      if ( not marks[i]->exists( n ) ) {
+      if ( ! marks[i]->exists( n ) ) {
         marks[i]->insert( n, std::pair<bool, bool>( false, false ) );
       }
 
       // Sending message to parents
       switch ( i->type().get( n ).elt_type() ) {
         case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
-          if ( not __getMark( marks, i, n ).first ) {
+          if ( ! __getMark( marks, i, n ).first ) {
             __getMark( marks, i, n ).first = true;
 
             for ( const auto inst : i->getInstances( n ) )
@@ -113,7 +113,7 @@ namespace gum {
                   marks );
           }
 
-          if ( not __getMark( marks, i, n ).second ) {
+          if ( ! __getMark( marks, i, n ).second ) {
             __getMark( marks, i, n ).second = true;
 
             for ( const auto chi : i->type().dag().children( n ) )
@@ -125,15 +125,15 @@ namespace gum {
 
         case PRMClassElement<GUM_SCALAR>::prm_aggregate:
         case PRMClassElement<GUM_SCALAR>::prm_attribute: {
-          if ( not __getMark( marks, i, n ).first ) {
+          if ( ! __getMark( marks, i, n ).first ) {
             __getMark( marks, i, n ).first = true;
 
-            if ( not __isHardEvidence( i, n ) )
+            if ( ! __isHardEvidence( i, n ) )
               for ( const auto par : i->type().dag().parents( n ) )
                 __fromChild( i, par, marks );
           }
 
-          if ( not __getMark( marks, i, n ).second ) {
+          if ( ! __getMark( marks, i, n ).second ) {
             __getMark( marks, i, n ).second = true;
 
             // In i.
@@ -168,22 +168,22 @@ namespace gum {
     template <typename GUM_SCALAR>
     void StructuredBayesBall<GUM_SCALAR>::__fromParent(
         const PRMInstance<GUM_SCALAR>* i, NodeId n, InstanceMap& marks ) {
-      if ( not marks.exists( i ) ) {
+      if ( ! marks.exists( i ) ) {
         marks.insert( i, new StructuredBayesBall<GUM_SCALAR>::MarkMap() );
       }
 
-      if ( not marks[i]->exists( n ) ) {
+      if ( ! marks[i]->exists( n ) ) {
         marks[i]->insert( n, std::pair<bool, bool>( false, false ) );
       }
 
       // Concerns only PRMAttribute (because of the hard evidence)
       if ( ( __isHardEvidence( i, n ) ) and
-           ( not __getMark( marks, i, n ).first ) ) {
+           ( ! __getMark( marks, i, n ).first ) ) {
         __getMark( marks, i, n ).first = true;
 
         for ( const auto par : i->type().dag().parents( n ) )
           __fromChild( i, par, marks );
-      } else if ( not __getMark( marks, i, n ).second ) {
+      } else if ( ! __getMark( marks, i, n ).second ) {
         __getMark( marks, i, n ).second = true;
 
         // In i.

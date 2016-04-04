@@ -136,7 +136,7 @@ namespace gum {
         for ( auto child = ( *( iter.val() ) ).begin();
               child != ( *( iter.val() ) ).end();
               ++child ) {
-          if ( not ignore.exists( child->first ) ) {
+          if ( ! ignore.exists( child->first ) ) {
             __eliminateNodesDownward( query,
                                       child->first,
                                       pool,
@@ -144,7 +144,7 @@ namespace gum {
                                       elim_list,
                                       ignore,
                                       eliminated );
-          } else if ( not eliminated.exists( child->first ) ) {
+          } else if ( ! eliminated.exists( child->first ) ) {
             __addDelayedVariable( child->first, query, iter.key() );
             delayedVars.insert( iter.key() );
           }
@@ -167,8 +167,8 @@ namespace gum {
       }
 
       for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx ) {
-        if ( ( t.eliminationOrder()[idx] != node ) and
-             ( not delayedVars.exists( t.eliminationOrder()[idx] ) ) ) {
+        if ( ( t.eliminationOrder()[idx] != node ) &&
+             ( ! delayedVars.exists( t.eliminationOrder()[idx] ) ) ) {
           elim_order.push_back( t.eliminationOrder()[idx] );
         }
       }
@@ -184,9 +184,9 @@ namespace gum {
       // Eliminating instance in elim_list
       List<const PRMInstance<GUM_SCALAR>*> tmp_list;
 
-      while ( not elim_list.empty() ) {
+      while ( ! elim_list.empty() ) {
         if ( __checkElimOrder( query, elim_list.front() ) ) {
-          if ( not ignore.exists( elim_list.front() ) ) {
+          if ( ! ignore.exists( elim_list.front() ) ) {
             __eliminateNodesDownward( query,
                                       elim_list.front(),
                                       pool,
@@ -205,7 +205,7 @@ namespace gum {
       // Upward elimination
       for ( const auto chain : query->type().slotChains() )
         for ( const auto parent : query->getInstances( chain->id() ) )
-          if ( not ignore.exists( parent ) )
+          if ( ! ignore.exists( parent ) )
             __eliminateNodesUpward(
                 parent, pool, trash, tmp_list, ignore, eliminated );
     }
@@ -255,10 +255,10 @@ namespace gum {
         for ( auto child = ( *( iter.val() ) ).begin();
               child != ( *( iter.val() ) ).end();
               ++child ) {
-          if ( not ignore.exists( child->first ) ) {
+          if ( ! ignore.exists( child->first ) ) {
             __eliminateNodesDownward(
                 i, child->first, pool, trash, my_list, ignore, eliminated );
-          } else if ( not eliminated.exists( child->first ) ) {
+          } else if ( ! eliminated.exists( child->first ) ) {
             __addDelayedVariable( child->first, i, iter.key() );
             delayedVars.insert( iter.key() );
           }
@@ -272,8 +272,8 @@ namespace gum {
 
       // Calling elimination over child's parents
       for ( const auto node : my_list ) {
-        if ( __checkElimOrder( i, node ) and ( node != from ) ) {
-          if ( not ignore.exists( node ) ) {
+        if ( __checkElimOrder( i, node ) && ( node != from ) ) {
+          if ( ! ignore.exists( node ) ) {
             __eliminateNodesDownward(
                 i, node, pool, trash, elim_list, ignore, eliminated );
           }
@@ -313,7 +313,7 @@ namespace gum {
             std::vector<NodeId> elim;
 
             for ( const auto node : __getElimOrder( i->type() ) )
-              if ( not delayedVars->exists( node ) ) elim.push_back( node );
+              if ( ! delayedVars->exists( node ) ) elim.push_back( node );
 
             inf.eliminateNodes( elim, pool, trash );
           } else {
@@ -346,7 +346,7 @@ namespace gum {
         for ( auto child = ( *( iter.val() ) ).begin();
               child != ( *( iter.val() ) ).end();
               ++child ) {
-          if ( not ignore.exists( child->first ) ) {
+          if ( ! ignore.exists( child->first ) ) {
             __eliminateNodesDownward(
                 i, child->first, pool, trash, elim_list, ignore, eliminated );
           }
@@ -359,9 +359,9 @@ namespace gum {
       // Eliminating instance in elim_list
       List<const PRMInstance<GUM_SCALAR>*> tmp_list;
 
-      while ( not elim_list.empty() ) {
+      while ( ! elim_list.empty() ) {
         if ( __checkElimOrder( i, elim_list.front() ) ) {
-          if ( not ignore.exists( elim_list.front() ) ) {
+          if ( ! ignore.exists( elim_list.front() ) ) {
             __eliminateNodesDownward( i,
                                       elim_list.front(),
                                       pool,
@@ -380,7 +380,7 @@ namespace gum {
       // Upward elimination
       for ( const auto chain : i->type().slotChains() ) {
         for ( const auto parent : i->getInstances( chain->id() ) ) {
-          if ( not ignore.exists( parent ) ) {
+          if ( ! ignore.exists( parent ) ) {
             __eliminateNodesUpward(
                 parent, pool, trash, tmp_list, ignore, eliminated );
           }
@@ -398,7 +398,7 @@ namespace gum {
       bool inner = false;
 
       for ( const auto& elt : this->evidence( i ) ) {
-        inner = i->type().isInputNode( i->get( elt.first ) ) or
+        inner = i->type().isInputNode( i->get( elt.first ) ) ||
                 i->type().isInnerNode( i->get( elt.first ) );
 
         if ( inner ) {
@@ -428,13 +428,13 @@ namespace gum {
 
         if ( delayedVars ) {
           for ( size_t idx = 0; idx < full_elim_order.size(); ++idx )
-            if ( not i->type().isOutputNode( i->get( full_elim_order[idx] ) ) )
+            if ( ! i->type().isOutputNode( i->get( full_elim_order[idx] ) ) )
               inner_elim_order.push_back( full_elim_order[idx] );
-            else if ( not delayedVars->exists( full_elim_order[idx] ) )
+            else if ( ! delayedVars->exists( full_elim_order[idx] ) )
               output_elim_order.push_back( full_elim_order[idx] );
         } else {
           for ( size_t idx = 0; idx < full_elim_order.size(); ++idx )
-            if ( not i->type().isOutputNode( i->get( full_elim_order[idx] ) ) )
+            if ( ! i->type().isOutputNode( i->get( full_elim_order[idx] ) ) )
               inner_elim_order.push_back( full_elim_order[idx] );
             else
               output_elim_order.push_back( full_elim_order[idx] );
@@ -446,7 +446,7 @@ namespace gum {
         for ( const auto pot : tmp_pool )
           pool.insert( pot );
 
-        if ( not output_elim_order.empty() )
+        if ( ! output_elim_order.empty() )
           inf.eliminateNodes( output_elim_order, pool, trash );
       } else {
         InstanceBayesNet<GUM_SCALAR> bn( *i );
@@ -464,7 +464,7 @@ namespace gum {
             for ( auto iter = __getElimOrder( i->type() ).begin();
                   iter != __getElimOrder( i->type() ).end();
                   ++iter ) {
-              if ( not delayedVars->exists( *iter ) ) {
+              if ( ! delayedVars->exists( *iter ) ) {
                 elim.push_back( *iter );
               }
             }
@@ -510,7 +510,7 @@ namespace gum {
         if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) ) {
           if ( c.isOutputNode( c.get( node ) ) )
             outers.insert( node );
-          else if ( not outers.exists( node ) )
+          else if ( ! outers.exists( node ) )
             inners.insert( node );
 
           lifted_pool->insert(
@@ -522,7 +522,7 @@ namespace gum {
           // are
           // innner nodes
           for ( const auto par : c.dag().parents( node ) )
-            if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( par ) ) and
+            if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( par ) ) &&
                  c.isInnerNode( c.get( par ) ) ) {
               inners.erase( par );
               outers.insert( par );
@@ -569,15 +569,15 @@ namespace gum {
 
       Set<NodeId> visited_node;
 
-      while ( not l.empty() ) {
+      while ( ! l.empty() ) {
         visited_node.insert( l.front() );
 
-        if ( not class_elim_order.exists( cdg.get( l.front() ).first ) ) {
+        if ( ! class_elim_order.exists( cdg.get( l.front() ).first ) ) {
           class_elim_order.insert( cdg.get( l.front() ).first );
         }
 
         for ( const auto child : cdg.dag().children( l.front() ) ) {
-          if ( not visited_node.contains( child ) ) {
+          if ( ! visited_node.contains( child ) ) {
             l.push_back( child );
           }
         }

@@ -174,7 +174,7 @@ namespace gum {
                 case PRMClassElement<GUM_SCALAR>::prm_aggregate:
                 case PRMClassElement<GUM_SCALAR>::prm_attribute: {
                   if ( ( c->get( name ).elt_type() ==
-                         PRMClassElement<GUM_SCALAR>::prm_attribute ) or
+                         PRMClassElement<GUM_SCALAR>::prm_attribute ) ||
                        ( c->get( name ).elt_type() ==
                          PRMClassElement<GUM_SCALAR>::prm_aggregate ) ) {
 
@@ -974,7 +974,7 @@ namespace gum {
       for ( size_t i = 0; i < chains.size(); ++i ) {
         try {
           inputs.push_back( &( c->get( chains[i] ) ) );
-          retVal = retVal or
+          retVal = retVal ||
                    PRMClassElement<GUM_SCALAR>::isSlotChain( *( inputs.back() ) );
         } catch ( NotFound& ) {
           inputs.push_back( __buildSlotChain( c, chains[i] ) );

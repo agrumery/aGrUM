@@ -227,7 +227,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE bool O3SystemFactory<GUM_SCALAR>::__checkSystem( O3System& sys ) {
 
-        if ( __checkInstance( sys ) and __checkAssignments( sys ) and
+        if ( __checkInstance( sys ) && __checkAssignments( sys ) &&
              __checkIncrements( sys ) ) {
           return true;
         }
@@ -241,13 +241,13 @@ namespace gum {
 
         for ( auto& i : sys.instances() ) {
 
-          if ( not __solver->resolveClass( i.type() ) ) {
+          if ( ! __solver->resolveClass( i.type() ) ) {
             return false;
           }
 
           const auto& type = __prm->getClass( i.type().label() );
           if ( type.parameters().size() > 0 ) {
-            if ( not __checkParameters( type, i ) ) {
+            if ( ! __checkParameters( type, i ) ) {
               return false;
             }
           }
@@ -269,12 +269,12 @@ namespace gum {
 
         for ( const auto& param : inst.parameters() ) {
 
-          if ( not type.exists( param.name().label() ) ) {
+          if ( ! type.exists( param.name().label() ) ) {
             O3PRM_SYSTEM_PARAMETER_NOT_FOUND( param, *__errors );
             return false;
           }
 
-          if ( not PRMClassElement<GUM_SCALAR>::isParameter(
+          if ( ! PRMClassElement<GUM_SCALAR>::isParameter(
                    type.get( param.name().label() ) ) ) {
             O3PRM_SYSTEM_NOT_A_PARAMETER( param, *__errors );
             return false;
@@ -286,7 +286,7 @@ namespace gum {
           switch ( type_param.valueType() ) {
 
             case PRMParameter<GUM_SCALAR>::ParameterType::INT: {
-              if ( not param.isInteger() ) {
+              if ( ! param.isInteger() ) {
                 O3PRM_SYSTEM_PARAMETER_NOT_INT( param, *__errors );
                 return false;
               }
@@ -318,7 +318,7 @@ namespace gum {
             return false;
           }
 
-          if ( not __nameMap.exists( ass.leftInstance().label() ) ) {
+          if ( ! __nameMap.exists( ass.leftInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.leftInstance(), *__errors );
             return false;
           }
@@ -327,7 +327,7 @@ namespace gum {
           const auto& type = __prm->getClass( i->type().label() );
           const auto& ref = ass.leftReference().label();
 
-          if ( not( type.exists( ass.leftReference().label() ) and
+          if ( !( type.exists( ass.leftReference().label() ) &&
                     PRMClassElement<GUM_SCALAR>::isReferenceSlot(
                         type.get( ref ) ) ) ) {
 
@@ -339,14 +339,14 @@ namespace gum {
           const auto& real_ref =
               static_cast<const PRMReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
 
-          if ( real_ref.isArray() and
+          if ( real_ref.isArray() &&
                __nameMap[ass.rightInstance().label()]->size().value() == 0 ) {
 
             O3PRM_SYSTEM_NOT_AN_ARRAY( ass.rightInstance(), *__errors );
             return false;
           }
 
-          if ( ( not real_ref.isArray() ) and
+          if ( ( ! real_ref.isArray() ) &&
                __nameMap[ass.rightInstance().label()]->size().value() > 0 ) {
 
             O3PRM_SYSTEM_NOT_AN_ARRAY( ass.leftReference(), *__errors );
@@ -367,7 +367,7 @@ namespace gum {
             return false;
           }
 
-          if ( not __nameMap.exists( inc.leftInstance().label() ) ) {
+          if ( ! __nameMap.exists( inc.leftInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( inc.leftInstance(), *__errors );
             return false;
           }
@@ -376,7 +376,7 @@ namespace gum {
           const auto& type = __prm->getClass( i->type().label() );
           const auto& ref = inc.leftReference().label();
 
-          if ( not( type.exists( inc.leftReference().label() ) and
+          if ( !( type.exists( inc.leftReference().label() ) &&
                     PRMClassElement<GUM_SCALAR>::isReferenceSlot(
                         type.get( ref ) ) ) ) {
 
@@ -388,7 +388,7 @@ namespace gum {
           const auto& real_ref =
               static_cast<const PRMReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
 
-          if ( not real_ref.isArray() ) {
+          if ( ! real_ref.isArray() ) {
 
             O3PRM_SYSTEM_NOT_AN_ARRAY( inc.leftReference(), *__errors );
             return false;

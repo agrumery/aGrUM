@@ -56,7 +56,7 @@ namespace gum {
           for ( auto iter = query->getRefAttr( attr ).begin();
                 iter != query->getRefAttr( attr ).end();
                 ++iter )
-            if ( ( not ignore.exists( iter->first ) ) and
+            if ( ( ! ignore.exists( iter->first ) ) &&
                  ( __bb.exists( iter->first ) ) )
               __eliminateNodesDownward(
                   query, iter->first, pool, trash, elim_list, ignore );
@@ -86,9 +86,9 @@ namespace gum {
       List<const PRMInstance<GUM_SCALAR>*> tmp_list;
       __reduceElimList( query, elim_list, tmp_list, ignore, pool, trash );
 
-      while ( not elim_list.empty() ) {
+      while ( ! elim_list.empty() ) {
         if ( __checkElimOrder( query, elim_list.front() ) ) {
-          if ( ( not ignore.exists( elim_list.front() ) ) and
+          if ( ( ! ignore.exists( elim_list.front() ) ) &&
                ( __bb.exists( elim_list.front() ) ) )
             __eliminateNodesDownward(
                 query, elim_list.front(), pool, trash, elim_list, ignore );
@@ -102,7 +102,7 @@ namespace gum {
       // Upward elimination
       for ( const auto chain : sc_set )
         for ( const auto parent : query->getInstances( chain ) )
-          if ( ( not ignore.exists( parent ) ) and ( __bb.exists( *parent ) ) )
+          if ( ( ! ignore.exists( parent ) ) && ( __bb.exists( *parent ) ) )
             __eliminateNodesUpward( parent, pool, trash, tmp_list, ignore );
     }
 
@@ -126,7 +126,7 @@ namespace gum {
           for ( auto iter = i->getRefAttr( attr ).begin();
                 iter != i->getRefAttr( attr ).end();
                 ++iter )
-            if ( ( not ignore.exists( iter->first ) ) and
+            if ( ( ! ignore.exists( iter->first ) ) &&
                  ( __bb.exists( iter->first ) ) )
               __eliminateNodesDownward(
                   i, iter->first, pool, trash, my_list, ignore );
@@ -155,9 +155,9 @@ namespace gum {
       }
 
       // Calling elimination over child's parents
-      while ( not my_list.empty() ) {
+      while ( ! my_list.empty() ) {
         if ( __checkElimOrder( i, my_list.front() ) ) {
-          if ( ( not ignore.exists( my_list.front() ) ) and
+          if ( ( ! ignore.exists( my_list.front() ) ) &&
                ( __bb.exists( my_list.front() ) ) )
             __eliminateNodesDownward(
                 i, my_list.front(), pool, trash, my_list, ignore );
@@ -171,7 +171,7 @@ namespace gum {
       // Adding parents instance to elim_list
       for ( const auto chain : sc_set )
         for ( const auto parent : i->getInstances( chain ) )
-          if ( ( not ignore.exists( parent ) ) and __bb.exists( parent ) and
+          if ( ( ! ignore.exists( parent ) ) && __bb.exists( parent ) &&
                ( parent != from ) )
             elim_list.insert( parent );
     }
@@ -194,7 +194,7 @@ namespace gum {
           for ( auto iter = i->getRefAttr( attr ).begin();
                 iter != i->getRefAttr( attr ).end();
                 ++iter )
-            if ( ( not ignore.exists( iter->first ) ) and
+            if ( ( ! ignore.exists( iter->first ) ) &&
                  ( __bb.exists( iter->first ) ) )
               __eliminateNodesDownward(
                   i, iter->first, pool, trash, elim_list, ignore );
@@ -225,9 +225,9 @@ namespace gum {
       // Eliminating instance in elim_list
       List<const PRMInstance<GUM_SCALAR>*> tmp_list;
 
-      while ( not elim_list.empty() ) {
+      while ( ! elim_list.empty() ) {
         if ( __checkElimOrder( i, elim_list.front() ) ) {
-          if ( ( not ignore.exists( elim_list.front() ) ) and
+          if ( ( ! ignore.exists( elim_list.front() ) ) &&
                ( __bb.exists( elim_list.front() ) ) )
             __eliminateNodesDownward(
                 i, elim_list.front(), pool, trash, elim_list, ignore );
@@ -241,7 +241,7 @@ namespace gum {
       // Upward elimination
       for ( const auto chain : sc_set )
         for ( const auto parent : i->getInstances( chain ) )
-          if ( ( not ignore.exists( parent ) ) and ( __bb.exists( parent ) ) )
+          if ( ( ! ignore.exists( parent ) ) && ( __bb.exists( parent ) ) )
             __eliminateNodesUpward( parent, pool, trash, tmp_list, ignore );
     }
 
@@ -308,7 +308,7 @@ namespace gum {
           if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( elt.first ) ) ) {
             if ( c.isOutputNode( c.get( elt.first ) ) )
               outers.insert( elt.first );
-            else if ( not outers.exists( elt.first ) )
+            else if ( ! outers.exists( elt.first ) )
               inners.insert( elt.first );
           } else if ( PRMClassElement<GUM_SCALAR>::isAggregate(
                           c.get( elt.first ) ) ) {
@@ -319,8 +319,8 @@ namespace gum {
             // innner nodes
             for ( const auto par : c.dag().parents( elt.first ) )
               if ( PRMClassElement<GUM_SCALAR>::isAttribute(
-                       i->type().get( par ) ) and
-                   i->type().isInnerNode( i->type().get( par ) ) and
+                       i->type().get( par ) ) &&
+                   i->type().isInnerNode( i->type().get( par ) ) &&
                    __bb.requisiteNodes( i ).exists( par ) ) {
                 inners.erase( par );
                 outers.insert( par );
@@ -341,7 +341,7 @@ namespace gum {
 
       if ( ignore.size() ) partial_ordering.pushBack( ignore );
 
-      GUM_ASSERT( inners.size() or outers.size() );
+      GUM_ASSERT( inners.size() || outers.size() );
       PartialOrderedTriangulation t(
           &( bn.moralGraph() ), &( bn.modalities() ), &partial_ordering );
 
@@ -374,15 +374,15 @@ namespace gum {
 
       Set<NodeId> visited_node;
 
-      while ( not l.empty() ) {
+      while ( ! l.empty() ) {
         visited_node.insert( l.front() );
 
-        if ( not class_elim_order.exists( cdg.get( l.front() ).first ) ) {
+        if ( ! class_elim_order.exists( cdg.get( l.front() ).first ) ) {
           class_elim_order.insert( cdg.get( l.front() ).first );
         }
 
         for ( const auto child : cdg.dag().children( l.front() ) ) {
-          if ( not visited_node.contains( child ) ) {
+          if ( ! visited_node.contains( child ) ) {
             l.push_back( child );
           }
         }
@@ -623,9 +623,9 @@ namespace gum {
         Set<const PRMInstance<GUM_SCALAR>*>& ignore,
         BucketSet& pool,
         BucketSet& trash ) {
-      while ( not elim_list.empty() ) {
+      while ( ! elim_list.empty() ) {
         if ( __checkElimOrder( i, elim_list.front() ) ) {
-          if ( ( not ignore.exists( elim_list.front() ) ) and
+          if ( ( ! ignore.exists( elim_list.front() ) ) &&
                ( __bb.exists( elim_list.front() ) ) ) {
             __eliminateNodesDownward(
                 i, elim_list.front(), pool, trash, elim_list, ignore );

@@ -229,8 +229,8 @@ namespace gum {
       };
 
       /**
-        Represent a o3prmr context, with an import, and some sequencials
-        commands.
+       * Represent a o3prmr context, with an import, and some sequencials
+       * commands.
        */
       template <typename GUM_SCALAR>
       class O3prmrContext {

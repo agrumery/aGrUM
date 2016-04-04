@@ -79,10 +79,10 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMClassElementContainer<GUM_SCALAR>::setInputNode(
         const PRMClassElement<GUM_SCALAR>& elt, bool b ) {
-      if ( not exists( elt.safeName() ) ) {
+      if ( ! exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound,
                    ": <" + elt.safeName() + "> is not in <" + name() + ">" );
-      } else if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) or
+      } else if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ||
                   PRMClassElement<GUM_SCALAR>::isAggregate( elt ) ) {
         try {
           _getIOFlag( elt ).first = b;
@@ -98,10 +98,10 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMClassElementContainer<GUM_SCALAR>::setOutputNode(
         const PRMClassElement<GUM_SCALAR>& elt, bool b ) {
-      if ( not exists( elt.safeName() ) ) {
+      if ( ! exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound,
                    "<" + elt.safeName() + "> is not in <" + name() + ">" );
-      } else if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) or
+      } else if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ||
                   PRMClassElement<GUM_SCALAR>::isAggregate( elt ) ) {
         try {
           _getIOFlag( elt ).second = b;
@@ -123,7 +123,7 @@ namespace gum {
     INLINE bool PRMClassElementContainer<GUM_SCALAR>::isInnerNode(
         const PRMClassElement<GUM_SCALAR>& elt ) const {
       try {
-        return not( _getIOFlag( elt ).first or _getIOFlag( elt ).second );
+        return !( _getIOFlag( elt ).first || _getIOFlag( elt ).second );
       } catch ( NotFound& ) {
         return true;
       }

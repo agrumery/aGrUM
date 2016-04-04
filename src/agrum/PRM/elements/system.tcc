@@ -345,11 +345,11 @@ namespace gum {
         p->add( *( bijection.second( var ) ) );
       }
       Instantiation inst( attr.cpf() ), jnst( *p );
-      for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+      for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
             inst.inc(), jnst.inc() ) {
         p->set( jnst, attr.cpf().get( inst ) );
       }
-      GUM_ASSERT( inst.end() and jnst.end() );
+      GUM_ASSERT( inst.end() && jnst.end() );
       factory.setVariableCPT( var_name.str(), p, false );
     }
 
@@ -591,7 +591,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMSystem<GUM_SCALAR>::exists( const std::string& name ) const {
-      return __nameMap.exists( name ) or __arrayMap.exists( name );
+      return __nameMap.exists( name ) || __arrayMap.exists( name );
     }
 
   } /* namespace prm */

@@ -39,8 +39,8 @@ namespace gum {
         for ( const auto inst : seq ) {
           for ( const auto input : inst->type().slotChains() )
             for ( const auto inst2 : inst->getInstances( input->id() ) )
-              if ( ( not seq.exists( inst2 ) ) and
-                   ( not input_set.exists(
+              if ( ( ! seq.exists( inst2 ) ) &&
+                   ( ! input_set.exists(
                        &( inst2->get( input->lastElt().safeName() ) ) ) ) ) {
                 cost += std::log( input->type().variable().domainSize() );
                 input_set.insert(
@@ -50,7 +50,7 @@ namespace gum {
           for ( auto vec = inst->beginInvRef(); vec != inst->endInvRef();
                 ++vec )
             for ( const auto inverse : *vec.val() )
-              if ( not seq.exists( inverse.first ) ) {
+              if ( ! seq.exists( inverse.first ) ) {
                 cost += std::log(
                     inst->get( vec.key() ).type().variable().domainSize() );
                 break;

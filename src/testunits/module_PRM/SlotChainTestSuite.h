@@ -212,7 +212,7 @@ namespace gum_tests {
       PRMSlotChain simple( "simple", *__booleanChain );
       PRMSlotChain multiple( "multiple", *__stateChain );
       // Act & Assert
-      TS_ASSERT( not simple.isMultiple() );
+      TS_ASSERT( ! simple.isMultiple() );
       TS_ASSERT( multiple.isMultiple() );
     }
 
@@ -260,7 +260,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( expected );
       gum::Instantiation j( actual );
-      for ( i.setFirst(), j.setFirst(); not( i.end() or j.end() );
+      for ( i.setFirst(), j.setFirst(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( expected[i], actual[j] );
       }
@@ -279,7 +279,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( expected );
       gum::Instantiation j( actual );
-      for ( i.setFirst(), j.setFirst(); not( i.end() or j.end() );
+      for ( i.setFirst(), j.setFirst(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( expected[i], actual[j] );
       }
@@ -301,7 +301,7 @@ namespace gum_tests {
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT( ! child.cpf().contains( parent.type().variable() ) );
     }
 
     void testAddParentDupplicateError() {
@@ -315,7 +315,7 @@ namespace gum_tests {
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT( ! child.cpf().contains( parent.type().variable() ) );
     }
 
     void testAddChild() {
@@ -328,7 +328,7 @@ namespace gum_tests {
       // Assert
       auto after = parent.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( not parent.cpf().contains( child.type().variable() ) );
+      TS_ASSERT( ! parent.cpf().contains( child.type().variable() ) );
     }
     /// @}
   };

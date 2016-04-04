@@ -64,7 +64,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMInstance<GUM_SCALAR>::instantiate() {
-      if ( not __instantiated ) {
+      if ( ! __instantiated ) {
         __instantiated = true;
         __instantiate();
       }
@@ -138,7 +138,7 @@ namespace gum {
       }
 
       // If sc is not multiple so it can be added as a parent of an attribute
-      if ( not sc->isMultiple() ) {
+      if ( ! sc->isMultiple() ) {
         // We should have only one instance
         // Less ugly way to get the single instance in set
         for ( auto instance : *set ) {
@@ -167,16 +167,16 @@ namespace gum {
               static_cast<PRMReferenceSlot<GUM_SCALAR>*>( elt );
 
           // Checking if instance's type is legal
-          if ( not instance.type().isSubTypeOf( ref->slotType() ) ) {
+          if ( ! instance.type().isSubTypeOf( ref->slotType() ) ) {
             GUM_ERROR( TypeError,
                        "given Instance type is not a proper "
                        "subclass of the ReferenceSlot<GUM_SCALAR> slot type" );
           }
 
           // Checking the reference's size limit
-          if ( __referenceMap.exists( id ) and
-               ( not static_cast<PRMReferenceSlot<GUM_SCALAR>&>( type().get( id ) )
-                         .isArray() ) and
+          if ( __referenceMap.exists( id ) &&
+               ( ! static_cast<PRMReferenceSlot<GUM_SCALAR>&>( type().get( id ) )
+                         .isArray() ) &&
                ( __referenceMap[id]->size() == 1 ) ) {
             GUM_ERROR( OutOfUpperBound,
                        "ReferenceSlot<GUM_SCALAR> size limit reached" );
@@ -190,7 +190,7 @@ namespace gum {
               static_cast<PRMSlotChain<GUM_SCALAR>&>( type().get( id ) );
 
           // Checking if instance's type is legal
-          if ( not instance.type().isSubTypeOf( sc.end() ) ) {
+          if ( ! instance.type().isSubTypeOf( sc.end() ) ) {
             GUM_ERROR( TypeError,
                        "given Instance type is not a proper "
                        "subclass of the ClassElementContainer pointed"
@@ -198,9 +198,9 @@ namespace gum {
           }
 
           // Checking the reference's size limit
-          if ( __referenceMap.exists( id ) and
-               ( not static_cast<PRMSlotChain<GUM_SCALAR>&>( type().get( id ) )
-                         .isMultiple() ) and
+          if ( __referenceMap.exists( id ) &&
+               ( ! static_cast<PRMSlotChain<GUM_SCALAR>&>( type().get( id ) )
+                         .isMultiple() ) &&
                ( __referenceMap[id]->size() == 1 ) ) {
             GUM_ERROR( OutOfUpperBound,
                        "SlotChain<GUM_SCALAR> size limit reached" );
@@ -210,14 +210,14 @@ namespace gum {
         }
 
         default: {
-          if ( not type().isOutputNode( *elt ) ) {
+          if ( ! type().isOutputNode( *elt ) ) {
             GUM_ERROR( WrongClassElement,
                        "given ClassElement<GUM_SCALAR> is not an output node" );
           }
         }
       }
 
-      if ( not __referenceMap.exists( id ) ) {
+      if ( ! __referenceMap.exists( id ) ) {
         __referenceMap.insert( id, new Set<PRMInstance<GUM_SCALAR>*>() );
       }
 
@@ -294,7 +294,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMInstance<GUM_SCALAR>::exists( const std::string& name ) const {
-      return __type->exists( name ) and exists( __type->get( name ).id() );
+      return __type->exists( name ) && exists( __type->get( name ).id() );
     }
 
     template <typename GUM_SCALAR>
@@ -606,8 +606,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMInstance<GUM_SCALAR>::hasRefAttr( NodeId id ) const {
-      return __referingAttr.exists( id ) and
-             ( not __referingAttr[id]->empty() );
+      return __referingAttr.exists( id ) &&
+             ( ! __referingAttr[id]->empty() );
     }
 
     template <typename GUM_SCALAR>

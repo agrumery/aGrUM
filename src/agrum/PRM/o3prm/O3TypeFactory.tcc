@@ -131,7 +131,7 @@ namespace gum {
           for ( auto type : __o3Types ) {
 
 
-            if ( not __isPrimitiveType( *type ) ) {
+            if ( ! __isPrimitiveType( *type ) ) {
 
               if ( __solver->resolveType( type->superLabel() ) ) {
 
@@ -273,7 +273,7 @@ namespace gum {
 
           if ( type->superLabel().label() != "" ) {
 
-            if ( not __solver->resolveType( type->superLabel() ) ) {
+            if ( ! __solver->resolveType( type->superLabel() ) ) {
               return false;
             }
 
@@ -293,7 +293,7 @@ namespace gum {
             }
 
             // Check labels inheritance
-            if ( not __checkLabels( *type ) ) {
+            if ( ! __checkLabels( *type ) ) {
               return false;
             }
           }
@@ -314,7 +314,7 @@ namespace gum {
             super_labels.insert( label.first.label() );
           }
 
-          if ( not super_labels.contains( pair.second.label() ) ) {
+          if ( ! super_labels.contains( pair.second.label() ) ) {
             O3PRM_TYPE_UNKNOWN_LABEL( type.superLabel(), pair.second, *__errors );
             return false;
           }

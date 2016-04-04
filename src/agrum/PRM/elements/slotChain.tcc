@@ -51,7 +51,7 @@ namespace gum {
           GUM_ERROR( WrongClassElement, "illegal ClassElement in chain" );
         } else {
           __isMultiple =
-              __isMultiple or
+              __isMultiple ||
               static_cast<PRMReferenceSlot<GUM_SCALAR>*>( __chain->atPos( i ) )
                   ->isArray();
         }

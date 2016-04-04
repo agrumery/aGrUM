@@ -127,7 +127,7 @@ namespace gum {
       size_t idx;
       const std::list<NodeId>* children = 0;
 
-      while ( not stack.empty() ) {
+      while ( ! stack.empty() ) {
         // Getting next pattern
         p = stack.back();
         stack.pop_back();
@@ -167,7 +167,7 @@ namespace gum {
                 // We want a forward edge in any case or a backward edge if
                 // current
                 // is the rightmost vertex
-                if ( ( not seq->exists( neighbor ) ) or
+                if ( ( ! seq->exists( neighbor ) ) ||
                      ( node == r_path.back() ) ) {
                   // Things we need to know: the LabelData data of the neighbour
                   // and,
@@ -239,7 +239,7 @@ namespace gum {
       NodeId id = 0;
       std::list<NodeId>* children = nullptr;
 
-      while ( not stack.empty() ) {
+      while ( ! stack.empty() ) {
         id = stack.back();
         stack.pop_back();
         __patterns.push_back( &( tree().pattern( id ) ) );
@@ -251,7 +251,7 @@ namespace gum {
           stack.push_back( *child );
       }
 
-      if ( not __patterns.empty() ) {
+      if ( ! __patterns.empty() ) {
         // We sort __patterns.
         GSpan<GUM_SCALAR>::PatternSort my_sort( this );
         std::sort( __patterns.begin(), __patterns.end(), my_sort );
@@ -293,7 +293,7 @@ namespace gum {
                 break;
               }
 
-            if ( not found ) {
+            if ( ! found ) {
               // We add the pattern to the reduced isomorphism graph to compute
               // the
               // max independent set
@@ -318,7 +318,7 @@ namespace gum {
           Set<NodeId> removed;
 
           for ( const auto node : degree_list )
-            if ( not removed.exists( node ) ) {
+            if ( ! removed.exists( node ) ) {
               // First we update removed to follow the max independent set
               // algorithm
               removed.insert( node );

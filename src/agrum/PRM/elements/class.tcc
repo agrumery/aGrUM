@@ -518,14 +518,14 @@ namespace gum {
                    "tail and/or head of arc does not exists in this Class" );
       }
 
-      if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) or
+      if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) ||
            ( head->elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) ) {
         GUM_ERROR(
             OperationNotAllowed,
             "a ReferenceSlot<GUM_SCALAR> can not on neither side of an arc" );
       }
 
-      if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) and
+      if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) &&
            ( head->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) ) {
         GUM_ERROR(
             OperationNotAllowed,
@@ -565,7 +565,7 @@ namespace gum {
       try {
         __nameMap.insert( elt->safeName(), elt );
       } catch ( DuplicateElement& e ) {
-        if ( !( PRMClassElement<GUM_SCALAR>::isSlotChain( *elt ) or
+        if ( !( PRMClassElement<GUM_SCALAR>::isSlotChain( *elt ) ||
                   PRMClassElement<GUM_SCALAR>::isParameter( *elt ) ) ) {
           throw e;
         }

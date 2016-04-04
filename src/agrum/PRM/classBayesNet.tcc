@@ -34,7 +34,7 @@ namespace gum {
       for ( const auto node : c.dag().nodes() ) {
         try {
           // Adding the attribute
-          if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) or
+          if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) ||
                PRMClassElement<GUM_SCALAR>::isAggregate( c.get( node ) ) ) {
             const PRMClassElement<GUM_SCALAR>& elt = c.get( node );
             this->_dag.addNode( elt.id() );

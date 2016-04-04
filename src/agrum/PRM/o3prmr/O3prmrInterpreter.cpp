@@ -100,7 +100,7 @@ namespace gum {
       /// Root paths to search from there packages.
       /// Default are './' and one is calculate from request package if any.
       void O3prmrInterpreter::addPath( std::string path ) {
-        if ( path.length() and path.back() != '/' ) {
+        if ( path.length() && path.back() != '/' ) {
           path = path + '/';
         }
         if ( Directory::isDir( path ) ) {
@@ -466,7 +466,7 @@ namespace gum {
           Instantiation i( command->potentiel );
           bool found = false;
 
-          for ( i.setFirst(); not i.end(); i.inc() ) {
+          for ( i.setFirst(); ! i.end(); i.inc() ) {
             if ( chain.second->type().variable().label(
                      i.val( chain.second->type().variable() ) ) == right_val ) {
               command->potentiel.set( i, (double)1.0 );
@@ -673,7 +673,7 @@ namespace gum {
             }
           }
 
-          if ( not found ) {
+          if ( ! found ) {
             if ( m_verbose ) {
               m_log << "Finished with errors." << std::endl;
             }
@@ -896,7 +896,7 @@ namespace gum {
         Instantiation j( m );
         const PRMAttribute<double>& attr = *( command->chain.second );
 
-        for ( j.setFirst(); not j.end(); j.inc() ) {
+        for ( j.setFirst(); ! j.end(); j.inc() ) {
           // auto label_value = j.val ( attr.type().variable() );
           auto label_value = j.val( 0 );
           std::string label = attr.type().variable().label( label_value );
