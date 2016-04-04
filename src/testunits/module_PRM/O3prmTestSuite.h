@@ -26,7 +26,7 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-#include <agrum/PRM/elements/formAttribute.h>
+#include <agrum/PRM/elements/PRMFormAttribute.h>
 
 namespace gum_tests {
 

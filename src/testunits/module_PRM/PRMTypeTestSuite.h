@@ -24,7 +24,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
-#include <agrum/PRM/elements/type.h>
+#include <agrum/PRM/elements/PRMType.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 

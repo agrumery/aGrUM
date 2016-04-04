@@ -24,8 +24,8 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/PRM/elements/PRMAggregate.h>
-#include <agrum/PRM/elements/scalarAttribute.h>
-#include <agrum/PRM/elements/type.h>
+#include <agrum/PRM/elements/PRMScalarAttribute.h>
+#include <agrum/PRM/elements/PRMType.h>
 
 #include <agrum/multidim/aggregators/min.h>
 #include <agrum/multidim/aggregators/max.h>

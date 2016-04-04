@@ -21,9 +21,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/PRM/elements/formAttribute.h>
-#include <agrum/PRM/elements/referenceSlot.h>
-#include <agrum/PRM/elements/class.h>
+#include <agrum/PRM/elements/PRMFormAttribute.h>
+#include <agrum/PRM/elements/PRMReferenceSlot.h>
+#include <agrum/PRM/elements/PRMClass.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 

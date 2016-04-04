@@ -30,8 +30,8 @@
 
 #include <agrum/core/math/formula.h>
 
-#include <agrum/PRM/elements/funcAttribute.h>
-#include <agrum/PRM/elements/formAttribute.h>
+#include <agrum/PRM/elements/PRMFuncAttribute.h>
+#include <agrum/PRM/elements/PRMFormAttribute.h>
 
 namespace gum {
 
