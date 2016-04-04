@@ -33,7 +33,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>::MultiDimContainer(
       MultiDimContainer<GUM_SCALAR>&& from )
-      : MultiDimAdressable( std::forward<const MultiDimAdressable&&>( from ) ) {
+      : MultiDimAdressable( std::forward<MultiDimAdressable>( from ) ) {
     GUM_CONS_MOV( MultiDimContainer );
   }
 
@@ -61,7 +61,7 @@ namespace gum {
   INLINE MultiDimContainer<GUM_SCALAR>& MultiDimContainer<GUM_SCALAR>::
   operator=( MultiDimContainer<GUM_SCALAR>&& from ) {
     GUM_OP_MOV( MultiDimContainer );
-    MultiDimAdressable::operator=( std::forward<MultiDimAdressable&&>( from ) );
+    MultiDimAdressable::operator=( std::forward<MultiDimAdressable>( from ) );
     return *this;
   }
 
