@@ -83,7 +83,7 @@
   #pragma warning(disable : 4503)
 #endif
 
-#ifdef MSVC // removing warning about using (non safe) methods instead of (safe but mc-specific) versions.
+#ifdef MSVC // removing warning about using (non safe) methods instead of (safe but m$-specific) versions.
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
