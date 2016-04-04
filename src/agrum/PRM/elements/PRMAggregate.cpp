@@ -25,7 +25,7 @@
  *
  */
 
-#include <agrum/PRM/elements/aggregate.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
 
 namespace gum {
   namespace prm {

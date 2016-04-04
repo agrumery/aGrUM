@@ -23,7 +23,7 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-#include <agrum/PRM/elements/aggregate.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/scalarAttribute.h>
 #include <agrum/PRM/elements/type.h>
 

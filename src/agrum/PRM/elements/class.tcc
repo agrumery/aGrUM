@@ -30,7 +30,7 @@
 #include <agrum/PRM/elements/class.h>
 
 #include <agrum/PRM/elements/interface.h>
-#include <agrum/PRM/elements/aggregate.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/slotChain.h>
 
 namespace gum {

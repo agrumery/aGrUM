@@ -241,6 +241,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/aggregate.tcc>
+#include <agrum/PRM/elements/PRMAggregate.tcc>
 
 #endif /* GUM_AGGREGATE_H */

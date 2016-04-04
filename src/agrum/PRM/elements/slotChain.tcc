@@ -26,7 +26,7 @@
 #include <agrum/PRM/elements/slotChain.h>
 #include <agrum/PRM/elements/referenceSlot.h>
 #include <agrum/PRM/elements/attribute.h>
-#include <agrum/PRM/elements/aggregate.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
 
 namespace gum {
   namespace prm {
