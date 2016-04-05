@@ -22,8 +22,8 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/PRM/elements/scalarAttribute.h>
-#include <agrum/PRM/elements/class.h>
+#include <agrum/PRM/elements/PRMScalarAttribute.h>
+#include <agrum/PRM/elements/PRMClass.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 

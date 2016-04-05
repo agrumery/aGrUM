@@ -33,16 +33,16 @@
 #include <agrum/core/sequence.h>
 
 #include <agrum/PRM/elements/PRMObject.h>
-#include <agrum/PRM/elements/type.h>
-#include <agrum/PRM/elements/class.h>
-#include <agrum/PRM/elements/instance.h>
-#include <agrum/PRM/elements/attribute.h>
-#include <agrum/PRM/elements/funcAttribute.h>
-#include <agrum/PRM/elements/aggregate.h>
-#include <agrum/PRM/elements/referenceSlot.h>
-#include <agrum/PRM/elements/slotChain.h>
+#include <agrum/PRM/elements/PRMType.h>
+#include <agrum/PRM/elements/PRMClass.h>
+#include <agrum/PRM/elements/PRMInstance.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+#include <agrum/PRM/elements/PRMFuncAttribute.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
+#include <agrum/PRM/elements/PRMReferenceSlot.h>
+#include <agrum/PRM/elements/PRMSlotChain.h>
 
-#include <agrum/PRM/elements/system.h>
+#include <agrum/PRM/elements/PRMSystem.h>
 
 namespace gum {
   namespace prm {

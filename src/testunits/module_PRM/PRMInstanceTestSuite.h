@@ -24,7 +24,7 @@
 #include <sstream>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/PRM/elements/instance.h>
+#include <agrum/PRM/elements/PRMInstance.h>
 
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac

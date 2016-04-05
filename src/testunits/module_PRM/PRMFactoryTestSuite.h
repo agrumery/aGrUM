@@ -22,8 +22,8 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/elements/classElement.h>
-#include <agrum/PRM/elements/parameter.h>
+#include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/PRM/elements/PRMParameter.h>
 
 namespace gum_tests {
   class PRMFactoryTestSuite : public CxxTest::TestSuite {

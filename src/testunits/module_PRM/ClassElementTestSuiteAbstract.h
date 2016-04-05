@@ -25,7 +25,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
-#include <agrum/PRM/elements/classElement.h>
+#include <agrum/PRM/elements/PRMClassElement.h>
 
 /*
  * This class is used to test gum::prm::PRMClassElement, since it is an abstract
