@@ -55,7 +55,7 @@ namespace gum_tests {
       int nbr = 6;  // nbr=nbr of parents
 
       std::string str;
-      const double t[4] = {0.1, 0.1, 0.1, 0.7};
+      const double t[4] = {0.1f, 0.1f, 0.1f, 0.7f};
       int n = 4;
       const std::vector<double> v( t, t + n );
 
@@ -86,8 +86,7 @@ namespace gum_tests {
             }
 
             TS_ASSERT_EQUALS( bn.cpt( idList[0] )[i],
-                              ( res == i.val( (gum::Idx)0 ) ) ? (float)1
-                                                              : (float)0 );
+                              ( res == i.val( (gum::Idx)0 ) ) ? 1.0f: 0.0f );
           }
         }
       }
@@ -106,7 +105,7 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(
               inf.posterior( idList[0] ).toString(),
               "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-              "0.144495 /<var1:3> :: 0.117649" );
+              "0.144495f /<var1:3> :: 0.117649" );
           TS_ASSERT_EQUALS( inf.posterior( idList[1] ).toString(),
                             "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
                             "/<var2:3> :: 0.7" );
@@ -129,11 +128,11 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(
               inf.posterior( idList[0] ).toString(),
               "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-              "0.144495 /<var1:3> :: 0.117649" );
+              "0.144495f /<var1:3> :: 0.117649" );
           TS_ASSERT_EQUALS( inf.posterior( idList[1] ).toString(),
                             "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
                             "/<var2:3> :: 0.7" );
-        } catch ( gum::Exception e ) {
+        } catch ( gum::Exception ) {
           TS_ASSERT( false );
         }
       }
@@ -153,64 +152,64 @@ namespace gum_tests {
       gum::NodeId idCold = bn.add( cold );
       gum::NodeId idFlu = bn.add( flu );
       gum::NodeId idMalaria = bn.add( malaria );
-      gum::NodeId idFever = bn.addNoisyORNet( fever, 0.0 );
+      gum::NodeId idFever = bn.addNoisyORNet( fever, 0.0f );
       gum::NodeId idOneMore = bn.add( oneMore );
       gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
       gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 
-      bn.addWeightedArc( idMalaria, idFever, 0.9 );
-      bn.addWeightedArc( idFlu, idFever, 0.8 );
-      bn.addWeightedArc( idCold, idFever, 0.4 );
+      bn.addWeightedArc( idMalaria, idFever, 0.9f );
+      bn.addWeightedArc( idFlu, idFever, 0.8f );
+      bn.addWeightedArc( idCold, idFever, 0.4f );
 
-      TS_ASSERT_THROWS( bn.addWeightedArc( idMalaria, idCold, 0.8 ),
+      TS_ASSERT_THROWS( bn.addWeightedArc( idMalaria, idCold, 0.8f ),
                         gum::InvalidArc );
 
       const gum::Potential<float>& pOneMoreParent1 = bn.cpt( idOneMoreParent1 );
-      pOneMoreParent1.fillWith( std::vector<float>{0.2, 0.8} );
+      pOneMoreParent1.fillWith( std::vector<float>{0.2f, 0.8f} );
 
       const gum::Potential<float>& pOneMoreParent2 = bn.cpt( idOneMoreParent2 );
-      pOneMoreParent2.fillWith( std::vector<float>{0.3, 0.7} );
+      pOneMoreParent2.fillWith( std::vector<float>{0.3f, 0.7f} );
 
       bn.addArc( idOneMoreParent1, idOneMore );
       bn.addArc( idFever, idOneMore );
       bn.addArc( idOneMoreParent2, idOneMore );
       const gum::Potential<float>& pOneMore = bn.cpt( idOneMore );
-      pOneMore.fillWith( std::vector<float>{0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2} );
+      pOneMore.fillWith( std::vector<float>{0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f} );
 
       const gum::Potential<float>& p = bn.cpt( idFever );
 
       gum::Instantiation i( p );
-      float witness[] = {1.0,
-                         0.0,
-                         0.1,
-                         0.9,
-                         0.2,
-                         0.8,
-                         0.02,
-                         0.98,
-                         0.6,
-                         0.4,
-                         0.06,
-                         0.94,
-                         0.12,
-                         0.88,
-                         0.012,
-                         0.988};
+      float witness[] = {1.0f,
+                         0.0f,
+                         0.1f,
+                         0.9f,
+                         0.2f,
+                         0.8f,
+                         0.02f,
+                         0.98f,
+                         0.6f,
+                         0.4f,
+                         0.06f,
+                         0.94f,
+                         0.12f,
+                         0.88f,
+                         0.012f,
+                         0.988f};
 
       int j = 0;
 
@@ -237,67 +236,67 @@ namespace gum_tests {
       gum::NodeId idCold = bn.add( cold );
       gum::NodeId idFlu = bn.add( flu );
       gum::NodeId idMalaria = bn.add( malaria );
-      gum::NodeId idFever = bn.addNoisyOR( fever, 0.0 );
+      gum::NodeId idFever = bn.addNoisyOR( fever, 0.0f );
       gum::NodeId idOneMore = bn.add( oneMore );
       gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
       gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 
-      bn.addWeightedArc( idMalaria, idFever, 0.9 );
-      bn.addWeightedArc( idFlu, idFever, 0.8 );
-      bn.addWeightedArc( idCold, idFever, 0.4 );
+      bn.addWeightedArc( idMalaria, idFever, 0.9f );
+      bn.addWeightedArc( idFlu, idFever, 0.8f );
+      bn.addWeightedArc( idCold, idFever, 0.4f );
 
-      TS_ASSERT_THROWS( bn.addWeightedArc( idMalaria, idCold, 0.8 ),
+      TS_ASSERT_THROWS( bn.addWeightedArc( idMalaria, idCold, 0.8f ),
                         gum::InvalidArc );
 
       const gum::Potential<float>& pOneMoreParent1 = bn.cpt( idOneMoreParent1 );
       // FILLING PARAMS
-      pOneMoreParent1.fillWith( std::vector<float>{0.2, 0.8} );
+      pOneMoreParent1.fillWith( std::vector<float>{0.2f, 0.8f} );
 
       const gum::Potential<float>& pOneMoreParent2 = bn.cpt( idOneMoreParent2 );
       // FILLING PARAMS
-      pOneMoreParent2.fillWith( std::vector<float>{0.3, 0.7} );
+      pOneMoreParent2.fillWith( std::vector<float>{0.3f, 0.7f} );
 
       bn.addArc( idOneMoreParent1, idOneMore );
       bn.addArc( idFever, idOneMore );
       bn.addArc( idOneMoreParent2, idOneMore );
       const gum::Potential<float>& pOneMore = bn.cpt( idOneMore );
       // FILLING PARAMS
-      pOneMore.fillWith( std::vector<float>{0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2} );
+      pOneMore.fillWith( std::vector<float>{0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f} );
 
       const gum::Potential<float>& p = bn.cpt( idFever );
 
       gum::Instantiation i( p );
-      float witness[] = {1.0,
-                         0.0,
-                         0.1,
-                         0.9,
-                         0.2,
-                         0.8,
-                         0.02,
-                         0.98,
-                         0.6,
-                         0.4,
-                         0.06,
-                         0.94,
-                         0.12,
-                         0.88,
-                         0.012,
-                         0.988};
+      float witness[] = {1.0f,
+                         0.0f,
+                         0.1f,
+                         0.9f,
+                         0.2f,
+                         0.8f,
+                         0.02f,
+                         0.98f,
+                         0.6f,
+                         0.4f,
+                         0.06f,
+                         0.94f,
+                         0.12f,
+                         0.88f,
+                         0.012f,
+                         0.988f};
 
       int j = 0;
 
@@ -325,69 +324,69 @@ namespace gum_tests {
       gum::NodeId idFlu = bn.add( flu );
       gum::NodeId idMalaria = bn.add( malaria );
       gum::NodeId idFever = 0;
-      TS_ASSERT_THROWS( idFever = bn.addNoisyAND( fever, 0.0 ),
+      TS_ASSERT_THROWS( idFever = bn.addNoisyAND( fever, 0.0f ),
                         gum::InvalidArgument );
-      TS_GUM_ASSERT_THROWS_NOTHING( idFever = bn.addNoisyAND( fever, 0.999 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( idFever = bn.addNoisyAND( fever, 0.999f ) );
       gum::NodeId idOneMore = bn.add( oneMore );
       gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
       gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 
-      bn.addWeightedArc( idMalaria, idFever, 0.9 );
-      bn.addWeightedArc( idFlu, idFever, 0.8 );
-      bn.addWeightedArc( idCold, idFever, 0.4 );
+      bn.addWeightedArc( idMalaria, idFever, 0.9f );
+      bn.addWeightedArc( idFlu, idFever, 0.8f );
+      bn.addWeightedArc( idCold, idFever, 0.4f );
 
-      TS_ASSERT_THROWS( bn.addWeightedArc( idMalaria, idCold, 0.8 ),
+      TS_ASSERT_THROWS( bn.addWeightedArc( idMalaria, idCold, 0.8f ),
                         gum::InvalidArc );
 
       const gum::Potential<float>& pOneMoreParent1 = bn.cpt( idOneMoreParent1 );
       // FILLING PARAMS
-      pOneMoreParent1.fillWith( std::vector<float>{0.2, 0.8} );
+      pOneMoreParent1.fillWith( std::vector<float>{0.2f, 0.8f} );
 
       const gum::Potential<float>& pOneMoreParent2 = bn.cpt( idOneMoreParent2 );
       // FILLING PARAMS
-      pOneMoreParent2.fillWith( std::vector<float>{0.3, 0.7} );
+      pOneMoreParent2.fillWith( std::vector<float>{0.3f, 0.7f} );
 
       bn.addArc( idOneMoreParent1, idOneMore );
       bn.addArc( idFever, idOneMore );
       bn.addArc( idOneMoreParent2, idOneMore );
       const gum::Potential<float>& pOneMore = bn.cpt( idOneMore );
       // FILLING PARAMS
-      pOneMore.fillWith( std::vector<float>{0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2,
-                                            0.1,
-                                            0.9,
-                                            0.8,
-                                            0.2} );
+      pOneMore.fillWith( std::vector<float>{0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f} );
 
       const gum::Potential<float>& p = bn.cpt( idFever );
 
       gum::Instantiation i( p );
-      float witness[] = {0.988012,
-                         0.011988,
-                         0.892108,
-                         0.107892,
-                         0.952048,
-                         0.047952,
-                         0.568432,
-                         0.431568,
-                         0.992008,
-                         0.007992,
-                         0.928072,
-                         0.071928,
-                         0.968032,
-                         0.031968,
-                         0.712288,
-                         0.287712};
+      float witness[] = {0.988012f,
+                         0.011988f,
+                         0.892108f,
+                         0.107892f,
+                         0.952048f,
+                         0.047952f,
+                         0.568432f,
+                         0.431568f,
+                         0.992008f,
+                         0.007992f,
+                         0.928072f,
+                         0.071928f,
+                         0.968032f,
+                         0.031968f,
+                         0.712288f,
+                         0.287712f};
 
       int j = 0;
 

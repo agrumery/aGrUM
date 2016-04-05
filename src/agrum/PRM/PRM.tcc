@@ -122,13 +122,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE PRMInterface<GUM_SCALAR>&
-    PRM<GUM_SCALAR>::interface( const std::string& name ) {
+    PRM<GUM_SCALAR>::getInterface( const std::string& name ) {
       return *__interfaceMap[name];
     }
 
     template <typename GUM_SCALAR>
     INLINE const PRMInterface<GUM_SCALAR>&
-    PRM<GUM_SCALAR>::interface( const std::string& name ) const {
+    PRM<GUM_SCALAR>::getInterface( const std::string& name ) const {
       return *__interfaceMap[name];
     }
 
@@ -140,13 +140,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE PRMSystem<GUM_SCALAR>&
-    PRM<GUM_SCALAR>::system( const std::string& name ) {
+    PRM<GUM_SCALAR>::getSystem( const std::string& name ) {
       return *( __systemMap[name] );
     }
 
     template <typename GUM_SCALAR>
     INLINE const PRMSystem<GUM_SCALAR>&
-    PRM<GUM_SCALAR>::system( const std::string& name ) const {
+    PRM<GUM_SCALAR>::getSystem( const std::string& name ) const {
       return *( __systemMap[name] );
     }
 

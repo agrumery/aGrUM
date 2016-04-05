@@ -72,7 +72,7 @@ namespace gum {
     INLINE void
     ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
         const std::vector<unsigned int>& modalities,
-        std::vector<std::vector<float, CountAlloc>>& counts,
+        std::vector<std::vector<double, CountAlloc>>& counts,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                     unsigned int>*>& target_nodesets,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,

@@ -73,7 +73,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::setEffectiveSampleSize(
-        float ess ) {
+        double ess ) {
       if ( ess < 0 ) {
         GUM_ERROR( OutOfBounds,
                    "The effective sample size of the BDeu's "
@@ -88,7 +88,7 @@ namespace gum {
     INLINE void
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
         const std::vector<unsigned int>& modalities,
-        std::vector<std::vector<float, CountAlloc>>& counts,
+        std::vector<std::vector<double, CountAlloc>>& counts,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                     unsigned int>*>& target_nodesets,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
@@ -99,8 +99,8 @@ namespace gum {
       for ( unsigned int i = 0; i < size; ++i ) {
         if ( target_nodesets[i] != nullptr ) {
           // compute the r_i's and q_i's
-          const float r_i = modalities[target_nodesets[i]->first.back()];
-          float q_i = 1;
+          const double r_i = modalities[target_nodesets[i]->first.back()];
+          double q_i = 1;
           if ( conditioning_nodesets[i] != nullptr ) {
             const std::vector<unsigned int, IdSetAlloc>& cond =
                 conditioning_nodesets[i]->first;
@@ -110,8 +110,8 @@ namespace gum {
           }
 
           // put ess / (r_i * q_i)  into the countings for the targets
-          const float target_weight = __ess / ( r_i * q_i );
-          std::vector<float, CountAlloc>& countings =
+          const double target_weight = __ess / ( r_i * q_i );
+          std::vector<double, CountAlloc>& countings =
               counts[target_nodesets[i]->second];
           for ( auto& count : countings ) {
             count += target_weight;
@@ -119,8 +119,8 @@ namespace gum {
 
           // put ess / q_i into the countings for the conditioning nodes
           if ( conditioning_nodesets[i] != nullptr ) {
-            const float cond_weight = __ess / q_i;
-            std::vector<float, CountAlloc>& countings =
+            const double cond_weight = __ess / q_i;
+            std::vector<double, CountAlloc>& countings =
                 counts[conditioning_nodesets[i]->second];
             for ( auto& count : countings ) {
               count += cond_weight;

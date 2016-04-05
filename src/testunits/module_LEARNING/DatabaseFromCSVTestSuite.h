@@ -114,7 +114,7 @@ namespace gum_tests {
       try {
         gum::learning::DatabaseFromCSV database(
             GET_RESSOURCES_PATH( "notExistingDummyDatabse.csv" ) );
-      } catch ( gum::IOError& e ) {
+      } catch ( gum::IOError& ) {
         TS_ASSERT( true );
         return;
       } catch ( ... ) {

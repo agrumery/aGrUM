@@ -72,7 +72,7 @@ namespace gum {
     INLINE void
     ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
         const std::vector<unsigned int>& modalities,
-        std::vector<std::vector<float, CountAlloc>>& counts,
+        std::vector<std::vector<double, CountAlloc>>& counts,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                     unsigned int>*>& target_nodesets,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
@@ -82,7 +82,7 @@ namespace gum {
       const unsigned int size = target_nodesets.size();
       for ( unsigned int i = 0; i < size; ++i ) {
         if ( target_nodesets[i] != nullptr ) {
-          std::vector<float, CountAlloc>& countings =
+          std::vector<double, CountAlloc>& countings =
               counts[target_nodesets[i]->second];
           for ( auto& count : countings ) {
             ++count;
@@ -90,8 +90,8 @@ namespace gum {
         }
 
         if ( conditioning_nodesets[i] != nullptr ) {
-          const float weight = modalities[target_nodesets[i]->first.back()];
-          std::vector<float, CountAlloc>& countings =
+          const double weight = modalities[target_nodesets[i]->first.back()];
+          std::vector<double, CountAlloc>& countings =
               counts[conditioning_nodesets[i]->second];
           for ( auto& count : countings ) {
             count += weight;

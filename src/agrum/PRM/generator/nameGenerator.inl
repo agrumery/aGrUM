@@ -59,7 +59,7 @@ namespace gum {
           break;
         }
 
-        case PRMObject::prm_type::INTERFACE: {
+        case PRMObject::prm_type::PRM_INTERFACE: {
           s << "iface_" << ++( __counters[0] );
           break;
         }

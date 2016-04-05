@@ -64,7 +64,7 @@ namespace gum {
      * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class ScoreLog2Likelihood : public Score<IdSetAlloc, CountAlloc> {
       public:
       // ##########################################################################
@@ -107,7 +107,7 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      float score( unsigned int nodeset_index );
+      double score( unsigned int nodeset_index );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -152,7 +152,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool isAprioriCompatible( const std::string& apriori_type,
-                                       float weight = 1.0f );
+                                       double weight = 1.0f );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score

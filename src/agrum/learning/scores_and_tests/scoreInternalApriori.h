@@ -62,7 +62,7 @@ namespace gum {
      * learning.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class ScoreInternalApriori {
       public:
       // ##########################################################################
@@ -90,7 +90,7 @@ namespace gum {
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
           const std::vector<unsigned int>& modalities,
-          std::vector<std::vector<float, CountAlloc>>& counts,
+          std::vector<std::vector<double, CountAlloc>>& counts,
           const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                       unsigned int>*>& target_nodesets,
           const std::vector<

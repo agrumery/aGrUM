@@ -275,7 +275,7 @@ O3AttributeList& elts);
 O3Label& name,
 O3Label& superLabel,
 O3InterfaceElementList& elts);
-	void INTERFACE(O3Position& pos);
+	void PRM_INTERFACE(O3Position& pos);
 	void INTERFACE_BODY(O3InterfaceElementList& elts);
 	void TYPE_DECLARATION(O3Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
 	void INT_TYPE_DECLARATION(O3Position& pos, O3Label& name, O3Integer& start, O3Integer& end);

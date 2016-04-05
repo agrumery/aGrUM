@@ -621,7 +621,7 @@ namespace gum {
     Idx n = 0;
     Size value = __vals[__vars.pos( var )];
 
-    if ( !__vals[__vars.pos( var )] % 2 ) {
+    if ( __vals[__vars.pos( var )] % 2 ==0) {
       while ( value & 1 ) {
         n++;
         value >>= 1;

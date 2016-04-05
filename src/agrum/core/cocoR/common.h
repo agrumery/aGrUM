@@ -114,11 +114,11 @@ namespace gum {
   /// CocoR uses unicode, thus use this to cast wstring in string.
   inline std::string narrow( const std::wstring& str ) {
     std::ostringstream stm;
-    const std::ctype<char>& ctfacet =
-        std::use_facet<std::ctype<char>>( stm.getloc() );
+    const std::ctype<wchar_t>& ctfacet =
+        std::use_facet<std::ctype<wchar_t>>( stm.getloc() );
 
     for ( size_t i = 0; i < str.size(); ++i )
-      stm << ctfacet.narrow(str[i],0); //std::ctype<char>::_Elem(str[i]), 0 );
+      stm << ctfacet.narrow(str.at(i),0); //std::ctype<char>::_Elem(str[i]), 0 );
 
     return stm.str();
   }

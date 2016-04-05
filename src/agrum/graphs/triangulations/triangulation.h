@@ -32,7 +32,7 @@ namespace gum {
 
   /* ===========================================================================
    */
-  /* ===               BASIC INTERFACE TO PERFORM TRIANGULATIONS             ===
+  /* ===               BASIC PRM_INTERFACE TO PERFORM TRIANGULATIONS             ===
    */
   /* ===========================================================================
    */

@@ -35,7 +35,7 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   class MultiDimFunctionGraph;
 
   /**
@@ -69,7 +69,7 @@ namespace gum {
    * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   class MultiDimFunctionGraphManager {
     // =========================================================================
     /// @name Constructors / Destructors
@@ -333,7 +333,7 @@ namespace gum {
    * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   class MultiDimFunctionGraphTreeManager
       : public MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy> {
 
@@ -387,7 +387,7 @@ namespace gum {
    * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   class MultiDimFunctionGraphROManager
       : public MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy> {
 

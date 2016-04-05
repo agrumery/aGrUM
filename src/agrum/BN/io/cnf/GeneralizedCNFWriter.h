@@ -53,7 +53,7 @@ namespace gum {
    * for information on this format @see ApproximationPolicy
    */
   template <typename GUM_SCALAR,
-            template <class> class IApproximationPolicy = ExactPolicy>
+            template <typename> class IApproximationPolicy = ExactPolicy>
   class GeneralizedCNFWriter
       : public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
     public:

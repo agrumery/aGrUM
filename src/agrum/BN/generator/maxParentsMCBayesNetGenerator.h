@@ -87,8 +87,8 @@ namespace gum {
    * resulting in the failure of most of the inference Methods. \n
    * */
   template <typename GUM_SCALAR,
-            template <class> class ICPTGenerator = SimpleCPTGenerator,
-            template <class> class ICPTDisturber = SimpleCPTDisturber>
+            template <typename> class ICPTGenerator = SimpleCPTGenerator,
+            template <typename> class ICPTDisturber = SimpleCPTDisturber>
   class MaxParentsMCBayesNetGenerator
       : public MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> {
 

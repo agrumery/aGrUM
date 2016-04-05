@@ -458,7 +458,7 @@ void Parser::INTERFACE_DECLARATION(O3Position& pos,
 O3Label& name,
 O3Label& superLabel,
 O3InterfaceElementList& elts) {
-		INTERFACE(pos);
+		PRM_INTERFACE(pos);
 		PREFIXED_LABEL(name);
 		if (la->kind == _extends) {
 			Get();
@@ -471,7 +471,7 @@ O3InterfaceElementList& elts) {
 		Expect(23 /* "}" */);
 }
 
-void Parser::INTERFACE(O3Position& pos) {
+void Parser::PRM_INTERFACE(O3Position& pos) {
 		Expect(_interface);
 		pos.file() = narrow( scanner->filename() ); 
 		pos.line() = t->line; 

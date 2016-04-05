@@ -158,12 +158,11 @@ namespace gum {
    \enddot
    */
   template <typename GUM_SCALAR,
-            template <class> class ICPTGenerator = SimpleCPTGenerator,
-            template <class> class ICPTDisturber = SimpleCPTDisturber>
+            template <typename> class ICPTGenerator = SimpleCPTGenerator,
+    template <typename> class ICPTDisturber = SimpleCPTDisturber>
   class MCBayesNetGenerator
       : public IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>,
         public ICPTDisturber<GUM_SCALAR> {
-
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -374,9 +373,9 @@ namespace gum {
      **/
     virtual bool __checkConditions();
 
-    void __createDAG( Size BNSize, Size iniRoot );
+    //NOT USED ? void __createDAG( Size BNSize, Size iniRoot );
 
-    std::vector<Idx>* __createPartDAG( Size BNSize, Size iniRoot );
+    // NOT USED ? std::vector<Idx>* __createPartDAG( Size BNSize, Size iniRoot );
 
     /**
      * The internal function used by the previous __connect. It asserts the

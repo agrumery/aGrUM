@@ -49,7 +49,7 @@ namespace gum_tests {
     gum::Id i1, i2, i3, i4, i5;
     gum::Potential<float>* e_i1, *e_i4;
 
-    float __epsilon{1e-6};
+    float __epsilon{1e-6f};
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -73,17 +73,17 @@ namespace gum_tests {
 
       e_i1 = new gum::Potential<float>();
       ( *e_i1 ) << bn->variable( i1 );
-      e_i1->fill( (float)0 );
+      e_i1->fill( 0.0f );
       gum::Instantiation inst_1( *e_i1 );
       inst_1.chgVal( bn->variable( i1 ), 0 );
-      e_i1->set( inst_1, (float)1 );
+      e_i1->set( inst_1, 1.0f );
 
       e_i4 = new gum::Potential<float>();
       ( *e_i4 ) << bn->variable( i4 );
-      e_i4->fill( (float)0 );
+      e_i4->fill( 0.0f );
       gum::Instantiation inst_4( *e_i4 );
       inst_4.chgVal( bn->variable( i4 ), 1 );
-      e_i4->set( inst_4, (float)1 );
+      e_i4->set( inst_4, 1.0f );
     }
 
     void tearDown() {
@@ -253,13 +253,13 @@ namespace gum_tests {
         const auto& variable = bn.variable( node );
         gum::Potential<float> ev_pot;
         ev_pot << variable;
-        ev_pot.fill( (float)0 );
+        ev_pot.fill( 0.0f );
         gum::List<const gum::Potential<float>*> evidences;
         evidences.insert( &ev_pot );
 
         gum::Instantiation inst( ev_pot );
         for ( inst.setFirst(); !inst.end(); ++inst ) {
-          ev_pot.set( inst, (float)1 );
+          ev_pot.set( inst, 1.0f );
           gum::LazyPropagation<float> inf1( bn );
           gum::ShaferShenoyInference<float> inf2( bn );
           TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
@@ -270,7 +270,7 @@ namespace gum_tests {
             TS_ASSERT( equalPotentials( inf1.posterior( node ),
                                         inf2.posterior( node ) ) );
           }
-          ev_pot.set( inst, (float)0 );
+          ev_pot.set( inst, 0.0f );
         }
       }
     }
@@ -302,16 +302,16 @@ namespace gum_tests {
       for ( const auto node : ev_nodes ) {
         gum::Potential<float>* ev_pot = new gum::Potential<float>;
         ( *ev_pot ) << bn.variable( node );
-        ev_pot->fill( (float)0 );
+        ev_pot->fill( 0.0f );
         gum::Instantiation inst( *ev_pot );
         if ( node <= 10 ) {
           inst.chgVal( bn.variable( node ), 0 );
-          ev_pot->set( inst, (float)1 );
+          ev_pot->set( inst, 1.0f );
         } else {
           inst.chgVal( bn.variable( node ), 0 );
-          ev_pot->set( inst, (float)0.4 );
+          ev_pot->set( inst, 0.4f );
           inst.chgVal( bn.variable( node ), 1 );
-          ev_pot->set( inst, (float)0.6 );
+          ev_pot->set( inst, 0.6f );
         }
         evidences.insert( ev_pot );
       }
@@ -369,18 +369,18 @@ namespace gum_tests {
         const auto& variable = bn.variable( node );
         gum::Potential<float> ev_pot;
         ev_pot << variable;
-        ev_pot.fill( (float)0 );
+        ev_pot.fill( 0.0f );
 
         gum::Instantiation inst( ev_pot );
         for ( inst.setFirst(); !inst.end(); ++inst ) {
-          ev_pot.set( inst, (float)1 );
+          ev_pot.set( inst, 1.0f );
 
           for ( auto node2 : bn.dag() ) {
             if ( node2 > node ) {
               const auto& variable2 = bn.variable( node2 );
               gum::Potential<float> ev_pot2;
               ev_pot2 << variable2;
-              ev_pot2.fill( (float)0 );
+              ev_pot2.fill( 0.0f );
 
               gum::List<const gum::Potential<float>*> evidences;
               evidences.insert( &ev_pot );
@@ -389,7 +389,7 @@ namespace gum_tests {
 
               gum::Instantiation inst2( ev_pot2 );
               for ( inst2.setFirst(); !inst2.end(); ++inst2 ) {
-                ev_pot2.set( inst2, (float)1 );
+                ev_pot2.set( inst2, 1.0f );
 
                 gum::LazyPropagation<float> inf1( bn );
                 gum::ShaferShenoyInference<float> inf2( bn );
@@ -406,12 +406,12 @@ namespace gum_tests {
                   TS_ASSERT( equalPotentials( inf1.posterior( xnode ),
                                               inf2.posterior( xnode ) ) );
                 }
-                ev_pot2.set( inst2, (float)0 );
+                ev_pot2.set( inst2, 0.0f );
               }
             }
           }
 
-          ev_pot.set( inst, (float)0 );
+          ev_pot.set( inst, 0.0f );
         }
       }
     }
@@ -429,18 +429,18 @@ namespace gum_tests {
         const auto& variable = bn.variable( node );
         gum::Potential<float> ev_pot;
         ev_pot << variable;
-        ev_pot.fill( (float)0 );
+        ev_pot.fill( 0.0f );
 
         gum::Instantiation inst( ev_pot );
         for ( inst.setFirst(); !inst.end(); ++inst ) {
-          ev_pot.set( inst, (float)1 );
+          ev_pot.set( inst, 1.0f );
 
           for ( auto node2 : bn.dag() ) {
             if ( node2 > node ) {
               const auto& variable2 = bn.variable( node2 );
               gum::Potential<float> ev_pot2;
               ev_pot2 << variable2;
-              ev_pot2.fill( (float)0 );
+              ev_pot2.fill( 0.0f );
 
               gum::List<const gum::Potential<float>*> evidences;
               evidences.insert( &ev_pot );
@@ -449,7 +449,7 @@ namespace gum_tests {
 
               gum::Instantiation inst2( ev_pot2 );
               for ( inst2.setFirst(); !inst2.end(); ++inst2 ) {
-                ev_pot2.set( inst2, (float)1 );
+                ev_pot2.set( inst2, 1.0f );
 
                 gum::LazyPropagation<float> inf1( bn );
                 inf1.setFindRelevantPotentialsType(
@@ -469,12 +469,12 @@ namespace gum_tests {
                   TS_ASSERT( equalPotentials( inf1.posterior( xnode ),
                                               inf2.posterior( xnode ) ) );
                 }
-                ev_pot2.set( inst2, (float)0 );
+                ev_pot2.set( inst2, 0.0f );
               }
             }
           }
 
-          ev_pot.set( inst, (float)0 );
+          ev_pot.set( inst, 0.0f );
         }
       }
     }
@@ -492,18 +492,18 @@ namespace gum_tests {
         const auto& variable = bn.variable( node );
         gum::Potential<float> ev_pot;
         ev_pot << variable;
-        ev_pot.fill( (float)0 );
+        ev_pot.fill( 0.0f );
 
         gum::Instantiation inst( ev_pot );
         for ( inst.setFirst(); !inst.end(); ++inst ) {
-          ev_pot.set( inst, (float)1 );
+          ev_pot.set( inst, 1.0f );
 
           for ( auto node2 : bn.dag() ) {
             if ( node2 > node ) {
               const auto& variable2 = bn.variable( node2 );
               gum::Potential<float> ev_pot2;
               ev_pot2 << variable2;
-              ev_pot2.fill( (float)0 );
+              ev_pot2.fill( 0.0f );
 
               gum::List<const gum::Potential<float>*> evidences;
               evidences.insert( &ev_pot );
@@ -512,7 +512,7 @@ namespace gum_tests {
 
               gum::Instantiation inst2( ev_pot2 );
               for ( inst2.setFirst(); !inst2.end(); ++inst2 ) {
-                ev_pot2.set( inst2, (float)1 );
+                ev_pot2.set( inst2, 1.0f );
 
                 gum::LazyPropagation<float> inf1( bn );
                 inf1.setFindRelevantPotentialsType(
@@ -532,12 +532,12 @@ namespace gum_tests {
                   TS_ASSERT( equalPotentials( inf1.posterior( xnode ),
                                               inf2.posterior( xnode ) ) );
                 }
-                ev_pot2.set( inst2, (float)0 );
+                ev_pot2.set( inst2, 0.0f );
               }
             }
           }
 
-          ev_pot.set( inst, (float)0 );
+          ev_pot.set( inst, 0.0f );
         }
       }
     }
@@ -545,23 +545,23 @@ namespace gum_tests {
     private:
     // Builds a BN to test the inference
     void fill( gum::BayesNet<float>& bn ) {
-      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
-      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
-      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn.cpt( i1 ).fillWith( {0.2f, 0.8f} );
+      bn.cpt( i2 ).fillWith( {0.3f, 0.7f} );
+      bn.cpt( i3 ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
       bn.cpt( i4 ).fillWith(  // clang-format off
-                  {0.4, 0.6,
-                   0.5, 0.5,
-                   0.5, 0.5,
-                   1.0, 0.0} );  // clang-format on
+                  {0.4f, 0.6f,
+                   0.5f, 0.5f,
+                   0.5f, 0.5f,
+                   1.0f, 0.0f} );  // clang-format on
       bn.cpt( i5 ).fillWith(  // clang-format off
-                  {0.3, 0.6, 0.1,
-                   0.5, 0.5, 0.0,
-                   0.5, 0.5, 0.0,
-                   1.0, 0.0, 0.0,
-                   0.4, 0.6, 0.0,
-                   0.5, 0.5, 0.0,
-                   0.5, 0.5, 0.0,
-                   0.0, 0.0, 1.0} );                                     // clang-format on
+                  {0.3f, 0.6f, 0.1f,
+                   0.5f, 0.5f, 0.0f,
+                   0.5f, 0.5f, 0.0f,
+                   1.0f, 0.0f, 0.0f,
+                   0.4f, 0.6f, 0.0f,
+                   0.5f, 0.5f, 0.0f,
+                   0.5f, 0.5f, 0.0f,
+                   0.0f, 0.0f, 1.0f} );                                     // clang-format on
     }
 
     // Uncomment this to have some outputs.

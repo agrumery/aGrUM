@@ -54,7 +54,7 @@ namespace gum {
    *
    */
   template <typename GUM_SCALAR,
-            template <class> class IApproximationPolicy = ExactPolicy>
+            template <typename> class IApproximationPolicy = ExactPolicy>
   class FactorisedValuesCNFWriter
       : public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
     public:

@@ -123,14 +123,15 @@ namespace gum {
       delta = std::fabs( pnumber - (GUM_SCALAR)p.back() / q.back() );
 
       if ( delta < zero ) {
-        numerator = ( number > 0 ) ? p.back() : -p.back();
+        numerator = ( long)p.back();
+        if (number < 0) numerator = -numerator;
         denominator = q.back();
         break;
       }
 
-      if ( std::fabs( rnumber - a.back() ) < 1e-6 ) break;
+      if ( std::abs( rnumber - a.back() ) < 1e-6 ) break;
 
-      rnumber = 1. / ( rnumber - a.back() );
+      rnumber = GUM_SCALAR(1.) / ( rnumber - a.back() );
     }  /// end of while
 
     if ( a.size() < 2 ) return;
@@ -151,13 +152,15 @@ namespace gum {
     delta_tmp = std::fabs( pnumber - ( (double)p_tmp ) / q_tmp );
 
     if ( delta < zero ) {
-      numerator = ( number > 0 ) ? p[i] : -p[i];
+      numerator = (long)p[i];
+      if (number < 0) numerator=-numerator;
       denominator = q[i];
       return;
     }
 
     if ( delta_tmp < zero ) {
-      numerator = ( number > 0 ) ? p_tmp : -p_tmp;
+      numerator = (long)p_tmp;
+      if (number < 0) numerator = -numerator;
       denominator = q_tmp;
       return;
     }
@@ -172,7 +175,8 @@ namespace gum {
       delta_tmp = std::fabs( pnumber - ( (double)p_tmp ) / q_tmp );
 
       if ( delta_tmp < zero ) {
-        numerator = ( number > 0 ) ? p_tmp : -p_tmp;
+        numerator = (long)p_tmp;
+        if (number < 0) numerator = -numerator;
         denominator = q_tmp;
         return;
       }
@@ -220,11 +224,12 @@ namespace gum {
 
       if ( std::fabs( rnumber - a.back() ) < 1e-6 ) break;
 
-      rnumber = 1. / ( rnumber - a.back() );
+      rnumber = GUM_SCALAR(1.) / ( rnumber - a.back() );
     }  /// end of while
 
     if ( a.size() < 2 || q.back() == denMax || p.back() == denMax ) {
-      numerator = ( (number > 0 ) ? 1:-1)*p.back();
+      numerator = p.back();
+      if (number < 0) numerator = -numerator;
       denominator = q.back();
       return;
     }
@@ -244,7 +249,8 @@ namespace gum {
 
       if ( q_tmp > denMax || p_tmp > denMax ) continue;
 
-      numerator = ( number > 0 ) ? p_tmp : -p_tmp;
+      numerator = (long)p_tmp;
+      if (number < 0) numerator = -numerator;
       denominator = q_tmp;
       return;
     }  // end of for
@@ -258,10 +264,13 @@ namespace gum {
     delta = std::fabs( pnumber - ( (double)p[i] ) / q[i] );
 
     if ( delta_tmp < delta && q_tmp <= denMax && p_tmp <= denMax ) {
-      numerator = ( number > 0 ) ? p_tmp : -p_tmp;
+      numerator = (long)p_tmp;
+      if (number < 0) numerator=-numerator;
       denominator = q_tmp;
     } else {
-      numerator = ( number > 0 ) ? p[i] : -p[i];
+      numerator = (long)p[i];
+      if (number<0) numerator=-numerator;
+
       denominator = q[i];
     }
 

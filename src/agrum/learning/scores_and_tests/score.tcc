@@ -83,7 +83,7 @@ namespace gum {
     Score<IdSetAlloc, CountAlloc>::addNodeSet( unsigned int var ) {
       if ( __use_cache ) {
         try {
-          float score = __cache.score( var, __empty_conditioning_set );
+          double score = __cache.score( var, __empty_conditioning_set );
           __is_cached_score.push_back( true );
           __cached_score.push_back( score );
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
@@ -103,7 +103,7 @@ namespace gum {
         unsigned int var, const std::vector<unsigned int>& conditioning_ids ) {
       if ( __use_cache ) {
         try {
-          float score = __cache.score( var, conditioning_ids );
+          double score = __cache.score( var, conditioning_ids );
           __is_cached_score.push_back( true );
           __cached_score.push_back( score );
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
@@ -139,7 +139,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void
     Score<IdSetAlloc, CountAlloc>::_insertIntoCache( unsigned int nodeset_index,
-                                                     float score ) {
+                                                     double score ) {
       const std::vector<unsigned int, IdSetAlloc>& all_nodes =
           _getAllNodes( nodeset_index );
       const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
@@ -161,7 +161,7 @@ namespace gum {
 
     /// returns a cached score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE float Score<IdSetAlloc, CountAlloc>::_cachedScore(
+    INLINE double Score<IdSetAlloc, CountAlloc>::_cachedScore(
         unsigned int nodeset_index ) const noexcept {
       return __cached_score[nodeset_index];
     }
@@ -189,7 +189,7 @@ namespace gum {
 
     /// returns the apriori vector for a given (conditioned) target set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     Score<IdSetAlloc, CountAlloc>::_getAllApriori( unsigned int index ) {
       if ( !__apriori_computed ) {
         _apriori->setParameters( this->_modalities,
@@ -205,7 +205,7 @@ namespace gum {
 
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     Score<IdSetAlloc, CountAlloc>::_getConditioningApriori(
         unsigned int index ) {
       if ( !__apriori_computed ) {

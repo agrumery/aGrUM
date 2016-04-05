@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 #include <agrum/core/utils_string.h>
 #include <agrum/CN/credalNet.h>
 

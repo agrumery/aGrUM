@@ -66,7 +66,7 @@ namespace gum {
       enum class prm_type : char {
         ALL,
         CLASS,
-        INTERFACE,
+        PRM_INTERFACE,
         CLASS_ELT,
         TYPE,
         SYSTEM,
@@ -94,8 +94,8 @@ namespace gum {
           case prm_type::INSTANCE:
             return "PRMType::INSTANCE";
 
-          case prm_type::INTERFACE:
-            return "PRMType::INTERFACE";
+          case prm_type::PRM_INTERFACE:
+            return "PRMType::PRM_INTERFACE";
 
           default:
             return "unknown";
@@ -109,7 +109,7 @@ namespace gum {
 
       /// Returns true if obj_ptr is of type PRMInterface.
       static INLINE bool isInterface( const PRMObject& obj ) {
-        return obj.obj_type() == prm_type::INTERFACE;
+        return obj.obj_type() == prm_type::PRM_INTERFACE;
       }
 
       /// Returns true if obj_ptr is of type PRMInstance.

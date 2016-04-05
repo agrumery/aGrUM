@@ -108,42 +108,42 @@ namespace gum_tests {
 
     void testFill() {
       TS_ASSERT( bn->cpt( i1 ).nbrDim() == 1 );
-      bn->cpt( i1 ).fillWith( {0.2, 0.8} );
+      bn->cpt( i1 ).fillWith( {0.2f, 0.8f} );
 
       TS_ASSERT( bn->cpt( i2 ).nbrDim() == 1 );
-      bn->cpt( i2 ).fillWith( {0.3, 0.7} );
+      bn->cpt( i2 ).fillWith( {0.3f, 0.7f} );
 
       TS_ASSERT( bn->cpt( i3 ).nbrDim() == 2 );
-      bn->cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn->cpt( i3 ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
 
       // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
       // gum::Set<const gum::DiscreteVariable*> del_vars;
       auto p3 = bn->cpt( i3 ).margSumOut( {&( bn->variable( i3 ) )} );
       for ( gum::Instantiation j( p3 ); !j.end(); ++j )
-        TS_ASSERT_DELTA( p3.get( j ), 1.0, 1e-5 );
+        TS_ASSERT_DELTA( p3.get( j ), 1.0f, 1e-5 );
 
       TS_ASSERT( bn->cpt( i4 ).nbrDim() == 3 );
-      bn->cpt( i4 ).fillWith( {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0} );
+      bn->cpt( i4 ).fillWith( {0.4f, 0.6f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f, 0.0f} );
       // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
       auto p4 = bn->cpt( i4 ).margSumOut( {&( bn->variable( i4 ) )} );
       for ( gum::Instantiation j( p4 ); !j.end(); ++j )
-        TS_ASSERT_DELTA( p4.get( j ), 1.0, 1e-5 );
+        TS_ASSERT_DELTA( p4.get( j ), 1.0f, 1e-5 );
 
       TS_ASSERT( bn->cpt( i5 ).nbrDim() == 4 );
       bn->cpt( i5 ).fillWith(  // clang-format off
-                             {0.3, 0.6, 0.1,
-                              0.5, 0.5, 0.0,
-                              0.5, 0.5,0.0,
-                              1.0, 0.0, 0.0,
-                              0.4, 0.6, 0.0,
-                              0.5, 0.5, 0.0,
-                              0.5, 0.5, 0.0,
-                              0.0, 0.0, 1.0}); //clang-format on
+                             {0.3f, 0.6f, 0.1f,
+                              0.5f, 0.5f, 0.0f,
+                              0.5f, 0.5f,0.0f,
+                              1.0f, 0.0f, 0.0f,
+                              0.4f, 0.6f, 0.0f,
+                              0.5f, 0.5f, 0.0f,
+                              0.5f, 0.5f, 0.0f,
+                              0.0f, 0.0f, 1.0f}); //clang-format on
 
       // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
       auto p5 = bn->cpt( i5 ).margSumOut( {&(bn->variable(i5))} );
       for ( gum::Instantiation j( p5 ); !j.end(); ++j ) {
-        TS_ASSERT_DELTA( p5.get(j), 1.0, 1e-5 );
+        TS_ASSERT_DELTA( p5.get(j), 1.0f, 1e-5 );
       }
     }
 
@@ -295,23 +295,23 @@ namespace gum_tests {
     private:
     // Builds a BN to test the inference
     void fill( gum::BayesNet<float>& bn ) {
-      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
-      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
-      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn.cpt( i1 ).fillWith( {0.2f, 0.8f} );
+      bn.cpt( i2 ).fillWith( {0.3f, 0.7f} );
+      bn.cpt( i3 ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
       bn.cpt( i4 ).fillWith(  // clang-format off
-              {0.4, 0.6,
-               0.5, 0.5,
-               0.5, 0.5,
-               1.0, 0.0} );  // clang-format on
+              {0.4f, 0.6f,
+               0.5f, 0.5f,
+               0.5f, 0.5f,
+               1.0f, 0.0f} );  // clang-format on
       bn.cpt( i5 ).fillWith(  // clang-format off
-              {0.3, 0.6, 0.1,
-               0.5, 0.5, 0.0,
-               0.5, 0.5, 0.0,
-               1.0, 0.0, 0.0,
-               0.4, 0.6, 0.0,
-               0.5, 0.5, 0.0,
-               0.5, 0.5, 0.0,
-               0.0, 0.0, 1.0} );                                     // clang-format on
+              {0.3f, 0.6f, 0.1f,
+               0.5f, 0.5f, 0.0f,
+               0.5f, 0.5f, 0.0f,
+               1.0f, 0.0f, 0.0f,
+               0.4f, 0.6f, 0.0f,
+               0.5f, 0.5f, 0.0f,
+               0.5f, 0.5f, 0.0f,
+               0.0f, 0.0f, 1.0f} );                                     // clang-format on
     }
 
     // Uncomment this to have some outputs.

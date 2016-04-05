@@ -66,7 +66,7 @@ namespace gum {
         }
 
         return p;
-      } catch ( Exception& e ) {
+      } catch ( Exception& ) {
         if ( p ) delete p;
 
         throw;

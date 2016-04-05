@@ -45,13 +45,13 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   class MultiDimFunctionGraphManager;
 
-  template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   class MultiDimFunctionGraphROManager;
 
-  template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   class MultiDimFunctionGraphTreeManager;
 
   /**
@@ -73,7 +73,7 @@ namespace gum {
    * MultiDimFunctionGraph.
    */
   template <typename GUM_SCALAR,
-            template <class> class TerminalNodePolicy = ExactTerminalNodePolicy>
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
   class MultiDimFunctionGraph : public MultiDimImplementation<GUM_SCALAR>,
                                 public TerminalNodePolicy<GUM_SCALAR> {
 

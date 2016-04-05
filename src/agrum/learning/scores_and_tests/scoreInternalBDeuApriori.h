@@ -53,7 +53,7 @@ namespace gum {
      * learning.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class ScoreInternalBDeuApriori
         : public ScoreInternalApriori<IdSetAlloc, CountAlloc> {
       public:
@@ -90,7 +90,7 @@ namespace gum {
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
           const std::vector<unsigned int>& modalities,
-          std::vector<std::vector<float, CountAlloc>>& counts,
+          std::vector<std::vector<double, CountAlloc>>& counts,
           const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                       unsigned int>*>& target_nodesets,
           const std::vector<
@@ -98,13 +98,13 @@ namespace gum {
               conditioning_nodesets ) final;
 
       /// sets the effective sample size of the internal apriori
-      void setEffectiveSampleSize( float ess );
+      void setEffectiveSampleSize( double ess );
 
       /// @}
 
       private:
       /// the effective sample size of the internal apriori
-      float __ess{1.0f};
+      double __ess{1.0f};
     };
 
   } /* namespace learning */

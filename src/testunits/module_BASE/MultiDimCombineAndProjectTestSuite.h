@@ -157,7 +157,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, 1 + (int)( ( (float)rand() / RAND_MAX ) * 50 ) );
+        t.set( i, 1 + (int)( 50.0 * rand() / RAND_MAX ));
     }
 
     // the function used to combine two tables

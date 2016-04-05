@@ -108,7 +108,7 @@ namespace gum_tests {
       // Assert
       try {
         TS_ASSERT_THROWS( elt.cast( bar ), gum::OperationNotAllowed );
-      } catch ( gum::OperationNotAllowed& e ) {
+      } catch ( gum::OperationNotAllowed& ) {
       }
     }
 
@@ -122,7 +122,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING( actual = elt.cast( type ) );
         // Assert
         TS_ASSERT_EQUALS( expected, actual );
-      } catch ( gum::OperationNotAllowed& e ) {
+      } catch ( gum::OperationNotAllowed&  ) {
         TS_FAIL( "Exception raised" );
       }
     }

@@ -150,7 +150,7 @@ namespace gum {
       if ( this->isEnabledMinEpsilonRate() /* replace check_rate */ ) {
         // delta is used as a temporary variable
         delta = _klPQ / nbrIterations();
-        error = (double)std::abs( delta - oldPQ );
+        error = (GUM_SCALAR)std::abs( delta - oldPQ );
         oldPQ = delta;
       }
     } while ( continueApproximationScheme( error /*,check_rate*/ ) );

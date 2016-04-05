@@ -86,7 +86,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     bool ScoreBD<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const std::string& apriori_type, float weight ) {
+        const std::string& apriori_type, double weight ) {
       if ( apriori_type == AprioriNoAprioriType::type ) {
         GUM_ERROR( IncompatibleScoreApriori,
                    "The BD score requires an apriori" );
@@ -128,7 +128,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    float ScoreBD<IdSetAlloc, CountAlloc>::score( unsigned int nodeset_index ) {
+    double ScoreBD<IdSetAlloc, CountAlloc>::score( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -142,22 +142,22 @@ namespace gum {
       }
 
       // get the counts for all the targets and the conditioning nodes
-      const std::vector<float, CountAlloc>& N_ijk =
+      const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
       const unsigned int targets_modal = N_ijk.size();
-      float score = 0;
+      double score = 0;
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( this->_getConditioningNodes( nodeset_index ) ) {
         // get the count of the conditioning nodes
-        const std::vector<float, CountAlloc>& N_ij =
+        const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
         const unsigned int conditioning_modal = N_ij.size();
 
-        const std::vector<float, CountAlloc>& N_prime_ijk =
+        const std::vector<double, CountAlloc>& N_prime_ijk =
             this->_getAllApriori( nodeset_index );
-        const std::vector<float, CountAlloc>& N_prime_ij =
+        const std::vector<double, CountAlloc>& N_prime_ij =
             this->_getConditioningApriori( nodeset_index );
 
         // the BD score can be computed as follows:
@@ -174,15 +174,15 @@ namespace gum {
                    __gammalog2( N_prime_ijk[k] );
         }
       } else {
-        const std::vector<float, CountAlloc>& N_prime_ijk =
+        const std::vector<double, CountAlloc>& N_prime_ijk =
             this->_getAllApriori( nodeset_index );
 
         // the BD score can be computed as follows:
         // gammalog2 ( N' ) - gammalog2 ( N + N' )
         // + sum_k=1^ri { gammlog2 ( N_i + N'_i ) - gammalog2 ( N'_i ) }
 
-        float N = 0;
-        float N_prime = 0;
+        double N = 0;
+        double N_prime = 0;
         for ( unsigned int k = 0; k < targets_modal; ++k ) {
           score += __gammalog2( N_ijk[k] + N_prime_ijk[k] ) -
                    __gammalog2( N_prime_ijk[k] );

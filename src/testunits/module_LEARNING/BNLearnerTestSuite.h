@@ -287,7 +287,7 @@ namespace gum_tests {
         gum::learning::BNLearner<float> learner(
             GET_RESSOURCES_PATH( "asia3.csv" ), modals );
         learner.useAprioriSmoothing();
-      } catch ( gum::UnknownLabelInDatabase& e ) {
+      } catch ( gum::UnknownLabelInDatabase& ) {
         except = true;
       }
 
@@ -374,7 +374,7 @@ namespace gum_tests {
         gum::learning::BNLearner<float> learner(
             GET_RESSOURCES_PATH( "asia.csv" ), modals );
         learner.useAprioriSmoothing();
-      } catch ( gum::UnknownLabelInDatabase& e ) {
+      } catch ( gum::UnknownLabelInDatabase& ) {
         except = true;
       }
 
