@@ -28,6 +28,8 @@
 
 namespace gum {
 
+#define IBNG IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>
+
   template <typename GUM_SCALAR>
   gum::Size getMaxModality( gum::BayesNet<GUM_SCALAR>& bayesNet ) {
     gum::Size maxMod = 0;
@@ -52,7 +54,7 @@ namespace gum {
                                                            Size iteration,
                                                            Idx p,
                                                            Idx q )
-      : IBayesNetGenerator(nbrNodes, maxArcs, maxModality )
+      : IBNG(nbrNodes, maxArcs, maxModality )
       , _bayesNettemp()
       , _hashMarginal() {
     if ( p + q > 100 )
@@ -79,7 +81,7 @@ namespace gum {
       : MCBayesNetGenerator(
             bayesNet.size(),
             ( Size )( bayesNet.sizeArcs() * 1.1 ),
-            getMaxModality( bayesNet ) ) 
+            getMaxModality( bayesNet ) )
   {
 
     _iteration = iteration;
@@ -106,17 +108,17 @@ namespace gum {
 
     Idx iteration = _iteration;
 
-    // IBayesNetGenerator::_bayesNet = bayesNet;
-    __createTree( IBayesNetGenerator::_nbrNodes );
-    __transformPoly( IBayesNetGenerator::_nbrNodes /
+    // IBNG::_bayesNet = bayesNet;
+    __createTree( IBNG::_nbrNodes );
+    __transformPoly( IBNG::_nbrNodes /
                      2 );
-    _bayesNettemp = IBayesNetGenerator::_bayesNet;
+    _bayesNettemp = IBNG::_bayesNet;
     __PMMx_poly();
 
-    IBayesNetGenerator::fillCPT();
+    IBNG::fillCPT();
     _iteration = iteration;
 
-    bayesNet = IBayesNetGenerator::_bayesNet;
+    bayesNet = IBNG::_bayesNet;
   }
 
   // density represent de
@@ -131,7 +133,7 @@ namespace gum {
 
     if ( iteration ) _iteration = iteration;
 
-    IBayesNetGenerator::_bayesNet = bayesNetinit;
+    IBNG::_bayesNet = bayesNetinit;
 
     if ( __checkConditions() ) {
       LazyPropagation<GUM_SCALAR> inf( bayesNetinit );
@@ -143,7 +145,7 @@ namespace gum {
         _hashMarginal.insert( node, pottemp );
       }
 
-      _bayesNettemp = IBayesNetGenerator::_bayesNet;
+      _bayesNettemp = IBNG::_bayesNet;
 
       if ( __isPolytree() )
         __PMMx_poly();
@@ -151,7 +153,7 @@ namespace gum {
         __PMMx_multi();
 
       bayesNetinit =
-          ( IBayesNetGenerator::_bayesNet );
+          ( IBNG::_bayesNet );
 
       while ( _hashMarginal.size() ) {
         delete ( _hashMarginal.begin().val() );
@@ -161,7 +163,7 @@ namespace gum {
 
     } else {
       std::cout
-          << IBayesNetGenerator::_bayesNet.toDot()
+          << IBNG::_bayesNet.toDot()
           << std::endl;
       GUM_ERROR( OperationNotAllowed,
                  "BN is not valid cause it does not respect constraint " );
@@ -178,8 +180,8 @@ namespace gum {
                                   ICPTGenerator,
                                   ICPTDisturber>::__checkConditions() {
 
-    return IBayesNetGenerator::_maxArcs >=
-           IBayesNetGenerator::_bayesNet.dag()
+    return IBNG::_maxArcs >=
+           IBNG::_bayesNet.dag()
                .sizeArcs();
   }
 
@@ -200,11 +202,11 @@ namespace gum {
 
       if ( __checkConditions() ) {
         _bayesNettemp =
-            IBayesNetGenerator::_bayesNet;
+            IBNG::_bayesNet;
         __PMMx_multi();
       } else {
 
-        IBayesNetGenerator::_bayesNet =
+        IBNG::_bayesNet =
             _bayesNettemp;
         __PMMx_poly();
       }
@@ -214,11 +216,11 @@ namespace gum {
 
         if ( !__checkConditions() ) {
 
-          IBayesNetGenerator::_bayesNet =
+          IBNG::_bayesNet =
               _bayesNettemp;
         } else
           _bayesNettemp =
-              IBayesNetGenerator::_bayesNet;
+              IBNG::_bayesNet;
 
         __PMMx_poly();
       } else {
@@ -226,11 +228,11 @@ namespace gum {
 
         if ( __checkConditions() ) {
           _bayesNettemp =
-              IBayesNetGenerator::_bayesNet;
+              IBNG::_bayesNet;
           __PMMx_multi();
 
         } else {
-          IBayesNetGenerator::_bayesNet =
+          IBNG::_bayesNet =
               _bayesNettemp;
           __PMMx_poly();
         }
@@ -256,21 +258,21 @@ namespace gum {
         if ( __isPolytree() ) {
           if ( per < _p ) {
             _bayesNettemp =
-                IBayesNetGenerator::_bayesNet;
+                IBNG::_bayesNet;
             __PMMx_poly();
           } else {
-            IBayesNetGenerator::_bayesNet =
+            IBNG::_bayesNet =
                 _bayesNettemp;
             __PMMx_multi();
           }
         } else {
           _bayesNettemp =
-              IBayesNetGenerator::_bayesNet;
+              IBNG::_bayesNet;
           __PMMx_multi();
         }
       } else {
 
-        IBayesNetGenerator::_bayesNet =
+        IBNG::_bayesNet =
             _bayesNettemp;
         __PMMx_multi();
       }
@@ -279,7 +281,7 @@ namespace gum {
 
       if ( __checkConditions() ) {
         _bayesNettemp =
-            IBayesNetGenerator::_bayesNet;
+            IBNG::_bayesNet;
 
         if ( __isPolytree() )
           __PMMx_poly();
@@ -287,7 +289,7 @@ namespace gum {
           __PMMx_multi();  // TODO verification required
 
       } else {
-        IBayesNetGenerator::_bayesNet =
+        IBNG::_bayesNet =
             _bayesNettemp;
         __PMMx_multi();
       }
@@ -301,7 +303,7 @@ namespace gum {
     NodeId i, j;
     __chooseNodes( i, j );
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
+        IBNG::_bayesNet.dag();
 
     if ( __dag.existsArc( i, j ) ) {
       __eraseArc( i, j );
@@ -318,7 +320,7 @@ namespace gum {
     NodeId i, j, head, tail;
     __chooseNodes( i, j );
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
+        IBNG::_bayesNet.dag();
 
     if ( __dag.existsArc( i, j ) || __dag.existsArc( j, i ) ) {
       return;
@@ -339,12 +341,12 @@ namespace gum {
 
         if ( __connect( node, i, excluded ) ) {
           std::string nameit =
-              IBayesNetGenerator::_bayesNet.variable(
+              IBNG::_bayesNet.variable(
                                                                           node )
                   .name();
-          IBayesNetGenerator::_bayesNet.eraseArc(
+          IBNG::_bayesNet.eraseArc(
               node, j );  // TODO reflect
-          IBayesNetGenerator::_bayesNet.addArc(
+          IBNG::_bayesNet.addArc(
               head, tail );
           return;
         }
@@ -356,12 +358,12 @@ namespace gum {
 
         if ( __connect( node, i, excluded ) ) {
           std::string nameit =
-              IBayesNetGenerator::_bayesNet.variable(
+              IBNG::_bayesNet.variable(
                                                                           node )
                   .name();
-          IBayesNetGenerator::_bayesNet.eraseArc(
+          IBNG::_bayesNet.eraseArc(
               j, node );
-          IBayesNetGenerator::_bayesNet.addArc(
+          IBNG::_bayesNet.addArc(
               head, tail );
           return;
         }
@@ -377,7 +379,7 @@ namespace gum {
     NodeId i, j;
     __chooseNodes( i, j );
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
+        IBNG::_bayesNet.dag();
 
     if ( !__dag.existsArc( i, j ) ) __insertArc( i, j );
   }
@@ -391,7 +393,7 @@ namespace gum {
     NodeId i, j;
     __chooseNodes( i, j );
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
+        IBNG::_bayesNet.dag();
 
     if ( __dag.existsArc( i, j ) ) {
       __eraseArc( i, j );
@@ -408,17 +410,17 @@ namespace gum {
 
     if ( _disturbing ) {
       Potential<GUM_SCALAR> potj;
-      potj = IBayesNetGenerator::_bayesNet.cpt( j );
-      IBayesNetGenerator::_bayesNet.addArc( i, j );
+      potj = IBNG::_bayesNet.cpt( j );
+      IBNG::_bayesNet.addArc( i, j );
 
       this->disturbAugmCPT(
           i,
           j,
-          IBayesNetGenerator::_bayesNet,
+          IBNG::_bayesNet,
           potj,
           (GUM_SCALAR)0.5 );
     } else
-      IBayesNetGenerator::_bayesNet.addArc( i, j );
+      IBNG::_bayesNet.addArc( i, j );
   }
 
   template <typename GUM_SCALAR,
@@ -429,11 +431,11 @@ namespace gum {
       NodeId i, NodeId j, bool mustbeconnex ) {
     if ( _disturbing ) {
       const BayesNet<GUM_SCALAR> bayesNet(
-          IBayesNetGenerator::_bayesNet );
+          IBNG::_bayesNet );
       Potential<GUM_SCALAR> potj;
       potj.copy(
-          IBayesNetGenerator::_bayesNet.cpt( j ) );
-      IBayesNetGenerator::_bayesNet.eraseArc( i, j );
+          IBNG::_bayesNet.cpt( j ) );
+      IBNG::_bayesNet.eraseArc( i, j );
 
       if ( __connect( i, j ) || !mustbeconnex ) {
         Potential<GUM_SCALAR> marg;
@@ -442,17 +444,17 @@ namespace gum {
         this->disturbReducCPT(
             i,
             j,
-            IBayesNetGenerator::_bayesNet,
+            IBNG::_bayesNet,
             potj,
             marg );
       } else
-        IBayesNetGenerator::_bayesNet.addArc( i, j );
+        IBNG::_bayesNet.addArc( i, j );
     } else {
-      IBayesNetGenerator::_bayesNet.eraseArc( i, j );
+      IBNG::_bayesNet.eraseArc( i, j );
 
       if ( !__connect( i, j ) && mustbeconnex ) {
 
-        IBayesNetGenerator::_bayesNet.addArc( i, j );
+        IBNG::_bayesNet.addArc( i, j );
       }
     }
   }
@@ -464,13 +466,13 @@ namespace gum {
   MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__chooseNodes(
       NodeId& i, NodeId& j ) {
     i = rand() %
-        IBayesNetGenerator::_bayesNet.size();
+        IBNG::_bayesNet.size();
     j = rand() %
-        IBayesNetGenerator::_bayesNet.size();
+        IBNG::_bayesNet.size();
 
     while ( i == j )
       j = rand() %
-          IBayesNetGenerator::_bayesNet.size();
+          IBNG::_bayesNet.size();
   }
 
   template <typename GUM_SCALAR,
@@ -481,18 +483,18 @@ namespace gum {
                            ICPTDisturber>::__chooseCloseNodes( NodeId& i,
                                                                NodeId& j ) {
     Idx temp = rand() %
-               IBayesNetGenerator::_bayesNet.size();
+               IBNG::_bayesNet.size();
     Size co = 0;
 
-    if ( IBayesNetGenerator::_bayesNet.dag()
+    if ( IBNG::_bayesNet.dag()
              .parents( temp )
              .size() ) {
       j = temp;
-      auto it = IBayesNetGenerator::_bayesNet.dag()
+      auto it = IBNG::_bayesNet.dag()
                     .parents( j )
                     .begin();
       co = rand() %
-           IBayesNetGenerator::_bayesNet.dag()
+           IBNG::_bayesNet.dag()
                .parents( j )
                .size();
 
@@ -501,15 +503,15 @@ namespace gum {
       }
 
       i = *it;
-    } else if ( IBayesNetGenerator::_bayesNet.dag()
+    } else if ( IBNG::_bayesNet.dag()
                     .children( temp )
                     .size() ) {
       i = temp;
-      auto it = IBayesNetGenerator::_bayesNet.dag()
+      auto it = IBNG::_bayesNet.dag()
                     .children( i )
                     .begin();
       co = rand() %
-           IBayesNetGenerator::_bayesNet.dag()
+           IBNG::_bayesNet.dag()
                .children( i )
                .size();
 
@@ -533,10 +535,10 @@ namespace gum {
     Idx nb_mod =
         2 +
         rand() %
-            ( IBayesNetGenerator::_maxModality - 1 );
+            ( IBNG::_maxModality - 1 );
     std::stringstream strBuff;
     strBuff << "n_" << n++;
-    NodeId root = IBayesNetGenerator::_bayesNet.add(
+    NodeId root = IBNG::_bayesNet.add(
         LabelizedVariable( strBuff.str(), "", nb_mod ) );
     Size maxNodes = BNSize - 1;
     Size SubG = 0;
@@ -545,7 +547,7 @@ namespace gum {
       SubG = ( rand() % ( maxNodes ) ) + 1;
       maxNodes = maxNodes - SubG;
       NodeId rootS = __createPartTree( SubG, n );
-      IBayesNetGenerator::_bayesNet.addArc( root,
+      IBNG::_bayesNet.addArc( root,
                                                                        rootS );
     }
   }
@@ -560,10 +562,10 @@ namespace gum {
     Idx nb_mod =
         2 +
         rand() %
-            ( IBayesNetGenerator::_maxModality - 1 );
+            ( IBNG::_maxModality - 1 );
     std::stringstream strBuff;
     strBuff << "n_" << n++;
-    NodeId root = IBayesNetGenerator::_bayesNet.add(
+    NodeId root = IBNG::_bayesNet.add(
         LabelizedVariable( strBuff.str(), "", nb_mod ) );
     Size maxNodes = BNSize - 1;
     Size SubG = 0;
@@ -572,7 +574,7 @@ namespace gum {
       SubG = ( rand() % ( maxNodes ) ) + 1;
       maxNodes = maxNodes - SubG;
       NodeId rootS = __createPartTree( SubG, n );
-      IBayesNetGenerator::_bayesNet.addArc( root,
+      IBNG::_bayesNet.addArc( root,
                                                                        rootS );
     }
 
@@ -589,12 +591,12 @@ namespace gum {
     while ( nbiter-- ) {
       NodeId i, j;
       __chooseCloseNodes( i, j );
-      _bayesNettemp = IBayesNetGenerator::_bayesNet;
+      _bayesNettemp = IBNG::_bayesNet;
       __eraseArc( i, j, false );
-      IBayesNetGenerator::_bayesNet.addArc( j, i );
+      IBNG::_bayesNet.addArc( j, i );
 
       if ( !__checkConditions() )
-        IBayesNetGenerator::_bayesNet =
+        IBNG::_bayesNet =
             _bayesNettemp;
     }
   }
@@ -606,10 +608,10 @@ namespace gum {
                                   ICPTGenerator,
                                   ICPTDisturber>::__isPolytree() {
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
-    return IBayesNetGenerator::_bayesNet.size() -
+        IBNG::_bayesNet.dag();
+    return IBNG::_bayesNet.size() -
                1 ==
-           IBayesNetGenerator::_bayesNet.sizeArcs();
+           IBNG::_bayesNet.sizeArcs();
   }
 
   template <typename GUM_SCALAR,
@@ -618,7 +620,7 @@ namespace gum {
   bool MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__connect(
       const NodeId i, const NodeId j ) {
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
+        IBNG::_bayesNet.dag();
 
     if ( __dag.existsArc( i, j ) || __dag.existsArc( j, i ) )
       return true;
@@ -647,7 +649,7 @@ namespace gum {
   bool MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__connect(
       const NodeId i, const NodeId j, NodeSet& excluded ) {
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
+        IBNG::_bayesNet.dag();
 
     if ( __dag.existsArc( i, j ) || __dag.existsArc( j, i ) )
       return true;
@@ -675,7 +677,7 @@ namespace gum {
   MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__directedPath(
       const NodeId tail, const NodeId head ) {
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
+        IBNG::_bayesNet.dag();
 
     if ( __dag.existsArc( tail, head ) )
       return true;
@@ -699,7 +701,7 @@ namespace gum {
       const NodeId tail, const NodeId head, NodeSet& excluded ) {
 
     const DAG __dag =
-        IBayesNetGenerator::_bayesNet.dag();
+        IBNG::_bayesNet.dag();
 
     if ( __dag.existsArc( tail, head ) )
       return true;

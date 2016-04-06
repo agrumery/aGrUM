@@ -28,6 +28,9 @@
 
 namespace gum {
 
+#define MCBG MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>
+#define IBNG IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>
+
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR,
@@ -42,7 +45,7 @@ namespace gum {
                                           Idx iteration,
                                           Idx p,
                                           Idx q )
-      : MCBayesNetGenerator(nbrNodes, maxArcs, max_modality, iteration, p, q ) {
+      : MCBG(nbrNodes, maxArcs, max_modality, iteration, p, q ) {
     if ( maxInducedWidth == 0 )
       GUM_ERROR( OperationNotAllowed,
                  "maxInducedWidth must be at least equal "
@@ -62,7 +65,7 @@ namespace gum {
                                           Idx iteration,
                                           Idx p,
                                           Idx q )
-      : MCBayesNetGenerator(bayesNet, iteration, p, q ) {
+      : MCBG(bayesNet, iteration, p, q ) {
     _maxlog10InducedWidth = maxInducedWidth;
     GUM_CONSTRUCTOR( MaxInducedWidthMCBayesNetGenerator );
   }
@@ -76,7 +79,7 @@ namespace gum {
   MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::MaxInducedWidthMCBayesNetGenerator(
   CPTGenerator* cptGenerator,Size nbrNodes,  Idx p,Idx q,Idx iteration,float
   maxDensity , Size max_modality, Size maxInducedWidth):
-  MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>(cptGenerator,
+  MCBG<GUM_SCALAR,ICPTGenerator,ICPTDisturber>(cptGenerator,
   nbrNodes,p,q,iteration, maxDensity,max_modality, maxInducedWidth){
       GUM_CONSTRUCTOR(MaxInducedWidthMCBayesNetGenerator);
   }*/
@@ -104,7 +107,7 @@ namespace gum {
     for ( auto node : this->_bayesNet.nodes() )
       __modalitiesMap.insert(
           node,
-          IBayesNetGenerator::_bayesNet.variable(
+          IBNG::_bayesNet.variable(
                                                                       node )
               .domainSize() );
 
@@ -113,7 +116,7 @@ namespace gum {
 
     if ( tri.maxLog10CliqueDomainSize() > _maxlog10InducedWidth ) return false;
 
-    return MCBayesNetGenerator::__checkConditions();
+    return MCBG::__checkConditions();
   }
 
   template <typename GUM_SCALAR,

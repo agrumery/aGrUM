@@ -29,12 +29,14 @@
 
 namespace gum {
 
+#define IBNG IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>
+
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR, template <typename> class ICPTGenerator>
   INLINE
   SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::SimpleBayesNetGenerator(
       Size nbrNodes, Size maxArcs, Size maxModality )
-      : IBayesNetGenerator(nbrNodes, maxArcs, maxModality ) {
+      : IBNG(nbrNodes, maxArcs, maxModality ) {
     GUM_CONSTRUCTOR( SimpleBayesNetGenerator );
   }
 
@@ -65,47 +67,47 @@ namespace gum {
   template <typename GUM_SCALAR, template <typename> class ICPTGenerator>
   void SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::generateBN(
       BayesNet<GUM_SCALAR>& bayesNet ) {
-    IBayesNetGenerator::_bayesNet = bayesNet;
+    IBNG::_bayesNet = bayesNet;
     HashTable<Size, NodeId> map;
     std::stringstream strBuff;
     int nb_mod;
 
     for ( Size i = 0;
-          i < IBayesNetGenerator::_nbrNodes;
+          i < IBNG::_nbrNodes;
           ++i ) {
       strBuff << "n" << i;
       nb_mod =
-          ( IBayesNetGenerator::_maxModality == 2 )
+          ( IBNG::_maxModality == 2 )
               ? 2
               : 2 +
-                    rand() % ( IBayesNetGenerator::_maxModality -
+                    rand() % ( IBNG::_maxModality -
                                1 );
       map.insert( i,
-                  IBayesNetGenerator::_bayesNet.add(
+                  IBNG::_bayesNet.add(
                       LabelizedVariable( strBuff.str(), "", nb_mod ) ) );
       strBuff.str( "" );
     }
 
     // We add arcs
     float density =
-        (float)( IBayesNetGenerator::_maxArcs * 2 ) /
-        (float)( IBayesNetGenerator::_nbrNodes *
-                 ( IBayesNetGenerator::_nbrNodes -
+        (float)( IBNG::_maxArcs * 2 ) /
+        (float)( IBNG::_nbrNodes *
+                 ( IBNG::_nbrNodes -
                    1 ) );
     float p = density * (float)RAND_MAX;
 
     for ( Size i = 0;
-          i < IBayesNetGenerator::_nbrNodes;
+          i < IBNG::_nbrNodes;
           ++i )
       for ( Size j = i + 1;
-            j < IBayesNetGenerator::_nbrNodes;
+            j < IBNG::_nbrNodes;
             ++j )
         if ( ( (float)rand() ) < p )
-          IBayesNetGenerator::_bayesNet.addArc(
+          IBNG::_bayesNet.addArc(
               map[i], map[j] );
 
-    IBayesNetGenerator::fillCPT();
+    IBNG::fillCPT();
 
-    bayesNet = IBayesNetGenerator::_bayesNet;
+    bayesNet = IBNG::_bayesNet;
   }
 } /* namespace gum */
