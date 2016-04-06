@@ -255,7 +255,7 @@ namespace gum {
             __typeMap.insert( type->name().label(), type.get() );
             __nodeMap.insert( id, type.get() );
 
-          } catch ( DuplicateElement& e ) {
+          } catch ( DuplicateElement& ) {
 
             // Raised if duplicate type names
             O3PRM_TYPE_DUPPLICATE( type->name(), *__errors );
@@ -284,7 +284,7 @@ namespace gum {
 
               __dag.addArc( tail, head );
 
-            } catch ( InvalidDirectedCycle& e ) {
+            } catch ( InvalidDirectedCycle& ) {
 
               // Cyclic inheritance
               O3PRM_TYPE_CYCLIC_INHERITANCE(

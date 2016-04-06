@@ -223,7 +223,7 @@ namespace gum {
           attr->setId( c_attr->id() );
           try {
             __dag.addNode( attr->id() );
-          } catch ( gum::Exception& e ) {
+          } catch ( gum::Exception&  ) {
             // Node reserved by an interface
           }
           __nodeIdMap.insert( attr->id(), attr );
@@ -482,7 +482,7 @@ namespace gum {
           return false;
         }
 
-        case PRMObject::prm_type::INTERFACE: {
+        case PRMObject::prm_type::PRM_INTERFACE: {
           if ( __implements != nullptr ) {
             const PRMInterface<GUM_SCALAR>& i =
                 static_cast<const PRMInterface<GUM_SCALAR>&>( cec );
@@ -624,7 +624,7 @@ namespace gum {
                 __nodeIdMap.insert( attr->id(), attr );
               }
             }
-          } catch ( NotFound& e ) {
+          } catch ( NotFound&  ) {
             // No interface
           }
           __addIOInterfaceFlags( elt );
@@ -670,7 +670,7 @@ namespace gum {
                 __nodeIdMap.insert( elt->id(), elt );
               }
             }
-          } catch ( NotFound& e ) {
+          } catch ( NotFound&  ) {
             // No interface
           }
           __addIOInterfaceFlags( elt );
@@ -713,7 +713,7 @@ namespace gum {
                 __nodeIdMap.insert( ref->id(), ref );
               }
             }
-          } catch ( NotFound& e ) {
+          } catch ( NotFound&  ) {
             // No interface to check
           }
           break;
@@ -757,7 +757,7 @@ namespace gum {
               break;
             }
           }
-        } catch ( NotFound& e ) {
+        } catch ( NotFound&  ) {
           // No interface
         }
         if ( ! found ) {
@@ -1037,7 +1037,7 @@ namespace gum {
             }
             try {
               super = &( super->super() );
-            } catch ( NotFound& e ) {
+            } catch ( NotFound&  ) {
               super = nullptr;
             }
           }

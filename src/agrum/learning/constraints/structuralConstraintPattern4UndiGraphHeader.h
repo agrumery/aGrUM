@@ -58,22 +58,22 @@ void modifyGraph( const GraphChange& change );
  * in a 2TBN structure, it is always impossible to add a backward-time arc.
  * Such graph changes are always invalid and are therefore tagged as such
  * by the isAlwaysInvalid method. */
-bool isAlwaysInvalid( const GraphChange& change ) const noexcept;
+bool isAlwaysInvalid( const GraphChange& change ) const ;
 
 /// checks whether the constraints enable to add edge (x,y)
-bool checkEdgeAddition( NodeId x, NodeId y ) const noexcept;
+bool checkEdgeAddition( NodeId x, NodeId y ) const ;
 
 /// checks whether the constraints enable to remove edge (x,y)
-bool checkEdgeDeletion( NodeId x, NodeId y ) const noexcept;
+bool checkEdgeDeletion( NodeId x, NodeId y ) const ;
 
 /// checks whether the constraints enable to add an edge
-bool checkModification( const EdgeAddition& change ) const noexcept;
+bool checkModification( const EdgeAddition& change ) const ;
 
 /// checks whether the constraints enable to remove an edge
-bool checkModification( const EdgeDeletion& change ) const noexcept;
+bool checkModification( const EdgeDeletion& change ) const ;
 
 /// checks whether the constraints enable to perform a graph change
-bool checkModification( const GraphChange& change ) const noexcept;
+bool checkModification( const GraphChange& change ) const ;
 
 /// @}
 

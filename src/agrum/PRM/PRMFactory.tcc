@@ -141,7 +141,7 @@ namespace gum {
     void
     PRMFactory<GUM_SCALAR>::continueClass( const std::string& name ) {
       std::string real_name = __addPrefix( name );
-      if ( not( __prm->__classMap.exists( real_name ) ) ) {
+      if ( !( __prm->__classMap.exists( real_name ) ) ) {
         std::stringstream msg;
         msg << "\"" << real_name << "\" not found";
         GUM_ERROR( NotFound, msg.str() );
@@ -183,14 +183,14 @@ namespace gum {
 
                       std::stringstream msg;
                       msg << "class " << c->name()
-                          << " does not respect interface ";
+                          << " does not respect interf ";
                       GUM_ERROR( TypeError, msg.str() + i->name() );
                     }
                   } else {
 
                     std::stringstream msg;
                     msg << "class " << c->name()
-                        << " does not respect interface ";
+                        << " does not respect interf ";
                     GUM_ERROR( TypeError, msg.str() + i->name() );
                   }
 
@@ -213,14 +213,14 @@ namespace gum {
 
                       std::stringstream msg;
                       msg << "class " << c->name()
-                          << " does not respect interface ";
+                          << " does not respect interf ";
                       GUM_ERROR( TypeError, msg.str() + i->name() );
                     }
                   } else {
 
                     std::stringstream msg;
                     msg << "class " << c->name()
-                        << " does not respect interface ";
+                        << " does not respect interf ";
                     GUM_ERROR( TypeError, msg.str() + i->name() );
                   }
 
@@ -234,14 +234,14 @@ namespace gum {
 
                 default: {
                   std::string msg =
-                      "unexpected ClassElement<GUM_SCALAR> in interface ";
+                      "unexpected ClassElement<GUM_SCALAR> in interf ";
                   GUM_ERROR( FatalError, msg + i->name() );
                 }
               }
             }
           } catch ( NotFound& ) {
             std::stringstream msg;
-            msg << "class " << c->name() << " does not respect interface ";
+            msg << "class " << c->name() << " does not respect interf ";
             GUM_ERROR( TypeError, msg.str() + i->name() );
           }
         }
@@ -794,7 +794,7 @@ namespace gum {
 
           delete agg;
         }
-      } catch ( DuplicateElement& e ) {
+      } catch ( DuplicateElement& ) {
         delete agg;
         throw;
       }
@@ -826,7 +826,7 @@ namespace gum {
 
       try {
         owner->add( ref );
-      } catch ( DuplicateElement& e ) {
+      } catch ( DuplicateElement&  ) {
         owner->overload( ref );
       }
     }
@@ -849,10 +849,10 @@ namespace gum {
           inst = new PRMInstance<GUM_SCALAR>( elt_name.str(), *c );
           model->add( name, inst );
         }
-      } catch ( TypeError& e ) {
+      } catch ( TypeError&  ) {
         delete inst;
         throw;
-      } catch ( NotFound& e ) {
+      } catch ( NotFound&  ) {
         delete inst;
         throw;
       }
@@ -1281,20 +1281,20 @@ namespace gum {
     PRMInterface<GUM_SCALAR>* PRMFactory<GUM_SCALAR>::__retrieveInterface(
         const std::string& name ) const {
 
-      PRMInterface<GUM_SCALAR>* interface = 0;
+      PRMInterface<GUM_SCALAR>* interf = 0;
       std::string full_name;
 
       // Looking for the type using its name
       if ( __prm->__interfaceMap.exists( name ) ) {
-        interface = __prm->__interfaceMap[name];
+        interf = __prm->__interfaceMap[name];
         full_name = name;
       }
 
       // Looking for the type using current package
       std::string prefixed = __addPrefix( name );
       if ( __prm->__interfaceMap.exists( prefixed ) ) {
-        if ( interface == 0 ) {
-          interface = __prm->__interfaceMap[prefixed];
+        if ( interf == 0 ) {
+          interf = __prm->__interfaceMap[prefixed];
           full_name = prefixed;
         } else if ( full_name != prefixed ) {
           GUM_ERROR( DuplicateElement,
@@ -1304,7 +1304,7 @@ namespace gum {
         }
       }
 
-      // Looking for the interface using all declared namespaces
+      // Looking for the interf using all declared namespaces
       if ( ! __namespaces.empty() ) {
         auto ns_list = __namespaces.back();
         // for( const auto & ns : *(__namespaces.top()) ) {
@@ -1313,8 +1313,8 @@ namespace gum {
           std::string ns_name = ns + "." + name;
 
           if ( __prm->__interfaceMap.exists( ns_name ) ) {
-            if ( interface == 0 ) {
-              interface = __prm->__interfaceMap[ns_name];
+            if ( interf == 0 ) {
+              interf = __prm->__interfaceMap[ns_name];
               full_name = ns_name;
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
@@ -1326,12 +1326,12 @@ namespace gum {
         }
       }
 
-      if ( interface == 0 ) {
+      if ( interf == 0 ) {
         GUM_ERROR( NotFound,
                    "Interface '" << name << "' not found, check imports." );
       }
 
-      return interface;
+      return interf;
     }
 
     template <typename GUM_SCALAR>
@@ -1446,7 +1446,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::endInterface() {
-      __checkStack( 1, PRMObject::prm_type::INTERFACE );
+      __checkStack( 1, PRMObject::prm_type::PRM_INTERFACE );
       __stack.pop_back();
     }
 
@@ -1454,7 +1454,7 @@ namespace gum {
     INLINE void
     PRMFactory<GUM_SCALAR>::addAttribute( const std::string& type,
                                           const std::string& name ) {
-      __checkStack( 1, PRMObject::prm_type::INTERFACE );
+      __checkStack( 1, PRMObject::prm_type::PRM_INTERFACE );
       startAttribute( type, name );
       endAttribute();
     }
@@ -1486,7 +1486,7 @@ namespace gum {
         } catch ( DuplicateElement& ) {
           c->overload( a );
         }
-      } catch ( Exception& e ) {
+      } catch ( Exception&  ) {
         if ( a != nullptr && ( ! c->exists( a->id() ) ) ) {
           delete a;
         }
@@ -1535,7 +1535,7 @@ namespace gum {
             __checkStack( 1, PRMObject::prm_type::SYSTEM ) );
         __stack.pop_back();
         model->instantiate();
-      } catch ( Exception& e ) {
+      } catch ( Exception&  ) {
         GUM_ERROR( FatalError, "could not create system" );
       }
     }
@@ -1625,7 +1625,7 @@ namespace gum {
 
           __packages = pck_cpy;
 
-        } catch ( DuplicateElement& e ) {
+        } catch ( DuplicateElement& ) {
           // Sub Class already exists in this system
         }
         c = __retrieveClass( sub_c );
@@ -1645,7 +1645,7 @@ namespace gum {
         i = new PRMInstance<GUM_SCALAR>( name, *type );
         s->add( i );
 
-      } catch ( OperationNotAllowed& e ) {
+      } catch ( OperationNotAllowed& ) {
 
         if ( i ) {
           delete i;
@@ -1695,7 +1695,7 @@ namespace gum {
       PRMObject* obj = __stack[__stack.size() - i];
 
       if ( ( obj->obj_type() == PRMObject::prm_type::CLASS ) ||
-           ( obj->obj_type() == PRMObject::prm_type::INTERFACE ) ) {
+           ( obj->obj_type() == PRMObject::prm_type::PRM_INTERFACE ) ) {
         return static_cast<PRMClassElementContainer<GUM_SCALAR>*>( obj );
       } else {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );

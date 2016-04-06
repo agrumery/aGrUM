@@ -86,7 +86,7 @@ namespace gum {
 
     if ( errors() == 0 ) {
       if ( prm->isSystem( __entityName ) ) {
-        __generateBN( prm->system( __entityName ) );
+        __generateBN( prm->getSystem( __entityName ) );
       } else {
         if ( prm->isClass( __entityName ) ) {
           ParseError warn( false,

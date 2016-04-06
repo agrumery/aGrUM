@@ -59,7 +59,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__readStream( std::istream& input ) {
         if ( input ) {
           input.seekg( 0, input.end );
-          auto length = input.tellg();
+          int length = input.tellg();
           input.seekg( 0, input.beg );
 
           auto str = std::string();
@@ -422,7 +422,7 @@ namespace gum {
             class_factory.declareAttributes();
             class_factory.completeAttributes();
             system_factory.build();
-          } catch ( Exception& e ) {
+          } catch ( Exception& ) {
 
             if ( __errors.count() == 0 ) {
               __errors.addException( "an unknown error occured", file );

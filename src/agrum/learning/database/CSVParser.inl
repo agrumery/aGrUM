@@ -25,7 +25,7 @@ namespace gum {
   namespace learning {
 
     INLINE bool CSVParser::next() {
-      while ( getline( __in, __line ) ) {
+      while ( getline(__instream, __line ) ) {
         __noLine++;
 
         if ( __line.size() == 0 ) continue;

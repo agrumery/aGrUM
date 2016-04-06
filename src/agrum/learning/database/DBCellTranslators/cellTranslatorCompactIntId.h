@@ -120,7 +120,7 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities( std::vector<unsigned int>& modal ) const noexcept;
+      void modalities( std::vector<unsigned int>& modal ) const ;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;

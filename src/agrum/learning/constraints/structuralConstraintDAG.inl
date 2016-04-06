@@ -61,45 +61,45 @@ namespace gum {
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcAdditionAlone( NodeId x,
                                                                 NodeId y ) const
-        noexcept {
+         {
       return !_DAG__cycle_detector.hasCycleFromAddition( x, y );
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcDeletionAlone( NodeId x,
                                                                 NodeId y ) const
-        noexcept {
+         {
       return !_DAG__cycle_detector.hasCycleFromDeletion( x, y );
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcReversalAlone( NodeId x,
                                                                 NodeId y ) const
-        noexcept {
+         {
       return !_DAG__cycle_detector.hasCycleFromReversal( x, y );
     }
 
     /// checks whether the constraints enable to add an arc
     INLINE bool StructuralConstraintDAG::checkModificationAlone(
-        const ArcAddition& change ) const noexcept {
+        const ArcAddition& change ) const  {
       return checkArcAdditionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool StructuralConstraintDAG::checkModificationAlone(
-        const ArcDeletion& change ) const noexcept {
+        const ArcDeletion& change ) const  {
       return checkArcDeletionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool StructuralConstraintDAG::checkModificationAlone(
-        const ArcReversal& change ) const noexcept {
+        const ArcReversal& change ) const  {
       return checkArcReversalAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintDAG::checkModificationAlone(
-        const GraphChange& change ) const noexcept {
+        const GraphChange& change ) const  {
       switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION:
           return checkArcAdditionAlone( change.node1(), change.node2() );
@@ -161,7 +161,7 @@ namespace gum {
     /// indicates whether a change will always violate the constraint
     INLINE bool
     StructuralConstraintDAG::isAlwaysInvalidAlone( const GraphChange& ) const
-        noexcept {
+         {
       return false;
     }
 

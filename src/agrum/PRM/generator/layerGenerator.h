@@ -142,15 +142,15 @@ namespace gum {
 
       void __generateClasses( PRMFactory<GUM_SCALAR>& f,
                               const std::string& type,
-                              std::vector<LayerGenerator::MyData>& l );
+                              std::vector<typename LayerGenerator::MyData>& l );
 
       void __generateClassDag( Size lvl,
                                DAG& dag,
                                Bijection<std::string, NodeId>& names,
-                               std::vector<LayerGenerator::MyData>& l );
+                               std::vector<typename LayerGenerator::MyData>& l );
 
       void __generateSystem( PRMFactory<GUM_SCALAR>& factory,
-                             std::vector<LayerGenerator::MyData>& l );
+                             std::vector<typename LayerGenerator::MyData>& l );
     };
 
   } /* namespace prm */

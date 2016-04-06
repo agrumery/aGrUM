@@ -450,47 +450,11 @@ namespace gum {
       /// Used at construction to instantiate attributes.
       /// @param source An attribute in __type.
       void __copyAttribute( PRMAttribute<GUM_SCALAR>* source );
-
-      /**
-       * @brief Add i as the inverse instantiation of name.
-       *
-       * @param name Either an inverse PRMReferenceSlot or an inverse
-       *PRMSlotChain<GUM_SCALAR>.
-       * @param i An inverse PRMInstance<GUM_SCALAR> added to name.
-       *
-       * @throw NotFound Raised if name does not match any PRMClassElement in this.
-       * @throw WrongClassElement Raised if name is not a PRMReferenceSlot nor a
-       *                          PRMSlotChain<GUM_SCALAR>.
-       * @throw TypeError Raised if i is not a valid subtype for name.
-       */
-      void __addInverse( const std::string& name, PRMInstance<GUM_SCALAR>* i );
-
+      
       /**
        * @brief Starts this instance instantiations.
        */
-      void __instantiate();
-
-      /**
-       * @brief This method is used to propagate instantiations between
-       *PRMInstance<GUM_SCALAR>
-       *        sharing dependencies.
-       *
-       * @param visited A Set to prevent any unnecessary call to
-       *__instantiate().
-       */
-      void __instantiate( Set<PRMInstance<GUM_SCALAR>*> visited );
-
-      /// This instantiate the corresponding aggregate.
-      void __instantiateAggregate( NodeId id );
-
-      /// This instantiate the corresponding attribute.
-      void __instantiateAttribute( NodeId id );
-
-      /// This instantiate a parent of given node.
-      void __instantiateParent( NodeId child, NodeId parent );
-
-      /// This instantiate a child of given node.
-      void __instantiateChild( NodeId child, NodeId parent );
+      void __doInstantiate();
 
       /// @brief Retrieve all instances referred by sc.
       /// @param sc A slot chain of this instance's type.

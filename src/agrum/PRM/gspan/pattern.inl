@@ -116,7 +116,7 @@ namespace gum {
 
       INLINE
       void Pattern::addArc( NodeId i, NodeId j, LabelData& l ) {
-        if ( not( DiGraph::exists( i ) && DiGraph::exists( j ) ) ) {
+        if ( !( DiGraph::exists( i ) && DiGraph::exists( j ) ) ) {
           GUM_ERROR( NotFound, "node not found in this pattern" );
         }
 

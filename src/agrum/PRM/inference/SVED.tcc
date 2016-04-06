@@ -399,35 +399,10 @@ namespace gum {
         }
         try {
           __class_elim_order->insert( name );
-        } catch ( DuplicateElement& e ) {
+        } catch ( DuplicateElement&) {
         }
       }
     }
-    // template <typename GUM_SCALAR> void SVED<GUM_SCALAR>::__initElimOrder() {
-    //  ClassDependencyGraph<GUM_SCALAR> cdg(*this->_prm);
-    //  __class_elim_order = new Sequence<const
-    //  PRMClassElementContainer<GUM_SCALAR> *>();
-    //  std::list<NodeId> l;
-
-    //  for (const auto node : cdg.dag().nodes())
-    //    if (cdg.dag().parents(node).empty())
-    //      l.push_back(node);
-
-    //  Set<NodeId> visited_node;
-
-    //  while (not l.empty()) {
-    //    visited_node.insert(l.front());
-
-    //    if (not __class_elim_order->exists(cdg.get(l.front()).first))
-    //      __class_elim_order->insert(cdg.get(l.front()).first);
-
-    //    for (const auto child : cdg.dag().children(l.front()))
-    //      if (not visited_node.contains(child))
-    //        l.push_back(child);
-
-    //    l.pop_front();
-    //  }
-    //}
 
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::_marginal( const Chain& chain,
@@ -583,13 +558,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void
-    SVED<GUM_SCALAR>::_evidenceAdded( const SVED<GUM_SCALAR>::Chain& chain ) {
+    SVED<GUM_SCALAR>::_evidenceAdded( const typename SVED<GUM_SCALAR>::Chain& chain ) {
       // Do nothing
     }
 
     template <typename GUM_SCALAR>
     INLINE void
-    SVED<GUM_SCALAR>::_evidenceRemoved( const SVED<GUM_SCALAR>::Chain& chain ) {
+    SVED<GUM_SCALAR>::_evidenceRemoved( const typename SVED<GUM_SCALAR>::Chain& chain ) {
       // Do nothing
     }
 

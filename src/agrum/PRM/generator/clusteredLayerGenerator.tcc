@@ -63,7 +63,7 @@ namespace gum {
     void ClusteredLayerGenerator<GUM_SCALAR>::__generateInterfaces(
         PRMFactory<GUM_SCALAR>& f,
         const std::string& type,
-        std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
+        std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
       for ( Size lvl = 0; lvl < __layers.size(); ++lvl ) {
         l.push_back( ClusteredLayerGenerator<GUM_SCALAR>::MyData() );
         l[lvl].i = this->_name_gen.nextName( PRMObject::prm_type::INTERFACE );
@@ -94,7 +94,7 @@ namespace gum {
     void ClusteredLayerGenerator<GUM_SCALAR>::__generateClasses(
         PRMFactory<GUM_SCALAR>& f,
         const std::string& type,
-        std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
+        std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
       // double ratio = getClusterRatio() + RAND_MAX;
       Set<std::string> i;
 
@@ -116,7 +116,7 @@ namespace gum {
     void ClusteredLayerGenerator<GUM_SCALAR>::__generateCluster(
         PRMFactory<GUM_SCALAR>& f,
         const std::string& type,
-        std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l,
+        std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l,
         Size lvl,
         Set<std::string>& i ) {
       Size size = 0;
@@ -322,7 +322,7 @@ namespace gum {
     void ClusteredLayerGenerator<GUM_SCALAR>::__generateClass(
         PRMFactory<GUM_SCALAR>& f,
         const std::string& type,
-        std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l,
+        std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l,
         Size lvl,
         Set<std::string>& i ) {
       Size size = 0;
@@ -387,7 +387,7 @@ namespace gum {
         Size lvl,
         DAG& dag,
         Bijection<std::string, NodeId>& names,
-        std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
+        std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
       float density = __layers[lvl].inner_density * RAND_MAX;
       std::vector<NodeId> nodes;
       NodeId id = 0;
@@ -441,7 +441,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void ClusteredLayerGenerator<GUM_SCALAR>::__generateSystem(
         PRMFactory<GUM_SCALAR>& factory,
-        std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
+        std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
       factory.startSystem(
           this->_name_gen.nextName( PRMObject::prm_type::SYSTEM ) );
       std::vector<std::vector<std::string>> o( __layers.size() );

@@ -60,46 +60,46 @@ namespace gum {
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintTabuList::checkArcAdditionAlone(
-        NodeId x, NodeId y ) const noexcept {
+        NodeId x, NodeId y ) const  {
       return !_TabuList__changes.existsFirst( ArcDeletion( x, y ) ) &&
              !_TabuList__changes.existsFirst( ArcAddition( x, y ) );
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintTabuList::checkArcDeletionAlone(
-        NodeId x, NodeId y ) const noexcept {
+        NodeId x, NodeId y ) const  {
       return !_TabuList__changes.existsFirst( ArcAddition( x, y ) ) &&
              !_TabuList__changes.existsFirst( ArcDeletion( x, y ) );
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintTabuList::checkArcReversalAlone(
-        NodeId x, NodeId y ) const noexcept {
+        NodeId x, NodeId y ) const  {
       return !_TabuList__changes.existsFirst( ArcReversal( y, x ) ) &&
              !_TabuList__changes.existsFirst( ArcReversal( x, y ) );
     }
 
     /// checks whether the constraints enable to add an arc
     INLINE bool StructuralConstraintTabuList::checkModificationAlone(
-        const ArcAddition& change ) const noexcept {
+        const ArcAddition& change ) const  {
       return checkArcAdditionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool StructuralConstraintTabuList::checkModificationAlone(
-        const ArcDeletion& change ) const noexcept {
+        const ArcDeletion& change ) const  {
       return checkArcDeletionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool StructuralConstraintTabuList::checkModificationAlone(
-        const ArcReversal& change ) const noexcept {
+        const ArcReversal& change ) const  {
       return checkArcReversalAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintTabuList::checkModificationAlone(
-        const GraphChange& change ) const noexcept {
+        const GraphChange& change ) const  {
       switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION:
           return checkArcAdditionAlone( change.node1(), change.node2() );
@@ -169,7 +169,7 @@ namespace gum {
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintTabuList::isAlwaysInvalidAlone(
-        const GraphChange& ) const noexcept {
+        const GraphChange& ) const  {
       return false;
     }
 

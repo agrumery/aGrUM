@@ -62,7 +62,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       void StrictSearch<GUM_SCALAR>::__buildPatternGraph(
-          StrictSearch<GUM_SCALAR>::PData& data,
+          typename StrictSearch<GUM_SCALAR>::PData& data,
           Set<Potential<GUM_SCALAR>*>& pool,
           const Sequence<PRMInstance<GUM_SCALAR>*>& match ) {
         for ( const auto inst : match ) {
@@ -153,7 +153,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       std::pair<Size, Size> StrictSearch<GUM_SCALAR>::__elimination_cost(
-          StrictSearch<GUM_SCALAR>::PData& data,
+          typename StrictSearch<GUM_SCALAR>::PData& data,
           Set<Potential<GUM_SCALAR>*>& pool ) {
         List<NodeSet> partial_order;
 
@@ -403,7 +403,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void
       StrictSearch<GUM_SCALAR>::__compute_costs( const Pattern* p ) {
-        StrictSearch<GUM_SCALAR>::PData data;
+        typename StrictSearch<GUM_SCALAR>::PData data;
         Set<Potential<GUM_SCALAR>*> pool;
         __buildPatternGraph(
             data, pool, *( this->_tree->data( *p ).iso_map.begin().val() ) );

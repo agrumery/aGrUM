@@ -254,28 +254,20 @@ namespace gum {
 
       /// Returns the cost with respect to an interface size and its frequency.
       /// TODO replace this by a class to enable different cost policies.
-      /// @param interface The size of all output nodes of a pattern.
+      /// @param interface_size The size of all output nodes of a pattern.
       /// @param frequency The frequency of the pattern in the current interface
       ///        graph.
       /// @return the cost with respect to an interface size and its frequency.
-      unsigned long __cost_func( unsigned int interface,
+      unsigned long __cost_func( unsigned int interface_size,
                                  unsigned int frequency );
 
       /// Sort the patterns and compute their respective costs.
       void __sortPatterns();
-
-      // /// Returns the cost of an instance.
-      // /// @param i An instance.
-      // /// @return the cost of an instance.
-      // double __instance_cost(PRMInstance<GUM_SCALAR>* i) const;
-
-      /// Print an iso map. For debug purpose.
-      void __printIsoMap( gspan::Pattern& p );
-
+      
       /// Returns true if e is an eligible root edge.
       /// @param e An EdgeData<GUM_SCALAR>.
       /// @return true if e is an eligible root edge.
-      bool __isEdgeEligible( gspan::EdgeData<GUM_SCALAR>* e );
+      bool __isEdgeEligible( typename gspan::EdgeData<GUM_SCALAR>* e );
 
       /// @}
 

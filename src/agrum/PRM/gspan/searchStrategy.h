@@ -236,11 +236,11 @@ namespace gum {
         std::string __str( const PRMInstance<GUM_SCALAR>* i,
                            const PRMSlotChain<GUM_SCALAR>& a ) const;
         void
-        __buildPatternGraph( StrictSearch<GUM_SCALAR>::PData& data,
+        __buildPatternGraph( typename StrictSearch<GUM_SCALAR>::PData& data,
                              Set<Potential<GUM_SCALAR>*>& pool,
                              const Sequence<PRMInstance<GUM_SCALAR>*>& match );
         std::pair<Size, Size>
-        __elimination_cost( StrictSearch<GUM_SCALAR>::PData& data,
+        __elimination_cost( typename StrictSearch<GUM_SCALAR>::PData& data,
                             Set<Potential<GUM_SCALAR>*>& pool );
       };
 

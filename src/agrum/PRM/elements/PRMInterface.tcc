@@ -312,7 +312,7 @@ namespace gum {
           return false;
         }
 
-        case PRMClassElement<GUM_SCALAR>::prm_type::INTERFACE: {
+        case PRMClassElement<GUM_SCALAR>::prm_type::PRM_INTERFACE: {
           const PRMInterface* current = this;
 
           while ( current != 0 ) {
@@ -428,7 +428,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE typename PRMObject::prm_type PRMInterface<GUM_SCALAR>::obj_type() const {
-      return PRMObject::prm_type::INTERFACE;
+      return PRMObject::prm_type::PRM_INTERFACE;
     }
 
     template <typename GUM_SCALAR>

@@ -175,7 +175,7 @@ namespace gum {
             __classMap.insert( c->name().label(), c.get() );
             __nodeMap.insert( id, c.get() );
 
-          } catch ( DuplicateElement& e ) {
+          } catch ( DuplicateElement& ) {
             O3PRM_CLASS_DUPLICATE( c->name(), *__errors );
             return false;
           }
@@ -200,7 +200,7 @@ namespace gum {
             try {
 
               __dag.addArc( tail, head );
-            } catch ( InvalidDirectedCycle& e ) {
+            } catch ( InvalidDirectedCycle& ) {
               // Cyclic inheritance
               O3PRM_CLASS_CYLIC_INHERITANCE( c->name(), c->superLabel(), *__errors );
               return false;
@@ -268,7 +268,7 @@ namespace gum {
                                                          AttrMap& attr_map,
                                                          AggMap& agg_map,
                                                          RefMap& ref_map ) {
-        const auto& real_i = __prm->interface( i.label() );
+        const auto& real_i = __prm->getInterface( i.label() );
 
         auto counter = (Size)0;
         for ( const auto& a : real_i.attributes() ) {
@@ -337,13 +337,9 @@ namespace gum {
         }
 
         if ( __prm->isInterface( o3_type.label() ) ) {
-
-          return __prm->interface( o3_type.label() ).isSubTypeOf( type );
-
+          return __prm->getInterface( o3_type.label() ).isSubTypeOf( type );
         } else {
-
-          return __prm->getClass( o3_type.label() ).isSubTypeOf( type );
-        }
+          return __prm->getClass( o3_type.label() ).isSubTypeOf( type );        }
       }
 
       template <typename GUM_SCALAR>
@@ -441,7 +437,7 @@ namespace gum {
 
             if ( __prm->isInterface( ref.type().label() ) ) {
 
-              slot_type = &( __prm->interface( ref.type().label() ) );
+              slot_type = &( __prm->getInterface( ref.type().label() ) );
 
             } else {
 
@@ -746,11 +742,10 @@ namespace gum {
           }
 
           // Check that formulas are valid and sums to 1
-          auto sum = 0.0f;
+          GUM_SCALAR sum = 0.0;
           for ( const auto& f : rule.second ) {
-
             try {
-              auto value = f.formula().result();
+              auto value = GUM_SCALAR(f.formula().result());
               sum += value;
 
               if ( value < 0.0 || 1.0 < value ) {
@@ -768,13 +763,13 @@ namespace gum {
           }
 
           // Check that CPT sums to 1
-          if ( std::abs( sum - 1.0f ) > 1e-3 ) {
+          if ( std::abs( sum - 1.0 ) > 1e-3 ) {
             O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(
-                c.name(), attr.name(), sum, *__errors );
+                c.name(), attr.name(), float(sum), *__errors );
             return false;
           } else if ( std::abs( sum - 1.0f ) > 1e-6 ) {
             O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(
-                c.name(), attr.name(), sum, *__errors );
+                c.name(), attr.name(), float(sum), *__errors );
           }
         }
 
@@ -824,13 +819,13 @@ namespace gum {
 
         // Check that CPT sums to 1
         Size parent_size = domainSize / type->domainSize();
-        auto values = std::vector<float>( parent_size, 0.0f );
+        auto values = std::vector<GUM_SCALAR>( parent_size, 0.0f );
 
         for ( std::size_t i = 0; i < attr.values().size(); ++i ) {
           try {
 
             auto idx = i % parent_size;
-            auto val = attr.values()[i].formula().result();
+            auto val = (GUM_SCALAR) attr.values()[i].formula().result();
             values[idx] += val;
 
             if ( val < 0.0 || 1.0 < val ) {
@@ -838,7 +833,7 @@ namespace gum {
                   c.name(), attr.name(), attr.values()[i], *__errors );
               return false;
             }
-          } catch ( Exception& e ) {
+          } catch ( Exception& ) {
             O3PRM_CLASS_ILLEGAL_CPT_VALUE(
                 c.name(), attr.name(), attr.values()[i], *__errors );
             return false;
@@ -846,13 +841,13 @@ namespace gum {
         }
 
         for ( auto f : values ) {
-          if ( std::abs( f - 1.0f ) > 1.0e-3 ) {
+          if ( std::abs( f - GUM_SCALAR(1.0) ) > 1.0e-3 ) {
             O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(
-                c.name(), attr.name(), f, *__errors );
+                c.name(), attr.name(), float(f), *__errors );
             return false;
-          } else if ( std::abs( f - 1.0f ) > 1.0e-6 ) {
+          } else if ( std::abs( f - GUM_SCALAR(1.0) ) > 1.0e-6 ) {
             O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(
-                c.name(), attr.name(), f, *__errors );
+                c.name(), attr.name(), float(f), *__errors );
           }
         }
         return true;

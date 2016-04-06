@@ -82,13 +82,13 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorCompactIntId::translate() {
-      out( 0 ) = in( 0 ).getFloat();
+      out( 0 ) = (unsigned int)in( 0 ).getFloat();
     }
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorCompactIntId::initialize() {
       if ( __check_database ) {
-        const int nb = in( 0 ).getFloat();
+        const int nb = (int) in( 0 ).getFloat();
         if ( nb < 0 ) {
           GUM_ERROR( WrongType,
                      "the CellTranslatorCompactIntId has read "
@@ -116,7 +116,7 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void CellTranslatorCompactIntId::modalities(
-        std::vector<unsigned int>& modal ) const noexcept {
+        std::vector<unsigned int>& modal ) const  {
       if ( __check_database ) {
         modal.push_back( __values.size() );
       } else {

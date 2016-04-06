@@ -292,7 +292,7 @@ namespace gum {
       /// Add edges in the reduced graph.
       void __addEdgesInReducedGraph( RGData& data );
 
-      void __removeNode( StructuredInference::PData& data,
+      void __removeNode( typename StructuredInference::PData& data,
                          NodeId id,
                          Set<Potential<GUM_SCALAR>*>& pool );
 
@@ -316,17 +316,17 @@ namespace gum {
                                 const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       void
-      __insertNodeInElimLists( StructuredInference::PData& data,
+      __insertNodeInElimLists(typename StructuredInference::PData& data,
                                const Sequence<PRMInstance<GUM_SCALAR>*>& match,
                                PRMInstance<GUM_SCALAR>* inst,
                                PRMAttribute<GUM_SCALAR>* attr,
                                NodeId id,
                                std::pair<Idx, std::string>& v );
 
-      bool __allInstanceNoRefAttr( StructuredInference::PData& data,
+      bool __allInstanceNoRefAttr(typename StructuredInference::PData& data,
                                    std::pair<Idx, std::string> attr );
 
-      void __removeBarrenNodes( StructuredInference::PData& data,
+      void __removeBarrenNodes(typename StructuredInference::PData& data,
                                 Set<Potential<GUM_SCALAR>*>& pool );
 
       /// Add in data.queries() any queried variable in one of data.pattern
@@ -336,20 +336,20 @@ namespace gum {
       /// Proceeds with the elimination of observed variables in math and then
       /// call __translatePotSet().
       Set<Potential<GUM_SCALAR>*>*
-      __eliminateObservedNodes( StructuredInference::PData& data,
+      __eliminateObservedNodes(typename StructuredInference::PData& data,
                                 const Set<Potential<GUM_SCALAR>*>& pool,
                                 const Sequence<PRMInstance<GUM_SCALAR>*>& match,
                                 const std::vector<NodeId>& elim_order );
 
       Set<Potential<GUM_SCALAR>*>* __eliminateObservedNodesInSource(
-          StructuredInference::PData& data,
+        typename StructuredInference::PData& data,
           const Set<Potential<GUM_SCALAR>*>& pool,
           const Sequence<PRMInstance<GUM_SCALAR>*>& match,
           const std::vector<NodeId>& elim_order );
 
       /// Translate a given Potential Set into one w.r.t. variables in match.
       Set<Potential<GUM_SCALAR>*>*
-      __translatePotSet( StructuredInference::PData& data,
+      __translatePotSet(typename StructuredInference::PData& data,
                          const Set<Potential<GUM_SCALAR>*>& pool,
                          const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 

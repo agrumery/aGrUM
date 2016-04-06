@@ -28,7 +28,7 @@ namespace gum {
 
   namespace learning {
 
-    CSVParser::CSVParser( std::istream& in,
+    CSVParser::CSVParser( std::istream& instream,
                           const std::string& delimiter,
                           const char commentmarker,
                           const char quoteMarker )
@@ -39,7 +39,7 @@ namespace gum {
         , __noLine( (Size)0 )
         , __commentMarker( commentmarker )
         , __quoteMarker( quoteMarker )
-        , __in( in )
+        , __instream( instream )
         , __data()
         , __emptyData( true ) {
       GUM_CONSTRUCTOR( CSVParser );

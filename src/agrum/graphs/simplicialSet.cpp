@@ -77,7 +77,10 @@ namespace gum {
       , __quasi_ratio( theRatio )
       , __log_threshold( std::log( 1 + theThreshold ) )
       , __we_want_fill_ins( false ) {
-    if ( !theGraph )
+
+    if (!theGraph) {
+      GUM_ERROR(OperationNotAllowed, "Graph can not be nullptr");
+    }
       // for debugging purposes
       GUM_CONSTRUCTOR( SimplicialSet );
 

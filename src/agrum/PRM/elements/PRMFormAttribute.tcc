@@ -311,12 +311,12 @@ namespace gum {
             f.variables().insert( item.first, item.second->value() );
           }
 
-          __cpf->set( jnst, f.result() );
+          __cpf->set( jnst, (GUM_SCALAR)f.result() );
         }
 
         GUM_ASSERT( inst.end() && jnst.end() );
 
-      } catch ( Exception& e ) {
+      } catch ( Exception& ) {
         GUM_ERROR( NotFound, "undefined value in cpt" );
       }
       GUM_ASSERT( __formulas->contains( __type->variable() ) );

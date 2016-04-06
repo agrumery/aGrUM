@@ -87,7 +87,7 @@ namespace gum {
       // truncate to fit in aggreegator domain size
       if ( current >= agg.domainSize() ) current = agg.domainSize() - 1;
 
-      return ( i.val( agg ) == current ) ? (GUM_SCALAR)1 : (GUM_SCALAR)0;
+      return ( i.val( agg ) == current ) ? (GUM_SCALAR)1.0 : (GUM_SCALAR)0.0;
     }
 
     template <typename GUM_SCALAR>

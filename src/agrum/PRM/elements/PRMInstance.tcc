@@ -66,12 +66,12 @@ namespace gum {
     void PRMInstance<GUM_SCALAR>::instantiate() {
       if ( ! __instantiated ) {
         __instantiated = true;
-        __instantiate();
+        __doInstantiate();
       }
     }
 
     template <typename GUM_SCALAR>
-    void PRMInstance<GUM_SCALAR>::__instantiate() {
+    void PRMInstance<GUM_SCALAR>::__doInstantiate() {
 
       // First retrieving any referenced instance
       for ( const auto chain : type().slotChains() ) {
@@ -301,7 +301,7 @@ namespace gum {
     INLINE PRMAttribute<GUM_SCALAR>& PRMInstance<GUM_SCALAR>::get( NodeId id ) {
       try {
         return *( __nodeIdMap[id] );
-      } catch ( NotFound& e ) {
+      } catch ( NotFound& ) {
         GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId" );
       }
     }
@@ -321,7 +321,7 @@ namespace gum {
     PRMInstance<GUM_SCALAR>::get( const std::string& name ) {
       try {
         return *( __nodeIdMap[type().get( name ).id()] );
-      } catch ( NotFound& e) {
+      } catch ( NotFound&) {
         GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given name" );
       }
     }
@@ -331,7 +331,7 @@ namespace gum {
     PRMInstance<GUM_SCALAR>::get( const std::string& name ) const {
       try {
         return *( __nodeIdMap[type().get( name ).id()] );
-      } catch ( NotFound& e) {
+      } catch ( NotFound&) {
         GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given name" );
       }
     }

@@ -177,7 +177,7 @@ namespace gum {
       }
 
       // Concerns only PRMAttribute (because of the hard evidence)
-      if ( ( __isHardEvidence( i, n ) ) and
+      if ( ( __isHardEvidence( i, n ) ) &&
            ( ! __getMark( marks, i, n ).first ) ) {
         __getMark( marks, i, n ).first = true;
 

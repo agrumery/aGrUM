@@ -61,56 +61,56 @@ GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
 /// checks whether the constraints enable to add arc (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcAddition( NodeId x,
                                                          NodeId y ) const
-    noexcept {
+     {
   return checkArcAdditionAlone( x, y );
 }
 
 /// checks whether the constraints enable to remove arc (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcDeletion( NodeId x,
                                                          NodeId y ) const
-    noexcept {
+     {
   return checkArcDeletionAlone( x, y );
 }
 
 /// checks whether the constraints enable to reverse arc (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcReversal( NodeId x,
                                                          NodeId y ) const
-    noexcept {
+     {
   return checkArcReversalAlone( x, y );
 }
 
 /// checks whether the constraints enable to add an arc
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const ArcAddition& change ) const
-    noexcept {
+     {
   return checkModificationAlone( change );
 }
 
 /// checks whether the constraints enable to remove an arc
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const ArcDeletion& change ) const
-    noexcept {
+     {
   return checkModificationAlone( change );
 }
 
 /// checks whether the constraints enable to reverse an arc
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const ArcReversal& change ) const
-    noexcept {
+     {
   return checkModificationAlone( change );
 }
 
 /// checks whether the constraints enable to perform a graph change
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const GraphChange& change ) const
-    noexcept {
+     {
   return checkModificationAlone( change );
 }
 
 /// indicates whether a change will always violate the constraint
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid( const GraphChange& change ) const
-    noexcept {
+     {
   return isAlwaysInvalidAlone( change );
 }
 

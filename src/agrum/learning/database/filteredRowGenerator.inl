@@ -74,7 +74,7 @@ namespace gum {
 
     /// returns true if there are still rows that can be output by the RowFilter
     INLINE bool FilteredRowGenerator::hasRows() noexcept {
-      return _nb_remaining_output_rows;
+      return _nb_remaining_output_rows!=0;
     }
 
     /// sets the input row from which the generator will create new rows

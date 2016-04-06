@@ -146,10 +146,7 @@ namespace gum {
 
         // Needed when file can't be parse (can not open it for exemple)
         ErrorsContainer __errors;
-
-        // Read a file into a std::string
-        std::string __readFile( const std::string& file );
-
+        
         void __readStream( std::istream& input,
                            const std::string& file,
                            std::string module = "" );

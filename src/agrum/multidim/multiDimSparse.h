@@ -69,10 +69,12 @@ namespace gum {
     MultiDimSparse( const MultiDimSparse<GUM_SCALAR>& from );
 
     /**
+     * @todo operator=
+     *
      * @brief Copy operator.
      * @param from The MultiDimSparse to copy.
-     */
     MultiDimSparse<GUM_SCALAR>& operator=( const MultiDimSparse<GUM_SCALAR>& from );
+     */
 
     /**
      * @brief Class destructor.

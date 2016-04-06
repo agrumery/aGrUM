@@ -35,7 +35,7 @@ INLINE void GUM_CONSTRAINT_CLASS_NAME::setGraph( const UndiGraph& graph ) {
 /// checks whether the constraints enable to add edge (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeAddition( NodeId x,
                                                           NodeId y ) const
-    noexcept {
+     {
   return constraints::checkEdgeAddition( x, y ) &&
          checkEdgeAdditionAlone( x, y );
 }
@@ -43,7 +43,7 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeAddition( NodeId x,
 /// checks whether the constraints enable to remove edge (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeDeletion( NodeId x,
                                                           NodeId y ) const
-    noexcept {
+     {
   return constraints::checkEdgeDeletion( x, y ) &&
          checkEdgeDeletionAlone( x, y );
 }
@@ -72,7 +72,7 @@ GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
 /// indicates whether a change will always violate the constraint
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid( const GraphChange& ) const
-    noexcept {
+     {
   return constraints::isAlwaysInvalid( change ) ||
          isAlwaysInvalidAlone( change );
 }
@@ -80,21 +80,21 @@ GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid( const GraphChange& ) const
 /// checks whether the constraints enable to add an edge
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const EdgeAddition& change ) const
-    noexcept {
+     {
   return checkEdgeAddition( change.node1(), change.node2() );
 }
 
 /// checks whether the constraints enable to remove an edge
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const EdgeDeletion& change ) const
-    noexcept {
+     {
   return checkEdgeDeletion( change.node1(), change.node2() );
 }
 
 /// checks whether the constraints enable to perform a graph change
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const GraphChange& change ) const
-    noexcept {
+     {
   switch ( change.type() ) {
     case GraphChangeType::EDGE_ADDITION:
       return checkEdgeAddition( change.node1(), change.node2() );

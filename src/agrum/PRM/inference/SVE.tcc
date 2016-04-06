@@ -594,7 +594,7 @@ namespace gum {
         }
         try {
           __class_elim_order->insert( name );
-        } catch ( DuplicateElement& e ) {
+        } catch ( DuplicateElement& ) {
         }
       }
     }

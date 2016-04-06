@@ -115,11 +115,8 @@ namespace gum {
             __addIncrements( factory, *sys );
 
             try {
-
               factory.endSystem();
-
-            } catch ( FatalError& e ) {
-
+            } catch ( FatalError& ) {
               O3PRM_SYSTEM_INSTANTIATION_FAILED( *sys, *__errors );
             }
           }
@@ -154,7 +151,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void O3SystemFactory<GUM_SCALAR>::__addAssignments(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
-        const auto& real_sys = __prm->system( sys.name().label() );
+        const auto& real_sys = __prm->getSystem( sys.name().label() );
 
         for ( auto& ass : sys.assignments() ) {
           if ( real_sys.isArray( ass.leftInstance().label() ) ) {
@@ -190,7 +187,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void O3SystemFactory<GUM_SCALAR>::__addIncrements(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
-        const auto& real_sys = __prm->system( sys.name().label() );
+        const auto& real_sys = __prm->getSystem( sys.name().label() );
         for ( auto& inc : sys.increments() ) {
 
           auto sBuff = std::stringstream();

@@ -173,12 +173,7 @@ namespace gum {
 
       /// Remove all evidences.
       void clearEvidence();
-
-      /// Copy evidences from source if they share the same Model.
-      /// @throw OperationNotAllowed Raised if source and this does not share
-      ///                            the same Model.
-      void copyEvidence( const PRMInference& source );
-
+      
       /// @}
       protected:
       // ========================================================================

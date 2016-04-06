@@ -204,7 +204,7 @@ namespace gum {
             for ( const auto& elt : *edge_count ) {
               try {
                 __tree.growPattern( *p, *elt.second, 2 );
-              } catch ( OperationNotAllowed& e ) {
+              } catch ( OperationNotAllowed& ) {
                 // The child was not minimal or was not worth considering
               }
 
@@ -399,9 +399,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE unsigned long
-    GSpan<GUM_SCALAR>::__cost_func( unsigned int interface,
+    GSpan<GUM_SCALAR>::__cost_func( unsigned int interface_size,
                                     unsigned int frequency ) {
-      return interface * frequency;
+      return interface_size * frequency;
     }
 
     template <typename GUM_SCALAR>
@@ -442,8 +442,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE bool
     GSpan<GUM_SCALAR>::__isEdgeEligible( gspan::EdgeData<GUM_SCALAR>* e ) {
-      return ( __graph->edges( e->l ).size() >= 2 ) and
-             ( __graph->nodes( e->l_u ).size() >= 2 ) and
+      return ( __graph->edges( e->l ).size() >= 2 ) &&
+             ( __graph->nodes( e->l_u ).size() >= 2 ) &&
              ( __graph->nodes( e->l_v ).size() >= 2 );
     }
 

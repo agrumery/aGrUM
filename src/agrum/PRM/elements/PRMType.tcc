@@ -190,7 +190,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMType<GUM_SCALAR>::isSubType() const {
-      return __superType;
+      return __superType!=nullptr;
     }
 
     template <typename GUM_SCALAR>

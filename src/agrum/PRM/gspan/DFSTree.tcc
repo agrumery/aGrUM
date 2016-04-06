@@ -236,7 +236,7 @@ namespace gum {
 
         try {
           __checkGrowth( p, child, edge_growth );
-        } catch ( OperationNotAllowed& e ) {
+        } catch ( OperationNotAllowed& ) {
           delete child;
           throw;
         }

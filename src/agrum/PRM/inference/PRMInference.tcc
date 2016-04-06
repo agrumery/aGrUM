@@ -212,7 +212,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMInference<GUM_SCALAR>::hasEvidence() const {
-      return __evidences.size();
+      return (__evidences.size()!=(Size)0);
     }
 
     template <typename GUM_SCALAR>
@@ -230,7 +230,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void PRMInference<GUM_SCALAR>::marginal(
-        const PRMInference<GUM_SCALAR>::Chain& chain,
+        const typename PRMInference<GUM_SCALAR>::Chain& chain,
         Potential<GUM_SCALAR>& m ) {
       if ( m.nbrDim() > 0 ) {
         GUM_ERROR( OperationNotAllowed, "the given Potential is not empty." );
@@ -247,7 +247,7 @@ namespace gum {
       } else {
         if ( chain.second !=
              &( chain.first->get( chain.second->safeName() ) ) ) {
-          PRMInference<GUM_SCALAR>::Chain good_chain = std::make_pair(
+          typename PRMInference<GUM_SCALAR>::Chain good_chain = std::make_pair(
               chain.first, &( chain.first->get( chain.second->safeName() ) ) );
           m.add( good_chain.second->type().variable() );
           _marginal( good_chain, m );
@@ -260,7 +260,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void PRMInference<GUM_SCALAR>::joint(
-        const std::vector<PRMInference<GUM_SCALAR>::Chain>& chains,
+        const std::vector<typename PRMInference<GUM_SCALAR>::Chain>& chains,
         Potential<GUM_SCALAR>& j ) {
       if ( j.nbrDim() > 0 ) {
         GUM_ERROR( OperationNotAllowed, "the given Potential is not empty." );

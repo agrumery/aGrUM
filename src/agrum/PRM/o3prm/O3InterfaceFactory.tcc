@@ -133,7 +133,7 @@ namespace gum {
             __interfaceMap.insert( i->name().label(), i.get() );
             __nodeMap.insert( id, i.get() );
 
-          } catch ( DuplicateElement& e ) {
+          } catch ( DuplicateElement&  ) {
             // Raised if duplicate type names
             O3PRM_INTERFACE_DUPLICATE( i->name(), *__errors );
             return false;
@@ -161,7 +161,7 @@ namespace gum {
 
               __dag.addArc( tail, head );
 
-            } catch ( InvalidDirectedCycle& e ) {
+            } catch ( InvalidDirectedCycle&  ) {
               // Cyclic inheritance
               O3PRM_INTERFACE_CYCLIC_INHERITANCE(
                   i->name(), i->superLabel(), *__errors );
@@ -189,7 +189,7 @@ namespace gum {
 
         for ( auto i : __o3Interface ) {
 
-          __prm->interface( i->name().label() ).inheritInterface();
+          __prm->getInterface( i->name().label() ).inheritInterface();
 
           factory.continueInterface( i->name().label() );
 
@@ -209,7 +209,7 @@ namespace gum {
                       elt.type().label(), elt.name().label(), elt.isArray() );
                 }
 
-              } catch ( OperationNotAllowed& e ) {
+              } catch ( OperationNotAllowed& ) {
                 // Duplicate or Wrong overload
                 O3PRM_INTERFACE_DUPLICATE_ELEMENT( elt, *__errors );
               }
@@ -232,7 +232,7 @@ namespace gum {
           return false;
         }
 
-        const auto& real_i = __prm->interface( i.name().label() );
+        const auto& real_i = __prm->getInterface( i.name().label() );
 
         if ( real_i.exists( elt.name().label() ) ) {
           if ( ! __checkOverloadLegality( i, elt ) ) {
@@ -251,7 +251,7 @@ namespace gum {
       INLINE bool O3InterfaceFactory<GUM_SCALAR>::__checkOverloadLegality(
           O3Interface& i, O3InterfaceElement& elt ) {
 
-        const auto& real_i = __prm->interface( i.name().label() );
+        const auto& real_i = __prm->getInterface( i.name().label() );
         const auto& real_elt = real_i.get( elt.name().label() );
 
         if ( PRMClassElement<GUM_SCALAR>::isAttribute( real_elt ) ) {
@@ -270,7 +270,7 @@ namespace gum {
       O3InterfaceFactory<GUM_SCALAR>::__checkAttributeOverloadLegality(
           O3Interface& i, O3InterfaceElement& elt ) {
 
-        const auto& real_i = __prm->interface( i.name().label() );
+        const auto& real_i = __prm->getInterface( i.name().label() );
         const auto& real_elt = real_i.get( elt.name().label() );
 
         const auto& sub_type = __prm->type( elt.type().label() );
@@ -293,7 +293,7 @@ namespace gum {
       INLINE bool
       O3InterfaceFactory<GUM_SCALAR>::__checkReferenceOverloadLegality(
           O3Interface& i, O3InterfaceElement& elt ) {
-        const auto& real_i = __prm->interface( i.name().label() );
+        const auto& real_i = __prm->getInterface( i.name().label() );
         const auto& real_elt = static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
             real_i.get( elt.name().label() ) );
 
@@ -302,7 +302,7 @@ namespace gum {
         if ( __prm->isClass( elt.type().label() ) ) {
           sub_type = &( __prm->getClass( elt.type().label() ) );
         } else {
-          sub_type = &( __prm->interface( elt.type().label() ) );
+          sub_type = &( __prm->getInterface( elt.type().label() ) );
         }
 
         auto super_type = &( real_elt.slotType() );
@@ -330,12 +330,12 @@ namespace gum {
           auto ref_type = (const PRMClassElementContainer<GUM_SCALAR>*)nullptr;
 
           if ( __prm->isInterface( elt.type().label() ) ) {
-            ref_type = &( __prm->interface( elt.type().label() ) );
+            ref_type = &( __prm->getInterface( elt.type().label() ) );
           } else {
             ref_type = &( __prm->getClass( elt.type().label() ) );
           }
 
-          const auto& real_i = __prm->interface( i.name().label() );
+          const auto& real_i = __prm->getInterface( i.name().label() );
 
           if ( &real_i == ref_type ) {
             O3PRM_INTERFACE_SELF_REFERENCE( i, elt, *__errors );

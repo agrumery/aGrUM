@@ -155,7 +155,7 @@ void Parser::TYPE_UNIT() {
 		} else SynErr(32);
 }
 
-void Parser::INTERFACE_UNIT() {
+void Parser::PRM_INTERFACE_UNIT() {
 		auto n = errors().error_count; 
 		auto i = O3Interface(); 
 		INTERFACE_DECLARATION(i.position(), i.name(), i.superLabel(), i.elements() );
@@ -454,7 +454,7 @@ void Parser::LABEL_OR_STAR_LIST(O3LabelList& list) {
 		}
 }
 
-void Parser::INTERFACE_DECLARATION(O3Position& pos,
+void Parser::PRM_INTERFACE_DECLARATION(O3Position& pos,
 O3Label& name,
 O3Label& superLabel,
 O3InterfaceElementList& elts) {
@@ -478,7 +478,7 @@ void Parser::PRM_INTERFACE(O3Position& pos) {
 		pos.column() = t->col; 
 }
 
-void Parser::INTERFACE_BODY(O3InterfaceElementList& elts) {
+void Parser::PRM_INTERFACE_BODY(O3InterfaceElementList& elts) {
 		auto elt = O3InterfaceElement(); 
 		CHAIN(elt.type());
 		if (la->kind == 24 /* "[" */) {

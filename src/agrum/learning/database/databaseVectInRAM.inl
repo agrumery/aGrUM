@@ -185,7 +185,7 @@ namespace gum {
     /// sets the area in the database the handler will handle
     INLINE void
     DatabaseVectInRAM::Handler::setRange( unsigned long begin,
-                                          unsigned long end ) noexcept {
+                                          unsigned long end ) {
       if ( begin > end ) std::swap( begin, end );
 
       // check that the end belongs to the database, else raise an exception
