@@ -236,7 +236,7 @@ namespace gum {
          * @end the handler handles rows in interval [begin,end). Thus, the
          * endth
          * row is not included in the set of rows handled. g*/
-        void setRange( unsigned long begin, unsigned long end ) ;
+        void setRange( unsigned long begin, unsigned long end );
 
         /// returns the current range of the handler [begin,end)
         std::pair<unsigned long, unsigned long> range() const noexcept;

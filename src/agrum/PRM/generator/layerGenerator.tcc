@@ -67,7 +67,7 @@ namespace gum {
         std::vector<typename LayerGenerator<GUM_SCALAR>::MyData>& l ) {
       for ( Size lvl = 0; lvl < __layers.size(); ++lvl ) {
         l.push_back( LayerGenerator<GUM_SCALAR>::MyData() );
-        l[lvl].i = this->_name_gen.nextName( PRMObject::prm_type::INTERFACE );
+        l[lvl].i = this->_name_gen.nextName( PRMObject::prm_type::PRM_INTERFACE );
         f.startInterface( l[lvl].i );
 
         for ( Size a = 0; a < __layers[lvl].a; ++a ) {
@@ -231,7 +231,7 @@ namespace gum {
         float density = __layers[lvl].outter_density * RAND_MAX;
 
         for ( size_t count = 0; count < __layers[lvl].o; ++count ) {
-          name = this->_name_gen.nextName( PRMObject::prm_type::INTERFACE );
+          name = this->_name_gen.nextName( PRMObject::prm_type::PRM_INTERFACE );
           factory.addInstance( l[lvl].c[std::rand() % l[lvl].c.size()], name );
           o[lvl].push_back( name );
 

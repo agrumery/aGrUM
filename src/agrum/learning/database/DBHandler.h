@@ -88,7 +88,7 @@ namespace gum {
 
       /// sets the range of rows in the database that the handler will parse
       virtual void setRange( unsigned long begin,
-                             unsigned long end ) noexcept = 0;
+                             unsigned long end ) = 0;
 
       /// returns the current range of the handler
       virtual std::pair<unsigned long, unsigned long> range() const

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Source implementation of MaxParentsMCBG
+ * @brief Source implementation of MaxParentsMCBayesNetGenerator
  *
  * @author Pierre-Henri WUILLEMIN and Ariele Maesano
  *
@@ -36,8 +36,8 @@ namespace gum {
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
   INLINE
-  MaxParentsMCBG<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
-      MaxParentsMCBG( Size nbrNodes,
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
+      MaxParentsMCBayesNetGenerator( Size nbrNodes,
                                      Size maxArcs,
                                      Size max_modality,
                                      Size maxParents,
@@ -51,22 +51,22 @@ namespace gum {
           "maxParents must be at least equal to 1 to have a connexe graph" );
 
     _maxParents = maxParents;
-    GUM_CONSTRUCTOR( MaxParentsMCBG );
+    GUM_CONSTRUCTOR( MaxParentsMCBayesNetGenerator );
   }
 
   template <typename GUM_SCALAR,
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
   INLINE
-  MaxParentsMCBG<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
-      MaxParentsMCBG( BayesNet<GUM_SCALAR> bayesNet,
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
+      MaxParentsMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet,
                                      Size maxParents,
                                      Idx iteration,
                                      Idx p,
                                      Idx q )
       : MCBG(bayesNet, iteration, p, q ) {
     _maxParents = maxParents;
-    GUM_CONSTRUCTOR( MaxParentsMCBG );
+    GUM_CONSTRUCTOR( MaxParentsMCBayesNetGenerator );
   }
 
   // Destructor.
@@ -74,15 +74,15 @@ namespace gum {
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
   INLINE
-      MaxParentsMCBG<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
-          ~MaxParentsMCBG() {
-    GUM_DESTRUCTOR( MaxParentsMCBG );
+      MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
+          ~MaxParentsMCBayesNetGenerator() {
+    GUM_DESTRUCTOR( MaxParentsMCBayesNetGenerator );
   }
 
   template <typename GUM_SCALAR,
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
-  bool MaxParentsMCBG<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__checkConditions() {
+  bool MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__checkConditions() {
     for ( auto node : this->_bayesNet.nodes() )
       if ( this->_bayesNet.dag().parents( node ).size() > _maxParents )
         return false;
@@ -93,7 +93,7 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
-  INLINE Size MaxParentsMCBG<GUM_SCALAR,
+  INLINE Size MaxParentsMCBayesNetGenerator<GUM_SCALAR,
                                             ICPTGenerator,
                                             ICPTDisturber>::maxParents() const {
     return _maxParents;
@@ -102,7 +102,7 @@ namespace gum {
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
   INLINE void
-  MaxParentsMCBG<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
       setMaxParents( Size maxParents ) {
     if ( maxParents == 0 )
       GUM_ERROR(
