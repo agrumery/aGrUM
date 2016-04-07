@@ -651,7 +651,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -688,7 +688,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -732,7 +732,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1011,7 +1011,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1058,7 +1058,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1103,7 +1103,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1150,7 +1150,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1196,7 +1196,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1244,7 +1244,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1290,7 +1290,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1338,7 +1338,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1384,7 +1384,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1432,7 +1432,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1478,7 +1478,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1526,7 +1526,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1572,7 +1572,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1620,7 +1620,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1666,7 +1666,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1714,7 +1714,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1760,7 +1760,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1808,7 +1808,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       const auto& state = foo.get( "state" );
@@ -1977,7 +1977,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( "", output.str() );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT( prm.isClass( "Bar" ) );
       TS_ASSERT_EQUALS( foo.referenceSlots().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
@@ -2008,7 +2008,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( "", output.str() );
       TS_ASSERT( prm.isInterface( "Foo" ) );
-      const auto& foo = prm.interface( "Foo" );
+      const auto& foo = prm.getInterface( "Foo" );
       TS_ASSERT( prm.isClass( "Bar" ) );
       TS_ASSERT_EQUALS( foo.referenceSlots().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
@@ -2045,7 +2045,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( "", output.str() );
       TS_ASSERT( prm.isInterface( "iFoo" ) );
-      const auto& ifoo = prm.interface( "iFoo" );
+      const auto& ifoo = prm.getInterface( "iFoo" );
       TS_ASSERT_EQUALS( ifoo.referenceSlots().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( ifoo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isClass( "Foo" ) );
@@ -2199,7 +2199,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( "", output.str() );
       TS_ASSERT( prm.isInterface( "iFoo" ) );
-      const auto& ifoo = prm.interface( "iFoo" );
+      const auto& ifoo = prm.getInterface( "iFoo" );
       TS_ASSERT_EQUALS( ifoo.referenceSlots().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( ifoo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isClass( "Foo" ) );
@@ -2238,7 +2238,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS( "", output.str() );
       TS_ASSERT( prm.isInterface( "iFoo" ) );
-      const auto& ifoo = prm.interface( "iFoo" );
+      const auto& ifoo = prm.getInterface( "iFoo" );
       TS_ASSERT_EQUALS( ifoo.referenceSlots().size(), (gum::Size)0 );
       TS_ASSERT_EQUALS( ifoo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( prm.isClass( "Foo" ) );
@@ -2300,13 +2300,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)2 );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)2 );
       TS_ASSERT( prm.isInterface( "Plop" ) );
-      const auto& plop = prm.interface( "Plop" );
+      const auto& plop = prm.getInterface( "Plop" );
       TS_ASSERT_EQUALS( plop.attributes().size(), (gum::Size)1 );
       TS_ASSERT( plop.exists( "state" ) );
       TS_ASSERT( plop.exists( "(boolean)state" ) );
 
       TS_ASSERT( prm.isInterface( "SubPlop" ) );
-      const auto& sub_plop = prm.interface( "SubPlop" );
+      const auto& sub_plop = prm.getInterface( "SubPlop" );
       TS_ASSERT_EQUALS( sub_plop.attributes().size(), (gum::Size)2 );
       TS_ASSERT( sub_plop.exists( "state" ) );
       TS_ASSERT( sub_plop.exists( "(boolean)state" ) );

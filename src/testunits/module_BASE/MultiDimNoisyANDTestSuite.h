@@ -57,13 +57,13 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( p.causalWeight( d, 0.7f ) );
       TS_ASSERT_EQUALS(
           p.toString(),
-          "a<0,1>=noisyAND([0.2f],b<0,1>[0.4f]c<0,1>[1]d<0,1>[0.7f])" );
+          "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
       TS_ASSERT_EQUALS( p.realSize(), (gum::Size)4 );
 
       gum::MultiDimNoisyAND<float> q( p );
       TS_ASSERT_EQUALS(
           q.toString(),
-          "a<0,1>=noisyAND([0.2f],b<0,1>[0.4f]c<0,1>[1]d<0,1>[0.7f])" );
+          "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
       TS_ASSERT_EQUALS( p.realSize(), (gum::Size)4 );
 
       // trying a noisyAND with 0 as external weight (not allowed)

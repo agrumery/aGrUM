@@ -34,7 +34,7 @@ namespace gum {
 
     /// constructor with a given size for the row
     INLINE
-    DBRow::DBRow( unsigned int size, const DBCell& default_cell, float weight )
+    DBRow::DBRow( unsigned int size, const DBCell& default_cell, double weight )
         : _row( size, default_cell )
         , _weight( weight ) {}
 
@@ -43,12 +43,12 @@ namespace gum {
         : _row( list ) {}
 
     /// initializer from a vector of cells
-    INLINE DBRow::DBRow( const std::vector<DBCell>& cells, float weight )
+    INLINE DBRow::DBRow( const std::vector<DBCell>& cells, double weight )
         : _row( cells )
         , _weight( weight ) {}
 
     /// initializer from a vector of cells
-    INLINE DBRow::DBRow( std::vector<DBCell>&& cells, float weight )
+    INLINE DBRow::DBRow( std::vector<DBCell>&& cells, double weight )
         : _row( std::move( cells ) )
         , _weight( weight ) {}
 
@@ -100,10 +100,10 @@ namespace gum {
     INLINE std::vector<DBCell>& DBRow::row() noexcept { return _row; }
 
     /// returns the weight
-    INLINE const float& DBRow::weight() const noexcept { return _weight; }
+    INLINE const double& DBRow::weight() const noexcept { return _weight; }
 
     /// returns the weight
-    INLINE float& DBRow::weight() noexcept { return _weight; }
+    INLINE double& DBRow::weight() noexcept { return _weight; }
 
     /// sets a new row
     INLINE void DBRow::setRow( const std::vector<DBCell>& new_row ) {
@@ -116,7 +116,7 @@ namespace gum {
     }
 
     /// sets a new weight
-    INLINE void DBRow::setWeight( float new_weight ) { _weight = new_weight; }
+    INLINE void DBRow::setWeight( double new_weight ) { _weight = new_weight; }
 
     /// returns the size of the row
     INLINE unsigned int DBRow::size() const noexcept { return _row.size(); }

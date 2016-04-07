@@ -66,7 +66,7 @@ namespace gum {
       // try first to set the DBCell with the current type
       switch ( __type ) {
         case EltType::FLOAT:
-          // try to convert the string into a float
+          // try to convert the string into a double
           try {
             __setFloatFromStringSafe( elt );
             return;

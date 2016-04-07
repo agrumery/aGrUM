@@ -87,7 +87,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)1 );
       TS_ASSERT( simple_printers->isSystem( "Foo" ) );
-      const auto& foo = simple_printers->system( "Foo" );
+      const auto& foo = simple_printers->getSystem( "Foo" );
       TS_ASSERT_EQUALS( foo.size(), (gum::Size)0 );
     }
 
@@ -114,7 +114,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)1 );
       TS_ASSERT( simple_printers->isSystem( "microSys" ) );
-      const auto& foo = simple_printers->system( "microSys" );
+      const auto& foo = simple_printers->getSystem( "microSys" );
       TS_ASSERT_EQUALS( foo.size(), (gum::Size)5 );
     }
 
@@ -310,7 +310,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)1 );
       TS_ASSERT( simple_printers->isSystem( "smallSys" ) );
-      const auto& foo = simple_printers->system( "smallSys" );
+      const auto& foo = simple_printers->getSystem( "smallSys" );
       TS_ASSERT_EQUALS( foo.size(), (gum::Size)10 );
     }
 
@@ -346,7 +346,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "" );
       TS_ASSERT_EQUALS( complex_printers->systems().size(), (gum::Size)1 );
       TS_ASSERT( complex_printers->isSystem( "aSys" ) );
-      const auto& foo = complex_printers->system( "aSys" );
+      const auto& foo = complex_printers->getSystem( "aSys" );
       TS_ASSERT_EQUALS( foo.size(), (gum::Size)18 );
     }
   };

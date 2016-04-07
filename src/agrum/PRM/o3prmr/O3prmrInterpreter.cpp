@@ -781,13 +781,13 @@ namespace gum {
       // After this method, ident doesn't contains the system name anymore.
       const PRMSystem<double>& O3prmrInterpreter::system( std::string& ident ) {
         try {
-          return prm()->system( findSystemName( ident ) );
+          return prm()->getSystem( findSystemName( ident ) );
         } catch ( const std::string& ) {
         }
 
-        if ( m_context->mainImport() != 0 &&
+        if (( m_context->mainImport() != 0) &&
              prm()->isSystem( m_context->mainImport()->value ) )
-          return prm()->system( m_context->mainImport()->value );
+          return prm()->getSystem( m_context->mainImport()->value );
 
         throw "could not find any system or alias in '" + ident +
             "' and no default alias has been set.";
@@ -816,7 +816,7 @@ namespace gum {
         return true;
 
       } catch ( OperationNotAllowed& ex ) {
-        addError( "someting went wrong when adding evidence " +
+        addError( "something went wrong when adding evidence " +
                   command->rightValue + " over " + command->leftValue + " : " +
                   ex.errorContent() );
         return false;
@@ -954,7 +954,7 @@ namespace gum {
           m_inf = new SVED<double>( *( prm() ), sys );
 
           //
-        } else if ( m_engine == "SVE" ) { 
+        } else if ( m_engine == "SVE" ) {
 
           m_inf = new SVE<double>( *( prm() ), sys );
 
@@ -983,7 +983,7 @@ namespace gum {
           grd_inf->setBNInference( bn_inf );
           m_inf = grd_inf;
 
-        } 
+        }
 
         if ( m_verbose ) m_log << "Finished." << std::endl;
       }

@@ -77,7 +77,7 @@ namespace gum {
 
     /// returns the CPT's parameters corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    const std::vector<float, CountAlloc>&
+    const std::vector<double, CountAlloc>&
     ParamEstimatorML<IdSetAlloc, CountAlloc>::parameters(
         unsigned int nodeset_index ) {
       // if all_counts is already normalized, just return it
@@ -94,8 +94,8 @@ namespace gum {
           this->_getConditioningNodes( nodeset_index );
       const unsigned int target_modal =
           this->modalities()[all_nodes[all_nodes.size() - 1]];
-      std::vector<float, CountAlloc>& N_ijk =
-          const_cast<std::vector<float, CountAlloc>&>(
+      std::vector<double, CountAlloc>& N_ijk =
+          const_cast<std::vector<double, CountAlloc>&>(
               this->_getAllCounts( nodeset_index ) );
 
       // if we did not count yet the internal apriori of the score, do it
@@ -105,14 +105,14 @@ namespace gum {
       // without conditioning nodes
       if ( conditioning_nodes ) {
         // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float, CountAlloc>& N_ij =
+        const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
         const unsigned int conditioning_size = N_ij.size();
 
         if ( this->_apriori->weight() ) {
-          const std::vector<float, CountAlloc>& N_prime_ijk =
+          const std::vector<double, CountAlloc>& N_prime_ijk =
               this->_getAllApriori( nodeset_index );
-          const std::vector<float, CountAlloc>& N_prime_ij =
+          const std::vector<double, CountAlloc>& N_prime_ij =
               this->_getConditioningApriori( nodeset_index );
 
           // check that all conditioning nodes have strictly positive counts
@@ -149,10 +149,10 @@ namespace gum {
           }
         }
       } else {
-        float sum = 0;
+        double sum = 0;
 
         if ( this->_apriori->weight() ) {
-          const std::vector<float, CountAlloc>& N_prime_ijk =
+          const std::vector<double, CountAlloc>& N_prime_ijk =
               this->_getAllApriori( nodeset_index );
 
           // here, there are no conditioning nodes

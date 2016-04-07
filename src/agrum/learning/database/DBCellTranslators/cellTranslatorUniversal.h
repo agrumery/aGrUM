@@ -82,7 +82,7 @@ namespace gum {
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorUniversal( Sequence<float> values = Sequence<float>(),
+      CellTranslatorUniversal( Sequence<double> values = Sequence<double>(),
                                bool check_database = true );
 
       /// default constructor
@@ -218,7 +218,7 @@ namespace gum {
        * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues( const Sequence<float>& values,
+      void setUserValues( const Sequence<double>& values,
                           bool check_database = true );
 
       /// specify the set of possible values (to do before creating the row
@@ -266,7 +266,7 @@ namespace gum {
       const Bijection<int, unsigned int>& stringTranslations() const noexcept;
 
       /// returns the set of translations for number values in the database
-      const Bijection<float, unsigned int>& numberTranslations() const noexcept;
+      const Bijection<double, unsigned int>& numberTranslations() const noexcept;
 
       virtual std::string toString() const noexcept;
 
@@ -277,7 +277,7 @@ namespace gum {
       unsigned int __max_value{0};
 
       /// the set of numbers found so far in the database
-      Bijection<float, unsigned int> __numbers;
+      Bijection<double, unsigned int> __numbers;
 
       /// the set of strings (actually their indices) found so far in the
       /// database
@@ -287,7 +287,7 @@ namespace gum {
       Sequence<std::string>* __str_user_values{nullptr};
 
       /// the sequence of numeric values specified by the user
-      Sequence<float>* __num_user_values{nullptr};
+      Sequence<double>* __num_user_values{nullptr};
 
       /// indicates whether the translator shall be initialized by DB parsing
       bool __check_database{true};

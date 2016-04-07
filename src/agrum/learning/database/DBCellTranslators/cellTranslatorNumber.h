@@ -82,7 +82,7 @@ namespace gum {
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorNumber( Sequence<float> values = Sequence<float>(),
+      CellTranslatorNumber( Sequence<double> values = Sequence<double>(),
                             bool check_database = true );
 
       /// copy constructor
@@ -182,7 +182,7 @@ namespace gum {
        * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues( const Sequence<float>& values,
+      void setUserValues( const Sequence<double>& values,
                           bool check_database = true );
 
       /// @}
@@ -192,10 +192,10 @@ namespace gum {
       unsigned int __max_value{0};
 
       /// the set of values found so far
-      Bijection<float, unsigned int> __values;
+      Bijection<double, unsigned int> __values;
 
       /// the sequence of values specified by the user
-      Sequence<float>* __user_values{nullptr};
+      Sequence<double>* __user_values{nullptr};
 
       /// indicates whether the translator shall be initialized by DB parsing
       bool __check_database{true};

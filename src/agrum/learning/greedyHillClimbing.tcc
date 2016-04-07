@@ -39,7 +39,7 @@ namespace gum {
       selector.setGraph( dag, modal );
 
       unsigned int nb_changes_applied = 1;
-      float delta_score;
+      double delta_score;
 
       initApproximationScheme();
 
@@ -51,7 +51,7 @@ namespace gum {
         nb_changes_applied = 0;
         delta_score = 0;
 
-        std::vector<std::pair<unsigned int, float>> ordered_queues =
+        std::vector<std::pair<unsigned int, double>> ordered_queues =
             selector.nodesSortedByBestScore();
 
         for ( unsigned int j = 0; j < dag.size(); ++j ) {

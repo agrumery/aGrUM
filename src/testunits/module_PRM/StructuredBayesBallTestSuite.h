@@ -43,7 +43,7 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader<double> reader;
         reader.readFile( GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ) );
         prm = reader.prm();
-        sys = &( prm->system( "aSys" ) );
+        sys = &( prm->getSystem( "aSys" ) );
         prm_inf = new gum::prm::SVE<double>( *prm, *sys );
       }
       {
@@ -51,7 +51,7 @@ namespace gum_tests {
         reader.readFile(
             GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) );
         small = reader.prm();
-        small_sys = &( small->system( "smallSys" ) );
+        small_sys = &( small->getSystem( "smallSys" ) );
         small_inf = new gum::prm::SVE<double>( *small, *small_sys );
       }
     }

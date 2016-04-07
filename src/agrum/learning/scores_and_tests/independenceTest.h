@@ -66,7 +66,7 @@ namespace gum {
      * test class, or use method score to get the computed score of the test if
      * you are an end user. */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class IndependenceTest : private Counter<IdSetAlloc, CountAlloc> {
       public:
       // ##########################################################################
@@ -230,13 +230,13 @@ namespace gum {
        * alpha, where @#sum corresponds to the summations mentioned above.
        * Therefore, any positive result should reflect a dependence whereas
        * negative results should reflect independences. */
-      virtual float score( unsigned int nodeset_index ) = 0;
+      virtual double score( unsigned int nodeset_index ) = 0;
 
       /// @}
 
       protected:
       /// 1 / log(2)
-      const float _1log2{M_LOG2E};
+      const double _1log2{M_LOG2E};
 
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
@@ -270,10 +270,10 @@ namespace gum {
       bool _isInCache( unsigned int nodeset_index ) const noexcept;
 
       /// inserts a new score into the cache
-      void _insertIntoCache( unsigned int nodeset_index, float score );
+      void _insertIntoCache( unsigned int nodeset_index, double score );
 
       /// returns a cached score
-      float _cachedScore( unsigned int nodeset_index ) const noexcept;
+      double _cachedScore( unsigned int nodeset_index ) const noexcept;
 
       /// indicates whether we use the cache or not
       bool _isUsingCache() const noexcept;
@@ -289,7 +289,7 @@ namespace gum {
       std::vector<bool> __is_cached_score;
 
       /// the vector of scores for the current nodesets
-      std::vector<float> __cached_score;
+      std::vector<double> __cached_score;
 
       /// an empty conditioning set
       const std::vector<unsigned int> __empty_conditioning_set;

@@ -51,16 +51,16 @@ namespace gum {
       /// constructor with a given size for the row
       DBRow( unsigned int size,
              const DBCell& default_cell = DBCell(),
-             float weight = 1.0f );
+             double weight = 1.0f );
 
       /// initializer list constructor
       DBRow( std::initializer_list<DBCell>& list );
 
       /// initializer from a vector of cells
-      DBRow( const std::vector<DBCell>& cells, float weight = 1.0f );
+      DBRow( const std::vector<DBCell>& cells, double weight = 1.0f );
 
       /// initializer from a vector of cells
-      DBRow( std::vector<DBCell>&& cells, float weight = 1.0f );
+      DBRow( std::vector<DBCell>&& cells, double weight = 1.0f );
 
       /// copy operator
       DBRow( const DBRow& from );
@@ -106,10 +106,10 @@ namespace gum {
       std::vector<DBCell>& row() noexcept;
 
       /// returns the weight
-      const float& weight() const noexcept;
+      const double& weight() const noexcept;
 
       /// returns the weight
-      float& weight() noexcept;
+      double& weight() noexcept;
 
       /// sets a new row
       void setRow( const std::vector<DBCell>& new_row );
@@ -118,7 +118,7 @@ namespace gum {
       void setRow( std::vector<DBCell>&& new_row );
 
       /// sets a new weight
-      void setWeight( float new_weight );
+      void setWeight( double new_weight );
 
       /// returns the size of the row
       unsigned int size() const noexcept;
@@ -133,7 +133,7 @@ namespace gum {
       std::vector<DBCell> _row;
 
       // the weight of the row
-      float _weight{1.0f};
+      double _weight{1.0f};
     };
 
   } /* namespace learning */

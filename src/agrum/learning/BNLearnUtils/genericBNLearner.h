@@ -391,7 +391,7 @@ namespace gum {
       /// @{
 
       /// sets the apriori weight
-      void setAprioriWeight( float weight );
+      void setAprioriWeight( double weight );
 
       /// use no apriori
       void useNoApriori();
@@ -400,7 +400,7 @@ namespace gum {
       /** @param weight pass in argument a weight if you wish to assign a weight
        * to the smoothing, else the current weight of the genericBNLearner will
        * be used. */
-      void useAprioriSmoothing( float weight = -1 );
+      void useAprioriSmoothing( double weight = -1 );
 
       /// use the Dirichlet apriori
       void useAprioriDirichlet( const std::string& filename );
@@ -499,7 +499,7 @@ namespace gum {
       Apriori<>* __apriori{nullptr};
 
       /// the weight of the apriori
-      float __apriori_weight{1.0f};
+      double __apriori_weight{1.0f};
 
       /// the constraint for 2TBNs
       StructuralConstraintSliceOrder __constraint_SliceOrder;

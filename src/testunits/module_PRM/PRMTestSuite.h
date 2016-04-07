@@ -72,7 +72,7 @@ namespace gum_tests {
       gum::prm::InstanceBayesNet<double>* inst = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
           inst = new gum::prm::InstanceBayesNet<double>(
-              prm->system( "aSys" ).get( "c1" ) ) );
+              prm->getSystem( "aSys" ).get( "c1" ) ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete inst );
     }
 
@@ -100,7 +100,7 @@ namespace gum_tests {
 
     void testInstanceAccess() {
       gum::prm::InstanceBayesNet<double>* bn = 0;
-      gum::prm::PRMInstance<double>& i = prm->system( "aSys" ).get( "c1" );
+      gum::prm::PRMInstance<double>& i = prm->getSystem( "aSys" ).get( "c1" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           bn = new gum::prm::InstanceBayesNet<double>( i ) );
       TS_ASSERT_EQUALS( bn->size(), i.size() );
@@ -122,7 +122,7 @@ namespace gum_tests {
     }
 
     void testGroundedBN() {
-      gum::prm::PRMSystem<double>& sys = prm->system( "aSys" );
+      gum::prm::PRMSystem<double>& sys = prm->getSystem( "aSys" );
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
@@ -166,7 +166,7 @@ namespace gum_tests {
     }
 
     void testCPF() {
-      gum::prm::PRMSystem<double>& sys = prm->system( "aSys" );
+      gum::prm::PRMSystem<double>& sys = prm->getSystem( "aSys" );
 
       for ( gum::prm::PRMSystem<double>::iterator iter = sys.begin();
             iter != sys.end();
@@ -193,7 +193,7 @@ namespace gum_tests {
     }
 
     void testNormalisedCPT() {
-      gum::prm::PRMSystem<double>& sys = prm->system( "aSys" );
+      gum::prm::PRMSystem<double>& sys = prm->getSystem( "aSys" );
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );

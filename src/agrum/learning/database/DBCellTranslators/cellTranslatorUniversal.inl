@@ -42,7 +42,7 @@ namespace gum {
       }
 
       if ( from.__num_user_values != nullptr ) {
-        __num_user_values = new Sequence<float>( *from.__num_user_values );
+        __num_user_values = new Sequence<double>( *from.__num_user_values );
       }
     }
 
@@ -62,7 +62,7 @@ namespace gum {
 
       if ( from.__num_user_values != nullptr ) {
         __num_user_values =
-            new Sequence<float>( std::move( *from.__num_user_values ) );
+            new Sequence<double>( std::move( *from.__num_user_values ) );
       }
     }
 
@@ -108,7 +108,7 @@ namespace gum {
         }
 
         if ( from.__num_user_values != nullptr ) {
-          __num_user_values = new Sequence<float>( *from.__num_user_values );
+          __num_user_values = new Sequence<double>( *from.__num_user_values );
         }
       }
 
@@ -142,7 +142,7 @@ namespace gum {
 
         if ( from.__num_user_values != nullptr ) {
           __num_user_values =
-              new Sequence<float>( std::move( *from.__num_user_values ) );
+              new Sequence<double>( std::move( *from.__num_user_values ) );
         }
       }
 
@@ -170,7 +170,7 @@ namespace gum {
     ALWAYS_INLINE void CellTranslatorUniversal::initialize() {
       if ( __check_database ) {
         if ( in( 0 ).type() == DBCell::EltType::FLOAT ) {
-          const float nb = in( 0 ).getFloat();
+          const double nb = in( 0 ).getFloat();
 
           if ( !__numbers.existsFirst( nb ) ) {
             __numbers.insert( nb, __max_value );
@@ -226,7 +226,7 @@ namespace gum {
     }
 
     /// returns the set of translations for number values in the database
-    INLINE const Bijection<float, unsigned int>&
+    INLINE const Bijection<double, unsigned int>&
     CellTranslatorUniversal::numberTranslations() const noexcept {
       return __numbers;
     }

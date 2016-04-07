@@ -42,7 +42,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class AprioriDirichletFromDatabase
         : public Apriori<IdSetAlloc, CountAlloc>,
           private Counter<IdSetAlloc, CountAlloc> {

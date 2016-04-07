@@ -50,7 +50,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    float
+    double
     IndepTestG2<IdSetAlloc, CountAlloc>::score( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
@@ -74,29 +74,29 @@ namespace gum {
         // sum_X sum_Y sum_Z #XYZ * log ( ( #XYZ * #Z ) / ( #XZ * #YZ ) )
 
         // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float, CountAlloc>& Nzyx =
+        const std::vector<double, CountAlloc>& Nzyx =
             this->_getAllCounts( nodeset_index );
-        const std::vector<float, CountAlloc>& Nzy =
+        const std::vector<double, CountAlloc>& Nzy =
             this->_getConditioningCounts( nodeset_index );
-        const std::vector<float, CountAlloc>& Nzx =
+        const std::vector<double, CountAlloc>& Nzx =
             this->_getAllCounts( nodeset_index + 1 );
-        const std::vector<float, CountAlloc>& Nz =
+        const std::vector<double, CountAlloc>& Nz =
             this->_getConditioningCounts( nodeset_index + 1 );
 
         const unsigned int Z_size = Nz.size();
         const unsigned int Y_size = modals[all_nodes[all_nodes.size() - 2]];
         const unsigned int X_size = modals[all_nodes[all_nodes.size() - 1]];
 
-        float score = 0;
+        double score = 0;
 
         for ( unsigned int x = 0, beg_zx = 0, zyx = 0; x < X_size;
               ++x, beg_zx += Z_size ) {
           for ( unsigned int y = 0, zy = 0, zx = beg_zx; y < Y_size;
                 ++y, zx = beg_zx ) {
             for ( unsigned int z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
-              const float tmp1 = Nzyx[zyx] * Nz[z];
+              const double tmp1 = Nzyx[zyx] * Nz[z];
               if ( tmp1 ) {
-                const float tmp2 = Nzy[zy] * Nzx[zx];
+                const double tmp2 = Nzy[zy] * Nzx[zx];
                 if ( tmp2 ) {
                   score += Nzyx[zyx] * logf( tmp1 / tmp2 );
                 }
@@ -109,7 +109,7 @@ namespace gum {
         // To get a meaningful score, we shall compute the critical values
         // for the Chi2 distribution and assign as the score of
         // (score - alpha ) / alpha, where alpha is the critical value
-        const float alpha = __chi2.criticalValue(
+        const double alpha = __chi2.criticalValue(
             all_nodes[all_nodes.size() - 1], all_nodes[all_nodes.size() - 2] );
         score = ( score - alpha ) / alpha;
 
@@ -128,28 +128,28 @@ namespace gum {
         // now, perform sum_X sum_Y #XY * log ( ( #XY * N ) / ( #X * #Y ) )
 
         // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float, CountAlloc>& Nyx =
+        const std::vector<double, CountAlloc>& Nyx =
             this->_getAllCounts( nodeset_index );
-        const std::vector<float, CountAlloc>& Ny =
+        const std::vector<double, CountAlloc>& Ny =
             this->_getConditioningCounts( nodeset_index );
-        const std::vector<float, CountAlloc>& Nx =
+        const std::vector<double, CountAlloc>& Nx =
             this->_getAllCounts( nodeset_index + 1 );
 
         const unsigned int Y_size = Ny.size();
         const unsigned int X_size = Nx.size();
 
         // count N
-        float N = 0;
+        double N = 0;
         for ( unsigned int i = 0; i < Nx.size(); ++i ) {
           N += Nx[i];
         }
 
-        float score = 0;
+        double score = 0;
 
         for ( unsigned int x = 0, yx = 0; x < X_size; ++x ) {
-          const float tmp_Nx = Nx[x];
+          const double tmp_Nx = Nx[x];
           for ( unsigned int y = 0; y < Y_size; ++y, ++yx ) {
-            const float tmp = tmp_Nx * Ny[y];
+            const double tmp = tmp_Nx * Ny[y];
             if ( tmp ) {
               score += Nyx[yx] * logf( ( Nyx[yx] * N ) / tmp );
             }
@@ -160,7 +160,7 @@ namespace gum {
         // To get a meaningful score, we shall compute the critical values
         // for the Chi2 distribution and assign as the score of
         // (score - alpha ) / alpha, where alpha is the critical value
-        const float alpha = __chi2.criticalValue(
+        const double alpha = __chi2.criticalValue(
             all_nodes[all_nodes.size() - 1], all_nodes[all_nodes.size() - 2] );
         score = ( score - alpha ) / alpha;
 

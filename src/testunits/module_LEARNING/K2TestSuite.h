@@ -95,7 +95,7 @@ namespace gum_tests {
       k2.approximationScheme().setEpsilon( 1000 );
 
       try {
-        gum::BayesNet<float> bn = k2.learnBN( selector,
+        gum::BayesNet<float> bn = k2.learnBN<float>( selector,
                                               estimator,
                                               database.variableNames(),
                                               modalities,

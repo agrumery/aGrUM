@@ -61,7 +61,7 @@ namespace gum {
      * performed, use method parameters to retrieve the parameters of interest.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class ParamEstimatorML : public ParamEstimator<IdSetAlloc, CountAlloc> {
       public:
       // ##########################################################################
@@ -112,7 +112,7 @@ namespace gum {
        * were specified) and, then, the target node.
        * @throw CPTError is raised if some values of the conditioning sets were
        * not observed in the database. */
-      const std::vector<float, CountAlloc>&
+      const std::vector<double, CountAlloc>&
       parameters( unsigned int nodeset_index );
 
       /// @}

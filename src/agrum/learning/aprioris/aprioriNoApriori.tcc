@@ -70,7 +70,7 @@ namespace gum {
 
     /// sets the weight of the a priori
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void AprioriNoApriori<IdSetAlloc, CountAlloc>::setWeight( float ) {}
+    INLINE void AprioriNoApriori<IdSetAlloc, CountAlloc>::setWeight( double ) {}
 
     /// indicates whether an apriori is of a certain type
     template <typename IdSetAlloc, typename CountAlloc>

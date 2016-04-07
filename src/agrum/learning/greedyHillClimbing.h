@@ -119,7 +119,7 @@ namespace gum {
        * database
        * @param translator The cell translator to use.
        * @param initial_dag the DAG we start from for our learning */
-      template <typename GUM_SCALAR = float,
+      template <typename GUM_SCALAR = double,
                 typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR,
                 typename CELL_TRANSLATORS>

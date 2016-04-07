@@ -65,7 +65,7 @@ namespace gum {
      * the parameters of interest.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class ParamEstimator : private Counter<IdSetAlloc, CountAlloc> {
       public:
       // ##########################################################################
@@ -148,13 +148,13 @@ namespace gum {
        * follows:
        * first, there are the conditioning nodes (in the order in which they
        * were specified) and, then, the target node. */
-      virtual const std::vector<float, CountAlloc>&
+      virtual const std::vector<double, CountAlloc>&
       parameters( unsigned int nodeset_index ) = 0;
 
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
        * are assumed to be identical */
-      void setParameters( unsigned int nodeset_index, Potential<float>& pot );
+      void setParameters( unsigned int nodeset_index, Potential<double>& pot );
 
       /// sets the range of records taken into account by the counter
       /** @param min_range he number of the first record to be taken into
@@ -215,11 +215,11 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<float, CountAlloc>&
+      const std::vector<double, CountAlloc>&
       _getAllApriori( unsigned int index );
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<float, CountAlloc>&
+      const std::vector<double, CountAlloc>&
       _getConditioningApriori( unsigned int index );
 
       /// if needed insert the score apriori into the countings

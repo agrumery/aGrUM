@@ -246,7 +246,7 @@ namespace gum {
     }
 
     // sets the apriori weight
-    INLINE void genericBNLearner::setAprioriWeight( float weight ) {
+    INLINE void genericBNLearner::setAprioriWeight( double weight ) {
       if ( weight < 0 ) {
         GUM_ERROR( OutOfBounds, "the weight of the apriori must be positive" );
       }
@@ -262,7 +262,7 @@ namespace gum {
     }
 
     // use the apriori smoothing
-    INLINE void genericBNLearner::useAprioriSmoothing( float weight ) {
+    INLINE void genericBNLearner::useAprioriSmoothing( double weight ) {
       __apriori_type = AprioriType::SMOOTHING;
 
       if ( weight >= 0 ) {

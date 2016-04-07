@@ -106,7 +106,7 @@ namespace gum {
         }
 
         // save the countings
-        std::vector<std::vector<float, CountAlloc>>& counts =
+        std::vector<std::vector<double, CountAlloc>>& counts =
             Counter<IdSetAlloc, CountAlloc>::_getCounts();
         std::swap( this->_apriori_counts, counts );
 

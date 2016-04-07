@@ -440,7 +440,7 @@ namespace gum {
 
     /// returns the counting vector for a given (conditioned) target set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     Counter<IdSetAlloc, CountAlloc>::_getAllCounts( unsigned int index ) {
       if ( !_counts_computed ) _count();
       return _record_counter.getCounts( _target_nodesets[index]->second );
@@ -448,7 +448,7 @@ namespace gum {
 
     /// returns the counting vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     Counter<IdSetAlloc, CountAlloc>::_getConditioningCounts(
         unsigned int index ) {
       if ( !_counts_computed ) _count();
@@ -491,7 +491,7 @@ namespace gum {
 
     /// returns all the countings performed (both targets and conditioned)
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE std::vector<std::vector<float, CountAlloc>>&
+    INLINE std::vector<std::vector<double, CountAlloc>>&
     Counter<IdSetAlloc, CountAlloc>::_getCounts() noexcept {
       if ( !_counts_computed ) _count();
       return _record_counter.__getCounts();

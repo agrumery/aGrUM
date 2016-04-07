@@ -133,7 +133,7 @@ namespace gum {
 
       /// return the score of the best graph change
       /** @throws NotFound exception is thrown if the selector is empty */
-      float bestScore();
+      double bestScore();
 
       /// return the score of the best graph change related to the ith node
       /** The selector computes not only the best change possible but also the
@@ -141,7 +141,7 @@ namespace gum {
        * allows to get the score of the change that is considered the best for
        * modifying the parents' set of the ith node.
        * @throws NotFound exception is thrown if the selector is empty */
-      float bestScore( unsigned int i );
+      double bestScore( unsigned int i );
 
       /// indicate to the selector that a change has been applied
       void applyChange( const GraphChange& change );
@@ -169,11 +169,11 @@ namespace gum {
       void setGraph( DiGraph& graph, const std::vector<unsigned int>& modal );
 
       /// returns the set of queues sorted by decreasing top priority
-      std::vector<std::pair<unsigned int, float>>
+      std::vector<std::pair<unsigned int, double>>
       nodesSortedByBestScore() const;
 
       /// returns the set of queues top priorities
-      std::vector<std::pair<unsigned int, float>>
+      std::vector<std::pair<unsigned int, double>>
       nodesUnsortedWithScore() const;
 
       /// @}
@@ -193,17 +193,17 @@ namespace gum {
 
       /// the scores for the head and tail of all the changes
       /** the scores are indexed by their index in sequence __changes */
-      std::vector<std::pair<float, float>> __change_scores;
+      std::vector<std::pair<double, double>> __change_scores;
 
       /// for each node, a priority queue sorting GraphChanges by decreasing
       /// score
       /** within each queue, the changes are determined by their index in
        * sequence __changes. */
-      std::vector<PriorityQueue<unsigned int, float, std::greater<float>>>
+      std::vector<PriorityQueue<unsigned int, double, std::greater<double>>>
           __change_queue_per_node;
 
       /// a global priority queue indicating for each node its best score
-      PriorityQueue<unsigned int, float, std::greater<float>> __node_queue;
+      PriorityQueue<unsigned int, double, std::greater<double>> __node_queue;
 
       /// the set of changes known to be currently illegal (due to the
       /// constraints)
@@ -212,7 +212,7 @@ namespace gum {
       Set<unsigned int> __illegal_changes;
 
       /// the current score of each node
-      std::vector<float> __node_current_scores;
+      std::vector<double> __node_current_scores;
 
       /// the set of parents of each node (speeds-up score computations)
       std::vector<std::vector<unsigned int>> __parents;

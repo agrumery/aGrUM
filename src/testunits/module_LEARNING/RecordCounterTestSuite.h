@@ -61,9 +61,9 @@ namespace gum_tests {
 
         counter.count();
 
-        const std::vector<float>& vect1 = counter.getCounts( id1 );
-        const std::vector<float>& vect2 = counter.getCounts( id2 );
-        const std::vector<float>& vect3 = counter.getCounts( id3 );
+        const std::vector<double>& vect1 = counter.getCounts( id1 );
+        const std::vector<double>& vect2 = counter.getCounts( id2 );
+        const std::vector<double>& vect3 = counter.getCounts( id3 );
 
         TS_ASSERT( vect1[0] == 5028 );
         TS_ASSERT( vect1[1] == 4972 );
@@ -92,7 +92,7 @@ namespace gum_tests {
       counter.clearNodeSets();
       unsigned int id = counter.addNodeSet( set4 );
       counter.count();
-      std::vector<float> vect = counter.getCounts( id );
+      std::vector<double> vect = counter.getCounts( id );
 
       counter.clearNodeSets();
       {
@@ -125,10 +125,10 @@ namespace gum_tests {
       unsigned int idx2 = counter.addNodeSet( setx2 );
       unsigned int idx3 = counter.addNodeSet( setx3 );
       counter.count();
-      std::vector<float> vectx13 = counter.getCounts( idx13 );
-      std::vector<float> vectx23 = counter.getCounts( idx23 );
-      std::vector<float> vectx2 = counter.getCounts( idx2 );
-      std::vector<float> vectx3 = counter.getCounts( idx3 );
+      std::vector<double> vectx13 = counter.getCounts( idx13 );
+      std::vector<double> vectx23 = counter.getCounts( idx23 );
+      std::vector<double> vectx2 = counter.getCounts( idx2 );
+      std::vector<double> vectx3 = counter.getCounts( idx3 );
 
       counter.clearNodeSets();
       {
@@ -190,9 +190,9 @@ namespace gum_tests {
 
         gum::learning::RecordCounter<> counter2( counter );
 
-        const std::vector<float>& vect1 = counter2.getCounts( id1 );
-        const std::vector<float>& vect2 = counter2.getCounts( id2 );
-        const std::vector<float>& vect3 = counter2.getCounts( id3 );
+        const std::vector<double>& vect1 = counter2.getCounts( id1 );
+        const std::vector<double>& vect2 = counter2.getCounts( id2 );
+        const std::vector<double>& vect3 = counter2.getCounts( id3 );
 
         TS_ASSERT( vect1[0] == 5028 );
         TS_ASSERT( vect1[1] == 4972 );
@@ -206,9 +206,9 @@ namespace gum_tests {
 
         gum::learning::RecordCounter<> counter3( std::move( counter2 ) );
 
-        const std::vector<float>& vvect1 = counter3.getCounts( id1 );
-        const std::vector<float>& vvect2 = counter3.getCounts( id2 );
-        const std::vector<float>& vvect3 = counter3.getCounts( id3 );
+        const std::vector<double>& vvect1 = counter3.getCounts( id1 );
+        const std::vector<double>& vvect2 = counter3.getCounts( id2 );
+        const std::vector<double>& vvect3 = counter3.getCounts( id3 );
 
         TS_ASSERT( vvect1[0] == 5028 );
         TS_ASSERT( vvect1[1] == 4972 );
@@ -237,7 +237,7 @@ namespace gum_tests {
       counter.clearNodeSets();
       unsigned int id = counter.addNodeSet( set4 );
       counter.count();
-      std::vector<float> vect = counter.getCounts( id );
+      std::vector<double> vect = counter.getCounts( id );
 
       counter.clearNodeSets();
       {
@@ -282,8 +282,8 @@ namespace gum_tests {
       }
     }
 
-    bool compare_vect3( const std::vector<float>& v1,
-                        const std::vector<float>& v2,
+    bool compare_vect3( const std::vector<double>& v1,
+                        const std::vector<double>& v2,
                         const std::vector<unsigned int>& order ) {
       unsigned int index1, index2;
       for ( unsigned int k = 0; k < 2; ++k ) {
@@ -301,8 +301,8 @@ namespace gum_tests {
       return true;
     }
 
-    bool compare_vect2( const std::vector<float>& v1,
-                        const std::vector<float>& v2,
+    bool compare_vect2( const std::vector<double>& v1,
+                        const std::vector<double>& v2,
                         const std::vector<unsigned int>& order ) {
       unsigned int index1, index2;
       for ( unsigned int j = 0; j < 2; ++j ) {

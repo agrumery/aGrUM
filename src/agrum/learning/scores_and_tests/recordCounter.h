@@ -69,7 +69,7 @@ namespace gum {
      * is but rather to be created by class RecordCounterThread.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class RecordCounterThreadBase {
       public:
       // ##########################################################################
@@ -122,7 +122,7 @@ namespace gum {
                              unsigned long max_index ) = 0;
 
       /// returns the countings for the nodeset specified in argument
-      const std::vector<float, CountAlloc>&
+      const std::vector<double, CountAlloc>&
       getCounts( unsigned int nodeset_id ) const noexcept;
 
       /// @}
@@ -135,7 +135,7 @@ namespace gum {
       std::vector<const std::vector<unsigned int, IdSetAlloc>*> _nodesets;
 
       /// the nodesets countings
-      std::vector<std::vector<float, CountAlloc>> _countings;
+      std::vector<std::vector<double, CountAlloc>> _countings;
 
       /// the size of the cache used to prevent cacheline omp parallel problems
       static constexpr unsigned int _cache_size{128};
@@ -163,7 +163,7 @@ namespace gum {
      */
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class RecordCounterThread
         : public RecordCounterThreadBase<IdSetAlloc, CountAlloc> {
 
@@ -246,7 +246,7 @@ namespace gum {
      * as many RecordCounterThreads as possible to do the job in parallel.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class RecordCounter {
       public:
       // ##########################################################################
@@ -312,7 +312,7 @@ namespace gum {
       void count();
 
       /// returns the counts performed for a given idSet
-      const std::vector<float, CountAlloc>&
+      const std::vector<double, CountAlloc>&
       getCounts( unsigned int idset ) const noexcept;
 
       /// resets the counter, i.e., remove all its sets of ids and counting
@@ -373,7 +373,7 @@ namespace gum {
 
       /// a vector for computing the countings of the IdSets which are subsets
       /** These countings are derived from the countings of the supersets */
-      std::vector<std::vector<float, CountAlloc>> __countings;
+      std::vector<std::vector<double, CountAlloc>> __countings;
 
       /// a hashtable associating to each IdSet its index in __set2thread_id
       /** This table indicates for each @e distinct set its index in
@@ -431,7 +431,7 @@ namespace gum {
       void __countOneSubset( unsigned int i );
 
       /// returns the counting performed
-      std::vector<std::vector<float, CountAlloc>>& __getCounts() noexcept;
+      std::vector<std::vector<double, CountAlloc>>& __getCounts() noexcept;
     };
 
   } /* namespace learning */

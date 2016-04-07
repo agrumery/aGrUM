@@ -108,15 +108,15 @@ namespace gum {
     /// sets the CPT's parameters corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::setParameters(
-        unsigned int nodeset_index, Potential<float>& pot ) {
-      const std::vector<float, CountAlloc>& normalized_counts =
+        unsigned int nodeset_index, Potential<double>& pot ) {
+      const std::vector<double, CountAlloc>& normalized_counts =
           parameters( nodeset_index );
       pot.fillWith( normalized_counts );
     }
 
     /// returns the apriori vector for a given (conditioned) target set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     ParamEstimator<IdSetAlloc, CountAlloc>::_getAllApriori(
         unsigned int index ) {
       if ( !__apriori_computed ) {
@@ -133,7 +133,7 @@ namespace gum {
 
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     ParamEstimator<IdSetAlloc, CountAlloc>::_getConditioningApriori(
         unsigned int index ) {
       if ( !__apriori_computed ) {

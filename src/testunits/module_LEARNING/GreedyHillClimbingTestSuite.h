@@ -151,7 +151,7 @@ namespace gum_tests {
         database.variableNames (),
         modalities );
 
-        gum::BayesNet<float> bn2 =
+        gum::BayesNet<double> bn2 =
         search.learnBN ( selector, estimator,
         database.variableNames (),
         modalities );
@@ -164,7 +164,7 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorUniversal> translators;
       gum::learning::CellTranslatorUniversal one_translator(
-          gum::Sequence<float>{0, 1}, false );
+          gum::Sequence<double>{0, 1}, false );
       translators.insertTranslator(
           one_translator, gum::learning::Col<0>(), database.nbVariables() );
 
@@ -238,7 +238,7 @@ namespace gum_tests {
       }
 
       /*
-        gum::BayesNet<float> bn2 =
+        gum::BayesNet<double> bn2 =
         search.learnBN ( selector, estimator,
         database.variableNames (),
         modalities );
@@ -251,7 +251,7 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorUniversal> translators;
       gum::learning::CellTranslatorUniversal translator_tf(
-          gum::Sequence<float>{0, 1, 2, 3}, true );
+          gum::Sequence<double>{0, 1, 2, 3}, true );
       translators.insertTranslator(
           translator_tf, gum::learning::Col<0>(), database.nbVariables() );
 
@@ -327,7 +327,7 @@ namespace gum_tests {
       }
 
       /*
-        gum::BayesNet<float> bn2 =
+        gum::BayesNet<double> bn2 =
         search.learnBN ( selector, estimator,
         database.variableNames (),
         modalities );
@@ -341,10 +341,10 @@ namespace gum_tests {
           gum::learning::CellTranslatorUniversal> translators;
       translators.insertTranslator( gum::learning::Col<0>(),
                                     database.nbVariables() );
-      translators[1].setUserValues( gum::Sequence<float>{0, 1, 2}, false );
-      translators[10].setUserValues( gum::Sequence<float>{0, 1, 2}, false );
-      translators[11].setUserValues( gum::Sequence<float>{0, 1, 2}, false );
-      translators[14].setUserValues( gum::Sequence<float>{0, 1, 2}, false );
+      translators[1].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
+      translators[10].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
+      translators[11].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
+      translators[14].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
 
       // auto translators = gum::learning::make_translators
       //  ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -416,7 +416,7 @@ namespace gum_tests {
       }
 
       /*
-        gum::BayesNet<float> bn2 =
+        gum::BayesNet<double> bn2 =
         search.learnBN ( selector, estimator,
         database.variableNames (),
         modalities );
@@ -690,7 +690,7 @@ namespace gum_tests {
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn_dag << std::endl;
 
-        gum::BayesNet<float> bn = search.learnBN( selector,
+        gum::BayesNet<double> bn = search.learnBN( selector,
                                                   estimator,
                                                   database.variableNames(),
                                                   modalities,

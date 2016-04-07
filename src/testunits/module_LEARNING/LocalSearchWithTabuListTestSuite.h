@@ -119,7 +119,7 @@ namespace gum_tests {
       search.setMaxNbDecreasingChanges( 2 );
 
       try {
-        gum::BayesNet<float> bn = search.learnBN( selector,
+        gum::BayesNet<float> bn = search.learnBN<float>( selector,
                                                   estimator,
                                                   database.variableNames(),
                                                   modalities,

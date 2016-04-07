@@ -243,9 +243,9 @@ namespace gum_tests {
               prm->getClass( "fr.lip6.printers.Computer" ) );
           TS_ASSERT_EQUALS( prm->interfaces().size(), (gum::Size)2 );
           TS_GUM_ASSERT_THROWS_NOTHING(
-              prm->interface( "fr.lip6.printers.Equipment" ) );
+              prm->getInterface( "fr.lip6.printers.Equipment" ) );
           TS_GUM_ASSERT_THROWS_NOTHING(
-              prm->interface( "fr.lip6.printers.Printer" ) );
+              prm->getInterface( "fr.lip6.printers.Printer" ) );
           delete prm;
         }
       } catch ( gum::Exception ) {
@@ -274,64 +274,64 @@ namespace gum_tests {
             prm->getClass( "fr.lip6.printers.Computer" );
         // Interfaces
         gum::prm::PRMInterface<double>& Equipment =
-            prm->interface( "fr.lip6.printers.Equipment" );
+            prm->getInterface( "fr.lip6.printers.Equipment" );
         gum::prm::PRMInterface<double>& Printer =
-            prm->interface( "fr.lip6.printers.Printer" );
+            prm->getInterface( "fr.lip6.printers.Printer" );
         // Testing PowerSupply
         TS_ASSERT( PowerSupply.isSubTypeOf( PowerSupply ) );
-        TS_ASSERT( not PowerSupply.isSubTypeOf( Room ) );
-        TS_ASSERT( not PowerSupply.isSubTypeOf( Equipment ) );
-        TS_ASSERT( not PowerSupply.isSubTypeOf( Printer ) );
-        TS_ASSERT( not PowerSupply.isSubTypeOf( BWPrinter ) );
-        TS_ASSERT( not PowerSupply.isSubTypeOf( ColorPrinter ) );
-        TS_ASSERT( not PowerSupply.isSubTypeOf( Computer ) );
+        TS_ASSERT(!PowerSupply.isSubTypeOf( Room ) );
+        TS_ASSERT(!PowerSupply.isSubTypeOf( Equipment ) );
+        TS_ASSERT(!PowerSupply.isSubTypeOf( Printer ) );
+        TS_ASSERT(!PowerSupply.isSubTypeOf( BWPrinter ) );
+        TS_ASSERT(!PowerSupply.isSubTypeOf( ColorPrinter ) );
+        TS_ASSERT(!PowerSupply.isSubTypeOf( Computer ) );
         // Testing Room
-        TS_ASSERT( not Room.isSubTypeOf( PowerSupply ) );
+        TS_ASSERT(!Room.isSubTypeOf( PowerSupply ) );
         TS_ASSERT( Room.isSubTypeOf( Room ) );
-        TS_ASSERT( not Room.isSubTypeOf( Equipment ) );
-        TS_ASSERT( not Room.isSubTypeOf( Printer ) );
-        TS_ASSERT( not Room.isSubTypeOf( BWPrinter ) );
-        TS_ASSERT( not Room.isSubTypeOf( ColorPrinter ) );
-        TS_ASSERT( not Room.isSubTypeOf( Computer ) );
+        TS_ASSERT(!Room.isSubTypeOf( Equipment ) );
+        TS_ASSERT(!Room.isSubTypeOf( Printer ) );
+        TS_ASSERT(!Room.isSubTypeOf( BWPrinter ) );
+        TS_ASSERT(!Room.isSubTypeOf( ColorPrinter ) );
+        TS_ASSERT(!Room.isSubTypeOf( Computer ) );
         // Testing Equipment
-        TS_ASSERT( not Equipment.isSubTypeOf( PowerSupply ) );
-        TS_ASSERT( not Equipment.isSubTypeOf( Room ) );
+        TS_ASSERT(!Equipment.isSubTypeOf( PowerSupply ) );
+        TS_ASSERT(!Equipment.isSubTypeOf( Room ) );
         TS_ASSERT( Equipment.isSubTypeOf( Equipment ) );
-        TS_ASSERT( not Equipment.isSubTypeOf( Printer ) );
-        TS_ASSERT( not Equipment.isSubTypeOf( BWPrinter ) );
-        TS_ASSERT( not Equipment.isSubTypeOf( ColorPrinter ) );
-        TS_ASSERT( not Equipment.isSubTypeOf( Computer ) );
+        TS_ASSERT(!Equipment.isSubTypeOf( Printer ) );
+        TS_ASSERT(!Equipment.isSubTypeOf( BWPrinter ) );
+        TS_ASSERT(!Equipment.isSubTypeOf( ColorPrinter ) );
+        TS_ASSERT(!Equipment.isSubTypeOf( Computer ) );
         // Testing Printer
-        TS_ASSERT( not Printer.isSubTypeOf( PowerSupply ) );
-        TS_ASSERT( not Printer.isSubTypeOf( Room ) );
+        TS_ASSERT(!Printer.isSubTypeOf( PowerSupply ) );
+        TS_ASSERT(!Printer.isSubTypeOf( Room ) );
         TS_ASSERT( Printer.isSubTypeOf( Equipment ) );
         TS_ASSERT( Printer.isSubTypeOf( Printer ) );
-        TS_ASSERT( not Printer.isSubTypeOf( BWPrinter ) );
-        TS_ASSERT( not Printer.isSubTypeOf( ColorPrinter ) );
-        TS_ASSERT( not Printer.isSubTypeOf( Computer ) );
+        TS_ASSERT(!Printer.isSubTypeOf( BWPrinter ) );
+        TS_ASSERT(!Printer.isSubTypeOf( ColorPrinter ) );
+        TS_ASSERT(!Printer.isSubTypeOf( Computer ) );
         // Testing BWPrinter
-        TS_ASSERT( not BWPrinter.isSubTypeOf( PowerSupply ) );
-        TS_ASSERT( not BWPrinter.isSubTypeOf( Room ) );
+        TS_ASSERT(!BWPrinter.isSubTypeOf( PowerSupply ) );
+        TS_ASSERT(!BWPrinter.isSubTypeOf( Room ) );
         TS_ASSERT( BWPrinter.isSubTypeOf( Equipment ) );
         TS_ASSERT( BWPrinter.isSubTypeOf( Printer ) );
         TS_ASSERT( BWPrinter.isSubTypeOf( BWPrinter ) );
-        TS_ASSERT( not BWPrinter.isSubTypeOf( ColorPrinter ) );
-        TS_ASSERT( not BWPrinter.isSubTypeOf( Computer ) );
+        TS_ASSERT(!BWPrinter.isSubTypeOf( ColorPrinter ) );
+        TS_ASSERT(!BWPrinter.isSubTypeOf( Computer ) );
         // Testing ColorPrinter
-        TS_ASSERT( not ColorPrinter.isSubTypeOf( PowerSupply ) );
-        TS_ASSERT( not ColorPrinter.isSubTypeOf( Room ) );
+        TS_ASSERT(!ColorPrinter.isSubTypeOf( PowerSupply ) );
+        TS_ASSERT(!ColorPrinter.isSubTypeOf( Room ) );
         TS_ASSERT( ColorPrinter.isSubTypeOf( Equipment ) );
         TS_ASSERT( ColorPrinter.isSubTypeOf( Printer ) );
-        TS_ASSERT( not ColorPrinter.isSubTypeOf( BWPrinter ) );
+        TS_ASSERT(!ColorPrinter.isSubTypeOf( BWPrinter ) );
         TS_ASSERT( ColorPrinter.isSubTypeOf( ColorPrinter ) );
-        TS_ASSERT( not ColorPrinter.isSubTypeOf( Computer ) );
+        TS_ASSERT(!ColorPrinter.isSubTypeOf( Computer ) );
         // Testing Computer
-        TS_ASSERT( not Computer.isSubTypeOf( PowerSupply ) );
-        TS_ASSERT( not Computer.isSubTypeOf( Room ) );
+        TS_ASSERT(!Computer.isSubTypeOf( PowerSupply ) );
+        TS_ASSERT(!Computer.isSubTypeOf( Room ) );
         TS_ASSERT( Computer.isSubTypeOf( Equipment ) );
-        TS_ASSERT( not Computer.isSubTypeOf( Printer ) );
-        TS_ASSERT( not Computer.isSubTypeOf( BWPrinter ) );
-        TS_ASSERT( not Computer.isSubTypeOf( ColorPrinter ) );
+        TS_ASSERT(!Computer.isSubTypeOf( Printer ) );
+        TS_ASSERT(!Computer.isSubTypeOf( BWPrinter ) );
+        TS_ASSERT(!Computer.isSubTypeOf( ColorPrinter ) );
         TS_ASSERT( Computer.isSubTypeOf( Computer ) );
         delete prm;
       } catch ( gum::Exception ) {
@@ -360,64 +360,64 @@ namespace gum_tests {
             prm->getClass( "fr.lip6.printers.Computer" );
         // Interfaces
         gum::prm::PRMInterface<double>& Equipment =
-            prm->interface( "fr.lip6.printers.Equipment" );
+            prm->getInterface( "fr.lip6.printers.Equipment" );
         gum::prm::PRMInterface<double>& Printer =
-            prm->interface( "fr.lip6.printers.Printer" );
+            prm->getInterface( "fr.lip6.printers.Printer" );
         // Testing PowerSupply
         TS_ASSERT( PowerSupply.isSuperTypeOf( PowerSupply ) );
-        TS_ASSERT( not PowerSupply.isSuperTypeOf( Room ) );
-        TS_ASSERT( not PowerSupply.isSuperTypeOf( Equipment ) );
-        TS_ASSERT( not PowerSupply.isSuperTypeOf( Printer ) );
-        TS_ASSERT( not PowerSupply.isSuperTypeOf( BWPrinter ) );
-        TS_ASSERT( not PowerSupply.isSuperTypeOf( ColorPrinter ) );
-        TS_ASSERT( not PowerSupply.isSuperTypeOf( Computer ) );
+        TS_ASSERT(!PowerSupply.isSuperTypeOf( Room ) );
+        TS_ASSERT(!PowerSupply.isSuperTypeOf( Equipment ) );
+        TS_ASSERT(!PowerSupply.isSuperTypeOf( Printer ) );
+        TS_ASSERT(!PowerSupply.isSuperTypeOf( BWPrinter ) );
+        TS_ASSERT(!PowerSupply.isSuperTypeOf( ColorPrinter ) );
+        TS_ASSERT(!PowerSupply.isSuperTypeOf( Computer ) );
         // Testing Room
-        TS_ASSERT( not Room.isSuperTypeOf( PowerSupply ) );
+        TS_ASSERT(!Room.isSuperTypeOf( PowerSupply ) );
         TS_ASSERT( Room.isSuperTypeOf( Room ) );
-        TS_ASSERT( not Room.isSuperTypeOf( Equipment ) );
-        TS_ASSERT( not Room.isSuperTypeOf( Printer ) );
-        TS_ASSERT( not Room.isSuperTypeOf( BWPrinter ) );
-        TS_ASSERT( not Room.isSuperTypeOf( ColorPrinter ) );
-        TS_ASSERT( not Room.isSuperTypeOf( Computer ) );
+        TS_ASSERT(!Room.isSuperTypeOf( Equipment ) );
+        TS_ASSERT(!Room.isSuperTypeOf( Printer ) );
+        TS_ASSERT(!Room.isSuperTypeOf( BWPrinter ) );
+        TS_ASSERT(!Room.isSuperTypeOf( ColorPrinter ) );
+        TS_ASSERT(!Room.isSuperTypeOf( Computer ) );
         // Testing Equipment
-        TS_ASSERT( not Equipment.isSuperTypeOf( PowerSupply ) );
-        TS_ASSERT( not Equipment.isSuperTypeOf( Room ) );
+        TS_ASSERT(!Equipment.isSuperTypeOf( PowerSupply ) );
+        TS_ASSERT(!Equipment.isSuperTypeOf( Room ) );
         TS_ASSERT( Equipment.isSuperTypeOf( Equipment ) );
         TS_ASSERT( Equipment.isSuperTypeOf( Printer ) );
         TS_ASSERT( Equipment.isSuperTypeOf( BWPrinter ) );
         TS_ASSERT( Equipment.isSuperTypeOf( ColorPrinter ) );
         TS_ASSERT( Equipment.isSuperTypeOf( Computer ) );
         // Testing Printer
-        TS_ASSERT( not Printer.isSuperTypeOf( PowerSupply ) );
-        TS_ASSERT( not Printer.isSuperTypeOf( Room ) );
-        TS_ASSERT( not Printer.isSuperTypeOf( Equipment ) );
+        TS_ASSERT(!Printer.isSuperTypeOf( PowerSupply ) );
+        TS_ASSERT(!Printer.isSuperTypeOf( Room ) );
+        TS_ASSERT(!Printer.isSuperTypeOf( Equipment ) );
         TS_ASSERT( Printer.isSuperTypeOf( Printer ) );
         TS_ASSERT( Printer.isSuperTypeOf( BWPrinter ) );
         TS_ASSERT( Printer.isSuperTypeOf( ColorPrinter ) );
-        TS_ASSERT( not Printer.isSuperTypeOf( Computer ) );
+        TS_ASSERT(!Printer.isSuperTypeOf( Computer ) );
         // Testing BWPrinter
-        TS_ASSERT( not BWPrinter.isSuperTypeOf( PowerSupply ) );
-        TS_ASSERT( not BWPrinter.isSuperTypeOf( Room ) );
-        TS_ASSERT( not BWPrinter.isSuperTypeOf( Equipment ) );
-        TS_ASSERT( not BWPrinter.isSuperTypeOf( Printer ) );
+        TS_ASSERT(!BWPrinter.isSuperTypeOf( PowerSupply ) );
+        TS_ASSERT(!BWPrinter.isSuperTypeOf( Room ) );
+        TS_ASSERT(!BWPrinter.isSuperTypeOf( Equipment ) );
+        TS_ASSERT(!BWPrinter.isSuperTypeOf( Printer ) );
         TS_ASSERT( BWPrinter.isSuperTypeOf( BWPrinter ) );
-        TS_ASSERT( not BWPrinter.isSuperTypeOf( ColorPrinter ) );
-        TS_ASSERT( not BWPrinter.isSuperTypeOf( Computer ) );
+        TS_ASSERT(!BWPrinter.isSuperTypeOf( ColorPrinter ) );
+        TS_ASSERT(!BWPrinter.isSuperTypeOf( Computer ) );
         // Testing ColorPrinter
-        TS_ASSERT( not ColorPrinter.isSuperTypeOf( PowerSupply ) );
-        TS_ASSERT( not ColorPrinter.isSuperTypeOf( Room ) );
-        TS_ASSERT( not ColorPrinter.isSuperTypeOf( Equipment ) );
-        TS_ASSERT( not ColorPrinter.isSuperTypeOf( Printer ) );
-        TS_ASSERT( not ColorPrinter.isSuperTypeOf( BWPrinter ) );
+        TS_ASSERT(!ColorPrinter.isSuperTypeOf( PowerSupply ) );
+        TS_ASSERT(!ColorPrinter.isSuperTypeOf( Room ) );
+        TS_ASSERT(!ColorPrinter.isSuperTypeOf( Equipment ) );
+        TS_ASSERT(!ColorPrinter.isSuperTypeOf( Printer ) );
+        TS_ASSERT(!ColorPrinter.isSuperTypeOf( BWPrinter ) );
         TS_ASSERT( ColorPrinter.isSuperTypeOf( ColorPrinter ) );
-        TS_ASSERT( not ColorPrinter.isSuperTypeOf( Computer ) );
+        TS_ASSERT(!ColorPrinter.isSuperTypeOf( Computer ) );
         // Testing Computer
-        TS_ASSERT( not Computer.isSuperTypeOf( PowerSupply ) );
-        TS_ASSERT( not Computer.isSuperTypeOf( Room ) );
-        TS_ASSERT( not Computer.isSuperTypeOf( Equipment ) );
-        TS_ASSERT( not Computer.isSuperTypeOf( Printer ) );
-        TS_ASSERT( not Computer.isSuperTypeOf( BWPrinter ) );
-        TS_ASSERT( not Computer.isSuperTypeOf( ColorPrinter ) );
+        TS_ASSERT(!Computer.isSuperTypeOf( PowerSupply ) );
+        TS_ASSERT(!Computer.isSuperTypeOf( Room ) );
+        TS_ASSERT(!Computer.isSuperTypeOf( Equipment ) );
+        TS_ASSERT(!Computer.isSuperTypeOf( Printer ) );
+        TS_ASSERT(!Computer.isSuperTypeOf( BWPrinter ) );
+        TS_ASSERT(!Computer.isSuperTypeOf( ColorPrinter ) );
         TS_ASSERT( Computer.isSuperTypeOf( Computer ) );
         delete prm;
       } catch ( gum::Exception ) {
@@ -456,18 +456,18 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( PowerSupply.slotChains().size(), (gum::Size)0 );
         // Testing interfaces for the state attribute and its cast descendant
         TS_ASSERT(
-            not PowerSupply.isOutputNode( PowerSupply["(boolean)state"] ) );
+           !PowerSupply.isOutputNode( PowerSupply["(boolean)state"] ) );
         TS_ASSERT(
-            not PowerSupply.isInputNode( PowerSupply["(boolean)state"] ) );
+           !PowerSupply.isInputNode( PowerSupply["(boolean)state"] ) );
         TS_ASSERT( PowerSupply.isInnerNode( PowerSupply["(boolean)state"] ) );
         TS_ASSERT( PowerSupply.isOutputNode( PowerSupply["state"] ) );
-        TS_ASSERT( not PowerSupply.isInputNode( PowerSupply["state"] ) );
-        TS_ASSERT( not PowerSupply.isInnerNode( PowerSupply["state"] ) );
+        TS_ASSERT(!PowerSupply.isInputNode( PowerSupply["state"] ) );
+        TS_ASSERT(!PowerSupply.isInnerNode( PowerSupply["state"] ) );
         TS_ASSERT( PowerSupply.isOutputNode(
             PowerSupply["(fr.lip6.printers.t_state)state"] ) );
-        TS_ASSERT( not PowerSupply.isInputNode(
+        TS_ASSERT(!PowerSupply.isInputNode(
             PowerSupply["(fr.lip6.printers.t_state)state"] ) );
-        TS_ASSERT( not PowerSupply.isInnerNode(
+        TS_ASSERT(!PowerSupply.isInnerNode(
             PowerSupply["(fr.lip6.printers.t_state)state"] ) );
         delete prm;
       } catch ( gum::Exception ) {
@@ -504,7 +504,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
         gum::prm::PRMInterface<double>& Equipment =
-            prm->interface( "fr.lip6.printers.Equipment" );
+            prm->getInterface( "fr.lip6.printers.Equipment" );
         TS_ASSERT_EQUALS( Equipment.referenceSlots().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( Equipment.attributes().size(), (gum::Size)3 );
         TS_GUM_ASSERT_THROWS_NOTHING( Equipment["equipState"] );
@@ -530,21 +530,21 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS( st, bool_st );
         TS_ASSERT_DIFFERS( st_st, bool_st );
         // t_degraded equipState
-        TS_ASSERT( not Equipment.isOutputNode( Equipment["equipState"] ) );
-        TS_ASSERT( not Equipment.isInputNode( Equipment["equipState"] ) );
+        TS_ASSERT(!Equipment.isOutputNode( Equipment["equipState"] ) );
+        TS_ASSERT(!Equipment.isInputNode( Equipment["equipState"] ) );
         TS_ASSERT( Equipment.isInnerNode( Equipment["equipState"] ) );
         // t_state equipState
-        TS_ASSERT( not Equipment.isOutputNode(
+        TS_ASSERT(!Equipment.isOutputNode(
             Equipment["(fr.lip6.printers.t_state)equipState"] ) );
-        TS_ASSERT( not Equipment.isInputNode(
+        TS_ASSERT(!Equipment.isInputNode(
             Equipment["(fr.lip6.printers.t_state)equipState"] ) );
         TS_ASSERT( Equipment.isInnerNode(
             Equipment["(fr.lip6.printers.t_state)equipState"] ) );
         // boolean equipState
         TS_ASSERT(
-            not Equipment.isOutputNode( Equipment["(boolean)equipState"] ) );
+           !Equipment.isOutputNode( Equipment["(boolean)equipState"] ) );
         TS_ASSERT(
-            not Equipment.isInputNode( Equipment["(boolean)equipState"] ) );
+           !Equipment.isInputNode( Equipment["(boolean)equipState"] ) );
         TS_ASSERT( Equipment.isInnerNode( Equipment["(boolean)equipState"] ) );
         delete prm;
       } catch ( gum::Exception ) {
@@ -561,9 +561,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING(
-            prm->interface( "fr.lip6.printers.Printer" ) );
+            prm->getInterface( "fr.lip6.printers.Printer" ) );
         gum::prm::PRMInterface<double>& Printer =
-            prm->interface( "fr.lip6.printers.Printer" );
+            prm->getInterface( "fr.lip6.printers.Printer" );
         TS_ASSERT_EQUALS( Printer.referenceSlots().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( Printer.attributes().size(), (gum::Size)5 );
         TS_GUM_ASSERT_THROWS_NOTHING( Printer["room"] );
@@ -594,28 +594,28 @@ namespace gum_tests {
         // t_degraded equipState
         TS_ASSERT( Printer.isOutputNode(
             Printer["(fr.lip6.printers.t_degraded)equipState"] ) );
-        TS_ASSERT( not Printer.isInputNode(
+        TS_ASSERT(!Printer.isInputNode(
             Printer["(fr.lip6.printers.t_degraded)equipState"] ) );
-        TS_ASSERT( not Printer.isInnerNode(
+        TS_ASSERT(!Printer.isInnerNode(
             Printer["(fr.lip6.printers.t_degraded)equipState"] ) );
         // t_state equipState
         TS_ASSERT( Printer.isOutputNode(
             Printer["(fr.lip6.printers.t_state)equipState"] ) );
-        TS_ASSERT( not Printer.isInputNode(
+        TS_ASSERT(!Printer.isInputNode(
             Printer["(fr.lip6.printers.t_state)equipState"] ) );
-        TS_ASSERT( not Printer.isInnerNode(
+        TS_ASSERT(!Printer.isInnerNode(
             Printer["(fr.lip6.printers.t_state)equipState"] ) );
         // boolean equipState
-        TS_ASSERT( not Printer.isOutputNode( Printer["(boolean)equipState"] ) );
-        TS_ASSERT( not Printer.isInputNode( Printer["(boolean)equipState"] ) );
+        TS_ASSERT(!Printer.isOutputNode( Printer["(boolean)equipState"] ) );
+        TS_ASSERT(!Printer.isInputNode( Printer["(boolean)equipState"] ) );
         TS_ASSERT( Printer.isInnerNode( Printer["(boolean)equipState"] ) );
         // Boolean hasPaper
-        TS_ASSERT( not Printer.isOutputNode( Printer["hasPaper"] ) );
-        TS_ASSERT( not Printer.isInputNode( Printer["hasPaper"] ) );
+        TS_ASSERT(!Printer.isOutputNode( Printer["hasPaper"] ) );
+        TS_ASSERT(!Printer.isInputNode( Printer["hasPaper"] ) );
         TS_ASSERT( Printer.isInnerNode( Printer["hasPaper"] ) );
         // Boolean hasInk
-        TS_ASSERT( not Printer.isOutputNode( Printer["hasInk"] ) );
-        TS_ASSERT( not Printer.isInputNode( Printer["hasInk"] ) );
+        TS_ASSERT(!Printer.isOutputNode( Printer["hasInk"] ) );
+        TS_ASSERT(!Printer.isInputNode( Printer["hasInk"] ) );
         TS_ASSERT( Printer.isInnerNode( Printer["hasInk"] ) );
         delete prm;
       } catch ( gum::Exception ) {
@@ -693,46 +693,46 @@ namespace gum_tests {
     //         BWPrinter["(fr.lip6.printers.t_degraded)equipState"] ) );
     //     TS_ASSERT( BWPrinter.isInputNode(
     //         BWPrinter["(fr.lip6.printers.t_degraded)equipState"] ) );
-    //     TS_ASSERT( not BWPrinter.isInnerNode(
+    //     TS_ASSERT(!BWPrinter.isInnerNode(
     //         BWPrinter["(fr.lip6.printers.t_degraded)equipState"] ) );
     //     // t_state equipState
     //     TS_ASSERT( BWPrinter.isOutputNode(
     //         BWPrinter["(fr.lip6.printers.t_state)equipState"] ) );
-    //     TS_ASSERT( not BWPrinter.isInputNode(
+    //     TS_ASSERT(!BWPrinter.isInputNode(
     //         BWPrinter["(fr.lip6.printers.t_state)equipState"] ) );
-    //     TS_ASSERT( not BWPrinter.isInnerNode(
+    //     TS_ASSERT(!BWPrinter.isInnerNode(
     //         BWPrinter["(fr.lip6.printers.t_state)equipState"] ) );
     //     // boolean equipState
     //     TS_ASSERT(
-    //         not BWPrinter.isOutputNode( BWPrinter["(boolean)equipState"] ) );
+    //        !BWPrinter.isOutputNode( BWPrinter["(boolean)equipState"] ) );
     //     TS_ASSERT(
-    //         not BWPrinter.isInputNode( BWPrinter["(boolean)equipState"] ) );
+    //        !BWPrinter.isInputNode( BWPrinter["(boolean)equipState"] ) );
     //     TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(boolean)equipState"] )
     //     );
     //     // t_paper hasPaper
-    //     TS_ASSERT( not BWPrinter.isOutputNode(
+    //     TS_ASSERT(!BWPrinter.isOutputNode(
     //         BWPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
-    //     TS_ASSERT( not BWPrinter.isInputNode(
+    //     TS_ASSERT(!BWPrinter.isInputNode(
     //         BWPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
     //     TS_ASSERT( BWPrinter.isInnerNode(
     //         BWPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
     //     // t_state hasInk
-    //     TS_ASSERT( not BWPrinter.isOutputNode(
+    //     TS_ASSERT(!BWPrinter.isOutputNode(
     //         BWPrinter["(fr.lip6.printers.t_ink)hasInk"] ) );
-    //     TS_ASSERT( not BWPrinter.isInputNode(
+    //     TS_ASSERT(!BWPrinter.isInputNode(
     //         BWPrinter["(fr.lip6.printers.t_ink)hasInk"] ) );
     //     TS_ASSERT( BWPrinter.isInnerNode(
     //         BWPrinter["(fr.lip6.printers.t_ink)hasInk"] ) );
     //     // Boolean hasPaper
     //     TS_ASSERT(
-    //         not BWPrinter.isOutputNode( BWPrinter["(boolean)hasPaper"] ) );
+    //        !BWPrinter.isOutputNode( BWPrinter["(boolean)hasPaper"] ) );
     //     TS_ASSERT(
-    //         not BWPrinter.isInputNode( BWPrinter["(boolean)hasPaper"] ) );
+    //        !BWPrinter.isInputNode( BWPrinter["(boolean)hasPaper"] ) );
     //     TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(boolean)hasPaper"] ) );
     //     // Boolean hasInk
-    //     TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["(boolean)hasInk"] )
+    //     TS_ASSERT(!BWPrinter.isOutputNode( BWPrinter["(boolean)hasInk"] )
     //     );
-    //     TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["(boolean)hasInk"] )
+    //     TS_ASSERT(!BWPrinter.isInputNode( BWPrinter["(boolean)hasInk"] )
     //     );
     //     TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["hasInk"] ) );
     //     delete prm;
@@ -864,130 +864,130 @@ namespace gum_tests {
     //        ColorPrinter["(fr.lip6.printers.t_degraded)equipState"] ) );
     //    TS_ASSERT( ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_degraded)equipState"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInnerNode(
+    //    TS_ASSERT(!ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_degraded)equipState"] ) );
     //    // t_state equipState
     //    TS_ASSERT( ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)equipState"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)equipState"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInnerNode(
+    //    TS_ASSERT(!ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)equipState"] ) );
     //    // boolean equipState
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(boolean)equipState"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(boolean)equipState"] ) );
     //    TS_ASSERT(
     //        ColorPrinter.isInnerNode( ColorPrinter["(boolean)equipState"] ) );
     //    // t_paper hasPaper
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
     //    // Boolean hasPaper
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(boolean)hasPaper"] ) );
     //    TS_ASSERT(
-    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)hasPaper"] )
+    //       !ColorPrinter.isInputNode( ColorPrinter["(boolean)hasPaper"] )
     //        );
     //    TS_ASSERT(
     //        ColorPrinter.isInnerNode( ColorPrinter["(boolean)hasPaper"] ) );
     //    // Boolean hasInk
     //    TS_ASSERT(
-    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)hasInk"] )
+    //       !ColorPrinter.isOutputNode( ColorPrinter["(boolean)hasInk"] )
     //        );
     //    TS_ASSERT(
-    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)hasInk"] ) );
+    //       !ColorPrinter.isInputNode( ColorPrinter["(boolean)hasInk"] ) );
     //    TS_ASSERT(
     //        ColorPrinter.isInnerNode( ColorPrinter["(boolean)hasInk"] ) );
     //    // t_ink black
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)black"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)black"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)black"] ) );
     //    // t_state black
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)black"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)black"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)black"] ) );
     //    // boolean black
     //    TS_ASSERT(
-    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)black"] ) );
+    //       !ColorPrinter.isOutputNode( ColorPrinter["(boolean)black"] ) );
     //    TS_ASSERT(
-    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)black"] ) );
+    //       !ColorPrinter.isInputNode( ColorPrinter["(boolean)black"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode( ColorPrinter["(boolean)black"] )
     //    );
     //    // t_ink magenta
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)magenta"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)magenta"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)magenta"] ) );
     //    // t_state magenta
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)magenta"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)magenta"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)magenta"] ) );
     //    // boolean magenta
     //    TS_ASSERT(
-    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)magenta"] )
+    //       !ColorPrinter.isOutputNode( ColorPrinter["(boolean)magenta"] )
     //        );
     //    TS_ASSERT(
-    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)magenta"] )
+    //       !ColorPrinter.isInputNode( ColorPrinter["(boolean)magenta"] )
     //        );
     //    TS_ASSERT(
     //        ColorPrinter.isInnerNode( ColorPrinter["(boolean)magenta"] ) );
     //    // t_ink yellow
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)yellow"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)yellow"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)yellow"] ) );
     //    // t_state yellow
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)yellow"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)yellow"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)yellow"] ) );
     //    // boolean yellow
     //    TS_ASSERT(
-    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)yellow"] )
+    //       !ColorPrinter.isOutputNode( ColorPrinter["(boolean)yellow"] )
     //        );
     //    TS_ASSERT(
-    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)yellow"] ) );
+    //       !ColorPrinter.isInputNode( ColorPrinter["(boolean)yellow"] ) );
     //    TS_ASSERT(
     //        ColorPrinter.isInnerNode( ColorPrinter["(boolean)yellow"] ) );
     //    // t_ink cyan
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)cyan"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)cyan"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)cyan"] ) );
     //    // t_state cyan
-    //    TS_ASSERT( not ColorPrinter.isOutputNode(
+    //    TS_ASSERT(!ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)cyan"] ) );
-    //    TS_ASSERT( not ColorPrinter.isInputNode(
+    //    TS_ASSERT(!ColorPrinter.isInputNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)cyan"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode(
     //        ColorPrinter["(fr.lip6.printers.t_state)cyan"] ) );
     //    // boolean cyan
     //    TS_ASSERT(
-    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)cyan"] ) );
+    //       !ColorPrinter.isOutputNode( ColorPrinter["(boolean)cyan"] ) );
     //    TS_ASSERT(
-    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)cyan"] ) );
+    //       !ColorPrinter.isInputNode( ColorPrinter["(boolean)cyan"] ) );
     //    TS_ASSERT( ColorPrinter.isInnerNode( ColorPrinter["(boolean)cyan"] )
     //    );
     //    delete prm;
@@ -1109,7 +1109,7 @@ namespace gum_tests {
         gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
         gum::prm::PRMSystem<double>* sys = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->getSystem( "aSys" ) ) );
         gum::prm::PRMClass<double>& Power = prm->getClass( "PowerSupply" );
         gum::prm::PRMClass<double>& Room = prm->getClass( "Room" );
         gum::prm::PRMClass<double>& BWPrinter = prm->getClass( "BWPrinter" );
@@ -1176,7 +1176,7 @@ namespace gum_tests {
         gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
         gum::prm::PRMSystem<double>* sys = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->getSystem( "aSys" ) ) );
 
         for ( gum::prm::PRMSystem<double>::iterator iter = sys->begin();
               iter != sys->end();
@@ -1188,10 +1188,10 @@ namespace gum_tests {
             gum::Instantiation i( ( *( jter.val() ) ).cpf() ), var;
             var.add( ( *( jter.val() ) ).type().variable() );
 
-            for ( i.setFirstOut( var ); not i.end(); i.incOut( var ) ) {
+            for ( i.setFirstOut( var );!i.end(); i.incOut( var ) ) {
               gum::prm::prm_float f = 0.0;
 
-              for ( i.setFirstIn( var ); not i.end(); i.incIn( var ) ) {
+              for ( i.setFirstIn( var );!i.end(); i.incIn( var ) ) {
                 f += ( *( jter.val() ) ).cpf().get( i );
               }
 
@@ -1231,7 +1231,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( prm->systems().size(), (gum::Size)1 );
         gum::prm::PRMSystem<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(
-            sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
+            sys = &( prm->getSystem( "systems.MySystem.MySystem" ) ) );
         TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
 
         // Checking that all class DAG are generated
@@ -1273,7 +1273,7 @@ namespace gum_tests {
             try {
               auto inst = gum::Instantiation( attr.val()->cpf() );
               auto sum = 0.0;
-              for ( inst.begin(); not inst.end(); inst.inc() ) {
+              for ( inst.begin();!inst.end(); inst.inc() ) {
                 sum += attr.val()->cpf()[inst];
               }
               auto card = 1;
@@ -1359,7 +1359,7 @@ namespace gum_tests {
 
         gum::Instantiation inst( hasInk.cpf() );
         std::vector<double> values;
-        for ( inst.begin(); not inst.end(); inst.inc() ) {
+        for ( inst.begin();!inst.end(); inst.inc() ) {
           values.push_back( hasInk.cpf()[inst] );
         }
 
@@ -1388,7 +1388,7 @@ namespace gum_tests {
 
         gum::Instantiation inst( hasPaper.cpf() );
         std::vector<double> values;
-        for ( inst.begin(); not inst.end(); inst.inc() ) {
+        for ( inst.begin();!inst.end(); inst.inc() ) {
           values.push_back( hasPaper.cpf()[inst] );
         }
 
@@ -1412,14 +1412,14 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
 
         auto prm = reader.prm();
-        auto& sys = prm->system( "fr.lip6.printers.aSys" );
+        auto& sys = prm->getSystem( "fr.lip6.printers.aSys" );
         auto& paramBis = sys.get( "paramBis" );
 
         const auto& hasInk = paramBis.get( "hasInk" );
 
         gum::Instantiation inst( hasInk.cpf() );
         std::vector<double> values;
-        for ( inst.begin(); not inst.end(); inst.inc() ) {
+        for ( inst.begin();!inst.end(); inst.inc() ) {
           values.push_back( hasInk.cpf()[inst] );
         }
 
@@ -1532,7 +1532,7 @@ namespace gum_tests {
         std::string package = "";
         reader.readFile( file, package );
         auto prm = reader.prm();
-        auto& sys = prm->system( "Asia" );
+        auto& sys = prm->getSystem( "Asia" );
         // sys.instantiate();
         auto bn = new gum::BayesNet<double>( "Asia" );
         gum::BayesNetFactory<double> factory( bn );
@@ -1656,12 +1656,12 @@ namespace gum_tests {
         }
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
 
-        auto sys = &( reader.prm()->system( "fr.base.Work" ) );
+        auto sys = &( reader.prm()->getSystem( "fr.base.Work" ) );
         for ( auto iter : *sys ) {
           auto inst = iter.second;
           for ( auto node : inst->type().dag() ) {
             // TS_ASSERT( inst->exists( node ) );
-            if ( ( not inst->exists( node ) ) and
+            if ( (!inst->exists( node ) ) and
                  inst->type().exists( node ) ) {
               auto elt = &( inst->type().get( node ) );
               if ( gum::prm::PRMClassElement<double>::isAttribute( *elt ) ||

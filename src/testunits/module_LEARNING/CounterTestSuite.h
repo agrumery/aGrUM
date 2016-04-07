@@ -37,15 +37,15 @@ namespace gum_tests {
                  const std::vector<unsigned int>& var_modalities )
           : gum::learning::Counter<>( filter, var_modalities ) {}
 
-      const std::vector<float>& getAllCounts( unsigned int index ) {
+      const std::vector<double>& getAllCounts( unsigned int index ) {
         return gum::learning::Counter<>::_getAllCounts( index );
       }
 
-      const std::vector<float>& getConditioningCounts( unsigned int index ) {
+      const std::vector<double>& getConditioningCounts( unsigned int index ) {
         return gum::learning::Counter<>::_getConditioningCounts( index );
       }
 
-      std::vector<std::vector<float>>& getCounts() noexcept {
+      std::vector<std::vector<double>>& getCounts() noexcept {
         return gum::learning::Counter<>::_getCounts();
       }
 
@@ -99,9 +99,9 @@ namespace gum_tests {
         unsigned int id2 = counter.addNodeSet( 1 );
         unsigned int id3 = counter.addNodeSet( 0, set2 );
 
-        const std::vector<float>& vect1 = counter.getAllCounts( id1 );
-        const std::vector<float>& vect2 = counter.getAllCounts( id2 );
-        const std::vector<float>& vect3 = counter.getAllCounts( id3 );
+        const std::vector<double>& vect1 = counter.getAllCounts( id1 );
+        const std::vector<double>& vect2 = counter.getAllCounts( id2 );
+        const std::vector<double>& vect3 = counter.getAllCounts( id3 );
 
         TS_ASSERT( vect1[0] == 5028 );
         TS_ASSERT( vect1[1] == 4972 );
@@ -129,8 +129,8 @@ namespace gum_tests {
 
       counter.clear();
       unsigned int id = counter.addNodeSet( 0, set4 );
-      std::vector<float> vectx = counter.getAllCounts( id );
-      std::vector<float> vecty = counter.getConditioningCounts( id );
+      std::vector<double> vectx = counter.getAllCounts( id );
+      std::vector<double> vecty = counter.getConditioningCounts( id );
 
       counter.clear();
       {
@@ -299,8 +299,8 @@ namespace gum_tests {
       }
     }
 
-    bool compare_vect3( const std::vector<float>& v1,
-                        const std::vector<float>& v2,
+    bool compare_vect3( const std::vector<double>& v1,
+                        const std::vector<double>& v2,
                         const std::vector<unsigned int>& order ) {
       unsigned int index1, index2;
       for ( unsigned int k = 0; k < 2; ++k ) {
@@ -318,8 +318,8 @@ namespace gum_tests {
       return true;
     }
 
-    bool compare_vect2( const std::vector<float>& v1,
-                        const std::vector<float>& v2,
+    bool compare_vect2( const std::vector<double>& v1,
+                        const std::vector<double>& v2,
                         const std::vector<unsigned int>& order ) {
       unsigned int index1, index2;
       for ( unsigned int j = 0; j < 2; ++j ) {

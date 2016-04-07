@@ -350,8 +350,8 @@ namespace gum {
       // set the __change_scores and __change_queue_per_node for legal changes
       __change_scores.resize(
           __changes.size(),
-          std::pair<float, float>( std::numeric_limits<float>::min(),
-                                   std::numeric_limits<float>::min() ) );
+          std::pair<double, double>( std::numeric_limits<double>::min(),
+                                   std::numeric_limits<double>::min() ) );
       __change_queue_per_node.clear();
       __change_queue_per_node.resize( nb_nodes );
       for ( unsigned int i = 0, j = 0; i < __changes.size(); ++i ) {
@@ -359,18 +359,18 @@ namespace gum {
           const GraphChange& change = __changes[i];
 
           if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
-            float delta2 =
+            double delta2 =
                 __score->score( j ) - __node_current_scores[change.node2()];
             ++j;
-            float delta1 =
+            double delta1 =
                 __score->score( j ) - __node_current_scores[change.node1()];
-            float delta = delta1 + delta2;
+            double delta = delta1 + delta2;
             __change_scores[i].first = delta1;
             __change_scores[i].second = delta2;
             __change_queue_per_node[change.node1()].insert( i, delta );
             __change_queue_per_node[change.node2()].insert( i, delta );
           } else {
-            float delta =
+            double delta =
                 __score->score( j ) - __node_current_scores[change.node2()];
             __change_scores[i].second = delta;
             __change_queue_per_node[change.node2()].insert( i, delta );
@@ -386,7 +386,7 @@ namespace gum {
       for ( unsigned int i = 0; i < nb_nodes; ++i ) {
         __node_queue.insert( i,
                              __change_queue_per_node[i].empty()
-                                 ? std::numeric_limits<float>::min()
+                                 ? std::numeric_limits<double>::min()
                                  : __change_queue_per_node[i].topPriority() );
       }
       __queues_valid = true;
@@ -404,25 +404,25 @@ namespace gum {
       const GraphChange& change = __changes[change_index];
       if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
         // remove the tail change from its priority queue
-        PriorityQueue<unsigned int, float, std::greater<float>>& queue1 =
+        PriorityQueue<unsigned int, double, std::greater<double>>& queue1 =
             __change_queue_per_node[change.node1()];
         queue1.erase( change_index );
 
         // recompute the top priority for the changes of the head
-        const float new_priority = queue1.empty()
-                                       ? std::numeric_limits<float>::min()
+        const double new_priority = queue1.empty()
+                                       ? std::numeric_limits<double>::min()
                                        : queue1.topPriority();
         __node_queue.setPriority( change.node1(), new_priority );
       }
 
       // remove the head change from its priority queue
-      PriorityQueue<unsigned int, float, std::greater<float>>& queue2 =
+      PriorityQueue<unsigned int, double, std::greater<double>>& queue2 =
           __change_queue_per_node[change.node2()];
       queue2.erase( change_index );
 
       // recompute the top priority for the changes of the head
-      const float new_priority = queue2.empty()
-                                     ? std::numeric_limits<float>::min()
+      const double new_priority = queue2.empty()
+                                     ? std::numeric_limits<double>::min()
                                      : queue2.topPriority();
       __node_queue.setPriority( change.node2(), new_priority );
 
@@ -448,7 +448,7 @@ namespace gum {
         __queues_valid = true;
       }
 
-      return __node_queue.topPriority() == std::numeric_limits<float>::min();
+      return __node_queue.topPriority() == std::numeric_limits<double>::min();
     }
 
     /// indicates whether the selector still contain graph changes in the ith
@@ -508,7 +508,7 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE float
+    INLINE double
     GraphChangesSelector4DiGraph<SCORE,
                                  STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>::bestScore() {
@@ -522,7 +522,7 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE float GraphChangesSelector4DiGraph<
+    INLINE double GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::bestScore( unsigned int i ) {
@@ -548,10 +548,10 @@ namespace gum {
           const GraphChange& change = __changes[*iter];
           if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
             __change_queue_per_node[change.node1()].insert(
-                *iter, std::numeric_limits<float>::min() );
+                *iter, std::numeric_limits<double>::min() );
           }
           __change_queue_per_node[change.node2()].insert(
-              *iter, std::numeric_limits<float>::min() );
+              *iter, std::numeric_limits<double>::min() );
 
           changes_to_recompute.insert( *iter );
           __illegal_changes.erase( iter );
@@ -603,12 +603,12 @@ namespace gum {
         const GraphChange& change = __changes[change_index];
         if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
           // get the scores of both the tail and the head
-          const float delta2 =
+          const double delta2 =
               __score->score( j ) - __node_current_scores[change.node2()];
           ++j;
-          const float delta1 =
+          const double delta1 =
               __score->score( j ) - __node_current_scores[change.node1()];
-          const float delta = delta1 + delta2;
+          const double delta = delta1 + delta2;
 
           // update the scores
           __change_scores[change_index].first = delta1;
@@ -625,7 +625,7 @@ namespace gum {
           modified_nodes.insert( change.node2() );
         } else {
           // get the score of the head
-          const float delta =
+          const double delta =
               __score->score( j ) - __node_current_scores[change.node2()];
 
           // update the score
@@ -647,7 +647,7 @@ namespace gum {
         __node_queue.setPriority(
             node,
             __change_queue_per_node[node].empty()
-                ? std::numeric_limits<float>::min()
+                ? std::numeric_limits<double>::min()
                 : __change_queue_per_node[node].topPriority() );
       }
     }
@@ -670,8 +670,8 @@ namespace gum {
           __illegal_changes.insert( __changes.size() );
           __changes << change;
           __change_scores.push_back(
-              std::pair<float, float>( std::numeric_limits<float>::min(),
-                                       std::numeric_limits<float>::min() ) );
+              std::pair<double, double>( std::numeric_limits<double>::min(),
+                                       std::numeric_limits<double>::min() ) );
         }
       }
 
@@ -960,10 +960,10 @@ namespace gum {
         const GraphChange& change = __changes[change_index];
         if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
           __change_queue_per_node[change.node1()].insert(
-              change_index, std::numeric_limits<float>::min() );
+              change_index, std::numeric_limits<double>::min() );
         }
         __change_queue_per_node[change.node2()].insert(
-            change_index, std::numeric_limits<float>::min() );
+            change_index, std::numeric_limits<double>::min() );
 
         changes_to_recompute.insert( change_index );
       }
@@ -978,12 +978,12 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE std::vector<std::pair<unsigned int, float>>
+    INLINE std::vector<std::pair<unsigned int, double>>
     GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::nodesSortedByBestScore() const {
-      std::vector<std::pair<unsigned int, float>> result( __node_queue.size() );
+      std::vector<std::pair<unsigned int, double>> result( __node_queue.size() );
       for ( unsigned int i = 0; i < __node_queue.size(); ++i ) {
         result[i].first = __node_queue[i];
         result[i].second = __node_queue.priorityByPos( i );
@@ -991,8 +991,8 @@ namespace gum {
 
       std::sort( result.begin(),
                  result.end(),
-                 []( const std::pair<unsigned int, float>& a,
-                     const std::pair<unsigned int, float>& b ) -> bool {
+                 []( const std::pair<unsigned int, double>& a,
+                     const std::pair<unsigned int, double>& b ) -> bool {
                    return a.second > b.second;
                  } );
 
@@ -1003,12 +1003,12 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE std::vector<std::pair<unsigned int, float>>
+    INLINE std::vector<std::pair<unsigned int, double>>
     GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::nodesUnsortedWithScore() const {
-      std::vector<std::pair<unsigned int, float>> result( __node_queue.size() );
+      std::vector<std::pair<unsigned int, double>> result( __node_queue.size() );
       for ( unsigned int i = 0; i < __node_queue.size(); ++i ) {
         result[i].first = __node_queue[i];
         result[i].second = __node_queue.priorityByPos( i );

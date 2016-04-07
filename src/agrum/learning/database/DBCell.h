@@ -55,7 +55,7 @@ namespace gum {
       DBCell();
 
       /// constructor for a number
-      DBCell( float nb );
+      DBCell( double nb );
 
       /// constructor for a string
       DBCell( const std::string& str );
@@ -85,7 +85,7 @@ namespace gum {
 
       /// unsafe set operator (assumes that the preceding type is of the same
       /// type)
-      DBCell& operator=( float x ) noexcept;
+      DBCell& operator=( double x ) noexcept;
 
       /// unsafe set operator (assumes that the preceding type is of the same
       /// type)
@@ -99,20 +99,20 @@ namespace gum {
 
       /// @{
 
-      /// returns the DBcell as a float (without checking its type)
+      /// returns the DBcell as a double (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
        * correct type of the element in the DBCell */
-      float getFloat() const noexcept;
+      double getFloat() const noexcept;
 
-      /// returns the DBcell as a float (safe with type checking)
+      /// returns the DBcell as a double (safe with type checking)
       /** @throw TypeError if the DBCell does not contain this type */
-      float getFloatSafe() const;
+      double getFloatSafe() const;
 
       /// unsafe set (assumes that the preceding type is of the same type)
-      void setFloat( float x );
+      void setFloat( double x );
 
       /// sets the content of the DBCell (safe type checking)
-      void setFloatSafe( float elt );
+      void setFloatSafe( double elt );
 
       /// returns the DBcell as a string (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
@@ -166,8 +166,8 @@ namespace gum {
       /// @}
 
       private:
-      using Float = typename std::conditional<sizeof( float ) >= sizeof( int ),
-                                              float,
+      using Float = typename std::conditional<sizeof( double ) >= sizeof( int ),
+                                              double,
                                               double>::type;
 
       /// the real type of the last element read from the database

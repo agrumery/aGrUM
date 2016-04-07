@@ -63,10 +63,10 @@ namespace gum {
       std::vector<unsigned int>& row() noexcept { return __row; }
 
       /// returns a reference on the weight of the row
-      float& weight() noexcept { return __weight; }
+      double& weight() noexcept { return __weight; }
 
       /// returns the weight of the row
-      float weight() const noexcept { return __weight; }
+      double weight() const noexcept { return __weight; }
 
       /// returns a reference on the number of unobserved values
       unsigned int& unobserved() noexcept { return __nb_unobserved; }
@@ -106,7 +106,7 @@ namespace gum {
       std::vector<unsigned int> __row;
 
       /// the weight of the row
-      float __weight{1};
+      double __weight{1};
 
       /// the number of unobserved values
       unsigned int __nb_unobserved{0};

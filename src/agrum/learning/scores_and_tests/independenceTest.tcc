@@ -55,7 +55,7 @@ namespace gum {
       if ( __use_cache ) {
         // check whether the score is already in the cache
         try {
-          float score = __cache.score( var1, var2, __empty_conditioning_set );
+          double score = __cache.score( var1, var2, __empty_conditioning_set );
           __is_cached_score.push_back( true );
           __cached_score.push_back( score );
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
@@ -70,7 +70,7 @@ namespace gum {
       if ( this->_modalities[var1] * this->_modalities[var2] * 5 >
            this->_record_counter.DBParsedSize() ) {
         __is_cached_score.push_back( true );
-        __cached_score.push_back( std::numeric_limits<float>::max() );
+        __cached_score.push_back( std::numeric_limits<double>::max() );
         return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
       }
 
@@ -100,7 +100,7 @@ namespace gum {
         const std::vector<unsigned int>& conditioning_ids ) {
       if ( __use_cache ) {
         try {
-          float score = __cache.score( var1, var2, conditioning_ids );
+          double score = __cache.score( var1, var2, conditioning_ids );
           __is_cached_score.push_back( true );
           __cached_score.push_back( score );
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
@@ -119,7 +119,7 @@ namespace gum {
       }
       if ( cpt_size > this->_record_counter.DBParsedSize() ) {
         __is_cached_score.push_back( true );
-        __cached_score.push_back( std::numeric_limits<float>::max() );
+        __cached_score.push_back( std::numeric_limits<double>::max() );
         return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
       }
 
@@ -150,7 +150,7 @@ namespace gum {
         std::vector<unsigned int>&& conditioning_ids ) {
       if ( __use_cache ) {
         try {
-          float score = __cache.score( var1, var2, conditioning_ids );
+          double score = __cache.score( var1, var2, conditioning_ids );
           __is_cached_score.push_back( true );
           __cached_score.push_back( score );
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
@@ -169,7 +169,7 @@ namespace gum {
       }
       if ( cpt_size > this->_record_counter.DBParsedSize() ) {
         __is_cached_score.push_back( true );
-        __cached_score.push_back( std::numeric_limits<float>::max() );
+        __cached_score.push_back( std::numeric_limits<double>::max() );
         return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
       }
 
@@ -213,7 +213,7 @@ namespace gum {
     /// inserts a new score into the cache
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void IndependenceTest<IdSetAlloc, CountAlloc>::_insertIntoCache(
-        unsigned int nodeset_index, float score ) {
+        unsigned int nodeset_index, double score ) {
       const std::vector<unsigned int, IdSetAlloc>& all_nodes =
           _getAllNodes( nodeset_index );
       std::vector<unsigned int, IdSetAlloc> conditioning_nodes =
@@ -239,7 +239,7 @@ namespace gum {
 
     /// returns a cached score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE float IndependenceTest<IdSetAlloc, CountAlloc>::_cachedScore(
+    INLINE double IndependenceTest<IdSetAlloc, CountAlloc>::_cachedScore(
         unsigned int nodeset_index ) const noexcept {
       return __cached_score[nodeset_index];
     }

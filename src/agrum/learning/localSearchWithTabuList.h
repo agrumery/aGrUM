@@ -115,7 +115,7 @@ namespace gum {
                           DAG initial_dag = DAG() );
 
       /// learns the structure and the parameters of a BN
-      template <typename GUM_SCALAR = float,
+      template <typename GUM_SCALAR = double,
                 typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR,
                 typename CELL_TRANSLATORS>

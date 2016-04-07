@@ -119,7 +119,7 @@ namespace gum_tests {
         f.addInstance( "MyClass", "i" );
         f.endSystem();
 
-        const auto& s = prm->system( "MySystem" );
+        const auto& s = prm->getSystem( "MySystem" );
 
         TS_ASSERT( s.exists( "i" ) );
 
@@ -159,7 +159,7 @@ namespace gum_tests {
         TS_ASSERT( prm->classes().size() == 3 );
 
         f.endSystem();
-        const auto& s = prm->system( "MySystem" );
+        const auto& s = prm->getSystem( "MySystem" );
 
         TS_ASSERT( s.exists( "i" ) );
 

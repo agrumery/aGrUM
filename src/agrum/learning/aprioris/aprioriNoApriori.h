@@ -39,7 +39,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class AprioriNoApriori : public Apriori<IdSetAlloc, CountAlloc> {
       public:
       using type = AprioriNoAprioriType;
@@ -75,7 +75,7 @@ namespace gum {
       virtual const std::string& getType() const noexcept final;
 
       /// sets the weight of the a priori
-      virtual void setWeight( float weight ) final;
+      virtual void setWeight( double weight ) final;
 
       /// @}
 

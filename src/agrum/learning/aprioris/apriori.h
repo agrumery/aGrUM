@@ -37,11 +37,11 @@ namespace gum {
   namespace learning {
 
     /** @class Apriori
-     * @brief the base class for all a prioris
+     * @brief the base class for all apriori
      * @ingroup learning_group
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class Apriori {
       public:
       // ##########################################################################
@@ -66,10 +66,10 @@ namespace gum {
       /// @{
 
       /// sets the weight of the a priori (kind of effective sample size)
-      virtual void setWeight( float weight );
+      virtual void setWeight( double weight );
 
       /// returns the weight assigned to the apriori
-      float weight() const noexcept;
+      double weight() const noexcept;
 
       /// indicates whether an apriori is of a certain type
       virtual bool isOfType( const std::string& type ) = 0;
@@ -80,7 +80,7 @@ namespace gum {
       /// sets the parameters for the apriori
       void setParameters(
           const std::vector<unsigned int>& modalities,
-          std::vector<std::vector<float, CountAlloc>>& counts,
+          std::vector<std::vector<double, CountAlloc>>& counts,
           const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                       unsigned int>*>& target_nodesets,
           const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
@@ -90,17 +90,17 @@ namespace gum {
       virtual void compute() = 0;
 
       /// returns the apriori vector for a given (conditioned) target set
-      const std::vector<float, CountAlloc>& getAllApriori( unsigned int index );
+      const std::vector<double, CountAlloc>& getAllApriori( unsigned int index );
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<float, CountAlloc>&
+      const std::vector<double, CountAlloc>&
       getConditioningApriori( unsigned int index );
 
       /// @}
 
       protected:
       /// the weight of the apriori
-      float _weight{1.0f};
+      double _weight{1.0f};
 
       /// the modalities of the nodes
       const std::vector<unsigned int>* _modalities{nullptr};
@@ -110,7 +110,7 @@ namespace gum {
        * to the countings performed by the score. Those are given to the apriori
        * so that the latter can add what is needed to _unapriori_counts to take
        * into account the so-called apriori. */
-      std::vector<std::vector<float, CountAlloc>>* _unapriori_counts{nullptr};
+      std::vector<std::vector<double, CountAlloc>>* _unapriori_counts{nullptr};
 
       /// the set of target + cond nodes, and their counting indices
       /** The first element of the pairs correspond to a nodeset and the
@@ -129,7 +129,7 @@ namespace gum {
           nullptr};
 
       /// the a priori
-      std::vector<std::vector<float, CountAlloc>> _apriori_counts;
+      std::vector<std::vector<double, CountAlloc>> _apriori_counts;
 
       /// copy constructor
       Apriori( const Apriori<IdSetAlloc, CountAlloc>& from );

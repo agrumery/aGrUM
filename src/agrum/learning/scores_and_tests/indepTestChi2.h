@@ -61,7 +61,7 @@ namespace gum {
      * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class IndepTestChi2 : public IndependenceTest<IdSetAlloc, CountAlloc> {
       public:
       // ##########################################################################
@@ -96,7 +96,7 @@ namespace gum {
        * @#sum corresponds to the summations mentioned above. Therefore, any
        * positive result should reflect a dependence whereas negative results
        * should reflect independences. */
-      float score( unsigned int nodeset_index );
+      double score( unsigned int nodeset_index );
 
       /// @}
 

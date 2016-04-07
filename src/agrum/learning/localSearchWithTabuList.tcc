@@ -42,7 +42,7 @@ namespace gum {
       unsigned int nb_changes_applied;
       unsigned int applied_change_with_positive_score;
       unsigned int current_N = 0;
-      float delta_score;
+      double delta_score;
 
       initApproximationScheme();
 
@@ -52,8 +52,8 @@ namespace gum {
 
       // the best dag found so far with its score
       DAG best_dag = dag;
-      float best_score = 0;
-      float current_score = 0;
+      double best_score = 0;
+      double current_score = 0;
 
       while ( current_N <= __MaxNbDecreasing ) {
         applied_change_with_positive_score = 0;
@@ -62,7 +62,7 @@ namespace gum {
           nb_changes_applied = 0;
           delta_score = 0;
 
-          std::vector<std::pair<unsigned int, float>> ordered_queues =
+          std::vector<std::pair<unsigned int, double>> ordered_queues =
               selector.nodesSortedByBestScore();
 
           for ( unsigned int j = 0; j < dag.size(); ++j ) {

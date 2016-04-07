@@ -70,7 +70,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     void Apriori<IdSetAlloc, CountAlloc>::setParameters(
         const std::vector<unsigned int>& modalities,
-        std::vector<std::vector<float, CountAlloc>>& counts,
+        std::vector<std::vector<double, CountAlloc>>& counts,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                     unsigned int>*>& target_nodesets,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
@@ -98,7 +98,7 @@ namespace gum {
           _apriori_counts.reserve( count_size );
           do {
             _apriori_counts.push_back(
-                std::vector<float, CountAlloc>( counts[apriori_size].size() ) );
+                std::vector<double, CountAlloc>( counts[apriori_size].size() ) );
             ++apriori_size;
           } while ( apriori_size < count_size );
         }
@@ -107,7 +107,7 @@ namespace gum {
 
     /// sets the weight of the a priori (kind of effective sample size)
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void Apriori<IdSetAlloc, CountAlloc>::setWeight( float weight ) {
+    INLINE void Apriori<IdSetAlloc, CountAlloc>::setWeight( double weight ) {
       if ( weight < 0 ) {
         GUM_ERROR( OutOfBounds, "the weight of the apriori must be positive" );
       }
@@ -116,13 +116,13 @@ namespace gum {
 
     /// returns the weight assigned to the apriori
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE float Apriori<IdSetAlloc, CountAlloc>::weight() const noexcept {
+    INLINE double Apriori<IdSetAlloc, CountAlloc>::weight() const noexcept {
       return _weight;
     }
 
     /// returns the apriori vector for a given (conditioned) target set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     Apriori<IdSetAlloc, CountAlloc>::getAllApriori( unsigned int index ) {
       if ( _weight ) {
         return _apriori_counts[_target_nodesets->operator[]( index )->second];
@@ -136,7 +136,7 @@ namespace gum {
 
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     Apriori<IdSetAlloc, CountAlloc>::getConditioningApriori(
         unsigned int index ) {
       if ( _weight ) {

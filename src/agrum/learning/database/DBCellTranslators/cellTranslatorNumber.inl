@@ -37,7 +37,7 @@ namespace gum {
         , __values( from.__values )
         , __check_database( from.__check_database ) {
       if ( from.__user_values != nullptr ) {
-        __user_values = new Sequence<float>( *from.__user_values );
+        __user_values = new Sequence<double>( *from.__user_values );
       }
     }
 
@@ -49,7 +49,7 @@ namespace gum {
         , __values( std::move( from.__values ) )
         , __check_database( std::move( from.__check_database ) ) {
       if ( from.__user_values != nullptr ) {
-        __user_values = new Sequence<float>( std::move( *from.__user_values ) );
+        __user_values = new Sequence<double>( std::move( *from.__user_values ) );
       }
     }
 
@@ -78,7 +78,7 @@ namespace gum {
           __user_values = nullptr;
         }
         if ( from.__user_values != nullptr ) {
-          __user_values = new Sequence<float>( *from.__user_values );
+          __user_values = new Sequence<double>( *from.__user_values );
         }
       }
       return *this;
@@ -98,7 +98,7 @@ namespace gum {
         }
         if ( from.__user_values != nullptr ) {
           __user_values =
-              new Sequence<float>( std::move( *from.__user_values ) );
+              new Sequence<double>( std::move( *from.__user_values ) );
         }
       }
       return *this;
@@ -111,7 +111,7 @@ namespace gum {
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorNumber::initialize() {
-      const float nb = in( 0 ).getFloat();
+      const double nb = in( 0 ).getFloat();
       if ( !__values.existsFirst( nb ) ) {
         __values.insert( nb, __max_value );
         ++__max_value;

@@ -75,7 +75,7 @@ namespace gum {
     Cache4IndepTest::insert( unsigned int var1,
                              unsigned int var2,
                              const std::vector<unsigned int>& conditioning_set,
-                             float score ) {
+                             double score ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
       __scores.insert( std::tuple<IdSet<>, unsigned int, unsigned int>(
                            IdSet<>( conditioning_set, 0 ), var1, var2 ),
@@ -87,7 +87,7 @@ namespace gum {
     INLINE void Cache4IndepTest::insert( unsigned int var1,
                                          unsigned int var2,
                                          IdSet<Alloc>& conditioning_set,
-                                         float score ) {
+                                         double score ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
       __scores.insert( std::tuple<IdSet<>, unsigned int, unsigned int>(
                            IdSet<>( conditioning_set ), var1, var2 ),
@@ -125,7 +125,7 @@ namespace gum {
     }
 
     /// returns a given score
-    INLINE float Cache4IndepTest::score(
+    INLINE double Cache4IndepTest::score(
         unsigned int var1,
         unsigned int var2,
         const std::vector<unsigned int>& conditioning_set ) {

@@ -32,7 +32,7 @@ namespace gum {
     INLINE DBCell::DBCell() { GUM_CONSTRUCTOR( DBCell ); }
 
     /// constructor for a number
-    INLINE DBCell::DBCell( float nb )
+    INLINE DBCell::DBCell( double nb )
         : __float( nb ) {
       GUM_CONSTRUCTOR( DBCell );
     }
@@ -95,7 +95,7 @@ namespace gum {
 
     /// unsafe set operator (assumes that the preceding type is of the same
     /// type)
-    INLINE DBCell& DBCell::operator=( float x ) noexcept {
+    INLINE DBCell& DBCell::operator=( double x ) noexcept {
       __type = EltType::FLOAT;
       __float = x;
       return *this;
@@ -115,22 +115,22 @@ namespace gum {
       return *this;
     }
 
-    /// returns the DBcell as a float (without checking its type)
-    INLINE float DBCell::getFloat() const noexcept { return __float; }
+    /// returns the DBcell as a double (without checking its type)
+    INLINE double DBCell::getFloat() const noexcept { return __float; }
 
-    /// returns the DBcell as a float (safe with type checking)
-    INLINE float DBCell::getFloatSafe() const {
+    /// returns the DBcell as a double (safe with type checking)
+    INLINE double DBCell::getFloatSafe() const {
       if ( __type == EltType::FLOAT )
         return __float;
       else
-        GUM_ERROR( TypeError, "the DBCell does not contain a float" );
+        GUM_ERROR( TypeError, "the DBCell does not contain a double" );
     }
 
     /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setFloat( float x ) { __float = x; }
+    INLINE void DBCell::setFloat( double x ) { __float = x; }
 
     /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setFloatSafe( float elt ) {
+    INLINE void DBCell::setFloatSafe( double elt ) {
       __type = EltType::FLOAT;
       __float = elt;
     }
@@ -198,7 +198,7 @@ namespace gum {
 
     /// safely sets the content of the DBCell with the best possible type
     INLINE void DBCell::setBestTypeSafe( const std::string& elt ) {
-      // try to convert the string into a float
+      // try to convert the string into a double
       try {
         __setFloatFromStringSafe( elt );
         return;

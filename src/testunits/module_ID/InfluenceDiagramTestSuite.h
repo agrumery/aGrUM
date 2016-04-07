@@ -138,7 +138,7 @@ namespace gum_tests {
         const gum::UtilityTable<float>& u1 = id.utility( idList[9] );
         {
           // FILLING PARAMS
-          const float t[4] = {42f, 69f, 666f, 84f};
+          const float t[4] = {42.0f, 69.0f, 666.0f, 84.0f};
           int n = 4;
           const std::vector<float> v( t, t + n );
           u1.populate( v );
@@ -147,7 +147,7 @@ namespace gum_tests {
         const gum::UtilityTable<float>& u2 = id.utility( idList[10] );
         {
           // FILLING PARAMS
-          const float t[4] = {42f, -69f, 666f, 84f};
+          const float t[4] = {42.0f, -69.0f, 666.0f, 84.0f};
           int n = 4;
           const std::vector<float> v( t, t + n );
           u2.populate( v );

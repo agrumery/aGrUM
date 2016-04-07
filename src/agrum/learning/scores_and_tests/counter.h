@@ -104,7 +104,7 @@ namespace gum {
      * but is rather a basis for classes Score and IndependenceTest.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+              typename CountAlloc = std::allocator<double>>
     class Counter {
       public:
       // ##########################################################################
@@ -350,7 +350,7 @@ namespace gum {
 
       protected:
       /// 1 / log(2)
-      const float _1log2{M_LOG2E};
+      const double _1log2{M_LOG2E};
 
       /// the modalities of the variables
       const std::vector<unsigned int>& _modalities;
@@ -388,12 +388,12 @@ namespace gum {
        * when callind addNodeset, and then the target nodes).
        * @warning whenever you call this function, if the counts have not been
        * computed yet, they are computed before the function returns. */
-      const std::vector<float, CountAlloc>& _getAllCounts( unsigned int index );
+      const std::vector<double, CountAlloc>& _getAllCounts( unsigned int index );
 
       /// returns the counting vector for a conditioning set
       /** @warning whenever you call this function, if the counts have not been
        * computed yet, they are computed before the function returns. */
-      const std::vector<float, CountAlloc>&
+      const std::vector<double, CountAlloc>&
       _getConditioningCounts( unsigned int index );
 
       /// returns all the countings performed (both targets and conditioned)
@@ -401,7 +401,7 @@ namespace gum {
        * be used in conjunction with methods _getConditioningNodes () and
        * _getTargetNodes () that indicate, for each nodeset, the index of
        * the corresponding counting in the vector returned by _getCounts (). */
-      std::vector<std::vector<float, CountAlloc>>& _getCounts() noexcept;
+      std::vector<std::vector<double, CountAlloc>>& _getCounts() noexcept;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets

@@ -84,7 +84,7 @@ namespace gum {
       }
 
       // allocate the counting set
-      _countings.push_back( std::vector<float, CountAlloc>( size, 0 ) );
+      _countings.push_back( std::vector<double, CountAlloc>( size, 0 ) );
 
       return nodeset_id;
     }
@@ -99,7 +99,7 @@ namespace gum {
 
     /// returns the countings for the nodeset specified in argument
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     RecordCounterThreadBase<IdSetAlloc, CountAlloc>::getCounts(
         unsigned int nodeset_id ) const noexcept {
       return _countings[nodeset_id];
@@ -350,7 +350,7 @@ namespace gum {
         set_size *= __modalities->operator[]( id );
       }
 
-      __countings.push_back( std::vector<float, CountAlloc>( set_size, 0.0f ) );
+      __countings.push_back( std::vector<double, CountAlloc>( set_size, 0.0f ) );
 
       // create the corresponding idset
       NodeId node = __nodesets.size();
@@ -478,8 +478,8 @@ namespace gum {
         for ( unsigned int i = 0, size = __countings.size(); i < size; ++i ) {
           if ( __set_state[i] == SetState::NOT_SUBSET ) {
             // get the ith idset countings computed by the curent thread
-            std::vector<float, CountAlloc>& vect =
-                const_cast<std::vector<float, CountAlloc>&>(
+            std::vector<double, CountAlloc>& vect =
+                const_cast<std::vector<double, CountAlloc>&>(
                     counter.getCounts( __set2thread_id[i].second ) );
             size_per_thread = ( vect.size() + __nb_thread_counters - 1 ) /
                               __nb_thread_counters;
@@ -491,7 +491,7 @@ namespace gum {
 
             for ( unsigned int j = 0; j < __nb_thread_counters; ++j ) {
               if ( j != this_thread ) {
-                const std::vector<float, CountAlloc>& othervect =
+                const std::vector<double, CountAlloc>& othervect =
                     __thread_counters[j]->getCounts(
                         __set2thread_id[i].second );
 
@@ -503,7 +503,7 @@ namespace gum {
 
             // now copy what we just computed into the countings of the
             // current object
-            std::vector<float, CountAlloc>& final_vect = __countings[i];
+            std::vector<double, CountAlloc>& final_vect = __countings[i];
 
             for ( unsigned int k = min_range; k < max_range; ++k ) {
               final_vect[k] = vect[k];
@@ -690,7 +690,7 @@ namespace gum {
 
     /// returns the counts performed for a given idSet
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc>&
+    INLINE const std::vector<double, CountAlloc>&
     RecordCounter<IdSetAlloc, CountAlloc>::getCounts( unsigned int idset ) const
         noexcept {
       return __countings[idset];
@@ -803,7 +803,7 @@ namespace gum {
 
     /// returns the counting performed
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE std::vector<std::vector<float, CountAlloc>>&
+    INLINE std::vector<std::vector<double, CountAlloc>>&
     RecordCounter<IdSetAlloc, CountAlloc>::__getCounts() noexcept {
       return __countings;
     }

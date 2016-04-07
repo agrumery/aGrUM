@@ -102,7 +102,7 @@ namespace gum {
       void insert( unsigned int var1,
                    unsigned int var2,
                    const std::vector<unsigned int>& conditioning_set,
-                   float score );
+                   double score );
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
@@ -111,7 +111,7 @@ namespace gum {
       void insert( unsigned int var1,
                    unsigned int var2,
                    IdSet<Alloc>& conditioning_set,
-                   float score );
+                   double score );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
@@ -135,7 +135,7 @@ namespace gum {
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      float score( unsigned int var1,
+      double score( unsigned int var1,
                    unsigned int var2,
                    const std::vector<unsigned int>& conditioning_set );
 
@@ -146,7 +146,7 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable<std::tuple<IdSet<>, unsigned int, unsigned int>, float>
+      HashTable<std::tuple<IdSet<>, unsigned int, unsigned int>, double>
           __scores;
     };
 

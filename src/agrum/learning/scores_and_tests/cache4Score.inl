@@ -66,7 +66,7 @@ namespace gum {
     INLINE void
     Cache4Score::insert( unsigned int var,
                          const std::vector<unsigned int>& conditioning_set,
-                         float score ) {
+                         double score ) {
       __scores.insert( std::pair<IdSet<>, unsigned int>(
                            IdSet<>( conditioning_set, 0 ), var ),
                        std::move( score ) );
@@ -76,7 +76,7 @@ namespace gum {
     template <typename Alloc>
     INLINE void Cache4Score::insert( unsigned int var,
                                      IdSet<Alloc>& conditioning_set,
-                                     float score ) {
+                                     double score ) {
       __scores.insert(
           std::pair<IdSet<>, unsigned int>( IdSet<>( conditioning_set ), var ),
           std::move( score ) );
@@ -107,7 +107,7 @@ namespace gum {
     }
 
     /// returns a given score
-    INLINE float
+    INLINE double
     Cache4Score::score( unsigned int var,
                         const std::vector<unsigned int>& conditioning_set ) {
       return __scores[std::pair<IdSet<>, unsigned int>(
