@@ -23,56 +23,6 @@
 namespace gum {
   namespace prm {
 
-    MultiDimImplementation<std::string>* copyMultiDim(
-        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimImplementation<std::string>& source ) {
-      const MultiDimImplementation<std::string>* impl = &source;
-      MultiDimImplementation<std::string>* p = 0;
-
-      try {
-        if ( dynamic_cast<const MultiDimReadOnly<std::string>*>( impl ) ) {
-          if ( dynamic_cast<const aggregator::MultiDimAggregator<std::string>*>(
-                   impl ) ) {
-            p = static_cast<MultiDimImplementation<std::string>*>(
-                impl->newFactory() );
-
-            for ( MultiDimInterface::iterator iter = impl->begin();
-                  iter != impl->end();
-                  ++iter )
-              p->add( *( bij.second( *iter ) ) );
-          } else {
-            GUM_ERROR( FatalError,
-                       "encountered an unexpected MultiDim implementation" );
-          }
-        } else {
-          if ( dynamic_cast<const MultiDimArray<std::string>*>( impl ) ) {
-            p = new MultiDimBijArray<std::string>(
-                bij, static_cast<const MultiDimArray<std::string>&>( *impl ) );
-          } else if ( dynamic_cast<const MultiDimBijArray<std::string>*>(
-                          impl ) ) {
-            p = new MultiDimBijArray<std::string>(
-                bij,
-                static_cast<const MultiDimBijArray<std::string>&>( *impl ) );
-          } else if ( dynamic_cast<const MultiDimSparse<std::string>*>(
-                          impl ) ) {
-            GUM_ERROR( FatalError,
-                       "There is no MultiDimSparse in PRMs, normally..." );
-          } else {
-            // Just need to make the copy using the bijection but we only use
-            // multidim array
-            GUM_ERROR( FatalError,
-                       "encountered an unexpected MultiDim implementation" );
-          }
-        }
-
-        return p;
-      } catch ( Exception& ) {
-        if ( p ) delete p;
-
-        throw;
-      }
-    }
-
     // Decompose a string in a vector of strings using "." as separators.
     void decomposePath( const std::string& path, std::vector<std::string>& v ) {
       size_t prev = 0;

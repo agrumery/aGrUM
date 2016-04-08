@@ -77,10 +77,6 @@ namespace gum {
     template <typename GUM_SCALAR>
     Potential<GUM_SCALAR>* multPotential( const Potential<GUM_SCALAR>& t1,
                                           const Potential<GUM_SCALAR>& t2 );
-
-    MultiDimImplementation<std::string>* copyMultiDim(
-        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimImplementation<std::string>& source );
     /**
      * @brief Proceeds with the elimination of var in pool.
      * @param var The variable eliminated from every potentials in pool.
