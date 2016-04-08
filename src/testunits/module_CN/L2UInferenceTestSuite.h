@@ -130,13 +130,13 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile( GET_RESSOURCES_PATH( "cn/L2U.evi" ) );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
       try {
         lp.eraseAllEvidence();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
@@ -151,13 +151,13 @@ namespace gum_tests {
 
       try {
         lp.insertEvidence( eviMap );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
       try {
         lp.eraseAllEvidence();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
@@ -170,19 +170,19 @@ namespace gum_tests {
       try {
         for ( const auto node : cn->current_bn().nodes() )
           modals[cn->current_bn().variable( node ).name()] = binaryModal;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
       /*try {
         lp.insertModals( modals );
-      } catch ( gum::Exception & e ) {
+      } catch ( gum::Exception & ) {
         TS_ASSERT ( false );
       }*/
 
       try {
         lp.makeInference();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
@@ -193,13 +193,13 @@ namespace gum_tests {
           // double e_inf = lp.expectationMin ( node_idIt );
           // double e_sup = lp.expectationMax ( node_idIt );
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
       try {
         lp.eraseAllEvidence();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
@@ -220,20 +220,20 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile( GET_RESSOURCES_PATH( "cn/dbn_bin_evi.evi" ) );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
       // modalities from file
       /*try {
         lp.insertModalsFile( GET_RESSOURCES_PATH ( modalities.modal ) );
-      } catch ( gum::Exception & e ) {
+      } catch ( gum::Exception & ) {
         TS_ASSERT ( false );
       }*/
 
       try {
         lp.makeInference();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
@@ -244,14 +244,14 @@ namespace gum_tests {
           // double e_inf = lp.expectationMin ( node_idIt );
           // double e_sup = lp.expectationMax ( node_idIt );
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
       /*
       try {
         lp.dynamicExpectations();
-      } catch ( gum::Exception & e ) {
+      } catch ( gum::Exception & ) {
         TS_ASSERT ( false );
       }*/
       /*
@@ -264,13 +264,13 @@ namespace gum_tests {
          );
                 //std::vector< double >  etemp_sup ( lp.dynamicExpMax ( "temp" )
          );
-              } catch ( gum::Exception & e ) {
+              } catch ( gum::Exception & ) {
                 TS_ASSERT ( false );
               }*/
 
       try {
         lp.eraseAllEvidence();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
@@ -286,7 +286,7 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile( GET_RESSOURCES_PATH( "cn/dbn_bin_evi.evi" ) );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
@@ -295,7 +295,7 @@ namespace gum_tests {
 
       try {
         lp.makeInference();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 
@@ -305,7 +305,7 @@ namespace gum_tests {
 
       try {
         lp.eraseAllEvidence();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
 

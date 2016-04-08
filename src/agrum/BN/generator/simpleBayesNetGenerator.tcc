@@ -29,7 +29,11 @@
 
 namespace gum {
 
+#ifdef _MSC_VER 
+#define IBNG IBayesNetGenerator
+#else 
 #define IBNG IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>
+#endif
 
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR, template <typename> class ICPTGenerator>
@@ -111,3 +115,4 @@ namespace gum {
     bayesNet = IBNG::_bayesNet;
   }
 } /* namespace gum */
+#undef IBNG

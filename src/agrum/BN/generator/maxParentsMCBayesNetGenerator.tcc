@@ -28,7 +28,11 @@
 
 namespace gum {
 
+#ifdef _MSC_VER 
+#define MCBG MCBayesNetGenerator
+#else
 #define MCBG MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>
+#endif
 
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
@@ -112,3 +116,5 @@ namespace gum {
     _maxParents = maxParents;
   }
 } /* namespace gum */
+
+#undef MCBG

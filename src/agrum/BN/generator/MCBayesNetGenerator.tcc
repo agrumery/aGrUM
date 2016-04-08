@@ -28,7 +28,11 @@
 
 namespace gum {
 
+#ifdef _MSC_VER 
+#define IBNG IBayesNetGenerator
+#else
 #define IBNG IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>
+#endif
 
   template <typename GUM_SCALAR>
   gum::Size getMaxModality( gum::BayesNet<GUM_SCALAR>& bayesNet ) {
@@ -777,4 +781,5 @@ namespace gum {
   }
 
 } /* namespace gum */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+
+#undef IBNG
