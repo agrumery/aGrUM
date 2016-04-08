@@ -95,10 +95,10 @@ namespace gum {
                 ++y, zx = beg_zx ) {
             for ( unsigned int z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
               const double tmp1 = Nzyx[zyx] * Nz[z];
-              if ( tmp1 ) {
+              if ( tmp1!=0.0 ) {
                 const double tmp2 = Nzy[zy] * Nzx[zx];
-                if ( tmp2 ) {
-                  score += Nzyx[zyx] * logf( tmp1 / tmp2 );
+                if ( tmp2!=0.0 ) {
+                  score += Nzyx[zyx] * std::log( tmp1 / tmp2 );
                 }
               }
             }
@@ -150,8 +150,8 @@ namespace gum {
           const double tmp_Nx = Nx[x];
           for ( unsigned int y = 0; y < Y_size; ++y, ++yx ) {
             const double tmp = tmp_Nx * Ny[y];
-            if ( tmp ) {
-              score += Nyx[yx] * logf( ( Nyx[yx] * N ) / tmp );
+            if ( tmp!=0.0 ) {
+              score += Nyx[yx] * std::log( ( Nyx[yx] * N ) / tmp );
             }
           }
         }

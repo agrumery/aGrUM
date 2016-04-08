@@ -34,7 +34,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void DAG2BNLearner::__probaVarReordering(
         gum::Potential<GUM_SCALAR>& pot,
-        const gum::Potential<double>& other_pot ) {
+        const gum::Potential<GUM_SCALAR>& other_pot ) {
       // check that the variables are identical
       if ( !pot.variablesSequence()
                 .diffSet( other_pot.variablesSequence() )
@@ -120,7 +120,7 @@ namespace gum {
         }
 
         // create a potential with the appropriate size
-        Potential<double> ordered_pot;
+        Potential<GUM_SCALAR> ordered_pot;
         ordered_pot.beginMultipleChanges();
         for ( const auto var : vars ) {
           ordered_pot.add( *var );

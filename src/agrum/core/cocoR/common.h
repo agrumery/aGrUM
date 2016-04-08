@@ -30,6 +30,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define COCO_R_COMMON_H
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/config.h>
 
 #include <iostream>
 #include <cstring>

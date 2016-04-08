@@ -21,13 +21,14 @@
  * @file
  * @brief Headers of the Concrete Leaf class.
  *
- * @author Jean-Christophe MAGNAN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // =========================================================================
 #ifndef GUM_CONCRETE_LEAF_H
 #define GUM_CONCRETE_LEAF_H
 // =========================================================================
+#include <agrum/config.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/multiPriorityQueue.h>
@@ -100,10 +101,10 @@ namespace gum {
 
     private:
     double __effectif( Idx moda, Int2Type<true> ) const {
-      return __n1->effectif( __valueDomain->atPos( moda ) );
+      return (double)__n1->effectif( __valueDomain->atPos( moda ) );
     }
     double __effectif( Idx moda, Int2Type<false> ) const {
-      return __n1->effectif( moda );
+      return (double)__n1->effectif( moda );
     }
 
     public:

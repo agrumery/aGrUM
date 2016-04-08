@@ -156,8 +156,8 @@ namespace gum_tests {
     void randomInitP( gum::Potential<float>& t ) {
       gum::Instantiation i( t );
 
-      for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, 1 + (int)( 50.0 * rand() / RAND_MAX ));
+      for (i.setFirst(); !i.end(); ++i)
+        t.set(i, 1.0f + rand()*50.0f / RAND_MAX);
     }
 
     // the function used to combine two tables

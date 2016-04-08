@@ -1708,7 +1708,7 @@ namespace gum {
           // smallest numerator & denominator is farley, also
           // best precision
           Rational<GUM_SCALAR>::farey(
-              num, den, ( ( *it2 > 0 ) ? *it2 : -*it2 ), __denMax, __epsF );
+              num, den, ( ( *it2 > 0 ) ? *it2 : -*it2 ), long(__denMax), __epsF );
 
           h_file << ( ( *it2 > 0 ) ? num : -num ) << '/' << den << ' ';
         }
@@ -1766,7 +1766,7 @@ namespace gum {
       char *cstr, *p;
       GUM_SCALAR probability;
 
-      std::string::size_type pos, end_pos;
+      std::string::size_type pos;
       bool keep_going = true;
       // int vertices;
 
@@ -1783,6 +1783,7 @@ namespace gum {
           keep_going = false;
           // this is to get vertices number :
           /*getline ( v_file, line );
+          std::string::size_type pos, end_pos;
           pos = line.find ( "vertices = " );
           end_pos = line.find ( "rays", pos + 9 );
           vertices = atoi ( line.substr ( pos + 9, end_pos - pos - 9 ).c_str()

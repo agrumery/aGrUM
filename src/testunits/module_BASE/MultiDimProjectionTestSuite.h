@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -339,9 +339,9 @@ public:
     TS_ASSERT(t2->variablesSequence().exists(vars[4]));
     TS_ASSERT(t2->variablesSequence().exists(vars[5]));
     TS_ASSERT(t2->variablesSequence().exists(vars[8]));
-    TS_ASSERT(not t2->variablesSequence().exists(vars[0]));
-    TS_ASSERT(not t2->variablesSequence().exists(vars[9]));
-    TS_ASSERT(not t2->variablesSequence().exists(vars[1]));
+    TS_ASSERT(! t2->variablesSequence().exists(vars[0]));
+    TS_ASSERT(! t2->variablesSequence().exists(vars[9]));
+    TS_ASSERT(! t2->variablesSequence().exists(vars[1]));
     delete t2;
 
     t2 = projectMinMultiDimArray(&t1, proj_set);

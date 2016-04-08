@@ -147,6 +147,5 @@ namespace gum {
   }
 } /* namespace gum */
 
-
-#undef MCBG MCBayesNetGenerator
-#undef IBNG IBayesNetGenerator
+#undef MCBG 
+#undef IBNG 

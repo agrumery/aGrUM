@@ -107,9 +107,10 @@ namespace gum {
 
     /// sets the CPT's parameters corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
+    template <typename GUM_SCALAR>
     INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::setParameters(
-        unsigned int nodeset_index, Potential<double>& pot ) {
-      const std::vector<double, CountAlloc>& normalized_counts =
+        unsigned int nodeset_index, Potential<GUM_SCALAR>& pot ) {
+      const std::vector<GUM_SCALAR, CountAlloc>& normalized_counts =
           parameters( nodeset_index );
       pot.fillWith( normalized_counts );
     }

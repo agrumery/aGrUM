@@ -34,11 +34,11 @@ namespace gum {
                                     long int& denominator,
                                     const GUM_SCALAR& number,
                                     const long int& den_max,
-                                    const double& zero ) {
+                                    const GUM_SCALAR& zero ) {
     bool isNegative = ( number < 0 ) ? true : false;
     GUM_SCALAR pnumber = ( isNegative ) ? -number : number;
 
-    if ( std::fabs( pnumber - 1. ) < zero ) {
+    if ( std::abs( pnumber - GUM_SCALAR(1.) ) < zero ) {
       numerator = ( isNegative ) ? -1 : 1;
       denominator = 1;
       return;
@@ -52,7 +52,7 @@ namespace gum {
     double mediant( 0.0F );
 
     while ( b <= den_max && d <= den_max ) {
-      mediant = (double)( a + c ) / (double)( b + d );
+      mediant = (GUM_SCALAR)( a + c ) / (GUM_SCALAR)( b + d );
 
       if ( std::fabs( pnumber - mediant ) < zero ) {
         if ( b + d <= den_max ) {

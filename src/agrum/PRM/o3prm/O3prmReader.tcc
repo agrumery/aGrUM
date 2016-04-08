@@ -25,7 +25,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
-
+#include <agrum/config.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 namespace gum {
@@ -56,17 +56,17 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE std::string
-      O3prmReader<GUM_SCALAR>::__readStream( std::istream& input ) {
-        if ( input ) {
-          input.seekg( 0, input.end );
-          int length = input.tellg();
-          input.seekg( 0, input.beg );
+      O3prmReader<GUM_SCALAR>::__readStream( std::istream& inputstr ) {
+        if ( inputstr ) {
+          inputstr.seekg( 0, inputstr.end );
+          int length = int(inputstr.tellg());
+          inputstr.seekg( 0, inputstr.beg );
 
           auto str = std::string();
           str.resize( length, ' ' );
           auto begin = &*str.begin();
 
-          input.read( begin, length );
+          inputstr.read( begin, length );
 
           return std::move(str);
         }

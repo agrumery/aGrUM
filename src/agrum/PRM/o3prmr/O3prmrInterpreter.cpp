@@ -24,9 +24,9 @@
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
+#include <agrum/config.h>
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 
-#include <agrum/core/utils.h>
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/VEWithBB.h>
@@ -193,26 +193,26 @@ namespace gum {
           } else {
             return interpret( &c );
           }
-        } catch ( gum::Exception& e ) {
+        } catch ( gum::Exception& ) {
           return false;
         }
       }
 
       std::string O3prmrInterpreter::__readFile( const std::string& file ) {
         // read entire file into string
-        std::ifstream is( file, std::ifstream::binary );
-        if ( is ) {
+        std::ifstream istream( file, std::ifstream::binary );
+        if ( istream ) {
           // get length of file:
-          is.seekg( 0, is.end );
-          int length = is.tellg();
-          is.seekg( 0, is.beg );
+          istream.seekg( 0, istream.end );
+          int length = int(istream.tellg());
+          istream.seekg( 0, istream.beg );
 
           std::string str;
           str.resize( length, ' ' );  // reserve space
           char* begin = &*str.begin();
 
-          is.read( begin, length );
-          is.close();
+          istream.read( begin, length );
+          istream.close();
 
           return str;
         }
@@ -900,7 +900,7 @@ namespace gum {
           // auto label_value = j.val ( attr.type().variable() );
           auto label_value = j.val( 0 );
           std::string label = attr.type().variable().label( label_value );
-          float value = m.get( j );
+          float value = float(m.get( j ));
 
           SingleResult singleResult;
           singleResult.label = label;

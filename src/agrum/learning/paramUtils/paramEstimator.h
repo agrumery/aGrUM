@@ -154,7 +154,8 @@ namespace gum {
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
        * are assumed to be identical */
-      void setParameters( unsigned int nodeset_index, Potential<double>& pot );
+      template<typename GUM_SCALAR>
+      void setParameters( unsigned int nodeset_index, Potential<GUM_SCALAR>& pot );
 
       /// sets the range of records taken into account by the counter
       /** @param min_range he number of the first record to be taken into

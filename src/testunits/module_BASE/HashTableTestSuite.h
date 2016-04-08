@@ -551,14 +551,14 @@ namespace gum_tests {
       gum::HashTable<float, unsigned int> t1;
 
       for ( unsigned int i = 0; i < size; ++i ) {
-        float nb = i + i * 0.01;
+        float nb = i + i * 0.01f;
         t1.insert( nb, i * 1000 + i );
       }
 
       std::vector<float> vect( size + 1 );
 
       for ( unsigned int i = 0; i < vect.size(); ++i ) {
-        vect[i] = i + i * 0.01;
+        vect[i] = i + i * 0.01f;
       }
 
       for ( unsigned int i = 0; i < size; ++i ) {
@@ -572,15 +572,15 @@ namespace gum_tests {
       gum::HashTable<std::pair<float, float>, unsigned int> t1;
 
       for ( unsigned int i = 0; i < size; ++i ) {
-        float nb1 = i + i * 0.01;
-        float nb2 = i * 2;
+        float nb1 = i + i * 0.01f;
+        float nb2 = float(i * 2);
         t1.insert( std::pair<float, float>( nb1, nb2 ), i * 1000 + i );
       }
 
       std::vector<float> vect( size + 1 );
 
       for ( unsigned int i = 0; i < vect.size(); ++i ) {
-        vect[i] = i + i * 0.01;
+        vect[i] = i + i * 0.01f;
       }
 
       for ( unsigned int i = 0; i < size; ++i ) {
@@ -595,14 +595,14 @@ namespace gum_tests {
       gum::HashTable<double, unsigned int> t1;
 
       for ( unsigned int i = 0; i < size; ++i ) {
-        double nb = i + i * 0.01;
+        double nb = i + i * 0.01f;
         t1.insert( nb, i * 1000 + i );
       }
 
       std::vector<double> vect( size + 1 );
 
       for ( unsigned int i = 0; i < vect.size(); ++i ) {
-        vect[i] = i + i * 0.01;
+        vect[i] = i + i * 0.01f;
       }
 
       for ( unsigned int i = 0; i < size; ++i ) {

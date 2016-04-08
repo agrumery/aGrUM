@@ -45,7 +45,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t->set( i, (int)( ( (float)rand() / RAND_MAX ) * 100000 ) );
+        t->set( i, rand() * 100000.0f / RAND_MAX );
     }
 
     // ==========================================================================
@@ -56,7 +56,7 @@ namespace gum_tests {
 
       for ( i.setFirst(); !i.end(); ++i )
         t->set( i,
-                new float( (int)( ( (float)rand() / RAND_MAX ) * 100000 ) ) );
+                new float(rand() * 100000.0f / RAND_MAX);
     }
 
     // ==========================================================================
@@ -66,7 +66,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, (int)( ( (float)rand() / RAND_MAX ) * 100000 ) );
+        t.set( i, rand() * 100000.0 / RAND_MAX);
     }
 
     // ==========================================================================
@@ -77,7 +77,7 @@ namespace gum_tests {
 
       for ( i.setFirst(); !i.end(); ++i )
         t.set( i,
-               new double( (int)( ( (float)rand() / RAND_MAX ) * 100000 ) ) );
+               new double(rand() * 100000.0 / RAND_MAX);
     }
 
     template <typename T>

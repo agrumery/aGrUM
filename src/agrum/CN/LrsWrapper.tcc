@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 #include <agrum/CN/LrsWrapper.h>
 
 namespace gum {

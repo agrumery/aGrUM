@@ -79,12 +79,10 @@
 
 #define GUM_UNUSED(expr) do { (void)(expr); } while (0)
 
-#ifdef _MSC_VER  // removing warning about the truncated names of type (>4096)... stupid compiler
-  #pragma warning(disable : 4503)
-#endif
-
-#ifdef _MSC_VER // removing warning about using (non safe) methods instead of (safe but m$-specific) versions.
-#define _CRT_SECURE_NO_WARNINGS
+#ifdef _MSC_VER  
+#pragma warning(disable : 4503) // removing warning about the truncated names of type (>4096)... stupid compiler
+#define _CRT_SECURE_NO_WARNINGS // removing warning about using (non safe) methods instead of (safe but m$-specific) versions.
+#define _CRT_NONSTDC_NO_DEPRECATE // removing warning about POSIX name (dup instead of _dup)
 #endif
 
 

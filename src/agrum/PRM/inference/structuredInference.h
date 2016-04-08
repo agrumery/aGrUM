@@ -287,7 +287,7 @@ namespace gum {
       void __buildReduceGraph( RGData& data );
 
       /// Add the nodes in the reduced graph.
-      void __addNodesInReducedGraph( RGData& data );
+      //MSVC void __addNodesInReducedGraph( RGData& data );
 
       /// Add edges in the reduced graph.
       void __addEdgesInReducedGraph( RGData& data );
@@ -331,7 +331,7 @@ namespace gum {
 
       /// Add in data.queries() any queried variable in one of data.pattern
       /// matches.
-      void __buildQuerySet( PData& data );
+      //MVSC void __buildQuerySet( PData& data );
 
       /// Proceeds with the elimination of observed variables in math and then
       /// call __translatePotSet().
@@ -354,9 +354,9 @@ namespace gum {
                          const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       /// Unreduce the match containing the query.
-      void __unreduceMatchWithQuery();
+      //MVSC void __unreduceMatchWithQuery();
 
-      std::vector<NodeId>* __getClassOutputs( const PRMClass<GUM_SCALAR>* c );
+      //MVSC std::vector<NodeId>* __getClassOutputs( const PRMClass<GUM_SCALAR>* c );
       /// Used to create strings
       std::string __dot;
       std::string __str( const PRMInstance<GUM_SCALAR>* i,

@@ -92,7 +92,7 @@ namespace gum {
       template <typename GUM_SCALAR = double>
       static void
       __probaVarReordering( gum::Potential<GUM_SCALAR>& pot,
-                            const gum::Potential<double>& other_pot );
+                            const gum::Potential<GUM_SCALAR>& other_pot );
     };
 
   } /* namespace learning */

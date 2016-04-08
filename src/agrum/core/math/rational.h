@@ -74,7 +74,7 @@ namespace gum {
                        long int& denominator,
                        const GUM_SCALAR& number,
                        const long int& den_max = 1000000,
-                       const double& zero = 1e-6 );
+                       const GUM_SCALAR& zero = 1e-6 );
 
     /**
      * @brief Find the first best rational approximation.
