@@ -146,6 +146,9 @@ namespace gum {
                                           size_t expected,
                                           ErrorsContainer& errors );
 
+      void O3PRM_CLASS_WRONG_PARENT( const O3Label& prnt,
+                                     ErrorsContainer& errors );
+
       void O3PRM_CLASS_WRONG_PARENT_TYPE( const O3Label& prnt,
                                           const std::string& expected,
                                           const std::string& found,

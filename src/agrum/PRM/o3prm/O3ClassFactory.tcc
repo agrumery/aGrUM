@@ -1000,7 +1000,15 @@ namespace gum {
 
             if ( t == nullptr ) {
 
+              try {
+
               t = &( elt->type() );
+
+              } catch ( OperationNotAllowed& ) {
+
+                O3PRM_CLASS_WRONG_PARENT( prnt, *__errors );
+                return nullptr;
+              }
 
             } else if ( ( *t ) != elt->type() ) {
 
