@@ -334,6 +334,15 @@ namespace gum {
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
+      void O3PRM_CLASS_WRONG_PARENT( const O3Label& prnt,
+                                     ErrorsContainer& errors ) {
+        const auto& pos = prnt.position();
+        auto msg = std::stringstream();
+        msg << "Error : "
+            << "Illegal parent " << prnt;
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
       void O3PRM_CLASS_WRONG_PARENT_TYPE( const O3Label& prnt,
                                           const std::string& expected,
                                           const std::string& found,
