@@ -26,7 +26,6 @@
 #define GUM_SIMPLE_UT_GENERATOR_H
 
 #include <cstdlib>
-#include <time.h>
 
 #include <agrum/ID/generator/UTGenerator.h>
 

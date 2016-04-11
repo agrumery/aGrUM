@@ -21,20 +21,19 @@
 
 // ============================================================================
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <sstream>
-#include <fstream>
-#include <string>
 #include <sstream>
-#include <time.h>
+#include <string>
 // =============================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // =============================================================================
-#include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/multiDimFunctionGraphGenerator.h>
+#include <agrum/multidim/potential.h>
 // =============================================================================
 #include <agrum/variables/labelizedVariable.h>
 // =============================================================================
@@ -421,7 +420,8 @@ namespace gum_tests {
         delete varList;
 
         if ( !evalRes ) {
-//          std::cout << "An error has occured! Aborting test." << std::endl;
+          //          std::cout << "An error has occured! Aborting test." <<
+          //          std::endl;
           return;
         }
 
@@ -440,207 +440,196 @@ namespace gum_tests {
     // *****************************************************************************************************
     void est_Reproducteur() {
 
-              gum::LabelizedVariable* v0 = new gum::LabelizedVariable( "v0",
-              "", 2 );
-              gum::LabelizedVariable* v1 = new gum::LabelizedVariable( "v1",
-              "", 2 );
-              gum::LabelizedVariable* v2 = new gum::LabelizedVariable( "v2",
-              "", 2 );
-              gum::LabelizedVariable* v3 = new gum::LabelizedVariable( "v3",
-              "", 3 );
-              gum::LabelizedVariable* v4 = new gum::LabelizedVariable( "4",
-              "", 2 );
-              gum::LabelizedVariable* v5 = new gum::LabelizedVariable( "5",
-              "", 3 );
-              gum::LabelizedVariable* v6 = new gum::LabelizedVariable( "6",
-              "", 2 );
-              gum::LabelizedVariable* v7 = new gum::LabelizedVariable( "7",
-              "", 2 );
-              gum::LabelizedVariable* v8 = new gum::LabelizedVariable( "8",
-              "", 3 );
-              gum::LabelizedVariable* v9 = new gum::LabelizedVariable( "9",
-              "", 2 );
+      gum::LabelizedVariable* v0 = new gum::LabelizedVariable( "v0", "", 2 );
+      gum::LabelizedVariable* v1 = new gum::LabelizedVariable( "v1", "", 2 );
+      gum::LabelizedVariable* v2 = new gum::LabelizedVariable( "v2", "", 2 );
+      gum::LabelizedVariable* v3 = new gum::LabelizedVariable( "v3", "", 3 );
+      gum::LabelizedVariable* v4 = new gum::LabelizedVariable( "4", "", 2 );
+      gum::LabelizedVariable* v5 = new gum::LabelizedVariable( "5", "", 3 );
+      gum::LabelizedVariable* v6 = new gum::LabelizedVariable( "6", "", 2 );
+      gum::LabelizedVariable* v7 = new gum::LabelizedVariable( "7", "", 2 );
+      gum::LabelizedVariable* v8 = new gum::LabelizedVariable( "8", "", 3 );
+      gum::LabelizedVariable* v9 = new gum::LabelizedVariable( "9", "", 2 );
 
-              gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10,
-              n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, n22;//,n23, n24, n25, n26;
+      gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12,
+          n13, n14, n15, n16, n17, n18, n19, n20, n21,
+          n22;  //,n23, n24, n25, n26;
 
 
-              gum::MultiDimFunctionGraph<double>* dg1 =
-              gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph<double>* dg1 =
+          gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-              dg1->add(*v3);
-              dg1->add(*v1);
-              dg1->add(*v0);
-              dg1->add(*v2);
+      dg1->add( *v3 );
+      dg1->add( *v1 );
+      dg1->add( *v0 );
+      dg1->add( *v2 );
 
-              n01 = dg1->manager()->addInternalNode( v3 );
-              n02 = dg1->manager()->addInternalNode( v0 );
-              n03 = dg1->manager()->addInternalNode( v1 );
-              n04 = dg1->manager()->addInternalNode( v1 );
-              n05 = dg1->manager()->addInternalNode( v2 );
-              n06 = dg1->manager()->addInternalNode( v2 );
-              n07 = dg1->manager()->addInternalNode( v0 );
-              n08 = dg1->manager()->addTerminalNode( 19.0836 );
-              n09 = dg1->manager()->addTerminalNode( 88.4791 );
-              n10 = dg1->manager()->addTerminalNode( 16.2301 );
-              n11 = dg1->manager()->addTerminalNode( 30.7077 );
-              n12 = dg1->manager()->addInternalNode( v2 );
-              n13 = dg1->manager()->addTerminalNode( 90.9853 );
-              n14 = dg1->manager()->addTerminalNode( 28.7184 );
-              n15 = dg1->manager()->addTerminalNode( 16.5207 );
-              n16 = dg1->manager()->addTerminalNode( 55.5485 );
-              n17 = dg1->manager()->addTerminalNode( 8.60651 );
-              n18 = dg1->manager()->addTerminalNode( 81.2182 );
-              n19 = dg1->manager()->addTerminalNode( 84.3831 );
-              n20 = dg1->manager()->addTerminalNode( 6.12946 );
-              n21 = dg1->manager()->addTerminalNode( 83.9071 );
-              n22 = dg1->manager()->addTerminalNode( 7.85962 );
+      n01 = dg1->manager()->addInternalNode( v3 );
+      n02 = dg1->manager()->addInternalNode( v0 );
+      n03 = dg1->manager()->addInternalNode( v1 );
+      n04 = dg1->manager()->addInternalNode( v1 );
+      n05 = dg1->manager()->addInternalNode( v2 );
+      n06 = dg1->manager()->addInternalNode( v2 );
+      n07 = dg1->manager()->addInternalNode( v0 );
+      n08 = dg1->manager()->addTerminalNode( 19.0836 );
+      n09 = dg1->manager()->addTerminalNode( 88.4791 );
+      n10 = dg1->manager()->addTerminalNode( 16.2301 );
+      n11 = dg1->manager()->addTerminalNode( 30.7077 );
+      n12 = dg1->manager()->addInternalNode( v2 );
+      n13 = dg1->manager()->addTerminalNode( 90.9853 );
+      n14 = dg1->manager()->addTerminalNode( 28.7184 );
+      n15 = dg1->manager()->addTerminalNode( 16.5207 );
+      n16 = dg1->manager()->addTerminalNode( 55.5485 );
+      n17 = dg1->manager()->addTerminalNode( 8.60651 );
+      n18 = dg1->manager()->addTerminalNode( 81.2182 );
+      n19 = dg1->manager()->addTerminalNode( 84.3831 );
+      n20 = dg1->manager()->addTerminalNode( 6.12946 );
+      n21 = dg1->manager()->addTerminalNode( 83.9071 );
+      n22 = dg1->manager()->addTerminalNode( 7.85962 );
 
-              dg1->manager()->setSon( n01, 0, n02 );
-              dg1->manager()->setSon( n01, 1, n03 );
-              dg1->manager()->setSon( n01, 2, n04 );
+      dg1->manager()->setSon( n01, 0, n02 );
+      dg1->manager()->setSon( n01, 1, n03 );
+      dg1->manager()->setSon( n01, 2, n04 );
 
-              dg1->manager()->setSon( n02, 0, n05 );
-              dg1->manager()->setSon( n02, 1, n06 );
-              dg1->manager()->setSon( n02, 2, n07 );
+      dg1->manager()->setSon( n02, 0, n05 );
+      dg1->manager()->setSon( n02, 1, n06 );
+      dg1->manager()->setSon( n02, 2, n07 );
 
-              dg1->manager()->setSon( n03, 0, n05 );
-              dg1->manager()->setSon( n03, 1, n06 );
+      dg1->manager()->setSon( n03, 0, n05 );
+      dg1->manager()->setSon( n03, 1, n06 );
 
-              dg1->manager()->setSon( n04, 0, n07 );
-              dg1->manager()->setSon( n04, 1, n05 );
+      dg1->manager()->setSon( n04, 0, n07 );
+      dg1->manager()->setSon( n04, 1, n05 );
 
-              dg1->manager()->setSon( n05, 0, n10 );
-              dg1->manager()->setSon( n05, 1, n11 );
-              dg1->manager()->setSon( n05, 2, n16 );
+      dg1->manager()->setSon( n05, 0, n10 );
+      dg1->manager()->setSon( n05, 1, n11 );
+      dg1->manager()->setSon( n05, 2, n16 );
 
-              dg1->manager()->setSon( n06, 0, n08 );
-              dg1->manager()->setSon( n06, 1, n09 );
-              dg1->manager()->setSon( n06, 2, n11 );
+      dg1->manager()->setSon( n06, 0, n08 );
+      dg1->manager()->setSon( n06, 1, n09 );
+      dg1->manager()->setSon( n06, 2, n11 );
 
-              dg1->manager()->setSon( n07, 0, n05 );
-              dg1->manager()->setSon( n07, 1, n12 );
+      dg1->manager()->setSon( n07, 0, n05 );
+      dg1->manager()->setSon( n07, 1, n12 );
 
-              dg1->manager()->setSon( n08, 0, n14 );
-              dg1->manager()->setSon( n08, 1, n15 );
-              dg1->manager()->setSon( n08, 2, n05 );
+      dg1->manager()->setSon( n08, 0, n14 );
+      dg1->manager()->setSon( n08, 1, n15 );
+      dg1->manager()->setSon( n08, 2, n05 );
 
-              dg1->manager()->setSon( n09, 0, n10 );
-              dg1->manager()->setSon( n09, 1, n11 );
+      dg1->manager()->setSon( n09, 0, n10 );
+      dg1->manager()->setSon( n09, 1, n11 );
 
-              dg1->manager()->setSon( n12, 0, n13 );
-              dg1->manager()->setSon( n12, 1, n14 );
-              dg1->manager()->setSon( n12, 2, n19 );
+      dg1->manager()->setSon( n12, 0, n13 );
+      dg1->manager()->setSon( n12, 1, n14 );
+      dg1->manager()->setSon( n12, 2, n19 );
 
-              dg1->manager()->setSon( n13, 0, n20 );
-              dg1->manager()->setSon( n13, 1, n21 );
-              dg1->manager()->setSon( n13, 2, n22 );
+      dg1->manager()->setSon( n13, 0, n20 );
+      dg1->manager()->setSon( n13, 1, n21 );
+      dg1->manager()->setSon( n13, 2, n22 );
 
-              dg1->manager()->setRootNode( n01 );
+      dg1->manager()->setRootNode( n01 );
 
-              gum::MultiDimFunctionGraph<double>* dg2 =
-              gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph<double>* dg2 =
+          gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-              dg2->add(*v0);
-              dg2->add(*v3);
-              dg2->add(*v2);
-              dg2->add(*v1);
+      dg2->add( *v0 );
+      dg2->add( *v3 );
+      dg2->add( *v2 );
+      dg2->add( *v1 );
 
-              n01 = dg2->manager()->addInternalNode( v0 );
-              n02 = dg2->manager()->addInternalNode( v1 );
-              n03 = dg2->manager()->addInternalNode( v3 );
-              n04 = dg2->manager()->addTerminalNode( 27.0957 );
-              n05 = dg2->manager()->addTerminalNode( 8.01978 );
-              n06 = dg2->manager()->addInternalNode( v2 );
-              n07 = dg2->manager()->addInternalNode( v1 );
-              n08 = dg2->manager()->addInternalNode( v1 );
-              n09 = dg2->manager()->addTerminalNode( 16.2307 );
-              n10 = dg2->manager()->addTerminalNode( 30.7077 );
-              n11 = dg2->manager()->addTerminalNode( 26.1679 );
-              n12 = dg2->manager()->addTerminalNode( 84.2562 );
-              n13 = dg2->manager()->addTerminalNode( 94.3744 );
-              n14 = dg2->manager()->addTerminalNode( 0.666253 );
-              n15 = dg2->manager()->addTerminalNode( 16.5207 );
-              n16 = dg2->manager()->addTerminalNode( 55.5485 );
-              n17 = dg2->manager()->addTerminalNode( 8.60651 );
-              n18 = dg2->manager()->addTerminalNode( 81.2182 );
-              n19 = dg2->manager()->addTerminalNode( 84.3831 );
-              n20 = dg2->manager()->addTerminalNode( 6.12946 );
-              n21 = dg2->manager()->addTerminalNode( 83.9071 );
-              n22 = dg2->manager()->addTerminalNode( 7.85962 );
+      n01 = dg2->manager()->addInternalNode( v0 );
+      n02 = dg2->manager()->addInternalNode( v1 );
+      n03 = dg2->manager()->addInternalNode( v3 );
+      n04 = dg2->manager()->addTerminalNode( 27.0957 );
+      n05 = dg2->manager()->addTerminalNode( 8.01978 );
+      n06 = dg2->manager()->addInternalNode( v2 );
+      n07 = dg2->manager()->addInternalNode( v1 );
+      n08 = dg2->manager()->addInternalNode( v1 );
+      n09 = dg2->manager()->addTerminalNode( 16.2307 );
+      n10 = dg2->manager()->addTerminalNode( 30.7077 );
+      n11 = dg2->manager()->addTerminalNode( 26.1679 );
+      n12 = dg2->manager()->addTerminalNode( 84.2562 );
+      n13 = dg2->manager()->addTerminalNode( 94.3744 );
+      n14 = dg2->manager()->addTerminalNode( 0.666253 );
+      n15 = dg2->manager()->addTerminalNode( 16.5207 );
+      n16 = dg2->manager()->addTerminalNode( 55.5485 );
+      n17 = dg2->manager()->addTerminalNode( 8.60651 );
+      n18 = dg2->manager()->addTerminalNode( 81.2182 );
+      n19 = dg2->manager()->addTerminalNode( 84.3831 );
+      n20 = dg2->manager()->addTerminalNode( 6.12946 );
+      n21 = dg2->manager()->addTerminalNode( 83.9071 );
+      n22 = dg2->manager()->addTerminalNode( 7.85962 );
 
-              dg2->manager()->setSon( n01, 0, n02 );
-              dg2->manager()->setSon( n01, 1, n03 );
-              dg2->manager()->setSon( n01, 2, n04 );
+      dg2->manager()->setSon( n01, 0, n02 );
+      dg2->manager()->setSon( n01, 1, n03 );
+      dg2->manager()->setSon( n01, 2, n04 );
 
-              dg2->manager()->setSon( n02, 0, n04 );
-              dg2->manager()->setSon( n02, 1, n05 );
-              dg2->manager()->setSon( n02, 2, n07 );
+      dg2->manager()->setSon( n02, 0, n04 );
+      dg2->manager()->setSon( n02, 1, n05 );
+      dg2->manager()->setSon( n02, 2, n07 );
 
-              dg2->manager()->setSon( n03, 0, n02 );
-              dg2->manager()->setSon( n03, 1, n06 );
-              dg2->manager()->setSon( n03, 2, n02 );
+      dg2->manager()->setSon( n03, 0, n02 );
+      dg2->manager()->setSon( n03, 1, n06 );
+      dg2->manager()->setSon( n03, 2, n02 );
 
-              dg2->manager()->setSon( n04, 0, n06 );
-              dg2->manager()->setSon( n04, 1, n05 );
+      dg2->manager()->setSon( n04, 0, n06 );
+      dg2->manager()->setSon( n04, 1, n05 );
 
-              dg2->manager()->setSon( n05, 0, n08 );
-              dg2->manager()->setSon( n05, 1, n09 );
-              dg2->manager()->setSon( n05, 2, n16 );
+      dg2->manager()->setSon( n05, 0, n08 );
+      dg2->manager()->setSon( n05, 1, n09 );
+      dg2->manager()->setSon( n05, 2, n16 );
 
-              dg2->manager()->setSon( n06, 0, n07 );
-              dg2->manager()->setSon( n06, 1, n08 );
-              dg2->manager()->setSon( n06, 2, n11 );
+      dg2->manager()->setSon( n06, 0, n07 );
+      dg2->manager()->setSon( n06, 1, n08 );
+      dg2->manager()->setSon( n06, 2, n11 );
 
-              dg2->manager()->setSon( n07, 0, n09 );
-              dg2->manager()->setSon( n07, 1, n10 );
+      dg2->manager()->setSon( n07, 0, n09 );
+      dg2->manager()->setSon( n07, 1, n10 );
 
-              dg2->manager()->setSon( n08, 0, n11 );
-              dg2->manager()->setSon( n08, 1, n12 );
-              dg2->manager()->setSon( n08, 2, n05 );
+      dg2->manager()->setSon( n08, 0, n11 );
+      dg2->manager()->setSon( n08, 1, n12 );
+      dg2->manager()->setSon( n08, 2, n05 );
 
-              dg2->manager()->setSon( n09, 0, n12 );
-              dg2->manager()->setSon( n09, 1, n13 );
+      dg2->manager()->setSon( n09, 0, n12 );
+      dg2->manager()->setSon( n09, 1, n13 );
 
-              dg2->manager()->setSon( n12, 0, n17 );
-              dg2->manager()->setSon( n12, 1, n18 );
-              dg2->manager()->setSon( n12, 2, n19 );
+      dg2->manager()->setSon( n12, 0, n17 );
+      dg2->manager()->setSon( n12, 1, n18 );
+      dg2->manager()->setSon( n12, 2, n19 );
 
-              dg2->manager()->setSon( n13, 0, n20 );
-              dg2->manager()->setSon( n13, 1, n21 );
-              dg2->manager()->setSon( n13, 2, n22 );
+      dg2->manager()->setSon( n13, 0, n20 );
+      dg2->manager()->setSon( n13, 1, n21 );
+      dg2->manager()->setSon( n13, 2, n22 );
 
-              dg2->manager()->setRootNode( n01 );
+      dg2->manager()->setRootNode( n01 );
 
-              double foo = 0.0, bar = 0.0;
-              TS_GUM_ASSERT_THROWS_NOTHING( __evalOperation( 1, dg1,
-              dg2,foo,bar,0.0 ) );
+      double foo = 0.0, bar = 0.0;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __evalOperation( 1, dg1, dg2, foo, bar, 0.0 ) );
 
-              delete dg1;
-              delete dg2;
+      delete dg1;
+      delete dg2;
 
-              delete v0;
-              delete v1;
-              delete v2;
-              delete v3;
-              delete v4;
-              delete v5;
-              delete v6;
-              delete v7;
-              delete v8;
-              delete v9;
+      delete v0;
+      delete v1;
+      delete v2;
+      delete v3;
+      delete v4;
+      delete v5;
+      delete v6;
+      delete v7;
+      delete v8;
+      delete v9;
     }
   };
 } /* end of gum_test */
-
-
 
 
 // =================================================================================
 // Code for doing random operation
 // I let it here just in case
 // =================================================================================
-//for ( gum::Idx i = 0; i < 1; i++ ) {
+// for ( gum::Idx i = 0; i < 1; i++ ) {
 
 //  time.reset();
 
@@ -700,9 +689,10 @@ namespace gum_tests {
 //  test_waiting( i );
 //}
 
-//end_test_waiting();
+// end_test_waiting();
 ////      std::cout << std::endl
 ////                << "Temps Génération : " << tempsGene
 ////                << "s - Temps Calcul : " << tempsCalcul
-////                << "s - Temps Evaluation " << tempsEval << "s " << std::endl;
+////                << "s - Temps Evaluation " << tempsEval << "s " <<
+///std::endl;
 //}

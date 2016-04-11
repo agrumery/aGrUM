@@ -42,12 +42,6 @@
 #include <agrum/core/mvsc/dirent.h>
 #endif
 
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#else
-#include <agrum/core/mvsc/time.h>
-#endif
-
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/generator/simpleCPTDisturber.h>

@@ -39,7 +39,7 @@ namespace gum_tests {
 
         TS_GUM_ASSERT_THROWS_NOTHING( gum::Timer t3( *t2 ) );
 
-        gum::Timer* t4 = 0;
+        gum::Timer* t4 = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( t4 = new gum::Timer( t1 ) );
         TS_ASSERT_DELTA( t4->step(), t1.step(), 1e-3 );
 
@@ -58,7 +58,7 @@ namespace gum_tests {
       bool test_pass = false;
       // The test randomly fails for reasons, it have to fails three times in
       // a row to be considered trully as failed
-      for ( int i = 0; ( i < 3 ) and not test_pass; ++i ) {
+      for ( int i = 0; ( i < 3 ) && ! test_pass; ++i ) {
         gum::Timer t;
         gum::Timer tt;
         int w = 0;

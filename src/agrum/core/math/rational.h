@@ -32,7 +32,6 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
-#include <time.h>
 #include <vector>
 
 namespace gum {

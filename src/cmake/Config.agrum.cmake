@@ -1,7 +1,6 @@
 INCLUDE(CheckIncludeFiles)
 CHECK_INCLUDE_FILES(dirent.h HAVE_DIRENT_H)
 CHECK_INCLUDE_FILES(unistd.h HAVE_UNISTD_H)
-CHECK_INCLUDE_FILES(sys/time.h HAVE_SYS_TIME_H)
 CHECK_INCLUDE_FILES(execinfo.h HAVE_EXECINFO_H)
 
 include(CheckTypeSize)
@@ -11,7 +10,7 @@ CHECK_TYPE_SIZE(long   GUM_LONG_SIZE)
 CHECK_TYPE_SIZE(float  GUM_FLOAT_SIZE)
 CHECK_TYPE_SIZE(double GUM_DOUBLE_SIZE)
 
-include (CheckFunctionExists) 
+include (CheckFunctionExists)
 CHECK_FUNCTION_EXISTS(mkstemp HAVE_MKSTEMP)
 
 set(GUM_SRC_PATH "${AGRUM_SOURCE_DIR}")

@@ -41,8 +41,8 @@ namespace gum {
     if ( _sleeping )
       ms=_pause-_start;
     else
-      ms=std::chrono::high_resolution_clock::now() - _start );
-    return 1000*std::chrono::duration_cast<std::chrono::duration<double, std::milli>>>(ms);
+      ms=std::chrono::high_resolution_clock::now() - _start ;
+    return ms.count()/1000.0;
   }
 
   INLINE
