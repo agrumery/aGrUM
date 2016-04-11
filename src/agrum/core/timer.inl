@@ -18,17 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 // to ease IDE parser
-#include <agrum/core/timer.h>
+#include <chrono>
 
+#include <agrum/core/timer.h>
 
 namespace gum {
 
 
   INLINE
   void Timer::reset() {
-    _pause = 0;
     _sleeping = false;
-    _start = Timer::get_clock();
+    _start = std::chrono::high_resolution_clock::now();
+    _pause = std::chrono::high_resolution_clock::now();
 
     // do _start = clock(); while ( _start == k );// to be sure to start at the
     // beginning of a tick
@@ -36,16 +37,18 @@ namespace gum {
 
   INLINE
   double Timer::step() const {
+    std::chrono::duration<double, std::milli> ms;;
     if ( _sleeping )
-      return double( _pause - _start ) / 1000000.0;
+      ms=_pause-_start;
     else
-      return double( Timer::get_clock() - _start ) / 1000000.0;
+      ms=std::chrono::high_resolution_clock::now() - _start );
+    return 1000*std::chrono::duration_cast<std::chrono::duration<double, std::milli>>>(ms);
   }
 
   INLINE
   double Timer::pause() {
     if ( !_sleeping ) {
-      _pause = Timer::get_clock();
+      _pause = std::chrono::high_resolution_clock::now();
       _sleeping = true;
     }
 
@@ -55,7 +58,7 @@ namespace gum {
   INLINE
   double Timer::resume() {
     if ( _sleeping ) {
-      _start += Timer::get_clock() - _pause;
+      _start += std::chrono::high_resolution_clock::now() - _pause;
       _sleeping = false;
     }
 

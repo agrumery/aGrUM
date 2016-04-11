@@ -54,10 +54,4 @@ namespace gum {
     return *this;
   }
 
-  long Timer::get_clock() {
-    struct timeval tv;
-    gettimeofday( &tv, nullptr );
-    return ( tv.tv_sec * 1000000 ) + tv.tv_usec;
-  }
-
 } /* namespace gum */

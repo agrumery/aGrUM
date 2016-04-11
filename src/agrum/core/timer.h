@@ -25,15 +25,9 @@
  */
 #ifndef GUM_TIMER_H
 #define GUM_TIMER_H
+#include <chrono>
 
 #include <agrum/config.h>
-#include <ctime>
-
-#ifdef HAVE_SYS_TIME_H 
-#include <sys/time.h>
-#else
-#include <agrum/core/mvsc/time.h>
-#endif
 
 
 namespace gum {
@@ -118,16 +112,13 @@ namespace gum {
 
     protected:
     /// Time of the last call to reset() or the constructor.
-    long _start;
+    std::chrono::high_resolution_clock::time_point _start;
 
     /// Time of the last call to pause().
-    long _pause;
+    std::chrono::high_resolution_clock::time_point _pause;
 
     /// False if running.
     bool _sleeping;
-
-    private:
-    static long get_clock();
   };
 
 } /* namespace gum */
