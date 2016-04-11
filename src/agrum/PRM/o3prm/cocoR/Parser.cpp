@@ -663,9 +663,13 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 					ass.leftInstance().position() = pos; 
 					ass.leftReference().label() = tmp; 
 					ass.leftReference().position() = tmp_pos; 
-					ass.index().value() = -1; 
+					ass.leftIndex().value() = -1; 
+					ass.rightIndex().value() = -1; 
 					Get();
 					LABEL(ass.rightInstance());
+					if (la->kind == 24 /* "[" */) {
+						ARRAY(ass.rightIndex());
+					}
 					sys.assignments().push_back( std::move( ass ) ); 
 				} else {
 					auto inc = O3Increment(); 
@@ -673,9 +677,13 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 					inc.leftInstance().position() = pos; 
 					inc.leftReference().label() = tmp; 
 					inc.leftReference().position() = tmp_pos; 
-					inc.index().value() = -1; 
+					inc.leftIndex().value() = -1; 
+					inc.rightIndex().value() = -1; 
 					Get();
 					LABEL(inc.rightInstance());
+					if (la->kind == 24 /* "[" */) {
+						ARRAY(inc.rightIndex());
+					}
 					sys.increments().push_back( std::move( inc ) ); 
 				}
 			} else SynErr(41);
@@ -701,18 +709,26 @@ void Parser::SYSTEM_BODY(O3System& sys) {
 				if (la->kind == 26 /* "=" */) {
 					auto ass = O3Assignment(); 
 					ass.leftInstance().label() = left_value.str(); 
-					ass.index() = i; 
+					ass.leftIndex() = i; 
 					ass.leftReference() = ref; 
+					ass.rightIndex().value() = -1; 
 					Get();
 					LABEL(ass.rightInstance());
+					if (la->kind == 24 /* "[" */) {
+						ARRAY(ass.rightIndex());
+					}
 					sys.assignments().push_back( std::move( ass ) ); 
 				} else if (la->kind == _inc) {
 					auto inc = O3Increment(); 
 					inc.leftInstance().label() = left_value.str(); 
-					inc.index() = i; 
+					inc.leftIndex() = i; 
 					inc.leftReference() = ref; 
+					inc.rightIndex().value() = -1; 
 					Get();
 					LABEL(inc.rightInstance());
+					if (la->kind == 24 /* "[" */) {
+						ARRAY(inc.rightIndex());
+					}
 					sys.increments().push_back( std::move( inc ) ); 
 				} else SynErr(42);
 			} else SynErr(43);

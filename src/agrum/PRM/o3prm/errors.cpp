@@ -565,6 +565,7 @@ namespace gum {
             << "Invalid left expression " << val.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
+
       void O3PRM_SYSTEM_INSTANCE_NOT_FOUND( const O3Label& i,
                                             ErrorsContainer& errors ) {
         const auto& pos = i.position();

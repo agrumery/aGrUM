@@ -154,73 +154,56 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void O3SystemFactory<GUM_SCALAR>::__addAssignments(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
-        const auto& real_sys = __prm->system( sys.name().label() );
 
         for ( auto& ass : sys.assignments() ) {
-          if ( real_sys.isArray( ass.leftInstance().label() ) ) {
 
-            if ( ass.index().value() == -1 ) {
+          auto leftInstance = ass.leftInstance().label();
+          auto leftReference = ass.leftReference().label();
+          auto rightInstance = ass.rightInstance().label();
 
-              factory.setReferenceSlot( ass.leftInstance().label(),
-                                        ass.leftReference().label(),
-                                        ass.rightInstance().label() );
-            } else {
+          if ( ass.leftIndex().value() > -1 ) {
 
-              auto sBuff = std::stringstream();
-
-              if ( real_sys.isArray( ass.leftInstance().label() ) ) {
-                sBuff << ass.leftInstance().label() << "["
-                      << ass.index().value() << "]";
-              } else {
-                sBuff << ass.leftInstance().label();
-              }
-
-              factory.setReferenceSlot( sBuff.str(),
-                                        ass.leftReference().label(),
-                                        ass.rightInstance().label() );
-            }
-          } else {
-            factory.setReferenceSlot( ass.leftInstance().label(),
-                                      ass.leftReference().label(),
-                                      ass.rightInstance().label() );
+            auto sBuff = std::stringstream();
+            sBuff << leftInstance << "[" << ass.leftIndex().value() << "]";
+            leftInstance = sBuff.str();
           }
+          if ( ass.rightIndex().value() > -1 ) {
+
+            auto sBuff = std::stringstream();
+            sBuff << rightInstance << "[" << ass.rightIndex().value() << "]";
+            rightInstance = sBuff.str();
+          }
+
+          factory.setReferenceSlot(
+              leftInstance, leftReference, rightInstance );
         }
       }
 
       template <typename GUM_SCALAR>
       INLINE void O3SystemFactory<GUM_SCALAR>::__addIncrements(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
-        const auto& real_sys = __prm->system( sys.name().label() );
+
         for ( auto& inc : sys.increments() ) {
 
-          auto sBuff = std::stringstream();
-          if ( real_sys.isArray( inc.leftInstance().label() ) ) {
-            if ( inc.index().value() == -1 ) {
+          auto leftInstance = inc.leftInstance().label();
+          auto leftReference = inc.leftReference().label();
+          auto rightInstance = inc.rightInstance().label();
 
-              factory.setReferenceSlot( inc.leftInstance().label(),
-                                        inc.leftReference().label(),
-                                        inc.rightInstance().label() );
+          if ( inc.leftIndex().value() > -1 ) {
 
-            } else {
-
-              auto sBuff = std::stringstream();
-
-              if ( real_sys.isArray( inc.leftInstance().label() ) ) {
-                sBuff << inc.leftInstance().label() << "["
-                      << inc.index().value() << "]";
-              } else {
-                sBuff << inc.leftInstance().label();
-              }
-
-              factory.setReferenceSlot( sBuff.str(),
-                                        inc.leftReference().label(),
-                                        inc.rightInstance().label() );
-            }
-          } else {
-            factory.setReferenceSlot( inc.leftInstance().label(),
-                                      inc.leftReference().label(),
-                                      inc.rightInstance().label() );
+            auto sBuff = std::stringstream();
+            sBuff << leftInstance << "[" << inc.leftIndex().value() << "]";
+            leftInstance = sBuff.str();
           }
+          if ( inc.rightIndex().value() > -1 ) {
+
+            auto sBuff = std::stringstream();
+            sBuff << rightInstance << "[" << inc.rightIndex().value() << "]";
+            rightInstance = sBuff.str();
+          }
+
+          factory.setReferenceSlot(
+              leftInstance, leftReference, rightInstance );
         }
       }
 
@@ -313,10 +296,10 @@ namespace gum {
 
         for ( auto& ass : sys.assignments() ) {
 
-          if ( ass.leftInstance().label() == ass.leftReference().label() ) {
-            O3PRM_SYSTEM_INVALID_LEFT_VALUE( ass.leftInstance(), *__errors );
-            return false;
-          }
+          //if ( ass.leftInstance().label() == ass.leftReference().label() ) {
+          //  O3PRM_SYSTEM_INVALID_LEFT_VALUE( ass.leftInstance(), *__errors );
+          //  return false;
+          //}
 
           if ( not __nameMap.exists( ass.leftInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.leftInstance(), *__errors );
@@ -339,16 +322,20 @@ namespace gum {
           const auto& real_ref =
               static_cast<const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
 
+          if ( ! __nameMap.exists( ass.rightInstance().label() ) ) {
+            O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.rightInstance(), *__errors );
+            return false;
+          }
+
           if ( real_ref.isArray() and
                __nameMap[ass.rightInstance().label()]->size().value() == 0 ) {
-
             O3PRM_SYSTEM_NOT_AN_ARRAY( ass.rightInstance(), *__errors );
             return false;
           }
 
           if ( ( not real_ref.isArray() ) and
-               __nameMap[ass.rightInstance().label()]->size().value() > 0 ) {
-
+               __nameMap[ass.rightInstance().label()]->size().value() > 0 and
+               ass.rightIndex().value() == -1 ) {
             O3PRM_SYSTEM_NOT_AN_ARRAY( ass.leftReference(), *__errors );
             return false;
           }
@@ -362,10 +349,10 @@ namespace gum {
 
         for ( auto& inc : sys.increments() ) {
 
-          if ( inc.leftInstance().label() == inc.leftReference().label() ) {
-            O3PRM_SYSTEM_INVALID_LEFT_VALUE( inc.leftInstance(), *__errors );
-            return false;
-          }
+          //if ( inc.leftInstance().label() == inc.leftReference().label() ) {
+          //  O3PRM_SYSTEM_INVALID_LEFT_VALUE( inc.leftInstance(), *__errors );
+          //  return false;
+          //}
 
           if ( not __nameMap.exists( inc.leftInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( inc.leftInstance(), *__errors );
