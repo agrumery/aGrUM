@@ -105,14 +105,21 @@ namespace gum {
       __score_apriori_inserted = false;
     }
 
+
+      // version for double : no need to copy normalized_count
+      template<>
+      template<>
+      INLINE void ParamEstimator<>::setParameters(
+              unsigned int nodeset_index, Potential<double>& pot ) {
+          pot.fillWith(parameters( nodeset_index ));
+      }
     /// sets the CPT's parameters corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename GUM_SCALAR>
     INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::setParameters(
         unsigned int nodeset_index, Potential<GUM_SCALAR>& pot ) {
-      const std::vector<GUM_SCALAR, CountAlloc>& normalized_counts =
-          parameters( nodeset_index );
-      pot.fillWith( normalized_counts );
+      const auto& nc=parameters( nodeset_index );//normalized_counts
+      pot.fillWith( std::vector<GUM_SCALAR>(nc.begin(),nc.end()) );
     }
 
     /// returns the apriori vector for a given (conditioned) target set
