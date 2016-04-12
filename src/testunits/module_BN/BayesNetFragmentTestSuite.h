@@ -354,6 +354,7 @@ namespace gum_tests {
       gum::BayesNet<float> bn;
       fill( bn );
 
+      GUM_CHECKPOINT;
       // propagation in the full BN
       gum::LazyPropagation<float> inf_complete( bn );
 
@@ -361,10 +362,19 @@ namespace gum_tests {
       ev << bn.variable( bn.idFromName( "v3" ) );
       ev.fillWith( {0.0, 1.0} );
 
+      GUM_CHECKPOINT;
       gum::List<const gum::Potential<float>*> l{&ev};
-      inf_complete.insertEvidence( l );
-      inf_complete.makeInference();
 
+      GUM_CHECKPOINT;
+      inf_complete.insertEvidence( l );
+      GUM_CHECKPOINT;
+      try {
+        inf_complete.makeInference();
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
+
+      GUM_CHECKPOINT;
       try {
         auto p = inf_complete.posterior( bn.idFromName( "v6" ) );
       } catch ( gum::Exception& e ) {
@@ -373,6 +383,7 @@ namespace gum_tests {
       const gum::Potential<float>& p1 =
           inf_complete.posterior( bn.idFromName( "v6" ) );
 
+      GUM_CHECKPOINT;
       // propagation in the fragment
       gum::BayesNetFragment<float> frag( bn );
       frag.installAscendants( bn.idFromName( "v6" ) );  // 1->3->6
@@ -384,6 +395,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( frag.size(), (gum::Size)3 );
       TS_ASSERT_EQUALS( frag.sizeArcs(), (gum::Size)1 );
 
+      GUM_CHECKPOINT;
       gum::LazyPropagation<float> inf_frag( frag );
       inf_frag.makeInference();
       const gum::Potential<float>& p2 =
@@ -395,6 +407,8 @@ namespace gum_tests {
 
       for ( I.setFirst(), J.setFirst(); !I.end(); ++I, ++J )
         TS_ASSERT_DELTA( p1[I], p2[J], 1e-6 );
+
+      GUM_CHECKPOINT;
     }
 
     void testInstallCPTs() {
