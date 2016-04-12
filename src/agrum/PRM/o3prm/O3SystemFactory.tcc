@@ -155,19 +155,23 @@ namespace gum {
       INLINE void O3SystemFactory<GUM_SCALAR>::__addAssignments(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
 
+        const auto& real_sys = __prm->system( sys.name().label() );
         for ( auto& ass : sys.assignments() ) {
 
           auto leftInstance = ass.leftInstance().label();
           auto leftReference = ass.leftReference().label();
           auto rightInstance = ass.rightInstance().label();
 
-          if ( ass.leftIndex().value() > -1 ) {
+          if ( ass.leftIndex().value() > -1 &&
+               real_sys.isArray( leftInstance ) ) {
 
             auto sBuff = std::stringstream();
             sBuff << leftInstance << "[" << ass.leftIndex().value() << "]";
             leftInstance = sBuff.str();
           }
-          if ( ass.rightIndex().value() > -1 ) {
+
+          if ( ass.rightIndex().value() > -1 &&
+               real_sys.isArray( rightInstance ) ) {
 
             auto sBuff = std::stringstream();
             sBuff << rightInstance << "[" << ass.rightIndex().value() << "]";
@@ -182,6 +186,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void O3SystemFactory<GUM_SCALAR>::__addIncrements(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
+        const auto& real_sys = __prm->system( sys.name().label() );
 
         for ( auto& inc : sys.increments() ) {
 
@@ -189,13 +194,16 @@ namespace gum {
           auto leftReference = inc.leftReference().label();
           auto rightInstance = inc.rightInstance().label();
 
-          if ( inc.leftIndex().value() > -1 ) {
+          if ( inc.leftIndex().value() > -1 &&
+               real_sys.isArray( leftInstance ) ) {
 
             auto sBuff = std::stringstream();
             sBuff << leftInstance << "[" << inc.leftIndex().value() << "]";
             leftInstance = sBuff.str();
           }
-          if ( inc.rightIndex().value() > -1 ) {
+
+          if ( inc.rightIndex().value() > -1 &&
+               real_sys.isArray( rightInstance ) ) {
 
             auto sBuff = std::stringstream();
             sBuff << rightInstance << "[" << inc.rightIndex().value() << "]";
