@@ -101,9 +101,8 @@ namespace gum {
 
 
     // version for double : no need to copy normalized_count
-    template<>
-    template<>
-    INLINE void ParamEstimator<>::setParameters(
+    template<typename IdSetAlloc, typename CountAlloc>
+    INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::setParameters(
             unsigned int nodeset_index, Potential<double> &pot) {
       pot.fillWith(parameters(nodeset_index));
     }

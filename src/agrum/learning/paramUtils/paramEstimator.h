@@ -154,6 +154,11 @@ namespace gum {
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
        * are assumed to be identical */
+      void setParameters( unsigned int nodeset_index, Potential<double>& pot );
+
+      /// sets the CPT's parameters corresponding to a given nodeset
+      /** The order of the variables in the potential and in the nodeset
+       * are assumed to be identical */
       template<typename GUM_SCALAR>
       void setParameters( unsigned int nodeset_index, Potential<GUM_SCALAR>& pot );
 
