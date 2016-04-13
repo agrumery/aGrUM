@@ -6646,8 +6646,8 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_useScoreLog2Likelihood(self)
 
 
-    def setAprioriWeight(self, weight: 'float') -> "void":
-        """setAprioriWeight(BNLearner_double self, float weight)"""
+    def setAprioriWeight(self, weight: 'double') -> "void":
+        """setAprioriWeight(BNLearner_double self, double weight)"""
         return _pyAgrum.BNLearner_double_setAprioriWeight(self, weight)
 
 
@@ -6658,7 +6658,7 @@ class BNLearner_double(_object):
 
     def useAprioriSmoothing(self, *args) -> "void":
         """
-        useAprioriSmoothing(BNLearner_double self, float weight=-1)
+        useAprioriSmoothing(BNLearner_double self, double weight=-1)
         useAprioriSmoothing(BNLearner_double self)
         """
         return _pyAgrum.BNLearner_double_useAprioriSmoothing(self, *args)

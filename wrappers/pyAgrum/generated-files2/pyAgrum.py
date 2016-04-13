@@ -6647,7 +6647,7 @@ class BNLearner_double(_object):
 
 
     def setAprioriWeight(self, weight):
-        """setAprioriWeight(BNLearner_double self, float weight)"""
+        """setAprioriWeight(BNLearner_double self, double weight)"""
         return _pyAgrum.BNLearner_double_setAprioriWeight(self, weight)
 
 
@@ -6658,7 +6658,7 @@ class BNLearner_double(_object):
 
     def useAprioriSmoothing(self, *args):
         """
-        useAprioriSmoothing(BNLearner_double self, float weight=-1)
+        useAprioriSmoothing(BNLearner_double self, double weight=-1)
         useAprioriSmoothing(BNLearner_double self)
         """
         return _pyAgrum.BNLearner_double_useAprioriSmoothing(self, *args)
