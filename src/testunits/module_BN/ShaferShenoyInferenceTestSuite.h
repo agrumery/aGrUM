@@ -146,23 +146,23 @@ namespace gum_tests {
     private:
     // Builds a BN to tst the inference
     void fill( gum::BayesNet<float>& bn ) {
-      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
-      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
-      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn.cpt( i1 ).fillWith( {0.2f, 0.8f} );
+      bn.cpt( i2 ).fillWith( {0.3f, 0.7f} );
+      bn.cpt( i3 ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
       bn.cpt( i4 ).fillWith(  // clang-format off
-              {0.4, 0.6,
-               0.5, 0.5,
-               0.5, 0.5,
-               1.0, 0.0} );  // clang-format on
+              {0.4f, 0.6f,
+               0.5f, 0.5f,
+               0.5f, 0.5f,
+               1.0f, 0.0f} );  // clang-format on
       bn.cpt( i5 ).fillWith(  // clang-format off
-              {0.3, 0.6, 0.1,
-               0.5, 0.5, 0.0,
-               0.5, 0.5, 0.0,
-               1.0, 0.0, 0.0,
-               0.4, 0.6, 0.0,
-               0.5, 0.5, 0.0,
-               0.5, 0.5, 0.0,
-               0.0, 0.0, 1.0} );                                     // clang-format on
+              {0.3f, 0.6f, 0.1f,
+               0.5f, 0.5f, 0.0f,
+               0.5f, 0.5f, 0.0f,
+               1.0f, 0.0f, 0.0f,
+               0.4f, 0.6f, 0.0f,
+               0.5f, 0.5f, 0.0f,
+               0.5f, 0.5f, 0.0f,
+               0.0f, 0.0f, 1.0f} );                                     // clang-format on
     }
 
     // Uncomment this to have some outputs.

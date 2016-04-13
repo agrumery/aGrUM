@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -178,10 +178,10 @@ namespace gum_tests {
           gum::Instantiation i( ( *( jter.val() ) ).cpf() ), var;
           var.add( ( *( jter.val() ) ).type().variable() );
 
-          for ( i.setFirstOut( var ); not i.end(); i.incOut( var ) ) {
+          for ( i.setFirstOut( var ); ! i.end(); i.incOut( var ) ) {
             double f = 0.0;
 
-            for ( i.setFirstIn( var ); not i.end(); i.incIn( var ) ) {
+            for ( i.setFirstIn( var ); ! i.end(); i.incIn( var ) ) {
               f += ( *( jter.val() ) ).cpf().get( i );
             }
 
@@ -203,10 +203,10 @@ namespace gum_tests {
         gum::Instantiation i( cpt ), j;
         j.add( bn.variable( node ) );
 
-        for ( i.setFirstOut( j ); not i.end(); i.incOut( j ) ) {
+        for ( i.setFirstOut( j ); ! i.end(); i.incOut( j ) ) {
           double sum = 0.0;
 
-          for ( i.setFirstIn( j ); not i.end(); i.incIn( j ) )
+          for ( i.setFirstIn( j ); ! i.end(); i.incIn( j ) )
             sum += cpt.get( i );
 
           TS_ASSERT_DELTA( sum, 1.0, 1e-7 );

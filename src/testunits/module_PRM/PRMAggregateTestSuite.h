@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -254,7 +254,7 @@ namespace gum_tests {
       // Assert
       auto after = parent.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( not parent.cpf().contains( child.type().variable() ) );
+      TS_ASSERT( ! parent.cpf().contains( child.type().variable() ) );
     }
 
     void testAddChild() {
@@ -267,7 +267,7 @@ namespace gum_tests {
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT( ! child.cpf().contains( parent.type().variable() ) );
     }
 
     void testCpf() {

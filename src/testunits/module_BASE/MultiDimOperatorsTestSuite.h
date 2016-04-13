@@ -919,7 +919,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t->set( i, (int)( gum::randomProba() * 100000 ) );
+        t->set( i, 100000.0f*float(gum::randomProba()) );
     }
 
     // ==========================================================================
@@ -929,7 +929,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t->set( i, new float( (int)( gum::randomProba() * 100000 ) ) );
+        t->set( i, new float( 100000.0f* float( gum::randomProba()) ) );
     }
 
     // ==========================================================================
@@ -939,7 +939,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, (int)( ( (double)rand() / RAND_MAX ) * 100000 ) );
+        t.set( i, rand() * 100000.0 / RAND_MAX );
     }
 
     // ==========================================================================

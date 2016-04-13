@@ -45,7 +45,7 @@ private:
     gum::Instantiation i(t);
 
     for (i.setFirst(); !i.end(); ++i)
-      t->set(i, (int)(gum::randomProba() * 100000));
+      t->set(i, 100000.0f*float(gum::randomProba()) );
   }
 
   // ==========================================================================
@@ -55,7 +55,7 @@ private:
     gum::Instantiation i(t);
 
     for (i.setFirst(); !i.end(); ++i)
-      t->set(i, new float((int)(gum::randomProba() * 100000)));
+      t->set(i, new float(100000.0f * float(gum::randomProba())));
   }
 
   // ==========================================================================
@@ -65,7 +65,7 @@ private:
     gum::Instantiation i(t);
 
     for (i.setFirst(); !i.end(); ++i)
-      t.set(i, (int)(gum::randomProba() * 100000));
+      t.set(i, 100000.0f*float(gum::randomProba() ));
   }
 
   // ==========================================================================
@@ -75,7 +75,7 @@ private:
     gum::Instantiation i(t);
 
     for (i.setFirst(); !i.end(); ++i)
-      t.set(i, new float((int)(gum::randomProba() * 100000)));
+      t.set(i, new float(100000.0f*float(gum::randomProba() )));
   }
 
   template <typename T> void pointerDelete(gum::MultiDimArray<T *> *t) {

@@ -71,7 +71,7 @@ namespace gum_tests {
       msg << "|1 col 1| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isClass( "Bar" ) );
+      TS_ASSERT( ! prm.isClass( "Bar" ) );
     }
 
     void testEmptyClassError2() {
@@ -90,7 +90,7 @@ namespace gum_tests {
       msg << "|1 col 7| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isClass( "Bar" ) );
+      TS_ASSERT(!prm.isClass( "Bar" ) );
     }
 
     void testEmptyClassError3() {
@@ -109,7 +109,7 @@ namespace gum_tests {
       msg << "|1 col 7| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isClass( "Bar" ) );
+      TS_ASSERT(!prm.isClass( "Bar" ) );
     }
 
     void testSimpleClass1() {
@@ -238,7 +238,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 9| Error : PRMAttribute Bar.isWorking CPT does not sum to 1, "
+      msg << "|4 col 9| Error : PRMAttribute Bar.isWorking CPT does!sum to 1, "
              "found 0.4";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
@@ -264,7 +264,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 29| Error : Parent stat not found";
+      msg << "|4 col 29| Error : Parent stat!found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
     }
@@ -666,7 +666,7 @@ namespace gum_tests {
       const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
           bar.get( "myFoo" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &( foo ) );
-      TS_ASSERT( not myFoo.isArray() );
+      TS_ASSERT(!myFoo.isArray() );
       TS_ASSERT_THROWS( bar.super(), gum::NotFound );
     }
 
@@ -747,13 +747,13 @@ namespace gum_tests {
       const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
           bar.get( "myFoo" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
-      TS_ASSERT( not myFoo.isArray() );
+      TS_ASSERT(!myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
       TS_ASSERT(
-          not cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+         !cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT( bar.exists( "myFoo.state" ) );
       const auto& chain = bar.get( "myFoo.state" );
       TS_ASSERT(
@@ -812,13 +812,13 @@ namespace gum_tests {
       const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
           bar.get( "myFoo" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
-      TS_ASSERT( not myFoo.isArray() );
+      TS_ASSERT(!myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
       TS_ASSERT(
-          not cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+         !cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT( bar.exists( "myFoo.state" ) );
       const auto& chain = bar.get( "myFoo.state" );
       TS_ASSERT(
@@ -892,7 +892,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|9 col 29| Error : Link stat in chain myFoo.stat not "
+      msg << "|9 col 29| Error : Link stat in chain myFoo.stat!"
              "found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
@@ -1877,7 +1877,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 24| Error : Link st in chain myFoos.st not "
+      msg << "|6 col 24| Error : Link st in chain myFoos.st!"
              "found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
@@ -1956,7 +1956,7 @@ namespace gum_tests {
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|7 col 39| Error : Parameter foobar in aggregate "
-             "isWorking does not match any expected values";
+             "isWorking does!match any expected values";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -2079,7 +2079,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 22| Error : Interface Bar not found";
+      msg << "|4 col 22| Error : Interface Bar!found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -2101,7 +2101,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 7| Error : Class Foo does not implement all of "
+      msg << "|4 col 7| Error : Class Foo does!implement all of "
              "interface iFoo attributes";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
@@ -2125,7 +2125,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 7| Error : Class Foo attribute state does not "
+      msg << "|6 col 7| Error : Class Foo attribute state does!"
              "respect interface iFoo";
       TS_ASSERT_EQUALS( line, msg.str() );
     }

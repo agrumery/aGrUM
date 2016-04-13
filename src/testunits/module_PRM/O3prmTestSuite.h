@@ -2,7 +2,7 @@
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
+ *   This program is free software; you can redistribute it &&/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
@@ -1189,7 +1189,7 @@ namespace gum_tests {
             var.add( ( *( jter.val() ) ).type().variable() );
 
             for ( i.setFirstOut( var );!i.end(); i.incOut( var ) ) {
-              gum::prm::prm_float f = 0.0;
+              double f = 0.0;
 
               for ( i.setFirstIn( var );!i.end(); i.incIn( var ) ) {
                 f += ( *( jter.val() ) ).cpf().get( i );
@@ -1428,7 +1428,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( values[1], 0.999, 1e-6 );
 
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -1448,7 +1448,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)8 );
         TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)8 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -1475,7 +1475,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
         delete prm;
         delete bn;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -1496,7 +1496,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)2 );
         TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)1 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -1518,7 +1518,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( asia->referenceSlots().size(), (gum::Size)1 );
         TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)7 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -1543,7 +1543,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
         delete prm;
         delete bn;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& e) {
         TS_ASSERT( false );
         GUM_TRACE( e.errorContent() );
         GUM_TRACE( e.errorCallStack() );
@@ -1611,7 +1611,7 @@ namespace gum_tests {
         }
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
         delete reader.prm();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception&e ) {
         TS_ASSERT( false );
         GUM_TRACE( e.errorContent() );
         GUM_TRACE( e.errorCallStack() );
@@ -1633,7 +1633,7 @@ namespace gum_tests {
         }
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
         delete reader.prm();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& e) {
         TS_ASSERT( false );
         GUM_TRACE( e.errorContent() );
         GUM_TRACE( e.errorCallStack() );
@@ -1661,7 +1661,7 @@ namespace gum_tests {
           auto inst = iter.second;
           for ( auto node : inst->type().dag() ) {
             // TS_ASSERT( inst->exists( node ) );
-            if ( (!inst->exists( node ) ) and
+            if ( (!inst->exists( node ) ) &&
                  inst->type().exists( node ) ) {
               auto elt = &( inst->type().get( node ) );
               if ( gum::prm::PRMClassElement<double>::isAttribute( *elt ) ||
@@ -1676,7 +1676,7 @@ namespace gum_tests {
         }
 
         delete reader.prm();
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& e) {
         TS_ASSERT( false );
         GUM_TRACE( e.errorContent() );
         GUM_TRACE( e.errorCallStack() );
@@ -1718,13 +1718,13 @@ namespace gum_tests {
                 }
               }
             }
-          } catch ( gum::NotFound& e ) {
+          } catch ( gum::NotFound& ) {
             // No PRMInterface
           }
         }
 
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& e) {
         TS_ASSERT( false );
         GUM_TRACE( e.errorContent() );
         GUM_TRACE( e.errorCallStack() );
@@ -1761,13 +1761,13 @@ namespace gum_tests {
                 TS_ASSERT_EQUALS( a->id(), c->get( a->id() ).id() );
               }
             }
-          } catch ( gum::NotFound& e ) {
+          } catch ( gum::NotFound& ) {
             // No interface
           }
         }
 
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& e) {
         TS_ASSERT( false );
         GUM_TRACE( e.errorContent() );
         GUM_TRACE( e.errorCallStack() );

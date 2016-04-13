@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -151,7 +151,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING( actual = c.belongsTo( attr ) );
       // Assert
-      TS_ASSERT( not actual );
+      TS_ASSERT( ! actual );
     }
 
     void testExists() {
@@ -173,7 +173,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING( actual = c.exists( "attr" ) );
       // Assert
-      TS_ASSERT( not actual );
+      TS_ASSERT( ! actual );
     }
 
     void testGet() {
@@ -435,7 +435,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING( c_4.overload( sub_ref ) );
       // Assert
-      TS_ASSERT( not c_4.exists( ref->safeName() ) );
+      TS_ASSERT( ! c_4.exists( ref->safeName() ) );
       TS_ASSERT( c_4.exists( sub_ref->name() ) );
       TS_ASSERT( c_4.exists( sub_ref->safeName() ) );
       TS_ASSERT_EQUALS( c_4.referenceSlots().size(), (gum::Size)1 );
@@ -455,7 +455,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT( c_4.exists( ref->safeName() ) );
       TS_ASSERT( c_4.exists( ref->name() ) );
-      TS_ASSERT( not c_4.exists( sub_ref->safeName() ) );
+      TS_ASSERT( ! c_4.exists( sub_ref->safeName() ) );
       TS_ASSERT_EQUALS( c_4.referenceSlots().size(), (gum::Size)1 );
       delete sub_ref;
     }
@@ -501,7 +501,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING( actual = c.isInputNode( *a ) );
       // Assert
-      TS_ASSERT( not actual );
+      TS_ASSERT( ! actual );
     }
 
     void testSetInputNode() {
@@ -528,7 +528,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING( actual = c.isOutputNode( *a ) );
       // Assert
-      TS_ASSERT( not actual );
+      TS_ASSERT( ! actual );
     }
 
     void testSetOutputNode() {
@@ -565,21 +565,21 @@ namespace gum_tests {
       c.add( a );
       // Act & Assert
       TS_ASSERT( c.isInnerNode( *a ) );
-      TS_ASSERT( not c.isInputNode( *a ) );
-      TS_ASSERT( not c.isOutputNode( *a ) );
+      TS_ASSERT( ! c.isInputNode( *a ) );
+      TS_ASSERT( ! c.isOutputNode( *a ) );
       TS_ASSERT_THROWS_NOTHING( c.setInputNode( *a, true ) );
-      TS_ASSERT( not c.isInnerNode( *a ) );
+      TS_ASSERT( ! c.isInnerNode( *a ) );
       TS_ASSERT( c.isInputNode( *a ) );
-      TS_ASSERT( not c.isOutputNode( *a ) );
+      TS_ASSERT( ! c.isOutputNode( *a ) );
       TS_ASSERT_THROWS_NOTHING( c.setOutputNode( *a, true ) );
-      TS_ASSERT( not c.isInnerNode( *a ) );
+      TS_ASSERT( ! c.isInnerNode( *a ) );
       TS_ASSERT( c.isInputNode( *a ) );
       TS_ASSERT( c.isOutputNode( *a ) );
       TS_ASSERT_THROWS_NOTHING( c.setInputNode( *a, false ) );
       TS_ASSERT_THROWS_NOTHING( c.setOutputNode( *a, false ) );
       TS_ASSERT( c.isInnerNode( *a ) );
-      TS_ASSERT( not c.isInputNode( *a ) );
-      TS_ASSERT( not c.isOutputNode( *a ) );
+      TS_ASSERT( ! c.isInputNode( *a ) );
+      TS_ASSERT( ! c.isOutputNode( *a ) );
     }
 
     void testIONodesInheritance() {

@@ -71,7 +71,7 @@ namespace gum_tests {
       msg << "|1 col 1| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testEmptyInterfaceError2() {
@@ -90,7 +90,7 @@ namespace gum_tests {
       msg << "|1 col 11| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testEmptyInterfaceError3() {
@@ -109,7 +109,7 @@ namespace gum_tests {
       msg << "|1 col 11| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testSimpleInterface() {
@@ -176,7 +176,7 @@ namespace gum_tests {
       msg << "|2 col 1| Error : \"}\" expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testSimpleInterfaceError3() {
@@ -197,7 +197,7 @@ namespace gum_tests {
       msg << "|2 col 6| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testSimpleInterfaceError4() {
@@ -218,7 +218,7 @@ namespace gum_tests {
       msg << "|3 col 1| Error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testSimpleInterfaceError5() {
@@ -239,7 +239,7 @@ namespace gum_tests {
       msg << "|2 col 9| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testWeAreOKWithSemicolons() {
@@ -365,11 +365,11 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 24| Error : Interface IFooBar not found";
+      msg << "|4 col 24| Error : Interface IFooBar!found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IFoo" ) );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IFoo" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testSuperInterfaceError2() {
@@ -391,11 +391,11 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 24| Error : Interface t_state not found";
+      msg << "|5 col 24| Error : Interface t_state!found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
-      TS_ASSERT( not prm.isInterface( "IFoo" ) );
-      TS_ASSERT( not prm.isInterface( "IBar" ) );
+      TS_ASSERT(!prm.isInterface( "IFoo" ) );
+      TS_ASSERT(!prm.isInterface( "IBar" ) );
     }
 
     void testSuperInterfaceError3() {

@@ -70,7 +70,7 @@ namespace gum_tests {
         , __nbr( 0 )
         , __mess( "" ){};
 
-    void whenProgress( const void* buffer, gum::Size a, const double b, const double c ) {
+    void whenProgress( const void* buffer, const gum::Size a, const double b, const double c ) {
       __nbr++;
       std::cout << __nbr << ": error = " << b << std::endl;
     }

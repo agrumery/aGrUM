@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -91,7 +91,7 @@ namespace gum_tests {
       try {
         state = new PRMType{boolean, map, *__state};
       } catch ( ... ) {
-        // TS_ASSERT_THROWS_NOTHING does not work here
+        // TS_ASSERT_THROWS_NOTHING does ! work here
         TS_FAIL( "Exception thrown" );
       }
       // Assert
@@ -232,7 +232,7 @@ namespace gum_tests {
       PRMType state{boolean, map, *__state};
       // Act & Assert
       TS_ASSERT( state.isSubType() );
-      TS_ASSERT( not boolean.isSubType() );
+      TS_ASSERT( ! boolean.isSubType() );
     }
 
     void testIsSubTypeOf() {
@@ -246,9 +246,9 @@ namespace gum_tests {
       // Act & Assert
       TS_ASSERT( state.isSubTypeOf( boolean ) );
       TS_ASSERT( state.isSubTypeOf( state ) );
-      TS_ASSERT( not boolean.isSubTypeOf( state ) );
-      TS_ASSERT( not dummy.isSubTypeOf( boolean ) );
-      TS_ASSERT( not boolean.isSubTypeOf( dummy ) );
+      TS_ASSERT( ! boolean.isSubTypeOf( state ) );
+      TS_ASSERT( ! dummy.isSubTypeOf( boolean ) );
+      TS_ASSERT( ! boolean.isSubTypeOf( dummy ) );
       TS_ASSERT( dummy.isSubTypeOf( state ) );
       TS_ASSERT( state.isSubTypeOf( dummy ) );
     }
@@ -264,9 +264,9 @@ namespace gum_tests {
       // Act & Assert
       TS_ASSERT( boolean.isSuperTypeOf( state ) );
       TS_ASSERT( state.isSuperTypeOf( state ) );
-      TS_ASSERT( not state.isSuperTypeOf( boolean ) );
-      TS_ASSERT( not dummy.isSuperTypeOf( boolean ) );
-      TS_ASSERT( not boolean.isSuperTypeOf( dummy ) );
+      TS_ASSERT( ! state.isSuperTypeOf( boolean ) );
+      TS_ASSERT( ! dummy.isSuperTypeOf( boolean ) );
+      TS_ASSERT( ! boolean.isSuperTypeOf( dummy ) );
       TS_ASSERT( dummy.isSuperTypeOf( state ) );
       TS_ASSERT( state.isSuperTypeOf( dummy ) );
     }

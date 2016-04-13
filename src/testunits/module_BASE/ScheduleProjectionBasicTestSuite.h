@@ -96,7 +96,7 @@ namespace gum_tests {
       TS_ASSERT( tt2.multiDim() == *t2 );
       gum::ScheduleDeleteMultiDim<float> del2( tt2 );
       del2.execute();
-      float dom = t1.domainSize();
+      auto dom = t1.domainSize();
       TS_ASSERT( myproj.nbOperations( t1, del_vars, schedule ) == dom );
       delete t2;
 
@@ -228,7 +228,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t->set( i, (int)( ( (float)rand() / RAND_MAX ) * 100000 ) );
+        t->set( i, rand()* 100000.0f / RAND_MAX);
     }
   };
 

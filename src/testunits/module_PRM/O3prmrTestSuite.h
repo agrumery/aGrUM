@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -144,7 +144,7 @@ namespace gum_tests {
         }
 
         delete si;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -261,7 +261,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)8 );
         TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)8 );
         delete si;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -286,7 +286,7 @@ namespace gum_tests {
         // GUM_TRACE( bn->toDot() );
         delete si;
         delete bn;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -301,7 +301,7 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prmr/AsiaOneFile/myRequest.o3prmr" ) );
         // si->showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS( si->count(), 0 );
-        if ( not si->count() ) {
+        if ( ! si->count() ) {
           auto prm = si->prm();
           const auto& sys = prm->getSystem( "Asia.Asia" );
           auto bn = new gum::BayesNet<double>( "plop" );
@@ -315,7 +315,7 @@ namespace gum_tests {
         }
         // GUM_TRACE( bn->toDot() );
         delete si;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -341,7 +341,7 @@ namespace gum_tests {
         // GUM_TRACE( bn->toDot() );
         delete si;
         delete bn;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
