@@ -31,7 +31,7 @@ from .tests import checkTests,testNames
 def checkAgrumMemoryLeak(x,pourcent):
   commande='act test debug -t {0} -m all'.format(x)
 
-  first=(cfg.C_VALUE+"[{:3d}%] "+cfg.C_WARNING+x+cfg.C_END+" : ").format(pourcent)
+  first=(cfg.C_VALUE+"[{:5.1f}%] "+cfg.C_WARNING+x+cfg.C_END+" : ").format(pourcent)
   flag=0
 
   sys.stdout.write(first)
@@ -59,8 +59,8 @@ def checkAgrumMemoryLeaks(current):
   res=[]
   testslist=sorted(testNames(checkTests(current)))
   for i,x in enumerate(testslist):
-    (msg,testOK)=checkAgrumMemoryLeak(x,int(i*100/len(testslist)))
+    (msg,testOK)=checkAgrumMemoryLeak(x,(i+1)*100.0/len(testslist))
     if not testOK:
       res.append(msg)
 
-  warn("\n"+cfg.C_WARNING+"Test(s) with problem(s) :\n -{0}\n".format("\n -".join(res) if len(res)>0 else cfg.C_VALUE+"none")+cfg.C_END)
+  print("\n"+cfg.C_WARNING+"Test(s) with problem(s) : {0}\n".format("\n -".join(res) if len(res)>0 else cfg.C_VALUE+"none")+cfg.C_END)
