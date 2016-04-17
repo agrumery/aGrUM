@@ -28,10 +28,10 @@ from .configuration import cfg
 from .utils import notif,warn,trace,setifyString
 from .tests import checkTests,testNames
 
-def checkAgrumMemoryLeak(x):
+def checkAgrumMemoryLeak(x,pourcent):
   commande='act test debug -t {0} -m all'.format(x)
 
-  first=cfg.C_WARNING+x+cfg.C_END+" : "
+  first=(cfg.C_VALUE+"[{:3d}%] "+cfg.C_WARNING+x+cfg.C_END+" : ").format(pourcent)
   flag=0
 
   sys.stdout.write(first)
@@ -57,8 +57,9 @@ def checkAgrumMemoryLeaks(current):
   notif("Searching leaks test by test (may be a bit long).\n")
 
   res=[]
-  for x in testNames(checkTests(current)):
-    (msg,testOK)=checkAgrumMemoryLeak(x)
+  testslist=sorted(testNames(checkTests(current)))
+  for i,x in enumerate(testslist):
+    (msg,testOK)=checkAgrumMemoryLeak(x,int(i*100/len(testslist)))
     if not testOK:
       res.append(msg)
 
