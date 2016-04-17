@@ -365,7 +365,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 24| Error : Interface IFooBar!found";
+      msg << "|4 col 24| Error : Interface IFooBar not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT(!prm.isInterface( "IFoo" ) );
@@ -391,7 +391,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|5 col 24| Error : Interface t_state!found";
+      msg << "|5 col 24| Error : Interface t_state not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.interfaces().size(), (gum::Size)0 );
       TS_ASSERT(!prm.isInterface( "IFoo" ) );

@@ -238,7 +238,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 9| Error : PRMAttribute Bar.isWorking CPT does!sum to 1, "
+      msg << "|4 col 9| Error : PRMAttribute Bar.isWorking CPT does not sum to 1, "
              "found 0.4";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
@@ -264,7 +264,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 29| Error : Parent stat!found";
+      msg << "|4 col 29| Error : Parent stat not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
     }
@@ -892,7 +892,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|9 col 29| Error : Link stat in chain myFoo.stat!"
+      msg << "|9 col 29| Error : Link stat in chain myFoo.stat not "
              "found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
@@ -1877,7 +1877,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 24| Error : Link st in chain myFoos.st!"
+      msg << "|6 col 24| Error : Link st in chain myFoos.st not "
              "found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
@@ -1956,7 +1956,7 @@ namespace gum_tests {
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|7 col 39| Error : Parameter foobar in aggregate "
-             "isWorking does!match any expected values";
+             "isWorking does not match any expected values";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -2079,7 +2079,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 22| Error : Interface Bar!found";
+      msg << "|4 col 22| Error : Interface Bar not found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
@@ -2101,7 +2101,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|4 col 7| Error : Class Foo does!implement all of "
+      msg << "|4 col 7| Error : Class Foo does not implement all of "
              "interface iFoo attributes";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
@@ -2125,7 +2125,7 @@ namespace gum_tests {
       std::string line;
       std::getline( output, line );
       auto msg = std::stringstream();
-      msg << "|6 col 7| Error : Class Foo attribute state does!"
+      msg << "|6 col 7| Error : Class Foo attribute state does not "
              "respect interface iFoo";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
