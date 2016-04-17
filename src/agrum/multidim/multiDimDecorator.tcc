@@ -86,9 +86,8 @@ namespace gum {
     GUM_OP_MOV( MultiDimDecorator );
 
     if ( this != &from ) {
-      auto tmp = _content;
+      if ( _content != nullptr ) delete ( _content ); //should be the case
       _content = from._content;
-      if ( tmp != nullptr ) delete ( tmp );
       from._content = nullptr;
     }
 
@@ -103,15 +102,8 @@ namespace gum {
             std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
     GUM_CONS_MOV( MultiDimDecorator );
 
-    if ( this != &from ) {
-      auto tmp = _content;
       _content = from._content;
-      if ( tmp != nullptr ) {
-        delete ( tmp );
-      }
-
       from._content = nullptr;
-    }
   }
 
 
