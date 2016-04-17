@@ -228,6 +228,7 @@ namespace gum_tests {
         tt1 = comb.combine( comb_set );
         tt2 = proj.project( *tt1, del_vars2 );
         delete tt1;
+
         TS_ASSERT( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) ||
                    ( *tt2 == *res3 ) );
 

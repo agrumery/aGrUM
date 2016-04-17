@@ -838,7 +838,6 @@ namespace gum {
   LazyPropagation<GUM_SCALAR>::makeInference( bool force_inference ) {
     // prepare a new inference from scratch
 
-    GUM_CHECKPOINT;
     if ( force_inference ) {
       // remove all the separator potentials, if any
       for ( auto& elt : __sep_potentials )
@@ -859,7 +858,6 @@ namespace gum {
       }
     }
 
-    GUM_CHECKPOINT;
     // compute barren nodes if necessary
     __computeBarrenPotentials();
 
@@ -867,17 +865,13 @@ namespace gum {
     for ( const auto& elt : __collected_cliques )
       if ( !elt.second ) __collect( elt.first, elt.first );
 
-    GUM_CHECKPOINT;
     // perform the __diffusion in all connected components of the junction tree
     for ( const auto& elt : __diffused_cliques )
       if ( !elt.second ) __diffusion( elt.first, elt.first );
 
-    GUM_CHECKPOINT;
     // indicate that we performed the inference with root =
     // __collected_cliques.begin()
     __last_collect_clique = __collected_cliques.begin().key();
-
-    GUM_CHECKPOINT;
     // ##### bug potentiel a virer : s'il y a plusieurs composantes connexes,
     // il faut plusieurs cliques de collecte
   }
