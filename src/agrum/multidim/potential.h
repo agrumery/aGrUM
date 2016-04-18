@@ -198,6 +198,14 @@ namespace gum {
      */
     const Potential<GUM_SCALAR>&
     fillWith( std::initializer_list<GUM_SCALAR> list ) const;
+
+    /**
+     * @brief Automatically fills this MultiDimContainer with the value v
+     *
+     * @param v contains the data.
+     */
+    const Potential<GUM_SCALAR>& fillWith( const GUM_SCALAR& v ) const;
+
     /**
      * @brief Apply abs on every element of the container
      */

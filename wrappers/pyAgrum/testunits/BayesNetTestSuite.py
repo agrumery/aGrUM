@@ -145,6 +145,44 @@ class TestFeatures(BayesNetTestCase):
         self.assertEqual(str(bn.variable(0)),"HISTORY<TRUE,FALSE>")
         bn.variable(0).toLabelizedVar().changeLabel(0,"toto")
         self.assertEqual(str(bn.variable(0)),"HISTORY<toto,FALSE>")
+        
+    def testStringAccessors(self):
+      bn=gum.BayesNet()
+      for s in "ABC":
+        bn.add(gum.LabelizedVariable(s,"",2))
+      for arc in [("A","C"),("B","C")]:
+        bn.addArc(*arc)
+      
+      self.assertEqual(str(bn),"BN{nodes: 3, arcs: 2, domainSize: 8, parameters: 12, compression ratio: -50% }")
+      
+      bn.cpt("A").fillWith(1).normalize()
+      bn.generateCPT("B")
+      bn.generateCPT("C")      
+      with self.assertRaises(IndexError):
+        bn.cpt("XX")
+      
+      bn.reverseArc("A","C")
+      self.assertEqual(str(bn),"BN{nodes: 3, arcs: 3, domainSize: 8, parameters: 14, compression ratio: -75% }")
+      
+      with self.assertRaises(gum.InvalidArc):
+        bn.reverseArc("A","C")
+      with self.assertRaises(gum.GraphError):
+        bn.reverseArc("A","C")
+      with self.assertRaises(IndexError):
+        bn.reverseArc("A","X")
+        
+      bn.erase("A")
+      self.assertEqual(str(bn),"BN{nodes: 2, arcs: 1, domainSize: 4, parameters: 6, compression ratio: -50% }")
+      
+      with self.assertRaises(IndexError):
+        bn.erase("A")
+      
+      bn.eraseArc("B","C")
+      self.assertEqual(str(bn),"BN{nodes: 2, arcs: 0, domainSize: 4, parameters: 4, compression ratio: 0% }")
+      
+      with self.assertRaises(IndexError):
+        bn.eraseArc("B","C")
+      
 
 class TestLoadBN(BayesNetTestCase):
 
@@ -287,6 +325,7 @@ ts.addTest(TestInsertions('testEraseArcs'))
 ts.addTest(TestFeatures('testMoralGraph'))
 ts.addTest(TestFeatures('testTopologicalOrder'))
 ts.addTest(TestFeatures('testChangeLabel'))
+ts.addTest(TestFeatures('testStringAccessors'))
 ts.addTest(TestLoadBN('testSimpleBIFLoad'))
 ts.addTest(TestLoadBN('testSimpleBIFLoadWithoutListener'))
 ts.addTest(TestLoadBN('testListBIFLoad'))

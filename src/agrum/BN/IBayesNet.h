@@ -103,7 +103,7 @@ namespace gum {
     virtual const VariableNodeMap& variableNodeMap() const = 0;
 
     /**
-    * Returns a constant reference over a variabe given it's node id.
+    * Returns a constant reference over a variable given it's node id.
     *
     * @throw NotFound If no variable's id matches varId.
     */
