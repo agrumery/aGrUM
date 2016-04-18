@@ -53,9 +53,7 @@ namespace gum_tests {
       node3 = new gum::LabelizedVariable( "Angle 1", "", 72 );
       node4 = new gum::LabelizedVariable( "DistM", "", 100 );
       node5 = new gum::LabelizedVariable( "Angle 2", "", 72 );
-
-      gum::Id tempId;
-
+      
       idMap.insert( node1, bn->add( *node1 ) );
       idMap.insert( node2, bn->add( *node2 ) );
       idMap.insert( node3, bn->add( *node3 ) );

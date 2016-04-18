@@ -50,10 +50,10 @@ namespace gum_tests {
           v[lvl].g = 2;
           v[lvl].c = nb_class;
           v[lvl].o = 20;
-          v[lvl].inner_density = 0.2;
-          v[lvl].outter_density = 0.05;
+          v[lvl].inner_density = 0.2f;
+          v[lvl].outter_density = 0.05f;
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -69,10 +69,10 @@ namespace gum_tests {
           v[lvl].g = 2;
           v[lvl].c = nb_class;
           v[lvl].o = 1 + lvl;
-          v[lvl].inner_density = 0.2;
-          v[lvl].outter_density = 0.05;
+          v[lvl].inner_density = 0.2f;
+          v[lvl].outter_density = 0.05f;
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -88,10 +88,10 @@ namespace gum_tests {
           v[lvl].g = 2;
           v[lvl].c = nb_class;
           v[lvl].o = depth - lvl;
-          v[lvl].inner_density = 0.2;
-          v[lvl].outter_density = 0.05;
+          v[lvl].inner_density = 0.2f;
+          v[lvl].outter_density = 0.05f;
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -142,12 +142,12 @@ namespace gum_tests {
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); ! inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -174,12 +174,12 @@ namespace gum_tests {
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); ! inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -206,12 +206,12 @@ namespace gum_tests {
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); ! inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -249,7 +249,7 @@ namespace gum_tests {
 
     //    TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
     //    delete prm;
-    //  } catch (gum::Exception& e) {
+    //  } catch (gum::Exception&) {
     //    TS_ASSERT(false);
     //  }
     //}

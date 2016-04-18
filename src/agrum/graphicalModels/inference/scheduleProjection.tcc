@@ -52,14 +52,7 @@ namespace gum {
     /// for debugging purposes
     GUM_DESTRUCTOR( ScheduleProjection );
   }
-
-  /// virtual constructor
-  template <typename GUM_SCALAR>
-  ScheduleProjection<GUM_SCALAR>*
-  ScheduleProjection<GUM_SCALAR>::newFactory() const {
-    return new ScheduleProjection<GUM_SCALAR>( *this );
-  }
-
+  
   /// creates and returns the projection of the table over a subset of its vars
   template <typename GUM_SCALAR>
   INLINE ScheduleMultiDim<GUM_SCALAR> ScheduleProjection<GUM_SCALAR>::project(

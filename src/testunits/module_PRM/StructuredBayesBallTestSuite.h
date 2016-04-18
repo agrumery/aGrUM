@@ -93,7 +93,7 @@ namespace gum_tests {
 
             for ( auto j = sys->begin(); j != sys->end(); ++j ) {
               if ( ( j.val() ) != ( i.val() ) ) {
-                TS_ASSERT( not bb->exists( j.val() ) );
+                TS_ASSERT( ! bb->exists( j.val() ) );
               } else if ( bb->exists( j.val() ) ) {
                 TS_ASSERT_EQUALS( bb->requisiteNodes( j.val() ).size(),
                                   (gum::Size)1 );
@@ -132,7 +132,7 @@ namespace gum_tests {
                   j != small_sys->end();
                   ++j ) {
               if ( ( j.val() ) != ( i.val() ) ) {
-                TS_ASSERT( not bb->exists( j.val() ) );
+                TS_ASSERT( ! bb->exists( j.val() ) );
               } else if ( bb->exists( j.val() ) ) {
                 TS_ASSERT_EQUALS( bb->requisiteNodes( j.val() ).size(),
                                   (gum::Size)1 );

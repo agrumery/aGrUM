@@ -397,10 +397,10 @@ namespace gum_tests {
 
           // This will write the asia BayesNet in the given file
           writer.write( buff, asia );
-        } catch ( gum::IOError& e ) {
+        } catch ( gum::IOError& ) {
           // A gum::IOError will be raised if an error occured
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception&e ) {
         TS_FAIL( e.errorContent() );
       }
     }

@@ -101,7 +101,7 @@ namespace gum {
 
     private:
     double __effectif( Idx moda, Int2Type<true> ) const {
-      return (double)__n1->effectif( __valueDomain->atPos( moda ) );
+      return (double)__n1->effectif( Idx(__valueDomain->atPos( moda )) );
     }
     double __effectif( Idx moda, Int2Type<false> ) const {
       return (double)__n1->effectif( moda );

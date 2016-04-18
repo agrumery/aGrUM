@@ -728,7 +728,7 @@ namespace gum {
   void CliqueProperties<GUM_SCALAR>::addVariable( const DiscreteVariable& v ) {
     try {
       __allVarsInst.add( v );
-    } catch ( DuplicateElement& e ) {
+    } catch ( DuplicateElement& ) {
       // Nothing to do then!
     }
   }
@@ -766,7 +766,7 @@ namespace gum {
           ++iter ) {
       if ( removable && !__allVarsInst.contains( **iter ) ) try {
           __removableVarList.insert( *iter );
-        } catch ( DuplicateElement& e ) {
+        } catch ( DuplicateElement& ) {
           // Nothing to do then!
         }
 
@@ -798,7 +798,7 @@ namespace gum {
           ++iter ) {
       if ( removable && !__allVarsInst.contains( **iter ) ) try {
           __removableVarList.insert( *iter );
-        } catch ( DuplicateElement& e ) {
+        } catch ( DuplicateElement& ) {
           // Nothing to do then!
         }
 

@@ -380,7 +380,7 @@ namespace gum {
 
     try {
       res = addUtilityNode( var, newMultiDim, varId );
-    } catch ( Exception& e ) {
+    } catch ( Exception& ) {
       delete newMultiDim;
       throw;
     }
@@ -412,7 +412,7 @@ namespace gum {
 
     try {
       res = addChanceNode( var, newMultiDim, varId );
-    } catch ( Exception& e ) {
+    } catch ( Exception& ) {
       delete newMultiDim;
       throw;
     }

@@ -159,7 +159,7 @@ namespace gum {
    * needed to perform the ScheduleOperation */
   template <typename GUM_SCALAR>
   INLINE float ScheduleProject<GUM_SCALAR>::nbOperations() const {
-    return __table.domainSize();
+    return float(__table.domainSize());
   }
 
   /// returns the memory consumption used during the operation
