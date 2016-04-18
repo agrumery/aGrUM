@@ -1,5 +1,4 @@
 /* EXCEPTION HANDLING */
-
 %exception {
   try {
     $action
@@ -58,6 +57,14 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidNode ), err );
+    SWIG_fail;
+  } catch ( gum::InvalidArc& e ) {
+    gum::InvalidArc* ecopy = new gum::InvalidArc ( e );
+    PyObject* err = SWIG_NewPointerObj ( ecopy,
+    SWIGTYPE_p_gum__InvalidArc,
+    1 );
+    PyErr_SetObject (
+      SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidArc ), err );
     SWIG_fail;
   } catch ( gum::InvalidEdge& e ) {
     gum::InvalidEdge* ecopy = new gum::InvalidEdge ( e );
