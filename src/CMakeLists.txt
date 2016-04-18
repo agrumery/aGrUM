@@ -49,12 +49,7 @@ set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INC
 add_library(${LIBAGRUM} ${AGRUM_FILES})
 set_target_properties (${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
-target_link_libraries( ${LIBAGRUM} ${ODBC_LIBRARIES} )
-
-if (GUM_COVERAGE)
-  set_target_properties( ${LIBAGRUM} PROPERTIES COMPILE_FLAGS " --coverage" )
-  target_link_libraries( ${LIBAGRUM} "gcov" )
-endif(GUM_COVERAGE)
+target_link_libraries( ${LIBAGRUM} ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
 
 ####################################################################
 ## TARGET docs
