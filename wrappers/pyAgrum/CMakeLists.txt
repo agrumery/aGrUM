@@ -67,21 +67,24 @@ execute_process(
   set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
  else()
    if (WIN32)
-	   #execute_process(
-	#	 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-	#	 OUTPUT_VARIABLE PYTHON_LOCAL_PATH
-	#	 OUTPUT_STRIP_TRAILING_WHITESPACE
-	#   )
-	#   execute_process(
-#		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-	#	OUTPUT_VARIABLE PYTHON_LIBPATH
-#		 OUTPUT_STRIP_TRAILING_WHITESPACE
-#	   )
+	   execute_process(
+		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+		 OUTPUT_VARIABLE PYTHON_LOCAL_PATH
+		 OUTPUT_STRIP_TRAILING_WHITESPACE
+	   )
+	   execute_process(
+		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+		OUTPUT_VARIABLE PYTHON_LIBPATH
+		 OUTPUT_STRIP_TRAILING_WHITESPACE
+	   )
 	  #set(PYTHON_LIBRARY "c:/Python27/libs/python${PYTHON_COMPLETE_VERSION}.lib")
 	  #set(PYTHON_LIBRARY "c:/Python27/libs/libpython27.a")
 	  #set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
 	  #
-	  find_package(PythonLibs)
+	  #find_package(PythonLibs)
+
+      set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libs/libPython${PYTHON_COMPLETE_VERSION}.a")
+      set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
    else()
 	find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
    endif()
@@ -170,7 +173,7 @@ else (SWIG_FOUND)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
   endif (WIN32)
 endif (SWIG_FOUND)
-
+set_source_files_properties(foo.cpp PROPERTIES COMPILE_FLAGS -Wno-effc++)
 set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # for additionnal rule such test pyAgrum
