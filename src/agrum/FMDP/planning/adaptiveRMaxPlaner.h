@@ -214,9 +214,6 @@ namespace gum {
 
 } /* namespace gum */
 
-
-#include <agrum/FMDP/planning/adaptiveRMaxPlaner.tcc>
-
 #endif  // GUM_ADAPTIVE_RMAX_PLANER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

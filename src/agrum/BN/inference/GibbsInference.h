@@ -110,6 +110,9 @@ namespace gum {
     void __initStats();
     void __updateStats_without_err();
     double __updateStats_with_err( Size nbr );
+
+  private:
+    //void __add_and_instancie(Instantiation& I,const DiscreteVariable& v,const Instantiation& __current_sample)
   };
 
 

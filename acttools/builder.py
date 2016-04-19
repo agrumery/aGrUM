@@ -91,7 +91,7 @@ def getMake(current,target):
 		if cfg.msbuild is None:
 			warning("MsBuild not found")
 		else:
-			line=cfg.msbuild+" ALL_BUILD.vcxproj"
+			line=cfg.msbuild+' agrum.sln /t:gumTest /p:Configuration="Release" /m:8'
 	else:
 	  line=cfg.make
 
