@@ -110,6 +110,20 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE void Aggregate<GUM_SCALAR>::setLabel( Idx idx ) {
+      if ( __label ) {
+        ( *__label ) = idx;
+      } else {
+        __label = new Idx( idx );
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE bool Aggregate<GUM_SCALAR>::hasLabel() const {
+      return __label != nullptr;
+    }
+
+    template <typename GUM_SCALAR>
     INLINE Type<GUM_SCALAR>& Aggregate<GUM_SCALAR>::type() {
       return *__type;
     }

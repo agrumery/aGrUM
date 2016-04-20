@@ -163,6 +163,16 @@ namespace gum {
        */
       Idx label() const;
 
+      /**
+       * @brief Set the aggregator's label.
+       */
+      void setLabel(Idx idx);
+
+      /**
+       * @brief Returns true if the label is defined.
+       */
+      bool hasLabel() const;
+
       /// See gum::ClassElement::_addParent().
       virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
 
