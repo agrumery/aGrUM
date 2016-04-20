@@ -651,21 +651,48 @@ namespace gum {
                                   std::string type = "" ) override;
 
       /**
+       * @brief Start an aggregator declaration.
+       *
+       * @param name The aggregator's name.
+       * @param agg_type The aggregtor's type (@see Aggregate::agg_type()).
+       * @param rv_type The aggregator's random variable type (@see Aggregate::type()).
+       * @param params The aggregator's parameters.
+       */
+      void startAggregator( const std::string& name,
+                            const std::string& agg_type,
+                            const std::string& rv_type,
+                            const std::vector<std::string>& params );
+
+      /**
+       * @brief Conitnues an aggregator declaration.
+       */
+      void continueAggregator( const std::string& name );
+
+
+      /**
+       * @brief Finishes an aggregate declaration.
+       */
+      void endAggregator();
+
+      /**
        * @brief Add a compound noisy-or as an Attribute<GUM_SCALAR> to the
        *current Class<GUM_SCALAR>.
        *
        * The type of a noisy-or must be a boolean.
        *
-       * @param name the name of the Attribute<GUM_SCALAR> added as a noisy-or.
+       * @param name the name of the Attribute<GUM_SCALAR> added as a
+       *noisy-or.
        * @param chains the list of parents of the noisy-or.
-       * @param numbers the list of weights for each parent. Can consist of only
+       * @param numbers the list of weights for each parent. Can consist of
+       *only
        *                one value which will be applied to all the parents.
        * @param leak the leak
        * @param label the label on which the noisy-or applies, can be an empty
        *              string (the noisy-or will behave as if chains are all
        *booleans).
        *
-       * @throw NotFound Raised if one of the chains or the label is not found.
+       * @throw NotFound Raised if one of the chains or the label is not
+       *found.
        * @throw FactoryInvalidState Raised if a Class<GUM_SCALAR> is not the
        *current declared
        *                            PRMObject.
@@ -725,7 +752,8 @@ namespace gum {
                         const HashTable<std::string, double>& params ) override;
 
       /**
-       * Creates an array with the given number of instances of the given type.
+       * Creates an array with the given number of instances of the given
+       * type.
        * Instance<GUM_SCALAR> are name using "name" as prefix and adding the
        * suffix "[i]",
        * with "i" being the position of the instance in the array.
@@ -751,7 +779,8 @@ namespace gum {
        *
        * @param left_instance The name of an instance in the model.
        * @param left_reference The name of a reference of left_instance.
-       * @param right_instance The name of an instance or an array of instances
+       * @param right_instance The name of an instance or an array of
+       * instances
        *                       in the model.
        */
       virtual void
@@ -834,7 +863,8 @@ namespace gum {
       /// @see PRMFactory::__retrieveType
       Class<GUM_SCALAR>* __retrieveClass( const std::string& name ) const;
 
-      /// Returns a pointer on an interface given it's name. Used when building
+      /// Returns a pointer on an interface given it's name. Used when
+      /// building
       /// models, meaning that the interface name can either be local (need to
       /// add the current prefix) or global (no prefix needed).
       /// @throw NotFound If no class matching the name is found.
@@ -863,7 +893,8 @@ namespace gum {
       /// @brief Retrieve inputs for an Aggregate.
       ///
       /// The vector chains contains names of the Aggregate inputs. If a name
-      /// does not match an existing ClassElement<GUM_SCALAR> in c, then a call
+      /// does not match an existing ClassElement<GUM_SCALAR> in c, then a
+      /// call
       /// to
       /// PRMFactory::__buildSlotChains() is made. Such created
       /// SlotChain<GUM_SCALAR> are
@@ -871,7 +902,8 @@ namespace gum {
       ///
       /// @param c The class in which the Aggregate is defined.
       /// @param chains Vector of the Aggregate inputs names.
-      /// @param inputs Vector filled with the ClassElement<GUM_SCALAR> matching
+      /// @param inputs Vector filled with the ClassElement<GUM_SCALAR>
+      /// matching
       /// the names
       ///               in chains.
       /// @return true if there was at least one slotchain in chains.
@@ -920,6 +952,15 @@ namespace gum {
       /// Check if c implements correctly all his interfaces.
       void __checkInterfaceImplementation( Class<GUM_SCALAR>* c );
 
+      /// Add a parent to an attribute.
+      void __addParent( ClassElementContainer<GUM_SCALAR>* c,
+                        Attribute<GUM_SCALAR>* agg,
+                        const std::string& name );
+
+      /// Add a parent to an aggregate.
+      void __addParent( Class<GUM_SCALAR>* c,
+                        Aggregate<GUM_SCALAR>* agg,
+                        const std::string& name );
       /// @}
       // ======================================================================
       ///  @name Private methods handling System<GUM_SCALAR> and
@@ -972,6 +1013,9 @@ namespace gum {
 
       /// A stack used to keep track of created PRMObject.
       std::vector<PRMObject*> __stack;
+
+      /// A mapping between aggregators and their parameters
+      HashTable<Aggregate<GUM_SCALAR>*, std::vector<std::string>> __agg_params;
 
       /// @}
     };
