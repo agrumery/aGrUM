@@ -468,8 +468,10 @@ namespace gum {
 
   template <typename Key, typename Val, typename Alloc>
   INLINE void HashTable<Key, Val, Alloc>::__clearIterators() {
-    for ( int i = __safe_iterators.size() - 1; i >= 0; --i ) {
-      __safe_iterators[i]->clear();
+    if (__safe_iterators.size() > 0) {
+      for (auto i = __safe_iterators.size() - 1; i >= 0; --i) {
+        __safe_iterators[i]->clear();
+      }
     }
   }
 
@@ -1322,7 +1324,7 @@ namespace gum {
     std::vector<HashTableConstIteratorSafe<Key, Val>*>& iter_vect =
         __table->__safe_iterators;
 
-    for ( int i = iter_vect.size() - 1; i >= 0; --i ) {
+    for ( auto i = iter_vect.size() - 1; i >= 0; --i ) {
       if ( iter_vect[i] == this ) {
         iter_vect.erase( iter_vect.begin() + i );
         break;

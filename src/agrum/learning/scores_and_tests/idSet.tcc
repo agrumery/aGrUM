@@ -181,11 +181,11 @@ namespace gum {
     template <typename OtherAlloc>
     INLINE bool IdSet<Alloc>::operator==( const IdSet<OtherAlloc>& from ) const
         noexcept {
-      unsigned int sz = __ids.size();
+      auto sz = __ids.size();
 
       if ( sz != from.__ids.size() ) return false;
 
-      for ( unsigned int i = 0; i < sz; ++i ) {
+      for ( auto i = 0; i < sz; ++i ) {
         if ( __ids[i] != from.__ids[i] ) return false;
       }
 

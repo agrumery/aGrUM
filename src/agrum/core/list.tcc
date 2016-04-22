@@ -601,7 +601,7 @@ namespace gum {
     // find where the iterator is
     std::vector<ListConstIteratorSafe<Val>*>& vect = __list->__safe_iterators;
 
-    for ( int i = vect.size() - 1; i >= 0; --i ) {
+    for ( auto i = vect.size() - 1; i >= 0; --i ) {
       if ( vect[i] == this ) {
         vect.erase( vect.begin() + i );
         break;

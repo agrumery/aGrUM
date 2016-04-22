@@ -76,7 +76,7 @@ def getCmake(current,target):
 
     if platform.system() == "Windows":
       if current["mvsc"]:			
-        line += ' -G "Visual Studio 14 2015"'
+        line += ' -G "Visual Studio 14 2015 Win64"'
       else:
         line += ' -G "MinGW Makefiles"'
 

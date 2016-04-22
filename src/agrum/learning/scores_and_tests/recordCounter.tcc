@@ -162,7 +162,7 @@ namespace gum {
       __filter.reset();
 
       // get the number of nodesets to process
-      const unsigned int size = this->_nodesets.size();
+      const auto size = this->_nodesets.size();
 
       try {
         while ( __filter.hasRows() ) {
@@ -170,12 +170,12 @@ namespace gum {
           FilteredRow& row = __filter.row();
 
           // fill the counts for the ith nodeset
-          for ( unsigned int i = 0; i < size; ++i ) {
+          for ( auto i = 0; i < size; ++i ) {
             const std::vector<unsigned int>& var_ids = *( this->_nodesets[i] );
             unsigned int offset = 0;
             unsigned int dim = 1;
 
-            for ( unsigned int j = 0, vsize = var_ids.size(); j < vsize; ++j ) {
+            for ( auto j = 0, vsize = var_ids.size(); j < vsize; ++j ) {
               offset += row[var_ids[j]] * dim;
               dim *= this->_modalities->operator[]( var_ids[j] );
             }

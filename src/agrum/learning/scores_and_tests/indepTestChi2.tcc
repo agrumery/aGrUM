@@ -83,17 +83,17 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nz =
             this->_getConditioningCounts( nodeset_index + 1 );
 
-        const unsigned int Z_size = Nz.size();
-        const unsigned int Y_size = modals[all_nodes[all_nodes.size() - 2]];
-        const unsigned int X_size = modals[all_nodes[all_nodes.size() - 1]];
+        const auto Z_size = Nz.size();
+        const auto Y_size = modals[all_nodes[all_nodes.size() - 2]];
+        const auto X_size = modals[all_nodes[all_nodes.size() - 1]];
 
-        double score = 0;
+        double score = 0.0;
 
-        for ( unsigned int x = 0, beg_zx = 0, zyx = 0; x < X_size;
+        for ( auto x = 0, beg_zx = 0, zyx = 0; x < X_size;
               ++x, beg_zx += Z_size ) {
-          for ( unsigned int y = 0, zy = 0, zx = beg_zx; y < Y_size;
+          for ( auto y = 0, zy = 0, zx = beg_zx; y < Y_size;
                 ++y, zx = beg_zx ) {
-            for ( unsigned int z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
+            for ( auto z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
               if ( Nz[z] ) {
                 const double tmp1 = ( Nzy[zy] * Nzx[zx] ) / Nz[z];
                 if ( tmp1 ) {
