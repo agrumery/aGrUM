@@ -976,8 +976,7 @@ namespace gum {
 
           if ( m_verbose ) m_log << "Finished)" << std::flush;
 
-          //bn_inf = new LazyPropagation<double>( *m_bn );
-          bn_inf = new VEWithBB<double>( *m_bn );
+          bn_inf = new LazyPropagation<double>( *m_bn );
 
           auto grd_inf = new GroundedInference<double>( *( prm() ), sys );
           grd_inf->setBNInference( bn_inf );

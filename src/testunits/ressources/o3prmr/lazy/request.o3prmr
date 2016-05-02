@@ -1,0 +1,8 @@
+import LazyError;
+
+request req {
+  engine GRD;
+  ? LazyError.t1.hits.hits;
+  ? LazyError.t1.hits.wounds;
+}
+
