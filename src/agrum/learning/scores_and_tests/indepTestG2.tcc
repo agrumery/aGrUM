@@ -34,7 +34,7 @@ namespace gum {
     template <typename RowFilter>
     INLINE IndepTestG2<IdSetAlloc, CountAlloc>::IndepTestG2(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities )
+        const std::vector<Size>& var_modalities )
         : IndependenceTest<IdSetAlloc, CountAlloc>( filter, var_modalities )
         , __chi2( var_modalities ) {
       // for debugging purposes
@@ -51,18 +51,18 @@ namespace gum {
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     double
-    IndepTestG2<IdSetAlloc, CountAlloc>::score( unsigned int nodeset_index ) {
+    IndepTestG2<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
       }
 
       // get the nodes involved in the score as well as their modalities
-      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
+      const std::vector<Idx, IdSetAlloc>& all_nodes =
           this->_getAllNodes( nodeset_index );
-      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
+      const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes( nodeset_index + 1 );
-      const std::vector<unsigned int>& modals = this->modalities();
+      const std::vector<Idx>& modals = this->modalities();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
@@ -83,17 +83,17 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nz =
             this->_getConditioningCounts( nodeset_index + 1 );
 
-        const unsigned int Z_size = Nz.size();
-        const unsigned int Y_size = modals[all_nodes[all_nodes.size() - 2]];
-        const unsigned int X_size = modals[all_nodes[all_nodes.size() - 1]];
+        const Size Z_size = Nz.size();
+        const Size Y_size = modals[all_nodes[all_nodes.size() - 2]];
+        const Size X_size = modals[all_nodes[all_nodes.size() - 1]];
 
         double score = 0;
 
-        for ( unsigned int x = 0, beg_zx = 0, zyx = 0; x < X_size;
+        for ( Idx x = 0, beg_zx = 0, zyx = 0; x < X_size;
               ++x, beg_zx += Z_size ) {
-          for ( unsigned int y = 0, zy = 0, zx = beg_zx; y < Y_size;
+          for ( Idx y = 0, zy = 0, zx = beg_zx; y < Y_size;
                 ++y, zx = beg_zx ) {
-            for ( unsigned int z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
+            for ( Idx z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
               const double tmp1 = Nzyx[zyx] * Nz[z];
               if ( tmp1!=0.0 ) {
                 const double tmp2 = Nzy[zy] * Nzx[zx];
@@ -135,20 +135,20 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nx =
             this->_getAllCounts( nodeset_index + 1 );
 
-        const unsigned int Y_size = Ny.size();
-        const unsigned int X_size = Nx.size();
+        const Size Y_size = Ny.size();
+        const Size X_size = Nx.size();
 
         // count N
         double N = 0;
-        for ( unsigned int i = 0; i < Nx.size(); ++i ) {
+        for ( Idx i = 0; i < Nx.size(); ++i ) {
           N += Nx[i];
         }
 
         double score = 0;
 
-        for ( unsigned int x = 0, yx = 0; x < X_size; ++x ) {
+        for ( Idx x = 0, yx = 0; x < X_size; ++x ) {
           const double tmp_Nx = Nx[x];
-          for ( unsigned int y = 0; y < Y_size; ++y, ++yx ) {
+          for ( Idx y = 0; y < Y_size; ++y, ++yx ) {
             const double tmp = tmp_Nx * Ny[y];
             if ( tmp!=0.0 ) {
               score += Nyx[yx] * std::log( ( Nyx[yx] * N ) / tmp );

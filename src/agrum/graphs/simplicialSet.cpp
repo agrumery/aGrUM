@@ -175,15 +175,15 @@ namespace gum {
       // say Y, such that, after deleting Y, id and its adjacent nodes form a
       // clique.
       const NodeSet& nei = __graph->neighbours( id );
-      unsigned int nb_adj = nei.size();
-      unsigned int nb = __nb_adjacent_neighbours[id];
+      Size nb_adj = nei.size();
+      Size nb = __nb_adjacent_neighbours[id];
 
       // nb_almost = the number of edges that should link the neighbours of
       // node id, after node Y mentioned above has been removed. Recall that
       // these neighbours and id form a clique. Hence this corresponds to the
       // number of triangles involving id and 2 of its neighbours, after node
       // Y has been removed.
-      unsigned int nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
+      Size nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
       NodeId node1 = 0;
 
       for ( const auto current_node : nei ) {
@@ -211,7 +211,7 @@ namespace gum {
       // nb_n1 will contain the number of pairs of neighbours of node1 that
       // will be adjacent after the clique is constructed but that
       // are not yet adjacent
-      unsigned int nb_n1 = 0;
+      Size nb_n1 = 0;
 
       // update the number of triangles of the edges and keep track of the
       // nodes involved.
@@ -233,7 +233,7 @@ namespace gum {
           // nb_n2 will contain the number of pairs of neighbours of node2 that
           // will be adjacent after the clique is constructed but that
           // are not yet adjacent
-          unsigned int nb_n2 = 0;
+          Size nb_n2 = 0;
 
           // for all common neighbours of node1 and node2, update the number of
           // triangles as well as the number of adjacent neighbours
@@ -291,7 +291,7 @@ namespace gum {
         float log_modal_node1 = ( *__log_modalities )[node1];
         float& __log_weights_node1 = ( *__log_weights )[node1];
         bool node1_status = false;
-        unsigned int nb_n1 = 0;
+        Size nb_n1 = 0;
 
         auto iterEdge2 = iter1;
 
@@ -316,7 +316,7 @@ namespace gum {
             // for all common neighbours of node1 and node2, update the number
             // of
             // triangles as well as the number of adjacent neighbours
-            unsigned int nb_n2 = 0;
+            Size nb_n2 = 0;
 
             if ( __graph->neighbours( node1 ).size() <=
                  __graph->neighbours( node2 ).size() ) {
@@ -400,7 +400,7 @@ namespace gum {
     const NodeSet nei = __graph->neighbours( id );
 
     // check that node id is actually a clique
-    unsigned int nb_adj = nei.size();
+    Size nb_adj = nei.size();
 
     if ( __nb_adjacent_neighbours[id] != ( nb_adj * ( nb_adj - 1 ) ) / 2 ) {
       GUM_ERROR( NotFound, "the node " << id << " is not a clique" );
@@ -512,7 +512,7 @@ namespace gum {
     ( *__log_weights )[node2] -= ( *__log_modalities )[node1];
 
     // update the number of triangles and the adjacent neighbours
-    unsigned int nb_neigh_n1_n2 = 0;
+    Size nb_neigh_n1_n2 = 0;
 
     for ( const auto othernode : __graph->neighbours( node1 ) ) {
       if ( __graph->existsEdge( node2, othernode ) ) {
@@ -548,8 +548,8 @@ namespace gum {
     ( *__log_weights )[node1] += ( *__log_modalities )[node2];
     ( *__log_weights )[node2] += ( *__log_modalities )[node1];
 
-    unsigned int nb_triangle_in_new_edge = 0;
-    unsigned int nb_neigh_n1_n2 = 0;
+    Size nb_triangle_in_new_edge = 0;
+    Size nb_neigh_n1_n2 = 0;
 
     for ( const auto othernode : __graph->neighbours( node1 ) ) {
       if ( __graph->existsEdge( node2, othernode ) ) {
@@ -596,7 +596,7 @@ namespace gum {
 
     __Belong& belong = __containing_list[id];
     const NodeSet& nei = __graph->neighbours( id );
-    unsigned int nb_adj = nei.size();
+    Size nb_adj = nei.size();
 
     // check if the node should belong to the simplicial set
     if ( __nb_adjacent_neighbours[id] == ( nb_adj * ( nb_adj - 1 ) ) / 2 ) {
@@ -614,8 +614,8 @@ namespace gum {
     }
 
     // check if the node should belong to the almost simplicial set
-    unsigned int nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
-    unsigned int nb = __nb_adjacent_neighbours[id];
+    Size nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
+    Size nb = __nb_adjacent_neighbours[id];
 
     for ( const auto cur : nei ) {
       if ( nb_almost == nb - __nb_triangles[Edge( cur, id )] ) {
@@ -790,8 +790,8 @@ namespace gum {
 
     // initialize the __nb_triangles so that there is no need to check whether
     // __nb_triangles need new insertions
-    __nb_triangles = __graph->edgesProperty( 0U );
-    __nb_adjacent_neighbours = __graph->nodesProperty( 0U );
+    __nb_triangles = __graph->edgesProperty( Size(0) );
+    __nb_adjacent_neighbours = __graph->nodesProperty( Size(0) );
     __containing_list = __graph->nodesProperty( __Belong::NO_LIST );
     __changed_status = __graph->asNodeSet();
 
@@ -802,7 +802,7 @@ namespace gum {
     // node X the set of its neighbours Y,Z that are adjacent to each other and
     // such that the Id of Y and Z are greater than X.
     for ( const auto nodeX : __graph->nodes() ) {
-      unsigned int& nb_adjacent_neighbours_idX =
+      Size& nb_adjacent_neighbours_idX =
           __nb_adjacent_neighbours[nodeX];
 
       const NodeSet& nei = __graph->neighbours( nodeX );
@@ -810,7 +810,7 @@ namespace gum {
       for ( auto iterY = nei.begin(); iterY != nei.end(); ++iterY )
         if ( *iterY > nodeX ) {
           NodeId node_idY = *iterY;
-          unsigned int& nb_adjacent_neighbours_idY =
+          Size& nb_adjacent_neighbours_idY =
               __nb_adjacent_neighbours[node_idY];
 
           auto iterZ = iterY;

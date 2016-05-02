@@ -65,7 +65,7 @@ namespace gum {
      * to get the observed countings if you are developping a new independence
      * test class, or use method score to get the computed score of the test if
      * you are an end user. */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class IndependenceTest : private Counter<IdSetAlloc, CountAlloc> {
       public:
@@ -80,7 +80,7 @@ namespace gum {
        */
       template <typename RowFilter>
       IndependenceTest( const RowFilter& filter,
-                        const std::vector<unsigned int>& var_modalities );
+                        const std::vector<Size>& var_modalities );
 
       /// destructor
       virtual ~IndependenceTest();
@@ -106,7 +106,7 @@ namespace gum {
        * argument
        * to methods _getAllCounts and _getConditioningCounts to get the observed
        * countings of (var2,var1) [in this order] and var2 respectively. */
-      unsigned int addNodeSet( unsigned int var1, unsigned int var2 );
+      Idx addNodeSet( Idx var1, Idx var2 );
 
       /// add a new target node conditioned by another node to be counted
       /** @param vars contains the index of the target variable (first) in the
@@ -120,8 +120,8 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * observed countings of (vars.second, vars.first) [in this order] and
        * vars.second respectively. */
-      unsigned int
-      addNodeSet( const std::pair<unsigned int, unsigned int>& vars );
+      Idx
+      addNodeSet( const std::pair<Idx, Idx>& vars );
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -141,10 +141,10 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
-      unsigned int
-      addNodeSet( unsigned int var1,
-                  unsigned int var2,
-                  const std::vector<unsigned int>& conditioning_ids );
+      Idx
+      addNodeSet( Idx var1,
+                  Idx var2,
+                  const std::vector<Idx>& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -164,9 +164,9 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
-      unsigned int addNodeSet( unsigned int var1,
-                               unsigned int var2,
-                               std::vector<unsigned int>&& conditioning_ids );
+      Idx addNodeSet( Idx var1,
+                               Idx var2,
+                               std::vector<Idx>&& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -184,9 +184,9 @@ namespace gum {
        * observed countings of (conditioning_ids, vars.second, vars.first) [in
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
-      unsigned int
-      addNodeSet( const std::pair<unsigned int, unsigned int>& vars,
-                  const std::vector<unsigned int>& conditioning_ids );
+      Idx
+      addNodeSet( const std::pair<Idx, Idx>& vars,
+                  const std::vector<Idx>& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -204,9 +204,9 @@ namespace gum {
        * observed countings of (conditioning_ids, vars.second, vars.first) [in
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
-      unsigned int
-      addNodeSet( const std::pair<unsigned int, unsigned int>& vars,
-                  std::vector<unsigned int>&& conditioning_ids );
+      Idx
+      addNodeSet( const std::pair<Idx, Idx>& vars,
+                  std::vector<Idx>&& conditioning_ids );
 
       /// clears all the data structures from memory
       void clear();
@@ -230,7 +230,7 @@ namespace gum {
        * alpha, where @#sum corresponds to the summations mentioned above.
        * Therefore, any positive result should reflect a dependence whereas
        * negative results should reflect independences. */
-      virtual double score( unsigned int nodeset_index ) = 0;
+      virtual double score( Idx nodeset_index ) = 0;
 
       /// @}
 
@@ -267,13 +267,13 @@ namespace gum {
       using Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes;
 
       /// indicates whether a score belongs to the cache
-      bool _isInCache( unsigned int nodeset_index ) const noexcept;
+      bool _isInCache( Idx nodeset_index ) const noexcept;
 
       /// inserts a new score into the cache
-      void _insertIntoCache( unsigned int nodeset_index, double score );
+      void _insertIntoCache( Idx nodeset_index, double score );
 
       /// returns a cached score
-      double _cachedScore( unsigned int nodeset_index ) const noexcept;
+      double _cachedScore( Idx nodeset_index ) const noexcept;
 
       /// indicates whether we use the cache or not
       bool _isUsingCache() const noexcept;
@@ -292,7 +292,7 @@ namespace gum {
       std::vector<double> __cached_score;
 
       /// an empty conditioning set
-      const std::vector<unsigned int> __empty_conditioning_set;
+      const std::vector<Idx> __empty_conditioning_set;
 
       // ##########################################################################
       // ##########################################################################

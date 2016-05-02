@@ -34,12 +34,12 @@ namespace gum {
     // if x is small, use precomputed values
     if ( x < 50 ) {
       if ( __requires_precision ) {
-        unsigned int index = int(x * 100);
+        Idx index = int(x * 100);
         return __small_values[index] +
                ( __small_values[index + 1] - __small_values[index] ) *
                    double( x * 100 - index );
       } else {
-        unsigned int index = int(x * 100 + 0.5);
+        Idx index = int(x * 100 + 0.5);
         return __small_values[index];
       }
     }

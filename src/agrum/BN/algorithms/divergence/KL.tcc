@@ -139,7 +139,7 @@ namespace gum {
                      "(not the same domainSize for " +
                          vp.name() + ")" );
 
-        for ( Id i = 0; i < vp.domainSize(); i++ ) {
+        for ( Idx i = 0; i < vp.domainSize(); i++ ) {
           try {
             vq[vp.label( i )];
             vp[vq.label( i )];

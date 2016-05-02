@@ -35,13 +35,13 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
-#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
-#include <agrum/FMDP/planning/actionSet.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/planning/IOperatorStrategy.h>
+#include <agrum/FMDP/planning/actionSet.h>
 #include <agrum/FMDP/planning/mddOperatorStrategy.h>
 #include <agrum/FMDP/planning/treeOperatorStrategy.h>
 // =========================================================================
@@ -306,9 +306,10 @@ namespace gum {
     /// presents at the leaves the associated ActionSet
     /// @warning deallocate the argmax optimal value function
     // ==========================================================================
-    void _extractOptimalPolicy( const MultiDimFunctionGraph<
-                                ArgMaxSet<GUM_SCALAR, Idx>,
-                                SetTerminalNodePolicy>* optimalValueFunction );
+    void _extractOptimalPolicy(
+        const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>,
+                                    SetTerminalNodePolicy>*
+            optimalValueFunction );
 
     private:
     // ==========================================================================

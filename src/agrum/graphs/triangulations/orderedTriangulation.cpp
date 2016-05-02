@@ -66,7 +66,7 @@ namespace gum {
                                        const NodeProperty<Size>* modal,
                                        const std::vector<NodeId>* sequence ) {
     // check that the graph, the modalities and the sequence seem OK
-    unsigned int nb = 0;
+    int nb = 0;
 
     if ( graph ) ++nb;
 

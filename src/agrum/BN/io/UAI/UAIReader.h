@@ -81,7 +81,7 @@ namespace gum {
     /// @return the number of detected errors
     /// @throws IOError if file not exists
     int proceed( void );
-    
+
     void buildFromQuartets(std::vector<std::tuple<float,int,int,int>> quartets);
 
     /// @{
@@ -93,13 +93,13 @@ namespace gum {
     Size warnings();
 
     /// line of ith error or warning
-    unsigned int errLine( unsigned int i );
+    Idx errLine( Idx i );
     /// col of ith error or warning
-    unsigned int errCol( unsigned int i );
+    Idx errCol( Idx i );
     /// type of ith error or warning
-    bool errIsError( unsigned int i );
+    bool errIsError( Idx i );
     /// message of ith error or warning
-    std::string errMsg( unsigned int i );
+    std::string errMsg( Idx i );
 
     /// send on std::cerr the list of errorswith contents
     void showElegantErrors( std::ostream& o = std::cerr );
@@ -127,7 +127,7 @@ namespace gum {
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
     bool __ioerror;
-    
+
     void __addFatalError(int lig,int col,const std::string& s); // throw an exception
     void __addError(int lig,int col,const std::string& s);
     void __addWarning(int lig,int col,const std::string& s);

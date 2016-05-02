@@ -27,19 +27,19 @@
 #ifndef GUM_GSPAN_H
 #define GUM_GSPAN_H
 
-#include <string>
-#include <ostream>
-#include <vector>
-#include <list>
 #include <algorithm>
+#include <list>
+#include <ostream>
+#include <string>
+#include <vector>
 
 #include <agrum/core/timer.h>
 
 #include <agrum/BN/inference/variableElimination.h>
 
 #include <agrum/PRM/PRM.h>
-#include <agrum/PRM/gspan/interfaceGraph.h>
 #include <agrum/PRM/gspan/DFSTree.h>
+#include <agrum/PRM/gspan/interfaceGraph.h>
 
 namespace gum {
   namespace prm {
@@ -258,12 +258,11 @@ namespace gum {
       /// @param frequency The frequency of the pattern in the current interface
       ///        graph.
       /// @return the cost with respect to an interface size and its frequency.
-      unsigned long __cost_func( unsigned int interface_size,
-                                 unsigned int frequency );
+      Size __cost_func( Size interface_size, Size frequency );
 
       /// Sort the patterns and compute their respective costs.
       void __sortPatterns();
-      
+
       /// Returns true if e is an eligible root edge.
       /// @param e An EdgeData<GUM_SCALAR>.
       /// @return true if e is an eligible root edge.

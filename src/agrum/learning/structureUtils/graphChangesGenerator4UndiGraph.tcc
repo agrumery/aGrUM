@@ -115,9 +115,9 @@ namespace gum {
           legal_changes.resize( num_threads );
         }
 
-        const int this_thread = getThreadNumber();
+        const Idx this_thread = getThreadNumber();
 
-        unsigned int i = 0;
+        Idx i = 0;
         for ( const auto node1 : _graph ) {
           if ( i == this_thread ) {
             for ( const auto node2 : _graph ) {
@@ -209,7 +209,7 @@ namespace gum {
     template <typename STRUCT_CONSTRAINT>
     INLINE void
     GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>::setMaxNbThreads(
-        unsigned int nb ) noexcept {
+        Size nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
       if ( nb == 0 ) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;

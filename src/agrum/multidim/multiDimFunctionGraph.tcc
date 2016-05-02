@@ -83,9 +83,13 @@ namespace gum {
   INLINE MultiDimFunctionGraph<GUM_SCALAR,
                                TerminalNodePolicy>::~MultiDimFunctionGraph() {
     // Manager deletion
+    GUM_CHECKPOINT;
     GUM_DESTRUCTOR( MultiDimFunctionGraph );
+    GUM_CHECKPOINT;
     if ( __manager != nullptr ) delete __manager;
+    GUM_CHECKPOINT;
     this->clear();
+    GUM_CHECKPOINT;
   }
 
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
@@ -443,11 +447,15 @@ namespace gum {
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::clear() {
 
+    GUM_CHECKPOINT;
     __model.clear();
+    GUM_CHECKPOINT;
     // Always discard the nodeId 0
     __model.addNode();
+    GUM_CHECKPOINT;
 
     this->clearAllTerminalNodes();
+    GUM_CHECKPOINT;
 
     // Nodes cleaning
     for ( HashTableIterator<NodeId, InternalNode*> nodeIter =
@@ -457,8 +465,10 @@ namespace gum {
 
       delete nodeIter.val();
     }
+    GUM_CHECKPOINT;
 
     __internalNodeMap.clear();
+    GUM_CHECKPOINT;
 
     // Cleaning the list of nodes for each variables
     for ( HashTableIterator<const DiscreteVariable*, LinkedList<NodeId>*>
@@ -467,7 +477,9 @@ namespace gum {
           ++varIter ) {
       delete varIter.val();
     }
+    GUM_CHECKPOINT;
     __var2NodeIdMap.clear();
+    GUM_CHECKPOINT;
 
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
               this->variablesSequence().rbeginSafe();
@@ -475,6 +487,7 @@ namespace gum {
           --varIter ) {
       this->erase( **varIter );
     }
+    GUM_CHECKPOINT;
   }
 
 

@@ -84,7 +84,7 @@ namespace gum_tests {
 
       filter = std::move( filter2 );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -98,7 +98,7 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree( 2 );
       struct_constraint.setTabuListSize( 100 );
 
-      gum::NodeProperty<unsigned int> slices{
+      gum::NodeProperty<gum::NodeId> slices{
           std::make_pair( gum::NodeId( 0 ), 0 ),
           std::make_pair( gum::NodeId( 1 ), 0 )};
       struct_constraint.setSliceOrder( slices );
@@ -149,7 +149,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       apriori.setWeight( 0 );
@@ -164,7 +164,7 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
 
-      gum::NodeProperty<unsigned int> slices{
+      gum::NodeProperty<gum::NodeId> slices{
           std::make_pair( gum::NodeId( 0 ), 0 ),
           std::make_pair( gum::NodeId( 1 ), 0 )};
       struct_constraint.setSliceOrder( slices );
@@ -207,7 +207,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       apriori.setWeight( 0 );
@@ -222,7 +222,7 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
 
-      gum::NodeProperty<unsigned int> slices{
+      gum::NodeProperty<gum::NodeId> slices{
           std::make_pair( gum::NodeId( 0 ), 0 ),
           std::make_pair( gum::NodeId( 1 ), 0 )};
       struct_constraint.setSliceOrder( slices );
@@ -265,7 +265,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       apriori.setWeight( 0 );
@@ -280,7 +280,7 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
 
-      gum::NodeProperty<unsigned int> slices{
+      gum::NodeProperty<gum::NodeId> slices{
           std::make_pair( gum::NodeId( 0 ), 0 ),
           std::make_pair( gum::NodeId( 1 ), 0 )};
       struct_constraint.setSliceOrder( slices );

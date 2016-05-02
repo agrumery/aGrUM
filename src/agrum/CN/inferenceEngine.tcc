@@ -22,8 +22,8 @@
 *
 * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
 */
-#include <agrum/config.h>
 #include <agrum/CN/inferenceEngine.h>
+#include <agrum/config.h>
 
 namespace gum {
   namespace credal {
@@ -172,7 +172,7 @@ namespace gum {
         p = strtok( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back( GUM_SCALAR(atof( p )) );
+          values.push_back( GUM_SCALAR( atof( p ) ) );
           p = strtok( nullptr, " " );
         }  // end of : line
 
@@ -315,7 +315,7 @@ namespace gum {
         p = strtok( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back( GUM_SCALAR(atof( p ) ));
+          values.push_back( GUM_SCALAR( atof( p ) ) );
           p = strtok( nullptr, " " );
         }  // end of : line
 
@@ -556,8 +556,7 @@ namespace gum {
         GUM_ERROR( IOError,
                    "void InferenceEngine< GUM_SCALAR >::saveMarginals(const "
                    "std::string & path) const : could not open output file "
-                   ": "
-                       << path );
+                   ": " << path );
       }
 
       for ( const auto& elt : _marginalMin ) {
@@ -751,10 +750,10 @@ namespace gum {
       if ( _dynamicExpMax.size() > 0 && _dynamicExpMin.size() > 0 ) return;
 
       // typedef typename std::map< int, GUM_SCALAR > innerMap;
-      typedef typename gum::HashTable<int, GUM_SCALAR> innerMap;
+      using innerMap = typename gum::HashTable<int, GUM_SCALAR>;
 
       // typedef typename std::map< std::string, innerMap > outerMap;
-      typedef typename gum::HashTable<std::string, innerMap> outerMap;
+      using outerMap = typename gum::HashTable<std::string, innerMap>;
 
       // typedef typename std::map< std::string, std::vector< GUM_SCALAR > >
       // mod;

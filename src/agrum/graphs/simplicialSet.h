@@ -315,10 +315,10 @@ namespace gum {
 
     /** @brief for each edge, keep track of the number of triangles passing
      * through this egde */
-    EdgeProperty<unsigned int> __nb_triangles;
+    EdgeProperty<Size> __nb_triangles;
 
     /// for each node, the number of pairs of adjacent neighbours
-    NodeProperty<unsigned int> __nb_adjacent_neighbours;
+    NodeProperty<Size> __nb_adjacent_neighbours;
 
     /// the current (induced) tree width
     /** @warning Note that what we call tree width here is not the classical

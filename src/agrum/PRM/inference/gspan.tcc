@@ -399,8 +399,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE unsigned long
-    GSpan<GUM_SCALAR>::__cost_func( unsigned int interface_size,
-                                    unsigned int frequency ) {
+    GSpan<GUM_SCALAR>::__cost_func( Size interface_size,
+                                    Size frequency ) {
       return interface_size * frequency;
     }
 

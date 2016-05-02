@@ -387,7 +387,7 @@ namespace gum {
                                          bool resize_pol,
                                          bool key_uniqueness_pol )
       :  // size must be >= 2 else we lose all the bits of the hash function
-      __size{1UL << __hashTableLog2( std::max( 2UL, size_param ) )}
+      __size{Size(1) << __hashTableLog2( std::max( Size(2), size_param ) )}
       , __resize_policy{resize_pol}
       , __key_uniqueness_policy{key_uniqueness_pol} {
     // for debugging purposes
@@ -401,7 +401,7 @@ namespace gum {
   HashTable<Key, Val, Alloc>::HashTable(
       std::initializer_list<std::pair<Key, Val>> list )
       :  // size must be >= 2 else we lose all the bits of the hash function
-      __size{1UL << __hashTableLog2(
+      __size{Size(1) << __hashTableLog2(
                  std::max<Size>( Size( 2 ), list.size() / 2 ) )} {
     // for debugging purposes
     GUM_CONSTRUCTOR( HashTable );
@@ -782,12 +782,12 @@ namespace gum {
   template <typename Key, typename Val, typename Alloc>
   void HashTable<Key, Val, Alloc>::resize( Size new_size ) {
     // new_size must be >= 2 else all the bits of the hash function are lost
-    new_size = std::max( 2UL, new_size );
+    new_size = std::max( Size(2), new_size );
 
     // find the real size for allocation (the smallest power of 2 greater
     // than or equal to new_size) and get its base-2 logarithm
     int log_size = __hashTableLog2( new_size );
-    new_size = 1UL << log_size;
+    new_size = Size(1) << log_size;
 
     // check if the new size is different from the actual size
     // if not, nothing else need be done
@@ -1113,7 +1113,7 @@ namespace gum {
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
     // resize in autmatic resizing mode
-    if ( size == 0 ) size = std::max( 2UL, __nb_elements / 2 );
+    if ( size == 0 ) size = std::max( Size(2), __nb_elements / 2 );
 
     // create a new table
     HashTable<Key, Mount, OtherAlloc> table(
@@ -1138,7 +1138,7 @@ namespace gum {
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
     // resize in autmatic resizing mode
-    if ( size == 0 ) size = std::max( 2UL, __nb_elements / 2 );
+    if ( size == 0 ) size = std::max( Size(2), __nb_elements / 2 );
 
     // create a new table
     HashTable<Key, Mount, OtherAlloc> table(
@@ -1163,7 +1163,7 @@ namespace gum {
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
     // resize in autmatic resizing mode
-    if ( size == 0 ) size = std::max( 2UL, __nb_elements / 2 );
+    if ( size == 0 ) size = std::max( Size(2), __nb_elements / 2 );
 
     // create a new table
     HashTable<Key, Mount, OtherAlloc> table(
@@ -1188,7 +1188,7 @@ namespace gum {
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
     // resize in autmatic resizing mode
-    if ( size == 0 ) size = std::max( 2UL, __nb_elements / 2 );
+    if ( size == 0 ) size = std::max( Size(2), __nb_elements / 2 );
 
     // create a new table
     HashTable<Key, Mount, OtherAlloc> table(
@@ -1660,18 +1660,17 @@ namespace gum {
         // 2/ index != 0 => we must search for a new slot containing elements
 
         // case 1:
-        if ( !__index ) {
+        if ( __index==0 ) {
           __bucket = nullptr;
           // we are thus at the end() of the hashTable
         }
-
         // case 2:
         else {
           // arrived here, we need to parse the hash table until we find a new
           // bucket because we are pointing on a chained list with no more
           // element
           // to the left of the current element
-          for ( Size i = __index - 1UL; i; --i ) {
+          for ( Size i = __index - 1; i>0; --i ) {
             if ( __table->__nodes[i].__nb_elements ) {
               __index = i;
               __bucket = __table->__nodes[i].__end_list;

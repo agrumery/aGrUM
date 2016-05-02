@@ -149,10 +149,10 @@ namespace gum {
         : public BaseDBCellTranslator {
       public:
       /// the number of DBRow cells read by the translator
-      static constexpr unsigned int input_size = Nb_inputs;
+      static constexpr Size input_size = Nb_inputs;
 
       /// the number of FilteredRow cells generated as output by the translator
-      static constexpr unsigned int output_size = Nb_outputs;
+      static constexpr Size output_size = Nb_outputs;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -216,7 +216,7 @@ namespace gum {
       /** If the DBCellTranslator outputs N columns, then those will be written
        * in
        * the output vector at indices start, start+1, ..., start+N-1. */
-      void setOutputCols( unsigned int start ) noexcept;
+      void setOutputCols( Idx start ) noexcept;
 
       /// returns the current input DBRow
       const DBRow& inputRow() const noexcept;
@@ -225,20 +225,20 @@ namespace gum {
       FilteredRow& outputFilteredRow() noexcept;
 
       /// returns the row of unsigned int of the current output FilteredRow
-      std::vector<unsigned int>& outputRow() noexcept;
+      std::vector<Idx>& outputRow() noexcept;
 
       /// returns the set of input DBRow's columns used by the translator
-      const unsigned int* inputCols() const noexcept;
+      const Idx* inputCols() const noexcept;
 
       /// returns the set of output FilteredRow's columns written by the
       /// translator
-      const unsigned int* outputCols() const noexcept;
+      const Idx* outputCols() const noexcept;
 
       /// returns the DBCell read at the ith input column of translator
-      const DBCell& in( unsigned int i ) const noexcept;
+      const DBCell& in( Idx i ) const noexcept;
 
       /// returns the FilteredRow cell corresponding to the ith output column
-      unsigned int& out( unsigned int i ) noexcept;
+      Idx& out( Idx i ) noexcept;
 
       /// performs a translation
       virtual void translate() = 0;
@@ -265,7 +265,7 @@ namespace gum {
        * found in the columns they translate. They can thus push back the
        * numbers
        * of such values into vector "modals". */
-      virtual void modalities( std::vector<unsigned int>& modals ) const = 0;
+      virtual void modalities( std::vector<Size>& modals ) const = 0;
 
       /// back-translate a given output (i.e., returns its input value)
       /** @param col the column in _output_cols corresponding to the translated
@@ -274,13 +274,13 @@ namespace gum {
        * know the original value (that which was actually read from the
        * database) */
       virtual std::string
-      translateBack( unsigned int col, unsigned int translated_val ) const = 0;
+      translateBack( Idx col, Idx translated_val ) const = 0;
 
       /// returns the size of the input for this cell translator
-      unsigned int inputSize() const noexcept;
+      Size inputSize() const noexcept;
 
       /// returns the size of the output for this cell translator
-      unsigned int outputSize() const noexcept;
+      Size outputSize() const noexcept;
 
       virtual std::string toString() const noexcept { return std::string(); }
 
@@ -291,14 +291,14 @@ namespace gum {
       const DBRow* _input_row{nullptr};
 
       /// the columns of the input DBRow that will be read by the translator
-      unsigned int _input_cols[Nb_inputs];
+      Idx _input_cols[Nb_inputs];
 
       /// the FilteredRow to which the translator will write its output
       FilteredRow* _output_row{nullptr};
 
       /** @brief the columns in the output FilteredRow that will be written by
        * the translator */
-      unsigned int _output_cols[Nb_outputs];
+      Idx _output_cols[Nb_outputs];
     };
 
     /// for friendly displaying the content of translators

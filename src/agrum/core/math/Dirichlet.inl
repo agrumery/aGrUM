@@ -73,18 +73,18 @@ namespace gum {
 
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::operator()() {
-    unsigned int size = __params.size();
+    Size size = __params.size();
     result_type res( size );
     float sum = 0.0f;
     while ( sum == 0.0f ) {
-      for ( unsigned int i = 0; i < size; ++i ) {
+      for ( Idx i = 0; i < size; ++i ) {
         __gamma.param(
             std::gamma_distribution<float>::param_type( __params[i], 1 ) );
         res[i] = __gamma( __generator );
         sum += res[i];
       }
     }
-    for ( unsigned int i = 0; i < size; ++i ) {
+    for ( Idx i = 0; i < size; ++i ) {
       res[i] /= sum;
     }
     return res;
@@ -93,18 +93,18 @@ namespace gum {
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::
   operator()( const Dirichlet::param_type& parm ) {
-    unsigned int size = parm.size();
+    Size size = parm.size();
     result_type res( size );
     float sum = 0.0f;
     while ( sum == 0.0f ) {
-      for ( unsigned int i = 0; i < size; ++i ) {
+      for ( Idx i = 0; i < size; ++i ) {
         __gamma.param(
             std::gamma_distribution<float>::param_type( parm[i], 1 ) );
         res[i] = __gamma( __generator );
         sum += res[i];
       }
     }
-    for ( unsigned int i = 0; i < size; ++i ) {
+    for ( Idx i = 0; i < size; ++i ) {
       res[i] /= sum;
     }
     return res;

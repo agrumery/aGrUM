@@ -94,7 +94,7 @@ namespace gum {
       /// and
       /// their
       /// modalities.
-      const NodeProperty<unsigned int>& modalities() const;
+      const NodeProperty<Size>& modalities() const;
 
       /// @}
       private:
@@ -118,7 +118,7 @@ namespace gum {
       /// This
       /// is useful when using a Triangulation class over a
       /// ClassDependencyGraph<GUM_SCALAR>.
-      NodeProperty<unsigned int> __modalitites;
+      NodeProperty<Size> __modalitites;
 
       /// Mapping between the nodes in __graph with the PRMClassElement<GUM_SCALAR>
       /// in

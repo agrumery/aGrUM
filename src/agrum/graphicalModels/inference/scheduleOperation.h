@@ -91,7 +91,7 @@ namespace gum {
     Type type() const;
 
     /// returns the id of the operation
-    Id id() const;
+    Idx id() const;
 
     /// returns the set of multidims passed in argument to the operation
     virtual const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
@@ -140,10 +140,10 @@ namespace gum {
     Type __type;
 
     /// the id corresponding to the operation
-    Id __id;
+    Idx __id;
 
     /// returns a new distinct ID for each operation
-    static Id __newId();
+    static Idx __newId();
   };
 
 } /* namespace gum */

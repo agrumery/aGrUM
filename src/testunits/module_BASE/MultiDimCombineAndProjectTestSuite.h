@@ -41,7 +41,7 @@ namespace gum_tests {
     void testDouble() {
       std::vector<gum::LabelizedVariable*> vars( 11 );
 
-      for ( unsigned int i = 0; i < 11; ++i ) {
+      for ( gum::Idx i = 0; i < 11; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -140,7 +140,7 @@ namespace gum_tests {
         for ( const auto pot : res )
           delete pot;
 
-        for ( unsigned int i = 0; i < vars.size(); ++i )
+        for ( gum::Idx i = 0; i < vars.size(); ++i )
           delete vars[i];
 
       } catch ( gum::NotFound& e ) {
@@ -153,7 +153,7 @@ namespace gum_tests {
     void testFloat() {
       std::vector<gum::LabelizedVariable*> vars( 11 );
 
-      for ( unsigned int i = 0; i < 11; ++i ) {
+      for ( gum::Idx i = 0; i < 11; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -253,7 +253,7 @@ namespace gum_tests {
         for ( const auto pot : res )
           delete pot;
 
-        for ( unsigned int i = 0; i < vars.size(); ++i )
+        for ( gum::Idx i = 0; i < vars.size(); ++i )
           delete vars[i];
 
       } catch ( gum::NotFound& e ) {

@@ -504,7 +504,7 @@ namespace gum {
       List<const DiscreteVariable*>& varList ) {
     bool last = true;
 
-    for ( unsigned int j = 0; j < modCounter.size(); j++ ) {
+    for ( Idx j = 0; j < modCounter.size(); j++ ) {
       last = ( modCounter[j] == ( varList[j]->domainSize() - 1 ) ) && last;
 
       if ( !last ) break;
@@ -516,7 +516,7 @@ namespace gum {
 
     bool add = false;
 
-    unsigned int i = varList.size() - 1;
+    Idx i = varList.size() - 1;
 
     do {
       if ( modCounter[i] == ( varList[i]->domainSize() - 1 ) ) {

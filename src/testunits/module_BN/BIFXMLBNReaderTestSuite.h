@@ -216,7 +216,7 @@ namespace gum_tests {
       TS_ASSERT( net != 0 );
 
       if ( net != 0 ) {
-        gum::HashTable<std::string, gum::Id> idMap;
+        gum::HashTable<std::string, gum::NodeId> idMap;
 
         for ( const auto node : net->nodes() )
           idMap.insert( net->variable( node ).name(), node );
@@ -554,7 +554,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
       TS_ASSERT_EQUALS( isOK, 0 );
 
-      gum::HashTable<std::string, gum::Id> idMap;
+      gum::HashTable<std::string, gum::NodeId> idMap;
 
       for ( const auto node : net->nodes() )
         idMap.insert( net->variable( node ).name(), node );

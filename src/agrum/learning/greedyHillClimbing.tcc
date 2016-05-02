@@ -34,11 +34,11 @@ namespace gum {
     template <typename GRAPH_CHANGES_SELECTOR>
     DAG
     GreedyHillClimbing::learnStructure( GRAPH_CHANGES_SELECTOR& selector,
-                                        const std::vector<unsigned int>& modal,
+                                        const std::vector<Size>& modal,
                                         DAG dag ) {
       selector.setGraph( dag, modal );
 
-      unsigned int nb_changes_applied = 1;
+      Size nb_changes_applied = 1;
       double delta_score;
 
       initApproximationScheme();
@@ -51,11 +51,11 @@ namespace gum {
         nb_changes_applied = 0;
         delta_score = 0;
 
-        std::vector<std::pair<unsigned int, double>> ordered_queues =
+        std::vector<std::pair<Idx, double>> ordered_queues =
             selector.nodesSortedByBestScore();
 
-        for ( unsigned int j = 0; j < dag.size(); ++j ) {
-          unsigned int i = ordered_queues[j].first;
+        for ( Idx j = 0; j < dag.size(); ++j ) {
+          Idx i = ordered_queues[j].first;
 
           if ( !( selector.empty( i ) ) && ( selector.bestScore( i ) > 0 ) ) {
             // pick up the best change
@@ -140,7 +140,7 @@ namespace gum {
     GreedyHillClimbing::learnBN( GRAPH_CHANGES_SELECTOR& selector,
                                  PARAM_ESTIMATOR& estimator,
                                  const std::vector<std::string>& names,
-                                 const std::vector<unsigned int>& modal,
+                                 const std::vector<Idx>& modal,
                                  const CELL_TRANSLATORS& translator,
                                  DAG initial_dag ) {
       return DAG2BNLearner::createBN<GUM_SCALAR,

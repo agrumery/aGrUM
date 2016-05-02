@@ -37,7 +37,7 @@ namespace gum {
     template <typename RowFilter>
     INLINE ScoreBDeu<IdSetAlloc, CountAlloc>::ScoreBDeu(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities,
+        const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         unsigned long min_range,
         unsigned long max_range )
@@ -153,7 +153,7 @@ namespace gum {
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     double
-    ScoreBDeu<IdSetAlloc, CountAlloc>::score( unsigned int nodeset_index ) {
+    ScoreBDeu<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -162,15 +162,15 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const unsigned int targets_modal = N_ijk.size();
+      const Idx targets_modal = N_ijk.size();
       double score = 0;
 
       // get the nodes involved in the score as well as their modalities
-      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
+      const std::vector<Idx, IdSetAlloc>& all_nodes =
           this->_getAllNodes( nodeset_index );
-      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
+      const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes( nodeset_index );
-      const std::vector<unsigned int>& modalities = this->modalities();
+      const std::vector<Idx>& modalities = this->modalities();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
@@ -178,7 +178,7 @@ namespace gum {
         // get the count of the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const unsigned int conditioning_modal = N_ij.size();
+        const Size conditioning_modal = N_ij.size();
 
         if ( this->_apriori->weight() ) {
           // the score to compute is that of BD with aprioris
@@ -199,11 +199,11 @@ namespace gum {
           const double ess_qi = __ess / conditioning_modal;
           const double ess_riqi = ess_qi / modalities[all_nodes.back()];
 
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+          for ( Idx j = 0; j < conditioning_modal; ++j ) {
             score += __gammalog2( N_prime_ij[j] + ess_qi ) -
                      __gammalog2( N_ij[j] + N_prime_ij[j] + ess_qi );
           }
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + N_prime_ijk[k] + ess_riqi ) -
                      __gammalog2( N_prime_ijk[k] + ess_riqi );
           }
@@ -222,10 +222,10 @@ namespace gum {
           score = conditioning_modal * __gammalog2( ess_qi ) -
                   ri * conditioning_modal * __gammalog2( ess_qiri );
 
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+          for ( Idx j = 0; j < conditioning_modal; ++j ) {
             score -= __gammalog2( N_ij[j] + ess_qi );
           }
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + ess_qiri );
           }
         }
@@ -259,7 +259,7 @@ namespace gum {
 
           double N = 0;
           double N_prime = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + N_prime_ijk[k] + ess_ri ) -
                      __gammalog2( N_prime_ijk[k] + ess_ri );
             N += N_ijk[k];
@@ -279,7 +279,7 @@ namespace gum {
 
           score = __gammalog2( __ess ) - ri * __gammalog2( ess_ri );
           double N = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + ess_ri );
             N += N_ijk[k];
           }

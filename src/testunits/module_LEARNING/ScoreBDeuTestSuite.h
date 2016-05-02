@@ -48,7 +48,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriNoApriori<> apriori;
       gum::learning::AprioriSmoothing<> apriori2;
@@ -74,8 +74,8 @@ namespace gum_tests {
       // equal to ri * qi, then score BDeu = score K2
 
       score.setEffectiveSampleSize( 2 );
-      unsigned int id1 = score.addNodeSet( 3 );
-      unsigned int id2 = score.addNodeSet( 1 );
+      gum::Idx id1 = score.addNodeSet( 3 );
+      gum::Idx id2 = score.addNodeSet( 1 );
       TS_ASSERT_DELTA(score.score( id1), -996.781, 0.05 );
       TS_ASSERT_DELTA(score.score( id2), -3030.73, 0.05 );
 
@@ -87,26 +87,26 @@ namespace gum_tests {
 
       score.clear();
       score.setEffectiveSampleSize( 4 );
-      id1 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
-      id2 = score.addNodeSet( 1, std::vector<unsigned int>{4} );
+      id1 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
+      id2 = score.addNodeSet( 1, std::vector<gum::Idx>{4} );
       TS_ASSERT_DELTA(score.score( id1), -991.062, 0.05 );
       TS_ASSERT_DELTA(score.score( id2), -3030.55, 0.05 );
 
       score.clear();
       score.setEffectiveSampleSize( 8 );
-      id1 = score.addNodeSet( 3, std::vector<unsigned int>{1, 2} );
+      id1 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
       TS_ASSERT_DELTA(score.score( id1), -1014.4, 0.05 );
 
       /*
-      unsigned int id3, id4, id5, id6, id7;
+      gum::Idx id3, id4, id5, id6, id7;
       score.clear ();
       id1 = score.addNodeSet ( 3, 2 );
       id2 = score.addNodeSet ( 1, 2 );
-      id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, 8 );
+      id3 = score.addNodeSet ( 3, std::vector<gum::Idx> { 1, 2 }, 8 );
       id4 = score.addNodeSet ( 2, 2 );
-      id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, 4 );
+      id5 = score.addNodeSet ( 3, std::vector<gum::Idx> { 4 }, 4 );
       id6 = score.addNodeSet ( 2, 2 );
-      id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, 4 );
+      id7 = score.addNodeSet ( 3, std::vector<gum::Idx> { 4 }, 4 );
       TS_ASSERT_DELTA(score.score ( id1), -996.781, 0.05 );
       TS_ASSERT_DELTA(score.score ( id2), -3030.73, 0.05 );
       TS_ASSERT_DELTA(score.score ( id3), -1014.4 , 0.05 );
@@ -128,15 +128,15 @@ namespace gum_tests {
           gum::learning::RowGeneratorIdentity() );
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
       gum::learning::AprioriSmoothing<> apriori;
       apriori.setWeight( 0 );
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
       score.setEffectiveSampleSize( 2 );
       // score.useCache ( false );
 
-      unsigned int id1, id2, id4, id6;
-      for ( unsigned int i = 0; i < 1000; ++i ) {
+      gum::Idx id1, id2, id4, id6;
+      for ( gum::Idx i = 0; i < 1000; ++i ) {
         score.clear();
         id1 = score.addNodeSet( 3 );
         id2 = score.addNodeSet( 1 );
@@ -160,14 +160,14 @@ namespace gum_tests {
           gum::learning::RowGeneratorIdentity() );
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
       gum::learning::AprioriNoApriori<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
       score.setEffectiveSampleSize( 2 );
       // score.useCache ( false );
 
-      unsigned int id1, id2, id4, id6;
-      for ( unsigned int i = 0; i < 4; ++i ) {
+      gum::Idx id1, id2, id4, id6;
+      for ( gum::Idx i = 0; i < 4; ++i ) {
         score.clearCache();
         id1 = score.addNodeSet( 3 );
         id2 = score.addNodeSet( 1 );

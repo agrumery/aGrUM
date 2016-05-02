@@ -115,7 +115,7 @@ namespace gum {
   /// @{
   /// publishing Errors API
   template <typename GUM_SCALAR>
-  INLINE unsigned int BIFReader<GUM_SCALAR>::errLine( unsigned int i ) {
+  INLINE Idx BIFReader<GUM_SCALAR>::errLine( Idx i ) {
     if ( __parseDone )
       return __parser->errors().error( i ).line;
     else {
@@ -124,7 +124,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE unsigned int BIFReader<GUM_SCALAR>::errCol( unsigned int i ) {
+  INLINE Idx BIFReader<GUM_SCALAR>::errCol( Idx i ) {
     if ( __parseDone )
       return __parser->errors().error( i ).column;
     else {
@@ -133,7 +133,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE bool BIFReader<GUM_SCALAR>::errIsError( unsigned int i ) {
+  INLINE bool BIFReader<GUM_SCALAR>::errIsError( Idx i ) {
     if ( __parseDone )
       return __parser->errors().error( i ).is_error;
     else {
@@ -142,7 +142,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE std::string BIFReader<GUM_SCALAR>::errMsg( unsigned int i ) {
+  INLINE std::string BIFReader<GUM_SCALAR>::errMsg( Idx i ) {
     if ( __parseDone )
       return __parser->errors().error( i ).msg;
     else {

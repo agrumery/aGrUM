@@ -26,16 +26,18 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <climits>
-
 #ifndef GUM_TYPES_H
 #define GUM_TYPES_H
+
+#include <cstddef>
+#include <climits>
 
 namespace gum {
 
   /// @ingroup configuration_group
   /// @{
 
+//@beforeMerging which type are really used (CopyType, Id ?)
   /**
    * How copies should be performed (usual or shallow copies)
    *
@@ -46,19 +48,19 @@ namespace gum {
   /**
    * Type for indexes.
    */
-  typedef unsigned int Idx;
+  using Idx=std::size_t; //typedef unsigned int Idx;
 
   /**
    * Type for ids.
    */
-  typedef unsigned int Id;
+  //using Id=std::size_t; //typedef unsigned int Id;
 
   /**
    * In aGrUM, hashed values are unsigned long int. This is sufficient to deal
    * with Bayes nets and other graphs already big enough to be unmanageable
    * from a computational point of view.
    */
-  typedef unsigned long Size;
+  using Size=std::size_t; //typedef unsigned long Size;
 
 /// Maximum sized used in aGrUM.
 #define GUM_MAX_SIZE ULONG_MAX

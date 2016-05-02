@@ -34,14 +34,14 @@ namespace gum_tests {
 
       std::vector<float> res( 2, 0 );
       float sum = 0;
-      for ( unsigned int i = 0; i < 10000; ++i ) {
+      for ( gum::Idx i = 0; i < 10000; ++i ) {
         std::vector<float> sample = dir();
-        for ( unsigned int j = 0; j < sample.size(); ++j ) {
+        for ( gum::Idx j = 0; j < sample.size(); ++j ) {
           res[j] += sample[j];
           sum += sample[j];
         }
       }
-      for ( unsigned int j = 0; j < res.size(); ++j ) {
+      for ( gum::Idx j = 0; j < res.size(); ++j ) {
         res[j] /= sum;
       }
 
@@ -53,42 +53,42 @@ namespace gum_tests {
       param[1] = 1;
       sum = 0;
       res[0] = res[1] = 0;
-      for ( unsigned int i = 0; i < 10000; ++i ) {
+      for ( gum::Idx i = 0; i < 10000; ++i ) {
         std::vector<float> sample = dir( gen, param );
-        for ( unsigned int j = 0; j < sample.size(); ++j ) {
+        for ( gum::Idx j = 0; j < sample.size(); ++j ) {
           res[j] += sample[j];
           sum += sample[j];
         }
       }
-      for ( unsigned int j = 0; j < res.size(); ++j ) {
+      for ( gum::Idx j = 0; j < res.size(); ++j ) {
         res[j] /= sum;
       }
       TS_ASSERT( 1 - res[0] < 0.01 );
 
       sum = 0;
       res[0] = res[1] = 0;
-      for ( unsigned int i = 0; i < 10000; ++i ) {
+      for ( gum::Idx i = 0; i < 10000; ++i ) {
         std::vector<float> sample = dir( param );
-        for ( unsigned int j = 0; j < sample.size(); ++j ) {
+        for ( gum::Idx j = 0; j < sample.size(); ++j ) {
           res[j] += sample[j];
           sum += sample[j];
         }
       }
-      for ( unsigned int j = 0; j < res.size(); ++j ) {
+      for ( gum::Idx j = 0; j < res.size(); ++j ) {
         res[j] /= sum;
       }
       TS_ASSERT( 1 - res[0] < 0.01 );
 
       sum = 0;
       res[0] = res[1] = 0;
-      for ( unsigned int i = 0; i < 10000; ++i ) {
+      for ( gum::Idx i = 0; i < 10000; ++i ) {
         std::vector<float> sample = dir( gen, dir.param() );
-        for ( unsigned int j = 0; j < sample.size(); ++j ) {
+        for ( gum::Idx j = 0; j < sample.size(); ++j ) {
           res[j] += sample[j];
           sum += sample[j];
         }
       }
-      for ( unsigned int j = 0; j < res.size(); ++j ) {
+      for ( gum::Idx j = 0; j < res.size(); ++j ) {
         res[j] /= sum;
       }
       TS_ASSERT( fabs( res[0] - res[1] ) < 0.03 );

@@ -314,7 +314,7 @@ namespace gum {
     for ( const auto clique : MPS_of_X ) {
       const std::vector<NodeId>& cliques_of_X = __cliques_of_mps[clique];
 
-      for ( unsigned int i = 0; i < cliques_of_X.size(); ++i ) {
+      for ( Idx i = 0; i < cliques_of_X.size(); ++i ) {
         __junction_tree.eraseFromClique( cliques_of_X[i], X );
 
         // if the intersection between clique and one of its neighbour is empty,
@@ -364,7 +364,7 @@ namespace gum {
     // update the elimination orders
 
     if ( !__require_update ) {
-      for ( unsigned int i = __reverse_elimination_order[X] + 1;
+      for ( auto i = __reverse_elimination_order[X] + 1;
             i < __reverse_elimination_order.size();
             ++i )
         __elimination_order[i - 1] = __elimination_order[i];
@@ -452,14 +452,14 @@ namespace gum {
       const std::vector<NodeId>& cliques_Y = __cliques_of_mps[mps_Y];
       NodeId c_X = 0, c_Y = 0;
 
-      for ( unsigned int i = 0; i < cliques_X.size(); ++i ) {
+      for ( Idx i = 0; i < cliques_X.size(); ++i ) {
         if ( __junction_tree.clique( cliques_X[i] ).contains( X ) ) {
           c_X = cliques_X[i];
           break;
         }
       }
 
-      for ( unsigned int i = 0; i < cliques_Y.size(); ++i ) {
+      for ( Idx i = 0; i < cliques_Y.size(); ++i ) {
         if ( __junction_tree.clique( cliques_Y[i] ).contains( Y ) ) {
           c_Y = cliques_Y[i];
           break;
@@ -808,7 +808,7 @@ namespace gum {
         // get the cliques contained in this MPS
         const std::vector<NodeId>& cliques = __cliques_of_mps[elt.first];
 
-        for ( unsigned int i = 0; i < cliques.size(); ++i )
+        for ( Idx i = 0; i < cliques.size(); ++i )
           all_cliques_affected.insert( cliques[i], true );
       }
 
@@ -889,7 +889,7 @@ namespace gum {
         // the tmp_junction_tree that results from the elimination (during the
         // triangulation process) of the first eliminated node in the separator
         // between R and S is an admissible candidate
-        for ( unsigned int i = 0; i < notAffectedneighbourCliques.size();
+        for ( Idx i = 0; i < notAffectedneighbourCliques.size();
               ++i ) {
           // check that the separator is not empty. If this is the case, do not
           // link the new junction tree to the old one
@@ -898,11 +898,11 @@ namespace gum {
 
           if ( sep.size() != 0 ) {
             // now find the first eliminated node in the separator
-            unsigned int __elim_order = tmp_graph.bound() + 1;
+            Idx __elim_order = tmp_graph.bound() + 1;
             NodeId elim_node = 0;
 
             for ( const auto id : sep ) {
-              unsigned int new_order = __triangulation->eliminationOrder( id );
+              auto new_order = __triangulation->eliminationOrder( id );
 
               if ( new_order < __elim_order ) {
                 __elim_order = new_order;
@@ -1050,7 +1050,7 @@ namespace gum {
     // compute the transitive closure of merged_cliques. This one will contain
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
     // Actually clique X will be inserted into clique Y.
-    for ( unsigned int i = 0; i < merged_cliques.size(); ++i ) {
+    for ( Idx i = 0; i < merged_cliques.size(); ++i ) {
       if ( T_mpd_cliques.exists( merged_cliques[i].second ) )
         T_mpd_cliques[merged_cliques[i].first] =
             T_mpd_cliques[merged_cliques[i].second];
@@ -1270,7 +1270,7 @@ namespace gum {
       const NodeId node,
       const NodeId from,
       NodeProperty<bool>& examined,
-      unsigned int& index ) {
+      Idx& index ) {
     // apply collect to all the neighbours except from
     for ( const auto othernode : __junction_tree.neighbours( node ) )
       if ( othernode != from )
@@ -1320,7 +1320,7 @@ namespace gum {
     }
 
     // now we can use a collect algorithm to get the elimination order
-    unsigned int index = 0;
+    Idx index = 0;
 
     NodeProperty<bool> examined = __junction_tree.nodesProperty<bool>( false );
 
@@ -1334,7 +1334,7 @@ namespace gum {
   /** @brief returns the number of a given node in the elimination order
    * (0 = first node eliminated) */
 
-  unsigned int IncrementalTriangulation::eliminationOrder( const NodeId node ) {
+  Idx IncrementalTriangulation::eliminationOrder( const NodeId node ) {
     if ( !__graph.existsNode( node ) ) {
       GUM_ERROR( NotFound, "the node " << node << " does not exist" );
     }

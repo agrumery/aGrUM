@@ -73,9 +73,9 @@ namespace gum {
     // indicate, for each node of the BN, a clique in __JT that can contain its
     // conditional probability table
     const std::vector<NodeId>& JT_elim_order = triangulation.eliminationOrder();
-    HashTable<NodeId, unsigned int> elim_order( JT_elim_order.size() );
+    HashTable<NodeId, Idx> elim_order( JT_elim_order.size() );
 
-    for ( unsigned int i = 0; i < JT_elim_order.size(); ++i )
+    for ( Idx i = 0; i < JT_elim_order.size(); ++i )
       elim_order.insert( JT_elim_order[i], i );
 
     const DAG& dag = BN.dag();
@@ -83,7 +83,7 @@ namespace gum {
     for ( const auto node : dag ) {
       // get the variables in the potential of iter_node
       NodeId first_eliminated_node = node;
-      unsigned int elim_number = elim_order[node];
+      Idx elim_number = elim_order[node];
 
       for ( const auto parent : dag.parents( node ) ) {
         if ( elim_order[parent] < elim_number ) {
@@ -344,7 +344,7 @@ namespace gum {
   INLINE bool LazyPropagation<GUM_SCALAR>::__isHardEvidence(
       const Potential<GUM_SCALAR>* pot ) {
     Instantiation i( pot );
-    unsigned int nb_non_zeros = 0;
+    Size nb_non_zeros = 0;
     for ( i.setFirst(); !i.end(); i.inc() ) {
       if ( pot->operator[]( i ) != 0 ) {
         ++nb_non_zeros;
@@ -1123,14 +1123,14 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR LazyPropagation<GUM_SCALAR>::evidenceProbability() {
-    // TODO: il y a un bug dans cette fonction: actuellement, je choisis un
+    // @TODO: il y a un bug dans cette fonction: actuellement, je choisis un
     // noeud X sur lequel je fais une collecte, et je calcule P(e) comme etant
     // P(e) = sum_X P(X,e). Mais s'il y a plusieurs composantes connexes dans
     // le reseau bayesien, ca ne fonctionne pas, il faudrait choisir un X par
     // composante connexe et multiplier entre elle les probas P(e) obtenues sur
-    // chaque composante. So un TODO a faire rapidement.
+    // chaque composante. So un truc a faire rapidement.
     Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
-    Id id = __node_to_clique.begin().key();
+    Idx id = __node_to_clique.begin().key();
     __aPosterioriMarginal( id, *tmp );
 
     GUM_SCALAR sum = 0;

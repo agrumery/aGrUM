@@ -68,7 +68,7 @@ namespace gum_tests {
 
     void testInsertion() {
       gum::BayesNet<float> topo;
-      gum::List<gum::Id> idList;
+      gum::List<gum::NodeId> idList;
 
       TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( topo.add( *var1 ) ) );
       TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( topo.add( *var2 ) ) );
@@ -79,7 +79,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( topo.size(), (gum::Size)5 );
       TS_ASSERT_EQUALS( topo.dag().size(), (gum::Size)5 );
 
-      gum::Id ind = 0;
+      gum::NodeId ind = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( const gum::DiscreteVariable& varPtr =
                                         topo.variable( idList[0] );
                                     ind = topo.nodeId( varPtr ); );
@@ -99,7 +99,7 @@ namespace gum_tests {
 
     void testArcInsertion() {
       gum::BayesNet<float> topo;
-      gum::List<gum::Id> idList;
+      gum::List<gum::NodeId> idList;
 
       idList.insert( topo.add( *var1 ) );
       idList.insert( topo.add( *var2 ) );
@@ -119,7 +119,7 @@ namespace gum_tests {
 
     void testEraseVar() {
       gum::BayesNet<float> topo;
-      gum::List<gum::Id> idList;
+      gum::List<gum::NodeId> idList;
 
       TS_ASSERT( topo.empty() );
       TS_ASSERT( topo.dag().empty() );
@@ -150,7 +150,7 @@ namespace gum_tests {
 
     void testEraseArc() {
       gum::BayesNet<float> topo;
-      gum::List<gum::Id> idList;
+      gum::List<gum::NodeId> idList;
 
       TS_ASSERT( topo.empty() );
       TS_ASSERT( topo.dag().empty() );
@@ -186,7 +186,7 @@ namespace gum_tests {
 
     void testIterator() {
       gum::BayesNet<float> topo;
-      gum::List<gum::Id> idList;
+      gum::List<gum::NodeId> idList;
 
       for ( const auto node : topo.nodes() )
         TS_ASSERT( idList.exists( node ) );
@@ -194,7 +194,7 @@ namespace gum_tests {
 
     void testMoralGraph() {
       gum::BayesNet<float> topo;
-      gum::List<gum::Id> idList;
+      gum::List<gum::NodeId> idList;
 
       fill( topo, idList );
 
@@ -205,7 +205,7 @@ namespace gum_tests {
 
     void testTopologicalOrder() {
       gum::BayesNet<float> topo;
-      gum::List<gum::Id> idList;
+      gum::List<gum::NodeId> idList;
 
       fill( topo, idList );
 
@@ -222,7 +222,7 @@ namespace gum_tests {
     }
 
     private:
-    void fill( gum::BayesNet<float>& topo, gum::List<gum::Id>& idList ) {
+    void fill( gum::BayesNet<float>& topo, gum::List<gum::NodeId>& idList ) {
       idList.insert( topo.add( *var1 ) );
       idList.insert( topo.add( *var2 ) );
       idList.insert( topo.add( *var3 ) );
@@ -238,7 +238,7 @@ namespace gum_tests {
     }
 
     gum::UndiGraph getRealMoralGraph( const gum::BayesNet<float>& topo,
-                                      gum::List<gum::Id>& idList ) {
+                                      gum::List<gum::NodeId>& idList ) {
       gum::UndiGraph graph;
 
       graph.populateNodes( topo.dag() );

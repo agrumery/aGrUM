@@ -42,7 +42,7 @@ namespace gum_tests {
       decreaseRemainingRows();
       return *_input_row;
     }
-    inline unsigned int _computeRows() {
+    inline gum::Idx _computeRows() {
       if ( nb ) {
         --nb;
         return 1;
@@ -50,7 +50,7 @@ namespace gum_tests {
         return 0;
     }
 
-    unsigned int nb{9500};
+    gum::Idx nb{9500};
   };
 
   class ThreeGenerator : public gum::learning::FilteredRowGenerator {
@@ -59,7 +59,7 @@ namespace gum_tests {
       decreaseRemainingRows();
       return *_input_row;
     }
-    inline unsigned int _computeRows() { return 3; }
+    inline gum::Idx _computeRows() { return 3; }
   };
 
   class TwoGenerator : public gum::learning::FilteredRowGenerator {
@@ -68,7 +68,7 @@ namespace gum_tests {
       decreaseRemainingRows();
       return *_input_row;
     }
-    inline unsigned int _computeRows() { return 2; }
+    inline gum::Idx _computeRows() { return 2; }
   };
 
   class DBRowTestSuite : public CxxTest::TestSuite {

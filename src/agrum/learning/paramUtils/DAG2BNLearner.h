@@ -80,7 +80,7 @@ namespace gum {
       createBN( PARAM_ESTIMATOR& estimator,
                 const DAG& dag,
                 const std::vector<std::string>& names,
-                const std::vector<unsigned int>& modal,
+                const std::vector<Size>& modal,
                 const CELL_TRANSLATORS& translator );
 
       /// @}

@@ -25,8 +25,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/triangulations/incrementalTriangulation.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/incrementalTriangulation.h>
 
 namespace gum_tests {
 
@@ -160,62 +160,34 @@ namespace gum_tests {
     }
 
     void testRandom() {
-      for ( unsigned int k = 1; k < 100; ++k ) {
-        // std::cerr << "<<<<<<<<<<<<<<<<<< k = "<< k << std::endl;
-
+      for ( gum::Idx k = 1; k < 100; ++k ) {
         gum::DefaultTriangulation tr;
         gum::IncrementalTriangulation triang( tr );
 
-        for ( unsigned int i = 0; i < 100; ++i ) {
-          int nb = (int)( ( (float)rand() / RAND_MAX ) * 100 );
+        for ( gum::Idx i = 0; i < 100; ++i ) {
+          gum::Size nb = ( gum::Size )( ( (float)rand() / RAND_MAX ) * 100 );
 
           // ===================================================
           // remove some node
-
-          if ( nb < 10 ) {
-            continue;
-            const gum::UndiGraph& graph = triang.graph();
-            nb = (int)( ( (float)rand() / RAND_MAX ) * graph.bound() );
-            // std::cerr << "remove node " << nb << std::endl;
-            triang.eraseNode( nb );
-          }
-
-          // ===================================================
-          // add a new node
-          else if ( nb < 30 ) {
-            // std::cerr << "create node " << triang.graph().bound() <<
-            // std::endl;
+          if ( ( nb >= 10 ) && ( nb < 30 ) ) {
             triang.addNode( triang.graph().bound(), 10 );
+          } else if ( nb < 50 ) {
+            gum::NodeId id1 = ( gum::NodeId )( ( (float)rand() / RAND_MAX ) *
+                                               triang.graph().bound() );
+            gum::NodeId id2 = ( gum::NodeId )( ( (float)rand() / RAND_MAX ) *
+                                               triang.graph().bound() );
+            triang.eraseEdge( gum::Edge( id1, id2 ) );
+          } else {
+            gum::NodeId id1 = ( gum::NodeId )( ( (float)rand() / RAND_MAX ) *
+                                               triang.graph().bound() );
+            gum::NodeId id2 = ( gum::NodeId )( ( (float)rand() / RAND_MAX ) *
+                                               triang.graph().bound() );
+            triang.addEdge( id1, id2 );
           }
 
-          // ===================================================
-          // remove some edge
-          else if ( nb < 50 ) {
-            unsigned int nb1 =
-                (int)( ( (float)rand() / RAND_MAX ) * triang.graph().bound() );
-            unsigned int nb2 =
-                (int)( ( (float)rand() / RAND_MAX ) * triang.graph().bound() );
-            // std::cerr << "remove edge (" << nb1 << "," << nb2 << ")" <<
-            // std::endl;
-            triang.eraseEdge( gum::Edge( nb1, nb2 ) );
-          }
-
-          // ===================================================
-          // add a new edge
-          else {
-            unsigned int nb1 =
-                (int)( ( (float)rand() / RAND_MAX ) * triang.graph().bound() );
-            unsigned int nb2 =
-                (int)( ( (float)rand() / RAND_MAX ) * triang.graph().bound() );
-            // std::cerr << "create edge (" << nb1 << "," << nb2 << ")" <<
-            // std::endl;
-            triang.addEdge( nb1, nb2 );
-          }
-
-          nb = (int)( ( (float)rand() / RAND_MAX ) * 20 );
+          nb = (gum::Size)( ( (float)rand() / RAND_MAX ) * 20 );
 
           if ( nb <= 3 ) {
-            // std::cerr << "   --- check --- " << std::endl;
             triang.updateTriangulation();
             TS_ASSERT_EQUALS( triang.__check(), true );
           }

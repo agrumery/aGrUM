@@ -212,7 +212,7 @@ namespace gum {
       // appropriately. In addition, if there is no parent, then we should
       // indicate that the operation is now available
       if ( !still_wrong ) {
-        unsigned int nb_parents = 0;
+        Size nb_parents = 0;
 
         for ( const auto arg : args )
           if ( arg->isAbstract() ) {

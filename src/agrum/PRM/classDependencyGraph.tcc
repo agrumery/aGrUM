@@ -143,7 +143,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const NodeProperty<unsigned int>&
+    INLINE const NodeProperty<Size>&
     ClassDependencyGraph<GUM_SCALAR>::modalities() const {
       return __modalitites;
     }

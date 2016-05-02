@@ -108,7 +108,7 @@ namespace gum {
   /// @{
   /// publishing Errors API
   template <typename GUM_SCALAR>
-  INLINE unsigned int DSLReader<GUM_SCALAR>::errLine( unsigned int i ) {
+  INLINE Idx DSLReader<GUM_SCALAR>::errLine( Idx i ) {
     if ( __parseDone )
       return __parser->errors().error( i ).line;
     else {
@@ -117,7 +117,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE unsigned int DSLReader<GUM_SCALAR>::errCol( unsigned int i ) {
+  INLINE Idx DSLReader<GUM_SCALAR>::errCol( Idx i ) {
     if ( __parseDone )
       return __parser->errors().error( i ).column;
     else {
@@ -126,7 +126,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE bool DSLReader<GUM_SCALAR>::errIsError( unsigned int i ) {
+  INLINE bool DSLReader<GUM_SCALAR>::errIsError( Idx i ) {
     if ( __parseDone )
       return __parser->errors().error( i ).is_error;
     else {
@@ -135,7 +135,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE std::string DSLReader<GUM_SCALAR>::errMsg( unsigned int i ) {
+  INLINE std::string DSLReader<GUM_SCALAR>::errMsg( Idx i ) {
     if ( __parseDone )
       return __parser->errors().error( i ).msg;
     else {

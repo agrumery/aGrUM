@@ -62,7 +62,7 @@ namespace gum_tests {
   class GibbsInferenceTestSuite : public CxxTest::TestSuite {
     public:
     gum::BayesNet<float>* bn;
-    gum::Id i1, i2, i3, i4, i5;
+    gum::NodeId i1, i2, i3, i4, i5;
     gum::Potential<float>* e_i1, *e_i4;
 
     void setUp() {

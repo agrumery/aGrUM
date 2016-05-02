@@ -115,12 +115,12 @@ namespace gum {
           legal_changes.resize( num_threads );
         }
 
-        const unsigned int this_thread = getThreadNumber();
+        const Size this_thread = getThreadNumber();
 
-        for ( unsigned int i = 0, j = 0; j < _order.size();
+        for ( Idx i = 0, j = 0; j < _order.size();
               i = ( i + 1 ) % num_threads, ++j ) {
           if ( i == this_thread ) {
-            for ( unsigned int k = j + 1; k < _order.size(); ++k ) {
+            for ( Idx k = j + 1; k < _order.size(); ++k ) {
               // try arc additions
               ArcAddition arc_add( _order[j], _order[k] );
               if ( !_constraint->isAlwaysInvalid( arc_add ) ) {
@@ -233,7 +233,7 @@ namespace gum {
     /// sets the maximum number of threads used to perform countings
     template <typename STRUCT_CONSTRAINT>
     INLINE void GraphChangesGenerator4K2<STRUCT_CONSTRAINT>::setMaxNbThreads(
-        unsigned int nb ) noexcept {
+        Size nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
       if ( nb == 0 ) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;

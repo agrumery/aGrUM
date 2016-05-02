@@ -308,7 +308,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE unsigned int LayerGenerator<GUM_SCALAR>::getMaxParents() const {
+    INLINE Size LayerGenerator<GUM_SCALAR>::getMaxParents() const {
       return __max_parents;
     }
 

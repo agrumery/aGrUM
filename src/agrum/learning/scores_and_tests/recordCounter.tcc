@@ -35,7 +35,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE
     RecordCounterThreadBase<IdSetAlloc, CountAlloc>::RecordCounterThreadBase(
-        const std::vector<unsigned int>& var_modalities )
+        const std::vector<Size>& var_modalities )
         : _modalities( &var_modalities ) {
       GUM_CONSTRUCTOR( RecordCounterThreadBase );
     }
@@ -69,15 +69,15 @@ namespace gum {
 
     /// adds a new target nodeset to be counted
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE unsigned int
+    INLINE Idx
     RecordCounterThreadBase<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::vector<unsigned int, IdSetAlloc>& ids ) {
+        const std::vector<Idx, IdSetAlloc>& ids ) {
       // adds the nodeset
-      const unsigned int nodeset_id = _nodesets.size();
+      const Idx nodeset_id = _nodesets.size();
       _nodesets.push_back( &ids );
 
       // compute the size of the nodeset and allocate a counting correspondingly
-      unsigned int size = 1;
+      Size size = 1;
 
       for ( const auto id : ids ) {
         size *= _modalities->operator[]( id );
@@ -101,7 +101,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<double, CountAlloc>&
     RecordCounterThreadBase<IdSetAlloc, CountAlloc>::getCounts(
-        unsigned int nodeset_id ) const noexcept {
+        Idx nodeset_id ) const noexcept {
       return _countings[nodeset_id];
     }
 
@@ -112,7 +112,7 @@ namespace gum {
     INLINE
     RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>::RecordCounterThread(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities )
+        const std::vector<Size>& var_modalities )
         : Base( var_modalities )
         , __filter( filter ) {
       GUM_CONSTRUCTOR( RecordCounterThread );
@@ -170,12 +170,12 @@ namespace gum {
           FilteredRow& row = __filter.row();
 
           // fill the counts for the ith nodeset
-          for ( auto i = 0; i < size; ++i ) {
-            const std::vector<unsigned int>& var_ids = *( this->_nodesets[i] );
-            unsigned int offset = 0;
-            unsigned int dim = 1;
+          for ( Idx i = 0; i < size; ++i ) {
+            const std::vector<Idx>& var_ids = *( this->_nodesets[i] );
+            Idx offset = 0;
+            Idx dim = 1;
 
-            for ( auto j = 0, vsize = var_ids.size(); j < vsize; ++j ) {
+            for ( Idx j = 0, vsize = var_ids.size(); j < vsize; ++j ) {
               offset += row[var_ids[j]] * dim;
               dim *= this->_modalities->operator[]( var_ids[j] );
             }
@@ -218,7 +218,7 @@ namespace gum {
     template <typename RowFilter>
     INLINE RecordCounter<IdSetAlloc, CountAlloc>::RecordCounter(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities,
+        const std::vector<Size>& var_modalities,
         unsigned long min_range,
         unsigned long max_range )
         : __modalities( &var_modalities )
@@ -262,7 +262,7 @@ namespace gum {
       __thread_counters.reserve( from.__thread_counters.size() );
 
       try {
-        for ( unsigned int i = 0, size = from.__thread_counters.size();
+        for ( Idx i = 0, size = from.__thread_counters.size();
               i < size;
               ++i ) {
           __thread_counters.push_back(
@@ -285,11 +285,11 @@ namespace gum {
       for ( const auto& thepair : from.__set2thread_id ) {
         if ( thepair.first != nullptr ) {
           __set2thread_id.push_back(
-              std::pair<const IdSet<IdSetAlloc>*, unsigned int>(
+              std::pair<const IdSet<IdSetAlloc>*, Idx>(
                   &( __idsets.first( thepair.second ) ), thepair.second ) );
         } else {
           __set2thread_id.push_back(
-              std::pair<const IdSet<IdSetAlloc>*, unsigned int>(
+              std::pair<const IdSet<IdSetAlloc>*, Idx>(
                   nullptr, thepair.second ) );
         }
       }
@@ -341,10 +341,10 @@ namespace gum {
 
     /// add a new nodeset to count
     template <typename IdSetAlloc, typename CountAlloc>
-    unsigned int RecordCounter<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::vector<unsigned int, IdSetAlloc>& ids ) {
+    Idx RecordCounter<IdSetAlloc, CountAlloc>::addNodeSet(
+        const std::vector<Idx, IdSetAlloc>& ids ) {
       // allocate a count vector of the domain size of the idset
-      unsigned int set_size = 1;
+      Size set_size = 1;
 
       for ( const auto id : ids ) {
         set_size *= __modalities->operator[]( id );
@@ -360,7 +360,7 @@ namespace gum {
       if ( ids.empty() ) {
         __set_state.push_back( SetState::EMPTY_SET );
         __set2thread_id.push_back(
-            std::pair<const IdSet<IdSetAlloc>*, unsigned int>( nullptr, 0 ) );
+            std::pair<const IdSet<IdSetAlloc>*, Idx>( nullptr, 0 ) );
         return node;
       }
 
@@ -376,7 +376,7 @@ namespace gum {
         const IdSet<IdSetAlloc>& idset = __idsets.first( node );
         __idset2index.insert( &idset, node );
         __set2thread_id.push_back(
-            std::pair<const IdSet<IdSetAlloc>*, unsigned int>( &idset, node ) );
+            std::pair<const IdSet<IdSetAlloc>*, Idx>( &idset, node ) );
 
         // for each variable in ids, indicate that ids contain this variable
         for ( auto id : ids ) {
@@ -392,7 +392,7 @@ namespace gum {
         __set_state.push_back( SetState::COPY_SET );
 
         __set2thread_id.push_back(
-            std::pair<const IdSet<IdSetAlloc>*, unsigned int>(
+            std::pair<const IdSet<IdSetAlloc>*, Idx>(
                 nullptr, __idsets.second( tmp_idset ) ) );
 
         __subset_lattice.addArc( __idsets.second( tmp_idset ), node );
@@ -411,7 +411,7 @@ namespace gum {
       // compute the max number of threads to use to parse the database, so that
       // each thread has at least NB elements to parse. This proves useful for
       // small databases and large numbers of processors
-      unsigned int max_nb_threads =
+      Size max_nb_threads =
           std::min( parsed_db_size / __min_nb_rows_per_thread,
                     (unsigned long)__max_threads_number );
       unsigned long max_size_per_thread;
@@ -427,7 +427,7 @@ namespace gum {
 #pragma omp parallel num_threads( max_nb_threads )
       {
         // create ThreadCounters if needed
-        const unsigned int num_threads = getNumberOfRunningThreads();
+        const Size num_threads = getNumberOfRunningThreads();
 
 #pragma omp single
         {
@@ -444,7 +444,7 @@ namespace gum {
             *( __thread_counters[this_thread] );
         thread_counter.clearNodeSets();
 
-        for ( unsigned int i = 0, size = __set_state.size(); i < size; ++i ) {
+        for ( Idx i = 0, size = __set_state.size(); i < size; ++i ) {
           if ( __set_state[i] == SetState::NOT_SUBSET ) {
             thread_counter.addNodeSet( *( __nodesets[i] ) );
           }
@@ -471,11 +471,11 @@ namespace gum {
 // perform the aggregation of the countings
 #pragma omp parallel num_threads( __nb_thread_counters )
       {
-        const unsigned int this_thread = getThreadNumber();
+        const Size this_thread = getThreadNumber();
         auto& counter = *( __thread_counters[this_thread] );
         unsigned long size_per_thread, min_range, max_range;
 
-        for ( unsigned int i = 0, size = __countings.size(); i < size; ++i ) {
+        for ( Idx i = 0, size = __countings.size(); i < size; ++i ) {
           if ( __set_state[i] == SetState::NOT_SUBSET ) {
             // get the ith idset countings computed by the curent thread
             std::vector<double, CountAlloc>& vect =
@@ -489,13 +489,13 @@ namespace gum {
             max_range = std::min( min_range + size_per_thread,
                                   (unsigned long)vect.size() );
 
-            for ( unsigned int j = 0; j < __nb_thread_counters; ++j ) {
+            for ( Idx j = 0; j < __nb_thread_counters; ++j ) {
               if ( j != this_thread ) {
                 const std::vector<double, CountAlloc>& othervect =
                     __thread_counters[j]->getCounts(
                         __set2thread_id[i].second );
 
-                for ( unsigned int k = min_range; k < max_range; ++k ) {
+                for ( Idx k = min_range; k < max_range; ++k ) {
                   vect[k] += othervect[k];
                 }
               }
@@ -505,7 +505,7 @@ namespace gum {
             // current object
             std::vector<double, CountAlloc>& final_vect = __countings[i];
 
-            for ( unsigned int k = min_range; k < max_range; ++k ) {
+            for ( Idx k = min_range; k < max_range; ++k ) {
               final_vect[k] = vect[k];
             }
           }
@@ -516,7 +516,7 @@ namespace gum {
     // computes the countings of one subset from those of its superset
     template <typename IdSetAlloc, typename CountAlloc>
     void
-    RecordCounter<IdSetAlloc, CountAlloc>::__countOneSubset( unsigned int i ) {
+    RecordCounter<IdSetAlloc, CountAlloc>::__countOneSubset( Idx i ) {
       // get the subset and its superset
       const auto& subset_ids = *( __nodesets[i] );
       const auto& superset_ids = *( __nodesets[__set2thread_id[i].second] );
@@ -527,21 +527,21 @@ namespace gum {
       // and its superset. Store the number of increments in the computation
       // loops at the end of the function before which the variables of the
       // projection set need be incremented (vector before_incr).
-      std::vector<unsigned int> result_offset( subset_ids.size() );
-      std::vector<unsigned int> result_domain( subset_ids.size() );
-      std::vector<unsigned int> before_incr( subset_ids.size() );
+      std::vector<Idx> result_offset( subset_ids.size() );
+      std::vector<Idx> result_domain( subset_ids.size() );
+      std::vector<Idx> before_incr( subset_ids.size() );
       {
-        unsigned int result_domain_size = 1;
-        unsigned int tmp_before_incr = 1;
+        Size result_domain_size = 1;
+        Idx tmp_before_incr = 1;
         bool has_before_incr = false;
-        unsigned int subset_size = subset_ids.size();
-        std::vector<unsigned int> superset_order( subset_ids.size() );
+        Size subset_size = subset_ids.size();
+        std::vector<Idx> superset_order( subset_ids.size() );
 
         // put the subset ids into a Set in order to know quickly if a given
         // id belongs to the subset or not
-        HashTable<unsigned int, unsigned int> subset;
+        HashTable<Idx, Idx> subset;
         {
-          unsigned int i = 0;
+          Idx i = 0;
 
           for ( auto id : subset_ids ) {
             subset.insert( id, i );
@@ -549,7 +549,7 @@ namespace gum {
           }
         }
 
-        for ( unsigned int h = 0, j = 0; h < superset_ids.size(); ++h ) {
+        for ( Idx h = 0, j = 0; h < superset_ids.size(); ++h ) {
           if ( j < subset_size ) {
             if ( subset.exists( superset_ids[h] ) ) {
               if ( has_before_incr ) {
@@ -563,7 +563,7 @@ namespace gum {
               tmp_before_incr = 1;
               ++j;
             } else {
-              unsigned int modality =
+              Idx modality =
                   __modalities->operator[]( superset_ids[h] );
               tmp_before_incr *= modality;
               has_before_incr = true;
@@ -572,20 +572,20 @@ namespace gum {
         }
 
         // compute the offsets in the correct order
-        for ( unsigned int i = 0; i < subset_ids.size(); ++i ) {
-          unsigned int modality = __modalities->operator[]( subset_ids[i] );
-          unsigned int j = superset_order[i];
+        for ( Idx i = 0; i < subset_ids.size(); ++i ) {
+          Idx modality = __modalities->operator[]( subset_ids[i] );
+          Idx j = superset_order[i];
           result_domain[j] = modality;
           result_offset[j] = result_domain_size;
           result_domain_size *= modality;
         }
       }
 
-      std::vector<unsigned int> result_value = result_domain;
-      std::vector<unsigned int> current_incr = before_incr;
-      std::vector<unsigned int> result_down = result_offset;
+      std::vector<Idx> result_value = result_domain;
+      std::vector<Idx> current_incr = before_incr;
+      std::vector<Idx> result_down = result_offset;
 
-      for ( unsigned int j = 0; j < result_down.size(); ++j ) {
+      for ( Idx j = 0; j < result_down.size(); ++j ) {
         result_down[j] = ( result_domain[j] - 1 ) * result_offset[j];
       }
 
@@ -598,14 +598,14 @@ namespace gum {
       // loop, we shall always reset resul_offset to 0. For the inner loop,
       // result_offset should be incremented (++) only when t1
       // before_incr[xxx] steps in the loop have already been made.
-      unsigned int the_result_offset = 0;
-      unsigned int table_domain_size = superset_vect.size();
+      Idx the_result_offset = 0;
+      Size table_domain_size = superset_vect.size();
 
-      for ( unsigned int h = 0; h < table_domain_size; ++h ) {
+      for ( Idx h = 0; h < table_domain_size; ++h ) {
         subset_vect[the_result_offset] += superset_vect[h];
 
         // update the offset of result
-        for ( unsigned int k = 0; k < current_incr.size(); ++k ) {
+        for ( Idx k = 0; k < current_incr.size(); ++k ) {
           // check if we need modify result_offset
           if ( current_incr[k] ) {
             --current_incr[k];
@@ -634,7 +634,7 @@ namespace gum {
       // computes a queue of the subsets that can be considered for counting
       // to do so, simply fill it with the nodes without parents in the
       // subset lattice
-      List<unsigned int> setFIFO;
+      List<Idx> setFIFO;
 
       for ( const auto node : __subset_lattice ) {
         if ( __subset_lattice.parents( node ).size() == 0 ) {
@@ -645,7 +645,7 @@ namespace gum {
       // perform the countings for the subsets
       while ( !setFIFO.empty() ) {
         // get the next set to count
-        unsigned int new_set = setFIFO.front();
+        Idx new_set = setFIFO.front();
         setFIFO.popFront();
 
         // perform the counting
@@ -691,7 +691,7 @@ namespace gum {
     /// returns the counts performed for a given idSet
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<double, CountAlloc>&
-    RecordCounter<IdSetAlloc, CountAlloc>::getCounts( unsigned int idset ) const
+    RecordCounter<IdSetAlloc, CountAlloc>::getCounts( Idx idset ) const
         noexcept {
       return __countings[idset];
     }
@@ -730,20 +730,20 @@ namespace gum {
       }
 
       // now, for each IdSet, determine if it is a subset of another IdSet
-      for ( unsigned int i = 0, j = 0, size = __set2thread_id.size(); i < size;
+      for ( Idx i = 0, j = 0, size = __set2thread_id.size(); i < size;
             ++i ) {
         if ( __set_state[i] < SetState::COPY_SET ) {
           // the set is not known to be a copy of another set and is not empty
 
           // get the IdSet to determine
           const IdSet<IdSetAlloc>& ids = *( __set2thread_id[i].first );
-          const unsigned int ids_size = ids.ids().size();
+          const Size ids_size = ids.ids().size();
 
           // get all the sets that contain its first variable and parse them
           const std::vector<const IdSet<IdSetAlloc>*>& sets =
               __var2idsets[ids[0]];
           bool subset = false;
-          unsigned int index;
+          Idx index;
 
           for ( const auto set : sets ) {
             if ( ( set->ids().size() > ids_size ) && ids.isSubset( *set ) ) {
@@ -768,7 +768,7 @@ namespace gum {
 
       // now that we know which nodes are supersets and which ones are not, we
       // can remove from the lattice all the nodes that are supersets
-      for ( unsigned int i = 0, size = __set2thread_id.size(); i < size; ++i ) {
+      for ( Idx i = 0, size = __set2thread_id.size(); i < size; ++i ) {
         if ( __set_state[i] == SetState::NOT_SUBSET ) {
           __subset_lattice.eraseNode( i );
         }
@@ -777,7 +777,7 @@ namespace gum {
 
     /// returns the modalities of the variables in the database
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<unsigned int>&
+    INLINE const std::vector<Idx>&
     RecordCounter<IdSetAlloc, CountAlloc>::modalities() const {
       if ( __modalities )
         return *__modalities;
@@ -791,7 +791,7 @@ namespace gum {
     /// sets the maximum number of threads used to perform countings
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void RecordCounter<IdSetAlloc, CountAlloc>::setMaxNbThreads(
-        unsigned int nb ) noexcept {
+        Size nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
       if ( nb == 0 ) nb = getMaxNumberOfThreads();
 

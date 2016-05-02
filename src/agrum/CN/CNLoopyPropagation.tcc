@@ -278,10 +278,8 @@ namespace gum {
         it[i] = combi_msg_p[i].begin();
       }
 
-      Size pas = 2;
       Size pp = pos;
-      // cn->intPow( pas, pp );
-      intPow( pas, pp );
+      Size pas=Size(intPow(2,pp));
 
       int combi_den = 0;
       int combi_num = pp;

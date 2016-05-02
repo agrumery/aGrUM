@@ -48,10 +48,10 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void
-    StructuralConstraintDAG::setGraphAlone( unsigned int nb_nodes ) {
+    StructuralConstraintDAG::setGraphAlone( Size nb_nodes ) {
       DAG g;
 
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         g.addNode( i );
       }
 
@@ -172,7 +172,7 @@ namespace gum {
     }
 
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDAG::setGraph( unsigned int nb_nodes ) {
+    INLINE void StructuralConstraintDAG::setGraph( Size nb_nodes ) {
       StructuralConstraintDiGraph::setGraph( nb_nodes );
       setGraphAlone( nb_nodes );
     }

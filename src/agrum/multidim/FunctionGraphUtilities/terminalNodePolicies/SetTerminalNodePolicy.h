@@ -72,10 +72,13 @@ namespace gum {
     /// Erase all terminal nodes
     // ============================================================================
     void clearAllTerminalNodes() {
+      GUM_CHECKPOINT;
       for ( auto nodeIter = __map.beginSafe(); nodeIter != __map.endSafe();
             ++nodeIter )
         delete nodeIter.val();
+      GUM_CHECKPOINT;
       __map.clear();
+      GUM_CHECKPOINT;
     }
 
     /// @}

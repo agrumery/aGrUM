@@ -62,7 +62,7 @@ namespace gum {
     template <int OUTPUT_SIZE>
     class BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> {
       public:
-      static constexpr unsigned int output_size = OUTPUT_SIZE;
+      static constexpr Size output_size = OUTPUT_SIZE;
 
       BasicDBRowTranslatorSetStatic() noexcept {}
       BasicDBRowTranslatorSetStatic(
@@ -85,8 +85,8 @@ namespace gum {
       void initialize() noexcept {}
       void postInitialize() noexcept {}
       bool requiresInitialization() const noexcept { return false; }
-      void modalities( std::vector<unsigned int>& ) const noexcept {}
-      std::string translateBack( unsigned int, unsigned int ) const {
+      void modalities( std::vector<Size>& ) const noexcept {}
+      std::string translateBack( Idx, Idx ) const {
         GUM_ERROR( NotFound,
                    "the variable could not be translated back: it "
                    "was not found by the translator" );
@@ -113,7 +113,7 @@ namespace gum {
 
       /// the number of columns written by all the
       /// BasicDBRowTranslatorSetStatics
-      static constexpr unsigned int output_size = NextTranslators::output_size;
+      static constexpr Size output_size = NextTranslators::output_size;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -194,8 +194,8 @@ namespace gum {
       void translate();
 
       /// returns the name of the jth value of the ith column
-      std::string translateBack( unsigned int col,
-                                 unsigned int translated_val ) const;
+      std::string translateBack( Idx col,
+                                 Idx translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       /** If initialization is required, this method is called for each row
@@ -212,13 +212,13 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities( std::vector<unsigned int>& modals ) const;
+      void modalities( std::vector<Size>& modals ) const;
 
       /// returns the size of the input as used by the cell translators
-      unsigned int inputSize() const noexcept;
+      Size inputSize() const noexcept;
 
       /// returns the size of the output of the cell translators
-      unsigned int outputSize() const noexcept;
+      Size outputSize() const noexcept;
 
       /// @}
 
@@ -280,7 +280,7 @@ namespace gum {
           BasicDBRowTranslatorSetStatic<0, Translators...>;
 
       /// the size of the output filtered row
-      static constexpr unsigned int output_size =
+      static constexpr Size output_size =
           TranslatorSetStatic::output_size;
 
       // ##########################################################################
@@ -337,8 +337,8 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which will be stored into the
        * Bayesian network) */
-      std::string translateBack( unsigned int col,
-                                 unsigned int translated_val ) const;
+      std::string translateBack( Idx col,
+                                 Idx translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       void initialize();
@@ -353,7 +353,7 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities( std::vector<unsigned int>& modals ) const;
+      void modalities( std::vector<Size>& modals ) const;
 
       /// sets the input row that shall be read by all the cell translators
       void setInputRow( const DBRow& row ) noexcept;
@@ -365,10 +365,10 @@ namespace gum {
       const DBRow& inputRow() const;
 
       /// returns the size of the input as used by the cell translators
-      unsigned int inputSize() const noexcept;
+      Size inputSize() const noexcept;
 
       /// returns the size of the output of the cell translators
-      unsigned int outputSize() const noexcept;
+      Size outputSize() const noexcept;
 
       /// @}
 

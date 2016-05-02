@@ -46,22 +46,22 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     /// the general type for the columns
-    template <int Idx, int... NextIdx>
+    template <int COLid, int... NextCOLid>
     struct Col;
 
     /// the specialized type for the specification of 1 column
-    template <int Idx>
-    struct Col<Idx> {
+    template <int COLid>
+    struct Col<COLid> {
       /// the number of columns specified by this class
-      static constexpr unsigned int size = 1;
+      static constexpr Size size = 1;
 
       /// saves the column into an array
-      static void toArray( unsigned int array[] ) noexcept { *array = Idx; }
+      static void toArray( Size array[] ) noexcept { *array = COLid; }
 
       /// to display the content of the column
       std::string toString() const noexcept {
         std::stringstream str;
-        str << Idx;
+        str << COLid;
         return str.str();
       }
     };
@@ -85,27 +85,27 @@ namespace gum {
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // The REAL definition of class gum::learning::Col
-    template <int Idx, int... NextIdx>
-    struct Col : public Col<NextIdx...> {
+    template <int COLid, int... NextCOLid>
+    struct Col : public Col<NextCOLid...> {
 #else
     // The FAKE definition of class gum::learning::Col as Doxygen does not like
     // recursive inheritance
-    template <int Idx, int... NextIdx>
+    template <int COLid, int... NextCOLid>
     struct Col {
 #endif
       /// the number of columns specified by this class
-      static constexpr unsigned int size = 1 + sizeof...( NextIdx );
+      static constexpr Size size = 1 + sizeof...( NextCOLid );
 
       /// saves the columns into an array of integers
-      static void toArray( unsigned int array[] ) noexcept {
-        *array = Idx;
-        Col<NextIdx...>::toArray( array + 1 );
+      static void toArray( Size array[] ) noexcept {
+        *array = COLid;
+        Col<NextCOLid...>::toArray( array + 1 );
       }
 
       /// to display the content of the columns
       std::string toString() {
         std::stringstream str;
-        str << Idx << " " << Col<NextIdx...>::toString();
+        str << COLid << " " << Col<NextCOLid...>::toString();
         return str.str();
       }
     };
@@ -121,9 +121,9 @@ namespace gum {
     struct ConcatCols;
 
     /// The class used to concatenate two Cols
-    template <int Idx1, int Idx2, int... NextIdx2>
-    struct ConcatCols<Col<Idx1>, Col<Idx2, NextIdx2...>> {
-      using type = Col<Idx1, Idx2, NextIdx2...>;
+    template <int COLid1, int COLid2, int... NextCOLid2>
+    struct ConcatCols<Col<COLid1>, Col<COLid2, NextCOLid2...>> {
+      using type = Col<COLid1, COLid2, NextCOLid2...>;
     };
 
     /// the generic class for adding two Cols
@@ -131,9 +131,9 @@ namespace gum {
     struct AddCols;
 
     /// the specialized addition of two columns
-    template <int Idx1, int Idx2>
-    struct AddCols<Col<Idx1>, Col<Idx2>> {
-      using type = Col<Idx1 + Idx2>;
+    template <int COLid1, int COLid2>
+    struct AddCols<Col<COLid1>, Col<COLid2>> {
+      using type = Col<COLid1 + COLid2>;
     };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -149,11 +149,11 @@ namespace gum {
      * addition is available through a "type" typedef, i.e., through
      * AddCols::type
      */
-    template <int Idx1, int Idx2, int... NextIdx1, int... NextIdx2>
-    struct AddCols<Col<Idx1, NextIdx1...>, Col<Idx2, NextIdx2...>> {
+    template <int COLid1, int COLid2, int... NextCOLid1, int... NextCOLid2>
+    struct AddCols<Col<COLid1, NextCOLid1...>, Col<COLid2, NextCOLid2...>> {
       using type = typename ConcatCols<
-          Col<Idx1 + Idx2>,
-          typename AddCols<Col<NextIdx1...>, Col<NextIdx2...>>::type>::type;
+          Col<COLid1 + COLid2>,
+          typename AddCols<Col<NextCOLid1...>, Col<NextCOLid2...>>::type>::type;
     };
 
 // ============================================================================
@@ -167,8 +167,8 @@ namespace gum {
     struct Make_Default_Incr;
 
     // the specialization of Make_Default_Incr for 1 column
-    template <int Idx>
-    struct Make_Default_Incr<Col<Idx>> {
+    template <int COLid>
+    struct Make_Default_Incr<Col<COLid>> {
       using type = Col<1>;
     };
 
@@ -184,10 +184,10 @@ namespace gum {
      * accessible through a "type" typedef, i.e., through
      * Make_Default_Incr::type.
      */
-    template <int Idx, int... NextIdx>
-    struct Make_Default_Incr<Col<Idx, NextIdx...>>
-        : public Make_Default_Incr<Col<NextIdx...>> {
-      using NextDefaultIncr = Make_Default_Incr<Col<NextIdx...>>;
+    template <int COLid, int... NextCOLid>
+    struct Make_Default_Incr<Col<COLid, NextCOLid...>>
+        : public Make_Default_Incr<Col<NextCOLid...>> {
+      using NextDefaultIncr = Make_Default_Incr<Col<NextCOLid...>>;
       using type =
           typename ConcatCols<Col<1>, typename NextDefaultIncr::type>::type;
     };
@@ -199,8 +199,8 @@ namespace gum {
      * To specify that you want to increment Col<2,3,4> by <1,6,3>, just create
      * an Incr<1,6,3>.
      */
-    template <int Idx, int... NextIdx>
-    using Incr = Col<Idx, NextIdx...>;
+    template <int COLid, int... NextCOLid>
+    using Incr = Col<COLid, NextCOLid...>;
 
   } /* namespace learning */
 

@@ -41,7 +41,7 @@ namespace gum {
      * @brief A dirichlet priori: computes its N'_ijk from a database
      * @ingroup learning_group
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class AprioriDirichletFromDatabase
         : public Apriori<IdSetAlloc, CountAlloc>,
@@ -58,7 +58,7 @@ namespace gum {
       template <typename RowFilter>
       AprioriDirichletFromDatabase(
           const RowFilter& filter,
-          const std::vector<unsigned int>& var_modalities );
+          const std::vector<Size>& var_modalities );
 
       /// virtual copy constructor
       virtual AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>*

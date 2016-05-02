@@ -166,12 +166,12 @@ namespace gum {
      * @param posterior the potential to fill
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior( Id id, Potential<GUM_SCALAR>& posterior );
+    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& posterior );
 
     private:
-    typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
-    typedef SetIteratorSafe<const Potential<GUM_SCALAR>*>
-        __PotentialSetIterator;
+    using __PotentialSet = Set<const Potential<GUM_SCALAR>*>;
+    using __PotentialSetIterator =
+        SetIteratorSafe<const Potential<GUM_SCALAR>*>;
 
     /// the triangulation class creating the junction tree used for inference
     DefaultTriangulation __triangulation;

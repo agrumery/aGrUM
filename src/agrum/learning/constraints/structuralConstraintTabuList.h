@@ -109,7 +109,7 @@ namespace gum {
       /// @{
 
       /// sets the size of the tabu list
-      void setTabuListSize( unsigned int new_size );
+      void setTabuListSize( Size new_size );
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone( const DiGraph& graph );

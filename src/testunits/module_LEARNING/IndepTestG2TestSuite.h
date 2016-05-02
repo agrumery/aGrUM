@@ -46,12 +46,12 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities( 8, 2 );
+      std::vector<gum::Size> modalities( 8, 2 );
 
       gum::learning::IndepTestG2<> score( filter, modalities );
 
-      unsigned int id1 = score.addNodeSet( 0, 1 );
-      unsigned int id2 = score.addNodeSet( 3, 1 );
+      gum::Idx id1 = score.addNodeSet( 0, 1 );
+      gum::Idx id2 = score.addNodeSet( 3, 1 );
       TS_ASSERT( fabs( score.score( id1 ) - 61.181 ) <= 0.01 );
       TS_ASSERT( fabs( score.score( id2 ) + 0.617 ) <= 0.01 );
 
@@ -62,24 +62,24 @@ namespace gum_tests {
       TS_ASSERT( fabs( score.score( id2 ) - 114.873 ) <= 0.01 );
 
       score.clear();
-      id1 = score.addNodeSet( 1, 3, std::vector<unsigned int>{4} );
-      id2 = score.addNodeSet( 0, 2, std::vector<unsigned int>{4} );
+      id1 = score.addNodeSet( 1, 3, std::vector<gum::Idx>{4} );
+      id2 = score.addNodeSet( 0, 2, std::vector<gum::Idx>{4} );
       TS_ASSERT( fabs( score.score( id1 ) + 0.778 ) <= 0.01 );
       TS_ASSERT( fabs( score.score( id2 ) - 73.36 ) <= 0.01 );
 
       score.clear();
-      id1 = score.addNodeSet( 3, 6, std::vector<unsigned int>{1, 2} );
+      id1 = score.addNodeSet( 3, 6, std::vector<gum::Idx>{1, 2} );
       TS_ASSERT( fabs( score.score( id1 ) + 0.808 ) <= 0.01 );
 
-      unsigned int id3, id4, id5, id6, id7;
+      gum::Idx id3, id4, id5, id6, id7;
       score.clear();
       id1 = score.addNodeSet( 0, 1 );
       id2 = score.addNodeSet( 1, 3 );
-      id3 = score.addNodeSet( 3, 6, std::vector<unsigned int>{1, 2} );
+      id3 = score.addNodeSet( 3, 6, std::vector<gum::Idx>{1, 2} );
       id4 = score.addNodeSet( 2, 0 );
-      id5 = score.addNodeSet( 3, 1, std::vector<unsigned int>{4} );
+      id5 = score.addNodeSet( 3, 1, std::vector<gum::Idx>{4} );
       id6 = score.addNodeSet( 2, 0 );
-      id7 = score.addNodeSet( 1, 3, std::vector<unsigned int>{4} );
+      id7 = score.addNodeSet( 1, 3, std::vector<gum::Idx>{4} );
       TS_ASSERT( fabs( score.score( id1 ) - 61.181 ) <= 0.01 );
       TS_ASSERT( fabs( score.score( id2 ) + 0.617 ) <= 0.01 );
       TS_ASSERT( fabs( score.score( id3 ) + 0.808 ) <= 0.01 );
@@ -100,20 +100,20 @@ namespace gum_tests {
           gum::learning::RowGeneratorIdentity() );
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Size> modalities = filter.modalities();
       gum::learning::IndepTestG2<> score( filter, modalities );
       // score.useCache ( false );
 
-      unsigned int id1, id2, id3, id4, id5, id6, id7;
-      for ( unsigned int i = 0; i < 10000; ++i ) {
+      gum::Idx id1, id2, id3, id4, id5, id6, id7;
+      for ( gum::Idx i = 0; i < 10000; ++i ) {
         score.clear();
         id1 = score.addNodeSet( 0, 1 );
         id2 = score.addNodeSet( 1, 3 );
-        id3 = score.addNodeSet( 3, 6, std::vector<unsigned int>{1, 2} );
+        id3 = score.addNodeSet( 3, 6, std::vector<gum::Idx>{1, 2} );
         id4 = score.addNodeSet( 2, 0 );
-        id5 = score.addNodeSet( 3, 1, std::vector<unsigned int>{4} );
+        id5 = score.addNodeSet( 3, 1, std::vector<gum::Idx>{4} );
         id6 = score.addNodeSet( 2, 0 );
-        id7 = score.addNodeSet( 1, 3, std::vector<unsigned int>{4} );
+        id7 = score.addNodeSet( 1, 3, std::vector<gum::Idx>{4} );
         TS_ASSERT( fabs( score.score( id1 ) - 61.181 ) <= 0.01 );
         TS_ASSERT( fabs( score.score( id2 ) + 0.617 ) <= 0.01 );
         TS_ASSERT( fabs( score.score( id3 ) + 0.808 ) <= 0.01 );
@@ -135,20 +135,20 @@ namespace gum_tests {
           gum::learning::RowGeneratorIdentity() );
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Size> modalities = filter.modalities();
       gum::learning::IndepTestG2<> score( filter, modalities );
       // score.useCache ( false );
 
-      unsigned int id1, id2, id3, id4, id5, id6, id7;
-      for ( unsigned int i = 0; i < 4; ++i ) {
+      gum::Idx id1, id2, id3, id4, id5, id6, id7;
+      for ( gum::Idx i = 0; i < 4; ++i ) {
         score.clearCache();
         id1 = score.addNodeSet( 0, 1 );
         id2 = score.addNodeSet( 1, 3 );
-        id3 = score.addNodeSet( 3, 6, std::vector<unsigned int>{1, 2} );
+        id3 = score.addNodeSet( 3, 6, std::vector<gum::Idx>{1, 2} );
         id4 = score.addNodeSet( 2, 0 );
-        id5 = score.addNodeSet( 3, 1, std::vector<unsigned int>{4} );
+        id5 = score.addNodeSet( 3, 1, std::vector<gum::Idx>{4} );
         id6 = score.addNodeSet( 2, 0 );
-        id7 = score.addNodeSet( 1, 3, std::vector<unsigned int>{4} );
+        id7 = score.addNodeSet( 1, 3, std::vector<gum::Idx>{4} );
         TS_ASSERT( fabs( score.score( id1 ) - 61.181 ) <= 0.01 );
         TS_ASSERT( fabs( score.score( id2 ) + 0.617 ) <= 0.01 );
         TS_ASSERT( fabs( score.score( id3 ) + 0.808 ) <= 0.01 );

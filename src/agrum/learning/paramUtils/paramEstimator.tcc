@@ -34,7 +34,7 @@ namespace gum {
     template<typename RowFilter>
     INLINE ParamEstimator<IdSetAlloc, CountAlloc>::ParamEstimator(
             const RowFilter &filter,
-            const std::vector<unsigned int> &var_modalities,
+            const std::vector<Size> &var_modalities,
             Apriori <IdSetAlloc, CountAlloc> &apriori,
             const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
             score_internal_apriori)
@@ -75,16 +75,16 @@ namespace gum {
 
     /// add a new CPT with a single variable to be estimated
     template<typename IdSetAlloc, typename CountAlloc>
-    INLINE unsigned int
-    ParamEstimator<IdSetAlloc, CountAlloc>::addNodeSet(unsigned int var) {
+    INLINE Idx
+    ParamEstimator<IdSetAlloc, CountAlloc>::addNodeSet(Idx var) {
       _is_normalized.push_back(false);
       return Counter<IdSetAlloc, CountAlloc>::addNodeSet(var);
     }
 
     /// add a new target variable plus some conditioning vars
     template<typename IdSetAlloc, typename CountAlloc>
-    INLINE unsigned int ParamEstimator<IdSetAlloc, CountAlloc>::addNodeSet(
-            unsigned int var, const std::vector<unsigned int> &conditioning_ids) {
+    INLINE Idx ParamEstimator<IdSetAlloc, CountAlloc>::addNodeSet(
+            Idx var, const std::vector<Idx> &conditioning_ids) {
       _is_normalized.push_back(false);
       return Counter<IdSetAlloc, CountAlloc>::addNodeSet(var,
                                                          conditioning_ids);
@@ -103,7 +103,7 @@ namespace gum {
     // version for double : no need to copy normalized_count
     template<typename IdSetAlloc, typename CountAlloc>
     INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::setParameters(
-            unsigned int nodeset_index, Potential<double> &pot) {
+            Idx nodeset_index, Potential<double> &pot) {
       pot.fillWith(parameters(nodeset_index));
     }
 
@@ -111,7 +111,7 @@ namespace gum {
     template<typename IdSetAlloc, typename CountAlloc>
     template<typename GUM_SCALAR>
     INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::setParameters(
-            unsigned int nodeset_index, Potential <GUM_SCALAR> &pot) {
+            Idx nodeset_index, Potential <GUM_SCALAR> &pot) {
       const auto &nc = parameters(nodeset_index);//normalized_counts
       pot.fillWith(std::vector<GUM_SCALAR>(nc.begin(), nc.end()));
     }
@@ -120,7 +120,7 @@ namespace gum {
     template<typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<double, CountAlloc> &
     ParamEstimator<IdSetAlloc, CountAlloc>::_getAllApriori(
-            unsigned int index) {
+            Idx index) {
       if (!__apriori_computed) {
         _apriori->setParameters(this->_modalities,
                                 Counter<IdSetAlloc, CountAlloc>::_getCounts(),
@@ -137,7 +137,7 @@ namespace gum {
     template<typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<double, CountAlloc> &
     ParamEstimator<IdSetAlloc, CountAlloc>::_getConditioningApriori(
-            unsigned int index) {
+            Idx index) {
       if (!__apriori_computed) {
         _apriori->setParameters(this->_modalities,
                                 Counter<IdSetAlloc, CountAlloc>::_getCounts(),

@@ -63,7 +63,7 @@ namespace gum {
      *for
      * details.
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class ScoreAIC : public Score<IdSetAlloc, CountAlloc> {
       public:
@@ -83,10 +83,10 @@ namespace gum {
       template <typename RowFilter>
       ScoreAIC(
           const RowFilter& filter,
-          const std::vector<unsigned int>& var_modalities,
+          const std::vector<Size>& var_modalities,
           Apriori<IdSetAlloc, CountAlloc>& apriori,
           unsigned long min_range = 0,
-          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
+          unsigned long max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       ScoreAIC( const ScoreAIC<IdSetAlloc, CountAlloc>& );
@@ -108,7 +108,7 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      virtual double score( unsigned int nodeset_index ) final;
+      virtual double score( Idx nodeset_index ) final;
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score

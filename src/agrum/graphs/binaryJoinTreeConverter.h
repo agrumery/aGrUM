@@ -65,7 +65,7 @@ namespace gum {
      * then for those with unspecified roots, an arbitrary root will be computed
      * and used for the binarization. */
     virtual CliqueGraph convert( const CliqueGraph& JT,
-                                 const NodeProperty<unsigned int>& domain_sizes,
+                                 const NodeProperty<Size>& domain_sizes,
                                  const NodeSet& roots ) = 0;
 
     /// returns all the roots considered for all the connected components

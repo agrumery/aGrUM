@@ -60,7 +60,7 @@ namespace gum {
     DAG2BNLearner::createBN( PARAM_ESTIMATOR& estimator,
                              const DAG& dag,
                              const std::vector<std::string>& names,
-                             const std::vector<unsigned int>& modal,
+                             const std::vector<Size>& modal,
                              const CELL_TRANSLATORS& translator ) {
       BayesNet<GUM_SCALAR> bn;
 
@@ -68,7 +68,7 @@ namespace gum {
       for ( const auto id : dag ) {
         // create the labelized variable
         LabelizedVariable variable( names[id], "", 0 );
-        for ( unsigned int i = 0; i < modal[id]; ++i ) {
+        for ( Idx i = 0; i < modal[id]; ++i ) {
           variable.addLabel( translator.translateBack( id, i ) );
         }
         bn.add( variable, id );
@@ -96,8 +96,8 @@ namespace gum {
 
         // setup the estimation
         if ( vars.size() > 1 ) {
-          std::vector<unsigned int> cond_ids( vars.size() - 1 );
-          for ( unsigned int i = 0; i < cond_ids.size(); ++i ) {
+          std::vector<Idx> cond_ids( vars.size() - 1 );
+          for ( Idx i = 0; i < cond_ids.size(); ++i ) {
             cond_ids[i] = varmap.get( *( vars[i] ) );
           }
           estimator.addNodeSet( id, cond_ids );
@@ -107,7 +107,7 @@ namespace gum {
       }
 
       // assign the parameters to the potentials
-      unsigned int index = 0;
+      Idx index = 0;
       for ( const auto id : dag ) {
         // get the variables of the CPT of id in the correct order
         Potential<GUM_SCALAR>& pot =

@@ -36,7 +36,7 @@ namespace gum {
     template <typename RowFilter>
     INLINE ScoreLog2Likelihood<IdSetAlloc, CountAlloc>::ScoreLog2Likelihood(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities,
+        const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         unsigned long min_range,
         unsigned long max_range )
@@ -122,7 +122,7 @@ namespace gum {
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     double ScoreLog2Likelihood<IdSetAlloc, CountAlloc>::score(
-        unsigned int nodeset_index ) {
+        Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -131,11 +131,11 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const unsigned int targets_modal = N_ijk.size();
+      const Size targets_modal = N_ijk.size();
       double score = 0;
 
       // get the nodes involved in the score
-      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
+      const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes( nodeset_index );
 
       // here, we distinguish nodesets with conditioning nodes from those
@@ -144,7 +144,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const unsigned int conditioning_modal = N_ij.size();
+        const Size conditioning_modal = N_ij.size();
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =
@@ -156,13 +156,13 @@ namespace gum {
           // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             const double new_count = N_ijk[k] + N_prime_ijk[k];
             if ( new_count ) {
               score += new_count * std::log( new_count );
             }
           }
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+          for ( Idx j = 0; j < conditioning_modal; ++j ) {
             const double new_count = N_ij[j] + N_prime_ij[j];
             if ( new_count ) {
               score -= new_count * std::log( new_count );
@@ -173,12 +173,12 @@ namespace gum {
           // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             if ( N_ijk[k] ) {
               score += N_ijk[k] * std::log( N_ijk[k] );
             }
           }
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+          for ( Idx j = 0; j < conditioning_modal; ++j ) {
             if ( N_ij[j] ) {
               score -= N_ij[j] * std::log( N_ij[j] );
             }
@@ -200,7 +200,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<double, CountAlloc>& N_ijk =
             this->_getAllCounts( nodeset_index );
-        const unsigned int targets_modal = N_ijk.size();
+        const Size targets_modal = N_ijk.size();
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =
@@ -211,7 +211,7 @@ namespace gum {
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
           double N_plus_N_prime = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             const double new_count = N_ijk[k] + N_prime_ijk[k];
             if ( new_count ) {
               score += new_count * std::log( new_count );
@@ -225,7 +225,7 @@ namespace gum {
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
           double N = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             if ( N_ijk[k] ) {
               score += N_ijk[k] * std::log( N_ijk[k] );
               N += N_ijk[k];

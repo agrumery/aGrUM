@@ -99,7 +99,7 @@ namespace gum {
           noexcept = 0;
 
       /// returns the number of variables (columns) of the database
-      virtual unsigned int nbVariables() const noexcept = 0;
+      virtual Size nbVariables() const noexcept = 0;
 
       protected:
       /// a buffer to avoid cacheline problems due to parallelism

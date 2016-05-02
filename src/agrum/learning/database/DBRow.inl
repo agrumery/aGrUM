@@ -34,7 +34,7 @@ namespace gum {
 
     /// constructor with a given size for the row
     INLINE
-    DBRow::DBRow( unsigned int size, const DBCell& default_cell, double weight )
+    DBRow::DBRow( Size size, const DBCell& default_cell, double weight )
         : _row( size, default_cell )
         , _weight( weight ) {}
 
@@ -84,10 +84,10 @@ namespace gum {
     }
 
     /// returns the ith DBCell of the row
-    INLINE DBCell& DBRow::operator[]( unsigned int i ) { return _row[i]; }
+    INLINE DBCell& DBRow::operator[]( Idx i ) { return _row[i]; }
 
     /// returns the ith DBCell of the row
-    INLINE const DBCell& DBRow::operator[]( unsigned int i ) const {
+    INLINE const DBCell& DBRow::operator[]( Idx i ) const {
       return _row[i];
     }
 
@@ -119,10 +119,10 @@ namespace gum {
     INLINE void DBRow::setWeight( double new_weight ) { _weight = new_weight; }
 
     /// returns the size of the row
-    INLINE unsigned int DBRow::size() const noexcept { return _row.size(); }
+    INLINE Size DBRow::size() const noexcept { return _row.size(); }
 
     /// resize a given row
-    INLINE void DBRow::resize( unsigned int new_size ) {
+    INLINE void DBRow::resize( Size new_size ) {
       _row.resize( new_size );
     }
 

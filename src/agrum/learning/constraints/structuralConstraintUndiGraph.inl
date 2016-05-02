@@ -117,9 +117,9 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void
-    StructuralConstraintUndiGraph::setGraph( unsigned int nb_nodes ) {
+    StructuralConstraintUndiGraph::setGraph( Size nb_nodes ) {
       _UndiGraph__graph.clear();
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         _UndiGraph__graph.addNode( i );
       }
     }

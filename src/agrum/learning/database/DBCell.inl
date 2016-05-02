@@ -166,7 +166,7 @@ namespace gum {
     }
 
     /// returns the DBcell as a string (without checking its type)
-    INLINE const std::string& DBCell::getString( unsigned int index ) {
+    INLINE const std::string& DBCell::getString( Idx index ) {
       return __strings().first( index );
     }
 

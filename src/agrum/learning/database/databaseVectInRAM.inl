@@ -214,7 +214,7 @@ namespace gum {
     }
 
     /// returns the number of variables (columns) of the database
-    INLINE unsigned int DatabaseVectInRAM::Handler::nbVariables() const
+    INLINE Size DatabaseVectInRAM::Handler::nbVariables() const
         noexcept {
       return __db->variableNames().size();
     }
@@ -329,7 +329,7 @@ namespace gum {
     }
 
     /// returns the number of variables (columns) of the database
-    INLINE unsigned int DatabaseVectInRAM::nbVariables() const noexcept {
+    INLINE Size DatabaseVectInRAM::nbVariables() const noexcept {
       if ( __data.empty() )
         return __variable_names.size();
       else
@@ -343,7 +343,7 @@ namespace gum {
 
     /// update the handlers when the size of the database changes
     INLINE void DatabaseVectInRAM::__updateHandlers( unsigned long new_size ) {
-      unsigned int db_size = __data.size();
+      Size db_size = __data.size();
 
       for ( auto handler : __list_of_handlers ) {
         if ( ( handler->__end_index == db_size ) ||
@@ -367,7 +367,7 @@ namespace gum {
                    "rest of the database" );
       }
 
-      const unsigned int nb_cols = __variable_names.size();
+      const Size nb_cols = __variable_names.size();
 
       if ( nb_cols && ( new_row.size() != nb_cols ) ) {
         GUM_ERROR( SizeError,
@@ -390,7 +390,7 @@ namespace gum {
                    "rest of the database" );
       }
 
-      const unsigned int nb_cols = __variable_names.size();
+      const Size nb_cols = __variable_names.size();
 
       if ( nb_cols && ( new_row.size() != nb_cols ) ) {
         GUM_ERROR( SizeError,
@@ -408,7 +408,7 @@ namespace gum {
       if ( new_rows.empty() ) return;
 
       // check that all the rows have the same size
-      const unsigned int new_size = new_rows[0].size();
+      const Size new_size = new_rows[0].size();
 
       for ( const auto& row : new_rows ) {
         if ( row.size() != new_size ) {
@@ -421,7 +421,7 @@ namespace gum {
       // check that the sizes of the new rows are the same as the rest of
       // the database
       const unsigned long db_size = __data.size();
-      const unsigned int nb_cols = __variable_names.size();
+      const Size nb_cols = __variable_names.size();
 
       if ( db_size && ( __data[0].size() != new_size ) ) {
         GUM_ERROR( SizeError,
@@ -448,7 +448,7 @@ namespace gum {
       if ( new_rows.empty() ) return;
 
       // check that all the rows have the same size
-      const unsigned int new_size = new_rows[0].size();
+      const Size new_size = new_rows[0].size();
 
       for ( const auto& row : new_rows ) {
         if ( row.size() != new_size ) {
@@ -460,8 +460,8 @@ namespace gum {
 
       // check that the sizes of the new rows are the same as the rest of
       // the database
-      const unsigned long db_size = __data.size();
-      const unsigned int nb_cols = __variable_names.size();
+      const Size db_size = __data.size();
+      const Size nb_cols = __variable_names.size();
 
       if ( db_size && ( __data[0].size() != new_size ) ) {
         GUM_ERROR( SizeError,

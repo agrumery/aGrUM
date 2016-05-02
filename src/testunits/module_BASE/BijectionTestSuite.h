@@ -313,7 +313,7 @@ namespace gum_tests {
       auto iter1 = bijection.begin();
       auto iter2 = bijection.end();
 
-      unsigned int nb = 0;
+      gum::Size nb = 0;
 
       for ( auto iter = bijection.begin(); iter != bijection.end();
             ++iter, ++nb ) {
@@ -361,7 +361,7 @@ namespace gum_tests {
       gum::Bijection<int, int>::iterator iter1 = bijection.begin();
       gum::Bijection<int, int>::iterator iter2 = bijection.end();
 
-      unsigned int nb = 0;
+      gum::Size nb = 0;
 
       for ( gum::Bijection<int, int>::iterator iter = bijection.begin();
             iter != bijection.end();
@@ -410,7 +410,7 @@ namespace gum_tests {
       auto iter1 = bijection.begin();
       auto iter2 = bijection.end();
 
-      unsigned int nb = 0;
+      gum::Size nb = 0;
 
       for ( auto iter = bijection.begin(); iter != bijection.end();
             ++iter, ++nb ) {
@@ -460,7 +460,7 @@ namespace gum_tests {
       gum::Bijection<std::string, std::string>::iterator iter2 =
           bijection.end();
 
-      unsigned int nb = 0;
+      gum::Size nb = 0;
 
       for ( gum::Bijection<std::string, std::string>::iterator
                 iter = bijection.begin();
@@ -607,7 +607,7 @@ namespace gum_tests {
       auto iter1 = bijection.begin();
       auto iter2 = bijection.end();
 
-      unsigned int nb = 0;
+      gum::Size nb = 0;
 
       for ( auto iter = bijection.begin(); iter != bijection.end();
             ++iter, ++nb ) {

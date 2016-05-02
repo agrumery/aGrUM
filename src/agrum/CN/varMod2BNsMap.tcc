@@ -35,8 +35,10 @@ namespace gum {
 
         for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
           Size nVertices = ( *cpt )[node][pconf].size();
-          Size nBits, newCard;
-          superiorPow( nVertices, nBits, newCard );
+          unsigned long b,c;
+          superiorPow( nVertices, b, c );
+          Size nBits=Size(b);
+          Size newCard=Size(c);
           _sampleDef[node][pconf].resize( nBits );
         }
       }
@@ -47,7 +49,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     bool
     VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<bool>& bn,
-                                       const std::vector<unsigned int>& key ) {
+                                       const std::vector<Size>& key ) {
       _currentHash = _vectHash( bn );
       std::list<Size>& nets =
           _myVarHashs.getWithDefault( key, std::list<Size>() );  //[ key ];
@@ -70,7 +72,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool
-    VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<unsigned int>& key,
+    VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<Size>& key,
                                        const bool isBetter ) {
       if ( isBetter ) {
         // get all nets of this key (maybe entry does not exists)
@@ -152,9 +154,9 @@ namespace gum {
         const std::vector<std::vector<std::vector<bool>>>& sample ) {
       _currentSample.clear();
 
-      for ( unsigned int i = 0; i < sample.size(); i++ )
-        for ( unsigned int j = 0; j < sample[j].size(); j++ )
-          for ( unsigned int k = 0; k < sample[i][j].size(); k++ )
+      for ( Size i = 0; i < sample.size(); i++ )
+        for ( Size j = 0; j < sample[j].size(); j++ )
+          for ( Size k = 0; k < sample[i][j].size(); k++ )
             _currentSample.push_back( sample[i][j][k] );
 
       // std::cout << sample << std::endl;
@@ -177,7 +179,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     const std::vector<std::vector<bool>*>
     VarMod2BNsMap<GUM_SCALAR>::getBNOptsFromKey(
-        const std::vector<unsigned int>& key ) {
+        const std::vector<Size>& key ) {
       // return something even if key does not exist
       if ( !_myVarHashs.exists( key ) )
         return std::vector<std::vector<bool>*>();
@@ -189,7 +191,7 @@ namespace gum {
 
       std::list<Size>::iterator it = netsHash.begin();
 
-      for ( unsigned int i = 0; i < netsHash.size(); i++, ++it ) {
+      for ( Size i = 0; i < netsHash.size(); i++, ++it ) {
         nets[i] = &_myHashNet /*.at(*/[*it];  //);
       }
 
@@ -199,7 +201,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     std::vector<std::vector<std::vector<std::vector<bool>>>>
     VarMod2BNsMap<GUM_SCALAR>::getFullBNOptsFromKey(
-        const std::vector<unsigned int>& key ) {
+        const std::vector<Size>& key ) {
       if ( cnet == nullptr )
         GUM_ERROR(
             OperationNotAllowed,
@@ -216,13 +218,13 @@ namespace gum {
 
       std::list<Size>::iterator it = netsHash.begin();
 
-      for ( unsigned int i = 0; i < netsHash.size(); i++, ++it ) {
+      for ( Size i = 0; i < netsHash.size(); i++, ++it ) {
         // std::vector< std::vector< std::vector < bool > > > net(_sampleDef);
         dBN::iterator it2 = _myHashNet /*.at(*/[*it] /*)*/.begin();
 
-        for ( unsigned int j = 0; j < _sampleDef.size(); j++ ) {
-          for ( unsigned int k = 0; k < _sampleDef[j].size(); k++ ) {
-            for ( unsigned int l = 0; l < _sampleDef[j][k].size(); l++ ) {
+        for ( Size j = 0; j < _sampleDef.size(); j++ ) {
+          for ( Size k = 0; k < _sampleDef[j].size(); k++ ) {
+            for ( Size l = 0; l < _sampleDef[j][k].size(); l++ ) {
               nets[i][j][k][l] = *it2;
               ++it2;
             }
@@ -234,7 +236,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    unsigned int VarMod2BNsMap<GUM_SCALAR>::getEntrySize() const {
+    Size VarMod2BNsMap<GUM_SCALAR>::getEntrySize() const {
       return _myHashNet.size();
     }
 

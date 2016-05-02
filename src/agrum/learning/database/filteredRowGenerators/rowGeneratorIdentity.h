@@ -82,7 +82,7 @@ namespace gum {
       FilteredRow& generate();
 
       /// computes the rows it will provide in output
-      unsigned int _computeRows();
+      Size _computeRows();
 
       /// @}
     };

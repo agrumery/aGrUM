@@ -156,13 +156,13 @@ namespace gum {
 
     /// sets the time slices of all the nodes in the property
     INLINE void StructuralConstraintSliceOrder::setSliceOrder(
-        const NodeProperty<unsigned int>& order ) {
+        const NodeProperty<NodeId>& order ) {
       _SliceOrder__order = order;
     }
 
     /// sets the default time slice
     INLINE void
-    StructuralConstraintSliceOrder::setDefaultSlice( unsigned int slice ) {
+    StructuralConstraintSliceOrder::setDefaultSlice( NodeId slice ) {
       for ( auto& node : _SliceOrder__order ) {
         node.second = slice;
       }
@@ -170,12 +170,12 @@ namespace gum {
 
     /// adds a new node in the slice order
     INLINE void StructuralConstraintSliceOrder::addNode( NodeId node,
-                                                         unsigned int slice ) {
+                                                         NodeId slice ) {
       _SliceOrder__order.set( node, slice );
     }
 
     /// returns the current slice order
-    INLINE const NodeProperty<unsigned int>&
+    INLINE const NodeProperty<NodeId>&
     StructuralConstraintSliceOrder::sliceOrder() const  {
       return _SliceOrder__order;
     }

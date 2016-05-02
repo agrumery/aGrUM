@@ -82,7 +82,7 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorCompactIntId::translate() {
-      out( 0 ) = (unsigned int)in( 0 ).getFloat();
+      out( 0 ) = (Idx)in( 0 ).getFloat();
     }
 
     /// initialize the cell translator by a first database parsing
@@ -102,7 +102,7 @@ namespace gum {
     INLINE void CellTranslatorCompactIntId::postInitialize() {
       if ( __check_database ) {
         // check that the values form a compact
-        unsigned int max_val = 0;
+        Size max_val = 0;
         for ( const auto& val : __values ) {
           if ( val > max_val ) max_val = val;
         }
@@ -116,7 +116,7 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void CellTranslatorCompactIntId::modalities(
-        std::vector<unsigned int>& modal ) const  {
+        std::vector<Size>& modal ) const  {
       if ( __check_database ) {
         modal.push_back( __values.size() );
       } else {
@@ -135,7 +135,7 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string CellTranslatorCompactIntId::translateBack(
-        unsigned int col, unsigned int translated_val ) const {
+        Idx col, Idx translated_val ) const {
       std::stringstream str;
       str << translated_val;
       return str.str();

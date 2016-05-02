@@ -259,7 +259,7 @@ namespace gum {
        *instantiation ( to get index ), therefor we pass it by value
        */
       void fillConstraint( const NodeId& id,
-                           unsigned long int& entry,
+                           const Idx& entry,
                            const std::vector<GUM_SCALAR>& lower,
                            const std::vector<GUM_SCALAR>& upper );
 
@@ -397,7 +397,7 @@ namespace gum {
        *zeroes
        *are not kept.
        */
-      void idmLearning( const unsigned int s = 0,
+      void idmLearning( const Idx s = 0,
                         const bool keepZeroes = false );
 
       /**

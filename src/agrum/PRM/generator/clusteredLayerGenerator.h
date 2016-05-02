@@ -82,7 +82,7 @@ namespace gum {
 
       /// Returns the max number of parents allowed for any attribute or
       /// aggregator
-      unsigned int getMaxParents() const;
+      Size getMaxParents() const;
 
       /// Returns the max number of parents allowed for any attribute or
       /// aggregator

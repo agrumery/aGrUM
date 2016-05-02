@@ -182,9 +182,9 @@ namespace gum {
     /** @brief returns the number of modalities of the variables, as stored
      * into the cell filters */
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
-    INLINE std::vector<unsigned int>
+    INLINE std::vector<Size>
     DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::modalities() const {
-      std::vector<unsigned int> res;
+      std::vector<Size> res;
       __translator_set.modalities( res );
       return res;
     }
@@ -199,7 +199,7 @@ namespace gum {
 
     /// returns the number of variables
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
-    INLINE unsigned int
+    INLINE Size
     DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::nbVariables() const
         noexcept {
       return __handler.variableNames().size();

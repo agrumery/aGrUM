@@ -103,7 +103,7 @@ namespace gum {
        * @param initial_dag the DAG we start from for our learning */
       template <typename GRAPH_CHANGES_SELECTOR>
       DAG learnStructure( GRAPH_CHANGES_SELECTOR& selector,
-                          const std::vector<unsigned int>& modal,
+                          const std::vector<Size>& modal,
                           DAG initial_dag = DAG() );
 
       /// learns the structure and the parameters of a BN
@@ -114,7 +114,7 @@ namespace gum {
       BayesNet<GUM_SCALAR> learnBN( GRAPH_CHANGES_SELECTOR& selector,
                                     PARAM_ESTIMATOR& estimator,
                                     const std::vector<std::string>& names,
-                                    const std::vector<unsigned int>& modal,
+                                    const std::vector<Size>& modal,
                                     const CELL_TRANSLATORS& translator,
                                     DAG initial_dag = DAG() );
 
@@ -125,7 +125,7 @@ namespace gum {
       /** @brief checks that the order passed to K2 is coherent with the
        * variables
        * as specified by their modalities */
-      void __checkOrder( const std::vector<unsigned int>& modal );
+      void __checkOrder( const std::vector<Size>& modal );
       /// @}
     };
 

@@ -108,9 +108,9 @@ namespace gum {
     // (resp. K) was the jth (resp. kth) one created during the triangulation
     // process. Then, in the vector below, substitution[j] = k.
     const std::vector<NodeId>& elim_order = __triangulation->eliminationOrder();
-    std::vector<unsigned int> substitution( elim_order.size() );
+    std::vector<NodeId> substitution( elim_order.size() );
 
-    for ( unsigned int i = 0; i < substitution.size(); ++i )
+    for ( NodeId i = 0; i < substitution.size(); ++i )
       substitution[i] = i;
 
     // for all cliques C_i, from the last one created to the first one, check if
@@ -122,9 +122,9 @@ namespace gum {
     // neighbour can be included in C_j (and conversely).
     // NodeSetIterator iter;
 
-    for ( unsigned int i = elim_order.size() - 1; i < elim_order.size(); --i ) {
+    for ( NodeId i = elim_order.size() - 1; i < elim_order.size(); --i ) {
       NodeId C_i = i;
-      unsigned int card_C_i = __junction_tree.clique( C_i ).size();
+      Size card_C_i = __junction_tree.clique( C_i ).size();
 
       // search for C_j such that |C_j| = [C_i| + 1
       NodeId C_j = C_i;
@@ -151,7 +151,7 @@ namespace gum {
     }
 
     // compute the transitive closure of vector substitution
-    for ( unsigned int i = 0; i < substitution.size(); ++i )
+    for ( NodeId i = 0; i < substitution.size(); ++i )
       substitution[i] = substitution[substitution[i]];
 
     // using the transitive closure of vector substitution, compute for each
@@ -159,7 +159,7 @@ namespace gum {
     // the clique of the junction tree that was created by its elimination
     // during
     // the triangulation
-    for ( unsigned int i = 0; i < elim_order.size(); ++i ) {
+    for ( NodeId i = 0; i < elim_order.size(); ++i ) {
       __node_2_junction_clique.insert( elim_order[i], substitution[i] );
     }
 

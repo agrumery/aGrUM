@@ -60,7 +60,7 @@ namespace gum {
      * nodes assume that this set is empty. Once the computations have been
      * performed, use method parameters to retrieve the parameters of interest.
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class ParamEstimatorML : public ParamEstimator<IdSetAlloc, CountAlloc> {
       public:
@@ -79,7 +79,7 @@ namespace gum {
       template <typename RowFilter>
       ParamEstimatorML(
           const RowFilter& filter,
-          const std::vector<unsigned int>& var_modalities,
+          const std::vector<Size>& var_modalities,
           Apriori<IdSetAlloc, CountAlloc>& apriori,
           const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
               score_internal_apriori =
@@ -113,7 +113,7 @@ namespace gum {
        * @throw CPTError is raised if some values of the conditioning sets were
        * not observed in the database. */
       const std::vector<double, CountAlloc>&
-      parameters( unsigned int nodeset_index );
+      parameters( Idx nodeset_index );
 
       /// @}
     };

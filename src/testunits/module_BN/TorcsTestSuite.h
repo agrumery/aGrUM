@@ -45,7 +45,7 @@ namespace gum_tests {
     gum::List<gum::Potential<float>*>* evidence;
 
     void setUp() {
-      gum::HashTable<gum::LabelizedVariable*, gum::Id> idMap;
+      gum::HashTable<gum::LabelizedVariable*, gum::NodeId> idMap;
       bn = new gum::BayesNet<float>();
 
       node1 = new gum::LabelizedVariable( "TgR", "", 72 );
@@ -53,7 +53,7 @@ namespace gum_tests {
       node3 = new gum::LabelizedVariable( "Angle 1", "", 72 );
       node4 = new gum::LabelizedVariable( "DistM", "", 100 );
       node5 = new gum::LabelizedVariable( "Angle 2", "", 72 );
-      
+
       idMap.insert( node1, bn->add( *node1 ) );
       idMap.insert( node2, bn->add( *node2 ) );
       idMap.insert( node3, bn->add( *node3 ) );

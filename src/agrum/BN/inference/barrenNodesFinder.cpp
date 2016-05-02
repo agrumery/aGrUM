@@ -41,7 +41,7 @@ namespace gum {
   BarrenNodesFinder::barrenNodes( const CliqueGraph& junction_tree ) {
     // assign a mark to all the nodes
     // and mark all the observed nodes and their ancestors as non-barren
-    NodeProperty<unsigned int> mark( __dag->size() );
+    NodeProperty<Size> mark( __dag->size() );
     {
       for ( const auto node : *__dag )
         mark.insert( node, 0 );  // for the moment, 0 = possibly barren
@@ -51,10 +51,10 @@ namespace gum {
       // barren
       // later on
       Sequence<NodeId> observed_anc( __dag->size() );
-      const unsigned int non_barren = std::numeric_limits<unsigned int>::max();
+      const Size non_barren = std::numeric_limits<Size>::max();
       for ( const auto node : __observed_nodes )
         observed_anc.insert( node );
-      for ( unsigned int i = 0; i < observed_anc.size(); ++i ) {
+      for ( Idx i = 0; i < observed_anc.size(); ++i ) {
         const NodeId node = observed_anc[i];
         if ( !mark[node] ) {
           mark[node] = non_barren;
@@ -169,10 +169,10 @@ namespace gum {
 
         if ( !mark[node] ) {  // mark the node and all its ancestors
           mark[node] = 1;
-          unsigned int nb_par = 0;
+          Size nb_par = 0;
           for ( auto par : __dag->parents( node ) ) {
-            const unsigned int parent_mark = mark[par];
-            if ( parent_mark != std::numeric_limits<unsigned int>::max() ) {
+            Size parent_mark = mark[par];
+            if ( parent_mark != std::numeric_limits<Size>::max() ) {
               ++nb_par;
               if ( parent_mark == 0 ) {
                 nodes_to_mark.insert( par );
@@ -196,8 +196,8 @@ namespace gum {
       }
     }
     for ( const auto node : sweep_dag ) {
-      const unsigned int nb_parents = sweep_dag.parents( node ).size();
-      const unsigned int nb_children = sweep_dag.children( node ).size();
+      const Size nb_parents = sweep_dag.parents( node ).size();
+      const Size nb_children = sweep_dag.children( node ).size();
       if ( ( nb_parents > 1 ) || ( nb_children > 1 ) ) {
         // perform the matching
         const auto& parents = sweep_dag.parents( node );
@@ -212,8 +212,8 @@ namespace gum {
           // find the child with the smallest number of parents
           const auto& children = sweep_dag.children( node );
           NodeId smallest_child = 0;
-          unsigned int smallest_nb_par =
-              std::numeric_limits<unsigned int>::max();
+          Size smallest_nb_par =
+              std::numeric_limits<Size>::max();
           for ( const auto child : children ) {
             const auto new_nb = sweep_dag.parents( child ).size();
             if ( new_nb < smallest_nb_par ) {
@@ -270,7 +270,7 @@ namespace gum {
     // to the ancestors is a given number, say N, that increases from path
     // to path. Hence, for a given path, all the nodes that are marked with a
     // number at least as high as N are non-barren, the others being barren.
-    unsigned int mark_id = 2;
+    Size mark_id = 2;
     for ( NodeId path : path_roots ) {
       // perform the sweeping from the path
       while ( true ) {

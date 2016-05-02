@@ -66,12 +66,12 @@ namespace gum {
         // we probably need to reorder the sequence to be compatible with the
         // order of the values specified by the user
         std::vector<int> no_user_vals;
-        std::vector<std::pair<unsigned int, unsigned int>> user_vals;
-        for ( unsigned int i = 0; i < __max_value; ++i ) {
-          const unsigned int str_index = __strings.first( i );
+        std::vector<std::pair<Idx, Idx>> user_vals;
+        for ( Idx i = 0; i < __max_value; ++i ) {
+          const Idx str_index = __strings.first( i );
           const std::string& str = DBCell::getString( str_index );
           if ( __user_values->exists( str ) ) {
-            user_vals.push_back( std::pair<unsigned int, unsigned int>(
+            user_vals.push_back( std::pair<Idx, Idx>(
                 str_index, __user_values->pos( str ) ) );
           } else {
             no_user_vals.push_back( str_index );
@@ -82,8 +82,8 @@ namespace gum {
         std::sort(
             user_vals.begin(),
             user_vals.end(),
-            []( const std::pair<unsigned int, unsigned int>& elt1,
-                const std::pair<unsigned int, unsigned int>& elt2 ) -> bool {
+            []( const std::pair<Idx, Idx>& elt1,
+                const std::pair<Idx, Idx>& elt2 ) -> bool {
               return elt1.second < elt2.second;
             } );
 

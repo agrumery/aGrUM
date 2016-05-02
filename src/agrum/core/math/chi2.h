@@ -64,7 +64,7 @@ namespace gum {
      * @param var_modalities The variables modalities.
      * @param confidence_proba The confidence probability.
      */
-    Chi2( const std::vector<unsigned int>& var_modalities,
+    Chi2( const std::vector<Idx>& var_modalities,
           double confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
 
     /**
@@ -85,7 +85,7 @@ namespace gum {
      * @param db_conditioning_ids The conditioning nodes id.
      */
     void setConditioningNodes(
-        const std::vector<unsigned int>& db_conditioning_ids );
+        const std::vector<Idx>& db_conditioning_ids );
 
     /**
     * @brief Computes the critical value according to the number of degrees of
@@ -93,7 +93,7 @@ namespace gum {
     * @param pair A pair of variables ids.
     * @return Returns the critical values.
     */
-    double criticalValue( const std::pair<unsigned long, unsigned int>& pair );
+    double criticalValue( const std::pair<Idx,Idx>& pair );
 
     /**
      * @brief Computes the critical value according to the number of degrees of
@@ -102,7 +102,7 @@ namespace gum {
      * @param var2 The second variable id.
      * @return Returns the critical value.
      */
-    double criticalValue( unsigned int var1, unsigned int var2 );
+    double criticalValue( Idx var1, Idx var2 );
 
     /**
      * @brief Returns the number of degrees of freedom.
@@ -110,7 +110,7 @@ namespace gum {
      * @return Returns the number of degrees of freedom.
      */
     unsigned long
-    degreesOfFreedom( const std::pair<unsigned int, unsigned int>& pair );
+    degreesOfFreedom( const std::pair<Idx,Idx>& pair );
 
     /**
      * @brief Returns the number of degrees of freedom.
@@ -118,7 +118,7 @@ namespace gum {
      * @param var2 The second variable id.
      * @return Returns the number of degrees of freedom.
      */
-    unsigned long degreesOfFreedom( unsigned int var1, unsigned int var2 );
+    unsigned long degreesOfFreedom( Idx var1, Idx var2 );
 
     /**
      * @brief Modifies the confidence probability.
@@ -130,7 +130,7 @@ namespace gum {
 
     private:
     /// The modalities of the random variables.
-    const std::vector<unsigned int>& __modalities;
+    const std::vector<Idx>& __modalities;
 
     /// The confidence probability used for critical values.
     double __confidence_proba;
@@ -139,7 +139,7 @@ namespace gum {
     unsigned long __conditioning_size;
 
     /// A set of already computed critical values.
-    HashTable<unsigned long, double> __critical_values;
+    HashTable<Idx, double> __critical_values;
 
     /**
      * @brief Computes the critical value of a given chi2 test (used by the

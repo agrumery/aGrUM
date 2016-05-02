@@ -17,12 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "ressources/myalloc.h"
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
-#include "ressources/myalloc.h"
 
-#include <list>
 #include <algorithm>
+#include <list>
 #include <vector>
 
 #include <agrum/core/list.h>
@@ -441,27 +441,27 @@ namespace gum_tests {
       gum::ListIterator<int> iter3( xlist );
       gum::ListConstIterator<int> iter4( xlist );
 
-      unsigned int i;
+      gum::Size i;
 
       for ( i = 0; iter1 != xlist.end(); ++iter1, ++i ) {
       }
 
-      TS_ASSERT( i == xlist.size() );
+      TS_ASSERT_EQUALS( i, xlist.size() );
 
       for ( i = 0; iter2 != xlist.cend(); ++iter2, ++i ) {
       }
 
-      TS_ASSERT( i == xlist.size() );
+      TS_ASSERT_EQUALS( i, xlist.size() );
 
       for ( i = 0; iter3 != xlist.end(); ++iter3, ++i ) {
       }
 
-      TS_ASSERT( i == xlist.size() );
+      TS_ASSERT_EQUALS( i, xlist.size() );
 
       for ( i = 0; iter4 != xlist.cend(); ++iter4, ++i ) {
       }
 
-      TS_ASSERT( i == xlist.size() );
+      TS_ASSERT_EQUALS( i, xlist.size() );
     }
 
     private:

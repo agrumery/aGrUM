@@ -231,9 +231,9 @@ namespace gum {
                   << ref );
       }
 
-      unsigned long int entry = 0, jump = 1;
+      Idx entry = 0, jump = 1;
 
-      for ( unsigned int i = 0, end = ins.nbrDim(); i < end; i++ ) {
+      for ( Idx i = 0, end = ins.nbrDim(); i < end; i++ ) {
         if ( __src_bn.nodeId( ins.variable( i ) ) == id ) continue;
 
         entry += ins.val( i ) * jump;
@@ -320,7 +320,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void CredalNet<GUM_SCALAR>::fillConstraint(
         const NodeId& id,
-        unsigned long int& entry,
+        const Idx& entry,
         const std::vector<GUM_SCALAR>& lower,
         const std::vector<GUM_SCALAR>& upper ) {
       Potential<GUM_SCALAR>* const potential_min(
@@ -413,9 +413,9 @@ namespace gum {
                   << ref );
       }
 
-      unsigned long int entry = 0, jump = 1;
+      Idx entry = 0, jump = 1;
 
-      for ( unsigned int i = 0, end = ins.nbrDim(); i < end; i++ ) {
+      for ( Idx i = 0, end = ins.nbrDim(); i < end; i++ ) {
         if ( __src_bn.nodeId( ins.variable( i ) ) == id ) continue;
 
         entry += ins.val( i ) * jump;
@@ -538,7 +538,7 @@ namespace gum {
           else
             den = potential_max->get( ins_max );
 
-          unsigned int nbm = 0;
+          Size nbm = 0;
 
           for ( Size modality = 0; modality < var_dSize; modality++ ) {
             vertex[modality] = potential->get( ins );
@@ -691,7 +691,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void CredalNet<GUM_SCALAR>::idmLearning( const unsigned int s,
+    void CredalNet<GUM_SCALAR>::idmLearning( const Idx s,
                                              const bool keepZeroes ) {
       for ( auto node : __src_bn.nodes() ) {
         const Potential<GUM_SCALAR>* const potential( &__src_bn.cpt( node ) );
@@ -718,7 +718,7 @@ namespace gum {
 
         for ( Size entry = 0; entry < entry_size; entry++ ) {
           GUM_SCALAR den = 0;
-          unsigned int nbm = 0;
+          Size nbm = 0;
 
           for ( Size modality = 0; modality < var_dSize; modality++ ) {
             vertex[modality] = potential->get( ins );
@@ -1092,11 +1092,13 @@ namespace gum {
       __bin_bn->beginTopologyTransformation();
 
       for ( auto node : __current_bn->nodes() ) {
-        Size nb_bits, new_card;
         auto var_dSize = __current_bn->variable( node ).domainSize();
 
         if ( var_dSize != 2 ) {
-          superiorPow( var_dSize, nb_bits, new_card );
+          unsigned long b,c;
+          superiorPow( var_dSize, b,c);
+          Size nb_bits{Size(b)};
+          Size new_card{Size(c)};
 
           std::string bit_name;
           std::vector<NodeId> bits( nb_bits );
@@ -1171,7 +1173,7 @@ namespace gum {
           std::vector<std::vector<std::vector<GUM_SCALAR>>> var_cpt(
               entry_size );
 
-          unsigned int old_conf = 0;
+          Size old_conf = 0;
 
           for ( Size conf = 0; conf < entry_size; conf++ ) {
             std::vector<std::vector<GUM_SCALAR>> pvar_cpt;
@@ -1184,16 +1186,14 @@ namespace gum {
                   ( *__credalNet_current_cpt )[var][old_conf][old_distri];
               auto vertexsize = vertex.size();
 
-              std::vector<unsigned int> incc( vertexsize, 0 );
+              std::vector<Idx> incc( vertexsize, 0 );
 
               for ( Size preced = 0; preced < i; preced++ ) {
                 auto bit_pos =
                     ins.pos( __bin_bn->variable( __var_bits[var][preced] ) );
                 auto val = ins.val( bit_pos );
 
-                Size pas = preced;
-                int2Pow( pas );
-
+                Size pas=Size(int2Pow(preced));
                 Size elem;
 
                 if ( val == 0 )
@@ -1209,8 +1209,7 @@ namespace gum {
                 }
               }
 
-              Size pas = i;
-              int2Pow( pas );
+              Size pas=Size(int2Pow( i ));
 
               std::vector<GUM_SCALAR> distri( 2, 0 );
               int pos = 1;
@@ -1307,8 +1306,7 @@ namespace gum {
             __bin_bn->addArc( __var_bits[i][bit], indic );
 
           // cpt
-          Size num = bitsize;
-          int2Pow( num );
+          Size num=Size(int2Pow(bitsize));
 
           std::vector<std::vector<std::vector<GUM_SCALAR>>> icpt( num );
 

@@ -74,7 +74,7 @@ namespace gum {
      *for
      * details.
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class ScoreK2 : public Score<IdSetAlloc, CountAlloc> {
       public:
@@ -100,10 +100,10 @@ namespace gum {
       template <typename RowFilter>
       ScoreK2(
           const RowFilter& filter,
-          const std::vector<unsigned int>& var_modalities,
+          const std::vector<Size>& var_modalities,
           Apriori<IdSetAlloc, CountAlloc>& apriori,
           unsigned long min_range = 0,
-          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
+          unsigned long max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       ScoreK2( const ScoreK2<IdSetAlloc, CountAlloc>& );
@@ -125,7 +125,7 @@ namespace gum {
       /// @{
 
       /// returns the log2(K2 score) corresponding to a given nodeset
-      double score( unsigned int nodeset_index );
+      double score( Idx nodeset_index );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score

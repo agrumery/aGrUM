@@ -1001,13 +1001,13 @@ namespace gum {
      * @brief Calls depl times Instantiation::inc().
      * @return Returns this Instantiation.
      */
-    Instantiation& operator+=( Id depl );
+    Instantiation& operator+=( Size depl );
 
     /**
      * @brief Calls depl times Instantiation::dec().
      * @return Returns this Instantiation.
      */
-    Instantiation& operator-=( Id depl );
+    Instantiation& operator-=( Size depl );
 
     /// @}
     // =========================================================================

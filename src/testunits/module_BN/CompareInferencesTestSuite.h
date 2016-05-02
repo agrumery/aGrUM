@@ -288,7 +288,7 @@ namespace gum_tests {
 
     void testMultipleInference() {
       gum::BayesNet<float> bn;
-      gum::Id c, s, r, w;
+      gum::NodeId c, s, r, w;
 
       gum::LabelizedVariable vc( "c", "cloudy", 2 ), vs( "s", "sprinklet", 2 );
       gum::LabelizedVariable vr( "r", "rain", 2 ), vw( "w", "wet grass", 2 );

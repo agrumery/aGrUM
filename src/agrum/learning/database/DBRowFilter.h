@@ -174,13 +174,13 @@ namespace gum {
 
       /** @brief returns the number of modalities of the variables, as stored
        * into the cell filters */
-      std::vector<unsigned int> modalities() const;
+      std::vector<Size> modalities() const;
 
       /// returns the names of the variables
       const std::vector<std::string>& variableNames() const noexcept;
 
       /// returns the number of variables
-      unsigned int nbVariables() const noexcept;
+      Size nbVariables() const noexcept;
 
       /// returns the translator set that is actually used
       const TranslatorSet& translatorSet() const noexcept;

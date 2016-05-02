@@ -129,7 +129,7 @@ namespace gum {
 
       /** @brief sets the columns of the output vector which will be written
        * by the translator */
-      void setOutputCols( unsigned int first_col ) noexcept;
+      void setOutputCols( Idx first_col ) noexcept;
 
       /// returns the current input DBRow
       const DBRow& inputRow() const noexcept;
@@ -137,8 +137,8 @@ namespace gum {
       /// returns the current output FilteredRow
       FilteredRow& outputFilteredRow() noexcept;
 
-      /// returns the row of unsigned int of the current output FilteredRow
-      std::vector<unsigned int>& outputRow() noexcept;
+      /// returns the row of Idx of the current output FilteredRow
+      std::vector<Idx>& outputRow() noexcept;
 
       /// returns the translator that does all the job
       Translator& getTranslator() noexcept;
@@ -155,8 +155,8 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      std::string translateBack( unsigned int col,
-                                 unsigned int translated_val ) const;
+      std::string translateBack( Idx col,
+                                 Idx translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       /** If initialization is required, this method is called for each row
@@ -173,13 +173,13 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities( std::vector<unsigned int>& modals ) const;
+      void modalities( std::vector<Size>& modals ) const;
 
       /// returns the size of the input for this cell translator
-      unsigned int inputSize() const noexcept;
+      Size inputSize() const noexcept;
 
       /// returns the size of the output for this cell translator
-      unsigned int outputSize() const noexcept;
+      Size outputSize() const noexcept;
 
       /// @}
 
@@ -309,7 +309,7 @@ namespace gum {
 
       /// sets the output columns written by all the applications of the
       /// translator
-      void setOutputCols( unsigned int first_col ) noexcept;
+      void setOutputCols( Idx first_col ) noexcept;
 
       /// sets the input row which will be read by the translator
       void setInputRow( const DBRow& row ) noexcept;
@@ -323,8 +323,8 @@ namespace gum {
       /// returns the current output FilteredRow
       FilteredRow& outputFilteredRow() noexcept;
 
-      /// returns the row of unsigned int of the current output FilteredRow
-      std::vector<unsigned int>& outputRow() noexcept;
+      /// returns the row of Idx of the current output FilteredRow
+      std::vector<Idx>& outputRow() noexcept;
 
       /// apply the translator
       void translate();
@@ -335,8 +335,8 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      std::string translateBack( unsigned int col,
-                                 unsigned int translated_val ) const;
+      std::string translateBack( Idx col,
+                                 Idx translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       void initialize();
@@ -351,13 +351,13 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities( std::vector<unsigned int>& modals ) const;
+      void modalities( std::vector<Size>& modals ) const;
 
       /// returns the size of the input for the cell translators
-      unsigned int inputSize() const noexcept;
+      Size inputSize() const noexcept;
 
       /// returns the size of the output for the cell translators
-      unsigned int outputSize() const noexcept;
+      Size outputSize() const noexcept;
 
       /// @}
     };
@@ -368,15 +368,15 @@ namespace gum {
     template <typename Translator, typename Cols, typename ColsIncr>
     class Create<Translator, Cols, 0, ColsIncr> {
       public:
-      void setOutputCols( unsigned int ) noexcept {}
+      void setOutputCols( Idx ) noexcept {}
       void setInputRow( const DBRow& ) noexcept {}
       void setOutputRow( FilteredRow& ) noexcept {}
       void translate() noexcept {}
       void initialize() noexcept {}
       void postInitialize() noexcept {}
       bool requiresInitialization() const noexcept { return false; }
-      void modalities( std::vector<unsigned int>& ) const {}
-      std::string translateBack( unsigned int, unsigned int ) const {
+      void modalities( std::vector<Size>& ) const {}
+      std::string translateBack( Idx, Idx ) const {
         GUM_ERROR( UndefinedElement,
                    "the set of translators does not contain "
                    "the column to be translated back" );

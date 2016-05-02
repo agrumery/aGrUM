@@ -114,12 +114,12 @@ namespace gum {
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
        * the translator set */
-      Translator& operator[]( unsigned int i );
+      Translator& operator[]( Idx i );
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
        * the translator set */
-      const Translator& operator[]( unsigned int i ) const;
+      const Translator& operator[]( Idx i ) const;
 
       /// @}
 
@@ -137,7 +137,7 @@ namespace gum {
       template <typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
       void insertTranslator( Cols deb_cols = Cols(),
-                             unsigned int nb_times = 1,
+                             Size nb_times = 1,
                              ColsIncr incr = ColsIncr() );
 
       /// inserts new translators at the end of the set
@@ -150,7 +150,7 @@ namespace gum {
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
       void insertTranslator( const NewTranslator& translator,
                              Cols deb_cols = Cols(),
-                             unsigned int nb_times = 1,
+                             Size nb_times = 1,
                              ColsIncr incr = ColsIncr() );
 
       /// inserts new translators at the end of the set
@@ -159,9 +159,9 @@ namespace gum {
        * If we wish to insert several translators, use an nb_times different
        * from 1. In this case, the other translators will read columns of the
        * database deduced from deb_col by applying increment "increment". */
-      void insertTranslator( unsigned int deb_col,
-                             unsigned int nb_times = 1,
-                             unsigned int increment = 1 );
+      void insertTranslator( Idx deb_col,
+                             Size nb_times = 1,
+                             Idx increment = 1 );
 
       /// execute all the translations on the current database row
       void translate();
@@ -181,7 +181,7 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities( std::vector<unsigned int>& modals ) const;
+      void modalities( std::vector<Size>& modals ) const;
 
       /// sets the input row that shall be read by all the cell translators
       void setInputRow( const DBRow& row ) noexcept;
@@ -196,17 +196,17 @@ namespace gum {
       void clear() noexcept;
 
       /// returns the name of the jth value of the ith column
-      std::string translateBack( unsigned int col,
-                                 unsigned int translated_val ) const;
+      std::string translateBack( Idx col,
+                                 Idx translated_val ) const;
 
       /// returns the size of the input as used by the cell translators
-      unsigned int inputSize() const noexcept;
+      Size inputSize() const noexcept;
 
       /// returns the size of the output of the cell translators
-      unsigned int outputSize() const noexcept;
+      Size outputSize() const noexcept;
 
       /// returns the number of translators stored into the set
-      unsigned int nbTranslators() const noexcept;
+      Size nbTranslators() const noexcept;
 
       /// @}
 
@@ -215,7 +215,7 @@ namespace gum {
       std::vector<Translator*> __translators;
 
       /// the size of the output
-      unsigned int __output_size{0};
+      Size __output_size{0};
 
       /// the output row into which the translators write their output
       FilteredRow __output_row;

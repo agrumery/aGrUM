@@ -306,7 +306,7 @@ public:
   void test_MultiDimArray_time() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -353,14 +353,14 @@ public:
     t2 = projectProductMultiDimArray(&t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimArray() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -405,14 +405,14 @@ public:
     t2 = projectMaxMultiDimArray(&t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimArrayDeb() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -457,14 +457,14 @@ public:
     t2 = projectMaxMultiDimArray(&t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimArrayEnd() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -509,14 +509,14 @@ public:
     t2 = projectMaxMultiDimArray(&t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimImplementation() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -564,14 +564,14 @@ public:
     t4 = projectMaxMultiDimArray(&t1, proj_set);
     delete t4;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimArrayPointer() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -620,14 +620,14 @@ public:
 
     pointerDelete(t1);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimImplementationPointer() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -677,7 +677,7 @@ public:
 
     pointerDelete(tt1);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
@@ -689,7 +689,7 @@ public:
 
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -734,14 +734,14 @@ public:
     t2 = projectMax(t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_potentials() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -789,7 +789,7 @@ public:
         new gum::Potential<float>(t1.margMaxOut(proj_set));
     delete t5;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
@@ -801,7 +801,7 @@ public:
 
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -849,14 +849,14 @@ public:
 
     pointerDelete(t1);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_Pointer_potential() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -906,7 +906,7 @@ public:
 
     pointerDelete(t1);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
@@ -919,7 +919,7 @@ public:
   void test_MultiDimProjection() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -971,7 +971,7 @@ public:
     TS_ASSERT(yyy.first == 2187);
     yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 };

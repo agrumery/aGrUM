@@ -681,8 +681,13 @@ namespace gum {
   // removes all the associations from the bijection
   template <typename T1, typename T2, typename Alloc>
   INLINE void BijectionImplementation<T1, T2, Alloc, true>::clear() {
+    GUM_CHECKPOINT;
+    GUM_TRACE_VAR(__firstToSecond);
+    GUM_TRACE_VAR(__secondToFirst);
     __firstToSecond.clear();
+    GUM_CHECKPOINT;
     __secondToFirst.clear();
+    GUM_CHECKPOINT;
     // note that __iter_end is actually a constant, whatever we add/remove
     // to/from __firstToSecond. As a consequence, it need not be updated
     // after the clear's

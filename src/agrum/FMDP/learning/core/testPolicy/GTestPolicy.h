@@ -142,7 +142,7 @@ namespace gum {
     /// Returns contingency table (needed for the merging of GTestPolicy
     /// instances)
     // ============================================================================
-    const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const {
+    const ContingencyTable<Idx, GUM_SCALAR>& ct() const {
       return __conTab;
     }
 
@@ -169,7 +169,7 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
+    ContingencyTable<Idx, GUM_SCALAR> __conTab;
     mutable double __GStat;
   };
 

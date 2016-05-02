@@ -28,6 +28,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
+#include <agrum/graphs/graphElements.h>
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 
@@ -127,12 +128,12 @@ namespace gum_tests {
       TS_ASSERT( net != 0 );
 
       if ( net != 0 ) {
-        gum::HashTable<std::string, gum::Id> idMap;
+        gum::HashTable<std::string, gum::NodeId> idMap;
 
         for ( const auto node : net->nodes() )
           idMap.insert( net->variable( node ).name(), node );
 
-        gum::Id decisionVar1Id = idMap["decisionVar1"];
+        gum::NodeId decisionVar1Id = idMap["decisionVar1"];
         TS_ASSERT( net->isDecisionNode( decisionVar1Id ) );
         TS_ASSERT( !net->isUtilityNode( decisionVar1Id ) );
         TS_ASSERT( !net->isChanceNode( decisionVar1Id ) );
@@ -143,7 +144,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( decisionVar1.label( 0 ), "0" );
         TS_ASSERT_EQUALS( decisionVar1.label( 1 ), "1" );
 
-        gum::Id decisionVar2Id = idMap["decisionVar2"];
+        gum::NodeId decisionVar2Id = idMap["decisionVar2"];
         TS_ASSERT( net->isDecisionNode( decisionVar2Id ) );
         TS_ASSERT( !net->isUtilityNode( decisionVar2Id ) );
         TS_ASSERT( !net->isChanceNode( decisionVar2Id ) );
@@ -154,7 +155,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( decisionVar2.label( 0 ), "0" );
         TS_ASSERT_EQUALS( decisionVar2.label( 1 ), "1" );
 
-        gum::Id decisionVar3Id = idMap["decisionVar3"];
+        gum::NodeId decisionVar3Id = idMap["decisionVar3"];
         TS_ASSERT( net->isDecisionNode( decisionVar3Id ) );
         TS_ASSERT( !net->isUtilityNode( decisionVar3Id ) );
         TS_ASSERT( !net->isChanceNode( decisionVar3Id ) );
@@ -165,7 +166,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( decisionVar3.label( 0 ), "0" );
         TS_ASSERT_EQUALS( decisionVar3.label( 1 ), "1" );
 
-        gum::Id decisionVar4Id = idMap["decisionVar4"];
+        gum::NodeId decisionVar4Id = idMap["decisionVar4"];
         TS_ASSERT( net->isDecisionNode( decisionVar4Id ) );
         TS_ASSERT( !net->isUtilityNode( decisionVar4Id ) );
         TS_ASSERT( !net->isChanceNode( decisionVar4Id ) );
@@ -176,7 +177,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( decisionVar4.label( 0 ), "0" );
         TS_ASSERT_EQUALS( decisionVar4.label( 1 ), "1" );
 
-        gum::Id chanceVar1Id = idMap["chanceVar1"];
+        gum::NodeId chanceVar1Id = idMap["chanceVar1"];
         TS_ASSERT( !net->isDecisionNode( chanceVar1Id ) );
         TS_ASSERT( !net->isUtilityNode( chanceVar1Id ) );
         TS_ASSERT( net->isChanceNode( chanceVar1Id ) );
@@ -186,7 +187,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( chanceVar1.label( 0 ), "0" );
         TS_ASSERT_EQUALS( chanceVar1.label( 1 ), "1" );
 
-        gum::Id chanceVar2Id = idMap["chanceVar2"];
+        gum::NodeId chanceVar2Id = idMap["chanceVar2"];
         TS_ASSERT( !net->isDecisionNode( chanceVar2Id ) );
         TS_ASSERT( !net->isUtilityNode( chanceVar2Id ) );
         TS_ASSERT( net->isChanceNode( chanceVar2Id ) );
@@ -196,7 +197,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( chanceVar2.label( 0 ), "0" );
         TS_ASSERT_EQUALS( chanceVar2.label( 1 ), "1" );
 
-        gum::Id chanceVar3Id = idMap["chanceVar3"];
+        gum::NodeId chanceVar3Id = idMap["chanceVar3"];
         TS_ASSERT( !net->isDecisionNode( chanceVar3Id ) );
         TS_ASSERT( !net->isUtilityNode( chanceVar3Id ) );
         TS_ASSERT( net->isChanceNode( chanceVar3Id ) );
@@ -206,7 +207,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( chanceVar3.label( 0 ), "0" );
         TS_ASSERT_EQUALS( chanceVar3.label( 1 ), "1" );
 
-        gum::Id chanceVar4Id = idMap["chanceVar4"];
+        gum::NodeId chanceVar4Id = idMap["chanceVar4"];
         TS_ASSERT( !net->isDecisionNode( chanceVar4Id ) );
         TS_ASSERT( !net->isUtilityNode( chanceVar4Id ) );
         TS_ASSERT( net->isChanceNode( chanceVar4Id ) );
@@ -216,7 +217,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( chanceVar4.label( 0 ), "0" );
         TS_ASSERT_EQUALS( chanceVar4.label( 1 ), "1" );
 
-        gum::Id chanceVar5Id = idMap["chanceVar5"];
+        gum::NodeId chanceVar5Id = idMap["chanceVar5"];
         TS_ASSERT( !net->isDecisionNode( chanceVar5Id ) );
         TS_ASSERT( !net->isUtilityNode( chanceVar5Id ) );
         TS_ASSERT( net->isChanceNode( chanceVar5Id ) );
@@ -226,7 +227,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( chanceVar5.label( 0 ), "0" );
         TS_ASSERT_EQUALS( chanceVar5.label( 1 ), "1" );
 
-        gum::Id utilityVar1Id = idMap["utilityVar1"];
+        gum::NodeId utilityVar1Id = idMap["utilityVar1"];
         TS_ASSERT( !net->isDecisionNode( utilityVar1Id ) );
         TS_ASSERT( net->isUtilityNode( utilityVar1Id ) );
         TS_ASSERT( !net->isChanceNode( utilityVar1Id ) );
@@ -236,7 +237,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( utilityVar1.domainSize(), (gum::Size)1 );
         TS_ASSERT_EQUALS( utilityVar1.label( 0 ), "0" );
 
-        gum::Id utilityVar2Id = idMap["utilityVar2"];
+        gum::NodeId utilityVar2Id = idMap["utilityVar2"];
         TS_ASSERT( !net->isDecisionNode( utilityVar2Id ) );
         TS_ASSERT( net->isUtilityNode( utilityVar2Id ) );
         TS_ASSERT( !net->isChanceNode( utilityVar2Id ) );

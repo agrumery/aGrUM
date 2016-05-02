@@ -64,11 +64,11 @@ namespace gum {
         // we probably need to reorder the sequence to be compatible with the
         // order of the values specified by the user
         std::vector<double> no_user_vals;
-        std::vector<std::pair<double, unsigned int>> user_vals;
-        for ( unsigned int i = 0; i < __max_value; ++i ) {
+        std::vector<std::pair<double, Idx>> user_vals;
+        for ( Idx i = 0; i < __max_value; ++i ) {
           const double val = __values.first( i );
           if ( __user_values->exists( val ) ) {
-            user_vals.push_back( std::pair<double, unsigned int>(
+            user_vals.push_back( std::pair<double, Idx>(
                 val, __user_values->pos( val ) ) );
           } else {
             no_user_vals.push_back( val );
@@ -78,8 +78,8 @@ namespace gum {
         // reorder user_vals in increasing order of the second argument
         std::sort( user_vals.begin(),
                    user_vals.end(),
-                   []( const std::pair<double, unsigned int>& elt1,
-                       const std::pair<double, unsigned int>& elt2 ) -> bool {
+                   []( const std::pair<double, Idx>& elt1,
+                       const std::pair<double, Idx>& elt2 ) -> bool {
                      return elt1.second < elt2.second;
                    } );
 

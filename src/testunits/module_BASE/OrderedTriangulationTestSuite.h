@@ -40,7 +40,7 @@ namespace gum_tests {
 
       gum::UndiGraph graph;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         graph.addNode( 10 * i );
 
       createClique( graph, c1 );
@@ -55,13 +55,13 @@ namespace gum_tests {
 
       gum::NodeProperty<gum::Size> dom;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::Idx i = 1; i <= 8; ++i )
         dom.insert( 10 * i, 10 );
 
-      std::vector<unsigned int> sequence( 8 );
+      std::vector<gum::NodeId> sequence( 8 );
 
-      for ( unsigned int i = 0; i < 8; ++i )
-        sequence[i] = ( 8 - i ) * 10;
+      for ( gum::Idx i = 0; i < 8; ++i )
+        sequence[i] = gum::NodeId(( 8 - i ) * 10);
 
       gum::OrderedTriangulation triang;
 
@@ -85,8 +85,8 @@ namespace gum_tests {
 
       triang.clear();
 
-      for ( unsigned int i = 0; i < 8; ++i )
-        sequence[i] = ( i + 1 ) * 10;
+      for ( gum::Idx i = 0; i < 8; ++i )
+        sequence[i] = gum::NodeId(( i + 1 ) * 10);
 
       triang.setGraph( &graph, &dom, &sequence );
 
@@ -144,8 +144,8 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS( clique3, cc3 );
 
-      for ( unsigned int i = 0; i < 8; ++i )
-        sequence[i] = ( 8 - i ) * 10;
+      for ( gum::Idx i = 0; i < 8; ++i )
+        sequence[i] = gum::NodeId(( 8 - i ) * 10);
 
       graph.eraseEdge( gum::Edge( 20, 50 ) );
 
@@ -167,7 +167,7 @@ namespace gum_tests {
     void testTriangulatedGraph2() {
       gum::UndiGraph graph;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         graph.addNode( i );
 
       for ( unsigned int i = 1; i <= 7; ++i )
@@ -177,13 +177,13 @@ namespace gum_tests {
 
       gum::NodeProperty<gum::Size> dom;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         dom.insert( i, 10 );
 
-      std::vector<unsigned int> sequence( 8 );
+      std::vector<gum::NodeId> sequence( 8 );
 
-      for ( unsigned int i = 0; i < 8; ++i )
-        sequence[i] = 8 - i;
+      for ( gum::Idx i = 0; i < 8; ++i )
+        sequence[i] = gum::NodeId(8 - i);
 
       gum::OrderedTriangulation triang;
 

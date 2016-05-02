@@ -58,7 +58,7 @@ namespace gum {
      *for
      * details.
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class IndepTestG2 : public IndependenceTest<IdSetAlloc, CountAlloc> {
       public:
@@ -73,7 +73,7 @@ namespace gum {
        */
       template <typename RowFilter>
       IndepTestG2( const RowFilter& filter,
-                   const std::vector<unsigned int>& var_modalities );
+                   const std::vector<Size>& var_modalities );
 
       /// destructor
       ~IndepTestG2();
@@ -94,7 +94,7 @@ namespace gum {
        * the summations mentioned above. Therefore, any positive result should
        * reflect a dependence whereas negative results should reflect
        * independences. */
-      double score( unsigned int nodeset_index );
+      double score( Idx nodeset_index );
 
       /// @}
 
@@ -103,7 +103,7 @@ namespace gum {
       Chi2 __chi2;
 
       /// an empty vector of ids
-      const std::vector<unsigned int, IdSetAlloc> __empty_set;
+      const std::vector<Idx, IdSetAlloc> __empty_set;
     };
 
   } /* namespace learning */

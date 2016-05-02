@@ -71,12 +71,12 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void
     ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
-        const std::vector<unsigned int>& modalities,
+        const std::vector<Size>& modalities,
         std::vector<std::vector<double, CountAlloc>>& counts,
-        const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int>*>& target_nodesets,
-        const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int>*>& conditioning_nodesets ) {}
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                    Idx>*>& target_nodesets,
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                    Idx>*>& conditioning_nodesets ) {}
 
     /// indicates whether the apriori is potentially informative
     template <typename IdSetAlloc, typename CountAlloc>

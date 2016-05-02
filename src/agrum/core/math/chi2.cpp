@@ -52,7 +52,7 @@
 namespace gum {
 
   // default constructor
-  Chi2::Chi2( const std::vector<unsigned int>& var_modalities,
+  Chi2::Chi2( const std::vector<Size>& var_modalities,
               double confidence_proba )
       : __modalities( var_modalities )
       , __confidence_proba( confidence_proba ) {

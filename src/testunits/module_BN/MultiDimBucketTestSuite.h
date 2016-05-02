@@ -441,10 +441,10 @@ namespace gum_tests {
       gum::BayesNet<double>* bn = new gum::BayesNet<double>();
       gum::LabelizedVariable vc( "c", "cloudy", 2 ), vs( "s", "sprinklet", 2 );
       gum::LabelizedVariable vr( "r", "rain", 2 ), vw( "w", "wet grass", 2 );
-      gum::Id c = bn->add( vc );
-      gum::Id s = bn->add( vs );
-      gum::Id r = bn->add( vr );
-      gum::Id w = bn->add( vw );
+      gum::NodeId c = bn->add( vc );
+      gum::NodeId s = bn->add( vs );
+      gum::NodeId r = bn->add( vr );
+      gum::NodeId w = bn->add( vw );
       bn->addArc( c, s );
       bn->addArc( c, r );
       bn->addArc( s, w );

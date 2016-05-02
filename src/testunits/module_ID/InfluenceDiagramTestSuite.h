@@ -317,7 +317,7 @@ namespace gum_tests {
 
           for ( cpInst.setFirst(); !cpInst.end(); cpInst.inc() ) {
             for ( gum::Idx i = 0; i < cpInst.nbrDim(); i++ ) {
-              gum::Id id = copy->nodeId( cpInst.variable( i ) );
+              gum::NodeId id = copy->nodeId( cpInst.variable( i ) );
               srcInst.chgVal( source.variable( id ), cpInst.val( i ) );
             }
 
@@ -333,7 +333,7 @@ namespace gum_tests {
 
           for ( cpInst.setFirst(); !cpInst.end(); cpInst.inc() ) {
             for ( gum::Idx i = 0; i < cpInst.nbrDim(); i++ ) {
-              gum::Id id = copy->nodeId( cpInst.variable( i ) );
+              gum::NodeId id = copy->nodeId( cpInst.variable( i ) );
               srcInst.chgVal( source.variable( id ), cpInst.val( i ) );
             }
 

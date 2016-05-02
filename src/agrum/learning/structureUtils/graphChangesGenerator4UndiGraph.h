@@ -190,7 +190,7 @@ namespace gum {
       void notifyGetCompleted();
 
       /// sets the maximum number of threads used to compute the set of changes
-      void setMaxNbThreads( unsigned int nb ) noexcept;
+      void setMaxNbThreads( Size nb ) noexcept;
 
       /// @}
 
@@ -210,9 +210,9 @@ namespace gum {
       private:
 /// the max number of threads authorized
 #if defined( _OPENMP ) && defined( NDEBUG )
-      unsigned int __max_threads_number{getMaxNumberOfThreads()};
+      Size __max_threads_number{getMaxNumberOfThreads()};
 #else
-      unsigned int __max_threads_number{1};
+      Size __max_threads_number{1};
 #endif /* NDEBUG */
     };
 

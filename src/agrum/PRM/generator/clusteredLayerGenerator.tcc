@@ -587,7 +587,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE unsigned int
+    INLINE Size
     ClusteredLayerGenerator<GUM_SCALAR>::getMaxParents() const {
       return __max_parents;
     }

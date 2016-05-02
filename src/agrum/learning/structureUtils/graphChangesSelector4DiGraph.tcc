@@ -185,12 +185,12 @@ namespace gum {
     INLINE void GraphChangesSelector4DiGraph<SCORE,
                                              STRUCTURAL_CONSTRAINT,
                                              GRAPH_CHANGES_GENERATOR>::
-        __addScoreToCompute( unsigned int change_index ) const {
+        __addScoreToCompute( Idx change_index ) const {
       const GraphChange& change = __changes[change_index];
 
       switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION: {
-          std::vector<unsigned int> parents = __parents[change.node2()];
+          std::vector<Idx> parents = __parents[change.node2()];
           parents.push_back( change.node1() );
           __score->addNodeSet( change.node2(), std::move( parents ) );
         } break;
@@ -198,7 +198,7 @@ namespace gum {
         case GraphChangeType::ARC_REVERSAL:
           // remove arc ( node1 -> node2 )
           {
-            std::vector<unsigned int> parents = __parents[change.node2()];
+            std::vector<Idx> parents = __parents[change.node2()];
             for ( auto& par : parents ) {
               if ( par == change.node1() ) {
                 par = *( parents.rbegin() );
@@ -211,7 +211,7 @@ namespace gum {
 
           // add narc node2 -> node1
           {
-            std::vector<unsigned int> parents = __parents[change.node1()];
+            std::vector<Idx> parents = __parents[change.node1()];
             parents.push_back( change.node2() );
 
             __score->addNodeSet( change.node1(), std::move( parents ) );
@@ -219,7 +219,7 @@ namespace gum {
           break;
 
         case GraphChangeType::ARC_DELETION: {
-          std::vector<unsigned int> parents = __parents[change.node2()];
+          std::vector<Idx> parents = __parents[change.node2()];
           for ( auto& par : parents ) {
             if ( par == change.node1() ) {
               par = *( parents.rbegin() );
@@ -245,7 +245,7 @@ namespace gum {
     INLINE bool GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::__isChangeValid( unsigned int index ) const {
+        GRAPH_CHANGES_GENERATOR>::__isChangeValid( Idx index ) const {
       return __constraint->checkModification( __changes[index] );
     }
 
@@ -268,10 +268,10 @@ namespace gum {
     void GraphChangesSelector4DiGraph<SCORE,
                                       STRUCTURAL_CONSTRAINT,
                                       GRAPH_CHANGES_GENERATOR>::
-        setGraph( DiGraph& graph, const std::vector<unsigned int>& modal ) {
+        setGraph( DiGraph& graph, const std::vector<Size>& modal ) {
       // fill the DAG with all the missing nodes
-      unsigned int nb_nodes = modal.size();
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      Size nb_nodes = modal.size();
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         if ( !graph.existsNode( i ) ) {
           graph.addNode( i );
         }
@@ -305,11 +305,11 @@ namespace gum {
       // computations of the scores)
       __parents.clear();
       __parents.resize( nb_nodes );
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         const NodeSet& dag_parents = graph.parents( i );
         if ( dag_parents.size() ) {
           __parents[i].resize( dag_parents.size() );
-          unsigned int j = 0;
+          NodeId j = 0;
           for ( const auto par : dag_parents ) {
             __parents[i][j] = par;
             ++j;
@@ -320,10 +320,10 @@ namespace gum {
       // assign a score to each node given its parents in the current graph
       __score->clear();
       __node_current_scores.resize( nb_nodes );
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         __score->addNodeSet( i, __parents[i] );
       }
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         __node_current_scores[i] = __score->score( i );
       }
 
@@ -339,7 +339,7 @@ namespace gum {
       // the scores of all the legal changes
       __illegal_changes.clear();
       __score->clear();
-      for ( unsigned int i = 0; i < __changes.size(); ++i ) {
+      for ( NodeId i = 0; i < __changes.size(); ++i ) {
         if ( !__isChangeValid( i ) ) {
           __illegal_changes.insert( i );
         } else {
@@ -354,7 +354,7 @@ namespace gum {
                                    std::numeric_limits<double>::min() ) );
       __change_queue_per_node.clear();
       __change_queue_per_node.resize( nb_nodes );
-      for ( unsigned int i = 0, j = 0; i < __changes.size(); ++i ) {
+      for ( NodeId i = 0, j = 0; i < __changes.size(); ++i ) {
         if ( !__illegal_changes.exists( i ) ) {
           const GraphChange& change = __changes[i];
 
@@ -383,7 +383,7 @@ namespace gum {
 
       // update the global queue
       __node_queue.clear();
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         __node_queue.insert( i,
                              __change_queue_per_node[i].empty()
                                  ? std::numeric_limits<double>::min()
@@ -400,11 +400,11 @@ namespace gum {
     INLINE void GraphChangesSelector4DiGraph<SCORE,
                                              STRUCTURAL_CONSTRAINT,
                                              GRAPH_CHANGES_GENERATOR>::
-        __invalidateChange( unsigned int change_index ) {
+        __invalidateChange( Idx change_index ) {
       const GraphChange& change = __changes[change_index];
       if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
         // remove the tail change from its priority queue
-        PriorityQueue<unsigned int, double, std::greater<double>>& queue1 =
+        PriorityQueue<Idx, double, std::greater<double>>& queue1 =
             __change_queue_per_node[change.node1()];
         queue1.erase( change_index );
 
@@ -416,7 +416,7 @@ namespace gum {
       }
 
       // remove the head change from its priority queue
-      PriorityQueue<unsigned int, double, std::greater<double>>& queue2 =
+      PriorityQueue<Idx, double, std::greater<double>>& queue2 =
           __change_queue_per_node[change.node2()];
       queue2.erase( change_index );
 
@@ -459,7 +459,7 @@ namespace gum {
     INLINE bool
     GraphChangesSelector4DiGraph<SCORE,
                                  STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR>::empty( unsigned int
+                                 GRAPH_CHANGES_GENERATOR>::empty( NodeId
                                                                       i ) {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
@@ -496,7 +496,7 @@ namespace gum {
     INLINE const GraphChange& GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::bestChange( unsigned int i ) {
+        GRAPH_CHANGES_GENERATOR>::bestChange( NodeId i ) {
       GUM_ASSERT( i < __change_queue_per_node.size() );
       if ( !empty( i ) )
         return __changes[__change_queue_per_node[i].top()];
@@ -525,7 +525,7 @@ namespace gum {
     INLINE double GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::bestScore( unsigned int i ) {
+        GRAPH_CHANGES_GENERATOR>::bestScore( NodeId i ) {
       GUM_ASSERT( i < __change_queue_per_node.size() );
       if ( !empty( i ) )
         return __change_queue_per_node[i].topPriority();
@@ -540,7 +540,7 @@ namespace gum {
     INLINE void GraphChangesSelector4DiGraph<SCORE,
                                              STRUCTURAL_CONSTRAINT,
                                              GRAPH_CHANGES_GENERATOR>::
-        __illegal2LegalChanges( Set<unsigned int>& changes_to_recompute ) {
+        __illegal2LegalChanges( Set<Idx>& changes_to_recompute ) {
       for ( auto iter = __illegal_changes.beginSafe();
             iter != __illegal_changes.endSafe();
             ++iter ) {
@@ -567,8 +567,8 @@ namespace gum {
                                              STRUCTURAL_CONSTRAINT,
                                              GRAPH_CHANGES_GENERATOR>::
         __findLegalChangesNeedingUpdate(
-            Set<unsigned int>& changes_to_recompute, NodeId target_node ) {
-      const HashTable<unsigned int, Size>& changes =
+            Set<Idx>& changes_to_recompute, NodeId target_node ) {
+      const HashTable<Idx, Size>& changes =
           __change_queue_per_node[target_node].allValues();
       for ( auto iter = changes.cbeginSafe(); iter != changes.cendSafe();
             ++iter ) {
@@ -589,7 +589,7 @@ namespace gum {
     INLINE void GraphChangesSelector4DiGraph<SCORE,
                                              STRUCTURAL_CONSTRAINT,
                                              GRAPH_CHANGES_GENERATOR>::
-        __updateScores( const Set<unsigned int>& changes_to_recompute ) {
+        __updateScores( const Set<Idx>& changes_to_recompute ) {
       // prepare the computations of the cores
       __score->clear();
       for ( const auto change_index : changes_to_recompute ) {
@@ -597,8 +597,8 @@ namespace gum {
       }
 
       // update the scores
-      unsigned int j = 0;
-      Set<unsigned int> modified_nodes( changes_to_recompute.size() );
+      Idx j = 0;
+      Set<Idx> modified_nodes( changes_to_recompute.size() );
       for ( const auto change_index : changes_to_recompute ) {
         const GraphChange& change = __changes[change_index];
         if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
@@ -691,7 +691,7 @@ namespace gum {
       unsigned change_index = __changes.pos( change );
 
       // perform the change
-      Set<unsigned int> changes_to_recompute;
+      Set<Idx> changes_to_recompute;
       switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION: {
           // update the current score
@@ -726,7 +726,7 @@ namespace gum {
           // update the current score
           __node_current_scores[change.node2()] +=
               __change_scores[change_index].second;
-          std::vector<unsigned int>& parents = __parents[change.node2()];
+          std::vector<Idx>& parents = __parents[change.node2()];
           for ( auto& par : parents ) {
             if ( par == change.node1() ) {
               par = *( parents.rbegin() );
@@ -765,7 +765,7 @@ namespace gum {
           __node_current_scores[change.node2()] +=
               __change_scores[change_index].second;
           __parents[change.node1()].push_back( change.node2() );
-          std::vector<unsigned int>& parents = __parents[change.node2()];
+          std::vector<Idx>& parents = __parents[change.node2()];
           for ( auto& par : parents ) {
             if ( par == change.node1() ) {
               par = *( parents.rbegin() );
@@ -852,7 +852,7 @@ namespace gum {
           // update the current score
           __node_current_scores[change.node2()] +=
               __change_scores[change_index].second;
-          std::vector<unsigned int>& parents = __parents[change.node2()];
+          std::vector<Idx>& parents = __parents[change.node2()];
           for ( auto& par : parents ) {
             if ( par == change.node1() ) {
               par = *( parents.rbegin() );
@@ -891,7 +891,7 @@ namespace gum {
           __node_current_scores[change.node2()] +=
               __change_scores[change_index].second;
           __parents[change.node1()].push_back( change.node2() );
-          std::vector<unsigned int>& parents = __parents[change.node2()];
+          std::vector<Idx>& parents = __parents[change.node2()];
           for ( auto& par : parents ) {
             if ( par == change.node1() ) {
               par = *( parents.rbegin() );
@@ -938,7 +938,7 @@ namespace gum {
         STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::updateScoresAfterAppliedChanges() {
       // determine which changes in the illegal set are now legal
-      Set<unsigned int> new_legal_changes;
+      Set<Idx> new_legal_changes;
       for ( auto iter = __illegal_changes.beginSafe();
             iter != __illegal_changes.endSafe();
             ++iter ) {
@@ -949,7 +949,7 @@ namespace gum {
       }
 
       // update the scores that need be updated
-      Set<unsigned int> changes_to_recompute;
+      Set<Idx> changes_to_recompute;
       for ( const auto& node : __queues_to_update ) {
         __findLegalChangesNeedingUpdate( changes_to_recompute, node );
       }
@@ -978,21 +978,21 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE std::vector<std::pair<unsigned int, double>>
+    INLINE std::vector<std::pair<Idx, double>>
     GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::nodesSortedByBestScore() const {
-      std::vector<std::pair<unsigned int, double>> result( __node_queue.size() );
-      for ( unsigned int i = 0; i < __node_queue.size(); ++i ) {
+      std::vector<std::pair<Idx, double>> result( __node_queue.size() );
+      for ( Idx i = 0; i < __node_queue.size(); ++i ) {
         result[i].first = __node_queue[i];
         result[i].second = __node_queue.priorityByPos( i );
       }
 
       std::sort( result.begin(),
                  result.end(),
-                 []( const std::pair<unsigned int, double>& a,
-                     const std::pair<unsigned int, double>& b ) -> bool {
+                 []( const std::pair<Idx, double>& a,
+                     const std::pair<Idx, double>& b ) -> bool {
                    return a.second > b.second;
                  } );
 
@@ -1003,13 +1003,13 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE std::vector<std::pair<unsigned int, double>>
+    INLINE std::vector<std::pair<Idx, double>>
     GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::nodesUnsortedWithScore() const {
-      std::vector<std::pair<unsigned int, double>> result( __node_queue.size() );
-      for ( unsigned int i = 0; i < __node_queue.size(); ++i ) {
+      std::vector<std::pair<Idx, double>> result( __node_queue.size() );
+      for ( Idx i = 0; i < __node_queue.size(); ++i ) {
         result[i].first = __node_queue[i];
         result[i].second = __node_queue.priorityByPos( i );
       }

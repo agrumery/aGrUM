@@ -71,16 +71,16 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void
     ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
-        const std::vector<unsigned int>& modalities,
+        const std::vector<Size>& modalities,
         std::vector<std::vector<double, CountAlloc>>& counts,
-        const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int>*>& target_nodesets,
-        const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int>*>& conditioning_nodesets ) {
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                    Idx>*>& target_nodesets,
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                    Idx>*>& conditioning_nodesets ) {
       // put 1's into the countings for the targets
       // and the sum of the weight times the target for the conditioning nodes
-      const unsigned int size = target_nodesets.size();
-      for ( unsigned int i = 0; i < size; ++i ) {
+      const Size size = target_nodesets.size();
+      for ( Idx i = 0; i < size; ++i ) {
         if ( target_nodesets[i] != nullptr ) {
           std::vector<double, CountAlloc>& countings =
               counts[target_nodesets[i]->second];

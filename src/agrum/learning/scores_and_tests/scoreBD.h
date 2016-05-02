@@ -65,7 +65,7 @@ namespace gum {
      *for
      * details.
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class ScoreBD : public Score<IdSetAlloc, CountAlloc> {
       public:
@@ -85,10 +85,10 @@ namespace gum {
       template <typename RowFilter>
       ScoreBD(
           const RowFilter& filter,
-          const std::vector<unsigned int>& var_modalities,
+          const std::vector<Size>& var_modalities,
           Apriori<IdSetAlloc, CountAlloc>& apriori,
           unsigned long min_range = 0,
-          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
+          unsigned long max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       ScoreBD( const ScoreBD<IdSetAlloc, CountAlloc>& );
@@ -110,7 +110,7 @@ namespace gum {
       /// @{
 
       /// returns the log2(BDeu score) corresponding to a given nodeset
-      double score( unsigned int nodeset_index );
+      double score( Idx nodeset_index );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -206,7 +206,7 @@ namespace gum {
       ScoreInternalNoApriori<IdSetAlloc, CountAlloc> __internal_apriori;
 
       /// an empty vector
-      const std::vector<unsigned int> __empty_vect;
+      const std::vector<Idx> __empty_vect;
     };
 
   } /* namespace learning */

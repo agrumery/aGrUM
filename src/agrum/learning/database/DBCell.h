@@ -135,7 +135,7 @@ namespace gum {
       int getStringIndexSafe() const;
 
       /// strings are stored into a static bijection. Get its ith string
-      static const std::string& getString( unsigned int index );
+      static const std::string& getString( Idx index );
 
       /// unsafe set (assumes that the preceding type is of the same type)
       void setString( const std::string& x );

@@ -108,7 +108,7 @@ namespace gum {
      * by the translator */
     template <class Translator, typename Cols>
     INLINE void CreateOnce<Translator, Cols>::setOutputCols(
-        unsigned int first_col ) noexcept {
+        Idx first_col ) noexcept {
       __translator.setOutputCols( first_col );
     }
 
@@ -134,7 +134,7 @@ namespace gum {
     /// back-translate a given output (i.e., returns its input)
     template <class Translator, typename Cols>
     INLINE std::string CreateOnce<Translator, Cols>::translateBack(
-        unsigned int col, unsigned int translated_val ) const {
+        Idx col, Idx translated_val ) const {
       return __translator.translateBack( col, translated_val );
     }
 
@@ -162,7 +162,7 @@ namespace gum {
     /// columns
     template <class Translator, typename Cols>
     INLINE void CreateOnce<Translator, Cols>::modalities(
-        std::vector<unsigned int>& modals ) const {
+        std::vector<Size>& modals ) const {
       __translator.modalities( modals );
     }
 
@@ -180,23 +180,23 @@ namespace gum {
       return __translator.outputFilteredRow();
     }
 
-    /// returns the row of unsigned int of the current output FilteredRow
+    /// returns the row of Idx of the current output FilteredRow
     template <class Translator, typename Cols>
-    INLINE std::vector<unsigned int>&
+    INLINE std::vector<Idx>&
     CreateOnce<Translator, Cols>::outputRow() noexcept {
       return __translator.outputRow();
     }
 
     /// returns the size of the input for this cell translator
     template <class Translator, typename Cols>
-    INLINE unsigned int CreateOnce<Translator, Cols>::inputSize() const
+    INLINE Size CreateOnce<Translator, Cols>::inputSize() const
         noexcept {
       return __translator.inputSize();
     }
 
     /// returns the size of the output for this cell translator
     template <class Translator, typename Cols>
-    INLINE unsigned int CreateOnce<Translator, Cols>::outputSize() const
+    INLINE Size CreateOnce<Translator, Cols>::outputSize() const
         noexcept {
       return __translator.outputSize();
     }
@@ -282,7 +282,7 @@ namespace gum {
               int nb_times,
               typename ColsIncr>
     INLINE void Create<Translator, Cols, nb_times, ColsIncr>::setOutputCols(
-        unsigned int first_col ) noexcept {
+        Idx first_col ) noexcept {
       CurrentTranslator::setOutputCols( first_col );
       NextTranslators::setOutputCols( first_col + Translator::output_size );
     }
@@ -329,12 +329,12 @@ namespace gum {
       return CurrentTranslator::outputFilteredRow();
     }
 
-    /// returns the row of unsigned int of the current output FilteredRow
+    /// returns the row of Idx of the current output FilteredRow
     template <typename Translator,
               typename Cols,
               int nb_times,
               typename ColsIncr>
-    INLINE std::vector<unsigned int>&
+    INLINE std::vector<Idx>&
     Create<Translator, Cols, nb_times, ColsIncr>::outputRow() noexcept {
       return CurrentTranslator::outputRow();
     }
@@ -357,7 +357,7 @@ namespace gum {
               typename ColsIncr>
     INLINE std::string
     Create<Translator, Cols, nb_times, ColsIncr>::translateBack(
-        unsigned int col, unsigned int translated_val ) const {
+        Idx col, Idx translated_val ) const {
       if ( col < Translator::output_size ) {
         return CurrentTranslator::translateBack( col, translated_val );
       } else {
@@ -407,7 +407,7 @@ namespace gum {
               int nb_times,
               typename ColsIncr>
     INLINE void Create<Translator, Cols, nb_times, ColsIncr>::modalities(
-        std::vector<unsigned int>& modals ) const {
+        std::vector<Size>& modals ) const {
       CurrentTranslator::modalities( modals );
       NextTranslators::modalities( modals );
     }
@@ -417,7 +417,7 @@ namespace gum {
               typename Cols,
               int nb_times,
               typename ColsIncr>
-    INLINE unsigned int
+    INLINE Size
     Create<Translator, Cols, nb_times, ColsIncr>::inputSize() const noexcept {
       return nb_times * CurrentTranslator::inputSize();
     }
@@ -427,7 +427,7 @@ namespace gum {
               typename Cols,
               int nb_times,
               typename ColsIncr>
-    INLINE unsigned int
+    INLINE Size
     Create<Translator, Cols, nb_times, ColsIncr>::outputSize() const noexcept {
       return nb_times * CurrentTranslator::outputSize();
     }

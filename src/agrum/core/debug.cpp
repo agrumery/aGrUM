@@ -114,7 +114,7 @@ namespace gum {
     }
 
     void __dumpObjects( void ) {
-      unsigned int nb_err = 0;
+      Size nb_err = 0;
       double total_size = 0.0;
 
       char fillChar = '_';

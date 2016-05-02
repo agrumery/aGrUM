@@ -121,7 +121,7 @@ namespace gum {
     std::vector<const ScheduleMultiDim<GUM_SCALAR>*> tables( set.size() );
 
     {
-      unsigned int i = 0;
+      Idx i = 0;
 
       for ( const auto sched : set ) {
         tables[i] = sched;
@@ -138,16 +138,16 @@ namespace gum {
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair<unsigned int, unsigned int> pair;
+    std::pair<Idx,Idx> pair;
 
-    PriorityQueue<std::pair<unsigned int, unsigned int>, Size> queue;
+    PriorityQueue<std::pair<Idx, Idx>, Size> queue;
 
-    for ( unsigned int i = 0; i < tables.size(); ++i ) {
+    for ( Idx i = 0; i < tables.size(); ++i ) {
       pair.first = i;
       const Sequence<const DiscreteVariable*>& seq1 =
           tables[i]->variablesSequence();
 
-      for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
+      for ( Idx j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
         queue.insert( pair,
                       _combinedSize( seq1, tables[j]->variablesSequence() ) );
@@ -160,11 +160,11 @@ namespace gum {
     // table j and recompute all the priorities of all the pairs (R,k) still
     // available.
     // Timer timer;
-    for ( unsigned int k = 1; k < tables.size(); ++k ) {
+    for ( Idx k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
       pair = queue.pop();
-      unsigned int ti = pair.first;
-      unsigned int tj = pair.second;
+      Idx ti = pair.first;
+      Idx tj = pair.second;
 
       // create the combination that will be performed later on and put it into
       // the schedule
@@ -198,7 +198,7 @@ namespace gum {
 
       // remove all the pairs involving tj in the priority queue
 
-      for ( unsigned int ind = 0; ind < tj; ++ind ) {
+      for ( Idx ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
           queue.erase( pair );
@@ -207,7 +207,7 @@ namespace gum {
 
       pair.first = tj;
 
-      for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
+      for ( Idx ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
           queue.erase( pair );
@@ -221,7 +221,7 @@ namespace gum {
         pair.second = ti;
         Size newsize;
 
-        for ( unsigned int ind = 0; ind < ti; ++ind ) {
+        for ( Idx ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize( seq1, tables[ind]->variablesSequence() );
@@ -231,7 +231,7 @@ namespace gum {
 
         pair.first = ti;
 
-        for ( unsigned int ind = ti + 1; ind < tables.size(); ++ind ) {
+        for ( Idx ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize( seq1, tables[ind]->variablesSequence() );
@@ -243,7 +243,7 @@ namespace gum {
 
     // here, there remains only one nonzero pointer in tables:
     // the result of our combination
-    unsigned int k = 0;
+    Idx k = 0;
 
     while ( !tables[k] )
       ++k;
@@ -284,7 +284,7 @@ namespace gum {
     std::vector<const Sequence<const DiscreteVariable*>*> tables( set.size() );
 
     {
-      unsigned int i = 0;
+      Idx i = 0;
 
       for ( const auto sched : set ) {
         tables[i] = &( sched->variablesSequence() );
@@ -302,13 +302,13 @@ namespace gum {
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair<unsigned int, unsigned int> pair;
-    PriorityQueue<std::pair<unsigned int, unsigned int>, Size> queue;
+    std::pair<Idx, Idx> pair;
+    PriorityQueue<std::pair<Idx, Idx>, Size> queue;
 
-    for ( unsigned int i = 0; i < tables.size(); ++i ) {
+    for ( Idx i = 0; i < tables.size(); ++i ) {
       pair.first = i;
 
-      for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
+      for ( Idx j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
         queue.insert( pair, _combinedSize( *( tables[i] ), *( tables[j] ) ) );
       }
@@ -319,11 +319,11 @@ namespace gum {
     // remove
     // table j and recompute all the priorities of all the pairs (R,k) still
     // available.
-    for ( unsigned int k = 1; k < tables.size(); ++k ) {
+    for ( Idx k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
       pair = queue.pop();
-      unsigned int ti = pair.first;
-      unsigned int tj = pair.second;
+      Idx ti = pair.first;
+      Idx tj = pair.second;
 
       // compute the result
       Sequence<const DiscreteVariable*>* new_seq =
@@ -359,7 +359,7 @@ namespace gum {
       tables[tj] = 0;
 
       // remove all the pairs involving tj in the priority queue
-      for ( unsigned int ind = 0; ind < tj; ++ind ) {
+      for ( Idx ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
           queue.erase( pair );
@@ -368,7 +368,7 @@ namespace gum {
 
       pair.first = tj;
 
-      for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
+      for ( Idx ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
           queue.erase( pair );
@@ -380,7 +380,7 @@ namespace gum {
         pair.second = ti;
         Size newsize;
 
-        for ( unsigned int ind = 0; ind < ti; ++ind ) {
+        for ( Idx ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize( *new_seq, *( tables[ind] ) );
@@ -390,7 +390,7 @@ namespace gum {
 
         pair.first = ti;
 
-        for ( unsigned int ind = ti + 1; ind < tables.size(); ++ind ) {
+        for ( Idx ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize( *new_seq, *( tables[ind] ) );
@@ -402,7 +402,7 @@ namespace gum {
 
     // here, there remains only one nonzero pointer in tables:
     // the result of our combination
-    unsigned int k = 0;
+    Idx k = 0;
 
     while ( !tables[k] )
       ++k;
@@ -445,7 +445,7 @@ namespace gum {
     std::vector<Size> table_size( set.size() );
 
     {
-      unsigned int i = 0;
+      Idx i = 0;
 
       for ( const auto tab : set ) {
         tables[i] = &( tab->variablesSequence() );
@@ -469,14 +469,14 @@ namespace gum {
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair<unsigned int, unsigned int> pair;
+    std::pair<Idx, Idx> pair;
 
-    PriorityQueue<std::pair<unsigned int, unsigned int>, Size> queue;
+    PriorityQueue<std::pair<Idx, Idx>, Size> queue;
 
-    for ( unsigned int i = 0; i < tables.size(); ++i ) {
+    for ( Idx i = 0; i < tables.size(); ++i ) {
       pair.first = i;
 
-      for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
+      for ( Idx j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
         queue.insert( pair, _combinedSize( *( tables[i] ), *( tables[j] ) ) );
       }
@@ -487,11 +487,11 @@ namespace gum {
     // remove
     // table j and recompute all the priorities of all the pairs (R,k) still
     // available.
-    for ( unsigned int k = 1; k < tables.size(); ++k ) {
+    for ( Idx k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
       pair = queue.pop();
-      unsigned int ti = pair.first;
-      unsigned int tj = pair.second;
+      Idx ti = pair.first;
+      Idx tj = pair.second;
 
       // compute the result
       Sequence<const DiscreteVariable*>* new_seq =
@@ -550,7 +550,7 @@ namespace gum {
 
       // remove all the pairs involving tj in the priority queue
 
-      for ( unsigned int ind = 0; ind < tj; ++ind ) {
+      for ( Idx ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
           queue.erase( pair );
@@ -559,7 +559,7 @@ namespace gum {
 
       pair.first = tj;
 
-      for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
+      for ( Idx ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
           queue.erase( pair );
@@ -571,7 +571,7 @@ namespace gum {
         pair.second = ti;
         Size newsize;
 
-        for ( unsigned int ind = 0; ind < ti; ++ind ) {
+        for ( Idx ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize( *new_seq, *( tables[ind] ) );
@@ -581,7 +581,7 @@ namespace gum {
 
         pair.first = ti;
 
-        for ( unsigned int ind = ti + 1; ind < tables.size(); ++ind ) {
+        for ( Idx ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize( *new_seq, *( tables[ind] ) );
@@ -593,7 +593,7 @@ namespace gum {
 
     // here, there remains only one nonzero pointer in tables:
     // the result of our combination
-    unsigned int k = 0;
+    Idx k = 0;
 
     while ( !tables[k] )
       ++k;

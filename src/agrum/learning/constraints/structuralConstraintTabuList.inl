@@ -32,7 +32,7 @@ namespace gum {
     /// sets the size of the tabu list
     INLINE
     void
-    StructuralConstraintTabuList::setTabuListSize( unsigned int new_size ) {
+    StructuralConstraintTabuList::setTabuListSize( Size new_size ) {
       if ( new_size == _TabuList__changes.size() ) return;
 
       if ( _TabuList__changes.size() > new_size ) {

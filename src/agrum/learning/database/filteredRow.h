@@ -60,7 +60,7 @@ namespace gum {
       /// @{
 
       /// returns the filtered row as a vector of integers
-      std::vector<unsigned int>& row() noexcept { return __row; }
+      std::vector<Idx>& row() noexcept { return __row; }
 
       /// returns a reference on the weight of the row
       double& weight() noexcept { return __weight; }
@@ -69,15 +69,15 @@ namespace gum {
       double weight() const noexcept { return __weight; }
 
       /// returns a reference on the number of unobserved values
-      unsigned int& unobserved() noexcept { return __nb_unobserved; }
+      Size& unobserved() noexcept { return __nb_unobserved; }
 
       /// returns the number of unobserved values
-      unsigned int unobserved() const noexcept { return __nb_unobserved; }
+      Size unobserved() const noexcept { return __nb_unobserved; }
 
       /// returns the value at the ith column
       /** by convention, unobserved columns should have value
-       * std::numeric_limits<unsigned int>::max () */
-      unsigned int operator[]( unsigned int i ) const noexcept {
+       * std::numeric_limits<Idx>::max () */
+      Idx operator[]( Idx i ) const noexcept {
         return __row[i];
       }
 
@@ -103,13 +103,13 @@ namespace gum {
 
       private:
       /// the integer-encoded filtered row
-      std::vector<unsigned int> __row;
+      std::vector<Idx> __row;
 
       /// the weight of the row
       double __weight{1};
 
       /// the number of unobserved values
-      unsigned int __nb_unobserved{0};
+      Size __nb_unobserved{0};
     };
 
   } /* namespace learning */

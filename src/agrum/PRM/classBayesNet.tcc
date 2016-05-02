@@ -149,8 +149,7 @@ namespace gum {
     ClassBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
         for ( const auto node : this->nodes() ) {
-          __modalities.insert( node,
-                               (unsigned int)variable( node ).domainSize() );
+          __modalities.insert( node,(Size)variable( node ).domainSize() );
         }
       }
 

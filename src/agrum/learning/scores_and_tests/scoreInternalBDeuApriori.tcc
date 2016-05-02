@@ -87,22 +87,22 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
-        const std::vector<unsigned int>& modalities,
+        const std::vector<Size>& modalities,
         std::vector<std::vector<double, CountAlloc>>& counts,
-        const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int>*>& target_nodesets,
-        const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int>*>& conditioning_nodesets ) {
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                    Idx>*>& target_nodesets,
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                    Idx>*>& conditioning_nodesets ) {
       if ( __ess == 0 ) return;
 
-      const unsigned int size = target_nodesets.size();
-      for ( unsigned int i = 0; i < size; ++i ) {
+      const Size size = target_nodesets.size();
+      for ( Idx i = 0; i < size; ++i ) {
         if ( target_nodesets[i] != nullptr ) {
           // compute the r_i's and q_i's
           const double r_i = modalities[target_nodesets[i]->first.back()];
           double q_i = 1;
           if ( conditioning_nodesets[i] != nullptr ) {
-            const std::vector<unsigned int, IdSetAlloc>& cond =
+            const std::vector<Idx, IdSetAlloc>& cond =
                 conditioning_nodesets[i]->first;
             for ( auto parent : cond ) {
               q_i *= modalities[parent];

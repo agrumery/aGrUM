@@ -72,7 +72,7 @@ namespace gum {
 
         DBRow new_row( row.size() );
 
-        for ( unsigned int i = 0; i < row.size(); ++i ) {
+        for ( Idx i = 0; i < row.size(); ++i ) {
           new_row[i].setBestTypeSafe( row[i] );
         }
 
@@ -88,7 +88,7 @@ namespace gum {
         std::vector<std::string>& names = _variableNames();
         names.resize( vect[0].size() );
 
-        for ( unsigned int i = 0; i < names.size(); ++i ) {
+        for ( Idx i = 0; i < names.size(); ++i ) {
           std::stringstream s;
           s << "node " << i;
           names[i] = s.str();

@@ -128,15 +128,15 @@ namespace gum {
     // result from the combination of clique i with clique j and store the
     // result
     // into a priorityQueue
-    std::pair<unsigned int, unsigned int> pair;
+    std::pair<NodeId, NodeId> pair;
 
-    PriorityQueue<std::pair<unsigned int, unsigned int>, float> queue;
+    PriorityQueue<std::pair<NodeId, NodeId>, float> queue;
 
-    for ( unsigned int i = 0; i < cliques.size(); ++i ) {
+    for ( NodeId i = 0; i < cliques.size(); ++i ) {
       pair.first = i;
       const NodeSet& nodes1 = JT.separator( cliques[i], clique );
 
-      for ( unsigned int j = i + 1; j < cliques.size(); ++j ) {
+      for ( NodeId j = i + 1; j < cliques.size(); ++j ) {
         pair.second = j;
         queue.insert( pair,
                       __combinedSize( nodes1,
@@ -150,11 +150,11 @@ namespace gum {
     // remove
     // table j and recompute all the priorities of all the pairs (R,k) still
     // available.
-    for ( unsigned int k = 2; k < cliques.size(); ++k ) {
+    for ( NodeId k = 2; k < cliques.size(); ++k ) {
       // get the combination to perform and do it
       pair = queue.pop();
-      unsigned int ti = pair.first;
-      unsigned int tj = pair.second;
+      NodeId ti = pair.first;
+      NodeId tj = pair.second;
 
       // create a new clique that will become adjacent to ti and tj
       // and remove the edges between ti, tj and clique
@@ -174,7 +174,7 @@ namespace gum {
 
       // remove all the pairs involving tj in the priority queue
 
-      for ( unsigned int ind = 0; ind < tj; ++ind ) {
+      for ( NodeId ind = 0; ind < tj; ++ind ) {
         if ( is_cliques_relevant[ind] ) {
           pair.first = ind;
           queue.erase( pair );
@@ -183,7 +183,7 @@ namespace gum {
 
       pair.first = tj;
 
-      for ( unsigned int ind = tj + 1; ind < cliques.size(); ++ind ) {
+      for ( NodeId ind = tj + 1; ind < cliques.size(); ++ind ) {
         if ( is_cliques_relevant[ind] ) {
           pair.second = ind;
           queue.erase( pair );
@@ -196,7 +196,7 @@ namespace gum {
         pair.second = ti;
         float newsize;
 
-        for ( unsigned int ind = 0; ind < ti; ++ind ) {
+        for ( NodeId ind = 0; ind < ti; ++ind ) {
           if ( is_cliques_relevant[ind] ) {
             pair.first = ind;
             newsize = __combinedSize(
@@ -207,7 +207,7 @@ namespace gum {
 
         pair.first = ti;
 
-        for ( unsigned int ind = ti + 1; ind < cliques.size(); ++ind ) {
+        for ( NodeId ind = ti + 1; ind < cliques.size(); ++ind ) {
           if ( is_cliques_relevant[ind] ) {
             pair.second = ind;
             newsize = __combinedSize(

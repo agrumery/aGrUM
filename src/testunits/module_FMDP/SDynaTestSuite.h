@@ -19,18 +19,18 @@
  ***************************************************************************/
 
 // ==============================================================================
+#include <cstdarg>
 #include <iostream>
 #include <string>
-#include <cstdarg>
 // ==============================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==============================================================================
+#include <agrum/FMDP/SDyna/sdyna.h>
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/simulation/fmdpSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
-#include <agrum/FMDP/SDyna/sdyna.h>
 // ==============================================================================
 
 namespace gum_tests {
@@ -44,8 +44,7 @@ namespace gum_tests {
       // Initialisation de l'instance de SDyna
       // *********************************************************************************************
       gum::SDYNA* sdyna = nullptr;
-              TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
-              gum::SDYNA::spimddiInstance() );
+      TS_GUM_ASSERT_THROWS_NOTHING( sdyna = gum::SDYNA::spimddiInstance() );
 
       // Enregistrement des actions possibles auprès de SDyna
       for ( auto actionIter = sim.beginActions();
@@ -82,8 +81,8 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING( sim.perform( actionChosenId ) );
           nbDec++;
 
-          TS_GUM_ASSERT_THROWS_NOTHING (
-          sdyna->feedback(sim.currentState(), sim.reward());)
+          TS_GUM_ASSERT_THROWS_NOTHING(
+              sdyna->feedback( sim.currentState(), sim.reward() ); )
         }
         TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
       }
@@ -95,24 +94,26 @@ namespace gum_tests {
     // Run the tests on a Coffee FMDP
     // *******************************************************************************
     void test_Coffee() {
-
+      GUM_CHECKPOINT;
       // **************************************************************
       // Chargement du fmdp servant de base
       gum::FMDPSimulator sim( GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" ) );
 
+      GUM_CHECKPOINT;
 
       // **************************************************************
-      // Définition des états finaux
+      // Définition of final states
       gum::Instantiation theEnd;
       for ( gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter =
                 sim.beginVariables();
             varIter != sim.endVariables();
-            ++varIter )
+            ++varIter ) {
         if ( ( *varIter )->name().compare( "huc" ) ) {
           theEnd.add( **varIter );
           theEnd.chgVal( **varIter, ( *varIter )->index( "yes" ) );
           break;
         }
+      }
       TS_GUM_ASSERT_THROWS_NOTHING( sim.setEndState( theEnd ) );
 
 

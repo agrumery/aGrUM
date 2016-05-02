@@ -189,7 +189,7 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void CellTranslatorUniversal::modalities(
-        std::vector<unsigned int>& modal ) const noexcept {
+        std::vector<Size>& modal ) const noexcept {
       modal.push_back( __max_value );
     }
 
@@ -201,7 +201,7 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string CellTranslatorUniversal::translateBack(
-        unsigned int col, unsigned int translated_val ) const {
+        Idx col, Idx translated_val ) const {
       std::stringstream str;
 
       if ( __numbers.existsSecond( translated_val ) )
@@ -220,13 +220,13 @@ namespace gum {
     }
 
     /// returns the set of translations for string values in the database
-    INLINE const Bijection<int, unsigned int>&
+    INLINE const Bijection<Idx, Idx>&
     CellTranslatorUniversal::stringTranslations() const noexcept {
       return __strings;
     }
 
     /// returns the set of translations for number values in the database
-    INLINE const Bijection<double, unsigned int>&
+    INLINE const Bijection<double, Idx>&
     CellTranslatorUniversal::numberTranslations() const noexcept {
       return __numbers;
     }

@@ -118,15 +118,15 @@ namespace gum {
         const ErrorsContainer& errorsContainer() const;
 
         /// line of ith error or warning
-        unsigned int errLine( unsigned int i ) const;
+        Idx errLine( Idx i ) const;
         /// col of ith error or warning
-        unsigned int errCol( unsigned int i ) const;
+        Idx errCol( Idx i ) const;
         /// filename of ith error or warning
-        std::wstring errFilename( unsigned int i ) const;
+        std::wstring errFilename( Idx i ) const;
         /// type of ith error or warning
-        bool errIsError( unsigned int i ) const;
+        bool errIsError( Idx i ) const;
         /// message of ith error or warning
-        std::string errMsg( unsigned int i ) const;
+        std::string errMsg( Idx i ) const;
 
         /// send on std::cerr the list of errors
         void showElegantErrors( std::ostream& o = std::cerr ) const;
@@ -146,7 +146,7 @@ namespace gum {
 
         // Needed when file can't be parse (can not open it for exemple)
         ErrorsContainer __errors;
-        
+
         void __readStream( std::istream& input,
                            const std::string& file,
                            std::string module = "" );

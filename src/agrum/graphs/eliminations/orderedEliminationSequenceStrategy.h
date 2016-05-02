@@ -144,7 +144,7 @@ namespace gum {
     const std::vector<NodeId>* __sequence;
 
     /// the index in the sequence indicating the new node to eliminate
-    unsigned int __seq_index;
+    Idx __seq_index;
   };
 
 } /* namespace gum */

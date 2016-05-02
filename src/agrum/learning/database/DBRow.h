@@ -49,7 +49,7 @@ namespace gum {
       DBRow();
 
       /// constructor with a given size for the row
-      DBRow( unsigned int size,
+      DBRow( Size size,
              const DBCell& default_cell = DBCell(),
              double weight = 1.0f );
 
@@ -86,10 +86,10 @@ namespace gum {
       DBRow& operator=( DBRow&& from );
 
       /// returns the ith DBCell of the row
-      DBCell& operator[]( unsigned int i );
+      DBCell& operator[]( Idx i );
 
       /// returns the ith DBCell of the row
-      const DBCell& operator[]( unsigned int i ) const;
+      const DBCell& operator[]( Idx i ) const;
 
       /// @}
 
@@ -121,10 +121,10 @@ namespace gum {
       void setWeight( double new_weight );
 
       /// returns the size of the row
-      unsigned int size() const noexcept;
+      Size size() const noexcept;
 
       /// resize a given row
-      void resize( unsigned int new_size );
+      void resize( Size new_size );
 
       /// @}
 

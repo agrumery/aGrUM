@@ -25,6 +25,7 @@
  */
 
 // To help IDE Parsers
+#include <agrum/config.h>
 #include <agrum/core/math/rational.h>
 
 namespace gum {
@@ -139,7 +140,7 @@ namespace gum {
     /// we can start looking at the semi-convergents made of the last two
     /// convergents
     /// before the one within precision zero of number found previously
-    unsigned int i = p.size() - 2;
+    Idx i = p.size() - 2;
     /// the last convergent has already been computed previously : end of for is
     /// p.size() - 2
     /// for ( ; i < p.size() - 1; ++i ) {
@@ -237,7 +238,7 @@ namespace gum {
     /// we can start looking at the semi-convergents made of the last two
     /// convergents
     /// before the one within precision zero of number found previously
-    unsigned int i = p.size() - 1;
+    Idx i = p.size() - 1;
 
     /// the last convergent has already been computed previously : end of for is
     /// p.size() - 2

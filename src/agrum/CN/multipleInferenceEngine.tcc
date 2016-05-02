@@ -20,7 +20,7 @@ namespace gum {
     template <typename GUM_SCALAR, class BNInferenceEngine>
     inline void
     MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_initThreadsData(
-        const unsigned int& num_threads,
+        const Size& num_threads,
         const bool __storeVertices,
         const bool __storeBNOpt ) {
       _workingSet.clear();
@@ -108,7 +108,7 @@ namespace gum {
           newOne = true;
 
           if ( __infE::_storeBNOpt && !__infE::_evidence.exists( id ) ) {
-            std::vector<unsigned int> key( 3 );
+            std::vector<Size> key( 3 );
             key[0] = id;
             key[1] = mod;
             key[2] = 0;
@@ -122,7 +122,7 @@ namespace gum {
           newOne = true;
 
           if ( __infE::_storeBNOpt && !__infE::_evidence.exists( id ) ) {
-            std::vector<unsigned int> key( 3 );
+            std::vector<Size> key( 3 );
             key[0] = id;
             key[1] = mod;
             key[2] = 1;
@@ -136,7 +136,7 @@ namespace gum {
           if ( __infE::_storeBNOpt &&
                vertex[mod] == _l_marginalMin[tId][id][mod] &&
                !__infE::_evidence.exists( id ) ) {
-            std::vector<unsigned int> key( 3 );
+            std::vector<Size> key( 3 );
             key[0] = id;
             key[1] = mod;
             key[2] = 0;
@@ -147,7 +147,7 @@ namespace gum {
           if ( __infE::_storeBNOpt &&
                vertex[mod] == _l_marginalMax[tId][id][mod] &&
                !__infE::_evidence.exists( id ) ) {
-            std::vector<unsigned int> key( 3 );
+            std::vector<Size> key( 3 );
             key[0] = id;
             key[1] = mod;
             key[2] = 1;
@@ -485,11 +485,11 @@ namespace gum {
 
         for ( Size j = 0; j < dSize; j++ ) {
           // go through all threads
-          std::vector<unsigned int> keymin( 3 );
+          std::vector<Size> keymin( 3 );
           keymin[0] = i;
           keymin[1] = j;
           keymin[2] = 0;
-          std::vector<unsigned int> keymax( keymin );
+          std::vector<Size> keymax( keymin );
           keymax[2] = 1;
 
           Size tsize = _l_marginalMin.size();

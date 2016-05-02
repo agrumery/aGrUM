@@ -337,7 +337,7 @@ namespace gum_tests {
     void test_MultiDimArray() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -389,14 +389,14 @@ namespace gum_tests {
       delete t2;
       delete t3;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_MultiDimImplementation() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -448,14 +448,14 @@ namespace gum_tests {
       delete t2;
       delete t3;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_MultiDimArrayPointer() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -507,14 +507,14 @@ namespace gum_tests {
       pointerDelete( t2 );
       pointerDelete( t3 );
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_MultiDimImplementationPointer() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -566,7 +566,7 @@ namespace gum_tests {
       pointerDelete( t2 );
       pointerDelete( t3 );
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
@@ -575,7 +575,7 @@ namespace gum_tests {
 
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -626,7 +626,7 @@ namespace gum_tests {
       delete t2;
       delete t3;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
@@ -635,7 +635,7 @@ namespace gum_tests {
 
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -686,14 +686,14 @@ namespace gum_tests {
       pointerDelete( t2 );
       pointerDelete( t3 );
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_potential() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -744,14 +744,14 @@ namespace gum_tests {
       delete t2;
       delete t3;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_potential_pointer() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -802,14 +802,14 @@ namespace gum_tests {
       pointerDelete( t2 );
       pointerDelete( t3 );
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_multidimPartialInstantiation() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -861,7 +861,7 @@ namespace gum_tests {
       delete t2;
       delete t3;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
   };

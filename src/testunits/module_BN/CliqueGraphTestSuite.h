@@ -625,7 +625,7 @@ namespace gum_tests {
       gum::CliqueGraph graph;
       fillG2( graph );
 
-      std::vector<gum::Id> vec;
+      std::vector<gum::NodeId> vec;
 
       try {
         vec = graph.undirectedPath( 1, 4 );

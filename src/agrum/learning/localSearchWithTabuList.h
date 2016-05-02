@@ -99,7 +99,7 @@ namespace gum {
 
       /// set the max number of changes decreasing the score that we allow to
       /// apply
-      void setMaxNbDecreasingChanges( unsigned int nb );
+      void setMaxNbDecreasingChanges( Size nb );
 
       /// learns the structure of a Bayes net
       /** @param selector A selector class that computes the best changes that
@@ -111,7 +111,7 @@ namespace gum {
        * @param initial_dag the DAG we start from for our learning */
       template <typename GRAPH_CHANGES_SELECTOR>
       DAG learnStructure( GRAPH_CHANGES_SELECTOR& selector,
-                          const std::vector<unsigned int>& modal,
+                          const std::vector<Size>& modal,
                           DAG initial_dag = DAG() );
 
       /// learns the structure and the parameters of a BN
@@ -122,7 +122,7 @@ namespace gum {
       BayesNet<GUM_SCALAR> learnBN( GRAPH_CHANGES_SELECTOR& selector,
                                     PARAM_ESTIMATOR& estimator,
                                     const std::vector<std::string>& names,
-                                    const std::vector<unsigned int>& modal,
+                                    const std::vector<Size>& modal,
                                     const CELL_TRANSLATORS& translator,
                                     DAG initial_dag = DAG() );
 
@@ -130,7 +130,7 @@ namespace gum {
 
       private:
       /// the max number of changes decreasing the score that we allow to apply
-      unsigned int __MaxNbDecreasing{2};
+      Size __MaxNbDecreasing{2};
     };
 
   } /* namespace learning */

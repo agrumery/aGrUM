@@ -131,14 +131,14 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities( std::vector<unsigned int>& modal ) const noexcept;
+      void modalities( std::vector<Size>& modal ) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack( unsigned int col,
-                                 unsigned int translated_val ) const;
+      std::string translateBack( Idx col,
+                                 Idx translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames( const std::vector<std::string>& db_var,
@@ -189,10 +189,10 @@ namespace gum {
 
       private:
       /// the next max translated value
-      unsigned int __max_value{0};
+      Size __max_value{0};
 
       /// the set of values found so far
-      Bijection<double, unsigned int> __values;
+      Bijection<double, Idx> __values;
 
       /// the sequence of values specified by the user
       Sequence<double>* __user_values{nullptr};

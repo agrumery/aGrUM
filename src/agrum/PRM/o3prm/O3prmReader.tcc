@@ -183,31 +183,31 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE unsigned int
-      O3prmReader<GUM_SCALAR>::errLine( unsigned int i ) const {
+      INLINE Idx
+      O3prmReader<GUM_SCALAR>::errLine( Idx i ) const {
         return __errors.error( i ).line;
       }
 
       template <typename GUM_SCALAR>
-      INLINE unsigned int
-      O3prmReader<GUM_SCALAR>::errCol( unsigned int i ) const {
+      INLINE Idx
+      O3prmReader<GUM_SCALAR>::errCol( Idx i ) const {
         return __errors.error( i ).column;
       }
 
       template <typename GUM_SCALAR>
       INLINE std::wstring
-      O3prmReader<GUM_SCALAR>::errFilename( unsigned int i ) const {
+      O3prmReader<GUM_SCALAR>::errFilename( Idx i ) const {
         return widen( __errors.error( i ).filename );
       }
 
       template <typename GUM_SCALAR>
-      INLINE bool O3prmReader<GUM_SCALAR>::errIsError( unsigned int i ) const {
+      INLINE bool O3prmReader<GUM_SCALAR>::errIsError( Idx i ) const {
         return __errors.error( i ).is_error;
       }
 
       template <typename GUM_SCALAR>
       INLINE std::string
-      O3prmReader<GUM_SCALAR>::errMsg( unsigned int i ) const {
+      O3prmReader<GUM_SCALAR>::errMsg( Idx i ) const {
         return __errors.error( i ).msg;
       }
 

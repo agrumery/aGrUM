@@ -102,7 +102,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -178,7 +178,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -231,7 +231,7 @@ namespace gum_tests {
 
       const std::string s0 = "0";
       const std::string s1 = "1";
-      for ( unsigned int i = 0; i < database.nbVariables(); ++i ) {
+      for ( gum::Idx i = 0; i < database.nbVariables(); ++i ) {
         const gum::DiscreteVariable& var = bn.variable( i );
         TS_ASSERT( var.label( 0 ) == s0 );
         TS_ASSERT( var.label( 1 ) == s1 );
@@ -265,7 +265,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -316,8 +316,8 @@ namespace gum_tests {
       const std::string s0 = "0";
       const std::string s1 = "1";
       const std::string s2 = "2";
-      gum::Set<unsigned int> seq{1, 10, 11, 14};
-      for ( unsigned int i = 0; i < database.nbVariables(); ++i ) {
+      gum::Set<gum::Idx> seq{1, 10, 11, 14};
+      for ( gum::Idx i = 0; i < database.nbVariables(); ++i ) {
         const gum::DiscreteVariable& var = bn.variable( i );
         TS_ASSERT( var.label( 0 ) == s0 );
         TS_ASSERT( var.label( 1 ) == s1 );
@@ -356,7 +356,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -407,7 +407,7 @@ namespace gum_tests {
       const std::string s0 = "0";
       const std::string s1 = "1";
       const std::string s2 = "2";
-      gum::Set<unsigned int> seq{1, 10, 11, 14};
+      gum::Set<gum::Idx> seq{1, 10, 11, 14};
       for ( auto i : seq ) {
         const gum::DiscreteVariable& var = bn.variable( i );
         TS_ASSERT( var.label( 0 ) == s0 );
@@ -436,7 +436,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -480,7 +480,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -524,7 +524,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -569,7 +569,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -614,7 +614,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -659,7 +659,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );

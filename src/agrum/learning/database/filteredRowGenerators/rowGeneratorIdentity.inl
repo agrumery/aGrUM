@@ -36,7 +36,7 @@ namespace gum {
     }
 
     /// computes the rows it will provide in output
-    INLINE unsigned int RowGeneratorIdentity::_computeRows() { return 1; }
+    INLINE Size RowGeneratorIdentity::_computeRows() { return 1; }
 
   } /* namespace learning */
 

@@ -245,7 +245,7 @@ namespace gum {
         const std::vector<std::string>& variableNames() const noexcept;
 
         /// returns the number of variables (columns) of the database
-        unsigned int nbVariables() const noexcept;
+        Size nbVariables() const noexcept;
 
         /// @}
 
@@ -326,7 +326,7 @@ namespace gum {
       void setVariableNames( const std::vector<std::string>& names );
 
       /// returns the number of variables (columns) of the database
-      unsigned int nbVariables() const noexcept;
+      Size nbVariables() const noexcept;
 
       /// insert a new DBRow at the end of the database
       void insertDBRow( const DBRow& new_row );

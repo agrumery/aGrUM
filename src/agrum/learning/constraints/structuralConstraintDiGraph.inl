@@ -143,10 +143,10 @@ namespace gum {
     }
 
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDiGraph::setGraph( unsigned int nb_nodes ) {
+    INLINE void StructuralConstraintDiGraph::setGraph( Size nb_nodes ) {
       _DiGraph__graph.clear();
 
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         _DiGraph__graph.addNode( i );
       }
     }

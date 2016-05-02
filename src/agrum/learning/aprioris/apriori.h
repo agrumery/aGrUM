@@ -40,7 +40,7 @@ namespace gum {
      * @brief the base class for all apriori
      * @ingroup learning_group
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class Apriori {
       public:
@@ -79,22 +79,22 @@ namespace gum {
 
       /// sets the parameters for the apriori
       void setParameters(
-          const std::vector<unsigned int>& modalities,
+          const std::vector<Size>& modalities,
           std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                      unsigned int>*>& target_nodesets,
-          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                      unsigned int>*>& conditioning_nodesets );
+          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                      Idx>*>& target_nodesets,
+          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                      Idx>*>& conditioning_nodesets );
 
       /// compute the apriori into a given set of counts
       virtual void compute() = 0;
 
       /// returns the apriori vector for a given (conditioned) target set
-      const std::vector<double, CountAlloc>& getAllApriori( unsigned int index );
+      const std::vector<double, CountAlloc>& getAllApriori( Idx index );
 
       /// returns the apriori vector for a conditioning set
       const std::vector<double, CountAlloc>&
-      getConditioningApriori( unsigned int index );
+      getConditioningApriori( Idx index );
 
       /// @}
 
@@ -103,7 +103,7 @@ namespace gum {
       double _weight{1.0f};
 
       /// the modalities of the nodes
-      const std::vector<unsigned int>* _modalities{nullptr};
+      const std::vector<Size>* _modalities{nullptr};
 
       /// the counts that were performed by the class on which we add an apriori
       /** Say that a score needs an apriori, then _unapriori_counts corresponds
@@ -119,13 +119,13 @@ namespace gum {
        * the countings have already been processed and have been put into a
        * cache.
        * So, for these pointers, no a priori operation needs be performed. */
-      const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                  unsigned int>*>* _target_nodesets{nullptr};
+      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                  Idx>*>* _target_nodesets{nullptr};
 
       /// the set of conditioning nodesets
       /** for details, see _target_nodesets */
-      const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                  unsigned int>*>* _conditioning_nodesets{
+      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
+                                  Idx>*>* _conditioning_nodesets{
           nullptr};
 
       /// the a priori

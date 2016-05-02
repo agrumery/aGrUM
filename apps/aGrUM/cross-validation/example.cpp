@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
     auto filter =
         gum::learning::make_DB_row_filter(database, translators, generators);
-    std::vector<unsigned int> modalities = filter.modalities();
+    std::vector<gum::Size> modalities = filter.modalities();
 
     gum::learning::AprioriSmoothing<> apriori;
 
@@ -72,8 +72,8 @@ int main(int argc, char *argv[]) {
     int foldSize = database.content().size() / k;
 
     for (int fold = 0; fold < k; fold++) {
-      unsigned int fold_deb = fold * foldSize;
-      unsigned int fold_end = fold_deb + foldSize - 1;
+      Idx fold_deb = fold * foldSize;
+      Idx fold_end = fold_deb + foldSize - 1;
       std::cout << "+ LEARNING on [" << fold_deb << "," << fold_end << "] : ";
 
       // LEARNING

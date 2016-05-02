@@ -46,32 +46,32 @@ namespace gum {
 
     // get the set of roots and leaves of the dag
     List<NodeId> roots, leaves;
-    NodeProperty<unsigned int> nb_parents, nb_children;
+    NodeProperty<Size> nb_parents, nb_children;
 
     for ( const auto node : dag ) {
-      unsigned int nb_ch = dag.children( node ).size();
+      Size nb_ch = dag.children( node ).size();
       nb_children.insert( node, nb_ch );
 
       if ( !nb_ch ) leaves.insert( node );
 
-      unsigned int nb_pa = dag.parents( node ).size();
+      Size nb_pa = dag.parents( node ).size();
       nb_parents.insert( node, nb_pa );
 
       if ( !nb_pa ) roots.insert( node );
     }
 
     // recompute the set of ancestors
-    NodeProperty<unsigned int> empty_set;
+    NodeProperty<Size> empty_set;
     __ancestors.clear();
 
-    for ( const auto node : dag ) {
+    for ( NodeId node : dag ) {
       __ancestors.insert( node, empty_set );
     }
 
     while ( !roots.empty() ) {
       // get a node and update the ancestors of its children
       NodeId node = roots.front();
-      NodeProperty<unsigned int> node_ancestors = __ancestors[node];
+      NodeProperty<Size> node_ancestors = __ancestors[node];
       node_ancestors.insert( node, 1 );
       const NodeSet& node_children = dag.children( node );
       roots.popFront();
@@ -96,7 +96,7 @@ namespace gum {
     while ( !leaves.empty() ) {
       // get a node and update the descendants of its parents
       NodeId node = leaves.front();
-      NodeProperty<unsigned int> node_descendants = __descendants[node];
+      NodeProperty<Size> node_descendants = __descendants[node];
       node_descendants.insert( node, 1 );
       const NodeSet& node_parents = dag.parents( node );
       leaves.popFront();
@@ -119,8 +119,8 @@ namespace gum {
     // a deletion + an insertion) and we check that no insertion also exists
     // as a deletion (if so, we remove both operations). In addition, if
     // we try to add an arc (X,X) we return that it induces a cycle
-    HashTable<Arc, unsigned int> deletions( modifs.size() );
-    HashTable<Arc, unsigned int> additions( modifs.size() );
+    HashTable<Arc, Size> deletions( modifs.size() );
+    HashTable<Arc, Size> additions( modifs.size() );
 
     for ( const auto& modif : modifs ) {
       Arc arc( modif.tail(), modif.head() );
@@ -168,8 +168,8 @@ namespace gum {
           iter != additions.endSafe();
           ++iter ) {
       if ( deletions.exists( iter.key() ) ) {
-        unsigned int& nb_del = deletions[iter.key()];
-        unsigned int& nb_add = iter.val();
+        Size& nb_del = deletions[iter.key()];
+        Size& nb_add = iter.val();
 
         if ( nb_del > nb_add ) {
           additions.erase( iter );
@@ -195,29 +195,29 @@ namespace gum {
     // we now retrieve the set of ancestors and descendants of all the
     // extremities of the arcs involved in the modifications. We also
     // keep track of all the children and parents of these nodes
-    NodeProperty<NodeProperty<unsigned int>> ancestors, descendants;
+    NodeProperty<NodeProperty<Size>> ancestors, descendants;
 
     for ( const auto& modif : modifs ) {
       if ( !ancestors.exists( modif.tail() ) ) {
-        NodeProperty<unsigned int>& anc =
-            ancestors.insert( modif.tail(), NodeProperty<unsigned int>() )
+        NodeProperty<Size>& anc =
+            ancestors.insert( modif.tail(), NodeProperty<Size>() )
                 .second;
         __restrictWeightedSet( anc, __ancestors[modif.tail()], extremities );
 
-        NodeProperty<unsigned int>& desc =
-            descendants.insert( modif.tail(), NodeProperty<unsigned int>() )
+        NodeProperty<Size>& desc =
+            descendants.insert( modif.tail(), NodeProperty<Size>() )
                 .second;
         __restrictWeightedSet( desc, __descendants[modif.tail()], extremities );
       }
 
       if ( !ancestors.exists( modif.head() ) ) {
-        NodeProperty<unsigned int>& anc =
-            ancestors.insert( modif.head(), NodeProperty<unsigned int>() )
+        NodeProperty<Size>& anc =
+            ancestors.insert( modif.head(), NodeProperty<Size>() )
                 .second;
         __restrictWeightedSet( anc, __ancestors[modif.head()], extremities );
 
-        NodeProperty<unsigned int>& desc =
-            descendants.insert( modif.head(), NodeProperty<unsigned int>() )
+        NodeProperty<Size>& desc =
+            descendants.insert( modif.head(), NodeProperty<Size>() )
                 .second;
         __restrictWeightedSet( desc, __descendants[modif.head()], extremities );
       }
@@ -237,12 +237,12 @@ namespace gum {
     for ( auto iter = deletions.cbegin(); iter != deletions.cend(); ++iter ) {
       const Arc& arc = iter.key();
       const NodeId tail = arc.tail();
-      const NodeProperty<unsigned int>& anc_tail = ancestors[tail];
+      const NodeProperty<Size>& anc_tail = ancestors[tail];
       const NodeId head = arc.head();
-      const NodeProperty<unsigned int>& desc_head = descendants[head];
+      const NodeProperty<Size>& desc_head = descendants[head];
 
       // update the set of descendants
-      NodeProperty<unsigned int> set_to_del = desc_head;
+      NodeProperty<Size> set_to_del = desc_head;
       set_to_del.insert( head, 1 );
       __delWeightedSet( descendants[tail], set_to_del, 1 );
 
@@ -279,16 +279,16 @@ namespace gum {
       NodeId tail = arc.tail();
       NodeId head = arc.head();
 
-      const NodeProperty<unsigned int>& anc_tail = ancestors[tail];
+      const NodeProperty<Size>& anc_tail = ancestors[tail];
 
       if ( anc_tail.exists( head ) ) {
         return true;
       }
 
-      const NodeProperty<unsigned int>& desc_head = descendants[head];
+      const NodeProperty<Size>& desc_head = descendants[head];
 
       // update the set of ancestors
-      NodeProperty<unsigned int> set_to_add = anc_tail;
+      NodeProperty<Size> set_to_add = anc_tail;
       set_to_add.insert( tail, 1 );
       __addWeightedSet( ancestors[head], set_to_add, 1 );
 
@@ -327,11 +327,11 @@ namespace gum {
 
     // now we apply the addition of the arc as done in method
     // hasCycleFromModifications
-    const NodeProperty<unsigned int>& anc_tail = __ancestors[tail];
-    const NodeProperty<unsigned int>& desc_head = __descendants[head];
+    const NodeProperty<Size>& anc_tail = __ancestors[tail];
+    const NodeProperty<Size>& desc_head = __descendants[head];
 
     // update the set of ancestors
-    NodeProperty<unsigned int> set_to_add = anc_tail;
+    NodeProperty<Size> set_to_add = anc_tail;
     set_to_add.insert( tail, 1 );
     __addWeightedSet( __ancestors[head], set_to_add, 1 );
 
@@ -361,11 +361,11 @@ namespace gum {
 
     // we apply the deletion of the arc as done in method
     // hasCycleFromModifications
-    const NodeProperty<unsigned int>& anc_tail = __ancestors[tail];
-    const NodeProperty<unsigned int>& desc_head = __descendants[head];
+    const NodeProperty<Size>& anc_tail = __ancestors[tail];
+    const NodeProperty<Size>& desc_head = __descendants[head];
 
     // update the set of descendants
-    NodeProperty<unsigned int> set_to_del = desc_head;
+    NodeProperty<Size> set_to_del = desc_head;
     set_to_del.insert( head, 1 );
     __delWeightedSet( __descendants[tail], set_to_del, 1 );
 

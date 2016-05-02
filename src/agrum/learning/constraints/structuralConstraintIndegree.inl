@@ -131,7 +131,7 @@ namespace gum {
 
     /// sets the indegree for a given set of nodes
     INLINE void StructuralConstraintIndegree::setIndegree(
-        const NodeProperty<unsigned int>& max_indegree ) {
+        const NodeProperty<Size>& max_indegree ) {
       for ( const auto& degree : max_indegree ) {
         _Indegree__max_parents.set( degree.first, degree.second );
       }
@@ -139,7 +139,7 @@ namespace gum {
 
     /// resets the max indegree
     INLINE void
-    StructuralConstraintIndegree::setMaxIndegree( unsigned int max_indegree,
+    StructuralConstraintIndegree::setMaxIndegree( Size max_indegree,
                                                   bool update_all ) {
       if ( update_all ) {
         for ( auto& degree : _Indegree__max_parents ) {

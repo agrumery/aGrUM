@@ -75,11 +75,11 @@ namespace gum {
 
       /// constructor starting with an empty graph with a given number of nodes
       /** param order the partial order  */
-      StructuralConstraintSliceOrder( const NodeProperty<unsigned int>& order );
+      StructuralConstraintSliceOrder( const NodeProperty<NodeId>& order );
 
       /// constructor starting with a given graph
       StructuralConstraintSliceOrder( const DiGraph& graph,
-                                      const NodeProperty<unsigned int>& order );
+                                      const NodeProperty<NodeId>& order );
 
       /// copy constructor
       StructuralConstraintSliceOrder(
@@ -114,17 +114,17 @@ namespace gum {
       /// @{
 
       /// sets the time slices of all the nodes in the property
-      void setSliceOrder( const NodeProperty<unsigned int>& slice );
+      void setSliceOrder( const NodeProperty<NodeId>& slice );
 
       /// returns the current slice order
-      const NodeProperty<unsigned int>& sliceOrder() const ;
+      const NodeProperty<NodeId>& sliceOrder() const ;
 
       /// adds a new node in the slice order
-      void addNode( NodeId node, unsigned int slice );
+      void addNode( NodeId node, NodeId slice );
 
       /** @brief assign a given slice to all the nodes specified in the
        * partial order */
-      void setDefaultSlice( unsigned int slice );
+      void setDefaultSlice( NodeId slice );
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone( const DiGraph& graph );
@@ -229,7 +229,7 @@ namespace gum {
 
       protected:
       /// slices to which belong the nodes
-      NodeProperty<unsigned int> _SliceOrder__order;
+      NodeProperty<NodeId> _SliceOrder__order;
     };
 
   } /* namespace learning */

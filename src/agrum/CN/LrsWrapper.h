@@ -92,7 +92,7 @@ namespace gum {
     class LRSWrapper {
       private:
       /** @brief Shortcut for dynamic matrix using vectors. */
-      typedef typename std::vector<std::vector<GUM_SCALAR>> matrix;
+      using matrix= typename std::vector<std::vector<GUM_SCALAR>>;
 
       /** @brief Input matrix - either a V-representation or an
        * H-representation. */

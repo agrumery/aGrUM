@@ -56,12 +56,12 @@ namespace gum {
       StructuralConstraintIndegree();
 
       /// constructor starting with an empty graph with a given number of nodes
-      StructuralConstraintIndegree( unsigned int nb_nodes,
-                                    unsigned int max_indegree );
+      StructuralConstraintIndegree( Size nb_nodes,
+                                    Size max_indegree );
 
       /// constructor starting with a given graph
       StructuralConstraintIndegree( const DiGraph& graph,
-                                    unsigned int max_indegree );
+                                    Size max_indegree );
 
       /// copy constructor
       StructuralConstraintIndegree( const StructuralConstraintIndegree& from );
@@ -95,11 +95,11 @@ namespace gum {
       /// @{
 
       /// sets the default max indegree for all the nodes in the property
-      void setIndegree( const NodeProperty<unsigned int>& max_indegree );
+      void setIndegree( const NodeProperty<Size>& max_indegree );
 
       /** @brief resets the default max indegree and possibly updates the
        * indegree of all nodes */
-      void setMaxIndegree( unsigned int max_indegree,
+      void setMaxIndegree( Size max_indegree,
                            bool update_all_node = false );
 
       /// sets a new graph from which we will perform checkings
@@ -208,11 +208,11 @@ namespace gum {
 
       protected:
       /// the max number of parents per node
-      NodeProperty<unsigned int> _Indegree__max_parents;
+      NodeProperty<Size> _Indegree__max_parents;
 
       /// a default max indegree to assign for nodes without specified indegree
-      unsigned int _Indegree__max_indegree{
-          std::numeric_limits<unsigned int>::max()};
+      Size _Indegree__max_indegree{
+          std::numeric_limits<Size>::max()};
     };
 
   } /* namespace learning */

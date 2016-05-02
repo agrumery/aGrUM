@@ -80,7 +80,7 @@ namespace gum {
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames();
-      unsigned int id = 0;
+      Idx id = 0;
 
       for ( const auto& name : var_names ) {
         __name2nodeId.insert( const_cast<std::string&>( name ), id );
@@ -123,7 +123,7 @@ namespace gum {
         const unsigned long db_size = handler.DBSize();
 
         // determine the number of threads to use for the parsing
-        unsigned int max_nb_threads =
+        Idx max_nb_threads =
             std::max( 1UL,
                       std::min( db_size / __min_nb_rows_per_thread,
                                 (unsigned long)__max_threads_number ) );
@@ -145,7 +145,7 @@ namespace gum {
 #pragma omp parallel num_threads( max_nb_threads )
         {
           // use the ith handler
-          const unsigned int num_threads = getNumberOfRunningThreads();
+          const Size num_threads = getNumberOfRunningThreads();
           const int this_thread = getThreadNumber();
           DBHandler& the_handler = handlers[this_thread];
 
@@ -166,7 +166,7 @@ namespace gum {
 
               for ( auto iter = modalities.cbegin(); iter != modalities.cend();
                     ++iter ) {
-                const unsigned int i = iter.key();
+                const Idx i = iter.key();
 
                 switch ( row[i].type() ) {
                   case DBCell::EltType::STRING:
@@ -244,7 +244,7 @@ namespace gum {
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames();
-      unsigned int id = 0;
+      Idx id = 0;
 
       for ( const auto& name : var_names ) {
         __name2nodeId.insert( const_cast<std::string&>( name ), id );
@@ -269,7 +269,7 @@ namespace gum {
           score_database.__database.variableNames();
       const std::vector<std::string>& apriori_vars = __database.variableNames();
 
-      for ( unsigned int i = 0, size = score_vars.size(); i < size; ++i ) {
+      for ( Idx i = 0, size = score_vars.size(); i < size; ++i ) {
         if ( score_vars[i] != apriori_vars[i] ) {
           GUM_ERROR( InvalidArgument,
                      "some a priori variables do not match "
@@ -581,7 +581,7 @@ namespace gum {
 
       return *this;
     }
-    
+
     DatabaseVectInRAM readFile( const std::string& filename ) {
       // get the extension of the file
       int filename_size = filename.size();

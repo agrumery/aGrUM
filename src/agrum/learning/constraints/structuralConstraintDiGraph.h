@@ -57,7 +57,7 @@ namespace gum {
       StructuralConstraintDiGraph();
 
       /// constructor starting with an empty graph with a given number of nodes
-      StructuralConstraintDiGraph( unsigned int nb_nodes );
+      StructuralConstraintDiGraph( Size nb_nodes );
 
       /// constructor starting with a given graph
       StructuralConstraintDiGraph( const DiGraph& graph );
@@ -94,7 +94,7 @@ namespace gum {
       /// @{
 
       /// sets a new empty graph from which we will perform checkings
-      void setGraph( unsigned int nb_nodes );
+      void setGraph( Size nb_nodes );
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone( const DiGraph& graph );

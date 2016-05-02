@@ -74,14 +74,13 @@ namespace gum {
     /// # of errors
     Size warnings() { return __errors.warning_count; }
 
-    /// line of ith error or warning
-    unsigned int errLine( unsigned int i ) { return __errors.error( i ).line; }
+    Idx errLine(  Idx i ) { return __errors.error( i ).line; }
     /// col of ith error or warning
-    unsigned int errCol( unsigned int i ) { return __errors.error( i ).column; }
+    Idx errCol( Idx i ) { return __errors.error( i ).column; }
     /// type of ith error or warning
-    bool errIsError( unsigned int i ) { return __errors.error( i ).is_error; }
+    bool errIsError( Idx i ) { return __errors.error( i ).is_error; }
     /// message of ith error or warning
-    std::string errMsg( unsigned int i ) { return __errors.error( i ).msg; }
+    std::string errMsg( Idx i ) { return __errors.error( i ).msg; }
 
     /// send on std::cerr the list of errors
     void showElegantErrors( std::ostream& o = std::cerr ) {

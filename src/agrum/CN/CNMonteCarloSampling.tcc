@@ -261,8 +261,8 @@ namespace gum {
     template <typename GUM_SCALAR, class BNInferenceEngine>
     inline void
     CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__binaryRep(
-        std::vector<bool>& toFill, const unsigned int value ) const {
-      unsigned int n = value;
+        std::vector<bool>& toFill, const Idx value ) const {
+      Idx n = value;
       auto tfsize = toFill.size();
 
       // get bits of choosen_vertex
@@ -280,7 +280,7 @@ namespace gum {
 
       const auto cpt = &this->_credalNet->credalNet_currentCpt();
 
-      typedef std::vector<std::vector<std::vector<bool>>> dBN;
+      using dBN= std::vector<std::vector<std::vector<bool>>>;
 
       dBN sample;
 

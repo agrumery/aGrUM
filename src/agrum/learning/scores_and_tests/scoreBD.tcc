@@ -37,7 +37,7 @@ namespace gum {
     template <typename RowFilter>
     INLINE ScoreBD<IdSetAlloc, CountAlloc>::ScoreBD(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities,
+        const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         unsigned long min_range,
         unsigned long max_range )
@@ -128,7 +128,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    double ScoreBD<IdSetAlloc, CountAlloc>::score( unsigned int nodeset_index ) {
+    double ScoreBD<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -144,7 +144,7 @@ namespace gum {
       // get the counts for all the targets and the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const unsigned int targets_modal = N_ijk.size();
+      const Size targets_modal = N_ijk.size();
       double score = 0;
 
       // here, we distinguish nodesets with conditioning nodes from those
@@ -153,7 +153,7 @@ namespace gum {
         // get the count of the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const unsigned int conditioning_modal = N_ij.size();
+        const Idx conditioning_modal = N_ij.size();
 
         const std::vector<double, CountAlloc>& N_prime_ijk =
             this->_getAllApriori( nodeset_index );
@@ -165,11 +165,11 @@ namespace gum {
         //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk ) -
         //                             gammalog2 ( N'_ijk ) } ]
 
-        for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+        for ( Idx j = 0; j < conditioning_modal; ++j ) {
           score += __gammalog2( N_prime_ij[j] ) -
                    __gammalog2( N_ij[j] + N_prime_ij[j] );
         }
-        for ( unsigned int k = 0; k < targets_modal; ++k ) {
+        for ( Idx k = 0; k < targets_modal; ++k ) {
           score += __gammalog2( N_ijk[k] + N_prime_ijk[k] ) -
                    __gammalog2( N_prime_ijk[k] );
         }
@@ -183,7 +183,7 @@ namespace gum {
 
         double N = 0;
         double N_prime = 0;
-        for ( unsigned int k = 0; k < targets_modal; ++k ) {
+        for ( Idx k = 0; k < targets_modal; ++k ) {
           score += __gammalog2( N_ijk[k] + N_prime_ijk[k] ) -
                    __gammalog2( N_prime_ijk[k] );
           N += N_ijk[k];

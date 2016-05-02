@@ -810,7 +810,7 @@ namespace gum {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
-    if ( size == 0 ) size = std::max( 2UL, __inside.size() / 2 );
+    if ( size == 0 ) size = std::max( Size(2), __inside.size() / 2 );
 
     // create a new table
     HashTable<Key, NewKey, NewAlloc> table( size );

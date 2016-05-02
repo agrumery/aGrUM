@@ -56,7 +56,7 @@ namespace gum {
       StructuralConstraintDAG();
 
       /// constructor starting with an empty graph with a given number of nodes
-      StructuralConstraintDAG( unsigned int nb_nodes );
+      StructuralConstraintDAG( Size nb_nodes );
 
       /// constructor starting with a given graph
       StructuralConstraintDAG( const DAG& graph );
@@ -94,7 +94,7 @@ namespace gum {
       void setGraphAlone( const DiGraph& graph );
 
       /// sets a new empty graph from which we will perform checkings
-      void setGraphAlone( unsigned int nb_nodes );
+      void setGraphAlone( Size nb_nodes );
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added nothing is done. In
@@ -188,7 +188,7 @@ namespace gum {
       void setGraph( const DAG& graph );
 
       /// sets a new empty graph from which we will perform checkings
-      void setGraph( unsigned int nb_nodes );
+      void setGraph( Size nb_nodes );
 
 /// @}
 

@@ -56,7 +56,7 @@ namespace gum {
       StructuralConstraintUndiGraph();
 
       /// constructor starting with an empty graph with a given number of nodes
-      StructuralConstraintUndiGraph( unsigned int nb_nodes );
+      StructuralConstraintUndiGraph( Size nb_nodes );
 
       /// constructor starting with a given graph
       StructuralConstraintUndiGraph( const UndiGraph& graph );
@@ -94,7 +94,7 @@ namespace gum {
       /// @{
 
       /// sets a new empty graph from which we will perform checkings
-      void setGraph( unsigned int nb_nodes );
+      void setGraph( Size nb_nodes );
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone( const UndiGraph& graph );

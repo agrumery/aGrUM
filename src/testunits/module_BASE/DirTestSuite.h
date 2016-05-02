@@ -99,11 +99,11 @@ namespace gum_tests {
 
       gum::Directory d0( "../undossierauhasard/" );
       entries = d0.entries();
-      TS_ASSERT_EQUALS( entries.size(), (unsigned int)0 );
+      TS_ASSERT_EQUALS( entries.size(), (gum::Size)0 );
 
       gum::Directory d1( "./" );
       entries = d1.entries();
-      TS_ASSERT_EQUALS( entries.size(), (unsigned int)5 );
+      TS_ASSERT_EQUALS( entries.size(), (gum::Size)5 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
                  entries.end() );
@@ -116,7 +116,7 @@ namespace gum_tests {
 
       gum::Directory d2( "../dir/" );
       entries = d2.entries();
-      TS_ASSERT_EQUALS( entries.size(), (unsigned int)5 );
+      TS_ASSERT_EQUALS( entries.size(), (gum::Size)5 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
                  entries.end() );
@@ -129,7 +129,7 @@ namespace gum_tests {
 
       gum::Directory d3( "./dir1/../" );
       entries = d3.entries();
-      TS_ASSERT_EQUALS( entries.size(), (unsigned int)5 );
+      TS_ASSERT_EQUALS( entries.size(), (gum::Size)5 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
                  entries.end() );
@@ -142,7 +142,7 @@ namespace gum_tests {
 
       gum::Directory d4( "./dir1/" );
       entries = d4.entries();
-      TS_ASSERT_EQUALS( entries.size(), (unsigned int)3 );
+      TS_ASSERT_EQUALS( entries.size(), (gum::Size)3 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
                  entries.end() );
@@ -151,7 +151,7 @@ namespace gum_tests {
 
       gum::Directory d5( "../dir/dir2/" );
       entries = d5.entries();
-      TS_ASSERT_EQUALS( entries.size(), (unsigned int)4 );
+      TS_ASSERT_EQUALS( entries.size(), (gum::Size)4 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
                  entries.end() );
@@ -162,7 +162,7 @@ namespace gum_tests {
 
       gum::Directory d6( "./dir1/../dir3/" );
       entries = d6.entries();
-      TS_ASSERT_EQUALS( entries.size(), (unsigned int)5 );
+      TS_ASSERT_EQUALS( entries.size(), (gum::Size)5 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
                  entries.end() );

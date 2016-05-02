@@ -315,18 +315,18 @@ namespace gum {
   }
 
   // operator +=
-  INLINE Instantiation& Instantiation::operator+=( Id depl ) {
+  INLINE Instantiation& Instantiation::operator+=( Size depl ) {
     //@todo : this code should be improved !!!
-    for ( Id i = 0; i < depl; i++ )
+    for ( Idx i = 0; i < depl; i++ )
       inc();
 
     return *this;
   }
 
   // operator -=
-  INLINE Instantiation& Instantiation::operator-=( Id depl ) {
+  INLINE Instantiation& Instantiation::operator-=( Size depl ) {
     //@todo : this code should be improved !!!
-    for ( Id i = 0; i < depl; i++ )
+    for ( Idx i = 0; i < depl; i++ )
       dec();
 
     return *this;
@@ -335,9 +335,9 @@ namespace gum {
   // assign the (0,0,...) first value to the tuple of the Instantiation.
   INLINE void Instantiation::setFirst() {
     __overflow = false;
-    Idx s = nbrDim();
+    Size s = nbrDim();
 
-    for ( Size p = 0; p < s; ++p )
+    for ( Idx p = 0; p < s; ++p )
       __vals[p] = 0;
 
     if ( __master ) __master->setFirstNotification( *this );
@@ -346,9 +346,9 @@ namespace gum {
   // put the (D1-1,D2-1,...) last value in the Instantiation
   INLINE void Instantiation::setLast() {
     __overflow = false;
-    Idx s = nbrDim();
+    Size s = nbrDim();
 
-    for ( Size p = 0; p < s; ++p )
+    for ( Idx p = 0; p < s; ++p )
       __vals[p] = __vars[p]->domainSize() - 1;
 
     if ( __master ) __master->setLastNotification( *this );

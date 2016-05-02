@@ -69,8 +69,8 @@ namespace gum {
       if ( this->_weight != 0 ) {
         // put the weight into the countings for the targets
         // and the sum of the weight times the target for the conditioning nodes
-        const unsigned int size = this->_target_nodesets->size();
-        for ( unsigned int i = 0; i < size; ++i ) {
+        const Size size = this->_target_nodesets->size();
+        for ( Idx i = 0; i < size; ++i ) {
           if ( this->_target_nodesets->operator[]( i ) != nullptr ) {
             std::vector<double, CountAlloc>& apriori =
                 this->_apriori_counts[this->_target_nodesets->operator[]( i )

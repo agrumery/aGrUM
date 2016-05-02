@@ -26,8 +26,8 @@ namespace gum {
 
   /// returns a new distinct ID for each ScheduleOperation
   template <typename GUM_SCALAR>
-  Id ScheduleOperation<GUM_SCALAR>::__newId() {
-    static Id id = 0;
+  Idx ScheduleOperation<GUM_SCALAR>::__newId() {
+    static Idx id = 0;
     return ++id;
   }
 
@@ -75,7 +75,7 @@ namespace gum {
 
   /// returns the id of the operation
   template <typename GUM_SCALAR>
-  INLINE Id ScheduleOperation<GUM_SCALAR>::id() const {
+  INLINE Idx ScheduleOperation<GUM_SCALAR>::id() const {
     return __id;
   }
 

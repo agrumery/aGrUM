@@ -145,13 +145,13 @@ namespace gum {
     bool incomplete;
     std::vector<NodeId> adj;
     EdgeSet T_prime;
-    NodeProperty<unsigned int> R( __triangulated_graph.size() );
+    NodeProperty<Size> R( __triangulated_graph.size() );
 
     for ( const auto node : __triangulated_graph.nodes() )
       R.insert( node, 0 );
 
     // the FMINT loop
-    for ( unsigned int i = __added_fill_ins.size() - 1;
+    for ( auto i = __added_fill_ins.size() - 1;
           i < __added_fill_ins.size();
           --i ) {
       if ( __added_fill_ins[i].size() ) {
@@ -162,7 +162,7 @@ namespace gum {
         // when R[...] >= j (see the j in the loop below), this means that the
         // node
         // belongs to an extremal edge in R
-        for ( unsigned int k = 0; k < __elim_order.size(); ++k )
+        for ( Idx k = 0; k < __elim_order.size(); ++k )
           R[__elim_order[k]] =
               0;  // WARNING: do not replace R[__elim_order[k]] by
 
@@ -172,7 +172,7 @@ namespace gum {
         // apply MINT while some edges can possibly be deleted
         bool require_mint = true;
 
-        for ( unsigned int j = 0; require_mint; ++j ) {
+        for ( Idx j = 0; require_mint; ++j ) {
           // find T' (it is equal to the edges (v,w) of T such that
           // the intersection of adj(v,G) and adj(w,G) is complete and such that
           // v and/or w belongs to an extremal node in R
@@ -202,8 +202,8 @@ namespace gum {
                 adj.push_back( adjnode );
 
             // check if the intersection is complete
-            for ( unsigned int k = 0; k < adj.size() && !incomplete; ++k ) {
-              for ( unsigned int m = k + 1; m < adj.size(); ++m ) {
+            for ( Idx k = 0; k < adj.size() && !incomplete; ++k ) {
+              for ( Idx m = k + 1; m < adj.size(); ++m ) {
                 if ( !__triangulated_graph.existsEdge( adj[k], adj[m] ) ) {
                   incomplete = true;
                   break;
@@ -246,16 +246,16 @@ namespace gum {
     // elimination that does not require any edge addition
 
     // a structure storing the number of neighbours previously processed
-    PriorityQueue<NodeId, unsigned int, std::greater<unsigned int>>
-    numbered_neighbours( std::greater<unsigned int>(),
+    PriorityQueue<NodeId, Idx, std::greater<Idx>>
+    numbered_neighbours( std::greater<Idx>(),
                          __triangulated_graph.size() );
 
-    for ( unsigned int i = 0; i < __elim_order.size(); ++i )
+    for ( Idx i = 0; i < __elim_order.size(); ++i )
       numbered_neighbours.insert( __elim_order[i], 0 );
 
+    //@beforeMerging : it this correct, christophe ?
     // perform the maximum cardinality search
-    for ( unsigned int i = __elim_order.size() - 1; i < __elim_order.size();
-          --i ) {
+    for ( auto i = __elim_order.size() - 1; i < __elim_order.size(); --i ) {
       NodeId node = numbered_neighbours.pop();
       __elim_order[i] = node;
       __reverse_elim_order[node] = i;
@@ -271,7 +271,7 @@ namespace gum {
 
     // here the elimination order is ok. We now need to update the
     // __elim_cliques
-    for ( unsigned int i = 0; i < __elim_order.size(); ++i ) {
+    for ( Idx i = 0; i < __elim_order.size(); ++i ) {
       NodeSet& cliques =
           __elim_cliques.insert( __elim_order[i], NodeSet() ).second;
       cliques << __elim_order[i];
@@ -294,18 +294,18 @@ namespace gum {
     // create the nodes of the elimination tree
     __elim_tree.clear();
 
-    for ( unsigned int i = 0; i < __elim_order.size(); ++i )
+    for ( Idx i = 0; i < __elim_order.size(); ++i )
       __elim_tree.addNode( i, __elim_cliques[__elim_order[i]] );
 
     // create the edges of the elimination tree: join a node to the one in
     // its clique that is eliminated first
-    for ( unsigned int i = 0; i < __elim_order.size(); ++i ) {
+    for ( Idx i = 0; i < __elim_order.size(); ++i ) {
       NodeId clique_i_creator = __elim_order[i];
       const NodeSet& list_of_nodes = __elim_cliques[clique_i_creator];
-      unsigned int child = __original_graph->bound() + 1;
+      Idx child = __original_graph->bound() + 1;
 
       for ( const auto node : list_of_nodes ) {
-        unsigned int it_elim_step = __reverse_elim_order[node];
+        Idx it_elim_step = __reverse_elim_order[node];
 
         if ( ( node != clique_i_creator ) && ( child > it_elim_step ) )
           child = it_elim_step;
@@ -391,7 +391,7 @@ namespace gum {
     // compute the transitive closure of merged_cliques. This one will contain
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
     // Actually clique X will be inserted into clique Y.
-    for ( unsigned int i = 0; i < merged_cliques.size(); ++i ) {
+    for ( Idx i = 0; i < merged_cliques.size(); ++i ) {
       T_mpd_cliques[merged_cliques[i].tail()] =
           T_mpd_cliques[merged_cliques[i].head()];
     }
@@ -455,7 +455,7 @@ namespace gum {
         // for each clique, add the edges necessary to make it complete
         const NodeSet& clique = __junction_tree->clique( clik_id );
         std::vector<NodeId> clique_nodes( clique.size() );
-        unsigned int i = 0;
+        Idx i = 0;
 
         for ( const auto node : clique ) {
           clique_nodes[i] = node;
@@ -463,7 +463,7 @@ namespace gum {
         }
 
         for ( i = 0; i < clique_nodes.size(); ++i ) {
-          for ( unsigned int j = i + 1; j < clique_nodes.size(); ++j ) {
+          for ( Idx j = i + 1; j < clique_nodes.size(); ++j ) {
             try {
               __triangulated_graph.addEdge( clique_nodes[i], clique_nodes[j] );
             } catch ( DuplicateElement& ) {
@@ -535,7 +535,7 @@ namespace gum {
     // perform the triangulation
     NodeId removable_node = 0;
 
-    for ( unsigned int nb_elim = 0; tmp_graph.size() != 0; ++nb_elim ) {
+    for ( Idx nb_elim = 0; tmp_graph.size() != 0; ++nb_elim ) {
       removable_node = _elimination_sequence_strategy->nextNodeToEliminate();
 
       // when minimality is not required, i.e., we won't apply recursive
@@ -676,7 +676,7 @@ namespace gum {
         // for each clique, add the edges necessary to make it complete
         const NodeSet& clique = __junction_tree->clique( clik_id );
         std::vector<NodeId> clique_nodes( clique.size() );
-        unsigned int i = 0;
+        Idx i = 0;
 
         for ( const auto node : clique ) {
           clique_nodes[i] = node;
@@ -684,7 +684,7 @@ namespace gum {
         }
 
         for ( i = 0; i < clique_nodes.size(); ++i ) {
-          for ( unsigned int j = i + 1; j < clique_nodes.size(); ++j ) {
+          for ( Idx j = i + 1; j < clique_nodes.size(); ++j ) {
             Edge edge( clique_nodes[i], clique_nodes[j] );
 
             if ( !__original_graph->existsEdge( edge ) ) {
