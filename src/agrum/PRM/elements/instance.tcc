@@ -93,7 +93,7 @@ namespace gum {
             attr.addParent( get( node ) );
           } catch ( NotFound& ) {
 
-            auto elt = &(type().get( node ));
+            auto elt = &( type().get( node ) );
             auto sc = static_cast<SlotChain<GUM_SCALAR>*>( elt );
             const auto& instances = getInstances( sc->id() );
 

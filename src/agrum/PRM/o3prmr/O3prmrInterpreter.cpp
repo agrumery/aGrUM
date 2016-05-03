@@ -61,11 +61,11 @@ namespace gum {
       /// Destructor. Delete current context.
       O3prmrInterpreter::~O3prmrInterpreter() {
         delete m_context;
-        if ( m_inf ) {
-          delete m_inf;
-        }
         if ( m_bn ) {
           delete m_bn;
+        }
+        for (auto p: m_inf_map) {
+          delete p.second;
         }
         delete m_reader->prm();
         delete m_reader;
@@ -799,7 +799,9 @@ namespace gum {
         const typename PRMInference<double>::Chain& chain = command->chain;
 
         // Generate the inference engine if it doesn't exist.
-        if ( !m_inf ) generateInfEngine( *( command->system ) );
+        if ( !m_inf ) {
+          generateInfEngine( *( command->system ) );
+        }
 
         // Prevent from something
         if ( m_inf->hasEvidence( chain ) )
@@ -852,7 +854,11 @@ namespace gum {
       void O3prmrInterpreter::query( const QueryCommand<double>* command ) try {
         const std::string& query = command->value;
 
-        Potential<double> m;
+        if ( m_inf_map.exists( command->system ) ) {
+          m_inf = m_inf_map[command->system];
+        } else {
+          m_inf = nullptr;
+        }
 
         // Create inference engine if it has not been already created.
         if ( !m_inf ) {
@@ -868,6 +874,7 @@ namespace gum {
         Timer timer;
         timer.reset();
 
+        Potential<double> m;
         m_inf->marginal( command->chain, m );
 
         // Compute spent time
@@ -942,13 +949,6 @@ namespace gum {
           m_log << "# Building the inference engine... " << std::flush;
 
         //
-        if ( m_inf ) {
-          addWarning( "an inference engine has already been defined." );
-          delete m_inf;
-          m_inf = 0;
-        }
-
-        //
         if ( m_engine == "SVED" ) {
           m_inf = new SVED<double>( *( prm() ), sys );
 
@@ -963,7 +963,7 @@ namespace gum {
             addWarning( "unkown engine '" + m_engine + "', use GRD insteed." );
           }
 
-          BayesNetInference<double>* bn_inf = 0;
+          BayesNetInference<double>* bn_inf = nullptr;
           if ( m_bn ) {
             delete m_bn;
           }
@@ -983,8 +983,9 @@ namespace gum {
           grd_inf->setBNInference( bn_inf );
           m_inf = grd_inf;
 
-        } 
+        }
 
+        m_inf_map.insert( &sys, m_inf );
         if ( m_verbose ) m_log << "Finished." << std::endl;
       }
 
