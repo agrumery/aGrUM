@@ -315,21 +315,21 @@ void Scanner::Init() {
   percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 9;
-	noSym = 9;
+  	maxT = 10;
+	noSym = 10;
 	int i;
-	for (i = 48; i <= 57; ++i) start.set(i, 10);
-	for (i = 65; i <= 90; ++i) start.set(i, 9);
-	for (i = 95; i <= 95; ++i) start.set(i, 9);
-	for (i = 97; i <= 122; ++i) start.set(i, 9);
-	start.set(43, 11);
-	start.set(45, 12);
-	for (i = 42; i <= 42; ++i) start.set(i, 7);
-	for (i = 47; i <= 47; ++i) start.set(i, 7);
-	for (i = 60; i <= 60; ++i) start.set(i, 7);
-	for (i = 62; i <= 62; ++i) start.set(i, 7);
-	for (i = 94; i <= 94; ++i) start.set(i, 7);
-	start.set(10, 8);
+	for (i = 48; i <= 57; ++i) start.set(i, 7);
+	for (i = 65; i <= 90; ++i) start.set(i, 6);
+	for (i = 95; i <= 95; ++i) start.set(i, 6);
+	for (i = 97; i <= 122; ++i) start.set(i, 6);
+	start.set(43, 8);
+	start.set(45, 9);
+	for (i = 42; i <= 42; ++i) start.set(i, 4);
+	for (i = 47; i <= 47; ++i) start.set(i, 4);
+	for (i = 60; i <= 60; ++i) start.set(i, 4);
+	for (i = 62; i <= 62; ++i) start.set(i, 4);
+	for (i = 94; i <= 94; ++i) start.set(i, 4);
+	start.set(10, 5);
 	start.set(40, 13);
 	start.set(41, 14);
 	start.set(44, 15);
@@ -500,8 +500,8 @@ case_0:
 
     		case 1:
 			case_1:
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_1;}
-			else if (ch == L'.') {AddCh(); goto case_2;}
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_3;}
+			else if (ch == L'+' || ch == L'-') {AddCh(); goto case_2;}
 			else {goto case_0;}
 		case 2:
 			case_2:
@@ -509,53 +509,55 @@ case_0:
 			else {goto case_0;}
 		case 3:
 			case_3:
-			recEnd = pos; recKind = 2;
+			recEnd = pos; recKind = 3;
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_3;}
-			else if (ch == L'E' || ch == L'e') {AddCh(); goto case_4;}
-			else {t->kind = 2; break;}
+			else {t->kind = 3; break;}
 		case 4:
-			case_4:
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_6;}
-			else if (ch == L'+' || ch == L'-') {AddCh(); goto case_5;}
-			else {goto case_0;}
+			{t->kind = 4; break;}
 		case 5:
-			case_5:
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_6;}
-			else {goto case_0;}
+			{t->kind = 5; break;}
 		case 6:
 			case_6:
-			recEnd = pos; recKind = 2;
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_6;}
-			else {t->kind = 2; break;}
+			recEnd = pos; recKind = 6;
+			if (ch == L'.' || (ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_6;}
+			else {t->kind = 6; break;}
 		case 7:
-			{t->kind = 3; break;}
+			case_7:
+			recEnd = pos; recKind = 1;
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_7;}
+			else if (ch == L'.') {AddCh(); goto case_10;}
+			else if (ch == L'E' || ch == L'e') {AddCh(); goto case_1;}
+			else {t->kind = 1; break;}
 		case 8:
-			{t->kind = 4; break;}
+			recEnd = pos; recKind = 4;
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_11;}
+			else {t->kind = 4; break;}
 		case 9:
-			case_9:
-			recEnd = pos; recKind = 5;
-			if (ch == L'.' || (ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_9;}
-			else {t->kind = 5; break;}
+			recEnd = pos; recKind = 4;
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_11;}
+			else {t->kind = 4; break;}
 		case 10:
 			case_10:
-			recEnd = pos; recKind = 1;
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_10;}
-			else if (ch == L'.') {AddCh(); goto case_2;}
-			else {t->kind = 1; break;}
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_12;}
+			else {goto case_0;}
 		case 11:
-			recEnd = pos; recKind = 3;
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_1;}
-			else {t->kind = 3; break;}
+			case_11:
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_11;}
+			else if (ch == L'.') {AddCh(); goto case_10;}
+			else if (ch == L'E' || ch == L'e') {AddCh(); goto case_1;}
+			else {goto case_0;}
 		case 12:
-			recEnd = pos; recKind = 3;
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_1;}
-			else {t->kind = 3; break;}
+			case_12:
+			recEnd = pos; recKind = 2;
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_12;}
+			else if (ch == L'E' || ch == L'e') {AddCh(); goto case_1;}
+			else {t->kind = 2; break;}
 		case 13:
-			{t->kind = 6; break;}
-		case 14:
 			{t->kind = 7; break;}
-		case 15:
+		case 14:
 			{t->kind = 8; break;}
+		case 15:
+			{t->kind = 9; break;}
 
   }
 

@@ -298,11 +298,41 @@ namespace gum_tests {
       }
     }
 
-    void testScientificNotation() {
+    void testScientificNotation1() {
       try {
         // Arrange
         std::string eq = "3.72663E-06";
         double expected = 3.72663E-06;
+        gum::Formula formula( eq );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
+        // Assert
+        TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testScientificNotation2() {
+      try {
+        // Arrange
+        std::string eq = "1 - 1.0e-9";
+        double expected = 1 - 1e-9;
+        gum::Formula formula( eq );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
+        // Assert
+        TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testScientificNotation3() {
+      try {
+        // Arrange
+        std::string eq = "1 - 1e-9";
+        double expected = 1 - 1e-9;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );

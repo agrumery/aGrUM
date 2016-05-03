@@ -128,17 +128,22 @@ void Parser::expression() {
 			__formula->__push_number((double)coco_atof(t->val)); 
 			break;
 		}
+		case _scifloat: {
+			Get();
+			__formula->__push_number((double)coco_atof(t->val)); 
+			break;
+		}
 		case _operator: {
 			Get();
 			__formula->__push_operator(narrow(t->val)[0]); 
 			break;
 		}
-		case 6 /* "(" */: {
+		case 7 /* "(" */: {
 			Get();
 			__formula->__push_leftParenthesis(); 
 			break;
 		}
-		case 7 /* ")" */: {
+		case 8 /* ")" */: {
 			Get();
 			__formula->__push_rightParenthesis(); 
 			break;
@@ -148,12 +153,12 @@ void Parser::expression() {
 			__formula->__push_identifier(narrow(t->val)); 
 			break;
 		}
-		case 8 /* "," */: {
+		case 9 /* "," */: {
 			Get();
 			__formula->__push_comma(); 
 			break;
 		}
-		default: SynErr(10); break;
+		default: SynErr(11); break;
 		}
 }
 
@@ -256,7 +261,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 9;
+  	maxT = 10;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -270,9 +275,9 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[2][11] = {
-		{T,x,x,x, x,x,x,x, x,x,x},
-		{x,T,T,T, x,T,T,T, T,x,x}
+  	static bool set[2][12] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x},
+		{x,T,T,T, T,x,T,T, T,T,x,x}
 	};
 
 
@@ -301,14 +306,15 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
       			case 0: s = coco_string_create(L"EOF expected"); break;
 			case 1: s = coco_string_create(L"integer expected"); break;
 			case 2: s = coco_string_create(L"float expected"); break;
-			case 3: s = coco_string_create(L"operator expected"); break;
-			case 4: s = coco_string_create(L"eol expected"); break;
-			case 5: s = coco_string_create(L"ident expected"); break;
-			case 6: s = coco_string_create(L"\"(\" expected"); break;
-			case 7: s = coco_string_create(L"\")\" expected"); break;
-			case 8: s = coco_string_create(L"\",\" expected"); break;
-			case 9: s = coco_string_create(L"??? expected"); break;
-			case 10: s = coco_string_create(L"invalid expression"); break;
+			case 3: s = coco_string_create(L"scifloat expected"); break;
+			case 4: s = coco_string_create(L"operator expected"); break;
+			case 5: s = coco_string_create(L"eol expected"); break;
+			case 6: s = coco_string_create(L"ident expected"); break;
+			case 7: s = coco_string_create(L"\"(\" expected"); break;
+			case 8: s = coco_string_create(L"\")\" expected"); break;
+			case 9: s = coco_string_create(L"\",\" expected"); break;
+			case 10: s = coco_string_create(L"??? expected"); break;
+			case 11: s = coco_string_create(L"invalid expression"); break;
 
 
     default: {
