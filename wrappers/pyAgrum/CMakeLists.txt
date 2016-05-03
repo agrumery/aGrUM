@@ -14,7 +14,7 @@ if (FOR_PYTHON2) # we use 3 by default
 	set(PYTHON_EXECUTABLE "python.exe")
   else(WIN32)
 	set(PYTHON_EXECUTABLE "python2")
-	find_package(PythonInterp REQUIRED)
+	find_package(PythonInterp 2 REQUIRED)
   endif(WIN32)
 else (FOR_PYTHON2)
   # hackish
