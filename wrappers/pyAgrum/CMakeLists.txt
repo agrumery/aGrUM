@@ -21,10 +21,13 @@ else (FOR_PYTHON2)
   if(WIN32)
 	set(PYTHON_EXECUTABLE "python.exe")
   else(WIN32)
-	set(PYTHON_EXECUTABLE "python3")
+    set(PYTHON_EXECUTABLE "python3")
 	find_package(PythonInterp 3 REQUIRED)
   endif(WIN32)
 endif (FOR_PYTHON2)
+
+find_program(FULL_PYTHON_EXECUTABLE NAMES ${PYTHON_EXECUTABLE})
+set(PYTHON_EXECUTABLE ${FULL_PYTHON_EXECUTABLE})
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
@@ -66,7 +69,9 @@ execute_process(
   set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libPython${PYTHON_COMPLETE_VERSION}.dylib")
   set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
  else()
-   find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
+  get_filename_component(_Python_PREFIX ${PYTHON_EXECUTABLE} PATH)
+  get_filename_component(_Python_PREFIX ${_Python_PREFIX} PATH)
+  find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
 endif()
 
 if (${PYTHON_VERSION} EQUAL "2")

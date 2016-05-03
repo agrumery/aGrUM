@@ -104,9 +104,6 @@ namespace gum {
     GUM_CONS_MOV( MultiDimDecorator );
 
     if ( this != &from ) {
-      if ( _content != nullptr ) {
-        delete _content;
-      }
       _content = from._content;
       from._content = nullptr;
     }
