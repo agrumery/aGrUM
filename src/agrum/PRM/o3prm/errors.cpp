@@ -334,6 +334,15 @@ namespace gum {
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
 
+      void O3PRM_CLASS_WRONG_PARENT( const O3Label& prnt,
+                                     ErrorsContainer& errors ) {
+        const auto& pos = prnt.position();
+        auto msg = std::stringstream();
+        msg << "Error : "
+            << "Illegal parent " << prnt;
+        errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
+      }
+
       void O3PRM_CLASS_WRONG_PARENT_TYPE( const O3Label& prnt,
                                           const std::string& expected,
                                           const std::string& found,
@@ -565,6 +574,7 @@ namespace gum {
             << "Invalid left expression " << val.label();
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }
+
       void O3PRM_SYSTEM_INSTANCE_NOT_FOUND( const O3Label& i,
                                             ErrorsContainer& errors ) {
         const auto& pos = i.position();

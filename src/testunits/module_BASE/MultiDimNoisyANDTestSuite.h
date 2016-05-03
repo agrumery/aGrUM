@@ -28,10 +28,6 @@
 #include <agrum/variables/rangeVariable.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/GibbsInference.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
 
 namespace gum_tests {
 
@@ -186,82 +182,6 @@ namespace gum_tests {
       for ( i.setFirst(); !i.end(); ++i, j++ ) {
         TS_ASSERT_DELTA( q[i], witness[j], 1e-6 );
       }
-    }
-
-    void testNoisyANDInBN() {
-      gum::BayesNet<float> bn;
-
-      gum::LabelizedVariable cold( "Cold", "", 2 );
-      gum::LabelizedVariable flu( "Flu", "", 2 );
-      gum::LabelizedVariable malaria( "Malaria", "", 2 );
-      gum::LabelizedVariable fever( "Fever", "", 2 );
-      gum::LabelizedVariable oneMore( "OneMore", "", 2 );
-      gum::LabelizedVariable oneMoreParent1( "OneMoreParent1", "", 2 );
-      gum::LabelizedVariable oneMoreParent2( "OneMoreParent2", "", 2 );
-
-      gum::NodeId idCold = bn.add( cold );
-      gum::NodeId idFlu = bn.add( flu );
-      gum::NodeId idMalaria = bn.add( malaria );
-      gum::NodeId idFever = 0;
-      TS_ASSERT_THROWS( idFever = bn.addNoisyAND( fever, 0.0f ),
-                        gum::InvalidArgument );
-      TS_GUM_ASSERT_THROWS_NOTHING( idFever = bn.addNoisyAND( fever, 0.999f ) );
-      gum::NodeId idOneMore = bn.add( oneMore );
-      gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
-      gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
-
-      bn.addWeightedArc( idMalaria, idFever, 0.9f );
-      bn.addWeightedArc( idFlu, idFever, 0.8f );
-      bn.addWeightedArc( idCold, idFever, 0.4f );
-
-      TS_ASSERT_THROWS( bn.addWeightedArc( idMalaria, idCold, 0.8f ),
-                        gum::InvalidArc );
-
-      const gum::Potential<float>& pOneMoreParent1 = bn.cpt( idOneMoreParent1 );
-      // FILLING PARAMS
-      pOneMoreParent1.fillWith( {0.2f, 0.8f} );
-
-      const gum::Potential<float>& pOneMoreParent2 = bn.cpt( idOneMoreParent2 );
-      // FILLING PARAMS
-      pOneMoreParent2.fillWith( {0.3f, 0.7f} );
-
-      bn.addArc( idOneMoreParent1, idOneMore );
-      bn.addArc( idFever, idOneMore );
-      bn.addArc( idOneMoreParent2, idOneMore );
-      const gum::Potential<float>& pOneMore = bn.cpt( idOneMore );
-      // FILLING PARAMS
-      pOneMore.fillWith(  // clang-format of
-                         {0.1f,0.9f,
-                          0.8f,0.2f,
-                          0.1f,0.9f,
-                          0.8f,0.2f,
-                          0.1f,0.9f,
-                          0.8f,0.2f,
-                          0.1f,0.9f,
-                          0.8f,0.2f});  // clang-format on
-
-      const gum::Potential<float>& p = bn.cpt( idFever );
-
-      gum::Instantiation i( p );
-      float witness[] =  // clang-format of
-                        {0.988012f,0.011988f,
-                         0.892108f,0.107892f,
-                         0.952048f,0.047952f,
-                         0.568432f,0.431568f,
-                         0.992008f,0.007992f,
-                         0.928072f,0.071928f,
-                         0.968032f,0.031968f,
-                         0.712288f,0.287712f}; // clang-format on
-
-      int j = 0;
-
-      for ( i.setFirst(); !i.end(); ++i, j++ ) {
-        TS_ASSERT_DELTA( p[i], witness[j], 1e-6 );
-      }
-
-      gum::LazyPropagation<float> inf_LazyProp( bn );
-
-      inf_LazyProp.makeInference();
     }
   };
 }

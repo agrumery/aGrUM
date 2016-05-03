@@ -275,7 +275,7 @@ O3AttributeList& elts);
 O3Label& name,
 O3Label& superLabel,
 O3InterfaceElementList& elts);
-	void PRM_INTERFACE(O3Position& pos);
+	void INTERFACE(O3Position& pos);
 	void INTERFACE_BODY(O3InterfaceElementList& elts);
 	void TYPE_DECLARATION(O3Position& pos, O3Label& name, O3Label& super, LabelMap& labels);
 	void INT_TYPE_DECLARATION(O3Position& pos, O3Label& name, O3Integer& start, O3Integer& end);
@@ -287,6 +287,9 @@ O3InterfaceElementList& elts);
 	void REAL(O3Position& pos);
 	void FLOAT_LIST(O3FloatList& values);
 	void FLOAT_OR_INT(O3Float& f);
+	void TYPE_LABEL(O3Label& l);
+	void INTEGER_AS_LABEL(O3Label& l);
+	void FLOAT_AS_LABEL(O3Label& l);
 	void SYSTEM_DECLARATION(O3System& s);
 	void SYSTEM_BODY(O3System& sys);
 	void ARRAY(O3Integer& size);
@@ -295,7 +298,6 @@ O3InterfaceElementList& elts);
 	void INTEGER_AS_FLOAT(O3Float& f);
 	void IMPORT_BODY();
 	void IMPORT_DECLARATION(O3Import& import);
-	void INTEGER_AS_LABEL(O3Label& l);
 	void LABEL_OR_INT(O3Label& l);
 	void CAST(std::stringstream& s);
 	void LINK(std::stringstream& s);

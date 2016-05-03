@@ -137,7 +137,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 17| Error : label expected" << std::endl;
+      msg << "|1 col 17| Error : invalid declaration" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT(!prm.isType( "t_state" ) );
@@ -188,7 +188,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       auto msg = std::stringstream();
-      msg << "|1 col 18| Error : label expected" << std::endl;
+      msg << "|1 col 18| Error : invalid declaration" << std::endl;
       TS_ASSERT_EQUALS( output.str(), msg.str() );
       TS_ASSERT_EQUALS( prm.types().size(), (gum::Size)1 );
       TS_ASSERT(!prm.isType( "t_state" ) );

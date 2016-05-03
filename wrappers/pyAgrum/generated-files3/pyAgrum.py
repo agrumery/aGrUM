@@ -4044,9 +4044,12 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_entropy(self)
 
 
-    def fillWith(self, v: 'Vector_double') -> "gum::Potential< double > const &":
-        """fillWith(Potential_double self, Vector_double v) -> Potential_double"""
-        val = _pyAgrum.Potential_double_fillWith(self, v)
+    def fillWith(self, *args) -> "gum::Potential< double > const &":
+        """
+        fillWith(Potential_double self, Vector_double v) -> Potential_double
+        fillWith(Potential_double self, double const & v) -> Potential_double
+        """
+        val = _pyAgrum.Potential_double_fillWith(self, *args)
 
         self._notSync=True
         return self
@@ -4722,9 +4725,12 @@ class BayesNet_double(IBayesNet_double):
         except __builtin__.Exception:
             self.this = this
 
-    def cpt(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
-        """cpt(BayesNet_double self, gum::NodeId varId) -> Potential_double"""
-        val = _pyAgrum.BayesNet_double_cpt(self, varId)
+    def cpt(self, *args) -> "gum::Potential< double > const &":
+        """
+        cpt(BayesNet_double self, gum::NodeId varId) -> Potential_double
+        cpt(BayesNet_double self, std::string const & name) -> Potential_double
+        """
+        val = _pyAgrum.BayesNet_double_cpt(self, *args)
 
         val.__fill_distrib__()
 
@@ -4750,19 +4756,26 @@ class BayesNet_double(IBayesNet_double):
     def erase(self, *args) -> "void":
         """
         erase(BayesNet_double self, gum::NodeId id)
+        erase(BayesNet_double self, std::string const & name)
         erase(BayesNet_double self, DiscreteVariable var)
         """
         return _pyAgrum.BayesNet_double_erase(self, *args)
 
 
-    def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
-        """variable(BayesNet_double self, gum::NodeId id) -> DiscreteVariable"""
-        return _pyAgrum.BayesNet_double_variable(self, id)
+    def variable(self, *args) -> "gum::DiscreteVariable const &":
+        """
+        variable(BayesNet_double self, gum::NodeId id) -> DiscreteVariable
+        variable(BayesNet_double self, std::string const & name) -> DiscreteVariable
+        """
+        return _pyAgrum.BayesNet_double_variable(self, *args)
 
 
-    def changeVariableName(self, id: 'gum::NodeId', new_name: 'std::string const &') -> "void":
-        """changeVariableName(BayesNet_double self, gum::NodeId id, std::string const & new_name)"""
-        return _pyAgrum.BayesNet_double_changeVariableName(self, id, new_name)
+    def changeVariableName(self, *args) -> "void":
+        """
+        changeVariableName(BayesNet_double self, gum::NodeId id, std::string const & new_name)
+        changeVariableName(BayesNet_double self, std::string const & name, std::string const & new_name)
+        """
+        return _pyAgrum.BayesNet_double_changeVariableName(self, *args)
 
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
@@ -4780,15 +4793,19 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_variableFromName(self, name)
 
 
-    def addArc(self, tail: 'gum::NodeId', head: 'gum::NodeId') -> "void":
-        """addArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)"""
-        return _pyAgrum.BayesNet_double_addArc(self, tail, head)
+    def addArc(self, *args) -> "void":
+        """
+        addArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)
+        addArc(BayesNet_double self, std::string const & tail, std::string const & head)
+        """
+        return _pyAgrum.BayesNet_double_addArc(self, *args)
 
 
     def eraseArc(self, *args) -> "void":
         """
         eraseArc(BayesNet_double self, Arc arc)
         eraseArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)
+        eraseArc(BayesNet_double self, std::string const & tail, std::string const & head)
         """
         return _pyAgrum.BayesNet_double_eraseArc(self, *args)
 
@@ -4806,6 +4823,7 @@ class BayesNet_double(IBayesNet_double):
     def reverseArc(self, *args) -> "void":
         """
         reverseArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)
+        reverseArc(BayesNet_double self, std::string const & tail, std::string const & head)
         reverseArc(BayesNet_double self, Arc arc)
         """
         return _pyAgrum.BayesNet_double_reverseArc(self, *args)
@@ -4915,14 +4933,20 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_generateCPTs(self)
 
 
-    def generateCPT(self, node: 'gum::NodeId') -> "void":
-        """generateCPT(BayesNet_double self, gum::NodeId node)"""
-        return _pyAgrum.BayesNet_double_generateCPT(self, node)
+    def generateCPT(self, *args) -> "void":
+        """
+        generateCPT(BayesNet_double self, gum::NodeId node)
+        generateCPT(BayesNet_double self, std::string const & name)
+        """
+        return _pyAgrum.BayesNet_double_generateCPT(self, *args)
 
 
-    def changePotential(self, id: 'gum::NodeId', newPot: 'Potential_double') -> "void":
-        """changePotential(BayesNet_double self, gum::NodeId id, Potential_double newPot)"""
-        return _pyAgrum.BayesNet_double_changePotential(self, id, newPot)
+    def changePotential(self, *args) -> "void":
+        """
+        changePotential(BayesNet_double self, gum::NodeId id, Potential_double newPot)
+        changePotential(BayesNet_double self, std::string const & name, Potential_double newPot)
+        """
+        return _pyAgrum.BayesNet_double_changePotential(self, *args)
 
 
     def dag(self) -> "gum::DAG const &":

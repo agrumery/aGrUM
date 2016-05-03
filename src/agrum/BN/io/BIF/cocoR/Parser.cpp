@@ -345,7 +345,7 @@ void Parser::ASSIGNATION(const std::string& var,const std::vector<std::string>& 
 		Expect(14 /* ";" */);
 }
 
-void Parser::LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, unsigned int num_label ) {
+void Parser::LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, Idx num_label ) {
 		std::string name_of_label;
 		
 		if (la->kind == _ident || la->kind == _integer) {

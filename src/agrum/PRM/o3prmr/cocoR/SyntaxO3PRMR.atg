@@ -99,6 +99,7 @@ Observe =   (. std::string left_value, right_value; .)
           IdentArray<left_value> '='(
             word (. right_value = gum::narrow(t->val); .)
             | float (. right_value = std::to_string(coco_atof(t->val)); .)
+            | integer (. right_value = std::to_string(coco_atoi(t->val)); .)
           )
           ';' (. __currentSession->addObserve(t->line, left_value, right_value); .) .
 

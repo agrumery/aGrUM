@@ -197,6 +197,9 @@ void Parser::Observe() {
 		} else if (la->kind == _float) {
 			Get();
 			right_value = std::to_string(coco_atof(t->val)); 
+		} else if (la->kind == _integer) {
+			Get();
+			right_value = std::to_string(coco_atoi(t->val)); 
 		} else SynErr(35);
 		Expect(15 /* ";" */);
 		__currentSession->addObserve(t->line, left_value, right_value); 

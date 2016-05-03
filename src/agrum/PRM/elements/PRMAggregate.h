@@ -163,6 +163,16 @@ namespace gum {
        */
       Idx label() const;
 
+      /**
+       * @brief Set the aggregator's label.
+       */
+      void setLabel(Idx idx);
+
+      /**
+       * @brief Returns true if the label is defined.
+       */
+      bool hasLabel() const;
+
       /// See gum::PRMClassElement::_addParent().
       virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
 
@@ -177,16 +187,14 @@ namespace gum {
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
-       * PRMAttribute,
-       *        so this will raise an OperationNotAllowed exception.
+       * PRMAttribute, so this will raise an OperationNotAllowed exception.
        * See gum::PRMClassElement::cpf().
        */
       virtual Potential<GUM_SCALAR>& cpf();
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
-       * PRMAttribute,
-       *        so this will raise an OperationNotAllowed exception.
+       * PRMAttribute, so this will raise an OperationNotAllowed exception.
        * See gum::PRMClassElement::cpf().
        */
       virtual const Potential<GUM_SCALAR>& cpf() const;

@@ -25,10 +25,6 @@
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/variables/rangeVariable.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/GibbsInference.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
 
 #include <agrum/multidim/aggregators/min.h>
 #include <agrum/multidim/aggregators/max.h>
@@ -432,92 +428,5 @@ namespace gum_tests {
       TS_ASSERT_THROWS( p.fill( 0 ), gum::OperationNotAllowed );
     }
 
-    void testBNwithMin() {
-      gum::List<gum::NodeId> idList;
-      gum::BayesNet<double> bn;
-
-      int nbr = 6;  // nbr=nbr of parents
-
-      std::string str;
-
-      for ( int i = 0; i <= nbr; i++ ) {
-        str = "";
-        std::stringstream ss;
-        ss << "var" << ( i + 1 );
-        ss >> str;
-
-        gum::LabelizedVariable var( str, str, 4 );
-
-        if ( i == 0 ) {
-          idList.insert( bn.add( var, new gum::aggregator::Min<double>() ) );
-        } else {
-          idList.insert( bn.add( var ) );
-          bn.addArc( idList[i], idList[0] );
-          bn.cpt( idList[i] ).fillWith( {0.1, 0.1, 0.1, 0.7} );
-
-          gum::Instantiation i( bn.cpt( idList[0] ) );
-
-          gum::Idx res;
-
-          for ( i.setFirst(); !i.end(); ++i ) {
-            res = (gum::Idx)10000;  // clearly arbitrary chosen
-
-            for ( gum::Idx j = 1; j < i.nbrDim(); j++ ) {
-              if ( res > i.val( j ) ) res = i.val( j );
-            }
-
-            TS_ASSERT_EQUALS( bn.cpt( idList[0] )[i],
-                              ( res == i.val( (gum::Idx)0 ) ) ? (float)1
-                                                              : (float)0 );
-          }
-        }
-      }
-
-      {
-        gum::ShaferShenoyInference<double> inf( bn );
-
-        try {
-          // Testing the inference
-          inf.makeInference();
-        } catch ( gum::Exception e ) {
-          TS_ASSERT( false );
-        }
-
-        try {
-          TS_ASSERT_EQUALS(
-              inf.posterior( idList[0] ).toString(),
-              "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-              "0.144495 /<var1:3> :: 0.117649" );
-          TS_ASSERT_EQUALS( inf.posterior( idList[1] ).toString(),
-                            "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
-                            "/<var2:3> :: 0.7" );
-        } catch ( gum::Exception e ) {
-          TS_ASSERT( false );
-        }
-      }
-
-      {
-        gum::LazyPropagation<double> inf( bn );
-
-        try {
-          // Testing the inference
-          inf.makeInference();
-        } catch ( gum::Exception e ) {
-          TS_ASSERT( false );
-        }
-
-        try {
-          TS_ASSERT_EQUALS(
-              inf.posterior( idList[0] ).toString(),
-              "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-              "0.144495 /<var1:3> :: 0.117649" );
-          TS_ASSERT_EQUALS( inf.posterior( idList[1] ).toString(),
-                            "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
-                            "/<var2:3> :: 0.7" );
-        } catch ( gum::Exception e ) {
-          TS_ASSERT( false );
-        }
-      }
-    }
   };
 }

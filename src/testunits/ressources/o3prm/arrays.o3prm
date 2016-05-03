@@ -1,0 +1,36 @@
+class A {
+  boolean X {[0.5, 0.5]};
+}
+
+class B {
+  A myRef;
+}
+
+system sys1 {
+  A[2] a;
+  B[2] b;
+
+  b[0].myRef = a[0];
+  b[1].myRef = a[1];
+}
+
+system sys2 {
+  A a;
+  A aa;
+
+  B[2] b;
+
+  b[0].myRef = a;
+  b[1].myRef = aa;
+}
+
+system sys3 {
+  A[2] a;
+
+  B b;
+  B bb;
+
+  b.myRef = a[0];
+  bb.myRef = a[1];
+}
+

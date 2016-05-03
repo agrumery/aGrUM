@@ -2390,6 +2390,32 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
+    void testAggregateWithError() {
+      // Arrange
+      auto input = std::stringstream();
+      input << "int(0,10) state;" << std::endl;
+      input << "interface Foo { " << std::endl
+            << "state state;" << std::endl
+            << "}" << std::endl;
+      input << "class Bar { " << std::endl
+            << "Foo[] myFoos;" << std::endl
+            << "Foo[] myBoos;" << std::endl
+            << "state isWorking = count([myFoos, myBoos.state], 5);"
+            << std::endl
+            << "}";
+      auto output = std::stringstream();
+      gum::prm::PRM<double> prm;
+      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      std::string line;
+      std::getline( output, line );
+      auto msg = std::stringstream();
+      msg << "|8 col 26| Error : Illegal parent myFoos";
+      TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
   };
 
 }  // namespace gum_tests

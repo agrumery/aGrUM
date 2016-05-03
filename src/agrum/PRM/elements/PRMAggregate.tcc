@@ -110,6 +110,20 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE void PRMAggregate<GUM_SCALAR>::setLabel( Idx idx ) {
+      if ( __label!=nullptr ) {
+        ( *__label ) = idx;
+      } else {
+        __label = new Idx( idx );
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE bool PRMAggregate<GUM_SCALAR>::hasLabel() const {
+      return __label != nullptr;
+    }
+
+    template <typename GUM_SCALAR>
     INLINE PRMType<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::type() {
       return *__type;
     }

@@ -156,30 +156,28 @@ namespace gum {
         for ( auto& ass : sys.assignments() ) {
           if ( real_sys.isArray( ass.leftInstance().label() ) ) {
 
-            if ( ass.index().value() == -1 ) {
+            auto leftInstance = ass.leftInstance().label();
+            auto leftReference = ass.leftReference().label();
+            auto rightInstance = ass.rightInstance().label();
 
-              factory.setReferenceSlot( ass.leftInstance().label(),
-                                        ass.leftReference().label(),
-                                        ass.rightInstance().label() );
-            } else {
+            if ( ass.leftIndex().value() > -1 &&
+                 real_sys.isArray( leftInstance ) ) {
 
               auto sBuff = std::stringstream();
-
-              if ( real_sys.isArray( ass.leftInstance().label() ) ) {
-                sBuff << ass.leftInstance().label() << "["
-                      << ass.index().value() << "]";
-              } else {
-                sBuff << ass.leftInstance().label();
-              }
-
-              factory.setReferenceSlot( sBuff.str(),
-                                        ass.leftReference().label(),
-                                        ass.rightInstance().label() );
+              sBuff << leftInstance << "[" << ass.leftIndex().value() << "]";
+              leftInstance = sBuff.str();
             }
-          } else {
-            factory.setReferenceSlot( ass.leftInstance().label(),
-                                      ass.leftReference().label(),
-                                      ass.rightInstance().label() );
+
+            if ( ass.rightIndex().value() > -1 &&
+                 real_sys.isArray( rightInstance ) ) {
+
+              auto sBuff = std::stringstream();
+              sBuff << rightInstance << "[" << ass.rightIndex().value() << "]";
+              rightInstance = sBuff.str();
+            }
+
+            factory.setReferenceSlot(
+                leftInstance, leftReference, rightInstance );
           }
         }
       }
@@ -190,34 +188,28 @@ namespace gum {
         const auto& real_sys = __prm->getSystem( sys.name().label() );
         for ( auto& inc : sys.increments() ) {
 
-          auto sBuff = std::stringstream();
-          if ( real_sys.isArray( inc.leftInstance().label() ) ) {
-            if ( inc.index().value() == -1 ) {
+          auto leftInstance = inc.leftInstance().label();
+          auto leftReference = inc.leftReference().label();
+          auto rightInstance = inc.rightInstance().label();
 
-              factory.setReferenceSlot( inc.leftInstance().label(),
-                                        inc.leftReference().label(),
-                                        inc.rightInstance().label() );
+          if ( inc.leftIndex().value() > -1 &&
+               real_sys.isArray( leftInstance ) ) {
 
-            } else {
-
-              auto sBuff = std::stringstream();
-
-              if ( real_sys.isArray( inc.leftInstance().label() ) ) {
-                sBuff << inc.leftInstance().label() << "["
-                      << inc.index().value() << "]";
-              } else {
-                sBuff << inc.leftInstance().label();
-              }
-
-              factory.setReferenceSlot( sBuff.str(),
-                                        inc.leftReference().label(),
-                                        inc.rightInstance().label() );
-            }
-          } else {
-            factory.setReferenceSlot( inc.leftInstance().label(),
-                                      inc.leftReference().label(),
-                                      inc.rightInstance().label() );
+            auto sBuff = std::stringstream();
+            sBuff << leftInstance << "[" << inc.leftIndex().value() << "]";
+            leftInstance = sBuff.str();
           }
+
+          if ( inc.rightIndex().value() > -1 &&
+               real_sys.isArray( rightInstance ) ) {
+
+            auto sBuff = std::stringstream();
+            sBuff << rightInstance << "[" << inc.rightIndex().value() << "]";
+            rightInstance = sBuff.str();
+          }
+
+          factory.setReferenceSlot(
+              leftInstance, leftReference, rightInstance );
         }
       }
 
@@ -238,13 +230,13 @@ namespace gum {
 
         for ( auto& i : sys.instances() ) {
 
-          if ( ! __solver->resolveClass( i.type() ) ) {
+          if ( !__solver->resolveClass( i.type() ) ) {
             return false;
           }
 
           const auto& type = __prm->getClass( i.type().label() );
           if ( type.parameters().size() > 0 ) {
-            if ( ! __checkParameters( type, i ) ) {
+            if ( !__checkParameters( type, i ) ) {
               return false;
             }
           }
@@ -266,12 +258,12 @@ namespace gum {
 
         for ( const auto& param : inst.parameters() ) {
 
-          if ( ! type.exists( param.name().label() ) ) {
+          if ( !type.exists( param.name().label() ) ) {
             O3PRM_SYSTEM_PARAMETER_NOT_FOUND( param, *__errors );
             return false;
           }
 
-          if ( ! PRMClassElement<GUM_SCALAR>::isParameter(
+          if ( !PRMClassElement<GUM_SCALAR>::isParameter(
                    type.get( param.name().label() ) ) ) {
             O3PRM_SYSTEM_NOT_A_PARAMETER( param, *__errors );
             return false;
@@ -283,7 +275,7 @@ namespace gum {
           switch ( type_param.valueType() ) {
 
             case PRMParameter<GUM_SCALAR>::ParameterType::INT: {
-              if ( ! param.isInteger() ) {
+              if ( !param.isInteger() ) {
                 O3PRM_SYSTEM_PARAMETER_NOT_INT( param, *__errors );
                 return false;
               }
@@ -310,12 +302,12 @@ namespace gum {
 
         for ( auto& ass : sys.assignments() ) {
 
-          if ( ass.leftInstance().label() == ass.leftReference().label() ) {
-            O3PRM_SYSTEM_INVALID_LEFT_VALUE( ass.leftInstance(), *__errors );
-            return false;
-          }
+          // if ( ass.leftInstance().label() == ass.leftReference().label() ) {
+          //  O3PRM_SYSTEM_INVALID_LEFT_VALUE( ass.leftInstance(), *__errors );
+          //  return false;
+          //}
 
-          if ( ! __nameMap.exists( ass.leftInstance().label() ) ) {
+          if ( !__nameMap.exists( ass.leftInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.leftInstance(), *__errors );
             return false;
           }
@@ -325,8 +317,8 @@ namespace gum {
           const auto& ref = ass.leftReference().label();
 
           if ( !( type.exists( ass.leftReference().label() ) &&
-                    PRMClassElement<GUM_SCALAR>::isReferenceSlot(
-                        type.get( ref ) ) ) ) {
+                  PRMClassElement<GUM_SCALAR>::isReferenceSlot(
+                      type.get( ref ) ) ) ) {
 
             O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
                 ass.leftReference(), type.name(), *__errors );
@@ -334,7 +326,13 @@ namespace gum {
           }
 
           const auto& real_ref =
-              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
+                  type.get( ref ) );
+
+          if ( !__nameMap.exists( ass.rightInstance().label() ) ) {
+            O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.rightInstance(), *__errors );
+            return false;
+          }
 
           if ( real_ref.isArray() &&
                __nameMap[ass.rightInstance().label()]->size().value() == 0 ) {
@@ -343,7 +341,7 @@ namespace gum {
             return false;
           }
 
-          if ( ( ! real_ref.isArray() ) &&
+          if ( ( !real_ref.isArray() ) &&
                __nameMap[ass.rightInstance().label()]->size().value() > 0 ) {
 
             O3PRM_SYSTEM_NOT_AN_ARRAY( ass.leftReference(), *__errors );
@@ -359,12 +357,12 @@ namespace gum {
 
         for ( auto& inc : sys.increments() ) {
 
-          if ( inc.leftInstance().label() == inc.leftReference().label() ) {
-            O3PRM_SYSTEM_INVALID_LEFT_VALUE( inc.leftInstance(), *__errors );
-            return false;
-          }
+          // if ( inc.leftInstance().label() == inc.leftReference().label() ) {
+          //  O3PRM_SYSTEM_INVALID_LEFT_VALUE( inc.leftInstance(), *__errors );
+          //  return false;
+          //}
 
-          if ( ! __nameMap.exists( inc.leftInstance().label() ) ) {
+          if ( !__nameMap.exists( inc.leftInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( inc.leftInstance(), *__errors );
             return false;
           }
@@ -374,8 +372,8 @@ namespace gum {
           const auto& ref = inc.leftReference().label();
 
           if ( !( type.exists( inc.leftReference().label() ) &&
-                    PRMClassElement<GUM_SCALAR>::isReferenceSlot(
-                        type.get( ref ) ) ) ) {
+                  PRMClassElement<GUM_SCALAR>::isReferenceSlot(
+                      type.get( ref ) ) ) ) {
 
             O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
                 inc.leftReference(), type.name(), *__errors );
@@ -383,9 +381,10 @@ namespace gum {
           }
 
           const auto& real_ref =
-              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
+                  type.get( ref ) );
 
-          if ( ! real_ref.isArray() ) {
+          if ( !real_ref.isArray() ) {
 
             O3PRM_SYSTEM_NOT_AN_ARRAY( inc.leftReference(), *__errors );
             return false;
@@ -397,4 +396,3 @@ namespace gum {
     }  // o3prm
   }    // prm
 }  // gum
-

@@ -82,7 +82,11 @@ namespace gum {
       }
 
       if ( count == 1 ) {
-        __hardEvidence.insert( varId, pot );
+        if ( __hardEvidence.exists( varId ) ) {
+          __hardEvidence[varId] = pot;
+        } else {
+          __hardEvidence.insert( varId, pot );
+        }
       }
     }
 

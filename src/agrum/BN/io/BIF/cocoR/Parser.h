@@ -139,7 +139,7 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
 	void FACTORIZED_PROBA(std::string& var,const std::vector<std::string>& parents );
 	void LISTE_FLOAT(std::vector<float>& v );
 	void ASSIGNATION(const std::string& var,const std::vector<std::string>& parents,bool is_first );
-	void LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, unsigned int num_label );
+	void LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, Idx num_label );
 	void FLOAT(float& val);
 
     void Parse();

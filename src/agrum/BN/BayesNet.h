@@ -132,6 +132,9 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
+    const Potential<GUM_SCALAR>& cpt( const std::string& name ) const {
+      return cpt( idFromName( name ) );
+    };
 
     /**
      * @brief Returns a map between variables and nodes of this gum::BayesNet.
@@ -224,6 +227,7 @@ namespace gum {
      * @param id The variable's id to remove.
      */
     void erase( NodeId id );
+    void erase( const std::string& name ) { erase( idFromName( name ) ); };
 
     /**
      * @brief Remove a variable from the gum::BayesNet.
@@ -248,6 +252,9 @@ namespace gum {
      *                 gum::BayesNet.
      */
     const DiscreteVariable& variable( NodeId id ) const;
+    const DiscreteVariable& variable( const std::string& name ) const {
+      return variable( idFromName( name ) );
+    };
 
     /**
      * @brief Changes a variable's name in the gum::BayesNet.
@@ -259,6 +266,10 @@ namespace gum {
      * @throws NotFound Raised if no variable matches id.
      */
     void changeVariableName( NodeId id, const std::string& new_name );
+    void changeVariableName( const std::string& name,
+                             const std::string& new_name ) {
+      changeVariableName( idFromName( name ), new_name );
+    }
 
     /**
      * @brief Returns a variable's id in the gum::BayesNet.
@@ -305,6 +316,9 @@ namespace gum {
      * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
      */
     void addArc( NodeId tail, NodeId head );
+    void addArc( const std::string& tail, const std::string& head ) {
+      addArc( idFromName( tail ), idFromName( head ) );
+    }
 
     /**
      * Removes an arc in the BN, and update head's CTP.
@@ -322,6 +336,9 @@ namespace gum {
      * @param tail as NodeId
      */
     void eraseArc( NodeId tail, NodeId head );
+    void eraseArc( const std::string& tail, const std::string& head ) {
+      eraseArc( idFromName( tail ), idFromName( head ) );
+    }
 
     /**
      * When inserting/removing arcs, node CPTs change their dimension with a
@@ -350,6 +367,9 @@ namespace gum {
      * would induce a directed cycle. */
     /// @{
     void reverseArc( NodeId tail, NodeId head );
+    void reverseArc( const std::string& tail, const std::string& head ) {
+      reverseArc( idFromName( tail ), idFromName( head ) );
+    }
     void reverseArc( const Arc& arc );
     /// @}
 
@@ -499,13 +519,13 @@ namespace gum {
      * Others aggregators
      * @{
      */
-    NodeId addAMPLITUDE(const DiscreteVariable& variable);
-    NodeId addCOUNT(const DiscreteVariable& variable,Idx Value=1);
-    NodeId addEXISTS(const DiscreteVariable& variable,Idx Value=1);
-    NodeId addFORALL(const DiscreteVariable& variable,Idx Value=1);
-    NodeId addMAX(const DiscreteVariable& variable);
-    NodeId addMEDIAN(const DiscreteVariable& variable);
-    NodeId addMIN(const DiscreteVariable& variable);
+    NodeId addAMPLITUDE( const DiscreteVariable& variable );
+    NodeId addCOUNT( const DiscreteVariable& variable, Idx Value = 1 );
+    NodeId addEXISTS( const DiscreteVariable& variable, Idx Value = 1 );
+    NodeId addFORALL( const DiscreteVariable& variable, Idx Value = 1 );
+    NodeId addMAX( const DiscreteVariable& variable );
+    NodeId addMEDIAN( const DiscreteVariable& variable );
+    NodeId addMIN( const DiscreteVariable& variable );
     /**
      * @}
      */
@@ -523,16 +543,23 @@ namespace gum {
     /// @}
 
     /// randomly generates CPTs for a given structure
-    void generateCPTs();
+    void generateCPTs() const;
 
     /// randomly generate CPT for a given node in a given structure
-    void generateCPT(NodeId node);
+    void generateCPT( NodeId node ) const;
+    void generateCPT( const std::string& name ) const {
+      generateCPT( idFromName( name ) );
+    };
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @throw NotAllowed if newPot has not the same signature as
     /// __probaMap[NodeId]
     void changePotential( NodeId id, Potential<GUM_SCALAR>* newPot );
+    void changePotential( const std::string& name,
+                          Potential<GUM_SCALAR>* newPot ) {
+      changePotential( idFromName( name ), newPot );
+    }
 
     private:
     /// clear all potentials

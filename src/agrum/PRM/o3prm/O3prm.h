@@ -677,8 +677,8 @@ namespace gum {
         O3Label& leftInstance();
         const O3Label& leftInstance() const;
 
-        O3Integer& index();
-        const O3Integer& index() const;
+        O3Integer& leftIndex();
+        const O3Integer& leftIndex() const;
 
         O3Label& leftReference();
         const O3Label& leftReference() const;
@@ -686,11 +686,15 @@ namespace gum {
         O3Label& rightInstance();
         const O3Label& rightInstance() const;
 
+        O3Integer& rightIndex();
+        const O3Integer& rightIndex() const;
+
         private:
         O3Label __leftInstance;
-        O3Integer __index;
+        O3Integer __leftIndex;
         O3Label __leftReference;
         O3Label __rightInstance;
+        O3Integer __rightIndex;
       };
 
       /**
@@ -713,8 +717,8 @@ namespace gum {
         O3Label& leftInstance();
         const O3Label& leftInstance() const;
 
-        O3Integer& index();
-        const O3Integer& index() const;
+        O3Integer& leftIndex();
+        const O3Integer& leftIndex() const;
 
         O3Label& leftReference();
         const O3Label& leftReference() const;
@@ -722,11 +726,15 @@ namespace gum {
         O3Label& rightInstance();
         const O3Label& rightInstance() const;
 
+        O3Integer& rightIndex();
+        const O3Integer& rightIndex() const;
+
         private:
         O3Label __leftInstance;
-        O3Integer __index;
+        O3Integer __leftIndex;
         O3Label __leftReference;
         O3Label __rightInstance;
+        O3Integer __rightIndex;
       };
 
       /**

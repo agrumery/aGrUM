@@ -82,7 +82,7 @@ namespace gum {
   INLINE MultiDimDecorator<GUM_SCALAR>& MultiDimDecorator<GUM_SCALAR>::
   operator=( MultiDimDecorator<GUM_SCALAR>&& from ) {
     MultiDimContainer<GUM_SCALAR>::operator=(
-        std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) );
+        std::forward<MultiDimContainer<GUM_SCALAR>>( from ) );
     GUM_OP_MOV( MultiDimDecorator );
 
     if ( this != &from ) {
@@ -99,7 +99,7 @@ namespace gum {
   INLINE MultiDimDecorator<GUM_SCALAR>::MultiDimDecorator(
       MultiDimDecorator<GUM_SCALAR>&& from )
       : MultiDimContainer<GUM_SCALAR>(
-            std::forward<MultiDimContainer<GUM_SCALAR>&&>( from ) ) {
+            std::forward<MultiDimContainer<GUM_SCALAR>>( from ) ) {
     GUM_CONS_MOV( MultiDimDecorator );
 
       _content = from._content;

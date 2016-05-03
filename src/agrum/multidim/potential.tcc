@@ -173,6 +173,15 @@ namespace gum {
     return *this;
   }
 
+
+  template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>&
+  Potential<GUM_SCALAR>::fillWith( const GUM_SCALAR& v ) const {
+    this->fill( v );
+    return *this;
+  }
+
+
   template <typename GUM_SCALAR>
   INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::sq() const {
     this->apply( []( GUM_SCALAR x ) { return x * x; } );

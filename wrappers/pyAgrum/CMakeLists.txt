@@ -14,7 +14,7 @@ if (FOR_PYTHON2) # we use 3 by default
 	set(PYTHON_EXECUTABLE "python.exe")
   else(WIN32)
 	set(PYTHON_EXECUTABLE "python2")
-	find_package(PythonInterp REQUIRED)
+	find_package(PythonInterp 2 REQUIRED)
   endif(WIN32)
 else (FOR_PYTHON2)
   # hackish
@@ -25,6 +25,9 @@ else (FOR_PYTHON2)
 	find_package(PythonInterp 3 REQUIRED)
   endif(WIN32)
 endif (FOR_PYTHON2)
+
+find_program(FULL_PYTHON_EXECUTABLE NAMES ${PYTHON_EXECUTABLE})
+set(PYTHON_EXECUTABLE ${FULL_PYTHON_EXECUTABLE})
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
@@ -173,7 +176,7 @@ else (SWIG_FOUND)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
   endif (WIN32)
 endif (SWIG_FOUND)
-set_source_files_properties(foo.cpp PROPERTIES COMPILE_FLAGS -Wno-effc++)
+
 set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # for additionnal rule such test pyAgrum

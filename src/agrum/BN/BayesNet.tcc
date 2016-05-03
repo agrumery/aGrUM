@@ -528,12 +528,12 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void BayesNet<GUM_SCALAR>::generateCPTs() {
+  INLINE void BayesNet<GUM_SCALAR>::generateCPTs() const {
     for ( auto node : nodes() )
       generateCPT( node );
   }
   template <typename GUM_SCALAR>
-  INLINE void BayesNet<GUM_SCALAR>::generateCPT( NodeId node ) {
+  INLINE void BayesNet<GUM_SCALAR>::generateCPT( NodeId node ) const {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
     generator.generateCPT( cpt( node ).pos( variable( node ) ), cpt( node ) );

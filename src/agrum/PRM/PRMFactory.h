@@ -651,6 +651,30 @@ namespace gum {
                                   std::string type = "" ) override;
 
       /**
+       * @brief Start an aggregator declaration.
+       *
+       * @param name The aggregator's name.
+       * @param agg_type The aggregtor's type (@see Aggregate::agg_type()).
+       * @param rv_type The aggregator's random variable type (@see Aggregate::type()).
+       * @param params The aggregator's parameters.
+       */
+      void startAggregator( const std::string& name,
+                            const std::string& agg_type,
+                            const std::string& rv_type,
+                            const std::vector<std::string>& params );
+
+      /**
+       * @brief Conitnues an aggregator declaration.
+       */
+      void continueAggregator( const std::string& name );
+
+
+      /**
+       * @brief Finishes an aggregate declaration.
+       */
+      void endAggregator();
+
+      /**
        * @brief Add a compound noisy-or as an PRMAttribute<GUM_SCALAR> to the
        *current Class<GUM_SCALAR>.
        *
@@ -853,8 +877,7 @@ namespace gum {
       /// and a string.
       ///
       /// @return Return a pointer over a PRMSlotChain<GUM_SCALAR> or 0 if no
-      /// PRMSlotChain<GUM_SCALAR> could
-      ///         be built.
+      /// PRMSlotChain<GUM_SCALAR> could be built.
       ///
       PRMSlotChain<GUM_SCALAR>*
       __buildSlotChain( PRMClassElementContainer<GUM_SCALAR>* start,
@@ -901,8 +924,7 @@ namespace gum {
       /// PRMClassElement<GUM_SCALAR> un elts.
       //
       /// @throw WrongClassElement Raised if elts contains a
-      /// PRMClassElement<GUM_SCALAR>
-      ///                          without a PRMType<GUM_SCALAR>.
+      /// PRMClassElement<GUM_SCALAR> without a PRMType<GUM_SCALAR>.
       /// @throw NotFound Raised if there exists no common super type of all
       ///                 PRMClassElement<GUM_SCALAR> in elts.
       PRMType<GUM_SCALAR>* __retrieveCommonType(
@@ -920,6 +942,15 @@ namespace gum {
       /// Check if c implements correctly all his interfaces.
       void __checkInterfaceImplementation( PRMClass<GUM_SCALAR>* c );
 
+      /// Add a parent to an attribute.
+      void __addParent( PRMClassElementContainer<GUM_SCALAR>* c,
+                        PRMAttribute<GUM_SCALAR>* agg,
+                        const std::string& name );
+
+      /// Add a parent to an aggregate.
+      void __addParent( PRMClass<GUM_SCALAR>* c,
+                        PRMAggregate<GUM_SCALAR>* agg,
+                        const std::string& name );
       /// @}
       // ======================================================================
       ///  @name Private methods handling PRMSystem<GUM_SCALAR> and
@@ -972,6 +1003,9 @@ namespace gum {
 
       /// A stack used to keep track of created PRMObject.
       std::vector<PRMObject*> __stack;
+
+      /// A mapping between aggregators and their parameters
+      HashTable<PRMAggregate<GUM_SCALAR>*, std::vector<std::string>> __agg_params;
 
       /// @}
     };

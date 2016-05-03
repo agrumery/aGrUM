@@ -530,18 +530,18 @@ MAP< LabelMap& labels > =
   (. auto first = O3Label(); .)
   (. auto second = O3Label(); .)
   (. auto pair = std::pair<O3Label, O3Label>(); .)
-  LABEL<first> ':' LABEL<second>
+  TYPE_LABEL<first> ':' TYPE_LABEL<second>
   (. pair.first = first; .)
   (. pair.second = second; .)
   (. labels.push_back( pair ); .)
   ','
-  LABEL<first> ':' LABEL<second>
+  TYPE_LABEL<first> ':' TYPE_LABEL<second>
   (. pair.first = first; .)
   (. pair.second = second; .)
   (. labels.push_back( pair ); .)
   {
     ','
-    LABEL<first> ':' LABEL<second>
+    TYPE_LABEL<first> ':' TYPE_LABEL<second>
     (. pair.first = first; .)
     (. pair.second = second; .)
     (. labels.push_back( pair ); .)
@@ -552,19 +552,26 @@ MAP< LabelMap& labels > =
 TYPE_VALUE_LIST< LabelMap& labels > =
   (. auto l = O3Label(); .)
   (. auto pair = std::pair<O3Label, O3Label>(); .)
-  LABEL<l>
+  TYPE_LABEL<l>
   (. pair.first = l; .)
   (. labels.push_back( pair ); .)
   ','
-  LABEL<l>
+  TYPE_LABEL<l>
   (. pair.first = l; .)
   (. labels.push_back( pair ); .)
   {
     ','
-    LABEL<l>
+    TYPE_LABEL<l>
     (. pair.first = l; .)
     (. labels.push_back( pair ); .)
   }
+  .
+
+//________________________
+TYPE_LABEL<O3Label& l> =
+  LABEL<l>
+  | INTEGER_AS_LABEL<l>
+  | FLOAT_AS_LABEL<l>
   .
 
 // ===========================================================================
@@ -630,8 +637,12 @@ SYSTEM_BODY<O3System& sys> =
         (. ass.leftInstance().position() = pos; .)
         (. ass.leftReference().label() = tmp; .)
         (. ass.leftReference().position() = tmp_pos; .)
-        (. ass.index().value() = -1; .)
+        (. ass.leftIndex().value() = -1; .)
+        (. ass.rightIndex().value() = -1; .)
         '=' LABEL<ass.rightInstance()>
+        [
+          ARRAY<ass.rightIndex()>
+        ]
         (. sys.assignments().push_back( std::move( ass ) ); .)
       | 
         (. auto inc = O3Increment(); .)
@@ -639,8 +650,12 @@ SYSTEM_BODY<O3System& sys> =
         (. inc.leftInstance().position() = pos; .)
         (. inc.leftReference().label() = tmp; .)
         (. inc.leftReference().position() = tmp_pos; .)
-        (. inc.index().value() = -1; .)
+        (. inc.leftIndex().value() = -1; .)
+        (. inc.rightIndex().value() = -1; .)
         inc LABEL<inc.rightInstance()>
+        [
+          ARRAY<inc.rightIndex()>
+        ]
         (. sys.increments().push_back( std::move( inc ) ); .)
       )
     )
@@ -665,16 +680,24 @@ SYSTEM_BODY<O3System& sys> =
       (
         (. auto ass = O3Assignment(); .)
         (. ass.leftInstance().label() = left_value.str(); .)
-        (. ass.index() = i; .)
+        (. ass.leftIndex() = i; .)
         (. ass.leftReference() = ref; .)
+        (. ass.rightIndex().value() = -1; .)
         '=' LABEL<ass.rightInstance()>
+        [
+          ARRAY<ass.rightIndex()>
+        ]
         (. sys.assignments().push_back( std::move( ass ) ); .)
       | 
         (. auto inc = O3Increment(); .)
         (. inc.leftInstance().label() = left_value.str(); .)
-        (. inc.index() = i; .)
+        (. inc.leftIndex() = i; .)
         (. inc.leftReference() = ref; .)
+        (. inc.rightIndex().value() = -1; .)
         inc LABEL<inc.rightInstance()>
+        [
+          ARRAY<inc.rightIndex()>
+        ]
         (. sys.increments().push_back( std::move( inc ) ); .)
       )
     )
@@ -773,6 +796,13 @@ FLOAT<O3Float& f> =
   float
   (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. f = O3Float( pos, coco_atof( t->val ) ); .)
+  .
+
+//________________________
+FLOAT_AS_LABEL<O3Label& l> =
+  float
+  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+  (. l = O3Label( pos, narrow( t->val ) ); .)
   .
 
 //________________________
@@ -892,9 +922,12 @@ LABEL_LIST<O3LabelList& list> =
 
 //________________________
 LABEL_OR_STAR<O3Label& l> =
-  ( label | '*' )
-  (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
-  (. l = O3Label( pos, narrow( t->val ) ); .)
+  (
+    TYPE_LABEL<l>
+  | '*'
+    (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
+    (. l = O3Label( pos, narrow( t->val ) ); .)
+  )
   .
 
 //________________________

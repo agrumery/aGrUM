@@ -471,6 +471,41 @@ namespace gum_tests {
       TS_ASSERT( bn.dag().emptyArcs() );
     }
 
+    void testStringAccessors() {
+      gum::BayesNet<float> bn;
+      for ( const auto& x : {"A", "B", "C"} ) {
+        bn.add( gum::LabelizedVariable( x, x, 2 ) );
+      }
+      for ( const auto& a :
+            {std::make_pair( "A", "C" ), std::make_pair( "B", "C" )} ) {
+        bn.addArc( a.first, a.second );
+      }
+      TS_ASSERT_EQUALS(bn.toString(),"BN{nodes: 3, arcs: 2, domainSize: 8, parameters: 12, compression ratio: -50% }");
+
+      bn.cpt("A").fillWith  (1.0f).normalize();
+      bn.generateCPT("B");
+      bn.generateCPT("C");
+      TS_ASSERT_THROWS(bn.cpt("XXX"),gum::NotFound);
+
+      bn.reverseArc("A","C");
+      TS_ASSERT_EQUALS(bn.toString(),"BN{nodes: 3, arcs: 3, domainSize: 8, parameters: 14, compression ratio: -75% }");
+
+      TS_ASSERT_THROWS(bn.reverseArc("A","C"),gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.reverseArc("A","C"), gum::GraphError);
+      TS_ASSERT_THROWS(bn.reverseArc("A","X"),gum::NotFound);
+
+      bn.erase("A");
+      TS_ASSERT_EQUALS(bn.toString(),"BN{nodes: 2, arcs: 1, domainSize: 4, parameters: 6, compression ratio: -50% }");
+
+      TS_ASSERT_THROWS(bn.erase("A"), gum::NotFound);
+
+      bn.eraseArc("B","C");
+      TS_ASSERT_EQUALS(bn.toString(),"BN{nodes: 2, arcs: 0, domainSize: 4, parameters: 4, compression ratio: 0% }");
+
+      TS_ASSERT_THROWS(bn.eraseArc("B","C"),gum::NotFound);
+    }
+
+
     void testIterator() {
       gum::BayesNet<float> bn;
       gum::List<gum::NodeId> idList;

@@ -154,7 +154,7 @@ def checkConsistency(current):
 def checkPython(current):
     if current['python']=="3":
         if cfg.python3==None:
-            notif("Python3 is not found. Swapping to python2.")
+            notif("Python3 is not found. Switching to python2.")
             print("")
             current['python']="2"
             cfg.python=cfg.python2
@@ -162,7 +162,7 @@ def checkPython(current):
             cfg.python=cfg.python3
     else:
         if cfg.python2==None:
-            notif("Python2 is not found. Swapping to python3.")
+            notif("Python2 is not found. Switching to python3.")
             print("")
             cfg.python=cfg.python3
             current["python"]="3"
