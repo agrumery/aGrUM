@@ -385,3 +385,19 @@ namespace std {
 %template ( InfluenceDiagramInference_double) gum::InfluenceDiagramInference<double>;
 
 %template ( BNLearner_double) gum::learning::BNLearner<double>;
+
+/* for debug */
+namespace gum {
+  void statsObj(void);
+}
+%{
+namespace gum {
+  void statsObj(void) {
+#ifndef NDEBUG
+    gum::__debug__::__atexit();
+#else
+    //std::cout<<"Stats on aGrUM objects only available in debug mode"<<std::endl;
+#endif //NDEBUG
+  }
+}
+%}

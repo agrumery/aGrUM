@@ -30,17 +30,32 @@ __version__ = '@PYAGRUM_VERSION@'
 __license__ = __doc__
 __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
-from .functions import *
+from @PYAGRUM_FUNCTIONS@ import *
 
-from @PYAGRUM_MODULE@ import *
+# selection of imports extracted from dir(.pyAgrum)
+from @PYAGRUM_MODULE@ import statsObj
+from @PYAGRUM_MODULE@ import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
+from @PYAGRUM_MODULE@ import BayesNet
+from @PYAGRUM_MODULE@ import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
+from @PYAGRUM_MODULE@ import Potential, Instantiation, UtilityTable
+from @PYAGRUM_MODULE@ import BruteForceKL, GibbsKL
+from @PYAGRUM_MODULE@ import GibbsInference, LazyPropagation
+from @PYAGRUM_MODULE@ import PythonApproximationListener, PythonBNListener, PythonLoadListener
+from @PYAGRUM_MODULE@ import BNGenerator, IDGenerator, JTGenerator
+from @PYAGRUM_MODULE@ import BNLearner
+from @PYAGRUM_MODULE@ import InfluenceDiagram, InfluenceDiagramInference
+from @PYAGRUM_MODULE@ import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
+from @PYAGRUM_MODULE@ import PRMexplorer
+  
+from @PYAGRUM_MODULE@ import initRandom, randomProba, randomDistribution
+from @PYAGRUM_MODULE@ import isOMP, setNumberOfThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads
 
-# seed is chosen randomly :)
-initRandom(0)
+from @PYAGRUM_MODULE@ import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTree, EmptySet, GumException, FatalError, FormatNotFound, GraphError, IOError, IdError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, OutOfLowerBound, OutOfUpperBound, ReferenceError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase
 
 # selection of imports extracted from dir(pyAgrum)
 __all__=[
-  '__version__','__license__','__project_url__',
-  'availableBNExts','availableBNExts','loadBN','saveBN','loadID',
+  '__version__','__license__','__project_url__',        # here
+  'about','availableBNExts','loadBN','saveBN','loadID', # in fuctions.py
   
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
   'BayesNet',
@@ -62,3 +77,6 @@ __all__=[
   
   'DefaultInLabel','DuplicateElement','DuplicateLabel','EmptyBSTree','EmptySet','GumException','FatalError','FormatNotFound','GraphError','IOError','IdError','InvalidArc','InvalidArgument','InvalidArgumentsNumber','InvalidDirectedCycle','InvalidEdge','InvalidNode','NoChild','NoNeighbour','NoParent','NotFound','NullElement','OperationNotAllowed','OutOfBounds','OutOfLowerBound','OutOfUpperBound','ReferenceError','SizeError','SyntaxError','UndefinedElement','UndefinedIteratorKey','UndefinedIteratorValue','UnknownLabelInDatabase'
   ]
+
+# seed is chosen randomly :)
+initRandom(0)

@@ -96,11 +96,13 @@ execute_process(
 if (${PYTHON_VERSION} EQUAL "2")
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE "pyAgrum")
+  set(PYAGRUM_FUNCTIONS "functions")
 else ()
   set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
 
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE ".pyAgrum")
+  set(PYAGRUM_FUNCTIONS ".functions")
 endif ()
 
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION}")
