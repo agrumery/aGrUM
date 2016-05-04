@@ -342,5 +342,84 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
+
+    void testOperatorUnary() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto expected = -( 2.0 * 5.0 - 6.0 );
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = -a );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorPlus() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto b = gum::Formula( "2/8" );
+        auto expected = 2.0 * 5.0 - 6.0 + 2.0 / 8.0;
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = a + b );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorMinus() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto b = gum::Formula( "2/8" );
+        auto expected = 2.0 * 5.0 - 6.0 - 2.0 / 8.0;
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = a - b );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorTimes() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto b = gum::Formula( "2/8" );
+        auto expected = ( 2.0 * 5.0 - 6.0 ) * ( 2.0 / 8.0 );
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = a * b );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorDivides() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto b = gum::Formula( "2/8" );
+        auto expected = ( 2.0 * 5.0 - 6.0 ) / ( 2.0 / 8.0 );
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = a / b );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
   };
 }

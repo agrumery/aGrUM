@@ -119,15 +119,41 @@ namespace gum {
     GUM_CONS_CPY( FormulaPart );
   }
 
+  FormulaPart::FormulaPart( FormulaPart&& source )
+      : type( std::move( source.type ) )
+      , number( std::move( source.number ) )
+      , character( std::move( source.character ) )
+      , function( std::move( source.function ) ) {
+    GUM_CONS_MOV( FormulaPart );
+  }
+
   FormulaPart::~FormulaPart() { GUM_DESTRUCTOR( FormulaPart ); }
 
   FormulaPart& FormulaPart::operator=( const FormulaPart& source ) {
+    if ( this == &source) {
+      return *this;
+    }
+
     type = source.type;
     number = source.number;
     character = source.character;
     function = source.function;
 
     return *this;
+  }
+
+  FormulaPart& FormulaPart::operator=( FormulaPart&& source) {
+    if ( this == &source) {
+      return *this;
+    }
+
+    type = std::move(source.type);
+    number = std::move(source.number);
+    character = std::move(source.character);
+    function = std::move(source.function);
+
+    return *this;
+
   }
 
   std::string FormulaPart::str() const {
@@ -162,11 +188,7 @@ namespace gum {
   // ===                        Class Formula                               ===
   // ==========================================================================
 
-  Formula::Formula( const std::string& f )
-      : __formula( f )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
-
+  void Formula::__initialise() {
     auto c_str = (unsigned char*)__formula.c_str();
     auto scanner = new gum::formula::Scanner( c_str, (int)__formula.size() );
     __scanner = std::unique_ptr<gum::formula::Scanner>( scanner );
@@ -174,6 +196,31 @@ namespace gum {
     auto parser = new gum::formula::Parser( scanner );
     __parser = std::unique_ptr<gum::formula::Parser>( parser );
     __parser->formula( this );
+  }
+
+  Formula::Formula( short s )
+      : __formula( std::to_string( s ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  // Formula( unsigned short us );
+  // Formula( int i );
+  // Formula( unsigned int ui );
+  // Formula( long l );
+  // Formula( unsigned long ul );
+  // Formula( long long l );
+  // Formula( unsigned long long ul );
+  // Formula( float f );
+  // Formula( double d );
+
+  Formula::Formula( const std::string& f )
+      : __formula( f )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+
+    __initialise();
   }
 
   Formula::Formula( const Formula& source )
@@ -183,12 +230,18 @@ namespace gum {
       , __stack( source.__stack ) {
     GUM_CONS_CPY( Formula );
 
-    auto c_str = (unsigned char*)__formula.c_str();
-    auto scanner = new gum::formula::Scanner( c_str, (int)__formula.size() );
-    __scanner = std::unique_ptr<gum::formula::Scanner>( scanner );
+    __initialise();
+  }
 
-    auto parser = new gum::formula::Parser( scanner );
-    __parser = std::unique_ptr<gum::formula::Parser>( parser );
+  Formula::Formula( Formula&& source )
+      : __formula( std::move( source.__formula ) )
+      , __scanner( std::move( source.__scanner ) )
+      , __parser( std::move( source.__parser ) )
+      , __last_token( std::move( source.__last_token ) )
+      , __output( std::move( source.__output ) )
+      , __stack( std::move( source.__stack ) ) {
+    GUM_CONS_CPY( Formula );
+
     __parser->formula( this );
   }
 
@@ -197,10 +250,33 @@ namespace gum {
   }
 
   Formula& Formula::operator=( const Formula& source ) {
+    if ( this == &source ) {
+      return *this;
+    }
+
     __formula = source.__formula;
     __last_token = source.__last_token;
     __output = source.__output;
     __stack = source.__stack;
+
+    __initialise();
+
+    return *this;
+  }
+
+  Formula& Formula::operator=( Formula&& source ) {
+    if ( this == &source ) {
+      return *this;
+    }
+
+    __formula = std::move( source.__formula );
+    __scanner = std::move( source.__scanner );
+    __parser = std::move( source.__parser );
+    __parser->formula( this );
+    __last_token = std::move( source.__last_token );
+    __output = std::move( source.__output );
+    __stack = std::move( source.__stack );
+
     return *this;
   }
 
