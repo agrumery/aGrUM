@@ -324,15 +324,17 @@ namespace gum {
         GUM_ERROR( NotFound, "unable to found all parents of this attribute" );
       }
     }
-    /*
+
         template <typename GUM_SCALAR>
-        INLINE void PRMFactory<GUM_SCALAR>::addParent( const std::string& name )
+        INLINE void PRMFactory<GUM_SCALAR>::__addParent( PRMClassElementContainer<GUM_SCALAR>* c,
+                                              PRMAttribute<GUM_SCALAR>* a,
+                                              const std::string& name )
        {
-          // Retrieving pointers
+          /*// Retrieving pointers
           PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
               __checkStack( 1, PRMClassElement<GUM_SCALAR>::prm_attribute ) );
           PRMClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 2 );
-
+*/
           try {
             PRMClassElement<GUM_SCALAR>& elt = c->get( name );
 
@@ -387,7 +389,7 @@ namespace gum {
             }
           }
         }
-    */
+
 
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::addParent( const std::string& name ) {

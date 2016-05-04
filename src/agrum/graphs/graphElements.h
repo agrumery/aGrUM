@@ -99,7 +99,7 @@ namespace gum {
   /** \ingroup graph_group
    * Type for node ids
    */
-  using NodeId=unsigned int; //typedef unsigned int NodeId;
+  typedef unsigned int NodeId;
 
   /* ===========================================================================
    */
