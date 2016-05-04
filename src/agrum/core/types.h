@@ -37,14 +37,6 @@ namespace gum {
   /// @ingroup configuration_group
   /// @{
 
-//@beforeMerging which type are really used (CopyType, Id ?)
-  /**
-   * How copies should be performed (usual or shallow copies)
-   *
-   * @todo default is ?
-   */
-  enum class CopyType : char { DEEP_COPY, SHALLOW_COPY };
-
   /**
    * Type for indexes.
    */
