@@ -442,14 +442,14 @@ namespace gum {
     std::vector<Idx> modCounter;
 
     // initializing the array
-    for ( Idx i = 0; i < nbrVar; i++ ) {
+    for ( NodeId i = 0; i < nbrVar; i++ ) {
       modCounter.push_back( 0 );
     }
 
     Idx j = 0;
 
     do {
-      for ( Idx i = 0; i < nbrVar; i++ ) {
+      for ( NodeId i = 0; i < nbrVar; i++ ) {
         cptInst.chgVal( *( varList[i] ), modCounter[i] );
       }
 
@@ -504,7 +504,7 @@ namespace gum {
       List<const DiscreteVariable*>& varList ) {
     bool last = true;
 
-    for ( Idx j = 0; j < modCounter.size(); j++ ) {
+    for ( NodeId j = 0; j < modCounter.size(); j++ ) {
       last = ( modCounter[j] == ( varList[j]->domainSize() - 1 ) ) && last;
 
       if ( !last ) break;
@@ -516,7 +516,7 @@ namespace gum {
 
     bool add = false;
 
-    Idx i = varList.size() - 1;
+    NodeId i = NodeId(varList.size() - 1);
 
     do {
       if ( modCounter[i] == ( varList[i]->domainSize() - 1 ) ) {
@@ -637,7 +637,7 @@ namespace gum {
     } else {
       const DiscreteVariable& var =
           __bn->variable( __varNameMap[__stringBag[0]] );
-      Idx varId = __varNameMap[__stringBag[0]];
+      NodeId varId = __varNameMap[__stringBag[0]];
 
       if ( __parents->domainSize() > 0 ) {
         Instantiation inst( __bn->cpt( __varNameMap[var.name()] ) );

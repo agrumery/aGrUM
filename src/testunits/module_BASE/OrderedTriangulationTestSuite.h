@@ -55,7 +55,7 @@ namespace gum_tests {
 
       gum::NodeProperty<gum::Size> dom;
 
-      for ( gum::Idx i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         dom.insert( 10 * i, 10 );
 
       std::vector<gum::NodeId> sequence( 8 );

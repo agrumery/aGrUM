@@ -290,9 +290,9 @@ namespace gum_tests {
         for ( gum::Idx j = 0; j < 2; ++j ) {
           for ( gum::Idx i = 0; i < 2; ++i ) {
             index2 = i + j * 2 + k * 4;
-            index1 = i * ( 1 << ( order[0] - 1 ) ) +
-                     j * ( 1 << ( order[1] - 1 ) ) +
-                     k * ( 1 << ( order[2] - 1 ) );
+            index1 = i * ( Idx(1) << ( order[0] - 1 ) ) +
+                     j * ( Idx(1) << ( order[1] - 1 ) ) +
+                     k * ( Idx(1) << ( order[2] - 1 ) );
             if ( v1[index1] != v2[index2] ) return false;
           }
         }

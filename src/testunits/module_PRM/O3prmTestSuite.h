@@ -24,6 +24,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/graphs/graphElements.g>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 #include <agrum/PRM/elements/PRMFormAttribute.h>
@@ -1276,7 +1277,7 @@ namespace gum_tests {
               for ( inst.begin();!inst.end(); inst.inc() ) {
                 sum += attr.val()->cpf()[inst];
               }
-              auto card = 1;
+              Size card = 1;
               for ( auto var : attr.val()->cpf().variablesSequence() ) {
                 card *= var->domainSize();
               }

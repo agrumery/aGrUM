@@ -86,7 +86,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  int DSLReader<GUM_SCALAR>::proceed( void ) {
+  Size DSLReader<GUM_SCALAR>::proceed( void ) {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError, "No such file " + streamName() );
     }

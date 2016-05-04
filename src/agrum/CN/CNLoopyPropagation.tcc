@@ -281,8 +281,8 @@ namespace gum {
       Size pp = pos;
       Size pas=Size(intPow(2,pp));
 
-      int combi_den = 0;
-      int combi_num = pp;
+      Size combi_den = 0;
+      Size combi_num = pp;
 
       // marginalisation
       while ( it[taille - 1] != combi_msg_p[taille - 1].end() ) {

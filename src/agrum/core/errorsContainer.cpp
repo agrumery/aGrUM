@@ -35,10 +35,10 @@
 
 namespace gum {
 
-  ParseError::ParseError( bool is_error, const std::string& msg, int line )
+  ParseError::ParseError( bool is_error, const std::string& msg, Idx line )
       : is_error( is_error )
       , line( line )
-      , column( -1 )
+      , column( 0 )
       , msg( msg )
       , filename( "" )
       , code( "" ) {}
@@ -46,8 +46,8 @@ namespace gum {
   ParseError::ParseError( bool is_error,
                           const std::string& msg,
                           const std::string& filename,
-                          int line,
-                          int col )
+                          Idx line,
+                          Idx col )
       : is_error( is_error )
       , line( line )
       , column( col )
@@ -59,8 +59,8 @@ namespace gum {
                           const std::string& msg,
                           const std::string& filename,
                           const std::string& code,
-                          int line,
-                          int col )
+                          Idx line,
+                          Idx col )
       : is_error( is_error )
       , line( line )
       , column( col )
@@ -123,7 +123,7 @@ namespace gum {
     return s.str();
   }
 
-  ParseError ErrorsContainer::error( int i ) const {
+  ParseError ErrorsContainer::error( Idx i ) const {
     if ( count() > i )
       return errors[i];  // May throw an error if i >= count().
     else {
@@ -201,7 +201,7 @@ namespace gum {
   void ErrorsContainer::elegantErrors( std::ostream& o ) const {
     if ( count() == 0 ) return;
 
-    for ( int i = 0; i < count(); i++ ) {
+    for ( Idx i = 0; i < count(); i++ ) {
       if ( error( i ).is_error ) {
         o << error( i ).toElegantString();
         o << std::endl;
@@ -212,7 +212,7 @@ namespace gum {
   void ErrorsContainer::elegantErrorsAndWarnings( std::ostream& o ) const {
     if ( count() == 0 ) return;
 
-    for ( int i = 0; i < count(); i++ ) {
+    for ( Idx i = 0; i < count(); i++ ) {
       o << error( i ).toElegantString();
       o << std::endl;
     }

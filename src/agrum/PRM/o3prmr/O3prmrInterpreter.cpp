@@ -681,8 +681,8 @@ namespace gum {
           }
 
           // May throw std::IOError if file does't exist
-          int previousO3prmError = m_reader->errors();
-          int previousO3prmrError = errors();
+          Size previousO3prmError = m_reader->errors();
+          Size previousO3prmrError = errors();
 
           try {
             m_reader->readFile( import_abs_filename, import_package );

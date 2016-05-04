@@ -75,7 +75,7 @@ namespace gum {
   /// @return the number of detected errors
   /// @throws IOError if file not exists
   template <typename GUM_SCALAR>
-  int O3prmBNReader<GUM_SCALAR>::proceed( void ) {
+  Size O3prmBNReader<GUM_SCALAR>::proceed( void ) {
     prm::o3prm::O3prmReader<GUM_SCALAR> reader;
     if ( __classpath != "" ) {
       reader.addClassPath( __classpath );

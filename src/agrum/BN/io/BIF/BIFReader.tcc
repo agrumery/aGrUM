@@ -93,7 +93,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  int BIFReader<GUM_SCALAR>::proceed( void ) {
+  Size BIFReader<GUM_SCALAR>::proceed( void ) {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError, "No such file " + streamName() );
     }

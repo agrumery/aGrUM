@@ -649,7 +649,7 @@ namespace gum_tests {
       gum::Sequence<gum::Idx> seq;
 
       seq << 1 << 3 << 5 << 2 << 4;
-      int n = 0;
+      Idx n = 0;
 
       for ( auto it = seq.rbeginSafe(); it != seq.rendSafe();
             --it ) {  // safe iterator needed here

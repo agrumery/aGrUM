@@ -64,7 +64,7 @@ namespace gum {
     /// parse the file
     /// @return the number of detected errors and warnings
     /// @throws IOError if file not exists
-    int proceed( void );
+    Size proceed( void );
 
     /// @{
     /// publishing Errors API

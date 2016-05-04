@@ -95,7 +95,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  int FMDPDatReader<GUM_SCALAR>::proceed( void ) {
+  Size FMDPDatReader<GUM_SCALAR>::proceed( void ) {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError, "No such file " + streamName() );
     }

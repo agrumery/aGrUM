@@ -70,11 +70,11 @@ namespace gum {
         do {
           eps = 0;
 
-          int iters = ( remaining < psize ) ? remaining : psize;
+          Size iters = ( remaining < psize ) ? remaining : psize;
 
 #pragma omp parallel for
 
-          for ( decltype( iters ) iter = 0; iter < iters; iter++ ) {
+          for ( int iter = 0; iter < iters; iter++ ) {
             __threadInference();
             __threadUpdate();
           }  // end of : parallel periodSize
@@ -104,7 +104,7 @@ namespace gum {
             __threadUpdate();
           }  // end of : parallel periodSize
 
-          this->updateApproximationScheme( psize );
+          this->updateApproximationScheme( int(psize) );
 
           this->_updateMarginals();  // fusion threads + update margi
 

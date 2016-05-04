@@ -47,11 +47,11 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       O3prmrContext<GUM_SCALAR>::~O3prmrContext() {
-        for ( int i = m_imports.size() - 1; i >= 0; i-- )
-          delete m_imports[i];
+        for ( Size i = m_imports.size() ; i > 0; i-- )
+          delete m_imports[i-1];
 
-        for ( int i = m_sessions.size() - 1; i >= 0; i-- )
-          delete m_sessions[i];
+        for ( Size i = m_sessions.size() ; i > 0; i-- )
+          delete m_sessions[i-1];
       }
 
       template <typename GUM_SCALAR>
@@ -72,8 +72,8 @@ namespace gum {
       template <typename GUM_SCALAR>
       std::string
       O3prmrContext<GUM_SCALAR>::aliasToImport( const std::string& alias ) {
-        for ( int i = m_imports.size() - 1; i >= 0; i-- )
-          if ( m_imports[i]->alias == alias ) return m_imports[i]->value;
+        for ( Idx i = m_imports.size() ; i > 0; i-- )
+          if ( m_imports[i-1]->alias == alias ) return m_imports[i-1]->value;
 
         return std::string();
       }

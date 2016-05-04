@@ -1130,7 +1130,7 @@ namespace gum {
     // composante connexe et multiplier entre elle les probas P(e) obtenues sur
     // chaque composante. So un truc a faire rapidement.
     Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
-    Idx id = __node_to_clique.begin().key();
+    NodeId id = __node_to_clique.begin().key();
     __aPosterioriMarginal( id, *tmp );
 
     GUM_SCALAR sum = 0;

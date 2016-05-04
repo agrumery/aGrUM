@@ -486,8 +486,7 @@ namespace gum {
                            ICPTGenerator,
                            ICPTDisturber>::__chooseCloseNodes( NodeId& i,
                                                                NodeId& j ) {
-    Idx temp = rand() %
-               IBNG::_bayesNet.size();
+    NodeId temp = rand() % IBNG::_bayesNet.size();
     Size co = 0;
 
     if ( IBNG::_bayesNet.dag()
@@ -536,7 +535,7 @@ namespace gum {
   MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__createTree(
       Size BNSize ) {
     Idx n = 0;
-    Idx nb_mod =
+    int nb_mod =
         2 +
         rand() %
             ( IBNG::_maxModality - 1 );
@@ -563,7 +562,7 @@ namespace gum {
                              ICPTGenerator,
                              ICPTDisturber>::__createPartTree( Size BNSize,
                                                                Idx& n ) {
-    Idx nb_mod =
+    int nb_mod =
         2 +
         rand() %
             ( IBNG::_maxModality - 1 );

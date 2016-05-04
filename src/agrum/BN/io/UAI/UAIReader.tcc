@@ -79,7 +79,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  int UAIReader<GUM_SCALAR>::proceed( void ) {
+  Size UAIReader<GUM_SCALAR>::proceed( void ) {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError, "No such file " + streamName() );
     }
@@ -121,7 +121,7 @@ void UAIReader<GUM_SCALAR>::buildFromQuartets(std::vector<std::tuple<float,int,i
 
   for(NodeId i=0;i<nbrNode;i++) {
     incCurrent();
-    Size mod=getInt();
+    int mod=getInt();
     if (mod<2) __addError(lig(),col(),"Number of modalities should be greater than 2.");
     __bn->add(gum::LabelizedVariable(std::to_string(i),"",mod));
   }

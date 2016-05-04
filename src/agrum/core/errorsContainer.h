@@ -70,8 +70,8 @@ namespace gum {
     ParseError( bool is_error,
                 const std::string& msg,
                 const std::string& filename,
-                int line,
-                int col = 0 );
+                Idx line,
+                Idx col = 0 );
 
     /**
      * @brief Class constructor.
@@ -86,8 +86,8 @@ namespace gum {
                 const std::string& msg,
                 const std::string& filename,
                 const std::string& code,
-                int line,
-                int col = 0 );
+                Idx line,
+                Idx col = 0 );
 
     /**
      * @brief Copy constructor.
@@ -118,10 +118,10 @@ namespace gum {
     bool is_error;
 
     /// The line of this gum::ParseError.
-    int line;
+    Idx line;
 
     /// The column of this gum::ParseError, default is 0.
-    int column;
+    IDx column;
 
     /// The gum::ParseError message.
     std::string msg;
@@ -161,10 +161,10 @@ namespace gum {
 
     public:
     /// Number of errors detected.
-    int error_count;
+    Size error_count;
 
     // Number of warnings detected.
-    int warning_count;
+    Size warning_count;
 
     // ============================================================================
     /// @name Class Constructor
@@ -200,7 +200,7 @@ namespace gum {
      * @return Returns the i-th error.
      * @throw OutOfBounds Raised if there is less than i errors.
      */
-    ParseError error( int i ) const;
+    ParseError error( Idx i ) const;
 
     /**
      * @brief Returns the last added error.
@@ -218,8 +218,8 @@ namespace gum {
      */
     void addError( const std::string& msg,
                    const std::string& filename,
-                   int line,
-                   int col );
+                   Idx line,
+                   Idx col );
 
     /**
      * @brief Adds a warning.
@@ -230,8 +230,8 @@ namespace gum {
      */
     void addWarning( const std::string& msg,
                      const std::string& filename,
-                     int line,
-                     int col );
+                     Idx line,
+                     Idx col );
 
     /**
      * @brief Add an exception.
@@ -244,7 +244,7 @@ namespace gum {
      * @brief Returns the number of errors and warnings.
      * @return Returns the number of errors and warnings.
      */
-    int count() const;
+    Size count() const;
 
     /**
      * @brief Print errors on output stream.
@@ -290,8 +290,8 @@ namespace gum {
      * @param msg The error's message.
      */
     void Error( const std::wstring& filename,
-                int line,
-                int col,
+                Idx line,
+                Idx col,
                 const wchar_t* msg );
 
     /**
@@ -302,8 +302,8 @@ namespace gum {
      * @param msg The warning's message.
      */
     void Warning( const std::wstring& filename,
-                  int line,
-                  int col,
+                  Idx line,
+                  Idx col,
                   const wchar_t* msg );
 
     /**

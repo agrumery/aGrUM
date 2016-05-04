@@ -219,8 +219,8 @@ namespace gum {
     INLINE RecordCounter<IdSetAlloc, CountAlloc>::RecordCounter(
         const RowFilter& filter,
         const std::vector<Size>& var_modalities,
-        unsigned long min_range,
-        unsigned long max_range )
+        Size min_range,
+        Size max_range )
         : __modalities( &var_modalities )
         , __min_range( min_range )
         , __max_range( max_range ) {

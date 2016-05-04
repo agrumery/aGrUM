@@ -29,14 +29,14 @@ namespace gum {
       auto nNodes = cpt->size();
       _sampleDef.resize( nNodes );
 
-      for ( decltype( nNodes ) node = 0; node < nNodes; node++ ) {
+      for ( NodeId node = 0; node < nNodes; node++ ) {
         auto pConfs = ( *cpt )[node].size();
         _sampleDef[node].resize( pConfs );
 
         for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
           Size nVertices = ( *cpt )[node][pconf].size();
           unsigned long b,c;
-          superiorPow( nVertices, b, c );
+          superiorPow( unsigned long(nVertices), b, c );
           Size nBits=Size(b);
           Size newCard=Size(c);
           _sampleDef[node][pconf].resize( nBits );

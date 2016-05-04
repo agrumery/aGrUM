@@ -109,7 +109,7 @@ namespace gum {
      * @param pair A pair of variables ids.
      * @return Returns the number of degrees of freedom.
      */
-    unsigned long
+    Size
     degreesOfFreedom( const std::pair<Idx,Idx>& pair );
 
     /**
@@ -118,7 +118,7 @@ namespace gum {
      * @param var2 The second variable id.
      * @return Returns the number of degrees of freedom.
      */
-    unsigned long degreesOfFreedom( Idx var1, Idx var2 );
+    Size degreesOfFreedom( Idx var1, Idx var2 );
 
     /**
      * @brief Modifies the confidence probability.
@@ -136,7 +136,7 @@ namespace gum {
     double __confidence_proba;
 
     /// The domain size of the conditioning nodes.
-    unsigned long __conditioning_size;
+    Size __conditioning_size;
 
     /// A set of already computed critical values.
     HashTable<Idx, double> __critical_values;
@@ -151,7 +151,7 @@ namespace gum {
      * @param df The number of degrees of freedom.
      * @return Returns the critical value of a given chi2 test.
      */
-    static double __criticalValue( double proba, unsigned long df );
+    static double __criticalValue( double proba, Size df );
 
     /**
      * @brief Computes the probability of chi2 value.
@@ -169,7 +169,7 @@ namespace gum {
      * @param df The number of degrees of freedom.
      * @return The probability of x given df degrees of freedom.
      */
-    static double __probaChi2( double x, unsigned long df );
+    static double __probaChi2( double x, Size df );
 
     /**
      * @brief Computes the probability of normal z value.

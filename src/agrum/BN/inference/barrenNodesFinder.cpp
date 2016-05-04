@@ -235,7 +235,7 @@ namespace gum {
               }
             }
           } else {
-            const int nb_match = std::min( nb_parents, nb_children ) - 1;
+            const int nb_match = int(std::min( nb_parents, nb_children )) - 1;
             auto iter_par = parents.beginSafe();
             ++iter_par;  // skip the first parent, whose arc with node will
                          // remain

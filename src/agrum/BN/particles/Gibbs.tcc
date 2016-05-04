@@ -301,7 +301,7 @@ namespace gum {
       // _nodes_array is assumed to be the list of nodes to draw; in a
       // topological-compatible order
       for ( Idx it = 0; it < __nodes_array.size(); it++ ) {
-        Idx id = __nodes_array[it];
+        NodeId id = __nodes_array[it];
 
         const Potential<GUM_SCALAR>& cpt = this->bn().cpt( id );
 
