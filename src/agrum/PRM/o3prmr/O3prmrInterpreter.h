@@ -120,13 +120,13 @@ namespace gum {
          * En cas d'échec, l'API de gestion d'erreurs est présente.
          * */
         /// # of errors + warnings
-        int count() const;
+        Size count() const;
         /// # of errors
-        int errors() const;
+        Size errors() const;
         /// # of warnings
-        int warnings() const;
+        Size warnings() const;
         /// throw a string error if i >= count
-        ParseError error( int i ) const;
+        ParseError error( Idx i ) const;
         /// send on std::cerr the list of errors
         void showElegantErrors( std::ostream& o = std::cerr ) const;
         /// send on std::cerr the list of errors or warnings

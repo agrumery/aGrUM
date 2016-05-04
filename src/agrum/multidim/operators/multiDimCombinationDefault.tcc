@@ -507,8 +507,7 @@ namespace gum {
                 seq1.beginSafe();
             iter != seq1.endSafe();
             ++iter ) {
-        if ( std::numeric_limits<long>::max() / (long)( *iter )->domainSize() <
-             new_size ) {
+        if ( std::numeric_limits<Size>::max() /  (*iter )->domainSize() <new_size ) {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
@@ -522,9 +521,7 @@ namespace gum {
             iter != seq2.endSafe();
             ++iter ) {
         if ( !seq1.exists( *iter ) ) {
-          if ( std::numeric_limits<long>::max() /
-                   (long)( *iter )->domainSize() <
-               new_size ) {
+          if ( std::numeric_limits<Size>::max() /( *iter )->domainSize() <new_size ) {
             GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
           }
 
@@ -534,7 +531,7 @@ namespace gum {
         }
       }
 
-      if ( std::numeric_limits<long>::max() - current_memory < new_size ) {
+      if ( std::numeric_limits<Size>::max() - current_memory < new_size ) {
         GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
       }
 

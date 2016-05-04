@@ -70,7 +70,7 @@ namespace gum {
         do {
           eps = 0;
 
-          Size iters = ( remaining < psize ) ? remaining : psize;
+          int iters = int(( remaining < psize ) ? remaining : psize);
 
 #pragma omp parallel for
 

@@ -223,7 +223,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void O3prmReader<GUM_SCALAR>::showElegantErrorsAndWarnings(
           std::ostream& o ) const {
-        for ( auto i = 0; i < __errors.count(); ++i ) {
+        for ( Idx i = 0; i < __errors.count(); ++i ) {
           auto err = __errors.error( i );
           o << __print( err ) << std::endl;
         }

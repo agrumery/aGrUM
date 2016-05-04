@@ -992,16 +992,16 @@ namespace gum {
        */
 
       /// # of errors + warnings
-      int O3prmrInterpreter::count() const { return m_errors.count(); }
+      Size O3prmrInterpreter::count() const { return m_errors.count(); }
 
       ///
-      int O3prmrInterpreter::errors() const { return m_errors.error_count; }
+      Size O3prmrInterpreter::errors() const { return m_errors.error_count; }
 
       ///
-      int O3prmrInterpreter::warnings() const { return m_errors.warning_count; }
+      Size O3prmrInterpreter::warnings() const { return m_errors.warning_count; }
 
       ///
-      ParseError O3prmrInterpreter::error( int i ) const {
+      ParseError O3prmrInterpreter::error( Idx i ) const {
         if ( i >= count() ) throw "Index out of bound.";
 
         return m_errors.error( i );

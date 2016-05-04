@@ -57,7 +57,7 @@ namespace gum {
      * @param msg The parsing error message.
      * @param line The line where the parsing error occured.
      */
-    ParseError( bool is_error, const std::string& msg, int line );
+    ParseError( bool is_error, const std::string& msg, Idx line );
 
     /**
      * @brief Class constructor.
@@ -121,7 +121,7 @@ namespace gum {
     Idx line;
 
     /// The column of this gum::ParseError, default is 0.
-    IDx column;
+    Idx column;
 
     /// The gum::ParseError message.
     std::string msg;

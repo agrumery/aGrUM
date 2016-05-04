@@ -110,7 +110,7 @@ namespace gum {
     if ( code.empty() ) {
       std::ifstream ifs( filename.c_str() );
 
-      for ( int i = 0; i < line; i++ )
+      for ( Idx i = 0; i < line; i++ )
         std::getline( ifs, code );
     }
 
@@ -177,7 +177,7 @@ namespace gum {
     error_count += cont.error_count;
     warning_count += cont.warning_count;
 
-    for ( int i = 0; i < cont.count(); i++ )
+    for ( Idx i = 0; i < cont.count(); i++ )
       errors.push_back( cont.error( i ) );
 
     return *this;
@@ -186,7 +186,7 @@ namespace gum {
   void ErrorsContainer::simpleErrors( std::ostream& o ) const {
     if ( count() == 0 ) return;
 
-    for ( int i = 0; i < count(); i++ ) {
+    for ( Idx i = 0; i < count(); i++ ) {
       if ( error( i ).is_error ) o << error( i ).toString() << std::endl;
     }
   }
@@ -194,7 +194,7 @@ namespace gum {
   void ErrorsContainer::simpleErrorsAndWarnings( std::ostream& o ) const {
     if ( count() == 0 ) return;
 
-    for ( int i = 0; i < count(); i++ )
+    for ( Idx i = 0; i < count(); i++ )
       o << error( i ).toString() << std::endl;
   }
 

@@ -86,7 +86,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  int NetReader<GUM_SCALAR>::proceed( void ) {
+  Size NetReader<GUM_SCALAR>::proceed( void ) {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError, "No such file " + streamName() );
     }

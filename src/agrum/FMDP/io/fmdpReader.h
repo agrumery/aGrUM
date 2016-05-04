@@ -77,7 +77,7 @@ namespace gum {
      * parameter fmdp.
      * @return Returns the number of error during the parsing (0 if none).
      */
-    virtual int proceed() = 0;
+    virtual Size proceed() = 0;
   };
 
 

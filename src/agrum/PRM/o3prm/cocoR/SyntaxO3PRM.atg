@@ -76,7 +76,7 @@ using O3PRM = gum::prm::o3prm::O3PRM;
 O3PRM* __prm;
 std::string __prefix;
 
-bool __ok (int n) { return errors().error_count == n; }
+bool __ok (Size n) { return errors().error_count == n; }
 
 void __addO3Type( O3Type t ) {
   get_prm()->types().emplace_back( new O3Type{std::move( t )} );
