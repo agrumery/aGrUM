@@ -384,19 +384,16 @@ namespace gum {
     void CNLoopyPropagation<GUM_SCALAR>::_enum_combi(
         std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
         const NodeId& id,
-        GUM_SCALAR& real_msg_p_min,
-        GUM_SCALAR& real_msg_p_max ) {
+        GUM_SCALAR& msg_p_min,
+        GUM_SCALAR& msg_p_max ) {
       auto taille = msgs_p.size();
 
       // source node
       if ( taille == 0 ) {
-        real_msg_p_min = __cn->get_CPT_min()[id][0];
-        real_msg_p_max = __cn->get_CPT_max()[id][0];
+        msg_p_min = __cn->get_CPT_min()[id][0];
+        msg_p_max = __cn->get_CPT_max()[id][0];
         return;
       }
-
-      GUM_SCALAR msg_p_min = real_msg_p_min;
-      GUM_SCALAR msg_p_max = real_msg_p_min;
 
       decltype( taille ) msgPerm = 1;
 #pragma omp parallel
@@ -454,9 +451,7 @@ namespace gum {
           }
         }
       }
-
-      real_msg_p_min = msg_p_min;
-      real_msg_p_max = msg_p_max;
+      return;
     }
 
     /**
