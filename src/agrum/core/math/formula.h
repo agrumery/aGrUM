@@ -277,15 +277,15 @@ namespace gum {
     /// @{
 
     Formula( short s );
-    //Formula( unsigned short us );
-    //Formula( int i );
-    //Formula( unsigned int ui );
-    //Formula( long l );
-    //Formula( unsigned long ul );
-    //Formula( long long l );
-    //Formula( unsigned long long ul );
-    //Formula( float f );
-    //Formula( double d );
+    Formula( unsigned short us );
+    Formula( int i );
+    Formula( unsigned int ui );
+    Formula( long l );
+    Formula( unsigned long ul );
+    Formula( long long l );
+    Formula( unsigned long long ul );
+    Formula( float f );
+    Formula( double d );
 
     /**
      * @brief Class constructor.
@@ -329,6 +329,11 @@ namespace gum {
      * @return Returns this gum::Formula.
      */
     Formula& operator=( Formula&& source );
+
+    /**
+     * @brief Allows implicit conversion to doubles.
+     */
+    explicit operator double() const { return result(); }
 
     /// @}
     // ========================================================================
@@ -510,6 +515,10 @@ namespace gum {
   Formula operator*( const Formula& a, const Formula& b );
 
   Formula operator/( const Formula& a, const Formula& b );
+
+  std::string to_string( const Formula& f );
+
+  std::ostream& operator<<( std::ostream& os, const Formula& f );
 
   // /// @}
 

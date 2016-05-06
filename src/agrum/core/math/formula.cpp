@@ -205,15 +205,68 @@ namespace gum {
     __initialise();
   }
 
-  // Formula( unsigned short us );
-  // Formula( int i );
-  // Formula( unsigned int ui );
-  // Formula( long l );
-  // Formula( unsigned long ul );
-  // Formula( long long l );
-  // Formula( unsigned long long ul );
-  // Formula( float f );
-  // Formula( double d );
+  Formula::Formula( unsigned short us )
+      : __formula( std::to_string( us ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  Formula::Formula( int i )
+      : __formula( std::to_string( i ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  Formula::Formula( unsigned int ui )
+      : __formula( std::to_string( ui ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  Formula::Formula( long l )
+      : __formula( std::to_string( l ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  Formula::Formula( unsigned long ul )
+      : __formula( std::to_string( ul ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  Formula::Formula( long long l )
+      : __formula( std::to_string( l ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  Formula::Formula( unsigned long long ul )
+      : __formula( std::to_string( ul ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  Formula::Formula( float f )
+      : __formula( std::to_string( f ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
+
+  Formula::Formula( double d )
+      : __formula( std::to_string( d ) )
+      , __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __initialise();
+  }
 
   Formula::Formula( const std::string& f )
       : __formula( f )

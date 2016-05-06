@@ -487,37 +487,38 @@ namespace gum {
 
   INLINE
   Formula operator-( const Formula& a ) {
-    auto sBuff = std::stringstream();
-    sBuff << "-(" << a.formula() << ")";
-    return std::move( Formula( sBuff.str() ) );
+    return std::move( Formula( std::to_string( -1 * a.result() ) ) );
   }
 
   INLINE
   Formula operator+( const Formula& a, const Formula& b ) {
-    auto sBuff = std::stringstream();
-    sBuff << "(" << a.formula() << ") + (" << b.formula() << ")";
-    return std::move( Formula( sBuff.str() ) );
+    return std::move( Formula( std::to_string( a.result() + b.result() ) ) );
   }
 
   INLINE
   Formula operator-( const Formula& a, const Formula& b ) {
-    auto sBuff = std::stringstream();
-    sBuff << "(" << a.formula() << ") - (" << b.formula() << ")";
-    return std::move( Formula( sBuff.str() ) );
+    return std::move( Formula( std::to_string( a.result() - b.result() ) ) );
   }
 
   INLINE
   Formula operator*( const Formula& a, const Formula& b ) {
-    auto sBuff = std::stringstream();
-    sBuff << "(" << a.formula() << ") * (" << b.formula() << ")";
-    return std::move( Formula( sBuff.str() ) );
+    return std::move( Formula( std::to_string( a.result() * b.result() ) ) );
   }
 
   INLINE
   Formula operator/( const Formula& a, const Formula& b ) {
-    auto sBuff = std::stringstream();
-    sBuff << "(" << a.formula() << ") / (" << b.formula() << ")";
-    return std::move( Formula( sBuff.str() ) );
+    return std::move( Formula( std::to_string( a.result() / b.result() ) ) );
+  }
+
+  INLINE
+  std::string to_string( const Formula& f ) {
+    return std::move( std::to_string( f.result() ) );
+  }
+
+  INLINE
+  std::ostream& operator<<( std::ostream& os, const Formula& f ) {
+    os << f.result();
+    return os;
   }
 
 }  // namespace gum
