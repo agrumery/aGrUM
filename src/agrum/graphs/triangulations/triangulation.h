@@ -66,7 +66,7 @@ namespace gum {
     /** @brief returns the number of a given node in the elimination order
      * (0 = first node eliminated) */
 
-    virtual Idx eliminationOrder( const NodeId ) = 0;
+    virtual NodeId eliminationOrder( const NodeId ) = 0;
 
     /// returns the triangulated graph
 

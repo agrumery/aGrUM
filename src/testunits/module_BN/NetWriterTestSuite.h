@@ -105,7 +105,7 @@ namespace gum_tests {
 
       reader.trace( false );
 
-      Size nbrErr = 0;
+      gum::Size nbrErr = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
       reader.showElegantErrors();

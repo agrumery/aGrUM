@@ -80,11 +80,11 @@ namespace gum {
 
     /** @brief returns the number of a given node in the elimination order
      * (0 = first node eliminated) */
-    Idx eliminationOrder( const NodeId );
+    NodeId eliminationOrder( const NodeId );
 
     /** @brief returns a table indicating, for each node, at which step it was
      * deleted by the triangulation process */
-    const NodeProperty<Idx>& reverseEliminationOrder();
+    const NodeProperty<NodeId>& reverseEliminationOrder();
 
     /// returns the triangulated graph
     const UndiGraph& triangulatedGraph();

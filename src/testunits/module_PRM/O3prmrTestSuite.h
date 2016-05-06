@@ -45,11 +45,11 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
             GET_RESSOURCES_PATH( "o3prmr/requests/query1.o3prmr" ) ) );
 
-        TS_ASSERT_EQUALS( si->errors(), 0 );
+        TS_ASSERT_EQUALS( si->errors(), (gum::Size)0 );
         if ( si->errors() > 0 ) {
           si->showElegantErrorsAndWarnings();
         }
-        TS_ASSERT_EQUALS( si->warnings(), 0 );
+        TS_ASSERT_EQUALS( si->warnings(), (gum::Size)0 );
 
         delete si;
       } catch ( gum::Exception& ) {
@@ -67,8 +67,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
             GET_RESSOURCES_PATH( "o3prmr/requests/query2.o3prmr" ) ) );
 
-        TS_ASSERT_EQUALS( si->errors(), 1 );
-        TS_ASSERT_EQUALS( si->warnings(), 0 );
+        TS_ASSERT_EQUALS( si->errors(), (gum::Size)1 );
+        TS_ASSERT_EQUALS( si->warnings(), (gum::Size)0 );
 
         delete si;
       } catch ( gum::Exception& ) {
@@ -87,8 +87,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
             GET_RESSOURCES_PATH( "o3prmr/requests/query1.o3prmr" ) ) );
 
-        TS_ASSERT_EQUALS( si->errors(), 0 );
-        TS_ASSERT_EQUALS( si->warnings(), 0 );
+        TS_ASSERT_EQUALS( si->errors(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( si->warnings(), (gum::Size)0 );
 
         delete si;
       } catch ( gum::Exception& ) {
@@ -106,8 +106,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile( GET_RESSOURCES_PATH(
             "o3prmr/requests/queryObserveTest.o3prmr" ) ) );
 
-        TS_ASSERT_EQUALS( si->errors(), 0 );
-        TS_ASSERT_EQUALS( si->warnings(), 0 );
+        TS_ASSERT_EQUALS( si->errors(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( si->warnings(), (gum::Size)0 );
 
         // Observe correctly
         const auto& c1 =
@@ -159,8 +159,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile( GET_RESSOURCES_PATH(
             "o3prmr/requests/queryUnobserveTest.o3prmr" ) ) );
 
-        TS_ASSERT_EQUALS( si->errors(), 0 );
-        TS_ASSERT_EQUALS( si->warnings(), 0 );
+        TS_ASSERT_EQUALS( si->errors(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( si->warnings(), (gum::Size)0 );
 
         // Unobserve correctly
         const gum::prm::PRMInstance<double>& c1 =
@@ -198,8 +198,8 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prmr/requests/query1.o3prmr" ) ) );
 
         si->showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS( si->errors(), 0 );
-        TS_ASSERT_EQUALS( si->warnings(), 0 );
+        TS_ASSERT_EQUALS( si->errors(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( si->warnings(), (gum::Size)0 );
 
         const gum::prm::PRMInstance<double>& c1 =
             si->prm()->getSystem( "systems.MySystem.MySystem" ).get( "c1" );
@@ -300,7 +300,7 @@ namespace gum_tests {
         si->interpretFile(
             GET_RESSOURCES_PATH( "o3prmr/AsiaOneFile/myRequest.o3prmr" ) );
         // si->showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS( si->count(), 0 );
+        TS_ASSERT_EQUALS( si->count(), (gum::Size)0 );
         if ( ! si->count() ) {
           auto prm = si->prm();
           const auto& sys = prm->getSystem( "Asia.Asia" );
@@ -357,8 +357,8 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prmr/ADD/Request.o3prmr" ) ) );
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS( si.errors(), 0 );
-        TS_ASSERT_EQUALS( si.warnings(), 0 );
+        TS_ASSERT_EQUALS( si.errors(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( si.warnings(), (gum::Size)0 );
 
         TS_ASSERT_EQUALS( si.results().size(), (gum::Size)1 );
 
@@ -377,8 +377,8 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prmr/ADD/Request.o3prmr" ) ) );
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS( si.errors(), 0 );
-        TS_ASSERT_EQUALS( si.warnings(), 0 );
+        TS_ASSERT_EQUALS( si.errors(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( si.warnings(), (gum::Size)0 );
 
         TS_ASSERT_EQUALS( si.results().size(), (gum::Size)1 );
 
@@ -399,8 +399,8 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prmr/aggregates/request.o3prmr" ) ) );
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS( si.errors(), 0 );
-        TS_ASSERT_EQUALS( si.warnings(), 0 );
+        TS_ASSERT_EQUALS( si.errors(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( si.warnings(), (gum::Size)0 );
 
         TS_ASSERT_EQUALS( si.results().size(), (gum::Size)6 );
 
@@ -421,8 +421,8 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prmr/University/fr/request.o3prmr" ) ) );
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS( si.errors(), 0 );
-        TS_ASSERT_EQUALS( si.warnings(), 0 );
+        TS_ASSERT_EQUALS( si.errors(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( si.warnings(), (gum::Size)0 );
 
         TS_ASSERT_EQUALS( si.results().size(), (gum::Size)1 );
 

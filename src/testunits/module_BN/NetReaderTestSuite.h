@@ -63,7 +63,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS( reader.trace( false ), gum::IOError );
 
-      Size nbrErr = 0;
+      gum::Size nbrErr = 0;
 
       TS_ASSERT_THROWS( nbrErr = reader.proceed(), gum::IOError );
 
@@ -90,7 +90,7 @@ namespace gum_tests {
 
       reader.trace( false );
 
-      Size nbrErr = 0;
+      gum::Size nbrErr = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
@@ -117,7 +117,7 @@ namespace gum_tests {
 
       reader.trace( false );
 
-      Size nbrErr = 0;
+      gum::Size nbrErr = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
@@ -144,7 +144,7 @@ namespace gum_tests {
 
       reader.trace( false );
 
-      Size nbrErr = 0;
+      gum::Size nbrErr = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
@@ -171,7 +171,7 @@ namespace gum_tests {
 
       reader.trace( false );
 
-      Size nbrErr = 0;
+      gum::Size nbrErr = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 

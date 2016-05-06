@@ -74,11 +74,11 @@ namespace gum {
 
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
-        int readFile( const std::string& file, const std::string& module = "" );
+        Size readFile( const std::string& file, const std::string& module = "" );
 
         /// With readString method, you must set the current path
         /// to search from import yourself, using addClassPath.
-        int readString( const std::string& string );
+        Size readString( const std::string& string );
 
         void parseStream( std::istream& input,
                           std::ostream& output,

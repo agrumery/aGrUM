@@ -1277,7 +1277,7 @@ namespace gum_tests {
               for ( inst.begin();!inst.end(); inst.inc() ) {
                 sum += attr.val()->cpf()[inst];
               }
-              Size card = 1;
+              gum::Size card = 1;
               for ( auto var : attr.val()->cpf().variablesSequence() ) {
                 card *= var->domainSize();
               }

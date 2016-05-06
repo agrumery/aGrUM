@@ -124,7 +124,7 @@ namespace gum {
     /** @brief returns the number of a given node in the elimination order
      * (0 = first node eliminated) */
 
-    Idx eliminationOrder( const NodeId );
+    NodeId eliminationOrder( const NodeId );
 
     /// returns the triangulated graph
 

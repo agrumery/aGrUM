@@ -214,7 +214,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void
       O3prmReader<GUM_SCALAR>::showElegantErrors( std::ostream& o ) const {
-        for ( auto i = 0; i < __errors.count(); ++i ) {
+        for ( Idx i = 0; i < __errors.count(); ++i ) {
           auto err = __errors.error( i );
           o << __print( err ) << std::endl;
         }
@@ -252,7 +252,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE int
+      INLINE Size
       O3prmReader<GUM_SCALAR>::readString( const std::string& str ) {
         auto sBuff = std::stringstream( str );
         __readStream( sBuff, "" );

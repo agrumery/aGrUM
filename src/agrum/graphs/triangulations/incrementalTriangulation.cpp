@@ -1334,7 +1334,7 @@ namespace gum {
   /** @brief returns the number of a given node in the elimination order
    * (0 = first node eliminated) */
 
-  Idx IncrementalTriangulation::eliminationOrder( const NodeId node ) {
+  NodeId IncrementalTriangulation::eliminationOrder( const NodeId node ) {
     if ( !__graph.existsNode( node ) ) {
       GUM_ERROR( NotFound, "the node " << node << " does not exist" );
     }

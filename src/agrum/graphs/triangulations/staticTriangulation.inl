@@ -24,6 +24,7 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/graphs/triangulations/staticTriangulation.h>
 
 namespace gum {
 
@@ -40,7 +41,7 @@ namespace gum {
    * (0 = first node eliminated) */
 
   INLINE
-  Idx StaticTriangulation::eliminationOrder( const NodeId id ) {
+  NodeId StaticTriangulation::eliminationOrder( const NodeId id ) {
     if ( !__has_triangulation ) __triangulate();
 
     return __reverse_elim_order[id];
@@ -50,7 +51,7 @@ namespace gum {
    * (0 = first node eliminated) */
 
   INLINE
-  const NodeProperty<Idx>&
+  const NodeProperty<NodeId>&
   StaticTriangulation::reverseEliminationOrder() {
     if ( !__has_triangulation ) __triangulate();
 
