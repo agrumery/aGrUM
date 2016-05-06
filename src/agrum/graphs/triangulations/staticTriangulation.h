@@ -219,7 +219,7 @@ namespace gum {
     std::vector<NodeId> __elim_order;
 
     /// the elimination order (access by NodeId)
-    NodeProperty<Idx> __reverse_elim_order;
+    NodeProperty<NodeId> __reverse_elim_order;
 
     /// the cliques formed by the elimination of the nodes
     NodeProperty<NodeSet> __elim_cliques;

@@ -123,7 +123,7 @@ namespace gum {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
       _TabuList__changes.insert(
-          change, _TabuList__offset + _TabuList__changes.size() );
+          change, NodeId(_TabuList__offset + _TabuList__changes.size()) );
     }
 
     /// notify the constraint of a modification of the graph
@@ -132,7 +132,7 @@ namespace gum {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
       _TabuList__changes.insert(
-          change, _TabuList__offset + _TabuList__changes.size() );
+          change, _TabuList__offset + NodeId(_TabuList__changes.size()) );
     }
 
     /// notify the constraint of a modification of the graph
@@ -141,7 +141,7 @@ namespace gum {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
       _TabuList__changes.insert(
-          change, _TabuList__offset + _TabuList__changes.size() );
+          change,_TabuList__offset + NodeId(_TabuList__changes.size()) );
     }
 
     /// notify the constraint of a modification of the graph

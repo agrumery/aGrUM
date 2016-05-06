@@ -294,18 +294,18 @@ namespace gum {
     // create the nodes of the elimination tree
     __elim_tree.clear();
 
-    for ( Idx i = 0; i < __elim_order.size(); ++i )
+    for ( NodeId i = 0; i < __elim_order.size(); ++i )
       __elim_tree.addNode( i, __elim_cliques[__elim_order[i]] );
 
     // create the edges of the elimination tree: join a node to the one in
     // its clique that is eliminated first
-    for ( Idx i = 0; i < __elim_order.size(); ++i ) {
+    for ( NodeId i = 0; i < __elim_order.size(); ++i ) {
       NodeId clique_i_creator = __elim_order[i];
       const NodeSet& list_of_nodes = __elim_cliques[clique_i_creator];
-      Idx child = __original_graph->bound() + 1;
+      NodeId child = __original_graph->bound() + 1;
 
-      for ( const auto node : list_of_nodes ) {
-        Idx it_elim_step = __reverse_elim_order[node];
+      for ( NodeId node : list_of_nodes ) {
+        NodeId it_elim_step = __reverse_elim_order[node];
 
         if ( ( node != clique_i_creator ) && ( child > it_elim_step ) )
           child = it_elim_step;

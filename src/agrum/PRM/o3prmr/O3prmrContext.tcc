@@ -170,8 +170,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       O3prmrSession<GUM_SCALAR>::~O3prmrSession() {
-        for ( int i = m_commands.size() - 1; i >= 0; i-- )
-          delete m_commands[i];
+        for ( Idx i = m_commands.size() ; i >= 1; i-- )
+          delete m_commands[i-1];
 
         m_commands.clear();
       }

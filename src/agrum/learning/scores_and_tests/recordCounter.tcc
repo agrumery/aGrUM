@@ -353,7 +353,7 @@ namespace gum {
       __countings.push_back( std::vector<double, CountAlloc>( set_size, 0.0f ) );
 
       // create the corresponding idset
-      NodeId node = __nodesets.size();
+      NodeId node =NodeId(__nodesets.size());
       __nodesets.push_back( &ids );
 
       // for empty sets
@@ -395,7 +395,7 @@ namespace gum {
             std::pair<const IdSet<IdSetAlloc>*, Idx>(
                 nullptr, __idsets.second( tmp_idset ) ) );
 
-        __subset_lattice.addArc( __idsets.second( tmp_idset ), node );
+        __subset_lattice.addArc( NodeId(__idsets.second( tmp_idset )), node );
       }
 
       return node;
@@ -413,8 +413,8 @@ namespace gum {
       // small databases and large numbers of processors
       Size max_nb_threads =
           std::min( parsed_db_size / __min_nb_rows_per_thread,
-                    (unsigned long)__max_threads_number );
-      unsigned long max_size_per_thread;
+                    __max_threads_number );
+      Size max_size_per_thread;
       if ( max_nb_threads == 0 ) {
         max_nb_threads = 1;
         max_size_per_thread = parsed_db_size;

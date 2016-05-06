@@ -43,7 +43,7 @@ namespace gum {
   INLINE void SetInst::__chgVal( Idx varPos, Idx newVal ) {
 
     //  Size oldVal = __vals[varPos];
-    __vals[varPos] = 1 << newVal;
+    __vals[varPos] = Idx(1) << newVal;
 
     //    if ( __master )
     //      __master->changeNotification( *this, __vars[varPos], oldVal, newVal

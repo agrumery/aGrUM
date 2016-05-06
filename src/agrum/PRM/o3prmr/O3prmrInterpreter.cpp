@@ -161,7 +161,7 @@ namespace gum {
           // On vérifie la syntaxe
           unsigned char* buffer = new unsigned char[file_content.length() + 1];
           strcpy( (char*)buffer, file_content.c_str() );
-          Scanner s( buffer, file_content.length() + 1 );
+          Scanner s( buffer, int(file_content.length() + 1) );
           Parser p( &s );
           p.setO3prmrContext( &c );
           p.Parse();

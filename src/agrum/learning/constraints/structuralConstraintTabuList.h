@@ -205,10 +205,10 @@ namespace gum {
 
       protected:
       /// the tabu list
-      Bijection<GraphChange, int> _TabuList__changes;
+      Bijection<GraphChange, NodeId> _TabuList__changes;
 
       /// the index of the oldest element
-      int _TabuList__offset{0};
+      NodeId _TabuList__offset{0};
     };
 
   } /* namespace learning */

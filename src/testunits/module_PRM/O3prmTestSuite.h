@@ -24,7 +24,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/graphElements.>
+#include <agrum/graphs/graphElements.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 #include <agrum/PRM/elements/PRMFormAttribute.h>

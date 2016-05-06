@@ -28,7 +28,7 @@ namespace gum {
   //
   // =================================================================================================
   StatesCounter::StatesCounter()
-      : __counter( MultiDimFunctionGraph<int>::getTreeInstance() ) {
+      : __counter( MultiDimFunctionGraph<Size>::getTreeInstance() ) {
     GUM_CONSTRUCTOR( StatesCounter )
   }
 
@@ -85,7 +85,7 @@ namespace gum {
   void StatesCounter::__incState( const Instantiation& state,
                                   NodeId parentId,
                                   Idx parentModa,
-                                  Idx nbVisits ) {
+                                  Size nbVisits ) {
 
     Idx varIter = 0;
     if ( parentId )

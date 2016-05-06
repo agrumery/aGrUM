@@ -44,7 +44,7 @@ namespace gum {
       StructuralConstraintDiGraph::setGraph( nb_nodes );
 
       DAG g;
-      for ( Idx i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         g.addNode( i );
       }
       _DAG__cycle_detector.setDAG( g );

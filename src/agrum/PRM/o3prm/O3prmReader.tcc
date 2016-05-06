@@ -260,7 +260,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE int
+      INLINE Size
       O3prmReader<GUM_SCALAR>::readFile( const std::string& file,
                                           const std::string& module ) {
         try {
@@ -314,7 +314,7 @@ namespace gum {
             new unsigned char[sBuff.length() + 1] );
         strcpy( (char*)buffer.get(), sBuff.c_str() );
         auto s =
-            o3prm_scanner( buffer.get(), sBuff.length() + 1, filename );
+            o3prm_scanner( buffer.get(), int(sBuff.length() + 1), filename );
         auto p = o3prm_parser( &s );
         p.set_prm( __o3_prm.get() );
         p.set_prefix( module );
