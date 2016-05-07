@@ -99,7 +99,7 @@ namespace gum {
       for ( Idx i = 0; i < size; ++i ) {
         if ( target_nodesets[i] != nullptr ) {
           // compute the r_i's and q_i's
-          const double r_i = modalities[target_nodesets[i]->first.back()];
+          const double r_i = double(modalities[target_nodesets[i]->first.back()]);
           double q_i = 1;
           if ( conditioning_nodesets[i] != nullptr ) {
             const std::vector<Idx, IdSetAlloc>& cond =

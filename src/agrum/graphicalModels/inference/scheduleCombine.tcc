@@ -204,7 +204,7 @@ namespace gum {
         GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
       }
 
-      size *= var->domainSize();
+      size *= long(var->domainSize());
     }
 
     for ( const auto var : seq2 )

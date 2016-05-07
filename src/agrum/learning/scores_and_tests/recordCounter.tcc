@@ -730,7 +730,7 @@ namespace gum {
       }
 
       // now, for each IdSet, determine if it is a subset of another IdSet
-      for ( NodeId i = 0, j = 0, size = __set2thread_id.size(); i < size;
+      for ( NodeId i = 0, j = 0, size = NodeId(__set2thread_id.size()); i < size;
             ++i ) {
         if ( __set_state[i] < SetState::COPY_SET ) {
           // the set is not known to be a copy of another set and is not empty
@@ -743,7 +743,7 @@ namespace gum {
           const std::vector<const IdSet<IdSetAlloc>*>& sets =
               __var2idsets[ids[0]];
           bool subset = false;
-          NodeId index;
+          Idx index;
 
           for ( const auto set : sets ) {
             if ( ( set->ids().size() > ids_size ) && ids.isSubset( *set ) ) {
@@ -757,8 +757,8 @@ namespace gum {
             // assign the superset to the subset and allocate the subset's
             // counting
             __set_state[i] = SetState::STRICT_SUBSET;
-            __set2thread_id[i].second = index;
-            __subset_lattice.addArc( index, i );
+            __set2thread_id[i].second = NodeId(index);
+            __subset_lattice.addArc( NodeId(index), i );
           } else {
             __set2thread_id[i].second = j;
             ++j;

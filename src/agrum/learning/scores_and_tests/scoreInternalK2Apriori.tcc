@@ -90,7 +90,7 @@ namespace gum {
         }
 
         if ( conditioning_nodesets[i] != nullptr ) {
-          const double weight = modalities[target_nodesets[i]->first.back()];
+          const double weight = double(modalities[target_nodesets[i]->first.back()]);
           std::vector<double, CountAlloc>& countings =
               counts[conditioning_nodesets[i]->second];
           for ( auto& count : countings ) {
