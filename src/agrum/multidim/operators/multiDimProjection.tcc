@@ -144,7 +144,7 @@ namespace gum {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
-        res *= ( *iter )->domainSize();
+        res *= long(( *iter )->domainSize());
       }
     }
 

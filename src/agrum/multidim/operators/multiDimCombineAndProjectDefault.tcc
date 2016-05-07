@@ -979,7 +979,7 @@ namespace gum {
             del_size *= ( *iter_del )->domainSize();
           }
 
-          current_memory -= del_size;
+          current_memory -= long(del_size);
 
           delete *iter;
           tmp_marginals.erase( *iter );

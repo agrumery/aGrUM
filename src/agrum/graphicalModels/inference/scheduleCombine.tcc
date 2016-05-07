@@ -214,7 +214,7 @@ namespace gum {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
-        size *= var->domainSize();
+        size *= long(var->domainSize());
       }
 
     return std::pair<long, long>( size, size );

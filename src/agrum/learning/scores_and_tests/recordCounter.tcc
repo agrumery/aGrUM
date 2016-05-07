@@ -634,7 +634,7 @@ namespace gum {
       // computes a queue of the subsets that can be considered for counting
       // to do so, simply fill it with the nodes without parents in the
       // subset lattice
-      List<Idx> setFIFO;
+      List<NodeId> setFIFO;
 
       for ( const auto node : __subset_lattice ) {
         if ( __subset_lattice.parents( node ).size() == 0 ) {
@@ -645,7 +645,7 @@ namespace gum {
       // perform the countings for the subsets
       while ( !setFIFO.empty() ) {
         // get the next set to count
-        Idx new_set = setFIFO.front();
+        NodeId new_set = setFIFO.front();
         setFIFO.popFront();
 
         // perform the counting
@@ -730,7 +730,7 @@ namespace gum {
       }
 
       // now, for each IdSet, determine if it is a subset of another IdSet
-      for ( Idx i = 0, j = 0, size = __set2thread_id.size(); i < size;
+      for ( NodeId i = 0, j = 0, size = __set2thread_id.size(); i < size;
             ++i ) {
         if ( __set_state[i] < SetState::COPY_SET ) {
           // the set is not known to be a copy of another set and is not empty
@@ -743,7 +743,7 @@ namespace gum {
           const std::vector<const IdSet<IdSetAlloc>*>& sets =
               __var2idsets[ids[0]];
           bool subset = false;
-          Idx index;
+          NodeId index;
 
           for ( const auto set : sets ) {
             if ( ( set->ids().size() > ids_size ) && ids.isSubset( *set ) ) {
@@ -768,7 +768,7 @@ namespace gum {
 
       // now that we know which nodes are supersets and which ones are not, we
       // can remove from the lattice all the nodes that are supersets
-      for ( Idx i = 0, size = __set2thread_id.size(); i < size; ++i ) {
+      for ( NodeId i = 0, size = __set2thread_id.size(); i < size; ++i ) {
         if ( __set_state[i] == SetState::NOT_SUBSET ) {
           __subset_lattice.eraseNode( i );
         }

@@ -506,7 +506,7 @@ namespace gum {
              new_size )
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
 
-        new_size *= var->domainSize();
+        new_size *= long(var->domainSize());
         new_seq->insert( var );
       }
 
@@ -516,7 +516,7 @@ namespace gum {
                new_size )
             GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
 
-          new_size *= var->domainSize();
+          new_size *= long(var->domainSize());
           new_seq->insert( var );
         }
       }
@@ -534,12 +534,12 @@ namespace gum {
       // substitute tables[pair.first] by the result
       if ( tables[ti] && is_t_new[ti] ) {
         delete tables[ti];
-        current_memory -= table_size[ti];
+        current_memory -= long(table_size[ti]);
       }
 
       if ( tables[tj] && is_t_new[tj] ) {
         delete tables[tj];
-        current_memory -= table_size[tj];
+        current_memory -= long(table_size[tj]);
       }
 
       tables[ti] = new_seq;

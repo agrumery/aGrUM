@@ -477,7 +477,7 @@ namespace gum {
           __output.push_back( std::vector<GUM_SCALAR>( ++__input[i - 1].begin(),
                                                        __input[i - 1].end() ) );
 
-      __vertices = __output.size();
+      __vertices = (unsigned int)__output.size();
 
       __freeLrs();
 
