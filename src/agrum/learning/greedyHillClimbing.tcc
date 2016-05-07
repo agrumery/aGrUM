@@ -51,7 +51,7 @@ namespace gum {
         nb_changes_applied = 0;
         delta_score = 0;
 
-        std::vector<std::pair<Idx, double>> ordered_queues =
+        std::vector<std::pair<NodeId, double>> ordered_queues =
             selector.nodesSortedByBestScore();
 
         for ( Idx j = 0; j < dag.size(); ++j ) {

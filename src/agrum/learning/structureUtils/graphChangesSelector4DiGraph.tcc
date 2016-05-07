@@ -978,13 +978,13 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE std::vector<std::pair<Idx, double>>
+    INLINE std::vector<std::pair<NodeId, double>>
     GraphChangesSelector4DiGraph<
         SCORE,
         STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::nodesSortedByBestScore() const {
-      std::vector<std::pair<Idx, double>> result( __node_queue.size() );
-      for ( Idx i = 0; i < __node_queue.size(); ++i ) {
+      std::vector<std::pair<NodeId, double>> result( __node_queue.size() );
+      for ( NodeId i = 0; i < __node_queue.size(); ++i ) {
         result[i].first = __node_queue[i];
         result[i].second = __node_queue.priorityByPos( i );
       }

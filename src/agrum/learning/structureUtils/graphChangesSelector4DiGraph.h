@@ -169,7 +169,7 @@ namespace gum {
       void setGraph( DiGraph& graph, const std::vector<Size>& modal );
 
       /// returns the set of queues sorted by decreasing top priority
-      std::vector<std::pair<Idx, double>>
+      std::vector<std::pair<NodeId, double>>
       nodesSortedByBestScore() const;
 
       /// returns the set of queues top priorities
@@ -203,7 +203,7 @@ namespace gum {
           __change_queue_per_node;
 
       /// a global priority queue indicating for each node its best score
-      PriorityQueue<Idx, double, std::greater<double>> __node_queue;
+      PriorityQueue<NodeId, double, std::greater<double>> __node_queue;
 
       /// the set of changes known to be currently illegal (due to the
       /// constraints)
