@@ -604,9 +604,8 @@ namespace gum {
   // Indicates if given node is terminal or not
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE bool
-  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::isTerminalNode(
-      const NodeId& node ) const {
-    return this->existsTerminalNode( node );
+  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::isTerminalNode(const NodeId& node ) const {
+    return this->existsTerminalNodeWithId( node );
   }
 
   // Indicates if given node is terminal or not

@@ -49,9 +49,6 @@ namespace gum {
    */
   typedef std::size_t Size;
 
-/// Maximum sized used in aGrUM.
-#define GUM_MAX_SIZE ULONG_MAX
-
   /// @}
 
 } /* namespace gum */
