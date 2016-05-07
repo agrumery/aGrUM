@@ -120,7 +120,7 @@ namespace gum {
       // specified by the user, map them into strings
       {
         DBHandler& handler = raw_filter.handler();
-        const unsigned long db_size = handler.DBSize();
+        const Size db_size = handler.DBSize();
 
         // determine the number of threads to use for the parsing
         Idx max_nb_threads =
@@ -128,7 +128,7 @@ namespace gum {
                       std::min( db_size / __min_nb_rows_per_thread,
                                 __max_threads_number ) );
 
-        const unsigned long max_size_per_thread =
+        const Size max_size_per_thread =
             ( db_size + max_nb_threads - 1 ) / max_nb_threads;
 
         max_nb_threads = db_size / max_size_per_thread;
@@ -150,10 +150,10 @@ namespace gum {
           DBHandler& the_handler = handlers[this_thread];
 
           // indicate to the filter which part of the database it must parse
-          const unsigned long size_per_thread =
+          const Size size_per_thread =
               ( db_size + num_threads - 1 ) / num_threads;
-          const unsigned long min_range = size_per_thread * this_thread;
-          const unsigned long max_range =
+          const Size min_range = size_per_thread * this_thread;
+          const Size max_range =
               std::min( min_range + size_per_thread, db_size );
 
           if ( min_range < max_range ) {

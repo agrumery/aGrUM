@@ -86,7 +86,7 @@ namespace gum_tests {
     }
 
     void testHash() {
-      gum::HashTable<gum::Edge, unsigned long> hash;
+      gum::HashTable<gum::Edge, gum::NodeId> hash;
 
       for ( gum::NodeId x = 0; x < 1000; ++x ) {
         for ( gum::NodeId y = x; y < 1000; ++y ) {

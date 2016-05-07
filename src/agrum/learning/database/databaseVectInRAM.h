@@ -188,10 +188,10 @@ namespace gum {
          * For instance, RecordCounters cut the database into several pieces and
          * assign each piece to a handler. Then each handler is used to perform
          * countings only on a subset of the database */
-        unsigned long size() const noexcept;
+        Size size() const noexcept;
 
         /// return the number of rows of the whole database
-        unsigned long DBSize() const noexcept;
+        Size DBSize() const noexcept;
 
         /// returns the current row pointed to by the handler (safe version)
         /** @throws OutOfBounds if the handler points to the end of its area */
@@ -257,13 +257,13 @@ namespace gum {
         const std::vector<DBRow>* __row;
 
         /// the index of the row currently pointed to by the handler
-        unsigned long __index{0};
+        Size __index{0};
 
         /// the first row managed by the handler
-        unsigned long __begin_index{0};
+        Size __begin_index{0};
 
         /// the row just after the last one managed by the handler
-        unsigned long __end_index{0};
+        Size __end_index{0};
 
         /// attach a new handler to the database
         void __attachHandler();
@@ -343,7 +343,7 @@ namespace gum {
       /// erase a given row
       /** if the row does not exist, nothing is done. In particular, no
        * exception is raised. */
-      void eraseDBRow( unsigned long index );
+      void eraseDBRow( Idx index );
 
       /// erase the first row
       /** if the row does not exist, nothing is done. In particular, no
@@ -358,15 +358,15 @@ namespace gum {
       /// erase the k first rows
       /** if there are fewer than k rows in the database, the database is
        * completely emptied */
-      void eraseFirstDBRows( unsigned long nb_rows );
+      void eraseFirstDBRows( Size nb_rows );
 
       /// erase the k last rows
       /** if there are fewer than k rows in the database, the database is
        * completely emptied */
-      void eraseLastDBRows( unsigned long nb_rows );
+      void eraseLastDBRows( Size nb_rows );
 
       /// erase the rows from the debth to the endth (not included)
-      void eraseDBRows( unsigned long deb, unsigned long end );
+      void eraseDBRows( Idx deb, Idx end );
 
       /// erase all the rows
       void eraseAllDBRows();
@@ -396,7 +396,7 @@ namespace gum {
       mutable std::vector<Handler*> __list_of_handlers;
 
       /// update the handlers when the size of the database changes
-      void __updateHandlers( unsigned long new_size );
+      void __updateHandlers( Size new_size );
 
       /// allow the handlers to access the database directly
       friend class Handler;

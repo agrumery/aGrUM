@@ -46,7 +46,7 @@ namespace gum {
   class ChiSquare {
 
     public:
-    static double probaChi2( double x, unsigned long df );
+    static double probaChi2( double x, Size df );
 
     private:
     // =================================================================================

@@ -6,7 +6,7 @@
 // prints reports of the errors to an output
 // stream.  Since we cannot rely ou the standard
 // iostreams, this header defines a base class
-// analogout to std::ostream.
+// analog to std::ostream.
 //
 
 // in order to force GUM_CHECKPOINT / GUM_TRACE / GUM_TRACE_VAR to works even in
@@ -125,7 +125,7 @@ namespace CxxTest {
 #endif  // NDEBUG
 
       ( *_o ) << endl
-              << "## Profiling : " << (unsigned long)( 1000.0 * __totalTime )
+              << "## Profiling : " << (gum::Size)( 1000.0 * __totalTime )
               << " ms ##" << endl;
 
       ( *_o ) << "Failed " << tracker().failedTests() << " of " << totalTests

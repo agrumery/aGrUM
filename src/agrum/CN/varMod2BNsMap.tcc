@@ -35,7 +35,7 @@ namespace gum {
 
         for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
           Size nVertices = ( *cpt )[node][pconf].size();
-          unsigned long b,c;
+          unsigned long b,c; // needed by superiorPow
           superiorPow( static_cast<unsigned long>(nVertices), b, c );
           Size nBits=Size(b);
           Size newCard=Size(c);

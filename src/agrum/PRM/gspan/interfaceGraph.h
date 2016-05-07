@@ -57,7 +57,7 @@ namespace gum {
         /// The string version of this label.
         std::string l;
         /// The size in terms of tree width of the given label.
-        unsigned long tree_width;
+        Size tree_width;
         /// Equality operator.
         bool operator==( const LabelData& from ) const;
         /// Difference operator.

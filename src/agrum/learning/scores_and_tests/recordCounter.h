@@ -115,7 +115,7 @@ namespace gum {
       virtual void count() = 0;
 
       /// returns the size of the database
-      virtual unsigned long DBSize() noexcept = 0;
+      virtual Size DBSize() noexcept = 0;
 
       /// sets the interval of records on which countings should be performed
       virtual void setRange( Size min_index,
@@ -215,7 +215,7 @@ namespace gum {
       using Base::getCounts;
 
       /// returns the size of the database
-      unsigned long DBSize() noexcept;
+      Size DBSize() noexcept;
 
       /// sets the interval of records on which countings should be performed
       void setRange( Size min_index, Size max_index );
@@ -283,7 +283,7 @@ namespace gum {
       addNodeSet( const std::vector<Idx, IdSetAlloc>& ids );
 
       /// returns the size of the database taken into account by the counter
-      unsigned long DBParsedSize() noexcept;
+      Size DBParsedSize() noexcept;
 
       /// sets the range of records taken into account by the counter
       /** @param min_range he number of the first record to be taken into

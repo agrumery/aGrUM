@@ -104,8 +104,8 @@ namespace gum {
           const RowFilter& filter,
           const std::vector<Size>& var_modalities,
           Apriori<IdSetAlloc, CountAlloc>& apriori,
-          unsigned long min_range = 0,
-          unsigned long max_range = std::numeric_limits<Size>::max() );
+          Size min_range = 0,
+          Size max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       ScoreBDeu( const ScoreBDeu<IdSetAlloc, CountAlloc>& );

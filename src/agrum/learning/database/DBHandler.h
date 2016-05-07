@@ -47,10 +47,10 @@ namespace gum {
        * For instance, RecordCounters cut the database into several pieces and
        * assign each piece to a handler. Then each handler is used to perform
        * countings only on a subset of the database */
-      virtual unsigned long size() const noexcept = 0;
+      virtual Size size() const noexcept = 0;
 
       /// the number of rows in the whole database
-      virtual unsigned long DBSize() const noexcept = 0;
+      virtual Size DBSize() const noexcept = 0;
 
       /// returns the current row of the database
       /** @throws OutOfBounds if the handler points to the end of its area */

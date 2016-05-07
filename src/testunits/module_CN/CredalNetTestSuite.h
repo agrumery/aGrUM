@@ -262,7 +262,7 @@ namespace gum_tests {
         gum::Instantiation ins( cn->instantiation( id ) );
         ins.setFirst();
 
-        unsigned long int entry( 0 );
+        gum::Size entry( 0 );
 
         while ( !ins.end() ) {
           std::vector<std::vector<double>> vertices(

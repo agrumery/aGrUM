@@ -38,7 +38,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     NodeId CredalNet<GUM_SCALAR>::addNode( const std::string& name,
-                                           const unsigned long& card ) {
+                                           const Size& card ) {
       LabelizedVariable var( name, "node " + name, card );
 
       NodeId a = __src_bn.add( var );
@@ -124,7 +124,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void CredalNet<GUM_SCALAR>::setCPT(
         const NodeId& id,
-        unsigned long int& entry,
+        Size& entry,
         const std::vector<std::vector<GUM_SCALAR>>& cpt ) {
       const Potential<GUM_SCALAR>* const potential( &__src_bn.cpt( id ) );
 
@@ -357,7 +357,7 @@ namespace gum {
       min.setFirst();
       max.setFirst();
 
-      unsigned long int pos = 0;
+      Idx pos = 0;
 
       while ( pos != entry ) {
         ++min;

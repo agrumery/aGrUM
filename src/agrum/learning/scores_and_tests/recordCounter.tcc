@@ -198,7 +198,7 @@ namespace gum {
 
     /// returns the size of the database
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    INLINE unsigned long
+    INLINE Size
     RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>::DBSize() noexcept {
       return __filter.handler().DBSize();
     }
@@ -234,7 +234,7 @@ namespace gum {
       __thread_counters.push_back( counter );
 
       // set the range of the counter
-      const unsigned long db_size = counter->DBSize();
+      const Size db_size = counter->DBSize();
       if ( __max_range > db_size ) {
         __max_range = db_size;
       }
@@ -473,7 +473,7 @@ namespace gum {
       {
         const Size this_thread = getThreadNumber();
         auto& counter = *( __thread_counters[this_thread] );
-        unsigned long size_per_thread, min_range, max_range;
+          Size size_per_thread, min_range, max_range;
 
         for ( Idx i = 0, size = __countings.size(); i < size; ++i ) {
           if ( __set_state[i] == SetState::NOT_SUBSET ) {
@@ -487,7 +487,7 @@ namespace gum {
             // add to vect the countings of the other threads
             min_range = size_per_thread * this_thread;
             max_range = std::min( min_range + size_per_thread,
-                                  (unsigned long)vect.size() );
+                                  (Size)vect.size() );
 
             for ( Idx j = 0; j < __nb_thread_counters; ++j ) {
               if ( j != this_thread ) {
@@ -821,7 +821,7 @@ namespace gum {
     INLINE void
     RecordCounter<IdSetAlloc, CountAlloc>::setRange( Size min_range,
                                                      Size max_range ) {
-      const unsigned long db_size = __thread_counters[0]->DBSize();
+      const Size db_size = __thread_counters[0]->DBSize();
       if ( max_range > db_size ) {
         max_range = db_size;
       }

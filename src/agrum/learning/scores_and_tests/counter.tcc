@@ -37,8 +37,8 @@ namespace gum {
     INLINE Counter<IdSetAlloc, CountAlloc>::Counter(
         const RowFilter& filter,
         const std::vector<Size>& var_modalities,
-        unsigned long min_range,
-        unsigned long max_range )
+        Size min_range,
+        Size max_range )
         : _modalities( var_modalities )
         , _record_counter( filter, var_modalities, min_range, max_range ) {
       // for debugging purposes

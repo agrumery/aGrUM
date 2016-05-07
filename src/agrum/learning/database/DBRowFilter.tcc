@@ -35,7 +35,7 @@ namespace gum {
         const DBHandler &handler,
         const TranslatorSet &translator_set,
         const GeneratorSet &generator_set,
-        unsigned long initialization_range ) noexcept
+        Size initialization_range ) noexcept
         : __handler( handler ),
           __translator_set( translator_set ),
           __generator_set( generator_set ) {
@@ -111,9 +111,9 @@ namespace gum {
     /// initialize the cell filters by parsing once the database
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     void DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::__initCellFilters(
-        unsigned long db_range ) {
+        Size db_range ) {
       // keep track of the previous range to restore it later
-      std::pair<unsigned long, unsigned long> previous_range =
+      std::pair<Size,Size> previous_range =
           __handler.range();
 
       // set the handler to the appropriate range

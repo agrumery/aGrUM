@@ -142,7 +142,7 @@ namespace gum {
        * @param card The cardinality of the variable
        * @return The \c NodeId of the variable in the network
        */
-      NodeId addNode( const std::string& name, const unsigned long& card );
+      NodeId addNode( const std::string& name, const Size& card );
 
       /**
        * @brief Adds an arc between two nodes.
@@ -193,7 +193,7 @@ namespace gum {
        *!
        */
       void setCPT( const NodeId& id,
-                   unsigned long int& entry,
+                   Size& entry,
                    const std::vector<std::vector<GUM_SCALAR>>& cpt );
 
       /**

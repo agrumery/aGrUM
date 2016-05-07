@@ -228,7 +228,7 @@ namespace gum {
       std::vector<gspan::LabelData*> __edges;
 
       /// Mapping between labels and their cost.
-      HashTable<gspan::LabelData*, unsigned long> __cost;
+      HashTable<gspan::LabelData*, Idx> __cost;
 
       /// Mapping between a pattern and the multiset of instances matched
       /// to it.

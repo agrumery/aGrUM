@@ -23,6 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include<agrum/learning/database/databaseVectInRAM.h>
 
 namespace gum {
 
@@ -127,12 +128,12 @@ namespace gum {
     }
 
     /// returns the number of rows managed by the handler
-    INLINE unsigned long DatabaseVectInRAM::Handler::size() const noexcept {
+    INLINE Size DatabaseVectInRAM::Handler::size() const noexcept {
       return __end_index - __begin_index;
     }
 
     /// return the number of rows of the whole database
-    INLINE unsigned long DatabaseVectInRAM::Handler::DBSize() const noexcept {
+    INLINE Size DatabaseVectInRAM::Handler::DBSize() const noexcept {
       return __row->size();
     }
 
@@ -201,9 +202,9 @@ namespace gum {
     }
 
     /// returns the current range of the handler
-    INLINE std::pair<unsigned long, unsigned long>
+    INLINE std::pair<Size, Size>
     DatabaseVectInRAM::Handler::range() const noexcept {
-      return std::pair<unsigned long, unsigned long>( __begin_index,
+      return std::pair<Size, Size>( __begin_index,
                                                       __end_index );
     }
 
@@ -342,7 +343,7 @@ namespace gum {
     }
 
     /// update the handlers when the size of the database changes
-    INLINE void DatabaseVectInRAM::__updateHandlers( unsigned long new_size ) {
+    INLINE void DatabaseVectInRAM::__updateHandlers( Size new_size ) {
       Size db_size = __data.size();
 
       for ( auto handler : __list_of_handlers ) {
@@ -359,7 +360,7 @@ namespace gum {
     /// insert a new DBRow at the end of the database
     INLINE void DatabaseVectInRAM::insertDBRow( const DBRow& new_row ) {
       // check that the size of the row is the same as the rest of the database
-      const unsigned long db_size = __data.size();
+      const Size db_size = __data.size();
 
       if ( db_size && ( new_row.size() != __data[0].size() ) ) {
         GUM_ERROR( SizeError,
@@ -382,7 +383,7 @@ namespace gum {
     /// insert a new DBRow at the end of the database
     INLINE void DatabaseVectInRAM::insertDBRow( DBRow&& new_row ) {
       // check that the size of the row is the same as the rest of the database
-      const unsigned long db_size = __data.size();
+      const Size db_size = __data.size();
 
       if ( db_size && ( new_row.size() != __data[0].size() ) ) {
         GUM_ERROR( SizeError,
@@ -420,7 +421,7 @@ namespace gum {
 
       // check that the sizes of the new rows are the same as the rest of
       // the database
-      const unsigned long db_size = __data.size();
+      const Size db_size = __data.size();
       const Size nb_cols = __variable_names.size();
 
       if ( db_size && ( __data[0].size() != new_size ) ) {
@@ -483,8 +484,8 @@ namespace gum {
     }
 
     /// erase a given row
-    INLINE void DatabaseVectInRAM::eraseDBRow( unsigned long index ) {
-      unsigned long db_size = __data.size();
+    INLINE void DatabaseVectInRAM::eraseDBRow( Idx index ) {
+      Size db_size = __data.size();
 
       if ( index < db_size ) {
         __updateHandlers( db_size - 1 );
@@ -494,7 +495,7 @@ namespace gum {
 
     /// erase the last row
     INLINE void DatabaseVectInRAM::eraseLastDBRow() {
-      unsigned long db_size = __data.size();
+      Size db_size = __data.size();
 
       if ( db_size ) {
         __updateHandlers( db_size - 1 );
@@ -504,7 +505,7 @@ namespace gum {
 
     /// erase the first row
     INLINE void DatabaseVectInRAM::eraseFirstDBRow() {
-      unsigned long db_size = __data.size();
+      Size db_size = __data.size();
 
       if ( db_size ) {
         __updateHandlers( db_size - 1 );
@@ -519,8 +520,8 @@ namespace gum {
     }
 
     /// erase the k first rows
-    INLINE void DatabaseVectInRAM::eraseFirstDBRows( unsigned long nb_rows ) {
-      unsigned long db_size = __data.size();
+    INLINE void DatabaseVectInRAM::eraseFirstDBRows( Size nb_rows ) {
+      Size db_size = __data.size();
 
       if ( nb_rows >= db_size ) {
         eraseAllDBRows();
@@ -531,8 +532,8 @@ namespace gum {
     }
 
     /// erase the k last rows
-    INLINE void DatabaseVectInRAM::eraseLastDBRows( unsigned long nb_rows ) {
-      unsigned long db_size = __data.size();
+    INLINE void DatabaseVectInRAM::eraseLastDBRows( Size nb_rows ) {
+      Size db_size = __data.size();
 
       if ( nb_rows >= db_size ) {
         eraseAllDBRows();
@@ -544,11 +545,11 @@ namespace gum {
     }
 
     /// erase the rows from the debth to the endth (not included)
-    INLINE void DatabaseVectInRAM::eraseDBRows( unsigned long deb,
-                                                unsigned long end ) {
+    INLINE void DatabaseVectInRAM::eraseDBRows( Idx deb,
+                                                Idx end ) {
       if ( deb > end ) std::swap( deb, end );
 
-      unsigned long db_size = __data.size();
+      Size db_size = __data.size();
 
       if ( end >= db_size ) {
         if ( deb >= db_size ) {

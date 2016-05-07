@@ -112,7 +112,7 @@ namespace gum {
       // size of the database (basically, if there are fewer than an average
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
-      unsigned long cpt_size =
+      Size cpt_size =
           this->_modalities[var1] * this->_modalities[var2] * 5;
       for ( auto node : conditioning_ids ) {
         cpt_size *= this->_modalities[node];
@@ -162,7 +162,7 @@ namespace gum {
       // size of the database (basically, if there are fewer than an average
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
-      unsigned long cpt_size =
+      Size cpt_size =
           this->_modalities[var1] * this->_modalities[var2] * 5;
       for ( auto node : conditioning_ids ) {
         cpt_size *= this->_modalities[node];

@@ -36,8 +36,8 @@ namespace gum {
         const RowFilter& filter,
         const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
-        unsigned long min_range,
-        unsigned long max_range )
+        Size min_range,
+        Size max_range )
         : Counter<IdSetAlloc, CountAlloc>(
               filter, var_modalities, min_range, max_range )
         , _apriori( &apriori ) {

@@ -398,10 +398,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE unsigned long
+    INLINE Idx
     GSpan<GUM_SCALAR>::__cost_func( Size interface_size,
                                     Size frequency ) {
-      return interface_size * frequency;
+      return Idx(interface_size * frequency);
     }
 
     template <typename GUM_SCALAR>

@@ -75,8 +75,8 @@ namespace gum {
       DBRowFilter( const DBHandler& handler,
                    const TranslatorSet& translator_set,
                    const GeneratorSet& generator_set,
-                   unsigned long initialization_range =
-                       std::numeric_limits<unsigned long>::max() ) noexcept;
+                   Size initialization_range =
+                       std::numeric_limits<Size>::max() ) noexcept;
 
       /// copy constructor
       DBRowFilter( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
@@ -204,7 +204,7 @@ namespace gum {
       /** @param db_range the number of rows to parse in the database to
        * initialize the cell filters. If db_range is larger than the size of the
        * database, then the whole database is parsed. */
-      void __initCellFilters( unsigned long db_range );
+      void __initCellFilters( Size db_range );
     };
 
     /// a helper used to easily create a DBRowFilter
@@ -232,8 +232,8 @@ namespace gum {
     make_DB_row_filter( const Database& database,
                         const TranslatorSet& translator_set,
                         const GeneratorSet& generator_set,
-                        unsigned long initialization_range =
-                            std::numeric_limits<unsigned long>::max() ) {
+                        Size initialization_range =
+                            std::numeric_limits<Size>::max() ) {
       return DBRowFilter<typename Database::Handler,
                          TranslatorSet,
                          GeneratorSet>( database.handler(),
