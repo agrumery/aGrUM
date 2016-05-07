@@ -215,7 +215,7 @@ namespace gum {
           // ]
 
           // precompute ess / qi and ess / ( ri * qi )
-          const double ri = modalities[all_nodes.back()];
+          const double ri = double(modalities[all_nodes.back()]);
           const double ess_qi = __ess / conditioning_modal;
           const double ess_qiri = ess_qi / ri;
 
@@ -254,7 +254,7 @@ namespace gum {
           //                - gammalog2 ( N'_i + ESS / ri ) }
 
           // precompute ess / ri
-          const double ri = modalities[all_nodes.back()];
+          const double ri = double(modalities[all_nodes.back()]);
           const double ess_ri = __ess / ri;
 
           double N = 0;
@@ -274,7 +274,7 @@ namespace gum {
           // + sum_k=1^ri log [ gammalog2 ( N_ijk + ess / ri ) ]
 
           // precompute ess / ri
-          const double ri = modalities[all_nodes.back()];
+          const double ri = double(modalities[all_nodes.back()]);
           const double ess_ri = __ess / ri;
 
           score = __gammalog2( __ess ) - ri * __gammalog2( ess_ri );

@@ -126,7 +126,7 @@ namespace gum {
         Idx max_nb_threads =
             std::max( 1UL,
                       std::min( db_size / __min_nb_rows_per_thread,
-                                (unsigned long)__max_threads_number ) );
+                                __max_threads_number ) );
 
         const unsigned long max_size_per_thread =
             ( db_size + max_nb_threads - 1 ) / max_nb_threads;

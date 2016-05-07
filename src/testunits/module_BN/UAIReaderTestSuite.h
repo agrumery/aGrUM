@@ -69,13 +69,13 @@ namespace gum_tests {
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::UAIReader<float> reader( net, file );
 
-      int isOK = 0;
+      gum::Size isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, 0 );
+      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
 
-      TS_ASSERT( net != 0 );
+      TS_ASSERT( net != nullptr );
 
-      if ( net != 0 ) {
+      if ( net != nullptr ) {
         TS_ASSERT( !net->empty() );
         TS_ASSERT_EQUALS( net->size(), (gum::Size)5 );
 
@@ -119,13 +119,13 @@ namespace gum_tests {
       gum::BayesNet<double>* net = new gum::BayesNet<double>();
       gum::UAIReader<double> reader( net, file );
 
-      int isOK = false;
+      gum::Size isOK = false;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, 0 );
+      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
 
-      TS_ASSERT( net != 0 );
+      TS_ASSERT( net != nullptr );
 
-      if ( net != 0 ) {
+      if ( net != nullptr ) {
         TS_ASSERT_EQUALS( net->size(), (gum::Size)5 );
 
         const gum::Potential<double>& proba =
@@ -142,12 +142,12 @@ namespace gum_tests {
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::UAIReader<float> reader( net, file );
 
-      int isOK = 0;
+      gum::Size isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, 0 );
-      TS_ASSERT( net != 0 );
+      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
+      TS_ASSERT( net != nullptr );
 
-      if ( net != 0 ) {
+      if ( net != nullptr) {
         gum::HashTable<std::string, gum::NodeId> idMap;
 
         for ( const auto node : net->nodes() )

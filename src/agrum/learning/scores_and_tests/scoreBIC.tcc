@@ -153,7 +153,7 @@ namespace gum {
         // i.e.,
         // -(ri-1 ) * qi * .5 * log ( N + N' )
         const double penalty =
-            conditioning_modal * ( modalities[all_nodes.back()] - 1 );
+            double(conditioning_modal * ( modalities[all_nodes.back()] - 1 ));
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =
@@ -219,7 +219,7 @@ namespace gum {
         // initialize the score: this should be the penalty of the AIC score,
         // i.e.,
         // -(ri-1 )
-        const double penalty = modalities[all_nodes.back()] - 1;
+        const double penalty = double(modalities[all_nodes.back()]) - 1;
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =

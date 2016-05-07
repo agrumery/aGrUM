@@ -236,10 +236,10 @@ namespace gum {
          * @end the handler handles rows in interval [begin,end). Thus, the
          * endth
          * row is not included in the set of rows handled. g*/
-        void setRange( unsigned long begin, unsigned long end );
+        void setRange( Size begin, Size end );
 
         /// returns the current range of the handler [begin,end)
-        std::pair<unsigned long, unsigned long> range() const noexcept;
+        std::pair<Size,Size> range() const noexcept;
 
         /// returns the names of the variables
         const std::vector<std::string>& variableNames() const noexcept;

@@ -118,8 +118,8 @@ namespace gum {
       virtual unsigned long DBSize() noexcept = 0;
 
       /// sets the interval of records on which countings should be performed
-      virtual void setRange( unsigned long min_index,
-                             unsigned long max_index ) = 0;
+      virtual void setRange( Size min_index,
+                             Size max_index ) = 0;
 
       /// returns the countings for the nodeset specified in argument
       const std::vector<double, CountAlloc>&
@@ -218,7 +218,7 @@ namespace gum {
       unsigned long DBSize() noexcept;
 
       /// sets the interval of records on which countings should be performed
-      void setRange( unsigned long min_index, unsigned long max_index );
+      void setRange( Size min_index, Size max_index );
 
       /// returns the filter used for the countings
       RowFilter& filter() noexcept;
@@ -290,7 +290,7 @@ namespace gum {
        * account during learning
        * @param max_range the number of the record after the last one taken
        * into account*/
-      void setRange( unsigned long min_range, unsigned long max_range );
+      void setRange( Size min_range, Size max_range );
 
       /// performs countings from the database by cutting it into several pieces
       /** This method implements a parallel counting strategy which consists of
@@ -419,10 +419,10 @@ namespace gum {
 
       /// the number of the first record to be taken into account during
       /// learning
-      unsigned long __min_range;
+      Size __min_range;
 
       /// the number of the record after the last one taken into account
-      unsigned long __max_range;
+      Size __max_range;
 
       /// determine which sets are subsets
       void __computeSubsets();
