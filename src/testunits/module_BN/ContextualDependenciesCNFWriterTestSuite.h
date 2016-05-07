@@ -142,7 +142,7 @@ namespace gum_tests {
       try {
         writer.write( file, *bn );
         // TS_ASSERT(false);
-      } catch ( gum::IOError&  ) {
+      } catch ( gum::IOError& ) {
         TS_ASSERT( true );
       }
     }

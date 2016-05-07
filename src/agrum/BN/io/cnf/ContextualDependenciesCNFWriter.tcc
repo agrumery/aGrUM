@@ -221,10 +221,10 @@ namespace gum {
           if ( newSeq ) {
             ( itpvall.val() )->insert( newSeq );
 
-            for ( Idx itelem = pv->size() - 1; itelem >= 0; itelem-- ) {
-              if ( elimination.exists( (gum::Idx)itelem ) ) {
-                delete ( ( *pv )[itelem] );
-                pv->erase( ( *pv )[itelem] );
+            for ( Idx itelem = pv->size() ; itelem > 0; itelem-- ) {
+              if ( elimination.exists( itelem -1) ) {
+                delete ( ( *pv )[itelem-1] );
+                pv->erase( ( *pv )[itelem-1] );
               }
             }
           }
