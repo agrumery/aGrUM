@@ -28,6 +28,7 @@
 
 #include <agrum/core/utils.h>
 #include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/BayesNet.h>
@@ -977,7 +978,7 @@ namespace gum {
           if ( m_verbose ) m_log << "Finished)" << std::flush;
 
           //bn_inf = new LazyPropagation<double>( *m_bn );
-          bn_inf = new VEWithBB<double>( *m_bn );
+          bn_inf = new VariableElimination<double>( *m_bn );
 
           auto grd_inf = new GroundedInference<double>( *( prm() ), sys );
           grd_inf->setBNInference( bn_inf );
