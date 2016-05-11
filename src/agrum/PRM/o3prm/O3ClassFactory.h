@@ -77,6 +77,10 @@ namespace gum {
 
         void buildReferenceSlots();
 
+        void declareAggregates();
+
+        void completeAggregates();
+
         void declareAttributes();
 
         void completeAttributes();
@@ -177,9 +181,13 @@ namespace gum {
 
         /// @name Checking and adding Aggregates
         /// @{
-        void __buildAggregates( O3Class& c );
+        void __declareAggregates( O3Class& c );
+        void __completeAggregates( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
 
         void __addAggregates( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
+
+        bool __checkAggregateForDeclaration( O3Class& o3class, O3Aggregate& agg );
+        bool __checkAggregateForCompletion( O3Class& o3class, O3Aggregate& agg );
 
         bool __checkAggregate( O3Class& o3class, O3Aggregate& agg );
 
