@@ -74,6 +74,14 @@
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidEdge ), err );
     SWIG_fail;
+  } catch ( gum::DuplicateLabel& e ) {
+    gum::DuplicateLabel* ecopy = new gum::DuplicateLabel ( e );
+    PyObject* err = SWIG_NewPointerObj ( ecopy,
+    SWIGTYPE_p_gum__DuplicateLabel,
+    1 );
+    PyErr_SetObject (
+      SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__DuplicateLabel ), err );
+    SWIG_fail;
   } catch ( gum::DuplicateElement& e ) {
     gum::DuplicateElement* ecopy = new gum::DuplicateElement ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,

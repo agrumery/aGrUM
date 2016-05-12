@@ -161,6 +161,19 @@ namespace gum {
     NodeId add( const DiscreteVariable& variable );
 
     /**
+    * @brief Shortcut for add(gum::LabelizedVariable(name,name,nbrmod))
+     *
+     * Add a gum::LabelizedVariable to the gum::BayesNet
+     *
+     * This method is just a shortcut for a often used pattern
+     *
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::BayesNet.
+     * @throws NotAllowed if nbrmod<2
+     */
+    NodeId add(const std::string& name,unsigned int nbrmod);
+
+    /**
      * @brief Add a variable to the gum::BayesNet.
      *
      * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
@@ -247,7 +260,7 @@ namespace gum {
      *
      * @param id The variable's id to return.
      * @returns Returns a constant reference of the gum::DiscreteVariable
-     *          correspondin to id in the gum::BayesNet.
+     *          corresponding to id in the gum::BayesNet.
      * @throw NotFound Raised if id does not match a a variable in the
      *                 gum::BayesNet.
      */
@@ -447,9 +460,7 @@ namespace gum {
 
     /**
      * Add a variable, its associate node and a noisyAND implementation. The id
-     *of
-     *the new
-     * variable is automatically generated.
+     *of the new variable is automatically generated.
      *
      * @param variable The variable added by copy.
      * @param externalWeight see gum::MultiDimNoisyAND
@@ -474,9 +485,7 @@ namespace gum {
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of
-     *the
-     *new
-     * variable is automatically generated.
+     *the new variable is automatically generated.
      *
      * @param variable The variable added by copy.
      * @param externalWeight see gum::MultiDimLogit
@@ -487,9 +496,7 @@ namespace gum {
 
     /**
      * Add a variable, it's associate node and an OR implementation. The id of
-     *the
-     *new
-     * variable is automatically generated.
+     *the new variable is automatically generated.
      *
      * @warning OR is implemented as a gum::aggregator::Or which means that if
      *parents are not boolean, all value>1 is True
@@ -502,9 +509,7 @@ namespace gum {
 
     /**
      * Add a variable, it's associate node and an AND implementation. The id of
-     *the
-     *new
-     * variable is automatically generated.
+     *the new variable is automatically generated.
      *
      * @warning AND is implemented as a gum::aggregator::And which means that if
      *parents are not boolean, all value>1 is True
