@@ -110,12 +110,22 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE const std::string& Aggregate<GUM_SCALAR>::labelValue() const {
+      return __label_value;
+    }
+
+    template <typename GUM_SCALAR>
     INLINE void Aggregate<GUM_SCALAR>::setLabel( Idx idx ) {
       if ( __label ) {
         ( *__label ) = idx;
       } else {
         __label = new Idx( idx );
       }
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE void Aggregate<GUM_SCALAR>::setLabel( const std::string& value ) {
+      __label_value = value;
     }
 
     template <typename GUM_SCALAR>

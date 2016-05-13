@@ -1014,9 +1014,6 @@ namespace gum {
       /// A stack used to keep track of created PRMObject.
       std::vector<PRMObject*> __stack;
 
-      /// A mapping between aggregators and their parameters
-      HashTable<Aggregate<GUM_SCALAR>*, std::vector<std::string>> __agg_params;
-
       /// @}
     };
   } /* namespace prm */

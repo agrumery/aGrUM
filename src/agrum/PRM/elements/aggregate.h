@@ -162,11 +162,13 @@ namespace gum {
        *                            on a label.
        */
       Idx label() const;
+      const std::string& labelValue() const;
 
       /**
        * @brief Set the aggregator's label.
        */
       void setLabel(Idx idx);
+      void setLabel(const std::string& label);
 
       /**
        * @brief Returns true if the label is defined.
@@ -240,7 +242,8 @@ namespace gum {
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
       Idx* __label;
-
+      std::string __label_value;
+ 
       /// @}
     };
 

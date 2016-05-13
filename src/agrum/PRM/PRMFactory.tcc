@@ -385,7 +385,7 @@ namespace gum {
         Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>(
             __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
         __addParent( c, a, name );
-      } catch ( OperationNotAllowed& e ) {
+      } catch ( FactoryInvalidState& e ) {
         auto agg = static_cast<Aggregate<GUM_SCALAR>*>(
             __checkStack( 1, ClassElement<GUM_SCALAR>::prm_aggregate ) );
         __addParent( static_cast<Class<GUM_SCALAR>*>( c ), agg, name );
@@ -667,8 +667,21 @@ namespace gum {
         c->overload( agg );
       }
 
+      switch ( agg->agg_type() ) {
+        case Aggregate<GUM_SCALAR>::AggregateType::COUNT:
+        case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
+        case Aggregate<GUM_SCALAR>::AggregateType::FORALL: {
+          if (params.size() != 1 ) {
+            GUM_ERROR( OperationNotAllowed, "aggregate requires a parameter");
+          }
+          agg->setLabel( params.front() );
+          break;
+        }
+        default: {
+          // Nothing to do
+        }
+      }
       __stack.push_back( agg );
-      __agg_params.insert( agg, params ); 
     }
 
     template <typename GUM_SCALAR>
@@ -710,12 +723,11 @@ namespace gum {
         case Aggregate<GUM_SCALAR>::AggregateType::FORALL: {
 
           if ( ! agg->hasLabel() ) {
-            auto& params = __agg_params[agg];
+            auto param = agg->labelValue();
             Idx label_idx = 0;
 
             while ( label_idx < inputs.front()->type()->domainSize() ) {
-              if ( inputs.front()->type()->label( label_idx ) ==
-                   params.front() ) {
+              if ( inputs.front()->type()->label( label_idx ) == param ) {
                 break;
               }
 

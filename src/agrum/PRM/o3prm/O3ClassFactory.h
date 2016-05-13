@@ -184,12 +184,8 @@ namespace gum {
         void __declareAggregates( O3Class& c );
         void __completeAggregates( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
 
-        void __addAggregates( PRMFactory<GUM_SCALAR>& factory, O3Class& c );
-
         bool __checkAggregateForDeclaration( O3Class& o3class, O3Aggregate& agg );
         bool __checkAggregateForCompletion( O3Class& o3class, O3Aggregate& agg );
-
-        bool __checkAggregate( O3Class& o3class, O3Aggregate& agg );
 
         const Type<GUM_SCALAR>* __checkAggParents( O3Class& o3class,
                                                    O3Aggregate& agg );
