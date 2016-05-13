@@ -546,14 +546,14 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__fill() const {
-      auto cols = __input[0].size();
+      long cols = __input[0].size();
 
       long int* num =
           new long int[cols];  // ISO C++ forbids variable length array,
                                // we need to do this instead
       long int* den = new long int[cols];
 
-      auto rows = __input.size();
+      long rows = __input.size();
 
       long int numerator, denominator;
 

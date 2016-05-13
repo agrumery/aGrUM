@@ -187,7 +187,7 @@ void __addO3Import( O3Import i ) {
 }
 
 void __split( const O3Label& value, O3Label& left, O3Label& right) {
-  int idx = (int)value.label().find_first_of('.');
+  auto idx = value.label().find_first_of('.');
   if ( ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
     left = O3Label( value.position(), value.label() );
     right = O3Label( value.position(), value.label() );

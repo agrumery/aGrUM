@@ -61,7 +61,7 @@ namespace gum {
       from.__translators.clear();
       Size size  =Size(__translators.size()); 
       for (Idx i = 0;i < size; ++i ) {
-        __translators[i]>setOutputRow( __output_row );
+        __translators[i]->setOutputRow( __output_row );
       }
 
       GUM_CONS_MOV( DBRowTranslatorSetDynamic );
