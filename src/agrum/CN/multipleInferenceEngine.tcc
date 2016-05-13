@@ -78,7 +78,7 @@ namespace gum {
 
         if ( _l_modal[tId].exists( var_name ) ) {
           GUM_SCALAR exp = 0;
-          Size vsize = vertex.size();
+          Size vsize = Size(vertex.size());
 
           for ( Size mod = 0; mod < vsize; mod++ )
             exp += vertex[mod] * _l_modal[tId][var_name][mod];
@@ -100,7 +100,7 @@ namespace gum {
       // we also don't want to store dbn for observed variables since there will
       // be a
       // huge number of them (probably all of them).
-      Size vsize = vertex.size();
+      Size vsize = Size(vertex.size());
 
       for ( Size mod = 0; mod < vsize; mod++ ) {
         if ( vertex[mod] < _l_marginalMin[tId][id][mod] ) {
@@ -177,7 +177,7 @@ namespace gum {
                                   const bool& elimRedund ) {
       int tId = getThreadNumber();
       auto& nodeCredalSet = _l_marginalSets[tId][id];
-      Size dsize = vertex.size();
+      Size dsize = Size(vertex.size());
 
       bool eq = true;
 
@@ -239,7 +239,7 @@ namespace gum {
       // meaning it's still a convex combination of vertices of this facet. Here
       // we
       // need lrs.
-      auto setSize = nodeCredalSet.size();
+      Size setSize = Size(nodeCredalSet.size());
 
       LRSWrapper<GUM_SCALAR> lrsWrapper;
       lrsWrapper.setUpV( dsize, setSize );
@@ -263,10 +263,10 @@ namespace gum {
 #pragma omp for
 
         for ( long i = 0; i < nsize; i++ ) {
-          Size dSize = _l_marginalMin[threadId][i].size();
+          Size dSize = Size(_l_marginalMin[threadId][i].size());
 
           for ( Size j = 0; j < dSize; j++ ) {
-            Size tsize = _l_marginalMin.size();
+            Size tsize = Size(_l_marginalMin.size());
 
             // go through all threads
             for ( Size tId = 0; tId < tsize; tId++ ) {
@@ -296,7 +296,7 @@ namespace gum {
 #pragma omp for
 
         for ( long i = 0; i < nsize; i++ ) {
-          Size dSize = _l_marginalMin[tId][i].size();
+          Size dSize = Size(_l_marginalMin[tId][i].size());
 
           for ( Size j = 0; j < dSize; j++ ) {
             // on min
@@ -335,10 +335,10 @@ namespace gum {
 #pragma omp for
 
         for ( long i = 0; i < nsize; i++ ) {
-          Size dSize = _l_marginalMin[threadId][i].size();
+          Size dSize = Size(_l_marginalMin[threadId][i].size());
 
           for ( Size j = 0; j < dSize; j++ ) {
-            Size tsize = _l_marginalMin.size();
+            Size tsize = Size(_l_marginalMin.size());
 
             // go through all threads
             for ( Size tId = 0; tId < tsize; tId++ ) {
@@ -362,16 +362,16 @@ namespace gum {
 #pragma omp parallel
       {
         int threadId = getThreadNumber();
-        long nsize = long(_workingSet[threadId]->size());
+        Size nsize = Size(_workingSet[threadId]->size());
 
 #pragma omp for
 
-        for ( long i = 0; i < nsize; i++ ) {
-          Size tsize = _l_marginalMin.size();
-          Size dSize = _l_marginalMin[threadId][i].size();
+        for ( long i = 0; i < long(nsize); i++ ) {
+          Size tsize = Size(_l_marginalMin.size());
+          Size dSize = Size(_l_marginalMin[threadId][i].size());
 
           // go through all threads
-          for ( Size tId = 0; tId < tsize; tId++ ) {
+          for ( long tId = 0; tId < long(tsize); tId++ ) {
             auto& nodeThreadCredalSet = _l_marginalSets[tId][i];
 
             // for each vertex, if we are at any opt marginal, add it to the set
@@ -402,11 +402,11 @@ namespace gum {
           int threadId = getThreadNumber();
 
           if ( !this->_l_modal[threadId].empty() ) {
-            long nsize = long(_workingSet[threadId]->size());
+            Size nsize = Size(_workingSet[threadId]->size());
 
 #pragma omp for
 
-            for ( long i = 0; i < nsize; i++ ) {
+            for ( long i = 0; i < long(nsize); i++ ) { // i needs to be signed (due to omp with visual c++ 15)
               std::string var_name =
                   _workingSet[threadId]->variable( i ).name();
               auto delim = var_name.find_first_of( "_" );
@@ -416,11 +416,11 @@ namespace gum {
 
               if ( !_l_modal[threadId].exists( var_name ) ) continue;
 
-              Size setsize = __infE::_marginalSets[i].size();
+              Size setsize = Size(__infE::_marginalSets[i].size());
 
               for ( const auto& vertex : __infE::_marginalSets[i] ) {
                 GUM_SCALAR exp = 0;
-                Size vsize = vertex.size();
+                Size vsize = Size(vertex.size());
 
                 for ( Size mod = 0; mod < vsize; mod++ )
                   exp += vertex[mod] * _l_modal[threadId][var_name][mod];
@@ -442,11 +442,9 @@ namespace gum {
         int threadId = getThreadNumber();
 
         if ( !this->_l_modal[threadId].empty() ) {
-          long nsize = long(_workingSet[threadId]->size());
-
+          Size nsize = Size(_workingSet[threadId]->size());
 #pragma omp for
-
-          for ( long i = 0; i < nsize; i++ ) {
+          for ( long i = 0; i < long(nsize); i++ ) { // long instead of Idx due to omp for visual C++15
             std::string var_name = _workingSet[threadId]->variable( i ).name();
             auto delim = var_name.find_first_of( "_" );
             std::string time_step =
@@ -455,9 +453,9 @@ namespace gum {
 
             if ( !_l_modal[threadId].exists( var_name ) ) continue;
 
-            Size tsize = _l_expectationMax.size();
+            Size tsize = Size(_l_expectationMax.size());
 
-            for ( Size tId = 0; tId < tsize; tId++ ) {
+            for ( Idx tId = 0; tId < tsize; tId++ ) {
               if ( _l_expectationMax[tId][i] > this->_expectationMax[i] )
                 this->_expectationMax[i] = _l_expectationMax[tId][i];
 
@@ -473,15 +471,15 @@ namespace gum {
     void MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_optFusion() {
       typedef std::vector<bool> dBN;
 
-      long nsize = long(_workingSet[0]->size());
+      Size nsize = Size(_workingSet[0]->size());
 
       // no parallel insert in hash-tables (OptBN)
-      for ( long i = 0; i < nsize; i++ ) {
+      for ( Idx i = 0; i < nsize; i++ ) {
 
         // we don't store anything for observed variables
         if ( __infE::_evidence.exists( i ) ) continue;
 
-        Size dSize = _l_marginalMin[0][i].size();
+        Size dSize = Size(_l_marginalMin[0][i].size());
 
         for ( Size j = 0; j < dSize; j++ ) {
           // go through all threads
@@ -492,13 +490,13 @@ namespace gum {
           std::vector<Size> keymax( keymin );
           keymax[2] = 1;
 
-          Size tsize = _l_marginalMin.size();
+          Size tsize =Size( _l_marginalMin.size());
 
           for ( Size tId = 0; tId < tsize; tId++ ) {
             if ( _l_marginalMin[tId][i][j] == this->_marginalMin[i][j] ) {
               const std::vector<dBN*>& tOpts =
                   _l_optimalNet[tId]->getBNOptsFromKey( keymin );
-              Size osize = tOpts.size();
+              Size osize = Size(tOpts.size());
 
               for ( Size bn = 0; bn < osize; bn++ ) {
                 __infE::_dbnOpt.insert( *tOpts[bn], keymin );
@@ -508,7 +506,7 @@ namespace gum {
             if ( _l_marginalMax[tId][i][j] == this->_marginalMax[i][j] ) {
               const std::vector<dBN*>& tOpts =
                   _l_optimalNet[tId]->getBNOptsFromKey( keymax );
-              Size osize = tOpts.size();
+              Size osize = Size(tOpts.size());
 
               for ( Size bn = 0; bn < osize; bn++ ) {
                 __infE::_dbnOpt.insert( *tOpts[bn], keymax );
@@ -523,7 +521,7 @@ namespace gum {
     void
     MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::eraseAllEvidence() {
       __infE::eraseAllEvidence();
-      Size tsize = _workingSet.size();
+      Size tsize = Size(_workingSet.size());
 
       // delete pointers
       for ( Size bn = 0; bn < tsize; bn++ ) {

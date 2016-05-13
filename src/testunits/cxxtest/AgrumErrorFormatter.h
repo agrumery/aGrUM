@@ -125,7 +125,7 @@ namespace CxxTest {
 #endif  // NDEBUG
 
       ( *_o ) << endl
-              << "## Profiling : " << (gum::Size)( 1000.0 * __totalTime )
+              << "## Profiling : " << (gum::Size)( 1000.0 * long(__totalTime ))
               << " ms ##" << endl;
 
       ( *_o ) << "Failed " << tracker().failedTests() << " of " << totalTests

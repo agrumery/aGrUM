@@ -102,7 +102,7 @@ namespace gum {
 template <typename GUM_SCALAR>
 void UAIReader<GUM_SCALAR>::buildFromQuartets(std::vector<std::tuple<float,int,int,int>> quartets) {
   Idx current;
-  Size max=quartets.size();
+  Size max=Size(quartets.size());
   if (max==0) {
     __addWarning(1,1,"Empty BayesNet");
     return;

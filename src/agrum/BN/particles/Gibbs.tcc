@@ -346,12 +346,12 @@ namespace gum {
 
       if ( __nbr_drawn_by_sample ==
            0 ) {  // means topological ordre for every sample
-        __nbr_of_iterations = __nodes_array.size();
+        __nbr_of_iterations = Size(__nodes_array.size());
       } else {  // randomly choosen set of vars of size __nbr_drawn_by_sample
         __nbr_of_iterations = __nbr_drawn_by_sample;
 
         if ( __nbr_of_iterations > __nodes_array.size() )
-          __nbr_of_iterations = __nodes_array.size();
+          __nbr_of_iterations = Size(__nodes_array.size());
 
         std::random_shuffle( __nodes_array.begin(), __nodes_array.end() );
       }

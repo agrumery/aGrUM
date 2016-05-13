@@ -246,9 +246,9 @@ namespace gum {
     template <typename OtherAlloc>
     INLINE bool
     IdSet<Alloc>::isSubset( const IdSet<OtherAlloc>& otherset ) const noexcept {
-      Size min_index = 0, max_index = otherset.__ids.size();
-
-      for ( Idx i = 0, size = __ids.size(); i < size; ++i ) {
+      Size min_index = Size(0), max_index = Size(otherset.__ids.size());
+      Size  size = Size(__ids.size());
+      for ( Idx i = 0; i < size; ++i ) {
         Size middle, tmp_max_index = max_index;
         Idx nb = __ids[i];
 
@@ -290,7 +290,7 @@ namespace gum {
     Size h = 0;
     const std::vector<Idx, Alloc>& vect = key.ids();
 
-    for ( size_t i = 0; i < vect.size(); ++i )
+    for ( Idx i = 0; i < Size(vect.size()); ++i )
       h += i * vect[i];
 
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
@@ -301,10 +301,10 @@ namespace gum {
   Size HashFunc<std::pair<learning::IdSet<Alloc>, Idx>>::operator()(
       const std::pair<learning::IdSet<Alloc>, Idx>& key ) const {
     Size h = 0;
-    size_t i;
+    Idx i;
     const std::vector<Idx, Alloc>& vect = key.first.ids();
 
-    for ( i = 0; i < vect.size(); ++i )
+    for ( i = 0; i < Size(vect.size()); ++i )
       h += i * vect[i];
 
     h *= i * key.second;
@@ -320,7 +320,7 @@ namespace gum {
           const std::tuple<learning::IdSet<Alloc>, Idx, Idx>&
               key ) const {
     Size h = 0;
-    size_t i;
+    Size i;
     const std::vector<Idx, Alloc>& vect = std::get<0>( key ).ids();
 
     for ( i = 0; i < vect.size(); ++i )

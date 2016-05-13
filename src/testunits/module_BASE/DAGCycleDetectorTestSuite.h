@@ -131,8 +131,8 @@ namespace gum_tests {
         }
       }
 
-      gum::HashTable<gum::Arc, gum::Idx> deletions( changes.size() );
-      gum::HashTable<gum::Arc, gum::Idx> additions( changes.size() );
+      gum::HashTable<gum::Arc, gum::Idx> deletions(gum::Size(changes.size()));
+      gum::HashTable<gum::Arc, gum::Idx> additions( gum::Size(changes.size()));
       for ( const auto& modif : changes ) {
         gum::Arc arc( modif.tail(), modif.head() );
 

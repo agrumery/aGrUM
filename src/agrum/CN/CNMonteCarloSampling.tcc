@@ -298,10 +298,10 @@ namespace gum {
               &working_bn->cpt( elt.first ) ) );
           std::vector<GUM_SCALAR> var_cpt( potential->domainSize() );
 
-          Size pconfs = ( *cpt )[elt.first].size();
+          Size pconfs = Size(( *cpt )[elt.first].size());
 
           for ( Size pconf = 0; pconf < pconfs; pconf++ ) {
-            auto choosen_vertex = rand() % ( *cpt )[elt.first][pconf].size();
+            Size choosen_vertex = rand() % ( *cpt )[elt.first][pconf].size();
 
             if ( __infEs::_storeBNOpt ) {
               __binaryRep( sample[elt.first][pconf], choosen_vertex );
@@ -315,7 +315,7 @@ namespace gum {
 
           potential->fillWith( var_cpt );
 
-          Size t0esize = elt.second.size();
+          Size t0esize = Size(elt.second.size());
 
           for ( Size pos = 0; pos < t0esize; pos++ ) {
             if ( __infEs::_storeBNOpt ) {
@@ -336,7 +336,7 @@ namespace gum {
           std::vector<GUM_SCALAR> var_cpt( potential->domainSize() );
 
           for ( Size pconf = 0; pconf < ( *cpt )[elt.first].size(); pconf++ ) {
-            auto choosen_vertex = rand() % ( *cpt )[elt.first][pconf].size();
+            Idx choosen_vertex = Idx(rand() % ( *cpt )[elt.first][pconf].size());
 
             if ( __infEs::_storeBNOpt ) {
               __binaryRep( sample[elt.first][pconf], choosen_vertex );
@@ -377,8 +377,8 @@ namespace gum {
           auto pConfs = ( *cpt )[node].size();
 
           for ( decltype( pConfs ) pconf = 0; pconf < pConfs; pconf++ ) {
-            auto nVertices = ( *cpt )[node][pconf].size();
-            auto choosen_vertex = rand() % nVertices;
+            Size nVertices = Size(( *cpt )[node][pconf].size());
+            Idx choosen_vertex = Idx(rand() % nVertices);
 
             if ( __infEs::_storeBNOpt ) {
               __binaryRep( sample[node][pconf], choosen_vertex );

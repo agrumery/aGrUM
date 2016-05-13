@@ -268,7 +268,7 @@ namespace gum_tests {
           std::vector<std::vector<double>> vertices(
               lps[id][entry].solve() );  // we solve the lp
 
-          gum::Size sols_size( lps_sols[id][entry].size() );
+          gum::Size sols_size=gum::Size(lps_sols[id][entry].size() );
           TS_ASSERT_EQUALS( vertices.size(), sols_size );
 
           std::vector<bool> checked( sols_size, false );

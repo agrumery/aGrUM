@@ -79,7 +79,7 @@ namespace gum {
                                     Idx>*>& conditioning_nodesets ) {
       // put 1's into the countings for the targets
       // and the sum of the weight times the target for the conditioning nodes
-      const Size size = target_nodesets.size();
+      const Size size = Size(target_nodesets.size());
       for ( Idx i = 0; i < size; ++i ) {
         if ( target_nodesets[i] != nullptr ) {
           std::vector<double, CountAlloc>& countings =

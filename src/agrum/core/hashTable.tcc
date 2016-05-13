@@ -402,7 +402,7 @@ namespace gum {
       std::initializer_list<std::pair<Key, Val>> list )
       :  // size must be >= 2 else we lose all the bits of the hash function
       __size{Size(1) << __hashTableLog2(
-                 std::max<Size>( Size( 2 ), list.size() / 2 ) )} {
+                 std::max<Size>( Size( 2 ), Size(list.size()) / 2 ) )} {
     // for debugging purposes
     GUM_CONSTRUCTOR( HashTable );
 

@@ -270,7 +270,7 @@ namespace gum {
                                       GRAPH_CHANGES_GENERATOR>::
         setGraph( DiGraph& graph, const std::vector<Size>& modal ) {
       // fill the DAG with all the missing nodes
-      Size nb_nodes = modal.size();
+      Size nb_nodes = Size(modal.size());
       for ( NodeId i = 0; i < nb_nodes; ++i ) {
         if ( !graph.existsNode( i ) ) {
           graph.addNode( i );

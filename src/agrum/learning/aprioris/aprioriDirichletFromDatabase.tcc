@@ -80,8 +80,7 @@ namespace gum {
       if ( this->_weight != 0 ) {
         // perform the countings
         Counter<IdSetAlloc, CountAlloc>::clear();
-        const Size size =
-            Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->size();
+        const Size size =Size(Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->size());
         for ( Idx i = 0; i < size; ++i ) {
           if ( Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->operator[](
                    i ) != nullptr ) {

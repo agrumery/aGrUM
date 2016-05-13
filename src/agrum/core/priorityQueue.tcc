@@ -315,7 +315,7 @@ namespace gum {
   INLINE Size
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::capacity() const
       noexcept {
-    return __heap.capacity();
+    return Size(__heap.capacity());
   }
 
   // changes the size of the array storing the priority queue
@@ -987,7 +987,7 @@ namespace gum {
   INLINE Size
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::capacity() const
       noexcept {
-    return __heap.capacity();
+    return Size(__heap.capacity());
   }
 
   // changes the size of the array storing the priority queue

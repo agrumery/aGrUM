@@ -328,7 +328,7 @@ namespace gum {
   void InfluenceDiagramInference<GUM_SCALAR>::__makeStrongJunctionTree() {
 
     // Pour chaque clique
-    for ( const auto cli : __triangulation->junctionTree().nodes() ) {
+    for ( NodeId cli : __triangulation->junctionTree().nodes() ) {
 
       Sequence<NodeId> eliminationOrder =
           __cliquePropertiesMap[cli]->cliqueEliminationOrder();
@@ -385,7 +385,7 @@ namespace gum {
           ;
 
         __cliqueEliminationMap.insert(
-            __triangulation->eliminationOrder().size() - index, cli );
+            Size(__triangulation->eliminationOrder().size() - index), cli );
       } else
         try {
           __cliqueEliminationMap.insert( 0, cli );

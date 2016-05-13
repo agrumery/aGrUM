@@ -83,9 +83,9 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nz =
             this->_getConditioningCounts( nodeset_index + 1 );
 
-        const auto Z_size = Nz.size();
-        const auto Y_size = modals[all_nodes[all_nodes.size() - 2]];
-        const auto X_size = modals[all_nodes[all_nodes.size() - 1]];
+        const auto Z_size = Size(Nz.size());
+        const auto Y_size = Size(modals[all_nodes[all_nodes.size() - 2]]);
+        const auto X_size = Size(modals[all_nodes[all_nodes.size() - 1]]);
 
         double score = 0.0;
 
@@ -135,8 +135,8 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nx =
             this->_getAllCounts( nodeset_index + 1 );
 
-        const Size Y_size = Ny.size();
-        const Size X_size = Nx.size();
+        const Size Y_size = Size(Ny.size());
+        const Size X_size = Size(Nx.size());
 
         // count N
         double N = 0;

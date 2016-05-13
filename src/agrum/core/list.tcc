@@ -668,7 +668,7 @@ namespace gum {
       if ( ( src.__list != nullptr ) ) {
         std::vector<ListConstIteratorSafe<Val>*>& vect =
             src.__list->__safe_iterators;
-        int index_src = vect.size() - 1;
+        Idx index_src = Size(vect.size()) - 1;
 
         for ( ;; --index_src ) {
           if ( vect[index_src] == &src ) {

@@ -42,8 +42,9 @@ namespace gum {
         , __output_size( from.__output_size )
         , __output_row( from.__output_row ) {
       // create the translators
-      for ( Idx i = 0, size = __translators.size(); i < size; ++i ) {
-        __translators[i] = from.__translators[i]->copyFactory();
+      Size size=Size(  __translators.size()); 
+      for (Idx i = 0;i < size; ++i ) {
+        __translators[i]= from.__translators[i]->copyFactory();
         __translators[i]->setOutputRow( __output_row );
       }
 
@@ -58,8 +59,9 @@ namespace gum {
         , __output_size( std::move( from.__output_size ) )
         , __output_row( std::move( from.__output_row ) ) {
       from.__translators.clear();
-      for ( Idx i = 0, size = __translators.size(); i < size; ++i ) {
-        __translators[i]->setOutputRow( __output_row );
+      Size size  =Size(__translators.size()); 
+      for (Idx i = 0;i < size; ++i ) {
+        __translators[i]>setOutputRow( __output_row );
       }
 
       GUM_CONS_MOV( DBRowTranslatorSetDynamic );
@@ -99,7 +101,8 @@ namespace gum {
         __output_row = from.__output_row;
 
         // create the translators
-        for ( Idx i = 0, size = __translators.size(); i < size; ++i ) {
+        Size size=Size(  __translators.size());
+        for (Idx i = 0; i < size; ++i ) {
           __translators[i] = from.__translators[i]->copyFactory();
           __translators[i]->setOutputRow( __output_row );
         }
@@ -120,7 +123,8 @@ namespace gum {
         __output_size = std::move( from.__output_size );
         __output_row = std::move( from.__output_row );
         from.__translators.clear();
-        for ( Idx i = 0, size = __translators.size(); i < size; ++i ) {
+        Size size =Size(__translators.size());
+        for ( Idx i= 0; i < size; ++i ) {
           __translators[i]->setOutputRow( __output_row );
         }
       }
@@ -323,7 +327,7 @@ namespace gum {
     template <typename Translator>
     std::string DBRowTranslatorSetDynamic<Translator>::translateBack(
         Idx col, Idx translated_val ) const {
-      const Size size = __translators.size();
+      const Size size = Size(__translators.size());
       if ( size == 0 ) {
         GUM_ERROR( UndefinedElement,
                    "the set of translators is empty, so it is "

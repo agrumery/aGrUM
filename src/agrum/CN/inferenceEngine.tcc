@@ -560,7 +560,7 @@ namespace gum {
       }
 
       for ( const auto& elt : _marginalMin ) {
-        Size esize = elt.second.size();
+        Size esize = Size(elt.second.size());
 
         for ( Size mod = 0; mod < esize; mod++ ) {
           m_stream << _credalNet->current_bn().variable( elt.first ).name()
@@ -624,7 +624,7 @@ namespace gum {
 
       // use cbegin() when available
       for ( const auto& elt : _marginalMin ) {
-        Size esize = elt.second.size();
+        Size esize = Size(elt.second.size());
 
         for ( Size mod = 0; mod < esize; mod++ ) {
           output << "P("
@@ -1018,10 +1018,8 @@ namespace gum {
       // meaning it's still a convex combination of vertices of this facet. Here
       // we
       // need lrs.
-      auto setSize = nodeCredalSet.size();
-
       LRSWrapper<GUM_SCALAR> lrsWrapper;
-      lrsWrapper.setUpV( dsize, setSize );
+      lrsWrapper.setUpV( (unsigned int)dsize, (unsigned int)(nodeCredalSet.size()) );
 
       for ( const auto& vtx : nodeCredalSet )
         lrsWrapper.fillV( vtx );

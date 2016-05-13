@@ -252,7 +252,7 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE Size MultiPriorityQueue<Val, Priority, Cmp, Alloc>::capacity() const
       noexcept {
-    return __heap.capacity();
+    return Size(__heap.capacity());
   }
 
   // changes the size of the array storing the priority queue

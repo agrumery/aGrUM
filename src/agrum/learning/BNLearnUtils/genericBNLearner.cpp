@@ -123,8 +123,8 @@ namespace gum {
         const Size db_size = handler.DBSize();
 
         // determine the number of threads to use for the parsing
-        Idx max_nb_threads =
-            std::max( 1UL,
+        Size max_nb_threads =
+            std::max( Size(1),
                       std::min( db_size / __min_nb_rows_per_thread,
                                 __max_threads_number ) );
 
@@ -269,7 +269,8 @@ namespace gum {
           score_database.__database.variableNames();
       const std::vector<std::string>& apriori_vars = __database.variableNames();
 
-      for ( Idx i = 0, size = score_vars.size(); i < size; ++i ) {
+      Size size = Size(score_vars.size());
+      for (Idx i = 0; i < size; ++i) {
         if ( score_vars[i] != apriori_vars[i] ) {
           GUM_ERROR( InvalidArgument,
                      "some a priori variables do not match "
@@ -584,7 +585,7 @@ namespace gum {
 
     DatabaseVectInRAM readFile( const std::string& filename ) {
       // get the extension of the file
-      int filename_size = filename.size();
+      Size filename_size = Size(filename.size());
 
       if ( filename_size < 4 ) {
         GUM_ERROR( FormatNotFound,
@@ -608,7 +609,7 @@ namespace gum {
     DatabaseVectInRAM
     genericBNLearner::__readFile( const std::string& filename ) {
       // get the extension of the file
-      int filename_size = filename.size();
+      Size filename_size = Size(filename.size());
 
       if ( filename_size < 4 ) {
         GUM_ERROR( FormatNotFound,

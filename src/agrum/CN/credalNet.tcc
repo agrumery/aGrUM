@@ -1133,10 +1133,10 @@ namespace gum {
 
         if ( !parents.empty() ) {
           for ( auto par : __current_bn->dag().parents( node ) ) {
-            for ( Size parent_bit = 0, spbits = __var_bits[par].size();
+            for ( Size parent_bit = 0, spbits = Size(__var_bits[par].size());
                   parent_bit < spbits;
                   parent_bit++ )
-              for ( Size var_bit = 0, mbits = __var_bits[node].size();
+              for ( Size var_bit = 0, mbits = Size(__var_bits[node].size());
                     var_bit < mbits;
                     var_bit++ )
                 __bin_bn->addArc( __var_bits[par][parent_bit],
@@ -1306,7 +1306,7 @@ namespace gum {
             __bin_bn->addArc( __var_bits[i][bit], indic );
 
           // cpt
-          Size num=Size(int2Pow(bitsize));
+          Size num=Size(int2Pow(long(bitsize)));
 
           std::vector<std::vector<std::vector<GUM_SCALAR>>> icpt( num );
 
@@ -1589,7 +1589,7 @@ namespace gum {
       for ( auto entry = var_cpt.cbegin(), theEnd = var_cpt.cend();
             entry != theEnd;
             ++entry ) {
-        if ( entry->size() > vertices_size ) vertices_size = entry->size();
+        if ( entry->size() > vertices_size ) vertices_size = Size(entry->size());
       }
 
       return vertices_size;

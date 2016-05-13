@@ -40,14 +40,14 @@ namespace gum {
   /**
    * Type for indexes.
    */
-  typedef std::size_t Idx;
+  typedef unsigned int Idx; //std::size_t Idx;
 
   /**
    * In aGrUM, hashed values are unsigned long int. This is sufficient to deal
    * with Bayes nets and other graphs already big enough to be unmanageable
    * from a computational point of view.
    */
-  typedef std::size_t Size;
+  typedef unsigned int Size; // std::size_t Size;
 
   /// @}
 

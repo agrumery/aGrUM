@@ -73,7 +73,7 @@ namespace gum {
 
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::operator()() {
-    Size size = __params.size();
+    Size size = Size(__params.size());
     result_type res( size );
     float sum = 0.0f;
     while ( sum == 0.0f ) {
@@ -93,7 +93,7 @@ namespace gum {
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::
   operator()( const Dirichlet::param_type& parm ) {
-    Size size = parm.size();
+    Size size = Size(parm.size());
     result_type res( size );
     float sum = 0.0f;
     while ( sum == 0.0f ) {

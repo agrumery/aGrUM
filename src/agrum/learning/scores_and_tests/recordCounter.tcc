@@ -73,7 +73,7 @@ namespace gum {
     RecordCounterThreadBase<IdSetAlloc, CountAlloc>::addNodeSet(
         const std::vector<Idx, IdSetAlloc>& ids ) {
       // adds the nodeset
-      const Idx nodeset_id = _nodesets.size();
+      const Idx nodeset_id = Idx(_nodesets.size());
       _nodesets.push_back( &ids );
 
       // compute the size of the nodeset and allocate a counting correspondingly
@@ -175,7 +175,7 @@ namespace gum {
             Idx offset = 0;
             Idx dim = 1;
 
-            for ( Idx j = 0, vsize = var_ids.size(); j < vsize; ++j ) {
+            for ( Idx j = 0, vsize = Size(var_ids.size()); j < vsize; ++j ) {
               offset += row[var_ids[j]] * dim;
               dim *= this->_modalities->operator[]( var_ids[j] );
             }
@@ -262,9 +262,8 @@ namespace gum {
       __thread_counters.reserve( from.__thread_counters.size() );
 
       try {
-        for ( Idx i = 0, size = from.__thread_counters.size();
-              i < size;
-              ++i ) {
+        Size size=Size( from.__thread_counters.size());
+        for ( Idx i = 0 ;i < size;++i ) {
           __thread_counters.push_back(
               from.__thread_counters[i]->copyFactory() );
         }
@@ -444,7 +443,8 @@ namespace gum {
             *( __thread_counters[this_thread] );
         thread_counter.clearNodeSets();
 
-        for ( Idx i = 0, size = __set_state.size(); i < size; ++i ) {
+        Size size = Size(__set_state.size());
+        for (Idx i = 0; i < size; ++i ) {
           if ( __set_state[i] == SetState::NOT_SUBSET ) {
             thread_counter.addNodeSet( *( __nodesets[i] ) );
           }
@@ -473,15 +473,15 @@ namespace gum {
       {
         const Size this_thread = getThreadNumber();
         auto& counter = *( __thread_counters[this_thread] );
-          Size size_per_thread, min_range, max_range;
-
-        for ( Idx i = 0, size = __countings.size(); i < size; ++i ) {
+          Size size_per_thread, min_range,max_range;
+          Size size = Size(__countings.size());
+        for ( Idx i = 0; i < size; ++i ) {
           if ( __set_state[i] == SetState::NOT_SUBSET ) {
-            // get the ith idset countings computed by the curent thread
+           // get the ith idset countings computed by the curent thread
             std::vector<double, CountAlloc>& vect =
                 const_cast<std::vector<double, CountAlloc>&>(
                     counter.getCounts( __set2thread_id[i].second ) );
-            size_per_thread = ( vect.size() + __nb_thread_counters - 1 ) /
+            size_per_thread = ( Size(vect.size()) + __nb_thread_counters - 1 ) /
                               __nb_thread_counters;
 
             // add to vect the countings of the other threads
@@ -534,7 +534,7 @@ namespace gum {
         Size result_domain_size = 1;
         Idx tmp_before_incr = 1;
         bool has_before_incr = false;
-        Size subset_size = subset_ids.size();
+        Size subset_size = Size(subset_ids.size());
         std::vector<Idx> superset_order( subset_ids.size() );
 
         // put the subset ids into a Set in order to know quickly if a given
@@ -599,7 +599,7 @@ namespace gum {
       // result_offset should be incremented (++) only when t1
       // before_incr[xxx] steps in the loop have already been made.
       Idx the_result_offset = 0;
-      Size table_domain_size = superset_vect.size();
+      Size table_domain_size = Size(superset_vect.size());
 
       for ( Idx h = 0; h < table_domain_size; ++h ) {
         subset_vect[the_result_offset] += superset_vect[h];
@@ -737,7 +737,7 @@ namespace gum {
 
           // get the IdSet to determine
           const IdSet<IdSetAlloc>& ids = *( __set2thread_id[i].first );
-          const Size ids_size = ids.ids().size();
+          const Size ids_size = Size(ids.ids().size());
 
           // get all the sets that contain its first variable and parse them
           const std::vector<const IdSet<IdSetAlloc>*>& sets =
@@ -768,7 +768,8 @@ namespace gum {
 
       // now that we know which nodes are supersets and which ones are not, we
       // can remove from the lattice all the nodes that are supersets
-      for ( NodeId i = 0, size = __set2thread_id.size(); i < size; ++i ) {
+        Size size =Size( __set2thread_id.size()); 
+      for ( NodeId i = 0;i < size; ++i)  {
         if ( __set_state[i] == SetState::NOT_SUBSET ) {
           __subset_lattice.eraseNode( i );
         }

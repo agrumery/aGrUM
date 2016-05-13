@@ -82,8 +82,8 @@ namespace gum {
         _conditioning_nodesets = &conditioning_nodesets;
 
         // reserve the _apriori_counts
-        Size apriori_size = _apriori_counts.size();
-        const Size count_size = counts.size();
+        Size apriori_size = Size(_apriori_counts.size());
+        const Size count_size = Size(counts.size());
 
         while ( apriori_size > count_size ) {
           _apriori_counts.pop_back();

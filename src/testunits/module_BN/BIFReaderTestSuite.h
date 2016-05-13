@@ -58,7 +58,7 @@ namespace gum_tests {
       gum::BIFReader<float> reader( net, file );
 
       reader.trace( false );
-      int nbrErr = 0;
+      gum::Size nbrErr = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
       TS_ASSERT( nbrErr == 0 );

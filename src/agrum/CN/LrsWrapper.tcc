@@ -557,8 +557,8 @@ namespace gum {
 
       long int numerator, denominator;
 
-      for ( decltype( rows ) row = 0; row < rows; row++ ) {
-        for ( decltype( cols ) col = 0; col < cols; col++ ) {
+      for ( long row = 0; row < rows; row++ ) {
+        for ( long col = 0; col < cols; col++ ) {
           Rational<GUM_SCALAR>::continuedFracFirst(
               numerator, denominator, __input[row][col] );
 
@@ -614,8 +614,8 @@ namespace gum {
             "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dat" );
       }
 
-      __dat->n = __input[0].size();
-      __dat->m = __input.size();
+      __dat->n = Size(__input[0].size());
+      __dat->m = Size(__input.size());
 
       __dat->getvolume = ( __getVolume ) ? 1L : 0L;
       __dat->hull = ( __hull ) ? 1L : 0L;

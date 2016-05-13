@@ -798,7 +798,7 @@ namespace gum {
         if ( domainSize != attr.values().size() ) {
           O3PRM_CLASS_ILLEGAL_CPT_SIZE( c.name(),
                                         attr.name(),
-                                        attr.values().size(),
+                                        Size(attr.values().size()),
                                         domainSize,
                                         *__errors );
           return false;
@@ -1102,7 +1102,7 @@ namespace gum {
         if ( agg.parameters().size() != n ) {
 
           O3PRM_CLASS_AGG_PARAMETERS(
-              agg.name(), n, agg.parameters().size(), *__errors );
+              agg.name(), n, Size(agg.parameters().size()), *__errors );
           return false;
         }
 

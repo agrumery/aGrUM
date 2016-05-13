@@ -107,7 +107,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const Size conditioning_size = N_ij.size();
+        const Size conditioning_size = Size(N_ij.size());
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =

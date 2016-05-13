@@ -255,7 +255,7 @@ namespace gum {
 
     //@beforeMerging : it this correct, christophe ?
     // perform the maximum cardinality search
-    for ( NodeId i = __elim_order.size() - 1; i < __elim_order.size(); --i ) {
+    for ( NodeId i = Size(__elim_order.size()) - 1; i < __elim_order.size(); --i ) {
       NodeId node = numbered_neighbours.pop();
       __elim_order[i] = node;
       __reverse_elim_order[node] = i;

@@ -675,7 +675,7 @@ namespace gum_tests {
 
       gum::NodeSet targets{0, 1, 2};
       op_set.setTargets( targets );
-      op_set.setTails( modalities.size() );
+      op_set.setTails( gum::Size(modalities.size()) );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
                                                   decltype( struct_constraint ),

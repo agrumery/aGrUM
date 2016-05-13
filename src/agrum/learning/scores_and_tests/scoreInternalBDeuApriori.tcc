@@ -95,7 +95,7 @@ namespace gum {
                                     Idx>*>& conditioning_nodesets ) {
       if ( __ess == 0 ) return;
 
-      const Size size = target_nodesets.size();
+      const Size size = Size(target_nodesets.size());
       for ( Idx i = 0; i < size; ++i ) {
         if ( target_nodesets[i] != nullptr ) {
           // compute the r_i's and q_i's

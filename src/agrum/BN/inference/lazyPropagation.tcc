@@ -73,7 +73,7 @@ namespace gum {
     // indicate, for each node of the BN, a clique in __JT that can contain its
     // conditional probability table
     const std::vector<NodeId>& JT_elim_order = triangulation.eliminationOrder();
-    HashTable<NodeId, Idx> elim_order( JT_elim_order.size() );
+    HashTable<NodeId, Idx> elim_order( Size(JT_elim_order.size()) );
 
     for ( Idx i = 0; i < JT_elim_order.size(); ++i )
       elim_order.insert( JT_elim_order[i], i );

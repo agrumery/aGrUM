@@ -410,22 +410,22 @@ namespace gum_tests {
       gum::List<int> list3{2, 1, 8, 5, 3, 6, 4, 7};
       gum::List<int>::const_iterator iter1 = list3.cbegin();
       gum::List<int>::const_iterator iter2 = list3.cbegin() + 4;
-      int d1 = iter2 - iter1;
+      int d1 = int(iter2 - iter1);
       TS_ASSERT_EQUALS( d1, 4 );
 
       gum::List<int>::iterator iter3 = list3.begin();
       gum::List<int>::iterator iter4 = list3.begin() + 4;
-      int d2 = iter4 - iter3;
+      int d2 = int(iter4 - iter3);
       TS_ASSERT_EQUALS( d2, 4 );
 
       gum::List<int>::const_iterator iter11 = list3.cbegin();
       gum::List<int>::const_iterator iter12 = list3.cbegin() + 4;
-      int d11 = iter12 - iter11;
+      int d11 = int(iter12 - iter11);
       TS_ASSERT_EQUALS( d11, 4 );
 
       gum::List<int>::iterator iter13 = list3.begin();
       gum::List<int>::iterator iter14 = list3.begin() + 4;
-      int d12 = iter14 - iter13;
+      int d12 = int(iter14 - iter13);
       TS_ASSERT_EQUALS( d12, 4 );
     }
 

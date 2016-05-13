@@ -332,7 +332,7 @@ namespace gum {
   // initializer list constructor
   template <typename Key, typename Alloc>
   INLINE Set<Key, Alloc>::Set( std::initializer_list<Key> list )
-      : __inside( list.size() / 2, true, false ) {
+      : __inside( Size(list.size()) / 2, true, false ) {
     GUM_CONSTRUCTOR( Set );
     for ( const auto& elt : list ) {
       insert( elt );

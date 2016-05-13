@@ -523,7 +523,7 @@ namespace gum {
         // not_used Size pos = 0;
         bool found = false;
 
-        for ( size_t i = 0; i < parents.size(); ++i ) {
+        for ( Idx i = 0; i < parents.size(); ++i ) {
           var = form->formulas().variablesSequence().atPos( 1 + i );
 
           if ( parents[i] == "*" ) {
@@ -589,7 +589,7 @@ namespace gum {
         // not_used Size pos = 0;
         bool found = false;
 
-        for ( size_t i = 0; i < parents.size(); ++i ) {
+        for ( Idx i = 0; i < parents.size(); ++i ) {
           var = form->formulas().variablesSequence().atPos( 1 + i );
 
           if ( parents[i] == "*" ) {

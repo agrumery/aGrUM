@@ -34,7 +34,7 @@ namespace gum {
         _sampleDef[node].resize( pConfs );
 
         for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
-          Size nVertices = ( *cpt )[node][pconf].size();
+          Size nVertices = Size(( *cpt )[node][pconf].size());
           unsigned long b,c; // needed by superiorPow
           superiorPow( static_cast<unsigned long>(nVertices), b, c );
           Size nBits=Size(b);
@@ -50,7 +50,7 @@ namespace gum {
     bool
     VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<bool>& bn,
                                        const std::vector<Size>& key ) {
-      _currentHash = _vectHash( bn );
+      _currentHash = Size(_vectHash( bn ));
       std::list<Size>& nets =
           _myVarHashs.getWithDefault( key, std::list<Size>() );  //[ key ];
 
@@ -162,7 +162,7 @@ namespace gum {
       // std::cout << sample << std::endl;
       // std::cout << _currentSample << std::endl;
 
-      _currentHash = _vectHash( _currentSample );
+      _currentHash = Size(_vectHash( _currentSample ));
     }
 
     template <typename GUM_SCALAR>

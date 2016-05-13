@@ -82,7 +82,8 @@ namespace gum {
           _record_counter.__nodesets;
       const std::vector<const std::vector<Idx, IdSetAlloc>*>&
           from_nodesets = from._record_counter.__nodesets;
-      for ( Idx i = 0, j = 0, size = from._target_nodesets.size();
+       Size size= Size(from._target_nodesets.size());
+      for ( Idx i = 0, j = 0;
             i < size;
             ++i ) {
         if ( from._target_nodesets[i] != nullptr ) {
@@ -92,9 +93,9 @@ namespace gum {
           nodesets[j] = &( _target_nodesets[i]->first );
         }
       }
+                  size =Size(nodesets.size());
       for ( Idx i = 0,
-                         j = 0,
-                         size = from._conditioning_nodesets.size();
+                         j = 0;
             i < size;
             ++i ) {
         if ( from._conditioning_nodesets[i] != nullptr ) {
@@ -141,7 +142,7 @@ namespace gum {
       _target_nodesets.push_back( nullptr );
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// add a new single variable to be counted
@@ -163,7 +164,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// add a new target variable plus some conditioning vars
@@ -196,7 +197,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// add a new target variable plus some conditioning vars
@@ -229,7 +230,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// add a new pair of target unconditioned variables to be counted
@@ -259,7 +260,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// add a new pair of target unconditioned variables to be counted
@@ -303,7 +304,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// add a new pair of target conditioned variables to be counted
@@ -340,7 +341,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// add a new pair of target conditioned variables to be counted
@@ -377,7 +378,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// add a new pair of target conditioned variables to be counted
@@ -414,7 +415,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return _target_nodesets.size() - 1;
+      return Idx(_target_nodesets.size() - 1);
     }
 
     /// clears all the data structures from memory
