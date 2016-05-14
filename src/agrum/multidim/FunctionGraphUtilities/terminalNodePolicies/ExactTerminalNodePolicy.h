@@ -71,11 +71,7 @@ namespace gum {
     /// Erase all terminal nodes
     // ============================================================================
     void clearAllTerminalNodes() {
-
-      GUM_CHECKPOINT;
-      GUM_TRACE_VAR(__map);
       __map.clear();
-      GUM_CHECKPOINT;
     }
 
     /// @}
