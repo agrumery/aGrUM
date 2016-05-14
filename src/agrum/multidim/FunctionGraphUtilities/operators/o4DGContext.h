@@ -65,7 +65,7 @@ namespace gum {
     /// Operator new overload to use the SmallObjectAllocator
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+      return SmallObjectAllocator::instance().allocate( Size(s) );
     }
 
     // ============================================================================

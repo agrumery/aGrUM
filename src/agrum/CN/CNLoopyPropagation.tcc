@@ -414,7 +414,7 @@ namespace gum {
 #pragma omp atomic
         msgPerm *= confs;
 #pragma omp barrier
-#pragma omp flush( msgPerm )
+#pragma omp flush // ( msgPerm ) let the compiler choose what to flush (due to mvsc)
 
 #pragma omp for
 
@@ -439,8 +439,8 @@ namespace gum {
 // than during for loop
 #pragma omp critical( msgpminmax )
         {
-#pragma omp flush( msg_p_min )
-#pragma omp flush( msg_p_max )
+#pragma omp flush //( msg_p_min )
+//#pragma omp flush ( msg_p_max )  let the compiler choose what to flush (due to mvsc)
 
           if ( msg_p_min > msg_pmin ) {
             msg_p_min = msg_pmin;
