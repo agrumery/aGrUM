@@ -129,7 +129,7 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( size(s) );
+      return SmallObjectAllocator::instance().allocate( Size(s) );
     }
     void operator delete( void* p ) {
       SmallObjectAllocator::instance().deallocate( p, sizeof( ActionSet ) );
@@ -214,7 +214,7 @@ namespace gum {
     // ============================================================================
     /// Gives the size
     // ============================================================================
-    Idx size() const { return __actionSeq->size(); }
+    Size size() const { return __actionSeq->size(); }
 
     bool exists( const Idx& elem ) const { return __actionSeq->exists( elem ); }
 
