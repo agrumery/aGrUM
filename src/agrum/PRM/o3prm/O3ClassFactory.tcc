@@ -498,7 +498,6 @@ namespace gum {
         // Class with a super class must be declared after
         for ( auto c : __o3Classes ) {
           __prm->getClass( c->name().label() ).inheritAttributes();
-          __prm->getClass( c->name().label() ).inheritAggregates();
           __declareAttribute( *c );
         }
       }
@@ -507,6 +506,7 @@ namespace gum {
       INLINE void O3ClassFactory<GUM_SCALAR>::declareAggregates() {
         // Class with a super class must be declared after
         for ( auto c : __o3Classes ) {
+          __prm->getClass( c->name().label() ).inheritAggregates();
           __declareAggregates( *c );
         }
       }

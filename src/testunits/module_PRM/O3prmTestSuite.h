@@ -1209,600 +1209,600 @@ namespace gum_tests {
     //  }
     //}
 
-    //void testImports() {
-    //  try {
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    reader.addClassPath( GET_RESSOURCES_PATH( "o3prmr" ) );
-    //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(
-    //        GET_RESSOURCES_PATH( "o3prmr/systems/MySystem.o3prm" ),
-    //        "systems.MySystem" ) );
-    //    TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
-    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
-    //    reader.showElegantErrorsAndWarnings();
+    void testImports() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        reader.addClassPath( GET_RESSOURCES_PATH( "o3prmr" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(
+            GET_RESSOURCES_PATH( "o3prmr/systems/MySystem.o3prm" ),
+            "systems.MySystem" ) );
+        TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        reader.showElegantErrorsAndWarnings();
 
-    //    gum::prm::PRM<double>* prm = nullptr;
+        gum::prm::PRM<double>* prm = nullptr;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-    //    gum::Size class_count = prm->classes().size();
-    //    class_count += prm->interfaces().size();
-    //    TS_ASSERT_EQUALS( class_count,
-    //                      (gum::Size)11 );  // Don't forget param subclasses !
+        TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
+        gum::Size class_count = prm->classes().size();
+        class_count += prm->interfaces().size();
+        TS_ASSERT_EQUALS( class_count,
+                          (gum::Size)11 );  // Don't forget param subclasses !
 
-    //    TS_ASSERT_EQUALS( prm->systems().size(), (gum::Size)1 );
-    //    gum::prm::System<double>* sys = 0;
-    //    TS_GUM_ASSERT_THROWS_NOTHING(
-    //        sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
-    //    TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
+        TS_ASSERT_EQUALS( prm->systems().size(), (gum::Size)1 );
+        gum::prm::System<double>* sys = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
+        TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
 
-    //    // Checking that all class DAG are generated
-    //    for ( auto c : prm->classes() ) {
-    //      for ( auto node = c->dag().begin(); node != c->dag().end(); ++node ) {
-    //        TS_ASSERT( c->exists( *node ) );
-    //        TS_ASSERT_THROWS_NOTHING( c->get( *node ) );
-    //        for ( auto prnt : c->dag().parents( *node ) ) {
-    //          TS_ASSERT( c->exists( prnt ) );
-    //          TS_ASSERT_THROWS_NOTHING( c->get( prnt ) );
-    //        }
+        // Checking that all class DAG are generated
+        for ( auto c : prm->classes() ) {
+          for ( auto node = c->dag().begin(); node != c->dag().end(); ++node ) {
+            TS_ASSERT( c->exists( *node ) );
+            TS_ASSERT_THROWS_NOTHING( c->get( *node ) );
+            for ( auto prnt : c->dag().parents( *node ) ) {
+              TS_ASSERT( c->exists( prnt ) );
+              TS_ASSERT_THROWS_NOTHING( c->get( prnt ) );
+            }
 
-    //        for ( auto child : c->dag().children( *node ) ) {
-    //          TS_ASSERT( c->exists( child ) );
-    //          TS_ASSERT_THROWS_NOTHING( c->get( child ) );
-    //        }
-    //      }
-    //      // checking parameters
-    //      for ( auto elt : c->parameters() ) {
-    //        c->dag().exists( elt->id() );
-    //      }
-    //      for ( auto elt : c->referenceSlots() ) {
-    //        c->dag().exists( elt->id() );
-    //      }
-    //      for ( auto elt : c->attributes() ) {
-    //        c->dag().exists( elt->id() );
-    //      }
-    //      for ( auto elt : c->aggregates() ) {
-    //        c->dag().exists( elt->id() );
-    //      }
-    //      for ( auto elt : c->slotChains() ) {
-    //        c->dag().exists( elt->id() );
-    //      }
-    //    }
+            for ( auto child : c->dag().children( *node ) ) {
+              TS_ASSERT( c->exists( child ) );
+              TS_ASSERT_THROWS_NOTHING( c->get( child ) );
+            }
+          }
+          // checking parameters
+          for ( auto elt : c->parameters() ) {
+            c->dag().exists( elt->id() );
+          }
+          for ( auto elt : c->referenceSlots() ) {
+            c->dag().exists( elt->id() );
+          }
+          for ( auto elt : c->attributes() ) {
+            c->dag().exists( elt->id() );
+          }
+          for ( auto elt : c->aggregates() ) {
+            c->dag().exists( elt->id() );
+          }
+          for ( auto elt : c->slotChains() ) {
+            c->dag().exists( elt->id() );
+          }
+        }
 
-    //    // Checking that all instances attributes are generated
-    //    for ( auto i = sys->begin(); i != sys->end(); ++i ) {
-    //      for ( auto attr = i.val()->begin(); attr != i.val()->end(); ++attr ) {
-    //        try {
-    //          auto inst = gum::Instantiation( attr.val()->cpf() );
-    //          auto sum = 0.0;
-    //          for ( inst.begin(); not inst.end(); inst.inc() ) {
-    //            sum += attr.val()->cpf()[inst];
-    //          }
-    //          auto card = 1;
-    //          for ( auto var : attr.val()->cpf().variablesSequence() ) {
-    //            card *= var->domainSize();
-    //          }
-    //          card /= attr.val()->type()->domainSize();
+        // Checking that all instances attributes are generated
+        for ( auto i = sys->begin(); i != sys->end(); ++i ) {
+          for ( auto attr = i.val()->begin(); attr != i.val()->end(); ++attr ) {
+            try {
+              auto inst = gum::Instantiation( attr.val()->cpf() );
+              auto sum = 0.0;
+              for ( inst.begin(); not inst.end(); inst.inc() ) {
+                sum += attr.val()->cpf()[inst];
+              }
+              auto card = 1;
+              for ( auto var : attr.val()->cpf().variablesSequence() ) {
+                card *= var->domainSize();
+              }
+              card /= attr.val()->type()->domainSize();
 
-    //          TS_ASSERT_DELTA( sum / card, 1.0, 1e-6 );
-    //        } catch ( gum::Exception& e ) {
-    //          TS_FAIL( e.errorContent() );
-    //        }
-    //      }
-    //    }
+              TS_ASSERT_DELTA( sum / card, 1.0, 1e-6 );
+            } catch ( gum::Exception& e ) {
+              TS_FAIL( e.errorContent() );
+            }
+          }
+        }
 
-    //    if ( prm ) {
-    //      delete prm;
-    //    }
-    //  } catch ( gum::Exception ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+        if ( prm ) {
+          delete prm;
+        }
+      } catch ( gum::Exception ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testParamClass() {
-    //  try {
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
-    //    std::string package = "fr.lip6.printers";
-    //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    gum::prm::PRM<double>* prm = reader.prm();
-    //    gum::prm::Class<double>& ParamClass =
-    //        prm->getClass( "fr.lip6.printers.ParamClass" );
-    //    TS_ASSERT_EQUALS( ParamClass.attributes().size(), (gum::Size)9 );
-    //    TS_ASSERT_EQUALS( ParamClass.referenceSlots().size(), (gum::Size)1 );
-    //    TS_ASSERT_EQUALS( ParamClass.slotChains().size(), (gum::Size)1 );
-    //    TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["lambda"] );
-    //    TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["t"] );
-    //    TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["room"] );
-    //    TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["hasInk"] );
-    //    TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["hasPaper"] );
-    //    TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["equipState"] );
+    void testParamClass() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+        std::string package = "fr.lip6.printers";
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        gum::prm::PRM<double>* prm = reader.prm();
+        gum::prm::Class<double>& ParamClass =
+            prm->getClass( "fr.lip6.printers.ParamClass" );
+        TS_ASSERT_EQUALS( ParamClass.attributes().size(), (gum::Size)9 );
+        TS_ASSERT_EQUALS( ParamClass.referenceSlots().size(), (gum::Size)1 );
+        TS_ASSERT_EQUALS( ParamClass.slotChains().size(), (gum::Size)1 );
+        TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["lambda"] );
+        TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["t"] );
+        TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["room"] );
+        TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["hasInk"] );
+        TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["hasPaper"] );
+        TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["equipState"] );
 
-    //    delete prm;
-    //  } catch ( gum::Exception ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+        delete prm;
+      } catch ( gum::Exception ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testSystemParamClass() {
-    //  try {
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file =
-    //        GET_RESSOURCES_PATH( "o3prm/complexprinters_system.o3prm" );
-    //    std::string package = "fr.lip6.printers";
-    //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    gum::prm::PRM<double>* prm = reader.prm();
+    void testSystemParamClass() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file =
+            GET_RESSOURCES_PATH( "o3prm/complexprinters_system.o3prm" );
+        std::string package = "fr.lip6.printers";
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        gum::prm::PRM<double>* prm = reader.prm();
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING(
-    //        prm->getClass( "fr.lip6.printers.ParamClass" ) );
-    //    TS_GUM_ASSERT_THROWS_NOTHING(
-    //        prm->getClass( "fr.lip6.printers.ParamClass<lambda=0.4,t=4>" ) );
-    //    TS_GUM_ASSERT_THROWS_NOTHING(
-    //        prm->getClass( "fr.lip6.printers.ParamClass<lambda=0.001,t=4>" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            prm->getClass( "fr.lip6.printers.ParamClass" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            prm->getClass( "fr.lip6.printers.ParamClass<lambda=0.4,t=4>" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            prm->getClass( "fr.lip6.printers.ParamClass<lambda=0.001,t=4>" ) );
 
-    //    delete prm;
-    //  } catch ( gum::Exception ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+        delete prm;
+      } catch ( gum::Exception ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testParamClassHasInk() {
-    //  try {
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
-    //    std::string package = "fr.lip6.printers";
-    //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+    void testParamClassHasInk() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+        std::string package = "fr.lip6.printers";
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
 
-    //    auto prm = reader.prm();
-    //    auto& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
+        auto prm = reader.prm();
+        auto& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
 
-    //    const auto& hasInk =
-    //        static_cast<gum::prm::Attribute<double>&>( ParamClass["hasInk"] );
+        const auto& hasInk =
+            static_cast<gum::prm::Attribute<double>&>( ParamClass["hasInk"] );
 
-    //    gum::Instantiation inst( hasInk.cpf() );
-    //    std::vector<double> values;
-    //    for ( inst.begin(); not inst.end(); inst.inc() ) {
-    //      values.push_back( hasInk.cpf()[inst] );
-    //    }
+        gum::Instantiation inst( hasInk.cpf() );
+        std::vector<double> values;
+        for ( inst.begin(); not inst.end(); inst.inc() ) {
+          values.push_back( hasInk.cpf()[inst] );
+        }
 
-    //    TS_ASSERT_EQUALS( values.size(), (size_t)2 );
-    //    TS_ASSERT_DELTA( values[0], 0.4, 1e-6 );
-    //    TS_ASSERT_DELTA( values[1], 0.6, 1e-6 );
+        TS_ASSERT_EQUALS( values.size(), (size_t)2 );
+        TS_ASSERT_DELTA( values[0], 0.4, 1e-6 );
+        TS_ASSERT_DELTA( values[1], 0.6, 1e-6 );
 
-    //    delete prm;
-    //  } catch ( gum::Exception ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+        delete prm;
+      } catch ( gum::Exception ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testParamClassHasPaper() {
-    //  try {
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
-    //    std::string package = "fr.lip6.printers";
-    //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+    void testParamClassHasPaper() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+        std::string package = "fr.lip6.printers";
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
 
-    //    auto prm = reader.prm();
-    //    auto& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
+        auto prm = reader.prm();
+        auto& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
 
-    //    const auto& hasPaper =
-    //        static_cast<gum::prm::Attribute<double>&>( ParamClass["hasPaper"] );
+        const auto& hasPaper =
+            static_cast<gum::prm::Attribute<double>&>( ParamClass["hasPaper"] );
 
-    //    gum::Instantiation inst( hasPaper.cpf() );
-    //    std::vector<double> values;
-    //    for ( inst.begin(); not inst.end(); inst.inc() ) {
-    //      values.push_back( hasPaper.cpf()[inst] );
-    //    }
+        gum::Instantiation inst( hasPaper.cpf() );
+        std::vector<double> values;
+        for ( inst.begin(); not inst.end(); inst.inc() ) {
+          values.push_back( hasPaper.cpf()[inst] );
+        }
 
-    //    TS_ASSERT_EQUALS( values.size(), (size_t)3 );
-    //    TS_ASSERT_DELTA( values[0], std::exp( -0.4 * 4 ), 1e-6 );
-    //    TS_ASSERT_DELTA( values[1], 1 - std::exp( -0.4 * 4 ), 1e-6 );
-    //    TS_ASSERT_DELTA( values[2], 0.0, 1e-6 );
+        TS_ASSERT_EQUALS( values.size(), (size_t)3 );
+        TS_ASSERT_DELTA( values[0], std::exp( -0.4 * 4 ), 1e-6 );
+        TS_ASSERT_DELTA( values[1], 1 - std::exp( -0.4 * 4 ), 1e-6 );
+        TS_ASSERT_DELTA( values[2], 0.0, 1e-6 );
 
-    //    delete prm;
-    //  } catch ( gum::Exception ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+        delete prm;
+      } catch ( gum::Exception ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testInstanceParamClassHasInk() {
-    //  try {
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file =
-    //        GET_RESSOURCES_PATH( "o3prm/complexprinters_system.o3prm" );
-    //    std::string package = "fr.lip6.printers";
-    //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+    void testInstanceParamClassHasInk() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file =
+            GET_RESSOURCES_PATH( "o3prm/complexprinters_system.o3prm" );
+        std::string package = "fr.lip6.printers";
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
 
-    //    auto prm = reader.prm();
-    //    auto& sys = prm->system( "fr.lip6.printers.aSys" );
-    //    auto& paramBis = sys.get( "paramBis" );
+        auto prm = reader.prm();
+        auto& sys = prm->system( "fr.lip6.printers.aSys" );
+        auto& paramBis = sys.get( "paramBis" );
 
-    //    const auto& hasInk = paramBis.get( "hasInk" );
+        const auto& hasInk = paramBis.get( "hasInk" );
 
-    //    gum::Instantiation inst( hasInk.cpf() );
-    //    std::vector<double> values;
-    //    for ( inst.begin(); not inst.end(); inst.inc() ) {
-    //      values.push_back( hasInk.cpf()[inst] );
-    //    }
+        gum::Instantiation inst( hasInk.cpf() );
+        std::vector<double> values;
+        for ( inst.begin(); not inst.end(); inst.inc() ) {
+          values.push_back( hasInk.cpf()[inst] );
+        }
 
-    //    TS_ASSERT_EQUALS( values.size(), (size_t)2 );
-    //    TS_ASSERT_DELTA( values[0], 0.001, 1e-6 );
-    //    TS_ASSERT_DELTA( values[1], 0.999, 1e-6 );
+        TS_ASSERT_EQUALS( values.size(), (size_t)2 );
+        TS_ASSERT_DELTA( values[0], 0.001, 1e-6 );
+        TS_ASSERT_DELTA( values[1], 0.999, 1e-6 );
 
-    //    delete prm;
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+        delete prm;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testAsiaBN() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" );
-    //    std::string package = "";
-    //    reader.readFile( file, package );
-    //    auto prm = reader.prm();
-    //    gum::prm::Class<double> const* asia = nullptr;
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia" ) ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)8 );
-    //    TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)8 );
-    //    delete prm;
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+    void testAsiaBN() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" );
+        std::string package = "";
+        reader.readFile( file, package );
+        auto prm = reader.prm();
+        gum::prm::Class<double> const* asia = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia" ) ) );
+        // Assert
+        TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)8 );
+        TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)8 );
+        delete prm;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testAsiaBNGrd() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" );
-    //    std::string package = "";
-    //    reader.readFile( file, package );
-    //    auto prm = reader.prm();
-    //    auto& asia = prm->getClass( "Asia" );
-    //    gum::prm::System<double> sys( "Asia" );
-    //    auto i = new gum::prm::Instance<double>( "asia", asia );
-    //    sys.add( i );
-    //    sys.instantiate();
-    //    auto bn = new gum::BayesNet<double>( "Asia" );
-    //    gum::BayesNetFactory<double> factory( bn );
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( bn->size(), (gum::Size)8 );
-    //    TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
-    //    delete prm;
-    //    delete bn;
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+    void testAsiaBNGrd() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" );
+        std::string package = "";
+        reader.readFile( file, package );
+        auto prm = reader.prm();
+        auto& asia = prm->getClass( "Asia" );
+        gum::prm::System<double> sys( "Asia" );
+        auto i = new gum::prm::Instance<double>( "asia", asia );
+        sys.add( i );
+        sys.instantiate();
+        auto bn = new gum::BayesNet<double>( "Asia" );
+        gum::BayesNetFactory<double> factory( bn );
+        // Act
+        TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+        // Assert
+        TS_ASSERT_EQUALS( bn->size(), (gum::Size)8 );
+        TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
+        delete prm;
+        delete bn;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testVisitAsiaTwoClassesBN() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH(
-    //        "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
-    //    std::string package = "";
-    //    reader.readFile( file, package );
-    //    auto prm = reader.prm();
-    //    gum::prm::Class<double> const* asia = nullptr;
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "VisitAsia" ) ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)2 );
-    //    TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)1 );
-    //    delete prm;
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+    void testVisitAsiaTwoClassesBN() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH(
+            "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
+        std::string package = "";
+        reader.readFile( file, package );
+        auto prm = reader.prm();
+        gum::prm::Class<double> const* asia = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "VisitAsia" ) ) );
+        // Assert
+        TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)2 );
+        TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)1 );
+        delete prm;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testAsiaTwoClassesBN() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH(
-    //        "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
-    //    std::string package = "";
-    //    reader.readFile( file, package );
-    //    auto prm = reader.prm();
-    //    gum::prm::Class<double> const* asia = nullptr;
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia" ) ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)6 );
-    //    TS_ASSERT_EQUALS( asia->referenceSlots().size(), (gum::Size)1 );
-    //    TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)7 );
-    //    delete prm;
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //  }
-    //}
+    void testAsiaTwoClassesBN() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH(
+            "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
+        std::string package = "";
+        reader.readFile( file, package );
+        auto prm = reader.prm();
+        gum::prm::Class<double> const* asia = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia" ) ) );
+        // Assert
+        TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size)6 );
+        TS_ASSERT_EQUALS( asia->referenceSlots().size(), (gum::Size)1 );
+        TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size)7 );
+        delete prm;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
 
-    //void testAsiaTwoClassBNGrd() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH(
-    //        "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
-    //    std::string package = "";
-    //    reader.readFile( file, package );
-    //    auto prm = reader.prm();
-    //    auto& sys = prm->system( "Asia" );
-    //    // sys.instantiate();
-    //    auto bn = new gum::BayesNet<double>( "Asia" );
-    //    gum::BayesNetFactory<double> factory( bn );
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( bn->size(), (gum::Size)8 );
-    //    TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
-    //    delete prm;
-    //    delete bn;
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //    GUM_TRACE( e.errorContent() );
-    //    GUM_TRACE( e.errorCallStack() );
-    //  }
-    //}
+    void testAsiaTwoClassBNGrd() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH(
+            "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
+        std::string package = "";
+        reader.readFile( file, package );
+        auto prm = reader.prm();
+        auto& sys = prm->system( "Asia" );
+        // sys.instantiate();
+        auto bn = new gum::BayesNet<double>( "Asia" );
+        gum::BayesNetFactory<double> factory( bn );
+        // Act
+        TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+        // Assert
+        TS_ASSERT_EQUALS( bn->size(), (gum::Size)8 );
+        TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
+        delete prm;
+        delete bn;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
 
-    //void testFileNotFound() {
-    //  // Arrange
-    //  gum::prm::o3prm::O3prmReader<double> reader;
-    //  std::string file = "ThisFileDoesNotExist.o3prm";
-    //  std::string package = "";
-    //  // Act & Assert
-    //  TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //  TS_ASSERT_DIFFERS( reader.errors(), (gum::Size)0 );
-    //  if ( reader.prm() ) {
-    //    delete reader.prm();
-    //  }
-    //}
+    void testFileNotFound() {
+      // Arrange
+      gum::prm::o3prm::O3prmReader<double> reader;
+      std::string file = "ThisFileDoesNotExist.o3prm";
+      std::string package = "";
+      // Act & Assert
+      TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+      TS_ASSERT_DIFFERS( reader.errors(), (gum::Size)0 );
+      if ( reader.prm() ) {
+        delete reader.prm();
+      }
+    }
 
-    //void testFileNotFoundInResDir() {
-    //  // Arrange
-    //  gum::prm::o3prm::O3prmReader<double> reader;
-    //  std::string file =
-    //      GET_RESSOURCES_PATH( "o3prm/ThisFileDoesNotExist.o3prm" );
-    //  std::string package = "";
-    //  // Act & Assert
-    //  TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //  TS_ASSERT_DIFFERS( reader.errors(), (gum::Size)0 );
-    //  if ( reader.prm() ) {
-    //    delete reader.prm();
-    //  }
-    //}
+    void testFileNotFoundInResDir() {
+      // Arrange
+      gum::prm::o3prm::O3prmReader<double> reader;
+      std::string file =
+          GET_RESSOURCES_PATH( "o3prm/ThisFileDoesNotExist.o3prm" );
+      std::string package = "";
+      // Act & Assert
+      TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+      TS_ASSERT_DIFFERS( reader.errors(), (gum::Size)0 );
+      if ( reader.prm() ) {
+        delete reader.prm();
+      }
+    }
 
-    //void testAsiaWithErrors() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/AsiaWithError.o3prm" );
-    //    std::string package = "";
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)1 );
-    //    TS_ASSERT_DIFFERS( reader.prm(), nullptr );
-    //    delete reader.prm();
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //    GUM_TRACE( e.errorContent() );
-    //    GUM_TRACE( e.errorCallStack() );
-    //  }
-    //}
+    void testAsiaWithErrors() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/AsiaWithError.o3prm" );
+        std::string package = "";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)1 );
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+        delete reader.prm();
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
 
-    //void testAggOrAnd() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/aggregates.o3prm" );
-    //    std::string package = "";
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
-    //    if ( reader.errors() ) {
-    //      reader.showElegantErrorsAndWarnings();
-    //    }
-    //    TS_ASSERT_DIFFERS( reader.prm(), nullptr );
-    //    delete reader.prm();
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //    GUM_TRACE( e.errorContent() );
-    //    GUM_TRACE( e.errorCallStack() );
-    //  }
-    //}
+    void testAggOrAnd() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/aggregates.o3prm" );
+        std::string package = "";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+        delete reader.prm();
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
 
-    //void testActors() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/acteurs.o3prm" );
-    //    std::string package = "";
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
-    //    if ( reader.errors() ) {
-    //      reader.showElegantErrorsAndWarnings();
-    //    }
-    //    TS_ASSERT_DIFFERS( reader.prm(), nullptr );
-    //    delete reader.prm();
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //    GUM_TRACE( e.errorContent() );
-    //    GUM_TRACE( e.errorCallStack() );
-    //  }
-    //}
+    void testActors() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/acteurs.o3prm" );
+        std::string package = "";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+        delete reader.prm();
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
 
-    //void testStudents() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file =
-    //        GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
-    //    std::string package = "fr.base";
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
-    //    if ( reader.errors() ) {
-    //      reader.showElegantErrorsAndWarnings();
-    //    }
-    //    TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+    void testStudents() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file =
+            GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
+        std::string package = "fr.base";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
 
-    //    auto sys = &( reader.prm()->system( "fr.base.Work" ) );
-    //    for ( auto iter : *sys ) {
-    //      auto inst = iter.second;
-    //      for ( auto node : inst->type().dag() ) {
-    //        // TS_ASSERT( inst->exists( node ) );
-    //        if ( ( not inst->exists( node ) ) and
-    //             inst->type().exists( node ) ) {
-    //          auto elt = &( inst->type().get( node ) );
-    //          if ( gum::prm::ClassElement<double>::isAttribute( *elt ) or
-    //               gum::prm::ClassElement<double>::isAggregate( *elt ) ) {
+        auto sys = &( reader.prm()->system( "fr.base.Work" ) );
+        for ( auto iter : *sys ) {
+          auto inst = iter.second;
+          for ( auto node : inst->type().dag() ) {
+            // TS_ASSERT( inst->exists( node ) );
+            if ( ( not inst->exists( node ) ) and
+                 inst->type().exists( node ) ) {
+              auto elt = &( inst->type().get( node ) );
+              if ( gum::prm::ClassElement<double>::isAttribute( *elt ) or
+                   gum::prm::ClassElement<double>::isAggregate( *elt ) ) {
 
-    //            GUM_TRACE( inst->type().name()
-    //                       << "."
-    //                       << inst->type().get( node ).safeName() );
-    //          }
-    //        }
-    //      }
-    //    }
+                GUM_TRACE( inst->type().name()
+                           << "."
+                           << inst->type().get( node ).safeName() );
+              }
+            }
+          }
+        }
 
-    //    delete reader.prm();
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //    GUM_TRACE( e.errorContent() );
-    //    GUM_TRACE( e.errorCallStack() );
-    //  }
-    //}
+        delete reader.prm();
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
 
-    //void testReferenceID() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file =
-    //        GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
-    //    std::string package = "";
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
-    //    if ( reader.errors() ) {
-    //      reader.showElegantErrorsAndWarnings();
-    //    }
+    void testReferenceID() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file =
+            GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
+        std::string package = "";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
 
-    //    TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
 
-    //    auto prm = reader.prm();
-    //    for ( auto c : prm->classes() ) {
-    //      try {
-    //        for ( auto i : c->implements() ) {
-    //          for ( auto r : i->referenceSlots() ) {
-    //            TS_ASSERT_EQUALS( r->name(), c->get( r->id() ).name() );
-    //            TS_ASSERT_EQUALS( r->safeName(), c->get( r->id() ).safeName() );
-    //            TS_ASSERT_EQUALS( r->id(), c->get( r->name() ).id() );
-    //          }
-    //          for ( auto r : c->referenceSlots() ) {
-    //            if ( i->exists( r->name() ) ) {
-    //              TS_ASSERT_EQUALS( r->name(), i->get( r->id() ).name() );
-    //              TS_ASSERT_EQUALS( r->safeName(),
-    //                                i->get( r->id() ).safeName() );
-    //              TS_ASSERT_EQUALS( r->id(), i->get( r->name() ).id() );
-    //            }
-    //          }
-    //        }
-    //      } catch ( gum::NotFound& e ) {
-    //        // No Interface
-    //      }
-    //    }
+        auto prm = reader.prm();
+        for ( auto c : prm->classes() ) {
+          try {
+            for ( auto i : c->implements() ) {
+              for ( auto r : i->referenceSlots() ) {
+                TS_ASSERT_EQUALS( r->name(), c->get( r->id() ).name() );
+                TS_ASSERT_EQUALS( r->safeName(), c->get( r->id() ).safeName() );
+                TS_ASSERT_EQUALS( r->id(), c->get( r->name() ).id() );
+              }
+              for ( auto r : c->referenceSlots() ) {
+                if ( i->exists( r->name() ) ) {
+                  TS_ASSERT_EQUALS( r->name(), i->get( r->id() ).name() );
+                  TS_ASSERT_EQUALS( r->safeName(),
+                                    i->get( r->id() ).safeName() );
+                  TS_ASSERT_EQUALS( r->id(), i->get( r->name() ).id() );
+                }
+              }
+            }
+          } catch ( gum::NotFound& e ) {
+            // No Interface
+          }
+        }
 
-    //    delete prm;
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //    GUM_TRACE( e.errorContent() );
-    //    GUM_TRACE( e.errorCallStack() );
-    //  }
-    //}
+        delete prm;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
 
-    //void testAttributeID() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file =
-    //        GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
-    //    std::string package = "";
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
-    //    if ( reader.errors() ) {
-    //      reader.showElegantErrorsAndWarnings();
-    //    }
+    void testAttributeID() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file =
+            GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
+        std::string package = "";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
 
-    //    TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
 
-    //    auto prm = reader.prm();
-    //    for ( auto c : prm->classes() ) {
-    //      try {
-    //        for ( auto i : c->implements() ) {
+        auto prm = reader.prm();
+        for ( auto c : prm->classes() ) {
+          try {
+            for ( auto i : c->implements() ) {
 
-    //          for ( auto a : i->attributes() ) {
-    //            TS_ASSERT( c->exists( a->name() ) );
-    //            TS_ASSERT( c->exists( a->safeName() ) );
-    //            TS_ASSERT( c->exists( a->id() ) );
-    //            TS_ASSERT_EQUALS( a->safeName(), c->get( a->id() ).safeName() );
-    //            TS_ASSERT_EQUALS( a->id(), c->get( a->id() ).id() );
-    //          }
-    //        }
-    //      } catch ( gum::NotFound& e ) {
-    //        // No interface
-    //      }
-    //    }
+              for ( auto a : i->attributes() ) {
+                TS_ASSERT( c->exists( a->name() ) );
+                TS_ASSERT( c->exists( a->safeName() ) );
+                TS_ASSERT( c->exists( a->id() ) );
+                TS_ASSERT_EQUALS( a->safeName(), c->get( a->id() ).safeName() );
+                TS_ASSERT_EQUALS( a->id(), c->get( a->id() ).id() );
+              }
+            }
+          } catch ( gum::NotFound& e ) {
+            // No interface
+          }
+        }
 
-    //    delete prm;
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //    GUM_TRACE( e.errorContent() );
-    //    GUM_TRACE( e.errorCallStack() );
-    //  }
-    //}
+        delete prm;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
 
-    //void testArrays() {
-    //  try {
-    //    // Arrange
-    //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file =
-    //        GET_RESSOURCES_PATH( "o3prm/arrays.o3prm" );
-    //    std::string package = "";
-    //    // Act
-    //    TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
-    //    // Assert
-    //    TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
-    //    if ( reader.errors() ) {
-    //      reader.showElegantErrorsAndWarnings();
-    //    }
+    void testArrays() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file =
+            GET_RESSOURCES_PATH( "o3prm/arrays.o3prm" );
+        std::string package = "";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
 
-    //    TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
 
-    //    if ( reader.prm() != nullptr ) {
-    //      delete reader.prm();
-    //    } else {
-    //      TS_ASSERT( false );
-    //    }
+        if ( reader.prm() != nullptr ) {
+          delete reader.prm();
+        } else {
+          TS_ASSERT( false );
+        }
 
-    //  } catch ( gum::Exception& e ) {
-    //    TS_ASSERT( false );
-    //    GUM_TRACE( e.errorContent() );
-    //    GUM_TRACE( e.errorCallStack() );
-    //  }
-    //}
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
 
     void testHamza() {
       try {
