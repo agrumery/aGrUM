@@ -193,7 +193,7 @@ namespace gum {
                                    O3Aggregate& agg,
                                    const PRMType<GUM_SCALAR>* t );
 
-        bool __checkParametersNumber( O3Aggregate& agg, size_t n );
+        bool __checkParametersNumber( O3Aggregate& agg, Size n );
 
         bool __checkParameterValue( O3Aggregate& agg,
                                     const gum::prm::PRMType<GUM_SCALAR>& t );

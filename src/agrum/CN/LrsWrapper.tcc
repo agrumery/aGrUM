@@ -546,7 +546,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__fill() const {
-      long cols = __input[0].size();
+      long cols = long(__input[0].size());
 
       long int* num =
           new long int[cols];  // ISO C++ forbids variable length array,

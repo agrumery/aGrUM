@@ -70,7 +70,7 @@ namespace gum {
         // read a new line in the input file and convert it into a DBRow
         const std::vector<std::string>& row = parser.current();
 
-        DBRow new_row( row.size() );
+        DBRow new_row( Size(row.size()) );
 
         for ( Idx i = 0; i < row.size(); ++i ) {
           new_row[i].setBestTypeSafe( row[i] );

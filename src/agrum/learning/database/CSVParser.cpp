@@ -59,7 +59,7 @@ namespace gum {
                                       Size& next_token,
                                       Size& last_letter_token,
                                       Size from ) const {
-      first_letter_token = str.find_first_not_of( __spaces, from );
+      first_letter_token = Size(str.find_first_not_of( __spaces, from ));
 
       if ( first_letter_token == std::string::npos ) {
         next_token = last_letter_token = first_letter_token;
@@ -74,31 +74,31 @@ namespace gum {
           GUM_SYNTAX_ERROR(
               "String quote missing", noLine(), first_letter_token );
 
-        next_token = str.find_first_of( __delimiter, last_letter_token + 1 );
+        next_token = Size(str.find_first_of( __delimiter, last_letter_token + 1 ));
         Size next_char =
-            str.find_first_not_of( __spaces, last_letter_token + 1 );
+            Size(str.find_first_not_of( __spaces, last_letter_token + 1 ));
 
         if ( next_char < next_token ) {
           GUM_SYNTAX_ERROR( "Delimiter missing at line", noLine(), next_char );
         }
       } else {
-        next_token = str.find_first_of( __delimiter, first_letter_token );
+        next_token = Size(str.find_first_of( __delimiter, first_letter_token ));
 
         if ( next_token == std::string::npos ) {
-          last_letter_token = str.find_last_not_of( __spaces, next_token );
+          last_letter_token = Size(str.find_last_not_of( __spaces, next_token ));
         } else if ( next_token == first_letter_token ) {
           last_letter_token = first_letter_token;
         } else {
           last_letter_token =
-              str.find_last_not_of( __delimiterPlusSpaces, next_token - 1 );
+              Size(str.find_last_not_of( __delimiterPlusSpaces, next_token - 1 ));
         }
       }
     }
 
     void CSVParser::__tokenize( const std::string& s ) {
       // looking for first commentMarker not in a string
-      Size commentMarker = s.find_first_of( __commentMarker, 0 );
-      Size quoteMarker = s.find_first_of( __quoteMarker, 0 );
+      Size commentMarker = Size(s.find_first_of( __commentMarker, 0 ));
+      Size quoteMarker = Size(s.find_first_of( __quoteMarker, 0 ));
       Size quoteMarkerEnd;
 
       while ( quoteMarker < commentMarker ) {
@@ -109,10 +109,10 @@ namespace gum {
 
         while ( commentMarker <
                 quoteMarkerEnd ) {  // the comment was in the quote
-          commentMarker = s.find_first_of( __commentMarker, commentMarker + 1 );
+          commentMarker = Size(s.find_first_of( __commentMarker, commentMarker + 1 ));
         }
 
-        quoteMarker = s.find_first_of( __quoteMarker, quoteMarkerEnd + 1 );
+        quoteMarker = Size(s.find_first_of( __quoteMarker, quoteMarkerEnd + 1 ));
       }
 
       std::string str = s.substr( 0, commentMarker );

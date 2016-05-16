@@ -119,8 +119,8 @@ namespace gum {
     // a deletion + an insertion) and we check that no insertion also exists
     // as a deletion (if so, we remove both operations). In addition, if
     // we try to add an arc (X,X) we return that it induces a cycle
-    HashTable<Arc, Size> deletions( modifs.size() );
-    HashTable<Arc, Size> additions( modifs.size() );
+    HashTable<Arc, Size> deletions( Size(modifs.size()) );
+    HashTable<Arc, Size> additions( Size(modifs.size()) );
 
     for ( const auto& modif : modifs ) {
       Arc arc( modif.tail(), modif.head() );

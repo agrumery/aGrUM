@@ -1097,12 +1097,12 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE bool
       O3ClassFactory<GUM_SCALAR>::__checkParametersNumber( O3Aggregate& agg,
-                                                           size_t n ) {
+                                                           Size n ) {
 
         if ( agg.parameters().size() != n ) {
 
           O3PRM_CLASS_AGG_PARAMETERS(
-              agg.name(), n, Size(agg.parameters().size()), *__errors );
+              agg.name(), Size(n), Size(agg.parameters().size()), *__errors );
           return false;
         }
 

@@ -206,7 +206,7 @@ namespace gum {
     __elimination_order.push_back( node );
 
     if ( !__reverse_elimination_order.exists( node ) )
-      __reverse_elimination_order.insert( node, __elimination_order.size() );
+      __reverse_elimination_order.insert( node,Size( __elimination_order.size() ));
 
     if ( !__created_JT_cliques.exists( node ) )
       __created_JT_cliques.insert( node, new_clique );

@@ -57,7 +57,7 @@ namespace gum {
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::
       PriorityQueueImplementation(
           std::initializer_list<std::pair<Val, Priority>> list )
-      : __indices( list.size() / 2, true, true ) {
+      : __indices( Size(list.size()) / 2, true, true ) {
     // fill the queue
     __heap.reserve( list.size() );
     for ( const auto& elt : list ) {
@@ -789,7 +789,7 @@ namespace gum {
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::
       PriorityQueueImplementation(
           std::initializer_list<std::pair<Val, Priority>> list )
-      : __indices( list.size() / 2, true, true ) {
+      : __indices(Size( list.size()) / 2, true, true ) {
     // fill the queue
     __heap.reserve( list.size() );
     for ( const auto& elt : list ) {

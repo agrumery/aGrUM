@@ -58,7 +58,7 @@ namespace gum {
     INLINE DatabaseVectInRAM::Handler::Handler( const DatabaseVectInRAM& db )
         : __db( &db )
         , __row( &( db.content() ) )
-        , __end_index( __row->size() ) {
+        , __end_index( Size(__row->size()) ) {
       __attachHandler();
       GUM_CONSTRUCTOR( DatabaseVectInRAM::Handler );
     }
@@ -134,7 +134,7 @@ namespace gum {
 
     /// return the number of rows of the whole database
     INLINE Size DatabaseVectInRAM::Handler::DBSize() const noexcept {
-      return __row->size();
+      return Size(__row->size());
     }
 
     /// returns the current row pointed to by the handler
@@ -217,7 +217,7 @@ namespace gum {
     /// returns the number of variables (columns) of the database
     INLINE Size DatabaseVectInRAM::Handler::nbVariables() const
         noexcept {
-      return __db->variableNames().size();
+      return Size(__db->variableNames().size());
     }
 
     // ===========================================================================
@@ -332,9 +332,9 @@ namespace gum {
     /// returns the number of variables (columns) of the database
     INLINE Size DatabaseVectInRAM::nbVariables() const noexcept {
       if ( __data.empty() )
-        return __variable_names.size();
+        return Size(__variable_names.size());
       else
-        return __data[0].size();
+        return Size(__data[0].size());
     }
 
     /// returns a new handler on the database
@@ -344,7 +344,7 @@ namespace gum {
 
     /// update the handlers when the size of the database changes
     INLINE void DatabaseVectInRAM::__updateHandlers( Size new_size ) {
-      Size db_size = __data.size();
+      Size db_size = Size(__data.size());
 
       for ( auto handler : __list_of_handlers ) {
         if ( ( handler->__end_index == db_size ) ||
@@ -360,7 +360,7 @@ namespace gum {
     /// insert a new DBRow at the end of the database
     INLINE void DatabaseVectInRAM::insertDBRow( const DBRow& new_row ) {
       // check that the size of the row is the same as the rest of the database
-      const Size db_size = __data.size();
+      const Size db_size = Size(__data.size());
 
       if ( db_size && ( new_row.size() != __data[0].size() ) ) {
         GUM_ERROR( SizeError,
@@ -368,7 +368,7 @@ namespace gum {
                    "rest of the database" );
       }
 
-      const Size nb_cols = __variable_names.size();
+      const Size nb_cols = Size(__variable_names.size());
 
       if ( nb_cols && ( new_row.size() != nb_cols ) ) {
         GUM_ERROR( SizeError,
@@ -383,7 +383,7 @@ namespace gum {
     /// insert a new DBRow at the end of the database
     INLINE void DatabaseVectInRAM::insertDBRow( DBRow&& new_row ) {
       // check that the size of the row is the same as the rest of the database
-      const Size db_size = __data.size();
+      const Size db_size = Size(__data.size());
 
       if ( db_size && ( new_row.size() != __data[0].size() ) ) {
         GUM_ERROR( SizeError,
@@ -391,7 +391,7 @@ namespace gum {
                    "rest of the database" );
       }
 
-      const Size nb_cols = __variable_names.size();
+      const Size nb_cols = Size(__variable_names.size());
 
       if ( nb_cols && ( new_row.size() != nb_cols ) ) {
         GUM_ERROR( SizeError,
@@ -421,8 +421,8 @@ namespace gum {
 
       // check that the sizes of the new rows are the same as the rest of
       // the database
-      const Size db_size = __data.size();
-      const Size nb_cols = __variable_names.size();
+      const Size db_size = Size(__data.size());
+      const Size nb_cols = Size(__variable_names.size());
 
       if ( db_size && ( __data[0].size() != new_size ) ) {
         GUM_ERROR( SizeError,
@@ -436,7 +436,7 @@ namespace gum {
                    "number of columns in the database" );
       }
 
-      __updateHandlers( db_size + new_rows.size() );
+      __updateHandlers( db_size + Size(new_rows.size() ));
 
       for ( const auto& row : new_rows ) {
         __data.push_back( row );
@@ -461,8 +461,8 @@ namespace gum {
 
       // check that the sizes of the new rows are the same as the rest of
       // the database
-      const Size db_size = __data.size();
-      const Size nb_cols = __variable_names.size();
+      const Size db_size = Size(__data.size());
+      const Size nb_cols = Size(__variable_names.size());
 
       if ( db_size && ( __data[0].size() != new_size ) ) {
         GUM_ERROR( SizeError,
@@ -476,7 +476,7 @@ namespace gum {
                    "number of columns in the database" );
       }
 
-      __updateHandlers( db_size + new_rows.size() );
+      __updateHandlers( db_size + Size(new_rows.size() ));
 
       for ( auto row : new_rows ) {
         __data.push_back( std::move( row ) );
@@ -485,7 +485,7 @@ namespace gum {
 
     /// erase a given row
     INLINE void DatabaseVectInRAM::eraseDBRow( Idx index ) {
-      Size db_size = __data.size();
+      Size db_size = Size(__data.size());
 
       if ( index < db_size ) {
         __updateHandlers( db_size - 1 );
@@ -495,7 +495,7 @@ namespace gum {
 
     /// erase the last row
     INLINE void DatabaseVectInRAM::eraseLastDBRow() {
-      Size db_size = __data.size();
+      Size db_size = Size(__data.size());
 
       if ( db_size ) {
         __updateHandlers( db_size - 1 );
@@ -505,7 +505,7 @@ namespace gum {
 
     /// erase the first row
     INLINE void DatabaseVectInRAM::eraseFirstDBRow() {
-      Size db_size = __data.size();
+      Size db_size = Size(__data.size());
 
       if ( db_size ) {
         __updateHandlers( db_size - 1 );
@@ -521,7 +521,7 @@ namespace gum {
 
     /// erase the k first rows
     INLINE void DatabaseVectInRAM::eraseFirstDBRows( Size nb_rows ) {
-      Size db_size = __data.size();
+      Size db_size = Size(__data.size());
 
       if ( nb_rows >= db_size ) {
         eraseAllDBRows();
@@ -533,7 +533,7 @@ namespace gum {
 
     /// erase the k last rows
     INLINE void DatabaseVectInRAM::eraseLastDBRows( Size nb_rows ) {
-      Size db_size = __data.size();
+      Size db_size =Size( __data.size());
 
       if ( nb_rows >= db_size ) {
         eraseAllDBRows();
@@ -549,7 +549,7 @@ namespace gum {
                                                 Idx end ) {
       if ( deb > end ) std::swap( deb, end );
 
-      Size db_size = __data.size();
+      Size db_size =Size( __data.size());
 
       if ( end >= db_size ) {
         if ( deb >= db_size ) {

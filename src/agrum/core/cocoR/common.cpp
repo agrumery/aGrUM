@@ -37,7 +37,7 @@ namespace gum {
   }
 
   wchar_t* coco_string_create( const wchar_t* value, int startIndex ) {
-    int valueLen = 0;
+    std::size_t valueLen = 0;
     int len = 0;
 
     if ( value ) {
@@ -69,7 +69,7 @@ namespace gum {
       return nullptr;
     }
 
-    int dataLen = 0;
+    std::size_t dataLen = 0;
 
     if ( data ) {
       dataLen = wcslen( data );
@@ -94,7 +94,7 @@ namespace gum {
       return nullptr;
     }
 
-    int dataLen = wcslen( data );
+    std::size_t dataLen = wcslen( data );
     return coco_string_create_lower( data, 0, dataLen );
   }
 
@@ -123,8 +123,8 @@ namespace gum {
   wchar_t* coco_string_create_append( const wchar_t* data1,
                                       const wchar_t* data2 ) {
     wchar_t* data;
-    int data1Len = 0;
-    int data2Len = 0;
+    std::size_t data1Len = 0;
+    std::size_t data2Len = 0;
 
     if ( data1 ) {
       data1Len = wcslen( data1 );
@@ -166,15 +166,15 @@ namespace gum {
 
   int coco_string_length( const wchar_t* data ) {
     if ( data ) {
-      return wcslen( data );
+      return (int)wcslen( data );
     }
 
     return 0;
   }
 
   bool coco_string_endswith( const wchar_t* data, const wchar_t* end ) {
-    int dataLen = wcslen( data );
-    int endLen = wcslen( end );
+    std::size_t dataLen = wcslen( data );
+    std::size_t endLen = wcslen( end );
     return ( endLen <= dataLen ) &&
            ( wcscmp( data + dataLen - endLen, end ) == 0 );
   }
@@ -183,7 +183,7 @@ namespace gum {
     const wchar_t* chr = wcschr( data, value );
 
     if ( chr ) {
-      return ( chr - data );
+      return (int)( chr - data );
     }
 
     return -1;
@@ -193,7 +193,7 @@ namespace gum {
     const wchar_t* chr = wcsrchr( data, value );
 
     if ( chr ) {
-      return ( chr - data );
+      return (int)( chr - data );
     }
 
     return -1;
@@ -238,7 +238,7 @@ namespace gum {
 
   // string handling, ascii character
   wchar_t* coco_string_create( const char* value ) {
-    int len = 0;
+    std::size_t len = 0;
 
     if ( value ) {
       len = strlen( value );

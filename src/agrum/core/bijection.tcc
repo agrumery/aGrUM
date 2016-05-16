@@ -98,8 +98,8 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc, bool Gen>
   INLINE BijectionImplementation<T1, T2, Alloc, Gen>::BijectionImplementation(
       std::initializer_list<std::pair<T1, T2>> list )
-      : __firstToSecond( list.size() / 2, true, false )
-      , __secondToFirst( list.size() / 2, true, false ) {
+      : __firstToSecond( Size(list.size()) / 2, true, false )
+      , __secondToFirst( Size(list.size()) / 2, true, false ) {
     GUM_CONSTRUCTOR( BijectionImplementation );
 
     for ( const auto& elt : list ) {
@@ -542,8 +542,8 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc>
   INLINE BijectionImplementation<T1, T2, Alloc, true>::BijectionImplementation(
       std::initializer_list<std::pair<T1, T2>> list )
-      : __firstToSecond( list.size() / 2, true, false )
-      , __secondToFirst( list.size() / 2, true, false ) {
+      : __firstToSecond( Size(list.size()) / 2, true, false )
+      , __secondToFirst( Size(list.size()) / 2, true, false ) {
     GUM_CONSTRUCTOR( BijectionImplementation );
 
     for ( const auto& elt : list ) {

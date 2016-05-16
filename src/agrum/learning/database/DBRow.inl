@@ -119,7 +119,7 @@ namespace gum {
     INLINE void DBRow::setWeight( double new_weight ) { _weight = new_weight; }
 
     /// returns the size of the row
-    INLINE Size DBRow::size() const noexcept { return _row.size(); }
+    INLINE Size DBRow::size() const noexcept { return Size(_row.size()); }
 
     /// resize a given row
     INLINE void DBRow::resize( Size new_size ) {
