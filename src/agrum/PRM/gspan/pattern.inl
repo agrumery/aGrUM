@@ -40,8 +40,8 @@ namespace gum {
 
       INLINE
       NodeId Pattern::addNode( LabelData& l ) {
-        NodeId n = NodeId(size());
-        DiGraph::addNode( n + 1 );
+        NodeId n = NodeId( size() + 1);
+        DiGraph::addNode( n );
         __node_map.insert( n, &l );
         __last = &l;
         return n;
@@ -152,7 +152,7 @@ namespace gum {
 
       INLINE
       void Pattern::rightmostPath( std::list<NodeId>& r_path ) const {
-        r_path.push_back( NodeId(size()) );
+        r_path.push_back( NodeId( size() ) );
 
         while ( r_path.front() != 1 ) {
           for ( const auto par : parents( r_path.front() ) ) {

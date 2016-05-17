@@ -200,7 +200,7 @@ namespace gum {
       void InterfaceGraph<GUM_SCALAR>::__label(
           NodeData<GUM_SCALAR>* node,
           HashTable<std::string, LabelData*>& label_map ) {
-          Size size =Size (1);
+        Size size = Size(1);
         std::stringstream sBuff;
         sBuff << node->n->type().name();
 
@@ -248,7 +248,7 @@ namespace gum {
       void InterfaceGraph<GUM_SCALAR>::__label(
           EdgeData<GUM_SCALAR>* edge,
           HashTable<std::string, LabelData*>& label_map ) {
-          Size size =Size(1);
+        Size size = Size(1);
         std::stringstream sBuff;
         sBuff << edge->u->type().name() << "-" << edge->v->type().name();
 

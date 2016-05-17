@@ -252,7 +252,7 @@ namespace gum {
         /// Data associated with a node in __graph.
         NodeProperty<NodeData<GUM_SCALAR>*> __nodes;
 
-        /// Mapping between PRMInstance<GUM_SCALAR> dans their NodeId in __graph.
+        /// Mapping between PRMInstance<GUM_SCALAR> dans their id in __graph.
         HashTable<PRMInstance<GUM_SCALAR>*, NodeId> __idMap;
 
         /// Data associated with edges in __graph.

@@ -110,13 +110,6 @@ namespace gum {
           Size cost;
           /// The gain of this Pattern
           Size gain;
-          // /// The different sub_patterns of p given the iso_map.
-          // Sequence< HashTable<PRMClassElement<GUM_SCALAR>*, Size>* >
-          // sub_patterns;
-          // /// The mapping between an iso_map and the given sub pattern.
-          // HashTable<NodeId, Idx> sub_patterns_map;
-          // /// The number of each sub pattern
-          // std::vector<Size> sub_patterns_count;
         };
 
         /// Returns the list of root patterns in this DFSTree.
@@ -225,7 +218,7 @@ namespace gum {
          * @throw NotFound Raised if p or node does not exists.
          */
         Sequence<PRMInstance<GUM_SCALAR>*>& iso_map( const Pattern& p,
-                                                  NodeId node );
+                                                     NodeId node );
 
         /**
          * @brief Returns the maximal independent set of p isomorphism graph.
@@ -306,12 +299,6 @@ namespace gum {
         /// @param seq A sequence of EdgeData<GUM_SCALAR>.
         void __initialiaze_root( Pattern* p,
                                  Sequence<EdgeData<GUM_SCALAR>*>& seq );
-
-        /// This can be used to decompose a pattern in sub patter, which could
-        /// be
-        /// useful
-        /// in some scenarios.
-        void __find_sub_pattern( Pattern& p, NodeId iso_map );
 
         // Used by __find_sub_pattern.
         bool __test_equality( HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,

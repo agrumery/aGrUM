@@ -154,31 +154,29 @@ namespace gum {
         const auto& real_sys = __prm->getSystem( sys.name().label() );
 
         for ( auto& ass : sys.assignments() ) {
-          if ( real_sys.isArray( ass.leftInstance().label() ) ) {
 
-            auto leftInstance = ass.leftInstance().label();
-            auto leftReference = ass.leftReference().label();
-            auto rightInstance = ass.rightInstance().label();
+          auto leftInstance = ass.leftInstance().label();
+          auto leftReference = ass.leftReference().label();
+          auto rightInstance = ass.rightInstance().label();
 
-            if ( ass.leftIndex().value() > -1 &&
-                 real_sys.isArray( leftInstance ) ) {
+          if ( ass.leftIndex().value() > -1 &&
+               real_sys.isArray( leftInstance ) ) {
 
-              auto sBuff = std::stringstream();
-              sBuff << leftInstance << "[" << ass.leftIndex().value() << "]";
-              leftInstance = sBuff.str();
-            }
-
-            if ( ass.rightIndex().value() > -1 &&
-                 real_sys.isArray( rightInstance ) ) {
-
-              auto sBuff = std::stringstream();
-              sBuff << rightInstance << "[" << ass.rightIndex().value() << "]";
-              rightInstance = sBuff.str();
-            }
-
-            factory.setReferenceSlot(
-                leftInstance, leftReference, rightInstance );
+            auto sBuff = std::stringstream();
+            sBuff << leftInstance << "[" << ass.leftIndex().value() << "]";
+            leftInstance = sBuff.str();
           }
+
+          if ( ass.rightIndex().value() > -1 &&
+               real_sys.isArray( rightInstance ) ) {
+
+            auto sBuff = std::stringstream();
+            sBuff << rightInstance << "[" << ass.rightIndex().value() << "]";
+            rightInstance = sBuff.str();
+          }
+
+          factory.setReferenceSlot(
+              leftInstance, leftReference, rightInstance );
         }
       }
 
@@ -342,7 +340,8 @@ namespace gum {
           }
 
           if ( ( !real_ref.isArray() ) &&
-               __nameMap[ass.rightInstance().label()]->size().value() > 0 ) {
+               __nameMap[ass.rightInstance().label()]->size().value() > 0 &&
+               ass.rightIndex().value() == -1 ) {
 
             O3PRM_SYSTEM_NOT_AN_ARRAY( ass.leftReference(), *__errors );
             return false;

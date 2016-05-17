@@ -149,40 +149,6 @@ namespace gum {
               ++iter, ++jter ) {
           if ( ( **iter ) != ( **jter ) ) {
             return ( **iter ) < ( **jter );
-            // EdgeCode& alpha = **iter;
-            // EdgeCode& beta = **jter;
-            // if ( alpha.isBackward() ) {
-            //   if ( beta.isForward() ) {
-            //     return true;
-            //   } else if ( alpha.j < beta.j ) {
-            //     // beta is a backward edge
-            //     return true;
-            //   } else if ( (alpha.j == beta.j) && (alpha.l_ij < beta.l_ij) )
-            //   {
-            //     return true;
-            //   }
-            //   return false;
-            // } else {
-            //   // alpha is a forward edge
-            //   if (beta.isBackward()) {
-            //     return false;
-            //   } else if (beta.i < alpha.i) {
-            //     // Beta is a forward edge
-            //     return true;
-            //   } else if (beta.i == alpha.i) {
-            //     if (alpha.l_i < beta.l_i) {
-            //       return true;
-            //     } else if (alpha.l_i == beta.l_i) {
-            //       if (alpha.l_ij < beta.l_ij) {
-            //         return true;
-            //       } else if (alpha.l_ij == beta.l_ij) {
-            //         return alpha.l_j < beta.l_j;
-            //       }
-            //     }
-            //   }
-            //   return false;
-            // }
-            // return (**iter) < (**jter);
           }
         }
 

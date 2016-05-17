@@ -213,7 +213,7 @@ namespace gum {
           for ( EdgeIter iter = child->code().codes.begin();
                 ( iter + 1 ) != child->code().codes.end();
                 ++iter ) {
-            if ( ( ( ( **iter ).i == v ) && ( ( **iter ).j == v ) ) &&
+            if ( ( ( ( **iter ).i == v ) || ( ( **iter ).j == v ) ) &&
                  edge < ( **iter ) ) {
               GUM_ERROR(
                   OperationNotAllowed,
@@ -236,7 +236,7 @@ namespace gum {
 
         try {
           __checkGrowth( p, child, edge_growth );
-        } catch ( OperationNotAllowed& ) {
+        } catch ( OperationNotAllowed& e ) {
           delete child;
           throw;
         }
@@ -340,63 +340,7 @@ namespace gum {
         }
 
         __addChild( p, child, edge_growth );
-        // Uncomment this if you want to debug it
-        // for (UndiGraph::NodeIterator node = data->iso_graph.beginNodes();
-        // node !=
-        // data->iso_graph.endNodes(); ++node) {
-        //   __find_sub_pattern(*child, *node);
-        // }
         return *child;
-      }
-
-      template <typename GUM_SCALAR>
-      void DFSTree<GUM_SCALAR>::__find_sub_pattern( Pattern& p,
-                                                    NodeId iso_map ) {
-        // PatternData& data = *(__data[&p]);
-        // Sequence<PRMInstance<GUM_SCALAR>*>& seq = *(data.iso_map[iso_map]);
-        // HashTable<PRMClassElement<GUM_SCALAR>*, Size>* elt_map = new
-        // HashTable<PRMClassElement<GUM_SCALAR>*, Size>();
-        // PRMClassElement<GUM_SCALAR>* elt = 0;
-        // for (Sequence<PRMInstance<GUM_SCALAR>*>::iterator iter = seq.begin();
-        // iter !=
-        // seq.end(); ++iter) {
-        //   for (Set<PRMSlotChain*>::iterator sc = (*iter)->slotChains().begin();
-        //        sc != (*iter)->slotChains().end(); ++sc) {
-        //     elt = const_cast<PRMClassElement<GUM_SCALAR>*>(&((*sc)->lastElt()));
-        //     if (not elt_map->exists(elt)) {
-        //       elt_map->insert(elt, 0);
-        //     }
-        //     for (Set<PRMInstance<GUM_SCALAR>*>::iterator i =
-        //     (*iter)->getInstances((*sc)->id()).begin();
-        //          i != (*iter)->getInstances((*sc)->id()).end(); ++i) {
-        //       if (not seq.exists(*i)) {
-        //         ++((*elt_map)[elt]);
-        //       }
-        //     }
-        //     if ((*elt_map)[elt] == 0) {
-        //       elt_map->erase(elt);
-        //     }
-        //   }
-        // }
-        // typedef Sequence< HashTable<PRMClassElement<GUM_SCALAR>*, Size>*
-        // >::iterator
-        // SubPatIter;
-        // for (SubPatIter iter = data.sub_patterns.begin(); iter !=
-        // data.sub_patterns.end(); ++iter) {
-        //   if (__test_equality(**iter, *elt_map)) {
-        //     data.sub_patterns_map.insert(iso_map,
-        //     data.sub_patterns.pos(*iter));
-        //     ++(data.sub_patterns_count[data.sub_patterns.pos(*iter)]);
-        //     break;
-        //   }
-        // }
-        // if (data.sub_patterns_map.exists(iso_map)) {
-        //   delete elt_map;
-        // } else {
-        //   data.sub_patterns_map.insert(iso_map, data.sub_patterns.size());
-        //   data.sub_patterns.insert(elt_map);
-        //   data.sub_patterns_count.push_back((Size) 1);
-        // }
       }
 
       template <typename GUM_SCALAR>
@@ -577,24 +521,6 @@ namespace gum {
             << edge.v;
         return out;
       }
-
-      // template<typename GUM_SCALAR> INLINE
-      // Sequence< HashTable<PRMClassElement<GUM_SCALAR>*, Size>* >&
-      // DFSTree<GUM_SCALAR>::sub_patterns(const Pattern& p) {
-      //   return __data[const_cast<Pattern*>(&p)]->sub_patterns;
-      // }
-      //
-      // template<typename GUM_SCALAR> INLINE
-      // HashTable<NodeId, Idx>&
-      // DFSTree<GUM_SCALAR>::sub_patterns_map(const Pattern& p) {
-      //   return __data[const_cast<Pattern*>(&p)]->sub_patterns_map;
-      // }
-
-      // template<typename GUM_SCALAR> INLINE
-      // Size
-      // DFSTree<GUM_SCALAR>::EdgeGrowth::count() const {
-      //  return matches.size();
-      //}
 
       template <typename GUM_SCALAR>
       INLINE double DFSTree<GUM_SCALAR>::frequency( const Pattern& p ) const {

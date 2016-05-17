@@ -63,11 +63,8 @@ namespace gum {
         EdgeGrowth( const EdgeGrowth& from );
         /// Destructor.
         ~EdgeGrowth();
-        /// The NodeId of the node from which we grow an edge.
+        /// The id of the node from which we grow an edge.
         NodeId u;
-        /// Returns the number of matches in the interface graph
-        /// for this edge growth.
-        // Size count() const;
         /// The LabelData over the edge of this edge growth.
         LabelData* edge;
         /// The LabelData over the node of this edge growth.
