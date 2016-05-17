@@ -392,8 +392,8 @@ namespace gum {
   };
 
 
-  extern template class MultiDimFunctionGraph<float>;
-  extern template class MultiDimFunctionGraph<double>;
+  //extern template class MultiDimFunctionGraph<float>;
+  //extern template class MultiDimFunctionGraph<double>;
 
 
 }
