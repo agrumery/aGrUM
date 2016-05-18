@@ -115,7 +115,7 @@ void __split( const O3Label& value, O3Label& left, O3Label& right) {
     left = O3Label( value.position(), value.label().substr( 0, idx ) );
     auto pos = O3Position( value.position().file(),
                          value.position().line(),
-                         (int)value.position().column() + idx );
+                         value.position().column() + (int)idx );
     right = O3Label( pos, value.label().substr( idx + 1 ) );
   }
 }
