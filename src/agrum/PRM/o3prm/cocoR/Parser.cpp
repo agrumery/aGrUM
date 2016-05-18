@@ -800,7 +800,7 @@ void Parser::PARAMETER(O3InstanceParameterList& params) {
 void Parser::INTEGER_AS_FLOAT(O3Float& f) {
 		Expect(_integer);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
-		f = O3Float( pos, coco_atoi( t->val ) ); 
+		f = O3Float( pos, (float)coco_atoi( t->val ) ); 
 }
 
 void Parser::IMPORT_BODY() {

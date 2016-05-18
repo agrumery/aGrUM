@@ -107,7 +107,7 @@ void __addO3Import( O3Import i ) {
 }
 
 void __split( const O3Label& value, O3Label& left, O3Label& right) {
-  int idx = (int)value.label().find_first_of('.');
+  auto idx = value.label().find_first_of('.');
   if ( ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
     left = O3Label( value.position(), value.label() );
     right = O3Label( value.position(), value.label() );
@@ -115,7 +115,7 @@ void __split( const O3Label& value, O3Label& left, O3Label& right) {
     left = O3Label( value.position(), value.label().substr( 0, idx ) );
     auto pos = O3Position( value.position().file(),
                          value.position().line(),
-                         value.position().column() + idx );
+                         (int)value.position().column() + idx );
     right = O3Label( pos, value.label().substr( idx + 1 ) );
   }
 }
@@ -781,7 +781,7 @@ INTEGER_AS_LABEL<O3Label& l> =
 INTEGER_AS_FLOAT<O3Float& f> =
   integer
   (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
-  (. f = O3Float( pos, coco_atoi( t->val ) ); .)
+  (. f = O3Float( pos, (float)coco_atoi( t->val ) ); .)
   .
 
 //________________________
