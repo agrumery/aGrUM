@@ -38,14 +38,14 @@ namespace gum {
 
   wchar_t* coco_string_create( const wchar_t* value, int startIndex ) {
     std::size_t valueLen = 0;
-    int len = 0;
+    std::size_t len = 0;
 
     if ( value ) {
       valueLen = wcslen( value );
       len = valueLen - startIndex;
     }
 
-    return coco_string_create( value, startIndex, len );
+    return coco_string_create( value, std::size_t(startIndex), len );
   }
 
   wchar_t*
@@ -95,7 +95,7 @@ namespace gum {
     }
 
     std::size_t dataLen = wcslen( data );
-    return coco_string_create_lower( data, 0, dataLen );
+    return coco_string_create_lower( data, 0, int(dataLen) );
   }
 
   wchar_t*
