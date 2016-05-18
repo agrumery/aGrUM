@@ -183,7 +183,7 @@ void Buffer::SetPos( int value ) {
     bufPos = value - bufStart;
   } else if ( stream != NULL ) { // must be swapped in
     fseek( stream, value, SEEK_SET );
-    bufLen = fread( buf, int(sizeof( unsigned char )), bufCapacity, stream );
+    bufLen = (int)fread( buf, int(sizeof( unsigned char )), bufCapacity, stream );
     bufStart = value; bufPos = 0;
   } else {
     bufPos = fileLen - bufStart; // make Pos return fileLen
@@ -209,7 +209,7 @@ int Buffer::ReadNextStreamChunk() {
     free = bufLen;
   }
 
-  int read = fread( buf + bufLen, int(sizeof( unsigned char )), free, stream );
+  int read = (int)fread( buf + bufLen, int(sizeof( unsigned char )), free, stream );
 
   if ( read > 0 ) {
     fileLen = bufLen = ( bufLen + read );
