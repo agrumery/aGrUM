@@ -26,9 +26,6 @@ else (FOR_PYTHON2)
   endif(WIN32)
 endif (FOR_PYTHON2)
 
-#find_program(FULL_PYTHON_EXECUTABLE NAMES ${PYTHON_EXECUTABLE})
-#set(PYTHON_EXECUTABLE ${FULL_PYTHON_EXECUTABLE})
-
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
   OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
