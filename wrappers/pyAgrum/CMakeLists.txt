@@ -11,23 +11,23 @@ option(FOR_PYTHON2 "ON if pyAgrum will be compiler agains python2. Python3 is us
 if (FOR_PYTHON2) # we use 3 by default
   # hackish
   if( WIN32)
-	set(PYTHON_EXECUTABLE "python.exe")
+    find_program(PYTHON_EXECUTABLE NAMES "python.exe")
   else(WIN32)
-	set(PYTHON_EXECUTABLE "python2")
+	set(PYTHON_EXECUTABLE "/usr/bin/python2")
 	find_package(PythonInterp 2 REQUIRED)
   endif(WIN32)
 else (FOR_PYTHON2)
   # hackish
   if(WIN32)
-	set(PYTHON_EXECUTABLE "python.exe")
+    find_program(PYTHON_EXECUTABLE NAMES "python.exe")
   else(WIN32)
-    set(PYTHON_EXECUTABLE "python3")
+    set(PYTHON_EXECUTABLE "/usr/bin/python3")
 	find_package(PythonInterp 3 REQUIRED)
   endif(WIN32)
 endif (FOR_PYTHON2)
 
-find_program(FULL_PYTHON_EXECUTABLE NAMES ${PYTHON_EXECUTABLE})
-set(PYTHON_EXECUTABLE ${FULL_PYTHON_EXECUTABLE})
+#find_program(FULL_PYTHON_EXECUTABLE NAMES ${PYTHON_EXECUTABLE})
+#set(PYTHON_EXECUTABLE ${FULL_PYTHON_EXECUTABLE})
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"

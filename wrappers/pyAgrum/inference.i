@@ -10,6 +10,8 @@
 // copy: M indicates the modifications
 %feature("shadow") gum::BayesNetInference<double>::setEvidence %{
 def setEvidence(self, evidces):
+    import numpy as np
+    
     bn = self.bn()
     if isinstance(evidces, dict):
         # set evidences
@@ -30,26 +32,26 @@ def setEvidence(self, evidces):
                 raise TypeError('values of the dict must be int or string')
 
             pot.add(var)
-            if isinstance(evidce, (int, float, str)):
+            if isinstance(evidce, (int, float, str,np.int64)):
                 pot[:] = 0
                 # determine the var type
                 try:
                     cast_var = var.toLabelizedVar()
-                    if isinstance(evidce, int):
-                        index = evidce
-                    elif isinstance(evidce, str):
+                    if isinstance(evidce, (int,np.int64)):
+                        index = int(evidce)
+                    elif isinstance(evidce, (str)):
                         index = cast_var[evidce]
                     else:
-                        raise TypeError('values of the dict must be int or string')
+                        raise TypeError('values of the dict must be integer or string')
                 except RuntimeError:
                     try:
                         cast_var = var.toRangeVar()
-                        if isinstance(evidce, int):
-                            index = cast_var[str(evidce)]
+                        if isinstance(evidce, (int,np.int64)):
+                            index = cast_var[str(int(evidce))]
                         elif isinstance(evidce, str):
                             index = cast_var[evidce]
                         else:
-                            raise TypeError('values of the dict must be int or string')
+                            raise TypeError('values of the dict must be integer or string')
                     except RuntimeError:
                         cast_var = var.toDiscretizedVar()
                         if isinstance(evidce, float):

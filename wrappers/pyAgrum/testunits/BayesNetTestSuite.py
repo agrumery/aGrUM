@@ -196,9 +196,9 @@ class TestFeatures(BayesNetTestCase):
         with self.assertRaises(gum.OperationNotAllowed):
             bn.add("C",0)
 
-        bn.addArc(a,b)
-        print(bn)
+        bn.addArc("A","B")
         self.assertEqual(bn.log10DomainSize(),scipy.log10(6.0))
+        self.assertEqual(bn.dim(),5)
 
 
 class TestLoadBN(BayesNetTestCase):
