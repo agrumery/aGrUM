@@ -45,7 +45,7 @@ namespace gum {
       len = valueLen - startIndex;
     }
 
-    return coco_string_create( value, std::size_t(startIndex), len );
+    return coco_string_create( value, startIndex, (int)len );
   }
 
   wchar_t*

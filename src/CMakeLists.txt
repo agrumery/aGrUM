@@ -1,3 +1,5 @@
+include (GenerateExportHeader)
+
 if (POLICY CMP0018)
   # ignore the POSITION_INDEPENDENT_CODE property for all targets and
   # use the modified value of CMAKE_SHARED_LIBRARY_<Lang>_FLAGS for
@@ -50,6 +52,12 @@ add_library(${LIBAGRUM} ${AGRUM_FILES})
 set_target_properties (${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 target_link_libraries( ${LIBAGRUM} ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
+GENERATE_EXPORT_HEADER( ${LIBAGRUM}
+             BASE_NAME ${LIBAGRUM}
+             EXPORT_MACRO_NAME ${LIBAGRUM}_EXPORT
+             EXPORT_FILE_NAME ${LIBAGRUM}_Export.h
+             STATIC_DEFINE ${LIBAGRUM}_BUILT_AS_STATIC
+)
 
 ####################################################################
 ## TARGET docs

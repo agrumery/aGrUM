@@ -553,7 +553,7 @@ namespace gum {
                                // we need to do this instead
       long int* den = new long int[cols];
 
-      long rows = __input.size();
+      long rows = long(__input.size());
 
       long int numerator, denominator;
 
