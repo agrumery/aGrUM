@@ -90,7 +90,7 @@ message(STATUS "python version : ${PYTHON_COMPLETE_VERSION}")
 message(STATUS "python installation : ${PYTHON_INSTALL}")
 message(STATUS "python include : ${PYTHON_INCLUDE_DIR}")
 message(STATUS "python library : ${PYTHON_LIBRARY}")
-message(STATUS "libagrum : ${LIBAGRUM}")
+#message(STATUS "libagrum : ${LIBAGRUM}")
 message(STATUS "================================")
 
 
@@ -100,6 +100,7 @@ set(AGRUM_FILE_VERSION "${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 include(${AGRUM_FILE_VERSION})
 include("${AGRUM_SOURCE_DIR}/cmake/Config.agrum.cmake")
 configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/agrum/config.h")
+file(GLOB_RECURSE AGRUM_SOURCES "${AGRUM_SOURCE_DIR}/agrum/*.cpp"  ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c) 
 
 #==
 #== Adding files in build tree
@@ -108,6 +109,14 @@ set(SWIG_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../swig")
 file(GLOB MAINSWIGFILES ${SWIG_SOURCE_DIR}/*.i)
 file(GLOB PYAGRUMFILES *.i)
 file(GLOB PYAGRUM_EXTENSIONS ${CMAKE_CURRENT_SOURCE_DIR}/extensions/*.h)
+
+#==
+#== Adding agrum sources
+#==
+foreach(AGRUMFILE ${AGRUM_SOURCES})
+  set_source_files_properties(${AGRUMFILE} PROPERTIES CPLUSPLUS ON)
+  list(APPEND BUILDSWIGFILES ${AGRUMFILE})
+endforeach(AGRUMFILE ${AGRUM_SOURCES})
 
 foreach(PYFILE ${PYAGRUMFILES})
   set_source_files_properties(${PYFILE} PROPERTIES CPLUSPLUS ON)
@@ -124,11 +133,10 @@ foreach(EXTFILE ${PYAGRUM_EXTENSIONS})
   list(APPEND BUILDSWIGFILES ${EXTFILE})
 endforeach(EXTFILE ${PYAGRUM_EXTENSIONS})
 
-#==
-#== Adding agrum sources
-#==
+
 include_directories (${PYTHON_INCLUDE_DIR})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${AGRUM_SOURCE_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/generated_files)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 include_directories (${SWIG_SOURCE_DIR})
@@ -139,12 +147,12 @@ set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 
 if (SWIG_FOUND)
   gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
-  swig_link_libraries(pyAgrum ${LIBAGRUM})
+  #swig_link_libraries(pyAgrum ${LIBAGRUM})
   swig_link_libraries(pyAgrum ${PYTHON_LIBRARY})  #for Apple ?
 else (SWIG_FOUND)
   file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
   add_library (${_PYAGRUMLIB} MODULE ${SWIG_GENERATED_FILES})
-  target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
+  #target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
   target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARY})
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
   set_target_properties(${_PYAGRUMLIB} PROPERTIES LINKER_LANGUAGE CXX)
@@ -156,6 +164,7 @@ else (SWIG_FOUND)
 endif (SWIG_FOUND)
 
 set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+target_sources (${_PYAGRUMLIB} PUBLIC ${AGRUM_SOURCES})
 
 # for additionnal rule such test pyAgrum
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
@@ -176,7 +185,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/__init__.py DESTINATION ${PYTHON_INSTA
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/functions.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE} DESTINATION ${PYTHON_INSTALL})
 install(FILES ${GENERATED_PYTHON}/pyAgrum.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
-
+        
 if (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUMLIB}.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 else (WIN32)
