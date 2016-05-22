@@ -104,12 +104,12 @@ def showInfluenceDiagram(diag,size="4",format="png"):
   #gr=getInfluenceDiagram(diag,size)
   #IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
 
-def getPosterior(bn,ev,target):
+def getPosterior(bn,evs,target):
     """
     Compute the posterior of a single target (variable) in a BN given evidence using Lazy Propagation (for now).
     """
     inf=gum.LazyPropagation(bn)
-    inf.setEvidence(ev)
+    inf.setEvidence(evs)
     inf.makeInference()
     return gum.Potential(inf.posterior(bn.idFromName(target)))
     # creating a new Potential from posterior (will disappear with ie)
@@ -182,11 +182,11 @@ def saveFigProba(p,filename,format="svg"):
     plt.close(fig)
 
 
-def showPosterior(bn,ev,target):
+def showPosterior(bn,evs,target):
     """
-    shortcut for showProba(getPosterior(bn,ev,target))
+    shortcut for showProba(getPosterior(bn,evs,target))
     """
-    showProba(getPosterior(bn,ev,target))
+    showProba(getPosterior(bn,evs,target))
 
 def animApproximationScheme(apsc,scale=np.log10):
   """
@@ -347,10 +347,10 @@ def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
     if engine is None:
       ie=gum.LazyPropagation(bn)
     else:
-      ie=engine    
+      ie=engine
     ie.setEvidence(evs)
     ie.makeInference()
-      
+
     from tempfile import TemporaryDirectory
     with TemporaryDirectory() as temp_dir:
         dotstr ="digraph structs {\n"
