@@ -49,7 +49,7 @@ def check_tools():
     		else:
     			exe_python2=exe_py
 
-    
+
     exe_cmake=is_tool("cmake")
     if exe_cmake is None:
       critic("No <cmake> utility found. Exit")
@@ -67,7 +67,7 @@ def check_tools():
         if is_tool("clang-format-3.{}".format(version)):
             exe_clangformat="clang-format-3.{}".format(version)
             break
-			
-	exe_msbuild=is_tool("msbuild")	
+
+    exe_msbuild=is_tool("msbuild")
 
     return (exe_python2,exe_python3,exe_cmake,exe_make,exe_clangformat,exe_msbuild)

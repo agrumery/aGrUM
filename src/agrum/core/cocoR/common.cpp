@@ -246,7 +246,7 @@ namespace gum {
 
     wchar_t* data = new wchar_t[len + 1];
 
-    for ( int i = 0; i < len; ++i ) {
+    for ( std::size i = 0; i < len; ++i ) {
       data[i] = (wchar_t)value[i];
     }
 
