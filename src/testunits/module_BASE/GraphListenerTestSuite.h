@@ -45,13 +45,13 @@ namespace gum_tests {
 
   class GraphListenerTestSuite : public CxxTest::TestSuite {
 
-    class Counter : public gum::Listener {
+    class CountListener : public gum::Listener {
       private:
       int __nbrNode, __nbrArcs, __nbrEdges;
       bool __isOn;
 
       public:
-      Counter() {
+      CountListener() {
         __nbrNode = __nbrArcs = __nbrEdges = 0;
         __isOn = false;
       }
@@ -239,27 +239,27 @@ namespace gum_tests {
       gum::DAG g1;
       gum::DAG g2;
 
-      Counter c1;
-      Counter c2;
+      CountListener c1;
+      CountListener c2;
 
       // g1 has 2 listeners
       // g2 has 1 listener
       // c1 listens to 1 graph
       // c2 listens to 2 graphs
-      GUM_CONNECT( g1, onNodeAdded, c1, Counter::whenNodeAdded );
-      GUM_CONNECT( g1, onNodeDeleted, c1, Counter::whenNodeDeleted );
-      GUM_CONNECT( g1, onArcAdded, c1, Counter::whenArcAdded );
-      GUM_CONNECT( g1, onArcDeleted, c1, Counter::whenArcDeleted );
+      GUM_CONNECT( g1, onNodeAdded, c1, CountListener::whenNodeAdded );
+      GUM_CONNECT( g1, onNodeDeleted, c1, CountListener::whenNodeDeleted );
+      GUM_CONNECT( g1, onArcAdded, c1, CountListener::whenArcAdded );
+      GUM_CONNECT( g1, onArcDeleted, c1, CountListener::whenArcDeleted );
 
-      GUM_CONNECT( g1, onNodeAdded, c2, Counter::whenNodeAdded );
-      GUM_CONNECT( g1, onNodeDeleted, c2, Counter::whenNodeDeleted );
-      GUM_CONNECT( g1, onArcAdded, c2, Counter::whenArcAdded );
-      GUM_CONNECT( g1, onArcDeleted, c2, Counter::whenArcDeleted );
+      GUM_CONNECT( g1, onNodeAdded, c2, CountListener::whenNodeAdded );
+      GUM_CONNECT( g1, onNodeDeleted, c2, CountListener::whenNodeDeleted );
+      GUM_CONNECT( g1, onArcAdded, c2, CountListener::whenArcAdded );
+      GUM_CONNECT( g1, onArcDeleted, c2, CountListener::whenArcDeleted );
 
-      GUM_CONNECT( g2, onNodeAdded, c2, Counter::whenNodeAdded );
-      GUM_CONNECT( g2, onNodeDeleted, c2, Counter::whenNodeDeleted );
-      GUM_CONNECT( g2, onArcAdded, c2, Counter::whenArcAdded );
-      GUM_CONNECT( g2, onArcDeleted, c2, Counter::whenArcDeleted );
+      GUM_CONNECT( g2, onNodeAdded, c2, CountListener::whenNodeAdded );
+      GUM_CONNECT( g2, onNodeDeleted, c2, CountListener::whenNodeDeleted );
+      GUM_CONNECT( g2, onArcAdded, c2, CountListener::whenArcAdded );
+      GUM_CONNECT( g2, onArcDeleted, c2, CountListener::whenArcDeleted );
 
       buildDAG( g2 );  // 5 nodes/6 arcs for g2
 
@@ -304,27 +304,27 @@ namespace gum_tests {
       gum::UndiGraph g1;
       gum::UndiGraph g2;
 
-      Counter c1;
-      Counter c2;
+      CountListener c1;
+      CountListener c2;
 
       // g1 has 2 listeners
       // g2 has 1 listener
       // c1 listens to 1 graph
       // c2 listens to 2 graphs
-      GUM_CONNECT( g1, onNodeAdded, c1, Counter::whenNodeAdded );
-      GUM_CONNECT( g1, onNodeDeleted, c1, Counter::whenNodeDeleted );
-      GUM_CONNECT( g1, onEdgeAdded, c1, Counter::whenEdgeAdded );
-      GUM_CONNECT( g1, onEdgeDeleted, c1, Counter::whenEdgeDeleted );
+      GUM_CONNECT( g1, onNodeAdded, c1, CountListener::whenNodeAdded );
+      GUM_CONNECT( g1, onNodeDeleted, c1, CountListener::whenNodeDeleted );
+      GUM_CONNECT( g1, onEdgeAdded, c1, CountListener::whenEdgeAdded );
+      GUM_CONNECT( g1, onEdgeDeleted, c1, CountListener::whenEdgeDeleted );
 
-      GUM_CONNECT( g1, onNodeAdded, c2, Counter::whenNodeAdded );
-      GUM_CONNECT( g1, onNodeDeleted, c2, Counter::whenNodeDeleted );
-      GUM_CONNECT( g1, onEdgeAdded, c2, Counter::whenEdgeAdded );
-      GUM_CONNECT( g1, onEdgeDeleted, c2, Counter::whenEdgeDeleted );
+      GUM_CONNECT( g1, onNodeAdded, c2, CountListener::whenNodeAdded );
+      GUM_CONNECT( g1, onNodeDeleted, c2, CountListener::whenNodeDeleted );
+      GUM_CONNECT( g1, onEdgeAdded, c2, CountListener::whenEdgeAdded );
+      GUM_CONNECT( g1, onEdgeDeleted, c2, CountListener::whenEdgeDeleted );
 
-      GUM_CONNECT( g2, onNodeAdded, c2, Counter::whenNodeAdded );
-      GUM_CONNECT( g2, onNodeDeleted, c2, Counter::whenNodeDeleted );
-      GUM_CONNECT( g2, onEdgeAdded, c2, Counter::whenEdgeAdded );
-      GUM_CONNECT( g2, onEdgeDeleted, c2, Counter::whenEdgeDeleted );
+      GUM_CONNECT( g2, onNodeAdded, c2, CountListener::whenNodeAdded );
+      GUM_CONNECT( g2, onNodeDeleted, c2, CountListener::whenNodeDeleted );
+      GUM_CONNECT( g2, onEdgeAdded, c2, CountListener::whenEdgeAdded );
+      GUM_CONNECT( g2, onEdgeDeleted, c2, CountListener::whenEdgeDeleted );
 
       buildUndiGraph( g2 );  // 5 nodes/6 edges for g2
 
@@ -369,8 +369,8 @@ namespace gum_tests {
       gum::MixedGraph g1;
       gum::MixedGraph g2;
 
-      Counter c1;
-      Counter c2;
+      CountListener c1;
+      CountListener c2;
 
       // g1 has 2 listeners
       // g2 has 1 listener
@@ -378,41 +378,41 @@ namespace gum_tests {
       // c2 listens to 2 graphs
 
       TS_ASSERT( !g1.onNodeAdded.hasListener() );
-      GUM_CONNECT( g1, onNodeAdded, c1, Counter::whenNodeAdded );
+      GUM_CONNECT( g1, onNodeAdded, c1, CountListener::whenNodeAdded );
       TS_ASSERT( g1.onNodeAdded.hasListener() );
 
-      GUM_CONNECT( g1, onNodeDeleted, c1, Counter::whenNodeDeleted );
+      GUM_CONNECT( g1, onNodeDeleted, c1, CountListener::whenNodeDeleted );
       TS_ASSERT( g1.onNodeDeleted.hasListener() );
 
       TS_ASSERT( !g1.onEdgeAdded.hasListener() );
-      GUM_CONNECT( g1, onEdgeAdded, c1, Counter::whenEdgeAdded );
+      GUM_CONNECT( g1, onEdgeAdded, c1, CountListener::whenEdgeAdded );
       TS_ASSERT( g1.onEdgeAdded.hasListener() );
 
       TS_ASSERT( !g1.onEdgeDeleted.hasListener() );
-      GUM_CONNECT( g1, onEdgeDeleted, c1, Counter::whenEdgeDeleted );
+      GUM_CONNECT( g1, onEdgeDeleted, c1, CountListener::whenEdgeDeleted );
       TS_ASSERT( g1.onEdgeDeleted.hasListener() );
 
       TS_ASSERT( !g1.onArcAdded.hasListener() );
-      GUM_CONNECT( g1, onArcAdded, c1, Counter::whenArcAdded );
+      GUM_CONNECT( g1, onArcAdded, c1, CountListener::whenArcAdded );
       TS_ASSERT( g1.onArcAdded.hasListener() );
 
       TS_ASSERT( !g1.onArcDeleted.hasListener() );
-      GUM_CONNECT( g1, onArcDeleted, c1, Counter::whenArcDeleted );
+      GUM_CONNECT( g1, onArcDeleted, c1, CountListener::whenArcDeleted );
       TS_ASSERT( g1.onArcDeleted.hasListener() );
 
-      GUM_CONNECT( g1, onNodeAdded, c2, Counter::whenNodeAdded );
-      GUM_CONNECT( g1, onNodeDeleted, c2, Counter::whenNodeDeleted );
-      GUM_CONNECT( g1, onEdgeAdded, c2, Counter::whenEdgeAdded );
-      GUM_CONNECT( g1, onEdgeDeleted, c2, Counter::whenEdgeDeleted );
-      GUM_CONNECT( g1, onArcAdded, c2, Counter::whenArcAdded );
-      GUM_CONNECT( g1, onArcDeleted, c2, Counter::whenArcDeleted );
+      GUM_CONNECT( g1, onNodeAdded, c2, CountListener::whenNodeAdded );
+      GUM_CONNECT( g1, onNodeDeleted, c2, CountListener::whenNodeDeleted );
+      GUM_CONNECT( g1, onEdgeAdded, c2, CountListener::whenEdgeAdded );
+      GUM_CONNECT( g1, onEdgeDeleted, c2, CountListener::whenEdgeDeleted );
+      GUM_CONNECT( g1, onArcAdded, c2, CountListener::whenArcAdded );
+      GUM_CONNECT( g1, onArcDeleted, c2, CountListener::whenArcDeleted );
 
-      GUM_CONNECT( g2, onNodeAdded, c2, Counter::whenNodeAdded );
-      GUM_CONNECT( g2, onNodeDeleted, c2, Counter::whenNodeDeleted );
-      GUM_CONNECT( g2, onEdgeAdded, c2, Counter::whenEdgeAdded );
-      GUM_CONNECT( g2, onEdgeDeleted, c2, Counter::whenEdgeDeleted );
-      GUM_CONNECT( g2, onArcAdded, c2, Counter::whenArcAdded );
-      GUM_CONNECT( g2, onArcDeleted, c2, Counter::whenArcDeleted );
+      GUM_CONNECT( g2, onNodeAdded, c2, CountListener::whenNodeAdded );
+      GUM_CONNECT( g2, onNodeDeleted, c2, CountListener::whenNodeDeleted );
+      GUM_CONNECT( g2, onEdgeAdded, c2, CountListener::whenEdgeAdded );
+      GUM_CONNECT( g2, onEdgeDeleted, c2, CountListener::whenEdgeDeleted );
+      GUM_CONNECT( g2, onArcAdded, c2, CountListener::whenArcAdded );
+      GUM_CONNECT( g2, onArcDeleted, c2, CountListener::whenArcDeleted );
 
       buildMixedGraph( g2 );  // 5 nodes/3 edges /3 arcs for g2
 

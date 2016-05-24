@@ -269,7 +269,7 @@ NBR<int& val> = integer (. val=coco_atoi(t->val); .).
 FLOAT<float& val> =
   number  (. val=coco_atof(t->val); .)
   |
-  integer (. val=coco_atoi(t->val); .)
+  integer (. val=float(coco_atoi(t->val)); .)
 .
 
 

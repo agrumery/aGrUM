@@ -768,7 +768,7 @@ namespace gum {
 
       // now that we know which nodes are supersets and which ones are not, we
       // can remove from the lattice all the nodes that are supersets
-        Size size =Size( __set2thread_id.size()); 
+        Size size =Size( __set2thread_id.size());
       for ( NodeId i = 0;i < size; ++i)  {
         if ( __set_state[i] == SetState::NOT_SUBSET ) {
           __subset_lattice.eraseNode( i );

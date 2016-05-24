@@ -77,7 +77,7 @@ namespace gum {
 
     wchar_t* newData = new wchar_t[dataLen + 1];
 
-    for ( int i = 0; i <= dataLen; i++ ) {
+    for ( int i = 0; i <= int(dataLen); i++ ) {
       if ( ( L'a' <= data[i] ) && ( data[i] <= L'z' ) ) {
         newData[i] = data[i] + ( L'A' - L'a' );
       } else {

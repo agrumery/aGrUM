@@ -94,12 +94,9 @@ namespace gum_tests {
     // Run the tests on a Coffee FMDP
     // *******************************************************************************
     void test_Coffee() {
-      GUM_CHECKPOINT;
       // **************************************************************
       // Chargement du fmdp servant de base
       gum::FMDPSimulator sim( GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" ) );
-
-      GUM_CHECKPOINT;
 
       // **************************************************************
       // Définition of final states
