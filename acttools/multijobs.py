@@ -202,9 +202,9 @@ def threaded_execution(cde,verbose):
   return p.returncode
 
 def execCde(commande,current):
-    if current["no_fun"]:
-      rc=call(commande,shell=True)
-    else:
-      rc=threaded_execution(commande,current["verbose"])
+  if current["no_fun"]:
+    rc=call(commande,shell=True)
+  else:
+    rc=threaded_execution(commande,current["verbose"])
 
-    return rc
+  return rc

@@ -116,7 +116,7 @@ def getMake(current,target):
     if target=="pyAgrum":
       line+=" -C wrappers/pyAgrum"
 
-    return line
+  return line
 
 def buildMake(current,target):
   line=getMake(current,target)
