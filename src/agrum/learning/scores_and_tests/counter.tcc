@@ -52,7 +52,7 @@ namespace gum {
         : _modalities( from._modalities )
         , _counts_computed( from._counts_computed )
         , _record_counter( from._record_counter ) {
-      // copy the target nodesets
+        // copy the target nodesets
       _target_nodesets.reserve( from._target_nodesets.size() );
       for ( const auto set : from._target_nodesets ) {
         if ( set != nullptr ) {
@@ -93,7 +93,7 @@ namespace gum {
           nodesets[j] = &( _target_nodesets[i]->first );
         }
       }
-                  size =Size(nodesets.size());
+      size =Size(nodesets.size());
       for ( Idx i = 0,
                          j = 0;
             i < size;
@@ -106,7 +106,6 @@ namespace gum {
           nodesets[j] = &( _conditioning_nodesets[i]->first );
         }
       }
-
       // for debugging purposes
       GUM_CONS_CPY( Counter );
     }
@@ -425,10 +424,14 @@ namespace gum {
 
       for ( auto set : _target_nodesets )
         if ( set ) delete set;
+
       for ( auto set : _conditioning_nodesets )
         if ( set ) delete set;
+
       _target_nodesets.clear();
+
       _conditioning_nodesets.clear();
+
       _counts_computed = false;
     }
 

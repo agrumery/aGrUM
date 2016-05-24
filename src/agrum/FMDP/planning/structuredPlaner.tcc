@@ -259,14 +259,11 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   void StructuredPlaner<GUM_SCALAR>::makePlanning( Idx nbStep ) {
-
-    GUM_CHECKPOINT;
     if ( __firstTime ) {
       this->_initVFunction();
       __firstTime = false;
     }
 
-    GUM_CHECKPOINT;
     // *****************************************************************************************
     // Main loop
     // *****************************************************************************************
@@ -274,45 +271,35 @@ namespace gum {
     GUM_SCALAR gap = __threshold + 1;
     while ( ( gap > __threshold ) && ( nbIte < nbStep ) ) {
 
-      GUM_CHECKPOINT;
       ++nbIte;
 
       MultiDimFunctionGraph<GUM_SCALAR>* newVFunction = this->_valueIteration();
 
-      GUM_CHECKPOINT;
       // *****************************************************************************************
       // Then we compare new value function and the old one
       MultiDimFunctionGraph<GUM_SCALAR>* deltaV =
           _operator->subtract( newVFunction, _vFunction );
       gap = 0;
 
-      GUM_CHECKPOINT;
       for ( deltaV->beginValues(); deltaV->hasValue(); deltaV->nextValue() )
         if ( gap < fabs( deltaV->value() ) ) gap = fabs( deltaV->value() );
-      GUM_CHECKPOINT;
-      GUM_TRACE_VAR( deltaV );
-      GUM_TRACE_VAR( gap );
       delete deltaV;
 
-      GUM_CHECKPOINT;
       if ( _verbose )
         std::cout << " ------------------- Fin itération n° " << nbIte
                   << std::endl
                   << " Gap : " << gap << " - " << __threshold << std::endl;
 
-      GUM_CHECKPOINT;
       // *****************************************************************************************
       // And eventually we update pointers for next loop
       delete _vFunction;
       _vFunction = newVFunction;
-      GUM_CHECKPOINT;
-    }
+      }
 
     // *****************************************************************************************
     // Policy matching value function research
     // *****************************************************************************************
     this->_evalPolicy();
-    GUM_CHECKPOINT;
   }
 
 

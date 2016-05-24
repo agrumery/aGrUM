@@ -70,19 +70,13 @@ def _swig_setattr(self, class_type, name, value):
     return _swig_setattr_nondynamic(self, class_type, name, value, 0)
 
 
-def _swig_getattr_nondynamic(self, class_type, name, static=1):
+def _swig_getattr(self, class_type, name):
     if (name == "thisown"):
         return self.this.own()
     method = class_type.__swig_getmethods__.get(name, None)
     if method:
         return method(self)
-    if (not static):
-        return object.__getattr__(self, name)
-    else:
-        raise AttributeError(name)
-
-def _swig_getattr(self, class_type, name):
-    return _swig_getattr_nondynamic(self, class_type, name, 0)
+    raise AttributeError("'%s' object has no attribute '%s'" % (class_type.__name__, name))
 
 
 def _swig_repr(self):
@@ -4505,8 +4499,6 @@ class RangeVariable(DiscreteVariable):
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
 RangeVariable_swigregister(RangeVariable)
 
-
-_pyAgrum.INC_MARKS_ARRAY_swigconstant(_pyAgrum)
 INC_MARKS_ARRAY = _pyAgrum.INC_MARKS_ARRAY
 class Edge(_object):
     """Proxy of C++ gum::Edge class."""
@@ -6883,8 +6875,6 @@ class Instantiation(_object):
 Instantiation_swigregister = _pyAgrum.Instantiation_swigregister
 Instantiation_swigregister(Instantiation)
 
-
-_pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER_swigconstant(_pyAgrum)
 GUM_DEFAULT_ITERATOR_NUMBER = _pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER
 class DAGmodel(_object):
     """Proxy of C++ gum::DAGmodel class."""
@@ -10719,12 +10709,12 @@ class CredalNet_double(_object):
 
     def addNode(self, name, card):
         """
-        addNode(CredalNet_double self, std::string const & name, unsigned long const & card) -> gum::NodeId
+        addNode(CredalNet_double self, std::string const & name, gum::Size const & card) -> gum::NodeId
 
         Parameters
         ----------
         name: std::string const &
-        card: unsigned long const &
+        card: gum::Size const &
 
         """
         return _pyAgrum.CredalNet_double_addNode(self, name, card)
@@ -10758,12 +10748,12 @@ class CredalNet_double(_object):
 
     def setCPT(self, *args):
         """
-        setCPT(CredalNet_double self, gum::NodeId const & id, unsigned long & entry, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
+        setCPT(CredalNet_double self, gum::NodeId const & id, gum::Size & entry, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
 
         Parameters
         ----------
         id: gum::NodeId const &
-        entry: unsigned long &
+        entry: gum::Size &
         cpt: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
 
         setCPT(CredalNet_double self, gum::NodeId const & id, Instantiation ins, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)

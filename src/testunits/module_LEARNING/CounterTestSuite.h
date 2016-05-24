@@ -73,12 +73,12 @@ namespace gum_tests {
 
     void test1() {
       gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+              GET_RESSOURCES_PATH("asia.csv"));
 
       auto translators = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                8>() );
+              gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                      gum::learning::Col<0>,
+                      8>());
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
@@ -86,7 +86,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<gum::Idx> modalities( 8, 2 );
+      std::vector<gum::Size> modalities( 8, 2 );
 
       MyCounter counter( filter, modalities );
 
@@ -184,7 +184,6 @@ namespace gum_tests {
         counter.addEmptyNodeSet();
         gum::Idx id4 = counter.addNodeSet( 0, set7 );
         gum::Idx id5 = counter.addNodeSet( 0, set8 );
-
         MyCounter counter2( counter );
 
         TS_ASSERT(
@@ -208,6 +207,7 @@ namespace gum_tests {
             vecty, counter2.getConditioningCounts( id4 ), {3, 2, 1} ) );
         TS_ASSERT( compare_vect3(
             vecty, counter2.getConditioningCounts( id5 ), {1, 3, 2} ) );
+
 
         MyCounter counter3( counter2 );
 

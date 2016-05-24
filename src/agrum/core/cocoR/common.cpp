@@ -77,7 +77,7 @@ namespace gum {
 
     wchar_t* newData = new wchar_t[dataLen + 1];
 
-    for ( int i = 0; i <= dataLen; i++ ) {
+    for ( int i = 0; i <= int(dataLen); i++ ) {
       if ( ( L'a' <= data[i] ) && ( data[i] <= L'z' ) ) {
         newData[i] = data[i] + ( L'A' - L'a' );
       } else {
@@ -246,7 +246,7 @@ namespace gum {
 
     wchar_t* data = new wchar_t[len + 1];
 
-    for ( std::size i = 0; i < len; ++i ) {
+    for ( std::size_t i = 0; i < len; ++i ) {
       data[i] = (wchar_t)value[i];
     }
 
