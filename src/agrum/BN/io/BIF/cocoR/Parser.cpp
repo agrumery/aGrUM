@@ -373,7 +373,7 @@ void Parser::FLOAT(float& val) {
 			val=coco_atof(t->val); 
 		} else if (la->kind == _integer) {
 			Get();
-			val=coco_atoi(t->val); 
+			val=float(coco_atoi(t->val)); 
 		} else SynErr(34);
 }
 

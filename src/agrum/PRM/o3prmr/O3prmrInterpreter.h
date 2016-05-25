@@ -168,7 +168,9 @@ namespace gum {
         gum::prm::o3prm::O3prmReader<double>* m_reader;
         std::vector<std::string> m_paths;
         gum::BayesNet<double>* m_bn;
+        // Don't delete this, the m_inf_map will do it
         gum::prm::PRMInference<double>* m_inf;
+        HashTable<const PRMSystem<double>*, PRMInference<double>*> m_inf_map;
         std::string m_engine;
         std::string m_bn_engine;
         std::vector<QueryResult> m_results;

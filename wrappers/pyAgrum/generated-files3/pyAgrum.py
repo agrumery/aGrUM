@@ -70,19 +70,13 @@ def _swig_setattr(self, class_type, name, value):
     return _swig_setattr_nondynamic(self, class_type, name, value, 0)
 
 
-def _swig_getattr_nondynamic(self, class_type, name, static=1):
+def _swig_getattr(self, class_type, name):
     if (name == "thisown"):
         return self.this.own()
     method = class_type.__swig_getmethods__.get(name, None)
     if method:
         return method(self)
-    if (not static):
-        return object.__getattr__(self, name)
-    else:
-        raise AttributeError(name)
-
-def _swig_getattr(self, class_type, name):
-    return _swig_getattr_nondynamic(self, class_type, name, 0)
+    raise AttributeError("'%s' object has no attribute '%s'" % (class_type.__name__, name))
 
 
 def _swig_repr(self):
@@ -4505,8 +4499,6 @@ class RangeVariable(DiscreteVariable):
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
 RangeVariable_swigregister(RangeVariable)
 
-
-_pyAgrum.INC_MARKS_ARRAY_swigconstant(_pyAgrum)
 INC_MARKS_ARRAY = _pyAgrum.INC_MARKS_ARRAY
 class Edge(_object):
     """Proxy of C++ gum::Edge class."""
@@ -6883,8 +6875,6 @@ class Instantiation(_object):
 Instantiation_swigregister = _pyAgrum.Instantiation_swigregister
 Instantiation_swigregister(Instantiation)
 
-
-_pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER_swigconstant(_pyAgrum)
 GUM_DEFAULT_ITERATOR_NUMBER = _pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER
 class DAGmodel(_object):
     """Proxy of C++ gum::DAGmodel class."""
@@ -7816,16 +7806,16 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___isub__(self, r)
 
 
-    def __idiv__(self, r: 'Potential_double') -> "gum::Potential< double > &":
+    def __itruediv__(self, r: 'Potential_double') -> "gum::Potential< double > &":
         """
-        __idiv__(Potential_double self, Potential_double r) -> Potential_double
+        __itruediv__(Potential_double self, Potential_double r) -> Potential_double
 
         Parameters
         ----------
         r: gum::Potential< double > const &
 
         """
-        return _pyAgrum.Potential_double___idiv__(self, r)
+        return _pyAgrum.Potential_double___itruediv__(self, r)
 
 
     def margSumOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
@@ -7924,8 +7914,14 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_margMinIn(self, varnames)
 
 
-    def __truediv__(self, b: 'Potential_double') -> "gum::Potential< double >":
+    def __truediv__(self, *args) -> "gum::Potential< double >":
         """
+        __truediv__(Potential_double self, Potential_double p2) -> Potential_double
+
+        Parameters
+        ----------
+        p2: gum::Potential< double > const &
+
         __truediv__(Potential_double self, Potential_double b) -> Potential_double
 
         Parameters
@@ -7933,17 +7929,11 @@ class Potential_double(_object):
         b: gum::Potential< double > const &
 
         """
-        return _pyAgrum.Potential_double___truediv__(self, b)
+        return _pyAgrum.Potential_double___truediv__(self, *args)
 
 
-    def __div__(self, *args) -> "gum::Potential< double >":
+    def __div__(self, b: 'Potential_double') -> "gum::Potential< double >":
         """
-        __div__(Potential_double self, Potential_double p2) -> Potential_double
-
-        Parameters
-        ----------
-        p2: gum::Potential< double > const &
-
         __div__(Potential_double self, Potential_double b) -> Potential_double
 
         Parameters
@@ -7951,7 +7941,7 @@ class Potential_double(_object):
         b: gum::Potential< double > const &
 
         """
-        return _pyAgrum.Potential_double___div__(self, *args)
+        return _pyAgrum.Potential_double___div__(self, b)
 
 
     def __eq__(self, b: 'Potential_double') -> "bool":
@@ -8843,6 +8833,13 @@ class BayesNet_double(IBayesNet_double):
         ----------
         variable: gum::DiscreteVariable const &
 
+        add(BayesNet_double self, std::string const & name, unsigned int nbrmod) -> gum::NodeId
+
+        Parameters
+        ----------
+        name: std::string const &
+        nbrmod: unsigned int
+
         add(BayesNet_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
 
         Parameters
@@ -9730,6 +9727,8 @@ class BayesNetInference_double(_object):
 
 
     def setEvidence(self, evidces):
+        import numpy as np
+
         bn = self.bn()
         if isinstance(evidces, dict):
     # set evidences
@@ -9750,26 +9749,26 @@ class BayesNetInference_double(_object):
                     raise TypeError('values of the dict must be int or string')
 
                 pot.add(var)
-                if isinstance(evidce, (int, float, str)):
+                if isinstance(evidce, (int, float, str,np.int64)):
                     pot[:] = 0
     # determine the var type
                     try:
                         cast_var = var.toLabelizedVar()
-                        if isinstance(evidce, int):
-                            index = evidce
-                        elif isinstance(evidce, str):
+                        if isinstance(evidce, (int,np.int64)):
+                            index = int(evidce)
+                        elif isinstance(evidce, (str)):
                             index = cast_var[evidce]
                         else:
-                            raise TypeError('values of the dict must be int or string')
+                            raise TypeError('values of the dict must be integer or string')
                     except RuntimeError:
                         try:
                             cast_var = var.toRangeVar()
-                            if isinstance(evidce, int):
-                                index = cast_var[str(evidce)]
+                            if isinstance(evidce, (int,np.int64)):
+                                index = cast_var[str(int(evidce))]
                             elif isinstance(evidce, str):
                                 index = cast_var[evidce]
                             else:
-                                raise TypeError('values of the dict must be int or string')
+                                raise TypeError('values of the dict must be integer or string')
                         except RuntimeError:
                             cast_var = var.toDiscretizedVar()
                             if isinstance(evidce, float):
@@ -10717,14 +10716,14 @@ class CredalNet_double(_object):
     __swig_destroy__ = _pyAgrum.delete_CredalNet_double
     __del__ = lambda self: None
 
-    def addNode(self, name: 'std::string const &', card: 'unsigned long const &') -> "gum::NodeId":
+    def addNode(self, name: 'std::string const &', card: 'gum::Size const &') -> "gum::NodeId":
         """
-        addNode(CredalNet_double self, std::string const & name, unsigned long const & card) -> gum::NodeId
+        addNode(CredalNet_double self, std::string const & name, gum::Size const & card) -> gum::NodeId
 
         Parameters
         ----------
         name: std::string const &
-        card: unsigned long const &
+        card: gum::Size const &
 
         """
         return _pyAgrum.CredalNet_double_addNode(self, name, card)
@@ -10758,12 +10757,12 @@ class CredalNet_double(_object):
 
     def setCPT(self, *args) -> "void":
         """
-        setCPT(CredalNet_double self, gum::NodeId const & id, unsigned long & entry, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
+        setCPT(CredalNet_double self, gum::NodeId const & id, gum::Size & entry, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
 
         Parameters
         ----------
         id: gum::NodeId const &
-        entry: unsigned long &
+        entry: gum::Size &
         cpt: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
 
         setCPT(CredalNet_double self, gum::NodeId const & id, Instantiation ins, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)

@@ -76,6 +76,14 @@ def prettifying(line):
   if len(s)==2:
       return remove_dirs(s[0])+" "+cfg.C_MSG+s[1].rstrip()+cfg.C_END
 
+  s=line.split("_pyAgrum.dir/__/__/") #for agrum in pyAgrum
+  if len(s)==2:
+      return remove_dirs(s[0])+" "+cfg.C_MSG+s[1].rstrip()+cfg.C_END
+
+  s=line.split("_pyAgrum.dir/") # for specific pyAgrum files
+  if len(s)==2:
+      return remove_dirs(s[0])+" "+cfg.C_MSG+s[1].rstrip()+cfg.C_END
+
   s=line.split("/generated-files/")
   if len(s)==2:
       return remove_dirs(s[0])+cfg.C_MSG+" generated-files/"+s[1].rstrip()+cfg.C_END
