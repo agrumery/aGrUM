@@ -430,6 +430,7 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
+
   };
 
 }  // namespace gum_tests

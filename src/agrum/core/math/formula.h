@@ -114,6 +114,12 @@ namespace gum {
     FormulaPart( const FormulaPart& source );
 
     /**
+     * @brief Move constructor.
+     * @param source The gum::FormulaPart to move.
+     */
+    FormulaPart( FormulaPart&& source );
+
+    /**
      * @brief Class destuctor.
      */
     ~FormulaPart();
@@ -130,6 +136,13 @@ namespace gum {
      * @return Returns this gum::FormulaPart.
      */
     FormulaPart& operator=( const FormulaPart& source );
+
+    /**
+     * @brief Move operator.
+     * @name source The gum::FormulaPart to copy.
+     * @return Returns this gum::FormulaPart.
+     */
+    FormulaPart& operator=( FormulaPart&& source );
 
     /// @}
     // ========================================================================
@@ -263,6 +276,17 @@ namespace gum {
     // ========================================================================
     /// @{
 
+    Formula( short s );
+    Formula( unsigned short us );
+    Formula( int i );
+    Formula( unsigned int ui );
+    Formula( long l );
+    Formula( unsigned long ul );
+    Formula( long long l );
+    Formula( unsigned long long ul );
+    Formula( float f );
+    Formula( double d );
+
     /**
      * @brief Class constructor.
      * @param f An algebraic formula.
@@ -274,6 +298,12 @@ namespace gum {
      * @param source The gum::Formula to copy.
      */
     Formula( const Formula& source );
+
+    /**
+     * @brief Move constructor.
+     * @param source The gum::Formula to move.
+     */
+    Formula( Formula&& source );
 
     /**
      * @brief Class destructor.
@@ -292,7 +322,19 @@ namespace gum {
      * @return Returns this gum::Formula.
      */
     Formula& operator=( const Formula& source );
-  
+
+    /**
+     * @brief Move operator.
+     * @param source The gum::Formula to move.
+     * @return Returns this gum::Formula.
+     */
+    Formula& operator=( Formula&& source );
+
+    /**
+     * @brief Allows implicit conversion to doubles.
+     */
+    explicit operator double() const { return result(); }
+
     /// @}
     // ========================================================================
     /// @name Accessors & modifiers
@@ -409,6 +451,11 @@ namespace gum {
     HashTable<std::string, double> __variables;
 
     /**
+     * @brief Initialise the formula scanner and parser.
+     */
+    void __initialise();
+
+    /**
      * @brief Pop the operator in the inner formula's stack.
      * @param o The operator to pop.
      * @return Returns true if the operator was popped.
@@ -454,7 +501,26 @@ namespace gum {
     void __push_stack( FormulaPart t );
   };
 
-  std::string func2str( FormulaPart::token_function func );
+  // // ========================================================================
+  // /// @name Arithmetic Operators
+  // // ========================================================================
+  // /// @{
+
+  Formula operator-( const Formula& a );
+
+  Formula operator+( const Formula& a, const Formula& b );
+
+  Formula operator-( const Formula& a, const Formula& b );
+
+  Formula operator*( const Formula& a, const Formula& b );
+
+  Formula operator/( const Formula& a, const Formula& b );
+
+  std::string to_string( const Formula& f );
+
+  std::ostream& operator<<( std::ostream& os, const Formula& f );
+
+  // /// @}
 
 } /* namespace gum */
 

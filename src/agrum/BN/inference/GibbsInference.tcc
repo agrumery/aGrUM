@@ -171,9 +171,9 @@ namespace gum {
     posterior = *( __sampling_nbr[id] );
     posterior.normalize();
   }
-  /*
-  template <typename GUM_SCALAR>
-  INLINE void GibbsInference<GUM_SCALAR>::__add_and_instancie( Instantiation& I,
+
+  inline
+  void add_and_instancie( Instantiation& I,
                           const DiscreteVariable& v,
                           const Instantiation& __current_sample ) {
     try {
@@ -182,7 +182,7 @@ namespace gum {
     } catch ( DuplicateElement e ) {
       // do nothing, it's OK
     }
-  }*/
+  }
 
   /// Returns the probability of the variables.
   template <typename GUM_SCALAR>

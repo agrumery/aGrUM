@@ -262,6 +262,7 @@ namespace std {
 %exceptionclass gum::Circuit;
 %exceptionclass gum::InvalidNode;
 %exceptionclass gum::InvalidEdge;
+%exceptionclass gum::DuplicateLabel;
 %exceptionclass gum::DuplicateElement;
 %exceptionclass gum::OutOfBounds;
 %exceptionclass gum::OutOfLowerBound;

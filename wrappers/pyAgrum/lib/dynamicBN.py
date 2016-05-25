@@ -200,12 +200,7 @@ def unroll2TBN(dbn,nbr):
 
   return bn
 
-def plotFollow(lovars,dbn,T,evs):
-  """
-  plots modifications of variables in a 2TDN knowing the size of the time window (T) and the evidence on the sequence.
-  @
-  """
-  bn=unroll2TBN(dbn,T)
+def plotFollowUnrolled(lovars,dbn,bn,T,evs):
   ie=gum.LazyPropagation(bn)
   ie.setEvidence(evs)
   ie.makeInference()
@@ -234,6 +229,13 @@ def plotFollow(lovars,dbn,T,evs):
     plt.legend(proxy_rects,labels,loc='center left', bbox_to_anchor=(1, 0.5),ncol=1, fancybox=True, shadow=True)
 
     plt.show()
+
+def plotFollow(lovars,dbn,T,evs):
+  """
+  plots modifications of variables in a 2TDN knowing the size of the time window (T) and the evidence on the sequence.
+  @
+  """
+  plotFollowUnrolled(lovars,dbn,unroll2TBN(dbn,T),T,evs)
 
 
 if __name__ == '__main__':

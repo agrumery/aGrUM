@@ -30,6 +30,7 @@ __version__ = '@PYAGRUM_VERSION@'
 __license__ = __doc__
 __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
+import numpy as np
 from @PYAGRUM_FUNCTIONS@ import *
 
 # selection of imports extracted from dir(.pyAgrum)

@@ -1,5 +1,6 @@
 # -*- encoding: UTF-8 -*-
 import pyAgrum as gum
+import scipy
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
@@ -145,44 +146,60 @@ class TestFeatures(BayesNetTestCase):
         self.assertEqual(str(bn.variable(0)),"HISTORY<TRUE,FALSE>")
         bn.variable(0).toLabelizedVar().changeLabel(0,"toto")
         self.assertEqual(str(bn.variable(0)),"HISTORY<toto,FALSE>")
-        
+
     def testStringAccessors(self):
       bn=gum.BayesNet()
       for s in "ABC":
         bn.add(gum.LabelizedVariable(s,"",2))
       for arc in [("A","C"),("B","C")]:
         bn.addArc(*arc)
-      
+
       self.assertEqual(str(bn),"BN{nodes: 3, arcs: 2, domainSize: 8, parameters: 12, compression ratio: -50% }")
-      
+
       bn.cpt("A").fillWith(1).normalize()
       bn.generateCPT("B")
-      bn.generateCPT("C")      
+      bn.generateCPT("C")
       with self.assertRaises(IndexError):
         bn.cpt("XX")
-      
+
       bn.reverseArc("A","C")
       self.assertEqual(str(bn),"BN{nodes: 3, arcs: 3, domainSize: 8, parameters: 14, compression ratio: -75% }")
-      
+
       with self.assertRaises(gum.InvalidArc):
         bn.reverseArc("A","C")
       with self.assertRaises(gum.GraphError):
         bn.reverseArc("A","C")
       with self.assertRaises(IndexError):
         bn.reverseArc("A","X")
-        
+
       bn.erase("A")
       self.assertEqual(str(bn),"BN{nodes: 2, arcs: 1, domainSize: 4, parameters: 6, compression ratio: -50% }")
-      
+
       with self.assertRaises(IndexError):
         bn.erase("A")
-      
+
       bn.eraseArc("B","C")
       self.assertEqual(str(bn),"BN{nodes: 2, arcs: 0, domainSize: 4, parameters: 4, compression ratio: 0% }")
-      
+
       with self.assertRaises(IndexError):
         bn.eraseArc("B","C")
-      
+
+    def testShortcutAdd(self):
+        bn=gum.BayesNet()
+        a=bn.add("A",2)
+        b=bn.add("B",3)
+        self.assertEqual(a,0)
+        self.assertEqual(b,1)
+
+        with self.assertRaises(gum.DuplicateLabel):
+            bn.add("A",5)
+        with self.assertRaises(gum.OperationNotAllowed):
+            bn.add("C",0)
+
+        bn.addArc("A","B")
+        self.assertEqual(bn.log10DomainSize(),scipy.log10(6.0))
+        self.assertEqual(bn.dim(),5)
+
 
 class TestLoadBN(BayesNetTestCase):
 
@@ -316,6 +333,7 @@ class TestLoadBN(BayesNetTestCase):
         self.assertEqual(bn.size(),5)
 
 
+
 ts = unittest.TestSuite()
 ts.addTest(TestConstructors('testConstructor'))
 ts.addTest(TestConstructors('testCopyConstructor'))
@@ -326,6 +344,7 @@ ts.addTest(TestFeatures('testMoralGraph'))
 ts.addTest(TestFeatures('testTopologicalOrder'))
 ts.addTest(TestFeatures('testChangeLabel'))
 ts.addTest(TestFeatures('testStringAccessors'))
+ts.addTest(TestFeatures('testShortcutAdd'))
 ts.addTest(TestLoadBN('testSimpleBIFLoad'))
 ts.addTest(TestLoadBN('testSimpleBIFLoadWithoutListener'))
 ts.addTest(TestLoadBN('testListBIFLoad'))

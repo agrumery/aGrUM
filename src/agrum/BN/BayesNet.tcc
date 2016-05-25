@@ -30,6 +30,8 @@
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/IBayesNet.h>
 
+#include <agrum/variables/labelizedVariable.h>
+
 #include <agrum/multidim/aggregators/amplitude.h>
 #include <agrum/multidim/aggregators/and.h>
 #include <agrum/multidim/aggregators/count.h>
@@ -127,6 +129,16 @@ namespace gum {
     }
 
     return res;
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE NodeId BayesNet<GUM_SCALAR>::add(const std::string& name,unsigned int nbrmod) {
+    if (nbrmod<2) {
+      GUM_ERROR(OperationNotAllowed, "Variable " << name << "needs more than " << nbrmod << " modalities");
+    }
+
+    LabelizedVariable v(name,name,nbrmod);
+    return add(v);
   }
 
   template <typename GUM_SCALAR>
