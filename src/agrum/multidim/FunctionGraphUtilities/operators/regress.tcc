@@ -18,31 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
  ****************************************************************************/
 /**
-* @file
-* @brief Class used to compute the operation between two decision diagrams
-*
-* @author Jean-Christophe Magnan
-*/
+ * @file
+ * @brief Class used to compute the operation between two decision diagrams
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe Magnan
+ */
 
-// =======================================================================================
-#include <agrum/multidim/FunctionGraphUtilities/operators/regress.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
-// =======================================================================================
+#include <agrum/multidim/FunctionGraphUtilities/operators/regress.h>
 
 #define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
 #define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 namespace gum {
 
-  /* *****************************************************************************************************************************
-   */
-  /* CONSTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
             template <typename> class TerminalNodePolicy>
+  INLINE
   Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::
       Regress( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG1,
                const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG2,
@@ -65,18 +60,14 @@ namespace gum {
     __targetVar = targetVar;
   }
 
-
-  /* *****************************************************************************************************************************
-   */
-  /* DESTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
             template <typename> class TerminalNodePolicy>
-  Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::
-      ~Regress() {
+  INLINE Regress<GUM_SCALAR,
+                 COMBINEOPERATOR,
+                 PROJECTOPERATOR,
+                 TerminalNodePolicy>::~Regress() {
 
     GUM_DESTRUCTOR( Regress );
 
@@ -94,19 +85,13 @@ namespace gum {
   }
 
 
-  /* *****************************************************************************************************************************
-   */
-  /* Compute */
-  /*                                                                                                                               */
-  /* This function is the main function. To be call every time an operation
-   * between the two given Function Graphs is required      */
-  /* *****************************************************************************************************************************
-   */
+  // This function is the main function. To be call every time an operation
+  // between the two given Function Graphs is required
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
             template <typename> class TerminalNodePolicy>
-  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
+  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* INLINE
   Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::
       compute() {
 
@@ -135,19 +120,14 @@ namespace gum {
     return __rd;
   }
 
-
-  /* ***************************************************************************************************************************** */
-  /* __establishVarOrder */
-  /*                                                                                                                               */
-  /* This function computes an efficient order for the final decision diagrams.
-   * Its main criterion to do so is the number of       */
-  /* re-exploration to be done */
-  /* ***************************************************************************************************************************** */
+  // This function computes an efficient order for the final decision diagrams.
+  // Its main criterion to do so is the number of
+  // re-exploration to be done
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
             template <typename> class TerminalNodePolicy>
-  void
+  INLINE void
   Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::
       __establishVarOrder() {
 
@@ -206,7 +186,6 @@ namespace gum {
       ++fite;
     }
 
-
     // Whenever an iterator has finished its sequence,
     // the other may still be in the middle of its one.
     // Hence, this part ensures that any variables remaining
@@ -219,7 +198,6 @@ namespace gum {
         if ( !__rd->variablesSequence().exists( *fite ) ) __rd->add( **fite );
     }
 
-
     // Various initialization needed now that we have a bigger picture
     __nbVar = __rd->variablesSequence().size();
 
@@ -231,20 +209,13 @@ namespace gum {
     }
   }
 
-
-  /* *****************************************************************************************************************************
-   */
-  /* __findRetrogradeVariables */
-  /*                                                                                                                               */
-  /* This function computes for every nodes if any retrograde variable is
-   * present below                                            */
-  /* *****************************************************************************************************************************
-   */
+  // This function computes for every nodes if any retrograde variable is
+  // present below
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
             template <typename> class TerminalNodePolicy>
-  void
+  INLINE void
   Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::
       __findRetrogradeVariables(
           const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
@@ -294,7 +265,6 @@ namespace gum {
       }
     }
 
-
     for ( auto varIter = dg->variablesSequence().beginSafe();
           varIter != dg->variablesSequence().endSafe();
           ++varIter ) {
@@ -328,10 +298,6 @@ namespace gum {
     nodesVarDescendant.clear();
   }
 
-
-  /// Main recursion function, called every time we move on a node to determine
-  /// what we have to do
-
   // A key is used for prunning uneccesary operations since once a node has been
   // visited in a given context, there's no use to revisit him,
   // the result will be the same node, so we just have to do an association
@@ -354,13 +320,12 @@ namespace gum {
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
             template <typename> class TerminalNodePolicy>
-  NodeId
+  INLINE NodeId
   Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::
       __compute( O4DGContext& currentSituation, Idx lastInstVarPos ) {
 
     NodeId newNode = 0;
 
-    // ******************************************************************************************************
     // If both current nodes are terminal,
     // we only have to compute the resulting value
     if ( __DG1->isTerminalNode( currentSituation.DG1Node() ) &&
@@ -378,17 +343,11 @@ namespace gum {
       return __rd->manager()->addTerminalNode( newVal );
     }
 
-
-    // ******************************************************************************************************
-
-
-    // ******************************************************************************************************
     // If not,
     // we'll have to do some exploration
 
     // First we ensure that we hadn't already visit this pair of node under hte
     // same circumstances
-
     short int* dg1NeededVar =
         __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )
             ? __DG1InstantiationNeeded[currentSituation.DG1Node()]
@@ -565,18 +524,17 @@ namespace gum {
         GUM_SCALAR newVal = __neutral;
         for ( Idx targetModa = 0; targetModa < __targetVar->domainSize();
               ++targetModa )
-          newVal =
-              __project( newVal,
-                         __combine( __DG1->nodeValue( __DG1->node( origDG1 )
-                                                          ->son( targetModa ) ),
-                                    __DG2->nodeValue( origDG2 ) ) );
+          newVal = __project(
+              newVal,
+              __combine(
+                  __DG1->nodeValue( __DG1->node( origDG1 )->son( targetModa ) ),
+                  __DG2->nodeValue( origDG2 ) ) );
         NodeId newNode = __rd->manager()->addTerminalNode( newVal );
         __explorationTable.insert( curSitKey, newNode );
         DEALLOCATE( instNeeded, sizeof( short int ) * __nbVar );
         return newNode;
       }
     }
-
 
     // ====================================================
     // Normal Exploration

@@ -24,19 +24,11 @@
 * @author Jean-Christophe Magnan
 */
 
-// =======================================================================================
-#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
-// =======================================================================================
-
+#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 
 namespace gum {
 
-  /* *****************************************************************************************************************************
-   */
-  /* CONSTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
@@ -60,12 +52,6 @@ namespace gum {
     __sizeVarRetro = 1;
   }
 
-
-  /* *****************************************************************************************************************************
-   */
-  /* DESTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
@@ -85,25 +71,19 @@ namespace gum {
           ++instIter )
       SOA_DEALLOCATE( instIter.val(), sizeof( short int ) * __nbVar );
 
-    if ( __nbVar != 0 ) SOA_DEALLOCATE( __default, sizeof( short int ) * __nbVar );
+    if ( __nbVar != 0 )
+      SOA_DEALLOCATE( __default, sizeof( short int ) * __nbVar );
   }
 
 
-  /* *****************************************************************************************************************************
-   */
-  /* Compute */
-  /*                                                                                                                               */
-  /* This function is the main function. To be call every time an operation
-   * between the two given Function Graphs is required      */
-  /* *****************************************************************************************************************************
-   */
+  // This function is the main function. To be call every time an operation
+  // between the two given Function Graphs is required
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
   MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
-  MultiDimFunctionGraphOperator<GUM_SCALAR,
-                                FUNCTOR,
-                                TerminalNodePolicy>::compute() {
+  MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::
+      compute() {
 
     __establishVarOrder();
     __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
@@ -128,16 +108,8 @@ namespace gum {
     return __rd;
   }
 
-
-  /* *****************************************************************************************************************************
-   */
-  /* __establishVarOrder */
-  /*                                                                                                                               */
-  /* This function computes an efficient order for the final decision diagrams.
-   * Its main criterion to do so is the number of       */
-  /* re-exploration to be done */
-  /* *****************************************************************************************************************************
-   */
+  // This function computes an efficient order for the final decision diagrams.
+  // Its main criterion to do so is the number of re-exploration to be done.
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
@@ -227,22 +199,15 @@ namespace gum {
     __nbVar = __rd->variablesSequence().size();
 
     if ( __nbVar != 0 ) {
-      __default =
-          static_cast<short int*>( SOA_ALLOCATE( sizeof( short int ) * __nbVar ) );
+      __default = static_cast<short int*>(
+          SOA_ALLOCATE( sizeof( short int ) * __nbVar ) );
       for ( Idx i = 0; i < __nbVar; i++ )
         __default[i] = (short int)0;
     }
   }
 
-
-  /* *****************************************************************************************************************************
-   */
-  /* __distance */
-  /*                                                                                                                               */
-  /* This function computes the number of re-exploration needed whenever to
-   * retrograde variables collides                          */
-  /* *****************************************************************************************************************************
-   */
+  // This function computes the number of re-exploration needed whenever to
+  // retrograde variables collides
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
@@ -265,14 +230,8 @@ namespace gum {
   }
 
 
-  /* *****************************************************************************************************************************
-   */
-  /* __findRetrogradeVariables */
-  /*                                                                                                                               */
-  /* This function computes for every nodes if any retrograde variable is
-   * present below                                            */
-  /* *****************************************************************************************************************************
-   */
+  // This function computes for every nodes if any retrograde variable is
+  // present below
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
@@ -391,7 +350,6 @@ namespace gum {
     NodeId newNode = 0;
 
 
-    // ******************************************************************************************************
     // If both current nodes are terminal,
     // we only have to compute the resulting value
     if ( __DG1->isTerminalNode( currentSituation.DG1Node() ) &&
@@ -404,19 +362,12 @@ namespace gum {
           __DG2->terminalNodeValue( currentSituation.DG2Node() ) ) );
     }
 
-
-    // ******************************************************************************************************
-
-
-    // ******************************************************************************************************
     // If not,
     // we'll have to do some exploration
 
     // First we ensure that we hadn't already visit this pair of node under hte
     // same circumstances
 
-    //      short int* dg1NeededVar = __DG1InstantiationNeeded[
-    //      currentSituation.DG1Node() ];
     short int* dg1NeededVar =
         __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )
             ? __DG1InstantiationNeeded[currentSituation.DG1Node()]
@@ -426,8 +377,6 @@ namespace gum {
             ? __nbVar
             : __rd->variablesSequence().pos(
                   __DG1->node( currentSituation.DG1Node() )->nodeVar() );
-    //      short int* dg2NeededVar = __DG2InstantiationNeeded[
-    //      currentSituation.DG2Node() ];
     short int* dg2NeededVar =
         __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )
             ? __DG2InstantiationNeeded[currentSituation.DG2Node()]
@@ -438,8 +387,8 @@ namespace gum {
             : __rd->variablesSequence().pos(
                   __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
-    short int* instNeeded =
-        static_cast<short int*>( SOA_ALLOCATE( sizeof( short int ) * __nbVar ) );
+    short int* instNeeded = static_cast<short int*>(
+        SOA_ALLOCATE( sizeof( short int ) * __nbVar ) );
     for ( Idx i = 0; i < __nbVar; i++ )
       instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
 
@@ -614,6 +563,33 @@ namespace gum {
 
       return newNode;
     }
+  }
+
+  template <typename GUM_SCALAR,
+            template <typename> class FUNCTOR,
+            template <typename> class TerminalNodePolicy>
+  INLINE Idx MultiDimFunctionGraphOperator<GUM_SCALAR,
+                                           FUNCTOR,
+                                           TerminalNodePolicy>::nbCall() {
+    return __nbCall;
+  }
+
+  template <typename GUM_SCALAR,
+            template <typename> class FUNCTOR,
+            template <typename> class TerminalNodePolicy>
+  INLINE Idx MultiDimFunctionGraphOperator<GUM_SCALAR,
+                                           FUNCTOR,
+                                           TerminalNodePolicy>::nbVarRetro() {
+    return __nbVarRetro;
+  }
+
+  template <typename GUM_SCALAR,
+            template <typename> class FUNCTOR,
+            template <typename> class TerminalNodePolicy>
+  INLINE Idx
+  MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::
+      sizeVarRetroDomain() {
+    return __sizeVarRetro;
   }
 
 }  // namespace gum

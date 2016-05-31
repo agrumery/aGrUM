@@ -1,44 +1,37 @@
-/*********************************************************************************
- *  Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES *
- *  {prenom.nom}_at_lip6.fr *
- *                                                                               *
- *  This program is free software; you can redistribute it and/or modify *
- *  it under the terms of the GNU General Public LiceDG2NodeIde as published by
- **
- *  the Free Software Foundation; either version 2 of the LiceDG2NodeIde, or *
- *  (at your option) any later version. *
- *                                                                               *
- *  This program is distributed in the hope that it will be useful, *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the *
- *  GNU General Public LiceDG2NodeIde for more details. *
- *                                                                               *
- *  You should have received a copy of the GNU General Public LiceDG2NodeIde *
- *  along with this program; if not, write to the *
- *  Free Software Foundation, Inc., *
- *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. *
- *********************************************************************************/
+/****************************************************************************
+ *  Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES     *
+ *  {prenom.nom}_at_lip6.fr                                                 *
+ *                                                                          *
+ *  This program is free software; you can redistribute it and/or modify    *
+ *  it under the terms of the GNU General Public License as published by    *
+ *  the Free Software Foundation; either version 2 of the License, or       *
+ *  (at your option) any later version.                                     *
+ *                                                                          *
+ *  This program is distributed in the hope that it will be useful,         *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the            *
+ *  GNU General Public License for more details.                            *
+ *                                                                          *
+ *  You should have received a copy of the GNU General Public License       *
+ *  along with this program; if not, write to the                           *
+ *  Free Software Foundation, Inc.,                                         *
+ *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                *
+ ****************************************************************************/
 /**
-* @file
-* @brief Class used to compute the Projection between two decision diagrams
-*
-* @author Jean-Christophe Magnan
-*/
+ * @file
+ * @brief Class used to compute the projection of a function graph
+ *
+ * @author Jean-Christophe Magnan
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-// =========================================================================================
-#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
-// =========================================================================================
+#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 #include <agrum/variables/discreteVariable.h>
-// =========================================================================================
 
 namespace gum {
 
-  /* *****************************************************************************************************************************
-   */
-  /* CONSTRUCTOR                                                          */
-  /* *****************************************************************************************************************************
-   */
+  // CONSTRUCTOR
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
@@ -57,11 +50,7 @@ namespace gum {
   }
 
 
-  /* *****************************************************************************************************************************
-   */
-  /* DESTRUCTOR                                                          */
-  /* *****************************************************************************************************************************
-   */
+  // DESTRUCTOR
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
@@ -71,22 +60,14 @@ namespace gum {
   }
 
 
-  /* *****************************************************************************************************************************
-   */
-  /* Compute                                                            */
-  /*                                                                */
-  /* This function is the main function. To be call every time an Projection
-   * between the two given Function Graphs is required   */
-  /* *****************************************************************************************************************************
-   */
+  // This function is the main function. To be call every time an Projection
+  // between the two given Function Graphs is required
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
   MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
-  MultiDimFunctionGraphProjector<GUM_SCALAR,
-                                 FUNCTOR,
-                                 TerminalNodePolicy>::project() {
-
+  MultiDimFunctionGraphProjector<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::
+      project() {
 
     __rd->copy( *__src );
 
@@ -97,16 +78,12 @@ namespace gum {
 
       const DiscreteVariable* curVar = *varIter;
 
-      // ******************************************************************************************************
       // Tout d'abord, on déplace la variable à projeter en fin de séquence afin
       // de simplifier la projection
-      // ******************************************************************************************************
       if ( __rd->variablesSequence().exists( curVar ) )
         __rd->manager()->moveTo( curVar, __rd->variablesSequence().size() - 1 );
 
-      // ******************************************************************************************************
       // 1er cas spécial : le diagramme est un un simple noeud terminal
-      // ******************************************************************************************************
       if ( __rd->isTerminalNode( __rd->root() ) ) {
 
         GUM_SCALAR newVal = __neutral, oldVal = __rd->nodeValue( __rd->root() );
@@ -122,10 +99,8 @@ namespace gum {
         continue;
       }
 
-      // ******************************************************************************************************
       // 2ème cas spécial : la racine du diagramme est associée à la variable
       // projetée
-      // ******************************************************************************************************
       if ( __rd->node( __rd->root() )->nodeVar() == curVar ) {
 
         const InternalNode* curVarNode = __rd->node( __rd->root() );
@@ -144,9 +119,7 @@ namespace gum {
         continue;
       }
 
-      // ******************************************************************************************************
       // Cas général
-      // ******************************************************************************************************
       HashTable<NodeId, NodeId> visitedNode(
           2 * __rd->realSize(), true, false );
       std::vector<NodeId> filo;

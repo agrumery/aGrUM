@@ -19,57 +19,13 @@
  ****************************************************************************/
 /**
  * @file
- * @brief Class used to manipulate o4DGContext in Function Graph Operations
+ * @brief Class used to compute the operation between two decision diagrams
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Jean-Christophe Magnan
  */
 
-#include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/regress.h>
 
-namespace gum {
+template class gum::Regress<double, std::multiplies, std::plus>;
 
-  // Set DG1 diagram current explored Node
-  INLINE void O4DGContext::setDG1Node( const NodeId& exploredNode ) {
-    __DG1ExploredNode = exploredNode;
-  }
-
-  // Set DG2 diagram current explored Node
-  INLINE void O4DGContext::setDG2Node( const NodeId& exploredNode ) {
-    __DG2ExploredNode = exploredNode;
-  }
-
-  // Changes given variable modality
-  INLINE void O4DGContext::chgVarModality( Idx varIndex, Idx newModality ) {
-    __varInstantiation[varIndex] = newModality;
-  }
-
-  // Changes given variable modality
-  INLINE Idx O4DGContext::varModality( Idx varIndex ) {
-    return __varInstantiation[varIndex];
-  }
-
-  // Returns o4DGContext key
-  INLINE const double& O4DGContext::key( short int* instNeeded ) {
-    __key = __DG1ExploredNode * __logPrime[__offset1] +
-            __DG2ExploredNode * __logPrime[__offset2];
-
-    for ( Idx varPos = 0, offset = __offsetv; varPos < __nbVar;
-          varPos++, offset-- )
-      if ( instNeeded[varPos] )
-        __key += __varInstantiation[varPos] * __logPrime[offset];
-
-    return __key;
-  }
-
-  INLINE void* O4DGContext::operator new( size_t s ) {
-    return SmallObjectAllocator::instance().allocate( s );
-  }
-
-  INLINE void O4DGContext::operator delete( void* p ) {
-    SmallObjectAllocator::instance().deallocate( p, sizeof( O4DGContext ) );
-  }
-  /// @}
-
-
-} /* end of namespace gum */
