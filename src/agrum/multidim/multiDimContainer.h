@@ -204,7 +204,7 @@ namespace gum {
      * @throw SizeError Raised if l size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void populate( std::initializer_list<GUM_SCALAR> list ) const;
+    virtual void populate( std::initializer_list<GUM_SCALAR> l ) const;
 
     /// @}
     // =========================================================================
@@ -219,14 +219,25 @@ namespace gum {
      * MultiDimContainer.
      *
      * @param src The MultiDimContainer src which values are copied.
-     * @param p_i Give the order to iterate in this MultiDimContainer during
-     * the copy (natural order if null).
      *
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      */
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
 
+    /**
+     * @brief Basic copy of a MultiDimContainer.
+     *
+     * This method is virtual because it should be optimized in certain
+     * MultiDimContainer.
+     *
+     * @param src The MultiDimContainer src which values are copied.
+     * @param p_i Give the order to iterate in this MultiDimContainer during
+     * the copy (natural order if null).
+     *
+     * @throw OperationNotAllowed Raised if src does not have the same domain
+     * size than this MultiDimContainer.
+     */
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
                            Instantiation* p_i ) const;
 
