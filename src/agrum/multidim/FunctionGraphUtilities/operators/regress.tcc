@@ -91,7 +91,7 @@ namespace gum {
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
             template <typename> class TerminalNodePolicy>
-  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* INLINE
+  INLINE MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
   Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::
       compute() {
 
