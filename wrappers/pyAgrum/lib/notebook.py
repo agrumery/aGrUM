@@ -167,7 +167,7 @@ def getFigProba(p):
     Show a matplotlib histogram for a Potential p.
 
     """
-    if p.variable(0).domainSize()>5:
+    if p.variable(0).domainSize()>8:
         return getFigProbaV(p)
     else:
         return getFigProbaH(p)
@@ -350,25 +350,29 @@ def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
       ie=engine
     ie.setEvidence(evs)
     ie.makeInference()
+    
+    from tempfile import mkdtemp
+    temp_dir=mkdtemp("", "tmp", Node) #with TemporaryDirectory() as temp_dir:
+    
+    dotstr ="digraph structs {\n"
+    dotstr+="  node [fillcolor=floralwhite, style=filled,color=grey];\n"
 
-    from tempfile import TemporaryDirectory
-    with TemporaryDirectory() as temp_dir:
-        dotstr ="digraph structs {\n"
-        dotstr+="  node [fillcolor=floralwhite, style=filled,color=grey];\n"
+    for i in bn.ids():
+        name=bn.variable(i).name()
+        if len(targets)==0 or name in targets:
+          fill=", fillcolor=sandybrown" if name in evs else ""
+          filename=temp_dir+name+"."+format
+          saveFigProba(ie.posterior(i),filename,format=format)
+          dotstr+=' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name,filename,fill)
+        else:
+          fill="[fillcolor=sandybrown]" if name in evs else ""
+          dotstr+=' "{0}" {1}'.format(name,fill)
+    for (i,j) in bn.arcs():
+        dotstr+=' "{0}"->"{1}";'.format(bn.variable(i).name(),bn.variable(j).name())
+    dotstr+='}'
 
-        for i in bn.ids():
-            name=bn.variable(i).name()
-            if len(targets)==0 or name in targets:
-              fill=", fillcolor=sandybrown" if name in evs else ""
-              filename=temp_dir+name+"."+format
-              saveFigProba(ie.posterior(i),filename,format=format)
-              dotstr+=' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name,filename,fill)
-            else:
-              fill="[fillcolor=sandybrown]" if name in evs else ""
-              dotstr+=' "{0}" {1}'.format(name,fill)
-        for (i,j) in bn.arcs():
-            dotstr+=' "{0}"->"{1}";'.format(bn.variable(i).name(),bn.variable(j).name())
-        dotstr+='}'
-
-        g=dot.graph_from_dot_data(dotstr)
-        showGraph(g,size=size,format=format)
+    g=dot.graph_from_dot_data(dotstr)
+    showGraph(g,size=size,format=format)
+    
+    shutil.rmtree(temp_dir)
+    
