@@ -78,7 +78,18 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 
     return q;
   };
+
+  %pythoncode {
+  def toDotWithNames(self,bn):
+    def nameFromId(m):
+      return " ".join([bn.variable(int(n)).name()
+                       for n in m.group().split("-")])
+    import re
+    m = re.compile('(?<=label=\")\d+[\-\d+]*')
+    return m.sub(nameFromId,self.toDot())
+  }
 };
+
 %ignore gum::CliqueGraph::clique;
 %ignore gum::CliqueGraph::addNode;
 %ignore gum::CliqueGraph::addEdge(const gum::NodeId,const gum::NodeId);

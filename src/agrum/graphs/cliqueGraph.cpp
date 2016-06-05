@@ -22,8 +22,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <sstream>
 #include <agrum/graphs/cliqueGraph.h>
+#include <sstream>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/cliqueGraph.inl>
@@ -325,8 +325,9 @@ namespace gum {
     // cliques as nodes
     for ( auto node : nodes() ) {
       std::string nom = '"' + expandClique( node, clique( node ) ) + '"';
-      stream << "  " << nom << " [label=" << nom
-             << ",fillcolor=\"burlywood\",style=\"filled\"];" << std::endl;
+      stream << "  " << nom << " [label=\""
+             << expandCliqueContent( clique( node ) )
+             << "\",fillcolor =\"burlywood\",style=\"filled\"];" << std::endl;
     }
 
     stream << std::endl;
