@@ -78,13 +78,13 @@ execute_process(
 		OUTPUT_VARIABLE PYTHON_LIBPATH
 		 OUTPUT_STRIP_TRAILING_WHITESPACE
 	   )
-	  #set(PYTHON_LIBRARY "c:/Python27/libs/python${PYTHON_COMPLETE_VERSION}.lib")
+	  set(PYTHON_LIBRARY "c:/Python27/libs/python${PYTHON_COMPLETE_VERSION}.lib")
 	  #set(PYTHON_LIBRARY "c:/Python27/libs/libpython27.a")
 	  #set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
 	  #
 	  #find_package(PythonLibs)
 
-      set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libs/libPython${PYTHON_COMPLETE_VERSION}.a")
+      #set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libs/libPython${PYTHON_COMPLETE_VERSION}.a")
       set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
    else()
 	find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
