@@ -398,5 +398,50 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p.fillWith( {1, 0} ).entropy(), 0.0 );
       TS_ASSERT_EQUALS( p.fillWith( {0.5, 0.5} ).entropy(), 1.0 );
     }
+
+    void testReorganizePotential() {
+
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+      auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
+      auto d = gum::LabelizedVariable( "d", "dfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      gum::Potential<float> q;
+      q << c << d;
+      q.fillWith( {4, 5, 6, 3, 2, 1, 4, 3, 2} );
+
+
+      TS_ASSERT_THROWS_NOTHING( {
+        auto joint1 = p * q;
+        auto joint2 = q * p;
+        TS_ASSERT_DIFFERS( joint1.toString(), joint2.toString() );
+        auto joint3 = ( q * p ).reorganize( {&c, &d, &a, &b} );
+        TS_ASSERT_EQUALS( joint1.toString(), joint3.toString() );
+      } )
+
+      TS_ASSERT_THROWS( p.reorganize( {&a, &b, &c} ), gum::InvalidArgument );
+      TS_ASSERT_THROWS( p.reorganize( {&a, &d} ), gum::InvalidArgument );
+      TS_ASSERT_THROWS( p.reorganize( {&a} ), gum::InvalidArgument );
+    }
+
+    void testPutFirst() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+      auto c = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      TS_ASSERT_DIFFERS( p.toString(), p.putFirst(&b).toString() );
+      TS_ASSERT_EQUALS( p.toString(), p.putFirst(&b).putFirst(&a).toString() );
+      TS_ASSERT_EQUALS( p.toString(), p.putFirst(&a).toString() );
+
+      TS_ASSERT_THROWS( p.putFirst( &c ), gum::InvalidArgument );
+    }
   };
 }

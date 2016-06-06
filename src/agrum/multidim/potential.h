@@ -196,6 +196,17 @@ namespace gum {
     /// entropy of the Potential
     GUM_SCALAR entropy() const;
 
+    /** create a new Potential with another order
+     * @throw InvalidArgument if not all and only the vars of the potential are in vars
+     */
+    Potential<GUM_SCALAR>
+    reorganize( const std::vector<const DiscreteVariable*>& vars ) const;
+
+    /** create a new Potential with a certain variable in first
+     * @throw InvalidArgument if the var is not in the potential
+     */
+    Potential<GUM_SCALAR> putFirst( const DiscreteVariable* var ) const;
+
     /**
      * @brief Automatically fills the potential with the values in
      * v.

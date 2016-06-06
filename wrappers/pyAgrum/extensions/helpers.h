@@ -28,40 +28,92 @@
 
 class PyAgrumHelper {
   public:
-  
+
+  static std::string stringFromPyObject(PyObject *o) {
+    std::string name="";
+    if (PyUnicode_Check(o)) { //python3 string
+      PyObject* asbytes=PyUnicode_AsASCIIString(o);
+      name=PyBytes_AsString(asbytes);
+      Py_DECREF(asbytes);
+    } else if (PyString_Check(o)) {// python2 string
+      name=PyString_AsString(o);
+    } else if (PyBytes_Check(o)) {//other python3 string
+      name=PyBytes_AsString(o);
+    }
+    return name;
+  }
+
   // filling a Set of DiscreteVariable* from a list of string, in the context of a potential.
   static void fillDVSetFromPyObject(const gum::Potential<double>* pot,gum::Set<const gum::DiscreteVariable*>& s,PyObject* varnames) {
     if (PyList_Check(varnames)) {
       gum::Set<std::string> names;
       auto siz=PyList_Size(varnames);
-      for (int i=0 ; 
-            i<siz ; 
+      for (int i=0 ;
+            i<siz ;
             i++) {
-        PyObject *o = PyList_GetItem(varnames,i);
-      
-        if (PyUnicode_Check(o)) { //python3 string
-          PyObject* asbytes=PyUnicode_AsASCIIString(o);
-          names<<PyBytes_AsString(asbytes);
-          Py_DECREF(asbytes);
-          continue;
-        }
-        if (PyString_Check(o)) {// python2 string
-          names<<PyString_AsString(o);
-          continue;
-        }
-        if (PyBytes_Check(o)) {//other python3 string
-          names<<PyBytes_AsString(o);
-          continue;
-        }
-        GUM_ERROR(gum::FatalError,"Argument is not a list of string");
+        std::string name=stringFromPyObject(PyList_GetItem(varnames,i));
+
+        if (name=="")
+          GUM_ERROR(gum::InvalidArgument,"Argument is not a list of string");
+
+        names<<name;
       }
-      
-      for(const auto v : pot->variablesSequence()) 
+
+      for(const auto v : pot->variablesSequence())
         if (names.contains(v->name())) s<<v;
-        
+
+      if (s.size()==0)
+        GUM_ERROR(gum::InvalidArgument,"No relevant dimension in the argument");
     } else {
-      GUM_ERROR(gum::FatalError,"Argument is not a list");
-    }     
+      GUM_ERROR(gum::InvalidArgument,"Argument is not a list");
+    }
   }
-    
+
+    // filling a vector of DiscreteVariable* from a list of string, in the context of a potential.
+    static void fillDVVectorFromPyObject(const gum::Potential<double>* pot,std::vector<const gum::DiscreteVariable*>& s,PyObject* varnames) {
+      if (PyList_Check(varnames)) {
+        gum::HashTable<std::string,const gum::DiscreteVariable*> namesToVars;
+        for(gum::Idx i=0;i<pot->nbrDim();i++)
+          namesToVars.insert(pot->variable(i).name(),&(pot->variable(i)));
+
+        auto siz=PyList_Size(varnames);
+        s.clear();
+
+        for (int i=0 ;
+             i<siz ;
+             i++) {
+          std::string name=stringFromPyObject(PyList_GetItem(varnames,i));
+          if (name=="") {
+            GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string");
+          }
+          if (! namesToVars.exists(name)) {
+            GUM_ERROR(gum::InvalidArgument, "Argument is a not a name of a variable in this potential");
+          }
+          s.push_back(namesToVars[name]);
+        }
+      } else {
+        GUM_ERROR(gum::InvalidArgument,"Argument is not a list");
+      }
+    }
+
+    // filling a vector of DiscreteVariable* from a list of string, in the context of a potential.
+    static void fillDVFromPyObject(const gum::Potential<double>* pot,const gum::DiscreteVariable*& pvar,PyObject* varname) {
+      std::string name = stringFromPyObject(varname);
+      bool isOK=false;
+      if (name == "") {
+        GUM_ERROR(gum::InvalidArgument, "Argument is not a string");
+      }
+
+      for (gum::Idx i = 0; i < pot->nbrDim(); i++) {
+        if (pot->variable(i).name() == name) {
+          pvar=&(pot->variable(i));
+          isOK=true;
+          break;
+        }
+      }
+      if (!isOK) {
+        GUM_ERROR(gum::InvalidArgument, "Argument is a not a name of a variable in this potential");
+      }
+    }
+
 };

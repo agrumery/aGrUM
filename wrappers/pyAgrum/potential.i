@@ -47,7 +47,24 @@
 %rename ("$ignore", fullname=1) gum::Potential<double>::margMaxIn(const Set<const DiscreteVariable*>& kept_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margMinIn(const Set<const DiscreteVariable*>& kept_vars) const;
 
+%rename ("$ignore", fullname=1) gum::Potential<double>::reorganize(const Set<const DiscreteVariable*>& vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::putFirst(const DiscreteVariable* var) const;
+
 %extend gum::Potential<double> {
+    Potential<double>
+    reorganize(PyObject* varnames ) const {
+      std::vector<const gum::DiscreteVariable*> v;
+      PyAgrumHelper::fillDVVectorFromPyObject(self,v,varnames); //from helpers.h
+      return self->reorganize(v);
+    }
+
+    Potential<double>
+    putFirst(PyObject* varname ) const {
+      const gum::DiscreteVariable* v;
+      PyAgrumHelper::fillDVFromPyObject(self,v,varname); //from helpers.h
+      return self->putFirst(v);
+    }
+
     Potential<double>
     margSumOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;

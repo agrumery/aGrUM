@@ -218,7 +218,8 @@ namespace gum {
      * This method is virtual because it should be optimized in certain
      * MultiDimContainer.
      *
-     * @param src The MultiDimContainer src which values are copied.
+     * @param src The MultiDimContainer src which values are copied. This is a
+     * full copy with no verification of dimensions.
      *
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
@@ -233,7 +234,7 @@ namespace gum {
      *
      * @param src The MultiDimContainer src which values are copied.
      * @param p_i Give the order to iterate in this MultiDimContainer during
-     * the copy (natural order if null).
+     * the copy (nullptr will correctly copy if this is a reorganization of src).
      *
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.

@@ -4125,6 +4125,19 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___itruediv__(self, r)
 
 
+    def reorganize(self, *args) -> "gum::Potential< double >":
+        """
+        reorganize(Potential_double self, std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const & vars) -> Potential_double
+        reorganize(Potential_double self, PyObject * varnames) -> Potential_double
+        """
+        return _pyAgrum.Potential_double_reorganize(self, *args)
+
+
+    def putFirst(self, varname: 'PyObject *') -> "gum::Potential< double >":
+        """putFirst(Potential_double self, PyObject * varname) -> Potential_double"""
+        return _pyAgrum.Potential_double_putFirst(self, varname)
+
+
     def margSumOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         """margSumOut(Potential_double self, PyObject * varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margSumOut(self, varnames)

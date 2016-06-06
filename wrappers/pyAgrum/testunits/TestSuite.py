@@ -27,7 +27,7 @@ import PRMexplorerTestSuite
 
 import time
 
-tests=[]
+tests=list()
 tests.append(VariablesTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)
 tests.append(PythonBNListenerTestSuite.ts)

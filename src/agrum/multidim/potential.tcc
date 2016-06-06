@@ -277,4 +277,46 @@ namespace gum {
     return cplt;
   }
 
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR> Potential<GUM_SCALAR>::reorganize(
+      const std::vector<const DiscreteVariable*>& vars ) const {
+    if ( vars.size() != this->nbrDim() )
+      GUM_ERROR( InvalidArgument,
+                 "The vector contains " << vars.size()
+                                        << " variables instead of "
+                                        << this->nbrDim() << "." );
+    for ( const auto var : vars ) {
+      if ( !this->contains( *var ) )
+        GUM_ERROR(
+            InvalidArgument,
+            "A variable in the vector does not belong to the potential." );
+    }
+
+    Potential<GUM_SCALAR> p;
+    p.beginMultipleChanges();
+    for ( auto var : vars )
+      p.add( *var );
+    p.endMultipleChanges();
+    p.copyFrom(*this,nullptr); // copy *this in p using the same order
+
+    return p;
+  }
+
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>
+  Potential<GUM_SCALAR>::putFirst( const DiscreteVariable* var ) const {
+    if ( !this->contains( *var ) ) {
+      GUM_ERROR( InvalidArgument,
+                 "The variable to put first does not belong to the potential" );
+    }
+
+    std::vector<const DiscreteVariable*> vars;
+    vars.push_back( var );
+    for ( Idx i = 0; i < this->nbrDim(); i++ )
+      if ( &( this->variable( i ) ) != var )
+        vars.push_back( &( this->variable( i ) ) );
+
+    return this->reorganize( vars );
+  }
+
 } /* namespace gum */
