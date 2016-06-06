@@ -70,19 +70,13 @@ def _swig_setattr(self, class_type, name, value):
     return _swig_setattr_nondynamic(self, class_type, name, value, 0)
 
 
-def _swig_getattr_nondynamic(self, class_type, name, static=1):
+def _swig_getattr(self, class_type, name):
     if (name == "thisown"):
         return self.this.own()
     method = class_type.__swig_getmethods__.get(name, None)
     if method:
         return method(self)
-    if (not static):
-        return object.__getattr__(self, name)
-    else:
-        raise AttributeError(name)
-
-def _swig_getattr(self, class_type, name):
-    return _swig_getattr_nondynamic(self, class_type, name, 0)
+    raise AttributeError("'%s' object has no attribute '%s'" % (class_type.__name__, name))
 
 
 def _swig_repr(self):
@@ -95,11 +89,10 @@ def _swig_repr(self):
 try:
     _object = object
     _newclass = 1
-except AttributeError:
+except __builtin__.Exception:
     class _object:
         pass
     _newclass = 0
-
 
 try:
     import weakref
@@ -2624,8 +2617,6 @@ class RangeVariable(DiscreteVariable):
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
 RangeVariable_swigregister(RangeVariable)
 
-
-_pyAgrum.INC_MARKS_ARRAY_swigconstant(_pyAgrum)
 INC_MARKS_ARRAY = _pyAgrum.INC_MARKS_ARRAY
 class Edge(_object):
     """Proxy of C++ gum::Edge class."""
@@ -3362,6 +3353,15 @@ class CliqueGraph(UndiGraph):
         """clique(CliqueGraph self, gum::NodeId const clique) -> PyObject *"""
         return _pyAgrum.CliqueGraph_clique(self, clique)
 
+
+    def toDotWithNames(self,bn):
+      def nameFromId(m):
+        return " ".join([bn.variable(int(n)).name()
+                         for n in m.group().split("-")])
+      import re
+      m = re.compile('(?<=label=\")\d+[\-\d+]*')
+      return m.sub(nameFromId,self.toDot())
+
 CliqueGraph_swigregister = _pyAgrum.CliqueGraph_swigregister
 CliqueGraph_swigregister(CliqueGraph)
 
@@ -3665,8 +3665,6 @@ class Instantiation(_object):
 Instantiation_swigregister = _pyAgrum.Instantiation_swigregister
 Instantiation_swigregister(Instantiation)
 
-
-_pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER_swigconstant(_pyAgrum)
 GUM_DEFAULT_ITERATOR_NUMBER = _pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER
 class DAGmodel(_object):
     """Proxy of C++ gum::DAGmodel class."""
@@ -3901,7 +3899,7 @@ class MultiDimContainer_double(_object):
     def populate(self, *args) -> "void":
         """
         populate(MultiDimContainer_double self, Vector_double v)
-        populate(MultiDimContainer_double self, std::initializer_list< double > list)
+        populate(MultiDimContainer_double self, std::initializer_list< double > l)
         """
         return _pyAgrum.MultiDimContainer_double_populate(self, *args)
 
@@ -4122,9 +4120,9 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___isub__(self, r)
 
 
-    def __idiv__(self, r: 'Potential_double') -> "gum::Potential< double > &":
-        """__idiv__(Potential_double self, Potential_double r) -> Potential_double"""
-        return _pyAgrum.Potential_double___idiv__(self, r)
+    def __itruediv__(self, r: 'Potential_double') -> "gum::Potential< double > &":
+        """__itruediv__(Potential_double self, Potential_double r) -> Potential_double"""
+        return _pyAgrum.Potential_double___itruediv__(self, r)
 
 
     def margSumOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
@@ -4167,17 +4165,17 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_margMinIn(self, varnames)
 
 
-    def __truediv__(self, b: 'Potential_double') -> "gum::Potential< double >":
-        """__truediv__(Potential_double self, Potential_double b) -> Potential_double"""
-        return _pyAgrum.Potential_double___truediv__(self, b)
+    def __truediv__(self, *args) -> "gum::Potential< double >":
+        """
+        __truediv__(Potential_double self, Potential_double p2) -> Potential_double
+        __truediv__(Potential_double self, Potential_double b) -> Potential_double
+        """
+        return _pyAgrum.Potential_double___truediv__(self, *args)
 
 
-    def __div__(self, *args) -> "gum::Potential< double >":
-        """
-        __div__(Potential_double self, Potential_double p2) -> Potential_double
-        __div__(Potential_double self, Potential_double b) -> Potential_double
-        """
-        return _pyAgrum.Potential_double___div__(self, *args)
+    def __div__(self, b: 'Potential_double') -> "gum::Potential< double >":
+        """__div__(Potential_double self, Potential_double b) -> Potential_double"""
+        return _pyAgrum.Potential_double___div__(self, b)
 
 
     def __eq__(self, b: 'Potential_double') -> "bool":

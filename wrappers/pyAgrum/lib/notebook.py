@@ -42,6 +42,8 @@ from IPython.core.pylabtools import print_figure
 from IPython.core.display import Image,display_png
 from IPython.display import display,HTML,SVG
 
+import shutil
+
 import pyAgrum as gum
 
 def configuration():
@@ -343,6 +345,7 @@ def showEntropy(bn,evs,size="4",cmap=INFOcmap):
 
 
 def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
+    startTime = time.time()
     # targets={} => each node is a target
     if engine is None:
       ie=gum.LazyPropagation(bn)
@@ -350,11 +353,13 @@ def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
       ie=engine
     ie.setEvidence(evs)
     ie.makeInference()
+    stopTime = time.time()
     
     from tempfile import mkdtemp
-    temp_dir=mkdtemp("", "tmp", Node) #with TemporaryDirectory() as temp_dir:
+    temp_dir=mkdtemp("", "tmp", None) #with TemporaryDirectory() as temp_dir:
     
     dotstr ="digraph structs {\n"
+    dotstr+="  label=\"Inference in {:6.2f}ms\";\n".format(1000*(stopTime-startTime))
     dotstr+="  node [fillcolor=floralwhite, style=filled,color=grey];\n"
 
     for i in bn.ids():

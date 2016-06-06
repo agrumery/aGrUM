@@ -3353,6 +3353,15 @@ class CliqueGraph(UndiGraph):
         """clique(CliqueGraph self, gum::NodeId const clique) -> PyObject *"""
         return _pyAgrum.CliqueGraph_clique(self, clique)
 
+
+    def toDotWithNames(self,bn):
+      def nameFromId(m):
+        return " ".join([bn.variable(int(n)).name()
+                         for n in m.group().split("-")])
+      import re
+      m = re.compile('(?<=label=\")\d+[\-\d+]*')
+      return m.sub(nameFromId,self.toDot())
+
 CliqueGraph_swigregister = _pyAgrum.CliqueGraph_swigregister
 CliqueGraph_swigregister(CliqueGraph)
 
@@ -3890,7 +3899,7 @@ class MultiDimContainer_double(_object):
     def populate(self, *args):
         """
         populate(MultiDimContainer_double self, Vector_double v)
-        populate(MultiDimContainer_double self, std::initializer_list< double > list)
+        populate(MultiDimContainer_double self, std::initializer_list< double > l)
         """
         return _pyAgrum.MultiDimContainer_double_populate(self, *args)
 
