@@ -54,7 +54,7 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
       }
     };
 
-    void whenStop ( const void* src, std::string message ) {
+    void whenStop ( const void* src, const std::string message ) {
       if ( __pyWhenStop ) {
         PyObject* arglist = Py_BuildValue ( "(s)", message.c_str() );
         PyEval_CallObject ( __pyWhenStop, arglist );
