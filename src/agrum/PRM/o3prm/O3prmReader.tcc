@@ -325,7 +325,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void
       O3prmReader<GUM_SCALAR>::__parseImport( const O3Import& i,
-                                               const std::string& module ) {
+                                              const std::string& module ) {
 
         if ( not __imported.exists( i.import().label() ) ) {
           __imported.insert( i.import().label() );
@@ -336,6 +336,7 @@ namespace gum {
           auto path = i.import().label();
           std::replace( path.begin(), path.end(), '.', '/' );
 
+          auto imported = false;
           for ( const auto& cp : __class_path ) {
 
             auto file_path = cp + path + ".o3prm";
@@ -344,6 +345,7 @@ namespace gum {
             if ( file.is_open() ) {
 
               __parseStream( file, file_path, i.import().label() );
+              imported = true;
               break;
             }
 
@@ -354,9 +356,12 @@ namespace gum {
 
               __parseStream(
                   file, file_path, module + "." + i.import().label() );
+              imported = true;
               break;
             }
+          }
 
+          if ( !imported ) {
             const auto& pos = i.import().position();
             auto msg = std::stringstream();
             msg << "Import error: could not resolve import "
