@@ -197,10 +197,16 @@ namespace gum {
     GUM_SCALAR entropy() const;
 
     /** create a new Potential with another order
-     * @throw InvalidArgument if not all and only the vars of the potential are in vars
+     * @throw InvalidArgument if not all and only the vars of the potential are
+     * in vars
      */
     Potential<GUM_SCALAR>
     reorganize( const std::vector<const DiscreteVariable*>& vars ) const;
+
+    /** create a new Potential extracted from *this given a partial
+     * instantiation
+     */
+    Potential<GUM_SCALAR> extract( const Instantiation& inst ) const;
 
     /** create a new Potential with a certain variable in first
      * @throw InvalidArgument if the var is not in the potential

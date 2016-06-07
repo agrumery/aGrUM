@@ -297,7 +297,7 @@ namespace gum {
     for ( auto var : vars )
       p.add( *var );
     p.endMultipleChanges();
-    p.copyFrom(*this,nullptr); // copy *this in p using the same order
+    p.copyFrom( *this, nullptr );  // copy *this in p using the same order
 
     return p;
   }
@@ -319,4 +319,11 @@ namespace gum {
     return this->reorganize( vars );
   }
 
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>
+  Potential<GUM_SCALAR>::extract( const Instantiation& inst ) const {
+    Potential<GUM_SCALAR> p;
+    p.extractFrom( *this, inst );
+    return p;
+  }
 } /* namespace gum */

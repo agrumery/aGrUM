@@ -3912,6 +3912,11 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_copyFrom(self, *args)
 
 
+    def extractFrom(self, src, mask):
+        """extractFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation mask)"""
+        return _pyAgrum.MultiDimContainer_double_extractFrom(self, src, mask)
+
+
     def content(self, *args):
         """
         content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > const
@@ -4123,6 +4128,27 @@ class Potential_double(_object):
     def __idiv__(self, r):
         """__idiv__(Potential_double self, Potential_double r) -> Potential_double"""
         return _pyAgrum.Potential_double___idiv__(self, r)
+
+
+    def extract(self, *args):
+        """
+        extract(Potential_double self, Instantiation inst) -> Potential_double
+        extract(Potential_double self, PyObject * dict) -> Potential_double
+        """
+        return _pyAgrum.Potential_double_extract(self, *args)
+
+
+    def reorganize(self, *args):
+        """
+        reorganize(Potential_double self, std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const & vars) -> Potential_double
+        reorganize(Potential_double self, PyObject * varnames) -> Potential_double
+        """
+        return _pyAgrum.Potential_double_reorganize(self, *args)
+
+
+    def putFirst(self, varname):
+        """putFirst(Potential_double self, PyObject * varname) -> Potential_double"""
+        return _pyAgrum.Potential_double_putFirst(self, varname)
 
 
     def margSumOut(self, varnames):

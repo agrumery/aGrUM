@@ -234,13 +234,28 @@ namespace gum {
      *
      * @param src The MultiDimContainer src which values are copied.
      * @param p_i Give the order to iterate in this MultiDimContainer during
-     * the copy (nullptr will correctly copy if this is a reorganization of src).
+     * the copy (nullptr will correctly copy if this is a reorganization of
+     *src).
      *
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      */
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
                            Instantiation* p_i ) const;
+
+    /**
+     * @brief Basic extraction of a MultiDimContainer.
+     *
+     * This method is virtual because it should be optimized in certain
+     * MultiDimContainer.
+     *
+     * @param src The MultiDimContainer src which datas are copied.
+     * @param mask partial instantiation of variables of the Potential : the
+     * extraction will concern every variable not in the instantiation and the
+     * copy of data will use the values in this instantiation.
+     */
+    virtual void extractFrom( const MultiDimContainer<GUM_SCALAR>& src,
+                              const Instantiation& mask );
 
     /**
     * @brief Returns the implementation for this object (may be *this).

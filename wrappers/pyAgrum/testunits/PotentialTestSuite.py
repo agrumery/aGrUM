@@ -369,6 +369,7 @@ class TestOperators(pyAgrumTestCase):
 
     self.assertEquals(joint.margMinIn(['a','b']),joint.margMinOut(['c','d']))
 
+    # one can not margIn on an invalid variable
     try:
       p.margSumIn(['d'])
       self.assertTrue(False)
@@ -434,9 +435,7 @@ class TestOperators(pyAgrumTestCase):
 
   def testPutFirstPotential(self):
     a,b=[gum.LabelizedVariable(s,s,3) for s in "ab"]
-    p=gum.Potential()
-    p.add(a).add(b)
-    p.fillWith([1,2,3,4,5,6,7,8,9])
+    p=gum.Potential().add(a).add(b).fillWith([1,2,3,4,5,6,7,8,9])
 
     self.assertNotEqual(str(p),str(p.putFirst("b")))
     self.assertEqual(str(p),str(p.putFirst("b").putFirst("a")))
@@ -447,6 +446,61 @@ class TestOperators(pyAgrumTestCase):
       self.assertTrue(False)
     except gum.InvalidArgument:
       self.assertTrue(True)
+
+  def testExtraction(self):
+    a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]
+    p=gum.Potential().add(a).add(b).fillWith([1,2,3,4,5,6,7,8,9])
+    q=gum.Potential().add(c).fillWith([1,2,3])
+
+    pot = q*p
+
+    I=gum.Instantiation()
+    I.add(c)
+    I.chgVal(c,0)
+    self.assertEqual(pot.extract(I),p)
+
+    I.chgVal(c,2)
+    r=gum.Potential().add(a).add(b).fillWith([3, 6, 9, 12, 15, 18, 21, 24, 27])
+    self.assertEqual(pot.reorganize(['b','c','a']).extract(I),r)
+
+  def testExtractionWithDict(self):
+    a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]
+    p=gum.Potential().add(a).add(b).fillWith([1,2,3,4,5,6,7,8,9])
+    q=gum.Potential().add(c).fillWith([1,2,3])
+
+    pot = q*p
+
+    self.assertEqual(pot.extract({"c":0}),p)
+
+    r=gum.Potential().add(a).add(b).fillWith([3, 6, 9, 12, 15, 18, 21, 24, 27])
+    self.assertEqual(pot.reorganize(['b','c','a']).extract({"c":2}),r)
+
+    try:
+      pot.extract({"x":1})
+      self.assertTrue(False)
+    except gum.InvalidArgument:
+      self.assertTrue(True)
+
+    try:
+      pot.extract({"c":16})
+      self.assertTrue(False)
+    except gum.InvalidArgument:
+      self.assertTrue(True)
+
+    try:
+      pot.extract({"c":"r"})
+      self.assertTrue(False)
+    except gum.InvalidArgument:
+      self.assertTrue(True)
+
+    try:
+      pot.extract({2:2})
+      self.assertTrue(False)
+    except gum.InvalidArgument:
+      self.assertTrue(True)
+
+
+
 
 
 
@@ -470,3 +524,5 @@ ts.addTest(TestOperators('testSqPotential'))
 ts.addTest(TestOperators('testEntropyPotential'))
 ts.addTest(TestOperators('testReorganizePotential'))
 ts.addTest(TestOperators('testPutFirstPotential'))
+ts.addTest(TestOperators('testExtraction'))
+ts.addTest(TestOperators('testExtractionWithDict'))

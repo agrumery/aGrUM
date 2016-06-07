@@ -3912,6 +3912,11 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_copyFrom(self, *args)
 
 
+    def extractFrom(self, src: 'MultiDimContainer_double', mask: 'Instantiation') -> "void":
+        """extractFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation mask)"""
+        return _pyAgrum.MultiDimContainer_double_extractFrom(self, src, mask)
+
+
     def content(self, *args) -> "gum::MultiDimImplementation< double > *":
         """
         content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > const
@@ -4123,6 +4128,14 @@ class Potential_double(_object):
     def __itruediv__(self, r: 'Potential_double') -> "gum::Potential< double > &":
         """__itruediv__(Potential_double self, Potential_double r) -> Potential_double"""
         return _pyAgrum.Potential_double___itruediv__(self, r)
+
+
+    def extract(self, *args) -> "gum::Potential< double >":
+        """
+        extract(Potential_double self, Instantiation inst) -> Potential_double
+        extract(Potential_double self, PyObject * dict) -> Potential_double
+        """
+        return _pyAgrum.Potential_double_extract(self, *args)
 
 
     def reorganize(self, *args) -> "gum::Potential< double >":
