@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief count aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+
 #ifndef GUM_COUNT_AGGREGATOR_H
 #define GUM_COUNT_AGGREGATOR_H
 
@@ -31,27 +32,24 @@
 namespace gum {
 
   namespace aggregator {
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /* ===                     GUM_MAX_AGGREGATOR                     === */
-    /* =========================================================================*/
-    /* =========================================================================*/
+    // =========================================================================
+    // ===                     GUM_MAX_AGGREGATOR                            === 
+    // =========================================================================
 
-    /** @class Count
-    * @brief count aggregator
-    * @ingroup multidim_agg_group
-    *
-    * @see MultiDimAggregator for more details of implementations
-    *
-    * Note that a <tt>Count(i)</tt> aggregator with a binary aggregator variable
-    *is
-    *the \f$ \exists i \f$ aggregator.
-    * If the aggregator variable is n-ary variable, <tt>Count(i)</tt> can serve
-    *as
-    *the \f$ \exists \f$ at least \f$ n\ times\ i \f$ aggregator.
-    */
-    /* =========================================================================*/
-
+    /**
+     * @class Count
+     * @headerfile count.h <agrum/multidim/aggregators/count.h>
+     * @ingroup multidim_agg_group
+     *
+     * @brief count aggregator
+     *
+     * @see MultiDimAggregator for more details of implementations
+     *
+     * Note that a <tt>Count(i)</tt> aggregator with a binary aggregator
+     * variable is the \f$ \exists i \f$ aggregator.  If the aggregator
+     * variable is n-ary variable, <tt>Count(i)</tt> can serve as the \f$
+     * \exists \f$ at least \f$ n\ times\ i \f$ aggregator.
+     */
     template <typename GUM_SCALAR>
     class Count : public MultiDimAggregator<GUM_SCALAR> {
       public:
@@ -66,9 +64,13 @@ namespace gum {
        * (including variable), you must use this method if you want to ensure
        * that the generated object has the same type than the object containing
        * the called newFactory()
+       *
        * For example :
+       * @code
        *   MultiDimArray<double> y;
        *   MultiDimContainer<double>* x = y.newFactory();
+       * @endcode
+       *
        * Then x is a MultiDimArray<double>*
        *
        * @warning you must desallocate by yourself the memory

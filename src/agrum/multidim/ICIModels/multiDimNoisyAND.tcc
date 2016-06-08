@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /**
+ * @file
+ * @brief class for NoisyAND-net implementation as multiDim
+ *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * <{prenom.nom}_at_lip6.fr>
  */
 
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
@@ -27,8 +29,7 @@
 
 namespace gum {
 
-  /// Default constructor
-
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE
   MultiDimNoisyAND<GUM_SCALAR>::MultiDimNoisyAND( GUM_SCALAR external_weight,
@@ -42,8 +43,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimNoisyAND );
   }
 
-  /// Default constructor
-
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyAND<GUM_SCALAR>::MultiDimNoisyAND(
       const MultiDimNoisyAND<GUM_SCALAR>& from )
@@ -51,8 +51,7 @@ namespace gum {
     GUM_CONS_CPY( MultiDimNoisyAND );
   }
 
-  /// Copy constructor using a bijection to swap variables from source.
-
+  // Copy constructor using a bijection to swap variables from source.
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyAND<GUM_SCALAR>::MultiDimNoisyAND(
       const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
@@ -61,8 +60,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimNoisyAND );
   }
 
-  /// destructor
-
+  // destructor
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyAND<GUM_SCALAR>::~MultiDimNoisyAND() {
     GUM_DESTRUCTOR( MultiDimNoisyAND );
@@ -126,9 +124,6 @@ namespace gum {
   MultiDimNoisyAND<GUM_SCALAR>::newFactory() const {
     return new MultiDimNoisyAND<GUM_SCALAR>( this->__external_weight,
                                              this->__default_weight );
-    // GUM_ERROR( OperationNotAllowed,
-    //            "This class doesn't contain an empty constructor" );
-    // return 0;
   }
 
   // returns the name of the implementation
@@ -138,5 +133,4 @@ namespace gum {
     return str;
   }
 
-  // ==================================================
 } /* namespace gum */

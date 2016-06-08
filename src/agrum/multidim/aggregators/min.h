@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief min aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+
 #ifndef GUM_MIN_AGGREGATOR_H
 #define GUM_MIN_AGGREGATOR_H
 
@@ -32,19 +33,19 @@ namespace gum {
 
   namespace aggregator {
 
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /* ===                     GUM_MIN_AGGREGATOR                     === */
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /** @class Min
-    * @brief min aggregator
-    * @ingroup multidim_agg_group
-    *
-    * @see MultiDimAggregator for more details of implementations
-    */
-    /* =========================================================================*/
+    // =========================================================================
+    // ===                     GUM_MIN_AGGREGATOR                            === 
+    // =========================================================================
 
+    /** 
+     * @class Min
+     * @headefile min.h <agrum/multidim/aggregators/min.h>
+     * @ingroup multidim_agg_group
+     *
+     * @brief min aggregator
+     *
+     * @see MultiDimAggregator for more details of implementations
+     */
     template <typename GUM_SCALAR>
     class Min : public MultiDimAggregator<GUM_SCALAR> {
       public:
@@ -57,9 +58,13 @@ namespace gum {
        * (including variable), you must use this method if you want to ensure
        * that the generated object has the same type than the object containing
        * the called newFactory()
+       * 
        * For example :
+       * @code
        *   MultiDimArray<double> y;
        *   MultiDimContainer<double>* x = y.newFactory();
+       * @endcode
+       *
        * Then x is a MultiDimArray<double>*
        *
        * @warning you must desallocate by yourself the memory

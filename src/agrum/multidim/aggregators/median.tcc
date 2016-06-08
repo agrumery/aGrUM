@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief median aggregator
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * <{prenom.nom}_at_lip6.fr>
  */
+
 #include <sstream>
 
 #include <vector>
@@ -92,6 +93,14 @@ namespace gum {
       // multiDimAggregator::get will truncate if needed.
       return ( maxR + max ) / 2;
     }
+
+    template <typename GUM_SCALAR>
+    INLINE Idx Median<GUM_SCALAR>::_fold( const DiscreteVariable& v,
+                                          Idx i1,
+                                          Idx i2,
+                                          bool& stop_iteration ) const {
+      return 0;
+    };
 
   }  // aggregator
 }  // namespace gum

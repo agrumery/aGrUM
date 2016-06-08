@@ -17,11 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Abstract base class for all multi dimensionnal aggregator
+/**
+ * @file
+ * @brief MultiDimAggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
 // to ease parser in IDEs
@@ -29,16 +29,15 @@
 
 namespace gum {
   namespace aggregator {
-    /// Default constructor
 
+    // Default constructor
     template <typename GUM_SCALAR>
     INLINE MultiDimAggregator<GUM_SCALAR>::MultiDimAggregator()
         : MultiDimReadOnly<GUM_SCALAR>() {
       GUM_CONSTRUCTOR( MultiDimAggregator );
     }
 
-    /// Default constructor
-
+    // Default constructor
     template <typename GUM_SCALAR>
     INLINE MultiDimAggregator<GUM_SCALAR>::MultiDimAggregator(
         const MultiDimAggregator<GUM_SCALAR>& from )
@@ -46,8 +45,7 @@ namespace gum {
       GUM_CONS_CPY( MultiDimAggregator );
     }
 
-    /// destructor
-
+    // destructor
     template <typename GUM_SCALAR>
     INLINE MultiDimAggregator<GUM_SCALAR>::~MultiDimAggregator() {
       GUM_DESTRUCTOR( MultiDimAggregator );
@@ -115,7 +113,6 @@ namespace gum {
     }
 
     // For friendly displaying the content of the variable.
-
     template <typename GUM_SCALAR>
     INLINE std::ostream&
     operator<<( std::ostream& s, const MultiDimAggregator<GUM_SCALAR>& ag ) {
@@ -128,8 +125,6 @@ namespace gum {
                                            const DiscreteVariable* y ) {
       MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
     }
-
-    // ==================================================
 
   } /* namespace aggregator */
 } /* namespace gum */
