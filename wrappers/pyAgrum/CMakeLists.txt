@@ -75,17 +75,11 @@ execute_process(
 	   )
 	   execute_process(
 		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-		OUTPUT_VARIABLE PYTHON_LIBPATH
+		 OUTPUT_VARIABLE PYTHON_LIBPATH
 		 OUTPUT_STRIP_TRAILING_WHITESPACE
 	   )
-	  set(PYTHON_LIBRARY "c:/Python27/libs/python${PYTHON_COMPLETE_VERSION}.lib")
-	  #set(PYTHON_LIBRARY "c:/Python27/libs/libpython27.a")
-	  #set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
-	  #
-	  #find_package(PythonLibs)
-
-      #set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libs/libPython${PYTHON_COMPLETE_VERSION}.a")
-      set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
+	  set(PYTHON_LIBRARY "${PYTHON_LOCAL_PATH}/libs/python${PYTHON_COMPLETE_VERSION}.lib")
+    set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
    else()
 	find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
    endif()
@@ -122,7 +116,7 @@ set(AGRUM_FILE_VERSION "${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 include(${AGRUM_FILE_VERSION})
 include("${AGRUM_SOURCE_DIR}/cmake/Config.agrum.cmake")
 configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/agrum/config.h")
-file(GLOB_RECURSE AGRUM_SOURCES "${AGRUM_SOURCE_DIR}/agrum/*.cpp"  ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c) 
+file(GLOB_RECURSE AGRUM_SOURCES "${AGRUM_SOURCE_DIR}/agrum/*.cpp"  ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c)
 
 #==
 #== Adding files in build tree
