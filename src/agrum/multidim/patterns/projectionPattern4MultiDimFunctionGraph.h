@@ -17,10 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
+ *
  * @brief the pattern used by all the projections of multidimensional tables
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/multidim/instantiation.h>
@@ -32,53 +35,46 @@
 
 #else
 
-// =======================================================================================
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimFunctionGraph.h>
-// =======================================================================================
 #include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
-// =======================================================================================
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 
-/// a specialized function for projecting a multiDimFunctionGraph over a subset
-/// of its vars
+// a specialized function for projecting a multiDimFunctionGraph over a subset
+// of its vars
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME
-
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
-
   template <typename GUM_SCALAR>
   MultiDimFunctionGraph<GUM_SCALAR>*
   GUM_MULTI_DIM_PROJECTION_NAME( const MultiDimFunctionGraph<GUM_SCALAR>* table,
-                                 const Set<const DiscreteVariable*>& delVars ) {
-
+                                 const Set<const DiscreteVariable*>& delVars )
 #endif
 
 
 #ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
-
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+      template <typename GUM_SCALAR>
+      MultiDimImplementation<GUM_SCALAR>* GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME(
+          const MultiDimImplementation<GUM_SCALAR>* ttable,
+          const Set<const DiscreteVariable*>& delVars )
+#endif
+  {
 
-    template <typename GUM_SCALAR>
-    MultiDimImplementation<GUM_SCALAR>*
-    GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME(
-        const MultiDimImplementation<GUM_SCALAR>* ttable,
-        const Set<const DiscreteVariable*>& delVars ) {
-
-      const MultiDimFunctionGraph<GUM_SCALAR>* table =
-          reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( ttable );
-
+#ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
+    const MultiDimFunctionGraph<GUM_SCALAR>* table =
+        reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( ttable );
 #endif
 
-      MultiDimFunctionGraphProjector<GUM_MULTI_DIM_PROJECTION_TYPE,
-                                     GUM_MULTI_DIM_PROJECTION_OPERATOR>
-          proj( table, delVars, GUM_MULTI_DIM_PROJECTION_NEUTRAL );
+    MultiDimFunctionGraphProjector<GUM_MULTI_DIM_PROJECTION_TYPE,
+                                   GUM_MULTI_DIM_PROJECTION_OPERATOR>
+        proj( table, delVars, GUM_MULTI_DIM_PROJECTION_NEUTRAL );
 
-      return proj.project();
-    }
+    return proj.project();
+  }
 
 
 #undef GUM_MULTI_DIM_PROJECTION_TYPE
-  } /* end of namespace GUM */
+} /* end of namespace GUM */
 #endif /* GUM_PROJECTION_PATTERN_ALLOWED */
