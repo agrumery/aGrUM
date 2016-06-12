@@ -43,7 +43,7 @@ namespace gum {
 
   INLINE
   void* Parent::operator new( size_t s ) {
-    return SmallObjectAllocator::instance().allocate( s );
+    return SmallObjectAllocator::instance().allocate( Size(s) );
   }
 
   INLINE
@@ -72,7 +72,7 @@ namespace gum {
 
   INLINE
   void* InternalNode::operator new( size_t s ) {
-    return SmallObjectAllocator::instance().allocate( s );
+    return SmallObjectAllocator::instance().allocate( Size(s) );
   }
 
   INLINE

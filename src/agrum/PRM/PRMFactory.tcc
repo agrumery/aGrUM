@@ -693,11 +693,11 @@ namespace gum {
     PRMFactory<GUM_SCALAR>::continueAggregator( const std::string& name ) {
 
       PRMClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
-      if ( not c->exists( name ) ) {
+      if ( ! c->exists( name ) ) {
         GUM_ERROR( NotFound, name << "not found" );
       }
       auto& agg = c->get( name );
-      if ( not PRMClassElement<GUM_SCALAR>::isAggregate( agg ) ) {
+      if ( ! PRMClassElement<GUM_SCALAR>::isAggregate( agg ) ) {
         GUM_ERROR( OperationNotAllowed, name << " not an aggregate" );
       }
       __stack.push_back( &agg );

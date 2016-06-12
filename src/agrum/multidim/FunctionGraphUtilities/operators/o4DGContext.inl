@@ -63,7 +63,7 @@ namespace gum {
   }
 
   INLINE void* O4DGContext::operator new( size_t s ) {
-    return SmallObjectAllocator::instance().allocate( s );
+    return SmallObjectAllocator::instance().allocate( Size(s) );
   }
 
   INLINE void O4DGContext::operator delete( void* p ) {
