@@ -18,28 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
  ****************************************************************************/
 /**
-* @file
-* @brief Class used to compute the operation between two decision diagrams
-*
-* @author Jean-Christophe Magnan
-*/
+ * @file
+ * @brief Class used to compute the operation between two decision diagrams
+ *
+ * @author Jean-Christophe Magnan
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-// =======================================================================================
-#include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
-// =======================================================================================
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.h>
 
 #define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
 #define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 namespace gum {
 
-  /* *****************************************************************************************************************************
-   */
-  /* CONSTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
@@ -59,12 +53,6 @@ namespace gum {
     GUM_CONSTRUCTOR( TreeRegress );
   }
 
-
-  /* *****************************************************************************************************************************
-   */
-  /* DESTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
@@ -77,15 +65,8 @@ namespace gum {
     GUM_DESTRUCTOR( TreeRegress );
   }
 
-
-  /* *****************************************************************************************************************************
-   */
-  /* Compute */
-  /*                                                                                                                               */
-  /* This function is the main function. To be call every time an operation
-   * between the two given Function Graphs is required      */
-  /* *****************************************************************************************************************************
-   */
+  // This function is the main function. To be call every time an operation
+  // between the two given Function Graphs is required
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,

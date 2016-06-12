@@ -60,7 +60,6 @@ namespace gum {
 
   /**
    * @brief Returns the aGrUM's seed used by the std::generators.
-   * @param seed The seed.
    * @return Returns the aGrUM's seed used by the std::generators.
    */
   unsigned int randomGeneratorSeed();

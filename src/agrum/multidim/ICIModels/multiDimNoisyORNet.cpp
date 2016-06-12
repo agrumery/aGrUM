@@ -17,6 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/** 
+ * @file
+ * @brief class for NoisyOR-net implementation as multiDim
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
+
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 
 #ifdef GUM_NO_INLINE

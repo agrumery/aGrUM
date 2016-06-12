@@ -26,7 +26,7 @@ import sys
 import os
 import subprocess
 
-from utils.pyAgrum_header import pyAgrum_header
+from ._utils.pyAgrum_header import pyAgrum_header
 
 import pyAgrum as gum
 
@@ -36,7 +36,7 @@ def dotize(aBN,name,style='pdf'):
 	dot format and in style. style in [pdf,png,fig,jpg,svg]
   """
   if style not in ['pdf','png','fig','jpg','svg']:
-      raise Exception,"<%s> in not a correct style ([pdf,png,fig,jpg,svg])"%style
+      raise Exception("<%s> in not a correct style ([pdf,png,fig,jpg,svg])"%style)
 
   if isinstance(aBN,str):
     bn=gum.loadBN(aBN)

@@ -30,8 +30,8 @@
 
 #include <agrum/core/math/formula.h>
 
-#include <agrum/PRM/elements/PRMFuncAttribute.h>
 #include <agrum/PRM/elements/PRMFormAttribute.h>
+#include <agrum/PRM/elements/PRMFuncAttribute.h>
 
 namespace gum {
 
@@ -325,70 +325,62 @@ namespace gum {
       }
     }
 
-        template <typename GUM_SCALAR>
-        INLINE void PRMFactory<GUM_SCALAR>::__addParent( PRMClassElementContainer<GUM_SCALAR>* c,
-                                              PRMAttribute<GUM_SCALAR>* a,
-                                              const std::string& name )
-       {
-          /*// Retrieving pointers
-          PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
-              __checkStack( 1, PRMClassElement<GUM_SCALAR>::prm_attribute ) );
-          PRMClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 2 );
-*/
-          try {
-            PRMClassElement<GUM_SCALAR>& elt = c->get( name );
+    template <typename GUM_SCALAR>
+    INLINE void PRMFactory<GUM_SCALAR>::__addParent(
+        PRMClassElementContainer<GUM_SCALAR>* c,
+        PRMAttribute<GUM_SCALAR>* a,
+        const std::string& name ) {
+      try {
+        PRMClassElement<GUM_SCALAR>& elt = c->get( name );
 
-            switch ( elt.elt_type() ) {
-              case PRMClassElement<GUM_SCALAR>::prm_refslot: {
-                GUM_ERROR(
-                    OperationNotAllowed,
-                    "can not add a reference slot as a parent of an attribute"
-       );
-                break;
-              }
+        switch ( elt.elt_type() ) {
+          case PRMClassElement<GUM_SCALAR>::prm_refslot: {
+            GUM_ERROR(
+                OperationNotAllowed,
+                "can not add a reference slot as a parent of an attribute" );
+            break;
+          }
 
-              case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
-                if ( static_cast<PRMSlotChain<GUM_SCALAR>&>( elt ).isMultiple()
-       ) {
-                  GUM_ERROR( OperationNotAllowed,
-                             "can not add a multiple slot chain to an attribute"
-       );
-                }
-
-                c->addArc( name, a->name() );
-
-                break;
-              }
-
-              case PRMClassElement<GUM_SCALAR>::prm_attribute:
-              case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
-                c->addArc( name, a->name() );
-                break;
-              }
-
-              default: {
-                GUM_ERROR( FatalError, "unknown ClassElement<GUM_SCALAR>" );
-              }
-            }
-          } catch ( NotFound& ) {
-            // Check if name is a slot chain
-            PRMSlotChain<GUM_SCALAR>* sc = __buildSlotChain( c, name );
-
-            if ( sc == nullptr ) {
-              std::string msg =
-                  "found no ClassElement<GUM_SCALAR> with the given name ";
-              GUM_ERROR( NotFound, msg + name );
-            } else if ( ! sc->isMultiple() ) {
-              c->add( sc );
-              c->addArc( sc->name(), a->name() );
-            } else {
-              delete sc;
+          case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
+            if ( static_cast<PRMSlotChain<GUM_SCALAR>&>( elt ).isMultiple() ) {
               GUM_ERROR( OperationNotAllowed,
-                         "Impossible to add a multiple reference slot as"
-                         " direct parent of an PRMAttribute<GUM_SCALAR>." );
+                         "can not add a multiple slot chain to an attribute" );
             }
+
+            c->addArc( name, a->name() );
+
+            break;
+          }
+
+          case PRMClassElement<GUM_SCALAR>::prm_attribute:
+          case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
+            c->addArc( name, a->name() );
+            break;
+          }
+
+          default: {
+            GUM_ERROR( FatalError, "unknown ClassElement<GUM_SCALAR>" );
           }
         }
+      } catch ( NotFound& ) {
+        // Check if name is a slot chain
+        PRMSlotChain<GUM_SCALAR>* sc = __buildSlotChain( c, name );
+
+        if ( sc == nullptr ) {
+          std::string msg =
+              "found no ClassElement<GUM_SCALAR> with the given name ";
+          GUM_ERROR( NotFound, msg + name );
+        } else if ( !sc->isMultiple() ) {
+          c->add( sc );
+          c->addArc( sc->name(), a->name() );
+        } else {
+          delete sc;
+          GUM_ERROR( OperationNotAllowed,
+                     "Impossible to add a multiple reference slot as"
+                     " direct parent of an PRMAttribute<GUM_SCALAR>." );
+        }
+      }
+    }
 
 
     template <typename GUM_SCALAR>
@@ -399,7 +391,7 @@ namespace gum {
         PRMAttribute<GUM_SCALAR>* a = static_cast<PRMAttribute<GUM_SCALAR>*>(
             __checkStack( 1, PRMClassElement<GUM_SCALAR>::prm_attribute ) );
         __addParent( c, a, name );
-      } catch ( OperationNotAllowed& ) {
+      } catch ( FactoryInvalidState& ) {
         auto agg = static_cast<PRMAggregate<GUM_SCALAR>*>(
             __checkStack( 1, PRMClassElement<GUM_SCALAR>::prm_aggregate ) );
         __addParent( static_cast<PRMClass<GUM_SCALAR>*>( c ), agg, name );
@@ -678,8 +670,22 @@ namespace gum {
         c->overload( agg );
       }
 
+      switch ( agg->agg_type() ) {
+        case PRMAggregate<GUM_SCALAR>::AggregateType::COUNT:
+        case PRMAggregate<GUM_SCALAR>::AggregateType::EXISTS:
+        case PRMAggregate<GUM_SCALAR>::AggregateType::FORALL: {
+          if ( params.size() != 1 ) {
+            GUM_ERROR( OperationNotAllowed, "aggregate requires a parameter" );
+          }
+          agg->setLabel( params.front() );
+          break;
+        }
+        default: {
+          // Nothing to do
+        }
+      }
       __stack.push_back( agg );
-      __agg_params.insert( agg, params );
+      //__agg_params.insert( agg, params );
     }
 
     template <typename GUM_SCALAR>
@@ -723,12 +729,11 @@ namespace gum {
         case PRMAggregate<GUM_SCALAR>::AggregateType::FORALL: {
 
           if ( !agg->hasLabel() ) {
-            auto& params = __agg_params[agg];
+            auto param = agg->labelValue();
             Idx label_idx = 0;
 
             while ( label_idx < inputs.front()->type()->domainSize() ) {
-              if ( inputs.front()->type()->label( label_idx ) ==
-                   params.front() ) {
+              if ( inputs.front()->type()->label( label_idx ) == param ) {
                 break;
               }
 
@@ -1127,8 +1132,9 @@ namespace gum {
 
       PRMType<GUM_SCALAR>* t = __retrieveCommonType( inputs );
 
-      std::vector<std::pair<PRMClassElement<GUM_SCALAR>*,
-                            PRMClassElement<GUM_SCALAR>*>> toAdd;
+      std::vector<
+          std::pair<PRMClassElement<GUM_SCALAR>*, PRMClassElement<GUM_SCALAR>*>>
+          toAdd;
 
       for ( const auto& elt : inputs ) {
         if ( ( *elt ).type() != ( *t ) ) {
@@ -1345,7 +1351,8 @@ namespace gum {
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
                          "Type name '"
-                             << name << "' is ambiguous: specify full name." );
+                             << name
+                             << "' is ambiguous: specify full name." );
             }
           }
         }
@@ -1398,7 +1405,8 @@ namespace gum {
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
                          "Class name '"
-                             << name << "' is ambiguous: specify full name." );
+                             << name
+                             << "' is ambiguous: specify full name." );
             }
           }
         }
@@ -1434,7 +1442,8 @@ namespace gum {
         } else if ( full_name != prefixed ) {
           GUM_ERROR( DuplicateElement,
                      "Interface name '"
-                         << name << "' is ambiguous: specify full name." );
+                         << name
+                         << "' is ambiguous: specify full name." );
         }
       }
 
@@ -1453,7 +1462,8 @@ namespace gum {
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
                          "Interface name '"
-                             << name << "' is ambiguous: specify full name." );
+                             << name
+                             << "' is ambiguous: specify full name." );
             }
           }
         }
@@ -1745,8 +1755,9 @@ namespace gum {
           // Update inherited parameters
           for ( auto p : my_params ) {
 
-            auto type = static_cast<PRMParameter<GUM_SCALAR>&>(
-                            c->get( p.first ) ).valueType();
+            auto type =
+                static_cast<PRMParameter<GUM_SCALAR>&>( c->get( p.first ) )
+                    .valueType();
             if ( type == PRMParameter<GUM_SCALAR>::ParameterType::INT ) {
 
               addParameter( "int", p.first, p.second );

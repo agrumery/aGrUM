@@ -42,6 +42,8 @@ from IPython.core.pylabtools import print_figure
 from IPython.core.display import Image,display_png
 from IPython.display import display,HTML,SVG
 
+import shutil
+
 import pyAgrum as gum
 
 def configuration():
@@ -167,7 +169,7 @@ def getFigProba(p):
     Show a matplotlib histogram for a Potential p.
 
     """
-    if p.variable(0).domainSize()>5:
+    if p.variable(0).domainSize()>8:
         return getFigProbaV(p)
     else:
         return getFigProbaH(p)
@@ -343,6 +345,7 @@ def showEntropy(bn,evs,size="4",cmap=INFOcmap):
 
 
 def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
+    startTime = time.time()
     # targets={} => each node is a target
     if engine is None:
       ie=gum.LazyPropagation(bn)
@@ -350,25 +353,90 @@ def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
       ie=engine
     ie.setEvidence(evs)
     ie.makeInference()
+    stopTime = time.time()
 
-    from tempfile import TemporaryDirectory
-    with TemporaryDirectory() as temp_dir:
-        dotstr ="digraph structs {\n"
-        dotstr+="  node [fillcolor=floralwhite, style=filled,color=grey];\n"
+    from tempfile import mkdtemp
+    temp_dir=mkdtemp("", "tmp", None) #with TemporaryDirectory() as temp_dir:
 
-        for i in bn.ids():
-            name=bn.variable(i).name()
-            if len(targets)==0 or name in targets:
-              fill=", fillcolor=sandybrown" if name in evs else ""
-              filename=temp_dir+name+"."+format
-              saveFigProba(ie.posterior(i),filename,format=format)
-              dotstr+=' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name,filename,fill)
-            else:
-              fill="[fillcolor=sandybrown]" if name in evs else ""
-              dotstr+=' "{0}" {1}'.format(name,fill)
-        for (i,j) in bn.arcs():
-            dotstr+=' "{0}"->"{1}";'.format(bn.variable(i).name(),bn.variable(j).name())
-        dotstr+='}'
+    dotstr ="digraph structs {\n"
+    dotstr+="  label=\"Inference in {:6.2f}ms\";\n".format(1000*(stopTime-startTime))
+    dotstr+="  node [fillcolor=floralwhite, style=filled,color=grey];\n"
 
-        g=dot.graph_from_dot_data(dotstr)
-        showGraph(g,size=size,format=format)
+    for i in bn.ids():
+        name=bn.variable(i).name()
+        if len(targets)==0 or name in targets:
+          fill=", fillcolor=sandybrown" if name in evs else ""
+          filename=temp_dir+name+"."+format
+          saveFigProba(ie.posterior(i),filename,format=format)
+          dotstr+=' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name,filename,fill)
+        else:
+          fill="[fillcolor=sandybrown]" if name in evs else ""
+          dotstr+=' "{0}" {1}'.format(name,fill)
+    for (i,j) in bn.arcs():
+        dotstr+=' "{0}"->"{1}";'.format(bn.variable(i).name(),bn.variable(j).name())
+    dotstr+='}'
+
+    g=dot.graph_from_dot_data(dotstr)
+    showGraph(g,size=size,format=format)
+
+    shutil.rmtree(temp_dir)
+
+def showPotential(pot,asString=False,digits=4):
+    """
+    Show a potential as a HTML table.
+    The first dimension is special (horizontal) due to the representation of conditional probability table
+
+    @param pot a aGrUM.Potential
+    @param asString allows to postpone the HTML representation
+    @param digits numbre of digits to show
+    """
+    from IPython.core.display import HTML
+
+    html=list()
+    html.append("<table>")
+
+    nparents=pot.nbrDim()-1
+    var=pot.variable(0)
+    #first line
+    if nparents>0:
+        html.append("<tr><th colspan='{}'></th><th colspan='{}' style='background-color:#AAAAAA'><center>{}</center></th></tr>".format(nparents,var.domainSize(),var.name()))
+    else:
+        html.append("<tr style='background-color:#AAAAAA'><th colspan='{}'><center>{}</center></th></tr>".format(var.domainSize(),var.name()))
+    #second line
+    html.append("<tr>")
+    if nparents>0:
+        for parent in pot.var_names[:-1]:
+            html.append("<th style='background-color:#AAAAAA'><center>{}</center></th>".format(parent))
+    for label in var.labels():
+        html.append("<th style='background-color:#BBBBBB'><center>{}</center></th>".format(label))
+
+    inst=gum.Instantiation(pot)
+    off=1
+    offset=dict()
+    for i in range(1,nparents+1):
+        offset[i]=off
+        off*=inst.variable(i).domainSize()
+
+    html.append("<tr>")
+    inst.setFirst()
+    while not inst.end():
+        if inst.val(0)==0:
+            for par in range(nparents,0,-1):
+                label=inst.variable(par).label(inst.val(par))
+                if par==1:
+                    html.append("<th style='background-color:#BBBBBB'>{}</th>".format(label))
+                else:
+                    if inst.val(par-1)==0:
+                        html.append("<th style='background-color:#BBBBBB;' rowspan = '{}'>{}</th>".format(offset[par],label))
+        html.append(("<td style='text-align:right;'>{:."+str(digits)+"f}</td>").format(pot.get(inst)))
+        inst.inc()
+        if not inst.end() and inst.val(0)==0:
+            html.append("</tr><tr>")
+    html.append("</tr>")
+
+    html.append("</table>")
+
+    if asString:
+        return "\n".join(html)
+    else:
+        return HTML("".join(html))

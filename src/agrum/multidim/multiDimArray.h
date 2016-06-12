@@ -99,6 +99,9 @@ namespace gum {
     // =========================================================================
     /// @{
 
+    /**
+     * @brief Copy from a other MultiDimContainer.
+     */
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
 
     /**
@@ -116,15 +119,31 @@ namespace gum {
     reduce( std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
             GUM_SCALAR base ) const;
 
+    /**
+     * @brief Adds a variable.
+     */
     virtual void add( const DiscreteVariable& v );
 
+    /**
+     * @brief Removes a variable.
+     */
     virtual void erase( const DiscreteVariable& v );
 
+    /**
+     * @brief Returns the real size of this MultiDimArray.
+     */
     virtual Size realSize() const;
 
+    /**
+     * @brief Fills the MultiDimArray with the given value.
+     */
     virtual void fill( const GUM_SCALAR& d ) const;
 
+    /**
+     * @brief Returns the MultiDimArray name.
+     */
     virtual const std::string& name() const;
+
     /// @}
     // =========================================================================
     /// @name Accessors / Modifiers

@@ -223,21 +223,50 @@ namespace gum {
   void MultiDimContainer<GUM_SCALAR>::copyFrom(
       const MultiDimContainer<GUM_SCALAR>& src, Instantiation* p_i ) const {
 
-    if ( p_i == nullptr ) {
-      copyFrom( src );
-    }
-
     if ( src.domainSize() != domainSize() ) {
       GUM_ERROR( OperationNotAllowed, "Domain sizes do not fit" );
     }
 
-    Instantiation i_dest( *this );
-    Instantiation i_src( src );
-    for ( i_dest.setFirst(), i_src.setFirst(); !i_dest.end();
-          i_dest.incIn( *p_i ), ++i_src ) {
-      set( i_dest, src[i_src] );
+    if ( p_i == nullptr ) {  // if null, we just follow the same order
+      Instantiation i( src );
+      for ( i.setFirst(); !i.end(); ++i ) {
+        set( i, src[i] );
+      }
+    } else {
+      Instantiation i_dest( *this );
+      Instantiation i_src( src );
+      for ( i_dest.setFirst(), i_src.setFirst(); !i_dest.end();
+            i_dest.incIn( *p_i ), ++i_src ) {
+        set( i_dest, src[i_src] );
+      }
     }
   }
+
+  template <typename GUM_SCALAR>
+  void MultiDimContainer<GUM_SCALAR>::extractFrom(
+      const MultiDimContainer<GUM_SCALAR>& src, const Instantiation& imask ) {
+    this->beginMultipleChanges();
+
+    Size nbr = this->nbrDim();
+
+    for ( Idx i = 0; i < nbr; i++ ) {
+      this->erase( this->variable( 0 ) );
+    }
+
+    for ( Idx i = 0; i < src.nbrDim(); i++ ) {
+      if ( !imask.contains( src.variable( i ) ) )
+        this->add( src.variable( i ) );
+    }
+
+    this->endMultipleChanges();
+
+
+    Instantiation inst( src );
+    inst.setVals( imask );
+    for ( inst.setFirstOut( imask ); !inst.end(); inst.incOut( imask ) )
+      set( inst, src[inst] );
+  }
+
   template <typename GUM_SCALAR>
   void MultiDimContainer<GUM_SCALAR>::copyFrom(
       const MultiDimContainer<GUM_SCALAR>& src ) const {

@@ -26,3 +26,9 @@
  *
  */
 #include <agrum/multidim/FunctionGraphUtilities/link.h>
+
+namespace gum {
+
+  template class Link<Idx>;
+
+} // namespace gum

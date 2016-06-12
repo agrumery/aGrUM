@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -23,7 +22,7 @@
  * @brief Headers of the Link and LinkedList classes.
  *
  * @author Jean-Christophe Magnan
- *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H
@@ -38,62 +37,76 @@ namespace gum {
 
   /**
    * @class Link link.h <agrum/multidim/FunctionGraphUtilities/link.h>
+   * @ingroup multidim_group
    *
    * @brief Link of a chain list allocated using the SmallObjectAllocator
    *
-   * @ingroup multidim_group
+   * @tparam T The type stored by the chain list.
    */
   template <typename T>
   class Link {
 
     public:
-    // #############################################################################################
-    /// Constructors and Destructors
-    // #############################################################################################
+    // ============================================================================
+    /// @name Constructors and Destructors
+    // ============================================================================
     /// @{
 
-    // ============================================================================
-    /// Constructor
-    // ============================================================================
+    /**
+     * @brief Constructor
+     */
     Link( const T& elem );
 
-    // ============================================================================
-    /// Constructor that insert link before the given link
-    // ============================================================================
+    /**
+     * @brief Constructor that insert link before the given link
+     */
     Link( const T& elem, Link<T>* nextLink );
 
-    // ============================================================================
-    /// Destructor
-    // ============================================================================
+    /**
+     * @brief Destructor
+     */
     ~Link();
 
-    // ============================================================================
-    /// Operator new overload to use the SmallObjectAllocator
-    // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( Size(s) );
-    }
+    /**
+     * @brief Operator new overload to use the SmallObjectAllocator
+     */
+    void* operator new( size_t s );
 
-    // ============================================================================
-    /// Operator delete overload to use the SmallObjectAllocator
-    // ============================================================================
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( Link<T> ) );
-    }
+    /**
+     * @brief Operator delete overload to use the SmallObjectAllocator
+     */
+    void operator delete( void* p );
 
     /// @}
-
-    // #############################################################################################
-    /// Misceleanous methods
-    // #############################################################################################
+    // ============================================================================
+    /// @name Getters and setters
+    // ============================================================================
     /// @{
 
-    const T& element() const { return __element; }
-    T& element() { return __element; }
+    /**
+     * @brief Returns the element stored in this link.
+     */
+    const T& element() const;
 
-    const Link<T>* nextLink() const { return __nextLink; }
-    void setNextLink( Link<T>* newLink ) { __nextLink = newLink; }
-    Link<T>* nextLink() { return __nextLink; }
+    /**
+     * @brief Returns the element stored in this link.
+     */
+    T& element();
+
+    /**
+     * @brief Returns next link.
+     */
+    const Link<T>* nextLink() const;
+
+    /**
+     * @brief Returns next link.
+     */
+    Link<T>* nextLink();
+
+    /**
+     * @brief Sets the next link.
+     */
+    void setNextLink( Link<T>* newLink );
 
     /// @}
 
@@ -107,18 +120,19 @@ namespace gum {
 
   /**
    * @class LinkedList link.h <agrum/multidim/FunctionGraphUtilities/link.h>
+   * @ingroup multidim_group
    *
    * @brief Chain list allocated using the SmallObjectAllocator
    *
-   * @ingroup multidim_group
+   * @tparam T The type stored by the chain list.
    */
   template <typename T>
   class LinkedList {
 
     public:
-    // #############################################################################################
-    /// Constructors and Destructors
-    // #############################################################################################
+    // ============================================================================
+    /// @name Constructors and Destructors
+    // ============================================================================
     /// @{
 
     // ============================================================================
@@ -134,31 +148,42 @@ namespace gum {
     // ============================================================================
     /// Operator new overload to use the SmallObjectAllocator
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( Size(s) );
-    }
+    void* operator new( size_t s );
 
     // ============================================================================
     /// Operator delete overload to use the SmallObjectAllocator
     // ============================================================================
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( LinkedList<T> ) );
-    }
+    void operator delete( void* p );
 
     /// @}
-
-    // #############################################################################################
-    /// Misceleanous methods
-    // #############################################################################################
+    // ============================================================================
+    /// @name Misceleanous methods
+    // ============================================================================
     /// @{
 
-    const Link<T>* list() const { return __firstLink; }
-    Link<T>* list() { return __firstLink; }
+    /**
+     * @brief Returns the first link in the chained list.
+     */
+    const Link<T>* list() const;
 
+    /**
+     * @brief Returns the first link in the chained list.
+     */
+    Link<T>* list();
+
+    /**
+     * @brief Clears the list.
+     */
     void clear();
 
+    /**
+     * @brief Adds a link.
+     */
     void addLink( const T& elem );
 
+    /**
+     * @brief Removes a element from the list.
+     */
     void searchAndRemoveLink( const T& elem );
 
     /// @}
@@ -167,6 +192,8 @@ namespace gum {
     /// The first link of our list
     Link<T>* __firstLink;
   };
+
+  extern template class Link<Idx>;
 
 }  // End of namespace gum
 

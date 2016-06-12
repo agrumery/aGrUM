@@ -254,6 +254,8 @@ namespace gum {
           } catch ( OperationNotAllowed& ) {
             agg = new PRMAggregate<GUM_SCALAR>(
                 c_agg->name(), c_agg->agg_type(), c_agg->type() );
+            agg->sharedLabel( c_agg->sharedLabel() );
+            agg->setLabel( c_agg->labelValue() );
           }
 
           __bijection->insert( &( c_agg->type().variable() ),

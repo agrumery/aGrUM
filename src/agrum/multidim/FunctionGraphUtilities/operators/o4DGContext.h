@@ -18,154 +18,124 @@
  *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                *
  ****************************************************************************/
 /**
-* @file
-* @brief Class used to manipulate o4DGContext in Function Graph Operations
-*
-* @author Pierre-Henri WUILLEMIN & Jean-Christophe Magnan
-*/
-// =======================================================
+ * @file
+ * @brief Class used to manipulate o4DGContext in Function Graph Operations
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe Magnan
+ */
+
 #ifndef O4DGCONTEXT_H
 #define O4DGCONTEXT_H
-// =======================================================
+
 #include <cmath>
-// =======================================================
+
 #include <agrum/config.h>
-// =======================================================
 #include <agrum/multidim/multiDimFunctionGraph.h>
-// =======================================================
 
 namespace gum {
 
+  // clang-format off
   /**
-  * @class O4DGContext o4DGContext.h
-  * <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
-  * @brief Class used to manipulate context during Function Graph Operations
-  * @ingroup multidim_group
-  *
-  */
-
+   * @class O4DGContext
+   * @headerfile o4DGContext.h <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
+   * @ingroup multidim_group
+   *
+   * @brief Class used to manipulate context during Function Graph Operations
+   */
+  // clang-format on
   class O4DGContext {
 
     public:
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors, Destructors.
-    // ############################################################################
+    // ============================================================================
     /// @{
-    // ============================================================================
-    /// Default constructor.
-    // ============================================================================
+
+    /**
+     * @brief Default constructor.
+     */
     O4DGContext( Idx*, Idx );
 
-    // ============================================================================
-    /// Default destructor.
-    // ============================================================================
+    /**
+     * @brief Default destructor.
+     */
     ~O4DGContext();
 
-    // ============================================================================
-    /// Operator new overload to use the SmallObjectAllocator
-    // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( Size(s) );
-    }
+    /**
+     * @brief Operator new overload to use the SmallObjectAllocator
+     */
+    void* operator new( size_t s );
 
-    // ============================================================================
-    /// Operator delete overload to use the SmallObjectAllocator
-    // ============================================================================
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( O4DGContext ) );
-    }
+    /**
+     * @brief Operator delete overload to use the SmallObjectAllocator
+     */
+    void operator delete( void* p );
     /// @}
 
-    // ############################################################################
+    // ============================================================================
     /// @name Diagrams current nodes setters & getters.
-    // ############################################################################
+    // ============================================================================
+
     /// @{
-    // ============================================================================
     /// Set DG1 diagram current explored Node
-    // ============================================================================
     void setDG1Node( const NodeId& );
 
-    // ============================================================================
     /// Get DG1 diagram current explored Node
-    // ============================================================================
     const NodeId& DG1Node() const { return __DG1ExploredNode; }
 
-    // ============================================================================
     /// Set DG2 diagram current explored Node
-    // ============================================================================
     void setDG2Node( const NodeId& );
 
-    // ============================================================================
     /// Get DG2 diagram current explored Node
-    // ============================================================================
     const NodeId& DG2Node() const { return __DG2ExploredNode; }
     /// @}
 
-
-    // ############################################################################
+    // ============================================================================
     /// @name Variables modalities handlers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    // ============================================================================
     /// Changes given variable modality
-    // ============================================================================
     void chgVarModality( Idx, Idx );
 
-    // ============================================================================
     /// Changes given variable modality
-    // ============================================================================
     Idx varModality( Idx );
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name O4DG Handling methods
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    // ============================================================================
     /// Returns o4DGContext key
-    // ============================================================================
     const double& key( short int* instNeeded );
 
     /// @}
 
     private:
-    // ============================================================================
     /// DG1 Diagram current explored node
-    // ============================================================================
     NodeId __DG1ExploredNode;
 
-    // ============================================================================
     /// DG2 Diagram current explored node
-    // ============================================================================
     NodeId __DG2ExploredNode;
 
-    // ============================================================================
     /// Vector containing for each retrograde variable its current modality
     /// 0 meaning no instantiation done => there's an offset
-    // ============================================================================
     Idx* __varInstantiation;
     Idx __nbVar;
 
-    // ============================================================================
     /// The key use to store the context as a key in the hashtable
-    // ============================================================================
     double __key;
 
-    // ============================================================================
     /// Table containing the log2 of prime numbers
-    // ============================================================================
     static const double __logPrime[];
     static const Idx __nbLogPrime, __offsetv, __offset1, __offset2;
   };
 }
 
-//========================================================================
 #ifndef GUM_NO_INLINE
 #include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.inl>
 #endif /* GUM_NO_INLINE */
-//========================================================================
 
 #endif  // O4DGCONTEXT_H

@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief median aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+
 #ifndef GUM_AMPLITUDE_AGGREGATOR_H
 #define GUM_AMPLITUDE_AGGREGATOR_H
 
@@ -31,29 +32,30 @@
 namespace gum {
 
   namespace aggregator {
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /* ===                     GUM_AMPLITUDE_AGGREGATOR                     ===
+    // =========================================================================
+    // ===                     GUM_AMPLITUDE_AGGREGATOR                      ===
+    // =========================================================================
+
+    /**
+     * @class Amplitude
+     * @headerfile amplitude.h <agrum/multidim/aggregators/amplitude.h>
+     * @ingroup multidim_agg_group
+     *
+     * @brief amplitude aggregator
+     *
+     * @see MultiDimAggregator for more details of implementations
+     *
+     * Amplitude may be truncated since the amplitude has not the same type as
+     * its parents.
      */
-    /* =========================================================================*/
-    /* =========================================================================*/
-
-    /** @class Amplitude
-    * @brief amplitude aggregator
-    * @ingroup multidim_agg_group
-    *
-    * @see MultiDimAggregator for more details of implementations
-    *
-    * Amplitude may be truncated since the amplitude has not the same type as
-    * its parents.
-    */
-    /* =========================================================================*/
-
     template <typename GUM_SCALAR>
     class Amplitude : public MultiDimAggregator<GUM_SCALAR> {
       public:
+
       Amplitude();
+
       Amplitude( const Amplitude<GUM_SCALAR>& from );
+      
       virtual ~Amplitude();
 
       virtual std::string aggregatorName( void ) const;
@@ -64,8 +66,12 @@ namespace gum {
        * that the generated object has the same type than the object containing
        * the called newFactory()
        * For example :
+       *
+       * @code
        *   MultiDimArray<double> y;
        *   MultiDimContainer<double>* x = y.newFactory();
+       * @endcode
+       *
        * Then x is a MultiDimArray<double>*
        *
        * @warning you must desallocate by yourself the memory
@@ -81,18 +87,14 @@ namespace gum {
       virtual Idx _fold( const DiscreteVariable& v,
                          Idx i1,
                          Idx i2,
-                         bool& stop_iteration ) const {
-        return 0;
-      };
+                         bool& stop_iteration ) const;
 
       private:
       Idx __value;
     };
 
-
     extern template class Amplitude<float>;
     extern template class Amplitude<double>;
-
 
   }  // aggregator
 }  // gum

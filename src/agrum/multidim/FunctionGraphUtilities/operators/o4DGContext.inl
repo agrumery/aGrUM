@@ -17,47 +17,27 @@
  *   Free Software Foundation, Inc.,                                        *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
  ****************************************************************************/
-
-#include <cmath>
+/**
+ * @file
+ * @brief Class used to manipulate o4DGContext in Function Graph Operations
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe Magnan
+ */
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.h>
 
-#ifndef O4DGCONTEXT_INL
-#define O4DGCONTEXT_INL
-
 namespace gum {
-
-
-  /* *********************************************************************************************
-   */
-  /*                                                                                               */
-  /*                          Diagrams current nodes setters & getters. */
-  /*                                                                                               */
-  /* *********************************************************************************************
-   */
-
 
   // Set DG1 diagram current explored Node
   INLINE void O4DGContext::setDG1Node( const NodeId& exploredNode ) {
     __DG1ExploredNode = exploredNode;
   }
 
-
   // Set DG2 diagram current explored Node
-
   INLINE void O4DGContext::setDG2Node( const NodeId& exploredNode ) {
     __DG2ExploredNode = exploredNode;
   }
-
-
-  /* *********************************************************************************************
-   */
-  /*                                                                                               */
-  /*                         Variables modalities handlers */
-  /*                                                                                               */
-  /* *********************************************************************************************
-   */
-
 
   // Changes given variable modality
   INLINE void O4DGContext::chgVarModality( Idx varIndex, Idx newModality ) {
@@ -68,15 +48,6 @@ namespace gum {
   INLINE Idx O4DGContext::varModality( Idx varIndex ) {
     return __varInstantiation[varIndex];
   }
-
-
-  /* *********************************************************************************************
-   */
-  /*                                                                                               */
-  /*                         O4DG Handling methods */
-  /*                                                                                               */
-  /* *********************************************************************************************
-   */
 
   // Returns o4DGContext key
   INLINE const double& O4DGContext::key( short int* instNeeded ) {
@@ -91,6 +62,14 @@ namespace gum {
     return __key;
   }
 
-} /* end of namespace gum */
+  INLINE void* O4DGContext::operator new( size_t s ) {
+    return SmallObjectAllocator::instance().allocate( s );
+  }
 
-#endif /* O4DGCONTEXT_INL */
+  INLINE void O4DGContext::operator delete( void* p ) {
+    SmallObjectAllocator::instance().deallocate( p, sizeof( O4DGContext ) );
+  }
+  /// @}
+
+
+} /* end of namespace gum */

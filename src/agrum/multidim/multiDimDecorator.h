@@ -70,26 +70,20 @@ namespace gum {
      * @brief copy constructor & assignment
      */
     MultiDimDecorator( const MultiDimDecorator<GUM_SCALAR>& from );
-    MultiDimDecorator<GUM_SCALAR>& operator=( const MultiDimDecorator& from );
 
     /**
-     * @brief Copy constructor.
-     *
-     * The newly created Potential share the variables and the values
-     * from src, but no instantiation is associated to it. It allows to force
-     * the chosen implementation and to copy the data from src.
-     *
-     * @param aContent The implementation to use in this Potential.
-     * @param src The MultiDimContainer to copy.
+     * @brief copy operator
      */
-    /*MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent,
-                       const MultiDimContainer<GUM_SCALAR>& src );*/
-
+    MultiDimDecorator<GUM_SCALAR>& operator=( const MultiDimDecorator& from );
 
     /**
      * @brief Class move constructor & assignment
      */
     MultiDimDecorator( MultiDimDecorator<GUM_SCALAR>&& );
+
+    /**
+     * @brief Copy operator.
+     */
     MultiDimDecorator<GUM_SCALAR>& operator=( MultiDimDecorator&& from );
 
     /**
@@ -209,7 +203,7 @@ namespace gum {
      * @throw SizeError Raised if l size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void populate( std::initializer_list<GUM_SCALAR> list ) const final;
+    virtual void populate( std::initializer_list<GUM_SCALAR> l ) const final;
 
     /**
      * @brief Apply a function on every element of the container

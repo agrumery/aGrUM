@@ -39,7 +39,7 @@ namespace gum {
   /* ===                               READERS === */
   /* =========================================================================*/
   /**
-   * @class UAIBNReader UAIBNReader.h <agrum/BN/io/UAI/UAIBNReader.h>
+   * @class UAIReader UAIReader.h <agrum/BN/io/UAI/UAIReader.h>
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *

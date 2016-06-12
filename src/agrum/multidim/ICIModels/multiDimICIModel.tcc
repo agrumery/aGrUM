@@ -17,13 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief A Interface to all Causal Independence models
  *
- * Causal Independence (CI) is a method of defining a discrete distribution that
- *can
- *dramatically
- * reduce the number of prior probabilities necessary to define a distribution.
+ * Causal Independence (CI) is a method of defining a discrete distribution
+ * that can dramatically reduce the number of prior probabilities necessary to
+ * define a distribution.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
@@ -34,7 +34,6 @@
 namespace gum {
 
   // Default constructor
-
   template <typename GUM_SCALAR>
   INLINE
   MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel( GUM_SCALAR external_weight,
@@ -45,8 +44,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimICIModel );
   }
 
-  /// Default constructor
-
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel(
       const MultiDimICIModel<GUM_SCALAR>& from )
@@ -58,7 +56,6 @@ namespace gum {
   }
 
   // Copy constructor using a bijection to swap variables from source.
-
   template <typename GUM_SCALAR>
   INLINE MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel(
       const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
@@ -81,7 +78,6 @@ namespace gum {
   }
 
   // destructor
-
   template <typename GUM_SCALAR>
   INLINE MultiDimICIModel<GUM_SCALAR>::~MultiDimICIModel() {
     GUM_DESTRUCTOR( MultiDimICIModel );
@@ -155,5 +151,5 @@ namespace gum {
     __causal_weights.erase( x );
   }
 
-  // ==================================================
 } /* namespace gum */
+

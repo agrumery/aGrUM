@@ -228,6 +228,18 @@ namespace gum {
           break;
         }
 
+        case PRMAggregate<GUM_SCALAR>::AggregateType::OR: {
+          factory.setVariableCPTImplementation(
+              new aggregator::Or<GUM_SCALAR>() );
+          break;
+        }
+
+        case PRMAggregate<GUM_SCALAR>::AggregateType::AND: {
+          factory.setVariableCPTImplementation(
+              new aggregator::And<GUM_SCALAR>() );
+          break;
+        }
+
         default: {
           GUM_ERROR( OperationNotAllowed, "Aggregator not handled yet" );
           break;

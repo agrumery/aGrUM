@@ -18,30 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
  ****************************************************************************/
 /**
-* @file
-* @brief Class used to compute the operation between two decision diagrams
-*
-* @author Jean-Christophe Magnan
-*/
+ * @file
+ * @brief Class used to compute the operation between two decision diagrams
+ *
+ * @author Jean-Christophe Magnan
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-// =======================================================================================
-#include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
-// =======================================================================================
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
 
 #define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
 #define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 namespace gum {
 
-  /* *****************************************************************************************************************************
-   */
-  /* CONSTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class TerminalNodePolicy>
+  INLINE
   TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::TreeOperator(
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt1,
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt2 )
@@ -54,14 +49,10 @@ namespace gum {
                                  TerminalNodePolicy>::getTreeInstance();
   }
 
-  /* *****************************************************************************************************************************
-   */
-  /* CONSTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class TerminalNodePolicy>
+  INLINE
   TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::TreeOperator(
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt1,
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt2,
@@ -76,33 +67,21 @@ namespace gum {
                                  TerminalNodePolicy>::getTreeInstance();
   }
 
-
-  /* *****************************************************************************************************************************
-   */
-  /* DESTRUCTOR */
-  /* *****************************************************************************************************************************
-   */
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class TerminalNodePolicy>
-  TreeOperator<GUM_SCALAR,
-               COMBINEOPERATOR,
-               TerminalNodePolicy>::~TreeOperator() {
+  INLINE TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::
+      ~TreeOperator() {
 
     GUM_DESTRUCTOR( TreeOperator );
   }
 
-
-  /* ****************************************************************************************************************************/
-  /* Compute */
-  /*                                                                                                                            */
-  /* This function is the main function. To be call every time an operation
-   * between the two given Function Graphs is required      */
-  /* **********************************************************************************************************************     */
+  // This function is the main function. To be call every time an operation
+  // between the two given Function Graphs is required
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class TerminalNodePolicy>
-  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
+  INLINE MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
   TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::compute() {
 
     __rd->manager()->setRootNode( __xPloreDT1( __dt1->root() ) );
@@ -110,13 +89,12 @@ namespace gum {
     return __rd;
   }
 
-
-  /// Main recursion function, called every time we move on a node to determine
-  /// what we have to do
+  // Main recursion function, called every time we move on a node to determine
+  // what we have to do
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class TerminalNodePolicy>
-  NodeId
+  INLINE NodeId
   TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::__xPloreDT1(
       NodeId currentNodeId ) {
 
@@ -140,11 +118,10 @@ namespace gum {
     return __checkRedundancy( currentNode->nodeVar(), sonsMap );
   }
 
-
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class TerminalNodePolicy>
-  NodeId
+  INLINE NodeId
   TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::__xPloreDT2(
       NodeId currentNodeId ) {
 
@@ -175,7 +152,7 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class TerminalNodePolicy>
-  NodeId TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::
+  INLINE NodeId TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::
       __checkRedundancy( const DiscreteVariable* var, NodeId* sonsMap ) {
     bool diff = false;
     for ( Idx moda = 1; moda < var->domainSize() && !diff; ++moda )

@@ -13,16 +13,24 @@ if (FOR_PYTHON2) # we use 3 by default
   if( WIN32)
     find_program(PYTHON_EXECUTABLE NAMES "python.exe")
   else(WIN32)
-	set(PYTHON_EXECUTABLE "/usr/bin/python2")
-	find_package(PythonInterp 2 REQUIRED)
+    if (APPLE)
+      set(PYTHON_EXECUTABLE "/usr/local/bin/python2")
+    else(APPLE)
+      set(PYTHON_EXECUTABLE "/usr/bin/python2")
+    endif(APPLE)
+	  find_package(PythonInterp 2 REQUIRED)
   endif(WIN32)
 else (FOR_PYTHON2)
   # hackish
   if(WIN32)
     find_program(PYTHON_EXECUTABLE NAMES "python.exe")
   else(WIN32)
-    set(PYTHON_EXECUTABLE "/usr/bin/python3")
-	find_package(PythonInterp 3 REQUIRED)
+    if (APPLE)
+      set(PYTHON_EXECUTABLE "/usr/local/bin/python3")
+    else(APPLE)
+      set(PYTHON_EXECUTABLE "/usr/bin/python3")
+    endif(APPLE)
+	  find_package(PythonInterp 3 REQUIRED)
   endif(WIN32)
 endif (FOR_PYTHON2)
 
@@ -189,7 +197,7 @@ add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
 
 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.py")
-file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/utils/*.py")
+file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/_utils/*.py")
 
 #include("${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
@@ -211,4 +219,4 @@ else (WIN32)
 endif (WIN32)
 
 install(FILES ${GUMLIB_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib)
-install(FILES ${GUMLIB_UTILS_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib/utils)
+install(FILES ${GUMLIB_UTILS_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib/_utils)

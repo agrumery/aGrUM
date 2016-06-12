@@ -1,6 +1,3 @@
-
-
-
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
@@ -29,7 +26,7 @@ import PRMexplorerTestSuite
 
 import time
 
-tests=[]
+tests=list()
 tests.append(VariablesTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)
 tests.append(PythonBNListenerTestSuite.ts)

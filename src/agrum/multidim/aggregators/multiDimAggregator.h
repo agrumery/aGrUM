@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Abstract base class for all multi dimensionnal aggregator
+/**
+ * @file
+ * @brief MultiDimAggregator
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- *<{prenom.nom}_at_lip6.fr>
  */
+
 #ifndef GUM_MULTI_DIM_AGGREGATOR_H
 #define GUM_MULTI_DIM_AGGREGATOR_H
 
@@ -30,55 +31,54 @@
 
 namespace gum {
   namespace aggregator {
-    /* ===========================================================================
-     */
-    /* ===========================================================================
-     */
-    /* ===                       GUM_MULTI_DIM_AGGREGATOR === */
-    /* ===========================================================================
-     */
-    /* ===========================================================================
-     */
-    /** @class MultiDimAggregator multiDimAggregator.h
-     *<agrum/multidim/aggregators/multiDimAggregator.h>
-     * @brief Abstract base class for all multi dimensionnal aggregator
+    // =========================================================================
+    // ===                       GUM_MULTI_DIM_AGGREGATOR                    ===
+    // =========================================================================
+
+    // clang-format off
+    /**
+     * @class MultiDimAggregator
+     * @headerfile multiDimAggregator.h <agrum/multidim/aggregators/multiDimAggregator.h>
      * @ingroup multidim_agg_group
+     *
+     * @brief Abstract base class for all multi dimensionnal aggregator.
      *
      * The principle of a deterministic aggregator is that
      * \f$P[i,J_1,\cdots,J_n]=1 \iff
-     *i==f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ and 0 otherwise.
+     * i==f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ and 0 otherwise.
      * f is a virtual function called the folder function (like folder_left or
-     * folder_right in OCaml).
-     * NeutralElement is an Idx
+     * folder_right in OCaml).  NeutralElement is an Idx
      *
      * @warning
-     *  - the way aggregators are implemented assumed that the FIRST variable in
-     *the
-     *    multiDim is the aggregator variable.
+     *  - the way aggregators are implemented assumed that the FIRST variable
+     *  in the multiDim is the aggregator variable.
      *  - the way aggregators are implemented does not check types and domain
-     *size
-     *    (e.g domain(folder function)==domain(aggregator variable)). However,
-     *    \f$f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ is truncated in
-     *order
-     *    to fit in domain(aggregator variable)
+     *  size (e.g domain(folder function)==domain(aggregator variable)).
+     *  However, \f$f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ is
+     *  truncated in order to fit in domain(aggregator variable).
      */
-    /* ===========================================================================
-     */
+    // clang-format on
     template <typename GUM_SCALAR>
     class MultiDimAggregator : public MultiDimReadOnly<GUM_SCALAR> {
       public:
-      // ############################################################################
+      // =======================================================================
       /// @name Constructors / Destructors
-      // ############################################################################
+      // =======================================================================
       /// @{
 
-      /// Default constructor.
-
+      /**
+       * Default constructor.
+       */
       MultiDimAggregator();
+
+      /**
+       * Copy constructor.
+       */
       MultiDimAggregator( const MultiDimAggregator<GUM_SCALAR>& from );
 
-      /// Destructor.
-
+      /**
+       * Class destructor.
+       */
       virtual ~MultiDimAggregator();
 
       /// @}
@@ -88,9 +88,13 @@ namespace gum {
        * (including variable), you must use this method if you want to ensure
        * that the generated object has the same type than the object containing
        * the called newFactory()
+       *
        * For example :
+       * @code
        *   MultiDimArray<double> y;
        *   MultiDimContainer<double>* x = y.newFactory();
+       * @endcode
+       *
        * Then x is a MultiDimArray<double>*
        *
        * @warning you must desallocate by yourself the memory
@@ -98,9 +102,9 @@ namespace gum {
        */
       virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
-      // ############################################################################
+      // =======================================================================
       /// @name Accessors / Modifiers
-      // ############################################################################
+      // =======================================================================
       /// @{
 
       public:
@@ -128,28 +132,29 @@ namespace gum {
         return i->toString();
       };
 
-      /// @return the real number of parameters used for this table. This
-      /// function is
-      /// used for compute @see compressionRatio()
+      /**
+       * @return the real number of parameters used for this table.
+       *
+       * This function is used for compute @see compressionRatio()
+       */
       virtual Size realSize() const { return 0; };
 
-      /// returns the real name of the multiDimArray
-      /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
+      /** 
+       * @brief Returns the real name of the multiDimArray.
+       *
+       * In aGrUM, all the types of multi-dimensional arrays/functionals have a
        * name that describes what they are in reality. For instance, a table
-       * stored
-       * in extension is a "MultiDimArray", one that stores only non zero
-       * elements
-       * is a "MultiDimSparseArray", and so on. These names are unique for each
-       * type
-       * of implementation and is used by the system to determine which is the
-       * best
-       * functions to use, say, when we wish to use operators such as operator+
-       * on
-       * two MultiDimImplementations */
+       * stored in extension is a "MultiDimArray", one that stores only non
+       * zero elements is a "MultiDimSparseArray", and so on. These names are
+       * unique for each type of implementation and is used by the system to
+       * determine which is the best functions to use, say, when we wish to use
+       * operators such as operator+ on two MultiDimImplementations.
+       */
       virtual const std::string& name() const;
 
       /// @}
       protected:
+
       /// by default, _buildValue uses a "fold" scheme and the user has to
       /// implement _neutralElt and _fold
       /// but if necessary (as for @ref Median), _buildValue can be
@@ -175,7 +180,6 @@ namespace gum {
 
     extern template class MultiDimAggregator<float>;
     extern template class MultiDimAggregator<double>;
-
 
     /// For friendly displaying the content of the array.
     template <typename GUM_SCALAR>

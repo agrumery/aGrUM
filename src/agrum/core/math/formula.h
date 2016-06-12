@@ -276,6 +276,10 @@ namespace gum {
     // ========================================================================
     /// @{
 
+    /**
+     * Constructor
+     */
+    /// @{
     Formula( short s );
     Formula( unsigned short us );
     Formula( int i );
@@ -286,6 +290,7 @@ namespace gum {
     Formula( unsigned long long ul );
     Formula( float f );
     Formula( double d );
+    /// @}
 
     /**
      * @brief Class constructor.

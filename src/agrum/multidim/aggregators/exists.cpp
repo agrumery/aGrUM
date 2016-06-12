@@ -17,16 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief exists aggregator
+/**
+ * @file
+ * @brief forall aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
-#include <agrum/multidim/aggregators/exists.h>
 
+#include <agrum/multidim/aggregators/exists.h>
 
 template class gum::aggregator::Exists<float>;
 template class gum::aggregator::Exists<double>;
-
 

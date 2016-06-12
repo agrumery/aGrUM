@@ -132,6 +132,10 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
+
+    /**
+     * @brief Returns the CPT of a variable.
+     */
     const Potential<GUM_SCALAR>& cpt( const std::string& name ) const {
       return cpt( idFromName( name ) );
     };
@@ -240,6 +244,10 @@ namespace gum {
      * @param id The variable's id to remove.
      */
     void erase( NodeId id );
+
+    /**
+     * @brief Removes a variable from the gum::BayesNet.
+     */
     void erase( const std::string& name ) { erase( idFromName( name ) ); };
 
     /**
@@ -265,6 +273,11 @@ namespace gum {
      *                 gum::BayesNet.
      */
     const DiscreteVariable& variable( NodeId id ) const;
+
+    /**
+     * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
+     *        gum::BayesNet.
+     */
     const DiscreteVariable& variable( const std::string& name ) const {
       return variable( idFromName( name ) );
     };
@@ -279,6 +292,10 @@ namespace gum {
      * @throws NotFound Raised if no variable matches id.
      */
     void changeVariableName( NodeId id, const std::string& new_name );
+
+    /**
+     * @brief Changes a variable's name.
+     */
     void changeVariableName( const std::string& name,
                              const std::string& new_name ) {
       changeVariableName( idFromName( name ), new_name );
@@ -329,6 +346,10 @@ namespace gum {
      * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
      */
     void addArc( NodeId tail, NodeId head );
+
+    /**
+     * Add an arc in the BN, and update arc.head's CPT.
+     */
     void addArc( const std::string& tail, const std::string& head ) {
       addArc( idFromName( tail ), idFromName( head ) );
     }
@@ -349,6 +370,10 @@ namespace gum {
      * @param tail as NodeId
      */
     void eraseArc( NodeId tail, NodeId head );
+
+    /**
+     * Removes an arc in the BN, and update head's CTP.
+     */
     void eraseArc( const std::string& tail, const std::string& head ) {
       eraseArc( idFromName( tail ), idFromName( head ) );
     }
@@ -371,8 +396,10 @@ namespace gum {
     void endTopologyTransformation();
     ///@}
 
-    /// reverses an arc while preserving the same joint distribution
-    /** This method uses Shachter's 1986 algorithm for reversing an arc in
+    /** 
+     * @brief Reverses an arc while preserving the same joint distribution.
+     *
+     * This method uses Shachter's 1986 algorithm for reversing an arc in
      * the Bayes net while preserving the same joint distribution. By
      * performing this reversal, we also add new arcs (required to not alter
      * the joint distribution)
@@ -597,7 +624,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::ostream& operator<<( std::ostream& output,
                             const BayesNet<GUM_SCALAR>& map );
-
 
   extern template class BayesNet<float>;
   extern template class BayesNet<double>;

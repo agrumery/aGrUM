@@ -1007,9 +1007,9 @@ namespace gum_tests {
         gum::prm::PRM<double>* prm = reader.prm();
         gum::prm::PRMClass<double>& Computer =
             prm->getClass( "fr.lip6.printers.Computer" );
-        TS_ASSERT_EQUALS( Computer.attributes().size(), (gum::Size)6 );
+        TS_ASSERT_EQUALS( Computer.attributes().size(), (gum::Size)4 );
         TS_ASSERT_EQUALS( Computer.referenceSlots().size(), (gum::Size)2 );
-        TS_ASSERT_EQUALS( Computer.aggregates().size(), (gum::Size)2 );
+        TS_ASSERT_EQUALS( Computer.aggregates().size(), (gum::Size)4 );
         TS_ASSERT_EQUALS( Computer.slotChains().size(), (gum::Size)2 );
         TS_GUM_ASSERT_THROWS_NOTHING( Computer["(boolean)functional_printer"] );
         TS_GUM_ASSERT_THROWS_NOTHING( Computer["functional_printer"] );
@@ -1043,9 +1043,9 @@ namespace gum_tests {
         gum::prm::PRM<double>* prm = reader.prm();
         gum::prm::PRMClass<double>& SafeComputer =
             prm->getClass( "fr.lip6.printers.SafeComputer" );
-        TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)5 );
+        TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
         TS_ASSERT_EQUALS( SafeComputer.referenceSlots().size(), (gum::Size)2 );
-        TS_ASSERT_EQUALS( SafeComputer.aggregates().size(), (gum::Size)2 );
+        TS_ASSERT_EQUALS( SafeComputer.aggregates().size(), (gum::Size)3 );
         TS_ASSERT_EQUALS( SafeComputer.slotChains().size(), (gum::Size)3 );
         TS_GUM_ASSERT_THROWS_NOTHING(
             SafeComputer["(boolean)functional_printer"] );

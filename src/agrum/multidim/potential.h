@@ -125,10 +125,15 @@ namespace gum {
      * Projection using sum as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
-     * @param kept_vars is the set of vars to keep
      */
     Potential<GUM_SCALAR>
     margSumOut( const Set<const DiscreteVariable*>& del_vars ) const;
+
+    /**
+     * Projection using sum as operation (and implementation-optimized
+     * operations)
+     * @param kept_vars is the set of vars to keep
+     */
     Potential<GUM_SCALAR>
     margSumIn( const Set<const DiscreteVariable*>& kept_vars ) const;
 
@@ -136,10 +141,15 @@ namespace gum {
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param del_vars is the set of vars to eliminate
-     * @param kept_vars is the set of vars to keep
      */
     Potential<GUM_SCALAR>
     margProdOut( const Set<const DiscreteVariable*>& del_vars ) const;
+
+    /**
+     * Projection using multiplication as operation (and
+     * implementation-optimized operations)
+     * @param kept_vars is the set of vars to keep
+     */
     Potential<GUM_SCALAR>
     margProdIn( const Set<const DiscreteVariable*>& kept_vars ) const;
 
@@ -147,10 +157,15 @@ namespace gum {
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
-     * @param kept_vars is the set of vars to keep
      */
     Potential<GUM_SCALAR>
     margMinOut( const Set<const DiscreteVariable*>& del_vars ) const;
+
+    /**
+     * Projection using min as operation (and implementation-optimized
+     * operations)
+     * @param kept_vars is the set of vars to keep
+     */
     Potential<GUM_SCALAR>
     margMinIn( const Set<const DiscreteVariable*>& kept_vars ) const;
 
@@ -158,13 +173,17 @@ namespace gum {
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
-     * @param kept_vars is the set of vars to keep
      */
     Potential<GUM_SCALAR>
     margMaxOut( const Set<const DiscreteVariable*>& del_vars ) const;
+
+    /**
+     * Projection using max as operation (and implementation-optimized
+     * operations)
+     * @param kept_vars is the set of vars to keep
+     */
     Potential<GUM_SCALAR>
     margMaxIn( const Set<const DiscreteVariable*>& kept_vars ) const;
-
 
     /// sum of all elements in the Potential
     GUM_SCALAR sum() const;
@@ -176,6 +195,23 @@ namespace gum {
     GUM_SCALAR min() const;
     /// entropy of the Potential
     GUM_SCALAR entropy() const;
+
+    /** create a new Potential with another order
+     * @throw InvalidArgument if not all and only the vars of the potential are
+     * in vars
+     */
+    Potential<GUM_SCALAR>
+    reorganize( const std::vector<const DiscreteVariable*>& vars ) const;
+
+    /** create a new Potential extracted from *this given a partial
+     * instantiation
+     */
+    Potential<GUM_SCALAR> extract( const Instantiation& inst ) const;
+
+    /** create a new Potential with a certain variable in first
+     * @throw InvalidArgument if the var is not in the potential
+     */
+    Potential<GUM_SCALAR> putFirst( const DiscreteVariable* var ) const;
 
     /**
      * @brief Automatically fills the potential with the values in
@@ -197,7 +233,7 @@ namespace gum {
      * MultiDimContainer domain size.
      */
     const Potential<GUM_SCALAR>&
-    fillWith( std::initializer_list<GUM_SCALAR> list ) const;
+    fillWith( std::initializer_list<GUM_SCALAR> l ) const;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the value v
