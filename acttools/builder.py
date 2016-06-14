@@ -88,11 +88,27 @@ def buildCmake(current,target):
 
 def getMake(current,target):
   if current["mvsc"]:
-    if cfg.msbuild is None:
-      warning("MsBuild not found")
-    else:
-      line=cfg.msbuild+' agrum.sln /t:gumTest /p:Configuration="Release" /m:8'
+      return getForMsBuildSystem(current,target)
   else:
+      return getForMakeSystem(current,target)
+
+def getForMsBuildSystem(current,target):
+  if cfg.msbuild is None:
+    critic("MsBuild not found")
+  else:
+      if current["action"]=="test":
+        if target =="aGrUM":
+          line=cfg.msbuild+' agrum.sln /t:gumTest /p:Configuration="Release"'
+        elif target!= "pyAgrum":
+          critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
+      elif current["action"]=="install":
+        line=cfg.msbuild+' agrum.sln /t:INSTALL /p:Configuration="Release"'
+      else:
+        critic("Action '"+current["action"]+"' not treated for now in windows weird world.")
+      line+=' /maxcpucount:'+str(current["jobs"])
+  return line
+
+def getForMakeSystem(current,target):
     line=cfg.make
 
     if current["action"]=="test":
@@ -116,7 +132,7 @@ def getMake(current,target):
     if target=="pyAgrum":
       line+=" -C wrappers/pyAgrum"
 
-  return line
+    return line
 
 def buildMake(current,target):
   line=getMake(current,target)
