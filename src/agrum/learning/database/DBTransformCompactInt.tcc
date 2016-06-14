@@ -49,7 +49,7 @@ namespace gum {
 
           // assign the output row to the intput
           for ( Idx i = 0, size = input_row.size(); i < size; ++i ) {
-            input_row[i].setFloat( output_row[i] );
+            input_row[i].setReal( output_row[i] );
           }
         }
       } catch ( NotFound& ) {

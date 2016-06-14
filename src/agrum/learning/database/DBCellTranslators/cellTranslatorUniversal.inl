@@ -23,6 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
 
 namespace gum {
 
@@ -151,26 +152,26 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorUniversal::translate() {
-      /*auto res=in ( 0 ).type() == DBCell::EltType::FLOAT
-               ? __numbers.second ( in ( 0 ).getFloat() )
+      /*auto res=in ( 0 ).type() == DBCell::EltType::REAL
+               ? __numbers.second ( in ( 0 ).getReal() )
                : __strings.second ( in ( 0 ).getStringIndex() );
-      std::cout<< ( in ( 0 ).type() == DBCell::EltType::FLOAT
+      std::cout<< ( in ( 0 ).type() == DBCell::EltType::REAL
                     ? "FLOAT "
                     : "STRING " )
-               << ( in ( 0 ).type() == DBCell::EltType::FLOAT
-                    ? in ( 0 ).getFloat()
+               << ( in ( 0 ).type() == DBCell::EltType::REAL
+                    ? in ( 0 ).getReal()
                     : in ( 0 ).getStringIndex() ) << "  ** "<<__numbers << "  **
       "<<__strings<<" ==> "<<res<<std::endl;*/
-      out( 0 ) = in( 0 ).type() == DBCell::EltType::FLOAT
-                     ? __numbers.second( in( 0 ).getFloat() )
+      out( 0 ) = in( 0 ).type() == DBCell::EltType::REAL
+                     ? __numbers.second( in( 0 ).getReal() )
                      : __strings.second( in( 0 ).getStringIndex() );
     }
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorUniversal::initialize() {
       if ( __check_database ) {
-        if ( in( 0 ).type() == DBCell::EltType::FLOAT ) {
-          const double nb = in( 0 ).getFloat();
+        if ( in( 0 ).type() == DBCell::EltType::REAL ) {
+          const double nb = in( 0 ).getReal();
 
           if ( !__numbers.existsFirst( nb ) ) {
             __numbers.insert( nb, __max_value );

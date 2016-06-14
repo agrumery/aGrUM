@@ -43,7 +43,7 @@ namespace gum {
     class DBCell {
       public:
       /// the set of types possibly taken by the last element read
-      enum EltType { FLOAT, STRING, MISSING };
+      enum EltType { REAL, STRING, MISSING };
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -102,17 +102,17 @@ namespace gum {
       /// returns the DBcell as a double (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
        * correct type of the element in the DBCell */
-      double getFloat() const noexcept;
+      double getReal() const noexcept;
 
       /// returns the DBcell as a double (safe with type checking)
       /** @throw TypeError if the DBCell does not contain this type */
-      double getFloatSafe() const;
+      double getRealSafe() const;
 
       /// unsafe set (assumes that the preceding type is of the same type)
-      void setFloat( double x );
+      void setReal( double x );
 
       /// sets the content of the DBCell (safe type checking)
-      void setFloatSafe( double elt );
+      void setRealSafe( double elt );
 
       /// returns the DBcell as a string (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
@@ -166,17 +166,16 @@ namespace gum {
       /// @}
 
       private:
-      using Float = typename std::conditional<sizeof( double ) >= sizeof( int ),
-                                              double,
-                                              double>::type;
+      using Real = double;
+      //typename std::conditional<sizeof( double ) >= sizeof( int ),double,double>::type;
 
       /// the real type of the last element read from the database
-      EltType __type{EltType::FLOAT};
+      EltType __type{EltType::REAL};
 
       /// the element read from the database
       union {
-        Float __float{0.0f};
-        int __int;  // stores string indices
+        Idx __index;  // stores string indices
+        Real __value{0.0};
       };
 
       /// a bijection assigning to each string index its corresponding string
@@ -187,7 +186,7 @@ namespace gum {
 
       /// sets the content of the DBCell from a string
       /** @throws std::invalid_argument if the string cannot be converted */
-      void __setFloatFromStringSafe( const std::string& str );
+      void __setRealFromStringSafe( const std::string& str );
     };
 
   } /* namespace learning */

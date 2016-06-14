@@ -44,14 +44,14 @@ namespace gum_tests {
       const gum::learning::DBRow& row = handler.row();
 
       for ( unsigned int i = 0; i < row.size(); ++i ) {
-        TS_ASSERT( row[i].type() == gum::learning::DBCell::EltType::FLOAT );
+        TS_ASSERT( row[i].type() == gum::learning::DBCell::EltType::REAL );
       }
 
       for ( unsigned int i = 0; i < row.size(); ++i ) {
         if ( ( i != 3 ) && ( i != 4 ) ) {
-          TS_ASSERT( row[i].getFloat() == 0 );
+          TS_ASSERT( row[i].getReal() == 0 );
         } else {
-          TS_ASSERT( row[i].getFloat() == 1 );
+          TS_ASSERT( row[i].getReal() == 1 );
         }
       }
 
@@ -82,8 +82,8 @@ namespace gum_tests {
         const gum::learning::DBRow& row = handler.row();
 
         for ( unsigned int i = 0; i < row.size(); ++i ) {
-          TS_ASSERT( row[i].type() == gum::learning::DBCell::EltType::FLOAT );
-          TS_ASSERT( ( row[i].getFloat() == 0 ) || ( row[i].getFloat() == 1 ) );
+          TS_ASSERT( row[i].type() == gum::learning::DBCell::EltType::REAL );
+          TS_ASSERT( ( row[i].getReal() == 0 ) || ( row[i].getReal() == 1 ) );
         }
 
         handler.nextRow();

@@ -184,6 +184,7 @@ namespace gum_tests {
         counter.addEmptyNodeSet();
         gum::Idx id4 = counter.addNodeSet( 0, set7 );
         gum::Idx id5 = counter.addNodeSet( 0, set8 );
+
         MyCounter counter2( counter );
 
         TS_ASSERT(
@@ -207,7 +208,6 @@ namespace gum_tests {
             vecty, counter2.getConditioningCounts( id4 ), {3, 2, 1} ) );
         TS_ASSERT( compare_vect3(
             vecty, counter2.getConditioningCounts( id5 ), {1, 3, 2} ) );
-
 
         MyCounter counter3( counter2 );
 

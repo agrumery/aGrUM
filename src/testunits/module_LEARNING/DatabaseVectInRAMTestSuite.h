@@ -64,11 +64,11 @@ namespace gum_tests {
       gum::learning::DatabaseVectInRAM::Handler handler3( database2 );
       handler2.setRange( 4, 6 );
       handler3.setRange( 5, 6 );
-      TS_ASSERT( handler2.row()[0].getFloat() == 4 );
-      TS_ASSERT( handler3.row()[0].getFloat() == 5 );
+      TS_ASSERT( handler2.row()[0].getReal() == 4 );
+      TS_ASSERT( handler3.row()[0].getReal() == 5 );
       database2.eraseLastDBRow();
-      TS_ASSERT( handler2.row()[0].getFloat() == 4 );
-      TS_ASSERT_THROWS( handler3.rowSafe()[0].getFloat(), gum::OutOfBounds );
+      TS_ASSERT( handler2.row()[0].getReal() == 4 );
+      TS_ASSERT_THROWS( handler3.rowSafe()[0].getReal(), gum::OutOfBounds );
 
       gum::learning::DatabaseVectInRAM database3( std::move( database2 ) );
       database2 = std::move( database );

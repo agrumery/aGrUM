@@ -52,13 +52,12 @@ namespace gum {
         : _modalities( from._modalities )
         , _counts_computed( from._counts_computed )
         , _record_counter( from._record_counter ) {
-        // copy the target nodesets
+      // copy the target nodesets
       _target_nodesets.reserve( from._target_nodesets.size() );
       for ( const auto set : from._target_nodesets ) {
         if ( set != nullptr ) {
           _target_nodesets.push_back(
-              new std::pair<std::vector<Idx, IdSetAlloc>,
-                            Idx>( *set ) );
+              new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( *set ) );
         } else {
           _target_nodesets.push_back( nullptr );
         }
@@ -69,8 +68,7 @@ namespace gum {
       for ( const auto set : from._conditioning_nodesets ) {
         if ( set != nullptr ) {
           _conditioning_nodesets.push_back(
-              new std::pair<std::vector<Idx, IdSetAlloc>,
-                            Idx>( *set ) );
+              new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( *set ) );
         } else {
           _conditioning_nodesets.push_back( nullptr );
         }
@@ -80,12 +78,10 @@ namespace gum {
       // points to the nodesets of from
       std::vector<const std::vector<Idx, IdSetAlloc>*>& nodesets =
           _record_counter.__nodesets;
-      const std::vector<const std::vector<Idx, IdSetAlloc>*>&
-          from_nodesets = from._record_counter.__nodesets;
-       Size size= Size(from._target_nodesets.size());
-      for ( Idx i = 0, j = 0;
-            i < size;
-            ++i ) {
+      const std::vector<const std::vector<Idx, IdSetAlloc>*>& from_nodesets =
+          from._record_counter.__nodesets;
+      Size size = Size( from._target_nodesets.size() );
+      for ( Idx i = 0, j = 0; i < size; ++i ) {
         if ( from._target_nodesets[i] != nullptr ) {
           while ( from_nodesets[j] != &( from._target_nodesets[i]->first ) ) {
             ++j;
@@ -93,11 +89,8 @@ namespace gum {
           nodesets[j] = &( _target_nodesets[i]->first );
         }
       }
-      size =Size(nodesets.size());
-      for ( Idx i = 0,
-                         j = 0;
-            i < size;
-            ++i ) {
+      size = Size( from._conditioning_nodesets.size() );
+      for ( Idx i = 0, j = 0; i < size; ++i ) {
         if ( from._conditioning_nodesets[i] != nullptr ) {
           while ( from_nodesets[j] !=
                   &( from._conditioning_nodesets[i]->first ) ) {
@@ -141,16 +134,14 @@ namespace gum {
       _target_nodesets.push_back( nullptr );
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// add a new single variable to be counted
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx
-    Counter<IdSetAlloc, CountAlloc>::addNodeSet( Idx var ) {
+    INLINE Idx Counter<IdSetAlloc, CountAlloc>::addNodeSet( Idx var ) {
       // create the target nodeset
-      std::pair<std::vector<Idx, IdSetAlloc>,
-                Idx>* new_target =
+      std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_target =
           new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
               std::vector<Idx, IdSetAlloc>{var}, 0 );
 
@@ -163,7 +154,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// add a new target variable plus some conditioning vars
@@ -176,18 +167,17 @@ namespace gum {
       }
 
       // create the target nodeset and assign to it its record counter index
-      std::pair<std::vector<Idx, IdSetAlloc>,
-                Idx>* new_target =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+      std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_target =
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_target->first.push_back( var );
       new_target->second = _record_counter.addNodeSet( new_target->first );
 
       // create the conditioning nodeset and assign to it its record counter
       // index
       std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_cond =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_cond->second = _record_counter.addNodeSet( new_cond->first );
 
       // save it in the score's nodeset
@@ -196,7 +186,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// add a new target variable plus some conditioning vars
@@ -209,10 +199,9 @@ namespace gum {
       }
 
       // create the target nodeset and assign to it its record counter index
-      std::pair<std::vector<Idx, IdSetAlloc>,
-                Idx>* new_target =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+      std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_target =
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_target->first.push_back( var );
       new_target->second = _record_counter.addNodeSet( new_target->first );
 
@@ -229,17 +218,15 @@ namespace gum {
 
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// add a new pair of target unconditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx
-    Counter<IdSetAlloc, CountAlloc>::addNodeSet( Idx var1,
-                                                 Idx var2 ) {
+    INLINE Idx Counter<IdSetAlloc, CountAlloc>::addNodeSet( Idx var1,
+                                                            Idx var2 ) {
       // create the target nodeset
-      std::pair<std::vector<Idx, IdSetAlloc>,
-                Idx>* new_target =
+      std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_target =
           new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
               std::vector<Idx, IdSetAlloc>{var2, var1}, 0 );
 
@@ -259,7 +246,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// add a new pair of target unconditioned variables to be counted
@@ -272,19 +259,16 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Idx Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-        Idx var1,
-        Idx var2,
-        const std::vector<Idx>& conditioning_ids ) {
+        Idx var1, Idx var2, const std::vector<Idx>& conditioning_ids ) {
       // if the conditioning set is empty, perform the unconditional addNodeSet
       if ( !conditioning_ids.size() ) {
         return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1, var2 );
       }
 
       // create the target nodeset and assign to it its record counter index
-      std::pair<std::vector<Idx, IdSetAlloc>,
-                Idx>* new_target =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+      std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_target =
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_target->first.push_back( var2 );
       new_target->first.push_back( var1 );
       new_target->second = _record_counter.addNodeSet( new_target->first );
@@ -292,8 +276,8 @@ namespace gum {
       // create the conditioning nodeset and assign to it its record counter
       // index
       std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_cond =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_cond->first.push_back( var2 );
       new_cond->second = _record_counter.addNodeSet( new_cond->first );
 
@@ -303,25 +287,22 @@ namespace gum {
 
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Idx Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-        Idx var1,
-        Idx var2,
-        std::vector<Idx>&& conditioning_ids ) {
+        Idx var1, Idx var2, std::vector<Idx>&& conditioning_ids ) {
       // if the conditioning set is empty, perform the unconditional addNodeSet
       if ( !conditioning_ids.size() ) {
         return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1, var2 );
       }
 
       // create the target nodeset and assign to it its record counter index
-      std::pair<std::vector<Idx, IdSetAlloc>,
-                Idx>* new_target =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+      std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_target =
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_target->first.push_back( var2 );
       new_target->first.push_back( var1 );
       new_target->second = _record_counter.addNodeSet( new_target->first );
@@ -340,7 +321,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// add a new pair of target conditioned variables to be counted
@@ -355,10 +336,9 @@ namespace gum {
       }
 
       // create the target nodeset and assign to it its record counter index
-      std::pair<std::vector<Idx, IdSetAlloc>,
-                Idx>* new_target =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+      std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_target =
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_target->first.push_back( vars.second );
       new_target->first.push_back( vars.first );
       new_target->second = _record_counter.addNodeSet( new_target->first );
@@ -366,8 +346,8 @@ namespace gum {
       // create the conditioning nodeset and assign to it its record counter
       // index
       std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_cond =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_cond->first.push_back( vars.second );
       new_cond->second = _record_counter.addNodeSet( new_cond->first );
 
@@ -377,14 +357,13 @@ namespace gum {
 
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Idx Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::pair<Idx, Idx>& vars,
-        std::vector<Idx>&& conditioning_ids ) {
+        const std::pair<Idx, Idx>& vars, std::vector<Idx>&& conditioning_ids ) {
       // if the conditioning set is empty, perform the unconditional addNodeSet
       if ( !conditioning_ids.size() ) {
         return Counter<IdSetAlloc, CountAlloc>::addNodeSet( vars.first,
@@ -392,10 +371,9 @@ namespace gum {
       }
 
       // create the target nodeset and assign to it its record counter index
-      std::pair<std::vector<Idx, IdSetAlloc>,
-                Idx>* new_target =
-          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>(
-              conditioning_ids, 0 );
+      std::pair<std::vector<Idx, IdSetAlloc>, Idx>* new_target =
+          new std::pair<std::vector<Idx, IdSetAlloc>, Idx>( conditioning_ids,
+                                                            0 );
       new_target->first.push_back( vars.second );
       new_target->first.push_back( vars.first );
       new_target->second = _record_counter.addNodeSet( new_target->first );
@@ -414,7 +392,7 @@ namespace gum {
 
       _counts_computed = false;
 
-      return Idx(_target_nodesets.size() - 1);
+      return Idx( _target_nodesets.size() - 1 );
     }
 
     /// clears all the data structures from memory
@@ -453,8 +431,7 @@ namespace gum {
     /// returns the counting vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<double, CountAlloc>&
-    Counter<IdSetAlloc, CountAlloc>::_getConditioningCounts(
-        Idx index ) {
+    Counter<IdSetAlloc, CountAlloc>::_getConditioningCounts( Idx index ) {
       if ( !_counts_computed ) _count();
       return _record_counter.getCounts( _conditioning_nodesets[index]->second );
     }
@@ -462,16 +439,15 @@ namespace gum {
     /// returns the set of target + conditioning nodes
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<Idx, IdSetAlloc>&
-    Counter<IdSetAlloc, CountAlloc>::_getAllNodes( Idx index ) const
-        noexcept {
+    Counter<IdSetAlloc, CountAlloc>::_getAllNodes( Idx index ) const noexcept {
       return _target_nodesets[index]->first;
     }
 
     /// returns the set of conditioning nodes
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<Idx, IdSetAlloc>*
-    Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes(
-        Idx index ) const noexcept {
+    Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes( Idx index ) const
+        noexcept {
       if ( _conditioning_nodesets[index] != nullptr ) {
         return &( _conditioning_nodesets[index]->first );
       } else {
@@ -488,8 +464,8 @@ namespace gum {
 
     /// sets the maximum number of threads used to perform countings
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads(
-        Size nb ) noexcept {
+    INLINE void
+    Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads( Size nb ) noexcept {
       _record_counter.setMaxNbThreads( nb );
     }
 
@@ -503,16 +479,14 @@ namespace gum {
 
     /// returns all the sets of target + cond nodes, and their counting indices
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<
-        std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+    INLINE const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
     Counter<IdSetAlloc, CountAlloc>::_getAllNodes() const noexcept {
       return _target_nodesets;
     }
 
     /// returns all the sets of conditioning nodes
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<
-        std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+    INLINE const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
     Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes() const noexcept {
       return _conditioning_nodesets;
     }
@@ -520,9 +494,8 @@ namespace gum {
 
     /// sets the range of records taken into account by the counter
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void
-    Counter<IdSetAlloc, CountAlloc>::setRange( Size min_range,
-                                               Size max_range ) {
+    INLINE void Counter<IdSetAlloc, CountAlloc>::setRange( Size min_range,
+                                                           Size max_range ) {
       return _record_counter.setRange( min_range, max_range );
     }
 

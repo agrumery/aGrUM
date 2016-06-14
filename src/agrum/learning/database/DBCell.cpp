@@ -65,10 +65,10 @@ namespace gum {
     void DBCell::setAgainTypeSafe( const std::string& elt ) {
       // try first to set the DBCell with the current type
       switch ( __type ) {
-        case EltType::FLOAT:
+        case EltType::REAL:
           // try to convert the string into a double
           try {
-            __setFloatFromStringSafe( elt );
+            __setRealFromStringSafe( elt );
             return;
           } catch ( std::invalid_argument& ) {
           }

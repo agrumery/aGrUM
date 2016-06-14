@@ -23,6 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorNumber.h>
 
 namespace gum {
 
@@ -106,12 +107,12 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorNumber::translate() {
-      out( 0 ) = __values.second( in( 0 ).getFloat() );
+      out( 0 ) = __values.second( in( 0 ).getReal() );
     }
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorNumber::initialize() {
-      const double nb = in( 0 ).getFloat();
+      const double nb = in( 0 ).getReal();
       if ( !__values.existsFirst( nb ) ) {
         __values.insert( nb, __max_value );
         ++__max_value;

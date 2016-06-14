@@ -24,6 +24,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 
 namespace gum {
 
@@ -82,13 +83,13 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorCompactIntId::translate() {
-      out( 0 ) = (Idx)in( 0 ).getFloat();
+      out( 0 ) = (Idx)in( 0 ).getReal();
     }
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorCompactIntId::initialize() {
       if ( __check_database ) {
-        const int nb = (int) in( 0 ).getFloat();
+        const int nb = (int) in( 0 ).getReal();
         if ( nb < 0 ) {
           GUM_ERROR( WrongType,
                      "the CellTranslatorCompactIntId has read "

@@ -187,9 +187,9 @@ namespace gum {
                   case DBCell::EltType::MISSING:
                     break;
 
-                  case DBCell::EltType::FLOAT: {
+                  case DBCell::EltType::REAL: {
                     std::stringstream str;
-                    str << row[i].getFloat();
+                    str << row[i].getReal();
 
                     if ( !iter.val().exists( str.str() ) ) {
                       std::stringstream str2;
