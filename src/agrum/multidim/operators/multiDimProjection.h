@@ -18,47 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A generic class to project efficiently a MultiDim table over a subset
- * of its variables
- *
- * MultiDimProjection is a generic wrapper designed to project efficiently a
- * multidimensional object over a subset of its variables.
- *
- * By multidimensional objects, we mean of course MultiDimImplementations,
- * but also more complex objects such as, for instance,
- * pairs of MultiDimImplementations the first one of which being a utility function
- * and
- * the second one being a table of instantiations (useful, e.g., for computing
- * MPE's) but this can also be a pair (Utility,Potential) for the inference in
- * an Influence Diagram.
- *
- * To be quite generic, the MultiDimProjection takes in argument the function
- * that produces the result of the projection of the multidimensional object.
- * The following code gives an example of the usage of MultiDimProjection:
- * @code
- * // a function used to project a Potential<float>:
- * Potential<float>* MinPot ( const Potential<float>& table,
- *                            const Set<const DiscreteVariable*>& del_vars ) {
- *   return new Potential<float> (...);
- * }
- *
- * // another function used to project a Potential<float>:
- * Potential<float>* MaxPot ( const Potential<float>& table,
- *                            const Set<const DiscreteVariable*>& del_vars ) {
- *   return new Potential<float> (...);
- * }
- *
- *
- * Potential<float> t1, t2;
- * Set<const DiscreteVariable*> set1, set2;
- * MultiDimProjectionDefault<float,Potential> Proj ( MinPot );
- * Potential<float>* projected_table = Proj.project ( t1, set1 );
- *
- * // change the operator to apply
- * Proj.setProjectFunction ( MaxPot );
- * Potential<float>* projected_table2 = Proj.project ( t2, set2 );
- *
- * @endcode
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -72,77 +31,156 @@
 
 namespace gum {
 
+  // clang-format off
+  /**
+   * @class MultiDimProjection
+   * @headerfile multiDimProjection.h <agrum/multidim/operators/multiDimProjection.h>
+   * @ingroup multidim_op_group
+   *
+   * @brief A generic class to project efficiently a MultiDim table over a subset
+   * of its variables
+   *
+   * MultiDimProjection is a generic wrapper designed to project efficiently a
+   * multidimensional object over a subset of its variables.
+   *
+   * By multidimensional objects, we mean of course MultiDimImplementations,
+   * but also more complex objects such as, for instance, pairs of
+   * MultiDimImplementations the first one of which being a utility function
+   * and the second one being a table of instantiations (useful, e.g., for
+   * computing MPE's) but this can also be a pair (Utility,Potential) for the
+   * inference in an Influence Diagram.
+   *
+   * To be quite generic, the MultiDimProjection takes in argument the function
+   * that produces the result of the projection of the multidimensional object.
+   * The following code gives an example of the usage of MultiDimProjection:
+   *
+   * @code
+   * // a function used to project a Potential<float>:
+   * Potential<float>* MinPot ( const Potential<float>& table,
+   *                            const Set<const DiscreteVariable*>& del_vars ) {
+   *   return new Potential<float> (...);
+   * }
+   *
+   * // another function used to project a Potential<float>:
+   * Potential<float>* MaxPot ( const Potential<float>& table,
+   *                            const Set<const DiscreteVariable*>& del_vars ) {
+   *   return new Potential<float> (...);
+   * }
+   *
+   *
+   * Potential<float> t1, t2;
+   * Set<const DiscreteVariable*> set1, set2;
+   * MultiDimProjectionDefault<float,Potential> Proj ( MinPot );
+   * Potential<float>* projected_table = Proj.project ( t1, set1 );
+   *
+   * // change the operator to apply
+   * Proj.setProjectFunction ( MaxPot );
+   * Potential<float>* projected_table2 = Proj.project ( t2, set2 );
+   *
+   * @endcode
+   */
+  // clang-format on
   template <typename GUM_SCALAR, template <typename> class TABLE>
   class
   MultiDimProjection {
     public:
-    // ############################################################################
+    // ========================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ========================================================================
     /// @{
 
-    /// default constructor
+    /// Default constructor
     MultiDimProjection( TABLE<GUM_SCALAR>* ( *proj )(
         const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) );
 
-    /// copy constructor
+    /// Copy constructor
     MultiDimProjection( const MultiDimProjection<GUM_SCALAR, TABLE>& );
 
-    /// destructor
+    /// Destructor
     virtual ~MultiDimProjection();
 
-    /// virtual constructor
-    /** @return a new fresh MultiDimCombinator with the same projection
-     * function. */
+    /** 
+     * @brief virtual constructor
+     *
+     * @return a new fresh MultiDimCombinator with the same projection
+     * function.
+     */
     virtual MultiDimProjection<GUM_SCALAR, TABLE>* newFactory() const;
 
     /// @}
-
-    // ############################################################################
+    // ========================================================================
     /// @name Accessors/Modifiers
-    // ############################################################################
+    // ========================================================================
     /// @{
 
-    /// creates and returns the projection of the table over a subset of its
-    /// vars
-    /** @return a new freshly created TABLE which is the result of the
-     * projection
-     * of the TABLE passed in argument over the set of variables NOT IN del_vars
+    /** 
+     * @brief Creates and returns the projection of the table over a subset of
+     * its vars.
+     *
+     * @return A new freshly created TABLE which is the result of the
+     * projection of the TABLE passed in argument over the set of variables NOT
+     * IN del_vars
+     *
      * @warning If del_vars is precisely equal to the variables of table, the
-     * result is an empty table. */
+     * result is an empty table.
+     */
     TABLE<GUM_SCALAR>* project( const TABLE<GUM_SCALAR>& table,
                                 const Set<const DiscreteVariable*>& del_vars );
+
     void project( TABLE<GUM_SCALAR>& container,
                   const TABLE<GUM_SCALAR>& table,
                   const Set<const TABLE<GUM_SCALAR>*>& del_vars );
 
-    /// changes the function used for projecting TABLES
+    /// Changes the function used for projecting TABLES
     void setProjectFunction( TABLE<GUM_SCALAR>* ( *proj )(
         const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) );
 
-    /// returns the projection function currently used by the projector
+    /// Returns the projection function currently used by the projector
     TABLE<GUM_SCALAR>* ( *projectFunction() )(
         const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& );
 
-    /** @brief returns a rough estimate of the number of operations that will be
-     * performed to compute the projection */
+    /**
+     * @brief returns a rough estimate of the number of operations that will be
+     * performed to compute the projection.
+     */
     float nbOperations( const TABLE<GUM_SCALAR>& table,
                         const Set<const DiscreteVariable*>& del_vars ) const;
+
+    /**
+     * @brief returns a rough estimate of the number of operations that will be
+     * performed to compute the projection.
+     */
     float nbOperations( const Sequence<const DiscreteVariable*>& vars,
                         const Set<const DiscreteVariable*>& del_vars ) const;
 
-    /// returns the memory consumption used during the projection
-    /** Actually, this function does not return a precise account of the memory
-     * used by the multidimProjection but a rough estimate based on the size
-     * of the table involved in the projection.
-     * @return a pair of memory consumption: the first one is the maximum
+    /** 
+     * @brief Returns the memory consumption used during the projection.
+     *
+     * Actually, this function does not return a precise account of the memory
+     * used by the multidimProjection but a rough estimate based on the size of
+     * the table involved in the projection.
+     *
+     * @return A pair of memory consumption: the first one is the maximum
      * amount of memory used during the combination and the second one is the
      * amount of memory still used at the end of the function ( the memory used
-     * by
-     * the resulting table ) */
+     * by the resulting table )
+     */
     std::pair<long, long>
     memoryUsage( const TABLE<GUM_SCALAR>& table,
                  const Set<const DiscreteVariable*>& del_vars ) const;
+
+    /** 
+     * @brief Returns the memory consumption used during the projection.
+     *
+     * Actually, this function does not return a precise account of the memory
+     * used by the multidimProjection but a rough estimate based on the size of
+     * the table involved in the projection.
+     *
+     * @return A pair of memory consumption: the first one is the maximum
+     * amount of memory used during the combination and the second one is the
+     * amount of memory still used at the end of the function ( the memory used
+     * by the resulting table )
+     */
     std::pair<long, long>
     memoryUsage( const Sequence<const DiscreteVariable*>& vars,
                  const Set<const DiscreteVariable*>& del_vars ) const;
@@ -150,12 +188,12 @@ namespace gum {
     /// @}
 
     protected:
-    /// the projection function actually used
+    /// The projection function actually used
     TABLE<GUM_SCALAR>* ( *_proj )( const TABLE<GUM_SCALAR>&,
                                    const Set<const DiscreteVariable*>& );
 
     private:
-    /// forbid copy operators
+    /// Forbid copy operators
     MultiDimProjection<GUM_SCALAR, TABLE>&
     operator=( const MultiDimProjection<GUM_SCALAR, TABLE>& );
   };

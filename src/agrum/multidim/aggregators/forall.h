@@ -38,7 +38,7 @@ namespace gum {
 
     /**
      * @class Forall
-     * @headerfil forall.h <agrum/multidim/aggregators/forall.h>
+     * @headerfile forall.h <agrum/multidim/aggregators/forall.h>
      * @ingroup multidim_agg_group
      *
      * @brief forall aggregator

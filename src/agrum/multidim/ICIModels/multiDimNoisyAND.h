@@ -92,7 +92,7 @@ namespace gum {
      * @code
      *   MultiDimArray<double> y;
      *   MultiDimContainer<double>* x = y.newFactory();
-     * @encode
+     * @endcode
      *
      * Then x is a MultiDimArray<double>*.
      *

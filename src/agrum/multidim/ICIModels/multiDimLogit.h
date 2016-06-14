@@ -32,7 +32,7 @@ namespace gum {
 
   /**
    * @class MultiDimLogit
-   * @headerfile mutlDimLogit.h <agrum/multidim/ICIModels/multiDimICIModel.h>
+   * @headerfile multiDimLogit.h <agrum/multidim/ICIModels/multiDimLogit.h>
    * @ingroup multidim_group
    *
    * @brief Logit representation

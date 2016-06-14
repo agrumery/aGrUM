@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief A generic class to combine efficiently several MultiDim tables
+/**
+ * @file
+ * @brief A generic class to combine efficiently several MultiDim tables.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -29,25 +30,25 @@
 
 namespace gum {
 
-  /// constructor
+  // Constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombination<GUM_SCALAR, TABLE>::MultiDimCombination() {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_CONSTRUCTOR( MultiDimCombination );
   }
 
-  /// copy constructor
+  // Copy constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombination<GUM_SCALAR, TABLE>::MultiDimCombination(
       const MultiDimCombination<GUM_SCALAR, TABLE>& from ) {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_CONS_CPY( MultiDimCombination );
   }
 
-  /// destructor
+  // Destructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombination<GUM_SCALAR, TABLE>::~MultiDimCombination() {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_DESTRUCTOR( MultiDimCombination );
   }
 

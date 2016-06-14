@@ -17,10 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief A container for registering binary functions on
- *multiDimImplementations
- *
+ * multiDimImplementations
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -33,7 +33,7 @@
 
 namespace gum {
 
-  /// adds a new entry into the register
+  // adds a new entry into the register
   template <typename GUM_SCALAR>
   void OperatorRegister4MultiDim<GUM_SCALAR>::insert(
       const std::string& operation_name,
@@ -62,7 +62,7 @@ namespace gum {
     theset->insert( thepair, newFunction );
   }
 
-  /// removes a given entry from the register
+  // removes a given entry from the register
   template <typename GUM_SCALAR>
   void OperatorRegister4MultiDim<GUM_SCALAR>::erase(
       const std::string& operation_name,
@@ -75,7 +75,7 @@ namespace gum {
     theset->erase( std::pair<std::string, std::string>( type1, type2 ) );
   }
 
-  /// indicates whether a given entry exists in the register
+  // indicates whether a given entry exists in the register
   template <typename GUM_SCALAR>
   INLINE bool OperatorRegister4MultiDim<GUM_SCALAR>::exists(
       const std::string& operation_name,
@@ -98,8 +98,8 @@ namespace gum {
     return ( *theset )[std::pair<std::string, std::string>( type1, type2 )];
   }
 
-  /// a named constructor that constructs one and only one Register per data
-  /// type
+  // a named constructor that constructs one and only one Register per data
+  // type
   template <typename GUM_SCALAR>
   OperatorRegister4MultiDim<GUM_SCALAR>&
   OperatorRegister4MultiDim<GUM_SCALAR>::Register() {
@@ -125,11 +125,11 @@ namespace gum {
     return container;
   }
 
-  /// Default constructor: creates an empty register
+  // Default constructor: creates an empty register
   template <typename GUM_SCALAR>
   OperatorRegister4MultiDim<GUM_SCALAR>::OperatorRegister4MultiDim() {}
 
-  /// destructor
+  // destructor
   template <typename GUM_SCALAR>
   OperatorRegister4MultiDim<GUM_SCALAR>::~OperatorRegister4MultiDim() {
     // remove all the sets
@@ -140,7 +140,7 @@ namespace gum {
       delete iter.val();
   }
 
-  /// a function to more easily register new operators in MultiDims
+  // a function to more easily register new operators in MultiDims
   template <typename GUM_SCALAR>
   void registerOperator(
       const std::string& operation_name,

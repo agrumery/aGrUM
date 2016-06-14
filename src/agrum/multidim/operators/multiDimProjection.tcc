@@ -17,10 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief A generic interface to project efficiently a MultiDim table over a
- *subset
- * of its variables
+ * subset of its variables
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -32,40 +32,40 @@
 
 namespace gum {
 
-  /// constructor
+  // constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimProjection<GUM_SCALAR, TABLE>::MultiDimProjection(
       TABLE<GUM_SCALAR>* ( *proj )( const TABLE<GUM_SCALAR>&,
                                     const Set<const DiscreteVariable*>& ) )
       : _proj( proj ) {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_CONSTRUCTOR( MultiDimProjection );
   }
 
-  /// copy constructor
+  // copy constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimProjection<GUM_SCALAR, TABLE>::MultiDimProjection(
       const MultiDimProjection<GUM_SCALAR, TABLE>& from )
       : _proj( from._proj ) {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_CONS_CPY( MultiDimProjection );
   }
 
-  /// destructor
+  // destructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimProjection<GUM_SCALAR, TABLE>::~MultiDimProjection() {
-    /// for debugging purposes
+    // for debugging purposes
     GUM_DESTRUCTOR( MultiDimProjection );
   }
 
-  /// virtual constructor
+  // virtual constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimProjection<GUM_SCALAR, TABLE>*
   MultiDimProjection<GUM_SCALAR, TABLE>::newFactory() const {
     return new MultiDimProjection<GUM_SCALAR, TABLE>( *this );
   }
 
-  /// creates and returns the projection of the table over a subset of its vars
+  // creates and returns the projection of the table over a subset of its vars
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE TABLE<GUM_SCALAR>* MultiDimProjection<GUM_SCALAR, TABLE>::project(
       const TABLE<GUM_SCALAR>& table,
@@ -73,7 +73,7 @@ namespace gum {
     return _proj( table, del_vars );
   }
 
-  /// creates and returns the projection of the table over a subset of its vars
+  // creates and returns the projection of the table over a subset of its vars
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void MultiDimProjection<GUM_SCALAR, TABLE>::project(
       TABLE<GUM_SCALAR>& container,
@@ -84,7 +84,7 @@ namespace gum {
     delete res;
   }
 
-  /// changes the function used for projecting TABLES
+  // changes the function used for projecting TABLES
   template <typename GUM_SCALAR, template <typename> class TABLE>
   void MultiDimProjection<GUM_SCALAR, TABLE>::setProjectFunction(
       TABLE<GUM_SCALAR>* ( *proj )( const TABLE<GUM_SCALAR>&,
@@ -92,7 +92,7 @@ namespace gum {
     _proj = proj;
   }
 
-  /// returns the projection function currently used by the projector
+  // returns the projection function currently used by the projector
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE TABLE<GUM_SCALAR>* (
       *MultiDimProjection<GUM_SCALAR, TABLE>::projectFunction() )(
@@ -127,7 +127,7 @@ namespace gum {
     return res;
   }
 
-  /// returns the memory consumption used during the projection
+  // returns the memory consumption used during the projection
   template <typename GUM_SCALAR, template <typename> class TABLE>
   std::pair<long, long> MultiDimProjection<GUM_SCALAR, TABLE>::memoryUsage(
       const Sequence<const DiscreteVariable*>& vars,
@@ -151,7 +151,7 @@ namespace gum {
     return std::pair<long, long>( res, res );
   }
 
-  /// returns the memory consumption used during the projection
+  // returns the memory consumption used during the projection
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE std::pair<long, long>
   MultiDimProjection<GUM_SCALAR, TABLE>::memoryUsage(
