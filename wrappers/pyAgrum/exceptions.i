@@ -122,6 +122,14 @@
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__UnknownLabelInDatabase ), err );
     SWIG_fail;
+  } catch ( gum::UndefinedElement& e ) {
+    gum::UndefinedElement* ecopy = new gum::UndefinedElement ( e );
+    PyObject* err = SWIG_NewPointerObj ( ecopy,
+    SWIGTYPE_p_gum__UndefinedElement,
+    1 );
+    PyErr_SetObject (
+      SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__UndefinedElement ), err );
+    SWIG_fail;
   } catch ( gum::InvalidArgument& e ) {
     gum::InvalidArgument* ecopy = new gum::InvalidArgument ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,

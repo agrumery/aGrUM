@@ -932,6 +932,7 @@ class GumException(Exception):
         __init__(gum::Exception self, std::string const aMsg, std::string const aType) -> GumException
         __init__(gum::Exception self, std::string const aMsg) -> GumException
         __init__(gum::Exception self) -> GumException
+        __init__(gum::Exception self, GumException e) -> GumException
         """
         this = _pyAgrum.new_GumException(*args)
         try:

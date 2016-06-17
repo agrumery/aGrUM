@@ -100,7 +100,7 @@ namespace gum {
                                           Idx i2,
                                           bool& stop_iteration ) const {
       return 0;
-    };
+    }
 
   }  // aggregator
 }  // namespace gum

@@ -97,6 +97,8 @@ namespace gum {
     Exception( const std::string aMsg = "",
                const std::string aType = "Generic error" );
 
+    Exception( const Exception& e);
+
     ~Exception() {}
 
     /// @}

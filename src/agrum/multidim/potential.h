@@ -267,21 +267,33 @@ namespace gum {
 
     /// the function to be used to add two Potentials
     Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p2 ) const {
+      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
+      if ( this->nbrDim() == 0 ) return Potential<GUM_SCALAR>( p2 );
+
       return Potential<GUM_SCALAR>( *this->content() + *p2.content() );
     }
 
     /// the function to be used to subtract two Potentials
     Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p2 ) const {
+      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
+      if ( this->nbrDim() == 0 ) GUM_ERROR(FatalError,"Undefined substraction");
+
       return Potential<GUM_SCALAR>( *this->content() - *p2.content() );
     }
 
     /// the function to be used to multiply two Potentials
     Potential<GUM_SCALAR> operator*( const Potential<GUM_SCALAR>& p2 ) const {
+      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
+      if ( this->nbrDim() == 0 ) return Potential<GUM_SCALAR>( p2 );
+
       return Potential<GUM_SCALAR>( *this->content() * *p2.content() );
     }
 
     /// the function to be used to divide two Potentials
     Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p2 ) const {
+      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
+      if ( this->nbrDim() == 0 ) GUM_ERROR(FatalError,"Undefined division");
+
       return Potential<GUM_SCALAR>( *this->content() / *p2.content() );
     }
 
@@ -308,6 +320,7 @@ namespace gum {
 
     protected:
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+
 
     Set<const DiscreteVariable*>
     _complementVars( const Set<const DiscreteVariable*>& del_vars ) const;
