@@ -137,7 +137,7 @@ namespace gum {
     virtual const IBayesNet<GUM_SCALAR>& bn () const noexcept final;
 
     /// prepare the internal inference structures for the next inference
-    virtual void prepareInference() final;
+    virtual void prepareInference () final;
 
     /// perform the heavy computations needed to compute the targets' posteriors
     /** In a Junction tree propagation scheme, for instance, the heavy
@@ -145,7 +145,7 @@ namespace gum {
      * what makeInference should compute. Later, the computations of the
      * posteriors can be done "lightly" by multiplying and projecting those
      * messages. */
-    virtual void makeInference() final;
+    virtual void makeInference () final;
 
     /// Clear all previously defined targets (single targets and sets of targets)
     /**
@@ -153,13 +153,13 @@ namespace gum {
      * considered as a potential target.
      * This is the default value for the targets manager.
      */
-    virtual void clearTargets() final;
+    virtual void clearTargets () final;
 
     /// Add a single target to the list of targets
     /**
      * @throw UndefinedElement if target is not a NodeId in the Bayes net
      */
-    virtual void addTarget( NodeId target ) final;
+    virtual void addTarget ( NodeId target ) final;
 
     /// Add a set of nodes as a new target
     /**
@@ -177,10 +177,10 @@ namespace gum {
     /**
      * If the NodeSet is empty, then every node is a potential target.
      */
-    virtual const NodeSet& targets() const final;
+    virtual const NodeSet& targets() const noexcept final;
 
     /// returns the list of target sets
-    virtual const Set<NodeSet>& targetSets() const final;
+    virtual const Set<NodeSet>& setTargets() const noexcept final;
     
     /// adds a new hard evidence on node id
     /**
@@ -188,13 +188,16 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id already has an evidence
      */
-    virtual void addEvidence( NodeId id, Idx val ) final;
+    virtual void addEvidence( NodeId id,
+                              Idx val ) final;
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
      * @throw UndefinedElement if id does not belong to the Bayesian network
      * @throw InvalidArgument if id already has an evidence
      * @throw FatalError if vals=[0,0,...,0]
+     * @throw InvalidArgument if the size of vals is different from the domain
+     *        size of node id
      */
     virtual void addEvidence( const NodeId id,
                               const std::vector<GUM_SCALAR>& vals ) final;
@@ -209,42 +212,82 @@ namespace gum {
      */
     virtual void addEvidence( const Potential<GUM_SCALAR>& pot ) final;
 
-    /// change the value of a hard evidence
-    virtual void chgEvidence( const NodeId id, const Idx val ) final;
+    /// adds a new evidence on node id (might be soft or hard)
+    /**
+     * @throw UndefinedElement if the potential is defined over several nodes
+     * @throw UndefinedElement if the node on which the potential is defined
+     * does not belong to the Bayesian network
+     * @throw InvalidArgument if the node of the potential already has an evidence
+     * @throw FatalError if pot=[0,0,...,0]
+     */
+    virtual void addEvidence( Potential<GUM_SCALAR>&& pot ) final;
 
-
-
-    
-    
-    //@{
+    /// change the value of an already existing hard evidence
     /**
      * @throw UndefinedElement if id does not belong to the Bayesian network
      * @throw InvalidArgument if val is not a value for id
-     * @throw InvalidArgument if id already has an evidence
+     * @throw InvalidArgument if id does not already have an evidence
+     */
+    virtual void chgEvidence( NodeId id,
+                              Idx val ) final;
+
+    /// change the value of an already existing evidence (might be soft or hard)
+    /**
+     * @throw UndefinedElement if id does not belong to the Bayesian network
+     * @throw InvalidArgument if id does not already have an evidence
+     * @throw FatalError if vals=[0,0,...,0]
+     * @throw InvalidArgument if the size of vals is different from the domain
+     *        size of node id
+     */
+    virtual void chgEvidence( NodeId id,
+                              const std::vector<GUM_SCALAR>& vals ) final;
+    
+    /// change the value of an already existing evidence (might be soft or hard)
+    /**
+     * @throw UndefinedElement if the potential is defined over several nodes
+     * @throw UndefinedElement if the node on which the potential is defined
+     *        does not belong to the Bayesian network
+     * @throw InvalidArgument if the node of the potential does not already
+     *        have an evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    
-
-    virtual void chgEvidence( const NodeId id,
-                              const std::vector<GUM_SCALAR>& vals ) final;
     virtual void chgEvidence( const Potential<GUM_SCALAR>& pot ) final;
 
-    virtual bool hasEvidence() const final;
-    virtual bool hasEvidence( const NodeId id ) const final;
-    virtual bool hasHardEvidence( const NodeId id ) const final;
-    virtual bool hasSoftEvidence( const NodeId id ) const final;
+    /// indicates whether some node(s) have received evidence
+    virtual bool hasEvidence () const final;
 
+    /// indicates whether node id has received an evidence
+    virtual bool hasEvidence( NodeId id ) const final;
+
+    /// indicates whether node id has received a hard evidence
+    virtual bool hasHardEvidence( NodeId id ) const final;
+
+    /// indicates whether node id has received a soft evidence
+    virtual bool hasSoftEvidence( NodeId id ) const final;
+
+    /// returns the number of evidence entered into the Bayesian network
     virtual Size nbrEvidence() const final;
+
+    /// returns the number of hard evidence entered into the Bayesian network
     virtual Size nbrHardEvidence() const final;
+
+    /// returns the number of soft evidence entered into the Bayesian network
     virtual Size nbrSoftEvidence() const final;
 
+    /// removes all the evidence entered into the network
     virtual void clearEvidence() final;
-    virtual void clearEvidence( const NodeId id ) final;
-    //@}
+
+    /// removed the evidence, if any, corresponding to node id
+    virtual void clearEvidence( NodeId id ) final;
+    
+    /// @}
 
 
     
   protected:
+    /// the Bayes net on which we perform inferences
+    const IBayesNet<GUM_SCALAR>& _bn;
+
     /**
      * _prepareInference is called when the bn, the targets and soft/hard
      * evidence are known. Note that the values of evidence are not necessarily
@@ -252,7 +295,7 @@ namespace gum {
      */
     virtual void _prepareInference() = 0;
 
-    /** fired when an evidence is changed.
+    /** fired when the status (hard/soft) of an evidence is changed.
      *
      * @param nodeId the node of the changed evidence
      * @param hasChangedSoftHard true if the evidence has changed from Soft to
@@ -264,6 +307,7 @@ namespace gum {
      */
     virtual bool _onEvidenceChanged( const NodeId id,
                                      bool hasChangedSoftHard ) = 0;
+
     /**
      * _makeInference() is called when the inference has to be performed
      * effectively. Once the inference is done, _fillPosterior can be called.
@@ -272,9 +316,8 @@ namespace gum {
 
     /**
      *
-     * This method is called when a BayesNetInference user ask for the posterior
-     * of
-     * a given target.
+     * This method is called when a BayesNetInference user asks for the posterior
+     * of a given target.
      *
      * The reference "posterior" is a reference over a const Potential that
      * contains the variable of node id (only values can then be changed)
@@ -286,17 +329,20 @@ namespace gum {
     virtual void _fillPosterior( NodeId id,
                                  Potential<GUM_SCALAR>& posterior ) = 0;
 
-    const IBayesNet<GUM_SCALAR>& _bn;
+    /// const access to evidence
+    const NodeProperty<const Potential<GUM_SCALAR>*>& _evidence() const;
 
-    // /const access to evidence
-    const NodeProperty<const Potential<GUM_SCALAR>*>* _evidence() const;
+    /// const access to hard evidence
+    const NodeProperty<Idx>& _hardEvidence() const;
 
-    // /const access to hard evidence
-    const NodeProperty<Idx>* _hardEvidence() const;
 
+
+    
   private:
-    void __createHardEvidence( const NodeId id, const Idx val,
-                               Potential<GUM_SCALAR>& pot ) const;
+    /// create the internal structure for a hard evidence
+    Potential<GUM_SCALAR> __createHardEvidence( NodeId id,
+                                                Idx val ) const;
+    
     bool __isHardEvidence( const Potential<GUM_SCALAR>& pot, Idx& val ) const;
 
 
@@ -313,7 +359,10 @@ namespace gum {
     Set<NodeSet> __settargets;
 
     NodeProperty<const Potential<GUM_SCALAR>*> __evidence;
-    NodeSet __nodesWithhardEvidence;
+
+    /// assign to each node with a hard evidence the index of its observed value
+    NodeProperty<Idx> __hardEvidence;
+
   };
 
 
