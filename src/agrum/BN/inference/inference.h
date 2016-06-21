@@ -1,0 +1,326 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief This file contains abstract class definitions for Bayesian networks
+ *        inference classes.
+ *
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ */
+
+#ifndef GUM_INFERENCE_H
+#define GUM_INFERENCE_H
+
+
+#include <agrum/config.h>
+#include <agrum/BN/IBayesNet.h>
+
+
+namespace gum {
+
+  
+  /**
+   * @class Inference inference.h
+   * <agrum/BN/inference/Inference.h>
+   * @brief Implementation of a generic class for Bayes net inference.
+   * @ingroup bn_group
+   *
+   * The goal of the Inference class is twofold: i) handling the common resources
+   * of BN inference (bn, soft/hard evidence and targets); and
+   * ii) propose a general scheme for all inference methods.
+   *
+   * A specialized inference just has to specify how to prepare inference, how
+   * to make inference and how to get the posteriors for nodes in
+   * pure virtual protected methods. and the scheme for every inference
+   * derived from Inference will be the same:
+   *
+   * 1- ie=SpecificInference(bn); // state <- Unprepared
+   * 2- set targets and evidence in ie
+   * 3- ie.prepareInference();    // state <- Ready
+   * 4- change values Of evidence in ie
+   * 5- ie.makeInference();       // state <- Done
+   * 6- get posteriors
+   * 7- goto 2 or 4
+   *
+   */
+
+  template <typename GUM_SCALAR> class Inference {
+  public:
+    /**
+     * current state of the inference
+     * Unprepared [addEvidence] --(prepareInference)--> Ready
+     * [changeEvidence]--(makeInference)--> Done
+     */
+    enum class StateOfInference { Unprepared, Ready, Done };
+
+
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+    /// default constructor
+    Inference( const IBayesNet<GUM_SCALAR>& bn );
+
+    /// destructor
+    virtual ~Inference();
+
+    /// @}
+
+    
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+
+    /// Compute the posterior of a node.
+    /**
+     * @returns a const ref to the internal representation of the posterior
+     * probability of the node.
+     * @param node the node for which we need a posterior probability
+     *
+     * @warning for efficiency, the potential is not copied. In order to ensure
+     * that the potential may still exist even if the Inference object is
+     * destroyed, the copy has to be explicit.
+     *
+     * @warning prepareInference and makeInference may be applied if needed.
+     *
+     * @throw UndefinedElement if node is not in the set of targets
+     */
+    virtual const Potential<GUM_SCALAR>& posterior( NodeId node ) final;
+
+    /// Compute the posterior of a set of nodes.
+    /**
+     * @returns a const ref to the internal representation of the posterior
+     * probability of the set of nodes.
+     * @param nodes the set of nodes whose posterior probability is wanted
+     *
+     * @warning for efficiency, the potential is not copied. In order to ensure
+     * that the potential may still exist even if the Inference object is
+     * destroyed, the copy has to be explicit.
+     *
+     * @warning prepareInference and makeInference may be applied if needed.
+     *
+     * @throw UndefinedElement if nodes is not in the targets
+     */
+    virtual const Potential<GUM_SCALAR>& posterior ( const NodeSet& nodes ) final;
+
+    /// returns whether the inference object is in a ready state
+    virtual bool isReady () const noexcept final;
+
+    /// returns whether the inference object is in a done state
+    /** The inference object is in a done state when the posteriors can be
+     * retrieved without performing a new inference, i.e., all the heavy
+     * computations have already been performed. Typically, in a junction tree
+     * algorithm, this corresponds to all the messages sent in the JT being
+     * already computed. */
+    virtual bool isDone () const noexcept final;
+
+    /// Returns a constant reference over the IBayesNet referenced by this class
+    virtual const IBayesNet<GUM_SCALAR>& bn () const noexcept final;
+
+    /// prepare the internal inference structures for the next inference
+    virtual void prepareInference() final;
+
+    /// perform the heavy computations needed to compute the targets' posteriors
+    /** In a Junction tree propagation scheme, for instance, the heavy
+     * computations are those of the messages sent in the JT. This is precisely
+     * what makeInference should compute. Later, the computations of the
+     * posteriors can be done "lightly" by multiplying and projecting those
+     * messages. */
+    virtual void makeInference() final;
+
+    /// Clear all previously defined targets (single targets and sets of targets)
+    /**
+     * Clear all previously defined targets. As a result, every node is
+     * considered as a potential target.
+     * This is the default value for the targets manager.
+     */
+    virtual void clearTargets() final;
+
+    /// Add a single target to the list of targets
+    /**
+     * @throw UndefinedElement if target is not a NodeId in the Bayes net
+     */
+    virtual void addTarget( NodeId target ) final;
+
+    /// Add a set of nodes as a new target
+    /**
+     * @throw UndefinedElement if some node(s) do not belong to the Bayes net
+     */
+    virtual void addSetTarget ( const NodeSet& target ) final;
+    
+    /// return true if variable is a target
+    virtual bool isTarget( NodeId variable ) const final;
+
+    /// return true if target is a nodeset target.
+    virtual bool isSetTarget ( const NodeSet& target ) const final;
+
+    /// returns the list of single targets
+    /**
+     * If the NodeSet is empty, then every node is a potential target.
+     */
+    virtual const NodeSet& targets() const final;
+
+    /// returns the list of target sets
+    virtual const Set<NodeSet>& targetSets() const final;
+    
+    /// adds a new hard evidence on node id
+    /**
+     * @throw UndefinedElement if id does not belong to the Bayesian network
+     * @throw InvalidArgument if val is not a value for id
+     * @throw InvalidArgument if id already has an evidence
+     */
+    virtual void addEvidence( NodeId id, Idx val ) final;
+
+    /// adds a new evidence on node id (might be soft or hard)
+    /**
+     * @throw UndefinedElement if id does not belong to the Bayesian network
+     * @throw InvalidArgument if id already has an evidence
+     * @throw FatalError if vals=[0,0,...,0]
+     */
+    virtual void addEvidence( const NodeId id,
+                              const std::vector<GUM_SCALAR>& vals ) final;
+
+    /// adds a new evidence on node id (might be soft or hard)
+    /**
+     * @throw UndefinedElement if the potential is defined over several nodes
+     * @throw UndefinedElement if the node on which the potential is defined
+     * does not belong to the Bayesian network
+     * @throw InvalidArgument if the node of the potential already has an evidence
+     * @throw FatalError if pot=[0,0,...,0]
+     */
+    virtual void addEvidence( const Potential<GUM_SCALAR>& pot ) final;
+
+    /// change the value of a hard evidence
+    virtual void chgEvidence( const NodeId id, const Idx val ) final;
+
+
+
+    
+    
+    //@{
+    /**
+     * @throw UndefinedElement if id does not belong to the Bayesian network
+     * @throw InvalidArgument if val is not a value for id
+     * @throw InvalidArgument if id already has an evidence
+     * @throw FatalError if pot=[0,0,...,0]
+     */
+    
+
+    virtual void chgEvidence( const NodeId id,
+                              const std::vector<GUM_SCALAR>& vals ) final;
+    virtual void chgEvidence( const Potential<GUM_SCALAR>& pot ) final;
+
+    virtual bool hasEvidence() const final;
+    virtual bool hasEvidence( const NodeId id ) const final;
+    virtual bool hasHardEvidence( const NodeId id ) const final;
+    virtual bool hasSoftEvidence( const NodeId id ) const final;
+
+    virtual Size nbrEvidence() const final;
+    virtual Size nbrHardEvidence() const final;
+    virtual Size nbrSoftEvidence() const final;
+
+    virtual void clearEvidence() final;
+    virtual void clearEvidence( const NodeId id ) final;
+    //@}
+
+
+    
+  protected:
+    /**
+     * _prepareInference is called when the bn, the targets and soft/hard
+     * evidence are known. Note that the values of evidence are not necessarily
+     * known and can be changed between _prepare and _makeInference.
+     */
+    virtual void _prepareInference() = 0;
+
+    /** fired when an evidence is changed.
+     *
+     * @param nodeId the node of the changed evidence
+     * @param hasChangedSoftHard true if the evidence has changed from Soft to
+     * Hard or from Hard to Soft
+     *
+     * @return true if the change forces the inference to go back to Unprepared
+     * (otherwise the state becomes Ready)
+     *
+     */
+    virtual bool _onEvidenceChanged( const NodeId id,
+                                     bool hasChangedSoftHard ) = 0;
+    /**
+     * _makeInference() is called when the inference has to be performed
+     * effectively. Once the inference is done, _fillPosterior can be called.
+     */
+    virtual void _makeInference() = 0;
+
+    /**
+     *
+     * This method is called when a BayesNetInference user ask for the posterior
+     * of
+     * a given target.
+     *
+     * The reference "posterior" is a reference over a const Potential that
+     * contains the variable of node id (only values can then be changed)
+     *
+     * @param id The variable's id.
+     * @param posterior The completely empty potential to fill.
+     * @throw UndefinedElement Raised if no variable matches id in the target.
+     */
+    virtual void _fillPosterior( NodeId id,
+                                 Potential<GUM_SCALAR>& posterior ) = 0;
+
+    const IBayesNet<GUM_SCALAR>& _bn;
+
+    // /const access to evidence
+    const NodeProperty<const Potential<GUM_SCALAR>*>* _evidence() const;
+
+    // /const access to hard evidence
+    const NodeProperty<Idx>* _hardEvidence() const;
+
+  private:
+    void __createHardEvidence( const NodeId id, const Idx val,
+                               Potential<GUM_SCALAR>& pot ) const;
+    bool __isHardEvidence( const Potential<GUM_SCALAR>& pot, Idx& val ) const;
+
+
+    /// remove all the posteriors computed (single and set targets)
+    void __invalidatePosteriors() noexcept;
+
+    StateOfInference __state;
+
+    NodeProperty<const Potential<GUM_SCALAR>*> __target_posteriors;
+    HashTable<NodeSet, const Potential<GUM_SCALAR>*> __settarget_posteriors;
+
+    NodeSet __targets;
+
+    Set<NodeSet> __settargets;
+
+    NodeProperty<const Potential<GUM_SCALAR>*> __evidence;
+    NodeSet __nodesWithhardEvidence;
+  };
+
+
+}  // namespace gum
+
+
+#include <agrum/BN/inference/inference.tcc>
+
+
+#endif  // GUM_INFERENCE_H

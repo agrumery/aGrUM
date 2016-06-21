@@ -27,7 +27,7 @@
 #include <cmath>
 
 #include <agrum/BN/inference/BayesNetInference.h>
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
 
 namespace gum {
   /**
@@ -168,15 +168,21 @@ namespace gum {
      */
     virtual void _fillPosterior( Id id, Potential<GUM_SCALAR>& posterior );
 
-    private:
+
+
+  private:
     typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
     typedef SetIteratorSafe<const Potential<GUM_SCALAR>*>
         __PotentialSetIterator;
 
     /// the triangulation class creating the junction tree used for inference
-    DefaultTriangulation __triangulation;
+    PartialOrderedTriangulation __triangulation;
+
+    /// a possible partial order for triangulations provided by the user
+    std::vector<NodeId> __elim_order;
+
     /// the junction tree associated to the bayes net
-    JunctionTree* __JT;
+    JunctionTree* __JT { nullptr };
 
     /// for each node of the bayes net, associate an ID in the JT
     HashTable<NodeId, NodeId> __node_to_clique;
@@ -190,7 +196,7 @@ namespace gum {
     /// the list of hard evidence potentials per random variable
     NodeProperty<const Potential<GUM_SCALAR>*> __bn_node2hard_potential;
 
-    /// the list of all potentials stored in the separators
+    /// the list of all potentials stored in the separators after inferences
     ArcProperty<__PotentialSet> __sep_potentials;
 
     /// a list of all the evidence stored into the graph
@@ -209,21 +215,18 @@ namespace gum {
     ArcProperty<__PotentialSet> __barren_potentials;
 
     /// indicates whether we shall recompute barren nodes
-    bool __need_recompute_barren_potentials{true};
+    bool __need_recompute_barren_potentials { true };
 
     /// the list of all potentials created during a propagation phase
-    __PotentialSet __created_potentials;
+    __PotentialSet __temporary_potentials;
 
-    /// an indicator of whether the collect phase passed through a given clique
-    NodeProperty<bool> __collected_cliques;
+    /// indicates whether a message (from one clique to another) has been computed
+    /** Here, all the messages, computed or not, are put into the property, only
+     * the Boolean makes the difference between messages computed and those that
+     * were not computed */
+    ArcProperty<bool> __messages_computed;
 
-    /// an indicator of whether the diffusion phase passed through a given
-    /// clique
-    NodeProperty<bool> __diffused_cliques;
-
-    /// the id of the last clique from which we performed a collect
-    NodeId __last_collect_clique;
-
+    /// a clique node used as a root in each connected component of __JT
     NodeSet __roots;
 
     /** @brief update a set of potentials: the remaining are those to be

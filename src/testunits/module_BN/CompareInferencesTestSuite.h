@@ -103,13 +103,19 @@ namespace gum_tests {
         test_waiting();
         inf_ShaShe.makeInference();
 
+        std::cout << "toto1" << std::endl;
+
         gum::LazyPropagation<double> inf_LazyProp( *bn );
         test_waiting();
         inf_LazyProp.makeInference();
 
+        std::cout << "toto2" << std::endl;
+
         gum::VariableElimination<double> inf_ValElim( *bn );
         test_waiting();
         inf_ValElim.makeInference();
+
+        std::cout << "toto3" << std::endl;
 
         gum::GibbsInference<double> inf_gibbs( *bn );
         inf_gibbs.setVerbosity( false );
@@ -118,6 +124,8 @@ namespace gum_tests {
         test_waiting();
         TS_GUM_ASSERT_THROWS_NOTHING( inf_gibbs.makeInference() );
 
+        std::cout << "toto4" << std::endl;
+        
         for ( const auto i : bn->nodes() ) {
           const gum::Potential<double>& marginal_gibbs =
               inf_gibbs.posterior( i );
@@ -130,6 +138,8 @@ namespace gum_tests {
 
           gum::Instantiation I;
           I << bn->variable( i );
+
+          std::cout << "titi" << std::endl;
 
           for ( I.setFirst(); !I.end(); ++I ) {
             TS_ASSERT_DELTA( marginal_gibbs[I],
