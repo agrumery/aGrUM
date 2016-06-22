@@ -361,7 +361,10 @@ namespace gum {
     NodeProperty<const Potential<GUM_SCALAR>*> __evidence;
 
     /// assign to each node with a hard evidence the index of its observed value
-    NodeProperty<Idx> __hardEvidence;
+    NodeProperty<Idx> __hard_evidence;
+
+    /// the set of nodes that received soft evidence
+    NodeSet __soft_evidence_nodes;
 
   };
 

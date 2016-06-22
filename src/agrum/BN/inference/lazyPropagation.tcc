@@ -57,33 +57,25 @@ namespace gum {
   }
 
 
+
+
+  
   // default constructor
   template <typename GUM_SCALAR>
   INLINE LazyPropagation<GUM_SCALAR>::LazyPropagation
-  ( const IBayesNet<GUM_SCALAR>& BN ) :
-    BayesNetInference<GUM_SCALAR>( BN ) {
-    // for debugging purposessetRequiredInference
-    GUM_CONSTRUCTOR( LazyPropagation );
-
-    // set the findRelevantPotentials function
-    __findRelevantPotentials =
-      &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
-  }
-
-
-  // constructor with a given elimination sequence
-  template <typename GUM_SCALAR>
-  INLINE LazyPropagation<GUM_SCALAR>::LazyPropagation
   ( const IBayesNet<GUM_SCALAR>& BN,
-    const std::vector<NodeId>& elim_order )
-    : BayesNetInference<GUM_SCALAR>( BN ),
-    __elim_order ( elim_order ) {
+    FindRelevantPotentialsType relevant_type,
+    FindBarrenNodesType barren_type ) :
+    BayesNetInference<GUM_SCALAR>( BN ) {
+    // sets the relevant potential and the barren nodes finding algorithm
+    setFindRelevantPotentialsType ( relevant_type );
+    setBarrenNodesType ( barren_type );
+
+    // create a default triangulation (the user can change it afterwards)
+    __triangulation = new DefaultTriangulation;
+
     // for debugging purposessetRequiredInference
     GUM_CONSTRUCTOR( LazyPropagation );
-
-    // set the findRelevantPotentials function
-    __findRelevantPotentials =
-      &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
   }
 
 
@@ -101,54 +93,257 @@ namespace gum {
     delete __JT;
   }
 
-
-  // check whether a new junction tree is needed for a given inference
+  
+  /// set a new triangulation algorithm
   template <typename GUM_SCALAR>
-  bool
-  LazyPropagation<GUM_SCALAR>::__isNewJTNeeded ( const NodeSet& nodes ) const {
+  void LazyPropagation<GUM_SCALAR>::setTriangulation
+  ( const Triangulation& new_triangulation ) {
+    delete __triangulation;
+    __triangulation = new_triangulation.newFactory ();
+  }
+  
+
+
+  /// sets how we determine the relevant potentials to combine
+  template <typename GUM_SCALAR>
+  void LazyPropagation<GUM_SCALAR>::setFindRelevantPotentialsType
+  ( FindRelevantPotentialsType type ) {
+    switch ( type ) {
+    case FIND_RELEVANT_D_SEPARATION2:
+      __findRelevantPotentials =
+        &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
+      break;
+
+    case FIND_RELEVANT_D_SEPARATION:
+      __findRelevantPotentials =
+        &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
+      break;
+
+    case FIND_RELEVANT_D_SEPARATION3:
+      __findRelevantPotentials =
+        &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
+      break;
+
+    case FIND_RELEVANT_ALL:
+      __findRelevantPotentials =
+        &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll;
+      break;
+
+    default:
+      GUM_ERROR( InvalidArgument,
+                 "setFindRelevantPotentialsType for type " << type
+                 << " is not implemented yet" );
+    }
+  }
+
+  
+  // check whether a new junction tree is needed for the next inference
+  template <typename GUM_SCALAR>
+  bool LazyPropagation<GUM_SCALAR>::__isNewJTNeeded () const {
     // if we do not have a JT, we need to create one
     if ( __JT == nullptr ) return true;
-    
-    // we check whether a clique contains all the nodes. If so, there is no
-    // need to create a new junction tree
-    for ( const auto node : nodes ) {
-      // get the clique created when eliminating "node" and check whether it
-      // contains all of "nodes"
-      const NodeSet& clique = __JT->clique[__node_to_clique[node]];
-      bool clique_found = true;
-      for ( const auto cnode : nodes ) {
-        if ( ! clique.contains ( cnode ) ) {
-          clique_found = false;
+
+    // if the list of hard evidence changed, then we need to create a new JT
+    const NodeProperty<Idx>& hard_ev_nodes = _hardEvidence();
+    if ( hard_ev_nodes.size () != __hard_evidence_nodes.size () ) return true;
+    for ( const auto node : hard_ev_nodes ) {
+      if ( ! __hard_evidence_nodes.contains ( node ) ) return true;
+    }
+
+    // if some soft evidence nodes or some targets do not belong to the junction
+    // tree (which is possible if we constructed it after pruning irrelevant nodes
+    // from the BN), then we need to create a new JT
+    for ( const auto& pair : _evidence () ) {
+      if ( ! __node_to_clique.exists ( pair.first ) ) return true;
+    }
+    for ( const auto node : targets () ) {
+      if ( ! __node_to_clique.exists ( node ) ) return true;
+    }
+    for ( const auto& nodes : setTargets() ) {
+      // here, we need to check that at least one clique contains all the nodes.
+      bool containing_clique_found = false;
+      for ( const auto node : nodes ) {
+        bool found = true;
+        const NodeSet& clique = __JT->clique ( __node_to_clique[node] );
+        for ( const auto xnode : nodes ) {
+          if ( ! clique.contains ( xnode ) ) {
+            found = false;
+            break;
+          }
+        }
+        if ( found ) {
+          containing_clique_found = true;
           break;
         }
       }
-      if ( clique_found ) return false;
+ 
+      if ( ! containing_clique_found ) return true;
     }
-
-    // here, none of the cliques contains "nodes"
-    return true;
+    
+    // here, the current JT is what we need for the next inference
+    return false;
   }
 
 
-  // create a new junction tree to compute a probability related to a set of nodes
+  /// create a new junction tree as well as its related data structures
   template <typename GUM_SCALAR>
-  void
-  LazyPropagation<GUM_SCALAR>::__createJT ( const NodeSet& nodes ) const {
-    // if there already exists a JT, discard it
-    if ( JT != nullptr ) {
-      delete __JT;
-      __node_to_clique.clear ();
-      __clique_potentials.clear ();
-      
+  void LazyPropagation<GUM_SCALAR>::__createNewJT () {
+    const auto& bn = this->bn ();
+    UndiGraph moral_graph = bn.moralGraph ();
+
+    // first, if we wish to exploit barren nodes, we shall remove them from the BN
+    // to do so: we identify all the nodes that are not targets and have received
+    // no evidence and such that their descendants are neither targets nor
+    // evidence nodes. Such nodes can be safely discarded from the BN without
+    // altering the inference output
+    if ( ( __barren_nodes_type != FindBarrenNodesType::FIND_NO_BARREN_NODES ) &&
+         ! targets ().empty () ) {
+      // identify the barren nodes
+      BarrenNodesFinder finder( bn.dag() );
+      NodeSet evidence_nodes;
+      for ( const auto& pair : _evidence () ) {
+        evidence_nodes.insert ( pair.first );
+      }  
+      finder.setEvidence ( evidence_nodes );
+
+      NodeSet target_nodes = targets ();
+      for ( const auto& nodeset : setTargets () ) {
+        for ( auto node : nodeset ) {
+          target_nodes.insert ( node );
+        }
+      }
+      finder.setTargets ( target_nodes );
+      NodeSet barren_nodes = finder.barrenNodes ();
+
+      // remove the barren nodes from the moral graph
+      for ( auto node : barren_nodes ) {
+        moral_graph.eraseNode ( node );
+      }
+    }
+
+    // if there exists some set targets, we shall add new edges into the moral
+    // graph in order to ensure that there exists a clique containing each set
+    for ( const auto& nodeset : setTargets () ) {
+      for ( auto iter1 = nodeset.cbegin (); iter1 != nodeset.cend (); ++iter1 ) {
+        auto iter2 = iter1;
+        for ( ++iter2; iter2 != nodeset.cend (); ++iter2 ) {
+          moral_graph.addEge ( *iter1, *iter2 );
+        }
+      }
+    }
+
+    // now we can compute the domain size of the variables
+    NodeProperty<Size> domain_sizes;
+    for ( auto node : moral_graph ) {
+      domain_sizes.insert ( node, bn.variable ( node ).domainSize () );
+    }
+
+    // now, we can compute the new junction tree
+    __triangulation->setGraph ( moral_graph, domain_sizes );
+    const JunctionTree& triang_jt = __triangulation->junctionTree ();
+    BinaryJoinTreeConverterDefault bon_converter;
+    NodeSet emptyset;
+    if ( __JT != nullptr ) delete __JT;
+    __JT = new CliqueGraph( bon_converter.convert( triang_jt, domain_sizes,
+                                                   emptyset ) );
+
+    // get one arbitrary root per connected component of the junction tree
+    __roots = bon_converter.roots();
+
+    // indicate, for each node of the moral graph, a clique in __JT that can
+    // contain its conditional probability table
+    const std::vector<NodeId>& JT_elim_order = __triangulation->eliminationOrder();
+    HashTable<NodeId, int> elim_order( JT_elim_order.size() );
+    for ( std::size_t i = 0, size = JT_elim_order.size(); i < size; ++i )
+      elim_order.insert( JT_elim_order[i], i );
+    const DAG& dag = bn.dag();
+    __node_to_clique.clear ();
+    for ( const auto node : moral_graph ) {
+      // get the variables in the potential of node (and its parents)
+      NodeId first_eliminated_node = node;
+      int elim_number = elim_order[node];
+
+      for ( const auto parent : dag.parents( node ) ) {
+        if ( elim_order[parent] < elim_number ) {
+          elim_number = elim_order[parent];
+          first_eliminated_node = parent;
+        }
+      }
+
+      // first_eliminated_node contains the first var (node or one of its
+      // parents) eliminated => the clique created during its elmination
+      // contains node and all of its parents => it can contain node's potential
+      __node_to_clique.insert
+        ( node,
+          __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
+    }
+
+    // create empty potential lists into the cliques of the joint tree as well
+    // as empty lists of evidence
+    List<const Potential<GUM_SCALAR>*> empty_list;
+
+    __clique_potentials.clear ();
+    __clique_evidence.clear ();
+    for ( const auto node : __JT->nodes() ) {
+      __clique_potentials.insert( node, empty_list );
+      __clique_evidence.insert( node, empty_list );
+    }
+
+    // create empty lists of potentials for the messages and indicate that no
+    // message has been computed yet
+    __separator_potentials.clear ();
+    __messages_computed.clear ();
+    for ( const auto& edge : __JT.edges () ) {
+      const Arc arc1 ( edge.first (), edge.second () );
+      __separator_potentials.insert ( arc1, empty_list );
+      __messages_computed.insert ( arc1, false );
+      Arc arc2 ( Arc ( edge.second (), edge.first () ) );
+      __separator_potentials.insert ( arc2, empty_list );
+      __messages_computed.insert ( arc2, false );
+    }
+
+
+    ==> tenir compte des hard evidence!!!!!!!!
+    
+    // put all the CPT's of the Bayes net nodes into the cliques
+    for ( const auto node : moral_graph ) {
+      const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
+      __clique_potentials[__node_to_clique[node]].insert( &cpt );
     }
   }
-  
+
+
+
 
 
   
 
+  /// prepare the inference structures w.r.t. new targets, soft/hard evidence
+  template <typename GUM_SCALAR>
+  void LazyPropagation<GUM_SCALAR>::_prepareInference () {
+    // check if a new JT is really needed. If so, create it
+    if ( __isNewJTNeeded () ) {
+      __createNewJT ();
+    }
+    else { // update the potentials and messages that require it
+
+    }
+  }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   
 
@@ -542,38 +737,6 @@ namespace gum {
     __need_recompute_barren_potentials = true;
   }
 
-
-  /// sets how we determine the relevant potentials to combine
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::setFindRelevantPotentialsType(
-                                                                         FindRelevantPotentialsType type ) {
-    switch ( type ) {
-    case FIND_RELEVANT_D_SEPARATION2:
-      __findRelevantPotentials = &LazyPropagation<
-      GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
-      break;
-
-    case FIND_RELEVANT_D_SEPARATION:
-      __findRelevantPotentials = &LazyPropagation<
-      GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
-      break;
-
-    case FIND_RELEVANT_D_SEPARATION3:
-      __findRelevantPotentials = &LazyPropagation<
-      GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
-      break;
-
-    case FIND_RELEVANT_ALL:
-      __findRelevantPotentials =
-        &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll;
-      break;
-
-    default:
-      GUM_ERROR(
-                InvalidArgument,
-                "setFindRelevantPotentialsType for this type not implemented yet" );
-    }
-  }
 
 
   // find the potentials d-connected to a set of variables

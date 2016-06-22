@@ -27,7 +27,7 @@
 #include <cmath>
 
 #include <agrum/BN/inference/BayesNetInference.h>
-#include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 namespace gum {
   /**
@@ -41,14 +41,36 @@ namespace gum {
 
   class LazyPropagation : public BayesNetInference<GUM_SCALAR> {
     public:
-    /// type of algorithm for determining the relevant potentials for
-    /// combinations
+    /** @brief type of algorithm for determining the relevant potentials for
+     * combinations using some d-separation analysis
+     *
+     * When constructing messages from one clique to its neighbor, we can
+     * exploit d-separation to determine that some potentials are irrelevant for
+     * the message computation. So we can discard them and, thereby, speed-up
+     * the computations.
+     */
     enum FindRelevantPotentialsType {
-      FIND_RELEVANT_ALL,
+      FIND_RELEVANT_ALL,            // do not perform d-separation analysis
       FIND_RELEVANT_D_SEPARATION,   // BayesBall requisite nodes -> potentials
       FIND_RELEVANT_D_SEPARATION2,  // BayesBall requisite potentials (directly)
       FIND_RELEVANT_D_SEPARATION3   // Koller & Friedman 2009 requisite
                                     // potentials
+    };
+
+    /** @brief type of algorithm to determine barren nodes
+     *
+     * When constructing messages from one clique to its neighbor, we can
+     * determine that some nodes are barren, i.e., they are the only one
+     * at the left hand side of a conditioning bar and they appear in only one
+     * potential. In such case, in a classical BN inference, there is no need
+     * to take them into account since their removal will necessarily create
+     * a constant potential. So, we can discard their potential from the
+     * computation. However, when computing p(evidence), we should not do that
+     * because the constant is important and need be computed.
+     */
+    enum FindBarrenNodesType {
+      FIND_NO_BARREN_NODES,  // do not try to find barren nodes
+      FIND_BARREN_NODES      // use a simple algorithm to detect barren nodes
     };
 
 
@@ -58,11 +80,10 @@ namespace gum {
     /// @{
 
     /// default constructor
-    LazyPropagation( const IBayesNet<GUM_SCALAR>& BN );
-
-    /// constructor with a given elimination sequence
     LazyPropagation( const IBayesNet<GUM_SCALAR>& BN,
-                     const std::vector<NodeId>& elim_order );
+                     FindRelevantPotentialsType =
+                     FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
+                     FindBarrenNodesType = FIND_BARREN_NODES );
 
     /// destructor
     ~LazyPropagation();
@@ -73,6 +94,39 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
+
+    /// set a new triangulation algorithm
+    void setTriangulation ( const Triangulation& new_triangulation );
+
+    /// sets how we determine the relevant potentials to combine
+    /** When a clique sends a message to a separator, it first constitute the
+     * set of the potentials it contains and of the potentials contained in the
+     * messages it received. If FindRelevantPotentialsType = FIND_RELEVANT_ALL,
+     * all these potentials are combined and projected to produce the message
+     * sent to the separator.
+     * If FindRelevantPotentialsType = FIND_RELEVANT_D_SEPARATION, then only the
+     * set of potentials d-connected to the variables of the separator are kept
+     * for combination and projection. */
+    void setFindRelevantPotentialsType( FindRelevantPotentialsType type );
+
+    /// sets the operator for performing the projections
+    void setProjectionFunction ( Potential<GUM_SCALAR>* (* proj)
+                                 ( const Potential<GUM_SCALAR>&,
+                                   const Set<const DiscreteVariable*>& ) );
+
+    /// sets the operator for performing the combinations
+    void setCombinationFunction ( Potential<GUM_SCALAR>* (* comb)
+                                  ( const Potential<GUM_SCALAR>&,
+                                    const Potential<GUM_SCALAR>& ) );
+
+    
+    =========================
+    
+
+    
+
+
+    
 
     /// insert new evidence in the graph
     /** @warning if an evidence already exists w.r.t. a given node and a new
@@ -99,18 +153,6 @@ namespace gum {
 
     /// clears the messages of previous inferences
     void clearInference();
-
-    /// sets how we determine the relevant potentials to combine
-    /** When a clique sends a message to a separator, it first constitute the
-     * set
-     * of the potentials it contains and of the potentials contained in the
-     * messages it received. If FindRelevantPotentialsType = FIND_RELEVANT_ALL,
-     * all these potentials are combined and projected to produce the message
-     * sent to the separator.
-     * If FindRelevantPotentialsType = FIND_RELEVANT_D_SEPARATION, then only the
-     * set of potentials d-connected to the variables of the separator are kept
-     * for combination and projection. */
-    void setFindRelevantPotentialsType( FindRelevantPotentialsType type );
 
     /// returns the probability P(e) of the evidence enterred into the BN
     GUM_SCALAR evidenceProbability();
@@ -170,19 +212,47 @@ namespace gum {
 
 
 
+  protected:
+    /**
+     * _prepareInference is called when the bn, the targets and soft/hard
+     * evidence are known. Note that the values of evidence are not necessarily
+     * known and can be changed between _prepare and _makeInference.
+     */
+    virtual void _prepareInference();
+
+
+    
+
+    
+
   private:
     typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
     typedef SetIteratorSafe<const Potential<GUM_SCALAR>*>
         __PotentialSetIterator;
+    
+    
+    /// the type of relevant potential finding algorithm to be used
+    FindRelevantPotentialsType __find_relevant_potential_type;
+    
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined to produce a message on a separator */
+    void ( LazyPropagation<GUM_SCALAR>::*__findRelevantPotentials )
+    ( __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
 
+    /// the type of barren nodes computation we wish
+    FindBarrenNodesType __barren_nodes_type;
+
+    /// the function to compute barren nodes during message passing
+    void ( LazyPropagation<GUM_SCALAR>::*__findBarrenNodes ) ();
+    
     /// the triangulation class creating the junction tree used for inference
-    PartialOrderedTriangulation __triangulation;
-
-    /// a possible partial order for triangulations provided by the user
-    std::vector<NodeId> __elim_order;
+    Triangulation* __triangulation;
 
     /// the junction tree associated to the bayes net
     JunctionTree* __JT { nullptr };
+
+    /// a clique node used as a root in each connected component of __JT
+    NodeSet __roots;
 
     /// for each node of the bayes net, associate an ID in the JT
     HashTable<NodeId, NodeId> __node_to_clique;
@@ -190,23 +260,41 @@ namespace gum {
     /// the list of all potentials stored in the cliques
     NodeProperty<List<const Potential<GUM_SCALAR>*>> __clique_potentials;
 
+    /// the list of all potentials stored in the separators after inferences
+    ArcProperty<List<const Potential<GUM_SCALAR>*>> __separator_potentials;
+
+    /// indicates whether a message (from one clique to another) has been computed
+    /** Here, all the messages, computed or not, are put into the property, only
+     * the Boolean makes the difference between messages computed and those that
+     * were not computed */
+    ArcProperty<bool> __messages_computed;
+
     /// the list of all the evidence stored in the cliques
     NodeProperty<List<const Potential<GUM_SCALAR>*>> __clique_evidence;
 
-    /// the list of hard evidence potentials per random variable
-    NodeProperty<const Potential<GUM_SCALAR>*> __bn_node2hard_potential;
-
-    /// the list of all potentials stored in the separators after inferences
-    ArcProperty<__PotentialSet> __sep_potentials;
-
-    /// a list of all the evidence stored into the graph
-    __PotentialSet __evidences;
+    /// the list of small potentials created to take into account hard evidence
+    List<const Potential<GUM_SCALAR>*> __hard_ev_potentials;
 
     /// the set of nodes that received hard evidences
     NodeSet __hard_evidence_nodes;
 
-    /// the set of nodes that received soft evidences
-    NodeSet __soft_evidence_nodes;
+
+
+    
+
+
+
+
+    
+
+
+    /// a possible partial order for triangulations provided by the user
+    std::vector<NodeId> __elim_order;
+
+    
+    /// the list of hard evidence potentials per random variable
+    NodeProperty<const Potential<GUM_SCALAR>*> __bn_node2hard_potential;
+
 
     /// the set of barren potentials: can be discarded from computations
     /** Assigns a set (possibly empty) of barren potentials to each message
@@ -217,23 +305,8 @@ namespace gum {
     /// indicates whether we shall recompute barren nodes
     bool __need_recompute_barren_potentials { true };
 
-    /// the list of all potentials created during a propagation phase
-    __PotentialSet __temporary_potentials;
 
-    /// indicates whether a message (from one clique to another) has been computed
-    /** Here, all the messages, computed or not, are put into the property, only
-     * the Boolean makes the difference between messages computed and those that
-     * were not computed */
-    ArcProperty<bool> __messages_computed;
 
-    /// a clique node used as a root in each connected component of __JT
-    NodeSet __roots;
-
-    /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
-    void ( LazyPropagation<GUM_SCALAR>::*__findRelevantPotentials )(
-        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
 
     /// creates the message sent by clique from_id to clique to_id
 
