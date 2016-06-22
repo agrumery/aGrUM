@@ -17,18 +17,18 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief ANoisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
+/** 
+ * @file
+ * @brief class for NoisyOR-net implementation as multiDim
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 
 namespace gum {
 
-  /// Default constructor
-
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyORNet<GUM_SCALAR>::MultiDimNoisyORNet(
       GUM_SCALAR external_weight, GUM_SCALAR default_weight )
@@ -36,8 +36,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimNoisyORNet );
   }
 
-  /// Default constructor
-
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyORNet<GUM_SCALAR>::MultiDimNoisyORNet(
       const MultiDimNoisyORNet<GUM_SCALAR>& from )
@@ -45,8 +44,7 @@ namespace gum {
     GUM_CONS_CPY( MultiDimNoisyORNet );
   }
 
-  /// Copy constructor using a bijection to swap variables from source.
-
+  // Copy constructor using a bijection to swap variables from source.
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyORNet<GUM_SCALAR>::MultiDimNoisyORNet(
       const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
@@ -55,8 +53,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimNoisyORNet );
   }
 
-  /// destructor
-
+  // destructor
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyORNet<GUM_SCALAR>::~MultiDimNoisyORNet() {
     GUM_DESTRUCTOR( MultiDimNoisyORNet );
@@ -118,7 +115,6 @@ namespace gum {
   }
 
   // For friendly displaying the content of the variable.
-
   template <typename GUM_SCALAR>
   INLINE std::ostream& operator<<( std::ostream& s,
                                    const MultiDimNoisyORNet<GUM_SCALAR>& ag ) {
@@ -130,9 +126,6 @@ namespace gum {
   MultiDimNoisyORNet<GUM_SCALAR>::newFactory() const {
     return new MultiDimNoisyORNet<GUM_SCALAR>( this->__external_weight,
                                                this->__default_weight );
-    // GUM_ERROR( OperationNotAllowed,
-    //            "This class doesn't contain an empty constructor" );
-    // return 0;
   }
 
   // returns the name of the implementation
@@ -142,5 +135,5 @@ namespace gum {
     return str;
   }
 
-  // ==================================================
 } /* namespace gum */
+

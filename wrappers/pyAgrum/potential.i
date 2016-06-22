@@ -51,6 +51,12 @@
 %rename ("$ignore", fullname=1) gum::Potential<double>::putFirst(const DiscreteVariable* var) const;
 
 %extend gum::Potential<double> {
+    Potential<double> extract(PyObject* dict) {
+      gum::Instantiation inst;
+      PyAgrumHelper::fillInstantiationFromPyObject(self,inst,dict);
+      return self->extract(inst);
+    }
+
     Potential<double>
     reorganize(PyObject* varnames ) const {
       std::vector<const gum::DiscreteVariable*> v;

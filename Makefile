@@ -47,11 +47,11 @@ clean:
 
 doc:
 	$(ACT) doc release aGrUM
-	cat build/release/src/warning.txt
+	cat build/release/warning.txt
 
 docdebug:
 	$(ACT) doc debug aGrUM
-	cat build/debug/src/warning.txt
+	cat build/debug/warning.txt
 
 clang-format:
 	$(ACT) autoindent

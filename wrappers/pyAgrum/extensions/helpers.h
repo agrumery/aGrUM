@@ -99,11 +99,11 @@ class PyAgrumHelper {
     // filling a vector of DiscreteVariable* from a list of string, in the context of a potential.
     static void fillDVFromPyObject(const gum::Potential<double>* pot,const gum::DiscreteVariable*& pvar,PyObject* varname) {
       std::string name = stringFromPyObject(varname);
-      bool isOK=false;
       if (name == "") {
         GUM_ERROR(gum::InvalidArgument, "Argument is not a string");
       }
 
+      bool isOK=false;
       for (gum::Idx i = 0; i < pot->nbrDim(); i++) {
         if (pot->variable(i).name() == name) {
           pvar=&(pot->variable(i));
@@ -113,6 +113,39 @@ class PyAgrumHelper {
       }
       if (!isOK) {
         GUM_ERROR(gum::InvalidArgument, "Argument is a not a name of a variable in this potential");
+      }
+    }
+
+    // filling a Instantiation from a dictionnary<string,int>
+    static void fillInstantiationFromPyObject(const gum::Potential<double>* pot,gum::Instantiation& inst,PyObject* dict) {
+      gum::HashTable<std::string,const gum::DiscreteVariable*> namesToVars;
+      for(gum::Idx i=0;i<pot->nbrDim();i++)
+        namesToVars.insert(pot->variable(i).name(),&(pot->variable(i)));
+
+      if (! PyDict_Check(dict)) {
+        GUM_ERROR(gum::InvalidArgument,"Argument is not a dictionnary");
+      }
+
+      PyObject *key, *value;
+      Py_ssize_t pos = 0;
+      inst.clear();
+      while (PyDict_Next(dict, &pos, &key, &value)) {
+        std::string name= stringFromPyObject(key);
+        if (name==""){
+          GUM_ERROR(gum::InvalidArgument, "A key is not a string");
+        }
+        if (! namesToVars.exists(name)) {
+          GUM_ERROR(gum::InvalidArgument, "The key "<<name<<" is a not a name of a variable in this potential");
+        }
+        if (!PyInt_Check(value)) {
+          GUM_ERROR(gum::InvalidArgument, "A value is not an int");
+        }
+        gum::Idx v=gum::Idx(PyInt_AsLong(value));
+        if (v>=namesToVars[name]->domainSize()) {
+          GUM_ERROR(gum::InvalidArgument, "The value "<<v<<" is not in the domain of "<<name);
+        }
+        inst.add(*(namesToVars[name]));
+        inst.chgVal(namesToVars[name],v);
       }
     }
 

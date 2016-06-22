@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief count aggregator
+/**
+ * @file
+ * @brief or aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+
 #ifndef GUM_OR_AGGREGATOR_H
 #define GUM_OR_AGGREGATOR_H
 
@@ -32,23 +33,22 @@ namespace gum {
 
   namespace aggregator {
 
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /* ===                     GUM_MAX_AGGREGATOR                     === */
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /** @class Or
-    * @brief or aggregator
-    * @ingroup multidim_agg_group
-    *
-    * @see MultiDimAggregator for more details of implementations
-    *
-    * Note that a <tt>Or(i)</tt> aggregator should have a binary aggregator
-    *variable
-    *since only 0 and 1 indexes are adressed...
-    */
-    /* =========================================================================*/
+    // =========================================================================
+    // ===                     GUM_MAX_AGGREGATOR                            === 
+    // =========================================================================
 
+    /**
+     * @class Or
+     * @headerfile or.h <agrum/multidim/aggregators/or.h>
+     * @ingroup multidim_agg_group
+     *
+     * @brief or aggregator
+     *
+     * @see MultiDimAggregator for more details of implementations
+     *
+     * Note that a <tt>Or(i)</tt> aggregator should have a binary aggregator
+     * variable since only 0 and 1 indexes are adressed...
+     */
     template <typename GUM_SCALAR>
     class Or : public MultiDimAggregator<GUM_SCALAR> {
       public:
@@ -61,9 +61,13 @@ namespace gum {
        * (including variable), you must use this method if you want to ensure
        * that the generated object has the same type than the object containing
        * the called newFactory()
+       *
        * For example :
+       * @code
        *   MultiDimArray<double> y;
        *   MultiDimContainer<double>* x = y.newFactory();
+       * @endcode
+       *
        * Then x is a MultiDimArray<double>*
        *
        * @warning you must desallocate by yourself the memory
@@ -84,10 +88,8 @@ namespace gum {
       Idx __value;
     };
 
-
     extern template class Or<float>;
     extern template class Or<double>;
-
 
   }  // aggregator
 }  // gum

@@ -323,7 +323,7 @@ namespace gum {
      * for (iterator iter = bij.cbeginSafe(); iter != bij.cendSafe(); ++iter) {
      *   // loops will parse all the associations
      * }
-     * @encode
+     * @endcode
      */
     const_iterator_safe cbeginSafe() const;
 
@@ -965,7 +965,7 @@ namespace gum {
      * for (iterator iter = bij.cbeginSafe(); iter != bij.cendSafe(); ++iter) {
      *   // loops will parse all the associations
      * }
-     * @encode
+     * @endcode
      */
     const_iterator_safe cbeginSafe() const;
 

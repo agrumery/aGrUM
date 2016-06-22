@@ -17,9 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief A generic class to project efficiently a MultiDim table over all
- * of its variables
+/**
+ * @file
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -34,58 +33,69 @@
 
 namespace gum {
 
+  // clang-format off
+  /** @class MultiDimCompleteProjection
+   * @headerfile multiDimCompleteProjection.h <agrum/multidim/operators/multiDimCompleteProjection.h>
+   * @ingroup multidim_op_group
+   *
+   * @brief A generic class to project efficiently a MultiDim table over all
+   * of its variables
+   */
+  // clang-format on
   template <typename GUM_SCALAR, template <typename> class TABLE>
   class MultiDimCompleteProjection {
 
     public:
-    // ############################################################################
+    // ========================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ========================================================================
     /// @{
 
-    /// default constructor
+    /// Default constructor
     MultiDimCompleteProjection( GUM_SCALAR ( *proj )( const TABLE<GUM_SCALAR>&,
                                                       Instantiation* ) );
 
-    /// copy constructor
+    /// Copy constructor
     MultiDimCompleteProjection(
         const MultiDimCompleteProjection<GUM_SCALAR, TABLE>& );
 
-    /// destructor
+    /// Destructor
     virtual ~MultiDimCompleteProjection();
 
-    /// virtual constructor
-    /** @return a new fresh MultiDimCombinator with the same projection
-     * function. */
+    /** 
+     * @brief Virtual constructor
+     *
+     * @return a new fresh MultiDimCombinator with the same projection
+     * function.
+     */
     virtual MultiDimCompleteProjection<GUM_SCALAR, TABLE>* newFactory() const;
 
     /// @}
-
-    // ############################################################################
+    // ========================================================================
     /// @name Accessors/Modifiers
-    // ############################################################################
+    // ========================================================================
     /// @{
 
-    /// creates and returns the projection of the table over all of its vars
+    /// Creates and returns the projection of the table over all of its vars
     GUM_SCALAR project( const TABLE<GUM_SCALAR>& table,
                         Instantiation* instantiation = 0 );
 
-    /// changes the function used for projecting TABLES
+    /// Changes the function used for projecting TABLES
     void setProjectFunction( GUM_SCALAR ( *proj )( const TABLE<GUM_SCALAR>&,
                                                    Instantiation* ) );
 
-    /// returns the projection function currently used by the projector
+    /// Returns the projection function currently used by the projector
     GUM_SCALAR( *projectFunction() )
     ( const TABLE<GUM_SCALAR>&, Instantiation* );
 
     /// @}
 
     protected:
-    /// the projection function actually used
+    /// The projection function actually used
     GUM_SCALAR ( *_proj )( const TABLE<GUM_SCALAR>&, Instantiation* );
 
     private:
-    /// forbid copy operators
+    /// Forbid copy operators
     MultiDimCompleteProjection<GUM_SCALAR, TABLE>&
     operator=( const MultiDimCompleteProjection<GUM_SCALAR, TABLE>& );
   };

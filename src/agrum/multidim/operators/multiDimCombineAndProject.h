@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief A generic interface to combine and project efficiently MultiDim tables
+/**
+ * @file
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -32,12 +32,21 @@
 
 namespace gum {
 
+  // clang-format off
+  /**
+   * @class MultiDimCombineAndProject
+   * @headerfile multiDimCombineAndProject.h <agrum/multidim/operators/multiDimCombineAndProject.h>
+   * @ingroup multidim_op_group
+   *
+   * @brief A generic interface to combine and project efficiently MultiDim tables.
+   */
+  // clang-format on
   template <typename GUM_SCALAR, template <typename> class TABLE>
   class MultiDimCombineAndProject {
     public:
-    // ############################################################################
+    // ========================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ========================================================================
     /// @{
 
     /// default constructor
@@ -50,27 +59,31 @@ namespace gum {
     /// destructor
     virtual ~MultiDimCombineAndProject();
 
-    /// virtual constructor
-    /** @return a new fresh MultiDimCombineAndProject with the same combination
-     * and projection functions. */
+    /** 
+     * @brief virtual constructor
+     *
+     * @return a new fresh MultiDimCombineAndProject with the same combination
+     * and projection functions.
+     */
     virtual MultiDimCombineAndProject<GUM_SCALAR, TABLE>*
     newFactory() const = 0;
 
     /// @}
-
-    // ############################################################################
+    // ========================================================================
     /// @name Accessors/Modifiers
-    // ############################################################################
+    // ========================================================================
     /// @{
 
-    /** @brief creates and returns the result of the projection over the
-     *variables
-     * not in del_vars of the combination of the tables within set
+    /**
+     * @brief creates and returns the result of the projection over the
+     * variables not in del_vars of the combination of the tables within set
      *
-     * @return a new freshly created TABLE which is the result of the projection
-     * of the combination of all the TABLES passed in argument
+     * @return a new freshly created TABLE which is the result of the
+     * projection of the combination of all the TABLES passed in argument
+     *
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
-     * argument contains less than two elements */
+     * argument contains less than two elements
+     */
     virtual Set<const TABLE<GUM_SCALAR>*>
     combineAndProject( Set<const TABLE<GUM_SCALAR>*> set,
                        Set<const DiscreteVariable*> del_vars ) = 0;
@@ -91,8 +104,10 @@ namespace gum {
     virtual TABLE<GUM_SCALAR>* ( *projectFunction() )(
         const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) = 0;
 
-    /** @brief returns a rough estimate of the number of operations that will be
-    * performed to compute the combination */
+    /**
+     * @brief returns a rough estimate of the number of operations that will be
+     * performed to compute the combination.
+     */
     virtual float
     nbOperations( const Set<const TABLE<GUM_SCALAR>*>& set,
                   const Set<const DiscreteVariable*>& del_vars ) const = 0;

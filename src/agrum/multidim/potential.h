@@ -197,10 +197,16 @@ namespace gum {
     GUM_SCALAR entropy() const;
 
     /** create a new Potential with another order
-     * @throw InvalidArgument if not all and only the vars of the potential are in vars
+     * @throw InvalidArgument if not all and only the vars of the potential are
+     * in vars
      */
     Potential<GUM_SCALAR>
     reorganize( const std::vector<const DiscreteVariable*>& vars ) const;
+
+    /** create a new Potential extracted from *this given a partial
+     * instantiation
+     */
+    Potential<GUM_SCALAR> extract( const Instantiation& inst ) const;
 
     /** create a new Potential with a certain variable in first
      * @throw InvalidArgument if the var is not in the potential
@@ -261,21 +267,33 @@ namespace gum {
 
     /// the function to be used to add two Potentials
     Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p2 ) const {
+      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
+      if ( this->nbrDim() == 0 ) return Potential<GUM_SCALAR>( p2 );
+
       return Potential<GUM_SCALAR>( *this->content() + *p2.content() );
     }
 
     /// the function to be used to subtract two Potentials
     Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p2 ) const {
+      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
+      if ( this->nbrDim() == 0 ) GUM_ERROR(FatalError,"Undefined substraction");
+
       return Potential<GUM_SCALAR>( *this->content() - *p2.content() );
     }
 
     /// the function to be used to multiply two Potentials
     Potential<GUM_SCALAR> operator*( const Potential<GUM_SCALAR>& p2 ) const {
+      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
+      if ( this->nbrDim() == 0 ) return Potential<GUM_SCALAR>( p2 );
+
       return Potential<GUM_SCALAR>( *this->content() * *p2.content() );
     }
 
     /// the function to be used to divide two Potentials
     Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p2 ) const {
+      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
+      if ( this->nbrDim() == 0 ) GUM_ERROR(FatalError,"Undefined division");
+
       return Potential<GUM_SCALAR>( *this->content() / *p2.content() );
     }
 
@@ -302,6 +320,7 @@ namespace gum {
 
     protected:
     virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+
 
     Set<const DiscreteVariable*>
     _complementVars( const Set<const DiscreteVariable*>& del_vars ) const;

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /**
+ * @brief class for LOGIT implementation as multiDim
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * <{prenom.nom}_at_lip6.fr>
  */
 
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
@@ -27,8 +27,7 @@
 
 namespace gum {
 
-  /// Default constructor
-
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimLogit<GUM_SCALAR>::MultiDimLogit( GUM_SCALAR external_weight,
                                                    GUM_SCALAR default_weight )
@@ -36,8 +35,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimLogit );
   }
 
-  /// Default constructor
-
+  // Default constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimLogit<GUM_SCALAR>::MultiDimLogit(
       const MultiDimLogit<GUM_SCALAR>& from )
@@ -45,8 +43,7 @@ namespace gum {
     GUM_CONS_CPY( MultiDimLogit );
   }
 
-  /// Copy constructor using a bijection to swap variables from source.
-
+  // Copy constructor using a bijection to swap variables from source.
   template <typename GUM_SCALAR>
   INLINE MultiDimLogit<GUM_SCALAR>::MultiDimLogit(
       const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
@@ -55,8 +52,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimLogit );
   }
 
-  /// destructor
-
+  // destructor
   template <typename GUM_SCALAR>
   INLINE MultiDimLogit<GUM_SCALAR>::~MultiDimLogit() {
     GUM_DESTRUCTOR( MultiDimLogit );
@@ -112,7 +108,6 @@ namespace gum {
   }
 
   // For friendly displaying the content of the variable.
-
   template <typename GUM_SCALAR>
   INLINE std::ostream& operator<<( std::ostream& s,
                                    const MultiDimLogit<GUM_SCALAR>& ag ) {
@@ -124,9 +119,6 @@ namespace gum {
   MultiDimLogit<GUM_SCALAR>::newFactory() const {
     return new MultiDimLogit<GUM_SCALAR>( this->__external_weight,
                                           this->__default_weight );
-    // GUM_ERROR( OperationNotAllowed,
-    //            "This class doesn't contain an empty constructor" );
-    // return 0;
   }
 
   // returns the name of the implementation
@@ -136,5 +128,4 @@ namespace gum {
     return str;
   }
 
-  // ==================================================
 } /* namespace gum */

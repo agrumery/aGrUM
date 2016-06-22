@@ -227,7 +227,7 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed, "Domain sizes do not fit" );
     }
 
-    if ( p_i == nullptr ) { // if null, we just follow the same order
+    if ( p_i == nullptr ) {  // if null, we just follow the same order
       Instantiation i( src );
       for ( i.setFirst(); !i.end(); ++i ) {
         set( i, src[i] );
@@ -240,6 +240,34 @@ namespace gum {
         set( i_dest, src[i_src] );
       }
     }
+  }
+
+  template <typename GUM_SCALAR>
+  void MultiDimContainer<GUM_SCALAR>::extractFrom(
+      const MultiDimContainer<GUM_SCALAR>& src, const Instantiation& imask ) {
+    this->beginMultipleChanges();
+
+    Size nbr = this->nbrDim();
+
+    for ( Idx i = 0; i < nbr; i++ ) {
+      this->erase( this->variable( 0 ) );
+    }
+
+    for ( Idx i = 0; i < src.nbrDim(); i++ ) {
+      if ( !imask.contains( src.variable( i ) ) )
+        this->add( src.variable( i ) );
+    }
+
+    if ( this->nbrDim()==0) {
+      GUM_ERROR(FatalError, "Empty potential");
+    }
+
+    this->endMultipleChanges();
+
+    Instantiation inst( src );
+    inst.setVals( imask );
+    for ( inst.setFirstOut( imask ); !inst.end(); inst.incOut( imask ) )
+      set( inst, src[inst] );
   }
 
   template <typename GUM_SCALAR>
