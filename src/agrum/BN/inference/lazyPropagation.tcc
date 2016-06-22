@@ -81,16 +81,23 @@ namespace gum {
 
   // destructor
   template <typename GUM_SCALAR>
-  INLINE LazyPropagation<GUM_SCALAR>::~LazyPropagation() {
+  INLINE LazyPropagation<GUM_SCALAR>::~LazyPropagation() {    
+    // remove all the potentials created during the last message passing
+    for ( const auto pot : __separator_potentials )
+      delete pot;
+    __separator_potentials.clear();
+
+    // remove the potentials created after removing the nodes that received
+    // hard evidence
+    for ( const auto pot : __hard_ev_potentials )
+      delete pot;
+
+    // remove the junction tree and the triangulation algorithm
+    delete __JT;
+    delete __triangulation;
+
     // for debugging purposes
     GUM_DESTRUCTOR( LazyPropagation );
-    // remove all the temporary potentials created
-    for ( const auto pot : __temporary_potentials )
-      delete ( pot );
-
-    __temporary_potentials.clear();
-
-    delete __JT;
   }
 
   
@@ -188,10 +195,26 @@ namespace gum {
   /// create a new junction tree as well as its related data structures
   template <typename GUM_SCALAR>
   void LazyPropagation<GUM_SCALAR>::__createNewJT () {
-    const auto& bn = this->bn ();
-    UndiGraph moral_graph = bn.moralGraph ();
+    // to create the JT, we first create the moral graph of the BN in the
+    // following way in order to take into account the barren nodes and the
+    // nodes that received evidence:
+    // 1/ we create an undirected graph containing only the nodes and no edge
+    // 2/ if we take into account barren nodes, remove them from the graph
+    // 3/ add edges so that each node and its parents in the BN form a clique
+    // 4/ add edges so that set targets are cliques of the moral graph
+    // 5/ remove the nodes that received hard evidence (by step 3/, their
+    //    parents are linked by edges, which is necessary for inference)
+    // 
+    // At the end of step 5/, we have our moral graph and we can triangulate it
+    // to get the new junction tree
 
-    // first, if we wish to exploit barren nodes, we shall remove them from the BN
+    // 1/ create an undirected graph containing only the nodes and no edge
+    const auto& bn = this->bn ();
+    UndiGraph moral_graph;
+    for ( auto node : bn.dag () )
+      moral_graph.addNode ( node );
+
+    // 2/ if we wish to exploit barren nodes, we shall remove them from the BN
     // to do so: we identify all the nodes that are not targets and have received
     // no evidence and such that their descendants are neither targets nor
     // evidence nodes. Such nodes can be safely discarded from the BN without
@@ -203,7 +226,7 @@ namespace gum {
       NodeSet evidence_nodes;
       for ( const auto& pair : _evidence () ) {
         evidence_nodes.insert ( pair.first );
-      }  
+      }
       finder.setEvidence ( evidence_nodes );
 
       NodeSet target_nodes = targets ();
@@ -221,7 +244,19 @@ namespace gum {
       }
     }
 
-    // if there exists some set targets, we shall add new edges into the moral
+    // 3/ add edges so that each node and its parents in the BN form a clique
+    for ( const auto node : moral_graph ) {
+      const NodeSet& parents = bn.dag().parents ( node );
+      for ( auto iter1 = parents.cbegin (); iter1 != parents.cend (); ++iter1 ) {
+        moral_graph.addEdge ( *iter1, node );
+        auto iter2 = iter1;
+        for ( ++iter2; iter2 != parents.cend (); ++iter2 ) {
+          moral_graph.addEge ( *iter1, *iter2 );
+        }
+      }
+    }
+
+    // 4/ if there exists some set targets, we shall add new edges into the moral
     // graph in order to ensure that there exists a clique containing each set
     for ( const auto& nodeset : setTargets () ) {
       for ( auto iter1 = nodeset.cbegin (); iter1 != nodeset.cend (); ++iter1 ) {
@@ -232,13 +267,21 @@ namespace gum {
       }
     }
 
-    // now we can compute the domain size of the variables
+    // 5/ remove all the nodes that received hard evidence
+    for ( const auto pair : this->_hardEvidence () ) {
+      moral_graph.eraseNode ( pair.first );
+    }
+
+    // now we can compute the domain size of the random variables of
+    // the moral graph
     NodeProperty<Size> domain_sizes;
     for ( auto node : moral_graph ) {
       domain_sizes.insert ( node, bn.variable ( node ).domainSize () );
     }
 
-    // now, we can compute the new junction tree
+    // now, we can compute the new junction tree. To speed-up computations
+    // (essentially, those of the distribution phase), we construct a binary
+    // join tree
     __triangulation->setGraph ( moral_graph, domain_sizes );
     const JunctionTree& triang_jt = __triangulation->junctionTree ();
     BinaryJoinTreeConverterDefault bon_converter;
@@ -247,7 +290,7 @@ namespace gum {
     __JT = new CliqueGraph( bon_converter.convert( triang_jt, domain_sizes,
                                                    emptyset ) );
 
-    // get one arbitrary root per connected component of the junction tree
+    // get one arbitrary root per connected component of the binary join tree
     __roots = bon_converter.roots();
 
     // indicate, for each node of the moral graph, a clique in __JT that can
@@ -271,7 +314,7 @@ namespace gum {
       }
 
       // first_eliminated_node contains the first var (node or one of its
-      // parents) eliminated => the clique created during its elmination
+      // parents) eliminated => the clique created during its elimination
       // contains node and all of its parents => it can contain node's potential
       __node_to_clique.insert
         ( node,

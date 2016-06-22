@@ -275,7 +275,7 @@ namespace gum {
     /// the list of small potentials created to take into account hard evidence
     List<const Potential<GUM_SCALAR>*> __hard_ev_potentials;
 
-    /// the set of nodes that received hard evidences
+    /// the set of nodes that received hard evidences during the last inference
     NodeSet __hard_evidence_nodes;
 
 
