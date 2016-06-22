@@ -494,6 +494,11 @@ class PRMexplorer(_object):
         return _pyAgrum.PRMexplorer_attributes(self, classname, allAttributes)
 
 
+    def references(self, classname):
+        """references(PRMexplorer self, std::string classname) -> PyObject *"""
+        return _pyAgrum.PRMexplorer_references(self, classname)
+
+
     def parameters(self, classname):
         """parameters(PRMexplorer self, std::string classname) -> PyObject *"""
         return _pyAgrum.PRMexplorer_parameters(self, classname)
