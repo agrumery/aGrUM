@@ -324,6 +324,8 @@ namespace gum {
   Potential<GUM_SCALAR>::extract( const Instantiation& inst ) const {
     Potential<GUM_SCALAR> p;
     p.extractFrom( *this, inst );
+
     return p;
   }
+
 } /* namespace gum */

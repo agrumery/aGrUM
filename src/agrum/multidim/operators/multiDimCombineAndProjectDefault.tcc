@@ -17,7 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief An efficient class for combining and projecting MultiDim tables
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -33,7 +34,7 @@
 
 namespace gum {
 
-  /// default constructor
+  // default constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::
       MultiDimCombineAndProjectDefault(
@@ -49,7 +50,7 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimCombineAndProjectDefault );
   }
 
-  /// copy constructor
+  // copy constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::
       MultiDimCombineAndProjectDefault(
@@ -61,7 +62,7 @@ namespace gum {
     GUM_CONS_CPY( MultiDimCombineAndProjectDefault );
   }
 
-  /// destructor
+  // destructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombineAndProjectDefault<GUM_SCALAR,
                                    TABLE>::~MultiDimCombineAndProjectDefault() {
@@ -71,14 +72,14 @@ namespace gum {
     delete __projection;
   }
 
-  /// virtual constructor
+  // virtual constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>*
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::newFactory() const {
     return new MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>( *this );
   }
 
-  /// combine and project
+  // combine and project
   template <typename GUM_SCALAR, template <typename> class TABLE>
   Set<const TABLE<GUM_SCALAR>*>
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::combineAndProject(
@@ -337,7 +338,7 @@ namespace gum {
     return table_set;
   }
 
-  /// changes the function used for combining two TABLES
+  // changes the function used for combining two TABLES
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::setCombineFunction(
@@ -346,7 +347,7 @@ namespace gum {
     __combination->setCombineFunction( combine );
   }
 
-  /// returns the current combination function
+  // returns the current combination function
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE TABLE<GUM_SCALAR>* (
       *MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::combineFunction() )(
@@ -354,7 +355,7 @@ namespace gum {
     return __combination->combineFunction();
   }
 
-  /// changes the class that performs the combinations
+  // changes the class that performs the combinations
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::setCombinationClass(
@@ -363,7 +364,7 @@ namespace gum {
     __combination = comb_class.newFactory();
   }
 
-  /// changes the function used for projecting TABLES
+  // changes the function used for projecting TABLES
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::setProjectFunction(
@@ -372,7 +373,7 @@ namespace gum {
     __projection->setProjectFunction( proj );
   }
 
-  /// returns the current projection function
+  // returns the current projection function
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE TABLE<GUM_SCALAR>* (
       *MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::projectFunction() )(
@@ -380,7 +381,7 @@ namespace gum {
     return __projection->projectFunction();
   }
 
-  /// changes the class that performs the projections
+  // changes the class that performs the projections
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::setProjectionClass(
@@ -699,8 +700,8 @@ namespace gum {
     return nbOperations( var_set, del_vars );
   }
 
-  /// returns the memory consumption used during the combinations and
-  /// projections
+  // returns the memory consumption used during the combinations and
+  // projections
   template <typename GUM_SCALAR, template <typename> class TABLE>
   std::pair<long, long>
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::memoryUsage(
@@ -1032,8 +1033,8 @@ namespace gum {
     return std::pair<long, long>( max_memory, current_memory );
   }
 
-  /// returns the memory consumption used during the combinations and
-  /// projections
+  // returns the memory consumption used during the combinations and
+  // projections
   template <typename GUM_SCALAR, template <typename> class TABLE>
   std::pair<long, long>
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::memoryUsage(

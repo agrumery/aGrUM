@@ -39,7 +39,7 @@ namespace gum {
 
     /** 
      * @class Min
-     * @headefile min.h <agrum/multidim/aggregators/min.h>
+     * @headerfile min.h <agrum/multidim/aggregators/min.h>
      * @ingroup multidim_agg_group
      *
      * @brief min aggregator

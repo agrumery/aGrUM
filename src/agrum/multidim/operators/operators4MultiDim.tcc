@@ -17,10 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief Efficient functionals for combining multiDims
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -29,15 +31,11 @@
 
 #include <agrum/multidim/operators/operatorRegister4MultiDim.h>
 
-/* *******************************************************************************************
- */
-/*                                                                                             */
-/*                               MultiDimArrays functions */
-/*                                                                                             */
-/* *******************************************************************************************
- */
+// ==========================================================================
+//                              MultiDimArrays functions
+// ==========================================================================
 
-/// a specialized function for summing two multiDimArrays
+// a specialized function for summing two multiDimArrays
 
 // addition taking in argument 2 multiDimArrays
 #define GUM_MULTI_DIM_OPERATOR_NAME add2MultiDimArrays
@@ -65,7 +63,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-/// a specialized function for subtracting two multiDimArrays
+// a specialized function for subtracting two multiDimArrays
 
 #define GUM_MULTI_DIM_OPERATOR_NAME subtract2MultiDimArrays
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x ) - ( y )
@@ -92,7 +90,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-/// a specialized function for multiplying two multiDimArrays
+// a specialized function for multiplying two multiDimArrays
 
 #define GUM_MULTI_DIM_OPERATOR_NAME multiply2MultiDimArrays
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x ) * ( y )
@@ -119,7 +117,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-/// a specialized function for dividing two multiDimArrays
+// a specialized function for dividing two multiDimArrays
 
 #define GUM_MULTI_DIM_OPERATOR_NAME divide2MultiDimArrays
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x ) / ( y )
@@ -146,17 +144,13 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-/* *******************************************************************************************
- */
-/*                                                                                             */
-/*                          MultiDimFunctionGraphs functions */
-/*                                                                                             */
-/* *******************************************************************************************
- */
+  // ==========================================================================
+  //                          MultiDimFunctionGraphs functions
+  // ==========================================================================
 
-// //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for summing two multiDimFunctionGraphs
-// //////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////
+// a specialized function for summing two multiDimFunctionGraphs
+// ///////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR std::plus
 
@@ -171,9 +165,9 @@
 
 #undef GUM_MULTI_DIM_OPERATOR
 
-// //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for subtracting two multiDimFunctionGraphs
-// //////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////
+// a specialized function for subtracting two multiDimFunctionGraphs
+// ///////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR std::minus
 
@@ -188,9 +182,9 @@
 
 #undef GUM_MULTI_DIM_OPERATOR
 
-// //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for multiplying two multiDimFunctionGraphs
-// //////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////
+// a specialized function for multiplying two multiDimFunctionGraphs
+// ///////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR std::multiplies
 
@@ -205,9 +199,9 @@
 
 #undef GUM_MULTI_DIM_OPERATOR
 
-// //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for dividing two multiDimFunctionGraphs
-// //////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////
+// a specialized function for dividing two multiDimFunctionGraphs
+// ///////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR std::divides
 
@@ -222,9 +216,9 @@
 
 #undef GUM_MULTI_DIM_OPERATOR
 
-// //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for finding max of two multiDimFunctionGraphs
-// //////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////
+// a specialized function for finding max of two multiDimFunctionGraphs
+// ///////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR Maximizes
 
@@ -239,9 +233,9 @@
 
 #undef GUM_MULTI_DIM_OPERATOR
 
-// //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for finding min of two multiDimFunctionGraphs
-// //////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////
+// a specialized function for finding min of two multiDimFunctionGraphs
+// ///////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR Minimizes
 
@@ -256,7 +250,7 @@
 
 #undef GUM_MULTI_DIM_OPERATOR
 
-/// a specialized function for functionally combining two multiDimArrays
+// a specialized function for functionally combining two multiDimArrays
 
 #define GUM_MULTI_DIM_OPERATOR_NAME_F combine2MultiDimArrays
 #define GUM_MULTI_DIM_OPERATOR( x, y ) f( ( x ), ( y ) )
@@ -267,7 +261,7 @@
 // the operators that should be used to select appropriately the functions
 // to combine multiDims
 
-/// the function to be used to add two MultiDimImplementations
+// the function to be used to add two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator+
 #define GUM_MULTI_DIM_OPERATOR_FUNC_NAME "+"
 #define GUM_MULTI_DIM_SYMMETRIC_OPERATOR
@@ -276,7 +270,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
-/// the function to be used to multiply two MultiDimImplementations
+// the function to be used to multiply two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator*
 #define GUM_MULTI_DIM_OPERATOR_FUNC_NAME "*"
 #define GUM_MULTI_DIM_SYMMETRIC_OPERATOR
@@ -285,21 +279,21 @@
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
-/// the function to be used to subtract two MultiDimImplementations
+// the function to be used to subtract two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator-
 #define GUM_MULTI_DIM_OPERATOR_FUNC_NAME "-"
 #include <agrum/multidim/patterns/operatorPattern4MultiDimImplementation.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
-/// the function to be used to divide two MultiDimImplementations
+// the function to be used to divide two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator/
 #define GUM_MULTI_DIM_OPERATOR_FUNC_NAME "/"
 #include <agrum/multidim/patterns/operatorPattern4MultiDimImplementation.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
-/// default "basename" functions for combining two MultiDimImplementations
+// default "basename" functions for combining two MultiDimImplementations
 
 #define GUM_MULTI_DIM_OPERATOR_NAME add2MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x ) + ( y )
@@ -331,7 +325,7 @@
 
 namespace gum {
 
-  /// the function used to register all the above functions
+  // the function used to register all the above functions
   template <typename GUM_SCALAR>
   void operators4MultiDimInit() {
     static bool first_init = true;
@@ -395,7 +389,7 @@ namespace gum {
     }
   }
 
-  /// the function used to register all the above functions
+  // the function used to register all the above functions
   template <typename GUM_SCALAR>
   void pointerOperators4MultiDimInit() {
     static bool first_init = true;

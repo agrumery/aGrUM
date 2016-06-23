@@ -22,8 +22,8 @@
  * @brief the pattern used by all binary MultiDimFunctionGraphs operators
  *
  * @author Jean-Christophe MAGNAN
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-
 
 // check if we allowed these patterns to be used
 #ifndef GUM_OPERATOR_PATTERN_ALLOWED
@@ -32,53 +32,56 @@
 
 #else
 
-// =======================================================================================
 #include <agrum/core/functors.h>
-// =======================================================================================
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimFunctionGraph.h>
-// =======================================================================================
+
 #include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
-// =======================================================================================
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 
 /**
- * This specialized function combines two MultiDimFunctionGraphs.
- * Any operation (addition, subtraction, multiplication, ...) must call this
- *methods.
+ * This specialized function combines two MultiDimFunctionGraphs.  Any
+ * operation (addition, subtraction, multiplication, ...) must call this
+ * methods.
  **/
 
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME
 #define GUM_MULTI_DIM_OPERATOR_TYPE GUM_SCALAR
-
   template <typename GUM_SCALAR>
   MultiDimFunctionGraph<GUM_SCALAR>*
   GUM_MULTI_DIM_OPERATOR_NAME( const MultiDimFunctionGraph<GUM_SCALAR>* dg1,
-                               const MultiDimFunctionGraph<GUM_SCALAR>* dg2 ) {
+                               const MultiDimFunctionGraph<GUM_SCALAR>* dg2 )
 #endif
 
+// clang-format off
 
 #ifdef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 #define GUM_MULTI_DIM_OPERATOR_TYPE GUM_SCALAR
-
-    template <typename GUM_SCALAR>
-    MultiDimImplementation<GUM_SCALAR>*
-    GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME(
-        const MultiDimImplementation<GUM_SCALAR>* tt1,
-        const MultiDimImplementation<GUM_SCALAR>* tt2 ) {
-      const MultiDimFunctionGraph<GUM_SCALAR>* dg1 =
-          reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( tt1 );
-      const MultiDimFunctionGraph<GUM_SCALAR>* dg2 =
-          reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( tt2 );
+  template <typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR>*
+  GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME(
+      const MultiDimImplementation<GUM_SCALAR>* tt1,
+      const MultiDimImplementation<GUM_SCALAR>* tt2 ) 
 #endif
 
-      MultiDimFunctionGraphOperator<GUM_MULTI_DIM_OPERATOR_TYPE,
-                                    GUM_MULTI_DIM_OPERATOR> ope( dg1, dg2 );
+  // clang-format on
 
-      return ope.compute();
-    }
+  {
+
+#ifdef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
+    const MultiDimFunctionGraph<GUM_SCALAR>* dg1 =
+        reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( tt1 );
+    const MultiDimFunctionGraph<GUM_SCALAR>* dg2 =
+        reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( tt2 );
+#endif
+    MultiDimFunctionGraphOperator<GUM_MULTI_DIM_OPERATOR_TYPE,
+                                  GUM_MULTI_DIM_OPERATOR>
+        ope( dg1, dg2 );
+
+    return ope.compute();
+  }
 #undef GUM_MULTI_DIM_OPERATOR_TYPE
 
-  }  // End of namespace gum
+}  // End of namespace gum
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */

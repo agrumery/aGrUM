@@ -858,6 +858,11 @@ class PRMexplorer(_object):
         return _pyAgrum.PRMexplorer_attributes(self, classname, allAttributes)
 
 
+    def references(self, classname: 'std::string') -> "PyObject *":
+        """references(PRMexplorer self, std::string classname) -> PyObject *"""
+        return _pyAgrum.PRMexplorer_references(self, classname)
+
+
     def parameters(self, classname: 'std::string') -> "PyObject *":
         """
         parameters(PRMexplorer self, std::string classname) -> PyObject *
@@ -1866,6 +1871,7 @@ class GumException(Exception):
         aMsg: std::string const
 
         __init__(gum::Exception self) -> GumException
+        __init__(gum::Exception self, GumException e) -> GumException
         """
         this = _pyAgrum.new_GumException(*args)
         try:

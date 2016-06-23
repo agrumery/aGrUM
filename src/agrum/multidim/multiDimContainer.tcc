@@ -258,8 +258,11 @@ namespace gum {
         this->add( src.variable( i ) );
     }
 
-    this->endMultipleChanges();
+    if ( this->nbrDim()==0) {
+      GUM_ERROR(FatalError, "Empty potential");
+    }
 
+    this->endMultipleChanges();
 
     Instantiation inst( src );
     inst.setVals( imask );

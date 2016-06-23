@@ -17,10 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief the pattern used by all binary MultiDimImplementations operators
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
 // check if we allowed these patterns to be used
 #ifndef GUM_OPERATOR_PATTERN_ALLOWED
@@ -52,9 +54,9 @@ namespace gum {
 
       try {
         // the function could not be found but, as additions are symmetric, it
-        // may be the case that +(impl2,impl1) does exist in the register.
-        // For instance, we wrote +(MultiDimArray,MultiDimSparse)
-        // but not +(MultiDimSparse,MultiDimArray) and we called
+        // may be the case that +(impl2,impl1) does exist in the register.  For
+        // instance, we wrote +(MultiDimArray,MultiDimSparse) but not
+        // +(MultiDimSparse,MultiDimArray) and we called
         // +(MultiDimSparse,MultiDimArray)
         func = OperatorRegister4MultiDim<T>::Register().get(
             GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl2.name(), impl1.name() );

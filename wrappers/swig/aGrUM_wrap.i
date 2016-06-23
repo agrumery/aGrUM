@@ -264,6 +264,7 @@ namespace std {
 %exceptionclass gum::InvalidEdge;
 %exceptionclass gum::DuplicateLabel;
 %exceptionclass gum::DuplicateElement;
+%exceptionclass gum::UndefinedElement;
 %exceptionclass gum::OutOfBounds;
 %exceptionclass gum::OutOfLowerBound;
 %exceptionclass gum::OutOfUpperBound;

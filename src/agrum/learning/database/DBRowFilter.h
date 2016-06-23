@@ -136,7 +136,7 @@ namespace gum {
        *   }
        * }
        * catch ( NotFound& ) { // stop, there are no more rows to process }
-       * @encode
+       * @endcode
        */
       bool hasRows() noexcept;
 
@@ -162,7 +162,7 @@ namespace gum {
        *   }
        * }
        * catch ( NotFound& ) { // stop, there are no more rows to process }
-       * @encode
+       * @endcode
        */
       FilteredRow& row();
 
