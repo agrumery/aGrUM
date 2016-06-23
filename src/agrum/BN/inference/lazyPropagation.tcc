@@ -59,6 +59,13 @@ namespace gum {
 
 
 
+
+
+
+
+
+
+  
   
   // default constructor
   template <typename GUM_SCALAR>
@@ -268,7 +275,8 @@ namespace gum {
     }
 
     // 5/ remove all the nodes that received hard evidence
-    for ( const auto pair : this->_hardEvidence () ) {
+    const NodeProperty<Idx>& hard_ev_nodes = this->_hardEvidence ();
+    for ( const auto pair : hard_ev_nodes ) {
       moral_graph.eraseNode ( pair.first );
     }
 
@@ -345,13 +353,32 @@ namespace gum {
       __messages_computed.insert ( arc2, false );
     }
 
-
-    ==> tenir compte des hard evidence!!!!!!!!
     
     // put all the CPT's of the Bayes net nodes into the cliques
+    // here, beware: all the potentials that are defined over some nodes including
+    // hard evidence must be projected so that these nodes are removed from the
+    // potential
     for ( const auto node : moral_graph ) {
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
-      __clique_potentials[__node_to_clique[node]].insert( &cpt );
+
+      // get the list of nodes with hard evidence in cpt
+      NodeSet hard_nodes;
+      const auto& variables = cpt.variablesSequence ();
+      for ( const auto var : variables ) {
+        const NodeId node = bn.nodeId ( *var );
+        if ( hard_ev_nodes.contains ( node ) ) 
+          hard_nodes.insert ( node );
+      }
+
+      // if hard_nodes contains hard evidence nodes, perform a projection
+      // and insert the result into the appropriate clique, else insert
+      // directly cpt into the clique
+      if ( hard_nodes.empty () ) {
+        __clique_potentials[__node_to_clique[node]].insert( &cpt );
+      }
+      else {
+        
+      }
     }
   }
 
