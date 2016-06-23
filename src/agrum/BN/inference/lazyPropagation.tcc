@@ -358,6 +358,7 @@ namespace gum {
     // here, beware: all the potentials that are defined over some nodes including
     // hard evidence must be projected so that these nodes are removed from the
     // potential
+    const auto& evidence = this->_evidence ();
     for ( const auto node : moral_graph ) {
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
 
@@ -377,16 +378,41 @@ namespace gum {
         __clique_potentials[__node_to_clique[node]].insert( &cpt );
       }
       else {
-        
+        // marginalize out the hard evidence nodes: first, get their potentials
+        Set<const DiscreteVariable*> hard_variables;
+        __PotentialSet marg_cpt_set { cpt };
+        for ( const auto node : hard_ev_nodes ) {
+          marg_cpt_set.insert( evidence[node] );
+          hard_variables.insert ( bn.variable ( node ) );
+        }
+        // perform the combination of those potentials and their projection
+        MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
+          combine_and_project( __combination, LPNewprojPotential );
+        __PotentialSet new_cpt_list =
+          combine_and_project.combineAndProject( marg_cpt_set, hard_variables );
+
+        // there should be only one potential in new_cpt_list
+        if ( new_cpt_list.size () != 1 ) {
+          GUM_ERROR ( FatalError, "the projection of a potential containing "
+                      << "hard evidence is empty!" );
+        }
+        const Potential<GUM_SCALAR>* projected_cpt = *( new_cpt_list.begin () );
+        __clique_potentials[__node_to_clique[node]].insert ( projected_cpt );
+        __hard_ev_potentials.insert ( projected_cpt );
+      }
+    }
+
+
+    // we shall now add all the potentials of the soft evidence
+    for ( const auto& pair : evidence ) {
+      const NodeId node = pair.first;
+      if ( ! hard_ev_nodes.contains ( node ) ) {
+        __clique_evidence[__node_to_clique[node]].insert ( pair.second );
+        __clique_potentials[__node_to_clique[node]].insert ( pair.second );
       }
     }
   }
 
-
-
-
-
-  
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template <typename GUM_SCALAR>
@@ -396,7 +422,15 @@ namespace gum {
       __createNewJT ();
     }
     else { // update the potentials and messages that require it
-
+      // if we do not need to create a new junction tree, this means that the
+      // hard evidence did not change and the targets and settargets already
+      // belong to the current junction tree. So, the only things that could have
+      // changed w.r.t. the last inference are:
+      // 1/ the values of the evidence (hard or soft)
+      // 2/ the insertion or deletion of some soft evidence
+      // So we first determine the evidence that correspond to cases 1 or 2
+      // and we invalidate all the messages that were sent from the cliques in
+      // which these evidence have been entered
     }
   }
 
@@ -408,6 +442,10 @@ namespace gum {
 
 
 
+
+
+
+  
 
 
 
