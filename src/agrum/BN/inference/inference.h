@@ -65,10 +65,15 @@ namespace gum {
   public:
     /**
      * current state of the inference
-     * Unprepared [addEvidence] --(prepareInference)--> Ready
+     * Unprepared/Outdated [addEvidence] --(prepareInference)--> Ready
      * [changeEvidence]--(makeInference)--> Done
      */
-    enum class StateOfInference { Unprepared, Ready, Done };
+    enum class StateOfInference {
+      UnpreparedStructure,
+      OutdatedPotentials,
+      Ready4Inference,
+      Done
+    };
 
 
     // ############################################################################
@@ -147,10 +152,19 @@ namespace gum {
      * messages. */
     virtual void makeInference () final;
 
+    /// @}
+
+    
+    // ############################################################################
+    /// @name Targets
+    // ############################################################################
+    /// @{
+
     /// Clear all previously defined targets (single targets and sets of targets)
     /**
      * Clear all previously defined targets. As a result, every node is
-     * considered as a potential target.
+     * considered as a potential target (empty target sets = all nodes are
+     * targets).
      * This is the default value for the targets manager.
      */
     virtual void clearTargets () final;
@@ -159,19 +173,15 @@ namespace gum {
     /**
      * @throw UndefinedElement if target is not a NodeId in the Bayes net
      */
-    virtual void addTarget ( NodeId target ) final;
+    virtual void addTarget ( const NodeId target ) final;
 
-    /// Add a set of nodes as a new target
-    /**
-     * @throw UndefinedElement if some node(s) do not belong to the Bayes net
-     */
-    virtual void addSetTarget ( const NodeSet& target ) final;
-    
+    /// removes an existing target
+    /** @warning If the target does not already exist, the method does nothing.
+     * In particular, it does not raise any exception. */
+    virtual void eraseTarget ( const NodeId target ) final;
+
     /// return true if variable is a target
-    virtual bool isTarget( NodeId variable ) const final;
-
-    /// return true if target is a nodeset target.
-    virtual bool isSetTarget ( const NodeSet& target ) const final;
+    virtual bool isTarget( const NodeId variable ) const final;
 
     /// returns the list of single targets
     /**
@@ -179,9 +189,31 @@ namespace gum {
      */
     virtual const NodeSet& targets() const noexcept final;
 
+    /// Add a set of nodes as a new target
+    /**
+     * @throw UndefinedElement if some node(s) do not belong to the Bayes net
+     */
+    virtual void addSetTarget ( const NodeSet& target ) final;
+    
+    /// removes an existing set target
+    /** @warning If the set target does not already exist, the method does
+     * nothing. In particular, it does not raise any exception. */
+    virtual void eraseSetTarget ( const NodeSet& target ) final;
+
+    /// return true if target is a nodeset target.
+    virtual bool isSetTarget ( const NodeSet& target ) const final;
+
     /// returns the list of target sets
     virtual const Set<NodeSet>& setTargets() const noexcept final;
+
+    /// @}
+
     
+    // ############################################################################
+    /// @name Evidence
+    // ############################################################################
+    /// @{
+
     /// adds a new hard evidence on node id
     /**
      * @throw UndefinedElement if id does not belong to the Bayesian network
@@ -288,6 +320,7 @@ namespace gum {
     /// the Bayes net on which we perform inferences
     const IBayesNet<GUM_SCALAR>& _bn;
 
+    
     /**
      * _prepareInference is called when the bn, the targets and soft/hard
      * evidence are known. Note that the values of evidence are not necessarily
@@ -295,17 +328,26 @@ namespace gum {
      */
     virtual void _prepareInference() = 0;
 
-    /** fired when the status (hard/soft) of an evidence is changed.
+    /// fired when a new evidence is inserted
+    virtual void _onEvidenceAdded ( const NodeId id,
+                                    bool isHardEvidence ) = 0;
+
+    /// fired when an evidence is removed
+    virtual void _onEvidenceErased ( const NodeId id,
+                                     bool isHardEvidence ) = 0;
+
+    /// fired when all the evidence are erased
+    virtual void _onAllEvidenceErased () = 0;
+    
+    /** @brief fired when an evidence is changed, in particular when its status
+     * (soft/hard) changes
      *
      * @param nodeId the node of the changed evidence
      * @param hasChangedSoftHard true if the evidence has changed from Soft to
      * Hard or from Hard to Soft
      *
-     * @return true if the change forces the inference to go back to Unprepared
-     * (otherwise the state becomes Ready)
-     *
      */
-    virtual bool _onEvidenceChanged( const NodeId id,
+    virtual void _onEvidenceChanged( const NodeId id,
                                      bool hasChangedSoftHard ) = 0;
 
     /**
@@ -339,25 +381,22 @@ namespace gum {
 
     
   private:
-    /// create the internal structure for a hard evidence
-    Potential<GUM_SCALAR> __createHardEvidence( NodeId id,
-                                                Idx val ) const;
-    
-    bool __isHardEvidence( const Potential<GUM_SCALAR>& pot, Idx& val ) const;
+    /// the current state of the inference (unprepared/ready/done)
+    StateOfInference __state { StateOfInference::UnpreparedStructure };
 
-
-    /// remove all the posteriors computed (single and set targets)
-    void __invalidatePosteriors() noexcept;
-
-    StateOfInference __state;
-
+    /// the set of single posteriors computed during the last inference
     NodeProperty<const Potential<GUM_SCALAR>*> __target_posteriors;
+
+    /// the set of set target posteriors computed during the last inference
     HashTable<NodeSet, const Potential<GUM_SCALAR>*> __settarget_posteriors;
 
+    /// the set of single targets
     NodeSet __targets;
 
+    /// the set of set targets (joint targets)
     Set<NodeSet> __settargets;
 
+    /// the set of evidence entered into the network
     NodeProperty<const Potential<GUM_SCALAR>*> __evidence;
 
     /// assign to each node with a hard evidence the index of its observed value
@@ -365,6 +404,22 @@ namespace gum {
 
     /// the set of nodes that received soft evidence
     NodeSet __soft_evidence_nodes;
+
+    /// the set of nodes that received hard evidence
+    NodeSet __hard_evidence_nodes;
+
+
+
+    /// create the internal structure for a hard evidence
+    Potential<GUM_SCALAR> __createHardEvidence( NodeId id,
+                                                Idx val ) const;
+
+    /// checks whether a potential corresponds to a hard evidence or not
+    bool __isHardEvidence( const Potential<GUM_SCALAR>& pot, Idx& val ) const;
+
+    /// remove all the posteriors computed (single and set targets)
+    void __invalidatePosteriors() noexcept;
+
 
   };
 

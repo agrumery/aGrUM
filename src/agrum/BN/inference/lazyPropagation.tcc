@@ -158,7 +158,7 @@ namespace gum {
     if ( __JT == nullptr ) return true;
 
     // if the list of hard evidence changed, then we need to create a new JT
-    const NodeProperty<Idx>& hard_ev_nodes = _hardEvidence();
+    const NodeProperty<Idx>& hard_ev_nodes = _hardEvidence ();
     if ( hard_ev_nodes.size () != __hard_evidence_nodes.size () ) return true;
     for ( const auto node : hard_ev_nodes ) {
       if ( ! __hard_evidence_nodes.contains ( node ) ) return true;
@@ -416,12 +416,19 @@ namespace gum {
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::_prepareInference () {
+  void LazyPropagation<GUM_SCALAR>::_prepareInferenceStructure () {
     // check if a new JT is really needed. If so, create it
     if ( __isNewJTNeeded () ) {
       __createNewJT ();
     }
-    else { // update the potentials and messages that require it
+  }
+  
+
+  /// update the potentials stored in the cliques and invalidate outdated messages
+  template <typename GUM_SCALAR>
+  void LazyPropagation<GUM_SCALAR>::_updateInferencePotentials () {
+  
+    { // update the potentials and messages that require it
       // if we do not need to create a new junction tree, this means that the
       // hard evidence did not change and the targets and settargets already
       // belong to the current junction tree. So, the only things that could have
@@ -431,6 +438,8 @@ namespace gum {
       // So we first determine the evidence that correspond to cases 1 or 2
       // and we invalidate all the messages that were sent from the cliques in
       // which these evidence have been entered
+
+      
     }
   }
 

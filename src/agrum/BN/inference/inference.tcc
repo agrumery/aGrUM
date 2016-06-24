@@ -32,15 +32,14 @@ namespace gum {
   
   // Default Constructor
   template <typename GUM_SCALAR>
-  Inference<GUM_SCALAR>::Inference( const IBayesNet<GUM_SCALAR>& bn ) :
-    _bn ( bn ),
-    __state( StateOfInference::Unprepared ) {
+  Inference<GUM_SCALAR>::Inference ( const IBayesNet<GUM_SCALAR>& bn ) :
+    _bn ( bn ) {
     GUM_CONSTRUCTOR( Inference );
   }
 
   
   // Destructor
-  template <typename GUM_SCALAR> Inference<GUM_SCALAR>::~Inference() {
+  template <typename GUM_SCALAR> Inference<GUM_SCALAR>::~Inference () {
     __invalidatePosteriors ();
     clearEvidence ();
 
@@ -50,8 +49,8 @@ namespace gum {
 
   // remove all the posteriors computed
   template <typename GUM_SCALAR>
-  void Inference<GUM_SCALAR>::__invalidatePosteriors() noexcept {
-    // remove the posteriors for single targets
+  void Inference<GUM_SCALAR>::__invalidatePosteriors () noexcept {
+    // remove the posteriors for the single targets
     for ( const auto& pair : __target_posteriors ) {
       if ( pair.second != nullptr ) {
         delete ( pair.second );
@@ -60,7 +59,7 @@ namespace gum {
     __target_posteriors.clear ();
 
     // remove the posteriors for the target sets
-        for ( const auto& pair : __settarget_posteriors ) {
+    for ( const auto& pair : __settarget_posteriors ) {
       if ( pair.second != nullptr ) {
         delete ( pair.second );
       }
@@ -90,35 +89,10 @@ namespace gum {
   }
 
 
-  // prepare the internal inference structures for the next inference
-  template <typename GUM_SCALAR>
-  INLINE void Inference<GUM_SCALAR>::prepareInference () {
-    if ( isReady() || isDone() ) {
-      return;
-    }
-
-    _prepareInference();
-    __state = StateOfInference::Ready;
-  }
-
-
-  // perform the heavy computations needed to compute the targets' posteriors
-  template <typename GUM_SCALAR>
-  INLINE void Inference<GUM_SCALAR>::makeInference () {
-    if ( isDone() ) {
-      return;
-    }
-
-    if ( ! isReady() ) {
-      prepareInference ();
-    }
-
-    _makeInference();
-
-    __invalidatePosteriors ();
-    __state = StateOfInference::Done;
-  }
   
+  // ##############################################################################
+  // Targets
+  // ##############################################################################
 
   // return true if variable is a target
   template <typename GUM_SCALAR>
@@ -153,13 +127,13 @@ namespace gum {
   INLINE void Inference<GUM_SCALAR>::clearTargets () {
     __targets.clear();
     __settargets.clear();
-    __state = StateOfInference::Unprepared;
+    __state = StateOfInference::UnpreparedStructure;
   }
   
 
   // Add a single target to the list of targets
   template <typename GUM_SCALAR>
-  void Inference<GUM_SCALAR>::addTarget( NodeId target ) {
+  void Inference<GUM_SCALAR>::addTarget ( NodeId target ) {
     // check if the node belongs to the Bayesian network
     if ( ! _bn.variableNodeMap().exists( target ) ) {
       GUM_ERROR( UndefinedElement, target << " is not a NodeId in the bn" );
@@ -168,24 +142,24 @@ namespace gum {
     // if the target set is empty, add the new target
     if ( __targets.empty () ) {
       __targets.insert( target );
-      __state = StateOfInference::Unprepared;
+      __state = StateOfInference::UnpreparedStructure;
     }
     else if ( ! __targets.contains ( target ) ) {
       if ( __targets.size() == _bn.size() - 1 ) {
-        clearTargets();  // all node are targets <=> no target anymore
+        clearTargets();  // all node are targets <=> no target specified anymore
       }
       else {
         __targets.insert( target );
       }
 
-      __state = StateOfInference::Unprepared;
+      __state = StateOfInference::UnpreparedStructure;
     }
   }
 
 
   // Add a set of nodes as a new target
   template <typename GUM_SCALAR>
-  void Inference<GUM_SCALAR>::addSetTarget( const NodeSet& target ) {
+  void Inference<GUM_SCALAR>::addSetTarget ( const NodeSet& target ) {
     // check if the nodes in the target belong to the Bayesian network
     for ( const auto node : target ) {
       if ( ! _bn.variableNodeMap().exists( node ) ) {
@@ -197,7 +171,39 @@ namespace gum {
     if ( __settargets.contains ( target ) ) return;
 
     __settargets.insert ( target );
-    __state = StateOfInference::Unprepared;
+    __state = StateOfInference::UnpreparedStructure;
+  }
+
+  
+  // removes an existing target
+  template <typename GUM_SCALAR>
+  void Inference<GUM_SCALAR>::eraseTarget ( NodeId target ) {
+    // check if the node belongs to the Bayesian network
+    if ( ! _bn.variableNodeMap().exists( target ) ) {
+      GUM_ERROR( UndefinedElement, target << " is not a NodeId in the bn" );
+    }
+    
+    if ( __targets.contains ( target ) ) {
+      __targets.erase ( target );
+      __state = StateOfInference::UnpreparedStructure;
+    }
+  }
+
+  // removes an existing set target
+  template <typename GUM_SCALAR>
+  void Inference<GUM_SCALAR>::eraseSetTarget ( const NodeSet& target ) {
+    // check if the nodes in the target belong to the Bayesian network
+    for ( const auto node : target ) {
+      if ( ! _bn.variableNodeMap().exists( node ) ) {
+        GUM_ERROR( UndefinedElement, target << " does not belong to the bn" );
+      }
+    }
+
+    // check that the settarget set does not contain the new target
+    if ( __settargets.contains ( target ) ) {
+      __settargets.erase ( target );
+      __state = StateOfInference::UnpreparedStructure;
+    }
   }
   
   
@@ -213,7 +219,12 @@ namespace gum {
   INLINE const Set<NodeSet>& Inference<GUM_SCALAR>::setTargets () const noexcept {
     return __settargets;
   }
-  
+
+
+
+  // ##############################################################################
+  // Evidence
+  // ##############################################################################
 
   // create the internal structure for a hard evidence
   template <typename GUM_SCALAR>
@@ -226,8 +237,8 @@ namespace gum {
     }
 
     if ( _bn.variable( id ).domainSize() <= val ) {
-      GUM_ERROR( InvalidArgument, _bn.variable( id ) << " and " << val
-                                                     << " do not correspond." );
+      GUM_ERROR( InvalidArgument, "node " << _bn.variable( id )
+                 << " and value " << val << " are incompatible." );
     }
     
     // create the deterministic potential
@@ -253,7 +264,7 @@ namespace gum {
     bool notZero = false;
     Instantiation I( pot );
 
-    for ( I.setFirst(); !I.end(); I.inc() ) {
+    for ( I.setFirst (); !I.end (); I.inc () ) {
       if ( pot[I] != 0.0 ) {
         if ( notZero ) {  // we already met a non-zero value
           return false;
@@ -265,7 +276,7 @@ namespace gum {
       }
     }
 
-    if ( !notZero ) {  // we met no non-zero value
+    if ( ! notZero ) {  // we met no non-zero value
       GUM_ERROR( FatalError, "Evidence of impossibility (vector of 0s)" );
     }
 
@@ -293,7 +304,7 @@ namespace gum {
 
     if ( _bn.variable( id ).domainSize() != vals.size() ) {
       GUM_ERROR( InvalidArgument, "node " << _bn.variable( id )
-                 << " and its evidence have different sizes." );
+                 << " and its evidence vector have different sizes." );
     }
 
     Potential<GUM_SCALAR> pot;
@@ -302,37 +313,6 @@ namespace gum {
     addEvidence( std::move ( pot ) );
   }
 
-
-  // adds a new evidence on node id (might be soft or hard)
-  template <typename GUM_SCALAR>
-  void
-  Inference<GUM_SCALAR>::addEvidence( const Potential<GUM_SCALAR>& pot ) {
-    // check if the potential corresponds to an evidence
-    if ( pot.nbrDim() != 1 ) {
-      GUM_ERROR( InvalidArgument, pot << " is not mono-dimensional." );
-    }
-    const NodeId id = _bn.variableNodeMap().get( pot.variable( 0 ) );
-
-    if ( hasEvidence( id ) ) {
-      GUM_ERROR( InvalidArgument,
-                 id << " already has an evidence. Please use chgEvidence()." );
-    }
-    
-    // check whether we have a hard evidence (and also check whether the
-    // potential only contains 0 (in this case, this will automatically raise
-    // an exception) )
-    Idx val;
-    bool hard_evidence = __isHardEvidence ( pot, val );
-
-    // insert the evidence
-    __evidence.insert( id, new Potential<GUM_SCALAR>( pot ) );
-    if ( hard_evidence ) {  // pot is deterministic
-      __hardEvidence.insert( id, val );
-    }
-    
-    __state = StateOfInference::Unprepared;
-  }
-  
 
   // adds a new evidence on node id (might be soft or hard)
   template <typename GUM_SCALAR>
@@ -353,16 +333,60 @@ namespace gum {
     // potential only contains 0 (in this case, this will automatically raise
     // an exception) )
     Idx val;
-    bool hard_evidence = __isHardEvidence ( pot, val );
+    bool is_hard_evidence = __isHardEvidence ( pot, val );
 
     // insert the evidence
     __evidence.insert( id, new Potential<GUM_SCALAR>
                        ( std::forward<Potential<GUM_SCALAR>> ( pot ) ) );
-    if ( hard_evidence ) {  // pot is deterministic
-      __hardEvidence.insert( id, val );
+    if ( is_hard_evidence ) {  // pot is deterministic
+      __hard_evidence.insert( id, val );
+      __hard_evidence_nodes.insert ( id );
+    }
+    else {
+      __soft_evidence_nodes.insert ( id );
     }
 
-    __state = StateOfInference::Unprepared;
+    __state = StateOfInference::UnpreparedStructure;
+    _onEvidenceAdded ( id, is_hard_evidence );
+  }
+
+
+  // adds a new evidence on node id (might be soft or hard)
+  template <typename GUM_SCALAR>
+  INLINE void
+  Inference<GUM_SCALAR>::addEvidence( const Potential<GUM_SCALAR>& pot ) {
+    Potential<GUM_SCALAR> new_pot ( pot );
+    addEvidence( std::move ( new_pot ) );
+  }
+
+  
+  // indicates whether some node(s) have received evidence
+  template <typename GUM_SCALAR>
+  INLINE bool Inference<GUM_SCALAR>::hasEvidence () const {
+    return ! __evidence.empty ();
+  }
+
+
+  // indicates whether node id has received an evidence
+  template <typename GUM_SCALAR>
+  INLINE bool Inference<GUM_SCALAR>::hasEvidence ( NodeId id ) const {
+    return __evidence.exists( id );
+  }
+  
+
+  // indicates whether node id has received a hard evidence
+  template <typename GUM_SCALAR>
+  INLINE bool
+  Inference<GUM_SCALAR>::hasHardEvidence ( NodeId id ) const {
+    return __hard_evidence_nodes.exists( id );
+  }
+
+
+  // indicates whether node id has received a soft evidence
+  template <typename GUM_SCALAR>
+  INLINE bool
+  Inference<GUM_SCALAR>::hasSoftEvidence ( NodeId id ) const {
+    return __soft_evidence_nodes.exists( id );
   }
 
 
@@ -417,7 +441,7 @@ namespace gum {
     // potential only contains 0 (in this case, this will automatically raise
     // an exception) )
     Idx val;
-    bool hard_evidence = __isHardEvidence ( pot, val );
+    bool is_hard_evidence = __isHardEvidence ( pot, val );
 
     // modify the evidence already stored
     const Potential<GUM_SCALAR>* localPot = __evidence[id];
@@ -430,81 +454,37 @@ namespace gum {
     // whether evidence change from Hard to Soft or not.
     bool hasChangedSoftHard = false;
 
-    if ( hard_evidence ) {
+    if ( is_hard_evidence ) {
       if ( ! hasHardEvidence( id ) ) {
         hasChangedSoftHard = true;
-        __hardEvidence.insert( id, val );
+        __hard_evidence.insert( id, val );
+        __hard_evidence_nodes.insert ( id );
+        __soft_evidence_nodes.erase ( id );
+      }
+      else {
+        __hard_evidence[id] = val;
       }
     }
     else {
       if ( hasHardEvidence( id ) ) {  // evidence was hard
-        __hardEvidence.erase( id );
+        __hard_evidence.erase( id );
+        __hard_evidence_nodes.erase( id );
+        __soft_evidence_nodes.insert ( id );
         hasChangedSoftHard = true;
       }
     }
 
-    if ( _onEvidenceChanged( id, hasChangedSoftHard ) ) {
-      __state = StateOfInference::Unprepared;
+    _onEvidenceChanged ( id, hasChangedSoftHard );
+    
+    if ( hasChangedSoftHard ) {
+      __state = StateOfInference::UnpreparedStructure;
     }
     else {
-      // if unprepared, it remains unprepared
-      // it it is done, it becomes Ready again
-      // it if is ready, it remains Ready
-      if ( isDone() ) {
-        __state = StateOfInference::Ready;
-      }
+      // if status = UnpreparedStructure, remain in that state, otherwise,
+      // go into an outdatedPoential state
+      if ( __state != StateOfInference::UnpreparedStructure )
+        __state = StateOfInference::OutdatedPotentials;
     }
-  }
-
-
-  // indicates whether some node(s) have received evidence
-  template <typename GUM_SCALAR>
-  INLINE bool Inference<GUM_SCALAR>::hasEvidence () const {
-    return ! __evidence.empty ();
-  }
-
-
-  // indicates whether node id has received an evidence
-  template <typename GUM_SCALAR>
-  INLINE bool Inference<GUM_SCALAR>::hasEvidence ( NodeId id ) const {
-    return __evidence.exists( id );
-  }
-  
-
-  // indicates whether node id has received a hard evidence
-  template <typename GUM_SCALAR>
-  INLINE bool
-  Inference<GUM_SCALAR>::hasHardEvidence ( NodeId id ) const {
-    return __hardEvidence.exists( id );
-  }
-
-
-  // indicates whether node id has received a soft evidence
-  template <typename GUM_SCALAR>
-  INLINE bool
-  Inference<GUM_SCALAR>::hasSoftEvidence ( NodeId id ) const {
-    return __evidence.exists( id ) && ! __hardEvidence.exists( id );
-  }
-
-  
-  // returns the number of evidence entered into the Bayesian network
-  template <typename GUM_SCALAR>
-  INLINE Size Inference<GUM_SCALAR>::nbrEvidence () const {
-    return __evidence.size();
-  }
-
-
-  // returns the number of hard evidence entered into the Bayesian network
-  template <typename GUM_SCALAR>
-  INLINE Size Inference<GUM_SCALAR>::nbrHardEvidence () const {
-    return __hardEvidence.size();
-  }
-  
-
-  // returns the number of soft evidence entered into the Bayesian network
-  template <typename GUM_SCALAR>
-  INLINE Size Inference<GUM_SCALAR>::nbrSoftEvidence () const {
-    return __evidence.size() - __hardEvidence.size();
   }
 
   
@@ -513,12 +493,19 @@ namespace gum {
   INLINE void Inference<GUM_SCALAR>::clearEvidence ( NodeId id ) {
     if ( hasEvidence( id ) ) {
       if ( hasHardEvidence( id ) ) {
-        __hardEvidence.erase ( id );
+        __hard_evidence.erase ( id );
+        __hard_evidence_nodes.erase ( id );
+        __state = StateOfInference::UnpreparedStructure;
+        _onEvidenceErased ( id, true );
+      }
+      else {
+        __soft_evidence_nodes.erase ( id );
+        __state = StateOfInference::OutdatedPotentials;
+        _onEvidenceErased ( id, false );
       }
 
       delete ( __evidence[id] );
       __evidence.erase( id );
-      __state = StateOfInference::Unprepared;
     }
   }
 
@@ -532,9 +519,34 @@ namespace gum {
         delete ( pair.second );
       }
 
-    __evidence.clear();
+    __evidence.clear ();
+    __hard_evidence.clear ();
+    __hard_evidence_nodes.clear ();
+    __soft_evidence_nodes.clear ();
 
-    __state = StateOfInference::Unprepared;
+    _onAllEvidenceErased ();
+ 
+    __state = StateOfInference::UnpreparedStructure;
+  }
+
+  // returns the number of evidence entered into the Bayesian network
+  template <typename GUM_SCALAR>
+  INLINE Size Inference<GUM_SCALAR>::nbrEvidence () const {
+    return __evidence.size();
+  }
+
+
+  // returns the number of hard evidence entered into the Bayesian network
+  template <typename GUM_SCALAR>
+  INLINE Size Inference<GUM_SCALAR>::nbrHardEvidence () const {
+    return __hard_evidence.size();
+  }
+  
+
+  // returns the number of soft evidence entered into the Bayesian network
+  template <typename GUM_SCALAR>
+  INLINE Size Inference<GUM_SCALAR>::nbrSoftEvidence () const {
+    return __evidence.size() - __hard_evidence.size();
   }
 
   
@@ -553,6 +565,46 @@ namespace gum {
     return __hardEvidence;
   }
 
+
+  
+  // ##############################################################################
+  // Inference
+  // ##############################################################################
+
+  // prepare the internal inference structures for the next inference
+  template <typename GUM_SCALAR>
+  INLINE void Inference<GUM_SCALAR>::prepareInference () {
+    if ( isReady() || isDone() ) {
+      return;
+    }
+
+    if ( __state == StateOfInference::UnpreparedStructure )
+      _prepareInferenceStructure ();
+    else
+      _updateInferencePotentials ();
+    
+    __state = StateOfInference::Ready;
+  }
+
+
+  // perform the heavy computations needed to compute the targets' posteriors
+  template <typename GUM_SCALAR>
+  INLINE void Inference<GUM_SCALAR>::makeInference () {
+    if ( isDone() ) {
+      return;
+    }
+
+    if ( ! isReady() ) {
+      prepareInference ();
+    }
+
+    __invalidatePosteriors ();
+    _makeInference();
+
+    __state = StateOfInference::Done;
+  }
+
+
   
   // Compute the posterior of a node.
   template <typename GUM_SCALAR>
@@ -562,11 +614,11 @@ namespace gum {
       GUM_ERROR( UndefinedElement, var << " is not a target node" );
     }
 
-    if ( !isDone() ) {
+    if ( ! isDone() ) {
       makeInference();
     }
 
-    if ( !__target_posteriors.exists( var ) ) {
+    if ( ! __target_posteriors.exists( var ) ) {
       Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR>();
       pot->add( _bn.variable( var ) );
       _fillPosterior( var, *pot );

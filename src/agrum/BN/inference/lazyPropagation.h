@@ -214,11 +214,11 @@ namespace gum {
 
   protected:
     /**
-     * _prepareInference is called when the bn, the targets and soft/hard
+     * _prepareInferenceStructure is called when the bn, the targets and soft/hard
      * evidence are known. Note that the values of evidence are not necessarily
      * known and can be changed between _prepare and _makeInference.
      */
-    virtual void _prepareInference();
+    virtual void _prepareInferenceStructure ();
 
 
     
