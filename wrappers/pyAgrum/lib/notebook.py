@@ -426,7 +426,7 @@ def showPotential(pot,asString=False,digits=4):
                 if par==1:
                     html.append("<th style='background-color:#BBBBBB'>{}</th>".format(label))
                 else:
-                    if inst.val(par-1)==0:
+                    if sum([inst.val(i) for i in range(1,par)])==0:
                         html.append("<th style='background-color:#BBBBBB;' rowspan = '{}'>{}</th>".format(offset[par],label))
         html.append(("<td style='text-align:right;'>{:."+str(digits)+"f}</td>").format(pot.get(inst)))
         inst.inc()
