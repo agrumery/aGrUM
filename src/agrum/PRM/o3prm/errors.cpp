@@ -291,7 +291,7 @@ namespace gum {
             << "Illegal CPT value \"" << f.formula().formula()
             << "\" in attribute " << c << "." << attr.label();
         try {
-          msg << f.formula().result();
+          msg << " formula resolve to " << f.formula().result();
         } catch ( ... ) {
           msg << "\"" << f.formula().formula() << "\"";
         }
