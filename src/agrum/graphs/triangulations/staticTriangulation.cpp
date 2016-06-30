@@ -30,103 +30,114 @@
 #include <agrum/graphs/triangulations/staticTriangulation.inl>
 #endif  // GUM_NO_INLINE
 
+
 namespace gum {
 
-  /// default constructor
-
-  StaticTriangulation::StaticTriangulation(
-      const UndiGraph* theGraph,
-      const NodeProperty<Size>* modal,
+  
+  // default constructor
+  StaticTriangulation::StaticTriangulation (
+      const UndiGraph& theGraph,
+      const NodeProperty<Size>& domsizes,
       const EliminationSequenceStrategy& elimSeq,
       const JunctionTreeStrategy& JTStrategy,
-      bool minimality )
-      : _elimination_sequence_strategy( elimSeq.newFactory() )
-      , _junction_tree_strategy( JTStrategy.newFactory() )
-      , __original_graph( theGraph )
-      , __junction_tree( 0 )
-      , __has_triangulation( false )
-      , __has_triangulated_graph( false )
-      , __has_elimination_tree( false )
-      , __has_junction_tree( false )
-      , __has_max_prime_junction_tree( false )
-      , __has_fill_ins( false )
-      , __minimality_required( minimality )
-      , __we_want_fill_ins( false ) {
+      bool minimality ) :
+    Triangulation ( domsizes ),
+    _elimination_sequence_strategy( elimSeq.newFactory() ),
+    _junction_tree_strategy( JTStrategy.newFactory() ),
+    __original_graph( &theGraph ),
+    __minimality_required( minimality ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( StaticTriangulation );
 
-    _modalities = *modal;
-
     // if the graph is not empty, resize several structures in order to speed-up
     // their fillings.
-    if ( theGraph ) {
-      __elim_order.resize( theGraph->size() );
-      __reverse_elim_order.resize( theGraph->size() );
-      __elim_cliques.resize( theGraph->size() );
-      __node_2_max_prime_clique.resize( theGraph->size() );
-      __added_fill_ins.resize( theGraph->size() );
+    __elim_order.resize( theGraph.size() );
+    __reverse_elim_order.resize( theGraph.size() );
+    __elim_cliques.resize( theGraph.size() );
+    __node_2_max_prime_clique.resize( theGraph.size() );
+    __added_fill_ins.resize( theGraph.size() );
+
+    // register the triangulation to its junction tree strategy
+    _junction_tree_strategy->setTriangulation( this );
+  }
+
+  
+  // default constructor
+  StaticTriangulation::StaticTriangulation(
+      const EliminationSequenceStrategy& elimSeq,
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality ) :
+    _elimination_sequence_strategy( elimSeq.newFactory() ),
+    _junction_tree_strategy( JTStrategy.newFactory() ),
+    __minimality_required( minimality ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( StaticTriangulation );
+
+    // register the triangulation to its junction tree strategy
+    _junction_tree_strategy->setTriangulation( this );
+  }
+
+
+  // copy constructor
+  StaticTriangulation::StaticTriangulation ( const StaticTriangulation& from ) :
+    Triangulation ( from ),
+    _elimination_sequence_strategy
+    ( from._elimination_sequence_strategy->newFactory() ),
+    _junction_tree_strategy( from._junction_tree_strategy->newFactory() ),
+    __original_graph( from.__original_graph ),
+    __minimality_required( from.__minimality_required ),
+    __we_want_fill_ins( from.__we_want_fill_ins ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( StaticTriangulation );
+  
+    // if the graph is not empty, resize several structures in order to speed-up
+    // their fillings.
+    if ( __original_graph != nullptr ) {
+      __elim_order.resize( __original_graph->size() );
+      __reverse_elim_order.resize( __original_graph->size() );
+      __elim_cliques.resize( __original_graph->size() );
+      __node_2_max_prime_clique.resize( __original_graph->size() );
+      __added_fill_ins.resize( __original_graph->size() );
     }
 
     // register the triangulation to its junction tree strategy
     _junction_tree_strategy->setTriangulation( this );
   }
 
-  /// default constructor
-
-  StaticTriangulation::StaticTriangulation(
-      const EliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy,
-      bool minimality )
-      : _elimination_sequence_strategy( elimSeq.newFactory() )
-      , _junction_tree_strategy( JTStrategy.newFactory() )
-      , __original_graph( 0 )
-      , __junction_tree( 0 )
-      , __has_triangulation( false )
-      , __has_triangulated_graph( false )
-      , __has_elimination_tree( false )
-      , __has_junction_tree( false )
-      , __has_max_prime_junction_tree( false )
-      , __has_fill_ins( false )
-      , __minimality_required( minimality )
-      , __we_want_fill_ins( false ) {
-    // for debugging purposes
-    GUM_CONSTRUCTOR( StaticTriangulation );
-
-    // register the triangulation to its junction tree strategy
-    _junction_tree_strategy->setTriangulation( this );
-  }
 
   /// destructor
-
   StaticTriangulation::~StaticTriangulation() {
     // for debugging purposes
     GUM_DESTRUCTOR( StaticTriangulation );
+
     delete _elimination_sequence_strategy;
     delete _junction_tree_strategy;
+
+    // no need to deallocate __original_graph nor __junction_tree because
+    // they are not owned by the static triangulation class
   }
 
+  
   /// reinitialize the graph to be triangulated to an empty graph
-
-  void StaticTriangulation::clear() {
+  void StaticTriangulation::clear () {
     // clear the factories
-    _elimination_sequence_strategy->clear();
-    _junction_tree_strategy->clear();
+    _elimination_sequence_strategy->clear ();
+    _junction_tree_strategy->clear ();
 
     // remove the current graphs
-    __original_graph = 0;
-    _modalities.clear();
-    __junction_tree = 0;
-    __triangulated_graph.clear();
-    __elim_tree.clear();
-    __max_prime_junction_tree.clear();
-    __elim_cliques.clear();
-    __node_2_max_prime_clique.clear();
+    __original_graph = nullptr;
+    __junction_tree = nullptr;
+    __triangulated_graph.clear ();
+    __elim_tree.clear ();
+    __max_prime_junction_tree.clear ();
+    __elim_cliques.clear ();
+    __node_2_max_prime_clique.clear ();
 
     // remove all fill-ins and orderings
-    __fill_ins.clear();
-    __added_fill_ins.clear();
-    __elim_order.clear();
-    __reverse_elim_order.clear();
+    __fill_ins.clear ();
+    __added_fill_ins.clear ();
+    __elim_order.clear ();
+    __reverse_elim_order.clear ();
 
     // indicates that the junction tree, the max prime tree, etc, are updated
     __has_triangulation = true;
@@ -136,6 +147,7 @@ namespace gum {
     __has_max_prime_junction_tree = true;
     __has_fill_ins = true;
   }
+  
 
   // removes redondant fill-ins and compute proper elimination cliques and order
   void StaticTriangulation::__computeRecursiveThinning() {
@@ -152,19 +164,16 @@ namespace gum {
 
     // the FMINT loop
     for ( unsigned int i = __added_fill_ins.size() - 1;
-          i < __added_fill_ins.size();
-          --i ) {
+          i < __added_fill_ins.size(); --i ) {
       if ( __added_fill_ins[i].size() ) {
         // here apply MINT to T_i = __added_fill_ins[i]
         EdgeSet& T = __added_fill_ins[i];
 
         // compute R: by default, R is equal to all the nodes in the graph
         // when R[...] >= j (see the j in the loop below), this means that the
-        // node
-        // belongs to an extremal edge in R
+        // node belongs to an extremal edge in R
         for ( unsigned int k = 0; k < __elim_order.size(); ++k )
-          R[__elim_order[k]] =
-              0;  // WARNING: do not replace R[__elim_order[k]] by
+          R[__elim_order[k]] = 0; // WARNING: do not replace R[__elim_order[k]] by
 
         // R[k] because the node ids may not be
         // consecutive numbers
@@ -176,7 +185,7 @@ namespace gum {
           // find T' (it is equal to the edges (v,w) of T such that
           // the intersection of adj(v,G) and adj(w,G) is complete and such that
           // v and/or w belongs to an extremal node in R
-          for ( const auto edge : T ) {
+          for ( const auto& edge : T ) {
             node1 = edge.first();
             node2 = edge.second();
 
@@ -222,7 +231,7 @@ namespace gum {
 
           // compute the new value of T (i.e. T\T') and update the
           // triangulated graph
-          for ( const auto edge : T_prime ) {
+          for ( const auto& edge : T_prime ) {
             T.erase( edge );
             __triangulated_graph.eraseEdge( edge );
 
@@ -254,8 +263,8 @@ namespace gum {
       numbered_neighbours.insert( __elim_order[i], 0 );
 
     // perform the maximum cardinality search
-    for ( unsigned int i = __elim_order.size() - 1; i < __elim_order.size();
-          --i ) {
+    for ( unsigned int i = __elim_order.size() - 1;
+          i < __elim_order.size(); --i ) {
       NodeId node = numbered_neighbours.pop();
       __elim_order[i] = node;
       __reverse_elim_order[node] = i;
@@ -264,7 +273,8 @@ namespace gum {
         try {
           numbered_neighbours.setPriority(
               neighbour, 1 + numbered_neighbours.priority( neighbour ) );
-        } catch ( NotFound& ) {
+        }
+        catch ( NotFound& ) {
         }
       }
     }
@@ -282,9 +292,9 @@ namespace gum {
     }
   }
 
+  
   /// returns an elimination tree from a triangulated graph
-
-  void StaticTriangulation::__computeEliminationTree() {
+  void StaticTriangulation::__computeEliminationTree () {
     // if there already exists an elimination tree, no need to compute it again
     if ( __has_elimination_tree ) return;
 
@@ -321,13 +331,14 @@ namespace gum {
     __has_elimination_tree = true;
   }
 
+  
   /// used for computing the junction tree of the maximal prime subgraphs
-
-  void StaticTriangulation::__computeMaxPrimeMergings(
-      const NodeId node,
-      const NodeId from,
-      std::vector<Arc>& merged_cliques,
-      NodeSet& mark ) const {
+  void
+  StaticTriangulation::__computeMaxPrimeMergings
+  ( const NodeId node,
+    const NodeId from,
+    std::vector<Arc>& merged_cliques,
+    NodeSet& mark ) const {
     mark << node;
 
     for ( const auto other_node : __junction_tree->neighbours( node ) )
@@ -357,11 +368,11 @@ namespace gum {
       }
   }
 
+  
   /// computes the junction tree of the maximal prime subgraphs
-
   void StaticTriangulation::__computeMaxPrimeJunctionTree() {
-    // if there already exists a max prime junction tree, no need to recompute
-    // it
+    // if there already exists a max prime junction tree, no need
+    // to recompute it
     if ( __has_max_prime_junction_tree ) return;
 
     // if there is no junction tree, create it
@@ -436,10 +447,10 @@ namespace gum {
 
     __has_max_prime_junction_tree = true;
   }
+  
 
   /// returns the triangulated graph
-
-  const UndiGraph& StaticTriangulation::triangulatedGraph() {
+  const UndiGraph& StaticTriangulation::triangulatedGraph () {
     if ( !__has_triangulation ) __triangulate();
 
     // if we did not construct the triangulated graph during the triangulation,
@@ -478,29 +489,39 @@ namespace gum {
     return __triangulated_graph;
   }
 
+  
   /* initialize the triangulation algorithm for a new graph
    * @param gr the new @ref UndiGraph
-   * @param modal the @ref Property giving the number of modalities for each
-   * node in
-   * the graph
+   * @param domsizes the @ref Property giving the number of modalities for each
+   * node in the graph
    */
-  void StaticTriangulation::_setGraph( const UndiGraph* gr,
-                                       const NodeProperty<Size>* modal ) {
+  void StaticTriangulation::_setGraph( const UndiGraph& graph,
+                                       const NodeProperty<Size>& domsizes ) {
+    // check that the nodes of the graph correspond to those of domsizes
+    for ( const auto node : graph ) {
+      if ( ! domsizes.exists ( node ) ) {
+        GUM_ERROR ( GraphError, "node " << node << " belongs to the graph "
+                    << "but has no domain size specified" );
+      }
+    }
+    if ( graph.size () != domsizes.size () ) {
+      GUM_ERROR ( GraphError, "The domain size(s) of some nodes that do not "
+                  << "belong to the graph are specified" );
+    }
+    
     // remove the old graph
     clear();
 
     // prepare the size of the data for the new graph
-    if ( gr ) {
-      __elim_order.resize( gr->size() );
-      __reverse_elim_order.resize( gr->size() );
-      __elim_cliques.resize( gr->size() );
-      __added_fill_ins.resize( gr->size() );
-      __node_2_max_prime_clique.resize( gr->size() );
-    }
+    __elim_order.resize( graph.size() );
+    __reverse_elim_order.resize( graph.size() );
+    __elim_cliques.resize( graph.size() );
+    __added_fill_ins.resize( graph.size() );
+    __node_2_max_prime_clique.resize( graph.size() );
 
     // copy the graph passed in argument
-    __original_graph = gr;
-    _modalities = *modal;
+    __original_graph = &graph;
+    _domain_sizes = domsizes;
 
     // indicate that no triangulation was performed for this graph
     __has_triangulation = false;
@@ -510,10 +531,10 @@ namespace gum {
     __has_max_prime_junction_tree = false;
     __has_fill_ins = false;
   }
+  
 
   /// the function that performs the triangulation
-
-  void StaticTriangulation::__triangulate() {
+  void StaticTriangulation::__triangulate () {
     // if the graph is already triangulated, no need to triangulate it again
     if ( __has_triangulation ) return;
 
@@ -525,8 +546,7 @@ namespace gum {
 
     // if we are to do recursive thinning, we will have to add fill-ins to the
     // triangulated graph each time we eliminate a node. Hence, we shall
-    // initialize
-    // the triangulated graph by a copy of the original graph
+    // initialize the triangulated graph by a copy of the original graph
     if ( __minimality_required ) {
       __triangulated_graph = *__original_graph;
       __has_triangulated_graph = true;
@@ -549,7 +569,8 @@ namespace gum {
 
         for ( const auto clik : tmp_graph.neighbours( removable_node ) )
           cliques << clik;
-      } else {
+      }
+      else {
         // here recursive thinning will be applied, hence we need store the
         // fill-ins added by the current node removal
         EdgeSet& current_fill = __added_fill_ins[nb_elim];
@@ -644,9 +665,9 @@ namespace gum {
 
     __has_triangulation = true;
   }
+  
 
   /// returns the fill-ins added by the triangulation algorithm
-
   const EdgeSet& StaticTriangulation::fillIns() {
     // if we did not compute the triangulation yet, do it and commpute
     // the fill-ins at the same time
@@ -665,7 +686,8 @@ namespace gum {
         return _elimination_sequence_strategy->fillIns();
       else
         return __fill_ins;
-    } else {
+    }
+    else {
       // ok, here, we shall compute the fill-ins as they were not precomputed
       if ( !__original_graph ) return __fill_ins;
 
@@ -690,7 +712,8 @@ namespace gum {
             if ( !__original_graph->existsEdge( edge ) ) {
               try {
                 __fill_ins.insert( edge );
-              } catch ( DuplicateElement& ) {
+              }
+              catch ( DuplicateElement& ) {
               }
             }
           }

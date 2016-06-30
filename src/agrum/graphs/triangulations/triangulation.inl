@@ -22,65 +22,21 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <cmath>
 
-#include <agrum/config.h>
-#include <agrum/graphs/triangulations/triangulation.h>
-
-
-#ifdef GUM_NO_INLINE
-#include <agrum/graphs/triangulations/triangulation.inl>
-#endif // GUM_NO_INLINE
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
 namespace gum {
 
   
-  // constructor
-  Triangulation::Triangulation() {
-    // for debugging purposes
-    GUM_CONSTRUCTOR( Triangulation );
+  /// returns the modalities of the variables of the graph to be triangulated
+  INLINE const NodeProperty<Size>&
+  Triangulation::domainSizes() const {
+    return _domain_sizes;
   }
 
   
-  // constructor with a domain size specified
-  Triangulation::Triangulation ( const NodeProperty<Size>& domsizes ) :
-    _domain_sizes ( domsizes ) {
-    GUM_CONSTRUCTOR( Triangulation );
-  }
-    
-  
-  // destructor
-  Triangulation::~Triangulation() {
-    // for debugging purposes
-    GUM_DESTRUCTOR( Triangulation );
-  }
-
-
-  // copy constructor
-  Triangulation::Triangulation( const Triangulation& from ) :
-    _domain_sizes ( from._domain_sizes ) {
-    GUM_CONS_CPY ( Triangulation );
-  }
-
-
-  // returns the max of log10DomainSize of cliques in the junction tree
-  double Triangulation::maxLog10CliqueDomainSize() {
-    double res = 0.0;
-    double dSize;
-    const JunctionTree& jt = junctionTree();
-
-    for ( const auto cl : jt.nodes() ) {
-      dSize = 0.0;
-
-      for ( const auto node : jt.clique( cl ) )
-        dSize += std::log10( _modalities[node] );
-
-      if ( res < dSize ) res = dSize;
-    }
-
-    return res;
-  }
-  
-
 } /* namespace gum */
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
