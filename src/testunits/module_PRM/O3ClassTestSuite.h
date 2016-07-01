@@ -497,7 +497,7 @@ namespace gum_tests {
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|5 col 15| Error : Illegal CPT value \"110/100\" in attribute "
-             "Bar.isWorking1.1";
+             "Bar.isWorking, formula resolve to 1.1";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
     }
@@ -548,7 +548,7 @@ namespace gum_tests {
       std::getline( output, line );
       auto msg = std::stringstream();
       msg << "|6 col 6| Error : Illegal CPT value \"FOO\" in attribute "
-             "Bar.isWorking\"FOO\"";
+             "Bar.isWorking, could not resolve the following formula: \"FOO\"";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
     }
