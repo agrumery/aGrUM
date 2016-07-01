@@ -30,7 +30,7 @@ from .tests import checkTests,testNames
 
 def checkAgrumMemoryLeak(x):
   commande='act test debug -t {0} -m all'.format(x)
-
+  
   first=cfg.C_WARNING+x+cfg.C_END+" : "
   flag=0
 
@@ -57,6 +57,7 @@ def checkAgrumMemoryLeaks(current):
   notif("Searching leaks test by test (may be a bit long).\n")
 
   res=[]
+
   for x in testNames(checkTests(current)):
     (msg,testOK)=checkAgrumMemoryLeak(x)
     if not testOK:

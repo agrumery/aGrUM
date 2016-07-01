@@ -62,7 +62,7 @@ def specialActions(current):
     return True
 
   if current["oneByOne"]==True:
-    #trace(current,"Special action [oneByOne]")
+    trace(current,"Special action [oneByOne]")
     checkAgrumMemoryLeaks(current)
     return True
 
