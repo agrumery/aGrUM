@@ -35,7 +35,7 @@
 namespace gum {
 
   // an empty fill-ins set returned by default when we ask for a fill-ins set
-  const EdgeSet& EliminationSequenceStrategy::__empty_fill_ins() {
+  const EdgeSet& EliminationSequenceStrategy::__empty_fill_ins () {
     static bool first_use = true;
     if ( first_use ) {
       first_use = false;

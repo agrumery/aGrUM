@@ -30,6 +30,7 @@
 #ifndef GUM_ELIMINATION_SEQUENCE_STRATEGY_H
 #define GUM_ELIMINATION_SEQUENCE_STRATEGY_H
 
+#include <agrum/config.h>
 #include <agrum/graphs/graphElements.h>
 
 namespace gum {
@@ -42,7 +43,7 @@ namespace gum {
    *
    */
   class EliminationSequenceStrategy {
-    public:
+  public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -58,8 +59,12 @@ namespace gum {
      * @return an empty clone of the current object with the same type */
     virtual EliminationSequenceStrategy* newFactory() const = 0;
 
+    /// virtual copy constructor
+    virtual EliminationSequenceStrategy* copyFactory () const = 0;
+
     /// @}
 
+    
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -117,7 +122,8 @@ namespace gum {
 
     /// @}
 
-    protected:
+    
+  protected:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -131,7 +137,7 @@ namespace gum {
 
     /// @}
 
-    private:
+  private:
     /// an empty fill-ins set used by default
     static const EdgeSet& __empty_fill_ins();
   };
