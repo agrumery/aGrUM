@@ -37,8 +37,6 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR>
-  class VEWithBB;
   /**
    * @class VariableElimination variableElimination.h
    *<agrum/BN/inference/variableElimination.h>
@@ -55,8 +53,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   class VariableElimination : public BayesNetInference<GUM_SCALAR> {
     public:
-    friend class VEWithBB<GUM_SCALAR>;
-
     /// @name Constructor & destructor
 
     /// @{

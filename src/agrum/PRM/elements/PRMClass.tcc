@@ -1137,10 +1137,12 @@ namespace gum {
     struct ParamScopeData {
       std::string prefix;
       const PRMClass<GUM_SCALAR>* c;
+      Idx depth;
 
-      ParamScopeData( std::string s, const PRMReferenceSlot<GUM_SCALAR>& ref ) {
+      ParamScopeData( std::string s, const PRMReferenceSlot<GUM_SCALAR>& ref, Idx d ) {
         prefix = s + ref.name() + ".";
         c = static_cast<const PRMClass<GUM_SCALAR>*>( &( ref.slotType() ) );
+        depth = d;
       }
     };
 
@@ -1148,8 +1150,6 @@ namespace gum {
     INLINE HashTable<std::string, const PRMParameter<GUM_SCALAR>*>
     PRMClass<GUM_SCALAR>::scope() const {
       HashTable<std::string, const PRMParameter<GUM_SCALAR>*> params;
-      Set<const PRMClass<GUM_SCALAR>*> visited;
-      visited.insert( this );
 
       for ( const auto p : parameters() ) {
         params.insert( p->name(), p );
@@ -1160,7 +1160,7 @@ namespace gum {
       for ( const auto ref : referenceSlots() ) {
 
         if ( PRMObject::isClass( ref->slotType() ) ) {
-          queue.push( ParamScopeData<GUM_SCALAR>( "", *ref ) );
+          queue.push( ParamScopeData<GUM_SCALAR>( "", *ref, 1 ) );
         }
       }
 
@@ -1168,8 +1168,7 @@ namespace gum {
         auto data = queue.front();
         queue.pop();
 
-        if ( ! visited.contains( data.c ) ) {
-          visited.insert( data.c );
+        if ( data.depth < 5 ) {
 
           for ( const auto p : data.c->parameters() ) {
             params.insert( data.prefix + p->name(), p );
@@ -1178,9 +1177,12 @@ namespace gum {
           for ( const auto ref : data.c->referenceSlots() ) {
 
             if ( PRMObject::isClass( ref->slotType() ) ) {
-              queue.push( ParamScopeData<GUM_SCALAR>( data.prefix, *ref ) );
+              queue.push( ParamScopeData<GUM_SCALAR>( data.prefix, *ref, data.depth + 1 ) );
             }
           }
+        } else {
+          // @todo depth>5 is a workaround. Cycle detection is needed here !
+          GUM_TRACE( "Depth limit reached when looking up parameters" );
         }
       }
 

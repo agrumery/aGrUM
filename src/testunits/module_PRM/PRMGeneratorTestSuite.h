@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class PRM<double> GeneratorTestSuite : public CxxTest::TestSuite {
+  class PRMGeneratorTestSuite : public CxxTest::TestSuite {
     private:
     public:
     void setUp() {
