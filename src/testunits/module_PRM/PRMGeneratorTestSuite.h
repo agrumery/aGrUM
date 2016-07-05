@@ -52,8 +52,8 @@ namespace gum_tests {
         v[lvl].g = 2;
         v[lvl].c = 1;
         v[lvl].o = 10;
-        v[lvl].inner_density = 0.2;
-        v[lvl].outter_density = 0.05;
+        v[lvl].inner_density = 0.2f;
+        v[lvl].outter_density = 0.05f;
       }
     }
 
@@ -225,8 +225,8 @@ namespace gum_tests {
         v[lvl].g = 2;
         v[lvl].c = 1;
         v[lvl].o = 10;
-        v[lvl].inner_density = 0.2;
-        v[lvl].outter_density = 0.05;
+        v[lvl].inner_density = 0.2f;
+        v[lvl].outter_density = 0.05f;
       }
     }
   };
