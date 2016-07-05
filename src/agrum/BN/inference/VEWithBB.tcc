@@ -71,7 +71,7 @@ namespace gum {
       //size_t count = 0;
       //Instantiation i( *pot );
 
-      //for ( i.setFirst(); not i.end(); i.inc() ) {
+      //for ( i.setFirst(); ! i.end(); i.inc() ) {
       //  if ( pot->get( i ) == (GUM_SCALAR)1 ) {
       //    ++count;
       //  }
@@ -119,7 +119,7 @@ namespace gum {
   INLINE bool
   VEWithBB<GUM_SCALAR>::__isHardEvidence( const Potential<GUM_SCALAR>* e ) {
     auto sum = 0.0;
-    for ( Instantiation i( e ); not i.end(); i.inc(), sum += e->get(i) ) {
+    for ( Instantiation i( e ); ! i.end(); i.inc(), sum += e->get(i) ) {
       if ( !( e->get(i) == 0.0 || e->get(i) == 1.0 ) ) {
         return false;
       }
@@ -177,7 +177,7 @@ namespace gum {
           auto node_j = this->bn().nodeId( *( pot.variablesSequence()[j] ) );
           __addNodeToMoralGraph( node_j, moral_graph, modalities );
 
-          if ( not moral_graph.existsEdge( node_i, node_j ) ) {
+          if ( ! moral_graph.existsEdge( node_i, node_j ) ) {
             moral_graph.addEdge( node_i, node_j );
           }
         }
@@ -188,7 +188,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void VEWithBB<GUM_SCALAR>::__addNodeToMoralGraph(
       NodeId node, UndiGraph& moral_graph, NodeProperty<Size>& modalities ) {
-    if ( not moral_graph.exists( node ) ) {
+    if ( ! moral_graph.exists( node ) ) {
       moral_graph.addNode( node );
       modalities.insert( node, this->bn().variable( node ).domainSize() );
     }
