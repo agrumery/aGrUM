@@ -30,167 +30,150 @@
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/eliminations/defaultPartialOrderedEliminationSequenceStrategy.h>
 
+
 namespace gum {
 
+  
   /// default constructor (uses an empty graph)
   DefaultPartialOrderedEliminationSequenceStrategy::
-      DefaultPartialOrderedEliminationSequenceStrategy( float theRatio,
-                                                        float theThreshold )
-      : __graph( 0 )
-      , __modalities( 0 )
-      , __subsets( 0 )
-      , __simplicial_set( 0 )
-      , __simplicial_ratio( theRatio )
-      , __simplicial_threshold( theThreshold )
-      , __provide_fill_ins( false ) {
+  DefaultPartialOrderedEliminationSequenceStrategy( double theRatio,
+                                                    double theThreshold ) :
+    __simplicial_ratio( theRatio ),
+    __simplicial_threshold( theThreshold ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultPartialOrderedEliminationSequenceStrategy );
   }
+  
 
   /// constructor for an a priori non empty graph
   DefaultPartialOrderedEliminationSequenceStrategy::
-      DefaultPartialOrderedEliminationSequenceStrategy(
-          UndiGraph* graph,
-          const NodeProperty<Size>* modal,
-          const List<NodeSet>* subsets,
-          float ratio,
-          float threshold )
-      : __graph( 0 )
-      , __modalities( 0 )
-      , __subsets( 0 )
-      , __simplicial_set( 0 )
-      , __simplicial_ratio( ratio )
-      , __simplicial_threshold( threshold )
-      , __provide_fill_ins( false ) {
+  DefaultPartialOrderedEliminationSequenceStrategy
+  ( UndiGraph* graph,
+    const NodeProperty<Size>* dom_sizes,
+    const List<NodeSet>* subsets,
+    double ratio,
+    double threshold ) :
+    __simplicial_ratio( ratio ),
+    __simplicial_threshold( threshold ) {
+    setGraph( graph, dom_sizes );
+    setPartialOrder ( subsets );
+
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultPartialOrderedEliminationSequenceStrategy );
-    setGraph( graph, modal, subsets );
   }
+  
 
   /// copy constructor
   DefaultPartialOrderedEliminationSequenceStrategy::
-      DefaultPartialOrderedEliminationSequenceStrategy(
-          const DefaultPartialOrderedEliminationSequenceStrategy& from )
-      : __graph( 0 )
-      , __modalities( 0 )
-      , __subsets( 0 )
-      , __simplicial_set( 0 )
-      , __simplicial_ratio( from.__simplicial_ratio )
-      , __simplicial_threshold( from.__simplicial_threshold )
-      , __provide_fill_ins( from.__provide_fill_ins ) {
+  DefaultPartialOrderedEliminationSequenceStrategy
+  ( const DefaultPartialOrderedEliminationSequenceStrategy& from ) :
+    PartialOrderedEliminationSequenceStrategy ( from ),
+    __simplicial_ratio( from.__simplicial_ratio ),
+    __simplicial_threshold( from.__simplicial_threshold ),
+    __provide_fill_ins( from.__provide_fill_ins ) {
+    __createSimplicialSet ();
+    
+    // for debugging purposes
     GUM_CONS_CPY( DefaultPartialOrderedEliminationSequenceStrategy );
-
-    if ( __graph ) {
-      setGraph( from.__graph, from.__modalities, from.__subsets );
-      __subset_iter = from.__subset_iter;
-      __nodeset = from.__nodeset;
-    }
   }
+
+  
+  /// move constructor
+  DefaultPartialOrderedEliminationSequenceStrategy::
+  DefaultPartialOrderedEliminationSequenceStrategy
+  ( DefaultPartialOrderedEliminationSequenceStrategy&& from ) :
+    PartialOrderedEliminationSequenceStrategy ( std::move ( from ) ),
+    __log_weights ( std::move ( from.__log_weights ) ),
+    __simplicial_set ( from.__simplicial_set ),
+    __simplicial_ratio( from.__simplicial_ratio ),
+    __simplicial_threshold( from.__simplicial_threshold ),
+    __provide_fill_ins( from.__provide_fill_ins ) {
+    __simplicial_set->replaceLogWeights ( &from.__log_weights, &__log_weights );
+    from.__simplicial_set = nullptr;
+    
+    // for debugging purposes
+    GUM_CONS_MOV( DefaultPartialOrderedEliminationSequenceStrategy );
+  }
+  
 
   /// destructor
   DefaultPartialOrderedEliminationSequenceStrategy::
-      ~DefaultPartialOrderedEliminationSequenceStrategy() {
+  ~DefaultPartialOrderedEliminationSequenceStrategy () {
     // for debugging purposes
     GUM_DESTRUCTOR( DefaultPartialOrderedEliminationSequenceStrategy );
 
     if ( __simplicial_set ) delete __simplicial_set;
   }
 
-  /// sets a new graph to be triangulated
-  void DefaultPartialOrderedEliminationSequenceStrategy::setGraph(
-      UndiGraph* graph,
-      const NodeProperty<Size>* modal,
-      const List<NodeSet>* subsets ) {
-    // check that both the graph, the modalities and the subsets are different
-    // from 0 or else that both are equal to 0
-    unsigned char nb = 0;
-
-    if ( graph ) ++nb;
-
-    if ( modal ) ++nb;
-
-    if ( subsets ) ++nb;
-
-    if ( nb && ( nb != 3 ) )
-      GUM_ERROR( GraphError,
-                 "DefaultPartialOrderedEliminationSequenceStrategy needs "
-                 "valid graphs, domain sizes and partial ordering" );
-
-    // check that each node has a domain size
-    for ( const auto node : graph->nodes() )
-      if ( !modal->exists( node ) )
-        GUM_ERROR( GraphError,
-                   "DefaultPartialOrderedEliminationSequenceStrategy"
-                   " needs  domain sizes" );
-
-    // avoid empty modifications
-    if ( ( graph != __graph ) || ( modal != __modalities ) ||
-         ( subsets != __subsets ) ) {
-      // remove, if any, the current graph and its simplicial set
-      clear();
-
-      // assign a new graph
-      __graph = graph;
-      __modalities = modal;
-      __subsets = subsets;
-
-      if ( graph ) {
-        // compute the log of the modalities
-        __log_modalities.resize( __graph->sizeNodes() / 2 );
-
-        for ( const auto node : graph->nodes() )
-          __log_modalities.insert( node, std::log( ( *modal )[node] ) );
-
-        // creation du simplicial set
-        __simplicial_set = new SimplicialSet( __graph,
-                                              &__log_modalities,
-                                              &__log_weights,
-                                              __simplicial_ratio,
-                                              __simplicial_threshold );
-
-        __simplicial_set->setFillIns( __provide_fill_ins );
-
-        // initialize properly the set of nodes that can be currently eliminated
-        __subset_iter = __subsets->cbegin();
-
-        __nodeset = *__subset_iter;
-      }
+  
+  /// create a new simplicial set suited for the current graph
+  void
+  DefaultPartialOrderedEliminationSequenceStrategy::__createSimplicialSet () {
+    // remove the old simplicial set, if any
+    if ( __simplicial_set != nullptr ) {
+      delete __simplicial_set;
+      __simplicial_set = nullptr;
+    }
+    
+    if ( _graph != nullptr ) {
+      // create a simplicial set suited for the graph
+      __simplicial_set = new SimplicialSet( _graph,
+                                            &_log_domain_sizes,
+                                            &__log_weights,
+                                            __simplicial_ratio,
+                                            __simplicial_threshold );
+        
+      __simplicial_set->setFillIns( __provide_fill_ins );
     }
   }
 
+
+  /// sets a new graph to be triangulated
+  bool DefaultPartialOrderedEliminationSequenceStrategy::setGraph
+  ( UndiGraph* graph,
+    const NodeProperty<Size>* domain_sizes ) {
+    if ( PartialOrderedEliminationSequenceStrategy::setGraph ( graph,
+                                                               domain_sizes ) ) {
+      __createSimplicialSet ();
+      return true;
+    }
+
+    return false;
+  }
+  
+
   /// clears the sequence (to prepare, for instance, a new elimination sequence)
   void DefaultPartialOrderedEliminationSequenceStrategy::clear() {
-    __graph = 0;
-    __modalities = 0;
-    __log_modalities.clear();
+    PartialOrderedEliminationSequenceStrategy::clear();
     __log_weights.clear();
-    __subsets = 0;
-    __subset_iter.clear();
-    __nodeset.clear();
 
-    if ( __simplicial_set ) delete __simplicial_set;
-
-    __simplicial_set = 0;
+    if ( __simplicial_set != nullptr ) {
+      delete __simplicial_set;
+      __simplicial_set = nullptr;
+    }
   }
 
+  
   /// returns the best possible node to be eliminated
-  NodeId DefaultPartialOrderedEliminationSequenceStrategy::__nodeToEliminate(
-      const PriorityQueue<NodeId, float>& possibleNodes ) {
+  NodeId DefaultPartialOrderedEliminationSequenceStrategy::__nodeToEliminate
+  ( const PriorityQueue<NodeId, double>& possibleNodes ) {
     bool found = false;
-    float min_score = 0;
+    double min_score = 0;
     NodeId best_node = 0;
 
-    for ( const auto node : __nodeset )
+    for ( const auto node : _nodeset ) {
       try {
-        float score = possibleNodes.priority( node );
+        double score = possibleNodes.priority( node );
 
         if ( !found || ( score < min_score ) ) {
           found = true;
           min_score = score;
           best_node = node;
         }
-      } catch ( NotFound& ) {
       }
+      catch ( NotFound& ) {
+      }
+    }
 
     if ( !found ) {
       GUM_ERROR( NotFound, "no possible node to eliminate" );
@@ -198,42 +181,51 @@ namespace gum {
 
     return best_node;
   }
+  
 
   /// returns the new node to be eliminated within the triangulation algorithm
   NodeId
   DefaultPartialOrderedEliminationSequenceStrategy::nextNodeToEliminate() {
     // if there is no simplicial set, send an exception
-    if ( !__graph ) GUM_ERROR( NotFound, "the graph is empty" );
+    if ( _graph == nullptr )
+      GUM_ERROR( NotFound, "the graph is empty" );
 
-    if ( __nodeset.empty() ) {
+    if ( _partial_order_needed )
+      GUM_ERROR( NotFound, "the partial order does not cover all the nodes "
+                 "of the graph" );
+    
+    if ( _nodeset.empty() ) {
       GUM_ERROR( NotFound, "no node is admissible" );
     }
 
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes
-    // note that if __graph != 0, __simplicial_set has been allocated
+    // note that if _graph != nullptr, __simplicial_set has been allocated
     try {
       return __nodeToEliminate( __simplicial_set->allSimplicialNodes() );
-    } catch ( NotFound& ) {
+    }
+    catch ( NotFound& ) {
     }
 
     try {
       return __nodeToEliminate( __simplicial_set->allAlmostSimplicialNodes() );
-    } catch ( NotFound& ) {
+    }
+    catch ( NotFound& ) {
     }
 
     try {
       return __nodeToEliminate( __simplicial_set->allQuasiSimplicialNodes() );
-    } catch ( NotFound& ) {
+    }
+    catch ( NotFound& ) {
     }
 
     // here: select the node through Kjaerulff's heuristic
-    auto iter = __nodeset.begin();
-    float min_score = __log_weights[*iter];
+    auto iter = _nodeset.cbegin();
+    double min_score = __log_weights[*iter];
     NodeId best_node = *iter;
 
-    for ( ++iter; iter != __nodeset.end(); ++iter ) {
-      float score = __log_weights[*iter];
+    for ( ++iter; iter != _nodeset.cend(); ++iter ) {
+      double score = __log_weights[*iter];
 
       if ( score < min_score ) {
         min_score = score;
@@ -243,10 +235,10 @@ namespace gum {
 
     return best_node;
   }
+  
 
   /** @brief if the elimination sequence is able to compute fill-ins, we
-   * indicate
-   * whether we want this feature to be activated */
+   * indicatewhether we want this feature to be activated */
   void
   DefaultPartialOrderedEliminationSequenceStrategy::askFillIns( bool do_it ) {
     __provide_fill_ins = do_it;
@@ -254,6 +246,7 @@ namespace gum {
     if ( __simplicial_set ) __simplicial_set->setFillIns( __provide_fill_ins );
   }
 
+  
   /** @brief indicates whether the new fill-ins generated by a new eliminated
    * node, if needed, will be computed by the elimination sequence, or need be
    * computed by the triangulation itself. */
@@ -262,47 +255,68 @@ namespace gum {
     return __provide_fill_ins;
   }
 
+  
   /** @brief indicates whether the elimination sequence updates by itself the
    * graph after a node has been eliminated */
-  bool DefaultPartialOrderedEliminationSequenceStrategy::providesGraphUpdate()
-      const {
+  bool
+  DefaultPartialOrderedEliminationSequenceStrategy::providesGraphUpdate() const {
     return true;
   }
 
+  
   /// performs all the graph/fill-ins updates provided
-  void DefaultPartialOrderedEliminationSequenceStrategy::eliminationUpdate(
-      const NodeId id ) {
+  void DefaultPartialOrderedEliminationSequenceStrategy::eliminationUpdate
+  ( const NodeId id ) {
     // check whether we can do something
-    if ( __simplicial_set ) {
+    if ( __simplicial_set != nullptr ) {
       __simplicial_set->makeClique( id );
       __simplicial_set->eraseClique( id );
 
-      // remove the node from __nodeset
-      __nodeset.erase( id );
+      if ( ! _partial_order_needed ) {
+        // remove the node from _nodeset
+        _nodeset.erase( id );
 
-      if ( __nodeset.empty() ) {
-        ++__subset_iter;
-
-        if ( __subset_iter != __subsets->cend() ) __nodeset = *__subset_iter;
+        if ( _nodeset.empty() ) {
+          // go to the next non-empty subset
+          for ( ++_subset_iter; _subset_iter != _subsets->cend ();
+                ++_subset_iter ) {
+            for ( const auto node : *_subset_iter ) {
+              if ( _graph->existsNode ( node ) ) {
+                _nodeset.insert ( node );
+              }
+            }
+            if ( ! _nodeset.empty () ) break;
+          }
+        }
       }
     }
   }
+  
 
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * generated after the last node elimination */
   const EdgeSet& DefaultPartialOrderedEliminationSequenceStrategy::fillIns() {
-    if ( !__provide_fill_ins || !__simplicial_set )
+    if ( !__provide_fill_ins || ( __simplicial_set == nullptr ) )
       return EliminationSequenceStrategy::fillIns();
     else
       return __simplicial_set->fillIns();
   }
 
+  
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
   DefaultPartialOrderedEliminationSequenceStrategy*
-  DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const {
-    return new DefaultPartialOrderedEliminationSequenceStrategy(
-        __simplicial_ratio, __simplicial_threshold );
+  DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const final {
+    return new DefaultPartialOrderedEliminationSequenceStrategy
+      ( __simplicial_ratio, __simplicial_threshold );
   }
+
+
+  /// virtual copy constructor
+  DefaultPartialOrderedEliminationSequenceStrategy*
+  DefaultPartialOrderedEliminationSequenceStrategy::copyFactory() const final {
+    return new DefaultPartialOrderedEliminationSequenceStrategy ( *this );
+  }
+
 
 } /* namespace gum */

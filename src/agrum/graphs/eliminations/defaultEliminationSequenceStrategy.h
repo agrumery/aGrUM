@@ -24,11 +24,11 @@
  * elimination sequence algorithm (that is, there is no external constraint on
  * the possible elimination ordering). The ordering is determined as follows:
  * # the nodes that are simplicial (i.e., those that already form a clique with
- *   their neighbours) are eliminated first
+ *   their neighbors) are eliminated first
  * # then the nodes that are almost simplicial (i.e. if we remove one of their
- *   neighbours, they become simplicial) and that create small cliques, are
- *   eliminated
- * # the quasi simplicial nodes (i.e., nodes that do not require many fill-ins
+ *   neighbors, they become simplicial) and that create small cliques, are
+ *   eliminated (see Bodlaender's safe reductions)
+ * # the quasi simplicial nodes (i.e., the nodes that do not require many fill-ins
  *   to create cliques) that would create small cliques, are eliminated
  * # finally, the heuristic proposed by Kjaerulff(90) is used to compute the
  *   last nodes to be eliminated.
@@ -56,21 +56,21 @@ namespace gum {
    * elimination sequence algorithm (that is, there is no external constraint on
    * the possible elimination ordering). The ordering is determined as follows:
    * # the nodes that are simplicial (i.e., those that already form a clique
-   *   with their neighbours) are eliminated first
+   *   with their neighbors) are eliminated first
    * # then the nodes that are almost simplicial (i.e., if we remove one of
-   *   their neighbours, they become simplicial) and that create small cliques,
+   *   their neighbors, they become simplicial) and that create small cliques,
    * # are eliminated
-   * # the quasi simplicial nodes (i.e., nodes that do not require many fill-ins
-   *   to create cliques) that would create small cliques, are eliminated
+   * # the quasi simplicial nodes (i.e., the nodes that do not require many
+   *   fill-ins to create cliques) that would create small cliques, are eliminated
    * # finally, the heuristic proposed by Kjaerulff(90) is used to compute the
    *   last nodes to be eliminated.
    *
    * \ingroup graph_group
    *
    */
-  class DefaultEliminationSequenceStrategy
-      : public UnconstrainedEliminationSequenceStrategy {
-    public:
+  class DefaultEliminationSequenceStrategy :
+    public UnconstrainedEliminationSequenceStrategy {
+  public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -82,8 +82,8 @@ namespace gum {
      * @param theThreshold the weight threshhold of the SimplicialSet included
      * in the DefaultEliminationSequenceStrategy */
     DefaultEliminationSequenceStrategy
-    ( float theRatio = GUM_QUASI_RATIO,
-      float theThreshold = GUM_WEIGHT_THRESHOLD );
+    ( double theRatio = GUM_QUASI_RATIO,
+      double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// constructor for an a priori non empty graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -93,17 +93,25 @@ namespace gum {
      * DefaultEliminationSequenceStrategy
      * @param threshold the weight threshhold of the SimplicialSet included in
      * the DefaultEliminationSequenceStrategy
+     * @warning Note that we allow dom_sizes to be defined over nodes/variables
+     * that do not belong to graph. These sizes will simply be ignored. However,
+     * it is compulsory that all the nodes of graph belong to dom_sizes
+     * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not copied but only referenced by the elimination sequence algorithm. */
     DefaultEliminationSequenceStrategy
     ( UndiGraph* graph,
       const NodeProperty<Size>* dom_sizes,
-      float ratio = GUM_QUASI_RATIO,
-      float threshold = GUM_WEIGHT_THRESHOLD );
+      double ratio = GUM_QUASI_RATIO,
+      double threshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
     DefaultEliminationSequenceStrategy
     ( const DefaultEliminationSequenceStrategy& );
+
+    /// move constructor
+    DefaultEliminationSequenceStrategy
+    ( DefaultEliminationSequenceStrategy&& );
 
     /// destructor
     virtual ~DefaultEliminationSequenceStrategy();
@@ -130,19 +138,24 @@ namespace gum {
      * triangulation with Graph "graph"
      * @param graph the new graph to be triangulated
      * @param dom_sizes the domain sizes of the variables/nodes
+     * @return true if the data structures were modified (if the graph or the
+     * @warning Note that we allow dom_sizes to be defined over nodes/variables
+     * that do not belong to graph. These sizes will simply be ignored. However,
+     * it is compulsory that all the nodes of graph belong to dom_sizes
+     * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not copied but only referenced by the elimination sequence algorithm. */
-    void setGraph( UndiGraph* graph,
-                   const NodeProperty<Size>* dom_sizes );
+    virtual bool setGraph( UndiGraph* graph,
+                           const NodeProperty<Size>* dom_sizes ) final;
 
     /** @brief clears the sequence (to prepare, for instance, a new elimination
      * sequence) */
-    void clear();
-
+    virtual void clear () final;
+    
     /// returns the new node to be eliminated within the triangulation algorithm
     /** @throws NotFound exception is thrown if there is no more node to
      * eliminate in the graph */
-    NodeId nextNodeToEliminate();
+    virtual NodeId nextNodeToEliminate () final;
 
     /** @brief if the elimination sequence is able to compute fill-ins, we
      * indicate whether we want this feature to be activated
@@ -150,7 +163,7 @@ namespace gum {
      * @param do_it when true and the elimination sequence has the ability to
      * compute fill-ins, the elimination sequence will actually compute them
      * (for the triangulation to use them), else they will not be available. */
-    void askFillIns( bool do_it );
+    virtual void askFillIns( bool do_it ) final;
 
     /** @brief indicates whether the fill-ins generated by the eliminated
      * nodes, if needed, will be computed by the elimination sequence, or need
@@ -159,7 +172,7 @@ namespace gum {
      * An elimination sequence provides fill-ins to its triangulation if and
      * only if it has the ability to compute them and it has been asked to do so
      * (by method askFillIns) */
-    bool providesFillIns() const;
+    virtual bool providesFillIns() const final;
 
     /** @brief indicates whether the elimination sequence updates by itself the
      * graph after a node has been eliminated
@@ -171,44 +184,39 @@ namespace gum {
      * elimination sequence. This is the case, for instance, for the
      * defaultEliminationSequence, which uses a SimplicialSet that knows that
      * some eliminated nodes do not require any fill-in. */
-    bool providesGraphUpdate() const;
+    virtual bool providesGraphUpdate() const final;
 
     /// performs all the graph/fill-ins updates provided (if any)
     /** @param node the node the elimination of which requires the graph update
      */
-    void eliminationUpdate( const NodeId node );
+    virtual void eliminationUpdate( const NodeId node ) final;
 
     /** @brief in case fill-ins are provided, this function returns the fill-ins
      * due to all the nodes eliminated so far */
-    const EdgeSet& fillIns();
+    virtual const EdgeSet& fillIns () final;
 
     /// @}
 
-    private:
-    /// the graph to be triangulated
-    UndiGraph* __graph { nullptr };
-
-    /// the domain sizes of the variables/nodes
-    const NodeProperty<Size>* __domain_sizes { nullptr };
-
-    /// the log of the domain sizes of the variables/nodes
-    NodeProperty<float> __log_domain_sizes;
-
-    /** @brief for each node, the weight of the clique created by the node's
-     * elimination */
-    NodeProperty<float> __log_weights;
+  private:
+    /// for each node, the weight of the clique created by the node's elimination
+    NodeProperty<double> __log_weights;
 
     /// the simplicial set used for determining the best nodes to eliminate
     SimplicialSet* __simplicial_set { nullptr };
 
     /// the ratio used by __simplicial_set for its quasi-simplicial nodes
-    float __simplicial_ratio;
+    double __simplicial_ratio;
 
     /// the threshold used by  __simplicial_set to determine small cliques
-    float __simplicial_threshold;
+    double __simplicial_threshold;
 
     /// indicates whether we compute new fill-ins
     bool __provide_fill_ins { false };
+
+
+    /// create a new simplicial set suited for the current graph
+    void __createSimplicialSet ();
+    
   };
 
   

@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for fast retrieval of simplicial and quasi/almost simplicial
- *nodes
+ * @brief Class for fast retrieval of simplicial and quasi/almost simplicial nodes
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -34,17 +33,14 @@
 #include <agrum/core/priorityQueue.h>
 #include <agrum/graphs/cliqueGraph.h>
 
-#define GUM_QUASI_RATIO 0.95
+#define GUM_QUASI_RATIO      0.99
 #define GUM_WEIGHT_THRESHOLD 0.0
 
 namespace gum {
 
-  /* ===========================================================================
-   */
-  /* ===  CLASS FOR RETRIEVING SIMPLICIAL, ALMOST AND QUASI SIMPLICIAL NODES ===
-   */
-  /* ===========================================================================
-   */
+  /* =========================================================================== */
+  /* ===  CLASS FOR RETRIEVING SIMPLICIAL, ALMOST AND QUASI SIMPLICIAL NODES === */
+  /* =========================================================================== */
   /** @class SimplicialSet
    * @brief Class enabling fast retrieval of simplicial, quasi and almost
    * simplicial nodes
@@ -52,42 +48,36 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  /* ===========================================================================
-   */
-
+  /* =========================================================================== */
   class SimplicialSet {
-    public:
+  public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
-    /// constructor. initialize the simplicial set w.r.t. a given graph
+    /// constructor. initializes the simplicial set w.r.t. a given graph
     /** creates a class for managing the simplicial sets of a given undirected
      * graph. When we add or remove nodes or edges within this undirected graph,
      * the simplicial set updates its list of simplicial, almost simplicial
-     * and quasi simplicial sets. Recall that a node is simplicial if, along
-     *with
-     * its neighbours, it forms a clique. A node X is almost simplicial if it
-     *has a
-     * neighbour, say Y, such that, after removing Y, X and its neighbours form
-     *a
-     * clique.
+     * and quasi simplicial sets. Recall that a node is simplicial if, along with
+     * its neighbors, it forms a clique. A node X is almost simplicial if it
+     * has a neighbor, say Y, such that, after removing Y, X and its neighbors
+     * form a clique.
      *
      * @param graph The undirected graph the simplicial sets of which we are
      * interested in.
-     * @param log_modalities The logarithm of the nodes modalities. This is used
-     * for two different reasons: i) it enables to retrieve the simplicial nodes
-     * that have the smallest number of modalities (useful for triangulations);
-     * and ii) it enables to compute and update the weight of the cliques
-     * containing the nodes (the weight of a clique is the sum of the
-     * log_modalities of its nodes).
+     * @param log_domain_sizes The logarithm of the domain sizes of the
+     * nodes/variables. This is used for two different reasons: i) it enables
+     * to retrieve the simplicial nodes that have the smallest domain size
+     * (useful for triangulations); and ii) it enables to compute and update
+     * the log-weight of the cliques containing the nodes (the log-weight of a
+     * clique is the sum of the log_domain_sizes of its nodes).
      * @param log_weights The logarithm of the weights of cliques.
-     * @param theRatio Let L be the number of edges between neighbours of a
+     * @param theRatio Let L be the number of edges between neighbors of a
      * given node and let L' be the number of all the possible edges between
-     *these
-     * neighbours (n * (n+1) / 2). If L/L' >= theRatio, then we consider that
-     * the node and its neighbours quasi form a clique and, hence is a
+     * these neighbors (n * (n+1) / 2). If L/L' >= theRatio, then we consider
+     * that the node and its neighbors quasi form a clique and, hence is a
      * quasi-simplicial node.
      * @param theThreshold for a safe triangulation (see Bodlaender), almost and
      * quasi-simplicial nodes should not be eliminated, unless their weight is
@@ -95,62 +85,65 @@ namespace gum {
      * consider it safe if the weight of a new clique is lower than
      * (1+theThreshold) * this highest weight. This enables flexibility.
      * @warning  Note that, by the aGrUM's constructor parameter's rule, the
-     *fact
-     * that an argument is passed as a pointer means that it is not copied
-     *within
-     * the SimplicialSet, but rather it is only referenced within it.
+     * fact that an argument is passed as a pointer means that it is not copied
+     * within the SimplicialSet, but rather it is only referenced within it.
      * @throws OperationNotAllowed exception is thrown if the graph, the
-     * log_modalities or the log_weights are null pointers. */
+     * log_modalities or the log_weights are null pointers.
+     * @warning Note that we allow log_domain_sizes to be defined over
+     * nodes/variables that do not belong to graph. These sizes will simply be
+     * ignored. However, it is compulsory that all the nodes of graph belong to
+     * log_domain_sizes. */
     explicit SimplicialSet( UndiGraph* graph,
-                            const NodeProperty<float>* log_modalities,
-                            NodeProperty<float>* log_weights,
-                            float theRatio = GUM_QUASI_RATIO,
-                            float theThreshold = GUM_WEIGHT_THRESHOLD );
+                            const NodeProperty<double>* log_domain_sizes,
+                            NodeProperty<double>* log_weights,
+                            double theRatio = GUM_QUASI_RATIO,
+                            double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
     /** The constructor tries to make a copy of simplicial_from. In addition, it
      * requires a graph that is a perfect copy of that of simplicial_from, as
-     * well
-     * as perfect copies of the log modalities and weights of simplicial_from.
-     * This
-     * requirement is necessary to avoid a mess: as the graph, the log
-     * modalities
-     * and the log weights are the only data that are not copied into the
-     * SimplicialSet, creating a copy of simplicial_from without using, say, a
-     * new
-     * graph would result in the new SimplicialSet asserting that some nodes are
-     * simplicial while they are not because the graph has been changed by
-     * simplicial_from. With these new copies, this kind of case cannot obtain.
+     * well as perfect copies of the log domain sizes and weights of
+     * simplicial_from. This requirement is necessary to avoid a mess: as the
+     * graph, the log domain sizes and the log weights are the only data that
+     * are not copied into the SimplicialSet, creating a copy of simplicial_from
+     * without using, say, a new graph would result in the new SimplicialSet
+     * asserting that some nodes are simplicial while they are not because the
+     * graph has been changed by simplicial_from. With these new copies, this
+     * kind of case cannot occur.
      * @param simplicial_from the simplicial set we wish to copy
      * @param graph The undirected graph the simplicial sets of which we are
      * interested in. It should be identical to that used by simplicial_from.
-     * @param log_modalities The logarithm of the nodes modalities. This is used
-     * for two different reasons: i) it enables to retrieve the simplicial nodes
-     * that have the smallest number of modalities (useful for triangulations);
-     * and ii) it enables to compute and update the weight of the cliques
-     * containing the nodes (the weight of a clique is the sum of the
-     * log_modalities of its nodes). log_modalities should be identical to that
-     * used by simplicial_from.
-     * @param log_weights The logarithm of the weights of cliques.
+     * @param log_domain_sizes The logarithm of the domain sizes of the
+     * nodes/variabless. This is used for two different reasons: i) it enables
+     * to retrieve the simplicial nodes that have the smallest domain sizes
+     * (useful for triangulations); and ii) it enables to compute and update
+     * the log-weight of the cliques containing the nodes (the log-weight of a
+     * clique is the sum of the log_domain_sizes of its nodes).
+     * log_domain_sizes should be identical to that used by simplicial_from.
+     * @param log_weights The logarithm of the weights of the cliques.
      * @param avoid_check if this Boolean is set to true, the SimplicialSet will
-     * not check whether the graph, the modalities and the log_weights are OK.
-     * It
-     * will simply assume that everything is OK. Never use this unless you know
-     * what you do: setting avoid_check to true results in a faster constructor
-     * but can also lead to a mess that is quite complicated to fix.
-     * @warning  Note that, by the aGrUM's constructor parameter's rule, the
-     * fact
-     * that an argument is passed as a pointer means that it is not copied
-     * within
-     * the SimplicialSet, but rather it is only referenced within it.
+     * not check whether the graph, the log_domain_sizes and the log_weights
+     * are OK. It will simply assume that everything is OK. Never use this unless
+     * you know what you do: setting avoid_check to true results in a faster
+     * constructor but can also lead to a mess that is quite complicated to fix.
+     * @warning Note that, by the aGrUM's constructor parameter's rule, the
+     * fact that an argument is passed as a pointer means that it is not copied
+     * within the SimplicialSet, but rather it is only referenced within it.
+     * @warning Note that we allow log_domain_sizes to be defined over
+     * nodes/variables that do not belong to graph. These sizes will simply be
+     * ignored. However, it is compulsory that all the nodes of graph belong to
+     * log_domain_sizes.
      * @throws OperationNotAllowed exception is thrown if the graph, the
-     * log_modalities or the log_weights are null pointers, or if these data are
+     * log_domain_sizes or the log_weights are null pointers, or if these data are
      * different from those stored into simplicial_from */
     SimplicialSet( const SimplicialSet& simplicial_from,
                    UndiGraph* graph,
-                   const NodeProperty<float>* log_modalities,
-                   NodeProperty<float>* log_weights,
+                   const NodeProperty<double>* log_domain_sizes,
+                   NodeProperty<double>* log_weights,
                    bool avoid_check = false );
+
+    /// move constructor
+    SimplicialSet( SimplicialSet&& from );
 
     /// destructor
     ~SimplicialSet();
@@ -162,14 +155,14 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// adds the necessary edges so that node 'id' and its neighbours form a
+    /// adds the necessary edges so that node 'id' and its neighbors form a
     /// clique
-    /** @param id the node which will form, with its neighbours, a clique */
+    /** @param id the node which will form, with its neighbors, a clique */
     void makeClique( const NodeId id );
 
     /// removes a node and its adjacent edges from the underlying graph
-    /** The node should form a clique with its neighbours.
-     * @param id the id of the node which, along with its neighbours, forms the
+    /** The node should form a clique with its neighbors.
+     * @param id the id of the node which, along with its neighbors, forms the
      * clique that will be removed
      * @throw NotFound exception is thrown if the node cannot be found
      * in the graph or if it is not a clique. */
@@ -198,13 +191,13 @@ namespace gum {
     void addEdge( NodeId first, NodeId second );
 
     /// indicates whether a given node is a simplicial node
-    /** A simplicial node is a node such that the latter and its neighbours form
+    /** A simplicial node is a node such that the latter and its neighbors form
      * a clique.
      * @param id the ID of the node the simpliciality of which we test */
     bool isSimplicial( const NodeId id );
 
     /// indicates whether there exists a simplicial node
-    /** A simplicial node is a node such that the latter and its neighbours form
+    /** A simplicial node is a node such that the latter and its neighbors form
      * a clique. */
     bool hasSimplicialNode();
 
@@ -215,30 +208,30 @@ namespace gum {
     bool hasQuasiSimplicialNode();
 
     /// returns the simplicial node with the lowest clique weight
-    /** A simplicial node is a node such that the latter and its neighbours form
+    /** A simplicial node is a node such that the latter and its neighbors form
      * a clique. */
     NodeId bestSimplicialNode();
 
     /// returns all the simplicial nodes
-    /** In the priority queue returned, the floats correspond to the weight of
-     * the cliques the nodes belong to. */
-    const PriorityQueue<NodeId, float>& allSimplicialNodes();
+    /** In the priority queue returned, the doubles correspond to the
+     * log-weight of the cliques the nodes belong to. */
+    const PriorityQueue<NodeId, double>& allSimplicialNodes();
 
     /// gets the almost simplicial node with the lowest clique weight
     NodeId bestAlmostSimplicialNode();
 
     /// returns all the almost simplicial nodes
-    /** In the priority queue returned, the floats correspond to the weight of
-     * cliques formed by the nodes and their neighbours. */
-    const PriorityQueue<NodeId, float>& allAlmostSimplicialNodes();
+    /** In the priority queue returned, the doubles correspond to the
+     * log-weight of the cliques formed by the nodes and their neighbors. */
+    const PriorityQueue<NodeId, double>& allAlmostSimplicialNodes();
 
     /// gets a quasi simplicial node with the lowest clique weight
     NodeId bestQuasiSimplicialNode();
 
     /// returns all the quasi simplicial nodes
-    /** In the priority queue returned, the floats correspond to the weight of
-     * cliques formed by the nodes and their neighbours. */
-    const PriorityQueue<NodeId, float>& allQuasiSimplicialNodes();
+    /** In the priority queue returned, the doubles correspond to the weight of
+     * cliques formed by the nodes and their neighbors. */
+    const PriorityQueue<NodeId, double>& allQuasiSimplicialNodes();
 
     /// sets/unset the fill-ins storage in the standard triangulation procedure
     /** @param on_off when true means that the SimplicialSet will compute the
@@ -253,55 +246,64 @@ namespace gum {
     /// initialize the simplicial set w.r.t. a new graph
     /** @param graph The undirected graph the simplicial sets of which we are
      * interested in.
-     * @param log_modalities The logarithm of the nodes modalities. This is used
-     * for two different reasons: i) it enables to retrieve the simplicial nodes
-     * that have the smallest number of modalities (useful for triangulations);
-     * and ii) it enables to compute and update the weight of the cliques
-     * containing the nodes (the weight of a clique is the sum of the
-     * log_modalities of its nodes).
-     * @param log_weights The logarithm of the weights of cliques.
-     * @param theRatio Let L be the number of edges between neighbours of a
+     * @param log_domain_sizes The logarithm of the domain sizes of the
+     * nodes/variables. This is used for two different reasons: i) it enables
+     * to retrieve the simplicial nodes that have the smallest domain sizes
+     * (useful for triangulations); and ii) it enables to compute and update
+     * the log-weight of the cliques containing the nodes (the log-weight of a
+     * clique is the sum of the log_domain_sizes of its nodes).
+     * @param log_weights The logarithm of the weights of the cliques.
+     * @param theRatio Let L be the number of edges between neighbors of a
      * given node and let L' be the number of all the possible edges between
-     * these
-     * neighbours (n * (n+1) / 2). If L/L' >= theRatio, then we consider that
-     * the node and its neighbours quasi form a clique and, hence is a
+     * these neighbors (n * (n+1) / 2). If L/L' >= theRatio, then we consider
+     * that the node and its neighbors quasi form a clique and, hence is a
      * quasi-simplicial node.
      * @param theThreshold for a safe triangulation (see Bodlaender), almost and
      * quasi-simplicial nodes should not be eliminated, unless their weight is
      * lower than the highest weight of the cliques created so far. Here, we
      * consider it safe if the weight of a new clique is lower than
      * (1+theThreshold) * this highest weight. This enables flexibility.
+     * @warning Note that we allow log_domain_sizes to be defined over
+     * nodes/variables that do not belong to graph. These sizes will simply be
+     * ignored. However, it is compulsory that all the nodes of graph belong to
+     * log_domain_sizes.
      * @warning  Note that, by the aGrUM's constructor parameter's rule, the
-     * fact
-     * that an argument is passed as a pointer means that it is not copied
-     * within
-     * the SimplicialSet, but rather it is only referenced within it. */
+     * fact that an argument is passed as a pointer means that it is not copied
+     * within the SimplicialSet, but rather it is only referenced within it. */
     void setGraph( UndiGraph* graph,
-                   const NodeProperty<float>* log_modalities,
-                   NodeProperty<float>* log_weights,
-                   float theRatio = GUM_QUASI_RATIO,
-                   float theThreshold = GUM_WEIGHT_THRESHOLD );
+                   const NodeProperty<double>* log_domain_sizes,
+                   NodeProperty<double>* log_weights,
+                   double theRatio = GUM_QUASI_RATIO,
+                   double theThreshold = GUM_WEIGHT_THRESHOLD );
+
+    /// reassigns a new set of cliques' log weights (with the same content)
+    /** This method is useful for move constructors in elimination sequences.
+     * @throws InvalidArgument is raised if the old_weights argument is
+     * different from the current __log_weights pointer. */
+    void replaceLogWeights ( NodeProperty<double>* old_weigths,
+                             NodeProperty<double>* new_weights );
 
     /// @}
 
-    private:
+    
+  private:
     /// the graph on which we perform the simplicial computations
     UndiGraph* __graph;
 
     /// the weights of the nodes (i.e., weight of their clique)
-    NodeProperty<float>* __log_weights;
+    NodeProperty<double>* __log_weights;
 
     /// the log of the modalities of the nodes
-    const NodeProperty<float>* __log_modalities;
+    const NodeProperty<double>* __log_domain_sizes;
 
     /// a queue of the simplicial nodes ordered by increasing node weight
-    PriorityQueue<NodeId, float> __simplicial_nodes;
+    PriorityQueue<NodeId, double> __simplicial_nodes;
 
     /// a queue of the almost simplicial nodes ordered by increasing node weight
-    PriorityQueue<NodeId, float> __almost_simplicial_nodes;
+    PriorityQueue<NodeId, double> __almost_simplicial_nodes;
 
     /// a queue of the quasi simplicial nodes ordered by increasing node weight
-    PriorityQueue<NodeId, float> __quasi_simplicial_nodes;
+    PriorityQueue<NodeId, double> __quasi_simplicial_nodes;
 
     /** @brief indicates for each node to which list (simplicial, almost
      * simplicial, quasi simplicial) it belongs */
@@ -317,40 +319,39 @@ namespace gum {
      * through this egde */
     EdgeProperty<unsigned int> __nb_triangles;
 
-    /// for each node, the number of pairs of adjacent neighbours
-    NodeProperty<unsigned int> __nb_adjacent_neighbours;
+    /// for each node, the number of pairs of adjacent neighbors
+    NodeProperty<unsigned int> __nb_adjacent_neighbors;
 
     /// the current (induced) tree width
     /** @warning Note that what we call tree width here is not the classical
      * definition, i.e., the number of nodes in the largest clique, as this is
      * not, to our mind, what is important for computations: what is important
      * is the size of the tables that would be stored into the cliques, i.e.,
-     * the
-     * product of the modalities of the nodes/variables contained in the cliques
+     * the product of the modalities of the nodes/variables contained in
+     * the cliques
      */
-    float __log_tree_width;
+    double __log_tree_width;
 
-    /** @brief for a given node, if the number of pairs of neighbours that are
-     * adjacent / the number of adjacent neighbours in a clique is greater than
-     * the
-     * quasi ratio, then the node should belong the quasi simplicial list */
-    float __quasi_ratio;
+    /** @brief for a given node, if the number of pairs of neighbors that are
+     * adjacent / the number of adjacent neighbors in a clique is greater than
+     * the quasi ratio, then the node should belong the quasi simplicial list */
+    double __quasi_ratio;
 
     /** @brief quasi and almost simplicial nodes may not be eliminated unless
-     * their
-     * weight is lower than (1 + threshold) * tree_width */
-    float __log_threshold;
+     * their weight is lower than (1 + threshold) * tree_width */
+    double __log_threshold;
 
     /// the set of nodes that have potentially changed of status
     NodeSet __changed_status;
 
     /** @brief a boolean indicating if we want fill-ins list with the standard
      * triangulation method */
-    bool __we_want_fill_ins;
+    bool __we_want_fill_ins { false };
 
     /// fill-ins list
     EdgeSet __fill_ins_list;
 
+    
     /** @brief put node id in the correct simplicial/almost simplicial/quasi
      * simplicial list */
     void __updateList( const NodeId id );
@@ -358,11 +359,11 @@ namespace gum {
     /// put all the nodes in their appropriate list
     void __updateAllNodes();
 
-    /** @brief initialize: compute __nb_triangles, __nb_adjacent_neighbours, etc
+    /** @brief initialize: compute __nb_triangles, __nb_adjacent_neighbors, etc
      * when a new graph is set
      *
      * This method initializes the log_weights, the number of triangles and the
-     * number of adjacent neighbours given the current graph. This is to be used
+     * number of adjacent neighbors given the current graph. This is to be used
      * in constructors and method setGraph */
     void __initialize();
 
@@ -371,15 +372,14 @@ namespace gum {
      * since the graph, the modalities and the weights would be shared and
      * updated
      * by several Simplicial sets whereas the number of triangles and the number
-     * of joined neighbours would not be shared. */
+     * of joined neighbors would not be shared. */
     SimplicialSet& operator=( const SimplicialSet& );
 
     /// prevent the default copy constructor
     /** If we did not prevent this operator to be used, we would be in a mess
-     * since the graph, the modalities and the weights would be shared and
-     * updated
-     * by several Simplicial sets whereas the number of triangles and the number
-     * of joined neighbours would not be shared. */
+     * since the graph, the domain sizes and the weights would be shared and
+     * updated by several Simplicial sets whereas the number of triangles and
+     * the number of joined neighbors would not be shared. */
     SimplicialSet( const SimplicialSet& );
   };
 
