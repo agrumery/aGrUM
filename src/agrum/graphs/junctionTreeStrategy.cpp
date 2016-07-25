@@ -29,13 +29,28 @@
 namespace gum {
 
   /// default constructor
-  JunctionTreeStrategy::JunctionTreeStrategy() {
+  JunctionTreeStrategy::JunctionTreeStrategy () {
     // for debugging purposes
     GUM_CONSTRUCTOR( JunctionTreeStrategy );
   }
 
+  
+  /// copy constructor
+  JunctionTreeStrategy::JunctionTreeStrategy ( const JunctionTreeStrategy& from ) {
+    // for debugging purposes
+    GUM_CONS_CPY( JunctionTreeStrategy );
+  }
+
+
+  /// move constructor
+  JunctionTreeStrategy::JunctionTreeStrategy ( JunctionTreeStrategy&& from ) {
+    // for debugging purposes
+    GUM_CONS_MOV( JunctionTreeStrategy );
+  }
+
+  
   /// destructor
-  JunctionTreeStrategy::~JunctionTreeStrategy() {
+  JunctionTreeStrategy::~JunctionTreeStrategy () {
     // for debugging purposes
     GUM_DESTRUCTOR( JunctionTreeStrategy );
   }

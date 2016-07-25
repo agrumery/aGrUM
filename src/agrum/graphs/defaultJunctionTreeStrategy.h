@@ -31,8 +31,6 @@
 
 namespace gum {
 
-  /* ===========================================================================
-   */
   /** @class DefaultJunctionTreeStrategy
    * @brief An algorithm producing a junction given the elimination tree
    * produced by a triangulation algorithm
@@ -40,10 +38,8 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  /* ===========================================================================
-   */
   class DefaultJunctionTreeStrategy : public JunctionTreeStrategy {
-    public:
+  public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -52,26 +48,36 @@ namespace gum {
     /// default constructor
     DefaultJunctionTreeStrategy();
 
+    /// copy constructor
+    DefaultJunctionTreeStrategy ( const DefaultJunctionTreeStrategy& from );
+
+    /// move constructor
+    DefaultJunctionTreeStrategy ( DefaultJunctionTreeStrategy&& from );
+
     /// destructor
     virtual ~DefaultJunctionTreeStrategy();
 
+    /// create a clone not assigned to any triangulation algorithm
+    virtual DefaultJunctionTreeStrategy* newFactory() const final;
+
     /// virtual copy constructor
-    virtual DefaultJunctionTreeStrategy* newFactory() const;
+    virtual DefaultJunctionTreeStrategy* copyFactory() const final;
 
     /// @}
+    
 
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
 
-    /// indicates whether the junction tree strategy needs fill-ins to work
-    /// properly
-    /** If the junctionTreeStrategy needs fill-ins to work properly, its
-     * assigned
-     * triangulation instance (see method setTriangulation) will be commited to
-     * compute them. */
-    bool requiresFillIns() const;
+    /** @brief indicates whether the junction tree strategy needs fill-ins
+     * to work properly
+     *
+     * If the junctionTreeStrategy needs fill-ins to work properly, its
+     * assigned triangulation instance (see method setTriangulation) will be
+     * commited to compute them. */
+    virtual bool requiresFillIns() const final;
 
     /// returns the junction tree computed
     /** The idea behind this method is that the JunctionTreeStrategy asks its
@@ -80,32 +86,45 @@ namespace gum {
      * for a triangulated graph or an elimination tree, or even the order of
      * elimination of the nodes, etc. All these data are available from the
      * triangulation class. Knowing these data, the junctionTreeStrategy
-     * computes
-     * and returns a junction tree corresponding to the triangulated graph. */
-    const CliqueGraph& junctionTree();
+     * computes and returns a junction tree corresponding to the triangulated
+     * graph.
+     * @throws UndefinedElement is raised if no triangulation has been assigned
+     * to the DefaultJunctionTreeStrategy */
+    virtual const CliqueGraph& junctionTree() final;
 
-    /// assign the triangulation to the junction tree strategy
-    void setTriangulation( StaticTriangulation* triangulation );
+    /// assigns the triangulation to the junction tree strategy
+    /** @param the triangulation whose resulting cliques will be used to
+     * construct the junction tree
+     * @warning note that, by aGrUM's rule, the graph and the domain sizes
+     * are not copied but only referenced by the elimination sequence
+     * algorithm. */
+    virtual void setTriangulation( StaticTriangulation* triangulation ) final;
 
     /** @brief returns, for each node, the clique of the junction tree which was
-     * created by its deletion */
-    const NodeProperty<NodeId>& createdCliques();
+     * created by its deletion
+     * @throws UndefinedElement is raised if no triangulation has been assigned
+     * to the DefaultJunctionTreeStrategy */
+    virtual const NodeProperty<NodeId>& createdCliques() final;
 
     /** @brief returns the Id of the clique of the junction tree created by the
-     * elimination of a given node during the triangulation process */
-    NodeId createdClique( const NodeId id );
+     * elimination of a given node during the triangulation process
+     * @param id the id of the node in the original undirected graph whose
+     * created clique's id is looked for
+     * @throws UndefinedElement is raised if no triangulation has been assigned
+     * to the DefaultJunctionTreeStrategy */
+    virtual NodeId createdClique( const NodeId id ) final;
 
     /// resets the current junction tree strategy data structures
-    void clear();
+    virtual void clear() final;
 
     /// @}
 
-    private:
+  private:
     /// the triangulation to which the junction tree is associated
-    StaticTriangulation* __triangulation;
+    StaticTriangulation* __triangulation { nullptr };
 
     /// a boolean indicating whether the junction tree has been constructed
-    bool __has_junction_tree;
+    bool __has_junction_tree { false };
 
     /// the junction tree computed by the algorithm
     CliqueGraph __junction_tree;
