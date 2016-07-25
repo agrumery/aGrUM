@@ -26,7 +26,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/unconstrainedEliminationSequenceStrategy.h>
 
 namespace gum {
 

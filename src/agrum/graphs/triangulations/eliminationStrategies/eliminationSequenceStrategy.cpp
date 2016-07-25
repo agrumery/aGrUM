@@ -25,10 +25,10 @@
  */
 
 #include <agrum/config.h>
-#include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/eliminations/eliminationSequenceStrategy.inl>
+#include <agrum/graphs/triangulations/eliminationStrategies/eliminationSequenceStrategy.inl>
 #endif  // GUM_NOINLINE
 
 

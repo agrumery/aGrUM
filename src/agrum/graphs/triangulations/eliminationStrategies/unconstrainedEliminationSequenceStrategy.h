@@ -41,8 +41,7 @@
 #ifndef GUM_UNCONSTRAINED_ELIMINATION_SEQUENCE_STRATEGY_H
 #define GUM_UNCONSTRAINED_ELIMINATION_SEQUENCE_STRATEGY_H
 
-#include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
-#include <agrum/graphs/undiGraph.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>
 
 namespace gum {
 

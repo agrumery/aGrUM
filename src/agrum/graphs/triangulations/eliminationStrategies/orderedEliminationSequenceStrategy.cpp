@@ -27,7 +27,12 @@
 
 #include <agrum/config.h>
 
-#include <agrum/graphs/eliminations/orderedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/orderedEliminationSequenceStrategy.h>
+
+#ifdef GUM_NO_INLINE
+#include <agrum/graphs/triangulations/eliminationStrategies/orderedEliminationSequenceStrategy.inl>
+#endif  // GUM_NOINLINE
+
 
 namespace gum {
 

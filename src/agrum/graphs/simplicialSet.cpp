@@ -25,7 +25,7 @@
 #include <sstream>
 #include <limits>
 #include <cmath>
-#include "graphElements.h"
+#include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/simplicialSet.h>
 
 #ifdef GUM_NO_INLINE

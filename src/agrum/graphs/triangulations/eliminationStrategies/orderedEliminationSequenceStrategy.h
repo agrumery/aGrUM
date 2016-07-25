@@ -28,8 +28,7 @@
 #define GUM_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
 
 #include <vector>
-#include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
-#include <agrum/graphs/undiGraph.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>
 
 namespace gum {
 
@@ -194,7 +193,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/eliminations/orderedEliminationSequenceStrategy.inl>
+#include <agrum/graphs/triangulations/eliminationStrategies/orderedEliminationSequenceStrategy.inl>
 #endif  // GUM_NOINLINE
 
 

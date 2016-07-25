@@ -26,9 +26,7 @@
 #include <cmath>
 
 #include <agrum/config.h>
-
-#include <agrum/graphs/undiGraph.h>
-#include <agrum/graphs/eliminations/defaultEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/defaultEliminationSequenceStrategy.h>
 
 
 namespace gum {

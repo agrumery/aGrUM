@@ -43,7 +43,7 @@
 #include <agrum/config.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/simplicialSet.h>
-#include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/unconstrainedEliminationSequenceStrategy.h>
 
 
 namespace gum {

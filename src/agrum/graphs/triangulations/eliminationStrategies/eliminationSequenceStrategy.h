@@ -32,6 +32,8 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/graphElements.h>
+#include <agrum/graphs/undiGraph.h>
+
 
 namespace gum {
 
@@ -189,7 +191,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/eliminations/eliminationSequenceStrategy.inl>
+#include <agrum/graphs/triangulations/eliminationStrategies/eliminationSequenceStrategy.inl>
 #endif  // GUM_NOINLINE
 
 

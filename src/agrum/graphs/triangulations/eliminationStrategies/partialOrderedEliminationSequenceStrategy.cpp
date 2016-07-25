@@ -28,7 +28,12 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/graphs/eliminations/partialOrderedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy.h>
+
+#ifdef GUM_NO_INLINE
+#include <agrum/graphs/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy.inl>
+#endif  // GUM_NOINLINE
+
 
 namespace gum {
 

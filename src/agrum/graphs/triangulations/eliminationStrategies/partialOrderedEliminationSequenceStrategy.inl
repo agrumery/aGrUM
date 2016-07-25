@@ -18,32 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief An Elimination sequence algorithm that imposes a given complete
- * ordering on the nodes elimination sequence
+ * @brief Base class for all elimination sequence algorithm that impose a given
+ * partial ordering on the nodes elimination sequence, that is, the set of all
+ * the nodes is divided into several subsets. Within each subset, any ordering
+ * can be chosen. But all the nodes of the first subset must be eliminated
+ * before the nodes of the second, which must be eliminated before those of the
+ * third subset, and so on.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifdef GUM_NO_INLINE
-#include <agrum/graphs/eliminations/orderedEliminationSequenceStrategy.inl>
-#endif  // GUM_NOINLINE
-
-
 namespace gum {
 
-  
-  // returns the current complete ordering
-  INLINE const std::vector<NodeId>*
-  OrderedEliminationSequenceStrategy::order () const noexcept {
-    return __order;
-  }
 
+  // returns the current partial ordering
+  INLINE const List<NodeSet>*
+  PartialOrderedEliminationSequenceStrategy::partialOrder () const noexcept {
+    return _subsets;
+  }
   
-  // indicates whether a new complete ordering is needed
+
+  // indicates if a new partial ordering is needed
   INLINE bool
-  OrderedEliminationSequenceStrategy::isOrderNeeded () const noexcept {
-    return __order_needed;
+  PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded ()
+    const noexcept {
+    return _partial_order_needed;
   }
+    
   
-
 } /* namespace gum */

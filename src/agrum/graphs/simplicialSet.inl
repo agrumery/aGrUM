@@ -29,7 +29,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease IDE parser
-#include <agrum/graphs/eliminations/defaultPartialOrderedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/defaultPartialOrderedEliminationSequenceStrategy.h>
 
 namespace gum {
 
