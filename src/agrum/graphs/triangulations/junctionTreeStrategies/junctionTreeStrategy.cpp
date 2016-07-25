@@ -24,7 +24,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/graphs/junctionTreeStrategy.h>
+#include <agrum/graphs/triangulations/junctionTreeStrategies/junctionTreeStrategy.h>
 
 namespace gum {
 

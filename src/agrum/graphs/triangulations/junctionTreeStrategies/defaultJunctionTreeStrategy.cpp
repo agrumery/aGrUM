@@ -27,7 +27,7 @@
 #include <numeric>
 
 #include <agrum/config.h>
-#include <agrum/graphs/defaultJunctionTreeStrategy.h>
+#include <agrum/graphs/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
 #include <agrum/graphs/triangulations/staticTriangulation.h>
 
 namespace gum {

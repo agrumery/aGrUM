@@ -27,7 +27,7 @@
 #ifndef GUM_DEFAULT_JUNCTION_TREE_STRATEGY_H
 #define GUM_DEFAULT_JUNCTION_TREE_STRATEGY_H
 
-#include <agrum/graphs/junctionTreeStrategy.h>
+#include <agrum/graphs/triangulations/junctionTreeStrategies/junctionTreeStrategy.h>
 
 namespace gum {
 
