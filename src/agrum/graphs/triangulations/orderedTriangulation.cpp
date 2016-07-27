@@ -45,33 +45,55 @@ namespace gum {
   
   /// constructor with a given graph
   OrderedTriangulation::OrderedTriangulation
-  ( const UndiGraph& theGraph,
-    const NodeProperty<Size>& dom,
-    const Sequence<NodeId>& sequence,
+  ( const UndiGraph* theGraph,
+    const NodeProperty<Size>* dom,
+    const std::vector<NodeId>* order,
     const OrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
     bool minimality ) :
     StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality ),
-    __sequence( &sequence ) {
+    __order( order ) {
+    static_cast<OrderedEliminationSequenceStrategy*>
+      ( _elimination_sequence_strategy )->setOrder ( __order );
+    
     // for debugging purposes
     GUM_CONSTRUCTOR( OrderedTriangulation );
-
-    // check whether the sequence is appropriate for performing a
-    // triangulation or not
-    __sequence_needed = __isSequenceNeeded ( __sequence );
   }
 
 
   // copy constructor
   OrderedTriangulation::OrderedTriangulation ( const OrderedTriangulation& from ):
     StaticTriangulation ( from ),
-    __sequence ( from.__sequence ),
-    __sequence_needed ( from.__sequence_needed ) {
+    __order ( from.__order ) {
     // for debugging purposes
     GUM_CONS_CPY ( OrderedTriangulation );
   }
   
+  
+  // move constructor
+  OrderedTriangulation::OrderedTriangulation ( OrderedTriangulation&& from ):
+    StaticTriangulation ( std::move ( from ) ),
+    __order ( from.__order ) {
+    // for debugging purposes
+    GUM_CONS_MOV ( OrderedTriangulation );
+  }
 
+
+  /// virtual copy constructor
+  OrderedTriangulation* OrderedTriangulation::newFactory() const {
+    return new OrderedTriangulation
+      ( static_cast<const OrderedEliminationSequenceStrategy&>
+        ( *_elimination_sequence_strategy ),
+        *_junction_tree_strategy );
+  }
+
+  
+  /// virtual copy constructor
+  OrderedTriangulation* OrderedTriangulation::copyFactory() const {
+    return new OrderedTriangulation ( *this );
+  }
+
+  
   /// destructor
   OrderedTriangulation::~OrderedTriangulation () {
     // for debugging purposes
@@ -80,55 +102,29 @@ namespace gum {
 
   
   /// initialize the triangulation data structures for a new graph
-  void OrderedTriangulation::setGraph( const UndiGraph& graph,
-                                       const NodeProperty<Size>& domsizes ) {
+  void OrderedTriangulation::setGraph( const UndiGraph* graph,
+                                       const NodeProperty<Size>* domsizes ) {
     StaticTriangulation::setGraph( graph, domsizes );
-
-    // check that the elimination sequence is coherent with the new graph.
-    // If this is not the case, indicate that the user will have to insert
-    // a new sequence before performing a triangulation
-    __sequence_needed = __isSequenceNeeded ( __sequence );
-  }
-
-
-  /// indicate whether an elimination sequence is compatible with the current graph
-  bool
-  OrderedTriangulation::__isSequenceNeeded ( const Sequence<NodeId>* seq ) const {
-    if ( seq == nullptr ) return true;
-
-    for ( const auto node : *seq ) {
-      if ( ! _domain_sizes.exists ( node ) ) return true;
-    }
-
-    return ( seq->size () != _domain_sizes.size () );
+    static_cast<OrderedEliminationSequenceStrategy*>
+      ( _elimination_sequence_strategy )->setOrder ( __order );
   }
 
 
   /// sets the sequence of elimination
-  void OrderedTriangulation::setEliminationSequence
-  ( const Sequence<NodeId>& sequence ) {
-    __sequence = &sequence;
-    __sequence_needed = __isSequenceNeeded ( __sequence );
-  }
-
-  
-  /// virtual copy constructor
-  OrderedTriangulation* OrderedTriangulation::newFactory() const {
-    return new OrderedTriangulation ( *this );
+  void OrderedTriangulation::setOrder ( const std::vector<NodeId>* order ) {
+    __order = order;
+    static_cast<OrderedEliminationSequenceStrategy*>
+      ( _elimination_sequence_strategy )->setOrder ( __order );
   }
 
   
   /// the function called to initialize the triangulation process
   void OrderedTriangulation::_initTriangulation( UndiGraph& graph ) {
-    if ( __sequence_needed ) {
-      GUM_ERROR ( UndefinedElement, "A correct elimination order has not been "
-                  "provided to the OrderedTriangulation." );
-    }
-    
     OrderedEliminationSequenceStrategy* elim =
         static_cast<OrderedEliminationSequenceStrategy*>(
             _elimination_sequence_strategy );
-    elim->setGraph( &graph, __sequence );
+    elim->setGraph( &graph, _domain_sizes );
+    elim->setOrder ( __order );
   }
   
 

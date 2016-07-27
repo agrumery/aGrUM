@@ -27,12 +27,11 @@
 #define GUM_UNCONSTRAINED_TRIANGULATION_H
 
 #include <agrum/graphs/triangulations/staticTriangulation.h>
-#include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/unconstrainedEliminationSequenceStrategy.h>
 
 namespace gum {
 
-  /* ===========================================================================
-   */
+
   /** @class UnconstrainedTriangulation
    * @brief Interface for all triangulation methods without constraints on
    * node elimination orderings
@@ -40,24 +39,12 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  /* ===========================================================================
-   */
   class UnconstrainedTriangulation : public StaticTriangulation {
-    public:
+  public:
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-
-    /// initialize the triangulation data structures for a new graph
-    /** @param theGraph the graph to be triangulated, i.e., the nodes of which
-     * will
-     * be eliminated
-     * @param modal the domain sizes of the nodes to be eliminated
-     * @warning note that, by aGrUM's rule, the graph and the modalities are not
-     * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph( const UndiGraph* theGraph,
-                           const NodeProperty<Size>* modal );
 
     /** @brief returns a fresh triangulation (over an empty graph) of the same
      * type as the current object
@@ -67,12 +54,19 @@ namespace gum {
      * more effective C++.*/
     virtual UnconstrainedTriangulation* newFactory() const = 0;
 
-    /// @}
+    /// virtual copy constructor
+    /** note that we return a pointer as it enables subclasses to return
+     * pointers to their types, not Triangulation pointers. See item 25 of the
+     * more effective C++. */
+    virtual UnconstrainedTriangulation* copyFactory() const = 0;
 
     /// destructor
     virtual ~UnconstrainedTriangulation();
 
-    protected:
+    /// @}
+
+    
+  protected:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -84,10 +78,10 @@ namespace gum {
      * trees
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
-    UnconstrainedTriangulation(
-        const UnconstrainedEliminationSequenceStrategy& elimSeq,
-        const JunctionTreeStrategy& JTStrategy,
-        bool minimality = false );
+    UnconstrainedTriangulation
+    ( const UnconstrainedEliminationSequenceStrategy& elimSeq,
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality = false );
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -100,31 +94,23 @@ namespace gum {
      * the triangulation is minimal w.r.t. inclusion
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
-    UnconstrainedTriangulation(
-        const UndiGraph* graph,
-        const NodeProperty<Size>* dom,
-        const UnconstrainedEliminationSequenceStrategy& elimSeq,
-        const JunctionTreeStrategy& JTStrategy,
-        bool minimality = false );
+    UnconstrainedTriangulation
+    ( const UndiGraph* graph,
+      const NodeProperty<Size>* dom,
+      const UnconstrainedEliminationSequenceStrategy& elimSeq,
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality = false );
 
-    /// the function called to initialize the triangulation process
-    /** This function is called when the triangulation process starts and is
-     * used to initialize the elimination sequence strategy. Actually, the
-     * graph that is modified by the triangulation algorithm is a copy of
-     * the original graph, and this copy need be known by the elimination
-     * sequence strategy. _initTriangulation is used to transmit this
-     * knowledge to the elimination sequence (through method setGraph of the
-     * elimination sequence class).
-     * @param graph the very graph that is triangulated (this is a copy of
-     * __original_graph) */
-    void _initTriangulation( UndiGraph& graph );
-
-    /// @}
-
-    private:
-    /// forbid copy constructor
+    /// forbid copy constructor except in newfactory
     UnconstrainedTriangulation( const UnconstrainedTriangulation& );
 
+    /// forbid move constructor except in children's constructors
+    UnconstrainedTriangulation( UnconstrainedTriangulation&& );
+
+    /// @}
+    
+
+  private:
     /// forbid copy operator
     UnconstrainedTriangulation& operator=( const UnconstrainedTriangulation& );
   };

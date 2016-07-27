@@ -30,17 +30,10 @@
 
 namespace gum {
 
-  /* ===========================================================================
-   */
-  /* ===             BASIC TRIANGULATION ALGORITHM USED BY AGRUM             ===
-   */
-  /* ===========================================================================
-   */
   /** @class DefaultTriangulation
    * @brief The default triangulation algorithm used by aGrUM
    *
    * \ingroup graph_group
-   *
    *
    * By default, this is the very class used by aGrUM for performing
    * triangulations. The algorithm used is the following:
@@ -50,92 +43,84 @@ namespace gum {
    * # finally, a junction tree is derived from the elimination tree
    *
    * The triangulation step first tries to remove simplicial nodes, that is,
-   *nodes
-   * that belong to only one clique. Then almost simplicial nodes of low width
-   *are
-   * removed (almost simplicial nodes are nodes such that all but one of their
-   * neighbours form a clique). Then quasi simplicial nodes are removed, that
-   *is,
-   * nodes such that the ratio of the number of fill-ins to add to form a clique
-   * by the number of edges in a clique is small. Then nodes that create cliques
-   * of small weight are removed.
+   * nodes that belong to only one clique. Then almost simplicial nodes of low
+   * width are removed (almost simplicial nodes are nodes such that all but
+   * one of their neighbors form a clique). Then quasi simplicial nodes are
+   * removed, that is, nodes such that the ratio of the number of fill-ins to
+   * add to form a clique by the number of edges in a clique is small. Then
+   * nodes that create cliques of small weight are removed.
    *
    * The transformation from the elimination tree to the join tree is performed
    * bottom-up. Each time a node of the elimination tree is identified to be a
    * sub-clique, it is removed and all of its parents but one are linked to the
-   * latter. The identification of sub-cliques is very fast (comparison of 2
-   *ints).
-   */
-  /* ===========================================================================
+   * latter. The identification of sub-cliques is very fast (comparison
+   * of 2 ints).
    */
   class DefaultTriangulation : public UnconstrainedTriangulation {
-    public:
+  public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// basic constructor. initialize the triangulation
-
     explicit DefaultTriangulation( const UndiGraph* graph,
-                                   const NodeProperty<Size>* modal,
+                                   const NodeProperty<Size>* dom_sizes,
                                    bool minimality = false,
-                                   float theRatio = GUM_QUASI_RATIO,
-                                   float theThreshold = GUM_WEIGHT_THRESHOLD );
+                                   double theRatio = GUM_QUASI_RATIO,
+                                   double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// default constructor: initialize the triangulation for an empty graph
-
     explicit DefaultTriangulation( bool minimality = false,
                                    double theRatio = GUM_QUASI_RATIO,
                                    double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
+    DefaultTriangulation ( const DefaultTriangulation& from );
 
-    // DefaultTriangulation( const DefaultTriangulation& from );
+    /// move constructor
+    DefaultTriangulation ( DefaultTriangulation&& from );
 
     /// destructor
-
     ~DefaultTriangulation();
 
-    /// virtual copy constructor
+    /// virtual clone constructor
     /** returns a fresh triangulation (over an empty graph) of the same
      * type as the current object
      *
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-
     virtual DefaultTriangulation* newFactory() const;
 
-    /// @}
-
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
+    /// virtual copy constructor
+    virtual DefaultTriangulation* copyFactory() const;
 
     /// @}
 
+    
+  private:
+    /// the ratio above which we consider nodes to be quasi simplicial
+    double __quasi_ratio;
+
+    /** @brief threshold under which almost and quasi simplicial nodes can be
+     * chosen to be eliminated */
+    double __threshold;
+
+    
     // ############################################################################
     /// @name Operators
     // ############################################################################
     /// @{
 
-    /// copy operator
-
+    /// forbid copy operator
     DefaultTriangulation& operator=( const DefaultTriangulation& );
 
     /// @}
-
-    private:
-    /// the ratio above which we consider nodes to be quasi simplicial
-    float __quasi_ratio;
-
-    /** @brief threshold under which almost and quasi simplicial nodes can be
-     * chosen to be eliminated */
-    float __threshold;
   };
 
+  
 } /* namespace gum */
+
 
 #endif /* GUM_DEFAULT_TRIANGULATION_H */

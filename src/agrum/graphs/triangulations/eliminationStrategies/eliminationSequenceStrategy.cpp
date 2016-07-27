@@ -127,8 +127,8 @@ namespace gum {
     if ( ( ( graph != nullptr ) && ( dom_sizes == nullptr ) ) ||
          ( ( graph == nullptr ) && ( dom_sizes != nullptr ) ) ) {
       GUM_ERROR( GraphError,
-                 "EliminationSequenceStrategy: one of the graph or the domain "
-                 "sizes set is a null pointer." );
+                 "EliminationSequenceStrategy: one of the graph or the set of "
+                 "domain sizes is a null pointer." );
     }
 
     // check that each node has a domain size

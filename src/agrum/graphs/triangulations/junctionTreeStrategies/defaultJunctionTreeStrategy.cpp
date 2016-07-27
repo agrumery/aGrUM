@@ -44,20 +44,18 @@ namespace gum {
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy
   ( const DefaultJunctionTreeStrategy& from ) :
     JunctionTreeStrategy ( from ),
-    __triangulation ( from.__triangulation ),
     __has_junction_tree ( from.__has_junction_tree ),
     __junction_tree ( from.__junction_tree ),
     __node_2_junction_clique ( from.__node_2_junction_clique ) {
     // for debugging purposes
     GUM_CONS_CPY( DefaultJunctionTreeStrategy );
   }
- 
+
 
   // move constructor
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy
   ( DefaultJunctionTreeStrategy&& from ) :
     JunctionTreeStrategy ( std::move ( from ) ),
-    __triangulation ( from.__triangulation ),
     __has_junction_tree ( from.__has_junction_tree ),
     __junction_tree ( std::move ( from.__junction_tree ) ),
     __node_2_junction_clique ( std::move ( from.__node_2_junction_clique ) ) {
@@ -74,14 +72,39 @@ namespace gum {
 
   
   // clone factory
-  DefaultJunctionTreeStrategy* DefaultJunctionTreeStrategy::newFactory () const {
+  DefaultJunctionTreeStrategy*
+  DefaultJunctionTreeStrategy::newFactory () const {
     return new DefaultJunctionTreeStrategy;
   }
 
   
   // virtual copy constructor
-  DefaultJunctionTreeStrategy* DefaultJunctionTreeStrategy::copyFactory () const {
-    return new DefaultJunctionTreeStrategy ( *this );
+  DefaultJunctionTreeStrategy*
+  DefaultJunctionTreeStrategy::copyFactory ( StaticTriangulation* tr ) const {
+    if ( tr == nullptr ) {
+      return new DefaultJunctionTreeStrategy ( *this );
+    }
+    else {
+      // here, we need to assign new triangulation "tr" to the new strategy
+      
+      // if there was already a triangulation associated with the current
+      // strategy, 2 cases can obtain:
+      // 1/ both __triangulation and tr point toward the same graph to be
+      //    triangulated. In this case, no need to recompute anything
+      // 2/ they point toward different graphs. Then, we must indicate that
+      //    the new strategy has not computed anything yet
+      if ( ( _triangulation != nullptr ) &&
+           ( tr->originalGraph () == _triangulation->originalGraph () ) ) {
+        auto new_strategy = new DefaultJunctionTreeStrategy ( *this ); // case 1/
+        new_strategy->_triangulation = tr;
+        return new_strategy;
+      }
+      else { // case 2/
+        auto new_strategy = new DefaultJunctionTreeStrategy;
+        new_strategy->setTriangulation ( tr );
+        return new_strategy;
+      }
+    }
   }
 
 
@@ -94,7 +117,7 @@ namespace gum {
   // assign the triangulation to the junction tree strategy
   void DefaultJunctionTreeStrategy::setTriangulation( StaticTriangulation* tr ) {
     clear ();
-    __triangulation = tr;
+    _triangulation = tr;
   }
   
 
@@ -138,12 +161,12 @@ namespace gum {
   void DefaultJunctionTreeStrategy::__computeJunctionTree() {
     // if no triangulation is assigned to the strategy, we cannot compute
     // the junction tree, so raise an exception
-    if ( __triangulation == nullptr )
+    if ( _triangulation == nullptr )
       GUM_ERROR ( UndefinedElement, "No triangulation has been assigned to "
                   "the DefaultJunctionTreeStrategy" );
 
     // copy the elimination tree into the junction tree
-    __junction_tree = __triangulation->eliminationTree ();
+    __junction_tree = _triangulation->eliminationTree ();
 
     // mark all the edges of the junction tree to false
     EdgeProperty<bool> mark = __junction_tree.edgesProperty( false );
@@ -154,7 +177,7 @@ namespace gum {
     // substituted by clique K of the elimination tree, and that clique J
     // (resp. K) was the jth (resp. kth) one created during the triangulation
     // process. Then, in the vector below, substitution[j] = k.
-    const std::vector<NodeId>& elim_order = __triangulation->eliminationOrder();
+    const std::vector<NodeId>& elim_order = _triangulation->eliminationOrder();
 
     std::size_t size = elim_order.size();
     std::vector<std::size_t> substitution( size );

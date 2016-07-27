@@ -26,13 +26,15 @@
 #ifndef GUM_ORDERED_TRIANGULATION_H
 #define GUM_ORDERED_TRIANGULATION_H
 
+#include <vector>
+
 #include <agrum/graphs/triangulations/staticTriangulation.h>
-#include <agrum/graphs/eliminations/orderedEliminationSequenceStrategy.h>
-#include <agrum/graphs/defaultJunctionTreeStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/orderedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
 
 namespace gum {
 
-  /* =========================================================================== */
+
   /** @class OrderedTriangulation
    * @brief class for graph triangulations for which we enforce a given complete
    * ordering on the nodes eliminations.
@@ -40,7 +42,6 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  /* =========================================================================== */
   class OrderedTriangulation : public StaticTriangulation {
   public:
     // ############################################################################
@@ -72,16 +73,26 @@ namespace gum {
      * trees
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion
-     * @warning note that, by aGrUM's rule, the graph and the modalities are not
-     * copied but only referenced by the elimination sequence algorithm. */
+     * @warning Note that we allow dom_sizes to be defined over nodes/variables
+     * that do not belong to graph. These sizes will simply be ignored. However,
+     * it is compulsory that all the nodes of graph belong to dom_sizes
+     * @warning note that, by aGrUM's rule, the graph and the elimination
+     * sequence are not copied but only referenced by the elimination sequence
+     * algorithm. */
     OrderedTriangulation
-    ( const UndiGraph& graph,
-      const NodeProperty<Size>& domsizes,
-      const Sequence<NodeId>& sequence,
+    ( const UndiGraph* graph,
+      const NodeProperty<Size>* domsizes,
+      const std::vector<NodeId>* sequence,
       const OrderedEliminationSequenceStrategy& elimSeq =
       OrderedEliminationSequenceStrategy(),
       const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
       bool minimality = false );
+
+    /// copy constructor
+    OrderedTriangulation( const OrderedTriangulation& from );
+
+    /// move constructor
+    OrderedTriangulation( OrderedTriangulation&& from  );
 
     /** @brief returns a fresh triangulation over the same graph and of the same
      * type as the current object (using the same sequence, etc.)
@@ -89,7 +100,10 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual OrderedTriangulation* newFactory () const;
+    virtual OrderedTriangulation* newFactory () const final;
+
+    /// virtual copy constructor
+    virtual OrderedTriangulation* copyFactory () const final;
 
     /// destructor
     virtual ~OrderedTriangulation ();
@@ -106,15 +120,15 @@ namespace gum {
      * be eliminated
      * @param domsizes the domain sizes of the nodes to be eliminated
      * @param sequence  the order in which the nodes should be eliminated
-     * @warning note that, by aGrUM's rule, the graph and the sequence are not
-     * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph( const UndiGraph& graph,
-                           const NodeProperty<Size>& domsizes );
+     * @warning note that, by aGrUM's rule, the graph and the domain sizes are not
+     *  notcopied but only referenced by the triangulation algorithm. */
+    virtual void setGraph( const UndiGraph* graph,
+                           const NodeProperty<Size>* domsizes ) final;
 
     /// sets the sequence of elimination (only the reference is stored)
     /** The elimination sequence is kept outside this class for efficiency
      * reasons. */
-    virtual void setEliminationSequence ( const Sequence<NodeId>& sequence );
+    virtual void setOrder ( const std::vector<NodeId>* order ) final;
     
     /// @}
 
@@ -129,28 +143,18 @@ namespace gum {
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
      * __original_graph) */
-    void _initTriangulation( UndiGraph& graph );
-
-    /// forbid copy constructor except in newFactory
-    OrderedTriangulation( const OrderedTriangulation& );
+    virtual void _initTriangulation( UndiGraph& graph ) final;
 
 
     /// the elimination sequence to apply
-    /** @warning __sequence is not owned by the orderedTriangulation class */
-    const Sequence<NodeId>* __sequence { nullptr };
-
-    /// indicate whether a new sequence is needed before performing a triangulation
-    bool __sequence_needed { true };
+    /** @warning __order is not owned by the orderedTriangulation class */
+    const std::vector<NodeId>* __order { nullptr };
     
     /// @}
 
   private:
     /// forbid copy operator
     OrderedTriangulation& operator=( const OrderedTriangulation& );
-
-    /** brief indicate whether an elimination sequence is compatible with
-     * the current graph */
-    bool __isSequenceNeeded ( const Sequence<NodeId>* seq ) const;
 
   };
 

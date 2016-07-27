@@ -68,11 +68,14 @@ namespace gum {
   DefaultPartialOrderedEliminationSequenceStrategy
   ( const DefaultPartialOrderedEliminationSequenceStrategy& from ) :
     PartialOrderedEliminationSequenceStrategy ( from ),
+    // no need to set __log_weights because the copy of the simplicial set
+    // will set it properly
+    __simplicial_set ( new SimplicialSet ( *from.__simplicial_set,
+                                           _graph, &_log_domain_sizes,
+                                           &__log_weights, false ) ),
     __simplicial_ratio( from.__simplicial_ratio ),
     __simplicial_threshold( from.__simplicial_threshold ),
     __provide_fill_ins( from.__provide_fill_ins ) {
-    __createSimplicialSet ();
-    
     // for debugging purposes
     GUM_CONS_CPY( DefaultPartialOrderedEliminationSequenceStrategy );
   }

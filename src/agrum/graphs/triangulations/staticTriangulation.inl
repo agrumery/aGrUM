@@ -31,7 +31,7 @@ namespace gum {
   
   /// returns an elimination ordering compatible with the triangulated graph
   INLINE
-  const Sequence<NodeId>& StaticTriangulation::eliminationOrder() {
+  const std::vector<NodeId>& StaticTriangulation::eliminationOrder() {
     if ( !__has_triangulation ) __triangulate();
 
     return __elim_order;
@@ -116,19 +116,39 @@ namespace gum {
     return _junction_tree_strategy->createdCliques();
   }
 
+  
   /// sets/unset the fill-ins storage in the standard triangulation procedure
-
   INLINE
   void StaticTriangulation::setFillIns( bool b ) {
     __we_want_fill_ins = b;
     _elimination_sequence_strategy->askFillIns( b );
   }
 
+  
   /// returns the graph to be triangulated
-
   INLINE
   const UndiGraph* StaticTriangulation::originalGraph() const {
     return __original_graph;
+  }
+
+  
+  /// returns the elimination sequence strategy used by the triangulation
+  INLINE EliminationSequenceStrategy&
+  StaticTriangulation::eliminationSequenceStrategy () const {
+    return *_elimination_sequence_strategy;
+  }
+  
+
+  /// returns the junction tree strategy used by the triangulation
+  INLINE JunctionTreeStrategy&
+  StaticTriangulation::junctionTreeStrategy () const {
+    return *_junction_tree_strategy;
+  }
+
+  
+  /// indicates wether minimality is required
+  INLINE bool StaticTriangulation::isMinimalityRequired () const {
+    return __minimality_required;
   }
 
   

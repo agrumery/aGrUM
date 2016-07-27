@@ -106,8 +106,17 @@ namespace gum {
       double threshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
+    /** @warning The newly created elimination sequence strategy points toward
+     * the same undirected graph as the one contained in from but each strategy
+     * possesses its own simplicial set. As a result, if both elimination
+     * strategies are used at the same time, they will probably result in a mess
+     * because their simplicial sets won't be synchronized correctly with the
+     * changing undirected graph. So, whenever using this copy constructor, be
+     * sure that either from or the newly created strategy is used for a
+     * triangulation but not both. This will necessarily be OK in
+     * DefaultTriangulations. */
     DefaultEliminationSequenceStrategy
-    ( const DefaultEliminationSequenceStrategy& );
+    ( const DefaultEliminationSequenceStrategy& from );
 
     /// move constructor
     DefaultEliminationSequenceStrategy
@@ -123,6 +132,15 @@ namespace gum {
     virtual DefaultEliminationSequenceStrategy* newFactory() const final;
 
     /// virtual copy constructor
+    /** @warning The newly created elimination sequence strategy points toward
+     * the same undirected graph as the one contained in the current strategy
+     * but each strategy possesses its own simplicial set. As a result, if both
+     * elimination strategies are used at the same time, they will probably
+     * result in a mess because their simplicial sets won't be synchronized
+     * correctly with the changing undirected graph. So, whenever using this
+     * virtual copy constructor, be sure that either the current or the newly
+     * created strategy is used for a triangulation but not both. This will
+     * necessarily be OK in DefaultTriangulations. */
     virtual DefaultEliminationSequenceStrategy* copyFactory() const final;
 
     /// @}

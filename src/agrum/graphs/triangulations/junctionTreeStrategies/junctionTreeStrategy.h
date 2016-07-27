@@ -56,9 +56,14 @@ namespace gum {
     virtual JunctionTreeStrategy* newFactory() const = 0;
 
     /// virtual copy constructor
-    virtual JunctionTreeStrategy* copyFactory() const = 0;
+    /** @param triangulation if triangulation is different from nullptr, this
+     * becomes the new triangulation algorithm associated with the junction tree
+     * strategy */
+    virtual JunctionTreeStrategy*
+    copyFactory( StaticTriangulation* triangulation = nullptr ) const = 0;
 
     /// @}
+    
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -87,6 +92,10 @@ namespace gum {
     /// assigns the triangulation to the junction tree strategy
     virtual void setTriangulation( StaticTriangulation* triangulation ) = 0;
 
+    /** @brief assigns a new triangulation to the junction tree strategy
+     * during a move construction */
+    virtual void moveTriangulation( StaticTriangulation* triangulation );
+
     /** @brief returns, for each node, the clique of the junction tree which was
      * created by its deletion */
     virtual const NodeProperty<NodeId>& createdCliques() = 0;
@@ -100,7 +109,12 @@ namespace gum {
 
     /// @}
 
+    
   protected:
+    /// the triangulation to which the junction tree is associated
+    StaticTriangulation* _triangulation { nullptr };
+
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################

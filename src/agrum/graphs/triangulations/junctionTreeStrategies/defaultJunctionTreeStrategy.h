@@ -58,10 +58,15 @@ namespace gum {
     virtual ~DefaultJunctionTreeStrategy();
 
     /// create a clone not assigned to any triangulation algorithm
-    virtual DefaultJunctionTreeStrategy* newFactory() const final;
+    virtual DefaultJunctionTreeStrategy*
+    newFactory () const final;
 
     /// virtual copy constructor
-    virtual DefaultJunctionTreeStrategy* copyFactory() const final;
+    /** @param triangulation if triangulation is different from nullptr, this
+     * becomes the new triangulation algorithm associated with the junction tree
+     * strategy */
+    virtual DefaultJunctionTreeStrategy*
+    copyFactory( StaticTriangulation* triangulation = nullptr ) const final;
 
     /// @}
     
@@ -96,8 +101,7 @@ namespace gum {
     /** @param the triangulation whose resulting cliques will be used to
      * construct the junction tree
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
-     * are not copied but only referenced by the elimination sequence
-     * algorithm. */
+     * are not copied but only referenced by the junction tree strategy. */
     virtual void setTriangulation( StaticTriangulation* triangulation ) final;
 
     /** @brief returns, for each node, the clique of the junction tree which was
@@ -120,9 +124,6 @@ namespace gum {
     /// @}
 
   private:
-    /// the triangulation to which the junction tree is associated
-    StaticTriangulation* __triangulation { nullptr };
-
     /// a boolean indicating whether the junction tree has been constructed
     bool __has_junction_tree { false };
 
