@@ -309,7 +309,7 @@ namespace gum {
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
   DefaultPartialOrderedEliminationSequenceStrategy*
-  DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const final {
+  DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const {
     return new DefaultPartialOrderedEliminationSequenceStrategy
       ( __simplicial_ratio, __simplicial_threshold );
   }
@@ -317,7 +317,7 @@ namespace gum {
 
   /// virtual copy constructor
   DefaultPartialOrderedEliminationSequenceStrategy*
-  DefaultPartialOrderedEliminationSequenceStrategy::copyFactory() const final {
+  DefaultPartialOrderedEliminationSequenceStrategy::copyFactory() const {
     return new DefaultPartialOrderedEliminationSequenceStrategy ( *this );
   }
 

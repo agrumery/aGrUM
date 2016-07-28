@@ -239,6 +239,9 @@ namespace gum {
     NodeId
     __nodeToEliminate( const PriorityQueue<NodeId, double>& possibleNodes );
    
+    /// create a new simplicial set suited for the current graph
+    void __createSimplicialSet ();
+    
   };
 
 } /* namespace gum */

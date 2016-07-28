@@ -25,8 +25,8 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
-#include <agrum/graphs/eliminations/defaultEliminationSequenceStrategy.h>
-#include <agrum/graphs/defaultJunctionTreeStrategy.h>
+#include <agrum/graphs/triangulations/eliminationStrategies/defaultEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -100,7 +100,7 @@ namespace gum {
   
   /// virtual copy constructor
   DefaultTriangulation* DefaultTriangulation::copyFactory () const {
-    return new DefaultTriangulation ( from );
+    return new DefaultTriangulation ( *this );
   }
 
   

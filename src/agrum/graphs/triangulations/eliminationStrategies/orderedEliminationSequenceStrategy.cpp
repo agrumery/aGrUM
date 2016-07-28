@@ -114,7 +114,7 @@ namespace gum {
   /// sets a new graph to be triangulated
   bool OrderedEliminationSequenceStrategy::setGraph
   ( UndiGraph* graph,
-    const NodeProperty<Size>* dom_sizes ) {
+    const NodeProperty<Size>* domain_sizes ) {
     if ( EliminationSequenceStrategy::setGraph ( graph, domain_sizes ) ) {
       setOrder ( __order );
       return true;
@@ -143,7 +143,7 @@ namespace gum {
 
 
   /// sets a new complete order
-  void OrderedEliminationSequenceStrategy::setOrder
+  bool OrderedEliminationSequenceStrategy::setOrder
   ( const std::vector<NodeId>* order ) {
    // check that the order contains all the nodes of the graph
     __order_needed = __isOrderNeeded ( order );
@@ -156,9 +156,13 @@ namespace gum {
       // lower than the size of __order since all the nodes in the graph
       // belong to vector __order
       __order_index = 0;
-      while ( ! _graph->existsNode ( __order[__order_index] ) )
+      while ( ! _graph->existsNode ( (* __order )[__order_index] ) )
         ++__order_index;
+
+      return true;
     }
+
+    return false;
   }
   
 
@@ -219,7 +223,7 @@ namespace gum {
       ++__order_index;
       std::size_t size = __order->size ();
       while ( ( __order_index < size ) &&
-              ! _graph->existsNode ( __order[__order_index] ) ) 
+              ! _graph->existsNode ( ( *__order )[__order_index] ) ) 
         ++__order_index;
     }
   }

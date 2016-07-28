@@ -86,7 +86,7 @@ namespace gum {
      * @warning the graph is not copied but only referenced by the elimination
      * sequence algorithm. */
     virtual void setGraph( const UndiGraph* graph,
-                           const NodeProperty<Size>* domsizes ) = 0;
+                           const NodeProperty<Size>* domsizes );
     
     /// returns the fill-ins added by the triangulation algorithm
     const EdgeSet& fillIns ();

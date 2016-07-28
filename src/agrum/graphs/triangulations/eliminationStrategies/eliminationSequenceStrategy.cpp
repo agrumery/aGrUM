@@ -114,7 +114,7 @@ namespace gum {
   void EliminationSequenceStrategy::clear () {
     _graph = nullptr;
     _domain_sizes = nullptr;
-    _log_modalities.clear ();
+    _log_domain_sizes.clear ();
   }
   
 
@@ -151,10 +151,10 @@ namespace gum {
 
       if ( _graph != nullptr ) {
         // compute the log of the modalities
-        _log_modalities.resize( _graph->sizeNodes() / 2 );
+        _log_domain_sizes.resize( _graph->sizeNodes() / 2 );
 
         for ( const auto node : *_graph )
-          _log_modalities.insert ( node, std::log( ( *_domain_sizes )[node] ) );
+          _log_domain_sizes.insert ( node, std::log( ( *_domain_sizes )[node] ) );
       }
 
       return true;

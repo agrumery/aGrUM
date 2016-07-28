@@ -76,9 +76,9 @@ namespace gum {
      * @warning Note that we allow dom_sizes to be defined over nodes/variables
      * that do not belong to graph. These sizes will simply be ignored. However,
      * it is compulsory that all the nodes of graph belong to dom_sizes
-     * @warning note that, by aGrUM's rule, the graph and the elimination
-     * sequence are not copied but only referenced by the elimination sequence
-     * algorithm. */
+     * @warning note that, by aGrUM's rule, the graph, the domain sizes and the
+     * elimination sequence are not copied but only referenced by the
+     * triangulation algorithm. */
     OrderedTriangulation
     ( const UndiGraph* graph,
       const NodeProperty<Size>* domsizes,
@@ -142,7 +142,7 @@ namespace gum {
      * knowledge to the elimination sequence (through method setGraph of the
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
-     * __original_graph) */
+     * _original_graph) */
     virtual void _initTriangulation( UndiGraph& graph ) final;
 
 
