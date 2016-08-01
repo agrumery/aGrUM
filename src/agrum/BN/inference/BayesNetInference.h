@@ -41,9 +41,15 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class BayesNetInference {
-    public:
-    /**
-     * Default constructor
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+    /// Default constructor
+    /** @warning note that, by aGrUM's rule, the BN is not copied but only
+     * referenced by the inference algorithm.
      */
     BayesNetInference( const IBayesNet<GUM_SCALAR>& bn );
 
@@ -52,9 +58,15 @@ namespace gum {
      */
     virtual ~BayesNetInference();
 
-    /**
-     * Makes the inference
-     */
+    /// @}
+
+
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+
+    /// Makes the inference
     virtual void makeInference() = 0;
 
     /**
@@ -108,7 +120,7 @@ namespace gum {
      */
     const IBayesNet<GUM_SCALAR>& bn() const;
 
-    protected:
+  protected:
     /**
      * @brief Fill the potential with the computed posterior
      *
@@ -132,14 +144,14 @@ namespace gum {
     /**
      * Invalidate the set of posterior kept here.
      */
-    void _invalidatePosteriors();
+    virtual void _invalidatePosteriors();
 
     /**
      * Mapping between posterior and __bayesNet's nodes.
      */
     NodeProperty<Potential<GUM_SCALAR>*> _posteriors;
 
-    private:
+  private:
     /**
      * The Bayes net we wish to perform inference on.
      */

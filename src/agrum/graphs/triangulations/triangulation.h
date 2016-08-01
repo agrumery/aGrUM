@@ -73,6 +73,18 @@ namespace gum {
     // ############################################################################
     /// @{
 
+    /// initialize the triangulation data structures for a new graph
+    /** @param graph the graph to be triangulated, i.e., the nodes of which
+     * will be eliminated
+     * @param domsizes the domain sizes of the nodes to be eliminated
+     * @warning Note that we allow domsizes to be defined over nodes/variables
+     * that do not belong to graph. These sizes will simply be ignored. However,
+     * it is compulsory that all the nodes of graph belong to dom_sizes
+     * @warning the graph is not copied but only referenced by the elimination
+     * sequence algorithm. */
+    virtual void setGraph( const UndiGraph* graph,
+                           const NodeProperty<Size>* domsizes ) = 0;
+    
     /// returns the fill-ins added by the triangulation algorithm
     virtual const EdgeSet& fillIns () = 0;
 

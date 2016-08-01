@@ -42,8 +42,9 @@ namespace gum {
    * @brief Implementation of a generic class for Bayes net inference.
    * @ingroup bn_group
    *
-   * The goal of the Inference class is twofold: i) handling the common resources
-   * of BN inference (bn, soft/hard evidence and targets); and
+   * The goal of the Inference class is twofold:
+   * i) handling the common resources of BN inference (bn, soft/hard
+   *    evidence and targets); and
    * ii) propose a general scheme for all inference methods.
    *
    * A specialized inference just has to specify how to prepare inference, how
@@ -51,14 +52,33 @@ namespace gum {
    * pure virtual protected methods. and the scheme for every inference
    * derived from Inference will be the same:
    *
-   * 1- ie=SpecificInference(bn); // state <- Unprepared
+   * 1- ie=SpecificInference(bn);              // state <- UnpreparedStructure
    * 2- set targets and evidence in ie
-   * 3- ie.prepareInference();    // state <- Ready
-   * 4- change values Of evidence in ie
-   * 5- ie.makeInference();       // state <- Done
+   * 3- ie.prepareInference();                 // state <- Ready4Inference
+   * 4.a- change values Of evidence in ie      // state <- OutdatedPotentials
+   * 4.b- change some hard evidence or targets // state <- UnpreparedStructure
+   * 5- ie.makeInference();                    // state <- Done
    * 6- get posteriors
    * 7- goto 2 or 4
    *
+   * Inference can be in one of 4 different states:
+   * - UnpreparedStructure: in this state, the inference is fully unprepared
+   *   to be applied. It needs a significant amount of preparation to be
+   *   ready. In a Lazy propagation, for instance, this step amounts to
+   *   compute a new junction tree, hence a new structure in which inference
+   *   will be applied.
+   * - OutdatedPotentials: in this state, the inference just needs to invalidate
+   *   some already computed potentials to be ready. Only a light amount of
+   *   preparation is needed to be able to perform inference.
+   * - Ready4Inference: in this state, all the data structures are ready for
+   *   inference. There just remains to perform the inference computations.
+   * - Done: the heavy computations of inference have been done. There might
+   *   still remain a few light computations to perform to get the posterior
+   *   potentials we need. Typically, in Lazy Propagation, all the messages in
+   *   the junction tree have been computed but, to get the potentials, we still
+   *   need to perform the combinations of the potentials in the cliques with
+   *   the messages sent to the cliques. In some inference algorithms, this
+   *   step may even be empty.
    */
 
   template <typename GUM_SCALAR> class Inference {
@@ -67,6 +87,25 @@ namespace gum {
      * current state of the inference
      * Unprepared/Outdated [addEvidence] --(prepareInference)--> Ready
      * [changeEvidence]--(makeInference)--> Done
+     *
+     * Inference can be in one of 4 different states:
+     * - UnpreparedStructure: in this state, the inference is fully unprepared
+     *   to be applied. It needs a significant amount of preparation to be
+     *   ready. In a Lazy propagation, for instance, this step amounts to
+     *   compute a new junction tree, hence a new structure in which inference
+     *   will be applied.
+     * - OutdatedPotentials: in this state, the inference just needs to
+     *   invalidate some already computed potentials to be ready. Only a light
+     * amount of preparation is needed to be able to perform inference.
+     * - Ready4Inference: in this state, all the data structures are ready for
+     *   inference. There just remains to perform the inference computations.
+     * - Done: the heavy computations of inference have been done. There might
+     *   still remain a few light computations to perform to get the posterior
+     *   potentials we need. Typically, in Lazy Propagation, all the messages in
+     *   the junction tree have been computed but, to get the potentials, we
+     *   still need to perform the combinations of the potentials in the cliques
+     *   with the messages sent to the cliques. In some inference algorithms,
+     *   this step may even be empty.
      */
     enum class StateOfInference {
       UnpreparedStructure,
@@ -82,7 +121,9 @@ namespace gum {
     /// @{
 
     /// default constructor
-    Inference( const IBayesNet<GUM_SCALAR>& bn );
+    /** @warning note that, by aGrUM's rule, the BN is not copied but only
+     * referenced by the inference algorithm. */
+    Inference( const IBayesNet<GUM_SCALAR>* bn );
 
     /// destructor
     virtual ~Inference();
@@ -94,6 +135,17 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
+
+    /// assigns a new BN to the inference engine
+    void setBayesNet ( const IBayesNet<GUM_SCALAR>* bn );
+
+    /// Returns a constant reference over the IBayesNet referenced by this class
+    /** @throws UndefinedElement is raised if no Bayes net has been assigned to
+     * the inference. */
+    virtual const IBayesNet<GUM_SCALAR>& BayesNet () const final;
+
+    /// get the domain sizes of the random variables of the BN
+    const NodeProperty<Size>& domainSizes () const;
 
     /// Compute the posterior of a node.
     /**
@@ -109,7 +161,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential<GUM_SCALAR>& posterior( NodeId node ) final;
+    virtual const Potential<GUM_SCALAR>& posterior( const NodeId node ) final;
 
     /// Compute the posterior of a set of nodes.
     /**
@@ -127,6 +179,9 @@ namespace gum {
      */
     virtual const Potential<GUM_SCALAR>& posterior ( const NodeSet& nodes ) final;
 
+    /// returns the probability P(e) of the evidence enterred into the BN
+    virtual GUM_SCALAR evidenceProbability () = 0;
+
     /// returns whether the inference object is in a ready state
     virtual bool isReady () const noexcept final;
 
@@ -138,9 +193,6 @@ namespace gum {
      * already computed. */
     virtual bool isDone () const noexcept final;
 
-    /// Returns a constant reference over the IBayesNet referenced by this class
-    virtual const IBayesNet<GUM_SCALAR>& bn () const noexcept final;
-
     /// prepare the internal inference structures for the next inference
     virtual void prepareInference () final;
 
@@ -151,6 +203,10 @@ namespace gum {
      * posteriors can be done "lightly" by multiplying and projecting those
      * messages. */
     virtual void makeInference () final;
+
+    /// clears all the data structures allocated for the last inference
+    virtual void clear ();
+    
 
     /// @}
 
@@ -311,35 +367,36 @@ namespace gum {
 
     /// removed the evidence, if any, corresponding to node id
     virtual void clearEvidence( NodeId id ) final;
-    
+
+    /// returns the set of evidence
+    const NodeProperty<const Potential<GUM_SCALAR>*>& evidence () const;
+
+    /// returns the set of nodes with soft evidence
+    const NodeSet& softEvidenceNodes () const;
+
+    /// returns the set of nodes with hard evidence
+    const NodeSet& hardEvidenceNodes () const;
+
+    /// indicate for each node with hard evidence which value it took
+    const NodeProperty<Idx>& hardEvidence() const;
+
     /// @}
 
 
     
   protected:
-    /// the Bayes net on which we perform inferences
-    const IBayesNet<GUM_SCALAR>& _bn;
-
-    
-    /**
-     * _prepareInference is called when the bn, the targets and soft/hard
-     * evidence are known. Note that the values of evidence are not necessarily
-     * known and can be changed between _prepare and _makeInference.
-     */
-    virtual void _prepareInference() = 0;
-
-    /// fired when a new evidence is inserted
+    /// fired after a new evidence is inserted
     virtual void _onEvidenceAdded ( const NodeId id,
                                     bool isHardEvidence ) = 0;
 
-    /// fired when an evidence is removed
+    /// fired before an evidence is removed
     virtual void _onEvidenceErased ( const NodeId id,
                                      bool isHardEvidence ) = 0;
 
-    /// fired when all the evidence are erased
-    virtual void _onAllEvidenceErased () = 0;
+    /// fired before all the evidence are erased
+    virtual void _onAllEvidenceErased ( bool contains_hard_evidence ) = 0;
     
-    /** @brief fired when an evidence is changed, in particular when its status
+    /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
      *
      * @param nodeId the node of the changed evidence
@@ -350,16 +407,24 @@ namespace gum {
     virtual void _onEvidenceChanged( const NodeId id,
                                      bool hasChangedSoftHard ) = 0;
 
-    /**
-     * _makeInference() is called when the inference has to be performed
-     * effectively. Once the inference is done, _fillPosterior can be called.
-     */
+    /// prepares inference when the latter is in UnpreparedStructure state
+    /** Note that the values of evidence are not necessarily
+     * known and can be changed between _prepareInferenceStructure and
+     * _makeInference. */
+    virtual void _prepareInferenceStructure () = 0;
+
+    /// prepares inference when the latter is in OutdatedPotentials state
+    /** Note that the values of evidence are not necessarily
+     * known and can be changed between _prepareInferenceStructure and
+     * _makeInference. */
+    virtual void _updateInferencePotentials () = 0;
+    
+    /// called when the inference has to be performed effectively
+    /** Once the inference is done, _fillPosterior can be called. */
     virtual void _makeInference() = 0;
 
-    /**
-     *
-     * This method is called when a BayesNetInference user asks for the posterior
-     * of a given target.
+    /** @brief This method is called when a BayesNetInference user asks for
+     * the posterior of a given target.
      *
      * The reference "posterior" is a reference over a const Potential that
      * contains the variable of node id (only values can then be changed)
@@ -371,18 +436,17 @@ namespace gum {
     virtual void _fillPosterior( NodeId id,
                                  Potential<GUM_SCALAR>& posterior ) = 0;
 
-    /// const access to evidence
-    const NodeProperty<const Potential<GUM_SCALAR>*>& _evidence() const;
-
-    /// const access to hard evidence
-    const NodeProperty<Idx>& _hardEvidence() const;
-
-
 
     
   private:
     /// the current state of the inference (unprepared/ready/done)
     StateOfInference __state { StateOfInference::UnpreparedStructure };
+
+    /// the Bayes net on which we perform inferences
+    const IBayesNet<GUM_SCALAR>* __bn { nullptr };
+
+    /// the domain sizes of the random variables
+    NodeProperty<Size> __domain_sizes;
 
     /// the set of single posteriors computed during the last inference
     NodeProperty<const Potential<GUM_SCALAR>*> __target_posteriors;
@@ -420,7 +484,9 @@ namespace gum {
     /// remove all the posteriors computed (single and set targets)
     void __invalidatePosteriors() noexcept;
 
-
+    /// computes the domain sizes of the random variables
+    void __computeDomainSizes ();
+    
   };
 
 
