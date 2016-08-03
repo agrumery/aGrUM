@@ -24,6 +24,9 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+#include <utility>
+
 #include <agrum/config.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -72,8 +75,10 @@ namespace gum {
   INLINE LazyPropagation<GUM_SCALAR>::LazyPropagation
   ( const IBayesNet<GUM_SCALAR>* BN,
     FindRelevantPotentialsType relevant_type,
-    FindBarrenNodesType barren_type ) :
-    Inference<GUM_SCALAR>( BN ) {
+    FindBarrenNodesType barren_type,
+    bool use_binary_join_tree ) :
+    Inference<GUM_SCALAR>( BN ),
+    __use_binary_join_tree ( use_binary_join_tree ) {
     // sets the relevant potential and the barren nodes finding algorithm
     setFindRelevantPotentialsType ( relevant_type );
     setFindBarrenNodesType ( barren_type );
@@ -95,7 +100,7 @@ namespace gum {
 
     // remove the potentials created after removing the nodes that received
     // hard evidence
-    for ( const auto pot : __hard_ev_potentials )
+    for ( const auto pot : __hard_ev_projected_CPTs )
       delete pot;
 
     // remove the junction tree and the triangulation algorithm
@@ -113,8 +118,17 @@ namespace gum {
   ( const Triangulation& new_triangulation ) {
     delete __triangulation;
     __triangulation = new_triangulation.newFactory ();
+    __is_new_jt_needed = true;
+    this->_setUnpreparedStructureState ();
   }
   
+  
+  /// returns the current join tree used
+  template <typename GUM_SCALAR>
+  INLINE const JoinTree*
+  LazyPropagation<GUM_SCALAR>::joinTree() const {
+    return __JT;
+  }
 
 
   /// sets how we determine the relevant potentials to combine
@@ -183,8 +197,18 @@ namespace gum {
     // of the undigraph
     if ( isHardEvidence || ! __graph.exists ( id ) )
       __is_new_jt_needed = true;
-    else
-      __evidence_changes.insert ( id, EvidenceChangeType::EVIDENCE_ADDED );
+    else {
+      try {
+        __evidence_changes.insert ( id, EvidenceChangeType::EVIDENCE_ADDED );
+      }
+      catch ( DuplicateElement& ) {
+        // here, the evidence change already existed. This necessarily means
+        // that the current saved change is an EVIDENCE_ERASED. So if we
+        // erased the evidence and added some again, this corresponds to an
+        // EVIDENCE_MODIFIED
+        __evidence_changes[id] = EvidenceChangeType::EVIDENCE_MODIFIED;
+      }
+    }
   }
 
   
@@ -197,8 +221,22 @@ namespace gum {
     // the join tree is created.
     if ( isHardEvidence )
       __is_new_jt_needed = true;
-    else
-      __evidence_changes.insert ( id, EvidenceChangeType::EVIDENCE_ERASED );
+    else {
+      try {
+        __evidence_changes.insert ( id, EvidenceChangeType::EVIDENCE_ERASED );
+      }
+      catch ( DuplicateElement& ) {
+        // here, the evidence change already existed and it is necessarily an
+        // EVIDENCE_ADDED or an EVIDENCE_MODIFIED. So, if the evidence has
+        // been added and is now erased, this is similar to not having created
+        // it. If the evidence was only modified, it already existed in the
+        // last inference and we should now indicate that it has been removed.
+        if ( __evidence_changes[id] == EvidenceChangeType::EVIDENCE_ADDED )
+          __evidence_changes.erase ( id );
+        else
+          __evidence_changes[id] = EvidenceChangeType::EVIDENCE_ERASED;
+      }
+    }
   }
    
 
@@ -209,8 +247,22 @@ namespace gum {
     if ( has_hard_evidence || ! this->hardEvidenceNodes ().empty () )
       __is_new_jt_needed = true;
     else {
-      for ( const auto node : this->softEvidenceNodes () )
-        __evidence_changes.insert ( node, EvidenceChangeType::EVIDENCE_ERASED );
+      for ( const auto node : this->softEvidenceNodes () ) {
+        try {
+          __evidence_changes.insert ( node, EvidenceChangeType::EVIDENCE_ERASED );
+        }
+        catch ( DuplicateElement& ) {
+          // here, the evidence change already existed and it is necessarily an
+          // EVIDENCE_ADDED or an EVIDENCE_MODIFIED. So, if the evidence has
+        // been added and is now erased, this is similar to not having created
+        // it. If the evidence was only modified, it already existed in the
+        // last inference and we should now indicate that it has been removed.
+          if ( __evidence_changes[node] == EvidenceChangeType::EVIDENCE_ADDED )
+            __evidence_changes.erase ( node );
+          else
+            __evidence_changes[node] = EvidenceChangeType::EVIDENCE_ERASED;
+        }
+      }
     }
   }
    
@@ -222,10 +274,18 @@ namespace gum {
                                                    bool hasChangedSoftHard ) {
     if ( hasChangedSoftHard )
       __is_new_jt_needed = true;
-    else
-      __evidence_changes.insert ( id, EvidenceChangeType::EVIDENCE_MODIFIED );
+    else {
+      try {
+        __evidence_changes.insert ( id, EvidenceChangeType::EVIDENCE_MODIFIED );
+      }
+      catch ( DuplicateElement& ) {
+        // here, the evidence change already existed and it is necessarily an
+        // EVIDENCE_ADDED. So we should keep this state to indicate that this
+        // evidence is new w.r.t. the last inference
+      }
+    }
   }
-
+        
 
   // check whether a new junction tree is really needed for the next inference
   template <typename GUM_SCALAR>
@@ -355,25 +415,27 @@ namespace gum {
     }
 
     // 5/ remove all the nodes that received hard evidence
-    const auto& hard_ev_nodes = this->hardEvidence ();
-    for ( const auto& pair : hard_ev_nodes ) {
-      __graph.eraseNode ( pair.first );
+    __hard_ev_nodes = this->hardEvidenceNodes ();
+    for ( const auto node : __hard_ev_nodes) {
+      __graph.eraseNode ( node );
     }
 
     // now, we can compute the new junction tree. To speed-up computations
     // (essentially, those of the distribution phase), we construct this
     // junction tree a binary join tree
+    if ( __JT != nullptr ) delete __JT;
     __triangulation->setGraph ( &__graph, &( this->domainSizes() ) );
     const JunctionTree& triang_jt = __triangulation->junctionTree ();
-    BinaryJoinTreeConverterDefault bjt_converter;
-    NodeSet emptyset;
-    if ( __JT != nullptr ) delete __JT;
-    __JT = new CliqueGraph( bjt_converter.convert( triang_jt,
-                                                   &( this->domainSizes() ),
-                                                   emptyset ) );
-
-    // get one arbitrary root per connected component of the binary join tree
-    __roots = bjt_converter.roots();
+    if ( __use_binary_join_tree ) {
+      BinaryJoinTreeConverterDefault bjt_converter;
+      NodeSet emptyset;
+      __JT = new CliqueGraph( bjt_converter.convert( triang_jt,
+                                                     &( this->domainSizes() ),
+                                                     emptyset ) );
+    }
+    else {
+      __JT = new CliqueGraph( triang_jt );
+    }
 
     // indicate, for each node of the moral graph, a clique in __JT that can
     // contain its conditional probability table
@@ -404,12 +466,32 @@ namespace gum {
           __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
     }
 
+    // indicate for each settarget a clique that contains it
+    __settarget_to_clique.clear ();
+    for ( const auto& nodeset : this->setTargets() ) {
+      NodeId first_eliminated_node = *( nodeset.begin () );
+      int elim_number = elim_order[first_eliminated_node];
+      for ( const auto node : nodeset ) {
+        if ( elim_order[node] < elim_number ) {
+          elim_number = elim_order[node];
+          first_eliminated_node = node;
+        }
+      }
+      __settarget_to_clique.insert ( nodeset,
+                                     __node_to_clique[first_eliminated_node] );
+    }
+    
+      
+    // compute the roots of __JT's connected components
+    __computeJoinTreeRoots ();
+
+
     // create empty potential lists into the cliques of the joint tree as well
     // as empty lists of evidence
     List<const Potential<GUM_SCALAR>*> empty_list;
 
     __clique_potentials.clear ();
-    __clique_evidence.clear ();
+    __node_to_soft_evidence.clear ();
     for ( const auto node : *__JT ) {
       __clique_potentials.insert( node, empty_list );
     }
@@ -422,9 +504,9 @@ namespace gum {
 
     // remove all the potentials created to take into account hard evidence
     // during the last inference
-    for ( auto pot : __hard_ev_potentials )
+    for ( auto pot : __hard_ev_projected_CPTs )
       delete pot.second;
-    __hard_ev_potentials.clear ();
+    __hard_ev_projected_CPTs.clear ();
 
     // remove all the constants created due to projections of CPTs that were
     // defined over only hard evidence nodes
@@ -438,7 +520,7 @@ namespace gum {
       const Arc arc1 ( edge.first (), edge.second () );
       __separator_potentials.insert ( arc1, empty_list );
       __messages_computed.insert ( arc1, false );
-      Arc arc2 ( Arc ( edge.second (), edge.first () ) );
+      const Arc arc2 ( Arc ( edge.second (), edge.first () ) );
       __separator_potentials.insert ( arc2, empty_list );
       __messages_computed.insert ( arc2, false );
     }
@@ -449,6 +531,7 @@ namespace gum {
     // hard evidence must be projected so that these nodes are removed from the
     // potential
     const auto& evidence = this->evidence ();
+    const auto& hard_evidence = this->hardEvidence ();
     for ( const auto node : __graph ) {
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
 
@@ -456,9 +539,9 @@ namespace gum {
       NodeSet hard_nodes;
       const auto& variables = cpt.variablesSequence ();
       for ( const auto var : variables ) {
-        const NodeId node = bn.nodeId ( *var );
-        if ( hard_ev_nodes.contains ( node ) )
-          hard_nodes.insert ( node );
+        const NodeId xnode = bn.nodeId ( *var );
+        if ( __hard_ev_nodes.contains ( xnode ) )
+          hard_nodes.insert ( xnode );
       }
 
       // if hard_nodes contains hard evidence nodes, perform a projection
@@ -475,7 +558,7 @@ namespace gum {
           Instantiation inst ( cpt );
           for ( int i = 0; i < hard_nodes.size (); ++i ) {
             inst.chgVal ( variables[i],
-                          hard_ev_nodes[bn.nodeId( variables[i] )] );
+                          hard_evidence[bn.nodeId( variables[i] )] );
           }
           __constants.insert ( node, cpt[inst] );
         }
@@ -483,13 +566,13 @@ namespace gum {
           // perform the projection with a combine and project instance
           Set<const DiscreteVariable*> hard_variables;
           __PotentialSet marg_cpt_set { cpt };
-          for ( const auto node : hard_ev_nodes ) {
-            marg_cpt_set.insert( evidence[node] );
-            hard_variables.insert ( bn.variable ( node ) );
+          for ( const auto xnode : hard_nodes ) {
+            marg_cpt_set.insert( evidence[xnode] );
+            hard_variables.insert ( bn.variable ( xnode ) );
           }
           // perform the combination of those potentials and their projection
           MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
-            combine_and_project( __combination, LPNewprojPotential );
+            combine_and_project( __combination_op, LPNewprojPotential );
           __PotentialSet new_cpt_list =
             combine_and_project.combineAndProject( marg_cpt_set, hard_variables );
 
@@ -500,7 +583,7 @@ namespace gum {
           }
           const Potential<GUM_SCALAR>* projected_cpt = *( new_cpt_list.begin () );
           __clique_potentials[__node_to_clique[node]].insert ( projected_cpt );
-          __hard_ev_potentials.insert ( node, projected_cpt );
+          __hard_ev_projected_CPTs.insert ( node, projected_cpt );
         }
       }
     }
@@ -508,7 +591,8 @@ namespace gum {
 
     // we shall now add all the potentials of the soft evidence
     for ( const auto node : this->sotfEvidenceNodes () ) {
-      __clique_evidence[__node_to_clique[node]].insert ( evidence[node] );
+      __node_to_soft_evidence.insert ( node, evidence[node] );
+      __clique_potentials[__node_to_clique[node]].insert ( evidence[node] );
     }
   }
 
@@ -556,34 +640,17 @@ namespace gum {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
   /// update the potentials stored in the cliques and invalidate outdated messages
   template <typename GUM_SCALAR>
   void LazyPropagation<GUM_SCALAR>::_updateInferencePotentials () {
+    // get the set of nodes that received evidence changes
+    
+    
     // invalidate all the messages that are no more correct: start from each of
     // the nodes whose evidence has changed and perform a diffusion from the
     // clique into which the evidence has been entered, indicating that the
-    // messages emanating from this clique are now invalid. At the same time,
-    // if there were potentials created on the arcs over wich the messages are
+    // messages spreading from this clique are now invalid. At the same time,
+    // if there were potentials created on the arcs over wich the messages were
     // sent, remove them from memory
     for ( const auto& pair : __evidence_changes ) {
       const auto clique = __node_to_clique[pair.first];
@@ -592,547 +659,183 @@ namespace gum {
       }
     }
 
-    // remove all the evidence that were entered into __clique_evidence and
-    // __clique_potentials and add the new soft ones
-    for ( auto& potlist : __clique_evidence ) {
-      auto& clique_potentials = __clique_potentials[potlist.first];
-      for ( auto pot : potlist.second ) {
-        clique_potentials.eraseByVal ( pot );
-      }
+    // remove all the evidence that were entered into __node_to_soft_evidence
+    // and __clique_potentials and add the new soft ones
+    for ( auto& pot_pair : __node_to_soft_evidence ) {
+      auto& clique_potentials =
+        __clique_potentials[__node_to_clique[pot_pair.first]];
+      clique_potentials.eraseByVal ( pot_pair.second );
     }
-    
-        
-    
-    __clique_evidence.clear ();
+    __node_to_soft_evidence.clear ();
+
     const auto& evidence = this->evidence ();
     for ( const auto node : this->softEvidenceNodes () ) {
-      __clique_evidence.insert ( __node_to_clique[node], evidence[node] );
+      __node_to_soft_evidence.insert ( node, evidence[node] );
+      __clique_potentials[__node_to_clique[node]].insert ( evidence[node] );
     }
+
 
     // now we shall remove the projections of the CPTs due to hard evidence
-    // when the latter have changed and add new ones  
-    const auto& hard_ev_nodes = this->_hardEvidence ();
-    NodeSet nodes_potentially_affected;
-    for ( const auto node : __evidence_changed ) {
-      if ( hard_ev_nodes.exists ( node ) ) {
-        nodes_potentially_affected.insert ( node );
-        for ( const auto neigh : __graph.neighbours ( node ) ) {
-          nodes_potentially_affected.insert ( neigh );
+    // when the latter have changed
+    NodeSet hard_nodes_changed ( __hard_ev_nodes.size () );
+    for ( const auto node : __hard_ev_nodes )
+      if ( __evidence_changes.exists ( node ) )
+        hard_nodes_changed.insert ( node );
+
+    NodeSet nodes_with_projected_CPTs_changed;
+    const auto& bn = this->BayesNet ();
+    for ( auto pot_iter = __hard_ev_projected_CPTs.beginSafe ();
+          pot_iter != __hard_ev_projected_CPTs.endSafe (); ++pot_iter ) {
+      const auto pot = pot_iter.val ();
+      const auto& variables = pot->variablesSequence ();
+      for ( const auto var : variables ) {
+        if ( hard_nodes_changed.contains ( bn.nodeId ( *var ) ) ) {
+          delete pot;
+          nodes_with_projected_CPTs_changed.insert ( pot_iter.key () );
+          __hard_ev_projected_CPTs.erase ( pot_iter );
+          break;
         }
       }
     }
-    for ( const auto node : nodes_affected ) {
-      // if we are performing _updateInferencePotentials, this means that the
-      // set of nodes that received hard evidence has not been changed, only
-      // their instantiations can have been changed. So, if there is an entry
-      // for node in __constants, there will still be such an entry after
-      // performing the new projections. Idem for __hard_ev_potentials
+    
+    // Now add the projections of the CPTs due to newly changed hard evidence: 
+    // if we are performing _updateInferencePotentials, this means that the
+    // set of nodes that received hard evidence has not been changed, only
+    // their instantiations can have been changed. So, if there is an entry
+    // for node in __constants, there will still be such an entry after
+    // performing the new projections. Idem for __hard_ev_projected_CPTs
+    for ( const auto node : nodes_with_projected_CPTs_changed ) {
+      // perform the projection with a combine and project instance
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
       const auto& variables = cpt.variablesSequence ();
-      if ( __constants.exists ( node ) ) {  
-        Instantiation inst ( cpt );
-        for ( const auto var : variables ) {
-          inst.chgVal ( var, hard_ev_nodes[bn.id( var )] );
+      Set<const DiscreteVariable*> hard_variables;
+      __PotentialSet marg_cpt_set { cpt };
+      for ( const auto var : variables ) {
+        const NodeId xnode = bn.id( var );
+        if ( __hard_ev_nodes.exists ( xnode ) ) {
+          marg_cpt_set.insert( evidence[xnode] );
+          hard_variables.insert ( bn.variable ( xnode ) );
         }
-        __constants[node] = cpt[inst];
       }
-      else if ( __hard_ev_potentials.exists ( node ) ) {
-        // perform the projection with a combine and project instance
-        Set<const DiscreteVariable*> hard_variables;
-        __PotentialSet marg_cpt_set { cpt };
-        for ( const auto var : variables ) {
-          const NodeId node = bn.id( var );
-          if ( hard_ev_nodes.exists ( node ) ) {
-            marg_cpt_set.insert( evidence[node] );
-            hard_variables.insert ( bn.variable ( node ) );
-          }
-          // perform the combination of those potentials and their projection
-          MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
-            combine_and_project( __combination, LPNewprojPotential );
-          __PotentialSet new_cpt_list =
-            combine_and_project.combineAndProject( marg_cpt_set, hard_variables );
+      // perform the combination of those potentials and their projection
+      MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
+        combine_and_project( __combination_op, LPNewprojPotential );
+      __PotentialSet new_cpt_list =
+        combine_and_project.combineAndProject( marg_cpt_set, hard_variables );
 
-          // there should be only one potential in new_cpt_list
-          if ( new_cpt_list.size () != 1 ) {
-            GUM_ERROR ( FatalError, "the projection of a potential containing "
-                        << "hard evidence is empty!" );
-          }
-          const Potential<GUM_SCALAR>* projected_cpt = *( new_cpt_list.begin () );
-          const auto pot = __hard_ev_potentials[node];
-          __clique_potentials[__node_to_clique[node]].eraseByVal ( pot );
-          __clique_potentials[__node_to_clique[node]].insert ( projected_cpt );
-          __hard_ev_potentials.insert ( projected_cpt );
-        }
+      // there should be only one potential in new_cpt_list
+      if ( new_cpt_list.size () != 1 ) {
+        GUM_ERROR ( FatalError, "the projection of a potential containing "
+                    << "hard evidence is empty!" );
+      }
+      const Potential<GUM_SCALAR>* projected_cpt = *( new_cpt_list.begin () );
+      __clique_potentials[__node_to_clique[node]].insert ( projected_cpt );
+      __hard_ev_projected_CPTs.insert ( node, projected_cpt );
+    }
+
+    // update the constants
+    const auto& hard_evidence = this->hardEvidence ();
+    for ( const auto node : __constants ) {
+      const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
+      const auto& variables = cpt.variablesSequence ();
+      Instantiation inst ( cpt );
+      for ( const auto var : variables ) {
+        inst.chgVal ( var, hard_evidence[bn.nodeId( var )] );
+      }
+      __constants[node] = cpt[inst];
+    }
+
+    // indicate that all changes have been performed
+    __evidence_changes.clear ();
+  }
+
+      
+  /// compute a root for each connected component of __JT
+  template <typename GUM_SCALAR>
+  void LazyPropagation<GUM_SCALAR>::__computeJoinTreeRoots () {
+    // get the set of cliques in which we can find the targets and settargets
+    NodeSet clique_targets;
+    for ( const auto node : this->targets () )
+      clique_targets.insert ( __node_to_clique[node] );
+    for ( const auto& set : this->setTargets () )
+      clique_targets.insert ( __settarget_to_clique[set] );
+
+    // put in a vector these cliques and their size
+    std::vector<std::pair<NodeId,Size>> possible_roots ( clique_targets.size () );
+    const auto& bn = this->BayesNet ();
+    std::size_t i = 0;
+    for ( const auto clique_id : clique_targets ) {
+      const auto& clique = __JT->clique ( clique_id );
+      Size dom_size = 1;
+      for ( const auto node : clique ) {
+        dom_size *= bn.variable ( node ).domainSize (); 
+      }
+      possible_roots[i++] = std::pair<NodeId,Size> ( clique_id, dom_size );
+    }
+
+    // sort the cliques by increasing domain size
+    std::sort ( possible_roots.begin (), possible_roots.end (),
+                []( const std::pair<NodeId,Size>& a,
+                    const std::pair<NodeId,Size>& b ) -> bool {
+                  return a.second < b.second;
+                } );
+
+    // pick up the clique with the smallest size in each connected component
+    NodeProperty<bool> marked = __JT->nodesProperty ( false );
+    std::function<void(NodeId,NodeId)> diffuse_marks =
+      [&marked,&diffuse_marks,this]( NodeId node, NodeId from ) {
+      if ( ! marked[node] ) {
+        marked[node] = true;
+        for ( const auto neigh : this->__JT->neighbours () )
+          if ( ( neigh != from ) && ! marked[neigh] )
+            diffuse_marks ( neigh, from );
+      }
+    };
+    __roots.clear ();
+    for ( const auto xclique : possible_roots ) {
+      const NodeId clique = xclique.first;
+      if ( ! marked[clique] ) {
+        __roots.insert ( clique );
+        diffuse_marks ( clique, clique );
       }
     }
   }
 
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-    
-    // for each evidence removed, remove it from __clique_evidence, for each
-    // evidence added, add it to __clique_evidence; and for each evidence
-
-
-    
-    { // update the potentials and messages that require it
-      // if we do not need to create a new junction tree, this means that the
-      // hard evidence did not change and the targets and settargets already
-      // belong to the current junction tree. So, the only things that could have
-      // changed w.r.t. the last inference are:
-      // 1/ the values of the evidence (hard or soft)
-      // 2/ the insertion or deletion of some soft evidence
-      // So we first determine the evidence that correspond to cases 1 or 2
-      // and we invalidate all the messages that were sent from the cliques in
-      // which these evidence have been entered
-
-      
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
   
-
-
-
-
-
-  
-
-  
-
-
-
   // performs the collect phase of Lazy Propagation
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::__collect( NodeId id, NodeId from ) {
-    for ( const auto other : __JT->neighbours( id ) )
-      if ( other != from ) __collect( other, id );
-
-    if ( id != from ) {
+  INLINE void
+  LazyPropagation<GUM_SCALAR>::__collectMessage ( const NodeId id,
+                                                  const NodeId from ) {
+    for ( const auto other : __JT->neighbours( id ) ) {
+      if ( ( other != from ) && ! __messages_computed ( Arc ( other, id ) ) )
+        __collectMessage ( other, id );
+    }
+    
+    if ( (id != from ) && ! __messages_computed ( Arc ( id, from ) ) ) {
       __produceMessage( id, from );
     }
   }
 
 
-
-  // performs the __collect phase of Lazy Propagation
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::collect( NodeId id,
-                                                    bool force_collect ) {
-    // get a clique that contains id
-    NodeId clique = __node_to_clique[id];
-    
-    // check if we really need to perform an inference when we do not force the
-    // collect to be performed
-    if ( ! force_collect ) {
-      bool do_collect = false;
-      for ( const auto neighbor : __JT->neighbours ( clique ) ) {
-        if ( ! __messages_computed[Arc ( neighbor, clique )] ) {
-          do_collect = true;
-          break;
-        }
-      }
-      if ( ! do_collect ) return;
-    }
-
-    // clean-up the area that will receive the __collect
-    __setRequiredInference( clique, clique );
-
-    // compute barren nodes if necessary
-    __computeBarrenPotentials();
-
-    // perform the __collect
-    __collect( clique, clique );
-  }
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  // initialization function
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::__initialize
-  ( const IBayesNet<GUM_SCALAR>& BN,
-    StaticTriangulation& triangulation,
-    const NodeProperty<Size>& modalities ) {
-
-
-    // initialize the __triangulation algorithm
-    OrderedTriangulation triangulation( &( this->bn().moralGraph() ),
-                                        &modalities, &elim_order );
-
-
-    const JunctionTree& triang_jt = triangulation.junctionTree();
-
-    // set the correspondance between variables and their id and get the
-    // variables domain sizes
-    NodeProperty<Size> modalities;
-    auto& bn = this->bn();
-
-    for ( const auto node : bn.dag () )
-      modalities.insert( node, bn.variable( node ).domainSize() );
-    __triangulation.setGraph( &( bn.moralGraph() ), &modalities );
-
-    BinaryJoinTreeConverterDefault bon_converter;
-    NodeSet emptyset;
-    __JT = new CliqueGraph( bon_converter.convert( triang_jt, modalities,
-                                                   emptyset ) );
-    __roots = bon_converter.roots();
-
-    // indicate, for each node of the BN, a clique in __JT that can contain its
-    // conditional probability table
-    const std::vector<NodeId>& JT_elim_order = triangulation.eliminationOrder();
-    HashTable<NodeId, unsigned int> elim_order( JT_elim_order.size() );
-
-    for ( unsigned int i = 0, size = JT_elim_order.size(); i < size; ++i )
-      elim_order.insert( JT_elim_order[i], i );
-
-    const DAG& dag = BN.dag();
-
-    for ( const auto node : dag ) {
-      // get the variables in the potential of node (and its parents)
-      NodeId first_eliminated_node = node;
-      unsigned int elim_number = elim_order[node];
-
-      for ( const auto parent : dag.parents( node ) ) {
-        if ( elim_order[parent] < elim_number ) {
-          elim_number = elim_order[parent];
-          first_eliminated_node = parent;
-        }
-      }
-
-      // first_eliminated_node contains the first var (node or one of its
-      // parents) eliminated => the clique created during its elmination
-      // contains node and all of its parents => it can contain node's potential
-      __node_to_clique.insert
-        ( node,
-          triangulation.createdJunctionTreeClique( first_eliminated_node ) );
-    }
-
-    // create empty potential lists into the cliques of the joint tree as well
-    // as empty lists of evidence
-    List<const Potential<GUM_SCALAR>*> empty_list;
-
-    for ( const auto node : __JT->nodes() ) {
-      __clique_potentials.insert( node, empty_list );
-      __clique_evidence.insert( node, empty_list );
-    }
-
-    // put all the CPT's of the Bayes net nodes into the cliques
-    for ( const auto node : dag ) {
-      const Potential<GUM_SCALAR>& cpt = BN.cpt( node );
-      __clique_potentials[__node_to_clique[node]].insert( &cpt );
-    }
-
-    // create empty messages on the separators and indicate that no message
-    // has been computed yet
-    __PotentialSet empty_set;
-
-    for ( const auto edge : __JT->edges() ) {
-      Arc arc1 ( edge.first(), edge.second() );
-      __sep_potentials.insert( arc1, empty_set );
-      __messages_computed.insert ( arc1, false );
-      Arc arc2 ( edge.second(), edge.first() );
-      __sep_potentials.insert( arc2, empty_set );
-      __messages_computed.insert ( arc2, false );
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-  // indicates that we need inference in a given Junction tree connected
-  // component
-  template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::__setRequiredInference( NodeId id,
-                                                            NodeId from ) {
-    // check if an inference has already happened through clique id
-    if ( ( __collected_cliques[id] == false ) &&
-         ( __diffused_cliques[id] == false ) )
-      return;
-
-    // indicates that clique "id" needs an inference
-    __collected_cliques[id] = false;
-    __diffused_cliques[id] = false;
-
-    // propagate this requirement to id's neighbours
-    for ( const auto other : __JT->neighbours( id ) ) {
-      if ( other != from ) {
-        // remove the potentials sent on clique id's adjacent separators
-        for ( const auto pot : __sep_potentials[Arc( other, id )] ) {
-          if ( __created_potentials.exists( pot ) ) {
-            delete pot;
-            __created_potentials.erase( pot );
-          }
-        }
-
-        for ( const auto pot : __sep_potentials[Arc( id, other )] ) {
-          if ( __created_potentials.exists( pot ) ) {
-            delete pot;
-            __created_potentials.erase( pot );
-          }
-        }
-
-        __sep_potentials[Arc( other, id )].clear();
-        __sep_potentials[Arc( id, other )].clear();
-
-        // propagate the "required" state to the neighbours
-        __setRequiredInference( other, id );
-      }
-    }
-  }
-
-
-  // remove a given evidence from the graph
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::eraseEvidence(
-                                                         const Potential<GUM_SCALAR>* pot ) {
-    this->_invalidatePosteriors();
-
-    // if the evidence does not exist, do nothing
-    if ( !__evidences.contains( pot ) ) return;
-
-    // get the variable involved in pot and indicate that this variable did
-    // not receive any evidence
-    const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
-    const NodeId var = this->bn().nodeId( *vars.atPos( 0 ) );
-    __hard_evidence_nodes.erase( var );
-    __soft_evidence_nodes.erase( var );
-
-    // remove the potential from the list of evidence of the cliques
-    for ( auto& elt : __clique_evidence ) {
-      elt.second.eraseByVal( pot );
-    }
-
-    // remove the potential from the list of evidence
-    __evidences.erase( pot );
-    __bn_node2hard_potential.erase( var );
-
-    // indicate that we need to perform both __collect and __diffusion in the
-    // connected component containing the variable of the evidence
-    const NodeId pot_clique = __node_to_clique[var];
-    __setRequiredInference( pot_clique, pot_clique );
-
-    // indicate that we shall recompute the set of barren nodes/potentials
-    __need_recompute_barren_potentials = true;
-  }
-
-
-  // remove all evidence from the graph
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::eraseAllEvidence() {
-    this->_invalidatePosteriors();
-    // remove the evidence store in the cliques
-    for ( auto& elt : __clique_evidence )
-      elt.second.clear();
-
-    // remove the messages sent during a previous propagation
-    for ( auto& elt : __sep_potentials )
-      elt.second.clear();
-
-    // remove actually all the evidence taken into account
-    __evidences.clear();
-    __bn_node2hard_potential.clear();
-
-    // indicate that no node received any evidence
-    __hard_evidence_nodes.clear();
-    __soft_evidence_nodes.clear();
-
-    // remove from memory all the created potentials
-    for ( const auto pot : __created_potentials )
-      delete pot;
-    __created_potentials.clear();
-
-    for ( auto& elt : __collected_cliques )
-      elt.second = false;
-
-    for ( auto& elt : __diffused_cliques )
-      elt.second = false;
-
-    // indicate that we shall recompute the set of barren nodes/potentials
-    __need_recompute_barren_potentials = true;
-  }
-
-
-  /// clears the messages of previous inferences
-  template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::clearInference() {
-    this->_invalidatePosteriors();
-
-    // remove the messages sent during a previous propagation
-    for ( auto& elt : __sep_potentials )
-      elt.second.clear();
-
-    // remove from memory all the created potentials
-    for ( const auto pot : __created_potentials )
-      delete pot;
-    __created_potentials.clear();
-
-    for ( auto& elt : __collected_cliques )
-      elt.second = false;
-
-    for ( auto& elt : __diffused_cliques )
-      elt.second = false;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  // template <typename GUM_SCALAR>
-  template <typename GUM_SCALAR>
-  INLINE bool LazyPropagation<GUM_SCALAR>::__isHardEvidence(
-                                                            const Potential<GUM_SCALAR>* pot ) {
-    Instantiation i( pot );
-    unsigned int nb_non_zeros = 0;
-    for ( i.setFirst(); !i.end(); i.inc() ) {
-      if ( pot->operator[]( i ) != 0 ) {
-        ++nb_non_zeros;
-        if ( nb_non_zeros > 1 ) return false;
-      }
-    }
-
-    return ( nb_non_zeros == 1 );
-  }
-
-
-  // insert new evidence in the graph
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::insertEvidence(
-                                                          const List<const Potential<GUM_SCALAR>*>& pot_list ) {
-    this->_invalidatePosteriors();
-    List<const Potential<GUM_SCALAR>*> empty_list;
-
-    for ( const auto pot : pot_list ) {
-      // check that the evidence is given w.r.t.only one random variable
-      const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
-      if ( vars.size() != 1 ) {
-        GUM_ERROR(
-                  SizeError,
-                  "Evidence can be be given w.r.t only one random variable for "
-                  << pot );
-      }
-    }
-
-    for ( const auto pot : pot_list ) {
-      const DiscreteVariable* var = pot->variablesSequence().atPos( 0 );
-      NodeId var_id = this->bn().nodeId( *var );
-      NodeId clique_id = __node_to_clique[var_id];  // get the clique that
-                                                    // contains the var
-      auto& clique_evidences = __clique_evidence[clique_id];
-
-      // remove already existing evidence w.r.t. variable in pot
-      for ( auto ev_pot : clique_evidences ) {
-        if ( var == ev_pot->variablesSequence().atPos( 0 ) ) {
-          // here we found the evidence corresponding to the variable
-          eraseEvidence( ev_pot );
-          break;
-        }
-      }
-
-      // insert the evidence
-      __evidences.insert( pot );
-      __clique_evidence[clique_id].insert( pot );
-      if ( __isHardEvidence( pot ) ) {
-        __hard_evidence_nodes.insert( var_id );
-        __bn_node2hard_potential.insert( var_id, pot );
-      } else {
-        __soft_evidence_nodes.insert( var_id );
-      }
-
-      // indicate that, now, new inference is required
-      __setRequiredInference( clique_id, clique_id );
-    }
-
-    // indicate that we shall recompute the set of barren nodes/potentials
-    __need_recompute_barren_potentials = true;
-  }
-
-
-
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll(
-                                                                          __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars ) {}
+  INLINE void
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll
+  ( __PotentialSet& pot_list,
+    Set<const DiscreteVariable*>& kept_vars ) {
+  }
 
 
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation(
-                                                                       __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars ) {
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation
+  ( __PotentialSet& pot_list,
+    Set<const DiscreteVariable*>& kept_vars ) {
     // find the node ids of the kept variables
     NodeSet kept_ids;
-    const auto& bn = this->bn();
+    const auto& bn = this->BayesNet ();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
@@ -1140,13 +843,12 @@ namespace gum {
     // determine the set of potentials d-connected with the kept variables
     NodeSet requisite_nodes;
     BayesBall bb;
-    bb.requisiteNodes( this->bn().dag(),
+    bb.requisiteNodes( bn.dag(),
                        kept_ids,
-                       __hard_evidence_nodes,
-                       __soft_evidence_nodes,
+                       this->hardEvidenceNodes (),
+                       this->softEvidenceNodes (),
                        requisite_nodes );
-    for ( auto iter = pot_list.beginSafe(); iter != pot_list.endSafe();
-          ++iter ) {
+    for ( auto iter = pot_list.beginSafe(); iter != pot_list.endSafe(); ++iter ) {
       const Sequence<const DiscreteVariable*>& vars =
         ( **iter ).variablesSequence();
       bool found = false;
@@ -1167,21 +869,22 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2(
-                                                                        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars ) {
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2
+  ( __PotentialSet& pot_list,
+    Set<const DiscreteVariable*>& kept_vars ) {
     // find the node ids of the kept variables
     NodeSet kept_ids;
-    const auto& bn = this->bn();
+    const auto& bn = this->BayesNet ();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
 
     // determine the set of potentials d-connected with the kept variables
     BayesBall bb;
-    bb.relevantPotentials( this->bn(),
+    bb.relevantPotentials( bn,
                            kept_ids,
-                           __hard_evidence_nodes,
-                           __soft_evidence_nodes,
+                           this->hardEvidenceNodes (),
+                           this->softEvidenceNodes (),
                            pot_list );
   }
 
@@ -1189,108 +892,43 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3(
-                                                                        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars ) {
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3
+  ( __PotentialSet& pot_list,
+    Set<const DiscreteVariable*>& kept_vars ) {
     // find the node ids of the kept variables
     NodeSet kept_ids;
-    const auto& bn = this->bn();
+    const auto& bn = this->BayesNet();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
 
     // determine the set of potentials d-connected with the kept variables
     dSeparation dsep;
-    dsep.relevantPotentials( this->bn(),
+    dsep.relevantPotentials( bn,
                              kept_ids,
-                             __hard_evidence_nodes,
-                             __soft_evidence_nodes,
+                             this->hardEvidenceNodes (),
+                             this->softEvidenceNodes (),
                              pot_list );
-  }
-
-
-  // remove barren variables
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::__removeBarrenVariables(
-                                                                   __PotentialSet& pot_list, Set<const DiscreteVariable*>& del_vars ) {
-    // remove from del_vars the variables that received some evidence:
-    // only those that did not received evidence can be barren variables
-    Set<const DiscreteVariable*> the_del_vars = del_vars;
-    for ( auto iter = the_del_vars.beginSafe(); iter != the_del_vars.endSafe();
-          ++iter ) {
-      NodeId id = this->bn().nodeId( **iter );
-      if ( __hard_evidence_nodes.exists( id ) ||
-           __soft_evidence_nodes.exists( id ) ) {
-        the_del_vars.erase( iter );
-      }
-    }
-
-    // assign to each random variable the set of potentials that contain it
-    HashTable<const DiscreteVariable*, __PotentialSet> var2pots;
-    __PotentialSet empty_pot_set;
-    for ( const auto pot : pot_list ) {
-      const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
-      for ( const auto var : vars ) {
-        if ( the_del_vars.exists( var ) ) {
-          if ( !var2pots.exists( var ) ) {
-            var2pots.insert( var, empty_pot_set );
-          }
-          var2pots[var].insert( pot );
-        }
-      }
-    }
-
-    // each variable with only one potential is a barren variable
-    // assign to each potential with barren nodes its set of barren variables
-    HashTable<const Potential<GUM_SCALAR>*, Set<const DiscreteVariable*>>
-      pot2barren_var;
-    Set<const DiscreteVariable*> empty_var_set;
-    for ( auto elt : var2pots ) {
-      if ( elt.second.size() == 1 ) {  // here we have a barren variable
-        const Potential<GUM_SCALAR>* pot = *( elt.second.begin() );
-        if ( !pot2barren_var.exists( pot ) ) {
-          pot2barren_var.insert( pot, empty_var_set );
-        }
-        pot2barren_var[pot].insert( elt.first );  // insert the barren variable
-      }
-    }
-
-    // for each potential with barren variables, marginalize them.
-    // if the potential has only barren variables, simply remove them from the
-    // set of potentials, else just project the potential
-    MultiDimProjection<GUM_SCALAR, Potential> projector( LPNewprojPotential );
-    for ( auto elt : pot2barren_var ) {
-      // remove the current potential from pot list as, anyway, we will change
-      // it
-      const Potential<GUM_SCALAR>* pot = elt.first;
-      pot_list.erase( pot );
-
-      // check whether we need to add a projected new potential or not (i.e.,
-      // whether there exist non-barren variables or not)
-      if ( pot->variablesSequence().size() != elt.second.size() ) {
-        auto new_pot = projector.project( *pot, elt.second );
-        pot_list.insert( new_pot );
-        __created_potentials.insert( new_pot );
-      }
-    }
   }
 
 
   // remove variables del_vars from the list of potentials pot_list
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::__marginalizeOut(
-                                                            __PotentialSet& pot_list,
-                                                            Set<const DiscreteVariable*>& del_vars,
-                                                            Set<const DiscreteVariable*>& kept_vars ) {
+  Set<const Potential<GUM_SCALAR>*>
+  LazyPropagation<GUM_SCALAR>::__marginalizeOut
+  ( const __PotentialSet& pot_list,
+    Set<const DiscreteVariable*>& del_vars,
+    Set<const DiscreteVariable*>& kept_vars ) {
     // use d-separation analysis to check which potentials shall be combined
     ( this->*__findRelevantPotentials )( pot_list, kept_vars );
 
     // remove the potentials corresponding to barren variables
-    __removeBarrenVariables( pot_list, del_vars );
+    // __removeBarrenVariables( pot_list, del_vars );
 
     // create a combine and project operator that will perform the
     // marginalization
-    MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential> combine_and_project(
-                                                                                LPNewmultiPotential, LPNewprojPotential );
+    MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
+      combine_and_project( __combination_op, __projection_op );
     __PotentialSet new_pot_list =
       combine_and_project.combineAndProject( pot_list, del_vars );
 
@@ -1298,104 +936,39 @@ namespace gum {
     // set of potentials created during inference. In addition, remove all the
     // potentials that have no dimension
     for ( auto iter_pot = new_pot_list.beginSafe();
-          iter_pot != new_pot_list.endSafe();
-          ++iter_pot ) {
+          iter_pot != new_pot_list.endSafe(); ++iter_pot ) {
       if ( ( *iter_pot )->variablesSequence().size() == 0 ) {
         // as we have already marginalized out variables that received evidence,
         // it may be the case that, after combining and projecting, some
-        // potentials might be empty. In this case, we shall remove them
-        // from memory
+        // potentials might be empty. In this case, we shall keep their
+        // constant and remove them from memory
         delete *iter_pot;
         new_pot_list.erase( iter_pot );
-      } else {
-        if ( !pot_list.exists( *iter_pot ) ) {
-          __created_potentials.insert( *iter_pot );
-        }
       }
     }
 
-    pot_list = new_pot_list;
+    return new_pot_list;
   }
 
 
   // creates the message sent by clique from_id to clique to_id
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::__produceMessage( NodeId from_id,
-                                                             NodeId to_id ) {
-    // get the set of CPTs of the BN that are barren w.r.t. the message
-    // we wish to produce
-    const __PotentialSet& barren_pots =
-      __barren_potentials[Arc( from_id, to_id )];
-
-    // get the potentials of the clique. For the potentials that contain a hard
-    // evidence, marginalize them over the nodes that received hard evidence
-    const List<const Potential<GUM_SCALAR>*>& clique_pot =
-      __clique_potentials[from_id];
-    __PotentialSet pot_list( clique_pot.size() );
-    for ( const auto& cli : clique_pot ) {
-      if ( !barren_pots.exists( cli ) ) {  // do not take into account barren CPTs
-        // check whether a variable of cli received a hard evidence
-        NodeSet hard_vars;
-        Set<const DiscreteVariable*> del_vars;
-        for ( const auto var : cli->variablesSequence() ) {
-          const NodeId id = this->bn().nodeId( *var );
-          if ( __hard_evidence_nodes.exists( id ) ) {
-            hard_vars.insert( id );
-            del_vars.insert( var );
-          }
-        }
-        if ( hard_vars.empty() ) {  // no hard evidence => no marginalization
-          pot_list.insert( cli );
-        } else {  // marginalize out the hard evidence nodes
-          // if all the variables are to be marginalized out, don't take into
-          // account the CPT
-          if ( hard_vars.size() != cli->variablesSequence().size() ) {
-            // get the set of potential to combine (the CPT of the clique + the
-            // potentials of the hard evidence)
-            __PotentialSet marg_pot_set{cli};
-            for ( const auto var_id : hard_vars ) {
-              marg_pot_set.insert( __bn_node2hard_potential[var_id] );
-            }
-
-            // perform the combination of those potentials and their projection
-            MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
-              combine_and_project( LPNewmultiPotential, LPNewprojPotential );
-            __PotentialSet new_pot_list =
-              combine_and_project.combineAndProject( marg_pot_set, del_vars );
-
-            // insert the resulting set of potentials into pot_list
-            for ( const auto pot : new_pot_list ) {
-              pot_list.insert( pot );
-              __created_potentials.insert( pot );
-            }
-          }
-        }
-      }
-    }
-
-    // add the soft evidence to the clique potentials
-    const List<const Potential<GUM_SCALAR>*>& evidence_list =
-      __clique_evidence[from_id];
-
-    for ( const auto ev_pot : evidence_list ) {
-      NodeId ev_node =
-        this->bn().nodeId( *( ev_pot->variablesSequence().atPos( 0 ) ) );
-      if ( !__hard_evidence_nodes.exists( ev_node ) ) {
-        pot_list.insert( ev_pot );
-      }
-    }
+  void LazyPropagation<GUM_SCALAR>::__produceMessage( const NodeId from_id,
+                                                      const NodeId to_id ) {
+    // get the potentials of the clique.
+    __PotentialSet pot_list = __clique_potentials[from_id];
 
     // add the messages sent by adjacent nodes to from_id
     for ( const auto other : __JT->neighbours( from_id ) )
       if ( other != to_id )
-        for ( const auto pot : __sep_potentials[Arc( other, from_id )] )
+        for ( const auto pot : __separator_potentials[Arc( other, from_id )] )
           pot_list.insert( pot );
 
     // get the set of variables that need be removed from the potentials
     const NodeSet& from_clique = __JT->clique( from_id );
     const NodeSet& separator = __JT->separator( from_id, to_id );
     Set<const DiscreteVariable*> del_vars( from_clique.size() );
-    Set<const DiscreteVariable*> kept_vars( from_clique.size() );
+    Set<const DiscreteVariable*> kept_vars( separator.size() );
 
     for ( const auto node : from_clique ) {
       if ( !separator.contains( node ) ) {
@@ -1408,365 +981,211 @@ namespace gum {
 
     // pot_list now contains all the potentials to multiply and marginalize
     // => combine the messages
-    __marginalizeOut( pot_list, del_vars, kept_vars );
-    Arc arc (  from_id, to_id );
-    __sep_potentials[arc] = pot_list;
+    __PotentialSet new_pot_list =
+      __marginalizeOut( pot_list, del_vars, kept_vars );
+
+    // keep track of the newly created potentials
+    const Arc arc (  from_id, to_id );
+    for ( auto pot : new_pot_list ) {
+      if ( ! pot_list.exists( pot ) ) {
+        __created_potentials[arc].insert( pot );
+      }
+    }
+
+    __separator_potentials[arc] = std::move ( new_pot_list );
     __messages_computed[arc] = true;
   }
 
-
-
-
-
-
-
-
-
-
-
-
   
-
-  
-
-  
-  // performs the __diffusion phase of Lazy Propagation
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::__diffusion( NodeId id,
-                                                        NodeId from ) {
-    // #### TODO: make a more efficient inference using a stack of
-    // of partial computations (see GONZALES, Mellouli, Mourali (2007))
-    for ( const auto other : __JT->neighbours( id ) ) {
-      if ( other != from ) {
-        __produceMessage( id, other );
-        __diffusion( other, id );
-      }
-    }
-  }
-  
-
-  // performs the __collect phase of Lazy Propagation
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::diffusion( NodeId id,
-                                                      bool force_diffusion ) {
-    // get a clique that contains id
-    NodeId clique = __node_to_clique[id];
-
-    // check if we really need to perform an inference
-    if ( force_diffusion ) {
-      __collect( clique, true );
-      __diffusion( clique, clique );
-    }
-    else {
-      bool do_diffuse = false;
-      for ( const auto neighbour : __JT->neighbours ( clique ) ) {
-        if ( ! __messages_computed[Arc ( clique, neighbour )] ) {
-          do_diffuse = true;
-          break;
-        }
-      }
-      if ( ! do_diffuse ) return;
-
-      __collect( clique, false );
-      __diffusion( clique, clique );
-    }
-  }
-
-  
-  // performs a whole inference (__collect + __diffusion)
-  template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::makeInference() {
-    makeInference( false );
-  }
-
-  
-  // performs a whole inference (__collect + __diffusion)
+  // performs a whole inference
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::makeInference( bool force_inference ) {
-    // prepare a new inference from scratch
-
-    if ( force_inference ) {
-      // remove all the current separator potentials, if any
-      for ( auto& elt : __sep_potentials )
-        elt.second.clear();
-
-      // remove all temporary potentials created in previous inferences
-      for ( const auto pot : __created_potentials )
-        delete pot;
-      __created_potentials.clear();
-
-      // indicate that __collect and __diffusion passed through no clique yet
-      for ( auto& elt : __messages_computed ) {
-        elt.second = false;
-      }
-    }
-
-    // compute barren nodes if necessary
-    __computeBarrenPotentials();
-
-    // perform the __collect in all connected components of the junction tree
+  LazyPropagation<GUM_SCALAR>::_makeInference () {
     for ( const auto root : __roots )
-      __collect( root, root );
-
-    // perform the __diffusion in all connected components of the junction tree
-    for ( const auto root : __roots )
-      __diffusion( root, root );
-
-    // ##### bug potentiel a virer : s'il y a plusieurs composantes connexes,
-    // il faut plusieurs cliques de collecte
+      __collectMessage ( root, root );
   }
 
-
-
-
-
-
   
-  // returns the marginal a posteriori proba of a given node
+  // compute P(1st arg,evidence) and store the result into the second arg
   template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::__aPosterioriMarginal(
-                                                          NodeId id, Potential<GUM_SCALAR>& marginal ) {
-    // if the node received a hard evidence, just return it
-    if ( __hard_evidence_nodes.exists( id ) ) {
-      marginal = *( __bn_node2hard_potential[id] );
-      return;
-    }
-
-    // compute barren nodes if necessary
-    __computeBarrenPotentials();
-
-    // check if we performed a __collect on id, else we need some
-    NodeId clique_of_id = __node_to_clique[id];
-
-    if ( !__collected_cliques[clique_of_id] ) {
-      __collect( clique_of_id, clique_of_id );
-      __last_collect_clique = clique_of_id;
-    }
-
-    // ok, we performed a __collect, but maybe this __collect was not performed
-    // from the clique containing id. In this case, we also need to perform
-    // a __diffusion
-    const NodeSet& clique_nodes = __JT->clique( __last_collect_clique );
-
-    bool last_collect_clique_contains_id = true;
-
-    if ( !clique_nodes.contains( id ) ) {
-      makeInference( false );
-      last_collect_clique_contains_id = false;
-    }
+  void LazyPropagation<GUM_SCALAR>::__aPosterioriMarginal
+  ( NodeId id,
+    Potential<GUM_SCALAR>& marginal ) {
+    // if we still need to perform some inference task, do it
+    const NodeId clique_of_id = __node_to_clique[id];
+    __collectMessage ( clique_of_id, clique_of_id );
 
     // now we just need to create the product of the potentials of the clique
     // containing id with the messages received by this clique and
     // marginalize out all variables except id
-    NodeId targetClique =
-      last_collect_clique_contains_id ? __last_collect_clique : clique_of_id;
-
-    const List<const Potential<GUM_SCALAR>*>& clique_pot =
-      __clique_potentials[targetClique];
-
-    // get the potentials of the clique
-    __PotentialSet pot_list( clique_pot.size() +
-                             __clique_evidence[targetClique].size() );
-
-    for ( const auto& cli : clique_pot )
-      pot_list.insert( cli );
-
-    // add the evidence to the clique potentials
-    const List<const Potential<GUM_SCALAR>*>& evidence_list =
-      __clique_evidence[targetClique];
-    for ( const auto ev_pot : evidence_list ) {
-      pot_list.insert( ev_pot );
-    }
-
-    // if some node of the clique received a hard evidence, add this evidence
-    // this is compulsory because, during the messages computations, we
-    // marginalized out the hard evidence nodes from the CPTs prior to the
-    // combinations. Hence, we must marginalize out these nodes on all tables
-    // that contain them
-    for ( const auto node : __JT->clique( targetClique ) ) {
-      if ( __bn_node2hard_potential.exists( node ) ) {
-        const auto ev_pot = __bn_node2hard_potential[node];
-        if ( !pot_list.exists( ev_pot ) ) {
-          pot_list.insert( ev_pot );
-        }
-      }
-    }
+    const List<const Potential<GUM_SCALAR>*>& clique_potentials =
+      __clique_potentials[clique_of_id];
+    __PotentialSet pot_list( clique_potentials.size() );
+    for ( const auto pot : clique_potentials )
+      pot_list.insert( pot );
 
     // add the messages sent by adjacent nodes to targetClique
-    for ( const auto other : __JT->neighbours( targetClique ) )
-      for ( const auto pot : __sep_potentials[Arc( other, targetClique )] )
+    for ( const auto other : __JT->neighbours( clique_of_id ) )
+      for ( const auto pot : __separator_potentials[Arc( other, clique_of_id )] )
         pot_list.insert( pot );
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet& nodes = __JT->clique( targetClique );
-    Set<const DiscreteVariable*> del_vars( nodes.size() );
-    Set<const DiscreteVariable*> kept_vars( nodes.size() );
+    const NodeSet& nodes = __JT->clique( clique_of_id );
+    Set<const DiscreteVariable*> del_vars ( nodes.size() );
+    Set<const DiscreteVariable*> kept_vars;
 
+    const auto& bn = this->BayesNet ();
     for ( const auto node : nodes ) {
       if ( node != id ) {
-        del_vars.insert( &( this->bn().variable( node ) ) );
-      } else {
-        kept_vars.insert( &( this->bn().variable( node ) ) );
+        del_vars.insert( &( bn.variable( node ) ) );
+      }
+      else {
+        kept_vars.insert( &( bn.variable( node ) ) );
       }
     }
+    
     // pot_list now contains all the potentials to multiply and marginalize
     // => combine the messages
-    __marginalizeOut( pot_list, del_vars, kept_vars );
+    __PotentialSet new_pot_list =
+      __marginalizeOut ( pot_list, del_vars, kept_vars );
 
-    if ( pot_list.size() == 1 ) {
-      marginal = **pot_list.begin();
-    } else {
-      Set<const Potential<GUM_SCALAR>*> set;
-      for ( const auto pot : pot_list )
-        set << pot;
-
-      MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
-                                                                         LPNewmultiPotential );
-
-      fast_combination.combine( marginal, set );
-    }
-  }
-
-
-  // returns the joint a posteriori proba of a given set of nodes
-  template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::__aPosterioriJoint(
-                                                       const NodeSet& ids, Potential<GUM_SCALAR>& marginal ) {
-    // compute barren nodes if necessary
-    __computeBarrenPotentials();
-
-    // find a clique that contains all the nodes in ids. To do so, we loop over
-    // all the cliques and check wheither there exists one with this feature
-    NodeId clique_of_ids = 0;
-    bool clique_found = false;
-
-    for ( const auto node : __JT->nodes() ) {
-      // get the nodes contained in the clique
-      const NodeSet& clique = __JT->clique( node );
-      // check whether the clique actually contains all of ids
-      bool clique_ok = true;
-
-      for ( const auto node2 : ids ) {
-        if ( !clique.contains( node2 ) ) {
-          clique_ok = false;
-          break;
-        }
+    if ( new_pot_list.size() == 1 ) {
+      auto pot = *new_pot_list.begin();
+      if ( ! pot_list.exists ( pot ) ) {
+        marginal = std::move ( pot );
+        delete pot;
       }
+      else {
+        marginal = *pot;
+      }
+    }
+    else {
+      MultiDimCombinationDefault<GUM_SCALAR, Potential>
+        fast_combination ( __combination_op );
+      fast_combination.combine( marginal, new_pot_list );
+      for ( auto pot : new_pot_list )
+        if ( ! pot_list.exists ( pot ) ) delete pot;
+    }
 
-      // check if we found the clique we wanted
-      if ( clique_ok ) {
-        clique_of_ids = node;
-        clique_found = true;
+    // check that the marginal is different from a 0 vector: this would
+    // indicate that the evidence are not compatibles
+    bool nonzero_found = false;
+    for ( Instantiation inst ( marginal ); ! inst.end (); ++inst ) {
+      if ( marginal[inst] ) {
+        nonzero_found = true;
         break;
       }
     }
-
-    // check if we actually found the clique we were interested in
-    if ( !clique_found ) {
-      GUM_ERROR( OperationNotAllowed,
-                 "no clique was found to compute the joint probability" );
-    }
-
-    // for the moment, always perform an inference before computing the
-    // joint a posteriori distribution
-    makeInference( true );
-
-    // now we just need to create the product of the potentials of the clique
-    // containing id with the messages received by this clique and
-    // marginalize out all variables except id
-    const List<const Potential<GUM_SCALAR>*>& clique_pot =
-      __clique_potentials[clique_of_ids];
-
-    // get the potentials of the clique
-    __PotentialSet pot_list( clique_pot.size() +
-                             __clique_evidence[clique_of_ids].size() );
-
-    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
-            clique_pot.cbeginSafe();
-          iter != clique_pot.cendSafe();
-          ++iter ) {
-      pot_list.insert( *iter );
-    }
-
-    // add the evidence to the clique potentials
-    const List<const Potential<GUM_SCALAR>*>& evidence_list =
-      __clique_evidence[clique_of_ids];
-
-    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
-            evidence_list.cbeginSafe();
-          iter != evidence_list.cendSafe();
-          ++iter ) {
-      pot_list.insert( *iter );
-    }
-
-    // if some node of the clique received a hard evidence, add this evidence
-    // this is compulsory because, during the messages computations, we
-    // marginalized out the hard evidence nodes from the CPTs prior to the
-    // combinations. Hence, we must marginalize out these nodes on all tables
-    // that contain them
-    for ( const auto node : __JT->clique( clique_of_ids ) ) {
-      if ( __bn_node2hard_potential.exists( node ) ) {
-        const auto ev_pot = __bn_node2hard_potential[node];
-        if ( !pot_list.exists( ev_pot ) ) {
-          pot_list.insert( ev_pot );
-        }
-      }
-    }
-
-
-    // add the messages sent by adjacent nodes to clique_of_ids
-    for ( const auto other : __JT->neighbours( clique_of_ids ) )
-      for ( const auto pot : __sep_potentials[Arc( other, clique_of_ids )] ) {
-        pot_list.insert( pot );
-      }
-
-    // get the set of variables that need be removed from the potentials
-    const NodeSet& nodes = __JT->clique( clique_of_ids );
-
-    Set<const DiscreteVariable*> del_vars( nodes.size() );
-    Set<const DiscreteVariable*> kept_vars( nodes.size() );
-
-    for ( const auto node : nodes ) {
-      if ( !ids.contains( node ) ) {
-        del_vars.insert( &( this->bn().variable( node ) ) );
-      } else {
-        kept_vars.insert( &( this->bn().variable( node ) ) );
-      }
-    }
-
-    // ok, now, pot_list contains all the potentials to multiply and marginalize
-    // => now, combine the messages
-    __marginalizeOut( pot_list, del_vars, kept_vars );
-
-    if ( pot_list.size() == 1 ) {
-      marginal = **pot_list.begin();
-    } else {
-      Set<const Potential<GUM_SCALAR>*> set;
-
-      for ( const auto pot : pot_list )
-        set << pot;
-
-      MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
-                                                                         LPNewmultiPotential );
-
-      fast_combination.combine( marginal, set );
-    }
+    if ( ! nonzero_found )
+      GUM_ERROR ( IncompatibleEvidence, "some evidence entered into the Bayes "
+                  "net are incompatible (their joint proba = 0)" );
   }
 
-  template <typename GUM_SCALAR>
-  INLINE const JunctionTree* LazyPropagation<GUM_SCALAR>::junctionTree() const {
-    return __JT;
-  }
 
   // returns the marginal a posteriori proba of a given node
-
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagation<GUM_SCALAR>::_fillPosterior(
-                                                          NodeId id, Potential<GUM_SCALAR>& posterior ) {
+  INLINE void
+  LazyPropagation<GUM_SCALAR>::_fillPosterior
+  ( const NodeId id,
+    Potential<GUM_SCALAR>& posterior ) {
     __aPosterioriMarginal( id, posterior );
     posterior.normalize();
   }
+
+
+  // returns the marginal a posteriori proba of a given node
+  template <typename GUM_SCALAR>
+  void LazyPropagation<GUM_SCALAR>::__aPosterioriSetMarginal
+  ( const NodeSet& set,
+    Potential<GUM_SCALAR>& marginal ) {
+    // if we still need to perform some inference task, do it
+    const NodeId clique_of_set = __settarget_to_clique[set];
+    __collectMessage ( clique_of_set, clique_of_set );
+
+    // now we just need to create the product of the potentials of the clique
+    // containing set with the messages received by this clique and
+    // marginalize out all variables except set
+    const List<const Potential<GUM_SCALAR>*>& clique_potentials =
+      __clique_potentials[clique_of_set];
+    __PotentialSet pot_list( clique_potentials.size() );
+    for ( const auto pot : clique_potentials )
+      pot_list.insert( pot );
+
+    // add the messages sent by adjacent nodes to targetClique
+    for ( const auto other : __JT->neighbours( clique_of_set ) )
+      for ( const auto pot : __separator_potentials[Arc( other, clique_of_set )] )
+        pot_list.insert( pot );
+
+    // get the set of variables that need be removed from the potentials
+    const NodeSet& nodes = __JT->clique( clique_of_set );
+    Set<const DiscreteVariable*> del_vars ( nodes.size() );
+    Set<const DiscreteVariable*> kept_vars;
+
+    const auto& bn = this->BayesNet ();
+    for ( const auto node : nodes ) {
+      if ( ! set.contains ( node ) ) {
+        del_vars.insert( &( bn.variable( node ) ) );
+      }
+      else {
+        kept_vars.insert( &( bn.variable( node ) ) );
+      }
+    }
+    
+    // pot_list now contains all the potentials to multiply and marginalize
+    // => combine the messages
+    __PotentialSet new_pot_list =
+      __marginalizeOut ( pot_list, del_vars, kept_vars );
+    
+    if ( new_pot_list.size() == 1 ) {
+      auto pot = *new_pot_list.begin();
+      if ( ! pot_list.exists ( pot ) ) {
+        marginal = std::move ( pot );
+        delete pot;
+      }
+      else {
+        marginal = *pot;
+      }
+    }
+    else {
+      MultiDimCombinationDefault<GUM_SCALAR, Potential>
+        fast_combination ( __combination_op );
+      fast_combination.combine( marginal, new_pot_list );
+      for ( auto pot : new_pot_list )
+        if ( ! pot_list.exists ( pot ) ) delete pot;
+    }
+
+    // check that the marginal is different from a 0 vector: this would
+    // indicate that the evidence are not compatibles
+    bool nonzero_found = false;
+    for ( Instantiation inst ( marginal ); ! inst.end (); ++inst ) {
+      if ( marginal[inst] ) {
+        nonzero_found = true;
+        break;
+      }
+    }
+    if ( ! nonzero_found )
+      GUM_ERROR ( IncompatibleEvidence, "some evidence entered into the Bayes "
+                  "net are incompatible (their joint proba = 0)" );
+  }
+
+  
+  // returns the marginal a posteriori proba of a given set of nodes
+  template <typename GUM_SCALAR>
+  INLINE void
+  LazyPropagation<GUM_SCALAR>::_fillSetPosterior
+  ( const NodeSet& set,
+    Potential<GUM_SCALAR>& posterior ) {
+    __aPosterioriSetMarginal( set, posterior );
+    posterior.normalize();
+  }
+
+
+
+  
+
+  
+
+
 
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR LazyPropagation<GUM_SCALAR>::evidenceProbability() {
@@ -1791,26 +1210,6 @@ namespace gum {
     return sum;
   }
 
-  // returns the joint a posteriori probability P(nodes|e)
-  /** @warning right now, method joint cannot compute joint a posteriori
-   * probabilities of every nodeset. In cases where it is not able to perform
-   * properly this task, it will raise a OperationNotAllowed exception. */
-
-  template <typename GUM_SCALAR>
-  INLINE Potential<GUM_SCALAR>*
-  LazyPropagation<GUM_SCALAR>::joint( const NodeSet& nodes ) {
-    Potential<GUM_SCALAR>* res = new Potential<GUM_SCALAR>();
-
-    try {
-      __aPosterioriJoint( nodes, *res );
-      res->normalize();
-    } catch ( OperationNotAllowed& e ) {
-      delete ( res );
-      throw;
-    }
-
-    return res;
-  }
 
   /** Entropy
    * Compute Shanon's entropy of a node given the observation

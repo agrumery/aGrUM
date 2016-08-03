@@ -355,9 +355,15 @@ namespace gum {
   /**
    * @class gum::CPTNoSumTo1 agrum/core/exceptions.h
    * @extends gum::CPTError
-   * Exception : no neighbour to a given node was found
+   * Exception : the CPT does not sum to 1
    */
   class CPTNoSumTo1;
+
+  /**
+   * @class gum::IncompatibleEvidence agrum/core/exceptions.h
+   * Exception : several evidence are incompatible together (proba=0)
+   */
+  class IncompatibleEvidence;
 
   /**
    * @class gum::FactoryError agrum/core/exceptions.h

@@ -426,16 +426,32 @@ namespace gum {
     /** @brief This method is called when a BayesNetInference user asks for
      * the posterior of a given target.
      *
-     * The reference "posterior" is a reference over a const Potential that
+     * The reference "posterior" is a reference over a Potential that
      * contains the variable of node id (only values can then be changed)
      *
      * @param id The variable's id.
      * @param posterior The completely empty potential to fill.
      * @throw UndefinedElement Raised if no variable matches id in the target.
      */
-    virtual void _fillPosterior( NodeId id,
+    virtual void _fillPosterior( const NodeId id,
                                  Potential<GUM_SCALAR>& posterior ) = 0;
 
+   /** @brief This method is called when a BayesNetInference user asks for
+     * the posterior of a given set target.
+     *
+     * The reference "posterior" is a reference over a Potential that
+     * contains all the variables of the set target (only values can then
+     * be changed)
+     *
+     * @param set the set of nodes of the potential
+     * @param posterior The completely empty potential to fill.
+     * @throw UndefinedElement Raised if no variable matches id in the target.
+     */
+    virtual void _fillSetPosterior( const NodeSet& set,
+                                    Potential<GUM_SCALAR>& posterior ) = 0;
+
+    /// put the inference into an unprepared state
+    void _setUnpreparedStructureState ();
 
     
   private:

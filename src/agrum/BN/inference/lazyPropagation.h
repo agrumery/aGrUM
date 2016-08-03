@@ -85,13 +85,14 @@ namespace gum {
     /// @{
 
     /// default constructor
-    LazyPropagation( const IBayesNet<GUM_SCALAR>* BN,
-                     FindRelevantPotentialsType =
-                     FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
-                     FindBarrenNodesType = FIND_BARREN_NODES );
+    LazyPropagation ( const IBayesNet<GUM_SCALAR>* BN,
+                      FindRelevantPotentialsType =
+                      FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
+                      FindBarrenNodesType = FIND_BARREN_NODES,
+                      bool use_binary_join_tree = true );
 
     /// destructor
-    ~LazyPropagation();
+    ~LazyPropagation ();
 
     /// @}
     
@@ -134,6 +135,9 @@ namespace gum {
                                     const Potential<GUM_SCALAR>& ) );
 
     /// returns the current join tree used
+    /** Lazy Propagation does not use a junction tree but a binary join tree
+     * because this may enable faster inferences. So do not be surprised to
+     * see that somes cliques are contained into others in this tree. */
     const JoinTree* joinTree() const;
 
     /// @}
@@ -219,8 +223,22 @@ namespace gum {
      * @param posterior The completely empty potential to fill.
      * @throw UndefinedElement Raised if no variable matches id in the target.
      */
-    virtual void _fillPosterior( NodeId id,
+    virtual void _fillPosterior( const NodeId id,
                                  Potential<GUM_SCALAR>& posterior );
+
+    /** @brief This method is called when a BayesNetInference user asks for
+     * the posterior of a given set target.
+     *
+     * The reference "posterior" is a reference over a Potential that
+     * contains all the variables of the set target (only values can then
+     * be changed)
+     *
+     * @param set the set of nodes of the potential
+     * @param posterior The completely empty potential to fill.
+     * @throw UndefinedElement Raised if no variable matches id in the target.
+     */
+    virtual void _fillSetPosterior( const NodeSet& set,
+                                    Potential<GUM_SCALAR>& posterior );
 
     
 
@@ -240,32 +258,62 @@ namespace gum {
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType __barren_nodes_type;
+
+    /// the operator for performing the projections
+    Potential<GUM_SCALAR>* (* __projection_op )
+      ( const Potential<GUM_SCALAR>&,
+        const Set<const DiscreteVariable*>& );
     
+    /// the operator for performing the combinations
+    Potential<GUM_SCALAR>* (* __combination_op )
+      ( const Potential<GUM_SCALAR>&,
+        const Potential<GUM_SCALAR>& );
     
     /// the triangulation class creating the junction tree used for inference
     Triangulation* __triangulation;
 
+    /** @brief indicates whether we should transform junction trees into
+     * binary join trees */
+    bool __use_binary_join_tree { true };
+
     /// the undigraph extracted from the BN and used to construct the join tree
+    /** If all nodes are targets, this graph corresponds to the moral graph
+     * of the BN. Otherwise, it may be a subgraph of this moral graph. For
+     * instance if the BN is A->B->C and only B is a target, __graph will be
+     * equal to A-B if we exploit barren nodes (C is a barren node and,
+     * therefore, can be removed for inference). */
     UndiGraph __graph;
 
     /// the junction tree used to answer the last inference query
     JoinTree* __JT { nullptr };
 
     /// indicates whether a new join tree is needed for the next inference
+    /** when modifying the set of hard evidence, we can determine that
+     * the current JT is no more appropriate for inference. This variable
+     * enables us to keep track of this. */
     bool __is_new_jt_needed { true };
 
     /// a clique node used as a root in each connected component of __JT
+    /** For usual probabilistic inference, roots is useless. This is useful
+     * when computing the probability of evidence. In this case, we need to
+     * compute this probability in every connected component and multiply
+     * them to get the overall probability of evidence.
+     * @warning __roots should be computed only when evidenceProbability
+     * is called. */
     NodeSet __roots;
 
-    /// for each node of the bayes net, associate an ID in the JT
+    /// for each node of __graph (~ in the Bayes net), associate an ID in the JT
     HashTable<NodeId, NodeId> __node_to_clique;
+
+    /// for each set target, assign a clique in the JT that contains it
+    HashTable<NodeSet, NodeId> __settarget_to_clique;
 
     /// the list of all potentials stored in the cliques
     /** This structure contains a list for each clique in the join tree. If
      * a clique did not received any potential, then its list is empty but
      * the entry for the clique does exist. Note that clique potentials
-     * do not contain any soft evidence: those are contained into the
-     * __clique_evidence structure. */
+     * contain also soft evidence and the CPTs that were projected to
+     * remove their variables that received hard evidence. */
     NodeProperty<List<const Potential<GUM_SCALAR>*>> __clique_potentials;
 
     /// the list of all potentials stored in the separators after inferences
@@ -273,7 +321,7 @@ namespace gum {
      * directions) whether the arc received any potential or not. */
     ArcProperty<List<const Potential<GUM_SCALAR>*>> __separator_potentials;
 
-    /// the set of potentials created during the last inference
+    /// the set of potentials created for the last inference messages
     /** This structure contains only the arcs on which potentials have
      * been created */
     ArcProperty<List<const Potential<GUM_SCALAR>*>> __created_potentials;
@@ -290,15 +338,24 @@ namespace gum {
      * were not computed */
     ArcProperty<bool> __messages_computed;
 
-    /// the list of all the evidence stored in the cliques
-    /** These potentials are not owned by LazyPropagation, they are only
+    /// the soft evidence stored in the cliques per their assigned node in the BN
+    /** This variable is useful for method _updateInferencePotentials: it enables
+     * to know which soft evidence should be removed/added into the cliques of the
+     * join tree.
+     * @warning These potentials are not owned by LazyPropagation, they are only
      * referenced by it. Only the cliques that contain evidence are
      * filled in this structure. */
-    NodeProperty<List<const Potential<GUM_SCALAR>*>> __clique_evidence;
+    NodeProperty<const Potential<GUM_SCALAR>*> __node_to_soft_evidence;
 
-    /// the list of small potentials created to take into account hard evidence
-    NodeProperty<const Potential<GUM_SCALAR>*> __hard_ev_potentials;
+    /// the CPTs that were projected due to hard evidence nodes
+    /** For each node whose CPT is defined over some nodes that contain some
+     * hard evidence, assigns a new projected CPT that does not contain
+     * these nodes anymore.
+     * @warning These potentials are owned by LayPropagation. */
+    NodeProperty<const Potential<GUM_SCALAR>*> __hard_ev_projected_CPTs;
 
+    /// the hard evidence nodes which were projected in CPTs
+    NodeSet __hard_ev_nodes;
 
     /// the possible types of evidence changes 
     enum EvidenceChangeType {
@@ -307,8 +364,10 @@ namespace gum {
       EVIDENCE_MODIFIED
     };
     
-    /// indicates which nodes have evidence that changed since the last inference
+    /** @brief indicates which nodes of the BN have evidence that changed
+     * since the last inference */
     NodeProperty<EvidenceChangeType> __evidence_changes;
+
 
 
     /// check whether a new join tree is really needed for the next inference
@@ -321,75 +380,8 @@ namespace gum {
     void __diffuseMessageInvalidations ( const NodeId from,
                                          const NodeId to );
 
-
-
-    
-
-
-    
-
-  
-
-    /// creates the message sent by clique from_id to clique to_id
-    void __produceMessage( NodeId from_id, NodeId to_id );
-
-    /// actually perform the collect phase
-    void __collectMessage( NodeId id, NodeId from );
-
-
-    
-
-    /*
-    /// a possible partial order for triangulations provided by the user
-    std::vector<NodeId> __elim_order;
-
-    
-    /// the list of hard evidence potentials per random variable
-    NodeProperty<const Potential<GUM_SCALAR>*> __bn_node2hard_potential;
-
-
-    /// the set of barren potentials: can be discarded from computations
-     * Assigns a set (possibly empty) of barren potentials to each message
-     * sent in the junction tree. A message is represented by an arc from
-     * one clique (id) to another.
-    ArcProperty<__PotentialSet> __barren_potentials;
-
-    /// indicates whether we shall recompute barren nodes
-    bool __need_recompute_barren_potentials { true };
-    */
-
-
-    /// indicates that we need inference in a given Junction tree connected
-    /// component
-    /** This function indicates to the class that part of the junction tree
-     * needs
-     * a new inference. As a result, it updates the messages sent on the
-     * separators
-     * on this part of the junction tree. */
-
-    void __setRequiredInference( NodeId id, NodeId from );
-
-    /// remove variables del_vars from the list of potentials pot_list
-    /** The function actually updates pot_list and, when it returns, pot_list
-     * contains the list of potentials resulting from the marginalization of the
-     * posterior*/
-
-    void __marginalizeOut( __PotentialSet& pot_list,
-                           Set<const DiscreteVariable*>& del_vars,
-                           Set<const DiscreteVariable*>& kept_vars );
-
-    void __aPosterioriMarginal( NodeId id, Potential<GUM_SCALAR>& posterior );
-
-    void __aPosterioriJoint( const NodeSet& ids,
-                             Potential<GUM_SCALAR>& posterior );
-
-    /// initialization function
-    void __initialize( const IBayesNet<GUM_SCALAR>& BN,
-                       StaticTriangulation& triangulation,
-                       const NodeProperty<Size>& modalities );
-
-    /// check wether an evidence is a hard one
-    bool __isHardEvidence( const Potential<GUM_SCALAR>* pot );
+    /// compute a root for each connected component of __JT
+    void __computeJoinTreeRoots ();
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
@@ -415,8 +407,42 @@ namespace gum {
     void
     __findRelevantPotentialsGetAll( __PotentialSet& pot_list,
                                     Set<const DiscreteVariable*>& kept_vars );
+    
+    /** @brief removes variables del_vars from a list of potentials and
+     * returns the resulting list */
+    __PotentialSet __marginalizeOut( const __PotentialSet& pot_list,
+                                     Set<const DiscreteVariable*>& del_vars,
+                                     Set<const DiscreteVariable*>& kept_vars );
+
+    /// creates the message sent by clique from_id to clique to_id
+    void __produceMessage( const NodeId from_id,
+                           const NodeId to_id );
+
+    /// actually perform the collect phase
+    void __collectMessage( const NodeId id,
+                           const NodeId from );
+
+    /// computes P(1st arg,evidence) and store the result into the second arg
+    void __aPosterioriMarginal( const NodeId id,
+                                Potential<GUM_SCALAR>& posterior );
+    
+    /// computes P(1st arg,evidence) and store the result into the second arg
+    void __aPosterioriSetMarginal ( const NodeSet& ids,
+                                    Potential<GUM_SCALAR>& posterior );
 
 
+
+
+
+
+    
+    
+    /// initialization function
+    void __initialize( const IBayesNet<GUM_SCALAR>& BN,
+                       StaticTriangulation& triangulation,
+                       const NodeProperty<Size>& modalities );
+
+ 
     /// remove barren variables from a set of potentials
     void __removeBarrenVariables( __PotentialSet& pot_list,
                                   Set<const DiscreteVariable*>& del_vars );

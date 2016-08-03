@@ -67,6 +67,14 @@ namespace gum {
     }
     __settarget_posteriors.clear ();
   }
+
+
+  // put the inference into an unprepared state
+  template <typename GUM_SCALAR>
+  INLINE void Inference<GUM_SCALAR>::_setUnpreparedStructureState () {
+    __invalidatePosteriors ();
+    __state = StateOfInference::UnpreparedStructure;
+  }
   
 
   // returns whether the inference object is in a ready state
@@ -714,7 +722,7 @@ namespace gum {
     if ( ! isTarget ( var ) ) {  // throws UndefinedElement if var is not a target
       GUM_ERROR( UndefinedElement, var << " is not a target node" );
     }
-
+    
     if ( ! isDone() ) {
       makeInference();
     }
