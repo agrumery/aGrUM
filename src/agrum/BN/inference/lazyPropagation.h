@@ -140,6 +140,9 @@ namespace gum {
      * see that somes cliques are contained into others in this tree. */
     const JoinTree* joinTree() const;
 
+    /// returns the probability of evidence
+    GUM_SCALAR evidenceProbability();
+
     /// @}
 
     
@@ -314,17 +317,17 @@ namespace gum {
      * the entry for the clique does exist. Note that clique potentials
      * contain also soft evidence and the CPTs that were projected to
      * remove their variables that received hard evidence. */
-    NodeProperty<List<const Potential<GUM_SCALAR>*>> __clique_potentials;
+    NodeProperty<__PotentialSet> __clique_potentials;
 
     /// the list of all potentials stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
      * directions) whether the arc received any potential or not. */
-    ArcProperty<List<const Potential<GUM_SCALAR>*>> __separator_potentials;
+    ArcProperty<__PotentialSet> __separator_potentials;
 
     /// the set of potentials created for the last inference messages
     /** This structure contains only the arcs on which potentials have
      * been created */
-    ArcProperty<List<const Potential<GUM_SCALAR>*>> __created_potentials;
+    ArcProperty<__PotentialSet> __created_potentials;
 
     /** @brief the constants resulting from the projections of CPTs defined
      * over only hard evidence nodes
@@ -410,7 +413,7 @@ namespace gum {
     
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    __PotentialSet __marginalizeOut( const __PotentialSet& pot_list,
+    __PotentialSet __marginalizeOut( __PotentialSet& pot_list,
                                      Set<const DiscreteVariable*>& del_vars,
                                      Set<const DiscreteVariable*>& kept_vars );
 
@@ -429,28 +432,6 @@ namespace gum {
     /// computes P(1st arg,evidence) and store the result into the second arg
     void __aPosterioriSetMarginal ( const NodeSet& ids,
                                     Potential<GUM_SCALAR>& posterior );
-
-
-
-
-
-
-    
-    
-    /// initialization function
-    void __initialize( const IBayesNet<GUM_SCALAR>& BN,
-                       StaticTriangulation& triangulation,
-                       const NodeProperty<Size>& modalities );
-
- 
-    /// remove barren variables from a set of potentials
-    void __removeBarrenVariables( __PotentialSet& pot_list,
-                                  Set<const DiscreteVariable*>& del_vars );
-
-    /// compute barren nodes if necessary
-    void __computeBarrenPotentials();
-
-
 
 
     

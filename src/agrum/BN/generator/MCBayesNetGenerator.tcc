@@ -138,7 +138,7 @@ namespace gum {
     IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = bayesNetinit;
 
     if ( __checkConditions() ) {
-      LazyPropagation<GUM_SCALAR> inf( bayesNetinit );
+      LazyPropagation<GUM_SCALAR> inf( &bayesNetinit );
       inf.makeInference();
 
       for ( auto node : bayesNetinit.nodes() ) {

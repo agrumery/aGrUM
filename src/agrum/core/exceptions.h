@@ -518,6 +518,8 @@ namespace gum {
                   "the graph contains a directed cycle" )
   GUM_MAKE_ERROR( CPTError, Exception, "CPT error" )
   GUM_MAKE_ERROR( CPTNoSumTo1, CPTError, "CPT does not sum to 1" )
+  GUM_MAKE_ERROR( IncompatibleEvidence, Exception,
+                  "several evidence are incompatible together (proba=0)" )
   GUM_MAKE_ERROR( FactoryError, Exception, "factory error" )
   GUM_MAKE_ERROR( FactoryInvalidState, FactoryError, "invalid state error" )
   GUM_MAKE_ERROR( WrongType, FactoryError, "wrong type for this operation" )

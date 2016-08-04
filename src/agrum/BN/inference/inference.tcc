@@ -80,7 +80,7 @@ namespace gum {
   // returns whether the inference object is in a ready state
   template <typename GUM_SCALAR>
   INLINE bool Inference<GUM_SCALAR>::isReady () const noexcept {
-    return ( __state == StateOfInference::Ready );
+    return ( __state == StateOfInference::Ready4Inference );
   }
 
   
@@ -126,7 +126,7 @@ namespace gum {
   void Inference<GUM_SCALAR>::__computeDomainSizes () {
     __domain_sizes.clear ();
     if ( __bn != nullptr ) {
-      for ( const auto node : __bn->DAG() ) {
+      for ( const auto node : __bn->dag() ) {
         __domain_sizes.insert ( node, __bn->variable( node ).domainSize () );
       }
     }
@@ -693,7 +693,7 @@ namespace gum {
     else
       _updateInferencePotentials ();
     
-    __state = StateOfInference::Ready;
+    __state = StateOfInference::Ready4Inference;
   }
 
 
@@ -754,10 +754,10 @@ namespace gum {
 
     if ( !__settarget_posteriors.exists( vars ) ) {
       Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR>();
-      pot.beginMultipleChanges();
+      pot->beginMultipleChanges();
       for ( const auto var : vars ) 
         pot->add( __bn->variable( var ) );
-      pot.endMultipleChanges();
+      pot->endMultipleChanges();
 
       _fillSetPosterior( vars, *pot );
       __settarget_posteriors.insert( vars, pot );
