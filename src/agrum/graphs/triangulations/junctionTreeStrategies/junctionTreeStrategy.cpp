@@ -64,7 +64,7 @@ namespace gum {
    * during a move construction */
   void JunctionTreeStrategy::moveTriangulation
   ( StaticTriangulation* triangulation ) {
-    _triangulation = _triangulation;
+    _triangulation = triangulation;
   }
   
 

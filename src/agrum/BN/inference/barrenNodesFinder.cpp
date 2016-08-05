@@ -52,7 +52,7 @@ namespace gum {
       // later on
       Sequence<NodeId> observed_anc( __dag->size() );
       const unsigned int non_barren = std::numeric_limits<unsigned int>::max();
-      for ( const auto node : __observed_nodes )
+      for ( const auto node : *__observed_nodes )
         observed_anc.insert( node );
       for ( unsigned int i = 0; i < observed_anc.size(); ++i ) {
         const NodeId node = observed_anc[i];
@@ -319,5 +319,38 @@ namespace gum {
     return result;
   }
 
+  
+  /// returns the set of barren nodes
+  NodeSet BarrenNodesFinder::barrenNodes () {
+    // mark all the nodes in the dag as barren (true)
+    NodeProperty<bool> barren_mark = __dag->nodesProperty ( true );
+
+    // mark all the ancestors of the evidence and targets as non-barren
+    List<NodeId> nodes_to_examine;
+    int nb_non_barren = 0;
+    for ( const auto node : *__observed_nodes )
+      nodes_to_examine.insert ( node );
+    for ( const auto node : *__target_nodes )
+      nodes_to_examine.insert ( node );
+    while ( ! nodes_to_examine.empty () ) {
+      const NodeId node = nodes_to_examine.front ();
+      nodes_to_examine.popFront ();
+      if ( barren_mark[node] ) {
+        barren_mark[node] = false;
+        ++nb_non_barren;
+        for ( const auto par : __dag->parents ( node ) )
+          nodes_to_examine.insert ( par );
+      }
+    }
+
+    // here, all the nodes marked true are barren
+    NodeSet barren_nodes ( __dag->sizeNodes () - nb_non_barren );
+    for ( const auto& marked_pair : barren_mark )
+      if ( marked_pair.second )
+        barren_nodes.insert ( marked_pair.first );
+
+    return barren_nodes;
+  }
+  
 
 } /* namespace gum */

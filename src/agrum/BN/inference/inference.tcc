@@ -22,10 +22,6 @@
  * @brief Implementation of the non pure virtual methods of class Inference.
  */
 
-// to ease parsers in IDE
-#ifdef GUM_INFERENCE_H
-#include <agrum/BN/inference/inference.h>
-
 
 namespace gum {
 
@@ -131,7 +127,15 @@ namespace gum {
       }
     }
   }
- 
+
+  
+  // get the domain sizes of the random variables of the BN
+  template <typename GUM_SCALAR>
+  INLINE const NodeProperty<Size>&
+  Inference<GUM_SCALAR>::domainSizes () const {
+    return __domain_sizes;
+  }
+  
 
  
   
@@ -769,5 +773,3 @@ namespace gum {
 
 } /* namespace gum */
 
-
-#endif  // GUM_INFERENCE_H

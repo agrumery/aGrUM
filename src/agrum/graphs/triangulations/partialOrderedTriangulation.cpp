@@ -111,6 +111,14 @@ namespace gum {
   }
 
 
+  /// sets the sequence of elimination
+  void PartialOrderedTriangulation::setPartialOrder
+  ( const List<NodeSet>* partial_order ) {
+    __partial_order = partial_order;
+    static_cast<PartialOrderedEliminationSequenceStrategy*>
+      ( _elimination_sequence_strategy )->setPartialOrder ( __partial_order );
+  }
+
   /// the function called to initialize the triangulation process
   void PartialOrderedTriangulation::_initTriangulation( UndiGraph& graph ) {
     PartialOrderedEliminationSequenceStrategy* elim =

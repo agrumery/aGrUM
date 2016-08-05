@@ -35,39 +35,10 @@
 #include <agrum/multidim/operators/multiDimProjection.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
-#include <agrum/graphs/triangulations/orderedTriangulation.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 
-// to ease IDE parsers
-#include <agrum/BN/inference/BayesNetInference.h>
 
 namespace gum {
-
-  // the function used to combine two tables
-  template <typename GUM_SCALAR>
-  INLINE static Potential<GUM_SCALAR>*
-  LPNewmultiPotential( const Potential<GUM_SCALAR>& t1,
-                       const Potential<GUM_SCALAR>& t2 ) {
-    return new Potential<GUM_SCALAR>( t1 * t2 );
-  }
-
-  // the function used to combine two tables
-  template <typename GUM_SCALAR>
-  INLINE static Potential<GUM_SCALAR>*
-  LPNewprojPotential( const Potential<GUM_SCALAR>& t1,
-                      const Set<const DiscreteVariable*>& del_vars ) {
-    return new Potential<GUM_SCALAR>( t1.margSumOut( del_vars ) );
-  }
-
-
-
-
-
-
-
-
-
-
   
   
   // default constructor
@@ -374,14 +345,14 @@ namespace gum {
       }
       
       if ( target_nodes.size () != bn.dag().sizeNodes () ) {
-        BarrenNodesFinder finder( bn.dag() );
-        finder.setTargets ( target_nodes );
+        BarrenNodesFinder finder( &( bn.dag() ) );
+        finder.setTargets ( &target_nodes );
 
         NodeSet evidence_nodes;
         for ( const auto& pair : this->evidence () ) {
           evidence_nodes.insert ( pair.first );
         }
-        finder.setEvidence ( evidence_nodes );
+        finder.setEvidence ( &evidence_nodes );
 
         NodeSet barren_nodes = finder.barrenNodes ();
 
@@ -823,7 +794,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll
-  ( __PotentialSet& pot_list,
+  ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& kept_vars ) {
   }
 
@@ -832,7 +803,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation
-  ( __PotentialSet& pot_list,
+  ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& kept_vars ) {
     // find the node ids of the kept variables
     NodeSet kept_ids;
@@ -871,7 +842,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2
-  ( __PotentialSet& pot_list,
+  ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& kept_vars ) {
     // find the node ids of the kept variables
     NodeSet kept_ids;
@@ -894,7 +865,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3
-  ( __PotentialSet& pot_list,
+  ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& kept_vars ) {
     // find the node ids of the kept variables
     NodeSet kept_ids;
@@ -917,7 +888,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   Set<const Potential<GUM_SCALAR>*>
   LazyPropagation<GUM_SCALAR>::__marginalizeOut
-  ( __PotentialSet& pot_list,
+  ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& del_vars,
     Set<const DiscreteVariable*>& kept_vars ) {
     // use d-separation analysis to check which potentials shall be combined

@@ -102,6 +102,8 @@ namespace gum {
 
 template class gum::Set<int>;
 template class gum::Set<long>;
+template class gum::Set<unsigned int>;
+template class gum::Set<unsigned long>;
 template class gum::Set<float>;
 template class gum::Set<double>;
 template class gum::Set<std::string>;

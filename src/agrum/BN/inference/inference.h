@@ -25,8 +25,8 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 
-#ifndef GUM_INFERENCE_H
-#define GUM_INFERENCE_H
+#ifndef GUM_BAYES_NET_INFERENCE_H
+#define GUM_BAYES_NET_INFERENCE_H
 
 
 #include <agrum/config.h>
@@ -81,7 +81,8 @@ namespace gum {
    *   step may even be empty.
    */
 
-  template <typename GUM_SCALAR> class Inference {
+  template <typename GUM_SCALAR>
+  class Inference {
   public:
     /**
      * current state of the inference
@@ -436,7 +437,7 @@ namespace gum {
     virtual void _fillPosterior( const NodeId id,
                                  Potential<GUM_SCALAR>& posterior ) = 0;
 
-   /** @brief This method is called when a BayesNetInference user asks for
+    /** @brief This method is called when a BayesNetInference user asks for
      * the posterior of a given set target.
      *
      * The reference "posterior" is a reference over a Potential that
@@ -512,4 +513,4 @@ namespace gum {
 #include <agrum/BN/inference/inference.tcc>
 
 
-#endif  // GUM_INFERENCE_H
+#endif  // GUM_BAYES_NET_INFERENCE_H

@@ -63,7 +63,7 @@ namespace gum {
    * __SetIterEnd.
    */
   class SetIteratorStaticEnd {
-    private:
+  private:
     /**
      * @brief The safe iterator used by everyone.
      * @return Returns the safe iterator used by everyone.
@@ -158,7 +158,7 @@ namespace gum {
    */
   template <typename Key, typename Alloc = std::allocator<Key>>
   class Set {
-    public:
+  public:
     /// Types for STL compliance.
     /// @{
     using value_type = Key;
@@ -180,7 +180,6 @@ namespace gum {
     // ============================================================================
     /// @{
 
-
     /**
      * @brief Default constructor.
      *
@@ -201,13 +200,13 @@ namespace gum {
      * @param list The initializer list.
      */
     Set( std::initializer_list<Key> list );
-
+    
     /**
      * @brief Copy constructor.
      * @param aHT The gum::Set to copy.
      */
     Set( const Set<Key, Alloc>& aHT );
-
+    
     /**
      * @brief Generalized copy constructor.
      * @param aHT The gum::Set to copy.
@@ -215,13 +214,13 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set( const Set<Key, OtherAlloc>& aHT );
-
+    
     /**
      * @brief Move constructor.
      * @param aHT The gum::Set to move.
      */
     Set( Set<Key, Alloc>&& aHT );
-
+    
     /**
      * @brief Class destructor.
      */
@@ -239,7 +238,7 @@ namespace gum {
      * @return Returns this gum::Set.
      */
     Set<Key, Alloc>& operator=( const Set<Key, Alloc>& from );
-
+    
     /**
      * @brief Generalized copy operator.
      * @param from The gum::Set to copy.
@@ -248,7 +247,7 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set<Key, Alloc>& operator=( const Set<Key, OtherAlloc>& from );
-
+    
     /**
      * @brief Move operator.
      * @param from The gum::Set to move.
@@ -264,7 +263,7 @@ namespace gum {
      */
     template <typename OtherAlloc>
     bool operator==( const Set<Key, OtherAlloc>& s2 ) const;
-
+    
     /**
      * @brief Mathematical inequality between two sets.
      * @param s2 The gum::Set to test for inequality.
@@ -273,6 +272,16 @@ namespace gum {
      */
     template <typename OtherAlloc>
     bool operator!=( const Set<Key, OtherAlloc>& s2 ) const;
+    
+    /**
+     * @brief Intersection update operator
+     * @tparam OtherAlloc The other gum::Set allocator.
+     * @param s2 The gum::Set to intersect.
+     * @return Returns this. Now this contains the elements belonging
+     * both to this and s2.
+     */
+    template <typename OtherAlloc>
+    const Set<Key, Alloc>& operator*= ( const Set<Key, OtherAlloc>& s2 ) const;
 
     /**
      * @brief Intersection operator.
@@ -283,8 +292,17 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set<Key, Alloc> operator*( const Set<Key, OtherAlloc>& s2 ) const;
-
-
+    
+    /**
+     * @brief Union update operator
+     * @tparam OtherAlloc The other gum::Set allocator.
+     * @param s2 The gum::Set to update
+     * @return Returns this. Now this contains the elements belonging
+     * both to this or to s2.
+     */
+    template <typename OtherAlloc>
+    const Set<Key, Alloc>& operator+= ( const Set<Key, OtherAlloc>& s2 ) const;
+    
     /**
      * @brief Union operator.
      * @tparam OtherAlloc The other gum::Set allocator.
@@ -294,8 +312,8 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set<Key, Alloc> operator+( const Set<Key, OtherAlloc>& s2 ) const;
-
-
+    
+    
     /**
      * @brief Disjunction operator.
      * @tparam OtherAlloc The other gum::Set allocator.
@@ -305,21 +323,21 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set<Key, Alloc> operator-( const Set<Key, OtherAlloc>& s2 ) const;
-
+    
     /**
      * @brief Adds a new element to the set (alias for insert).
      * @param k The new element to add.
      * @return Returns this gum::Set.
      */
     Set<Key, Alloc>& operator<<( const Key& k );
-
+    
     /**
      * @brief Adds a new element to the set (alias for insert).
      * @param k The new element to add.
      * @return Returns this gum::Set.
      */
     Set<Key, Alloc>& operator<<( Key&& k );
-
+    
     /**
      * @brief Removes an element from the set (alias for erase).
      * @param k The element to remove.
@@ -680,8 +698,8 @@ namespace gum {
      * consumption and efficiency of new elements insertions.
      */
     template <
-        typename NewKey,
-        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+      typename NewKey,
+      typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     HashTable<Key, NewKey, NewAlloc> hashMap( NewKey ( *f )( const Key& ),
                                               Size capacity = 0 ) const;
 
@@ -699,8 +717,8 @@ namespace gum {
      * consumption and efficiency of new elements insertions.
      */
     template <
-        typename NewKey,
-        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+      typename NewKey,
+      typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     HashTable<Key, NewKey, NewAlloc> hashMap( const NewKey& val,
                                               Size size = 0 ) const;
 
@@ -713,13 +731,13 @@ namespace gum {
      * @param f A function that maps a Key into a NewKey
      */
     template <
-        typename NewKey,
-        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+      typename NewKey,
+      typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     List<NewKey, NewAlloc> listMap( NewKey ( *f )( const Key& ) ) const;
 
     /// @}
 
-    private:
+  private:
     /// Friends to speed up access
     /// @{
     friend class SetIterator<Key>;
@@ -734,6 +752,8 @@ namespace gum {
     /// Convert a hash table into a set of keys.
     Set( const HashTable<Key, bool, Alloc>& h );
   };
+
+  
 
   // ===========================================================================
   // ===                          SAFE SET ITERATORS                         ===
@@ -772,7 +792,7 @@ namespace gum {
    */
   template <typename Key>
   class SetIteratorSafe {
-    public:
+  public:
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
@@ -935,7 +955,7 @@ namespace gum {
 
     /// @}
 
-    private:
+  private:
     /// For efficiency, Set should be able to modify the hash table iterator.
     template <typename K, typename A>
     friend class Set;
@@ -985,7 +1005,7 @@ namespace gum {
    */
   template <typename Key>
   class SetIterator {
-    public:
+  public:
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
@@ -1135,7 +1155,7 @@ namespace gum {
 
     /// @}
 
-    private:
+  private:
     /// For efficiency, Set should be able to modify the hash table iterator.
     template <typename K, typename A>
     friend class Set;
@@ -1149,11 +1169,79 @@ namespace gum {
   template <typename Key, typename Alloc>
   std::ostream& operator<<( std::ostream&, const Set<Key, Alloc>& );
 
+
+  
+
+  /// the hash function for sets of int
+  template <typename Alloc>
+  class HashFunc<Set<int,Alloc>> :
+    public HashFuncBase<Set<int,Alloc>> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const Set<int,Alloc>& key ) const;
+  };
+
+  /// the hash function for sets of unsigned int
+  template <typename Alloc>
+  class HashFunc<Set<unsigned int,Alloc>> :
+    public HashFuncBase<Set<unsigned int,Alloc>> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const Set<unsigned int,Alloc>& key ) const;
+  };
+
+  /// the hash function for sets of long
+  template <typename Alloc>
+  class HashFunc<Set<long,Alloc>> :
+    public HashFuncBase<Set<long,Alloc>> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const Set<long,Alloc>& key ) const;
+  };
+
+  /// the hash function for sets of unsigned long
+  template <typename Alloc>
+  class HashFunc<Set<unsigned long,Alloc>> :
+    public HashFuncBase<Set<unsigned long,Alloc>> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const Set<unsigned long,Alloc>& key ) const;
+  };
+
+  /// the hash function for sets of float
+  template <typename Alloc>
+  class HashFunc<Set<float,Alloc>> :
+    public HashFuncBase<Set<float,Alloc>> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const Set<float,Alloc>& key ) const;
+
+  private:
+    /// used for casting floats to Size
+    typename HashFuncCastKey<float>::type __casting;
+  };
+  
+  /// the hash function for sets of double
+  template <typename Alloc>
+  class HashFunc<Set<double,Alloc>> :
+    public HashFuncBase<Set<double,Alloc>> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const Set<double,Alloc>& key ) const;
+
+  private:
+    /// used for casting floats to Size
+    typename HashFuncCastKey<double>::type __casting;
+  };
+
+
 } /* namespace gum */
 
 
 extern template class gum::Set<int>;
 extern template class gum::Set<long>;
+extern template class gum::Set<unsigned int>;
+extern template class gum::Set<unsigned long>;
 extern template class gum::Set<float>;
 extern template class gum::Set<double>;
 extern template class gum::Set<std::string>;

@@ -27,11 +27,31 @@
 
 #include <cmath>
 
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/inference.h>
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 namespace gum {
+
+
+  // the function used to combine two tables
+  template <typename GUM_SCALAR>
+  INLINE static Potential<GUM_SCALAR>*
+  LPNewmultiPotential( const Potential<GUM_SCALAR>& t1,
+                       const Potential<GUM_SCALAR>& t2 ) {
+    return new Potential<GUM_SCALAR>( t1 * t2 );
+  }
+
+  // the function used to combine two tables
+  template <typename GUM_SCALAR>
+  INLINE static Potential<GUM_SCALAR>*
+  LPNewprojPotential( const Potential<GUM_SCALAR>& t1,
+                      const Set<const DiscreteVariable*>& del_vars ) {
+    return new Potential<GUM_SCALAR>( t1.margSumOut( del_vars ) );
+  }
+
+
+
 
   /** @brief type of algorithm for determining the relevant potentials for
    * combinations using some d-separation analysis
@@ -265,12 +285,12 @@ namespace gum {
     /// the operator for performing the projections
     Potential<GUM_SCALAR>* (* __projection_op )
       ( const Potential<GUM_SCALAR>&,
-        const Set<const DiscreteVariable*>& );
+        const Set<const DiscreteVariable*>& ) { LPNewprojPotential };
     
     /// the operator for performing the combinations
     Potential<GUM_SCALAR>* (* __combination_op )
       ( const Potential<GUM_SCALAR>&,
-        const Potential<GUM_SCALAR>& );
+        const Potential<GUM_SCALAR>& ) { LPNewmultiPotential };
     
     /// the triangulation class creating the junction tree used for inference
     Triangulation* __triangulation;
@@ -390,26 +410,29 @@ namespace gum {
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation(
-        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
+        __PotentialSet& pot_list,
+        Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation2(
-        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
+        __PotentialSet& pot_list,
+        Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation3(
-        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
+        __PotentialSet& pot_list,
+        Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void
-    __findRelevantPotentialsGetAll( __PotentialSet& pot_list,
-                                    Set<const DiscreteVariable*>& kept_vars );
+    void __findRelevantPotentialsGetAll
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable*>& kept_vars );
     
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */

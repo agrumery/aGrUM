@@ -49,7 +49,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    BarrenNodesFinder( const DAG& dag );
+    BarrenNodesFinder( const DAG* dag );
 
     /// copy constructor
     BarrenNodesFinder( const BarrenNodesFinder& from );
@@ -83,13 +83,13 @@ namespace gum {
     /// @{
 
     /// sets a new DAG
-    void setDAG( const DAG& new_dag );
+    void setDAG( const DAG* new_dag );
 
     /// sets the observed nodes in the DAG
-    void setEvidence ( const NodeSet& observed_nodes );
+    void setEvidence ( const NodeSet* observed_nodes );
 
     /// sets the set of target nodes we are interested in
-    void setTargets ( const NodeSet& target_nodes );
+    void setTargets ( const NodeSet* target_nodes );
 
     /// returns the set of barren nodes
     NodeSet barrenNodes ();
@@ -110,7 +110,10 @@ namespace gum {
     const DAG* __dag;
 
     /// the set of observed nodes
-    NodeSet __observed_nodes;
+    const NodeSet* __observed_nodes;
+
+    /// the set of targeted nodes
+    const NodeSet* __target_nodes;
   };
 
 
