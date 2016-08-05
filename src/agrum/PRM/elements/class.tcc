@@ -254,6 +254,8 @@ namespace gum {
           } catch ( OperationNotAllowed& ) {
             agg = new Aggregate<GUM_SCALAR>(
                 c_agg->name(), c_agg->agg_type(), c_agg->type() );
+            agg->sharedLabel( c_agg->sharedLabel() );
+            agg->setLabel( c_agg->labelValue() );
           }
 
           __bijection->insert( &( c_agg->type().variable() ),
@@ -1135,10 +1137,12 @@ namespace gum {
     struct ParamScopeData {
       std::string prefix;
       const Class<GUM_SCALAR>* c;
+      int depth;
 
-      ParamScopeData( std::string s, const ReferenceSlot<GUM_SCALAR>& ref ) {
+      ParamScopeData( std::string s, const ReferenceSlot<GUM_SCALAR>& ref, int d ) {
         prefix = s + ref.name() + ".";
         c = static_cast<const Class<GUM_SCALAR>*>( &( ref.slotType() ) );
+        depth = d;
       }
     };
 
@@ -1146,8 +1150,6 @@ namespace gum {
     INLINE HashTable<std::string, const Parameter<GUM_SCALAR>*>
     Class<GUM_SCALAR>::scope() const {
       HashTable<std::string, const Parameter<GUM_SCALAR>*> params;
-      Set<const Class<GUM_SCALAR>*> visited;
-      visited.insert( this );
 
       for ( const auto p : parameters() ) {
         params.insert( p->name(), p );
@@ -1158,16 +1160,15 @@ namespace gum {
       for ( const auto ref : referenceSlots() ) {
 
         if ( PRMObject::isClass( ref->slotType() ) ) {
-          queue.push( ParamScopeData<GUM_SCALAR>( "", *ref ) );
+          queue.push( ParamScopeData<GUM_SCALAR>( "", *ref, 1 ) );
         }
       }
 
       while ( not queue.empty() ) {
         auto data = queue.front();
         queue.pop();
-
-        if ( not visited.contains( data.c ) ) {
-          visited.insert( data.c );
+        
+        if ( data.depth < 5 ) {
 
           for ( const auto p : data.c->parameters() ) {
             params.insert( data.prefix + p->name(), p );
@@ -1176,9 +1177,11 @@ namespace gum {
           for ( const auto ref : data.c->referenceSlots() ) {
 
             if ( PRMObject::isClass( ref->slotType() ) ) {
-              queue.push( ParamScopeData<GUM_SCALAR>( data.prefix, *ref ) );
+              queue.push( ParamScopeData<GUM_SCALAR>( data.prefix, *ref, data.depth + 1 ) );
             }
           }
+        } else {
+          GUM_TRACE( "Depth limit reached when looking up parameters" );
         }
       }
 

@@ -17,11 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief class for LOGIT implementation as multiDim
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- *<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_MULTI_DIM_LOGIT_H
 #define GUM_MULTI_DIM_LOGIT_H
@@ -30,44 +30,46 @@
 
 namespace gum {
 
-  /** @class MultiDimLogit
-   * @brief Logit representation
+  /**
+   * @class MultiDimLogit
+   * @headerfile multiDimLogit.h <agrum/multidim/ICIModels/multiDimLogit.h>
    * @ingroup multidim_group
+   *
+   * @brief Logit representation
    *
    * Logit instantiation of GLM (Generalized Linear Models)
    *
    * @warning
-   *   - The first variable is assumed to be the class estimated by a logit. The
-   *latter are
-   *     the features.
+   *   - The first variable is assumed to be the class estimated by a logit.
+   *     The latter are the features.
    *   - This code give probabilities for BINARY VARIABLES (other values are
    *     assumed to be of probability 0). But for optimization reason, we will
    *     never check if it is the case.
    */
-  /* ===========================================================================
-   */
   template <typename GUM_SCALAR>
-
   class MultiDimLogit : public MultiDimICIModel<GUM_SCALAR> {
     public:
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /** Default constructor.
+    /**
+     * @brief Default constructor.
+     *
      * default_weight is 0 for logit model.
      **/
     MultiDimLogit( GUM_SCALAR external_weight,
                    GUM_SCALAR default_weight = (GUM_SCALAR)0.0 );
 
-    ///
     MultiDimLogit( const MultiDimLogit<GUM_SCALAR>& from );
 
-    /** Copy constructor using a bijection to swap variables from source.
-    * @param bij First variables are new variables, seconds are in from.
-    * @param from the copied instance
-    */
+    /**
+     * Copy constructor using a bijection to swap variables from source.
+     *
+     * @param bij First variables are new variables, seconds are in from.
+     * @param from the copied instance
+     */
     MultiDimLogit(
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
         const MultiDimLogit<GUM_SCALAR>& from );
@@ -82,6 +84,7 @@ namespace gum {
      * (including variable), you must use this method if you want to ensure
      * that the generated object has the same type than the object containing
      * the called newFactory()
+     *
      * For example :
      *   MultiDimArray<double> y;
      *   MultiDimContainer<double>* x = y.newFactory();
@@ -92,9 +95,9 @@ namespace gum {
      */
     virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
     public:
@@ -102,17 +105,17 @@ namespace gum {
 
     const std::string toString( void ) const;
 
-    /// returns the real name of the multiDimArray
-    /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
+    /** 
+     * @brief Returns the real name of the multiDimArray.
+     *
+     * In aGrUM, all the types of multi-dimensional arrays/functionals have a
      * name that describes what they are in reality. For instance, a table
-     * stored
-     * in extension is a "MultiDimArray", one that stores only non zero elements
-     * is a "MultiDimSparseArray", and so on. These names are unique for each
-     * type
-     * of implementation and is used by the system to determine which is the
-     * best
-     * functions to use, say, when we wish to use operators such as operator+ on
-     * two MultiDimImplementations */
+     * stored in extension is a "MultiDimArray", one that stores only non zero
+     * elements is a "MultiDimSparseArray", and so on. These names are unique
+     * for each type of implementation and is used by the system to determine
+     * which is the best functions to use, say, when we wish to use operators
+     * such as operator+ on two MultiDimImplementations.
+     */
     virtual const std::string& name() const;
 
     /// @}
@@ -121,7 +124,6 @@ namespace gum {
 
   extern template class MultiDimLogit<float>;
   extern template class MultiDimLogit<double>;
-
 
   /// For friendly displaying the content of the array.
   template <typename GUM_SCALAR>

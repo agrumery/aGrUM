@@ -69,11 +69,12 @@ eol    = '\n'.
 
 //________________________
 TOKENS
-integer     =  digit {digit}.
-float      = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
-operator    = '+'|'-'|'*'|'/'|'^'|'<'|'>'.
-eol         = '\n'.
-ident       = letter {letter | digit | '_' | '.'}.
+integer    =  digit {digit}.
+float      = ['+'|'-'] digit {digit} '.' digit {digit}.
+scifloat   = ['+'|'-'] digit {digit} [ '.' digit {digit} ] ('E'|'e') ['+'|'-'] digit {digit} .
+operator   = '+'|'-'|'*'|'/'|'^'|'<'|'>'.
+eol        = '\n'.
+ident      = letter {letter | digit | '_' | '.'}.
 
 //________________________
 IGNORE '\r' + eol + '\t'
@@ -94,6 +95,7 @@ EVAL =
 expression =
     integer    (. __formula->__push_number((double)coco_atoi(t->val)); .)
     | float    (. __formula->__push_number((double)coco_atof(t->val)); .)
+    | scifloat (. __formula->__push_number((double)coco_atof(t->val)); .)
     | operator (. __formula->__push_operator(narrow(t->val)[0]); .)
     | '('      (. __formula->__push_leftParenthesis(); .)
     | ')'      (. __formula->__push_rightParenthesis(); .)

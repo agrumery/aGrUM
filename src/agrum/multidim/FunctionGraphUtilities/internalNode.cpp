@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                              //
@@ -18,25 +17,22 @@
  *   Free Software Foundation, Inc.,                                      //
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.            //
  ***************************************************************************/
+
 /**
  * @file
  * @brief Methods of the MultiDimFunctionGraph InternalNode class.
  *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  * @author Jean-Christophe Magnan
- *
  */
-// =======================================================================================
+
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
-// =======================================================================================
+
 #define ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
 #define DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
-// =======================================================================================
 
 namespace gum {
 
-  // ############################################################################
-  // Internal Nodes methods
-  // ############################################################################
   // ============================================================================
   // Constructors
   // ============================================================================
@@ -47,7 +43,7 @@ namespace gum {
 
   InternalNode::InternalNode( const DiscreteVariable* v ) {
     GUM_CONSTRUCTOR( InternalNode )
-    _setNodeVar( v );
+    __setNodeVar( v );
   }
 
   InternalNode::InternalNode( const DiscreteVariable* v, NodeId* sons ) {
@@ -97,10 +93,10 @@ namespace gum {
   // ============================================================================
   void InternalNode::setNodeVar( const DiscreteVariable* v ) {
     if ( __nodeVar != nullptr ) deallocateNodeSons( __nodeVar, __nodeSons );
-    _setNodeVar( v );
+    __setNodeVar( v );
   }
 
-  void InternalNode::_setNodeVar( const DiscreteVariable* v ) {
+  void InternalNode::__setNodeVar( const DiscreteVariable* v ) {
     __nodeVar = v;
     __nodeSons = allocateNodeSons( v );
   }
@@ -117,3 +113,8 @@ namespace gum {
   }
 
 }  // namespace gum
+
+#ifdef GUM_NO_INLINE
+#include <agrum/multidim/FunctionGraphUtilities/internalNode.inl>
+#endif /* GUM_NO_INLINE */
+

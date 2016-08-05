@@ -135,10 +135,9 @@ def checkConsistency(current):
     has_notif=True
     notif("Options [stats] and [oneByOne] are mutually exclusive")
 
-  # check -t and -m
-  if not isSpecialAction(current):
-    check_modules(current)
-    checkAndWriteTests(current)
+  # check -t and -m  
+  check_modules(current)
+  checkAndWriteTests(current)
 
   check_aGrumTest('oneByOne',current)
   if current['coverage'] and current['mode'] != "debug":

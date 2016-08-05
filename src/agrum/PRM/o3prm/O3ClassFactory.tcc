@@ -498,9 +498,16 @@ namespace gum {
         // Class with a super class must be declared after
         for ( auto c : __o3Classes ) {
           __prm->getClass( c->name().label() ).inheritAttributes();
-          __prm->getClass( c->name().label() ).inheritAggregates();
           __declareAttribute( *c );
-          __buildAggregates( *c );
+        }
+      }
+
+      template <typename GUM_SCALAR>
+      INLINE void O3ClassFactory<GUM_SCALAR>::declareAggregates() {
+        // Class with a super class must be declared after
+        for ( auto c : __o3Classes ) {
+          __prm->getClass( c->name().label() ).inheritAggregates();
+          __declareAggregates( *c );
         }
       }
 
@@ -597,6 +604,59 @@ namespace gum {
 
           factory.endClass( true );
         }
+      }
+
+      template <typename GUM_SCALAR>
+      INLINE void O3ClassFactory<GUM_SCALAR>::completeAggregates() {
+
+        PRMFactory<GUM_SCALAR> factory( __prm );
+
+        // Class with a super class must be declared in order
+        for ( auto c : __o3Classes ) {
+
+          factory.continueClass( c->name().label() );
+
+          __completeAggregates( factory, *c );
+
+          factory.endClass( false );
+        }
+      }
+
+      template <typename GUM_SCALAR>
+      INLINE void O3ClassFactory<GUM_SCALAR>::__completeAggregates(
+          PRMFactory<GUM_SCALAR>& factory, O3Class& c ) {
+
+        // Attributes
+        for ( auto& agg : c.aggregates() ) {
+
+          if ( __checkAggregateForCompletion( c, agg ) ) {
+
+            factory.continueAggregator( agg.name().label() );
+
+            for ( const auto& parent : agg.parents() ) {
+              factory.addParent( parent.label() );
+            }
+
+            factory.endAggregator();
+          }
+        }
+      }
+
+      template <typename GUM_SCALAR>
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAggregateForCompletion(
+          O3Class& c, O3Aggregate& agg ) {
+        // Checking parents
+        auto t = __checkAggParents( c, agg );
+        if ( t == nullptr ) {
+          return false;
+        }
+ 
+        // Checking parameters numbers
+        if ( not __checkAggParameters( c, agg, t ) ) {
+          return false;
+        }
+
+        return true;
       }
 
       template <typename GUM_SCALAR>
@@ -914,65 +974,40 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE void O3ClassFactory<GUM_SCALAR>::__buildAggregates( O3Class& c ) {
+      INLINE void O3ClassFactory<GUM_SCALAR>::__declareAggregates( O3Class& c ) {
 
         PRMFactory<GUM_SCALAR> factory( __prm );
-
         factory.continueClass( c.name().label() );
-        __addAggregates( factory, c );
+
+        for ( auto& agg : c.aggregates() ) {
+
+          if ( __checkAggregateForDeclaration( c, agg ) ) {
+            auto params = std::vector<std::string>();
+            for ( auto& p : agg.parameters() ) {
+              params.push_back( p.label() );
+            }
+
+            factory.startAggregator( agg.name().label(),
+                                     agg.aggregateType().label(),
+                                     agg.variableType().label(),
+                                     params
+                                     );
+            factory.endAggregator();
+          }
+        }
+
         factory.endClass( false );
       }
 
       template <typename GUM_SCALAR>
-      INLINE void O3ClassFactory<GUM_SCALAR>::__addAggregates(
-          PRMFactory<GUM_SCALAR>& factory, O3Class& c ) {
-
-        // Aggregates
-        for ( auto& agg : c.aggregates() ) {
-
-          if ( __checkAggregate( c, agg ) ) {
-
-            auto parents = std::vector<std::string>();
-            for ( auto& prnt : agg.parents() ) {
-              parents.push_back( prnt.label() );
-            }
-
-            auto params = std::vector<std::string>();
-            for ( auto& param : agg.parameters() ) {
-              params.push_back( param.label() );
-            }
-
-            factory.addAggregator( agg.name().label(),
-                                   agg.aggregateType().label(),
-                                   parents,
-                                   params,
-                                   agg.variableType().label() );
-          }
-        }
-      }
-
-      template <typename GUM_SCALAR>
-      INLINE bool
-      O3ClassFactory<GUM_SCALAR>::__checkAggregate( O3Class& o3class,
-                                                    O3Aggregate& agg ) {
-
+      INLINE bool O3ClassFactory<GUM_SCALAR>::__checkAggregateForDeclaration(
+          O3Class& c, O3Aggregate& agg ) {
         if ( not __solver->resolveType( agg.variableType() ) ) {
           return false;
         }
 
-        // Checking parents
-        auto t = __checkAggParents( o3class, agg );
-        if ( t == nullptr ) {
-          return false;
-        }
-
         // Checking type legality if overload
-        if ( not __checkAggTypeLegality( o3class, agg ) ) {
-          return false;
-        }
-
-        // Checking parameters numbers
-        if ( not __checkAggParameters( o3class, agg, t ) ) {
+        if ( not __checkAggTypeLegality( c, agg ) ) {
           return false;
         }
 

@@ -17,11 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief min aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
 // to ease parser in IDEs
@@ -32,24 +32,21 @@ namespace gum {
 
   namespace aggregator {
 
-    /// Default constructor
-
+    // Default constructor
     template <typename GUM_SCALAR>
     INLINE Min<GUM_SCALAR>::Min()
         : MultiDimAggregator<GUM_SCALAR>() {
       GUM_CONSTRUCTOR( Min )
     }
 
-    /// Default constructor
-
+    // Default constructor
     template <typename GUM_SCALAR>
     INLINE Min<GUM_SCALAR>::Min( const Min<GUM_SCALAR>& from )
         : MultiDimAggregator<GUM_SCALAR>( from ) {
       GUM_CONS_CPY( Min );
     }
 
-    /// destructor
-
+    // destructor
     template <typename GUM_SCALAR>
     INLINE Min<GUM_SCALAR>::~Min() {
       GUM_DESTRUCTOR( Min );

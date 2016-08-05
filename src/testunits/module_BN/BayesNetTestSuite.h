@@ -806,6 +806,24 @@ namespace gum_tests {
                                     bn.variable( 0 ) ).changeLabel( 0, "x" ) );
       TS_ASSERT_EQUALS( bn.variable( 0 ).toString(), "var1<x,1>" );
     }
+
+    void testShortCutAddLabelized() {
+      gum::BayesNet<float> bn;
+
+      gum::NodeId i1,i2,i3;
+
+      TS_ASSERT_THROWS_NOTHING( i1=bn.add("A",2));
+      TS_ASSERT_THROWS_NOTHING( i2=bn.add("B",3));
+      TS_ASSERT_EQUALS(i1, gum::NodeId(0));
+      TS_ASSERT_EQUALS(i2, gum::NodeId(1));
+
+      TS_ASSERT_THROWS(i3=bn.add("A",5), gum::DuplicateLabel);
+      TS_ASSERT_THROWS(i3=bn.add("C",1), gum::OperationNotAllowed);
+      GUM_UNUSED(i3);
+
+      TS_ASSERT_THROWS_NOTHING(bn.addArc(i1,i2));
+      TS_ASSERT_EQUALS(bn.log10DomainSize(), std::log10(2.0*3.0));
+    }
   };
 
 }  // tests

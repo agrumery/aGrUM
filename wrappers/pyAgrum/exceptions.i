@@ -74,6 +74,14 @@
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidEdge ), err );
     SWIG_fail;
+  } catch ( gum::DuplicateLabel& e ) {
+    gum::DuplicateLabel* ecopy = new gum::DuplicateLabel ( e );
+    PyObject* err = SWIG_NewPointerObj ( ecopy,
+    SWIGTYPE_p_gum__DuplicateLabel,
+    1 );
+    PyErr_SetObject (
+      SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__DuplicateLabel ), err );
+    SWIG_fail;
   } catch ( gum::DuplicateElement& e ) {
     gum::DuplicateElement* ecopy = new gum::DuplicateElement ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -113,6 +121,22 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__UnknownLabelInDatabase ), err );
+    SWIG_fail;
+  } catch ( gum::UndefinedElement& e ) {
+    gum::UndefinedElement* ecopy = new gum::UndefinedElement ( e );
+    PyObject* err = SWIG_NewPointerObj ( ecopy,
+    SWIGTYPE_p_gum__UndefinedElement,
+    1 );
+    PyErr_SetObject (
+      SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__UndefinedElement ), err );
+    SWIG_fail;
+  } catch ( gum::InvalidArgument& e ) {
+    gum::InvalidArgument* ecopy = new gum::InvalidArgument ( e );
+    PyObject* err = SWIG_NewPointerObj ( ecopy,
+    SWIGTYPE_p_gum__InvalidArgument,
+    1 );
+    PyErr_SetObject (
+      SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidArgument ), err );
     SWIG_fail;
   } catch ( gum::Exception& e ) {
     PyErr_SetString ( PyExc_Exception, e.errorContent().c_str() );

@@ -91,6 +91,20 @@ class PRMexplorer {
 
     return q;
   }
+  /**
+   * @return a list of attribute names from a class
+   * @param classname : the name of the class
+   * @param allAttributes : even automatically generated attributes
+   */
+  PyObject* references( std::string classname) {
+    PyObject* q = PyList_New( 0 );
+
+    for ( auto r : __prm->getClass( classname ).referenceSlots() )
+      PyList_Append( q, PyString_FromString( r->name().c_str() ) );
+
+    return q;
+  }
+
 
 
   /**

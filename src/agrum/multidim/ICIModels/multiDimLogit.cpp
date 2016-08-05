@@ -17,13 +17,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief class for LOGIT implementation as multiDim
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ */
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
 
 #ifdef GUM_NO_INLINE
 #endif /* GUM_NO_INLINE */
 
-
 template class gum::MultiDimLogit<float>;
 template class gum::MultiDimLogit<double>;
-
 

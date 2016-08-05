@@ -291,9 +291,11 @@ namespace gum {
             << "Illegal CPT value \"" << f.formula().formula()
             << "\" in attribute " << c << "." << attr.label();
         try {
-          msg << f.formula().result();
+          auto result = f.formula().result();
+          msg << ", formula resolve to " << result;
         } catch ( ... ) {
-          msg << "\"" << f.formula().formula() << "\"";
+          msg << ", could not resolve the following formula: "
+              << "\"" << f.formula().formula() << "\"";
         }
         errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
       }

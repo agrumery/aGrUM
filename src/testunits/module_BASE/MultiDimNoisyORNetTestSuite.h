@@ -68,7 +68,7 @@ namespace gum_tests {
       gum::LabelizedVariable malaria( "Malaria", "", 2 );
       gum::LabelizedVariable fever( "Fever", "", 2 );
 
-      gum::MultiDimNoisyORCompound<float> p( 0.0 );
+      gum::MultiDimNoisyORNet<float> p( 0.0 );
       p << fever << malaria << flu << cold;
       p.causalWeight( cold, 1.0 );
       p.causalWeight( flu, 1.0 );

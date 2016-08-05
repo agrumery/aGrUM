@@ -132,6 +132,10 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
+
+    /**
+     * @brief Returns the CPT of a variable.
+     */
     const Potential<GUM_SCALAR>& cpt( const std::string& name ) const {
       return cpt( idFromName( name ) );
     };
@@ -159,6 +163,19 @@ namespace gum {
      *                        gum::BayesNet.
      */
     NodeId add( const DiscreteVariable& variable );
+
+    /**
+    * @brief Shortcut for add(gum::LabelizedVariable(name,name,nbrmod))
+     *
+     * Add a gum::LabelizedVariable to the gum::BayesNet
+     *
+     * This method is just a shortcut for a often used pattern
+     *
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::BayesNet.
+     * @throws NotAllowed if nbrmod<2
+     */
+    NodeId add(const std::string& name,unsigned int nbrmod);
 
     /**
      * @brief Add a variable to the gum::BayesNet.
@@ -227,6 +244,10 @@ namespace gum {
      * @param id The variable's id to remove.
      */
     void erase( NodeId id );
+
+    /**
+     * @brief Removes a variable from the gum::BayesNet.
+     */
     void erase( const std::string& name ) { erase( idFromName( name ) ); };
 
     /**
@@ -247,11 +268,16 @@ namespace gum {
      *
      * @param id The variable's id to return.
      * @returns Returns a constant reference of the gum::DiscreteVariable
-     *          correspondin to id in the gum::BayesNet.
+     *          corresponding to id in the gum::BayesNet.
      * @throw NotFound Raised if id does not match a a variable in the
      *                 gum::BayesNet.
      */
     const DiscreteVariable& variable( NodeId id ) const;
+
+    /**
+     * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
+     *        gum::BayesNet.
+     */
     const DiscreteVariable& variable( const std::string& name ) const {
       return variable( idFromName( name ) );
     };
@@ -266,6 +292,10 @@ namespace gum {
      * @throws NotFound Raised if no variable matches id.
      */
     void changeVariableName( NodeId id, const std::string& new_name );
+
+    /**
+     * @brief Changes a variable's name.
+     */
     void changeVariableName( const std::string& name,
                              const std::string& new_name ) {
       changeVariableName( idFromName( name ), new_name );
@@ -316,6 +346,10 @@ namespace gum {
      * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
      */
     void addArc( NodeId tail, NodeId head );
+
+    /**
+     * Add an arc in the BN, and update arc.head's CPT.
+     */
     void addArc( const std::string& tail, const std::string& head ) {
       addArc( idFromName( tail ), idFromName( head ) );
     }
@@ -336,6 +370,10 @@ namespace gum {
      * @param tail as NodeId
      */
     void eraseArc( NodeId tail, NodeId head );
+
+    /**
+     * Removes an arc in the BN, and update head's CTP.
+     */
     void eraseArc( const std::string& tail, const std::string& head ) {
       eraseArc( idFromName( tail ), idFromName( head ) );
     }
@@ -358,8 +396,10 @@ namespace gum {
     void endTopologyTransformation();
     ///@}
 
-    /// reverses an arc while preserving the same joint distribution
-    /** This method uses Shachter's 1986 algorithm for reversing an arc in
+    /** 
+     * @brief Reverses an arc while preserving the same joint distribution.
+     *
+     * This method uses Shachter's 1986 algorithm for reversing an arc in
      * the Bayes net while preserving the same joint distribution. By
      * performing this reversal, we also add new arcs (required to not alter
      * the joint distribution)
@@ -447,9 +487,7 @@ namespace gum {
 
     /**
      * Add a variable, its associate node and a noisyAND implementation. The id
-     *of
-     *the new
-     * variable is automatically generated.
+     *of the new variable is automatically generated.
      *
      * @param variable The variable added by copy.
      * @param externalWeight see gum::MultiDimNoisyAND
@@ -474,9 +512,7 @@ namespace gum {
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of
-     *the
-     *new
-     * variable is automatically generated.
+     *the new variable is automatically generated.
      *
      * @param variable The variable added by copy.
      * @param externalWeight see gum::MultiDimLogit
@@ -487,9 +523,7 @@ namespace gum {
 
     /**
      * Add a variable, it's associate node and an OR implementation. The id of
-     *the
-     *new
-     * variable is automatically generated.
+     *the new variable is automatically generated.
      *
      * @warning OR is implemented as a gum::aggregator::Or which means that if
      *parents are not boolean, all value>1 is True
@@ -502,9 +536,7 @@ namespace gum {
 
     /**
      * Add a variable, it's associate node and an AND implementation. The id of
-     *the
-     *new
-     * variable is automatically generated.
+     *the new variable is automatically generated.
      *
      * @warning AND is implemented as a gum::aggregator::And which means that if
      *parents are not boolean, all value>1 is True
@@ -592,7 +624,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::ostream& operator<<( std::ostream& output,
                             const BayesNet<GUM_SCALAR>& map );
-
 
   extern template class BayesNet<float>;
   extern template class BayesNet<double>;

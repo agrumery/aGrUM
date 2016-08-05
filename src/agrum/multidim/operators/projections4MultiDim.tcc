@@ -17,7 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief Efficient functionals for projecting multiDimensional tables
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
@@ -29,7 +30,7 @@
 
 #include <agrum/multidim/operators/projectionRegister4MultiDim.h>
 
-/// a specialized max projection function for multiDimArrays
+// a specialized max projection function for multiDimArrays
 
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMaxMultiDimArray
 #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
@@ -76,7 +77,7 @@
 #undef GUM_MULTI_DIM_PROJECTION
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-/// a specialized min projection function for multiDimArrays
+// a specialized min projection function for multiDimArrays
 
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMinMultiDimArray
 #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
@@ -123,7 +124,7 @@
 #undef GUM_MULTI_DIM_PROJECTION
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-/// a specialized sum projection function for multiDimArrays
+// a specialized sum projection function for multiDimArrays
 
 #define GUM_MULTI_DIM_PROJECTION_NAME projectSumMultiDimArray
 #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
@@ -166,7 +167,7 @@
 #undef GUM_MULTI_DIM_PROJECTION
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-/// a specialized product projection function for multiDimArrays
+// a specialized product projection function for multiDimArrays
 
 #define GUM_MULTI_DIM_PROJECTION_NAME projectProductMultiDimArray
 #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
@@ -210,7 +211,7 @@
 #undef GUM_MULTI_DIM_PROJECTION
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-/// a specialized max projection function for multiDimFunctionGraphs
+// a specialized max projection function for multiDimFunctionGraphs
 
 #define GUM_MULTI_DIM_PROJECTION_OPERATOR Maximizes
 #define GUM_MULTI_DIM_PROJECTION_NEUTRAL \
@@ -228,7 +229,7 @@
 #undef GUM_MULTI_DIM_PROJECTION_OPERATOR
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-/// a specialized min projection function for multiDimFunctionGraphs
+// a specialized min projection function for multiDimFunctionGraphs
 
 #define GUM_MULTI_DIM_PROJECTION_OPERATOR Minimizes
 #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<GUM_SCALAR>::max()
@@ -245,7 +246,7 @@
 #undef GUM_MULTI_DIM_PROJECTION_OPERATOR
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-/// a specialized sum projection function for multiDimFunctionGraphs
+// a specialized sum projection function for multiDimFunctionGraphs
 
 #define GUM_MULTI_DIM_PROJECTION_OPERATOR std::plus
 #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)0
@@ -262,7 +263,7 @@
 #undef GUM_MULTI_DIM_PROJECTION_OPERATOR
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-/// a specialized product projection function for multiDimFunctionGraphs
+// a specialized product projection function for multiDimFunctionGraphs
 
 #define GUM_MULTI_DIM_PROJECTION_OPERATOR std::multiplies
 #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)1
@@ -279,7 +280,7 @@
 #undef GUM_MULTI_DIM_PROJECTION_OPERATOR
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-/// a specialized function for functionally projecting a multiDimArray
+// a specialized function for functionally projecting a multiDimArray
 
 /*
 #define GUM_MULTI_DIM_PROJECTION_NAME_F projectFuncMultiDimArray
@@ -293,7 +294,7 @@
 // the operators that should be used to select appropriately the functions
 // to project multiDims
 
-/// the function to be used to project a MultiDimImplementation using a Max
+// the function to be used to project a MultiDimImplementation using a Max
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMax
 #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "max"
 #define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
@@ -302,7 +303,7 @@
 #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
-/// the function to be used to project a MultiDimImplementation using a Min
+// the function to be used to project a MultiDimImplementation using a Min
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMin
 #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "min"
 #define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
@@ -311,7 +312,7 @@
 #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
-/// the function to be used to project a MultiDimImplementation using a Sum
+// the function to be used to project a MultiDimImplementation using a Sum
 #define GUM_MULTI_DIM_PROJECTION_NAME projectSum
 #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "sum"
 #define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
@@ -320,7 +321,7 @@
 #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
-/// the function to be used to project a MultiDimImplementation using a Product
+// the function to be used to project a MultiDimImplementation using a Product
 #define GUM_MULTI_DIM_PROJECTION_NAME projectProduct
 #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "product"
 #define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
@@ -329,7 +330,7 @@
 #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
-/// default "basename" functions for projecting MultiDimImplementations
+// default "basename" functions for projecting MultiDimImplementations
 
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMaxMultiDimImplementation
 #define GUM_MULTI_DIM_PROJECTION( x, y ) ( ( x ) > ( y ) ? ( x ) : ( y ) )
@@ -368,7 +369,7 @@
 //
 
 namespace gum {
-  /// the function used to register all the above functions
+  // the function used to register all the above functions
   template <typename GUM_SCALAR>
   void projections4MultiDimInit() {
     static bool first_init = true;
@@ -416,7 +417,7 @@ namespace gum {
     }
   }
 
-  /// the function used to register all the above functions
+  // the function used to register all the above functions
   template <typename GUM_SCALAR>
   void pointerProjections4MultiDimInit() {
     static bool first_init = true;

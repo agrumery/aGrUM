@@ -17,11 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief the pattern used by all the partial instantiations of multidimensional
- * tables
+/**
+ * @file
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
+ * @brief the pattern used by all the partial instantiations of
+ * multidimensional tables
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
 // check if we allowed these patterns to be used
 #ifndef GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED

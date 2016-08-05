@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief max aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+
 #ifndef GUM_MAX_AGGREGATOR_H
 #define GUM_MAX_AGGREGATOR_H
 
@@ -31,23 +32,21 @@
 namespace gum {
 
   namespace aggregator {
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /* ===                     GUM_MAX_AGGREGATOR                     === */
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /** @class Max
-    * @brief max aggregator
-    * @ingroup multidim_agg_group
-    *
-    * @see MultiDimAggregator for more details of implementations
-    *
-    * Note that a <tt>Max</tt> aggregator with a binary aggregator variable is
-    *the
-    *\f$ \exists \neq 0\f$ aggregator.
-    */
-    /* =========================================================================*/
-
+    // =========================================================================
+    // ===                     GUM_MAX_AGGREGATOR                            ===
+    // =========================================================================
+    /**
+     * @class Max
+     * @headerfile max.h <agrum/multidim/aggregators/max.h>
+     * @ingroup multidim_agg_group
+     *
+     * @brief max aggregator
+     *
+     * @see MultiDimAggregator for more details of implementations
+     *
+     * Note that a <tt>Max</tt> aggregator with a binary aggregator variable is
+     * the \f$ \exists \neq 0\f$ aggregator.
+     */
     template <typename GUM_SCALAR>
     class Max : public MultiDimAggregator<GUM_SCALAR> {
       public:
@@ -60,9 +59,14 @@ namespace gum {
        * (including variable), you must use this method if you want to ensure
        * that the generated object has the same type than the object containing
        * the called newFactory()
+       *
        * For example :
+       *
+       * @code
        *   MultiDimArray<double> y;
        *   MultiDimContainer<double>* x = y.newFactory();
+       * @endcode
+       *
        * Then x is a MultiDimArray<double>*
        *
        * @warning you must desallocate by yourself the memory

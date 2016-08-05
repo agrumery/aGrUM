@@ -298,7 +298,7 @@ namespace gum_tests {
       }
     }
 
-    void testScientificNotation() {
+    void testScientificNotation1() {
       try {
         // Arrange
         std::string eq = "3.72663E-06";
@@ -312,5 +312,180 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
+
+    void testScientificNotation2() {
+      try {
+        // Arrange
+        std::string eq = "1 - 1.0e-9";
+        double expected = 1 - 1e-9;
+        gum::Formula formula( eq );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
+        // Assert
+        TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testScientificNotation3() {
+      try {
+        // Arrange
+        std::string eq = "1 - 1e-9";
+        double expected = 1 - 1e-9;
+        gum::Formula formula( eq );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
+        // Assert
+        TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorUnary() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto expected = -( 2.0 * 5.0 - 6.0 );
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = -a );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorPlus() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto b = gum::Formula( "2/8" );
+        auto expected = 2.0 * 5.0 - 6.0 + 2.0 / 8.0;
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = a + b );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorMinus() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto b = gum::Formula( "2/8" );
+        auto expected = 2.0 * 5.0 - 6.0 - 2.0 / 8.0;
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = a - b );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorTimes() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto b = gum::Formula( "2/8" );
+        auto expected = ( 2.0 * 5.0 - 6.0 ) * ( 2.0 / 8.0 );
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = a * b );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testOperatorDivides() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto b = gum::Formula( "2/8" );
+        auto expected = ( 2.0 * 5.0 - 6.0 ) / ( 2.0 / 8.0 );
+        auto result = gum::Formula( "0" );
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = a / b );
+        // Assert
+        TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testDoubleImplicitConversion() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto expected = 2.0 * 5.0 - 6.0 ;
+        auto result = 0.0; 
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = (double)a );
+        // Assert
+        TS_ASSERT_DELTA( result, expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testDoubleExplicitConversion() {
+      try {
+        // Arrange
+        auto a = gum::Formula( "2*5-6" );
+        auto expected = 2.0 * 5.0 - 6.0 ;
+        auto result = 0.0; 
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( result = static_cast<double>( a ) );
+        // Assert
+        TS_ASSERT_DELTA( result, expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testDoubleInitialisation() {
+      // Arrange
+      try {
+        auto expected = 3.14;
+        // Act
+        gum::Formula f = 3.14;
+        // Assert
+        TS_ASSERT_DELTA( (double)f, expected, 1e-6 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testToString() {
+      // Arrange
+      auto f = gum::Formula("2*5+6");
+      auto expected = std::to_string( 2.0*5.0+6.0 );
+      auto result = std::string();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( result = gum::to_string( f ) );
+      // Assert
+      TS_ASSERT_EQUALS( result, expected );
+    }
+
+    void testToStream() {
+      // Arrange
+      auto f = gum::Formula("2*5+6");
+      auto expected = std::to_string( 2*5+6 );
+      auto result = std::stringstream();
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( result << f );
+      // Assert
+      TS_ASSERT_EQUALS( result.str(), expected );
+    }
+
   };
 }

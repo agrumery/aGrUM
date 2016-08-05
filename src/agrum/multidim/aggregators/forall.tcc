@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief forall aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+
 #include <sstream>
 // to ease parser in IDEs
 #include <agrum/multidim/aggregators/forall.h>
@@ -81,9 +82,6 @@ namespace gum {
     INLINE MultiDimContainer<GUM_SCALAR>*
     Forall<GUM_SCALAR>::newFactory() const {
       return new Forall<GUM_SCALAR>( __value );
-      // GUM_ERROR( OperationNotAllowed,
-      //            "This class doesn't contain an empty constructor" );
-      // return 0;
     }
 
   }  // aggregator

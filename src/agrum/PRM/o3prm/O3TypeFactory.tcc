@@ -186,8 +186,8 @@ namespace gum {
 
             for ( std::size_t idx = 1; idx < type->values().size(); ++idx ) {
               auto label = std::stringstream();
-              label << "]" << type->values()[idx - 1].value() << ", "
-                    << type->values()[idx].value() << "]";
+              label << "[" << type->values()[idx - 1].value() << ", "
+                    << type->values()[idx].value() << "[";
               factory.addLabel( label.str() );
             }
 

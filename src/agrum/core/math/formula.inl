@@ -332,7 +332,8 @@ namespace gum {
 
     __stack.pop();
 
-    if ( __stack.top().type == FormulaPart::token_type::FUNCTION ) {
+    if ( ( !__stack.empty() ) &&
+         __stack.top().type == FormulaPart::token_type::FUNCTION ) {
 
       __push_output( __stack.top() );
       __stack.pop();
@@ -478,6 +479,46 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed, "unknown identifier" );
       }
     }
+  }
+
+  // ========================================================================
+  //  @name Arithmetic Operators
+  // ========================================================================
+
+  INLINE
+  Formula operator-( const Formula& a ) {
+    return std::move( Formula( std::to_string( -1 * a.result() ) ) );
+  }
+
+  INLINE
+  Formula operator+( const Formula& a, const Formula& b ) {
+    return std::move( Formula( std::to_string( a.result() + b.result() ) ) );
+  }
+
+  INLINE
+  Formula operator-( const Formula& a, const Formula& b ) {
+    return std::move( Formula( std::to_string( a.result() - b.result() ) ) );
+  }
+
+  INLINE
+  Formula operator*( const Formula& a, const Formula& b ) {
+    return std::move( Formula( std::to_string( a.result() * b.result() ) ) );
+  }
+
+  INLINE
+  Formula operator/( const Formula& a, const Formula& b ) {
+    return std::move( Formula( std::to_string( a.result() / b.result() ) ) );
+  }
+
+  INLINE
+  std::string to_string( const Formula& f ) {
+    return std::move( std::to_string( f.result() ) );
+  }
+
+  INLINE
+  std::ostream& operator<<( std::ostream& os, const Formula& f ) {
+    os << f.result();
+    return os;
   }
 
 }  // namespace gum

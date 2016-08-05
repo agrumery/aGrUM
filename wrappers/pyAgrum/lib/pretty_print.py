@@ -24,7 +24,7 @@
 from __future__ import print_function
 import sys,os
 
-from .utils.pyAgrum_header import pyAgrum_header
+from ._utils.pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
 
 DECIMAL_LENGTH=4

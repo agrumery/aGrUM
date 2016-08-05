@@ -18,31 +18,29 @@
  *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                *
  ****************************************************************************/
 /**
-* @file
-* @brief Class used to compute the operation between two decision diagrams
-*
-* @author Jean-Christophe Magnan
-*/
+ * @file
+ * @brief Class used to compute the operation between two decision diagrams
+ *
+ * @author Jean-Christophe Magnan
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-// =======================================================
 #ifndef GUM_TREE_REGRESS_H
 #define GUM_TREE_REGRESS_H
-// =======================================================
+
+#include <functional>
+
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
-// =======================================================
 
 namespace gum {
 
   /**
    * @class TreeRegress treeRegress.h <agrum/multidim/patterns/treeRegress.h>
-   * @brief Class used to perform Decision Tree Regression in the FMDP Framework
    * @ingroup multidim_group
    *
-   *
-   *
+   * @brief Class used to perform Decision Tree Regression in the FMDP Framework
    */
-
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
@@ -50,51 +48,39 @@ namespace gum {
                 ExactTerminalNodePolicy>
   class TreeRegress {
     public:
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    // ============================================================================
     /// Default constructor.
-    // ============================================================================
     TreeRegress(
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* qAction,
         const Bijection<
             const DiscreteVariable*,
             const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*> pxi );
 
-    // ============================================================================
     /// Default destructor.
-    // ============================================================================
     ~TreeRegress();
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Main Method
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    // ============================================================================
     /// Computes and builds the Function Graph that is the result of the
     /// operation
-    // ============================================================================
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
 
     /// @}
 
-
     private:
-    // ============================================================================
     /// The whatever 1
-    // ============================================================================
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
     __xPloreVFunc( NodeId currentNodeId );
 
-    // ============================================================================
     /// The function graphs used for the operation
-    // ============================================================================
     const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
     const Bijection<
         const DiscreteVariable*,
@@ -102,8 +88,10 @@ namespace gum {
     HashTable<const DiscreteVariable*, Idx> __context;
   };
 
+  extern template class TreeRegress<double, std::multiplies, std::plus>;
+
 }  // namespace gum
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.tcc>
 
-#endif  // GUM_REGRESS_H
+#endif // GUM_REGRESS_H

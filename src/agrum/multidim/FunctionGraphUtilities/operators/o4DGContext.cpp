@@ -18,22 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
  ****************************************************************************/
 
-#include <cmath>
+/**
+ * @file
+ * @brief Class used to manipulate o4DGContext in Function Graph Operations
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe Magnan
+ */
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.h>
-
 
 namespace gum {
 
 
-  // ********************************************************************************************************************
   // First 140 prime numbers...
   // see e.g.
   // http://en.wikipedia.org/wiki/List_of_prime_numbers#The_first_500_prime_numbers
   // if more is needed...
   // Don't forget to change __nbLogPrime to match number of log2 of prime
   // numbers  in that table.
-
   const Idx O4DGContext::__nbLogPrime = 140;
 
   const double O4DGContext::__logPrime[] = {
@@ -69,21 +72,8 @@ namespace gum {
   const Idx O4DGContext::__offsetv = O4DGContext::__nbLogPrime - 3;
   const Idx O4DGContext::__offset1 = O4DGContext::__nbLogPrime - 1;
   const Idx O4DGContext::__offset2 = O4DGContext::__nbLogPrime - 2;
-  // ********************************************************************************************************************
 
-
-  /* *********************************************************************************************
-   */
-  /*                                                                                               */
-  /*                         Constructors, Destructors */
-  /*                                                                                               */
-  /* *********************************************************************************************
-   */
-
-
-  // ================================================================
   // Default constructor.
-  // ================================================================
   O4DGContext::O4DGContext( Idx* varInst, Idx nbVar )
       : __DG1ExploredNode( 0 )
       , __DG2ExploredNode( 0 )
@@ -94,13 +84,12 @@ namespace gum {
     __nbVar = nbVar;
   }
 
-  // ================================================================
   // Default Destructor.
-  // ================================================================
   O4DGContext::~O4DGContext() { GUM_DESTRUCTOR( O4DGContext ); }
-}
 
+} // namespace gum
 
 #ifdef GUM_NO_INLINE
 #include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.inl>
 #endif
+

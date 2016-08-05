@@ -17,10 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
+ *
  * @brief the pattern used by all the MultiDimImplementation projections
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
 // check if we allowed these patterns to be used
 #ifndef GUM_PROJECTION_PATTERN_ALLOWED

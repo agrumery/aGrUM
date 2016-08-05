@@ -29,8 +29,8 @@ represented by a Bayesian network.
 from __future__ import print_function
 import sys,os,csv,random
 
-from .utils.progress_bar import ProgressBar
-from .utils.pyAgrum_header import pyAgrum_header
+from ._utils.progress_bar import ProgressBar
+from ._utils.pyAgrum_header import pyAgrum_header
 
 
 import math

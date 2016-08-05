@@ -172,7 +172,7 @@ namespace gum {
     posterior.normalize();
   }
 
-  INLINE
+  inline
   void add_and_instancie( Instantiation& I,
                           const DiscreteVariable& v,
                           const Instantiation& __current_sample ) {

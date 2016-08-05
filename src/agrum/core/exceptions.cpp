@@ -46,6 +46,9 @@ namespace gum {
            << "--------------" << std::endl;
     return stream.str();
   }
+  Exception::Exception( const Exception& e )
+      : _msg( e._msg )
+      , _type( e._type ) {}
 
   Exception::Exception( const std::string aMsg, const std::string aType )
       : _msg( aMsg )

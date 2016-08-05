@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief class for multiDimNoisyORCompound
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- *<{prenom.nom}_at_lip6.fr>
  */
+
 #ifndef GUM_MULTI_DIM_NOISY_OR_COMPOUND_H
 #define GUM_MULTI_DIM_NOISY_OR_COMPOUND_H
 
@@ -30,19 +31,16 @@
 
 namespace gum {
 
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
-  /* ===                       GUM_MULTI_DIM_NOISYOR_COMPOU                  ===
-   */
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
-  /** @class MultiDimNoisyORCompound
-   * @brief Noisy OR representation
+  // ===========================================================================
+  // ===                       GUM_MULTI_DIM_NOISYOR_COMPOU                  ===
+  // ===========================================================================
+  // clang-format off
+  /**
+   * @class MultiDimNoisyORCompound
+   * @headerfile multiDimNoisyORCompound.h <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
    * @ingroup multidim_group
+   *
+   * @brief Noisy OR representation
    *
    * Noisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
    *
@@ -53,34 +51,33 @@ namespace gum {
    *     assumed to be of probability 0). But for optimization reason, we will
    *     never check if it is the case.
    */
-  /* ===========================================================================
-   */
+  // clang-format on
   template <typename GUM_SCALAR>
 
   class MultiDimNoisyORCompound : public MultiDimICIModel<GUM_SCALAR> {
     public:
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
     /// Default constructor.
-
     MultiDimNoisyORCompound( GUM_SCALAR external_weight,
                              GUM_SCALAR default_weight = (GUM_SCALAR)1.0 );
+
     MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
-    /** Copy constructor using a bijection to swap variables from source.
-    * @param bij First variables are new variables, seconds are in from.
-    * @param from the copied instance
-    */
-
+    /**
+     * Copy constructor using a bijection to swap variables from source.
+     *
+     * @param bij First variables are new variables, seconds are in from.
+     * @param from the copied instance
+     */
     MultiDimNoisyORCompound(
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
         const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
     /// Destructor.
-
     virtual ~MultiDimNoisyORCompound();
 
     /// @}
@@ -126,10 +123,8 @@ namespace gum {
     /// @}
   };
 
-
   extern template class MultiDimNoisyORCompound<float>;
   extern template class MultiDimNoisyORCompound<double>;
-
 
   /// For friendly displaying the content of the array.
   template <typename GUM_SCALAR>

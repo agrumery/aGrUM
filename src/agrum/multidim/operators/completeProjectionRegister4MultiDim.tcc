@@ -17,10 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief A container for registering complete projection functions on
  * multiDimImplementations, i.e., projections over all variables
- *
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -33,7 +33,7 @@
 
 namespace gum {
 
-  /// adds a new entry into the register
+  // adds a new entry into the register
   template <typename GUM_SCALAR>
   void CompleteProjectionRegister4MultiDim<GUM_SCALAR>::insert(
       const std::string& projection_name,
@@ -60,7 +60,7 @@ namespace gum {
     theset->insert( type_multidim, newFunction );
   }
 
-  /// removes a given entry from the register
+  // removes a given entry from the register
   template <typename GUM_SCALAR>
   void CompleteProjectionRegister4MultiDim<GUM_SCALAR>::erase(
       const std::string& projection_name, const std::string& type_multidim ) {
@@ -71,7 +71,7 @@ namespace gum {
     theset->erase( type_multidim );
   }
 
-  /// indicates whether a given entry exists in the register
+  // indicates whether a given entry exists in the register
   template <typename GUM_SCALAR>
   INLINE bool CompleteProjectionRegister4MultiDim<GUM_SCALAR>::exists(
       const std::string& projection_name,
@@ -93,8 +93,8 @@ namespace gum {
     return theset->operator[]( type_multidim );
   }
 
-  /// a named constructor that constructs one and only one Register per data
-  /// type
+  // a named constructor that constructs one and only one Register per data
+  // type
   template <typename GUM_SCALAR>
   CompleteProjectionRegister4MultiDim<GUM_SCALAR>&
   CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register() {
@@ -120,12 +120,12 @@ namespace gum {
     return container;
   }
 
-  /// Default constructor: creates an empty register
+  // Default constructor: creates an empty register
   template <typename GUM_SCALAR>
   CompleteProjectionRegister4MultiDim<
       GUM_SCALAR>::CompleteProjectionRegister4MultiDim() {}
 
-  /// destructor
+  // destructor
   template <typename GUM_SCALAR>
   CompleteProjectionRegister4MultiDim<
       GUM_SCALAR>::~CompleteProjectionRegister4MultiDim() {
@@ -137,7 +137,7 @@ namespace gum {
       delete iter.val();
   }
 
-  /// a function to more easily register new projection functions in MultiDims
+  // a function to more easily register new projection functions in MultiDims
   template <typename GUM_SCALAR>
   void registerCompleteProjection(
       const std::string& projection_name,

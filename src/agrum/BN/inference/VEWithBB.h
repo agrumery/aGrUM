@@ -119,12 +119,28 @@ namespace gum {
 
     private:
     /// Mapping between nodes and their evidences.
-    NodeProperty<const Potential<GUM_SCALAR>*> __hardEvidence;
+    NodeProperty<const Potential<GUM_SCALAR>*> __evidence;
 
     /// The VariableElimination algorithm as the inference engine
     VariableElimination<GUM_SCALAR> __ve;
 
     void __fillRequisiteNode( NodeId id, Set<NodeId>& requisite_nodes );
+
+    bool __isHardEvidence( const Potential<GUM_SCALAR>* e );
+
+    void
+    __initializeElimination( NodeId id,
+                             UndiGraph& moral_graph,
+                             NodeProperty<Size>& modalities,
+                             std::vector<const Potential<GUM_SCALAR>*>& pool );
+
+    void __addNodeToMoralGraph( NodeId node,
+                                UndiGraph& moral_graph,
+                                NodeProperty<Size>& modalities );
+
+    void __eliminateNode( NodeId id,
+                          std::vector<const Potential<GUM_SCALAR>*>& pool,
+                          Set<Potential<GUM_SCALAR>*>& trash );
   };
 
   extern template class VEWithBB<float>;

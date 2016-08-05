@@ -162,6 +162,32 @@ namespace gum {
        *                            on a label.
        */
       Idx label() const;
+      const std::string& labelValue() const;
+
+      /**
+       * @brief Returns the shared_ptr holding this Aggregate label.
+       * 
+       * This is used for inherited Aggregates to share labels in O3PRM.
+       */
+      std::shared_ptr<Idx> sharedLabel() const;
+
+      /**
+       * @brief Sets the shared_ptr of this Aggregate.
+       * 
+       * This is used for inherited aggregates to share labels in O3PRM.
+       */
+      void sharedLabel( std::shared_ptr<Idx> label );
+
+      /**
+       * @brief Set the aggregator's label.
+       */
+      void setLabel(Idx idx);
+      void setLabel(const std::string& label);
+
+      /**
+       * @brief Returns true if the label is defined.
+       */
+      bool hasLabel() const;
 
       /**
        * @brief Set the aggregator's label.
@@ -239,8 +265,10 @@ namespace gum {
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
-      Idx* __label;
-
+      std::shared_ptr<Idx> __label;
+      //Idx* __label;
+      std::string __label_value;
+ 
       /// @}
     };
 

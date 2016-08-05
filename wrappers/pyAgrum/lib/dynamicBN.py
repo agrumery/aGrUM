@@ -200,12 +200,7 @@ def unroll2TBN(dbn,nbr):
 
   return bn
 
-def plotFollow(lovars,dbn,T,evs):
-  """
-  plots modifications of variables in a 2TDN knowing the size of the time window (T) and the evidence on the sequence.
-  @
-  """
-  bn=unroll2TBN(dbn,T)
+def plotFollowUnrolled(lovars,dbn,bn,T,evs):
   ie=gum.LazyPropagation(bn)
   ie.setEvidence(evs)
   ie.makeInference()
@@ -235,34 +230,38 @@ def plotFollow(lovars,dbn,T,evs):
 
     plt.show()
 
+def plotFollow(lovars,dbn,T,evs):
+  """
+  plots modifications of variables in a 2TDN knowing the size of the time window (T) and the evidence on the sequence.
+  @
+  """
+  plotFollowUnrolled(lovars,dbn,unroll2TBN(dbn,T),T,evs)
+
 
 if __name__ == '__main__':
-    dbn=gum.BayesNet()
-    a0,b0,c0,d0,at,bt,ct,dt=[dbn.add(gum.LabelizedVariable(s,s,5)) for s in ["a0","b0","c0","d0","at","bt","ct","dt"]]
+  dbn=gum.BayesNet()
+  a0,b0,c0,d0,at,bt,ct,dt=[dbn.add(gum.LabelizedVariable(s,s,5)) for s in ["a0","b0","c0","d0","at","bt","ct","dt"]]
 
-    dbn.addArc(a0,b0)
-    dbn.addArc(c0,d0)
-    dbn.addArc(at,bt)
+  dbn.addArc(a0,b0)
+  dbn.addArc(c0,d0)
+  dbn.addArc(at,bt)
 
-    dbn.addArc(a0,bt)
-    dbn.addArc(b0,ct)
-    dbn.addArc(c0,dt)
-    dbn.addArc(d0,at)
+  dbn.addArc(a0,bt)
+  dbn.addArc(b0,ct)
+  dbn.addArc(c0,dt)
+  dbn.addArc(d0,at)
 
-    #needed from within spyder, do not understand why
-    import time
-    gum.initRandom(int(str(time.time()).split('.')[1]))
-    #should not be necessary
-    dbn.generateCPTs()
-
-
-    showTimeSlices(dbn)
-
-    #T=5
-    #bn=unroll2TBN(dbn,T)
-    #showTimeSlices(bn)
-
-    plotFollow(["a","b","c","d"],dbn,T=51,evs={'a15':2,'a30':0,'c14':0,'b40':0})
+  #needed from within spyder, do not understand why
+  import time
+  gum.initRandom(int(str(time.time()).split('.')[1]))
+  #should not be necessary
+  dbn.generateCPTs()
 
 
+  showTimeSlices(dbn)
 
+  #T=5
+  #bn=unroll2TBN(dbn,T)
+  #showTimeSlices(bn)
+
+  plotFollow(["a","b","c","d"],dbn,T=51,evs={'a15':2,'a30':0,'c14':0,'b40':0})

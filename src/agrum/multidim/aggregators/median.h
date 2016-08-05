@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief median aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+
 #ifndef GUM_MEDIAN_AGGREGATOR_H
 #define GUM_MEDIAN_AGGREGATOR_H
 
@@ -31,30 +32,27 @@
 namespace gum {
 
   namespace aggregator {
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /* ===                     GUM_MEDIAN_AGGREGATOR                     === */
-    /* =========================================================================*/
-    /* =========================================================================*/
+    // =========================================================================
+    // ===                     GUM_MEDIAN_AGGREGATOR                         ===
+    // =========================================================================
 
-    /** @class Median
-    * @brief median aggregator
-    * @ingroup multidim_agg_group
-    *
-    * @see MultiDimAggregator for more details of implementations
-    *
-    * Median needs to have the same domain than its parent.
-    *
-    * @warning if the number of parent is even, the median (with the same type
-    * as its parents)
-    * is not well defined : the median of [1,1,3,3] is 2. But what is the median
-    * of [1,1,2,2] ?
-    * The mathematical response is 1.5 which is not in the range of the
-    * variables. In that case,
-    * we choose (arbitrarilly by excess) the value 2.
-    */
-    /* =========================================================================*/
-
+    /**
+     * @class Median
+     * @headerfile median.h <agrum/multidim/aggregators/median.h>
+     * @ingroup multidim_agg_group
+     *
+     * @brief median aggregator
+     *
+     * @see MultiDimAggregator for more details of implementations
+     *
+     * Median needs to have the same domain than its parent.
+     *
+     * @warning if the number of parent is even, the median (with the same type
+     * as its parents) is not well defined : the median of [1,1,3,3] is 2. But
+     * what is the median of [1,1,2,2] ?  The mathematical response is 1.5
+     * which is not in the range of the variables. In that case, we choose
+     * (arbitrarilly by excess) the value 2.
+     */
     template <typename GUM_SCALAR>
     class Median : public MultiDimAggregator<GUM_SCALAR> {
       public:
@@ -69,9 +67,13 @@ namespace gum {
        * (including variable), you must use this method if you want to ensure
        * that the generated object has the same type than the object containing
        * the called newFactory()
+       *
        * For example :
+       * @code
        *   MultiDimArray<double> y;
        *   MultiDimContainer<double>* x = y.newFactory();
+       * @endcode
+       *
        * Then x is a MultiDimArray<double>*
        *
        * @warning you must desallocate by yourself the memory
@@ -87,9 +89,7 @@ namespace gum {
       virtual Idx _fold( const DiscreteVariable& v,
                          Idx i1,
                          Idx i2,
-                         bool& stop_iteration ) const {
-        return 0;
-      };
+                         bool& stop_iteration ) const;
 
       private:
       Idx __value;

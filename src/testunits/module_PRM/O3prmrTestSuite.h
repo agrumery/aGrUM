@@ -431,31 +431,6 @@ namespace gum_tests {
       }
     }
 
-    void testLazyBug() {
-      try {
-        gum::prm::o3prmr::O3prmrInterpreter si;
-        si.setSyntaxMode( false );
-        si.addPath( GET_RESSOURCES_PATH( "o3prmr/lazy/" ) );
-
-        TS_GUM_ASSERT_THROWS_NOTHING( si.interpretFile(
-            GET_RESSOURCES_PATH( "o3prmr/lazy/request.o3prmr" ) ) );
-
-        si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS( si.errors(), 0 );
-        TS_ASSERT_EQUALS( si.warnings(), 0 );
-
-        TS_ASSERT_EQUALS( si.results().size(), (gum::Size)2 );
-        auto first = si.results()[0];
-        TS_ASSERT_DELTA( first.values[0].p, 0.333333, 1e-6 );
-        TS_ASSERT_DELTA( first.values[1].p, 0.666667, 1e-6 );
-        auto second = si.results()[1];
-        TS_ASSERT_DELTA( second.values[0].p, 0.666667, 1e-6 );
-        TS_ASSERT_DELTA( second.values[1].p, 0.333333, 1e-6 );
-
-      } catch ( gum::Exception& ) {
-        TS_ASSERT( false );
-      }
-    }
   };
 
 }  // namespace gum_tests
