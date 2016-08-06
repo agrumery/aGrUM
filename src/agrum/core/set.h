@@ -200,13 +200,13 @@ namespace gum {
      * @param list The initializer list.
      */
     Set( std::initializer_list<Key> list );
-    
+
     /**
      * @brief Copy constructor.
      * @param aHT The gum::Set to copy.
      */
     Set( const Set<Key, Alloc>& aHT );
-    
+
     /**
      * @brief Generalized copy constructor.
      * @param aHT The gum::Set to copy.
@@ -214,13 +214,13 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set( const Set<Key, OtherAlloc>& aHT );
-    
+
     /**
      * @brief Move constructor.
      * @param aHT The gum::Set to move.
      */
     Set( Set<Key, Alloc>&& aHT );
-    
+
     /**
      * @brief Class destructor.
      */
@@ -238,7 +238,7 @@ namespace gum {
      * @return Returns this gum::Set.
      */
     Set<Key, Alloc>& operator=( const Set<Key, Alloc>& from );
-    
+
     /**
      * @brief Generalized copy operator.
      * @param from The gum::Set to copy.
@@ -247,7 +247,7 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set<Key, Alloc>& operator=( const Set<Key, OtherAlloc>& from );
-    
+
     /**
      * @brief Move operator.
      * @param from The gum::Set to move.
@@ -263,7 +263,7 @@ namespace gum {
      */
     template <typename OtherAlloc>
     bool operator==( const Set<Key, OtherAlloc>& s2 ) const;
-    
+
     /**
      * @brief Mathematical inequality between two sets.
      * @param s2 The gum::Set to test for inequality.
@@ -312,8 +312,8 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set<Key, Alloc> operator+( const Set<Key, OtherAlloc>& s2 ) const;
-    
-    
+
+
     /**
      * @brief Disjunction operator.
      * @tparam OtherAlloc The other gum::Set allocator.
@@ -323,21 +323,21 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set<Key, Alloc> operator-( const Set<Key, OtherAlloc>& s2 ) const;
-    
+
     /**
      * @brief Adds a new element to the set (alias for insert).
      * @param k The new element to add.
      * @return Returns this gum::Set.
      */
     Set<Key, Alloc>& operator<<( const Key& k );
-    
+
     /**
      * @brief Adds a new element to the set (alias for insert).
      * @param k The new element to add.
      * @return Returns this gum::Set.
      */
     Set<Key, Alloc>& operator<<( Key&& k );
-    
+
     /**
      * @brief Removes an element from the set (alias for erase).
      * @param k The element to remove.

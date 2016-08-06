@@ -112,7 +112,7 @@ namespace gum {
                       bool use_binary_join_tree = true );
 
     /// destructor
-    ~LazyPropagation ();
+    virtual ~LazyPropagation ();
 
     /// @}
     

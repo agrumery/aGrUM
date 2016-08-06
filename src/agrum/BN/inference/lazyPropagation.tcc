@@ -64,7 +64,7 @@ namespace gum {
 
   // destructor
   template <typename GUM_SCALAR>
-  INLINE LazyPropagation<GUM_SCALAR>::~LazyPropagation() {    
+  INLINE LazyPropagation<GUM_SCALAR>::~LazyPropagation() {
     // remove all the potentials created during the last message passing
     for ( const auto& pots : __created_potentials )
       for ( const auto pot : pots.second )
@@ -75,10 +75,10 @@ namespace gum {
     for ( const auto& pot : __hard_ev_projected_CPTs )
       delete pot.second;
 
-    // remove the junction tree and the triangulation algorithm
+     // remove the junction tree and the triangulation algorithm
     if ( __JT != nullptr ) delete __JT;
     delete __triangulation;
-
+ 
     // for debugging purposes
     GUM_DESTRUCTOR( LazyPropagation );
   }
@@ -423,9 +423,11 @@ namespace gum {
       int elim_number = elim_order[node];
 
       for ( const auto parent : dag.parents( node ) ) {
-        if ( elim_order[parent] < elim_number ) {
-          elim_number = elim_order[parent];
-          first_eliminated_node = parent;
+        if ( __graph.existsNode ( parent ) ) {
+          if ( elim_order[parent] < elim_number ) {
+            elim_number = elim_order[parent];
+            first_eliminated_node = parent;
+          }
         }
       }
 
@@ -452,8 +454,7 @@ namespace gum {
       __settarget_to_clique.insert ( nodeset,
                                      __node_to_clique[first_eliminated_node] );
     }
-    
-      
+          
     // compute the roots of __JT's connected components
     __computeJoinTreeRoots ();
 
@@ -497,7 +498,6 @@ namespace gum {
       __messages_computed.insert ( arc2, false );
     }
 
-    
     // put all the CPT's of the Bayes net nodes into the cliques
     // here, beware: all the potentials that are defined over some nodes including
     // hard evidence must be projected so that these nodes are removed from the
@@ -559,7 +559,6 @@ namespace gum {
         }
       }
     }
-
 
     // we shall now add all the potentials of the soft evidence
     for ( const auto node : this->softEvidenceNodes () ) {
@@ -963,10 +962,12 @@ namespace gum {
     const Arc arc (  from_id, to_id );
     for ( auto pot : new_pot_list ) {
       if ( ! pot_list.exists( pot ) ) {
+        if ( ! __created_potentials.exists ( arc ) )
+          __created_potentials.insert ( arc, __PotentialSet () );
         __created_potentials[arc].insert( pot );
       }
     }
-
+    
     __separator_potentials[arc] = std::move ( new_pot_list );
     __messages_computed[arc] = true;
   }
@@ -986,6 +987,16 @@ namespace gum {
   void LazyPropagation<GUM_SCALAR>::__aPosterioriMarginal
   ( NodeId id,
     Potential<GUM_SCALAR>& marginal ) {
+    // hard evidence do not belong to the join tree
+    // # TODO: check for inconsistent hard evidence
+    if ( this->hardEvidenceNodes().contains ( id ) ) {
+      marginal.fill ( 0 );
+      Instantiation inst ( marginal );
+      inst.chgVal ( Idx(0), this->hardEvidence ()[id] );
+      marginal.set ( inst, 1 );
+       return;
+    }
+    
     // if we still need to perform some inference task, do it
     const NodeId clique_of_id = __node_to_clique[id];
     __collectMessage ( clique_of_id, clique_of_id );
@@ -1145,12 +1156,6 @@ namespace gum {
     __aPosterioriSetMarginal( set, posterior );
     posterior.normalize();
   }
-
-
-
-  
-
-  
 
 
 

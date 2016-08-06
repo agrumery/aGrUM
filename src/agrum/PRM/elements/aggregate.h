@@ -181,7 +181,6 @@ namespace gum {
       /**
        * @brief Set the aggregator's label.
        */
-      void setLabel(Idx idx);
       void setLabel(const std::string& label);
 
       /**

@@ -38,7 +38,17 @@ namespace gum {
   // Destructor
   template <typename GUM_SCALAR> Inference<GUM_SCALAR>::~Inference () {
     __invalidatePosteriors ();
-    clearEvidence ();
+
+    // clear all evidence.
+    // Warning: Do not use method clearEvidence () because it contains a call
+    // to pure virtual method _onAllEvidenceErased which belongs to an inherited
+    // instantce and, therefore, does not exist anymore when ~Inference () is
+    // called
+    for ( const auto& pair : __evidence ) {
+      if ( pair.second != nullptr ) {
+        delete ( pair.second );
+      }
+    }
 
     GUM_DESTRUCTOR( Inference );
   }
@@ -608,10 +618,11 @@ namespace gum {
   INLINE void Inference<GUM_SCALAR>::clearEvidence() {
     _onAllEvidenceErased ( ! __hard_evidence.empty () );
 
-    for ( const auto& pair : __evidence )
+    for ( const auto& pair : __evidence ) {
       if ( pair.second != nullptr ) {
         delete ( pair.second );
       }
+    }
 
     __evidence.clear ();
     __hard_evidence.clear ();

@@ -290,7 +290,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      gum::LazyPropagation<float> inf( *bn );
+      gum::LazyPropagation<float> inf( bn );
 
       if ( bn != 0 ) delete ( bn );
     };

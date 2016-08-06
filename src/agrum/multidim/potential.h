@@ -235,7 +235,6 @@ namespace gum {
     const Potential<GUM_SCALAR>&
     fillWith( std::initializer_list<GUM_SCALAR> l ) const;
 
-
     /**
      * @brief Automatically fills this MultiDimContainer with the value v
      *

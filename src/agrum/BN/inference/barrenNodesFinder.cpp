@@ -322,6 +322,10 @@ namespace gum {
   
   /// returns the set of barren nodes
   NodeSet BarrenNodesFinder::barrenNodes () {
+    // by convention, if __target_nodes is empty, all the nodes are
+    // potential targets and, therefore, no node is barren
+    if ( __target_nodes->empty () ) return NodeSet ();
+    
     // mark all the nodes in the dag as barren (true)
     NodeProperty<bool> barren_mark = __dag->nodesProperty ( true );
 
@@ -332,6 +336,7 @@ namespace gum {
       nodes_to_examine.insert ( node );
     for ( const auto node : *__target_nodes )
       nodes_to_examine.insert ( node );
+
     while ( ! nodes_to_examine.empty () ) {
       const NodeId node = nodes_to_examine.front ();
       nodes_to_examine.popFront ();
