@@ -65,7 +65,8 @@ namespace gum_tests {
 
       gum::OrderedTriangulation triang;
 
-      triang.setGraph( &graph, &dom, &sequence );
+      triang.setGraph( &graph, &dom );
+      triang.setOrder ( &sequence );
 
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
@@ -75,7 +76,8 @@ namespace gum_tests {
 
       triang.clear();
 
-      triang.setGraph( &graph, &dom, &sequence );
+      triang.setGraph( &graph, &dom );
+      triang.setOrder ( &sequence );
 
       const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
@@ -88,7 +90,8 @@ namespace gum_tests {
       for ( unsigned int i = 0; i < 8; ++i )
         sequence[i] = ( i + 1 ) * 10;
 
-      triang.setGraph( &graph, &dom, &sequence );
+      triang.setGraph( &graph, &dom );
+      triang.setOrder ( &sequence );
 
       const gum::UndiGraph& gr5 = triang.triangulatedGraph();
 
@@ -149,7 +152,8 @@ namespace gum_tests {
 
       graph.eraseEdge( gum::Edge( 20, 50 ) );
 
-      triang.setGraph( &graph, &dom, &sequence );
+      triang.setGraph( &graph, &dom );
+      triang.setOrder ( &sequence );
 
       const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
@@ -187,7 +191,8 @@ namespace gum_tests {
 
       gum::OrderedTriangulation triang;
 
-      triang.setGraph( &graph, &dom, &sequence );
+      triang.setGraph( &graph, &dom );
+      triang.setOrder ( &sequence );
 
       const gum::CliqueGraph& elim = triang.eliminationTree();
 

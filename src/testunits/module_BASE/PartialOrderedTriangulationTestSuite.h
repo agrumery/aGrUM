@@ -68,13 +68,15 @@ namespace gum_tests {
 
       gum::PartialOrderedTriangulation triang;
 
-      triang.setGraph( &graph, &dom, &partial_order );
+      triang.setGraph( &graph, &dom );
+      triang.setPartialOrder ( &partial_order );
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS( gr2.sizeNodes(), 8U );
       TS_ASSERT_EQUALS( gr2.sizeEdges(), 14U );
 
       triang.clear();
-      triang.setGraph( &graph, &dom, &partial_order );
+      triang.setGraph( &graph, &dom);
+      triang.setPartialOrder ( &partial_order );
       const gum::UndiGraph& gr3 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS( gr3.sizeNodes(), 8U );
       TS_ASSERT_EQUALS( gr3.sizeEdges(), 14U );
@@ -88,7 +90,8 @@ namespace gum_tests {
         partial_order.pushBack( nodes );
       }
 
-      triang.setGraph( &graph, &dom, &partial_order );
+      triang.setGraph( &graph, &dom );
+      triang.setPartialOrder ( &partial_order );
 
       const gum::UndiGraph& gr5 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS( gr5.sizeNodes(), 8U );
@@ -128,7 +131,8 @@ namespace gum_tests {
 
       graph.eraseEdge( gum::Edge( 20, 50 ) );
 
-      triang.setGraph( &graph, &dom, &partial_order );
+      triang.setGraph( &graph, &dom );
+      triang.setPartialOrder ( &partial_order );
       const gum::UndiGraph& gr4 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS( gr4.sizeNodes(), 8U );
       TS_ASSERT_EQUALS( gr4.sizeEdges(), 14U );
@@ -176,7 +180,8 @@ namespace gum_tests {
 
       gum::PartialOrderedTriangulation triang;
 
-      triang.setGraph( &graph, &dom, &partial_order );
+      triang.setGraph( &graph, &dom );
+      triang.setPartialOrder ( &partial_order );
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS( gr2.sizeNodes(), 8U );
       TS_ASSERT_EQUALS( gr2.sizeEdges(), 14U );
@@ -208,7 +213,8 @@ namespace gum_tests {
 
       gum::PartialOrderedTriangulation triang;
 
-      triang.setGraph( &graph, &dom, &partial_order );
+      triang.setGraph( &graph, &dom );
+      triang.setPartialOrder ( &partial_order );
       const gum::CliqueGraph& elim = triang.eliminationTree();
       TS_ASSERT_EQUALS( elim.sizeNodes(), 8U );
       TS_ASSERT_EQUALS( elim.sizeEdges(), 7U );
