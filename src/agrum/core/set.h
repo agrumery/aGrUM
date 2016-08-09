@@ -281,7 +281,7 @@ namespace gum {
      * both to this and s2.
      */
     template <typename OtherAlloc>
-    const Set<Key, Alloc>& operator*= ( const Set<Key, OtherAlloc>& s2 ) const;
+    const Set<Key, Alloc>& operator*= ( const Set<Key, OtherAlloc>& s2 );
 
     /**
      * @brief Intersection operator.
@@ -301,7 +301,7 @@ namespace gum {
      * both to this or to s2.
      */
     template <typename OtherAlloc>
-    const Set<Key, Alloc>& operator+= ( const Set<Key, OtherAlloc>& s2 ) const;
+    const Set<Key, Alloc>& operator+= ( const Set<Key, OtherAlloc>& s2 );
     
     /**
      * @brief Union operator.

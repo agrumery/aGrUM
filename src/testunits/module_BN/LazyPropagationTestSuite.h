@@ -159,7 +159,7 @@ namespace gum_tests {
       for ( auto pot : e_list )
         TS_ASSERT_THROWS_NOTHING( inf.addEvidence( *pot ) );
       TS_ASSERT_THROWS_NOTHING( infX.insertEvidence( e_list ) );
-      
+
       TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
       TS_ASSERT_THROWS_NOTHING( infX.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
@@ -175,11 +175,6 @@ namespace gum_tests {
       TS_ASSERT( equalPotentials( inf.posterior( i4 ), infX.posterior( i4 ) ) );
       TS_ASSERT( equalPotentials( inf.posterior( i5 ), infX.posterior( i5 ) ) );
 
-      std::cout << inf.posterior( i2 ) << "   !=   "
-                << infX.posterior( i2 ) << std::endl;
-       std::cout << inf.posterior( i5 ) << "   !=   "
-                << infX.posterior( i5 ) << std::endl;
-      
       gum::LazyPropagation<float> inf2( bn );
       gum::ShaferShenoyInference<float> inf2X( *bn );
 
@@ -215,40 +210,46 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    void xtestJoint() {
+    void testJoint() {
       fill( *bn );
       // Testing the inference
       gum::LazyPropagation<float> inf( bn );
       gum::NodeSet nodeset;
       nodeset.insert( 2 );
       nodeset.insert( 4 );
+      inf.addSetTarget ( nodeset );
 
-      gum::Potential<float>* pot = 0;
-      TS_ASSERT_THROWS_NOTHING( *pot = inf.posterior ( nodeset ) );
-
-      if ( pot ) delete pot;
+      TS_ASSERT_THROWS_NOTHING( inf.posterior ( nodeset ) );
     }
 
     // testing information methods
-    void xtestInformationMethods() {
+    void testInformationMethods() {
       fill( *bn );
 
       gum::LazyPropagation<float> inf( bn );
+      gum::NodeSet nodeset;
+      nodeset.insert( 0 );
+      nodeset.insert( 4 );
+      inf.addSetTarget ( nodeset );
+      nodeset.clear ();
+      nodeset.insert( 2 );
+      nodeset.insert( 4 );
+      inf.addSetTarget ( nodeset );
       inf.makeInference();
 
       TS_GUM_ASSERT_THROWS_NOTHING( inf.H( (gum::NodeId)2 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)2, (gum::NodeId)4 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)2, (gum::NodeId)2 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( inf.VI( (gum::NodeId)2, (gum::NodeId)4 ) );
-      TS_ASSERT_THROWS( inf.I( (gum::NodeId)0, (gum::NodeId)4 ),
-                        gum::OperationNotAllowed );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)0, (gum::NodeId)4 ) );
 
       //@TODO : test computations and not only good behaviour
     }
 
-    void xtestEvidenceProbability() {
+    void testEvidenceProbability() {
       fill( *bn );
       gum::LazyPropagation<float> inf( bn );
+      inf.setFindRelevantPotentialsType(gum::FindRelevantPotentialsType::FIND_RELEVANT_ALL );
       inf.makeInference();
       auto p = inf.posterior( 0 );
       auto I = gum::Instantiation( p );
@@ -261,7 +262,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA( proba, proba2, 1e-5 );
     }
 
-    void xtestEvidenceProbabilityAsia() {
+    void testEvidenceProbabilityAsia() {
       std::string file = GET_RESSOURCES_PATH( "asia.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
@@ -273,6 +274,7 @@ namespace gum_tests {
       auto id = bn.idFromName( "lung_cancer?" );
 
       gum::LazyPropagation<float> inf( &bn );
+      inf.setFindRelevantPotentialsType(gum::FindRelevantPotentialsType::FIND_RELEVANT_ALL );
       inf.makeInference();
       auto p = inf.posterior( id );
       auto I = gum::Instantiation( p );
@@ -285,7 +287,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA( proba, proba2, 1e-5 );
     }
 
-    void xtestAsia() {
+    void testAsia() {
       std::string file = GET_RESSOURCES_PATH( "asia.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
@@ -321,7 +323,7 @@ namespace gum_tests {
       }
     }
 
-    void xtestAlarm() {
+    void testAlarm() {
       std::string file = GET_RESSOURCES_PATH( "alarm.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
@@ -406,7 +408,7 @@ namespace gum_tests {
         delete pot;
     }
 
-    void xtestAsia2() {
+    void testAsia2() {
       std::string file = GET_RESSOURCES_PATH( "asia3.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
@@ -467,7 +469,7 @@ namespace gum_tests {
       }
     }
 
-    void xtestAsia3() {
+    void testAsia3() {
       std::string file = GET_RESSOURCES_PATH( "asia3.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
@@ -530,7 +532,7 @@ namespace gum_tests {
       }
     }
 
-    void xtestAsia4() {
+    void testAsia4() {
       std::string file = GET_RESSOURCES_PATH( "asia.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
@@ -546,7 +548,8 @@ namespace gum_tests {
         ev_pot.fill( (float)0 );
 
         gum::Instantiation inst( ev_pot );
-        for ( inst.setFirst(); !inst.end(); ++inst ) {
+        int inst_index = 0;
+        for ( inst.setFirst(); !inst.end(); ++inst, ++inst_index ) {
           ev_pot.set( inst, (float)1 );
 
           for ( auto node2 : bn.dag() ) {
@@ -562,7 +565,8 @@ namespace gum_tests {
               // std::cout << "hard ev: " << node << "  " << node2 << std::endl;
 
               gum::Instantiation inst2( ev_pot2 );
-              for ( inst2.setFirst(); !inst2.end(); ++inst2 ) {
+              int inst2_index = 0;
+              for ( inst2.setFirst(); !inst2.end(); ++inst2, ++inst2_index ) {
                 ev_pot2.set( inst2, (float)1 );
 
                 gum::LazyPropagation<float> inf1( &bn );
@@ -581,8 +585,18 @@ namespace gum_tests {
                   // std::cout << "    " << inf1.posterior(xnode) << std::endl
                   //           << "    " << inf2.posterior(xnode) << std::endl;
 
-                  TS_ASSERT( equalPotentials( inf1.posterior( xnode ),
-                                              inf2.posterior( xnode ) ) );
+                  try { equalPotentials( inf1.posterior( xnode ),
+                                         inf2.posterior( xnode ) ); }
+                  catch ( gum::IncompatibleEvidence& e ) {
+                    // check evidence incompatibility:
+                    if ( node2 == gum::NodeId ( 2 ) ) {
+                      // node2 = tuberculos_or_cancer?, then node = tuberculosis?
+                      TS_ASSERT ( ( inst2_index == 1 ) && ( inst_index == 0 ) );
+                    }
+                    else { // node2 = lung_cancer? & node = tuberculos_or_cancer?
+                      TS_ASSERT ( ( inst2_index == 0 ) && ( inst_index == 1 ) );
+                    }
+                  }
                 }
                 ev_pot2.set( inst2, (float)0 );
               }

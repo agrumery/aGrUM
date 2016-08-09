@@ -166,7 +166,7 @@ namespace gum {
     CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__threadInference() {
       int tId = getThreadNumber();
       __verticesSampling();
-      this->_l_inferenceEngine[tId]->eraseAllEvidence();
+      this->_l_inferenceEngine[tId]->clearEvidence();
       __insertEvidence();
       this->_l_inferenceEngine[tId]->makeInference();
     }
@@ -247,7 +247,7 @@ namespace gum {
         this->_workingSetE[this_thread] = evi_list;
 
         BNInferenceEngine* inference_engine =
-            new BNInferenceEngine( *( this->_workingSet[this_thread] ) );
+          new BNInferenceEngine( ( this->_workingSet[this_thread] ) );
         this->_l_inferenceEngine[this_thread] = inference_engine;
 
         if ( __infEs::_storeBNOpt ) {
@@ -417,7 +417,8 @@ namespace gum {
           this->_workingSetE[this_thread];
 
       if ( evi_list->size() > 0 ) {
-        inference_engine->insertEvidence( *evi_list );
+        for ( const auto pot : *evi_list )
+          inference_engine->addEvidence( *pot );
         return;
       }
 
@@ -436,7 +437,8 @@ namespace gum {
       }
 
       if ( evi_list->size() > 0 ) {
-        inference_engine->insertEvidence( *evi_list );
+        for ( const auto pot : *evi_list )
+          inference_engine->addEvidence( *pot );
       }
     }
 

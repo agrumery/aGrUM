@@ -719,7 +719,7 @@ namespace gum {
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
   const Set<Key, Alloc>&
-  Set<Key, Alloc>::operator*=( const Set<Key, OtherAlloc>& s2 ) const {
+  Set<Key, Alloc>::operator*=( const Set<Key, OtherAlloc>& s2 ) {
     if ( &s2 != this ) {
       const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
       for ( auto iter = __inside.beginSafe ();
@@ -736,7 +736,7 @@ namespace gum {
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
   const Set<Key, Alloc>&
-  Set<Key, Alloc>::operator+= ( const Set<Key, OtherAlloc>& s2 ) const {
+  Set<Key, Alloc>::operator+= ( const Set<Key, OtherAlloc>& s2 ) {
     if ( &s2 != this ) {
       for ( auto pair : s2.__inside ) {
         if ( ! __inside.exists ( pair.first ) )

@@ -116,7 +116,7 @@ namespace gum_tests {
       }
 
       {
-        gum::LazyPropagation<double> inf( bn );
+        gum::LazyPropagation<double> inf( &bn );
 
         try {
           // Testing the inference
@@ -218,7 +218,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( p[i], witness[j], 1e-6 );
       }
 
-      gum::LazyPropagation<float> inf_LazyProp( bn );
+      gum::LazyPropagation<float> inf_LazyProp( &bn );
 
       inf_LazyProp.makeInference();
     }
@@ -305,7 +305,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( p[i], witness[j], 1e-6 );
       }
 
-      gum::LazyPropagation<float> inf_LazyProp( bn );
+      gum::LazyPropagation<float> inf_LazyProp( &bn );
 
       inf_LazyProp.makeInference();
     }
@@ -395,7 +395,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( p[i], witness[j], 1e-6 );
       }
 
-      gum::LazyPropagation<float> inf_LazyProp( bn );
+      gum::LazyPropagation<float> inf_LazyProp( &bn );
 
       inf_LazyProp.makeInference();
     }

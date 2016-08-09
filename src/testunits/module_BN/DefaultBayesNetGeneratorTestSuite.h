@@ -100,7 +100,7 @@ namespace gum_tests {
       gum::BayesNet<float>* bn = new gum::BayesNet<float>();
       gen.generateBN( *bn );
       // Test for inference
-      gum::LazyPropagation<float> lazyInf( *bn );
+      gum::LazyPropagation<float> lazyInf( bn );
       TS_GUM_ASSERT_THROWS_NOTHING( lazyInf.makeInference() );
 
       if ( bn != 0 ) delete bn;
@@ -112,17 +112,17 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::BayesNet<float>();
                                     gen.generateBN( *bn );
-                                    gum::LazyPropagation<float> lazyInf( *bn );
+                                    gum::LazyPropagation<float> lazyInf( bn );
                                     lazyInf.makeInference();
                                     delete bn );
       TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::BayesNet<float>();
                                     gen.generateBN( *bn );
-                                    gum::LazyPropagation<float> lazyInf( *bn );
+                                    gum::LazyPropagation<float> lazyInf( bn );
                                     lazyInf.makeInference();
                                     delete bn );
       TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::BayesNet<float>();
                                     gen.generateBN( *bn );
-                                    gum::LazyPropagation<float> lazyInf( *bn );
+                                    gum::LazyPropagation<float> lazyInf( bn );
                                     lazyInf.makeInference();
                                     delete bn );
     }
@@ -171,7 +171,7 @@ namespace gum_tests {
       gen.generateBN( *bn );
 
       // Test for inference
-      gum::LazyPropagation<double> lazyInf( *bn );
+      gum::LazyPropagation<double> lazyInf( bn );
       TS_GUM_ASSERT_THROWS_NOTHING( lazyInf.makeInference() );
 
       if ( bn != 0 ) delete bn;

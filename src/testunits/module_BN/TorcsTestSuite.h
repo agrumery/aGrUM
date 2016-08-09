@@ -114,7 +114,7 @@ namespace gum_tests {
     }
 
     void testInference() {
-      gum::LazyPropagation<float> inf( *bn );
+      gum::LazyPropagation<float> inf( bn );
 
       try {
         inf.makeInference();

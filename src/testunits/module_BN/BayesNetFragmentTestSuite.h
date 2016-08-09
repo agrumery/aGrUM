@@ -355,14 +355,14 @@ namespace gum_tests {
       fill( bn );
 
       // propagation in the full BN
-      gum::LazyPropagation<float> inf_complete( bn );
+      gum::LazyPropagation<float> inf_complete( &bn );
 
       gum::Potential<float> ev;
       ev << bn.variable( bn.idFromName( "v3" ) );
       ev.fillWith( {0.0, 1.0} );
 
       gum::List<const gum::Potential<float>*> l{&ev};
-      inf_complete.insertEvidence( l );
+      inf_complete.addEvidence( ev );
       inf_complete.makeInference();
 
       try {
@@ -384,8 +384,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( frag.size(), (gum::Size)3 );
       TS_ASSERT_EQUALS( frag.sizeArcs(), (gum::Size)1 );
 
-      gum::LazyPropagation<float> inf_frag( frag );
+      gum::LazyPropagation<float> inf_frag( &frag );
       inf_frag.makeInference();
+
       const gum::Potential<float>& p2 =
           inf_frag.posterior( bn.idFromName( "v6" ) );
 
@@ -492,11 +493,11 @@ namespace gum_tests {
 
       TS_ASSERT( bn2 == frag );
 
-      gum::LazyPropagation<float> ie2( bn2 );
+      gum::LazyPropagation<float> ie2( &bn2 );
       ie2.makeInference();
       const gum::Potential<float>& p2 = ie2.posterior( bn2.idFromName( "v5" ) );
 
-      gum::LazyPropagation<float> ie( frag );
+      gum::LazyPropagation<float> ie( &frag );
       ie.makeInference();
       const gum::Potential<float>& p1 = ie.posterior( frag.idFromName( "v5" ) );
 

@@ -220,6 +220,28 @@ namespace gum {
     virtual void _onEvidenceChanged( const NodeId id,
                                      bool hasChangedSoftHard );
 
+    /// fired after a new target is inserted
+    /** @param id The target variable's id. */
+    virtual void _onTargetAdded ( const NodeId id );
+
+    /// fired before a target is removed
+    /** @param id The target variable's id. */
+    virtual void _onTargetErased ( const NodeId id );
+
+    /// fired after a new set target is inserted
+    /** @param set The set of target variable's ids. */
+    virtual void _onSetTargetAdded ( const NodeSet& set );
+
+    /// fired before a set target is removed
+    /** @param set The set of target variable's ids. */
+    virtual void _onSetTargetErased ( const NodeSet& set );
+
+    /// fired after all the nodes of the BN are added as single targets
+    virtual void _onAllTargetsAdded ();
+
+    /// fired before a all targets and settargets are removed
+    virtual void _onAllTargetsErased ();
+
     /// prepares inference when the latter is in UnpreparedStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _prepareInferenceStructure and
@@ -236,32 +258,15 @@ namespace gum {
     /** Once the inference is done, _fillPosterior can be called. */
     virtual void _makeInference();
 
-    /** @brief This method is called when a BayesNetInference user asks for
-     * the posterior of a given target.
-     *
-     * The reference "posterior" is a reference over a const Potential that
-     * contains the variable of node id (only values can then be changed)
-     *
-     * @param id The variable's id.
-     * @param posterior The completely empty potential to fill.
-     * @throw UndefinedElement Raised if no variable matches id in the target.
-     */
-    virtual void _fillPosterior( const NodeId id,
-                                 Potential<GUM_SCALAR>& posterior );
 
-    /** @brief This method is called when a BayesNetInference user asks for
-     * the posterior of a given set target.
-     *
-     * The reference "posterior" is a reference over a Potential that
-     * contains all the variables of the set target (only values can then
-     * be changed)
-     *
-     * @param set the set of nodes of the potential
-     * @param posterior The completely empty potential to fill.
-     * @throw UndefinedElement Raised if no variable matches id in the target.
-     */
-    virtual void _fillSetPosterior( const NodeSet& set,
-                                    Potential<GUM_SCALAR>& posterior );
+    /// returns the posterior of a given variable
+    /** @param id The variable's id. */
+    virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id );
+
+    /// returns the posterior of a given set of variables
+    /** @param set The set of ids of the variables whose joint posterior is
+     * looked for. */
+    virtual const Potential<GUM_SCALAR>& _posterior( const NodeSet& set );
 
     
 
@@ -346,8 +351,19 @@ namespace gum {
 
     /// the set of potentials created for the last inference messages
     /** This structure contains only the arcs on which potentials have
-     * been created */
+     * been created.
+     * @warning Note that the CPTs that were projected due to hard
+     * evidence do not belong to this structure, they are kept in
+     * __hard_ev_projected_CPTs. */
     ArcProperty<__PotentialSet> __created_potentials;
+
+    /// the set of single posteriors computed during the last inference
+    /** the posteriors are owned by LazyPropagation. */
+    NodeProperty<const Potential<GUM_SCALAR>*> __target_posteriors;
+
+    /// the set of set target posteriors computed during the last inference
+    /** the posteriors are owned by LazyPropagation. */
+    HashTable<NodeSet, const Potential<GUM_SCALAR>*> __settarget_posteriors;
 
     /** @brief the constants resulting from the projections of CPTs defined
      * over only hard evidence nodes
@@ -401,7 +417,11 @@ namespace gum {
 
     /// invalidate all the messages sent from a given clique
     void __diffuseMessageInvalidations ( const NodeId from,
-                                         const NodeId to );
+                                         const NodeId to,
+                                         NodeSet& cliques_invalidated );
+
+    /// invalidate all messages, posteriors and created potentials
+    void __invalidateAllMessages ();
 
     /// compute a root for each connected component of __JT
     void __computeJoinTreeRoots ();
@@ -448,15 +468,11 @@ namespace gum {
     void __collectMessage( const NodeId id,
                            const NodeId from );
 
-    /// computes P(1st arg,evidence) and store the result into the second arg
-    void __aPosterioriMarginal( const NodeId id,
-                                Potential<GUM_SCALAR>& posterior );
+    /// returns a fresh potential equal to P(1st arg,evidence)
+    Potential<GUM_SCALAR>* __computeJointPosterior ( const NodeId id );
     
-    /// computes P(1st arg,evidence) and store the result into the second arg
-    void __aPosterioriSetMarginal ( const NodeSet& ids,
-                                    Potential<GUM_SCALAR>& posterior );
-
-
+    /// returns a fresh potential equal to P(1st arg,evidence)
+    Potential<GUM_SCALAR>* __computeJointPosterior ( const NodeSet& set );
     
     /// avoid copy constructors
     LazyPropagation( const LazyPropagation<GUM_SCALAR>& );
@@ -464,6 +480,7 @@ namespace gum {
     /// avoid copy operators
     LazyPropagation<GUM_SCALAR>&
     operator=( const LazyPropagation<GUM_SCALAR>& );
+    
   };
 
 
