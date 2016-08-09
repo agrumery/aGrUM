@@ -30,6 +30,7 @@
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -229,22 +230,27 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
       gum::ShaferShenoyInference<double> ss( bn );
       gum::VEWithBB<double> vebb( bn );
-      gum::Potential<double> p_vebb, p_ss;
+      gum::LazyPropagation<double> lazy ( &bn );
+      gum::Potential<double> p_vebb, p_ss, p_lazy;
       auto e_id = bn.idFromName( "bronchitis?" );
       auto inf_list = std::vector<gum::BayesNetInference<double>*>{&ss, &vebb};
       for ( auto inf : inf_list ) {
         inf->addHardEvidence( e_id, 0 );
       }
+      lazy.addEvidence ( e_id, 0 );
       auto var_id = bn.idFromName( "tuberculos_or_cancer?" );
+
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( p_ss = ss.posterior( var_id ) );
       TS_GUM_ASSERT_THROWS_NOTHING( p_vebb = vebb.posterior( var_id ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( p_lazy = lazy.posterior( var_id ) );
       // Assert
       TS_ASSERT_EQUALS( p_vebb.domainSize(), p_ss.domainSize() );
 
       gum::Instantiation i_ve( p_vebb );
       for ( gum::Instantiation i( p_vebb ); not i.end(); i.inc() ) {
         TS_ASSERT_DELTA( p_vebb[i], p_ss[i], 1e-6 );
+        TS_ASSERT_DELTA( p_vebb[i], p_lazy[i], 1e-6 );
       }
     }
 

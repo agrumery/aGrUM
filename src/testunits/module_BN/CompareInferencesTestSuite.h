@@ -477,7 +477,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
         for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          //TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
+          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }
@@ -522,7 +522,7 @@ namespace gum_tests {
         gum::Instantiation i_ve( p_ve );
         for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          //TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
+          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }
@@ -591,7 +591,7 @@ namespace gum_tests {
         gum::Instantiation i_ve( p_ve );
         for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          //TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
+          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }
@@ -636,7 +636,7 @@ namespace gum_tests {
         gum::Instantiation i_ve( p_ve );
         for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          //TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
+          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }

@@ -78,6 +78,12 @@ namespace gum {
     }
 
     __ve.insertEvidence( pot_list );
+    
+    for ( auto pot : pot_list ) {
+      const auto node = this->bn().nodeId ( *( pot->variablesSequence ()[0] ) );
+      __evidence.insert ( node, pot );
+    }
+    
     this->_invalidatePosteriors();
   }
 
@@ -149,6 +155,7 @@ namespace gum {
       std::vector<const Potential<GUM_SCALAR>*>& pool ) {
     Set<NodeId> requisite_nodes;
     __fillRequisiteNode( id, requisite_nodes );
+
 
     for ( auto node : requisite_nodes ) {
 
