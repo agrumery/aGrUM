@@ -1892,6 +1892,34 @@ class CPTNoSumTo1(CPTError):
 CPTNoSumTo1_swigregister = _pyAgrum.CPTNoSumTo1_swigregister
 CPTNoSumTo1_swigregister(CPTNoSumTo1)
 
+class IncompatibleEvidence(GumException):
+    """Proxy of C++ gum::IncompatibleEvidence class."""
+
+    __swig_setmethods__ = {}
+    for _s in [GumException]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IncompatibleEvidence, name, value)
+    __swig_getmethods__ = {}
+    for _s in [GumException]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, IncompatibleEvidence, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(gum::IncompatibleEvidence self, std::string aMsg, std::string aType) -> IncompatibleEvidence
+        __init__(gum::IncompatibleEvidence self, std::string aMsg) -> IncompatibleEvidence
+        """
+        this = _pyAgrum.new_IncompatibleEvidence(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_IncompatibleEvidence
+    __del__ = lambda self: None
+IncompatibleEvidence_swigregister = _pyAgrum.IncompatibleEvidence_swigregister
+IncompatibleEvidence_swigregister(IncompatibleEvidence)
+
 class FactoryError(GumException):
     """Proxy of C++ gum::FactoryError class."""
 
@@ -3793,6 +3821,12 @@ cvar = _pyAgrum.cvar
 __list_end_safe = cvar.__list_end_safe
 __list_end = cvar.__list_end
 
+FIND_RELEVANT_ALL = _pyAgrum.FIND_RELEVANT_ALL
+FIND_RELEVANT_D_SEPARATION = _pyAgrum.FIND_RELEVANT_D_SEPARATION
+FIND_RELEVANT_D_SEPARATION2 = _pyAgrum.FIND_RELEVANT_D_SEPARATION2
+FIND_RELEVANT_D_SEPARATION3 = _pyAgrum.FIND_RELEVANT_D_SEPARATION3
+FIND_NO_BARREN_NODES = _pyAgrum.FIND_NO_BARREN_NODES
+FIND_BARREN_NODES = _pyAgrum.FIND_BARREN_NODES
 
 def randomDistribution_double(n: 'gum::Size') -> "std::vector< double,std::allocator< double > >":
     """randomDistribution_double(gum::Size n) -> Vector_double"""
@@ -5233,27 +5267,21 @@ class BayesNetInference_double(_object):
 BayesNetInference_double_swigregister = _pyAgrum.BayesNetInference_double_swigregister
 BayesNetInference_double_swigregister(BayesNetInference_double)
 
-class LazyPropagation_double(BayesNetInference_double):
+class LazyPropagation_double(_object):
     """Proxy of C++ gum::LazyPropagation<(double)> class."""
 
     __swig_setmethods__ = {}
-    for _s in [BayesNetInference_double]:
-        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, LazyPropagation_double, name, value)
     __swig_getmethods__ = {}
-    for _s in [BayesNetInference_double]:
-        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, LazyPropagation_double, name)
     __repr__ = _swig_repr
-    FIND_RELEVANT_ALL = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_ALL
-    FIND_RELEVANT_D_SEPARATION = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_D_SEPARATION
-    FIND_RELEVANT_D_SEPARATION2 = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_D_SEPARATION2
-    FIND_RELEVANT_D_SEPARATION3 = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_D_SEPARATION3
 
     def __init__(self, *args):
         """
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::FindRelevantPotentialsType arg3, gum::FindBarrenNodesType arg4, bool use_binary_join_tree=True) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::FindRelevantPotentialsType arg3, gum::FindBarrenNodesType arg4) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::FindRelevantPotentialsType arg3) -> LazyPropagation_double
         __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN) -> LazyPropagation_double
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & elim_order) -> LazyPropagation_double
         """
         this = _pyAgrum.new_LazyPropagation_double(*args)
         try:
@@ -5263,58 +5291,39 @@ class LazyPropagation_double(BayesNetInference_double):
     __swig_destroy__ = _pyAgrum.delete_LazyPropagation_double
     __del__ = lambda self: None
 
-    def eraseAllEvidence(self) -> "void":
-        """eraseAllEvidence(LazyPropagation_double self)"""
-        return _pyAgrum.LazyPropagation_double_eraseAllEvidence(self)
+    def setTriangulation(self, new_triangulation: 'Triangulation const &') -> "void":
+        """setTriangulation(LazyPropagation_double self, Triangulation const & new_triangulation)"""
+        return _pyAgrum.LazyPropagation_double_setTriangulation(self, new_triangulation)
 
 
-    def eraseEvidence(self, arg2: 'Potential_double') -> "void":
-        """eraseEvidence(LazyPropagation_double self, Potential_double arg2)"""
-        return _pyAgrum.LazyPropagation_double_eraseEvidence(self, arg2)
-
-
-    def collect(self, id: 'gum::NodeId', force_collect: 'bool'=False) -> "void":
-        """
-        collect(LazyPropagation_double self, gum::NodeId id, bool force_collect=False)
-        collect(LazyPropagation_double self, gum::NodeId id)
-        """
-        return _pyAgrum.LazyPropagation_double_collect(self, id, force_collect)
-
-
-    def diffusion(self, id: 'gum::NodeId', force_diffusion: 'bool'=False) -> "void":
-        """
-        diffusion(LazyPropagation_double self, gum::NodeId id, bool force_diffusion=False)
-        diffusion(LazyPropagation_double self, gum::NodeId id)
-        """
-        return _pyAgrum.LazyPropagation_double_diffusion(self, id, force_diffusion)
-
-
-    def makeInference(self, *args) -> "void":
-        """
-        makeInference(LazyPropagation_double self)
-        makeInference(LazyPropagation_double self, bool force_inference)
-        """
-        return _pyAgrum.LazyPropagation_double_makeInference(self, *args)
-
-
-    def clearInference(self) -> "void":
-        """clearInference(LazyPropagation_double self)"""
-        return _pyAgrum.LazyPropagation_double_clearInference(self)
-
-
-    def setFindRelevantPotentialsType(self, type: 'gum::LazyPropagation< double >::FindRelevantPotentialsType') -> "void":
-        """setFindRelevantPotentialsType(LazyPropagation_double self, gum::LazyPropagation< double >::FindRelevantPotentialsType type)"""
+    def setFindRelevantPotentialsType(self, type: 'gum::FindRelevantPotentialsType') -> "void":
+        """setFindRelevantPotentialsType(LazyPropagation_double self, gum::FindRelevantPotentialsType type)"""
         return _pyAgrum.LazyPropagation_double_setFindRelevantPotentialsType(self, type)
+
+
+    def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
+        """setFindBarrenNodesType(LazyPropagation_double self, gum::FindBarrenNodesType type)"""
+        return _pyAgrum.LazyPropagation_double_setFindBarrenNodesType(self, type)
+
+
+    def setProjectionFunction(self, proj: 'gum::Potential< double > *(*)(gum::Potential< double > const &,Set< gum::DiscreteVariable const * > const &)') -> "void":
+        """setProjectionFunction(LazyPropagation_double self, gum::Potential< double > *(*)(gum::Potential< double > const &,Set< gum::DiscreteVariable const * > const &) proj)"""
+        return _pyAgrum.LazyPropagation_double_setProjectionFunction(self, proj)
+
+
+    def setCombinationFunction(self, comb: 'gum::Potential< double > *(*)(gum::Potential< double > const &,gum::Potential< double > const &)') -> "void":
+        """setCombinationFunction(LazyPropagation_double self, gum::Potential< double > *(*)(gum::Potential< double > const &,gum::Potential< double > const &) comb)"""
+        return _pyAgrum.LazyPropagation_double_setCombinationFunction(self, comb)
+
+
+    def joinTree(self) -> "gum::JoinTree const *":
+        """joinTree(LazyPropagation_double self) -> CliqueGraph"""
+        return _pyAgrum.LazyPropagation_double_joinTree(self)
 
 
     def evidenceProbability(self) -> "double":
         """evidenceProbability(LazyPropagation_double self) -> double"""
         return _pyAgrum.LazyPropagation_double_evidenceProbability(self)
-
-
-    def junctionTree(self) -> "gum::JunctionTree const *":
-        """junctionTree(LazyPropagation_double self) -> CliqueGraph"""
-        return _pyAgrum.LazyPropagation_double_junctionTree(self)
 
 
     def H(self, X: 'gum::NodeId') -> "double":
@@ -5337,12 +5346,9 @@ class LazyPropagation_double(BayesNetInference_double):
         return _pyAgrum.LazyPropagation_double_junctionTreeToDot(self)
 
 
-    def joint(self, *args) -> "gum::Potential< double > *":
-        """
-        joint(LazyPropagation_double self, gum::NodeSet const & nodes) -> Potential_double
-        joint(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
-        """
-        return _pyAgrum.LazyPropagation_double_joint(self, *args)
+    def joint(self, seq_of_ids: 'PyObject *') -> "gum::Potential< double > *":
+        """joint(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double"""
+        return _pyAgrum.LazyPropagation_double_joint(self, seq_of_ids)
 
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)

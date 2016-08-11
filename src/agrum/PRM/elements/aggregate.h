@@ -196,7 +196,7 @@ namespace gum {
       /**
        * @brief Returns true if the label is defined.
        */
-      bool hasLabel() const;
+      //bool hasLabel() const;
 
       /// See gum::ClassElement::_addParent().
       virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
