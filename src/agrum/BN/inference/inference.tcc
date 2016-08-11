@@ -44,7 +44,7 @@ namespace gum {
   // Destructor
   template <typename GUM_SCALAR> Inference<GUM_SCALAR>::~Inference () {
     // clear all evidence.
-    // Warning: Do not use method clearEvidence () because it contains a call
+    // Warning: Do not use method eraseAllEvidence () because it contains a call
     // to pure virtual method _onAllEvidenceErased which belongs to an inherited
     // instantce and, therefore, does not exist anymore when ~Inference () is
     // called
@@ -69,6 +69,14 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE bool Inference<GUM_SCALAR>::isDone () const noexcept {
     return ( __state == StateOfInference::Done );
+  }
+
+  
+  // returns the state of the inference engine
+  template <typename GUM_SCALAR>
+  INLINE typename Inference<GUM_SCALAR>::StateOfInference
+  Inference<GUM_SCALAR>::state () const noexcept {
+    return __state;
   }
 
 
@@ -97,7 +105,7 @@ namespace gum {
   // clears all the data structures allocated for the last inference
   template <typename GUM_SCALAR>
   INLINE void Inference<GUM_SCALAR>::clear () {
-    clearEvidence ();
+    eraseAllEvidence ();
     __state = StateOfInference::UnpreparedStructure;
   }
 
@@ -163,7 +171,7 @@ namespace gum {
 
   // Clear all previously defined targets (single targets and sets of targets)
   template <typename GUM_SCALAR>
-  INLINE void Inference<GUM_SCALAR>::clearTargets () {
+  INLINE void Inference<GUM_SCALAR>::eraseAllTargets () {
     _onAllTargetsErased ();
     __targets.clear();
     __settargets.clear();
@@ -428,13 +436,31 @@ namespace gum {
     _onEvidenceAdded ( id, is_hard_evidence );
   }
 
-
+  
   // adds a new evidence on node id (might be soft or hard)
   template <typename GUM_SCALAR>
   INLINE void
   Inference<GUM_SCALAR>::addEvidence( const Potential<GUM_SCALAR>& pot ) {
     Potential<GUM_SCALAR> new_pot ( pot );
     addEvidence( std::move ( new_pot ) );
+  }
+
+
+  /// adds a new list of evidence
+  template <typename GUM_SCALAR>
+  INLINE void Inference<GUM_SCALAR>::addListOfEvidence
+  ( const List<Potential<GUM_SCALAR>*>& potlist ) {
+    for ( const auto pot : potlist )
+      addEvidence ( *pot );
+  }
+
+  
+  /// adds a new set of evidence
+  template <typename GUM_SCALAR>
+  INLINE void Inference<GUM_SCALAR>::addSetOfEvidence
+  ( const Set<Potential<GUM_SCALAR>*>& potset ) {
+    for ( const auto pot : potset )
+      addEvidence ( *pot );
   }
 
   
@@ -575,7 +601,7 @@ namespace gum {
   
   // removed the evidence, if any, corresponding to node id
   template <typename GUM_SCALAR>
-  INLINE void Inference<GUM_SCALAR>::clearEvidence ( NodeId id ) {
+  INLINE void Inference<GUM_SCALAR>::eraseEvidence ( NodeId id ) {
     if ( hasEvidence( id ) ) {
       if ( hasHardEvidence( id ) ) {
         _onEvidenceErased ( id, true );
@@ -586,7 +612,8 @@ namespace gum {
       else {
         _onEvidenceErased ( id, false );
         __soft_evidence_nodes.erase ( id );
-        __state = StateOfInference::OutdatedPotentials;
+        if ( __state != StateOfInference::UnpreparedStructure )
+          __state = StateOfInference::OutdatedPotentials;
       }
 
       delete ( __evidence[id] );
@@ -597,7 +624,7 @@ namespace gum {
 
   // removes all the evidence entered into the network
   template <typename GUM_SCALAR>
-  INLINE void Inference<GUM_SCALAR>::clearEvidence() {
+  INLINE void Inference<GUM_SCALAR>::eraseAllEvidence() {
     bool has_hard_evidence = ! __hard_evidence.empty ();
     _onAllEvidenceErased ( has_hard_evidence );
 
@@ -612,7 +639,8 @@ namespace gum {
     __hard_evidence_nodes.clear ();
     __soft_evidence_nodes.clear ();
 
-    if ( has_hard_evidence )
+    if ( has_hard_evidence ||
+         ( __state == StateOfInference::UnpreparedStructure ) )
       __state = StateOfInference::UnpreparedStructure;
     else
       __state = StateOfInference::OutdatedPotentials;
@@ -751,7 +779,7 @@ namespace gum {
   // Compute the posterior of a nodeset.
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
-  Inference<GUM_SCALAR>::posterior( const NodeSet& vars ) {
+  Inference<GUM_SCALAR>::jointPosterior( const NodeSet& vars ) {
     for ( const auto var : vars ) {
       if ( ! isTarget ( var ) ) { // throws UndefinedElement if var is not a target
         GUM_ERROR( UndefinedElement, var << " is not a target set" );
@@ -762,7 +790,7 @@ namespace gum {
       makeInference();
     }
 
-    return _posterior ( vars );
+    return _jointPosterior ( vars );
   }
 
 

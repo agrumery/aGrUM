@@ -186,7 +186,7 @@ namespace gum {
      */
     virtual const Potential<GUM_SCALAR>& posterior( const NodeId node ) final;
 
-    /// Compute the posterior of a set of nodes.
+    /// Compute the joint posterior of a set of nodes.
     /**
      * @returns a const ref to the internal representation of the posterior
      * probability of the set of nodes.
@@ -200,7 +200,8 @@ namespace gum {
      *
      * @throw UndefinedElement if nodes is not in the targets
      */
-    virtual const Potential<GUM_SCALAR>& posterior ( const NodeSet& nodes ) final;
+    virtual const Potential<GUM_SCALAR>&
+    jointPosterior ( const NodeSet& nodes ) final;
 
     /// returns the probability P(e) of the evidence enterred into the BN
     virtual GUM_SCALAR evidenceProbability () = 0;
@@ -229,7 +230,9 @@ namespace gum {
 
     /// clears all the data structures allocated for the last inference
     virtual void clear ();
-    
+
+    /// returns the state of the inference engine
+    virtual StateOfInference state () const noexcept final;
 
     /// @}
 
@@ -246,7 +249,7 @@ namespace gum {
      * targets).
      * This is the default value for the targets manager.
      */
-    virtual void clearTargets () final;
+    virtual void eraseAllTargets () final;
 
     /// Add a single target to the list of targets
     /**
@@ -333,6 +336,28 @@ namespace gum {
      */
     virtual void addEvidence( Potential<GUM_SCALAR>&& pot ) final;
 
+    /// adds a new list of evidence
+    /**
+     * @throw UndefinedElement if some potential is defined over several nodes
+     * @throw UndefinedElement if the node on which some potential is defined
+     * does not belong to the Bayesian network
+     * @throw InvalidArgument if the node of some potential already has an evidence
+     * @throw FatalError if pot=[0,0,...,0]
+     */
+    virtual void addSetOfEvidence
+    ( const Set<Potential<GUM_SCALAR>*>& potlist ) final;
+
+    /// adds a new set of evidence
+    /**
+     * @throw UndefinedElement if some potential is defined over several nodes
+     * @throw UndefinedElement if the node on which some potential is defined
+     * does not belong to the Bayesian network
+     * @throw InvalidArgument if the node of some potential already has an evidence
+     * @throw FatalError if pot=[0,0,...,0]
+     */
+    virtual void addListOfEvidence
+    ( const List<Potential<GUM_SCALAR>*>& potlist ) final;
+
     /// change the value of an already existing hard evidence
     /**
      * @throw UndefinedElement if id does not belong to the Bayesian network
@@ -364,6 +389,12 @@ namespace gum {
      */
     virtual void chgEvidence( const Potential<GUM_SCALAR>& pot ) final;
 
+    /// removes all the evidence entered into the network
+    virtual void eraseAllEvidence() final;
+
+    /// removed the evidence, if any, corresponding to node id
+    virtual void eraseEvidence( NodeId id ) final;
+
     /// indicates whether some node(s) have received evidence
     virtual bool hasEvidence () const final;
 
@@ -384,12 +415,6 @@ namespace gum {
 
     /// returns the number of soft evidence entered into the Bayesian network
     virtual Size nbrSoftEvidence() const final;
-
-    /// removes all the evidence entered into the network
-    virtual void clearEvidence() final;
-
-    /// removed the evidence, if any, corresponding to node id
-    virtual void clearEvidence( NodeId id ) final;
 
     /// returns the set of evidence
     const NodeProperty<const Potential<GUM_SCALAR>*>& evidence () const;
@@ -475,7 +500,8 @@ namespace gum {
     /// asks derived classes for the posterior of a given set of variables
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    virtual const Potential<GUM_SCALAR>& _posterior( const NodeSet& set ) = 0;
+    virtual const Potential<GUM_SCALAR>&
+    _jointPosterior( const NodeSet& set ) = 0;
 
     /// put the inference into an unprepared state
     void _setUnpreparedStructureState ();

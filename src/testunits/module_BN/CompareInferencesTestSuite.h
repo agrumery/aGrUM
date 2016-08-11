@@ -358,7 +358,7 @@ namespace gum_tests {
           TS_ASSERT_DELTA( p[I], 0.6471, 1e-7 );
         }
 
-        inf.clearEvidence();
+        inf.eraseAllEvidence();
         for ( auto pot : list_pot )
           inf.addEvidence( *pot );
         inf.makeInference();

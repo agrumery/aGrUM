@@ -219,7 +219,7 @@ namespace gum_tests {
       nodeset.insert( 4 );
       inf.addSetTarget ( nodeset );
 
-      TS_ASSERT_THROWS_NOTHING( inf.posterior ( nodeset ) );
+      TS_ASSERT_THROWS_NOTHING( inf.jointPosterior ( nodeset ) );
     }
 
     // testing information methods

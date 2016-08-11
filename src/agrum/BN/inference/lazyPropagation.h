@@ -266,7 +266,7 @@ namespace gum {
     /// returns the posterior of a given set of variables
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    virtual const Potential<GUM_SCALAR>& _posterior( const NodeSet& set );
+    virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set );
 
     
 
@@ -282,7 +282,8 @@ namespace gum {
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
     void ( LazyPropagation<GUM_SCALAR>::*__findRelevantPotentials )
-    ( __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
+    ( Set<const Potential<GUM_SCALAR>*>& pot_list,
+      Set<const DiscreteVariable*>& kept_vars );
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType __barren_nodes_type;

@@ -166,7 +166,8 @@ namespace gum {
     CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__threadInference() {
       int tId = getThreadNumber();
       __verticesSampling();
-      this->_l_inferenceEngine[tId]->clearEvidence();
+
+      this->_l_inferenceEngine[tId]->eraseAllEvidence();
       __insertEvidence();
       this->_l_inferenceEngine[tId]->makeInference();
     }
@@ -246,8 +247,12 @@ namespace gum {
             new List<const Potential<GUM_SCALAR>*>();
         this->_workingSetE[this_thread] = evi_list;
 
+        // #TODO: the next instruction works only for lazy propagation.
+        //        => find a way to remove the second argument
         BNInferenceEngine* inference_engine =
-          new BNInferenceEngine( ( this->_workingSet[this_thread] ) );
+          new BNInferenceEngine( ( this->_workingSet[this_thread] ),
+                                 FindRelevantPotentialsType::FIND_RELEVANT_ALL );
+        
         this->_l_inferenceEngine[this_thread] = inference_engine;
 
         if ( __infEs::_storeBNOpt ) {

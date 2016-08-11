@@ -269,9 +269,9 @@ namespace gum {
         catch ( DuplicateElement& ) {
           // here, the evidence change already existed and it is necessarily an
           // EVIDENCE_ADDED or an EVIDENCE_MODIFIED. So, if the evidence has
-        // been added and is now erased, this is similar to not having created
-        // it. If the evidence was only modified, it already existed in the
-        // last inference and we should now indicate that it has been removed.
+          // been added and is now erased, this is similar to not having created
+          // it. If the evidence was only modified, it already existed in the
+          // last inference and we should now indicate that it has been removed.
           if ( __evidence_changes[node] == EvidenceChangeType::EVIDENCE_ADDED )
             __evidence_changes.erase ( node );
           else
@@ -771,6 +771,7 @@ namespace gum {
     // messages spreading from this clique are now invalid. At the same time,
     // if there were potentials created on the arcs over wich the messages were
     // sent, remove them from memory
+    std::cout << __JT << std::endl;
     NodeSet invalidated_cliques ( __JT->size () );
     for ( const auto& pair : __evidence_changes ) {
       const auto clique = __node_to_clique[pair.first];
@@ -795,7 +796,7 @@ namespace gum {
         __settarget_posteriors.erase ( iter );
       }
     }
-
+    
     // remove all the evidence that were entered into __node_to_soft_evidence
     // and __clique_potentials and add the new soft ones
     for ( auto& pot_pair : __node_to_soft_evidence ) {
@@ -873,7 +874,7 @@ namespace gum {
       __clique_potentials[__node_to_clique[node]].insert ( projected_cpt );
       __hard_ev_projected_CPTs.insert ( node, projected_cpt );
     }
-
+    
     // update the constants
     const auto& hard_evidence = this->hardEvidence ();
     for ( auto& node_cst : __constants ) {
@@ -966,7 +967,7 @@ namespace gum {
 
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
-  INLINE void
+  void
   LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll
   ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& kept_vars ) {
@@ -975,7 +976,7 @@ namespace gum {
 
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
-  INLINE void
+  void
   LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation
   ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& kept_vars ) {
@@ -1014,7 +1015,7 @@ namespace gum {
 
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
-  INLINE void
+  void
   LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2
   ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& kept_vars ) {
@@ -1037,7 +1038,7 @@ namespace gum {
 
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
-  INLINE void
+  void
   LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3
   ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& kept_vars ) {
@@ -1065,11 +1066,19 @@ namespace gum {
   ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& del_vars,
     Set<const DiscreteVariable*>& kept_vars ) {
+#pragma omp critical
+    {
+      std::cout << "pot = " << pot_list << "  " << del_vars << "  "
+                << kept_vars << std::endl;
+      std::cout << "relevant reasoning = "
+                << this->__findRelevantPotentials << std::endl;
     // use d-separation analysis to check which potentials shall be combined
     ( this->*__findRelevantPotentials )( pot_list, kept_vars );
-
+      
     // remove the potentials corresponding to barren variables
     // __removeBarrenVariables( pot_list, del_vars );
+    std::cout << "endpot" << std::endl;
+    }
 
     // create a combine and project operator that will perform the
     // marginalization
@@ -1384,7 +1393,7 @@ namespace gum {
   /// returns the posterior of a given set of variables
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
-  LazyPropagation<GUM_SCALAR>::_posterior( const NodeSet& set ) {
+  LazyPropagation<GUM_SCALAR>::_jointPosterior( const NodeSet& set ) {
     // check if we have already computed the posterior
     if ( __settarget_posteriors.exists ( set ) ) {
       return *( __settarget_posteriors[set] );
