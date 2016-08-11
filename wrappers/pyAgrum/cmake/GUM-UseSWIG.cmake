@@ -148,7 +148,16 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
     ARGS -i 's/\\bNodeProperty\\b/gum::NodeProperty/g'
     ${swig_generated_file_fullname}
     COMMAND sed
+    ARGS -i 's/\\bSet\\b/gum::Set/g'
+    ${swig_generated_file_fullname}
+    COMMAND sed
+    ARGS -i 's/\\bTriangulation\\b/gum::Triangulation/g'
+    ${swig_generated_file_fullname}
+    COMMAND sed
     ARGS -i 's/^\# include <Python\\.h>/\#include <cmath>\\n\#include <Python.h>/g'
+    ${swig_generated_file_fullname}
+    COMMAND sed
+    ARGS -i 's/\\bgum::gum::\\b/gum::/g'
     ${swig_generated_file_fullname}
     MAIN_DEPENDENCY "${swig_source_file_fullname}"
     DEPENDS ${SWIG_MODULE_${name}_EXTRA_DEPS}

@@ -5346,9 +5346,9 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_junctionTreeToDot(self)
 
 
-    def joint(self, seq_of_ids: 'PyObject *') -> "gum::Potential< double > *":
-        """joint(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double"""
-        return _pyAgrum.LazyPropagation_double_joint(self, seq_of_ids)
+    def posterior(self, seq_of_ids: 'PyObject *') -> "gum::Potential< double > *":
+        """posterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double"""
+        return _pyAgrum.LazyPropagation_double_posterior(self, seq_of_ids)
 
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
