@@ -127,7 +127,7 @@ def getFigProbaV(p):
     fig=plt.figure()
     fig.set_figwidth(var.domainSize()/4.0)
     fig.set_figheight(2)
-
+    
     ax=fig.add_subplot(111)
 
     ax.bar(ra,p.tolist(),align='center')
@@ -381,7 +381,7 @@ def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
 
     shutil.rmtree(temp_dir)
 
-def showPotential(pot,asString=False,digits=4):
+def showPotential(pot,asString=False,digits=4,varnames=None):
     """
     Show a potential as a HTML table.
     The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -390,22 +390,27 @@ def showPotential(pot,asString=False,digits=4):
     @param asString allows to postpone the HTML representation
     @param digits numbre of digits to show
     """
-    from IPython.core.display import HTML
+    from IPython.core.display import HTML    
 
     html=list()
     html.append("<table>")
 
+    if varnames is not None and len(varnames)!=pot.nbrDim():
+      raise ValueError("varnames contains {} values instead of the needed {} values.".format(len(varnames),pot.nbrDim()))
+    
     nparents=pot.nbrDim()-1
     var=pot.variable(0)
+    varname=var.name() if varnames==None else varnames[0]
+    
     #first line
     if nparents>0:
-        html.append("<tr><th colspan='{}'></th><th colspan='{}' style='background-color:#AAAAAA'><center>{}</center></th></tr>".format(nparents,var.domainSize(),var.name()))
+        html.append("<tr><th colspan='{}'></th><th colspan='{}' style='background-color:#AAAAAA'><center>{}</center></th></tr>".format(nparents,var.domainSize(),varname))
     else:
-        html.append("<tr style='background-color:#AAAAAA'><th colspan='{}'><center>{}</center></th></tr>".format(var.domainSize(),var.name()))
+        html.append("<tr style='background-color:#AAAAAA'><th colspan='{}'><center>{}</center></th></tr>".format(var.domainSize(),varname))
     #second line
     html.append("<tr>")
     if nparents>0:
-        for parent in pot.var_names[:-1]:
+        for parent in pot.var_names[:-1] if varnames==None else varnames[1:]:
             html.append("<th style='background-color:#AAAAAA'><center>{}</center></th>".format(parent))
     for label in var.labels():
         html.append("<th style='background-color:#BBBBBB'><center>{}</center></th>".format(label))
