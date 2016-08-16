@@ -55,6 +55,7 @@ namespace gum {
       GUM_CONSTRUCTOR( Aggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
+      this->__type->variable().setName( name );
     }
 
     template <typename GUM_SCALAR>
@@ -69,6 +70,7 @@ namespace gum {
       GUM_CONSTRUCTOR( Aggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
+      this->__type->variable().setName( name );
     }
 
     template <typename GUM_SCALAR>
