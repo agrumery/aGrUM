@@ -61,6 +61,7 @@ namespace gum {
 
       this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name() +
                         PRMObject::RIGHT_CAST() + name;
+      this->lastElt().type().variable().setName( name ); 
     }
 
     // Parameters are inverse to prevent unwanted constructors calls (it
