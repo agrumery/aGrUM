@@ -836,17 +836,38 @@ class PRMexplorer(_object):
             self.this = this
 
     def isType(self, name: 'std::string') -> "PyObject *":
-        """isType(PRMexplorer self, std::string name) -> PyObject *"""
+        """
+        isType(PRMexplorer self, std::string name) -> PyObject *
+
+        Parameters
+        ----------
+        name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_isType(self, name)
 
 
     def isClass(self, name: 'std::string') -> "PyObject *":
-        """isClass(PRMexplorer self, std::string name) -> PyObject *"""
+        """
+        isClass(PRMexplorer self, std::string name) -> PyObject *
+
+        Parameters
+        ----------
+        name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_isClass(self, name)
 
 
     def isInterface(self, name: 'std::string') -> "PyObject *":
-        """isInterface(PRMexplorer self, std::string name) -> PyObject *"""
+        """
+        isInterface(PRMexplorer self, std::string name) -> PyObject *
+
+        Parameters
+        ----------
+        name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_isInterface(self, name)
 
 
@@ -863,22 +884,50 @@ class PRMexplorer(_object):
 
 
     def classAttributes(self, class_name: 'std::string') -> "PyObject *":
-        """classAttributes(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        classAttributes(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_classAttributes(self, class_name)
 
 
     def classReferences(self, class_name: 'std::string') -> "PyObject *":
-        """classReferences(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        classReferences(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_classReferences(self, class_name)
 
 
     def classParameters(self, class_name: 'std::string') -> "PyObject *":
-        """classParameters(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        classParameters(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_classParameters(self, class_name)
 
 
     def classImplements(self, class_name: 'std::string') -> "PyObject *":
-        """classImplements(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        classImplements(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_classImplements(self, class_name)
 
     __swig_setmethods__["aggType"] = _pyAgrum.PRMexplorer_aggType_set
@@ -887,145 +936,215 @@ class PRMexplorer(_object):
         aggType = _swig_property(_pyAgrum.PRMexplorer_aggType_get, _pyAgrum.PRMexplorer_aggType_set)
 
     def classAggregates(self, class_name: 'std::string') -> "PyObject *":
-        """classAggregates(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        classAggregates(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_classAggregates(self, class_name)
 
 
     def classSlotChains(self, class_name: 'std::string') -> "PyObject *":
-        """classSlotChains(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        classSlotChains(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_classSlotChains(self, class_name)
 
 
     def classDag(self, class_name: 'std::string') -> "PyObject *":
-        """classDag(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        classDag(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_classDag(self, class_name)
 
 
     def getSuperClass(self, class_name: 'std::string') -> "PyObject *":
-        """getSuperClass(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        getSuperClass(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getSuperClass(self, class_name)
 
 
     def getDirectSubClass(self, class_name: 'std::string') -> "PyObject *":
-        """getDirectSubClass(PRMexplorer self, std::string class_name) -> PyObject *"""
+        """
+        getDirectSubClass(PRMexplorer self, std::string class_name) -> PyObject *
+
+        Parameters
+        ----------
+        class_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getDirectSubClass(self, class_name)
 
 
     def cpf(self, class_name: 'std::string', attribute: 'std::string') -> "gum::Potential< double > const &":
-        """cpf(PRMexplorer self, std::string class_name, std::string attribute) -> Potential_double"""
+        """
+        cpf(PRMexplorer self, std::string class_name, std::string attribute) -> Potential_double
+
+        Parameters
+        ----------
+        class_name: std::string
+        attribute: std::string
+
+        """
         return _pyAgrum.PRMexplorer_cpf(self, class_name, attribute)
 
 
     def types(self) -> "PyObject *":
-        """types(PRMexplorer self) -> PyObject *"""
+        """
+        types(PRMexplorer self) -> PyObject *
+
+        Parameters
+        ----------
+        self: PRMexplorer *
+
+        """
         return _pyAgrum.PRMexplorer_types(self)
 
 
     def getSuperType(self, type_name: 'std::string') -> "PyObject *":
-        """getSuperType(PRMexplorer self, std::string type_name) -> PyObject *"""
+        """
+        getSuperType(PRMexplorer self, std::string type_name) -> PyObject *
+
+        Parameters
+        ----------
+        type_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getSuperType(self, type_name)
 
 
     def getDirectSubTypes(self, type_name: 'std::string') -> "PyObject *":
-        """getDirectSubTypes(PRMexplorer self, std::string type_name) -> PyObject *"""
+        """
+        getDirectSubTypes(PRMexplorer self, std::string type_name) -> PyObject *
+
+        Parameters
+        ----------
+        type_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getDirectSubTypes(self, type_name)
 
 
     def getLabels(self, type_name: 'std::string') -> "PyObject *":
-        """getLabels(PRMexplorer self, std::string type_name) -> PyObject *"""
+        """
+        getLabels(PRMexplorer self, std::string type_name) -> PyObject *
+
+        Parameters
+        ----------
+        type_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getLabels(self, type_name)
 
 
     def getLabelMap(self, type_name: 'std::string') -> "PyObject *":
-        """getLabelMap(PRMexplorer self, std::string type_name) -> PyObject *"""
+        """
+        getLabelMap(PRMexplorer self, std::string type_name) -> PyObject *
+
+        Parameters
+        ----------
+        type_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getLabelMap(self, type_name)
 
 
     def interfaces(self) -> "PyObject *":
-        """interfaces(PRMexplorer self) -> PyObject *"""
+        """
+        interfaces(PRMexplorer self) -> PyObject *
+
+        Parameters
+        ----------
+        self: PRMexplorer *
+
+        """
         return _pyAgrum.PRMexplorer_interfaces(self)
 
 
     def interAttributes(self, interface_name: 'std::string', allAttributes: 'bool'=False) -> "PyObject *":
         """
-<<<<<<< HEAD
-        attributes(PRMexplorer self, std::string classname, bool allAttributes=False) -> PyObject
+        interAttributes(PRMexplorer self, std::string interface_name, bool allAttributes=False) -> PyObject
 
         Parameters
         ----------
-        classname: std::string
+        interface_name: std::string
         allAttributes: bool
 
-        attributes(PRMexplorer self, std::string classname) -> PyObject *
+        interAttributes(PRMexplorer self, std::string interface_name) -> PyObject *
 
         Parameters
         ----------
-        classname: std::string
+        interface_name: std::string
 
-=======
-        interAttributes(PRMexplorer self, std::string interface_name, bool allAttributes=False) -> PyObject
-        interAttributes(PRMexplorer self, std::string interface_name) -> PyObject *
->>>>>>> master
         """
         return _pyAgrum.PRMexplorer_interAttributes(self, interface_name, allAttributes)
 
 
     def interReferences(self, interface_name: 'std::string') -> "PyObject *":
-        """interReferences(PRMexplorer self, std::string interface_name) -> PyObject *"""
+        """
+        interReferences(PRMexplorer self, std::string interface_name) -> PyObject *
+
+        Parameters
+        ----------
+        interface_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_interReferences(self, interface_name)
 
 
-<<<<<<< HEAD
-    def references(self, classname: 'std::string') -> "PyObject *":
-        """
-        references(PRMexplorer self, std::string classname) -> PyObject *
-
-        Parameters
-        ----------
-        classname: std::string
-
-        """
-        return _pyAgrum.PRMexplorer_references(self, classname)
-
-
-    def parameters(self, classname: 'std::string') -> "PyObject *":
-        """
-        parameters(PRMexplorer self, std::string classname) -> PyObject *
-
-        Parameters
-        ----------
-        classname: std::string
-
-        """
-        return _pyAgrum.PRMexplorer_parameters(self, classname)
-
-
-    def cpf(self, classname: 'std::string', attribute: 'std::string') -> "gum::Potential< double > const &":
-        """
-        cpf(PRMexplorer self, std::string classname, std::string attribute) -> Potential_double
-
-        Parameters
-        ----------
-        classname: std::string
-        attribute: std::string
-
-        """
-        return _pyAgrum.PRMexplorer_cpf(self, classname, attribute)
-=======
     def getSuperInterface(self, interface_name: 'std::string') -> "PyObject *":
-        """getSuperInterface(PRMexplorer self, std::string interface_name) -> PyObject *"""
+        """
+        getSuperInterface(PRMexplorer self, std::string interface_name) -> PyObject *
+
+        Parameters
+        ----------
+        interface_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getSuperInterface(self, interface_name)
 
 
     def getDirectSubInterfaces(self, interface_name: 'std::string') -> "PyObject *":
-        """getDirectSubInterfaces(PRMexplorer self, std::string interface_name) -> PyObject *"""
+        """
+        getDirectSubInterfaces(PRMexplorer self, std::string interface_name) -> PyObject *
+
+        Parameters
+        ----------
+        interface_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getDirectSubInterfaces(self, interface_name)
 
 
     def getImplementations(self, interface_name: 'std::string') -> "PyObject *":
-        """getImplementations(PRMexplorer self, std::string interface_name) -> PyObject *"""
+        """
+        getImplementations(PRMexplorer self, std::string interface_name) -> PyObject *
+
+        Parameters
+        ----------
+        interface_name: std::string
+
+        """
         return _pyAgrum.PRMexplorer_getImplementations(self, interface_name)
->>>>>>> master
 
     __swig_destroy__ = _pyAgrum.delete_PRMexplorer
     __del__ = lambda self: None
