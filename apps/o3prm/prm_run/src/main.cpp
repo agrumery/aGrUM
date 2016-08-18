@@ -45,10 +45,10 @@ auto options() {
   desc.add_options()( "classpath,p",
                       po::value<std::vector<std::string>>(),
                       "a folder where to find O3PRM files" );
-  desc.add_options()( "output,o", po::value<std::string>(), "outout file" );
+  desc.add_options()( "output,o", po::value<std::string>(), "output file" );
   desc.add_options()( "output-type,t",
                       po::value<std::string>(),
-                      "outout file type (txt or csv)" );
+                      "output file type (txt or csv)" );
   desc.add_options()(
       "input-file", po::value<std::vector<std::string>>(), "input files" );
   return std::move( desc );

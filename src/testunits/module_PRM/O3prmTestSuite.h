@@ -1076,6 +1076,91 @@ namespace gum_tests {
       }
     }
 
+    // Testing class Computer
+    void testComplexPrinters_12() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+        std::string package = "fr.lip6.printers";
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        gum::prm::PRM<double>* prm = reader.prm();
+        gum::prm::Class<double>& SafeComputer =
+            prm->getClass( "fr.lip6.printers.SafeComputer" );
+        TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
+        TS_ASSERT( SafeComputer.exists( "can_print" ) );
+        const auto& cpf = SafeComputer.get( "can_print" ).cpf();
+        auto set = gum::Set<std::string>();
+        set.insert( "can_print" );
+        set.insert( "working_printer" );
+        set.insert( "equipState" );
+        for ( auto var : cpf.variablesSequence() ) {
+          if ( set.contains( var->name() ) ) {
+            set.erase( var->name() );
+          }
+        }
+        TS_ASSERT_EQUALS( set.size(), 0 );
+        delete prm;
+      } catch ( gum::Exception ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    // Testing class Computer
+    void testComplexPrinters_13() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+        std::string package = "fr.lip6.printers";
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        gum::prm::PRM<double>* prm = reader.prm();
+        gum::prm::Class<double>& SafeComputer =
+            prm->getClass( "fr.lip6.printers.Computer" );
+        TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
+        TS_ASSERT( SafeComputer.exists( "equipState" ) );
+        const auto& cpf = SafeComputer.get( "equipState" ).cpf();
+        auto set = gum::Set<std::string>();
+        set.insert( "equipState" );
+        set.insert( "room.power.state" );
+        for ( auto var : cpf.variablesSequence() ) {
+          if ( set.contains( var->name() ) ) {
+            set.erase( var->name() );
+          }
+        }
+        TS_ASSERT_EQUALS( set.size(), 0 );
+        delete prm;
+      } catch ( gum::Exception ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    // Testing class Computer
+    void testComplexPrinters_14() {
+      try {
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+        std::string package = "fr.lip6.printers";
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        gum::prm::PRM<double>* prm = reader.prm();
+        gum::prm::Class<double>& SafeComputer =
+            prm->getClass( "fr.lip6.printers.SafeComputer" );
+        TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
+        TS_ASSERT( SafeComputer.exists( "equipState" ) );
+        const auto& cpf = SafeComputer.get( "equipState" ).cpf();
+        auto set = gum::Set<std::string>();
+        set.insert( "equipState" );
+        set.insert( "room.power.(fr.lip6.printers.t_state)state" );
+        for ( auto var : cpf.variablesSequence() ) {
+          if ( set.contains( var->name() ) ) {
+            set.erase( var->name() );
+          }
+        }
+        TS_ASSERT_EQUALS( set.size(), 0 );
+        delete prm;
+      } catch ( gum::Exception ) {
+        TS_ASSERT( false );
+      }
+    }
+
     void testPrintersSystems1() {
       try {
         gum::prm::o3prm::O3prmReader<double> reader;
