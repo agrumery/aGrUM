@@ -134,19 +134,26 @@ public:
         PyTuple_SetItem(uplet, 1, PyString_FromString( a->name().c_str() ));
 
         PyObject* depenson = PyList_New(0);
-        for(auto arc : gra.arcs()){
-          if(arc.head() == a->id()){
-            PyList_Append(depenson, PyString_FromString(c.get(arc.tail()).name().c_str()));
-          }
+        for(auto parentId : gra.parents(a->id())){
+          PyList_Append(depenson, PyString_FromString(c.get(parentId).name().c_str()));
         }
 
         PyTuple_SetItem(uplet, 2, depenson);
-
 
         PyList_Append( q, uplet);
       }
     }
     return q;
+  }
+
+  /**
+  * @param class_name : the name of the class
+  * @param att_name : the name of the attribute contained in this class
+  */
+  PyObject* isAttribute( std::string class_name, std::string att_name){
+    auto& ob = __prm->getClass(class_name).get(att_name);
+    
+    return gum::prm::ClassElement<double>::isAttribute(ob) ? Py_True : Py_False;
   }
 
   /**
@@ -230,10 +237,8 @@ public:
       }
       PyObject* param = PyList_New( 0 );
 
-      for(auto arc : gra.arcs()){
-        if(arc.head() == a->id()){
-          PyList_Append(param, PyString_FromString(c.get(arc.tail()).name().c_str()));
-        }
+      for(auto parentId : gra.parents(a->id())){
+        PyList_Append(param, PyString_FromString(c.get(parentId).name().c_str()));
       }
 
       PyTuple_SetItem(uplet, 4, param);
