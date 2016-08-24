@@ -30,19 +30,14 @@ class PRMexplorerTestCase(pyAgrumTestCase):
     def testO3PRMAttributes(self):
         prm=gum.PRMexplorer(self.agrumSrcDir('src/testunits/ressources/o3prm/Asia.o3prm')) 
         
-        witness=set(['tubOrCancer', 'positiveXRay', 'dyspnea', 'visitToAsia', 'tuberculosis', 'smoking', 'bronchitis', 'lungCancer'])
-        attrs=prm.attributes('Asia')
+        witness=[('boolean', 'tuberculosis', ['visitToAsia']), ('boolean', 'visitToAsia', []), ('boolean', 'smoking', []), ('boolean', 'dyspnea', ['bronchitis', 'tubOrCancer']), ('boolean', 'lungCancer', ['smoking']), ('boolean', 'tubOrCancer', ['lungCancer', 'tuberculosis']), ('boolean', 'bronchitis', ['smoking']), ('boolean', 'positiveXRay', ['tubOrCancer'])]
+        attrs=prm.classAttributes('Asia')
         self.assertEqual(len(attrs),len(witness))
-        for attr in attrs:
-            self.assertTrue(attr in witness)
-            
-        
-        witness=set(['(boolean)bronchitis', '(boolean)dyspnea', '(boolean)visitToAsia', '(boolean)tuberculosis', '(boolean)lungCancer', '(boolean)tubOrCancer', '(boolean)positiveXRay', '(boolean)smoking'])
-        attrs=prm.attributes('Asia',allAttributes=True)        
-        self.assertEqual(len(attrs),len(witness))
-        for attr in attrs:
-            self.assertTrue(attr in witness)
-        
+        wit_nom=set([nom for (t,nom,par) in witness])
+        for t,n,p in attrs:
+            self.assertTrue(n in wit_nom)
+            self.assertTrue(t == 'boolean')
+                
 
 
 ts = unittest.TestSuite()
