@@ -66,7 +66,7 @@ namespace gum_tests {
       std::vector<gum::prm::LayerGenerator<double>::LayerData> v;
       generateLayerLayer( v, 10 );
       gen->setLayers( v );
-      gum::prm::PRM<double>* prm = 0;
+      gum::prm::PRM<double>* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
       // testing interfaces
       const gum::Set<gum::prm::Interface<double>*>& i_set = prm->interfaces();
@@ -136,7 +136,7 @@ namespace gum_tests {
     }
 
     void testClusterGenerator() {
-      gum::prm::ClusteredLayerGenerator<double>* gen = 0;
+      gum::prm::ClusteredLayerGenerator<double>* gen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
           gen = new gum::prm::ClusteredLayerGenerator<double>() );
       gen->setDomainSize( 6 );
@@ -145,7 +145,7 @@ namespace gum_tests {
       std::vector<gum::prm::LayerGenerator<double>::LayerData> v;
       generateLayerLayer( v, 10 );
       gen->setLayers( v );
-      gum::prm::PRM<double>* prm = 0;
+      gum::prm::PRM<double>* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
       // testing interfaces
       const gum::Set<gum::prm::Interface<double>*>& i_set = prm->interfaces();

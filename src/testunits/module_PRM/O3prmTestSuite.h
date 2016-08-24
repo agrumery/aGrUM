@@ -227,7 +227,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
         TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
         reader.showElegantErrorsAndWarnings();
-        gum::prm::PRM<double>* prm = 0;
+        gum::prm::PRM<double>* prm = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
         if ( prm ) {
           TS_ASSERT_EQUALS( prm->classes().size(), (gum::Size)7 );
@@ -1097,7 +1097,7 @@ namespace gum_tests {
             set.erase( var->name() );
           }
         }
-        TS_ASSERT_EQUALS( set.size(), 0 );
+        TS_ASSERT_EQUALS( set.size(), (gum::Size)0 );
         delete prm;
       } catch ( gum::Exception ) {
         TS_ASSERT( false );
@@ -1125,7 +1125,7 @@ namespace gum_tests {
             set.erase( var->name() );
           }
         }
-        TS_ASSERT_EQUALS( set.size(), 0 );
+        TS_ASSERT_EQUALS( set.size(), (gum::Size)0 );
         delete prm;
       } catch ( gum::Exception ) {
         TS_ASSERT( false );
@@ -1153,7 +1153,7 @@ namespace gum_tests {
             set.erase( var->name() );
           }
         }
-        TS_ASSERT_EQUALS( set.size(), 0 );
+        TS_ASSERT_EQUALS( set.size(), (gum::Size)0 );
         delete prm;
       } catch ( gum::Exception ) {
         TS_ASSERT( false );
@@ -1168,7 +1168,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
         TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
         reader.showElegantErrorsAndWarnings();
-        gum::prm::PRM<double>* prm = 0;
+        gum::prm::PRM<double>* prm = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
 
         if ( prm ) {
@@ -1191,9 +1191,9 @@ namespace gum_tests {
           reader.showElegantErrorsAndWarnings();
         }
 
-        gum::prm::PRM<double>* prm = 0;
+        gum::prm::PRM<double>* prm = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        gum::prm::System<double>* sys = 0;
+        gum::prm::System<double>* sys = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
         gum::prm::Class<double>& Power = prm->getClass( "PowerSupply" );
         gum::prm::Class<double>& Room = prm->getClass( "Room" );
@@ -1258,9 +1258,9 @@ namespace gum_tests {
             reader.readFile( GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ) ) );
         TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
         TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
-        gum::prm::PRM<double>* prm = 0;
+        gum::prm::PRM<double>* prm = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        gum::prm::System<double>* sys = 0;
+        gum::prm::System<double>* sys = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
 
         for ( gum::prm::System<double>::iterator iter = sys->begin();
@@ -1314,7 +1314,7 @@ namespace gum_tests {
                           (gum::Size)11 );  // Don't forget param subclasses !
 
         TS_ASSERT_EQUALS( prm->systems().size(), (gum::Size)1 );
-        gum::prm::System<double>* sys = 0;
+        gum::prm::System<double>* sys = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(
             sys = &( prm->system( "systems.MySystem.MySystem" ) ) );
         TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
@@ -1753,8 +1753,7 @@ namespace gum_tests {
                    gum::prm::ClassElement<double>::isAggregate( *elt ) ) {
 
                 GUM_TRACE( inst->type().name()
-                           << "."
-                           << inst->type().get( node ).safeName() );
+                           << "." << inst->type().get( node ).safeName() );
               }
             }
           }
@@ -1863,8 +1862,7 @@ namespace gum_tests {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader<double> reader;
-        std::string file =
-            GET_RESSOURCES_PATH( "o3prm/arrays.o3prm" );
+        std::string file = GET_RESSOURCES_PATH( "o3prm/arrays.o3prm" );
         std::string package = "";
         // Act
         TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
@@ -1888,7 +1886,6 @@ namespace gum_tests {
         GUM_TRACE( e.errorCallStack() );
       }
     }
-
   };
 
 }  // namespace gum_tests
