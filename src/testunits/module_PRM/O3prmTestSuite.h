@@ -17,9 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <cmath>
 #include <iostream>
 #include <string>
-#include <cmath>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
@@ -1242,6 +1242,9 @@ namespace gum_tests {
         }
 
         TS_ASSERT_EQUALS( count, 18 );
+
+        TS_ASSERT( sys->skeleton().nodes().size() > 0 );
+        TS_ASSERT( sys->skeleton().arcs().size() > 0 );
 
         if ( prm ) {
           delete prm;

@@ -56,41 +56,6 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::addArc( const std::string& u_name,
-                                     const std::string& v_name,
-                                     const std::string& ref_name ) {
-      Instance<GUM_SCALAR>* u = nullptr;
-      Instance<GUM_SCALAR>* v = nullptr;
-      ReferenceSlot<GUM_SCALAR>* ref = nullptr;
-
-      try {
-        u = __nameMap[u_name];
-        v = __nameMap[v_name];
-      } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "found no instance matching the given names" );
-      }
-
-      try {
-        ClassElement<GUM_SCALAR>& elt = u->type().get( ref_name );
-
-        if ( elt.elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) {
-          ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( &elt );
-        } else {
-          GUM_ERROR( WrongClassElement,
-                     "the given name does not match a "
-                     "ReferenceSlot<GUM_SCALAR> in u's type" );
-        }
-      } catch ( NotFound& ) {
-        GUM_ERROR(
-            NotFound,
-            "found no ClassElement<GUM_SCALAR> matching the given name" );
-      }
-
-      u->add( ref->id(), *v );
-      __skeleton.addArc( __nodeIdMap.keyByVal( u ), __nodeIdMap.keyByVal( v ) );
-    }
-
-    template <typename GUM_SCALAR>
     NodeId System<GUM_SCALAR>::add( Instance<GUM_SCALAR>* i ) {
       if ( __nameMap.exists( i->name() ) ) {
         GUM_ERROR(
@@ -100,6 +65,7 @@ namespace gum {
 
       NodeId id = __skeleton.addNode();
       __nodeIdMap.insert( id, i );
+      __instance2Node.insert( i, id );
       __nameMap.insert( i->name(), i );
 
       try {
@@ -401,7 +367,7 @@ namespace gum {
     INLINE NodeId
     System<GUM_SCALAR>::get( const Instance<GUM_SCALAR>& i ) const {
       try {
-        return __nodeIdMap.keyByVal( const_cast<Instance<GUM_SCALAR>*>( &i ) );
+        return __instance2Node[const_cast<Instance<GUM_SCALAR>*>( &i )];
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
                    "found no Instance<GUM_SCALAR> matching the given id" );
@@ -439,6 +405,17 @@ namespace gum {
     INLINE void System<GUM_SCALAR>::instantiate() {
       for ( auto iter = begin(); iter != end(); ++iter ) {
         ( *( iter.val() ) ).instantiate();
+
+        const auto& type = iter.val()->type();
+
+        for ( auto ref : type.referenceSlots() ) {
+
+          for ( auto inst : iter.val()->getInstances( ref->id() ) ) {
+
+            __skeleton.addArc( __instance2Node[iter.val()],
+                               __instance2Node[inst] );
+          }
+        }
       }
     }
 

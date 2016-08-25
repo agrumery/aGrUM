@@ -86,10 +86,6 @@ namespace gum {
 
       NodeId get( const Instance<GUM_SCALAR>& i ) const;
 
-      void addArc( const std::string& u,
-                   const std::string& v,
-                   const std::string& ref );
-
       /// @}
       // ========================================================================
       /// @name Getters & setters over Instance and array of Instance.
@@ -264,6 +260,12 @@ namespace gum {
       /// The maping between Instance and their NodeId in the relational
       /// skeleton of this System.
       NodeProperty<Instance<GUM_SCALAR>*> __nodeIdMap;
+
+      /// The maping between Instance and their NodeId in the relational
+      /// skeleton of this System. We are not using Bijection to not break
+      /// existing code (Bijection's iterator are not compatible with
+      /// NodeProperty iterators).
+      HashTable<Instance<GUM_SCALAR>*, NodeId> __instance2Node;
 
       /// The mapping between Instance and their names.
       HashTable<std::string, Instance<GUM_SCALAR>*> __nameMap;
