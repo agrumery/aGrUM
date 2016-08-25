@@ -155,7 +155,7 @@ namespace gum {
           for ( std::vector<std::string>::iterator a = l[lvl].a.begin();
                 a != l[lvl].a.end();
                 ++a ) {
-            f.startAttribute( type, *a );
+            f.startAttribute( type, *a, true );
             size = getDomainSize();
 
             for ( const auto par : dag.parents( names.second( *a ) ) ) {
@@ -221,7 +221,7 @@ namespace gum {
             for ( std::vector<std::string>::iterator a = l[lvl].a.begin();
                   a != l[lvl].a.end();
                   ++a ) {
-              f.startAttribute( type, *a );
+              f.startAttribute( type, *a, true );
               size = getDomainSize();
 
               for ( const auto par : dag.parents( names.second( *a ) ) ) {
@@ -278,7 +278,7 @@ namespace gum {
             for ( std::vector<std::string>::iterator a = l[lvl].a.begin();
                   a != l[lvl].a.end();
                   ++a ) {
-              f.startAttribute( type, *a );
+              f.startAttribute( type, *a, true );
               size = getDomainSize();
 
               for ( const auto par : dag.parents( names.second( *a ) ) ) {
@@ -350,7 +350,7 @@ namespace gum {
 
       // Adding attributes
       for ( const auto attr : l[lvl].a ) {
-        f.startAttribute( type, attr );
+        f.startAttribute( type, attr, true );
         size = getDomainSize();
 
         for ( const auto par : dag.parents( names.second( attr ) ) ) {

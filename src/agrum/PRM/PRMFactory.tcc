@@ -409,12 +409,13 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::setRawCPFByLines(
         const std::vector<GUM_SCALAR>& array ) {
-      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>(
-          __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
+      auto elt = __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute );
+      auto a = static_cast<Attribute<GUM_SCALAR>*>( elt );
       __checkStack( 2, PRMObject::PRMType::CLASS );
 
-      if ( a->cpf().domainSize() != array.size() )
+      if ( a->cpf().domainSize() != array.size() ) {
         GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
+      }
 
       a->cpf().fillWith( array );
     }
@@ -1594,11 +1595,12 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void
     PRMFactory<GUM_SCALAR>::startAttribute( const std::string& type,
-                                            const std::string& name ) {
+                                            const std::string& name,
+                                            bool scalar_attr ) {
       ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
       Attribute<GUM_SCALAR>* a = nullptr;
 
-      if ( PRMObject::isClass( *c ) ) {
+      if ( PRMObject::isClass( *c ) && ( !scalar_attr ) ) {
 
         a = new FormAttribute<GUM_SCALAR>(
             static_cast<Class<GUM_SCALAR>&>( *c ),

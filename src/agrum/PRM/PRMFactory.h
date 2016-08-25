@@ -394,7 +394,8 @@ namespace gum {
        * @throw FatalError Raised if the given operation is illegal.
        */
       virtual void startAttribute( const std::string& type,
-                                   const std::string& name ) override;
+                                   const std::string& name,
+                                   bool scalar_atttr = false ) override;
 
       /**
        * Continues the declaration of an attribute.

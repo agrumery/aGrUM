@@ -217,18 +217,6 @@ namespace gum_tests {
       }
     }
 
-    void __generateLayer1(
-        std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
-      for ( size_t lvl = 0; lvl < 5; ++lvl ) {
-        v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
-        v[lvl].a = 10;
-        v[lvl].g = 2;
-        v[lvl].c = 1;
-        v[lvl].o = 10;
-        v[lvl].inner_density = 0.2;
-        v[lvl].outter_density = 0.05;
-      }
-    }
   };
 
 }  // namespace gum_tests
