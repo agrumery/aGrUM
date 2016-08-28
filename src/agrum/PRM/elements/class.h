@@ -389,12 +389,25 @@ namespace gum {
       /// attributes in c.
       Bijection<const DiscreteVariable*, const DiscreteVariable*>* __bijection;
 
-
       /// Proceed with the copy when this inherits c.
       void __inheritClass( const Class<GUM_SCALAR>& c );
    
       /// Proceed with the implementation of interfaces
       void __implementInterfaces(bool delayInheritance);
+
+      /// Check that a given element respects all the class interfaces
+      void __checkInterfaces( ClassElement<GUM_SCALAR>* elt );
+
+      /// Check that a given element respects a specific interface
+      void __checkInterface( ClassElement<GUM_SCALAR>* elt,
+                            Interface<GUM_SCALAR>* i );
+
+      /// Check that a given element respects all the class interfaces
+      void __checkRefInterfaces( ReferenceSlot<GUM_SCALAR>* elt );
+
+      /// Check that a given element respects a specific interface
+      void __checkRefInterface( ReferenceSlot<GUM_SCALAR>* elt,
+                                Interface<GUM_SCALAR>* i );
 
       /// Check if elt is present in an implementation. If it is, its IO flags
       /// are updated.
