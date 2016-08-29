@@ -75,5 +75,5 @@ namespace gum {
       return new Min<GUM_SCALAR>;
     }
 
-  }  // aggregator
+  }  // namespace aggregator
 }  // namespace gum

@@ -35,7 +35,6 @@ namespace gum {
     // ===                       GUM_MULTI_DIM_AGGREGATOR                    ===
     // =========================================================================
 
-    // clang-format off
     /**
      * @class MultiDimAggregator
      * @headerfile multiDimAggregator.h <agrum/multidim/aggregators/multiDimAggregator.h>
@@ -57,7 +56,6 @@ namespace gum {
      *  However, \f$f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ is
      *  truncated in order to fit in domain(aggregator variable).
      */
-    // clang-format on
     template <typename GUM_SCALAR>
     class MultiDimAggregator : public MultiDimReadOnly<GUM_SCALAR> {
       public:
@@ -69,7 +67,7 @@ namespace gum {
       /**
        * Default constructor.
        */
-      MultiDimAggregator();
+      MultiDimAggregator(  );
 
       /**
        * Copy constructor.
