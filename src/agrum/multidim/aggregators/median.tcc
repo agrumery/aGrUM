@@ -67,6 +67,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Idx Median<GUM_SCALAR>::_buildValue( const gum::Instantiation& i ) const {
+      if (i.nbrDim()<2)
+        return i.nbrDim()/2; // arbitrary. Guess = (max-min)/2 .
+
       // we assume that every (parent) variable has the same domainSize
       Idx maxVal = i.variable( 1 ).domainSize();
 
@@ -102,5 +105,5 @@ namespace gum {
       return 0;
     }
 
-  }  // aggregator
+  }  // namespace aggregator
 }  // namespace gum
