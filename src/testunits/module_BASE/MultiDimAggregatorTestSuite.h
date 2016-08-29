@@ -538,5 +538,71 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
       TS_ASSERT_EQUALS( s, res1 );
     }
+
+    void testForall_Min() {
+      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 );
+
+      std::string res0 = "0-0-0-1"; // min of zero value is +infinity
+      std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
+      gum::aggregator::Min<float> p;
+
+      gum::Instantiation ind( p );
+      std::string s;
+
+      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+
+      p << a;
+      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
+      TS_ASSERT_EQUALS( s, res0 );
+
+      p << b;
+      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
+      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
+      TS_ASSERT_EQUALS( s, res1 );
+    }
+
+    void testForall_Max() {
+      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 );
+
+      std::string res0 = "1-0-0-0"; // max of zero value is -infinity
+      std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
+      gum::aggregator::Max<float> p;
+
+      gum::Instantiation ind( p );
+      std::string s;
+
+      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+
+      p << a;
+      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
+      TS_ASSERT_EQUALS( s, res0 );
+
+      p << b;
+      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
+      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
+      TS_ASSERT_EQUALS( s, res1 );
+    }
+
+    void testForall_Count() {
+      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 2 );
+
+      std::string res0 = "1-0-0-0"; // max of zero value is -infinity
+      std::string res1 = "1-0-0-0-0-1-0-0-0";
+      gum::aggregator::Count<float> p(1);
+
+      gum::Instantiation ind( p );
+      std::string s;
+
+      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+
+      p << a;
+      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
+      TS_ASSERT_EQUALS( s, res0 );
+
+      p << b;
+      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
+      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
+      TS_ASSERT_EQUALS( s, res1 );
+    }
   };
 };
