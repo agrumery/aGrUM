@@ -506,6 +506,11 @@ class PRMexplorer(_object):
         return _pyAgrum.PRMexplorer_classAttributes(self, class_name)
 
 
+    def isAttribute(self, class_name, att_name):
+        """isAttribute(PRMexplorer self, std::string class_name, std::string att_name) -> PyObject *"""
+        return _pyAgrum.PRMexplorer_isAttribute(self, class_name, att_name)
+
+
     def classReferences(self, class_name):
         """classReferences(PRMexplorer self, std::string class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classReferences(self, class_name)
@@ -538,6 +543,11 @@ class PRMexplorer(_object):
     def classDag(self, class_name):
         """classDag(PRMexplorer self, std::string class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classDag(self, class_name)
+
+
+    def getalltheSystems(self):
+        """getalltheSystems(PRMexplorer self) -> PyObject *"""
+        return _pyAgrum.PRMexplorer_getalltheSystems(self)
 
 
     def getSuperClass(self, class_name):
