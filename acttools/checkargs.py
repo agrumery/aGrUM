@@ -134,6 +134,11 @@ def checkConsistency(current):
   if current['stats'] and current['oneByOne']:
     has_notif=True
     notif("Options [stats] and [oneByOne] are mutually exclusive")
+    
+  if current['mvsc']:
+    current['static']=True
+    notif("Option [static] forced by option [mvsc]")
+    has_notif=True
 
   # check -t and -m  
   check_modules(current)

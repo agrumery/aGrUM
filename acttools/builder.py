@@ -96,16 +96,16 @@ def getForMsBuildSystem(current,target):
   if cfg.msbuild is None:
     critic("MsBuild not found")
   else:
-      if current["action"]=="test":
-        if target =="aGrUM":
-          line=cfg.msbuild+' agrum.sln /t:gumTest /p:Configuration="Release"'
-        elif target!= "pyAgrum":
-          critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
-      elif current["action"]=="install":
-        line=cfg.msbuild+' agrum.sln /t:INSTALL /p:Configuration="Release"'
-      else:
-        critic("Action '"+current["action"]+"' not treated for now in windows weird world.")
-      line+=' /maxcpucount:'+str(current["jobs"])
+    if current["action"]=="test":
+      if target =="aGrUM":
+        line=cfg.msbuild+' agrum.sln /t:gumTest /p:Configuration="Release"'
+      elif target!= "pyAgrum":
+        critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
+    elif current["action"]=="install":
+      line=cfg.msbuild+' INSTALL.vcxproj /p:Configuration="Release"'
+    else:
+      critic("Action '"+current["action"]+"' not treated for now in windows weird world.")
+    line+=' /maxcpucount:'+str(current["jobs"])
   return line
 
 def getForMakeSystem(current,target):
