@@ -99,8 +99,8 @@ def getForMsBuildSystem(current,target):
     if current["action"]=="test":
       if target =="aGrUM":
         line=cfg.msbuild+' agrum.sln /t:gumTest /p:Configuration="Release"'
-      elif target!= "pyAgrum":
-        critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
+      else: #if target!= "pyAgrum":
+        critic("Action '"+current["action"]+"' not treated for target '"+target+"' for now in windows weird world.")
     elif current["action"]=="install":
       line=cfg.msbuild+' INSTALL.vcxproj /p:Configuration="Release"'
     else:

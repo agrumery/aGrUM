@@ -636,7 +636,7 @@ namespace gum_tests {
     //     gum::prm::PRM<double>* prm = reader.prm();
     //     TS_GUM_ASSERT_THROWS_NOTHING(
     //         prm->getClass( "fr.lip6.printers.BWPrinter" ) );
-    //     gum::prm::Class<double>& BWPrinter =
+    //     gum::prm::PRMClass<double>& BWPrinter =
     //         prm->getClass( "fr.lip6.printers.BWPrinter" );
     //     TS_ASSERT_EQUALS( BWPrinter.referenceSlots().size(), (gum::Size)1 );
     //     TS_ASSERT_EQUALS( BWPrinter.attributes().size(), (gum::Size)9 );
@@ -754,7 +754,7 @@ namespace gum_tests {
     //    gum::prm::PRM<double>* prm = reader.prm();
     //    TS_GUM_ASSERT_THROWS_NOTHING(
     //        prm->getClass( "fr.lip6.printers.ColorPrinter" ) );
-    //    gum::prm::Class<double>& ColorPrinter =
+    //    gum::prm::PRMClass<double>& ColorPrinter =
     //        prm->getClass( "fr.lip6.printers.ColorPrinter" );
     //    TS_ASSERT_EQUALS( ColorPrinter.referenceSlots().size(), (gum::Size)1
     //    );
@@ -1084,7 +1084,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
-        gum::prm::Class<double>& SafeComputer =
+        gum::prm::PRMClass<double>& SafeComputer =
             prm->getClass( "fr.lip6.printers.SafeComputer" );
         TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
         TS_ASSERT( SafeComputer.exists( "can_print" ) );
@@ -1113,7 +1113,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
-        gum::prm::Class<double>& SafeComputer =
+        gum::prm::PRMClass<double>& SafeComputer =
             prm->getClass( "fr.lip6.printers.Computer" );
         TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
         TS_ASSERT( SafeComputer.exists( "equipState" ) );
@@ -1141,7 +1141,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
         gum::prm::PRM<double>* prm = reader.prm();
-        gum::prm::Class<double>& SafeComputer =
+        gum::prm::PRMClass<double>& SafeComputer =
             prm->getClass( "fr.lip6.printers.SafeComputer" );
         TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
         TS_ASSERT( SafeComputer.exists( "equipState" ) );
