@@ -21,6 +21,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <iterator>
 #include <algorithm>
 #include <list>
 #include <vector>
