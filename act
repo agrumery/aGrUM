@@ -36,12 +36,23 @@ def main():
   configureOptions(current)
 
   (options, args)=parseCommandLine(current)
+  
+  noFunForced=False
+  if current['mvsc']:
+    options.static_lib=True
+    options.no_fun=True
+    noFunForced=True
+    
   # colors, fun & verbosity partly controlled by options (--no-fun, ...)
   configureOutputs(options)
 
   if not options.no_fun:
     about()
 
+  if noFunForced:  
+    notif("Options [static] and [no-fun] forced by option [mvsc]")
+    print()
+    
   configureTools()
 
   # check current consistency and update it if necessary

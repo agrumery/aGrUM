@@ -142,7 +142,10 @@ def getPost(current,target):
   if current["action"]=="test":
     if target=="aGrUM":
       if cfg.os_platform=="win32":
-        line="src\\gumTest.exe"
+        if current['mode']=="release":
+          line="src\\Release\\gumTest.exe"
+        else:
+          line="src\\Debug\\gumTest.exe"
       else:
         line="src/gumTest"
       return line,True
