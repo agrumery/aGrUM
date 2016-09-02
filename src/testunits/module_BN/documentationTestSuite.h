@@ -36,7 +36,6 @@ namespace gum_tests {
 
     public:
     void testBayesNet() {
-      GUM_CHECKPOINT;
       try {
         auto bn = gum::BayesNet<double>( "Asia" );
         // Variables are added by copy to the BayesNet, so you can use a single
@@ -124,7 +123,6 @@ namespace gum_tests {
     }
 
     void testBayesNetFactory() {
-      GUM_CHECKPOINT;
       try {
         auto asia = gum::BayesNet<double>();
         auto factory = gum::BayesNetFactory<double>( &asia );
@@ -266,7 +264,6 @@ namespace gum_tests {
     }
 
     void testInference() {
-      GUM_CHECKPOINT;
       try {
         auto asia = gum::BayesNet<double>( "Asia" );
         // Constructing the BayesNet...
@@ -330,7 +327,6 @@ namespace gum_tests {
     }
 
     void testSerialization() {
-      GUM_CHECKPOINT;
       try {
         auto asia = gum::BayesNet<double>( "Asia" );
         // One implementation of the gum::BNReader class
@@ -348,7 +344,6 @@ namespace gum_tests {
     }
 
     void testDeserialization() {
-      GUM_CHECKPOINT;
       try {
         auto asia = gum::BayesNet<double>( "Asia" );
         // Constructing BayesNet...
@@ -402,7 +397,8 @@ namespace gum_tests {
 
           // This will write the asia BayesNet in the given file
           writer.write( buff, asia );
-        } catch ( gum::IOError& ) {
+        } catch ( gum::IOError& e) {
+        TS_FAIL( e.errorContent() );
           // A gum::IOError will be raised if an error occured
         }
       } catch ( gum::Exception&e ) {
