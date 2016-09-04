@@ -106,8 +106,7 @@ namespace gum {
       bool exists( const std::string& name ) const;
 
       /// Returns true if the given Class<GUM_SCALAR> has at least one PRMInstance
-      /// in this
-      /// PRMSystem.
+      /// in this PRMSystem.
       bool isInstantiated( const PRMClass<GUM_SCALAR>& c ) const;
 
       /// Returns true if an PRMInstance with the given name exists.

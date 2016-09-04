@@ -27,7 +27,7 @@ tools for BN analysis in ipython qtconsole and notebook
 (but can be used every where)
 """
 from __future__ import print_function
-from base64 import encodestring
+import base64 
 import numpy as np
 import time
 
@@ -47,6 +47,9 @@ import shutil
 import pyAgrum as gum
 
 def configuration():
+  """
+  Display the collection of dependance and versions 
+  """
   from collections import OrderedDict
   import sys,os
 
@@ -69,42 +72,59 @@ def configuration():
   return IPython.display.HTML(res)
 
 
-def showGraph(gr,size="4",format="png"):
+def showGraph(gr,size="4",format="png",asString=False):
+  """
+  show a pydot graph in a notebook
+  
+  @param string format : render as png or create_svg
+  @param string size : size of the rendered graph
+  @param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+  """
   gr.set_size(size)
   if format=="svg":
     gsvg=SVG(gr.create_svg())
-    display(HTML("<div align='center'>"+gsvg.data+"</div>"))
+    if asString:
+        return gsvg.data
+    else:
+        display(HTML(gsvg.data))
   else:
-    display_png(Image(format="png",data=gr.create_png()))
+    i=Image(format="png",data=gr.create_png())
+    if asString:
+        return '<img style="margin:0" src="data:image/png;base64,{}"/>'.format(base64.encodebytes(i.data).decode())
+    else:
+        display_png(Image(format="png",data=gr.create_png()))
+        
 
-def showDot(dotstring,size="4",format="png"):
-  showGraph(dot.graph_from_dot_data(dotstring),size,format)
+def showDot(dotstring,size="4",format="png",asString=False):
+  """
+  show a dot string as a graph
+  
+  @param string format : render as "png" or "svg"
+  @param string size : size of the rendered graph
+  @param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+  """
+  return showGraph(dot.graph_from_dot_data(dotstring),size,format,asString)
 
-def showJunctionTree(bn,size="4",format="png"):
+def showJunctionTree(bn,size="4",format="png",asString=False):
+  """
+  show a junctionTree
+  
+  @param string format : render as png or create_svg
+  @param string size : size of the rendered graph
+  @param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+  """
   ie=gum.LazyPropagation(bn)
-  showDot(ie.junctionTreeToDot(),size,format)
+  return showDot(ie.junctionTreeToDot(),size,format,asString)
 
-def showInfluenceDiagram(diag,size="4",format="png"):
-  showDot(diag.toDot(),size,format)
-
-#def getJunctionTree(bn,size="4"):
-  #ie=gum.LazyPropagation(bn)
-  #graph=dot.graph_from_dot_data(ie.junctionTreeToDot())
-  #graph.set_size(size)
-  #return IPython.display.SVG(graph.create_svg())
-
-#def showJunctionTree(bn,size="4"):
-  #gr=getJunctionTree(bn,size)
-  #IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
-
-#def getInfluenceDiagram(diag,size="4"):
-  #graph=dot.graph_from_dot_data(diag.toDot())
-  #graph.set_size(size)
-  #return IPython.display.SVG(graph.create_svg())
-
-#def showInfluenceDiagram(diag,size="4"):
-  #gr=getInfluenceDiagram(diag,size)
-  #IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
+def showInfluenceDiagram(diag,size="4",format="png",asString=False):
+  """
+  show an influence diagram as a graph
+  
+  @param string format : render as png or create_svg
+  @param string size : size of the rendered graph
+  @param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+  """
+  return showDot(diag.toDot(),size,format,asString)
 
 def getPosterior(bn,evs,target):
     """
@@ -281,9 +301,18 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
     graph.set_size(size)
     return graph
 
-def showBN(bn,size="4",vals=None,cmap=INFOcmap,format="svg"):
+def showBN(bn,size="4",vals=None,cmap=INFOcmap,format="svg",asString=False):
+  """
+  show a Bayesian network
+  
+  @param string format : render as png or create_svg
+  @params dictionnary vals: a nodeMap of values to be shown as color nodes
+  @params INFOcmap cmap: color map
+  @param string size : size of the rendered graph
+  @param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+  """
   gr=getBN(bn,size,vals,cmap)
-  showGraph(gr,size,format)
+  return showGraph(gr,size,format,asString)
 
 
 def _normalizeVals(vals,hilightExtrema=False):
@@ -332,7 +361,7 @@ def showEntropy(bn,evs,size="4",cmap=INFOcmap):
                                    orientation='horizontal')
   cb1.set_label('Entropy')
   png=print_figure(canvas.figure,"png") # from IPython.core.pylabtools
-  png_legend="<img style='vertical-align:middle' src='data:image/png;base64,%s'>"%encodestring(png).decode('ascii')
+  png_legend="<img style='vertical-align:middle' src='data:image/png;base64,%s'>"%base64.encodestring(png).decode('ascii')
 
   gsvg=SVG(gr.create_svg())
   IPython.display.display(IPython.display.HTML("<div align='center'>"+
@@ -344,7 +373,17 @@ def showEntropy(bn,evs,size="4",cmap=INFOcmap):
                               "</div>"))
 
 
-def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
+def showInference(bn,engine=None,evs={},targets={},size="7",format='png',asString=False):
+    """
+    show an inference as a graph
+    
+    @param gum.Inference engine : inference algorithm used. If None, LazyPropagation will be used
+    @params dictionnary evs : set of evidence
+    @params set targets : set of targets
+    @param string format : render as png or create_svg
+    @param string size : size of the rendered graph
+    @param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+    """
     startTime = time.time()
     # targets={} => each node is a target
     if engine is None:
@@ -377,9 +416,10 @@ def showInference(bn,engine=None,evs={},targets={},size="7",format='png'):
     dotstr+='}'
 
     g=dot.graph_from_dot_data(dotstr)
-    showGraph(g,size=size,format=format)
+    sss=showGraph(g,size=size,format=format,asString=asString)
 
     shutil.rmtree(temp_dir)
+    return sss
 
 def showPotential(pot,asString=False,digits=4,varnames=None):
     """
@@ -445,3 +485,25 @@ def showPotential(pot,asString=False,digits=4,varnames=None):
         return "\n".join(html)
     else:
         return HTML("".join(html))
+
+
+def sideBySide(htmls,titles=None):
+  """
+  display side by side args as HMTL fragment as string
+  @param list htmls : list of HMTL fragments as string
+  @param list titles : list of string (titles, optional)
+  """
+  s='<table style="border-style: hidden; border-collapse: collapse;" width="100%">'
+  
+  s+='<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'
+  s+='</div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'.join(htmls)
+  s+='</div></td></tr>'
+  
+  if titles is not None:
+    s+='<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'
+    s+='</div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'.join(titles)
+    s+='</div></td></tr>'
+  
+  s+='</table>'
+  
+  display(HTML(s))

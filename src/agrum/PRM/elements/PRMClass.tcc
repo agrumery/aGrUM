@@ -580,55 +580,8 @@ namespace gum {
 
           // Update attribute or cast descendant id to respect implemented
           // interface
-          try {
-            for ( auto i : implements() ) {
-              if ( i->exists( elt->name() ) ) {
-                if ( ! PRMClassElement<GUM_SCALAR>::isAttribute(
-                         i->get( elt->name() ) ) ) {
-                  GUM_ERROR( OperationNotAllowed,
-                             "Class does not respect it's interface" );
-                }
-                auto attr = static_cast<PRMAttribute<GUM_SCALAR>*>( elt );
-                auto& i_attr = static_cast<PRMAttribute<GUM_SCALAR>&>(
-                    i->get( attr->name() ) );
-                if ( ! attr->type().isSubTypeOf( i_attr.type() ) ) {
-                  GUM_ERROR(
-                      OperationNotAllowed,
-                      "PRMAttribute type does not respect class interface" );
-                }
-                if ( attr->type() != i_attr.type() ) {
-                  if ( ! this->exists( i_attr.safeName() ) ) {
-                    GUM_ERROR(
-                        OperationNotAllowed,
-                        "PRMAttribute type does not respect class interface" );
-                  }
-                  attr = static_cast<PRMAttribute<GUM_SCALAR>*>(
-                      &( this->get( i_attr.safeName() ) ) );
-                }
-                // Node must be reserved by constructor
-                if ( ! __dag.existsNode( i_attr.id() ) ) {
-                  GUM_ERROR( FatalError,
-                             "class " << this->name()
-                                      << " does not respect interface "
-                                      << i->name()
-                                      << " implementation" );
-                }
-                // Removing unused node and changing to proper node
-                if ( attr->id() != i_attr.id() ) {
-                  // Update cast descendants
-                  for ( auto child : __dag.children( attr->id() ) ) {
-                    __dag.addArc( i_attr.id(), child );
-                  }
-                  __dag.eraseNode( attr->id() );
-                }
-                __nodeIdMap.erase( attr->id() );
-                attr->setId( i_attr.id() );
-                __nodeIdMap.insert( attr->id(), attr );
-              }
-            }
-          } catch ( NotFound&  ) {
-            // No interface
-          }
+          __checkInterfaces( elt );
+
           __addIOInterfaceFlags( elt );
           break;
         }
@@ -636,88 +589,21 @@ namespace gum {
         case PRMClassElement<GUM_SCALAR>::prm_aggregate: {
           __aggregates.insert( static_cast<PRMAggregate<GUM_SCALAR>*>( elt ) );
           __addCastDescendants( static_cast<PRMAttribute<GUM_SCALAR>*>( elt ) );
-          try {
-            for ( auto i : implements() ) {
-              if ( i->exists( elt->name() ) ) {
-                if ( ! PRMClassElement<GUM_SCALAR>::isAttribute(
-                         i->get( elt->name() ) ) ) {
-                  GUM_ERROR( OperationNotAllowed,
-                             "Class does not respect it's interface" );
-                }
-                auto& i_attr = static_cast<PRMAttribute<GUM_SCALAR>&>(
-                    i->get( elt->name() ) );
-                if ( ! elt->type().isSubTypeOf( i_attr.type() ) ) {
-                  GUM_ERROR(
-                      OperationNotAllowed,
-                      "PRMAttribute type does not respect class interface" );
-                }
-                if ( elt->type() != i_attr.type() ) {
-                  elt = static_cast<PRMClassElement<GUM_SCALAR>*>(
-                      &( this->get( i_attr.safeName() ) ) );
-                }
-                // Node must be reserved by constructor
-                if ( ! __dag.existsNode( i_attr.id() ) ) {
-                  GUM_ERROR( FatalError,
-                             "class " << this->name()
-                                      << " does not respect interface "
-                                      << i->name()
-                                      << " implementation" );
-                }
-                // Removing unused node and changin to propoer node
-                if ( elt->id() != i_attr.id() ) {
-                  __dag.eraseNode( elt->id() );
-                }
-                __nodeIdMap.erase( elt->id() );
-                elt->setId( i_attr.id() );
-                __nodeIdMap.insert( elt->id(), elt );
-              }
-            }
-          } catch ( NotFound&  ) {
-            // No interface
-          }
+
+          // Update attribute or cast descendant id to respect implemented
+          // interface
+          __checkInterfaces( elt );
+
           __addIOInterfaceFlags( elt );
           break;
         }
 
         case PRMClassElement<GUM_SCALAR>::prm_refslot: {
-          PRMReferenceSlot<GUM_SCALAR>* ref =
-              static_cast<PRMReferenceSlot<GUM_SCALAR>*>( elt );
+          auto ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( elt );
           __referenceSlots.insert( ref );
+
           // Updating ref's id if ref implements an interface
-          try {
-            for ( auto i : implements() ) {
-              if ( i->exists( ref->name() ) ) {
-                auto& i_elt = i->get( ref->name() );
-                if ( i_elt.elt_type() != ref->elt_type() ) {
-                  GUM_ERROR( OperationNotAllowed,
-                             "Class does not respect it's interface" );
-                }
-                auto& i_ref = static_cast<PRMReferenceSlot<GUM_SCALAR>&>( i_elt );
-                if ( ! ref->slotType().isSubTypeOf( i_ref.slotType() ) ) {
-                  GUM_ERROR(
-                      OperationNotAllowed,
-                      "ReferenceSlot type does not respect class interface" );
-                }
-                // Node must be reserved by constructor
-                if ( ! __dag.exists( i_ref.id() ) ) {
-                  GUM_ERROR( FatalError,
-                             "class " << this->name()
-                                      << " does not respect interface "
-                                      << i->name()
-                                      << " implementation" );
-                }
-                // Removing unused node and changin to propoer node
-                if ( ref->id() != i_ref.id() ) {
-                  __dag.eraseNode( ref->id() );
-                }
-                __nodeIdMap.erase( ref->id() );
-                ref->setId( i_ref.id() );
-                __nodeIdMap.insert( ref->id(), ref );
-              }
-            }
-          } catch ( NotFound&  ) {
-            // No interface to check
-          }
+          __checkRefInterfaces( ref );
           break;
         }
 

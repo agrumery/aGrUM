@@ -54,7 +54,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     Idx MultiDimAggregator<GUM_SCALAR>::_buildValue(
         const Instantiation& i ) const {
-      // is i equal to f(f(f(f...(j_,,neutral_elt))))
+      if (this->nbrDim()==1) return _neutralElt();
+
+      // is i equal to f(f(f(f...(j_,neutral_elt))))
       Idx current = _neutralElt();
 
       bool stop_iteration = false;
@@ -74,7 +76,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     GUM_SCALAR
     MultiDimAggregator<GUM_SCALAR>::get( const Instantiation& i ) const {
-      if ( this->nbrDim() < 2 ) {
+      if ( this->nbrDim() < 1 ) {
         GUM_ERROR( OperationNotAllowed,
                    "Not enough variable for an aggregator : " << *this );
       }

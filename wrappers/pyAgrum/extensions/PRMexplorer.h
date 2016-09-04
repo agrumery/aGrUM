@@ -134,19 +134,26 @@ public:
         PyTuple_SetItem(uplet, 1, PyString_FromString( a->name().c_str() ));
 
         PyObject* depenson = PyList_New(0);
-        for(auto arc : gra.arcs()){
-          if(arc.head() == a->id()){
-            PyList_Append(depenson, PyString_FromString(c.get(arc.tail()).name().c_str()));
-          }
+        for(auto parentId : gra.parents(a->id())){
+          PyList_Append(depenson, PyString_FromString(c.get(parentId).name().c_str()));
         }
 
         PyTuple_SetItem(uplet, 2, depenson);
-
 
         PyList_Append( q, uplet);
       }
     }
     return q;
+  }
+
+  /**
+  * @param class_name : the name of the class
+  * @param att_name : the name of the attribute contained in this class
+  */
+  PyObject* isAttribute( std::string class_name, std::string att_name){
+    auto& ob = __prm->getClass(class_name).get(att_name);
+
+    return gum::prm::ClassElement<double>::isAttribute(ob) ? Py_True : Py_False;
   }
 
   /**
@@ -230,10 +237,8 @@ public:
       }
       PyObject* param = PyList_New( 0 );
 
-      for(auto arc : gra.arcs()){
-        if(arc.head() == a->id()){
-          PyList_Append(param, PyString_FromString(c.get(arc.tail()).name().c_str()));
-        }
+      for(auto parentId : gra.parents(a->id())){
+        PyList_Append(param, PyString_FromString(c.get(parentId).name().c_str()));
       }
 
       PyTuple_SetItem(uplet, 4, param);
@@ -279,6 +284,7 @@ public:
   * @param class_name : the name of the class
   */
   PyObject* classDag(std::string class_name){
+
     PyObject* uplet = PyTuple_New(2);
     auto &  c = __prm->getClass(class_name);
     PyObject* d = PyDict_New();
@@ -291,6 +297,50 @@ public:
     PyTuple_SetItem(uplet, 1, PyString_FromString( gra.toDot().c_str() ));
     return uplet;
   }
+
+  /**
+  * @return a list of 3-uplets (nameofsystem,dictinary of ids  their name & type,list of arcs:[(tail,head),..] )
+  */
+    PyObject* getalltheSystems(){
+      PyObject* l = PyList_New( 0 );
+
+      auto the_systems=__prm->systems();
+
+      unsigned long var=0;
+      for (auto a_system : the_systems){
+        PyObject* uplet = PyTuple_New(3);
+        PyObject* a = PyList_New(0);
+        PyObject* n = PyDict_New();
+
+        auto graph=a_system->skeleton();
+
+        PyTuple_SetItem(uplet, 0,  PyString_FromString(a_system->name().c_str()));
+
+        for(auto node : graph.nodes()){
+          PyObject* tnode = PyTuple_New(2);
+          PyTuple_SetItem(tnode, 0, PyString_FromString(a_system->get(node).name().c_str()) );
+          PyTuple_SetItem(tnode, 1, PyString_FromString(a_system->get(node).type().name().c_str()) );
+          PyDict_SetItem(n, PyLong_FromUnsignedLong((unsigned long)node), tnode );
+
+        }
+
+
+        for(auto arc : graph.arcs()){
+          PyObject* tarc = PyTuple_New(2);
+          PyTuple_SetItem(tarc, 0, PyLong_FromUnsignedLong((unsigned long)arc.tail()));
+          PyTuple_SetItem(tarc, 1, PyLong_FromUnsignedLong((unsigned long)arc.head()));
+          PyList_Append(a, tarc);
+        }
+
+        PyTuple_SetItem(uplet, 1, n);
+        PyTuple_SetItem(uplet, 2, a);
+        PyList_Append(l, uplet);
+
+        var=var+1;
+      }
+
+      return l;
+    }
 
   /**
   * @return the name of the super class

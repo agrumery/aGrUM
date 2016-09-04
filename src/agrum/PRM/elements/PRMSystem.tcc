@@ -56,41 +56,6 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void PRMSystem<GUM_SCALAR>::addArc( const std::string& u_name,
-                                     const std::string& v_name,
-                                     const std::string& ref_name ) {
-      PRMInstance<GUM_SCALAR>* u = nullptr;
-      PRMInstance<GUM_SCALAR>* v = nullptr;
-      PRMReferenceSlot<GUM_SCALAR>* ref = nullptr;
-
-      try {
-        u = __nameMap[u_name];
-        v = __nameMap[v_name];
-      } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "found no instance matching the given names" );
-      }
-
-      try {
-        PRMClassElement<GUM_SCALAR>& elt = u->type().get( ref_name );
-
-        if ( elt.elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) {
-          ref = static_cast<PRMReferenceSlot<GUM_SCALAR>*>( &elt );
-        } else {
-          GUM_ERROR( WrongClassElement,
-                     "the given name does not match a "
-                     "ReferenceSlot<GUM_SCALAR> in u's type" );
-        }
-      } catch ( NotFound& ) {
-        GUM_ERROR(
-            NotFound,
-            "found no ClassElement<GUM_SCALAR> matching the given name" );
-      }
-
-      u->add( ref->id(), *v );
-      __skeleton.addArc( __nodeIdMap.keyByVal( u ), __nodeIdMap.keyByVal( v ) );
-    }
-
-    template <typename GUM_SCALAR>
     NodeId PRMSystem<GUM_SCALAR>::add( PRMInstance<GUM_SCALAR>* i ) {
       if ( __nameMap.exists( i->name() ) ) {
         GUM_ERROR(

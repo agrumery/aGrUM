@@ -66,7 +66,7 @@ namespace gum_tests {
       std::vector<gum::prm::LayerGenerator<double>::LayerData> v;
       generateLayerLayer( v, 10 );
       gen->setLayers( v );
-      gum::prm::PRM<double>* prm = 0;
+      gum::prm::PRM<double>* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
       // testing interfaces
       const gum::Set<gum::prm::PRMInterface<double>*>& i_set = prm->interfaces();
@@ -214,19 +214,6 @@ namespace gum_tests {
 
       if ( gen ) {
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-      }
-    }
-
-    void __generateLayer1(
-        std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
-      for ( size_t lvl = 0; lvl < 5; ++lvl ) {
-        v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
-        v[lvl].a = 10;
-        v[lvl].g = 2;
-        v[lvl].c = 1;
-        v[lvl].o = 10;
-        v[lvl].inner_density = 0.2f;
-        v[lvl].outter_density = 0.05f;
       }
     }
   };
