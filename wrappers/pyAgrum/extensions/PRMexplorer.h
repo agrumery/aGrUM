@@ -153,7 +153,7 @@ public:
   PyObject* isAttribute( std::string class_name, std::string att_name){
     auto& ob = __prm->getClass(class_name).get(att_name);
 
-    return gum::prm::ClassElement<double>::isAttribute(ob) ? Py_True : Py_False;
+    return gum::prm::PRMClassElement<double>::isAttribute(ob) ? Py_True : Py_False;
   }
 
   /**

@@ -24,6 +24,7 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
+ 
 // =========================================================================
 #include <random>
 #include <cstdlib>
@@ -149,36 +150,45 @@ namespace gum {
    */
   // ###################################################################
   void SDYNA::feedback( const Instantiation& newState, double reward ) {
-
+    std::cout<<"HAHA"<<std::endl;
+GUM_CHECKPOINT;
     Observation* obs = new Observation();
 
+GUM_CHECKPOINT;
     for ( auto varIter = _lastState.variablesSequence().beginSafe();
           varIter != _lastState.variablesSequence().endSafe();
           ++varIter )
       obs->setModality( *varIter, _lastState.val( **varIter ) );
 
+GUM_CHECKPOINT;
     for ( auto varIter = newState.variablesSequence().beginSafe();
           varIter != newState.variablesSequence().endSafe();
           ++varIter ) {
       obs->setModality( _fmdp->main2prime( *varIter ),
                         newState.val( **varIter ) );
+GUM_CHECKPOINT;
       if ( this->__actionReward )
         obs->setRModality( *varIter, _lastState.val( **varIter ) );
       else
         obs->setRModality( *varIter, newState.val( **varIter ) );
     }
 
+GUM_CHECKPOINT;
     obs->setReward( reward );
 
+GUM_CHECKPOINT;
     __learner->addObservation( __lastAction, obs );
     __bin.insert( obs );
 
+GUM_CHECKPOINT;
     setCurrentState( newState );
     __decider->checkState( _lastState, __lastAction );
 
+GUM_CHECKPOINT;
     if ( __nbObservation % __observationPhaseLenght == 0 )
       makePlanning( __nbValueIterationStep );
 
+GUM_CHECKPOINT;
     __nbObservation++;
   }
 

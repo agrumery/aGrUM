@@ -105,7 +105,7 @@ def getForMsBuildSystem(current,target):
       line=cfg.msbuild+' INSTALL.vcxproj /p:Configuration="Release"'
     else:
       critic("Action '"+current["action"]+"' not treated for now in windows weird world.")
-    line+=' /maxcpucount:'+str(current["jobs"])
+    line+=' /p:BuildInParallel=true /maxcpucount:'+str(current["jobs"])
   return line
 
 def getForMakeSystem(current,target):
@@ -142,10 +142,7 @@ def getPost(current,target):
   if current["action"]=="test":
     if target=="aGrUM":
       if cfg.os_platform=="win32":
-        if current['mode']=="release":
-          line="src\\Release\\gumTest.exe"
-        else:
-          line="src\\Debug\\gumTest.exe"
+        line="src\\Release\\gumTest.exe" #debug or release create Release folder
       else:
         line="src/gumTest"
       return line,True

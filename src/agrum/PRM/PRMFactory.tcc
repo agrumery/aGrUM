@@ -1610,11 +1610,12 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void
     PRMFactory<GUM_SCALAR>::startAttribute( const std::string& type,
-                                            const std::string& name ) {
+                                            const std::string& name,
+                                          bool scalar_attr) {
       PRMClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
       PRMAttribute<GUM_SCALAR>* a = nullptr;
 
-      if ( PRMObject::isClass( *c ) ) {
+      if ( PRMObject::isClass( *c ) && (!scalar_attr)) {
 
         a = new PRMFormAttribute<GUM_SCALAR>(
             static_cast<PRMClass<GUM_SCALAR>&>( *c ),

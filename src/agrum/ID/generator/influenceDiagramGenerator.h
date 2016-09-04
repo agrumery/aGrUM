@@ -110,10 +110,10 @@ namespace gum {
      * @return A IDs randomly generated.
      */
     InfluenceDiagram<GUM_SCALAR>* generateID( Size nbrNodes,
-                                              float arcDensity,
-                                              float chanceNodeDensity,
-                                              float utilityNodeDensity,
-                                              int max_modality = 2 );
+      GUM_SCALAR arcDensity,
+      GUM_SCALAR chanceNodeDensity,
+      GUM_SCALAR utilityNodeDensity,
+                                              Size max_modality = 2 );
 
     /// @}
     private:

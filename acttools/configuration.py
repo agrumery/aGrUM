@@ -189,7 +189,7 @@ def configureOptions(current):
                                         type="choice",
                                         choices=["all","no-cmake","no-make"],
                                         dest="build",
-                                        default=current['build'])                                        
+                                        default="all")                                        
 
 def configureColors(no_fun=False):
   if no_fun or not cfg.withColour:

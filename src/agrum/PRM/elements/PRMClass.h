@@ -396,18 +396,18 @@ namespace gum {
       void __implementInterfaces(bool delayInheritance);
 
       /// Check that a given element respects all the class interfaces
-      void __checkInterfaces( ClassElement<GUM_SCALAR>* elt );
+      void __checkInterfaces( PRMClassElement<GUM_SCALAR>* elt );
 
       /// Check that a given element respects a specific interface
-      void __checkInterface( ClassElement<GUM_SCALAR>* elt,
-                            Interface<GUM_SCALAR>* i );
+      void __checkInterface( PRMClassElement<GUM_SCALAR>* elt,
+                            PRMInterface<GUM_SCALAR>* i );
 
       /// Check that a given element respects all the class interfaces
-      void __checkRefInterfaces( ReferenceSlot<GUM_SCALAR>* elt );
+      void __checkRefInterfaces( PRMReferenceSlot<GUM_SCALAR>* elt );
 
       /// Check that a given element respects a specific interface
-      void __checkRefInterface( ReferenceSlot<GUM_SCALAR>* elt,
-                                Interface<GUM_SCALAR>* i );
+      void __checkRefInterface( PRMReferenceSlot<GUM_SCALAR>* elt,
+                                PRMInterface<GUM_SCALAR>* i );
 
       /// Check if elt is present in an implementation. If it is, its IO flags
       /// are updated.

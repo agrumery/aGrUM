@@ -524,7 +524,7 @@ namespace gum {
            ( head->elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) ) {
         GUM_ERROR(
             OperationNotAllowed,
-            "a ReferenceSlot<GUM_SCALAR> can not on neither side of an arc" );
+            "a PRMReferenceSlot<GUM_SCALAR> can not on neither side of an arc" );
       }
 
       if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) &&
@@ -552,6 +552,105 @@ namespace gum {
       }
     }
 
+    template <typename GUM_SCALAR>
+    void PRMClass<GUM_SCALAR>::__checkInterfaces( PRMClassElement<GUM_SCALAR>* elt ) {
+      try {
+        for ( auto i : implements() ) {
+          if ( i->exists( elt->name() ) ) {
+            __checkInterface( elt, i );
+          }
+        }
+      } catch ( NotFound& ) {
+        // No interface
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void PRMClass<GUM_SCALAR>::__checkInterface( PRMClassElement<GUM_SCALAR>* elt,
+                                              PRMInterface<GUM_SCALAR>* i ) {
+      const auto& i_elt = i->get( elt->name() );
+      bool is_attr = PRMClassElement<GUM_SCALAR>::isAttribute( i_elt );
+      bool is_agg = PRMClassElement<GUM_SCALAR>::isAggregate( i_elt );
+
+      if ( !( is_attr || is_agg ) ) {
+        GUM_ERROR( OperationNotAllowed,
+                   "Class does not respect it's interface" );
+      }
+
+      if ( !elt->type().isSubTypeOf( i_elt.type() ) ) {
+        GUM_ERROR( OperationNotAllowed,
+                   "Attribute type does not respect class interface" );
+      }
+
+      if ( elt->type() != i_elt.type() ) {
+        if ( !this->exists( i_elt.safeName() ) ) {
+          GUM_ERROR( OperationNotAllowed,
+                     "Attribute type does not respect class interface" );
+        }
+        elt = &( this->get( i_elt.safeName() ) );
+      }
+
+      // Node must be reserved by constructor
+      if ( !__dag.existsNode( i_elt.id() ) ) {
+        GUM_ERROR( FatalError, "Class does not reserved implemented nodes" );
+      }
+
+      // Removing unused node and changing to proper node
+      if ( elt->id() != i_elt.id() ) {
+        // Update cast descendants
+        for ( auto child : __dag.children( elt->id() ) ) {
+          __dag.addArc( i_elt.id(), child );
+        }
+        __dag.eraseNode( elt->id() );
+      }
+      __nodeIdMap.erase( elt->id() );
+      elt->setId( i_elt.id() );
+      __nodeIdMap.insert( elt->id(), elt );
+    }
+
+    template <typename GUM_SCALAR>
+    void
+    PRMClass<GUM_SCALAR>::__checkRefInterfaces( PRMReferenceSlot<GUM_SCALAR>* ref ) {
+      try {
+        for ( auto i : implements() ) {
+          if ( i->exists( ref->name() ) ) {
+            __checkRefInterface( ref, i );
+          }
+        }
+      } catch ( NotFound& ) {
+        // No interface to check
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    void PRMClass<GUM_SCALAR>::__checkRefInterface( PRMReferenceSlot<GUM_SCALAR>* ref,
+                                                 PRMInterface<GUM_SCALAR>* i ) {
+      auto& i_elt = i->get( ref->name() );
+      if ( i_elt.elt_type() != ref->elt_type() ) {
+        GUM_ERROR( OperationNotAllowed,
+                   "Class does not respect it's interface" );
+      }
+      auto& i_ref = static_cast<PRMReferenceSlot<GUM_SCALAR>&>( i_elt );
+      if ( ! ref->slotType().isSubTypeOf( i_ref.slotType() ) ) {
+        GUM_ERROR( OperationNotAllowed,
+                   "ReferenceSlot type does not respect class interface" );
+      }
+      // Node must be reserved by constructor
+      if ( ! __dag.exists( i_ref.id() ) ) {
+        GUM_ERROR( FatalError,
+                   "class " << this->name() << " does not respect interface "
+                            << i->name()
+                            << " implementation" );
+      }
+      // Removing unused node and changin to propoer node
+      if ( ref->id() != i_ref.id() ) {
+        __dag.eraseNode( ref->id() );
+      }
+      __nodeIdMap.erase( ref->id() );
+      ref->setId( i_ref.id() );
+      __nodeIdMap.insert( ref->id(), ref );
+    }
+    
     template <typename GUM_SCALAR>
     NodeId PRMClass<GUM_SCALAR>::add( PRMClassElement<GUM_SCALAR>* elt ) {
       if ( __nameMap.exists( elt->name() ) ) {
@@ -599,7 +698,7 @@ namespace gum {
         }
 
         case PRMClassElement<GUM_SCALAR>::prm_refslot: {
-          auto ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( elt );
+          auto ref = static_cast<PRMReferenceSlot<GUM_SCALAR>*>( elt );
           __referenceSlots.insert( ref );
 
           // Updating ref's id if ref implements an interface
