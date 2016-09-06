@@ -771,7 +771,6 @@ namespace gum {
     // messages spreading from this clique are now invalid. At the same time,
     // if there were potentials created on the arcs over wich the messages were
     // sent, remove them from memory
-    std::cout << __JT << std::endl;
     NodeSet invalidated_cliques ( __JT->size () );
     for ( const auto& pair : __evidence_changes ) {
       const auto clique = __node_to_clique[pair.first];
@@ -1059,6 +1058,35 @@ namespace gum {
   }
 
 
+  // find the potentials d-connected to a set of variables
+  template <typename GUM_SCALAR>
+  void
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsXX
+  ( Set<const Potential<GUM_SCALAR>*>& pot_list,
+    Set<const DiscreteVariable*>& kept_vars ) {
+    switch ( __find_relevant_potential_type ) {
+    case FIND_RELEVANT_D_SEPARATION2:
+      __findRelevantPotentialsWithdSeparation2 ( pot_list, kept_vars );
+      break;
+
+    case FIND_RELEVANT_D_SEPARATION:
+      __findRelevantPotentialsWithdSeparation ( pot_list, kept_vars );
+      break;
+
+    case FIND_RELEVANT_D_SEPARATION3:
+      __findRelevantPotentialsWithdSeparation3  ( pot_list, kept_vars );
+      break;
+
+    case FIND_RELEVANT_ALL:
+      __findRelevantPotentialsGetAll  ( pot_list, kept_vars );
+      break;
+
+    default:
+      GUM_ERROR ( FatalError, "not implemented yet" );
+    }
+  }
+  
+
   // remove variables del_vars from the list of potentials pot_list
   template <typename GUM_SCALAR>
   Set<const Potential<GUM_SCALAR>*>
@@ -1066,19 +1094,11 @@ namespace gum {
   ( Set<const Potential<GUM_SCALAR>*>& pot_list,
     Set<const DiscreteVariable*>& del_vars,
     Set<const DiscreteVariable*>& kept_vars ) {
-#pragma omp critical
-    {
-      std::cout << "pot = " << pot_list << "  " << del_vars << "  "
-                << kept_vars << std::endl;
-      std::cout << "relevant reasoning = "
-                << this->__findRelevantPotentials << std::endl;
     // use d-separation analysis to check which potentials shall be combined
-    ( this->*__findRelevantPotentials )( pot_list, kept_vars );
+    __findRelevantPotentialsXX ( pot_list, kept_vars );
       
     // remove the potentials corresponding to barren variables
-    // __removeBarrenVariables( pot_list, del_vars );
-    std::cout << "endpot" << std::endl;
-    }
+    //__removeBarrenVariables( pot_list, del_vars );
 
     // create a combine and project operator that will perform the
     // marginalization

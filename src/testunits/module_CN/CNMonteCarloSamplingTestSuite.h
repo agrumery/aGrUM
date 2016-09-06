@@ -121,11 +121,16 @@ namespace gum_tests {
       gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>>
           mcs( *cn );
 
+      std::cout << "toto1" << std::endl;
+      
       // evidence from file
       TS_GUM_ASSERT_THROWS_NOTHING(
           mcs.insertEvidenceFile( GET_CN_PATH_STR( L2U.evi ) ); );
 
+      std::cout << "toto2" << std::endl;
+
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.eraseAllEvidence(); );
+      std::cout << "toto3" << std::endl;
 
       // evidence from map
       std::map<std::string, std::vector<double>> eviMap;
@@ -142,6 +147,8 @@ namespace gum_tests {
 
       mcs.setRepetitiveInd( false );
       mcs.setMaxTime( 1 );
+
+      std::cout << "toto4" << std::endl;
 
       // mcs.storeBNOpt ( true );
 
@@ -161,6 +168,9 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.insertModals( modals ); );
 
+      std::cout << "toto5" << std::endl;
+
+      
       // TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
 
       try {
@@ -169,6 +179,7 @@ namespace gum_tests {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
+      std::cout << "toto6" << std::endl;
 
       try {
         for ( const auto node : cn->current_bn().nodes() ) {
@@ -181,6 +192,9 @@ namespace gum_tests {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
+
+      std::cout << "toto7" << std::endl;
+
 
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.eraseAllEvidence(); );
 

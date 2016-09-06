@@ -455,6 +455,13 @@ namespace gum {
     ( __PotentialSet& pot_list,
       Set<const DiscreteVariable*>& kept_vars );
     
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsXX
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable*>& kept_vars );
+    
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
     __PotentialSet __marginalizeOut( __PotentialSet& pot_list,
