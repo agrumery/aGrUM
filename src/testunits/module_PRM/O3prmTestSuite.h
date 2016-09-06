@@ -1098,7 +1098,7 @@ namespace gum_tests {
             set.erase( var->name() );
           }
         }
-        TS_ASSERT_EQUALS( set.size(), 0 );
+        TS_ASSERT_EQUALS( set.size(), gum::Size(0) );
         delete prm;
       } catch ( gum::Exception ) {
         TS_ASSERT( false );
@@ -1126,7 +1126,7 @@ namespace gum_tests {
             set.erase( var->name() );
           }
         }
-        TS_ASSERT_EQUALS( set.size(), 0 );
+        TS_ASSERT_EQUALS( set.size(), gum::Size(0) );
         delete prm;
       } catch ( gum::Exception ) {
         TS_ASSERT( false );
@@ -1154,7 +1154,7 @@ namespace gum_tests {
             set.erase( var->name() );
           }
         }
-        TS_ASSERT_EQUALS( set.size(), 0 );
+        TS_ASSERT_EQUALS( set.size(), gum::Size(0) );
         delete prm;
       } catch ( gum::Exception ) {
         TS_ASSERT( false );
@@ -1262,7 +1262,7 @@ namespace gum_tests {
         gum::prm::PRM<double>* prm = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
         gum::prm::PRMSystem<double>* sys = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->getSystem( "aSys" ) ) );
 
         for ( gum::prm::PRMSystem<double>::iterator iter = sys->begin();
               iter != sys->end();

@@ -649,4 +649,4 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( s, res1 );
     }
   };
-};
+}
