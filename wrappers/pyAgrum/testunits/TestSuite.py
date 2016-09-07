@@ -4,9 +4,11 @@
 from __future__ import print_function
 
 import sys
+import os
 
-# to force to use local pyAgrum for the tests (and not installed one)
-sys.path.insert(1,"..")
+if len(sys.argv)>1:
+  p=os.getcwd()+"\\"+sys.argv[1]
+  sys.path.insert(1,p) # to force to use local pyAgrum for the tests (and not installed one)
 
 import pyAgrum as gum
 
@@ -35,7 +37,7 @@ tests.append(LazyPropagationTestSuite.ts)
 tests.append(JunctionTreeTestSuite.ts)
 tests.append(GibbsTestSuite.ts)
 tests.append(ICIModelsForBNTestSuite.ts)
-tests.append(BNLearnerTestSuite.ts)
+#tests.append(BNLearnerTestSuite.ts)
 tests.append(AggregatorsForBNTestSuite.ts)
 tests.append(PRMexplorerTestSuite.ts)
 
