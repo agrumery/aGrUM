@@ -64,6 +64,12 @@ namespace gum_tests {
       // simpleCSV
 
       count = testParseString( "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12", res );
+
+      TS_ASSERT_EQUALS( count, (gum::Size)3 );
+      TS_ASSERT_EQUALS( __noParsedLine, (gum::Size)3 );
+      TS_ASSERT_EQUALS( res, std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) );
+
+      count = testParseString( "1,2,3,4 \r\n 5,6,7,8 \r\n 9,10,11,12", res );
       TS_ASSERT_EQUALS( count, (gum::Size)3 );
       TS_ASSERT_EQUALS( __noParsedLine, (gum::Size)3 );
       TS_ASSERT_EQUALS( res, std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) );

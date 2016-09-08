@@ -33,7 +33,7 @@ namespace gum {
         // fast recognition of commented or empty lines lines
         Size lastPos = Size(__line.find_first_not_of( __spaces, 0 ));
 
-        if ( lastPos == std::string::npos ) continue;
+        if ( lastPos == Size(std::string::npos) ) continue;
 
         if ( __line.at( lastPos ) == __commentMarker ) continue;
 
@@ -52,11 +52,11 @@ namespace gum {
       while ( true ) {
         res = Size(str.find_first_of( __quoteMarker, res + 1 ));
 
-        if ( res == std::string::npos ) return res;  // no quote found
+        if ( res == Size(std::string::npos) ) return res;  // no quote found
 
         before = Size(str.find_last_not_of( '\\', res - 1 ));
 
-        if ( before == std::string::npos )
+        if ( before == Size(std::string::npos) )
           return res;  // quote found, it is the good one
 
         if ( ( res - before ) % 2 == 1 )
