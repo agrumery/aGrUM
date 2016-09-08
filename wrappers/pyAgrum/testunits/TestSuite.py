@@ -37,7 +37,7 @@ tests.append(LazyPropagationTestSuite.ts)
 tests.append(JunctionTreeTestSuite.ts)
 tests.append(GibbsTestSuite.ts)
 tests.append(ICIModelsForBNTestSuite.ts)
-#tests.append(BNLearnerTestSuite.ts)
+tests.append(BNLearnerTestSuite.ts)
 tests.append(AggregatorsForBNTestSuite.ts)
 tests.append(PRMexplorerTestSuite.ts)
 
