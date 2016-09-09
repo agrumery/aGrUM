@@ -194,7 +194,7 @@ void Parser::Net() {
 					LIST(vals);
 					std::string merge;
 					merge="(";
-					for(Size i=0;i<vals.size();i++) {
+					for(Size i=Size(0);i<Size(vals.size());i++) {
 					 if (i>0) merge+=",";
 					 merge+=vals[i];
 					}
@@ -281,12 +281,12 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 			Get();
 			if (StartOf(1)) {
 				PURE_LIST(parents);
-				for (Size i=parents.size();i>=1;--i){
+				for (Size i=Size(parents.size());i>=Size(1);--i){
 				   TRY(factory().variableId(parents[i-1]));
 				   TRY(factory().addParent(parents[i-1]));
 				}
 				
-				for(Size i=0;i<parents.size();i++) {
+				for(Size i=0;i<Size(parents.size());i++) {
 				 var_seq.push_back(parents[i]);
 				}
 				
@@ -304,7 +304,7 @@ void Parser::FLOAT(float& val) {
 			val=coco_atof(t->val); 
 		} else if (la->kind == _integer) {
 			Get();
-			val=coco_atoi(t->val); 
+			val=float(coco_atoi(t->val)); 
 		} else SynErr(21);
 }
 
