@@ -173,7 +173,11 @@ def threaded_execution(cde,verbose):
     if chan=='stdout' and lines is not None:
       #if len(lastline)>1:
       #  print(" ")
-      lines=(lines.decode('utf-8')).split("\n")
+      try:
+        lines=(lines.decode('utf-8')).split("\n")
+      except:
+        lines=lines.split("\n")
+        
       for i in range(len(lines)-1):
         if lines[i]!="":
           print(prettifying(lines[i]).rstrip())
