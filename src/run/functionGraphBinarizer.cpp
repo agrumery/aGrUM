@@ -70,7 +70,7 @@ namespace gum {
 
     if( vPos > 0 ){
       sonsMap[0] = Size(__recurBinarize( binarizedNode, valueModa, vPos - 1 ));
-      sonsMap[1] = Size(__recurBinarize( binarizedNode, valueModa + std::pow(2,vPos), vPos - 1 ));
+      sonsMap[1] = Size(__recurBinarize( binarizedNode, valueModa + Idx(std::pow(2,vPos)), vPos - 1 ));
     } else {
 
       NodeId srcSon = __binarizedFG->node( binarizedNode )->son( valueModa );
