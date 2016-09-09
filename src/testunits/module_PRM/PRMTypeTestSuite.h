@@ -25,6 +25,7 @@
 
 #include <agrum/core/exceptions.h>
 #include <agrum/PRM/elements/PRMType.h>
+#include <agrum/PRM/elements/PRMClass.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
