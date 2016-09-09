@@ -231,20 +231,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
       TS_ASSERT_EQUALS( set.size(), (gum::Size)3 );
 
-/* @TODO FOR CHRISTOPHE
-      GUM_CHECKPOINT;
       gum::Set<int, MyAlloc<int>> set2;
-      GUM_CHECKPOINT;
       fill( set2 );
-      GUM_CHECKPOINT;
       TS_ASSERT( set2.size() == 6 );
-      GUM_CHECKPOINT;
-      iter = set2.beginSafe();  // safe iterator needed here      
-      GUM_CHECKPOINT;
+      iter = set2.beginSafe();  // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING( set2.erase( iter ) );
-      GUM_CHECKPOINT;
       TS_ASSERT( set2.size() == 5 );
-      GUM_CHECKPOINT;*/
     }
 
     void testClear() {

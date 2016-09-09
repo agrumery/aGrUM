@@ -74,9 +74,9 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate(Size(s));
+      return SmallObjectAllocator::instance().allocate(s);
     }
-      
+
     void operator delete( void* p ) {
       SmallObjectAllocator::instance().deallocate( p, sizeof( GTestPolicy ) );
     }

@@ -21,13 +21,11 @@
  * @file
  * @brief Template trick for efficient development
  *
- * @author Jean-Christophe MAGNAN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// =========================================================================
 #ifndef GUM_TEMPLATE_STRATEGY_H
 #define GUM_TEMPLATE_STRATEGY_H
-// =========================================================================
 
 namespace gum {
 

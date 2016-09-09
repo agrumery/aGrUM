@@ -63,7 +63,7 @@ def check_tools():
     exe_clangformat=None
     if is_tool("clang-format"):
         exe_clangformat="clang-format"
-    for version in range(5,9):
+    for version in range(9,5,-1):
         if is_tool("clang-format-3.{}".format(version)):
             exe_clangformat="clang-format-3.{}".format(version)
             break

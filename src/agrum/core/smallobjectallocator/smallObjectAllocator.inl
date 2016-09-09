@@ -78,7 +78,7 @@ namespace gum {
   // ============================================================================
   // Allocates an object
   // ============================================================================
-  INLINE void* SmallObjectAllocator::allocate( const Size& objectSize ) {
+  INLINE void* SmallObjectAllocator::allocate( const size_t& objectSize ) {
 
     assert( objectSize > 0 &&
             "Small Object Allocator called for an object of size equals to 0" );
@@ -114,7 +114,7 @@ namespace gum {
   // ============================================================================
   INLINE void
   SmallObjectAllocator::deallocate( void* pDeallocatedObject,
-                                    const Size& objectSize ) {
+                                    const size_t& objectSize ) {
 
     assert( objectSize > 0 &&
             "Small Object Allocator called for an object of size equals to 0" );

@@ -111,7 +111,7 @@ namespace gum {
     // ============================================================================
     /// Allocates a block
     // ============================================================================
-    void* allocate( const Size& objectSize );
+    void* allocate( const size_t& objectSize );
 
     // ============================================================================
     /// Deallocates an object
@@ -119,7 +119,7 @@ namespace gum {
     /// @param objectSize is the size of that object (useful for faster
     /// deallocation)
     // ============================================================================
-    void deallocate( void* pDeallocatedObject, const Size& objectSize );
+    void deallocate( void* pDeallocatedObject, const size_t& objectSize );
 
     /// @}
 
@@ -139,7 +139,7 @@ namespace gum {
     // ============================================================================
     /// The pool containing FixedAllocator
     // ============================================================================
-    typedef HashTable<Size, FixedAllocator*> __Pool;
+    typedef HashTable<size_t, FixedAllocator*> __Pool;
     __Pool __pool;
 
     // ============================================================================

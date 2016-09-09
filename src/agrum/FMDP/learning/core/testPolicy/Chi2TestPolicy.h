@@ -61,7 +61,7 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( Size(s) );
+      return SmallObjectAllocator::instance().allocate( s );
     }
     void operator delete( void* p ) {
       SmallObjectAllocator::instance().deallocate( p,
@@ -120,9 +120,7 @@ namespace gum {
 
     /// @}
 
-    const ContingencyTable<Idx, GUM_SCALAR>& ct() const {
-      return __conTab;
-    }
+    const ContingencyTable<Idx, GUM_SCALAR>& ct() const { return __conTab; }
 
     void add( const Chi2TestPolicy<GUM_SCALAR>& src );
 

@@ -2162,7 +2162,7 @@ namespace gum {
     /**
      * @brief Removes the iterator from its hashtable' safe iterators list.
      */
-    void __removeFromSafeList() const noexcept;
+    void __removeFromSafeList() const ;
 
     /**
      * @brief Insert the iterator into the hashtable's list of safe iterators.

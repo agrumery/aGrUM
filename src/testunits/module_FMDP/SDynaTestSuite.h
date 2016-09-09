@@ -39,13 +39,11 @@ namespace gum_tests {
 
     private:
     void run( gum::AbstractSimulator& sim ) {
-GUM_CHECKPOINT;
       // *********************************************************************************************
       // Initialisation de l'instance de SDyna
       // *********************************************************************************************
       gum::SDYNA* sdyna = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING( sdyna = gum::SDYNA::spimddiInstance() );
-      GUM_CHECKPOINT;
 
       // Enregistrement des actions possibles auprès de SDyna
       for ( auto actionIter = sim.beginActions();
@@ -53,17 +51,14 @@ GUM_CHECKPOINT;
             ++actionIter ) {
         sdyna->addAction( *actionIter, sim.actionName( *actionIter ) );
       }
-GUM_CHECKPOINT;
       // Enregistrement des variables caractérisant les états auprès de SDyna
       for ( auto varIter = sim.beginVariables(); varIter != sim.endVariables();
             ++varIter ) {
         sdyna->addVariable( *varIter );
       }
-GUM_CHECKPOINT;
       TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
       TS_GUM_ASSERT_THROWS_NOTHING( sdyna->initialize( sim.currentState() ) );
 
-GUM_CHECKPOINT;
       gum::Idx nbObs = 0;
       for ( gum::Idx nbRun = 0; nbRun < 10; ++nbRun ) {
 
@@ -71,29 +66,22 @@ GUM_CHECKPOINT;
         TS_GUM_ASSERT_THROWS_NOTHING(
             sdyna->setCurrentState( sim.currentState() ) );
         gum::Idx nbDec = 0;
-GUM_CHECKPOINT;
         while ( !sim.hasReachEnd() && nbDec < 25 ) {
 
           nbObs++;
-          GUM_CHECKPOINT;
 
           // Normal Iteration Part
           gum::Idx actionChosenId = 0;
           TS_GUM_ASSERT_THROWS_NOTHING( actionChosenId = sdyna->takeAction(); );
-          GUM_CHECKPOINT;
           TS_GUM_ASSERT_THROWS_NOTHING( sim.perform( actionChosenId ) );
-          GUM_CHECKPOINT;
           nbDec++;
 
           TS_GUM_ASSERT_THROWS_NOTHING(
               sdyna->feedback( sim.currentState(), sim.reward() ); );
-          GUM_CHECKPOINT;
         }
         TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
-        GUM_CHECKPOINT;
       }
       TS_GUM_ASSERT_THROWS_NOTHING( delete sdyna );
-      GUM_CHECKPOINT;
     }
 
     public:
@@ -101,16 +89,13 @@ GUM_CHECKPOINT;
     // Run the tests on a Coffee FMDP
     // *******************************************************************************
     void test_Coffee() {
-      GUM_CHECKPOINT;
       // **************************************************************
       // Chargement du fmdp servant de base
       gum::FMDPSimulator sim( GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" ) );
-      GUM_CHECKPOINT;
 
       // **************************************************************
       // Définition of final states
       gum::Instantiation theEnd;
-      GUM_CHECKPOINT;
       for ( gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter =
                 sim.beginVariables();
             varIter != sim.endVariables();
@@ -120,17 +105,12 @@ GUM_CHECKPOINT;
           theEnd.chgVal( **varIter, ( *varIter )->index( "yes" ) );
           break;
         }
-      GUM_CHECKPOINT;
       }
-      GUM_CHECKPOINT;
       TS_GUM_ASSERT_THROWS_NOTHING( sim.setEndState( theEnd ) );
-
-      GUM_CHECKPOINT;
 
       // **************************************************************
       // Lancement
       run( sim );
-      GUM_CHECKPOINT;
     }
 
 
@@ -138,7 +118,6 @@ GUM_CHECKPOINT;
     // Run the tests on a Taxi instance
     // *******************************************************************************
     void test_Taxi() {
-      GUM_CHECKPOINT;
 
       // **************************************************************
       // Chargement du simulateur

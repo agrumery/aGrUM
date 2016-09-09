@@ -21,17 +21,14 @@
  * @file
  * @brief
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_TUPLE_HASH_FUNC_H
 #define GUM_TUPLE_HASH_FUNC_H
 
-// ============================================================================
 #include <tuple>
-// ============================================================================
 #include <agrum/core/hashFunc.h>
-// ============================================================================
 
 namespace gum {
 
