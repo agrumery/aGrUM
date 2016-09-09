@@ -176,8 +176,12 @@ def threaded_execution(cde,verbose):
       try:
         lines=(lines.decode('utf-8')).split("\n")
       except:
-        lines=lines.split("\n")
-        
+        try:
+            lines=lines.split("\n")
+        except:
+            print('ERRROR')
+            print(lines)
+
       for i in range(len(lines)-1):
         if lines[i]!="":
           print(prettifying(lines[i]).rstrip())
