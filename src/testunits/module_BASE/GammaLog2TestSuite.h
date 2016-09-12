@@ -35,11 +35,14 @@ namespace gum_tests {
       gum::GammaLog2 f;
       gum::GammaLog2 g( true );
 
-      for ( unsigned int i = 0; i < 60; ++i ) {
-        for ( unsigned int j = 0; j < 100; ++j ) {
+      for ( auto i = 0; i < 60; ++i ) {
+        for ( auto j = 0; j < 100; ++j ) {
           if ( i + j > 0 ) {
-            float index = i + j / 100.0f;
-            TS_ASSERT( fabs( f( index ) - g( index ) ) < 0.01 );
+            double index = i + j / 100.0;
+            TS_ASSERT_DELTA( f( index ) , g( index ) , 0.1);
+
+            double findex= i + j / 100.0;
+            TS_ASSERT_DELTA( f( findex ) , g( findex ) , 0.1 );
           }
         }
       }

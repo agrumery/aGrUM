@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -45,7 +45,7 @@ private:
     gum::Instantiation i(t);
 
     for (i.setFirst(); !i.end(); ++i)
-      t->set(i, (int)(gum::randomProba() * 100000));
+      t->set(i, 100000.0f*float(gum::randomProba()) );
   }
 
   // ==========================================================================
@@ -55,7 +55,7 @@ private:
     gum::Instantiation i(t);
 
     for (i.setFirst(); !i.end(); ++i)
-      t->set(i, new float((int)(gum::randomProba() * 100000)));
+      t->set(i, new float(100000.0f * float(gum::randomProba())));
   }
 
   // ==========================================================================
@@ -65,7 +65,7 @@ private:
     gum::Instantiation i(t);
 
     for (i.setFirst(); !i.end(); ++i)
-      t.set(i, (int)(gum::randomProba() * 100000));
+      t.set(i, 100000.0f*float(gum::randomProba() ));
   }
 
   // ==========================================================================
@@ -75,7 +75,7 @@ private:
     gum::Instantiation i(t);
 
     for (i.setFirst(); !i.end(); ++i)
-      t.set(i, new float((int)(gum::randomProba() * 100000)));
+      t.set(i, new float(100000.0f*float(gum::randomProba() )));
   }
 
   template <typename T> void pointerDelete(gum::MultiDimArray<T *> *t) {
@@ -306,7 +306,7 @@ public:
   void test_MultiDimArray_time() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -339,9 +339,9 @@ public:
     TS_ASSERT(t2->variablesSequence().exists(vars[4]));
     TS_ASSERT(t2->variablesSequence().exists(vars[5]));
     TS_ASSERT(t2->variablesSequence().exists(vars[8]));
-    TS_ASSERT(not t2->variablesSequence().exists(vars[0]));
-    TS_ASSERT(not t2->variablesSequence().exists(vars[9]));
-    TS_ASSERT(not t2->variablesSequence().exists(vars[1]));
+    TS_ASSERT(! t2->variablesSequence().exists(vars[0]));
+    TS_ASSERT(! t2->variablesSequence().exists(vars[9]));
+    TS_ASSERT(! t2->variablesSequence().exists(vars[1]));
     delete t2;
 
     t2 = projectMinMultiDimArray(&t1, proj_set);
@@ -353,14 +353,14 @@ public:
     t2 = projectProductMultiDimArray(&t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimArray() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -405,14 +405,14 @@ public:
     t2 = projectMaxMultiDimArray(&t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimArrayDeb() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -457,14 +457,14 @@ public:
     t2 = projectMaxMultiDimArray(&t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimArrayEnd() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -509,14 +509,14 @@ public:
     t2 = projectMaxMultiDimArray(&t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimImplementation() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -564,14 +564,14 @@ public:
     t4 = projectMaxMultiDimArray(&t1, proj_set);
     delete t4;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimArrayPointer() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -620,14 +620,14 @@ public:
 
     pointerDelete(t1);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_MultiDimImplementationPointer() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -677,7 +677,7 @@ public:
 
     pointerDelete(tt1);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
@@ -689,7 +689,7 @@ public:
 
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -734,14 +734,14 @@ public:
     t2 = projectMax(t1, proj_set);
     delete t2;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_potentials() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -789,7 +789,7 @@ public:
         new gum::Potential<float>(t1.margMaxOut(proj_set));
     delete t5;
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
@@ -801,7 +801,7 @@ public:
 
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -849,14 +849,14 @@ public:
 
     pointerDelete(t1);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
   void test_Pointer_potential() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -906,7 +906,7 @@ public:
 
     pointerDelete(t1);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 
@@ -919,7 +919,7 @@ public:
   void test_MultiDimProjection() {
     std::vector<gum::LabelizedVariable *> vars(10);
 
-    for (unsigned int i = 0; i < 10; ++i) {
+    for (gum::Idx i = 0; i < 10; ++i) {
       std::stringstream str;
       str << "x" << i;
       std::string s = str.str();
@@ -971,7 +971,7 @@ public:
     TS_ASSERT(yyy.first == 2187);
     yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
-    for (unsigned int i = 0; i < vars.size(); ++i)
+    for (gum::Idx i = 0; i < vars.size(); ++i)
       delete vars[i];
   }
 };

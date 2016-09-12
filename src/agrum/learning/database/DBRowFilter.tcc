@@ -35,7 +35,7 @@ namespace gum {
         const DBHandler &handler,
         const TranslatorSet &translator_set,
         const GeneratorSet &generator_set,
-        unsigned long initialization_range ) noexcept
+        Size initialization_range ) noexcept
         : __handler( handler ),
           __translator_set( translator_set ),
           __generator_set( generator_set ) {
@@ -111,9 +111,9 @@ namespace gum {
     /// initialize the cell filters by parsing once the database
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     void DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::__initCellFilters(
-        unsigned long db_range ) {
+        Size db_range ) {
       // keep track of the previous range to restore it later
-      std::pair<unsigned long, unsigned long> previous_range =
+      std::pair<Size,Size> previous_range =
           __handler.range();
 
       // set the handler to the appropriate range
@@ -182,9 +182,9 @@ namespace gum {
     /** @brief returns the number of modalities of the variables, as stored
      * into the cell filters */
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
-    INLINE std::vector<unsigned int>
+    INLINE std::vector<Size>
     DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::modalities() const {
-      std::vector<unsigned int> res;
+      std::vector<Size> res;
       __translator_set.modalities( res );
       return res;
     }
@@ -199,7 +199,7 @@ namespace gum {
 
     /// returns the number of variables
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
-    INLINE unsigned int
+    INLINE Size
     DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::nbVariables() const
         noexcept {
       return __handler.variableNames().size();

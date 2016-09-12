@@ -45,7 +45,7 @@ namespace gum_tests {
   class VEWithBBTestSuite : public CxxTest::TestSuite {
     public:
     gum::BayesNet<float>* bn;
-    gum::Id i1, i2, i3, i4, i5;
+    gum::NodeId i1, i2, i3, i4, i5;
     gum::Potential<float>* e_i1, *e_i4;
 
     void setUp() {
@@ -248,7 +248,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p_vebb.domainSize(), p_ss.domainSize() );
 
       gum::Instantiation i_ve( p_vebb );
-      for ( gum::Instantiation i( p_vebb ); not i.end(); i.inc() ) {
+      for ( gum::Instantiation i( p_vebb ); ! i.end(); i.inc() ) {
         TS_ASSERT_DELTA( p_vebb[i], p_ss[i], 1e-6 );
         TS_ASSERT_DELTA( p_vebb[i], p_lazy[i], 1e-6 );
       }
@@ -258,34 +258,35 @@ namespace gum_tests {
     // Builds a BN to test the inference
     void fill( gum::BayesNet<float>& bn ) {
       // FILLING PARAMS
-      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
-      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
-      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
+      bn.cpt( i1 ).fillWith( {0.2f, 0.8f} );
+      bn.cpt( i2 ).fillWith( {0.3f, 0.7f} );
+      bn.cpt( i3 ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
       bn.cpt( i4 ).fillWith( {// clang-format off
-                              0.4, 0.6,
-                              0.5, 0.5,
-                              0.5, 0.5,
-                              1.0, 0.0}  // clang-format on
+                              0.4f, 0.6f,
+                              0.5f, 0.5f,
+                              0.5f, 0.5f,
+                              1.0f, 0.0f}  // clang-format on
                              );
       bn.cpt( i5 ).fillWith( {// clang-format off
-                0.3, 0.6, 0.1,
-                0.5, 0.5, 0.0,
-                0.5, 0.5, 0.0,
-                1.0, 0.0, 0.0,
-                0.4, 0.6, 0.0,
-                0.5, 0.5, 0.0,
-                0.5, 0.5, 0.0,
-                0.0, 0.0, 1.0}  //clang-format on
+                0.3f, 0.6f, 0.1f,
+                0.5f, 0.5f, 0.0f,
+                0.5f, 0.5f, 0.0f,
+                1.0f, 0.0f, 0.0f,
+                0.4f, 0.6f, 0.0f,
+                0.5f, 0.5f, 0.0f,
+                0.5f, 0.5f, 0.0f,
+                0.0f, 0.0f, 1.0f}  //clang-format on
        );
     }
 
-    // Uncomment this to have some outputs.
     void printProba( const gum::Potential<float>& p ) {
-      /*gum::Instantiation inst( p );
+      // Uncomment this to have some outputs.
+      /*
+      gum::Instantiation inst( p );
       for ( inst.setFirst(); !inst.end(); ++inst ) {
-        std::cerr << inst << " : " << p[inst] << std::endl;
+        GUM_TRACE(inst << " : " << p[inst] << std::endl);
       }
-      std::cerr << std::endl;*/
+      */
     }
   };
 }

@@ -39,7 +39,7 @@ namespace gum_tests {
     void test_op_multidimArray() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -109,14 +109,14 @@ namespace gum_tests {
       delete t6;
       delete t7;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_op_multidimImplementationOfMultiDimArray() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -190,7 +190,7 @@ namespace gum_tests {
       delete t6;
       delete t7;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
@@ -202,7 +202,7 @@ namespace gum_tests {
 
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -233,14 +233,14 @@ namespace gum_tests {
       delete t4;
       delete t5;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_potentials() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -314,14 +314,14 @@ namespace gum_tests {
       delete t6;
       delete t7;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_op_multidimArray4Pointers() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -391,14 +391,14 @@ namespace gum_tests {
       mydelete( t6 );
       mydelete( t7 );
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_op_multidimImplementationOfMultiDimArray4Pointers() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -472,7 +472,7 @@ namespace gum_tests {
       mydelete( t6 );
       mydelete( t7 );
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
@@ -484,7 +484,7 @@ namespace gum_tests {
 
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -515,14 +515,14 @@ namespace gum_tests {
       mydelete( t4 );
       mydelete( t5 );
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_potentials4Pointers() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -596,14 +596,14 @@ namespace gum_tests {
       mydelete( t6 );
       mydelete( t7 );
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_op_optimizeArrays() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -709,14 +709,14 @@ namespace gum_tests {
       delete t6;
       delete t5;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
     void test_op_optimizeMultiDimImplementations() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -834,7 +834,7 @@ namespace gum_tests {
       delete t6;
       delete t5;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
@@ -919,7 +919,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t->set( i, (int)( gum::randomProba() * 100000 ) );
+        t->set( i, 100000.0f*float(gum::randomProba()) );
     }
 
     // ==========================================================================
@@ -929,7 +929,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t->set( i, new float( (int)( gum::randomProba() * 100000 ) ) );
+        t->set( i, new float( 100000.0f* float( gum::randomProba()) ) );
     }
 
     // ==========================================================================
@@ -939,7 +939,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, (int)( ( (double)rand() / RAND_MAX ) * 100000 ) );
+        t.set( i, rand() * 100000.0 / RAND_MAX );
     }
 
     // ==========================================================================

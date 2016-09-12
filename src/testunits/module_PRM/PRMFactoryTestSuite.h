@@ -22,8 +22,8 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/elements/classElement.h>
-#include <agrum/PRM/elements/parameter.h>
+#include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/PRM/elements/PRMParameter.h>
 
 namespace gum_tests {
   class PRMFactoryTestSuite : public CxxTest::TestSuite {
@@ -46,10 +46,10 @@ namespace gum_tests {
         const auto& c = prm->getClass( "MyClass" );
         TS_ASSERT( 1 == c.parameters().size() );
         const auto& elt = c.get( "lambda" );
-        TS_ASSERT( gum::prm::ClassElement<double>::isParameter( elt ) );
+        TS_ASSERT( gum::prm::PRMClassElement<double>::isParameter( elt ) );
         const auto& lambda =
-            static_cast<const gum::prm::Parameter<double>&>( elt );
-        TS_ASSERT( lambda.valueType() == gum::prm::Parameter<double>::REAL );
+            static_cast<const gum::prm::PRMParameter<double>&>( elt );
+        TS_ASSERT( lambda.valueType() == gum::prm::PRMParameter<double>::REAL );
         TS_ASSERT( lambda.value() == 0.001 );
 
         delete prm;
@@ -88,10 +88,10 @@ namespace gum_tests {
 
         TS_ASSERT( 1 == c.parameters().size() );
         const auto& elt = c.get( "lambda" );
-        TS_ASSERT( gum::prm::ClassElement<double>::isParameter( elt ) );
+        TS_ASSERT( gum::prm::PRMClassElement<double>::isParameter( elt ) );
         const auto& lambda =
-            static_cast<const gum::prm::Parameter<double>&>( elt );
-        TS_ASSERT( lambda.valueType() == gum::prm::Parameter<double>::REAL );
+            static_cast<const gum::prm::PRMParameter<double>&>( elt );
+        TS_ASSERT( lambda.valueType() == gum::prm::PRMParameter<double>::REAL );
         TS_ASSERT( lambda.value() == 0.001 );
 
         delete prm;
@@ -119,7 +119,7 @@ namespace gum_tests {
         f.addInstance( "MyClass", "i" );
         f.endSystem();
 
-        const auto& s = prm->system( "MySystem" );
+        const auto& s = prm->getSystem( "MySystem" );
 
         TS_ASSERT( s.exists( "i" ) );
 
@@ -159,7 +159,7 @@ namespace gum_tests {
         TS_ASSERT( prm->classes().size() == 3 );
 
         f.endSystem();
-        const auto& s = prm->system( "MySystem" );
+        const auto& s = prm->getSystem( "MySystem" );
 
         TS_ASSERT( s.exists( "i" ) );
 

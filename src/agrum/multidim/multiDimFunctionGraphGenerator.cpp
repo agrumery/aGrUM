@@ -76,7 +76,7 @@ namespace gum {
 
       NodeId currentNodeId = filo.back();
       filo.pop_back();
-      NodeId cvp = node2MinVar[currentNodeId];
+      Idx cvp = node2MinVar[currentNodeId];
       const InternalNode* currentNode =
           generatedFunctionGraph->node( currentNodeId );
 
@@ -90,7 +90,6 @@ namespace gum {
 
         Idx vsp = __varSeq.pos( var );
         if ( vsp > cvp ) {
-
           const Link<NodeId>* nicleIter =
               generatedFunctionGraph->varNodeListe( var )->list();
           while ( nicleIter ) {
@@ -166,7 +165,7 @@ namespace gum {
 
     if ( span != 0 ) {
       auto generator = gum::getRandomGenerator();
-      std::weibull_distribution<double> distribution( span, 1.0 );
+      std::weibull_distribution<double> distribution( double(span), 1.0 );
       randOut = ( Idx )( distribution( generator ) * span / 2 );
       if ( randOut > span ) randOut = span;
     }

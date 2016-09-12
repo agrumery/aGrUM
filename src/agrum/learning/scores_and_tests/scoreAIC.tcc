@@ -37,10 +37,10 @@ namespace gum {
     template <typename RowFilter>
     INLINE ScoreAIC<IdSetAlloc, CountAlloc>::ScoreAIC(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities,
+        const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
-        unsigned long min_range,
-        unsigned long max_range )
+        Size min_range,
+        Size max_range )
         : Score<IdSetAlloc, CountAlloc>(
               filter, var_modalities, apriori, min_range, max_range ) {
       // for debugging purposes
@@ -84,7 +84,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     bool ScoreAIC<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const std::string& apriori_type, float weight ) {
+        const std::string& apriori_type, double weight ) {
       // check that the apriori is compatible with the score
       if ( ( apriori_type == AprioriDirichletType::type ) ||
            ( apriori_type == AprioriSmoothingType::type ) ||
@@ -121,60 +121,60 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    float
-    ScoreAIC<IdSetAlloc, CountAlloc>::score( unsigned int nodeset_index ) {
+    double
+    ScoreAIC<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
       }
 
       // get the counts for all the targets and for the conditioning nodes
-      const std::vector<float, CountAlloc>& N_ijk =
+      const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const unsigned int targets_modal = N_ijk.size();
-      float score = 0;
+      const Size targets_modal =Size( N_ijk.size());
+      double score = 0;
 
       // get the nodes involved in the score as well as their modalities
-      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
+      const std::vector<Idx, IdSetAlloc>& all_nodes =
           this->_getAllNodes( nodeset_index );
-      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
+      const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes( nodeset_index );
-      const std::vector<unsigned int>& modalities = this->modalities();
+      const std::vector<Size>& modalities = this->modalities();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( conditioning_nodes ) {
         // get the counts for the conditioning nodes
-        const std::vector<float, CountAlloc>& N_ij =
+        const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const unsigned int conditioning_modal = N_ij.size();
+        const Size conditioning_modal =Size(  N_ij.size());
 
         // initialize the score: this should be the penalty of the AIC score,
         // i.e.,
         // -(ri-1 ) * qi
-        const float penalty =
-            conditioning_modal * ( modalities[all_nodes.back()] - 1 );
+        const double penalty =
+            double(conditioning_modal * ( modalities[all_nodes.back()] - 1 ));
 
         if ( this->_apriori->weight() ) {
-          const std::vector<float, CountAlloc>& N_prime_ijk =
+          const std::vector<double, CountAlloc>& N_prime_ijk =
               this->_getAllApriori( nodeset_index );
-          const std::vector<float, CountAlloc>& N_prime_ij =
+          const std::vector<double, CountAlloc>& N_prime_ij =
               this->_getConditioningApriori( nodeset_index );
 
           // compute the score: it remains to compute the log likelihood, i.e.,
           // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            const float new_count = N_ijk[k] + N_prime_ijk[k];
+          for ( Idx k = 0; k < targets_modal; ++k ) {
+            const double new_count = N_ijk[k] + N_prime_ijk[k];
             if ( new_count ) {
-              score += new_count * logf( new_count );
+              score += new_count * std::log( new_count );
             }
           }
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-            const float new_count = N_ij[j] + N_prime_ij[j];
+          for ( Idx j = 0; j < conditioning_modal; ++j ) {
+            const double new_count = N_ij[j] + N_prime_ij[j];
             if ( new_count ) {
-              score -= new_count * logf( new_count );
+              score -= new_count * std::log( new_count );
             }
           }
         } else {
@@ -182,14 +182,14 @@ namespace gum {
           // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             if ( N_ijk[k] ) {
-              score += N_ijk[k] * logf( N_ijk[k] );
+              score += N_ijk[k] * std::log( N_ijk[k] );
             }
           }
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+          for ( Idx j = 0; j < conditioning_modal; ++j ) {
             if ( N_ij[j] ) {
-              score -= N_ij[j] * logf( N_ij[j] );
+              score -= N_ij[j] * std::log( N_ij[j] );
             }
           }
         }
@@ -212,38 +212,38 @@ namespace gum {
         // initialize the score: this should be the penalty of the AIC score,
         // i.e.,
         // -(ri-1 )
-        const float penalty = modalities[all_nodes.back()] - 1;
+        const double penalty = double(modalities[all_nodes.back()]) - 1;
 
         if ( this->_apriori->weight() ) {
-          const std::vector<float, CountAlloc>& N_prime_ijk =
+          const std::vector<double, CountAlloc>& N_prime_ijk =
               this->_getAllApriori( nodeset_index );
 
           // compute the score: it remains to compute the log likelihood, i.e.,
           // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-          float N = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            const float new_count = N_ijk[k] + N_prime_ijk[k];
+          double N = 0;
+          for ( Idx k = 0; k < targets_modal; ++k ) {
+            const double new_count = N_ijk[k] + N_prime_ijk[k];
             if ( new_count ) {
-              score += new_count * logf( new_count );
+              score += new_count * std::log( new_count );
               N += new_count;
             }
           }
-          score -= N * logf( N );
+          score -= N * std::log( N );
         } else {
           // compute the score: it remains to compute the log likelihood, i.e.,
           // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-          float N = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          double N = 0;
+          for ( Idx k = 0; k < targets_modal; ++k ) {
             if ( N_ijk[k] ) {
-              score += N_ijk[k] * logf( N_ijk[k] );
+              score += N_ijk[k] * std::log( N_ijk[k] );
               N += N_ijk[k];
             }
           }
-          score -= N * logf( N );
+          score -= N * std::log( N );
         }
 
         // divide by log(2), since the log likelihood uses log_2

@@ -44,7 +44,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -59,7 +59,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -74,7 +74,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -89,7 +89,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -104,7 +104,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -119,7 +119,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -134,7 +134,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -149,7 +149,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -164,7 +164,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -179,7 +179,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -194,7 +194,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -209,7 +209,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -224,7 +224,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -239,7 +239,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -254,7 +254,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -269,7 +269,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -293,7 +293,7 @@ namespace gum_tests {
         TS_ASSERT( formula.variables().exists( "t" ) );
         TS_ASSERT( formula.variables().exists( "unused" ) );
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -308,7 +308,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -323,7 +323,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -338,7 +338,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
         // Assert
         TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -353,7 +353,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( result = -a );
         // Assert
         TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -369,7 +369,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( result = a + b );
         // Assert
         TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -385,7 +385,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( result = a - b );
         // Assert
         TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -401,7 +401,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( result = a * b );
         // Assert
         TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -417,7 +417,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( result = a / b );
         // Assert
         TS_ASSERT_DELTA( result.result(), expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -432,7 +432,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( result = (double)a );
         // Assert
         TS_ASSERT_DELTA( result, expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -447,7 +447,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( result = static_cast<double>( a ) );
         // Assert
         TS_ASSERT_DELTA( result, expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -460,7 +460,7 @@ namespace gum_tests {
         gum::Formula f = 3.14;
         // Assert
         TS_ASSERT_DELTA( (double)f, expected, 1e-6 );
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }

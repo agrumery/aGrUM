@@ -63,11 +63,8 @@ namespace gum {
         EdgeGrowth( const EdgeGrowth& from );
         /// Destructor.
         ~EdgeGrowth();
-        /// The NodeId of the node from which we grow an edge.
+        /// The id of the node from which we grow an edge.
         NodeId u;
-        /// Returns the number of matches in the interface graph
-        /// for this edge growth.
-        // Size count() const;
         /// The LabelData over the edge of this edge growth.
         LabelData* edge;
         /// The LabelData over the node of this edge growth.
@@ -76,10 +73,10 @@ namespace gum {
         /// otherwise 0 is assigned (recall that subscripts start from 1)
         NodeId v;
         /// Add the pair (u,v) as a match for the current growth.
-        void insert( Instance<GUM_SCALAR>* u, Instance<GUM_SCALAR>* v );
+        void insert( PRMInstance<GUM_SCALAR>* u, PRMInstance<GUM_SCALAR>* v );
         /// The mapping between the u and v for each match in the interface
         /// graph.
-        NodeProperty<std::pair<Instance<GUM_SCALAR>*, Instance<GUM_SCALAR>*>>
+        NodeProperty<std::pair<PRMInstance<GUM_SCALAR>*, PRMInstance<GUM_SCALAR>*>>
             matches;
         /// Return a string representation of this
         std::string toString();

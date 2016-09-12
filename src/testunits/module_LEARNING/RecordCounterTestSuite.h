@@ -46,24 +46,24 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities( 8, 2 );
+      std::vector<gum::Size> modalities( 8, 2 );
 
       gum::learning::RecordCounter<> counter( filter, modalities );
 
-      std::vector<unsigned int> set1{0};
-      std::vector<unsigned int> set2{1};
-      std::vector<unsigned int> set3{1, 0};
+      std::vector<gum::Idx> set1{0};
+      std::vector<gum::Idx> set2{1};
+      std::vector<gum::Idx> set3{1, 0};
 
       {
-        unsigned int id1 = counter.addNodeSet( set1 );
-        unsigned int id2 = counter.addNodeSet( set2 );
-        unsigned int id3 = counter.addNodeSet( set3 );
+        gum::Idx id1 = counter.addNodeSet( set1 );
+        gum::Idx id2 = counter.addNodeSet( set2 );
+        gum::Idx id3 = counter.addNodeSet( set3 );
 
         counter.count();
 
-        const std::vector<float>& vect1 = counter.getCounts( id1 );
-        const std::vector<float>& vect2 = counter.getCounts( id2 );
-        const std::vector<float>& vect3 = counter.getCounts( id3 );
+        const std::vector<double>& vect1 = counter.getCounts( id1 );
+        const std::vector<double>& vect2 = counter.getCounts( id2 );
+        const std::vector<double>& vect3 = counter.getCounts( id3 );
 
         TS_ASSERT( vect1[0] == 5028 );
         TS_ASSERT( vect1[1] == 4972 );
@@ -77,12 +77,12 @@ namespace gum_tests {
       }
 
       counter.clearNodeSets();
-      std::vector<unsigned int> set4{1, 2, 3};
+      std::vector<gum::Idx> set4{1, 2, 3};
       {
         counter.addNodeSet( set2 );
-        unsigned int id2 = counter.addNodeSet( set4 );
+        gum::Idx id2 = counter.addNodeSet( set4 );
         counter.addNodeSet( set1 );
-        unsigned int id4 = counter.addNodeSet( set4 );
+        gum::Idx id4 = counter.addNodeSet( set4 );
 
         counter.count();
 
@@ -90,21 +90,21 @@ namespace gum_tests {
       }
 
       counter.clearNodeSets();
-      unsigned int id = counter.addNodeSet( set4 );
+      gum::Idx id = counter.addNodeSet( set4 );
       counter.count();
-      std::vector<float> vect = counter.getCounts( id );
+      std::vector<double> vect = counter.getCounts( id );
 
       counter.clearNodeSets();
       {
-        std::vector<unsigned int> set5{2, 1, 3};
-        std::vector<unsigned int> set6{3, 1, 2};
-        std::vector<unsigned int> set7{3, 2, 1};
-        std::vector<unsigned int> set8{1, 3, 2};
-        unsigned int id1 = counter.addNodeSet( set4 );
-        unsigned int id2 = counter.addNodeSet( set5 );
-        unsigned int id3 = counter.addNodeSet( set6 );
-        unsigned int id4 = counter.addNodeSet( set7 );
-        unsigned int id5 = counter.addNodeSet( set8 );
+        std::vector<gum::Idx> set5{2, 1, 3};
+        std::vector<gum::Idx> set6{3, 1, 2};
+        std::vector<gum::Idx> set7{3, 2, 1};
+        std::vector<gum::Idx> set8{1, 3, 2};
+        gum::Idx id1 = counter.addNodeSet( set4 );
+        gum::Idx id2 = counter.addNodeSet( set5 );
+        gum::Idx id3 = counter.addNodeSet( set6 );
+        gum::Idx id4 = counter.addNodeSet( set7 );
+        gum::Idx id5 = counter.addNodeSet( set8 );
 
         counter.count();
 
@@ -116,35 +116,35 @@ namespace gum_tests {
       }
 
       counter.clearNodeSets();
-      std::vector<unsigned int> setx13{1, 3};
-      std::vector<unsigned int> setx23{2, 3};
-      std::vector<unsigned int> setx2{2};
-      std::vector<unsigned int> setx3{3};
-      unsigned int idx13 = counter.addNodeSet( setx13 );
-      unsigned int idx23 = counter.addNodeSet( setx23 );
-      unsigned int idx2 = counter.addNodeSet( setx2 );
-      unsigned int idx3 = counter.addNodeSet( setx3 );
+      std::vector<gum::Idx> setx13{1, 3};
+      std::vector<gum::Idx> setx23{2, 3};
+      std::vector<gum::Idx> setx2{2};
+      std::vector<gum::Idx> setx3{3};
+      gum::Idx Idx13 = counter.addNodeSet( setx13 );
+      gum::Idx Idx23 = counter.addNodeSet( setx23 );
+      gum::Idx Idx2 = counter.addNodeSet( setx2 );
+      gum::Idx Idx3 = counter.addNodeSet( setx3 );
       counter.count();
-      std::vector<float> vectx13 = counter.getCounts( idx13 );
-      std::vector<float> vectx23 = counter.getCounts( idx23 );
-      std::vector<float> vectx2 = counter.getCounts( idx2 );
-      std::vector<float> vectx3 = counter.getCounts( idx3 );
+      std::vector<double> vectx13 = counter.getCounts( Idx13 );
+      std::vector<double> vectx23 = counter.getCounts( Idx23 );
+      std::vector<double> vectx2 = counter.getCounts( Idx2 );
+      std::vector<double> vectx3 = counter.getCounts( Idx3 );
 
       counter.clearNodeSets();
       {
-        std::vector<unsigned int> set5{1, 3};
-        std::vector<unsigned int> set6{3, 1};
-        std::vector<unsigned int> set7{3, 2};
-        std::vector<unsigned int> set8{2, 3};
-        std::vector<unsigned int> set9{3};
-        std::vector<unsigned int> set10{2};
-        unsigned int id1 = counter.addNodeSet( set4 );
-        unsigned int id2 = counter.addNodeSet( set5 );
-        unsigned int id3 = counter.addNodeSet( set6 );
-        unsigned int id4 = counter.addNodeSet( set7 );
-        unsigned int id5 = counter.addNodeSet( set8 );
-        unsigned int id6 = counter.addNodeSet( set9 );
-        unsigned int id7 = counter.addNodeSet( set10 );
+        std::vector<gum::Idx> set5{1, 3};
+        std::vector<gum::Idx> set6{3, 1};
+        std::vector<gum::Idx> set7{3, 2};
+        std::vector<gum::Idx> set8{2, 3};
+        std::vector<gum::Idx> set9{3};
+        std::vector<gum::Idx> set10{2};
+        gum::Idx id1 = counter.addNodeSet( set4 );
+        gum::Idx id2 = counter.addNodeSet( set5 );
+        gum::Idx id3 = counter.addNodeSet( set6 );
+        gum::Idx id4 = counter.addNodeSet( set7 );
+        gum::Idx id5 = counter.addNodeSet( set8 );
+        gum::Idx id6 = counter.addNodeSet( set9 );
+        gum::Idx id7 = counter.addNodeSet( set10 );
 
         counter.count();
 
@@ -173,26 +173,26 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities( 8, 2 );
+      std::vector<gum::Idx> modalities( 8, 2 );
 
       gum::learning::RecordCounter<> counter( filter, modalities );
 
-      std::vector<unsigned int> set1{0};
-      std::vector<unsigned int> set2{1};
-      std::vector<unsigned int> set3{1, 0};
+      std::vector<gum::Idx> set1{0};
+      std::vector<gum::Idx> set2{1};
+      std::vector<gum::Idx> set3{1, 0};
 
       {
-        unsigned int id1 = counter.addNodeSet( set1 );
-        unsigned int id2 = counter.addNodeSet( set2 );
-        unsigned int id3 = counter.addNodeSet( set3 );
+        gum::Idx id1 = counter.addNodeSet( set1 );
+        gum::Idx id2 = counter.addNodeSet( set2 );
+        gum::Idx id3 = counter.addNodeSet( set3 );
 
         counter.count();
 
         gum::learning::RecordCounter<> counter2( counter );
 
-        const std::vector<float>& vect1 = counter2.getCounts( id1 );
-        const std::vector<float>& vect2 = counter2.getCounts( id2 );
-        const std::vector<float>& vect3 = counter2.getCounts( id3 );
+        const std::vector<double>& vect1 = counter2.getCounts( id1 );
+        const std::vector<double>& vect2 = counter2.getCounts( id2 );
+        const std::vector<double>& vect3 = counter2.getCounts( id3 );
 
         TS_ASSERT( vect1[0] == 5028 );
         TS_ASSERT( vect1[1] == 4972 );
@@ -206,9 +206,9 @@ namespace gum_tests {
 
         gum::learning::RecordCounter<> counter3( std::move( counter2 ) );
 
-        const std::vector<float>& vvect1 = counter3.getCounts( id1 );
-        const std::vector<float>& vvect2 = counter3.getCounts( id2 );
-        const std::vector<float>& vvect3 = counter3.getCounts( id3 );
+        const std::vector<double>& vvect1 = counter3.getCounts( id1 );
+        const std::vector<double>& vvect2 = counter3.getCounts( id2 );
+        const std::vector<double>& vvect3 = counter3.getCounts( id3 );
 
         TS_ASSERT( vvect1[0] == 5028 );
         TS_ASSERT( vvect1[1] == 4972 );
@@ -222,12 +222,12 @@ namespace gum_tests {
       }
 
       counter.clearNodeSets();
-      std::vector<unsigned int> set4{1, 2, 3};
+      std::vector<gum::Idx> set4{1, 2, 3};
       {
         counter.addNodeSet( set2 );
-        unsigned int id2 = counter.addNodeSet( set4 );
+        gum::Idx id2 = counter.addNodeSet( set4 );
         counter.addNodeSet( set1 );
-        unsigned int id4 = counter.addNodeSet( set4 );
+        gum::Idx id4 = counter.addNodeSet( set4 );
 
         counter.count();
 
@@ -235,21 +235,21 @@ namespace gum_tests {
       }
 
       counter.clearNodeSets();
-      unsigned int id = counter.addNodeSet( set4 );
+      gum::Idx id = counter.addNodeSet( set4 );
       counter.count();
-      std::vector<float> vect = counter.getCounts( id );
+      std::vector<double> vect = counter.getCounts( id );
 
       counter.clearNodeSets();
       {
-        std::vector<unsigned int> set5{2, 1, 3};
-        std::vector<unsigned int> set6{3, 1, 2};
-        std::vector<unsigned int> set7{3, 2, 1};
-        std::vector<unsigned int> set8{1, 3, 2};
-        unsigned int id1 = counter.addNodeSet( set4 );
-        unsigned int id2 = counter.addNodeSet( set5 );
-        unsigned int id3 = counter.addNodeSet( set6 );
-        unsigned int id4 = counter.addNodeSet( set7 );
-        unsigned int id5 = counter.addNodeSet( set8 );
+        std::vector<gum::Idx> set5{2, 1, 3};
+        std::vector<gum::Idx> set6{3, 1, 2};
+        std::vector<gum::Idx> set7{3, 2, 1};
+        std::vector<gum::Idx> set8{1, 3, 2};
+        gum::Idx id1 = counter.addNodeSet( set4 );
+        gum::Idx id2 = counter.addNodeSet( set5 );
+        gum::Idx id3 = counter.addNodeSet( set6 );
+        gum::Idx id4 = counter.addNodeSet( set7 );
+        gum::Idx id5 = counter.addNodeSet( set8 );
 
         gum::learning::RecordCounter<> counter2( counter );
         gum::learning::RecordCounter<> counter2bis( counter );
@@ -282,17 +282,17 @@ namespace gum_tests {
       }
     }
 
-    bool compare_vect3( const std::vector<float>& v1,
-                        const std::vector<float>& v2,
-                        const std::vector<unsigned int>& order ) {
-      unsigned int index1, index2;
-      for ( unsigned int k = 0; k < 2; ++k ) {
-        for ( unsigned int j = 0; j < 2; ++j ) {
-          for ( unsigned int i = 0; i < 2; ++i ) {
+    bool compare_vect3( const std::vector<double>& v1,
+                        const std::vector<double>& v2,
+                        const std::vector<gum::Idx>& order ) {
+      gum::Idx index1, index2;
+      for ( gum::Idx k = 0; k < 2; ++k ) {
+        for ( gum::Idx j = 0; j < 2; ++j ) {
+          for ( gum::Idx i = 0; i < 2; ++i ) {
             index2 = i + j * 2 + k * 4;
-            index1 = i * ( 1 << ( order[0] - 1 ) ) +
-                     j * ( 1 << ( order[1] - 1 ) ) +
-                     k * ( 1 << ( order[2] - 1 ) );
+            index1 = i * ( gum::Idx( 1 ) << ( order[0] - 1 ) ) +
+                     j * ( gum::Idx( 1 ) << ( order[1] - 1 ) ) +
+                     k * ( gum::Idx( 1 ) << ( order[2] - 1 ) );
             if ( v1[index1] != v2[index2] ) return false;
           }
         }
@@ -301,15 +301,15 @@ namespace gum_tests {
       return true;
     }
 
-    bool compare_vect2( const std::vector<float>& v1,
-                        const std::vector<float>& v2,
-                        const std::vector<unsigned int>& order ) {
-      unsigned int index1, index2;
-      for ( unsigned int j = 0; j < 2; ++j ) {
-        for ( unsigned int i = 0; i < 2; ++i ) {
+    bool compare_vect2( const std::vector<double>& v1,
+                        const std::vector<double>& v2,
+                        const std::vector<gum::Idx>& order ) {
+      gum::Idx index1, index2;
+      for ( gum::Idx j = 0; j < 2; ++j ) {
+        for ( gum::Idx i = 0; i < 2; ++i ) {
           index2 = i + j * 2;
           index1 =
-              i * ( 1 << ( order[0] - 1 ) ) + j * ( 1 << ( order[1] - 1 ) );
+              i * ( gum::Idx(1) << ( order[0] - 1 ) ) + j * (gum::Idx(1) << ( order[1] - 1 ) );
           if ( v1[index1] != v2[index2] ) return false;
         }
       }

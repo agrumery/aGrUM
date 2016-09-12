@@ -48,7 +48,7 @@ namespace gum {
        * @headerfile O3SystemFactory.h <agrum/PRM/o3prm/O3SystemFactory.h>
        * @ingroup o3prm_group
        *
-       * @brief Builds gum::prm::System from gum::prm::o3prm::O3System.
+       * @brief Builds gum::prm::PRMSystem from gum::prm::o3prm::O3System.
        *
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
        */
@@ -88,7 +88,7 @@ namespace gum {
 
         bool __checkIncrements( O3System& sys );
 
-        bool __checkParameters( const Class<GUM_SCALAR>& type,
+        bool __checkParameters( const PRMClass<GUM_SCALAR>& type,
                                 const O3Instance& inst );
 
         bool __checkInstance( O3System& sys );

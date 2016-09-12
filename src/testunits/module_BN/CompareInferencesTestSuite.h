@@ -291,7 +291,7 @@ namespace gum_tests {
 
     void testMultipleInference() {
       gum::BayesNet<float> bn;
-      gum::Id c, s, r, w;
+      gum::NodeId c, s, r, w;
 
       gum::LabelizedVariable vc( "c", "cloudy", 2 ), vs( "s", "sprinklet", 2 );
       gum::LabelizedVariable vr( "r", "rain", 2 ), vw( "w", "wet grass", 2 );
@@ -306,10 +306,10 @@ namespace gum_tests {
       bn.addArc( s, w );
       bn.addArc( r, w );
 
-      bn.cpt( c ).fillWith( {0.5, 0.5} );
-      bn.cpt( s ).fillWith( {0.5, 0.5, 0.9, 0.1} );
-      bn.cpt( r ).fillWith( {0.8, 0.2, 0.2, 0.8} );
-      bn.cpt( w ).fillWith( {1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99} );
+      bn.cpt( c ).fillWith( {0.5f, 0.5f} );
+      bn.cpt( s ).fillWith( {0.5f, 0.5f, 0.9f, 0.1f} );
+      bn.cpt( r ).fillWith( {0.8f, 0.2f, 0.2f, 0.8f} );
+      bn.cpt( w ).fillWith( {1.0f, 0.0f, 0.1f, 0.9f, 0.1f, 0.9f, 0.01f, 0.99f} );
 
       gum::Potential<float> e_i1;
       e_i1 << bn.variable( c );
@@ -330,9 +330,9 @@ namespace gum_tests {
         {
           const gum::Potential<float>& p = inf.posterior( w );
           gum::Instantiation I( p );
-          TS_ASSERT_DELTA( p[I], 0.3529, 3e-2 );
+          TS_ASSERT_DELTA( p[I], 0.3529f, 3e-2f );
           ++I;
-          TS_ASSERT_DELTA( p[I], 0.6471, 3e-2 );
+          TS_ASSERT_DELTA( p[I], 0.6471f, 3e-2f );
         }
 
         inf.eraseAllEvidence();
@@ -341,9 +341,9 @@ namespace gum_tests {
         {
           const gum::Potential<float>& p = inf.posterior( w );
           gum::Instantiation I( p );
-          TS_ASSERT_DELTA( p[I], 0.082, 1e-2 );
+          TS_ASSERT_DELTA( p[I], 0.082f, 1e-2f );
           ++I;
-          TS_ASSERT_DELTA( p[I], 0.918, 1e-2 );
+          TS_ASSERT_DELTA( p[I], 0.918f, 1e-2f );
         }
       }
 
@@ -353,9 +353,9 @@ namespace gum_tests {
         {
           const gum::Potential<float>& p = inf.posterior( w );
           gum::Instantiation I( p );
-          TS_ASSERT_DELTA( p[I], 0.3529, 1e-7 );
+          TS_ASSERT_DELTA( p[I], 0.3529f, 1e-7f );
           ++I;
-          TS_ASSERT_DELTA( p[I], 0.6471, 1e-7 );
+          TS_ASSERT_DELTA( p[I], 0.6471f, 1e-7f );
         }
 
         inf.eraseAllEvidence();
@@ -365,9 +365,9 @@ namespace gum_tests {
         {
           const gum::Potential<float>& p = inf.posterior( w );
           gum::Instantiation I( p );
-          TS_ASSERT_DELTA( p[I], 0.082, 1e-7 );
+          TS_ASSERT_DELTA( p[I], 0.082f, 1e-7f );
           ++I;
-          TS_ASSERT_DELTA( p[I], 0.918, 1e-7 );
+          TS_ASSERT_DELTA( p[I], 0.918f, 1e-7f );
         }
       }
 
@@ -377,9 +377,9 @@ namespace gum_tests {
         {
           const gum::Potential<float>& p = inf.posterior( w );
           gum::Instantiation I( p );
-          TS_ASSERT_DELTA( p[I], 0.3529, 1e-5 );
+          TS_ASSERT_DELTA( p[I], 0.3529f, 1e-5f );
           ++I;
-          TS_ASSERT_DELTA( p[I], 0.6471, 1e-5 );
+          TS_ASSERT_DELTA( p[I], 0.6471f, 1e-5f );
         }
 
         inf.eraseAllEvidence();
@@ -388,9 +388,9 @@ namespace gum_tests {
         {
           const gum::Potential<float>& p = inf.posterior( w );
           gum::Instantiation I( p );
-          TS_ASSERT_DELTA( p[I], 0.082, 1e-7 );
+          TS_ASSERT_DELTA( p[I], 0.082f, 1e-7f );
           ++I;
-          TS_ASSERT_DELTA( p[I], 0.918, 1e-7 );
+          TS_ASSERT_DELTA( p[I], 0.918f, 1e-7f );
         }
       }
 
@@ -400,9 +400,9 @@ namespace gum_tests {
         {
           const gum::Potential<float>& p = inf.posterior( w );
           gum::Instantiation I( p );
-          TS_ASSERT_DELTA( p[I], 0.3529, 1e-5 );
+          TS_ASSERT_DELTA( p[I], 0.3529f, 1e-5f );
           ++I;
-          TS_ASSERT_DELTA( p[I], 0.6471, 1e-5 );
+          TS_ASSERT_DELTA( p[I], 0.6471f, 1e-5f );
         }
 
         inf.eraseAllEvidence();
@@ -411,9 +411,9 @@ namespace gum_tests {
         {
           const gum::Potential<float>& p = inf.posterior( w );
           gum::Instantiation I( p );
-          TS_ASSERT_DELTA( p[I], 0.082, 1e-7 );
+          TS_ASSERT_DELTA( p[I], 0.082f, 1e-7f );
           ++I;
-          TS_ASSERT_DELTA( p[I], 0.918, 1e-7 );
+          TS_ASSERT_DELTA( p[I], 0.918f, 1e-7f );
         }
       }
     }
@@ -440,7 +440,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_ss.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_vebb.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
-        for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
+        for ( gum::Instantiation i( p_ve ); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
@@ -475,7 +475,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_ss.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_vebb.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
-        for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
+        for ( gum::Instantiation i( p_ve ); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
@@ -520,7 +520,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
 
         gum::Instantiation i_ve( p_ve );
-        for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
+        for ( gum::Instantiation i( p_ve ); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
@@ -551,7 +551,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
 
         gum::Instantiation i_ve( p_ve );
-        for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
+        for ( gum::Instantiation i( p_ve ); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
@@ -589,7 +589,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
 
         gum::Instantiation i_ve( p_ve );
-        for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
+        for ( gum::Instantiation i( p_ve ); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
@@ -634,7 +634,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
 
         gum::Instantiation i_ve( p_ve );
-        for ( gum::Instantiation i( p_ve ); not i.end(); i.inc() ) {
+        for ( gum::Instantiation i( p_ve ); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );

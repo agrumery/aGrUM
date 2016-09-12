@@ -25,34 +25,34 @@
 
 #include <agrum/core/hashTable.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/PRM/elements/system.h>
+#include <agrum/PRM/elements/PRMSystem.h>
 
 /**
- * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 
   class PRMSystemTestSuite : public CxxTest::TestSuite {
     private:
-    typedef gum::prm::System<double> System;
-    typedef gum::prm::Instance<double> Instance;
-    typedef gum::prm::Class<double> Class;
-    typedef gum::prm::Type<double> Type;
-    typedef gum::prm::ScalarAttribute<double> Attribute;
-    typedef gum::prm::ReferenceSlot<double> Reference;
-    typedef gum::prm::SlotChain<double> SlotChain;
+    typedef gum::prm::PRMSystem<double> PRMSystem;
+    typedef gum::prm::PRMInstance<double> PRMInstance;
+    typedef gum::prm::PRMClass<double> PRMClass;
+    typedef gum::prm::PRMType<double> PRMType;
+    typedef gum::prm::PRMScalarAttribute<double> PRMAttribute;
+    typedef gum::prm::PRMReferenceSlot<double> Reference;
+    typedef gum::prm::PRMSlotChain<double> PRMSlotChain;
 
-    Type* __boolean;
-    Class* __asia;
+    PRMType* __boolean;
+    PRMClass* __asia;
     gum::HashTable<std::string, gum::NodeId>* __nodeMap;
 
     public:
     void setUp() {
-      __boolean = Type::boolean();
+      __boolean = PRMType::boolean();
       __nodeMap = new gum::HashTable<std::string, gum::NodeId>();
-      __asia = new Class( "asia" );
+      __asia = new PRMClass( "asia" );
       __buildAsiaBN();
     }
 
@@ -75,7 +75,7 @@ namespace gum_tests {
 
     void __visitToAsia() {
       std::string name = "visitToAsia";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       std::vector<double> values{0.99, 0.01};
       attr->cpf().fillWith( values );
@@ -84,7 +84,7 @@ namespace gum_tests {
 
     void __tuberculosis() {
       std::string name = "tuberculosis";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "visitToAsia", "tuberculosis" );
       std::vector<double> values{0.99, 0.95, 0.01, 0.05};
@@ -94,7 +94,7 @@ namespace gum_tests {
 
     void __smoking() {
       std::string name = "smoking";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       std::vector<double> values{0.50, 0.50};
       attr->cpf().fillWith( values );
@@ -103,7 +103,7 @@ namespace gum_tests {
 
     void __lungCancer() {
       std::string name = "lungCancer";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "smoking", "lungCancer" );
       std::vector<double> values{0.99, 0.90, 0.01, 0.10};
@@ -113,7 +113,7 @@ namespace gum_tests {
 
     void __bronchitis() {
       std::string name = "bronchitis";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "smoking", "bronchitis" );
       std::vector<double> values{0.70, 0.40, 0.30, 0.60};
@@ -123,7 +123,7 @@ namespace gum_tests {
 
     void __tubOrCancer() {
       std::string name = "tubOrCancer";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "tuberculosis", "tubOrCancer" );
       __asia->addArc( "lungCancer", "tubOrCancer" );
@@ -134,7 +134,7 @@ namespace gum_tests {
 
     void __positiveXRay() {
       std::string name = "positiveXRay";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "tubOrCancer", "positiveXRay" );
       std::vector<double> values{0.95, 0.02, 0.05, 0.98};
@@ -144,7 +144,7 @@ namespace gum_tests {
 
     void __dyspnea() {
       std::string name = "dyspnea";
-      auto attr = new Attribute( name, *__boolean );
+      auto attr = new PRMAttribute( name, *__boolean );
       auto id = __asia->add( attr );
       __asia->addArc( "tubOrCancer", "dyspnea" );
       __asia->addArc( "bronchitis", "dyspnea" );
@@ -159,8 +159,8 @@ namespace gum_tests {
 
     void testAddInstance() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       // Act
       TS_ASSERT_THROWS_NOTHING( sys.add( inst ) );
       // Assert
@@ -171,8 +171,8 @@ namespace gum_tests {
 
     void testInstantiate() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       // Act
       TS_ASSERT_THROWS_NOTHING( sys.instantiate() );
@@ -187,8 +187,8 @@ namespace gum_tests {
       std::string x0, y0, x1, y1;
       auto bn = new gum::BayesNet<double>( "asia" );
       {
-        System sys( "asia" );
-        auto inst = new Instance( "asia", *__asia );
+        PRMSystem sys( "asia" );
+        auto inst = new PRMInstance( "asia", *__asia );
         sys.add( inst );
         sys.instantiate();
         gum::BayesNetFactory<double> factory( bn );
@@ -209,8 +209,8 @@ namespace gum_tests {
 
     void testGroundBNAfterDelete() {
       // Arrange
-      System* sys = new System( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem* sys = new PRMSystem( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys->add( inst );
       sys->instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -225,7 +225,7 @@ namespace gum_tests {
         const gum::Potential<double>* cpt = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( node ) ) );
         gum::Instantiation inst( *cpt );
-        for ( inst.begin(); not inst.end(); inst.inc() ) {
+        for ( inst.begin(); ! inst.end(); inst.inc() ) {
           TS_GUM_ASSERT_THROWS_NOTHING( cpt->get( inst ) );
         }
       }
@@ -234,8 +234,8 @@ namespace gum_tests {
 
     void testVisitToAsiaId() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -249,8 +249,8 @@ namespace gum_tests {
 
     void testVisitToAsia() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -265,7 +265,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -274,8 +274,8 @@ namespace gum_tests {
 
     void testTuberculosis() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -290,7 +290,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -299,8 +299,8 @@ namespace gum_tests {
 
     void testSmoking() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -315,7 +315,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -324,8 +324,8 @@ namespace gum_tests {
 
     void testLungCancer() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -340,7 +340,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -349,8 +349,8 @@ namespace gum_tests {
 
     void testBronchitis() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -365,7 +365,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -374,8 +374,8 @@ namespace gum_tests {
 
     void testTubOrCancer() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -390,7 +390,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -399,8 +399,8 @@ namespace gum_tests {
 
     void testPositiveXRay() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -415,7 +415,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
@@ -424,8 +424,8 @@ namespace gum_tests {
 
     void testDyspnea() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
+      PRMSystem sys( "asia" );
+      auto inst = new PRMInstance( "asia", *__asia );
       sys.add( inst );
       sys.instantiate();
       auto bn = new gum::BayesNet<double>( "asia" );
@@ -440,7 +440,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+      for ( i.begin(), j.begin(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }

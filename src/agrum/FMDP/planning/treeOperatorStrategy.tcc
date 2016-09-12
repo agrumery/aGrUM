@@ -26,7 +26,7 @@
 */
 
 // =========================================================================
-#include <math.h>
+#include <cmath>
 #include <vector>
 #include <queue>
 #include <algorithm>

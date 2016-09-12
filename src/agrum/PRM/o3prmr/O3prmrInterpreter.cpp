@@ -24,9 +24,9 @@
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
+#include <agrum/config.h>
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 
-#include <agrum/core/utils.h>
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/VEWithBB.h>
@@ -99,7 +99,7 @@ namespace gum {
       /// Root paths to search from there packages.
       /// Default are './' and one is calculate from request package if any.
       void O3prmrInterpreter::addPath( std::string path ) {
-        if ( path.length() and path.back() != '/' ) {
+        if ( path.length() && path.back() != '/' ) {
           path = path + '/';
         }
         if ( Directory::isDir( path ) ) {
@@ -162,7 +162,7 @@ namespace gum {
           // On vérifie la syntaxe
           unsigned char* buffer = new unsigned char[file_content.length() + 1];
           strcpy( (char*)buffer, file_content.c_str() );
-          Scanner s( buffer, file_content.length() + 1 );
+          Scanner s( buffer, int(file_content.length() + 1) );
           Parser p( &s );
           p.setO3prmrContext( &c );
           p.Parse();
@@ -192,26 +192,26 @@ namespace gum {
           } else {
             return interpret( &c );
           }
-        } catch ( gum::Exception& e ) {
+        } catch ( gum::Exception& ) {
           return false;
         }
       }
 
       std::string O3prmrInterpreter::__readFile( const std::string& file ) {
         // read entire file into string
-        std::ifstream is( file, std::ifstream::binary );
-        if ( is ) {
+        std::ifstream istream( file, std::ifstream::binary );
+        if ( istream ) {
           // get length of file:
-          is.seekg( 0, is.end );
-          int length = is.tellg();
-          is.seekg( 0, is.beg );
+          istream.seekg( 0, istream.end );
+          int length = int(istream.tellg());
+          istream.seekg( 0, istream.beg );
 
           std::string str;
           str.resize( length, ' ' );  // reserve space
           char* begin = &*str.begin();
 
-          is.read( begin, length );
-          is.close();
+          istream.read( begin, length );
+          istream.close();
 
           return str;
         }
@@ -448,10 +448,10 @@ namespace gum {
           const std::string right_val = command->rightValue;
 
           // Contruct the pair (instance,attribut)
-          const System<double>& sys = system( left_val );
-          const Instance<double>& instance =
+          const PRMSystem<double>& sys = system( left_val );
+          const PRMInstance<double>& instance =
               sys.get( findInstanceName( left_val, sys ) );
-          const Attribute<double>& attr =
+          const PRMAttribute<double>& attr =
               instance.get( findAttributeName( left_val, instance ) );
           typename PRMInference<double>::Chain chain =
               std::make_pair( &instance, &attr );
@@ -465,7 +465,7 @@ namespace gum {
           Instantiation i( command->potentiel );
           bool found = false;
 
-          for ( i.setFirst(); not i.end(); i.inc() ) {
+          for ( i.setFirst(); ! i.end(); i.inc() ) {
             if ( chain.second->type().variable().label(
                      i.val( chain.second->type().variable() ) ) == right_val ) {
               command->potentiel.set( i, (double)1.0 );
@@ -497,10 +497,10 @@ namespace gum {
           std::string name = command->value;
 
           // Contruct the pair (instance,attribut)
-          const System<double>& sys = system( name );
-          const Instance<double>& instance =
+          const PRMSystem<double>& sys = system( name );
+          const PRMInstance<double>& instance =
               sys.get( findInstanceName( name, sys ) );
-          const Attribute<double>& attr =
+          const PRMAttribute<double>& attr =
               instance.get( findAttributeName( name, instance ) );
           // PRMInference<double>::Chain chain = std::make_pair(&instance,
           // &attr);
@@ -524,10 +524,10 @@ namespace gum {
           std::string name = command->value;
 
           // Contruct the pair (instance,attribut)
-          const System<double>& sys = system( name );
-          const Instance<double>& instance =
+          const PRMSystem<double>& sys = system( name );
+          const PRMInstance<double>& instance =
               sys.get( findInstanceName( name, sys ) );
-          const Attribute<double>& attr =
+          const PRMAttribute<double>& attr =
               instance.get( findAttributeName( name, instance ) );
           // PRMInference<double>::Chain chain = std::make_pair(&instance,
           // &attr);
@@ -672,7 +672,7 @@ namespace gum {
             }
           }
 
-          if ( not found ) {
+          if ( ! found ) {
             if ( m_verbose ) {
               m_log << "Finished with errors." << std::endl;
             }
@@ -682,8 +682,8 @@ namespace gum {
           }
 
           // May throw std::IOError if file does't exist
-          int previousO3prmError = m_reader->errors();
-          int previousO3prmrError = errors();
+          Size previousO3prmError = m_reader->errors();
+          Size previousO3prmrError = errors();
 
           try {
             m_reader->readFile( import_abs_filename, import_package );
@@ -754,7 +754,7 @@ namespace gum {
 
       std::string
       O3prmrInterpreter::findInstanceName( std::string& s,
-                                           const System<double>& sys ) {
+                                           const PRMSystem<double>& sys ) {
         // We have found system before, so 's' has been stripped.
         size_t dot = s.find_first_of( '.' );
         std::string name = s.substr( 0, dot );
@@ -769,7 +769,7 @@ namespace gum {
 
       std::string
       O3prmrInterpreter::findAttributeName( const std::string& s,
-                                            const Instance<double>& instance ) {
+                                            const PRMInstance<double>& instance ) {
         if ( !instance.exists( s ) )
           throw "'" + s + "' is not an attribute of instance '" +
               instance.name() + "'.";
@@ -778,15 +778,15 @@ namespace gum {
       }
 
       // After this method, ident doesn't contains the system name anymore.
-      const System<double>& O3prmrInterpreter::system( std::string& ident ) {
+      const PRMSystem<double>& O3prmrInterpreter::system( std::string& ident ) {
         try {
-          return prm()->system( findSystemName( ident ) );
+          return prm()->getSystem( findSystemName( ident ) );
         } catch ( const std::string& ) {
         }
 
-        if ( m_context->mainImport() != 0 &&
+        if (( m_context->mainImport() != 0) &&
              prm()->isSystem( m_context->mainImport()->value ) )
-          return prm()->system( m_context->mainImport()->value );
+          return prm()->getSystem( m_context->mainImport()->value );
 
         throw "could not find any system or alias in '" + ident +
             "' and no default alias has been set.";
@@ -817,7 +817,7 @@ namespace gum {
         return true;
 
       } catch ( OperationNotAllowed& ex ) {
-        addError( "someting went wrong when adding evidence " +
+        addError( "something went wrong when adding evidence " +
                   command->rightValue + " over " + command->leftValue + " : " +
                   ex.errorContent() );
         return false;
@@ -900,13 +900,13 @@ namespace gum {
         result.time = t;
 
         Instantiation j( m );
-        const Attribute<double>& attr = *( command->chain.second );
+        const PRMAttribute<double>& attr = *( command->chain.second );
 
-        for ( j.setFirst(); not j.end(); j.inc() ) {
+        for ( j.setFirst(); ! j.end(); j.inc() ) {
           // auto label_value = j.val ( attr.type().variable() );
           auto label_value = j.val( 0 );
           std::string label = attr.type().variable().label( label_value );
-          float value = m.get( j );
+          float value = float(m.get( j ));
 
           SingleResult singleResult;
           singleResult.label = label;
@@ -945,7 +945,7 @@ namespace gum {
       }
 
       ///
-      void O3prmrInterpreter::generateInfEngine( const System<double>& sys ) {
+      void O3prmrInterpreter::generateInfEngine( const PRMSystem<double>& sys ) {
         if ( m_verbose )
           m_log << "# Building the inference engine... " << std::flush;
 
@@ -954,7 +954,7 @@ namespace gum {
           m_inf = new SVED<double>( *( prm() ), sys );
 
           //
-        } else if ( m_engine == "SVE" ) { 
+        } else if ( m_engine == "SVE" ) {
 
           m_inf = new SVE<double>( *( prm() ), sys );
 
@@ -994,16 +994,16 @@ namespace gum {
        */
 
       /// # of errors + warnings
-      int O3prmrInterpreter::count() const { return m_errors.count(); }
+      Size O3prmrInterpreter::count() const { return m_errors.count(); }
 
       ///
-      int O3prmrInterpreter::errors() const { return m_errors.error_count; }
+      Size O3prmrInterpreter::errors() const { return m_errors.error_count; }
 
       ///
-      int O3prmrInterpreter::warnings() const { return m_errors.warning_count; }
+      Size O3prmrInterpreter::warnings() const { return m_errors.warning_count; }
 
       ///
-      ParseError O3prmrInterpreter::error( int i ) const {
+      ParseError O3prmrInterpreter::error( Idx i ) const {
         if ( i >= count() ) throw "Index out of bound.";
 
         return m_errors.error( i );

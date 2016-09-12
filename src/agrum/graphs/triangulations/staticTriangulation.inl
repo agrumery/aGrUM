@@ -28,7 +28,7 @@
 
 namespace gum {
 
-  
+
   /// returns an elimination ordering compatible with the triangulated graph
   INLINE
   const std::vector<NodeId>& StaticTriangulation::eliminationOrder() {
@@ -41,24 +41,24 @@ namespace gum {
   /** @brief returns the index of a given node in the elimination order
    * (0 = first node eliminated) */
   INLINE
-  unsigned int StaticTriangulation::eliminationOrder ( const NodeId id ) {
+  Idx StaticTriangulation::eliminationOrder ( const NodeId id ) {
     if ( !__has_triangulation ) __triangulate();
 
     return __reverse_elim_order[id];
   }
 
-  
+
   /** @brief returns the number of a given node in the elimination order
    * (0 = first node eliminated) */
   INLINE
-  const NodeProperty<unsigned int>&
+  const NodeProperty<NodeId>&
   StaticTriangulation::reverseEliminationOrder() {
     if ( !__has_triangulation ) __triangulate();
 
     return __reverse_elim_order;
   }
 
-  
+
   /// returns the elimination tree of a compatible ordering
   INLINE
   const CliqueGraph& StaticTriangulation::eliminationTree() {
@@ -80,7 +80,7 @@ namespace gum {
     return *__junction_tree;
   }
 
-  
+
   /// returns a junction tree of maximal prime subgraphs
   INLINE
   const CliqueGraph& StaticTriangulation::maxPrimeSubgraphTree() {
@@ -89,7 +89,7 @@ namespace gum {
     return __max_prime_junction_tree;
   }
 
-  
+
   /** @brief returns the Id of the maximal prime subgraph created by the
    * elimination of a given node during the triangulation process */
   INLINE
@@ -99,7 +99,7 @@ namespace gum {
     return __node_2_max_prime_clique[id];
   }
 
-  
+
   /** @brief returns the Id of the clique created by the
    * elimination of a given node during the triangulation process */
   INLINE
@@ -107,7 +107,7 @@ namespace gum {
     return _junction_tree_strategy->createdClique( id );
   }
 
-  
+
   /** @brief returns the Ids of the cliques of the junction tree created by the
    * elimination of the nodes */
   INLINE
@@ -116,7 +116,7 @@ namespace gum {
     return _junction_tree_strategy->createdCliques();
   }
 
-  
+
   /// sets/unset the fill-ins storage in the standard triangulation procedure
   INLINE
   void StaticTriangulation::setFillIns( bool b ) {
@@ -124,20 +124,20 @@ namespace gum {
     _elimination_sequence_strategy->askFillIns( b );
   }
 
-  
+
   /// returns the graph to be triangulated
   INLINE
   const UndiGraph* StaticTriangulation::originalGraph() const {
     return __original_graph;
   }
 
-  
+
   /// returns the elimination sequence strategy used by the triangulation
   INLINE EliminationSequenceStrategy&
   StaticTriangulation::eliminationSequenceStrategy () const {
     return *_elimination_sequence_strategy;
   }
-  
+
 
   /// returns the junction tree strategy used by the triangulation
   INLINE JunctionTreeStrategy&
@@ -145,13 +145,13 @@ namespace gum {
     return *_junction_tree_strategy;
   }
 
-  
+
   /// indicates wether minimality is required
   INLINE bool StaticTriangulation::isMinimalityRequired () const {
     return __minimality_required;
   }
 
-  
+
 } /* namespace gum */
 
 

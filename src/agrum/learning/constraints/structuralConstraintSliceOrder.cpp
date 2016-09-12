@@ -52,7 +52,7 @@ namespace gum {
 
     /// constructor starting with an empty graph with a given number of nodes
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-        const NodeProperty<unsigned int>& order ) {
+        const NodeProperty<NodeId>& order ) {
       for ( auto iter = order.cbegin(); iter != order.cend(); ++iter ) {
         _DiGraph__graph.addNode( iter.key() );
       }
@@ -63,7 +63,7 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-        const DiGraph& graph, const NodeProperty<unsigned int>& order )
+        const DiGraph& graph, const NodeProperty<NodeId>& order )
         : StructuralConstraintDiGraph( graph )
         , _SliceOrder__order( order ) {
       GUM_CONSTRUCTOR( StructuralConstraintSliceOrder );

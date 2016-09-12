@@ -128,7 +128,7 @@ namespace gum {
       void decreaseRemainingRows() noexcept;
 
       /// the method that computes the set of FilteredRows
-      virtual unsigned int _computeRows() = 0;
+      virtual Size _computeRows() = 0;
 
       /// resets the filter
       virtual void reset();
@@ -141,7 +141,7 @@ namespace gum {
 
       /// the number of output rows still to retrieve through the generate
       /// method
-      unsigned int _nb_remaining_output_rows{0};
+      Size _nb_remaining_output_rows{0};
     };
 
   } /* namespace learning */

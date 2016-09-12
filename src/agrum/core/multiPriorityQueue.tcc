@@ -45,7 +45,7 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>::MultiPriorityQueue(
       std::initializer_list<std::pair<Val, Priority>> list )
-      : __indices( list.size() / 2, true, false ) {
+      : __indices( Size(list.size()) / 2, true, false ) {
     // fill the queue
     __heap.reserve( list.size() );
     for ( const auto& elt : list ) {
@@ -252,7 +252,7 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE Size MultiPriorityQueue<Val, Priority, Cmp, Alloc>::capacity() const
       noexcept {
-    return __heap.capacity();
+    return Size(__heap.capacity());
   }
 
   // changes the size of the array storing the priority queue

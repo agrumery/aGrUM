@@ -25,19 +25,17 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
-#include <agrum/PRM/elements/classElementContainer.h>
-#include <agrum/PRM/elements/classElement.h>
-#include <agrum/PRM/elements/referenceSlot.h>
+#include <agrum/PRM/elements/PRMClassElement.h>
 
 /*
- * This class is used to test gum::prm::ClassElement, since it is an abstract
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstract
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 
   class ClassElementTestSuiteAbstract {
-    typedef gum::prm::ClassElement<double> ClassElt;
+    typedef gum::prm::PRMClassElement<double> ClassElt;
 
     public:
     void testIsReferenceSlot( const ClassElt& elt, bool expected ) {
@@ -77,7 +75,7 @@ namespace gum_tests {
 
     void test_obj_type( const ClassElt& elt ) {
       // Arrange
-      auto expected = gum::prm::PRMObject::PRMType::CLASS_ELT;
+      auto expected = gum::prm::PRMObject::prm_type::CLASS_ELT;
       // Act
       auto actual = elt.obj_type();
       // Assert
@@ -89,7 +87,7 @@ namespace gum_tests {
       std::string expected;
       if ( ClassElt::isReferenceSlot( elt ) ) {
         expected = gum::prm::PRMObject::LEFT_CAST() +
-                   static_cast<const gum::prm::ReferenceSlot<double>&>( elt )
+                   static_cast<const gum::prm::PRMReferenceSlot<double>&>( elt )
                        .slotType()
                        .name() +
                    gum::prm::PRMObject::RIGHT_CAST() + elt.name();
@@ -106,15 +104,15 @@ namespace gum_tests {
     void testCast_NotAllowed( const ClassElt& elt ) {
       // Arrange
       gum::LabelizedVariable foo{"foo", "A dummy variable"};
-      gum::prm::Type<double> bar{foo};
+      gum::prm::PRMType<double> bar{foo};
       // Assert
       try {
         TS_ASSERT_THROWS( elt.cast( bar ), gum::OperationNotAllowed );
-      } catch ( gum::OperationNotAllowed& e ) {
+      } catch ( gum::OperationNotAllowed& ) {
       }
     }
 
-    void testCast( const ClassElt& elt, const gum::prm::Type<double>& type ) {
+    void testCast( const ClassElt& elt, const gum::prm::PRMType<double>& type ) {
       try {
         // Arrange
         auto expected = gum::prm::PRMObject::LEFT_CAST() + type.name() +
@@ -124,7 +122,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING( actual = elt.cast( type ) );
         // Assert
         TS_ASSERT_EQUALS( expected, actual );
-      } catch ( gum::OperationNotAllowed& e ) {
+      } catch ( gum::OperationNotAllowed&  ) {
         TS_FAIL( "Exception raised" );
       }
     }

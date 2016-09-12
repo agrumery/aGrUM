@@ -32,10 +32,10 @@ namespace gum_tests {
     private:
     gum::prm::PRM<double>* prm;
     gum::prm::PRMInference<double>* prm_inf;
-    gum::prm::System<double>* sys;
+    gum::prm::PRMSystem<double>* sys;
     gum::prm::PRM<double>* small;
     gum::prm::PRMInference<double>* small_inf;
-    gum::prm::System<double>* small_sys;
+    gum::prm::PRMSystem<double>* small_sys;
 
     public:
     void setUp() {
@@ -43,7 +43,7 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader<double> reader;
         reader.readFile( GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ) );
         prm = reader.prm();
-        sys = &( prm->system( "aSys" ) );
+        sys = &( prm->getSystem( "aSys" ) );
         prm_inf = new gum::prm::SVE<double>( *prm, *sys );
       }
       {
@@ -51,7 +51,7 @@ namespace gum_tests {
         reader.readFile(
             GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) );
         small = reader.prm();
-        small_sys = &( small->system( "smallSys" ) );
+        small_sys = &( small->getSystem( "smallSys" ) );
         small_inf = new gum::prm::SVE<double>( *small, *small_sys );
       }
     }
@@ -93,7 +93,7 @@ namespace gum_tests {
 
             for ( auto j = sys->begin(); j != sys->end(); ++j ) {
               if ( ( j.val() ) != ( i.val() ) ) {
-                TS_ASSERT( not bb->exists( j.val() ) );
+                TS_ASSERT( ! bb->exists( j.val() ) );
               } else if ( bb->exists( j.val() ) ) {
                 TS_ASSERT_EQUALS( bb->requisiteNodes( j.val() ).size(),
                                   (gum::Size)1 );
@@ -128,11 +128,11 @@ namespace gum_tests {
             TS_GUM_ASSERT_THROWS_NOTHING(
                 bb->compute( i.val(), ( *( a.val() ) ).id() ) );
 
-            for ( gum::prm::System<double>::iterator j = small_sys->begin();
+            for ( gum::prm::PRMSystem<double>::iterator j = small_sys->begin();
                   j != small_sys->end();
                   ++j ) {
               if ( ( j.val() ) != ( i.val() ) ) {
-                TS_ASSERT( not bb->exists( j.val() ) );
+                TS_ASSERT( ! bb->exists( j.val() ) );
               } else if ( bb->exists( j.val() ) ) {
                 TS_ASSERT_EQUALS( bb->requisiteNodes( j.val() ).size(),
                                   (gum::Size)1 );
@@ -157,9 +157,9 @@ namespace gum_tests {
     //         gum::prm::StructuredBayesBall<double>* bb = 0;
     //         TS_GUM_ASSERT_THROWS_NOTHING(bb = new
     //         gum::prm::StructuredBayesBall<double>(*prm_inf));
-    //         for (gum::prm::System<double>::iterator i = sys->begin(); i !=
+    //         for (gum::prm::PRMSystem<double>::iterator i = sys->begin(); i !=
     //         sys->end(); ++i) {
-    //           for (gum::prm::Instance::iterator a = (**i).begin(); a !=
+    //           for (gum::prm::PRMInstance::iterator a = (**i).begin(); a !=
     //           (**i).end(); ++a) {
     //             if ( (**i).type().dag().children((**a).id()).empty() and (not
     //             (**i).hasRefAttr((**a).id())) ) {
@@ -177,17 +177,17 @@ namespace gum_tests {
     //             }
     //           }
     //         }
-    //         for (gum::prm::System<double>::iterator i = sys->begin(); i !=
+    //         for (gum::prm::PRMSystem<double>::iterator i = sys->begin(); i !=
     //         sys->end(); ++i) {
-    //           for (gum::prm::Instance::iterator a = (**i).begin(); a !=
+    //           for (gum::prm::PRMInstance::iterator a = (**i).begin(); a !=
     //           (**i).end(); ++a) {
     //             if ((**i).type().dag().parents((**a).id()).empty()) {
     //               TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(*i, (**a).id()));
-    //               std::vector<gum::prm::Instance*> stack;
+    //               std::vector<gum::prm::PRMInstance*> stack;
     //               stack.push_back(*i);
     //               gum::Size count = 0;
     //               while (not stack.empty()) {
-    //                 gum::prm::Instance* inst = stack.back();
+    //                 gum::prm::PRMInstance* inst = stack.back();
     //                 stack.pop_back();
     //                 TS_ASSERT(bb->exists(inst));
     //                 if (not bb->exists(inst)) {
@@ -196,9 +196,9 @@ namespace gum_tests {
     //                   GUM_TRACE((**i).name() + dot + (**a).safeName());
     //                 }
     //                 count += inst->size();
-    //                 for (gum::prm::Instance::InvRefIterator iter =
+    //                 for (gum::prm::PRMInstance::InvRefIterator iter =
     //                 inst->beginInvRef(); iter != inst->endInvRef(); ++iter) {
-    //                   typedef std::vector< std::pair<gum::prm::Instance*,
+    //                   typedef std::vector< std::pair<gum::prm::PRMInstance*,
     //                   std::string> >::iterator Iter;
     //                   for (Iter jter = (**iter).begin(); jter !=
     //                   (**iter).end();

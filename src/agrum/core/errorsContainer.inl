@@ -30,8 +30,8 @@ namespace gum {
 
   INLINE
   void ErrorsContainer::Error( const std::wstring& filename,
-                               int line,
-                               int col,
+                               Idx line,
+                               Idx col,
                                const wchar_t* msg ) {
     add( ParseError(
         true, narrow( std::wstring( msg ) ), narrow( filename ), line, col ) );
@@ -39,8 +39,8 @@ namespace gum {
 
   INLINE
   void ErrorsContainer::Warning( const std::wstring& filename,
-                                 int line,
-                                 int col,
+                                 Idx line,
+                                 Idx col,
                                  const wchar_t* msg ) {
     add( ParseError(
         false, narrow( std::wstring( msg ) ), narrow( filename ), line, col ) );
@@ -69,16 +69,16 @@ namespace gum {
   INLINE
   void ErrorsContainer::addError( const std::string& msg,
                                   const std::string& filename,
-                                  int line,
-                                  int col ) {
+                                  Idx line,
+                                  Idx col ) {
     add( ParseError( true, msg, filename, line, col ) );
   }
 
   INLINE
   void ErrorsContainer::addWarning( const std::string& msg,
                                     const std::string& filename,
-                                    int line,
-                                    int col ) {
+                                    Idx line,
+                                    Idx col ) {
     add( ParseError( false, msg, filename, line, col ) );
   }
 
@@ -89,7 +89,7 @@ namespace gum {
   }
 
   INLINE
-  int ErrorsContainer::count( void ) const {
+  Size ErrorsContainer::count( void ) const {
     return error_count + warning_count;
   }
 

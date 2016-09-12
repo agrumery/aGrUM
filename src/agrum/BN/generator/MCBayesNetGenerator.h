@@ -27,6 +27,8 @@
 #ifndef GUM_MC_BAYES_NET_GENERATOR
 #define GUM_MC_BAYES_NET_GENERATOR
 
+#include <agrum/config.h>
+
 #include <set>
 #include <vector>
 #include <iostream>
@@ -34,10 +36,12 @@
 
 #include <sstream>
 
+#ifdef  HAVE_DIRENT_H
 #include <dirent.h>
-#include <sys/time.h>
+#else
+#include <agrum/core/mvsc/dirent.h>
+#endif
 
-#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
@@ -148,12 +152,11 @@ namespace gum {
    \enddot
    */
   template <typename GUM_SCALAR,
-            template <class> class ICPTGenerator = SimpleCPTGenerator,
-            template <class> class ICPTDisturber = SimpleCPTDisturber>
+            template <typename> class ICPTGenerator = SimpleCPTGenerator,
+    template <typename> class ICPTDisturber = SimpleCPTDisturber>
   class MCBayesNetGenerator
       : public IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>,
         public ICPTDisturber<GUM_SCALAR> {
-
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -364,9 +367,9 @@ namespace gum {
      **/
     virtual bool __checkConditions();
 
-    void __createDAG( Size BNSize, Size iniRoot );
+    //NOT USED ? void __createDAG( Size BNSize, Size iniRoot );
 
-    std::vector<Idx>* __createPartDAG( Size BNSize, Size iniRoot );
+    // NOT USED ? std::vector<Idx>* __createPartDAG( Size BNSize, Size iniRoot );
 
     /**
      * The internal function used by the previous __connect. It asserts the

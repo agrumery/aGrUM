@@ -91,7 +91,7 @@ namespace gum {
   // Deallocates a block of memory
   // ============================================================================
   INLINE void
-  FixedAllocator::__Chunk::__deallocate( void* pDeallocatedBlock,
+  FixedAllocator::__Chunk::__deallocat( void* pDeallocatedBlock,
                                          const std::size_t& blockSize ) {
 
     // first, ensure that deallocated is in this chunk
@@ -227,7 +227,7 @@ namespace gum {
         }
       }
     }
-    __deallocChunk->__deallocate( pDeallocatedBlock, __blockSize );
+    __deallocChunk->__deallocat( pDeallocatedBlock, __blockSize );
   }
 
 }  // namespace gum

@@ -134,7 +134,7 @@ namespace gum {
        *false
        *otherwise.
        */
-      void _initThreadsData( const unsigned int& num_threads,
+      void _initThreadsData( const Size& num_threads,
                              const bool __storeVertices,
                              const bool __storeBNOpt );
 

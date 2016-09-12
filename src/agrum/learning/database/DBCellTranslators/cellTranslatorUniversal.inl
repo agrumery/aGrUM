@@ -23,6 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
 
 namespace gum {
 
@@ -42,7 +43,7 @@ namespace gum {
       }
 
       if ( from.__num_user_values != nullptr ) {
-        __num_user_values = new Sequence<float>( *from.__num_user_values );
+        __num_user_values = new Sequence<double>( *from.__num_user_values );
       }
     }
 
@@ -62,7 +63,7 @@ namespace gum {
 
       if ( from.__num_user_values != nullptr ) {
         __num_user_values =
-            new Sequence<float>( std::move( *from.__num_user_values ) );
+            new Sequence<double>( std::move( *from.__num_user_values ) );
       }
     }
 
@@ -108,7 +109,7 @@ namespace gum {
         }
 
         if ( from.__num_user_values != nullptr ) {
-          __num_user_values = new Sequence<float>( *from.__num_user_values );
+          __num_user_values = new Sequence<double>( *from.__num_user_values );
         }
       }
 
@@ -142,7 +143,7 @@ namespace gum {
 
         if ( from.__num_user_values != nullptr ) {
           __num_user_values =
-              new Sequence<float>( std::move( *from.__num_user_values ) );
+              new Sequence<double>( std::move( *from.__num_user_values ) );
         }
       }
 
@@ -151,26 +152,26 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorUniversal::translate() {
-      /*auto res=in ( 0 ).type() == DBCell::EltType::FLOAT
-               ? __numbers.second ( in ( 0 ).getFloat() )
+      /*auto res=in ( 0 ).type() == DBCell::EltType::REAL
+               ? __numbers.second ( in ( 0 ).getReal() )
                : __strings.second ( in ( 0 ).getStringIndex() );
-      std::cout<< ( in ( 0 ).type() == DBCell::EltType::FLOAT
+      std::cout<< ( in ( 0 ).type() == DBCell::EltType::REAL
                     ? "FLOAT "
                     : "STRING " )
-               << ( in ( 0 ).type() == DBCell::EltType::FLOAT
-                    ? in ( 0 ).getFloat()
+               << ( in ( 0 ).type() == DBCell::EltType::REAL
+                    ? in ( 0 ).getReal()
                     : in ( 0 ).getStringIndex() ) << "  ** "<<__numbers << "  **
       "<<__strings<<" ==> "<<res<<std::endl;*/
-      out( 0 ) = in( 0 ).type() == DBCell::EltType::FLOAT
-                     ? __numbers.second( in( 0 ).getFloat() )
+      out( 0 ) = in( 0 ).type() == DBCell::EltType::REAL
+                     ? __numbers.second( in( 0 ).getReal() )
                      : __strings.second( in( 0 ).getStringIndex() );
     }
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorUniversal::initialize() {
       if ( __check_database ) {
-        if ( in( 0 ).type() == DBCell::EltType::FLOAT ) {
-          const float nb = in( 0 ).getFloat();
+        if ( in( 0 ).type() == DBCell::EltType::REAL ) {
+          const double nb = in( 0 ).getReal();
 
           if ( !__numbers.existsFirst( nb ) ) {
             __numbers.insert( nb, __max_value );
@@ -189,7 +190,7 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void CellTranslatorUniversal::modalities(
-        std::vector<unsigned int>& modal ) const noexcept {
+        std::vector<Size>& modal ) const noexcept {
       modal.push_back( __max_value );
     }
 
@@ -201,7 +202,7 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string CellTranslatorUniversal::translateBack(
-        unsigned int col, unsigned int translated_val ) const {
+        Idx col, Idx translated_val ) const {
       std::stringstream str;
 
       if ( __numbers.existsSecond( translated_val ) )
@@ -220,13 +221,13 @@ namespace gum {
     }
 
     /// returns the set of translations for string values in the database
-    INLINE const Bijection<int, unsigned int>&
+    INLINE const Bijection<Idx, Idx>&
     CellTranslatorUniversal::stringTranslations() const noexcept {
       return __strings;
     }
 
     /// returns the set of translations for number values in the database
-    INLINE const Bijection<float, unsigned int>&
+    INLINE const Bijection<double, Idx>&
     CellTranslatorUniversal::numberTranslations() const noexcept {
       return __numbers;
     }

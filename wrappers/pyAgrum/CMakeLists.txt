@@ -34,6 +34,7 @@ else (FOR_PYTHON2)
   endif(WIN32)
 endif (FOR_PYTHON2)
 
+
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
   OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
@@ -74,19 +75,34 @@ execute_process(
   set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libPython${PYTHON_COMPLETE_VERSION}.dylib")
   set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
  else()
-  get_filename_component(_Python_PREFIX ${PYTHON_EXECUTABLE} PATH)
-  get_filename_component(_Python_PREFIX ${_Python_PREFIX} PATH)
-  find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
-endif()
+   if (WIN32)
+	   execute_process(
+		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+		 OUTPUT_VARIABLE PYTHON_LOCAL_PATH
+		 OUTPUT_STRIP_TRAILING_WHITESPACE
+	   )
+	   execute_process(
+		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+		 OUTPUT_VARIABLE PYTHON_LIBPATH
+		 OUTPUT_STRIP_TRAILING_WHITESPACE
+	   )
+	  set(PYTHON_LIBRARY "${PYTHON_LOCAL_PATH}/libs/python${PYTHON_COMPLETE_VERSION}.lib")
+    set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
+   else()
+	find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
+   endif()
+ endif()
 
 if (${PYTHON_VERSION} EQUAL "2")
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE "pyAgrum")
+  set(PYAGRUM_FUNCTIONS "functions")
 else ()
   set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
 
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE ".pyAgrum")
+  set(PYAGRUM_FUNCTIONS ".functions")
 endif ()
 
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION}")
@@ -141,7 +157,9 @@ foreach(EXTFILE ${PYAGRUM_EXTENSIONS})
   list(APPEND BUILDSWIGFILES ${EXTFILE})
 endforeach(EXTFILE ${PYAGRUM_EXTENSIONS})
 
-
+#==
+#== Adding agrum sources
+#==
 include_directories (${PYTHON_INCLUDE_DIR})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${AGRUM_SOURCE_DIR})
@@ -195,7 +213,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE} DESTINATION ${PYTHO
 install(FILES ${GENERATED_PYTHON}/pyAgrum.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 
 if (WIN32)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUMLIB}.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/Release/${_PYAGRUMLIB}.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 else (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUMLIB}.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 endif (WIN32)

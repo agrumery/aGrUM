@@ -43,7 +43,7 @@ namespace gum {
     class DBCell {
       public:
       /// the set of types possibly taken by the last element read
-      enum EltType { FLOAT, STRING, MISSING };
+      enum EltType { REAL, STRING, MISSING };
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -55,7 +55,7 @@ namespace gum {
       DBCell();
 
       /// constructor for a number
-      DBCell( float nb );
+      DBCell( double nb );
 
       /// constructor for a string
       DBCell( const std::string& str );
@@ -85,7 +85,7 @@ namespace gum {
 
       /// unsafe set operator (assumes that the preceding type is of the same
       /// type)
-      DBCell& operator=( float x ) noexcept;
+      DBCell& operator=( double x ) noexcept;
 
       /// unsafe set operator (assumes that the preceding type is of the same
       /// type)
@@ -99,20 +99,20 @@ namespace gum {
 
       /// @{
 
-      /// returns the DBcell as a float (without checking its type)
+      /// returns the DBcell as a double (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
        * correct type of the element in the DBCell */
-      float getFloat() const noexcept;
+      double getReal() const noexcept;
 
-      /// returns the DBcell as a float (safe with type checking)
+      /// returns the DBcell as a double (safe with type checking)
       /** @throw TypeError if the DBCell does not contain this type */
-      float getFloatSafe() const;
+      double getRealSafe() const;
 
       /// unsafe set (assumes that the preceding type is of the same type)
-      void setFloat( float x );
+      void setReal( double x );
 
       /// sets the content of the DBCell (safe type checking)
-      void setFloatSafe( float elt );
+      void setRealSafe( double elt );
 
       /// returns the DBcell as a string (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
@@ -135,7 +135,7 @@ namespace gum {
       int getStringIndexSafe() const;
 
       /// strings are stored into a static bijection. Get its ith string
-      static const std::string& getString( unsigned int index );
+      static const std::string& getString( Idx index );
 
       /// unsafe set (assumes that the preceding type is of the same type)
       void setString( const std::string& x );
@@ -166,17 +166,16 @@ namespace gum {
       /// @}
 
       private:
-      using Float = typename std::conditional<sizeof( float ) >= sizeof( int ),
-                                              float,
-                                              double>::type;
+      using Real = double;
+      //typename std::conditional<sizeof( double ) >= sizeof( int ),double,double>::type;
 
       /// the real type of the last element read from the database
-      EltType __type{EltType::FLOAT};
+      EltType __type{EltType::REAL};
 
       /// the element read from the database
       union {
-        Float __float{0.0f};
-        int __int;  // stores string indices
+        Idx __index;  // stores string indices
+        Real __value{0.0};
       };
 
       /// a bijection assigning to each string index its corresponding string
@@ -187,7 +186,7 @@ namespace gum {
 
       /// sets the content of the DBCell from a string
       /** @throws std::invalid_argument if the string cannot be converted */
-      void __setFloatFromStringSafe( const std::string& str );
+      void __setRealFromStringSafe( const std::string& str );
     };
 
   } /* namespace learning */

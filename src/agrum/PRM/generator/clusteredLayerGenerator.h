@@ -82,7 +82,7 @@ namespace gum {
 
       /// Returns the max number of parents allowed for any attribute or
       /// aggregator
-      unsigned int getMaxParents() const;
+      Size getMaxParents() const;
 
       /// Returns the max number of parents allowed for any attribute or
       /// aggregator
@@ -136,17 +136,17 @@ namespace gum {
 
       void __generateClasses( PRMFactory<GUM_SCALAR>& f,
                               const std::string& type,
-                              std::vector<ClusteredLayerGenerator::MyData>& l );
+                              std::vector<typename ClusteredLayerGenerator::MyData>& l );
 
       void __generateCluster( PRMFactory<GUM_SCALAR>& f,
                               const std::string& type,
-                              std::vector<ClusteredLayerGenerator::MyData>& l,
+                              std::vector<typename ClusteredLayerGenerator::MyData>& l,
                               Size lvl,
                               Set<std::string>& i );
 
       void __generateClass( PRMFactory<GUM_SCALAR>& f,
                             const std::string& type,
-                            std::vector<ClusteredLayerGenerator::MyData>& l,
+                            std::vector<typename ClusteredLayerGenerator::MyData>& l,
                             Size lvl,
                             Set<std::string>& i );
 
@@ -154,10 +154,10 @@ namespace gum {
       __generateClassDag( Size lvl,
                           DAG& dag,
                           Bijection<std::string, NodeId>& names,
-                          std::vector<ClusteredLayerGenerator::MyData>& l );
+                          std::vector<typename ClusteredLayerGenerator::MyData>& l );
 
       void __generateSystem( PRMFactory<GUM_SCALAR>& factory,
-                             std::vector<ClusteredLayerGenerator::MyData>& l );
+                             std::vector<typename ClusteredLayerGenerator::MyData>& l );
     };
 
   } /* namespace prm */

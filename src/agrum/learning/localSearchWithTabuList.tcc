@@ -35,14 +35,14 @@ namespace gum {
     template <typename GRAPH_CHANGES_SELECTOR>
     DAG LocalSearchWithTabuList::learnStructure(
         GRAPH_CHANGES_SELECTOR& selector,
-        const std::vector<unsigned int>& modal,
+        const std::vector<Size>& modal,
         DAG dag ) {
       selector.setGraph( dag, modal );
 
-      unsigned int nb_changes_applied;
-      unsigned int applied_change_with_positive_score;
-      unsigned int current_N = 0;
-      float delta_score;
+      Size nb_changes_applied;
+      Idx applied_change_with_positive_score;
+      Idx current_N = 0;
+      double delta_score;
 
       initApproximationScheme();
 
@@ -52,8 +52,8 @@ namespace gum {
 
       // the best dag found so far with its score
       DAG best_dag = dag;
-      float best_score = 0;
-      float current_score = 0;
+      double best_score = 0;
+      double current_score = 0;
 
       while ( current_N <= __MaxNbDecreasing ) {
         applied_change_with_positive_score = 0;
@@ -62,11 +62,11 @@ namespace gum {
           nb_changes_applied = 0;
           delta_score = 0;
 
-          std::vector<std::pair<unsigned int, float>> ordered_queues =
+          std::vector<std::pair<NodeId, double>> ordered_queues =
               selector.nodesSortedByBestScore();
 
-          for ( unsigned int j = 0; j < dag.size(); ++j ) {
-            unsigned int i = ordered_queues[j].first;
+          for ( Idx j = 0; j < dag.size(); ++j ) {
+            NodeId i = ordered_queues[j].first;
 
             if ( !selector.empty( i ) &&
                  ( !nb_changes_applied || ( selector.bestScore( i ) > 0 ) ) ) {
@@ -194,7 +194,7 @@ namespace gum {
     LocalSearchWithTabuList::learnBN( GRAPH_CHANGES_SELECTOR& selector,
                                       PARAM_ESTIMATOR& estimator,
                                       const std::vector<std::string>& names,
-                                      const std::vector<unsigned int>& modal,
+                                      const std::vector<Size>& modal,
                                       const CELL_TRANSLATORS& translator,
                                       DAG initial_dag ) {
       return DAG2BNLearner::createBN<GUM_SCALAR,

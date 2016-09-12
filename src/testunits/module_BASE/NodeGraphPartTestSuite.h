@@ -183,11 +183,11 @@ namespace gum_tests {
     void testUnsafeIterator() {
       gum::NodeGraphPart ngp;
 
-      for ( unsigned int i = 0; i < 20; ++i ) {
+      for ( gum::NodeId i = 0; i < 20; ++i ) {
         ngp.addNode( i );
       }
 
-      for ( unsigned int i = 0; i < 20; ++i ) {
+      for ( gum::NodeId i = 0; i < 20; ++i ) {
         if ( i % 3 == 0 ) {
           ngp.eraseNode( i );
         }
@@ -218,7 +218,7 @@ namespace gum_tests {
     void testIteratorEnd() {
       gum::NodeGraphPart nodeset;
       nodeset.addNode();
-      unsigned int cpt = 0;
+      gum::Size cpt = 0;
 
       for ( gum::NodeGraphPartIteratorSafe iter =
                 nodeset.beginSafe();  // safe iterator needed here
@@ -237,13 +237,13 @@ namespace gum_tests {
 
     void testIteratorEraseNode() {
       gum::NodeGraphPart nodeset;
-      const unsigned int max_cpt = 100;
+      const gum::Size max_cpt = 100;
 
-      for ( unsigned int i = 0; i < max_cpt; ++i ) {
+      for ( gum::NodeId i = 0; i < max_cpt; ++i ) {
         nodeset.addNode();
       }
 
-      unsigned int cpt = 0;
+      gum::Size cpt = 0;
 
       for ( gum::NodeGraphPartIteratorSafe
                 iter = nodeset.beginSafe();  // safe iterator needed here

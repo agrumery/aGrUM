@@ -80,7 +80,7 @@ namespace gum {
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames();
-      unsigned int id = 0;
+      Idx id = 0;
 
       for ( const auto& name : var_names ) {
         __name2nodeId.insert( const_cast<std::string&>( name ), id );
@@ -120,15 +120,15 @@ namespace gum {
       // specified by the user, map them into strings
       {
         DBHandler& handler = raw_filter.handler();
-        const unsigned long db_size = handler.DBSize();
+        const Size db_size = handler.DBSize();
 
         // determine the number of threads to use for the parsing
-        unsigned int max_nb_threads =
-            std::max( 1UL,
+        Size max_nb_threads =
+            std::max( Size(1),
                       std::min( db_size / __min_nb_rows_per_thread,
-                                (unsigned long)__max_threads_number ) );
+                                __max_threads_number ) );
 
-        const unsigned long max_size_per_thread =
+        const Size max_size_per_thread =
             ( db_size + max_nb_threads - 1 ) / max_nb_threads;
 
         max_nb_threads = db_size / max_size_per_thread;
@@ -145,15 +145,15 @@ namespace gum {
 #pragma omp parallel num_threads( max_nb_threads )
         {
           // use the ith handler
-          const unsigned int num_threads = getNumberOfRunningThreads();
+          const Size num_threads = getNumberOfRunningThreads();
           const int this_thread = getThreadNumber();
           DBHandler& the_handler = handlers[this_thread];
 
           // indicate to the filter which part of the database it must parse
-          const unsigned long size_per_thread =
+          const Size size_per_thread =
               ( db_size + num_threads - 1 ) / num_threads;
-          const unsigned long min_range = size_per_thread * this_thread;
-          const unsigned long max_range =
+          const Size min_range = size_per_thread * this_thread;
+          const Size max_range =
               std::min( min_range + size_per_thread, db_size );
 
           if ( min_range < max_range ) {
@@ -166,7 +166,7 @@ namespace gum {
 
               for ( auto iter = modalities.cbegin(); iter != modalities.cend();
                     ++iter ) {
-                const unsigned int i = iter.key();
+                const Idx i = iter.key();
 
                 switch ( row[i].type() ) {
                   case DBCell::EltType::STRING:
@@ -187,9 +187,9 @@ namespace gum {
                   case DBCell::EltType::MISSING:
                     break;
 
-                  case DBCell::EltType::FLOAT: {
+                  case DBCell::EltType::REAL: {
                     std::stringstream str;
-                    str << row[i].getFloat();
+                    str << row[i].getReal();
 
                     if ( !iter.val().exists( str.str() ) ) {
                       std::stringstream str2;
@@ -244,7 +244,7 @@ namespace gum {
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames();
-      unsigned int id = 0;
+      Idx id = 0;
 
       for ( const auto& name : var_names ) {
         __name2nodeId.insert( const_cast<std::string&>( name ), id );
@@ -269,7 +269,8 @@ namespace gum {
           score_database.__database.variableNames();
       const std::vector<std::string>& apriori_vars = __database.variableNames();
 
-      for ( unsigned int i = 0, size = score_vars.size(); i < size; ++i ) {
+      Size size = Size(score_vars.size());
+      for (Idx i = 0; i < size; ++i) {
         if ( score_vars[i] != apriori_vars[i] ) {
           GUM_ERROR( InvalidArgument,
                      "some a priori variables do not match "
@@ -581,10 +582,10 @@ namespace gum {
 
       return *this;
     }
-    
+
     DatabaseVectInRAM readFile( const std::string& filename ) {
       // get the extension of the file
-      int filename_size = filename.size();
+      Size filename_size = Size(filename.size());
 
       if ( filename_size < 4 ) {
         GUM_ERROR( FormatNotFound,
@@ -608,7 +609,7 @@ namespace gum {
     DatabaseVectInRAM
     genericBNLearner::__readFile( const std::string& filename ) {
       // get the extension of the file
-      int filename_size = filename.size();
+      Size filename_size = Size(filename.size());
 
       if ( filename_size < 4 ) {
         GUM_ERROR( FormatNotFound,

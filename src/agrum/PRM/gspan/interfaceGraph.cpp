@@ -51,12 +51,12 @@ namespace gum {
       LabelData::~LabelData() { GUM_DESTRUCTOR( LabelData ); }
 
       bool LabelData::operator==( const LabelData& from ) const {
-        return ( id == from.id ) and ( l == from.l ) and
+        return ( id == from.id ) && ( l == from.l ) &&
                ( tree_width == from.tree_width );
       }
 
       bool LabelData::operator!=( const LabelData& from ) const {
-        return ( id != from.id ) and ( l != from.l ) and
+        return ( id != from.id ) && ( l != from.l ) &&
                ( tree_width != from.tree_width );
       }
 

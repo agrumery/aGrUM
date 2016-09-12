@@ -294,7 +294,7 @@ namespace gum {
       O3Type::O3Type( const O3Type& src )
           : __pos( src.__pos )
           , __name( src.__name )
-          , __super( src.__super )
+          , __superLabel( src.__superLabel )
           , __labels( src.__labels ) {
         GUM_CONS_CPY( O3Type );
       }
@@ -302,7 +302,7 @@ namespace gum {
       O3Type::O3Type( O3Type&& src )
           : __pos( std::move( src.__pos ) )
           , __name( std::move( src.__name ) )
-          , __super( std::move( src.__super ) )
+          , __superLabel( std::move( src.__superLabel ) )
           , __labels( std::move( src.__labels ) ) {
         GUM_CONS_MOV( O3Type );
       }
@@ -315,7 +315,7 @@ namespace gum {
         }
         __pos = src.__pos;
         __name = src.__name;
-        __super = src.__super;
+        __superLabel = src.__superLabel;
         __labels = src.__labels;
         return *this;
       }
@@ -326,7 +326,7 @@ namespace gum {
         }
         __pos = std::move( src.__pos );
         __name = std::move( src.__name );
-        __super = std::move( src.__super );
+        __superLabel = std::move( src.__superLabel );
         __labels = std::move( src.__labels );
         return *this;
       }
@@ -334,8 +334,8 @@ namespace gum {
       O3Label& O3Type::name() { return __name; }
       const O3Label& O3Type::name() const { return __name; }
 
-      O3Label& O3Type::super() { return __super; }
-      const O3Label& O3Type::super() const { return __super; }
+      O3Label& O3Type::superLabel() { return __superLabel; }
+      const O3Label& O3Type::superLabel() const { return __superLabel; }
 
       O3Type::LabelMap& O3Type::labels() { return __labels; }
       const O3Type::LabelMap& O3Type::labels() const { return __labels; }
@@ -647,7 +647,7 @@ namespace gum {
       O3Interface::O3Interface( const O3Interface& src )
           : __pos( src.__pos )
           , __name( src.__name )
-          , __super( src.__super ) {
+          , __superLabel( src.__superLabel ) {
         GUM_CONS_CPY( O3Interface );
         auto copy = new O3InterfaceElementList( src.elements() );
         __elts = std::unique_ptr<O3InterfaceElementList>( copy );
@@ -656,7 +656,7 @@ namespace gum {
       O3Interface::O3Interface( O3Interface&& src )
           : __pos( std::move( src.__pos ) )
           , __name( std::move( src.__name ) )
-          , __super( std::move( src.__super ) )
+          , __superLabel( std::move( src.__superLabel ) )
           , __elts( std::move( src.__elts ) ) {
         GUM_CONS_MOV( O3Interface );
       }
@@ -669,7 +669,7 @@ namespace gum {
         }
         __pos = src.__pos;
         __name = src.__name;
-        __super = src.__super;
+        __superLabel = src.__superLabel;
         auto copy = new O3InterfaceElementList( src.elements() );
         __elts = std::unique_ptr<O3InterfaceElementList>( copy );
         return *this;
@@ -681,7 +681,7 @@ namespace gum {
         }
         __pos = std::move( src.__pos );
         __name = std::move( src.__name );
-        __super = std::move( src.__super );
+        __superLabel = std::move( src.__superLabel );
         __elts = std::move( src.__elts );
         return *this;
       }
@@ -692,8 +692,8 @@ namespace gum {
       O3Label& O3Interface::name() { return __name; }
       const O3Label& O3Interface::name() const { return __name; }
 
-      O3Label& O3Interface::super() { return __super; }
-      const O3Label& O3Interface::super() const { return __super; }
+      O3Label& O3Interface::superLabel() { return __superLabel; }
+      const O3Label& O3Interface::superLabel() const { return __superLabel; }
 
       O3Interface::O3InterfaceElementList& O3Interface::elements() {
         return *__elts;
@@ -903,7 +903,7 @@ namespace gum {
       O3Class::O3Class( const O3Class& src )
           : __pos( src.__pos )
           , __name( src.__name )
-          , __super( src.__super ) {
+          , __superLabel( src.__superLabel ) {
         GUM_CONS_CPY( O3Class );
         auto i = new O3LabelList( src.interfaces() );
         __interfaces = std::unique_ptr<O3LabelList>( i );
@@ -927,7 +927,7 @@ namespace gum {
       O3Class::O3Class( O3Class&& src )
           : __pos( std::move( src.__pos ) )
           , __name( std::move( src.__name ) )
-          , __super( std::move( src.__super ) )
+          , __superLabel( std::move( src.__superLabel ) )
           , __interfaces( std::move( src.__interfaces ) )
           , __params( std::move( src.__params ) )
           , __refs( std::move( src.__refs ) )
@@ -944,7 +944,7 @@ namespace gum {
         }
         __pos = src.__pos;
         __name = src.__name;
-        __super = src.__super;
+        __superLabel = src.__superLabel;
 
         auto i = new O3LabelList( src.interfaces() );
         __interfaces = std::unique_ptr<O3LabelList>( i );
@@ -972,7 +972,7 @@ namespace gum {
         }
         __pos = std::move( src.__pos );
         __name = std::move( src.__name );
-        __super = std::move( src.__super );
+        __superLabel = std::move( src.__superLabel );
         __interfaces = std::move( src.__interfaces );
         __params = std::move( src.__params );
         __refs = std::move( src.__refs );
@@ -987,8 +987,8 @@ namespace gum {
       const O3Label& O3Class::name() const { return __name; }
       O3Label& O3Class::name() { return __name; }
 
-      const O3Label& O3Class::super() const { return __super; }
-      O3Label& O3Class::super() { return __super; }
+      const O3Label& O3Class::superLabel() const { return __superLabel; }
+      O3Label& O3Class::superLabel() { return __superLabel; }
 
       const O3Class::O3LabelList& O3Class::interfaces() const {
         return *__interfaces;
@@ -1019,14 +1019,14 @@ namespace gum {
       }
 
       O3Parameter::O3Parameter()
-          : __type( O3Parameter::Type::NONE ) {
+          : __type( O3Parameter::PRMType::NONE ) {
         GUM_CONSTRUCTOR( O3Parameter );
       }
 
       O3Parameter::O3Parameter( const O3Position& pos,
                                 const O3Label& name,
                                 const O3Integer& value )
-          : __type( O3Parameter::Type::INT )
+          : __type( O3Parameter::PRMType::INT )
           , __pos( pos )
           , __name( name )
           , __value( O3Float( value.position(), (float)value.value() ) ) {
@@ -1036,7 +1036,7 @@ namespace gum {
       O3Parameter::O3Parameter( const O3Position& pos,
                                 const O3Label& name,
                                 const O3Float& value )
-          : __type( O3Parameter::Type::FLOAT )
+          : __type( O3Parameter::PRMType::FLOAT )
           , __pos( pos )
           , __name( name )
           , __value( value ) {
@@ -1083,8 +1083,8 @@ namespace gum {
         return *this;
       }
 
-      O3Parameter::Type& O3Parameter::type() { return __type; }
-      O3Parameter::Type O3Parameter::type() const { return __type; }
+      O3Parameter::PRMType& O3Parameter::type() { return __type; }
+      O3Parameter::PRMType O3Parameter::type() const { return __type; }
 
       O3Position& O3Parameter::position() { return __pos; }
       const O3Position& O3Parameter::position() const { return __pos; }

@@ -72,8 +72,8 @@ namespace gum {
 
     for ( Idx j = 1; j < this->nbrDim(); j++ ) {
       const DiscreteVariable& v = this->variable( j );
-      fact +=
-          this->causalWeight( v ) * this->variable( j ).numerical( i.val( v ) );
+      fact += GUM_SCALAR(
+          this->causalWeight( v ) * this->variable( j ).numerical( i.val( v ) ));
     }
 
     fact =

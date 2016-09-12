@@ -218,8 +218,8 @@ namespace gum {
         O3Label& name();
         const O3Label& name() const;
 
-        O3Label& super();
-        const O3Label& super() const;
+        O3Label& superLabel();
+        const O3Label& superLabel() const;
 
         LabelMap& labels();
         const LabelMap& labels() const;
@@ -227,7 +227,7 @@ namespace gum {
         private:
         O3Position __pos;
         O3Label __name;
-        O3Label __super;
+        O3Label __superLabel;
         LabelMap __labels;
       };
 
@@ -359,8 +359,8 @@ namespace gum {
         O3Label& name();
         const O3Label& name() const;
 
-        O3Label& super();
-        const O3Label& super() const;
+        O3Label& superLabel();
+        const O3Label& superLabel() const;
 
         O3InterfaceElementList& elements();
         const O3InterfaceElementList& elements() const;
@@ -368,7 +368,7 @@ namespace gum {
         private:
         O3Position __pos;
         O3Label __name;
-        O3Label __super;
+        O3Label __superLabel;
         std::unique_ptr<O3InterfaceElementList> __elts;
       };
 
@@ -381,7 +381,7 @@ namespace gum {
        */
       class O3Parameter {
         public:
-        enum class Type { NONE, INT, FLOAT };
+        enum class PRMType { NONE, INT, FLOAT };
 
         O3Parameter();
         O3Parameter( const O3Position& pos,
@@ -397,8 +397,8 @@ namespace gum {
         O3Parameter& operator=( const O3Parameter& src );
         O3Parameter& operator=( O3Parameter&& src );
 
-        Type& type();
-        Type type() const;
+        PRMType& type();
+        PRMType type() const;
 
         O3Position& position();
         const O3Position& position() const;
@@ -410,7 +410,7 @@ namespace gum {
         const O3Float& value() const;
 
         private:
-        Type __type;
+        PRMType __type;
         O3Position __pos;
         O3Label __name;
         O3Float __value;
@@ -628,8 +628,8 @@ namespace gum {
         O3Label& name();
         const O3Label& name() const;
 
-        O3Label& super();
-        const O3Label& super() const;
+        O3Label& superLabel();
+        const O3Label& superLabel() const;
 
         O3LabelList& interfaces();
         const O3LabelList& interfaces() const;
@@ -649,7 +649,7 @@ namespace gum {
         private:
         O3Position __pos;
         O3Label __name;
-        O3Label __super;
+        O3Label __superLabel;
         std::unique_ptr<O3LabelList> __interfaces;
         std::unique_ptr<O3ParameterList> __params;
         std::unique_ptr<O3ReferenceSlotList> __refs;

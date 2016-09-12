@@ -107,7 +107,7 @@ namespace gum {
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    int proceed( void );
+    Size proceed( void );
 
     /// @{
     /// publishing Errors API
@@ -118,13 +118,13 @@ namespace gum {
     Size warnings();
 
     /// line of ith error or warning
-    unsigned int errLine( unsigned int i );
+    Idx errLine( Idx i );
     /// col of ith error or warning
-    unsigned int errCol( unsigned int i );
+    Idx errCol( Idx i );
     /// type of ith error or warning
-    bool errIsError( unsigned int i );
+    bool errIsError( Idx i );
     /// message of ith error or warning
-    std::string errMsg( unsigned int i );
+    std::string errMsg( Idx i );
 
     /// send on std::cerr the list of errors
     void showElegantErrors( std::ostream& o = std::cerr );

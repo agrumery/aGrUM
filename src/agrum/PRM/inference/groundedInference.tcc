@@ -35,7 +35,7 @@ namespace gum {
 
       if ( __inf != nullptr ) delete __inf;
 
-      if ( not __obs.empty() )
+      if ( ! __obs.empty() )
         for ( const auto pot : __obs )
           // We used const ptrs only because of BayesNetInference::addEvidence()
           // requires it
@@ -55,7 +55,7 @@ namespace gum {
           this->evidence( chain.first )[chain.second->id()];
       Instantiation i( *bn_obs ), j( *prm_obs );
 
-      for ( i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc() ) {
+      for ( i.setFirst(), j.setFirst(); ! i.end(); i.inc(), j.inc() ) {
         bn_obs->set( i, prm_obs->get( j ) );
       }
 
@@ -84,7 +84,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE GroundedInference<GUM_SCALAR>::GroundedInference(
-        const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& system )
+        const PRM<GUM_SCALAR>& prm, const PRMSystem<GUM_SCALAR>& system )
         : PRMInference<GUM_SCALAR>( prm, system )
         , __inf( 0 ) {
       GUM_CONSTRUCTOR( GroundedInference );
@@ -135,7 +135,7 @@ namespace gum {
 
       std::stringstream sBuff;
 
-      if ( not __obs.empty() ) {
+      if ( ! __obs.empty() ) {
         __inf->insertEvidence( __obs );
       }
 

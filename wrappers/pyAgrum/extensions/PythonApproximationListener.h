@@ -46,7 +46,7 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
       if ( __pyWhenStop ) Py_DECREF ( __pyWhenStop );
     };
 
-    void whenProgress ( const void* src, gum::Size step, double error, double duration ) {
+    void whenProgress ( const void* src, const gum::Size step, const double error, const double duration ) {
       if ( __pyWhenProgress ) {
         PyObject* arglist = Py_BuildValue ( "(ldd)", step, error, duration );
         PyEval_CallObject ( __pyWhenProgress, arglist );
@@ -54,7 +54,7 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
       }
     };
 
-    void whenStop ( const void* src, std::string message ) {
+    void whenStop ( const void* src, const std::string message ) {
       if ( __pyWhenStop ) {
         PyObject* arglist = Py_BuildValue ( "(s)", message.c_str() );
         PyEval_CallObject ( __pyWhenStop, arglist );

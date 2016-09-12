@@ -94,7 +94,7 @@ namespace gum {
     // marginalizing
     // process
 
-    unsigned int nb_vars;
+    Size nb_vars;
     {
       // determine the set of all the variables involved in the tables.
       // this should help sizing correctly the hashtables
@@ -407,7 +407,7 @@ namespace gum {
     // wish to remove first variables that would produce small tables. This
     // should speed up the whole marginalizing process.
 
-    unsigned int nb_vars;
+    Size nb_vars;
     {
       // determine the set of all the variables involved in the tables.
       // this should help sizing correctly the hashtables
@@ -718,7 +718,7 @@ namespace gum {
     // wish to remove first variables that would produce small tables. This
     // should speed up the whole marginalizing process.
 
-    unsigned int nb_vars;
+    Size nb_vars;
     {
       // determine the set of all the variables involved in the tables.
       // this should help sizing correctly the hashtables
@@ -970,7 +970,7 @@ namespace gum {
         }
 
         if ( tmp_marginals.contains( *iter ) ) {
-          long del_size = 1;
+          Size del_size = 1;
           const Sequence<const DiscreteVariable*>& del = **iter;
 
           for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
@@ -980,7 +980,7 @@ namespace gum {
             del_size *= ( *iter_del )->domainSize();
           }
 
-          current_memory -= del_size;
+          current_memory -= long(del_size);
 
           delete *iter;
           tmp_marginals.erase( *iter );

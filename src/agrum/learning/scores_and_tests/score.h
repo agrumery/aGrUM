@@ -68,8 +68,8 @@ namespace gum {
      * performed, use method _getAllCounts and _getConditioningCounts to get the
      * observed countings if you are developping a new score class, or use
      * method score to get the computed score if you are an end user. */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+    template <typename IdSetAlloc = std::allocator<Idx>,
+              typename CountAlloc = std::allocator<double>>
     class Score : private Counter<IdSetAlloc, CountAlloc> {
       public:
       // ##########################################################################
@@ -89,10 +89,10 @@ namespace gum {
       template <typename RowFilter>
       Score(
           const RowFilter& filter,
-          const std::vector<unsigned int>& var_modalities,
+          const std::vector<Size>& var_modalities,
           Apriori<IdSetAlloc, CountAlloc>& apriori,
-          unsigned long min_range = 0,
-          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
+          Size min_range = 0,
+          Size max_range = std::numeric_limits<Size>::max() );
 
       /// virtual copy factory
       virtual Score<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
@@ -121,7 +121,7 @@ namespace gum {
        * this
        * index as argument to methods _getAllCounts to get the corresponding
        * counting vector. */
-      unsigned int addNodeSet( unsigned int var );
+      Idx addNodeSet( Idx var );
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
@@ -138,9 +138,9 @@ namespace gum {
        * _getConditioningCounts to get the counting vectors of
        * (conditioning_ids,vars) [in this order] and conditioning_ids
        * respectively. */
-      unsigned int
-      addNodeSet( unsigned int var,
-                  const std::vector<unsigned int>& conditioning_ids );
+      Idx
+      addNodeSet( Idx var,
+                  const std::vector<Idx>& conditioning_ids );
 
       /// clears all the data structures from memory
       void clear();
@@ -158,7 +158,7 @@ namespace gum {
       using Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads;
 
       /// returns the score corresponding to a given nodeset
-      virtual float score( unsigned int nodeset_index ) = 0;
+      virtual double score( Idx nodeset_index ) = 0;
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -195,13 +195,13 @@ namespace gum {
        * account during learning
        * @param max_range the number of the record after the last one taken
        * into account*/
-      void setRange( unsigned long min_range, unsigned long max_range );
+      void setRange( Size min_range, Size max_range );
 
       /// @}
 
       protected:
       /// 1 / log(2)
-      const float _1log2{M_LOG2E};
+      const double _1log2{M_LOG2E};
 
       /// the a priori used by the score
       Apriori<IdSetAlloc, CountAlloc>* _apriori;
@@ -244,21 +244,21 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<float, CountAlloc>&
-      _getAllApriori( unsigned int index );
+      const std::vector<double, CountAlloc>&
+      _getAllApriori( Idx index );
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<float, CountAlloc>&
-      _getConditioningApriori( unsigned int index );
+      const std::vector<double, CountAlloc>&
+      _getConditioningApriori( Idx index );
 
       /// indicates whether a score belongs to the cache
-      bool _isInCache( unsigned int nodeset_index ) const noexcept;
+      bool _isInCache( Idx nodeset_index ) const noexcept;
 
       /// inserts a new score into the cache
-      void _insertIntoCache( unsigned int nodeset_index, float score );
+      void _insertIntoCache( Idx nodeset_index, double score );
 
       /// returns a cached score
-      float _cachedScore( unsigned int nodeset_index ) const noexcept;
+      double _cachedScore( Idx nodeset_index ) const noexcept;
 
       /// indicates whether we use the cache or not
       bool _isUsingCache() const noexcept;
@@ -280,13 +280,13 @@ namespace gum {
       std::vector<bool> __is_cached_score;
 
       /// the vector of scores for the current nodesets
-      std::vector<float> __cached_score;
+      std::vector<double> __cached_score;
 
       /// has the a priori been computed
       bool __apriori_computed{false};
 
       /// an empty conditioning set
-      const std::vector<unsigned int> __empty_conditioning_set;
+      const std::vector<Idx> __empty_conditioning_set;
 
       // ##########################################################################
       // ##########################################################################

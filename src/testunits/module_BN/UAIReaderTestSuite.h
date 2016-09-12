@@ -56,29 +56,29 @@ namespace gum_tests {
       TS_ASSERT( net != nullptr );
 
       gum::UAIReader<float> reader( net, file );
-      auto err=reader.proceed();  
+      auto err=reader.proceed();
 
       if ( net != nullptr ) {
         TS_ASSERT( net->empty() );
         delete net;
       }
     }
-    
+
     void testRead_file2_float() {
       std::string file = GET_RESSOURCES_PATH( "uai/BNUAIReader_file2.uai" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::UAIReader<float> reader( net, file );
 
-      int isOK = 0;
+      gum::Size isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, 0 );
+      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
 
-      TS_ASSERT( net != 0 );
+      TS_ASSERT( net != nullptr );
 
-      if ( net != 0 ) {
+      if ( net != nullptr ) {
         TS_ASSERT( !net->empty() );
         TS_ASSERT_EQUALS( net->size(), (gum::Size)5 );
-	
+
         gum::NodeId node_1 = 0, node_2 = 0;
 	node_1=net->idFromName("0");
 	node_2=net->idFromName("1");
@@ -119,13 +119,13 @@ namespace gum_tests {
       gum::BayesNet<double>* net = new gum::BayesNet<double>();
       gum::UAIReader<double> reader( net, file );
 
-      int isOK = false;
+      gum::Size isOK = false;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, 0 );
+      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
 
-      TS_ASSERT( net != 0 );
+      TS_ASSERT( net != nullptr );
 
-      if ( net != 0 ) {
+      if ( net != nullptr ) {
         TS_ASSERT_EQUALS( net->size(), (gum::Size)5 );
 
         const gum::Potential<double>& proba =
@@ -142,13 +142,13 @@ namespace gum_tests {
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::UAIReader<float> reader( net, file );
 
-      int isOK = 0;
+      gum::Size isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, 0 );
-      TS_ASSERT( net != 0 );
+      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
+      TS_ASSERT( net != nullptr );
 
-      if ( net != 0 ) {
-        gum::HashTable<std::string, gum::Id> idMap;
+      if ( net != nullptr) {
+        gum::HashTable<std::string, gum::NodeId> idMap;
 
         for ( const auto node : net->nodes() )
           idMap.insert( net->variable( node ).name(), node );

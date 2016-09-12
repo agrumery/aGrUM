@@ -45,7 +45,7 @@ namespace gum {
    * @headerfile O3prmBNReader.h <agrum/PRM/o3prm/O3prmBNReader.h>
    * @ingroup o3prm_group
    *
-   * @brief Read an O3PRM and transform the gum::prm::System into
+   * @brief Read an O3PRM and transform the gum::prm::PRMSystem into
    * gum::BayesNet.
    *
    * @tparam GUM_SCALAR The scalar type used both for the gum::prm::PRM and the
@@ -64,7 +64,7 @@ namespace gum {
     /// parse the file
     /// @return the number of detected errors and warnings
     /// @throws IOError if file not exists
-    int proceed( void );
+    Size proceed( void );
 
     /// @{
     /// publishing Errors API
@@ -74,14 +74,13 @@ namespace gum {
     /// # of errors
     Size warnings() { return __errors.warning_count; }
 
-    /// line of ith error or warning
-    unsigned int errLine( unsigned int i ) { return __errors.error( i ).line; }
+    Idx errLine(  Idx i ) { return __errors.error( i ).line; }
     /// col of ith error or warning
-    unsigned int errCol( unsigned int i ) { return __errors.error( i ).column; }
+    Idx errCol( Idx i ) { return __errors.error( i ).column; }
     /// type of ith error or warning
-    bool errIsError( unsigned int i ) { return __errors.error( i ).is_error; }
+    bool errIsError( Idx i ) { return __errors.error( i ).is_error; }
     /// message of ith error or warning
-    std::string errMsg( unsigned int i ) { return __errors.error( i ).msg; }
+    std::string errMsg( Idx i ) { return __errors.error( i ).msg; }
 
     /// send on std::cerr the list of errors
     void showElegantErrors( std::ostream& o = std::cerr ) {
@@ -108,7 +107,7 @@ namespace gum {
     BayesNet<GUM_SCALAR>* __bn;
     ErrorsContainer __errors;
 
-    void __generateBN( prm::System<GUM_SCALAR>& system );
+    void __generateBN( prm::PRMSystem<GUM_SCALAR>& system );
     static std::string __getVariableName( const std::string& path,
                                           const std::string& type,
                                           const std::string& name );

@@ -56,7 +56,7 @@ namespace gum {
       StructuralConstraintUndiGraph();
 
       /// constructor starting with an empty graph with a given number of nodes
-      StructuralConstraintUndiGraph( unsigned int nb_nodes );
+      StructuralConstraintUndiGraph( Size nb_nodes );
 
       /// constructor starting with a given graph
       StructuralConstraintUndiGraph( const UndiGraph& graph );
@@ -94,7 +94,7 @@ namespace gum {
       /// @{
 
       /// sets a new empty graph from which we will perform checkings
-      void setGraph( unsigned int nb_nodes );
+      void setGraph( Size nb_nodes );
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone( const UndiGraph& graph );
@@ -132,31 +132,31 @@ namespace gum {
        * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone( const GraphChange& change ) const noexcept;
+      bool isAlwaysInvalidAlone( const GraphChange& change ) const ;
 
       /// checks whether the constraints enable to add edge (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the edge does not already exist. */
-      bool checkEdgeAdditionAlone( NodeId x, NodeId y ) const noexcept;
+      bool checkEdgeAdditionAlone( NodeId x, NodeId y ) const ;
 
       /// checks whether the constraints enable to remove edge (x,y)
       /** an edge can be removed if and only if the edge exists. */
-      bool checkEdgeDeletionAlone( NodeId x, NodeId y ) const noexcept;
+      bool checkEdgeDeletionAlone( NodeId x, NodeId y ) const ;
 
       /// checks whether the constraints enable to perform a graph change
       /** An edge can be added if and only if its extremal nodes belong to the
        * graph and the edge does not already exist.
        * An edge can be removed if and only if the edge exists. */
-      bool checkModificationAlone( const GraphChange& change ) const noexcept;
+      bool checkModificationAlone( const GraphChange& change ) const ;
 
       /// checks whether the constraints enable to add an edge
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the edge does not already exist. */
-      bool checkModificationAlone( const EdgeAddition& change ) const noexcept;
+      bool checkModificationAlone( const EdgeAddition& change ) const ;
 
       /// checks whether the constraints enable to remove an edge
       /** an edge can be removed if and only if the edge exists. */
-      bool checkModificationAlone( const EdgeDeletion& change ) const noexcept;
+      bool checkModificationAlone( const EdgeDeletion& change ) const ;
 
 /// @}
 

@@ -18,34 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
+#include <iostream>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/BN/BayesNet.h>
 
-#include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 
-#include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
 
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
 
-#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
+#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
+#include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
 
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/K2.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 namespace gum_tests {
 
@@ -66,19 +66,19 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintDAG struct_constraint(
-          modalities.size() );
+          gum::Size(modalities.size()) );
 
       gum::learning::ParamEstimatorML<> estimator(
           filter, modalities, apriori );
 
-      std::vector<unsigned int> order( filter.modalities().size() );
-      for ( unsigned int i = 0; i < order.size(); ++i ) {
+      std::vector<gum::NodeId> order( filter.modalities().size() );
+      for ( gum::NodeId i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
 
@@ -95,11 +95,11 @@ namespace gum_tests {
       k2.approximationScheme().setEpsilon( 1000 );
 
       try {
-        gum::BayesNet<float> bn = k2.learnBN( selector,
-                                              estimator,
-                                              database.variableNames(),
-                                              modalities,
-                                              filter.translatorSet() );
+        gum::BayesNet<float> bn = k2.learnBN<float>( selector,
+                                                     estimator,
+                                                     database.variableNames(),
+                                                     modalities,
+                                                     filter.translatorSet() );
 
         gum::BayesNet<double> bn2 =
             k2.learnBN<double>( selector,
@@ -114,6 +114,7 @@ namespace gum_tests {
       }
     }
 
+    //@beforeMerging why is this code commented ?
     /*
     void xtest_k2_asia_bis () {
       gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv"
@@ -130,7 +131,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
-      std::vector<unsigned int> modalities = filter.modalities ();
+      std::vector<gum::Idx> modalities = filter.modalities ();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> real_score ( filter, modalities, apriori );
@@ -142,8 +143,8 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<> real_estimator ( filter, modalities );
       gum::learning::ParamEstimator<>& estimator = real_estimator;
 
-      std::vector<unsigned int> order ( filter.modalities ().size() );
-      for ( unsigned int i = 0; i < order.size(); ++i ) {
+      std::vector<gum::Idx> order ( filter.modalities ().size() );
+      for ( gum::Idx i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
 
@@ -165,7 +166,7 @@ namespace gum_tests {
 
     void xtest_K2_asia2 () {
       gum::learning::K2 k2;
-      std::vector<unsigned int> order { 3,2 };
+      std::vector<gum::Idx> order { 3,2 };
 
       gum::BayesNet<float> bn =
         k2.learnBNFromCSV ( GET_RESSOURCES_PATH( "asia.csv" ), order );
@@ -193,7 +194,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
-      std::vector<unsigned int> modalities = filter.modalities ();
+      std::vector<gum::Idx> modalities = filter.modalities ();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
@@ -203,8 +204,8 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
-      std::vector<unsigned int> order ( filter.modalities ().size() );
-      for ( unsigned int i = 0; i < order.size(); ++i ) {
+      std::vector<gum::Size> order ( filter.modalities ().size() );
+      for ( gum::Idx i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
 
@@ -233,13 +234,13 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
-      std::vector<unsigned int> modalities = filter.modalities ();
+      std::vector<gum::Size> modalities = filter.modalities ();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::NodeProperty<bool> slices;
-      for ( unsigned int i = 0; i < modalities.size (); ++i ) {
+      for ( gum::Idx i = 0; i < modalities.size (); ++i ) {
         if ( i % 2 ) {
           slices.insert ( i, false );
         }
@@ -253,8 +254,8 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
-      std::vector<unsigned int> order ( filter.modalities ().size() );
-      for ( unsigned int i = 0; i < order.size(); ++i ) {
+      std::vector<gum::Size> order ( filter.modalities ().size() );
+      for ( gum::Idx i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
 
@@ -283,7 +284,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
-      std::vector<unsigned int> modalities = filter.modalities ();
+      std::vector<gum::Size> modalities = filter.modalities ();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
@@ -293,8 +294,8 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
-      std::vector<unsigned int> order ( filter.modalities ().size() );
-      for ( unsigned int i = 0; i < order.size(); ++i ) {
+      std::vector<gum::Size> order ( filter.modalities ().size() );
+      for ( gum::Idx i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
 

@@ -17,12 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "ressources/myalloc.h"
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
-#include "ressources/myalloc.h"
 
-#include <list>
+#include <iterator>
 #include <algorithm>
+#include <list>
 #include <vector>
 
 #include <agrum/core/list.h>
@@ -410,22 +411,22 @@ namespace gum_tests {
       gum::List<int> list3{2, 1, 8, 5, 3, 6, 4, 7};
       gum::List<int>::const_iterator iter1 = list3.cbegin();
       gum::List<int>::const_iterator iter2 = list3.cbegin() + 4;
-      int d1 = iter2 - iter1;
+      int d1 = int(iter2 - iter1);
       TS_ASSERT_EQUALS( d1, 4 );
 
       gum::List<int>::iterator iter3 = list3.begin();
       gum::List<int>::iterator iter4 = list3.begin() + 4;
-      int d2 = iter4 - iter3;
+      int d2 = int(iter4 - iter3);
       TS_ASSERT_EQUALS( d2, 4 );
 
       gum::List<int>::const_iterator iter11 = list3.cbegin();
       gum::List<int>::const_iterator iter12 = list3.cbegin() + 4;
-      int d11 = iter12 - iter11;
+      int d11 = int(iter12 - iter11);
       TS_ASSERT_EQUALS( d11, 4 );
 
       gum::List<int>::iterator iter13 = list3.begin();
       gum::List<int>::iterator iter14 = list3.begin() + 4;
-      int d12 = iter14 - iter13;
+      int d12 = int(iter14 - iter13);
       TS_ASSERT_EQUALS( d12, 4 );
     }
 
@@ -441,27 +442,27 @@ namespace gum_tests {
       gum::ListIterator<int> iter3( xlist );
       gum::ListConstIterator<int> iter4( xlist );
 
-      unsigned int i;
+      gum::Size i;
 
       for ( i = 0; iter1 != xlist.end(); ++iter1, ++i ) {
       }
 
-      TS_ASSERT( i == xlist.size() );
+      TS_ASSERT_EQUALS( i, xlist.size() );
 
       for ( i = 0; iter2 != xlist.cend(); ++iter2, ++i ) {
       }
 
-      TS_ASSERT( i == xlist.size() );
+      TS_ASSERT_EQUALS( i, xlist.size() );
 
       for ( i = 0; iter3 != xlist.end(); ++iter3, ++i ) {
       }
 
-      TS_ASSERT( i == xlist.size() );
+      TS_ASSERT_EQUALS( i, xlist.size() );
 
       for ( i = 0; iter4 != xlist.cend(); ++iter4, ++i ) {
       }
 
-      TS_ASSERT( i == xlist.size() );
+      TS_ASSERT_EQUALS( i, xlist.size() );
     }
 
     private:

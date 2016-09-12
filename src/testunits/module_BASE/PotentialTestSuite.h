@@ -111,7 +111,7 @@ namespace gum_tests {
       gum::Size cpt = 0;
 
       for ( i.setFirst(); !i.end(); ++i ) {
-        m.set( i, cpt );
+        m.set( i, double(cpt) );
         cpt++;
       }
 

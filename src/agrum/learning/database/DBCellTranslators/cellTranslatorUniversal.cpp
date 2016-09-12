@@ -61,7 +61,7 @@ namespace gum {
     }
 
     /// default constructor
-    CellTranslatorUniversal::CellTranslatorUniversal( Sequence<float> values,
+    CellTranslatorUniversal::CellTranslatorUniversal( Sequence<double> values,
                                                       bool check_database )
         : __check_database( check_database ) {
 
@@ -79,7 +79,7 @@ namespace gum {
       } else {
         // if we specified values, store them
         if ( !values.empty() ) {
-          __num_user_values = new Sequence<float>( std::move( values ) );
+          __num_user_values = new Sequence<double>( std::move( values ) );
         }
       }
     }
@@ -90,12 +90,12 @@ namespace gum {
         // we probably need to reorder the sequence to be compatible with the
         // order of the values specified by the user
         std::vector<int> no_user_vals;
-        std::vector<std::pair<unsigned int, unsigned int>> user_vals;
+        std::vector<std::pair<Idx, Idx>> user_vals;
         for ( auto iter = __strings.begin(); iter != __strings.end(); ++iter ) {
           const int str_index = iter.first();
           const std::string& str = DBCell::getString( str_index );
           if ( __str_user_values->exists( str ) ) {
-            user_vals.push_back( std::pair<unsigned int, unsigned int>(
+            user_vals.push_back( std::pair<Idx, Idx>(
                 str_index, __str_user_values->pos( str ) ) );
           } else {
             no_user_vals.push_back( str_index );
@@ -106,8 +106,8 @@ namespace gum {
         std::sort(
             user_vals.begin(),
             user_vals.end(),
-            []( const std::pair<unsigned int, unsigned int>& elt1,
-                const std::pair<unsigned int, unsigned int>& elt2 ) -> bool {
+            []( const std::pair<Idx, Idx>& elt1,
+                const std::pair<Idx, Idx>& elt2 ) -> bool {
               return elt1.second < elt2.second;
             } );
 
@@ -124,8 +124,8 @@ namespace gum {
         }
 
         // if there existed numbers, add them (in any order)
-        std::vector<float> numbers( __numbers.size() );
-        unsigned int i = 0;
+        std::vector<double> numbers( __numbers.size() );
+        Idx i = 0;
         for ( auto iter = __numbers.begin(); iter != __numbers.end();
               ++iter, ++i ) {
           numbers[i] = iter.first();
@@ -142,12 +142,12 @@ namespace gum {
       } else if ( __num_user_values != nullptr ) {
         // we probably need to reorder the sequence to be compatible with the
         // order of the values specified by the user
-        std::vector<float> no_user_vals;
-        std::vector<std::pair<float, unsigned int>> user_vals;
+        std::vector<double> no_user_vals;
+        std::vector<std::pair<double, Idx>> user_vals;
         for ( auto iter = __numbers.begin(); iter != __numbers.end(); ++iter ) {
-          const float val = iter.first();
+          const double val = iter.first();
           if ( __num_user_values->exists( val ) ) {
-            user_vals.push_back( std::pair<float, unsigned int>(
+            user_vals.push_back( std::pair<double, Idx>(
                 val, __num_user_values->pos( val ) ) );
           } else {
             no_user_vals.push_back( val );
@@ -157,8 +157,8 @@ namespace gum {
         // reorder user_vals in increasing order of the second argument
         std::sort( user_vals.begin(),
                    user_vals.end(),
-                   []( const std::pair<float, unsigned int>& elt1,
-                       const std::pair<float, unsigned int>& elt2 ) -> bool {
+                   []( const std::pair<double, Idx>& elt1,
+                       const std::pair<double, Idx>& elt2 ) -> bool {
                      return elt1.second < elt2.second;
                    } );
 
@@ -176,7 +176,7 @@ namespace gum {
 
         // if there existed strings, add them (in any order)
         std::vector<int> strings( __strings.size() );
-        unsigned int i = 0;
+        Idx i = 0;
         for ( auto iter = __strings.begin(); iter != __strings.end();
               ++iter, ++i ) {
           strings[i] = iter.first();
@@ -195,7 +195,7 @@ namespace gum {
 
     /// specify the set of possible values (to do before creating the row
     /// filter)
-    void CellTranslatorUniversal::setUserValues( const Sequence<float>& values,
+    void CellTranslatorUniversal::setUserValues( const Sequence<double>& values,
                                                  bool check_database ) {
       // clear all current data
       __numbers.clear();
@@ -227,7 +227,7 @@ namespace gum {
       } else {
         // if we specified values, store them
         if ( !values.empty() ) {
-          __num_user_values = new Sequence<float>( values );
+          __num_user_values = new Sequence<double>( values );
         }
       }
     }

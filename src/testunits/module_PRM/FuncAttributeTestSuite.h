@@ -22,36 +22,36 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/PRM/elements/funcAttribute.h>
-#include <agrum/PRM/elements/class.h>
+#include <agrum/PRM/elements/PRMFuncAttribute.h>
+#include <agrum/PRM/elements/PRMClass.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
- * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 
   class FuncAttributeTestSuite : public CxxTest::TestSuite {
     private:
-    typedef gum::prm::FuncAttribute<double> Attribute;
+    typedef gum::prm::PRMFuncAttribute<double> PRMAttribute;
     ClassElementTestSuiteAbstract* __classEltTestSuite;
-    gum::prm::Type<double>* __boolean;
-    gum::prm::Type<double>* __state;
+    gum::prm::PRMType<double>* __boolean;
+    gum::prm::PRMType<double>* __state;
 
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract;
-      __boolean = gum::prm::Type<double>::boolean();
+      __boolean = gum::prm::PRMType<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );
       state.addLabel( "NOK" );
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      __state = new gum::prm::Type<double>{*__boolean, map, state};
+      __state = new gum::prm::PRMType<double>{*__boolean, map, state};
     }
 
     void tearDown() {
@@ -60,15 +60,15 @@ namespace gum_tests {
       delete __state;
     }
 
-    /// ClassElement Tests
+    /// PRMClassElement Tests
     /// @{
     void testIsReferenceSlot() {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
-      Attribute attr( "my_attr", type );
+      gum::prm::PRMType<double> type{var};
+      PRMAttribute attr( "my_attr", type );
       bool expected = false;
       // Act & Assert
       __classEltTestSuite->testIsReferenceSlot( attr, expected );
@@ -79,8 +79,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
-      Attribute attr( "my_attr", type );
+      gum::prm::PRMType<double> type{var};
+      PRMAttribute attr( "my_attr", type );
       bool expected = true;
       // Act & Assert
       __classEltTestSuite->testIsAttribute( attr, expected );
@@ -91,8 +91,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
-      Attribute attr( "my_attr", type );
+      gum::prm::PRMType<double> type{var};
+      PRMAttribute attr( "my_attr", type );
       bool expected = false;
       // Act & Assert
       __classEltTestSuite->testIsSlotChain( attr, expected );
@@ -103,8 +103,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
-      Attribute attr( "my_attr", type );
+      gum::prm::PRMType<double> type{var};
+      PRMAttribute attr( "my_attr", type );
       // Act & Assert
       __classEltTestSuite->testSetNodeId( attr );
     }
@@ -114,8 +114,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
-      Attribute attr( "my_attr", type );
+      gum::prm::PRMType<double> type{var};
+      PRMAttribute attr( "my_attr", type );
       // Act & Assert
       __classEltTestSuite->test_obj_type( attr );
     }
@@ -125,8 +125,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
-      Attribute attr( "my_attr", type );
+      gum::prm::PRMType<double> type{var};
+      PRMAttribute attr( "my_attr", type );
 
       // Act & Assert
       __classEltTestSuite->testSafeName( attr );
@@ -137,8 +137,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel( "False" );
       var.addLabel( "True" );
-      gum::prm::Type<double> type{var};
-      Attribute attr( "my_attr", type );
+      gum::prm::PRMType<double> type{var};
+      PRMAttribute attr( "my_attr", type );
 
       // Act & Assert
       __classEltTestSuite->testCast_NotAllowed( attr );
@@ -160,9 +160,9 @@ namespace gum_tests {
       map.push_back( 1 );
       map.push_back( 0 );
 
-      gum::prm::Type<double> boolean{boolean_var};
-      gum::prm::Type<double> state{boolean, map, state_var};
-      Attribute attr( "my_attr", state );
+      gum::prm::PRMType<double> boolean{boolean_var};
+      gum::prm::PRMType<double> state{boolean, map, state_var};
+      PRMAttribute attr( "my_attr", state );
 
       // Act & Assert
       __classEltTestSuite->testCast( attr, boolean );
@@ -174,11 +174,11 @@ namespace gum_tests {
     void testClassConstructor() {
       // Arrange
       std::string name = "my_state";
-      Attribute* attr = nullptr;
+      PRMAttribute* attr = nullptr;
       // Act & Assert
       try {
-        attr = new Attribute( name, *__boolean );
-      } catch ( ... ) {  // TS_ASSERT_THROWS_NOTHING does not work
+        attr = new PRMAttribute( name, *__boolean );
+      } catch ( ... ) {  // TS_ASSERT_THROWS_NOTHING does ! work
         TS_FAIL( "Exception raised." );
       }
       TS_ASSERT_THROWS_NOTHING( delete attr );
@@ -189,7 +189,7 @@ namespace gum_tests {
     /// @{
     void testType() {
       // Arrange
-      Attribute attr( "attr", *__boolean );
+      PRMAttribute attr( "attr", *__boolean );
       auto& expected = *__boolean;
       // Act
       auto& actual = attr.type();
@@ -200,7 +200,7 @@ namespace gum_tests {
 
     void testTypeConst() {
       // Arrange
-      Attribute attr( "attr", *__boolean );
+      PRMAttribute attr( "attr", *__boolean );
       const auto& attr_const = attr;
       const auto& expected = *__boolean;
       // Act
@@ -212,7 +212,7 @@ namespace gum_tests {
 
     void testCpf() {
       // Arrange
-      Attribute attr( "attr", *__boolean );
+      PRMAttribute attr( "attr", *__boolean );
       gum::Potential<double> expected;
       expected << attr.type().variable();
       // Act
@@ -220,7 +220,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( expected );
       gum::Instantiation j( actual );
-      for ( i.setFirst(), j.setFirst(); not( i.end() or j.end() );
+      for ( i.setFirst(), j.setFirst(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( expected[i], actual[j] );
       }
@@ -230,7 +230,7 @@ namespace gum_tests {
 
     void testCpfConst() {
       // Arrange
-      Attribute attr( "attr", *__boolean );
+      PRMAttribute attr( "attr", *__boolean );
       const auto& attr_const = attr;
       gum::Potential<double> expected;
       expected << attr.type().variable();
@@ -239,7 +239,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( expected );
       gum::Instantiation j( actual );
-      for ( i.setFirst(), j.setFirst(); not( i.end() or j.end() );
+      for ( i.setFirst(), j.setFirst(); !( i.end() || j.end() );
             i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( expected[i], actual[j] );
       }
@@ -253,21 +253,21 @@ namespace gum_tests {
     /// @{
     void testAddParentCheckChild() {
       // Arrange
-      Attribute parent( "attr", *__boolean );
-      Attribute child( "attr", *__boolean );
+      PRMAttribute parent( "attr", *__boolean );
+      PRMAttribute child( "attr", *__boolean );
       auto before = child.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT( !child.cpf().contains( parent.type().variable() ) );
     }
 
     void testAddParentDupplicateError() {
       // Arrange
-      Attribute parent( "attr", *__boolean );
-      Attribute child( "attr", *__boolean );
+      PRMAttribute parent( "attr", *__boolean );
+      PRMAttribute child( "attr", *__boolean );
       child.addParent( parent );
       auto before = child.cpf().variablesSequence().size();
       // Act
@@ -275,20 +275,20 @@ namespace gum_tests {
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT( ! child.cpf().contains( parent.type().variable() ) );
     }
 
     void testAddChild() {
       // Arrange
-      Attribute parent( "attr", *__boolean );
-      Attribute child( "attr", *__boolean );
+      PRMAttribute parent( "attr", *__boolean );
+      PRMAttribute child( "attr", *__boolean );
       auto before = parent.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );
       // Assert
       auto after = parent.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( not parent.cpf().contains( child.type().variable() ) );
+      TS_ASSERT( ! parent.cpf().contains( child.type().variable() ) );
     }
     /// @}
 
@@ -296,8 +296,8 @@ namespace gum_tests {
     /// @{
     void testGetCastDescendant() {
       // Arrange
-      Attribute state( "state", *__state );
-      gum::prm::Attribute<double>* cast = nullptr;
+      PRMAttribute state( "state", *__state );
+      gum::prm::PRMAttribute<double>* cast = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( cast = state.getCastDescendant() );
       // Assert
@@ -312,8 +312,8 @@ namespace gum_tests {
 
     void testSetAsCastDescendant() {
       // Arrange
-      Attribute boolean( "boolean", *__boolean );
-      Attribute state( "state", *__state );
+      PRMAttribute boolean( "boolean", *__boolean );
+      PRMAttribute state( "state", *__state );
       auto before = boolean.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( state.setAsCastDescendant( &boolean ) );
@@ -324,8 +324,8 @@ namespace gum_tests {
 
     void testSetAsCastDescendantOperationNotAllowed() {
       // Arrange
-      Attribute boolean( "boolean", *__boolean );
-      Attribute boolean_bis( "boolean", *__boolean );
+      PRMAttribute boolean( "boolean", *__boolean );
+      PRMAttribute boolean_bis( "boolean", *__boolean );
       auto before = boolean.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS( boolean_bis.setAsCastDescendant( &boolean ),
@@ -338,8 +338,8 @@ namespace gum_tests {
     void testSetAsCastDescendantTypeError() {
       // Arrange
       gum::LabelizedVariable foovar{"Foo", "Bar", 5};
-      Attribute foo( "foobar", foovar );
-      Attribute state( "state", *__state );
+      PRMAttribute foo( "foobar", foovar );
+      PRMAttribute state( "state", *__state );
       auto before = foo.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS( state.setAsCastDescendant( &foo ), gum::WrongType );

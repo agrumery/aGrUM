@@ -36,12 +36,22 @@ def main():
   configureOptions(current)
 
   (options, args)=parseCommandLine(current)
+  
+  noFunForced=False
+  if current['mvsc']:
+    options.static_lib=True
+    options.no_fun=True
+    noFunForced=True
+    
   # colors, fun & verbosity partly controlled by options (--no-fun, ...)
   configureOutputs(options)
 
-  if not options.no_fun:
-    about()
+  about()
 
+  if noFunForced:  
+    notif("Options [static] and [no-fun] forced by option [mvsc]")
+    print()
+    
   configureTools()
 
   # check current consistency and update it if necessary
@@ -59,9 +69,11 @@ def main():
 
     for target in current["targets"]:
       t0 = time.time()
-      buildCmake(current,target)
+      if options.build=="all":
+        buildCmake(current,target)
       t1 = time.time()
-      buildMake(current,target)
+      if options.build!="no-make":
+        buildMake(current,target)
       t2 = time.time()
       buildPost(current,target)
       t3 = time.time()

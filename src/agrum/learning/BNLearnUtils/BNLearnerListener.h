@@ -47,10 +47,10 @@ namespace gum {
       virtual ~BNLearnerListener();
 
       virtual void whenProgress( const void* src,
-                                 Size pourcent,
-                                 double error,
-                                 double time ) final;
-      virtual void whenStop( const void* src, std::string message ) final;
+                                 const Size pourcent,
+                                 const double error,
+                                 const double time ) final;
+      virtual void whenStop( const void* src, const std::string message ) final;
 
       private:
       BNLearnerListener( const BNLearnerListener& other );

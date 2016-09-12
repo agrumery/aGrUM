@@ -25,17 +25,17 @@
 */
 
 // =========================================================================
-#include <math.h>
-#include <vector>
+#include <cmath>
 #include <queue>
+#include <vector>
 //#include <algorithm>
 //#include <utility>
 // =========================================================================
 #include <agrum/core/functors.h>
 // =========================================================================
-#include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/potential.h>
 // =========================================================================
 #include <agrum/FMDP/planning/structuredPlaner.h>
 // =========================================================================
@@ -59,11 +59,14 @@ namespace gum {
   // Default constructor
   // ===========================================================================
   template <typename GUM_SCALAR>
-  INLINE StructuredPlaner<GUM_SCALAR>::StructuredPlaner(IOperatorStrategy<GUM_SCALAR>* opi,
+  INLINE StructuredPlaner<GUM_SCALAR>::StructuredPlaner(
+      IOperatorStrategy<GUM_SCALAR>* opi,
       GUM_SCALAR discountFactor,
-      GUM_SCALAR epsilon , bool verbose)
+      GUM_SCALAR epsilon,
+      bool verbose )
       : _discountFactor( discountFactor )
-      , _operator( opi ), _verbose( verbose ) {
+      , _operator( opi )
+      , _verbose( verbose ) {
 
     GUM_CONSTRUCTOR( StructuredPlaner );
 
@@ -230,7 +233,8 @@ namespace gum {
   // Initializes data structure needed for making the planning
   // ===========================================================================
   template <typename GUM_SCALAR>
-  void StructuredPlaner<GUM_SCALAR>::initialize( const FMDP<GUM_SCALAR>* fmdp ) {
+  void
+  StructuredPlaner<GUM_SCALAR>::initialize( const FMDP<GUM_SCALAR>* fmdp ) {
 
     _fmdp = fmdp;
 
@@ -255,7 +259,6 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   void StructuredPlaner<GUM_SCALAR>::makePlanning( Idx nbStep ) {
-
     if ( __firstTime ) {
       this->_initVFunction();
       __firstTime = false;
@@ -266,7 +269,7 @@ namespace gum {
     // *****************************************************************************************
     Idx nbIte = 0;
     GUM_SCALAR gap = __threshold + 1;
-    while ( gap > __threshold && nbIte < nbStep ) {
+    while ( ( gap > __threshold ) && ( nbIte < nbStep ) ) {
 
       ++nbIte;
 
@@ -282,16 +285,16 @@ namespace gum {
         if ( gap < fabs( deltaV->value() ) ) gap = fabs( deltaV->value() );
       delete deltaV;
 
-      if(_verbose)
-      std::cout << " ------------------- Fin itération n° " << nbIte
-                << std::endl
-                << " Gap : " << gap << " - " << __threshold << std::endl;
+      if ( _verbose )
+        std::cout << " ------------------- Fin itération n° " << nbIte
+                  << std::endl
+                  << " Gap : " << gap << " - " << __threshold << std::endl;
 
       // *****************************************************************************************
       // And eventually we update pointers for next loop
       delete _vFunction;
       _vFunction = newVFunction;
-    }
+      }
 
     // *****************************************************************************************
     // Policy matching value function research
@@ -539,8 +542,8 @@ namespace gum {
       nody = argMaxCpy->manager()->addTerminalNode( leaf );
     } else {
       const InternalNode* currentNode = src->node( currentNodeId );
-      NodeId* sonsMap = static_cast<NodeId*>(
-          SOA_ALLOCATE( sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
+      NodeId* sonsMap = static_cast<NodeId*>( SOA_ALLOCATE(
+          sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
       for ( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
         sonsMap[moda] = __recurArgMaxCopy(
             currentNode->son( moda ), actionId, src, argMaxCpy, visitedNodes );
@@ -625,8 +628,8 @@ namespace gum {
       nody = _optimalPolicy->manager()->addTerminalNode( leaf );
     } else {
       const InternalNode* currentNode = argMaxOptVFunc->node( currentNodeId );
-      NodeId* sonsMap = static_cast<NodeId*>(
-          SOA_ALLOCATE( sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
+      NodeId* sonsMap = static_cast<NodeId*>( SOA_ALLOCATE(
+          sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
       for ( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
         sonsMap[moda] = __recurExtractOptPol(
             currentNode->son( moda ), argMaxOptVFunc, visitedNodes );

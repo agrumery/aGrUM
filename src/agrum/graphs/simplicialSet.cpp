@@ -65,19 +65,19 @@ namespace gum {
     __quasi_simplicial_nodes( std::less<double>(), __graph->size() ),
     __containing_list( __graph->size() ),
     __nb_triangles( __graph->size() * __graph->size() / 2 ),
-    __nb_adjacent_neighbors( __graph->size() ),
+    __nb_adjacent_neighbours( __graph->size() ),
     __quasi_ratio( theRatio ),
     __log_threshold( std::log( 1 + theThreshold ) ) {
     if ( graph != nullptr )
       // for debugging purposes
       GUM_CONSTRUCTOR( SimplicialSet );
 
-    // end of initialization: compute __nb_triangles, __nb_adjacent_neighbors,
+    // end of initialization: compute __nb_triangles, __nb_adjacent_neighbours,
     // etc
     __initialize();
   }
 
-  
+
   /// copy constructor
   SimplicialSet::SimplicialSet( const SimplicialSet& from,
                                 UndiGraph* graph,
@@ -116,7 +116,7 @@ namespace gum {
     __quasi_simplicial_nodes = from.__quasi_simplicial_nodes;
     __containing_list = from.__containing_list;
     __nb_triangles = from.__nb_triangles;
-    __nb_adjacent_neighbors = from.__nb_adjacent_neighbors;
+    __nb_adjacent_neighbours = from.__nb_adjacent_neighbours;
     __log_tree_width = from.__log_tree_width;
     __quasi_ratio = from.__quasi_ratio;
     __log_threshold = from.__log_threshold;
@@ -139,7 +139,7 @@ namespace gum {
     __quasi_simplicial_nodes ( std::move ( from.__quasi_simplicial_nodes ) ),
     __containing_list ( std::move ( from.__containing_list ) ),
     __nb_triangles ( std::move ( from.__nb_triangles ) ),
-    __nb_adjacent_neighbors ( std::move ( from.__nb_adjacent_neighbors ) ),
+    __nb_adjacent_neighbours ( std::move ( from.__nb_adjacent_neighbours ) ),
     __log_tree_width ( from.__log_tree_width ),
     __quasi_ratio ( from.__quasi_ratio ),
     __log_threshold ( from.__log_threshold ),
@@ -149,15 +149,15 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_MOV( SimplicialSet );
   }
-  
-  
+
+
   /// destructor
   SimplicialSet::~SimplicialSet() {
     // for debugging purposes
     GUM_DESTRUCTOR( SimplicialSet );
   }
 
-  
+
   /// adds the necessary edges so that node 'id' and its neighbors form a clique
   void SimplicialSet::makeClique( const NodeId id ) {
     // first, update the list to which belongs the node
@@ -182,15 +182,15 @@ namespace gum {
       // say Y, such that, after deleting Y, id and its adjacent nodes form a
       // clique.
       const NodeSet& nei = __graph->neighbours( id );
-      unsigned int nb_adj = nei.size();
-      unsigned int nb = __nb_adjacent_neighbors[id];
+      Size nb_adj = nei.size();
+      Size nb = __nb_adjacent_neighbours[id];
 
       // nb_almost = the number of edges that should link the neighbors of
       // node id, after node Y mentioned above has been removed. Recall that
       // these neighbors and id form a clique. Hence this corresponds to the
       // number of triangles involving id and 2 of its neighbors, after node
       // Y has been removed.
-      unsigned int nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
+      Size nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
       NodeId node1 = 0;
 
       for ( const auto current_node : nei ) {
@@ -252,7 +252,7 @@ namespace gum {
                 // that between node1, node2 and iterEdge->other( node1 )
                 ++nb_n1;
                 ++nb_n2;
-                ++__nb_adjacent_neighbors[neighbor];
+                ++__nb_adjacent_neighbours[neighbor];
                 ++__nb_triangles[Edge( node1, neighbor )];
                 ++__nb_triangles[Edge( node2, neighbor )];
 
@@ -269,7 +269,7 @@ namespace gum {
                 // that between node1, node2 and iterEdge->other( node2 )
                 ++nb_n1;
                 ++nb_n2;
-                ++__nb_adjacent_neighbors[neighbor];
+                ++__nb_adjacent_neighbours[neighbor];
                 ++__nb_triangles[Edge( node2, neighbor )];
                 ++__nb_triangles[Edge( node1, neighbor )];
 
@@ -279,7 +279,7 @@ namespace gum {
             }
           }
 
-          __nb_adjacent_neighbors[node2] += nb_n2;
+          __nb_adjacent_neighbours[node2] += nb_n2;
           __nb_triangles[e1_2] += nb_n2;
         }
       }
@@ -287,7 +287,7 @@ namespace gum {
       if ( !__changed_status.contains( node1 ) )
         __changed_status.insert( node1 );
 
-      __nb_adjacent_neighbors[node1] += nb_n1;
+      __nb_adjacent_neighbours[node1] += nb_n1;
     }
     else {
       // here, id is neither a simplicial node nor an almost simplicial node
@@ -335,7 +335,7 @@ namespace gum {
                   // both node1 and node2
                   ++nb_n1;
                   ++nb_n2;
-                  ++__nb_adjacent_neighbors[neighbor];
+                  ++__nb_adjacent_neighbours[neighbor];
                   ++__nb_triangles[Edge( node1, neighbor )];
                   ++__nb_triangles[Edge( node2, neighbor )];
 
@@ -350,7 +350,7 @@ namespace gum {
                   // both node1 and node2
                   ++nb_n1;
                   ++nb_n2;
-                  ++__nb_adjacent_neighbors[neighbor];
+                  ++__nb_adjacent_neighbours[neighbor];
                   ++__nb_triangles[Edge( node2, neighbor )];
                   ++__nb_triangles[Edge( node1, neighbor )];
 
@@ -360,12 +360,12 @@ namespace gum {
               }
             }
 
-            __nb_adjacent_neighbors[node2] += nb_n2;
+            __nb_adjacent_neighbours[node2] += nb_n2;
             __nb_triangles[e1_2] += nb_n2;
           }
         }
 
-        __nb_adjacent_neighbors[node1] += nb_n1;
+        __nb_adjacent_neighbours[node1] += nb_n1;
 
         if ( node1_status && !__changed_status.contains( node1 ) )
           __changed_status.insert( node1 );
@@ -398,7 +398,7 @@ namespace gum {
       }
     }
   }
-  
+
 
   /// removes a node and its adjacent edges from the underlying __graph
   void SimplicialSet::eraseClique( const NodeId id ) {
@@ -411,7 +411,7 @@ namespace gum {
 
     // check that node id is actually a clique
     unsigned int nb_adj = nei.size();
-    if ( __nb_adjacent_neighbors[id] != ( nb_adj * ( nb_adj - 1 ) ) / 2 ) {
+    if ( __nb_adjacent_neighbours[id] != ( nb_adj * ( nb_adj - 1 ) ) / 2 ) {
       GUM_ERROR( NotFound, "Node " << id << " is not a clique" );
     }
 
@@ -419,7 +419,7 @@ namespace gum {
     double log_domain_size_id = ( *__log_domain_sizes )[id];
     for ( auto iter1 = nei.begin(); iter1 != nei.end(); ++iter1 ) {
       const NodeId node1 = *iter1;
-      __nb_adjacent_neighbors[node1] -= nb_adj - 1;
+      __nb_adjacent_neighbours[node1] -= nb_adj - 1;
       ( *__log_weights )[node1] -= log_domain_size_id;
 
       if ( !__changed_status.contains( node1 ) )
@@ -451,14 +451,14 @@ namespace gum {
       break;
     }
 
-    __nb_adjacent_neighbors.erase( id );
+    __nb_adjacent_neighbours.erase( id );
     __containing_list.erase( id );
     __changed_status.erase( id );
     __graph->eraseNode( id );
     __log_weights->erase( id );
   }
 
-  
+
   /// removes a node and its adjacent edges from the underlying __graph
   void SimplicialSet::eraseNode( const NodeId id ) {
     // check if the node we wish to remove actually belongs to the __graph
@@ -490,13 +490,13 @@ namespace gum {
       break;
     }
 
-    __nb_adjacent_neighbors.erase( id );
+    __nb_adjacent_neighbours.erase( id );
     __containing_list.erase( id );
     __changed_status.erase( id );
     __graph->eraseNode( id );
     __log_weights->erase( id );
   }
-  
+
 
   /// removes a node and its adjacent edges from the underlying __graph
   void SimplicialSet::eraseEdge( const Edge& edge ) {
@@ -526,20 +526,20 @@ namespace gum {
         --__nb_triangles[Edge( node2, othernode )];
         // update the neighbors
         ++nb_neigh_n1_n2;
-        --__nb_adjacent_neighbors[othernode];
+        --__nb_adjacent_neighbours[othernode];
 
         if ( !__changed_status.contains( othernode ) )
           __changed_status.insert( othernode );
       }
     }
 
-    __nb_adjacent_neighbors[node1] -= nb_neigh_n1_n2;
-    __nb_adjacent_neighbors[node2] -= nb_neigh_n1_n2;
+    __nb_adjacent_neighbours[node1] -= nb_neigh_n1_n2;
+    __nb_adjacent_neighbours[node2] -= nb_neigh_n1_n2;
 
     if ( !__changed_status.contains( node1 ) ) __changed_status.insert( node1 );
     if ( !__changed_status.contains( node2 ) ) __changed_status.insert( node2 );
   }
-  
+
 
   /// adds a new edge to the __graph and recomputes the simplicial set
   void SimplicialSet::addEdge( NodeId node1, NodeId node2 ) {
@@ -564,15 +564,15 @@ namespace gum {
 
         // update the neighbors
         ++nb_neigh_n1_n2;
-        ++__nb_adjacent_neighbors[othernode];
+        ++__nb_adjacent_neighbours[othernode];
 
         if ( !__changed_status.contains( othernode ) )
           __changed_status.insert( othernode );
       }
     }
 
-    __nb_adjacent_neighbors[node1] += nb_neigh_n1_n2;
-    __nb_adjacent_neighbors[node2] += nb_neigh_n1_n2;
+    __nb_adjacent_neighbours[node1] += nb_neigh_n1_n2;
+    __nb_adjacent_neighbours[node2] += nb_neigh_n1_n2;
 
     // add the edge
     __graph->addEdge( node1, node2 );
@@ -582,7 +582,7 @@ namespace gum {
     if ( !__changed_status.contains( node2 ) ) __changed_status.insert( node2 );
   }
 
-  
+
   /// put node id in the correct simplicial/almost simplicial/quasi simplicial list
   void SimplicialSet::__updateList( const NodeId id ) {
     // check if the node belongs to the __graph
@@ -600,7 +600,7 @@ namespace gum {
     unsigned int nb_adj = nei.size();
 
     // check if the node should belong to the simplicial set
-    if ( __nb_adjacent_neighbors[id] == ( nb_adj * ( nb_adj - 1 ) ) / 2 ) {
+    if ( __nb_adjacent_neighbours[id] == ( nb_adj * ( nb_adj - 1 ) ) / 2 ) {
       if ( belong != __Belong::SIMPLICIAL ) {
         if ( belong == __Belong::ALMOST_SIMPLICIAL )
           __almost_simplicial_nodes.erase( id );
@@ -615,8 +615,8 @@ namespace gum {
     }
 
     // check if the node should belong to the almost simplicial set
-    unsigned int nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
-    unsigned int nb = __nb_adjacent_neighbors[id];
+    Size nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
+    Size nb = __nb_adjacent_neighbours[id];
 
     for ( const auto cur : nei ) {
       if ( nb_almost == nb - __nb_triangles[Edge( cur, id )] ) {
@@ -637,7 +637,7 @@ namespace gum {
     }
 
     // check if the node should belong to the quasi simplicial nodes
-    if ( __nb_adjacent_neighbors[id] / ( ( nb_adj * ( nb_adj - 1 ) ) / 2 ) >=
+    if ( __nb_adjacent_neighbours[id] / ( ( nb_adj * ( nb_adj - 1 ) ) / 2 ) >=
          __quasi_ratio ) {
       if ( belong != __Belong::QUASI_SIMPLICIAL ) {
         if ( belong == __Belong::SIMPLICIAL )
@@ -664,7 +664,7 @@ namespace gum {
 
     belong = __Belong::NO_LIST;
   }
-  
+
 
   /// indicates whether there exists an almost simplicial node
   bool SimplicialSet::hasAlmostSimplicialNode() {
@@ -697,7 +697,7 @@ namespace gum {
     return false;
   }
 
-  
+
   /// indicates whether there exists an almost simplicial node
   bool SimplicialSet::hasSimplicialNode() {
     // update the elements currently in the simplicial list that may
@@ -722,7 +722,7 @@ namespace gum {
     return false;
   }
 
-  
+
   /// indicates whether there exists a quasi simplicial node
   bool SimplicialSet::hasQuasiSimplicialNode() {
     // set the limit weight value
@@ -754,8 +754,8 @@ namespace gum {
     return false;
   }
 
-  
-  /** @brief initialize: compute __nb_triangles, __nb_adjacent_neighbors, etc
+
+  /** @brief initialize: compute __nb_triangles, __nb_adjacent_neighbours, etc
    * when a new graph is set */
   void SimplicialSet::__initialize() {
     // if the __graph is empty, do nothing
@@ -770,32 +770,32 @@ namespace gum {
       double log_weight = ( *__log_domain_sizes )[nodeX];
       for ( const auto& nei : __graph->neighbours( nodeX ) )
         log_weight += ( *__log_domain_sizes )[nei];
-      
+
       __log_weights->insert( nodeX, log_weight );
       if ( __log_tree_width > log_weight ) __log_tree_width = log_weight;
     }
 
     // initialize the __nb_triangles so that there is no need to check whether
     // __nb_triangles need new insertions
-    __nb_triangles = __graph->edgesProperty( 0U );
-    __nb_adjacent_neighbors = __graph->nodesProperty( 0U );
+    __nb_triangles = __graph->edgesProperty( Size(0) );
+    __nb_adjacent_neighbours = __graph->nodesProperty( Size(0) );
     __containing_list = __graph->nodesProperty( __Belong::NO_LIST );
     __changed_status = __graph->asNodeSet();
 
-    // set the __nb_triangles and the __nb_adjacent_neighbors: for each
+    // set the __nb_triangles and the __nb_adjacent_neighbours: for each
     // triangle, update the __nb_triangles. To count the triangles only once,
     // parse for each node X the set of its neighbors Y,Z that are adjacent to
     // each other and such that the Id of Y and Z are greater than X.
     for ( const auto nodeX : *__graph ) {
-      unsigned int& nb_adjacent_neighbors_idX =
-        __nb_adjacent_neighbors[nodeX];
+      Size& nb_adjacent_neighbors_idX =
+        __nb_adjacent_neighbours[nodeX];
       const NodeSet& nei = __graph->neighbours( nodeX );
 
       for ( auto iterY = nei.begin(); iterY != nei.end(); ++iterY )
         if ( *iterY > nodeX ) {
           const NodeId node_idY = *iterY;
-          unsigned int& nb_adjacent_neighbors_idY =
-            __nb_adjacent_neighbors[node_idY];
+          Size& nb_adjacent_neighbors_idY =
+            __nb_adjacent_neighbours[node_idY];
 
           auto iterZ = iterY;
           for ( ++iterZ; iterZ != nei.end(); ++iterZ )
@@ -804,7 +804,7 @@ namespace gum {
               const NodeId node_idZ = *iterZ;
               ++nb_adjacent_neighbors_idX;
               ++nb_adjacent_neighbors_idY;
-              ++__nb_adjacent_neighbors[node_idZ];
+              ++__nb_adjacent_neighbours[node_idZ];
               ++__nb_triangles[Edge( nodeX, node_idY )];
               ++__nb_triangles[Edge( nodeX, node_idZ )];
               ++__nb_triangles[Edge( node_idZ, node_idY )];
@@ -812,7 +812,7 @@ namespace gum {
         }
     }
   }
-  
+
 
   /// initialize the simplicial set w.r.t. a new graph
   void SimplicialSet::setGraph( UndiGraph* graph,
@@ -844,8 +844,8 @@ namespace gum {
     __containing_list.resize( __graph->size() );
     __nb_triangles.clear();
     __nb_triangles.resize( __graph->size() * __graph->size() / 2 );
-    __nb_adjacent_neighbors.clear();
-    __nb_adjacent_neighbors.resize( __graph->size() );
+    __nb_adjacent_neighbours.clear();
+    __nb_adjacent_neighbours.resize( __graph->size() );
 
     __log_tree_width = std::numeric_limits<double>::max();
     __quasi_ratio = theRatio;
@@ -853,11 +853,11 @@ namespace gum {
     __changed_status.clear();
     __fill_ins_list.clear();
 
-    // end of initialization: compute __nb_triangles, __nb_adjacent_neighbors, etc
+    // end of initialization: compute __nb_triangles, __nb_adjacent_neighbours, etc
     __initialize();
   }
 
-  
+
   /// reassigns a new set of cliques' log weights (with the same content)
   void SimplicialSet::replaceLogWeights ( NodeProperty<double>* old_weights,
                                           NodeProperty<double>* new_weights ) {
@@ -868,7 +868,7 @@ namespace gum {
 
     __log_weights = new_weights;
   }
-  
+
 
 } /* namespace gum */
 

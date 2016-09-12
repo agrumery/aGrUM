@@ -222,7 +222,7 @@ namespace gum {
           HashTable<NodeId, short int*>& dgInstNeed ) {
 
     HashTable<NodeId, short int*> nodesVarDescendant;
-    std::size_t tableSize = __nbVar * sizeof( short int );
+    Size tableSize = Size(__nbVar * sizeof( short int ));
 
     for ( auto varIter = dg->variablesSequence().rbeginSafe();
           varIter != dg->variablesSequence().rendSafe();

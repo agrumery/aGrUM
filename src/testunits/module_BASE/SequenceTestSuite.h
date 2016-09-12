@@ -649,7 +649,7 @@ namespace gum_tests {
       gum::Sequence<gum::Idx> seq;
 
       seq << 1 << 3 << 5 << 2 << 4;
-      int n = 0;
+      gum::Idx n = 0;
 
       for ( auto it = seq.rbeginSafe(); it != seq.rendSafe();
             --it ) {  // safe iterator needed here
@@ -657,7 +657,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      TS_ASSERT_EQUALS( n, 42531 );
+      TS_ASSERT_EQUALS( n, (gum::Size)42531 );
       n = 0;
 
       for ( auto it = seq.rbegin(); it != seq.rend(); --it ) {
@@ -665,7 +665,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      TS_ASSERT_EQUALS( n, 42531 );
+      TS_ASSERT_EQUALS( n, (gum::Size)42531 );
       n = 0;
 
       for ( auto it = seq.beginSafe(); it != seq.endSafe();
@@ -674,7 +674,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      TS_ASSERT_EQUALS( n, 13524 );
+      TS_ASSERT_EQUALS( n, (gum::Size)13524 );
       n = 0;
 
       for ( auto it = seq.begin(); it != seq.end(); ++it ) {
@@ -682,7 +682,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      TS_ASSERT_EQUALS( n, 13524 );
+      TS_ASSERT_EQUALS( n, (gum::Size)13524 );
       n = 0;
 
       for ( const auto i : seq ) {
@@ -690,7 +690,7 @@ namespace gum_tests {
         n += i;
       }
 
-      TS_ASSERT_EQUALS( n, 13524 );
+      TS_ASSERT_EQUALS( n, (gum::Size)13524 );
 
       gum::Sequence<gum::Idx> seq2;
       TS_ASSERT_THROWS( seq2.front(), gum::NotFound );

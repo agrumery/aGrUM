@@ -21,23 +21,23 @@
  * @file
  * @brief Headers of the ContingencyTable class.
  *
- * @author Jean-Christophe MAGNAN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// =========================================================================
+
 #ifndef GUM_CONTINGENCY_TABLE_H
 #define GUM_CONTINGENCY_TABLE_H
-// =========================================================================
+
 #include <cmath>
-// =========================================================================
+
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
-// =========================================================================
+
 #include <agrum/FMDP/learning/observation.h>
-// =========================================================================
+
 #include <agrum/variables/discreteVariable.h>
-// =========================================================================
+
 
 namespace gum {
 
@@ -59,14 +59,14 @@ namespace gum {
     // ##########################################################################
     /// @{
 
-    // ==========================================================================
+
     /// Default constructor
-    // ==========================================================================
+
     ContingencyTable();
 
-    // ==========================================================================
+
     /// Default destructor
-    // ==========================================================================
+
     ~ContingencyTable();
 
     // ============================================================================
@@ -82,19 +82,19 @@ namespace gum {
 
     /// @}
 
-    // ==========================================================================
+
     /// @name
-    // ==========================================================================
+
     /// @{
 
-    // ==========================================================================
+
     /// Increments the number of sample for case( iattr, ivalue )
-    // ==========================================================================
+
     void add( GUM_SCALAR_A valueA, GUM_SCALAR_B valueB );
 
-    // ==========================================================================
+
     /// Returns the number of samples for case (iattr, ivalue)
-    // ==========================================================================
+
     Idx joint( GUM_SCALAR_A valueA, GUM_SCALAR_B valueB ) const {
       return __jointTable.exists(
                  std::pair<GUM_SCALAR_A, GUM_SCALAR_B>( valueA, valueB ) )
@@ -103,27 +103,27 @@ namespace gum {
                  : 0;
     }
 
-    // ==========================================================================
+
     /// Returns the number of samples for case (iattr, ivalue)
-    // ==========================================================================
+
     Idx attrAMarginal( GUM_SCALAR_A valueA ) const {
       return __attrAMarginalTable.exists( valueA )
                  ? __attrAMarginalTable[valueA]
                  : 0;
     }
 
-    // ==========================================================================
+
     /// Returns the number of samples for case (iattr, ivalue)
-    // ==========================================================================
+
     Idx attrBMarginal( GUM_SCALAR_B valueB ) const {
       return __attrAMarginalTable.exists( valueB )
                  ? __attrAMarginalTable[valueB]
                  : 0;
     }
 
-    // ==========================================================================
+
     /// Returns the number of samples for line iattr
-    // ==========================================================================
+
     //        Idx aMarginal( GUM_SCALAR_A iattr ) { return
     //        __attrMarginalTable[iattr]; }
     HashTableConstIteratorSafe<GUM_SCALAR_A, Idx> attrABeginSafe() const {
@@ -134,9 +134,9 @@ namespace gum {
     }
 
 
-    // ==========================================================================
+
     /// Returns the number of samples for column ivalue
-    // ==========================================================================
+
     //        Idx vMarginal( GUM_SCALAR_B ivalue ) { return
     //        __valueMarginalTable[ivalue]; }
     HashTableConstIteratorSafe<GUM_SCALAR_B, Idx> attrBBeginSafe() const {
@@ -146,14 +146,14 @@ namespace gum {
       return __attrBMarginalTable.cendSafe();
     }
 
-    // ==========================================================================
+
     /// Returns the number of samples for line iattr
-    // ==========================================================================
+
     Idx attrASize() const { return __attrAMarginalTable.size(); }
 
-    // ==========================================================================
+
     /// Returns the number of samples for column ivalue
-    // ==========================================================================
+
     Idx attrBSize() const { return __attrBMarginalTable.size(); }
 
     /// @}

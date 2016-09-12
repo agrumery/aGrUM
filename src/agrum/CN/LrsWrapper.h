@@ -29,8 +29,15 @@
 #ifndef __LRSWrapper_WRAPPER__H__
 #define __LRSWrapper_WRAPPER__H__
 
+#include <agrum/config.h>
+
 #include <cmath>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#else
+#include <agrum/core/mvsc/unistd.h>
+#endif
+
 #include <fcntl.h>
 #include <cstdio>
 #include <vector>
@@ -38,7 +45,6 @@
 #include <fstream>
 #include <chrono>
 
-#include <agrum/core/exceptions.h>
 #include <agrum/core/math/rational.h>
 
 // we force MP (not long or GMP)
@@ -86,7 +92,7 @@ namespace gum {
     class LRSWrapper {
       private:
       /** @brief Shortcut for dynamic matrix using vectors. */
-      typedef typename std::vector<std::vector<GUM_SCALAR>> matrix;
+      using matrix= typename std::vector<std::vector<GUM_SCALAR>>;
 
       /** @brief Input matrix - either a V-representation or an
        * H-representation. */

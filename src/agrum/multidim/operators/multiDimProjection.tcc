@@ -106,7 +106,7 @@ namespace gum {
   INLINE float MultiDimProjection<GUM_SCALAR, TABLE>::nbOperations(
       const TABLE<GUM_SCALAR>& table,
       const Set<const DiscreteVariable*>& del_vars ) const {
-    return table.domainSize();
+    return float(table.domainSize());
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
@@ -144,7 +144,7 @@ namespace gum {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
-        res *= ( *iter )->domainSize();
+        res *= long(( *iter )->domainSize());
       }
     }
 

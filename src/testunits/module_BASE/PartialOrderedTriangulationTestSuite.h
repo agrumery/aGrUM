@@ -40,7 +40,7 @@ namespace gum_tests {
 
       gum::UndiGraph graph;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         graph.addNode( 10 * i );
 
       createClique( graph, c1 );
@@ -55,14 +55,14 @@ namespace gum_tests {
 
       gum::NodeProperty<gum::Size> dom;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         dom.insert( 10 * i, 10 );
 
       gum::List<gum::NodeSet> partial_order;
 
-      for ( unsigned int i = 0; i < 8; ++i ) {
+      for ( gum::Idx i = 0; i < 8; ++i ) {
         gum::NodeSet nodes;
-        nodes << ( 8 - i ) * 10;
+        nodes << gum::NodeId( ( 8 - i ) * 10 );
         partial_order.pushBack( nodes );
       }
 
@@ -84,9 +84,9 @@ namespace gum_tests {
       triang.clear();
       partial_order.clear();
 
-      for ( unsigned int i = 0; i < 8; ++i ) {
+      for ( gum::Idx i = 0; i < 8; ++i ) {
         gum::NodeSet nodes;
-        nodes << ( i + 1 ) * 10;
+        nodes << gum::NodeId( ( i + 1 ) * 10 );
         partial_order.pushBack( nodes );
       }
 
@@ -123,9 +123,9 @@ namespace gum_tests {
 
       partial_order.clear();
 
-      for ( unsigned int i = 0; i < 8; ++i ) {
+      for ( gum::Idx i = 0; i < 8; ++i ) {
         gum::NodeSet nodes;
-        nodes << ( 8 - i ) * 10;
+        nodes << gum::NodeId( ( 8 - i ) * 10 );
         partial_order.pushBack( nodes );
       }
 
@@ -151,8 +151,8 @@ namespace gum_tests {
 
       gum::UndiGraph graph;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
-        graph.addNode( 10 * i );
+      for ( gum::Idx i = 1; i <= 8; ++i )
+        graph.addNode( gum::NodeId( 10 * i ) );
 
       createClique( graph, c1 );
 
@@ -166,15 +166,15 @@ namespace gum_tests {
 
       gum::NodeProperty<gum::Size> dom;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         dom.insert( 10 * i, 10 );
 
       gum::List<gum::NodeSet> partial_order;
 
-      for ( unsigned int i = 0; i < 8; i += 2 ) {
+      for ( gum::Idx i = 0; i < 8; i += 2 ) {
         gum::NodeSet nodes;
-        nodes << ( 8 - i ) * 10;
-        nodes << ( 8 - i - 1 ) * 10;
+        nodes << gum::NodeId(( 8 - i ) * 10);
+        nodes << gum::NodeId(( 8 - i - 1 ) * 10);
         partial_order.pushBack( nodes );
       }
 
@@ -190,24 +190,24 @@ namespace gum_tests {
     void testTriangulatedGraph3() {
       gum::UndiGraph graph;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         graph.addNode( i );
 
-      for ( unsigned int i = 1; i <= 7; ++i )
-        graph.addEdge( i, i + 1 );
+      for ( gum::NodeId i = 1; i <= 7; ++i )
+        graph.addEdge( i, gum::NodeId(i + 1) );
 
       graph.addEdge( 8, 1 );
 
       gum::NodeProperty<gum::Size> dom;
 
-      for ( unsigned int i = 1; i <= 8; ++i )
+      for ( gum::NodeId i = 1; i <= 8; ++i )
         dom.insert( i, 10 );
 
       gum::List<gum::NodeSet> partial_order;
 
-      for ( unsigned int i = 0; i < 8; ++i ) {
+      for ( gum::Idx i = 0; i < 8; ++i ) {
         gum::NodeSet nodes;
-        nodes << ( 8 - i );
+        nodes << gum::NodeId( 8 - i );
         partial_order.pushBack( nodes );
       }
 

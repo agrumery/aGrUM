@@ -30,6 +30,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define COCO_R_COMMON_H
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/config.h>
 
 #include <iostream>
 #include <cstring>
@@ -56,6 +57,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define coco_swprintf _snwprintf
 #elif defined __GNUC__
 #define coco_swprintf swprintf
+// cocoR genereted files may create unused-variable
+#pragma GCC diagnostic ignored "-Wunused-variable"
 #else
 #error unknown compiler!
 #endif
@@ -66,8 +69,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define HEAP_BLOCK_SIZE ( 64 * 1024 )
 #define COCO_CPP_NAMESPACE_SEPARATOR L':'
 
-// cocoR genereted files may create unused-variable
-#pragma GCC diagnostic ignored "-Wunused-variable"
 
 namespace gum {
 
@@ -114,11 +115,11 @@ namespace gum {
   /// CocoR uses unicode, thus use this to cast wstring in string.
   inline std::string narrow( const std::wstring& str ) {
     std::ostringstream stm;
-    const std::ctype<char>& ctfacet =
-        std::use_facet<std::ctype<char>>( stm.getloc() );
+    const std::ctype<wchar_t>& ctfacet =
+        std::use_facet<std::ctype<wchar_t>>( stm.getloc() );
 
     for ( size_t i = 0; i < str.size(); ++i )
-      stm << ctfacet.narrow( str[i], 0 );
+      stm << ctfacet.narrow(str.at(i),0); //std::ctype<char>::_Elem(str[i]), 0 );
 
     return stm.str();
   }

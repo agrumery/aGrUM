@@ -63,8 +63,8 @@ namespace gum {
      *for
      * details.
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+    template <typename IdSetAlloc = std::allocator<Idx>,
+              typename CountAlloc = std::allocator<double>>
     class ScoreAIC : public Score<IdSetAlloc, CountAlloc> {
       public:
       // ##########################################################################
@@ -83,10 +83,10 @@ namespace gum {
       template <typename RowFilter>
       ScoreAIC(
           const RowFilter& filter,
-          const std::vector<unsigned int>& var_modalities,
+          const std::vector<Size>& var_modalities,
           Apriori<IdSetAlloc, CountAlloc>& apriori,
-          unsigned long min_range = 0,
-          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
+          Size min_range = 0,
+          Size max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       ScoreAIC( const ScoreAIC<IdSetAlloc, CountAlloc>& );
@@ -108,7 +108,7 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      virtual float score( unsigned int nodeset_index ) final;
+      virtual double score( Idx nodeset_index ) final;
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -153,7 +153,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool isAprioriCompatible( const std::string& apriori_type,
-                                       float weight = 1.0f );
+                                       double weight = 1.0f );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score

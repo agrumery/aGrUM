@@ -21,17 +21,17 @@
  * @file
  * @brief Headers of the ChiSquare class.
  *
- * @author Jean-Christophe MAGNAN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// =========================================================================
+
 #ifndef GUM_CHI_SQUARE_H
 #define GUM_CHI_SQUARE_H
-// =========================================================================
+
 #include <cmath>
-// =========================================================================
+
 #include <agrum/core/hashTable.h>
-// =========================================================================
+
 
 namespace gum {
 
@@ -46,12 +46,10 @@ namespace gum {
   class ChiSquare {
 
     public:
-    static double probaChi2( double x, unsigned long df );
+    static double probaChi2( double x, Size df );
 
     private:
-    // =================================================================================
     /// Required constant to compute the cdf
-    // =================================================================================
     /// @{
 
     /// maximum meaningful z value
@@ -75,9 +73,7 @@ namespace gum {
     /// @}
 
 
-    // =================================================================================
     /// Required constant to compute the cdf
-    // =================================================================================
     /// @{
 
     static double __exp( double x ) {

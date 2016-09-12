@@ -311,28 +311,28 @@ namespace gum {
 
     /// the set of ancestors of each node in the dag
     /** for each ancestor, we keep track of the number of paths leading to it */
-    NodeProperty<NodeProperty<unsigned int>> __ancestors;
+    NodeProperty<NodeProperty<Size>> __ancestors;
 
     /// the set of descendants of each node in the dag
     /** for each ancestor, we keep track of the number of paths leading to it */
-    NodeProperty<NodeProperty<unsigned int>> __descendants;
+    NodeProperty<NodeProperty<Size>> __descendants;
 
     /// adds a weighted nodeset to another (weights are added)
-    void __addWeightedSet( NodeProperty<unsigned int>& nodeset,
-                           const NodeProperty<unsigned int>& set_to_add,
-                           unsigned int multiplier ) const;
+    void __addWeightedSet( NodeProperty<Size>& nodeset,
+                           const NodeProperty<Size>& set_to_add,
+                           Size multiplier ) const;
 
     /// removes a weighted nodeset from another (weights are subtracted)
-    void __delWeightedSet( NodeProperty<unsigned int>& nodeset,
-                           const NodeProperty<unsigned int>& set_to_del,
-                           unsigned int multiplier ) const;
+    void __delWeightedSet( NodeProperty<Size>& nodeset,
+                           const NodeProperty<Size>& set_to_del,
+                           Size multiplier ) const;
 
     /** @brief put into a weighted nodeset the nodes of another weighted set
      * that
      * belong to a set of arc extremities */
     void
-    __restrictWeightedSet( NodeProperty<unsigned int>& result_set,
-                           const NodeProperty<unsigned int>& set_to_restrict,
+    __restrictWeightedSet( NodeProperty<Size>& result_set,
+                           const NodeProperty<Size>& set_to_restrict,
                            const NodeSet& extrmities ) const;
   };
 

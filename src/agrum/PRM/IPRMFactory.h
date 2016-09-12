@@ -55,15 +55,15 @@ namespace gum {
       virtual ~IPRMFactory(){};
 
       // virtual PRM<GUM_SCALAR>* prm() const=0;
-      virtual PRMObject::PRMType currentType() const = 0;
+      virtual PRMObject::prm_type currentType() const = 0;
       virtual PRMObject* getCurrent() = 0;
       virtual const PRMObject* getCurrent() const = 0;
       virtual PRMObject* closeCurrent() = 0;
       virtual std::string currentPackage() const = 0;
       // Class<GUM_SCALAR>& retrieveClass ( const std::string& name )=0;
-      // Type<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
-      // Type<GUM_SCALAR>& retrieveCommonType ( const
-      // std::vector<ClassElement<GUM_SCALAR>*>& elts )=0;
+      // PRMType<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
+      // PRMType<GUM_SCALAR>& retrieveCommonType ( const
+      // std::vector<PRMClassElement<GUM_SCALAR>*>& elts )=0;
       virtual void pushPackage( const std::string& name ) = 0;
       virtual std::string popPackage() = 0;
       virtual void addImport( const std::string& name ) = 0;
@@ -86,9 +86,10 @@ namespace gum {
       virtual void addAttribute( const std::string& type,
                                  const std::string& name ) = 0;
       virtual void endInterface() = 0;
-      // virtual void addAttribute ( Attribute<GUM_SCALAR>* attr ) =0;
+      // virtual void addAttribute ( PRMAttribute<GUM_SCALAR>* attr ) =0;
       virtual void startAttribute( const std::string& type,
-                                   const std::string& name ) = 0;
+                                   const std::string& name,
+                                   bool scalar_attr = false ) = 0;
       virtual void continueAttribute( const std::string& name ) = 0;
       virtual void addParent( const std::string& name ) = 0;
       virtual void setRawCPFByFloatLines( const std::vector<float>& array ) = 0;

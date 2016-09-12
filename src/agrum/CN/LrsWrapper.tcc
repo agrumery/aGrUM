@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 #include <agrum/CN/LrsWrapper.h>
 
 namespace gum {
@@ -328,7 +328,7 @@ namespace gum {
       std::vector<GUM_SCALAR> vertex( __card );
 
       for ( decltype( vtx ) i = 1; i <= vtx; i++ ) {
-        vertex[( i - 1 ) % __card] = ( Num[i - 1] * 1.0 / Den[i - 1] );
+        vertex[( i - 1 ) % __card] = GUM_SCALAR( Num[i - 1] * 1.0 / Den[i - 1] );
 
         if ( i % __card == 0 ) {
           __output.push_back( vertex );
@@ -477,7 +477,7 @@ namespace gum {
           __output.push_back( std::vector<GUM_SCALAR>( ++__input[i - 1].begin(),
                                                        __input[i - 1].end() ) );
 
-      __vertices = __output.size();
+      __vertices = (unsigned int)__output.size();
 
       __freeLrs();
 
@@ -546,19 +546,19 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__fill() const {
-      auto cols = __input[0].size();
+      long cols = long(__input[0].size());
 
       long int* num =
           new long int[cols];  // ISO C++ forbids variable length array,
                                // we need to do this instead
       long int* den = new long int[cols];
 
-      auto rows = __input.size();
+      long rows = long(__input.size());
 
       long int numerator, denominator;
 
-      for ( decltype( rows ) row = 0; row < rows; row++ ) {
-        for ( decltype( cols ) col = 0; col < cols; col++ ) {
+      for ( long row = 0; row < rows; row++ ) {
+        for ( long col = 0; col < cols; col++ ) {
           Rational<GUM_SCALAR>::continuedFracFirst(
               numerator, denominator, __input[row][col] );
 
@@ -614,8 +614,8 @@ namespace gum {
             "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dat" );
       }
 
-      __dat->n = __input[0].size();
-      __dat->m = __input.size();
+      __dat->n = Size(__input[0].size());
+      __dat->m = Size(__input.size());
 
       __dat->getvolume = ( __getVolume ) ? 1L : 0L;
       __dat->hull = ( __hull ) ? 1L : 0L;

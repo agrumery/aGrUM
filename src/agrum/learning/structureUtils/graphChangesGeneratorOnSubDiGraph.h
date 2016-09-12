@@ -171,7 +171,7 @@ namespace gum {
       void setTails( const NodeSet& nodes );
 
       /// assign a set of "tail" nodes from 0 to nb_nodes - 1
-      void setTails( unsigned int nb_nodes );
+      void setTails( Size nb_nodes );
 
       /// adds a new "tail" node
       void addTail( NodeId node );
@@ -198,7 +198,7 @@ namespace gum {
       void notifyGetCompleted();
 
       /// sets the maximum number of threads used to compute the set of changes
-      void setMaxNbThreads( unsigned int nb ) noexcept;
+      void setMaxNbThreads( Size nb ) noexcept;
 
       /// @}
 
@@ -221,9 +221,9 @@ namespace gum {
       private:
 /// the max number of threads authorized
 #if defined( _OPENMP ) && defined( NDEBUG )
-      unsigned int __max_threads_number{getMaxNumberOfThreads()};
+      Size __max_threads_number{getMaxNumberOfThreads()};
 #else
-      unsigned int __max_threads_number{1};
+      Size __max_threads_number{1};
 #endif /* NDEBUG */
     };
 

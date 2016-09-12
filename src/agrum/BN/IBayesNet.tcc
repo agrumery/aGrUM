@@ -225,7 +225,7 @@ namespace gum {
       try {
         alignment.insert( &variable( node ),
                           &from.variableFromName( variable( node ).name() ) );
-      } catch ( NotFound& e ) {
+      } catch ( NotFound& ) {
         // a name is not found in from
         return false;
       }
@@ -245,7 +245,7 @@ namespace gum {
       Instantiation i( cpt( node ) );
       Instantiation j( from.cpt( fromnode ) );
 
-      for ( i.setFirst(); not i.end(); i.inc() ) {
+      for ( i.setFirst(); ! i.end(); i.inc() ) {
         for ( Idx indice = 0; indice < cpt( node ).nbrDim(); ++indice ) {
           const DiscreteVariable* p = &( i.variable( indice ) );
           j.chgVal( *( alignment.second( p ) ), i.val( *p ) );
@@ -263,7 +263,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   bool IBayesNet<GUM_SCALAR>::operator!=( const IBayesNet& from ) const {
-    return not this->operator==( from );
+    return ! this->operator==( from );
   }
 
   template <typename GUM_SCALAR>

@@ -28,13 +28,14 @@ from .configuration import cfg
 from .utils import notif,warn,trace,setifyString
 from .tests import checkTests,testNames
 
-def checkAgrumMemoryLeak(x):
+def checkAgrumMemoryLeak(x,pourcent):
   commande='act test debug -t {0} -m all'.format(x)
-  
-  first=cfg.C_WARNING+x+cfg.C_END+" : "
+
+  first=(cfg.C_VALUE+"[{:5.1f}%] ").format(pourcent)
+  second=cfg.C_WARNING+x+cfg.C_END+" : "
   flag=0
 
-  sys.stdout.write(first)
+  sys.stdout.write(first+second)
   sys.stdout.flush()
 
   proc=Popen(commande+" --no-fun",shell=True,stdout=PIPE,stderr=STDOUT)
@@ -51,16 +52,16 @@ def checkAgrumMemoryLeak(x):
     last=cfg.C_ERROR+"?"+cfg.C_END
 
   print(last)
-  return (first+last,flag==1)
+  return (second+last,flag==1)
 
 def checkAgrumMemoryLeaks(current):
   notif("Searching leaks test by test (may be a bit long).\n")
 
   res=[]
-
-  for x in testNames(checkTests(current)):
-    (msg,testOK)=checkAgrumMemoryLeak(x)
+  testslist=sorted(testNames(checkTests(current)))
+  for i,x in enumerate(testslist):
+    (msg,testOK)=checkAgrumMemoryLeak(x,(i+1)*100.0/len(testslist))
     if not testOK:
       res.append(msg)
 
-  print("\n"+cfg.C_WARNING+"Test(s) with problem(s) :\n -{0}\n".format("\n -".join(res) if len(res)>0 else cfg.C_VALUE+"none")+cfg.C_END)
+  warn("\n"+cfg.C_WARNING+"Test(s) with problem(s) :\n -{0}\n".format("\n -".join(res) if len(res)>0 else cfg.C_VALUE+"none")+cfg.C_END)

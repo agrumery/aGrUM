@@ -88,7 +88,7 @@ namespace gum {
       // ============================================================================
       /// Deallocates a block of memory
       // ============================================================================
-      void __deallocate( void* p, const std::size_t& blockSize );
+      void __deallocat( void* p, const std::size_t& blockSize );
 
       // ============================================================================
       /// Releases the allocated memory

@@ -391,7 +391,7 @@ namespace gum {
   /**
    * @class gum::WrongClassElement agrum/core/exceptions.h
    * @extends gum::FactoryError
-   * Exception: wrong ClassElement for this operation
+   * Exception: wrong PRMClassElement for this operation
    */
   class WrongClassElement;
 

@@ -103,20 +103,13 @@ namespace gum {
           /// The isomorphism graph of the pattern.
           UndiGraph iso_graph;
           /// The instances matching p in the interface graph.
-          NodeProperty<Sequence<Instance<GUM_SCALAR>*>*> iso_map;
+          NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*> iso_map;
           /// The maximal independent set of p.
           Set<NodeId> max_indep_set;
           /// The cost of this Pattern
           Size cost;
           /// The gain of this Pattern
           Size gain;
-          // /// The different sub_patterns of p given the iso_map.
-          // Sequence< HashTable<ClassElement<GUM_SCALAR>*, Size>* >
-          // sub_patterns;
-          // /// The mapping between an iso_map and the given sub pattern.
-          // HashTable<NodeId, Idx> sub_patterns_map;
-          // /// The number of each sub pattern
-          // std::vector<Size> sub_patterns_count;
         };
 
         /// Returns the list of root patterns in this DFSTree.
@@ -187,7 +180,7 @@ namespace gum {
          *
          * The isomorphism graph is a undirected graph in which each node
          *represents
-         * a set of Instance<GUM_SCALAR> matching p in the interface graph.
+         * a set of PRMInstance<GUM_SCALAR> matching p in the interface graph.
          *
          * If there exists an edge between two nodes in the isomorphism graph,
          *then
@@ -224,8 +217,8 @@ namespace gum {
          *
          * @throw NotFound Raised if p or node does not exists.
          */
-        Sequence<Instance<GUM_SCALAR>*>& iso_map( const Pattern& p,
-                                                  NodeId node );
+        Sequence<PRMInstance<GUM_SCALAR>*>& iso_map( const Pattern& p,
+                                                     NodeId node );
 
         /**
          * @brief Returns the maximal independent set of p isomorphism graph.
@@ -298,8 +291,8 @@ namespace gum {
 
         /// Check if an instance match is redundant.
         bool
-        __is_new_seq( Sequence<Instance<GUM_SCALAR>*>& seq,
-                      NodeProperty<Sequence<Instance<GUM_SCALAR>*>*>& iso_map );
+        __is_new_seq( Sequence<PRMInstance<GUM_SCALAR>*>& seq,
+                      NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& iso_map );
 
         /// This initialize the DSFTree with a new root.
         /// @param p A Pattern.
@@ -307,15 +300,9 @@ namespace gum {
         void __initialiaze_root( Pattern* p,
                                  Sequence<EdgeData<GUM_SCALAR>*>& seq );
 
-        /// This can be used to decompose a pattern in sub patter, which could
-        /// be
-        /// useful
-        /// in some scenarios.
-        void __find_sub_pattern( Pattern& p, NodeId iso_map );
-
         // Used by __find_sub_pattern.
-        bool __test_equality( HashTable<ClassElement<GUM_SCALAR>*, Size>& x,
-                              HashTable<ClassElement<GUM_SCALAR>*, Size>& y );
+        bool __test_equality( HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,
+                              HashTable<PRMClassElement<GUM_SCALAR>*, Size>& y );
       };
 
 

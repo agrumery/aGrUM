@@ -30,8 +30,8 @@
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
-#include <agrum/PRM/elements/classElement.h>
-#include <agrum/PRM/elements/aggregate.h>
+#include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
 
 template <typename GUM_SCALAR>
 class classElement;
@@ -152,8 +152,8 @@ public:
   */
   PyObject* isAttribute( std::string class_name, std::string att_name){
     auto& ob = __prm->getClass(class_name).get(att_name);
-    
-    return gum::prm::ClassElement<double>::isAttribute(ob) ? Py_True : Py_False;
+
+    return gum::prm::PRMClassElement<double>::isAttribute(ob) ? Py_True : Py_False;
   }
 
   /**
@@ -284,6 +284,7 @@ public:
   * @param class_name : the name of the class
   */
   PyObject* classDag(std::string class_name){
+
     PyObject* uplet = PyTuple_New(2);
     auto &  c = __prm->getClass(class_name);
     PyObject* d = PyDict_New();
@@ -296,6 +297,50 @@ public:
     PyTuple_SetItem(uplet, 1, PyString_FromString( gra.toDot().c_str() ));
     return uplet;
   }
+
+  /**
+  * @return a list of 3-uplets (nameofsystem,dictinary of ids  their name & type,list of arcs:[(tail,head),..] )
+  */
+    PyObject* getalltheSystems(){
+      PyObject* l = PyList_New( 0 );
+
+      auto the_systems=__prm->systems();
+
+      unsigned long var=0;
+      for (auto a_system : the_systems){
+        PyObject* uplet = PyTuple_New(3);
+        PyObject* a = PyList_New(0);
+        PyObject* n = PyDict_New();
+
+        auto graph=a_system->skeleton();
+
+        PyTuple_SetItem(uplet, 0,  PyString_FromString(a_system->name().c_str()));
+
+        for(auto node : graph.nodes()){
+          PyObject* tnode = PyTuple_New(2);
+          PyTuple_SetItem(tnode, 0, PyString_FromString(a_system->get(node).name().c_str()) );
+          PyTuple_SetItem(tnode, 1, PyString_FromString(a_system->get(node).type().name().c_str()) );
+          PyDict_SetItem(n, PyLong_FromUnsignedLong((unsigned long)node), tnode );
+
+        }
+
+
+        for(auto arc : graph.arcs()){
+          PyObject* tarc = PyTuple_New(2);
+          PyTuple_SetItem(tarc, 0, PyLong_FromUnsignedLong((unsigned long)arc.tail()));
+          PyTuple_SetItem(tarc, 1, PyLong_FromUnsignedLong((unsigned long)arc.head()));
+          PyList_Append(a, tarc);
+        }
+
+        PyTuple_SetItem(uplet, 1, n);
+        PyTuple_SetItem(uplet, 2, a);
+        PyList_Append(l, uplet);
+
+        var=var+1;
+      }
+
+      return l;
+    }
 
   /**
   * @return the name of the super class
@@ -356,7 +401,7 @@ public:
     PyObject* getSuperType(std::string type_name){
       auto& c = __prm->type(type_name);
       if(c.isSubType()){
-        return PyString_FromString(c.super()->name().c_str());
+        return PyString_FromString(c.superType()->name().c_str());
       }
       else {
         return Py_None;
@@ -372,7 +417,7 @@ public:
       auto& selected = __prm->type(type_name);
       for (auto c : __prm->types()){
         if(c->isSubType()){
-          if(c->super().name() == selected.name()){
+          if(c->superType().name() == selected.name()){
             PyList_Append(l, PyString_FromString(c->name().c_str()));
           }
         }
@@ -404,7 +449,7 @@ public:
         return Py_None;
       }
       auto typeLabelVector = selected.variable().labels();
-      auto superTypeLabelVector = selected.super().variable().labels();
+      auto superTypeLabelVector = selected.superType().variable().labels();
       auto& labelMapTypeToSuperType = selected.label_map();
       for(unsigned i = 0; i != labelMapTypeToSuperType.size(); i++){
         PyDict_SetItem(d, PyString_FromString(typeLabelVector[i].c_str()), PyString_FromString(superTypeLabelVector[labelMapTypeToSuperType[i]].c_str()));
@@ -433,13 +478,13 @@ public:
     PyObject* interAttributes( std::string interface_name, bool allAttributes = false ) {
       PyObject* q = PyList_New( 0 );
 
-      for ( auto c : __prm->interface( interface_name ).attributes() )
+      for ( auto c : __prm->getInterface( interface_name ).attributes() )
       if ( allAttributes ) {
         PyObject* uplet = PyTuple_New(2);
         PyTuple_SetItem(uplet, 0, PyString_FromString( c->type().name().c_str()) );
         PyTuple_SetItem(uplet, 1, PyString_FromString( c->name().c_str() ));
         PyList_Append( q, uplet);
-      } else if ( &( __prm->interface( interface_name ).get( c->name() ) ) == c ){
+      } else if ( &( __prm->getInterface( interface_name ).get( c->name() ) ) == c ){
         // remove automatically created attributes
         // (cast-descendant)
         PyObject* uplet = PyTuple_New(2);
@@ -459,7 +504,7 @@ public:
     PyObject* interReferences( std::string interface_name) {
       PyObject* q = PyList_New( 0 );
 
-      for ( auto r : __prm->interface( interface_name ).referenceSlots() ){
+      for ( auto r : __prm->getInterface( interface_name ).referenceSlots() ){
         PyObject* uplet = PyTuple_New(3);
         PyTuple_SetItem(uplet, 0, PyString_FromString(r->slotType().name().c_str()) );
         PyTuple_SetItem(uplet, 1, PyString_FromString( r->name().c_str() ));
@@ -479,7 +524,7 @@ public:
     * @param interface_name : the name of the interface
     */
     PyObject* getSuperInterface(std::string interface_name){
-      auto& c = __prm->interface(interface_name);
+      auto& c = __prm->getInterface(interface_name);
       try{
         //raise NotFound if this interface haven't super
         return PyString_FromString(c.super().name().c_str());
@@ -495,7 +540,7 @@ public:
     */
     PyObject* getDirectSubInterfaces(std::string interface_name){
       PyObject* l = PyList_New(0);
-      auto& selected = __prm->interface(interface_name);
+      auto& selected = __prm->getInterface(interface_name);
       for (auto c : __prm->interfaces()){
         try{
           //raise NotFound if this interface haven't super
@@ -514,7 +559,7 @@ public:
     */
     PyObject* getImplementations(std::string interface_name){
       PyObject* l = PyList_New(0);
-      auto& selected = __prm->interface(interface_name);
+      auto& selected = __prm->getInterface(interface_name);
       for(auto c : selected.implementations()){
         PyList_Append(l, PyString_FromString(c->name().c_str()));
       }

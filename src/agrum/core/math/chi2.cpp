@@ -52,8 +52,8 @@
 namespace gum {
 
   // default constructor
-  Chi2::Chi2( const std::vector<unsigned int>& var_modalities,
-              float confidence_proba )
+  Chi2::Chi2( const std::vector<Size>& var_modalities,
+              double confidence_proba )
       : __modalities( var_modalities )
       , __confidence_proba( confidence_proba ) {
     // for debugging purposes
@@ -130,7 +130,7 @@ namespace gum {
   }
 
   // computes the probability of chi2 value (used by the cache)
-  double Chi2::__probaChi2( double x, unsigned long df ) {
+  double Chi2::__probaChi2( double x, Size df ) {
     double a, y = 0, s;
     double e, c, z;
     int even; /* true if df is an even number */
@@ -177,7 +177,7 @@ namespace gum {
   }
 
   // computes the critical value of a given chi2 test (used by the cache)
-  double Chi2::__criticalValue( double proba, unsigned long df ) {
+  double Chi2::__criticalValue( double proba, Size df ) {
     double minchisq = 0.0;
     double maxchisq = GUM_CHI_MAX;
     double chisqval;

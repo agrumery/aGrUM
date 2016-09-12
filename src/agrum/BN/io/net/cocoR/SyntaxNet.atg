@@ -139,7 +139,7 @@ Net = 	(.
           LIST<vals> (.
               std::string merge;
               merge="(";
-              for(Size i=0;i<vals.size();i++) {
+              for(Size i=Size(0);i<Size(vals.size());i++) {
                 if (i>0) merge+=",";
                 merge+=vals[i];
               }
@@ -203,12 +203,12 @@ PARENTS_DEFINITION<.std::string& name,std::vector<std::string>& var_seq.> = (.st
     '|'
     [
     PURE_LIST<parents> (.
-        for (Size i=parents.size();i>=1;--i){
+        for (Size i=Size(parents.size());i>=Size(1);--i){
             TRY(factory().variableId(parents[i-1]));
             TRY(factory().addParent(parents[i-1]));
         }
 
-        for(Size i=0;i<parents.size();i++) {
+        for(Size i=0;i<Size(parents.size());i++) {
           var_seq.push_back(parents[i]);
         }
     .)
@@ -225,7 +225,7 @@ PARENTS_DEFINITION<.std::string& name,std::vector<std::string>& var_seq.> = (.st
 FLOAT<float& val> =
   number  (. val=coco_atof(t->val); .)
   |
-  integer (. val=coco_atoi(t->val); .)
+  integer (. val=float(coco_atoi(t->val)); .)
 .
 
 //==============

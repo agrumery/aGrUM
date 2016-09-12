@@ -84,11 +84,11 @@ namespace gum {
 
       // transform each column
       bool conversion_ok = true;
-      unsigned int cols = db[0].size();
-      for ( unsigned int i = 0; i < cols; ++i ) {
+      Size cols = db[0].size();
+      for ( Idx i = 0; i < cols; ++i ) {
         // count all the observations to determine whether there exists
         // a type which appears much more frequently than the others
-        std::vector<unsigned int> counts( sizeof( DBCell::EltType ), 0 );
+        std::vector<Size> counts( sizeof( DBCell::EltType ), 0 );
 
         // parse the database and fill counts
         for ( DBRow& row : db ) {
@@ -99,8 +99,8 @@ namespace gum {
         }
 
         // get the type with the highest number of observations
-        unsigned int pos = 0;
-        for ( unsigned int j = 1; j < counts.size(); ++j ) {
+        Idx pos = 0;
+        for ( Idx j = 1; j < counts.size(); ++j ) {
           if ( ( j != DBCell::EltType::MISSING ) &&
                ( counts[j] > counts[pos] ) )
             pos = j;

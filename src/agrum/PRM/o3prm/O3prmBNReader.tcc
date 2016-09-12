@@ -75,7 +75,7 @@ namespace gum {
   /// @return the number of detected errors
   /// @throws IOError if file not exists
   template <typename GUM_SCALAR>
-  int O3prmBNReader<GUM_SCALAR>::proceed( void ) {
+  Size O3prmBNReader<GUM_SCALAR>::proceed( void ) {
     prm::o3prm::O3prmReader<GUM_SCALAR> reader;
     if ( __classpath != "" ) {
       reader.addClassPath( __classpath );
@@ -86,7 +86,7 @@ namespace gum {
 
     if ( errors() == 0 ) {
       if ( prm->isSystem( __entityName ) ) {
-        __generateBN( prm->system( __entityName ) );
+        __generateBN( prm->getSystem( __entityName ) );
       } else {
         if ( prm->isClass( __entityName ) ) {
           ParseError warn( false,
@@ -95,8 +95,8 @@ namespace gum {
                            __filename,
                            0 );
           __errors.add( warn );
-          gum::prm::System<GUM_SCALAR> s( "S_" + __entityName );
-          auto i = new gum::prm::Instance<GUM_SCALAR>(
+          gum::prm::PRMSystem<GUM_SCALAR> s( "S_" + __entityName );
+          auto i = new gum::prm::PRMInstance<GUM_SCALAR>(
               __getInstanceName( __entityName ),
               prm->getClass( __entityName ) );
           s.add( i );
@@ -151,7 +151,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void
-  O3prmBNReader<GUM_SCALAR>::__generateBN( prm::System<GUM_SCALAR>& system ) {
+  O3prmBNReader<GUM_SCALAR>::__generateBN( prm::PRMSystem<GUM_SCALAR>& system ) {
     system.instantiate();
     BayesNetFactory<GUM_SCALAR> factory( __bn );
     system.groundedBN( factory );

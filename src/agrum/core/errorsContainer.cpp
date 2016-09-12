@@ -35,10 +35,10 @@
 
 namespace gum {
 
-  ParseError::ParseError( bool is_error, const std::string& msg, int line )
+  ParseError::ParseError( bool is_error, const std::string& msg, Idx line )
       : is_error( is_error )
       , line( line )
-      , column( -1 )
+      , column( 0 )
       , msg( msg )
       , filename( "" )
       , code( "" ) {}
@@ -46,8 +46,8 @@ namespace gum {
   ParseError::ParseError( bool is_error,
                           const std::string& msg,
                           const std::string& filename,
-                          int line,
-                          int col )
+                          Idx line,
+                          Idx col )
       : is_error( is_error )
       , line( line )
       , column( col )
@@ -59,8 +59,8 @@ namespace gum {
                           const std::string& msg,
                           const std::string& filename,
                           const std::string& code,
-                          int line,
-                          int col )
+                          Idx line,
+                          Idx col )
       : is_error( is_error )
       , line( line )
       , column( col )
@@ -110,7 +110,7 @@ namespace gum {
     if ( code.empty() ) {
       std::ifstream ifs( filename.c_str() );
 
-      for ( int i = 0; i < line; i++ )
+      for ( Idx i = 0; i < line; i++ )
         std::getline( ifs, code );
     }
 
@@ -123,7 +123,7 @@ namespace gum {
     return s.str();
   }
 
-  ParseError ErrorsContainer::error( int i ) const {
+  ParseError ErrorsContainer::error( Idx i ) const {
     if ( count() > i )
       return errors[i];  // May throw an error if i >= count().
     else {
@@ -177,7 +177,7 @@ namespace gum {
     error_count += cont.error_count;
     warning_count += cont.warning_count;
 
-    for ( int i = 0; i < cont.count(); i++ )
+    for ( Idx i = 0; i < cont.count(); i++ )
       errors.push_back( cont.error( i ) );
 
     return *this;
@@ -186,7 +186,7 @@ namespace gum {
   void ErrorsContainer::simpleErrors( std::ostream& o ) const {
     if ( count() == 0 ) return;
 
-    for ( int i = 0; i < count(); i++ ) {
+    for ( Idx i = 0; i < count(); i++ ) {
       if ( error( i ).is_error ) o << error( i ).toString() << std::endl;
     }
   }
@@ -194,14 +194,14 @@ namespace gum {
   void ErrorsContainer::simpleErrorsAndWarnings( std::ostream& o ) const {
     if ( count() == 0 ) return;
 
-    for ( int i = 0; i < count(); i++ )
+    for ( Idx i = 0; i < count(); i++ )
       o << error( i ).toString() << std::endl;
   }
 
   void ErrorsContainer::elegantErrors( std::ostream& o ) const {
     if ( count() == 0 ) return;
 
-    for ( int i = 0; i < count(); i++ ) {
+    for ( Idx i = 0; i < count(); i++ ) {
       if ( error( i ).is_error ) {
         o << error( i ).toElegantString();
         o << std::endl;
@@ -212,7 +212,7 @@ namespace gum {
   void ErrorsContainer::elegantErrorsAndWarnings( std::ostream& o ) const {
     if ( count() == 0 ) return;
 
-    for ( int i = 0; i < count(); i++ ) {
+    for ( Idx i = 0; i < count(); i++ ) {
       o << error( i ).toElegantString();
       o << std::endl;
     }

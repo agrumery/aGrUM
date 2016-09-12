@@ -57,7 +57,7 @@ namespace gum_tests {
     void testInsert() {
       gum::AVLSearchTree<int> tree;
 
-      for ( unsigned int i = 0; i < 1000; ++i ) {
+      for ( gum::Idx i = 0; i < 1000; ++i ) {
         tree.insert( rand() );
 
         if ( i % 50 == 0 ) {
@@ -120,7 +120,7 @@ namespace gum_tests {
       tree.insert( 4 );
       tree.insert( 7 );
 
-      unsigned int i = 0;
+      gum::Idx i = 0;
 
       for ( gum::AVLSearchTree<int>::iterator iter = tree.begin();
             iter != tree.end();
@@ -224,21 +224,21 @@ namespace gum_tests {
 
     void testRandomErase() {
       gum::AVLSearchTree<int> tree;
-      std::vector<unsigned int> vect( 4000 );
+      std::vector<gum::Idx> vect( 4000 );
 
-      for ( unsigned int i = 0; i < 4000; ++i )
+      for ( gum::Idx i = 0; i < 4000; ++i )
         vect[i] = rand();
 
-      for ( unsigned int i = 0; i < 4000; ++i ) {
+      for ( gum::Idx i = 0; i < 4000; ++i ) {
         tree.insert( i );
         TS_ASSERT( tree.checkAVLStructure() == true );
       }
 
-      for ( unsigned int j = 0; j < 4000; j += 10 ) {
-        for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx j = 0; j < 4000; j += 10 ) {
+        for ( gum::Idx i = 0; i < 10; ++i ) {
           try {
             tree.erase( vect[i + j] );
-          } catch ( gum::NotFound& e ) {
+          } catch ( gum::NotFound& ) {
           }
 
           TS_ASSERT( tree.checkAVLStructure() == true );

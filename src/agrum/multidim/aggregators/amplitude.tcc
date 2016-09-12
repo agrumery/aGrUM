@@ -28,8 +28,8 @@
 #include <vector>
 
 // to ease parser in IDEs
-#include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/aggregators/amplitude.h>
+#include <agrum/multidim/aggregators/multiDimAggregator.h>
 
 namespace gum {
 
@@ -68,6 +68,8 @@ namespace gum {
     Idx
     Amplitude<GUM_SCALAR>::_buildValue( const gum::Instantiation& i ) const {
       // we assume that every (parent) variable has the same domainSize
+      if ( i.nbrDim() < 2 ) return 0;
+
       Idx min = i.val( 1 );
       Idx max = i.val( 1 );
 
@@ -87,5 +89,5 @@ namespace gum {
       return 0;
     }
 
-  }  // aggregator
+  }  // namespace aggregator
 }  // namespace gum

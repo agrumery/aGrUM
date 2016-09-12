@@ -24,9 +24,10 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
+
 // =========================================================================
-#include <random>
 #include <cstdlib>
+#include <random>
 // =========================================================================
 #include <agrum/FMDP/SDyna/sdyna.h>
 // =========================================================================
@@ -149,7 +150,6 @@ namespace gum {
    */
   // ###################################################################
   void SDYNA::feedback( const Instantiation& newState, double reward ) {
-
     Observation* obs = new Observation();
 
     for ( auto varIter = _lastState.variablesSequence().beginSafe();
@@ -162,6 +162,7 @@ namespace gum {
           ++varIter ) {
       obs->setModality( _fmdp->main2prime( *varIter ),
                         newState.val( **varIter ) );
+
       if ( this->__actionReward )
         obs->setRModality( *varIter, _lastState.val( **varIter ) );
       else

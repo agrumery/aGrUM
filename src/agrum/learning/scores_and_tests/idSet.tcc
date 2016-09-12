@@ -40,7 +40,7 @@ namespace gum {
     /// initializer list constructor
     template <typename Alloc>
     INLINE
-    IdSet<Alloc>::IdSet( const std::initializer_list<unsigned int> list ) {
+    IdSet<Alloc>::IdSet( const std::initializer_list<Idx> list ) {
       GUM_CONSTRUCTOR( IdSet );
 
       if ( list.size() ) __size = 1;
@@ -59,8 +59,8 @@ namespace gum {
     template <typename Alloc>
     template <typename OtherAlloc>
     INLINE
-    IdSet<Alloc>::IdSet( const std::vector<unsigned int, OtherAlloc>& ids,
-                         unsigned int sz )
+    IdSet<Alloc>::IdSet( const std::vector<Idx, OtherAlloc>& ids,
+                         Size sz )
         : __ids( ids )
         , __size( sz ) {
       GUM_CONSTRUCTOR( IdSet );
@@ -143,16 +143,16 @@ namespace gum {
 
     /// returns the id stored at a given index
     template <typename Alloc>
-    INLINE unsigned int IdSet<Alloc>::operator[]( unsigned int index ) const
+    INLINE Idx IdSet<Alloc>::operator[]( Idx index ) const
         noexcept {
       return __ids[index];
     }
 
     /// inserts a new element into the set
     template <typename Alloc>
-    INLINE IdSet<Alloc>& IdSet<Alloc>::operator<<( unsigned int id ) {
-      unsigned int min_index = 0, max_index = __ids.size();
-      unsigned int middle;
+    INLINE IdSet<Alloc>& IdSet<Alloc>::operator<<( Idx id ) {
+      Size min_index = 0, max_index = __ids.size();
+      Size middle;
 
       // search for id by dichotomy
       while ( max_index > min_index ) {
@@ -181,11 +181,11 @@ namespace gum {
     template <typename OtherAlloc>
     INLINE bool IdSet<Alloc>::operator==( const IdSet<OtherAlloc>& from ) const
         noexcept {
-      unsigned int sz = __ids.size();
+      auto sz = __ids.size();
 
       if ( sz != from.__ids.size() ) return false;
 
-      for ( unsigned int i = 0; i < sz; ++i ) {
+      for ( Idx i = 0; i < sz; ++i ) {
         if ( __ids[i] != from.__ids[i] ) return false;
       }
 
@@ -202,20 +202,20 @@ namespace gum {
 
     /// returns the set of ids contained in the object
     template <typename Alloc>
-    INLINE const std::vector<unsigned int, Alloc>& IdSet<Alloc>::ids() const
+    INLINE const std::vector<Idx, Alloc>& IdSet<Alloc>::ids() const
         noexcept {
       return __ids;
     }
 
     /// returns the domain size of the id set
     template <typename Alloc>
-    INLINE unsigned int IdSet<Alloc>::size() const noexcept {
+    INLINE Size IdSet<Alloc>::size() const noexcept {
       return __size;
     }
 
     /// sets the domain size of the set
     template <typename Alloc>
-    INLINE void IdSet<Alloc>::setSize( unsigned int sz ) noexcept {
+    INLINE void IdSet<Alloc>::setSize( Idx sz ) noexcept {
       __size = sz;
     }
 
@@ -227,7 +227,7 @@ namespace gum {
       str << '{';
       bool deja = false;
 
-      for ( unsigned int i = 0; i < __ids.size(); ++i ) {
+      for ( Idx i = 0; i < __ids.size(); ++i ) {
         if ( deja )
           str << " , ";
         else
@@ -246,11 +246,11 @@ namespace gum {
     template <typename OtherAlloc>
     INLINE bool
     IdSet<Alloc>::isSubset( const IdSet<OtherAlloc>& otherset ) const noexcept {
-      unsigned int min_index = 0, max_index = otherset.__ids.size();
-
-      for ( unsigned int i = 0, size = __ids.size(); i < size; ++i ) {
-        unsigned int middle, tmp_max_index = max_index;
-        unsigned int nb = __ids[i];
+      Size min_index = Size(0), max_index = Size(otherset.__ids.size());
+      Size  size = Size(__ids.size());
+      for ( Idx i = 0; i < size; ++i ) {
+        Size middle, tmp_max_index = max_index;
+        Idx nb = __ids[i];
 
         // search for nb by dichotomy
         while ( tmp_max_index > min_index ) {
@@ -288,23 +288,23 @@ namespace gum {
   Size HashFunc<learning::IdSet<Alloc>>::
   operator()( const learning::IdSet<Alloc>& key ) const {
     Size h = 0;
-    const std::vector<unsigned int, Alloc>& vect = key.ids();
+    const std::vector<Idx, Alloc>& vect = key.ids();
 
-    for ( size_t i = 0; i < vect.size(); ++i )
+    for ( Idx i = 0; i < Size(vect.size()); ++i )
       h += i * vect[i];
 
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
   }
 
-  /// the hash function for pairs (idSet,unsigned int)
+  /// the hash function for pairs (idSet,Idx)
   template <typename Alloc>
-  Size HashFunc<std::pair<learning::IdSet<Alloc>, unsigned int>>::operator()(
-      const std::pair<learning::IdSet<Alloc>, unsigned int>& key ) const {
+  Size HashFunc<std::pair<learning::IdSet<Alloc>, Idx>>::operator()(
+      const std::pair<learning::IdSet<Alloc>, Idx>& key ) const {
     Size h = 0;
-    size_t i;
-    const std::vector<unsigned int, Alloc>& vect = key.first.ids();
+    Idx i;
+    const std::vector<Idx, Alloc>& vect = key.first.ids();
 
-    for ( i = 0; i < vect.size(); ++i )
+    for ( i = 0; i < Size(vect.size()); ++i )
       h += i * vect[i];
 
     h *= i * key.second;
@@ -312,16 +312,16 @@ namespace gum {
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
   }
 
-  /// the hash function for pairs (idSet,unsigned int)
+  /// the hash function for pairs (idSet,Idx)
   template <typename Alloc>
   Size
-      HashFunc<std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>>::
+      HashFunc<std::tuple<learning::IdSet<Alloc>, Idx, Idx>>::
       operator()(
-          const std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>&
+          const std::tuple<learning::IdSet<Alloc>, Idx, Idx>&
               key ) const {
     Size h = 0;
-    size_t i;
-    const std::vector<unsigned int, Alloc>& vect = std::get<0>( key ).ids();
+    Size i;
+    const std::vector<Idx, Alloc>& vect = std::get<0>( key ).ids();
 
     for ( i = 0; i < vect.size(); ++i )
       h += i * vect[i];

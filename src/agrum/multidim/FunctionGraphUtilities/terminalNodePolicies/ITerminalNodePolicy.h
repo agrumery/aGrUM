@@ -65,10 +65,10 @@ namespace gum {
     /// @{
 
     /// Returns true if a terminal node matching this id exists
-    virtual bool existsTerminalNode( const NodeId& n ) const = 0;
+    virtual bool existsTerminalNodeWithId( const NodeId& n ) const = 0;
 
     /// Returns true if a terminal node matching this value exists
-    virtual bool existsTerminalNode( const GUM_SCALAR& v ) const = 0;
+    virtual bool existsTerminalNodeWithValue( const GUM_SCALAR& v ) const = 0;
 
     /// @}
     // ============================================================================

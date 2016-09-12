@@ -53,7 +53,18 @@ class AggregatorsForBNTestCase(pyAgrumTestCase):
                 else:
                     self.assertEqual(ie.posterior(a)[:][0],1.0)
                     self.assertEqual(ie.posterior(a)[:][1],0.0)
+        
+    def testZeroParent(self):
+      bn=gum.BayesNet()
+      
+      a=bn.addOR(gum.LabelizedVariable('a','a',2))
+      self.assertEqual(bn.cpt(a).tolist(),[1.0,0.0])
+      
+      b=bn.addAND(gum.LabelizedVariable('b','b',2))
+      self.assertEqual(bn.cpt(b).tolist(),[0.0,1.0])
+      
 
 ts = unittest.TestSuite()
 ts.addTest(AggregatorsForBNTestCase('testAnd'))
 ts.addTest(AggregatorsForBNTestCase('testOr'))
+ts.addTest(AggregatorsForBNTestCase('testZeroParent'))

@@ -53,7 +53,7 @@ namespace gum {
 
   template <typename T>
   INLINE void* Link<T>::operator new( size_t s ) {
-    return SmallObjectAllocator::instance().allocate( s );
+    return SmallObjectAllocator::instance().allocate( Size(s) );
   }
 
   template <typename T>
@@ -102,7 +102,7 @@ namespace gum {
 
   template <typename T>
   INLINE void* LinkedList<T>::operator new( size_t s ) {
-    return SmallObjectAllocator::instance().allocate( s );
+    return SmallObjectAllocator::instance().allocate( Size(s) );
   }
 
   template <typename T>

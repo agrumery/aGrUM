@@ -123,7 +123,7 @@ namespace gum {
     try {
       res = add( var, ptr );
 
-    } catch ( Exception& e ) {
+    } catch ( Exception& ) {
       delete ptr;
       throw;
     }
@@ -162,7 +162,7 @@ namespace gum {
     try {
       res = add( var, ptr, id );
 
-    } catch ( Exception& e ) {
+    } catch ( Exception&) {
       delete ptr;
       throw;
     }
@@ -267,7 +267,7 @@ namespace gum {
       DAG d = dag();
       d.eraseArc( arc );
       d.addArc( head, tail );
-    } catch ( Exception& e ) {
+    } catch ( Exception&  ) {
       GUM_ERROR( InvalidArc,
                  "this arc reversal would induce a directed cycle" );
     }

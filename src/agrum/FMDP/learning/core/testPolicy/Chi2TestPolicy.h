@@ -120,9 +120,7 @@ namespace gum {
 
     /// @}
 
-    const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const {
-      return __conTab;
-    }
+    const ContingencyTable<Idx, GUM_SCALAR>& ct() const { return __conTab; }
 
     void add( const Chi2TestPolicy<GUM_SCALAR>& src );
 
@@ -138,7 +136,7 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
+    ContingencyTable<Idx, GUM_SCALAR> __conTab;
 
     mutable double __chi2Score;
   };

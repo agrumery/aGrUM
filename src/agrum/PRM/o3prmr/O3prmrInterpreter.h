@@ -120,13 +120,13 @@ namespace gum {
          * En cas d'échec, l'API de gestion d'erreurs est présente.
          * */
         /// # of errors + warnings
-        int count() const;
+        Size count() const;
         /// # of errors
-        int errors() const;
+        Size errors() const;
         /// # of warnings
-        int warnings() const;
+        Size warnings() const;
         /// throw a string error if i >= count
-        ParseError error( int i ) const;
+        ParseError error( Idx i ) const;
         /// send on std::cerr the list of errors
         void showElegantErrors( std::ostream& o = std::cerr ) const;
         /// send on std::cerr the list of errors or warnings
@@ -152,12 +152,12 @@ namespace gum {
 
         std::string findSystemName( std::string& s );
         std::string findInstanceName( std::string& s,
-                                      const gum::prm::System<double>& sys );
+                                      const gum::prm::PRMSystem<double>& sys );
         std::string
         findAttributeName( const std::string& s,
-                           const gum::prm::Instance<double>& instance );
-        const System<double>& system( std::string& ident );
-        void generateInfEngine( const gum::prm::System<double>& sys );
+                           const gum::prm::PRMInstance<double>& instance );
+        const PRMSystem<double>& system( std::string& ident );
+        void generateInfEngine( const gum::prm::PRMSystem<double>& sys );
 
         void addError( std::string msg );
         void addWarning( std::string msg );
@@ -170,7 +170,7 @@ namespace gum {
         gum::BayesNet<double>* m_bn;
         // Don't delete this, the m_inf_map will do it
         gum::prm::PRMInference<double>* m_inf;
-        HashTable<const System<double>*, PRMInference<double>*> m_inf_map;
+        HashTable<const PRMSystem<double>*, PRMInference<double>*> m_inf_map;
         std::string m_engine;
         std::string m_bn_engine;
         std::vector<QueryResult> m_results;

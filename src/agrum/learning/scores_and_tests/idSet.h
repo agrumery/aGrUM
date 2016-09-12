@@ -53,7 +53,7 @@ namespace gum {
      * variables and they subsequently deduce from these counts those for the
      * included sets.
      */
-    template <typename Alloc = std::allocator<unsigned int>>
+    template <typename Alloc = std::allocator<Idx>>
     class IdSet {
       public:
       // ##########################################################################
@@ -65,12 +65,12 @@ namespace gum {
       IdSet();
 
       /// initializer list constructor
-      IdSet( const std::initializer_list<unsigned int> list );
+      IdSet( const std::initializer_list<Idx> list );
 
       /// default constructor
       template <typename OtherAlloc>
-      IdSet( const std::vector<unsigned int, OtherAlloc>& ids,
-             unsigned int sz );
+      IdSet( const std::vector<Idx, OtherAlloc>& ids,
+             Size sz );
 
       /// copy constructor
       IdSet( const IdSet<Alloc>& from );
@@ -103,10 +103,10 @@ namespace gum {
       IdSet<Alloc>& operator=( IdSet<Alloc>&& from );
 
       /// returns the id stored at a given index
-      unsigned int operator[]( unsigned int index ) const noexcept;
+      Idx operator[]( Idx index ) const noexcept;
 
       /// inserts a new element into the set (assuming it is a Boolean)
-      IdSet<Alloc>& operator<<( unsigned int id );
+      IdSet<Alloc>& operator<<( Idx id );
 
       /// returns true if both sets are equal
       template <typename OtherAlloc>
@@ -124,13 +124,13 @@ namespace gum {
       /// @{
 
       /// returns the set of ids contained in the object
-      const std::vector<unsigned int, Alloc>& ids() const noexcept;
+      const std::vector<Idx, Alloc>& ids() const noexcept;
 
       /// returns the domain size of the id set
-      unsigned int size() const noexcept;
+      Size size() const noexcept;
 
       /// sets the domain size of the set
-      void setSize( unsigned int ) noexcept;
+      void setSize( Idx ) noexcept;
 
       /// returns the content of the set as a string
       std::string toString() const noexcept;
@@ -143,10 +143,10 @@ namespace gum {
 
       private:
       /// the ordered set of ids
-      std::vector<unsigned int, Alloc> __ids;
+      std::vector<Idx, Alloc> __ids;
 
       /// the domain size of the set
-      unsigned int __size{0};
+      Size __size{0};
     };
 
     /// the display operator
@@ -164,25 +164,25 @@ namespace gum {
     Size operator()( const learning::IdSet<Alloc>& key ) const;
   };
 
-  /// the hash function for pairs (idSet,unsigned int)
+  /// the hash function for pairs (idSet,Idx)
   template <typename Alloc>
-  class HashFunc<std::pair<learning::IdSet<Alloc>, unsigned int>>
-      : public HashFuncBase<std::pair<learning::IdSet<Alloc>, unsigned int>> {
+  class HashFunc<std::pair<learning::IdSet<Alloc>, Idx>>
+      : public HashFuncBase<std::pair<learning::IdSet<Alloc>, Idx>> {
     public:
     /// computes the hashed value of a key
     Size operator()(
-        const std::pair<learning::IdSet<Alloc>, unsigned int>& key ) const;
+        const std::pair<learning::IdSet<Alloc>, Idx>& key ) const;
   };
 
-  /// the hash function for pairs (idSet,pair<unsigned int,unsigned int>)
+  /// the hash function for pairs (idSet,pair<Idx,Idx>)
   template <typename Alloc>
-  class HashFunc<std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>>
+  class HashFunc<std::tuple<learning::IdSet<Alloc>, Idx, Idx>>
       : public HashFuncBase<
-            std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>> {
+            std::tuple<learning::IdSet<Alloc>, Idx, Idx>> {
     public:
     /// computes the hashed value of a key
     Size operator()(
-        const std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>&
+        const std::tuple<learning::IdSet<Alloc>, Idx, Idx>&
             key ) const;
   };
 
@@ -190,14 +190,14 @@ namespace gum {
 
 
 extern template class gum::HashFunc<
-    std::tuple<gum::learning::IdSet<std::allocator<unsigned int>>>>;
+    std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>>>;
 extern template class gum::HashFunc<
-    std::tuple<gum::learning::IdSet<std::allocator<unsigned int>>,
-               unsigned int>>;
+    std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>,
+               gum::Idx>>;
 extern template class gum::HashFunc<
-    std::tuple<gum::learning::IdSet<std::allocator<unsigned int>>,
-               unsigned int,
-               unsigned int>>;
+    std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>,
+               gum::Idx,
+               gum::Idx>>;
 
 
 

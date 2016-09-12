@@ -41,7 +41,7 @@
 #include <agrum/core/approximations/approximationPolicy.h>
 
 // Ajout sur branche DDE pour pouvoir compiler (à retirer très probablement)
-// problème sur template <class> class IApproximationPolicy = ExactPolicy sinon
+// problème sur template <typename> class IApproximationPolicy = ExactPolicy sinon
 // (reconnaissance de ExactPolicy?)
 #include <agrum/core/approximations/exactPolicy.h>
 
@@ -59,7 +59,7 @@ namespace gum {
    *
    */
   template <typename GUM_SCALAR,
-            template <class> class IApproximationPolicy = ExactPolicy>
+            template <typename> class IApproximationPolicy = ExactPolicy>
   class CNFWriter : public BNWriter<GUM_SCALAR>,
                     public IApproximationPolicy<GUM_SCALAR> {
     public:

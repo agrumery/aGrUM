@@ -30,13 +30,13 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    void ClassBayesNet<GUM_SCALAR>::__init( const Class<GUM_SCALAR>& c ) {
+    void ClassBayesNet<GUM_SCALAR>::__init( const PRMClass<GUM_SCALAR>& c ) {
       for ( const auto node : c.dag().nodes() ) {
         try {
           // Adding the attribute
-          if ( ClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) or
-               ClassElement<GUM_SCALAR>::isAggregate( c.get( node ) ) ) {
-            const ClassElement<GUM_SCALAR>& elt = c.get( node );
+          if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( node ) ) ||
+               PRMClassElement<GUM_SCALAR>::isAggregate( c.get( node ) ) ) {
+            const PRMClassElement<GUM_SCALAR>& elt = c.get( node );
             this->_dag.addNode( elt.id() );
             this->__varNodeMap.insert( &( elt.type().variable() ), &elt );
           }
@@ -56,7 +56,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE
-    ClassBayesNet<GUM_SCALAR>::ClassBayesNet( const Class<GUM_SCALAR>& c )
+    ClassBayesNet<GUM_SCALAR>::ClassBayesNet( const PRMClass<GUM_SCALAR>& c )
         : IBayesNet<GUM_SCALAR>()
         , __class( &c ) {
       GUM_CONSTRUCTOR( ClassBayesNet );
@@ -125,7 +125,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>&
+    INLINE const PRMClassElement<GUM_SCALAR>&
     ClassBayesNet<GUM_SCALAR>::__get( NodeId id ) const {
       if ( this->_dag.exists( id ) ) {
         return __class->get( id );
@@ -135,7 +135,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElement<GUM_SCALAR>&
+    INLINE const PRMClassElement<GUM_SCALAR>&
     ClassBayesNet<GUM_SCALAR>::__get( const std::string& name ) const {
       try {
         return __class->get( name );
@@ -149,8 +149,7 @@ namespace gum {
     ClassBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
         for ( const auto node : this->nodes() ) {
-          __modalities.insert( node,
-                               (unsigned int)variable( node ).domainSize() );
+          __modalities.insert( node,(Size)variable( node ).domainSize() );
         }
       }
 

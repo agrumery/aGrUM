@@ -42,7 +42,7 @@ namespace gum {
     }
 
     // returns the modalities of the variables
-    INLINE std::vector<unsigned int>&
+    INLINE std::vector<Size>&
     genericBNLearner::Database::modalities() noexcept {
       return __modalities;
     }
@@ -130,7 +130,7 @@ namespace gum {
     }
 
     // sets the max indegree
-    INLINE void genericBNLearner::setMaxIndegree( unsigned int max_indegree ) {
+    INLINE void genericBNLearner::setMaxIndegree( Size max_indegree ) {
       __constraint_Indegree.setMaxIndegree( max_indegree );
     }
 
@@ -155,7 +155,7 @@ namespace gum {
 
     // indicate that we wish to use a local search with tabu list
     INLINE void genericBNLearner::useLocalSearchWithTabuList(
-        unsigned int tabu_size, unsigned int nb_decrease ) noexcept {
+        Size tabu_size, Size nb_decrease ) noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
       __constraint_TabuList.setTabuListSize( tabu_size );
       __local_search_with_tabu_list.setMaxNbDecreasingChanges( nb_decrease );
@@ -241,12 +241,12 @@ namespace gum {
 
     // sets a partial order on the nodes
     INLINE void genericBNLearner::setSliceOrder(
-        const NodeProperty<unsigned int>& slice_order ) {
-      __constraint_SliceOrder = slice_order;
+        const NodeProperty<NodeId>& slice_order ) {
+      __constraint_SliceOrder =StructuralConstraintSliceOrder(slice_order);
     }
 
     // sets the apriori weight
-    INLINE void genericBNLearner::setAprioriWeight( float weight ) {
+    INLINE void genericBNLearner::setAprioriWeight( double weight ) {
       if ( weight < 0 ) {
         GUM_ERROR( OutOfBounds, "the weight of the apriori must be positive" );
       }
@@ -262,7 +262,7 @@ namespace gum {
     }
 
     // use the apriori smoothing
-    INLINE void genericBNLearner::useAprioriSmoothing( float weight ) {
+    INLINE void genericBNLearner::useAprioriSmoothing( double weight ) {
       __apriori_type = AprioriType::SMOOTHING;
 
       if ( weight >= 0 ) {
@@ -305,7 +305,7 @@ namespace gum {
     }
 
     // returns the modalities  of the variables in the database
-    INLINE const std::vector<unsigned int>&
+    INLINE const std::vector<Size>&
     genericBNLearner::modalities() noexcept {
       return __score_database.modalities();
     }

@@ -52,7 +52,7 @@ namespace gum {
    * @return Returns the number of error during the parsing (0 if none).
    */
   template <typename GUM_SCALAR>
-  int BIFXMLBNReader<GUM_SCALAR>::proceed() {
+  Size BIFXMLBNReader<GUM_SCALAR>::proceed() {
     try {
       // Loading file
       std::string status = "Loading File ...";

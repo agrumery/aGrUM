@@ -62,7 +62,7 @@ namespace gum {
       LabelizedVariable var( "boolean", "built-in type", 0 );
       var.addLabel( "false" );
       var.addLabel( "true" );
-      Type<GUM_SCALAR>* boolean = new Type<GUM_SCALAR>( var );
+      PRMType<GUM_SCALAR>* boolean = new PRMType<GUM_SCALAR>( var );
       __types.insert( boolean );
       __typeMap.insert( "boolean", boolean );
     }
@@ -88,70 +88,70 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR>& PRM<GUM_SCALAR>::type( const std::string& name ) {
+    INLINE PRMType<GUM_SCALAR>& PRM<GUM_SCALAR>::type( const std::string& name ) {
       return *( __typeMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR>&
+    INLINE const PRMType<GUM_SCALAR>&
     PRM<GUM_SCALAR>::type( const std::string& name ) const {
       return *( __typeMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Type<GUM_SCALAR>*>& PRM<GUM_SCALAR>::types() const {
+    INLINE const Set<PRMType<GUM_SCALAR>*>& PRM<GUM_SCALAR>::types() const {
       return __types;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Class<GUM_SCALAR>&
+    INLINE PRMClass<GUM_SCALAR>&
     PRM<GUM_SCALAR>::getClass( const std::string& name ) {
       return *( __classMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Class<GUM_SCALAR>&
+    INLINE const PRMClass<GUM_SCALAR>&
     PRM<GUM_SCALAR>::getClass( const std::string& name ) const {
       return *( __classMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Class<GUM_SCALAR>*>& PRM<GUM_SCALAR>::classes() const {
+    INLINE const Set<PRMClass<GUM_SCALAR>*>& PRM<GUM_SCALAR>::classes() const {
       return __classes;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Interface<GUM_SCALAR>&
-    PRM<GUM_SCALAR>::interface( const std::string& name ) {
+    INLINE PRMInterface<GUM_SCALAR>&
+    PRM<GUM_SCALAR>::getInterface( const std::string& name ) {
       return *__interfaceMap[name];
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Interface<GUM_SCALAR>&
-    PRM<GUM_SCALAR>::interface( const std::string& name ) const {
+    INLINE const PRMInterface<GUM_SCALAR>&
+    PRM<GUM_SCALAR>::getInterface( const std::string& name ) const {
       return *__interfaceMap[name];
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<Interface<GUM_SCALAR>*>&
+    INLINE const Set<PRMInterface<GUM_SCALAR>*>&
     PRM<GUM_SCALAR>::interfaces() const {
       return __interfaces;
     }
 
     template <typename GUM_SCALAR>
-    INLINE System<GUM_SCALAR>&
-    PRM<GUM_SCALAR>::system( const std::string& name ) {
+    INLINE PRMSystem<GUM_SCALAR>&
+    PRM<GUM_SCALAR>::getSystem( const std::string& name ) {
       return *( __systemMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const System<GUM_SCALAR>&
-    PRM<GUM_SCALAR>::system( const std::string& name ) const {
+    INLINE const PRMSystem<GUM_SCALAR>&
+    PRM<GUM_SCALAR>::getSystem( const std::string& name ) const {
       return *( __systemMap[name] );
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Set<System<GUM_SCALAR>*>& PRM<GUM_SCALAR>::systems() const {
+    INLINE const Set<PRMSystem<GUM_SCALAR>*>& PRM<GUM_SCALAR>::systems() const {
       return __systems;
     }
 

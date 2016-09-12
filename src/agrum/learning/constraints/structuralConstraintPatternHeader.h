@@ -63,28 +63,28 @@ void modifyGraph( const GraphChange& change );
  * in a 2TBN structure, it is always impossible to add a backward-time arc.
  * Such graph changes are always invalid and are therefore tagged as such
  * by the isAlwaysInvalid method. */
-bool isAlwaysInvalid( const GraphChange& change ) const noexcept;
+bool isAlwaysInvalid( const GraphChange& change ) const ;
 
 /// checks whether the constraints enable to add arc (x,y)
-bool checkArcAddition( NodeId x, NodeId y ) const noexcept;
+bool checkArcAddition( NodeId x, NodeId y ) const ;
 
 /// checks whether the constraints enable to remove arc (x,y)
-bool checkArcDeletion( NodeId x, NodeId y ) const noexcept;
+bool checkArcDeletion( NodeId x, NodeId y ) const ;
 
 /// checks whether the constraints enable to reverse arc (x,y)
-bool checkArcReversal( NodeId x, NodeId y ) const noexcept;
+bool checkArcReversal( NodeId x, NodeId y ) const ;
 
 /// checks whether the constraints enable to add an arc
-bool checkModification( const ArcAddition& change ) const noexcept;
+bool checkModification( const ArcAddition& change ) const ;
 
 /// checks whether the constraints enable to remove an arc
-bool checkModification( const ArcDeletion& change ) const noexcept;
+bool checkModification( const ArcDeletion& change ) const ;
 
 /// checks whether the constraints enable to reverse an arc
-bool checkModification( const ArcReversal& change ) const noexcept;
+bool checkModification( const ArcReversal& change ) const ;
 
 /// checks whether the constraints enable to perform a graph change
-bool checkModification( const GraphChange& change ) const noexcept;
+bool checkModification( const GraphChange& change ) const ;
 
 /// @}
 

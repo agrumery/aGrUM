@@ -326,9 +326,9 @@ namespace gum {
   /// adds a nodeset to another (nodes are weighted, so weights are added)
   INLINE
   void DAGCycleDetector::__addWeightedSet(
-      NodeProperty<unsigned int>& nodeset,
-      const NodeProperty<unsigned int>& set_to_add,
-      unsigned int multiplier ) const {
+      NodeProperty<Size>& nodeset,
+      const NodeProperty<Size>& set_to_add,
+      Size multiplier ) const {
     for ( auto iter = set_to_add.cbegin(); iter != set_to_add.cend(); ++iter ) {
       if ( nodeset.exists( iter.key() ) ) {
         nodeset[iter.key()] += iter.val() * multiplier;
@@ -341,12 +341,12 @@ namespace gum {
   /// removes a weighted nodeset from another (weights are subtracted)
   INLINE
   void DAGCycleDetector::__delWeightedSet(
-      NodeProperty<unsigned int>& nodeset,
-      const NodeProperty<unsigned int>& set_to_del,
-      unsigned int multiplier ) const {
+      NodeProperty<Size>& nodeset,
+      const NodeProperty<Size>& set_to_del,
+      Size multiplier ) const {
     for ( auto iter = set_to_del.cbegin(); iter != set_to_del.cend(); ++iter ) {
       if ( nodeset.exists( iter.key() ) ) {
-        unsigned int& weight = nodeset[iter.key()];
+        Size& weight = nodeset[iter.key()];
         weight -= iter.val() * multiplier;
 
         if ( !weight ) {
@@ -360,8 +360,8 @@ namespace gum {
    * belong to a set of arc extremities */
   INLINE
   void DAGCycleDetector::__restrictWeightedSet(
-      NodeProperty<unsigned int>& result_set,
-      const NodeProperty<unsigned int>& set_to_restrict,
+      NodeProperty<Size>& result_set,
+      const NodeProperty<Size>& set_to_restrict,
       const NodeSet& extremities ) const {
     for ( auto iter = set_to_restrict.cbegin(); iter != set_to_restrict.cend();
           ++iter ) {

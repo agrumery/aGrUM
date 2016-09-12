@@ -285,7 +285,7 @@ namespace gum {
 
     /// @}
 
-    
+
   private:
     /// the graph on which we perform the simplicial computations
     UndiGraph* __graph;
@@ -317,10 +317,10 @@ namespace gum {
 
     /** @brief for each edge, keep track of the number of triangles passing
      * through this egde */
-    EdgeProperty<unsigned int> __nb_triangles;
+    EdgeProperty<Size> __nb_triangles;
 
-    /// for each node, the number of pairs of adjacent neighbors
-    NodeProperty<unsigned int> __nb_adjacent_neighbors;
+    /// for each node, the number of pairs of adjacent neighbours
+    NodeProperty<Size> __nb_adjacent_neighbours;
 
     /// the current (induced) tree width
     /** @warning Note that what we call tree width here is not the classical
@@ -351,7 +351,7 @@ namespace gum {
     /// fill-ins list
     EdgeSet __fill_ins_list;
 
-    
+
     /** @brief put node id in the correct simplicial/almost simplicial/quasi
      * simplicial list */
     void __updateList( const NodeId id );

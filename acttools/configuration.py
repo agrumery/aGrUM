@@ -72,6 +72,7 @@ def initParams():
     cfg.default['coverage']=False
     cfg.default['withSQL']=True
     cfg.default['mvsc']=False
+    cfg.default['build']="all"
 
     cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
     cfg.modes=set("debug release".split())
@@ -183,6 +184,12 @@ def configureOptions(current):
                                         action="store_true",
                                         dest="mvsc",
                                         default=False)
+    cfg.parser.add_option("","--build",
+                                        help="build options : {all|no-cmake|no-make}.",
+                                        type="choice",
+                                        choices=["all","no-cmake","no-make"],
+                                        dest="build",
+                                        default="all")                                        
 
 def configureColors(no_fun=False):
   if no_fun or not cfg.withColour:
@@ -203,4 +210,4 @@ def configureOutputs(options):
   configureColors(options.no_fun)
 
 def configureTools():
-    (cfg.python2,cfg.python3,cfg.cmake,cfg.make,cfg.clangformat)=check_tools()
+    (cfg.python2,cfg.python3,cfg.cmake,cfg.make,cfg.clangformat,cfg.msbuild)=check_tools()

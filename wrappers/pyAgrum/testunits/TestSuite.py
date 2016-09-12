@@ -4,9 +4,13 @@
 from __future__ import print_function
 
 import sys
+import os
 
-# to force to use local pyAgrum for the tests (and not installed one)
-sys.path.insert(1,"..")
+if len(sys.argv)>1:
+  p=os.getcwd()+"\\"+sys.argv[1]
+  sys.path.insert(1,p) # to force to use local pyAgrum for the tests (and not installed one)
+
+import pyAgrum as gum
 
 import unittest
 
@@ -61,6 +65,12 @@ runner.stream.writeln(result.separator2)
 
 failed, errored = map(len, (result.failures, result.errors))
 errs=failed+errored
+
+runner=None
+
+import gc
+gc.collect()
+gum.statsObj() # reporting on objects in debug mode
 
 import platform
 from sys import platform as os_platform

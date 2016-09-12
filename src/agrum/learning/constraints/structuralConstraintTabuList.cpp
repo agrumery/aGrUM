@@ -41,7 +41,7 @@ namespace gum {
               GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE ) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
-      for ( unsigned int i = 0;
+      for ( NodeId i = 0;
             i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
             ++i ) {
         _TabuList__changes.insert(
@@ -60,7 +60,7 @@ namespace gum {
               GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE ) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
-      for ( unsigned int i = 0;
+      for ( NodeId i = 0;
             i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
             ++i ) {
         _TabuList__changes.insert(

@@ -1144,7 +1144,7 @@ namespace gum {
   // initializer list constructor
   template <typename Key, typename Alloc>
   INLINE Sequence<Key, Alloc>::Sequence( std::initializer_list<Key> list )
-      : SequenceImplementation<Key, Alloc, std::is_scalar<Key>::value>{list} {
+      : SequenceImplementation<Key, Alloc, std::is_scalar<Key>::value>(list) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Sequence );
   }

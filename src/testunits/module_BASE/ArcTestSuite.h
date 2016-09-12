@@ -91,7 +91,7 @@ namespace gum_tests {
     }
 
     void testHash() {
-      gum::HashTable<gum::Arc, unsigned long> hash;
+      gum::HashTable<gum::Arc, gum::NodeId> hash;
 
       for ( gum::NodeId x = 0; x < 1000; ++x ) {
         for ( gum::NodeId y = x; y < 1000; ++y ) {

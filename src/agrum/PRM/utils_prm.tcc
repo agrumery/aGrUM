@@ -67,7 +67,7 @@ namespace gum {
                   bij,
                   static_cast<const MultiDimBucket<GUM_SCALAR>*>( impl )
                       ->bucket() ) );
-            } catch ( OperationNotAllowed& e ) {
+            } catch ( OperationNotAllowed& ) {
               // This is an empty bucket, it happens if all variables were
               // eliminated
               return new Potential<GUM_SCALAR>();
@@ -98,7 +98,7 @@ namespace gum {
         }
 
         return p;
-      } catch ( Exception& e ) {
+      } catch ( Exception& ) {
         if ( p ) delete p;
 
         throw;

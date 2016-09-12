@@ -50,10 +50,10 @@ namespace gum_tests {
           v[lvl].g = 2;
           v[lvl].c = nb_class;
           v[lvl].o = 20;
-          v[lvl].inner_density = 0.2;
-          v[lvl].outter_density = 0.05;
+          v[lvl].inner_density = 0.2f;
+          v[lvl].outter_density = 0.05f;
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -69,10 +69,10 @@ namespace gum_tests {
           v[lvl].g = 2;
           v[lvl].c = nb_class;
           v[lvl].o = 1 + lvl;
-          v[lvl].inner_density = 0.2;
-          v[lvl].outter_density = 0.05;
+          v[lvl].inner_density = 0.2f;
+          v[lvl].outter_density = 0.05f;
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -88,19 +88,19 @@ namespace gum_tests {
           v[lvl].g = 2;
           v[lvl].c = nb_class;
           v[lvl].o = depth - lvl;
-          v[lvl].inner_density = 0.2;
-          v[lvl].outter_density = 0.05;
+          v[lvl].inner_density = 0.2f;
+          v[lvl].outter_density = 0.05f;
         }
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
 
-    const gum::prm::Instance<double>&
-    pickInstance( const gum::prm::System<double>& sys ) {
-      gum::Sequence<const gum::prm::Instance<double>*> seq;
+    const gum::prm::PRMInstance<double>&
+    pickInstance( const gum::prm::PRMSystem<double>& sys ) {
+      gum::Sequence<const gum::prm::PRMInstance<double>*> seq;
 
-      for ( gum::prm::System<double>::const_iterator iter = sys.begin();
+      for ( gum::prm::PRMSystem<double>::const_iterator iter = sys.begin();
             iter != sys.end();
             ++iter )
         seq.insert( iter.val() );
@@ -108,11 +108,11 @@ namespace gum_tests {
       return *( seq.atPos( std::rand() % seq.size() ) );
     }
 
-    const gum::prm::Attribute<double>&
-    pickAttribute( const gum::prm::Instance<double>& i ) {
-      gum::Sequence<const gum::prm::Attribute<double>*> seq;
+    const gum::prm::PRMAttribute<double>&
+    pickAttribute( const gum::prm::PRMInstance<double>& i ) {
+      gum::Sequence<const gum::prm::PRMAttribute<double>*> seq;
 
-      for ( gum::prm::Instance<double>::const_iterator iter = i.begin();
+      for ( gum::prm::PRMInstance<double>::const_iterator iter = i.begin();
             iter != i.end();
             ++iter )
         seq.insert( iter.val() );
@@ -130,24 +130,24 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys =
-            prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::PRMSystem<double>& sys =
+            prm->getSystem( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance<double>& i = pickInstance( sys );
-        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        const gum::prm::PRMInstance<double>& i = pickInstance( sys );
+        const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); ! inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -162,24 +162,24 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys =
-            prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::PRMSystem<double>& sys =
+            prm->getSystem( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance<double>& i = pickInstance( sys );
-        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        const gum::prm::PRMInstance<double>& i = pickInstance( sys );
+        const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); ! inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -194,24 +194,24 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys =
-            prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::PRMSystem<double>& sys =
+            prm->getSystem( ( **( prm->systems().begin() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance<double>& i = pickInstance( sys );
-        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        const gum::prm::PRMInstance<double>& i = pickInstance( sys );
+        const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
         gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); ! inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& ) {
         TS_ASSERT( false );
       }
     }
@@ -227,7 +227,7 @@ namespace gum_tests {
     //    generator.setMaxParents( 5 );
 
     //    gum::prm::PRM<double>* prm = generator.generate();
-    //    gum::prm::System<double>& sys = prm->system( ( **(
+    //    gum::prm::PRMSystem<double>& sys = prm->getSystem( ( **(
     //    prm->systems().begin() ) ).name() );
 
     //    gum::prm::gspan::FrequenceSearch<double>* search = new
@@ -235,8 +235,8 @@ namespace gum_tests {
     //    gum::prm::StructuredInference<double> inf( *prm, sys, search );
 
     //    inf.setPatternMining( true );
-    //    const gum::prm::Instance<double>& i = pickInstance( sys );
-    //    const gum::prm::Attribute<double>& a = pickAttribute( i );
+    //    const gum::prm::PRMInstance<double>& i = pickInstance( sys );
+    //    const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
     //    gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a
     //    );
     //    gum::Potential<double> m;
@@ -249,7 +249,7 @@ namespace gum_tests {
 
     //    TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
     //    delete prm;
-    //  } catch (gum::Exception& e) {
+    //  } catch (gum::Exception&) {
     //    TS_ASSERT(false);
     //  }
     //}

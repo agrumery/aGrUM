@@ -67,7 +67,7 @@ namespace gum {
 
           DBRow new_row( row.size() );
 
-          for ( unsigned int i = 0; i < row.size(); ++i ) {
+          for ( Idx i = 0; i < row.size(); ++i ) {
             new_row[i].setBestTypeSafe( row[i] );
           }
 

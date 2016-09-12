@@ -93,7 +93,7 @@ namespace gum_tests {
         const gum::Potential<float>& p1 = id.cpt( idList[4] );
         {
           // FILLING PARAMS
-          const float t[4] = {0.2, 0.8, 0.5, 0.5};
+          const float t[4] = {0.2f, 0.8f, 0.5f, 0.5f};
           int n = 4;
           const std::vector<float> v( t, t + n );
           p1.populate( v );
@@ -102,7 +102,7 @@ namespace gum_tests {
         const gum::Potential<float>& p2 = id.cpt( idList[5] );
         {
           // FILLING PARAMS
-          const float t[4] = {0.1, 0.9, 0.9, 0.1};
+          const float t[4] = {0.1f, 0.9f, 0.9f, 0.1f};
           int n = 4;
           const std::vector<float> v( t, t + n );
           p2.populate( v );
@@ -111,7 +111,7 @@ namespace gum_tests {
         const gum::Potential<float>& p3 = id.cpt( idList[6] );
         {
           // FILLING PARAMS
-          const float t[4] = {0.35, 0.65, 0.19, 0.81};
+          const float t[4] = {0.35f, 0.65f, 0.19f, 0.81f};
           int n = 4;
           const std::vector<float> v( t, t + n );
           p3.populate( v );
@@ -120,7 +120,7 @@ namespace gum_tests {
         const gum::Potential<float>& p4 = id.cpt( idList[7] );
         {
           // FILLING PARAMS
-          const float t[4] = {0.4, 0.6, 0.5, 0.5};
+          const float t[4] = {0.4f, 0.6f, 0.5f, 0.5f};
           int n = 4;
           const std::vector<float> v( t, t + n );
           p4.populate( v );
@@ -129,7 +129,7 @@ namespace gum_tests {
         const gum::Potential<float>& p5 = id.cpt( idList[8] );
         {
           // FILLING PARAMS
-          const float t[8] = {0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7};
+          const float t[8] = {0.4f, 0.6f, 0.8f, 0.2f, 0.4f, 0.6f, 0.3f, 0.7f};
           int n = 8;
           const std::vector<float> v( t, t + n );
           p5.populate( v );
@@ -138,7 +138,7 @@ namespace gum_tests {
         const gum::UtilityTable<float>& u1 = id.utility( idList[9] );
         {
           // FILLING PARAMS
-          const float t[4] = {42, 69, 666, 84};
+          const float t[4] = {42.0f, 69.0f, 666.0f, 84.0f};
           int n = 4;
           const std::vector<float> v( t, t + n );
           u1.populate( v );
@@ -147,7 +147,7 @@ namespace gum_tests {
         const gum::UtilityTable<float>& u2 = id.utility( idList[10] );
         {
           // FILLING PARAMS
-          const float t[4] = {42, -69, 666, 84};
+          const float t[4] = {42.0f, -69.0f, 666.0f, 84.0f};
           int n = 4;
           const std::vector<float> v( t, t + n );
           u2.populate( v );
@@ -317,7 +317,7 @@ namespace gum_tests {
 
           for ( cpInst.setFirst(); !cpInst.end(); cpInst.inc() ) {
             for ( gum::Idx i = 0; i < cpInst.nbrDim(); i++ ) {
-              gum::Id id = copy->nodeId( cpInst.variable( i ) );
+              gum::NodeId id = copy->nodeId( cpInst.variable( i ) );
               srcInst.chgVal( source.variable( id ), cpInst.val( i ) );
             }
 
@@ -333,7 +333,7 @@ namespace gum_tests {
 
           for ( cpInst.setFirst(); !cpInst.end(); cpInst.inc() ) {
             for ( gum::Idx i = 0; i < cpInst.nbrDim(); i++ ) {
-              gum::Id id = copy->nodeId( cpInst.variable( i ) );
+              gum::NodeId id = copy->nodeId( cpInst.variable( i ) );
               srcInst.chgVal( source.variable( id ), cpInst.val( i ) );
             }
 

@@ -54,7 +54,7 @@ namespace gum {
       private:
       typedef std::vector<bool> dBN;
 
-      typedef typename std::vector<unsigned int> varKey;
+      typedef typename std::vector<Size> varKey;
 
       typedef typename gum::HashTable<Size, dBN> hashNet;
 
@@ -120,7 +120,7 @@ namespace gum {
        * net.
        */
       bool insert( const std::vector<bool>& bn,
-                   const std::vector<unsigned int>& key );
+                   const std::vector<Size>& key );
 
       /**
        * Thread insert.
@@ -129,7 +129,7 @@ namespace gum {
        * marginals.
        * @return \c True if the net was inserted, \c false otherwise.
        */
-      bool insert( const std::vector<unsigned int>& key, const bool isBetter );
+      bool insert( const std::vector<Size>& key, const bool isBetter );
 
       /// @name Getters and setters
       /// @{
@@ -172,7 +172,7 @@ namespace gum {
        * @return The constant vector of not yet constant pointers to the nets.
        */
       const std::vector<dBN*>
-      getBNOptsFromKey( const std::vector<unsigned int>& key );
+      getBNOptsFromKey( const std::vector<Size>& key );
 
       /**
       * Get optimum IBayesNet (s) with structure of the given variable, modality
@@ -182,10 +182,10 @@ namespace gum {
       * @return The vector of not yet constant pointers to the nets.
       */
       std::vector<std::vector<std::vector<std::vector<bool>>>>
-      getFullBNOptsFromKey( const std::vector<unsigned int>& key );
+      getFullBNOptsFromKey( const std::vector<Size>& key );
 
       /** Get the number of IBayesNet stored. */
-      unsigned int getEntrySize() const;
+      Size getEntrySize() const;
 
       /// @}
 

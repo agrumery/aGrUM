@@ -20,10 +20,10 @@
 #ifndef GUM_EDGE_GRAPH_PART_H
 #define GUM_EDGE_GRAPH_PART_H
 
-#include <algorithm>
-#include <utility>
 
 #include <agrum/config.h>
+#include <algorithm>
+#include <utility>
 
 #include <agrum/core/signal/signaler.h>
 

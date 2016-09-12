@@ -54,7 +54,7 @@ namespace gum {
   template <TESTNAME AttributeSelection, bool isScalar>
   class NodeDatabase {
 
-    typedef typename ValueSelect<isScalar, double, long unsigned int>::type
+    typedef typename ValueSelect<isScalar, double, Idx>::type
         ValueType;
 
     template <typename GUM_SCALAR>
@@ -85,7 +85,7 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+      return SmallObjectAllocator::instance().allocate( s);
     }
     void operator delete( void* p ) {
       SmallObjectAllocator::instance().deallocate( p, sizeof( NodeDatabase ) );

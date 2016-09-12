@@ -554,7 +554,7 @@ namespace gum {
     NodeId addAMPLITUDE( const DiscreteVariable& variable );
     NodeId addCOUNT( const DiscreteVariable& variable, Idx Value = 1 );
     NodeId addEXISTS( const DiscreteVariable& variable, Idx Value = 1 );
-    NodeId addFORALL( const DiscreteVariable& variable, Id Value = 1 );
+    NodeId addFORALL( const DiscreteVariable& variable, Idx Value = 1 );
     NodeId addMAX( const DiscreteVariable& variable );
     NodeId addMEDIAN( const DiscreteVariable& variable );
     NodeId addMIN( const DiscreteVariable& variable );

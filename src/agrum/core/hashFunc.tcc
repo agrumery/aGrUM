@@ -34,6 +34,9 @@ namespace gum {
   // ===                   GUM_HASH_FUNC_BASE IMPLEMENTATION ===
   // ===========================================================================
 
+  //@beforeMerging authorized gum::HashFunc<std::pair<unsigned int, double> >
+  // for instance when gum::Idx==gum::Size===unsigned int
+
   template <typename Key>
   INLINE void HashFuncBase<Key>::resize( Size new_size ) {
     // things work properly only for hashtables with at least 2 elements
@@ -42,7 +45,7 @@ namespace gum {
     }
 
     _hash_log2_size = __hashTableLog2( new_size );
-    _hash_size = 1UL << _hash_log2_size;
+    _hash_size = Size(1) << _hash_log2_size;
     _hash_mask = _hash_size - 1;
   }
 

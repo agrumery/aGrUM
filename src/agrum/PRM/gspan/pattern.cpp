@@ -139,7 +139,7 @@ namespace gum {
             // Invalid forward edge
             return false;
           } else if ( ( p.existsArc( node_map.second( u ),
-                                     node_map.second( v ) ) ) or
+                                     node_map.second( v ) ) ) ||
                       ( p.existsArc( node_map.second( v ),
                                      node_map.second( u ) ) ) ) {
             // Duplicate arc !
@@ -208,13 +208,13 @@ namespace gum {
         NodeId v = 0;
         bool go = true;
 
-        while ( not stack.empty() ) {
+        while ( ! stack.empty() ) {
           go = true;
           u = stack.back().first;
           v = stack.back().second;
           stack.pop_back();
 
-          if ( ( u == 0 ) and ( v == 0 ) ) {
+          if ( ( u == 0 ) && ( v == 0 ) ) {
             p.pop_back();
           } else {
             if ( node_map.existsFirst( v ) ) {
@@ -222,7 +222,7 @@ namespace gum {
                 // Invalid forward edge
                 go = false;
               } else if ( ( p.existsArc( node_map.second( u ),
-                                         node_map.second( v ) ) ) or
+                                         node_map.second( v ) ) ) ||
                           ( p.existsArc( node_map.second( v ),
                                          node_map.second( u ) ) ) ) {
                 // Duplicate arc !

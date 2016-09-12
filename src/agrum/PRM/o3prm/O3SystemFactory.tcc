@@ -115,11 +115,8 @@ namespace gum {
             __addIncrements( factory, *sys );
 
             try {
-
               factory.endSystem();
-
-            } catch ( FatalError& e ) {
-
+            } catch ( FatalError& ) {
               O3PRM_SYSTEM_INSTANTIATION_FAILED( *sys, *__errors );
             }
           }
@@ -154,8 +151,8 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void O3SystemFactory<GUM_SCALAR>::__addAssignments(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
+        const auto& real_sys = __prm->getSystem( sys.name().label() );
 
-        const auto& real_sys = __prm->system( sys.name().label() );
         for ( auto& ass : sys.assignments() ) {
 
           auto leftInstance = ass.leftInstance().label();
@@ -186,8 +183,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void O3SystemFactory<GUM_SCALAR>::__addIncrements(
           PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
-        const auto& real_sys = __prm->system( sys.name().label() );
-
+        const auto& real_sys = __prm->getSystem( sys.name().label() );
         for ( auto& inc : sys.increments() ) {
 
           auto leftInstance = inc.leftInstance().label();
@@ -218,7 +214,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE bool O3SystemFactory<GUM_SCALAR>::__checkSystem( O3System& sys ) {
 
-        if ( __checkInstance( sys ) and __checkAssignments( sys ) and
+        if ( __checkInstance( sys ) && __checkAssignments( sys ) &&
              __checkIncrements( sys ) ) {
           return true;
         }
@@ -232,13 +228,13 @@ namespace gum {
 
         for ( auto& i : sys.instances() ) {
 
-          if ( not __solver->resolveClass( i.type() ) ) {
+          if ( !__solver->resolveClass( i.type() ) ) {
             return false;
           }
 
           const auto& type = __prm->getClass( i.type().label() );
           if ( type.parameters().size() > 0 ) {
-            if ( not __checkParameters( type, i ) ) {
+            if ( !__checkParameters( type, i ) ) {
               return false;
             }
           }
@@ -256,35 +252,35 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool O3SystemFactory<GUM_SCALAR>::__checkParameters(
-          const Class<GUM_SCALAR>& type, const O3Instance& inst ) {
+          const PRMClass<GUM_SCALAR>& type, const O3Instance& inst ) {
 
         for ( const auto& param : inst.parameters() ) {
 
-          if ( not type.exists( param.name().label() ) ) {
+          if ( !type.exists( param.name().label() ) ) {
             O3PRM_SYSTEM_PARAMETER_NOT_FOUND( param, *__errors );
             return false;
           }
 
-          if ( not ClassElement<GUM_SCALAR>::isParameter(
+          if ( !PRMClassElement<GUM_SCALAR>::isParameter(
                    type.get( param.name().label() ) ) ) {
             O3PRM_SYSTEM_NOT_A_PARAMETER( param, *__errors );
             return false;
           }
 
-          const auto& type_param = static_cast<const Parameter<GUM_SCALAR>&>(
+          const auto& type_param = static_cast<const PRMParameter<GUM_SCALAR>&>(
               type.get( param.name().label() ) );
 
           switch ( type_param.valueType() ) {
 
-            case Parameter<GUM_SCALAR>::ParameterType::INT: {
-              if ( not param.isInteger() ) {
+            case PRMParameter<GUM_SCALAR>::ParameterType::INT: {
+              if ( !param.isInteger() ) {
                 O3PRM_SYSTEM_PARAMETER_NOT_INT( param, *__errors );
                 return false;
               }
               break;
             }
 
-            case Parameter<GUM_SCALAR>::ParameterType::REAL: {
+            case PRMParameter<GUM_SCALAR>::ParameterType::REAL: {
               if ( param.isInteger() ) {
                 O3PRM_SYSTEM_PARAMETER_NOT_FLOAT( param, *__errors );
                 return false;
@@ -304,12 +300,12 @@ namespace gum {
 
         for ( auto& ass : sys.assignments() ) {
 
-          //if ( ass.leftInstance().label() == ass.leftReference().label() ) {
+          // if ( ass.leftInstance().label() == ass.leftReference().label() ) {
           //  O3PRM_SYSTEM_INVALID_LEFT_VALUE( ass.leftInstance(), *__errors );
           //  return false;
           //}
 
-          if ( not __nameMap.exists( ass.leftInstance().label() ) ) {
+          if ( !__nameMap.exists( ass.leftInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.leftInstance(), *__errors );
             return false;
           }
@@ -318,9 +314,9 @@ namespace gum {
           const auto& type = __prm->getClass( i->type().label() );
           const auto& ref = ass.leftReference().label();
 
-          if ( not( type.exists( ass.leftReference().label() ) and
-                    ClassElement<GUM_SCALAR>::isReferenceSlot(
-                        type.get( ref ) ) ) ) {
+          if ( !( type.exists( ass.leftReference().label() ) &&
+                  PRMClassElement<GUM_SCALAR>::isReferenceSlot(
+                      type.get( ref ) ) ) ) {
 
             O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
                 ass.leftReference(), type.name(), *__errors );
@@ -328,22 +324,25 @@ namespace gum {
           }
 
           const auto& real_ref =
-              static_cast<const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
+                  type.get( ref ) );
 
-          if ( ! __nameMap.exists( ass.rightInstance().label() ) ) {
+          if ( !__nameMap.exists( ass.rightInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.rightInstance(), *__errors );
             return false;
           }
 
-          if ( real_ref.isArray() and
+          if ( real_ref.isArray() &&
                __nameMap[ass.rightInstance().label()]->size().value() == 0 ) {
+
             O3PRM_SYSTEM_NOT_AN_ARRAY( ass.rightInstance(), *__errors );
             return false;
           }
 
-          if ( ( not real_ref.isArray() ) and
-               __nameMap[ass.rightInstance().label()]->size().value() > 0 and
+          if ( ( !real_ref.isArray() ) &&
+               __nameMap[ass.rightInstance().label()]->size().value() > 0 &&
                ass.rightIndex().value() == -1 ) {
+
             O3PRM_SYSTEM_NOT_AN_ARRAY( ass.leftReference(), *__errors );
             return false;
           }
@@ -357,12 +356,12 @@ namespace gum {
 
         for ( auto& inc : sys.increments() ) {
 
-          //if ( inc.leftInstance().label() == inc.leftReference().label() ) {
+          // if ( inc.leftInstance().label() == inc.leftReference().label() ) {
           //  O3PRM_SYSTEM_INVALID_LEFT_VALUE( inc.leftInstance(), *__errors );
           //  return false;
           //}
 
-          if ( not __nameMap.exists( inc.leftInstance().label() ) ) {
+          if ( !__nameMap.exists( inc.leftInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( inc.leftInstance(), *__errors );
             return false;
           }
@@ -371,9 +370,9 @@ namespace gum {
           const auto& type = __prm->getClass( i->type().label() );
           const auto& ref = inc.leftReference().label();
 
-          if ( not( type.exists( inc.leftReference().label() ) and
-                    ClassElement<GUM_SCALAR>::isReferenceSlot(
-                        type.get( ref ) ) ) ) {
+          if ( !( type.exists( inc.leftReference().label() ) &&
+                  PRMClassElement<GUM_SCALAR>::isReferenceSlot(
+                      type.get( ref ) ) ) ) {
 
             O3PRM_SYSTEM_REFERENCE_NOT_FOUND(
                 inc.leftReference(), type.name(), *__errors );
@@ -381,9 +380,10 @@ namespace gum {
           }
 
           const auto& real_ref =
-              static_cast<const ReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
+                  type.get( ref ) );
 
-          if ( not real_ref.isArray() ) {
+          if ( !real_ref.isArray() ) {
 
             O3PRM_SYSTEM_NOT_AN_ARRAY( inc.leftReference(), *__errors );
             return false;
@@ -395,4 +395,3 @@ namespace gum {
     }  // o3prm
   }    // prm
 }  // gum
-

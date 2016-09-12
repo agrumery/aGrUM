@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -103,12 +103,12 @@ namespace gum_tests {
       TS_ASSERT( ( *gamma ) < ( *alpha ) );
       TS_ASSERT( ( *gamma ) < ( *beta ) );
       TS_ASSERT( ( *alpha ) < ( *beta ) );
-      TS_ASSERT( not( ( *alpha ) < ( *alpha ) ) );
-      TS_ASSERT( not( ( *beta ) < ( *beta ) ) );
-      TS_ASSERT( not( ( *gamma ) < ( *gamma ) ) );
-      TS_ASSERT( not( ( *alpha ) < ( *gamma ) ) );
-      TS_ASSERT( not( ( *beta ) < ( *gamma ) ) );
-      TS_ASSERT( not( ( *beta ) < ( *alpha ) ) );
+      TS_ASSERT( !( ( *alpha ) < ( *alpha ) ) );
+      TS_ASSERT( !( ( *beta ) < ( *beta ) ) );
+      TS_ASSERT( !( ( *gamma ) < ( *gamma ) ) );
+      TS_ASSERT( !( ( *alpha ) < ( *gamma ) ) );
+      TS_ASSERT( !( ( *beta ) < ( *gamma ) ) );
+      TS_ASSERT( !( ( *beta ) < ( *alpha ) ) );
     }
 
     void testLesserOrEqualThan() {
@@ -118,9 +118,9 @@ namespace gum_tests {
       TS_ASSERT( ( *alpha ) <= ( *alpha ) );
       TS_ASSERT( ( *beta ) <= ( *beta ) );
       TS_ASSERT( ( *gamma ) <= ( *gamma ) );
-      TS_ASSERT( not( ( *alpha ) <= ( *gamma ) ) );
-      TS_ASSERT( not( ( *beta ) <= ( *gamma ) ) );
-      TS_ASSERT( not( ( *beta ) <= ( *alpha ) ) );
+      TS_ASSERT( !( ( *alpha ) <= ( *gamma ) ) );
+      TS_ASSERT( !( ( *beta ) <= ( *gamma ) ) );
+      TS_ASSERT( !( ( *beta ) <= ( *alpha ) ) );
     }
 
     void testAlphaNeighbors() {

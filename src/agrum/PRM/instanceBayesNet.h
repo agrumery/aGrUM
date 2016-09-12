@@ -38,7 +38,7 @@ namespace gum {
 
     /**
      * @class InstanceBayesNet instanceBayesNet.h <agrum/PRM/instanceBayesNet.h>
-     * @brief This class decorates an Instance<GUM_SCALAR> as an IBaseBayesNet.
+     * @brief This class decorates an PRMInstance<GUM_SCALAR> as an IBaseBayesNet.
      *
      * Remember that an InstanceBayesNet does not contain input nodes parents
      *and
@@ -57,8 +57,8 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      /// @param i The Instance<GUM_SCALAR> decorated by this InstanceBayesNet.
-      InstanceBayesNet( const Instance<GUM_SCALAR>& i );
+      /// @param i The PRMInstance<GUM_SCALAR> decorated by this InstanceBayesNet.
+      InstanceBayesNet( const PRMInstance<GUM_SCALAR>& i );
 
       /// Copy constructor.
       InstanceBayesNet( const InstanceBayesNet& from );
@@ -107,22 +107,22 @@ namespace gum {
       /// @}
       private:
       /// Mapping between DiscreteVariable and their NodeId
-      HashTable<const DiscreteVariable*, const Attribute<GUM_SCALAR>*>
+      HashTable<const DiscreteVariable*, const PRMAttribute<GUM_SCALAR>*>
           __varNodeMap;
 
       /// Private getter with type checking in case the id is not a formal
-      /// Attribute<GUM_SCALAR>.
+      /// PRMAttribute<GUM_SCALAR>.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const ClassElement<GUM_SCALAR>& __get( NodeId id ) const;
+      const PRMClassElement<GUM_SCALAR>& __get( NodeId id ) const;
 
-      const ClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
+      const PRMClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 
-      /// The ClassElementContainer decorated by this.
-      const Instance<GUM_SCALAR>* __inst;
+      /// The PRMClassElementContainer decorated by this.
+      const PRMInstance<GUM_SCALAR>* __inst;
 
       mutable NodeProperty<Size> __modalities;
 
-      void __init( const Instance<GUM_SCALAR>& i );
+      void __init( const PRMInstance<GUM_SCALAR>& i );
     };
 
 

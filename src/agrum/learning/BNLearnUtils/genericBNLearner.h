@@ -212,7 +212,7 @@ namespace gum {
         rowFilter();
 
         /// returns the modalities of the variables
-        std::vector<unsigned int>& modalities() noexcept;
+        std::vector<Size>& modalities() noexcept;
 
         /// returns the names of the variables in the database
         const std::vector<std::string>& names() const noexcept;
@@ -254,20 +254,20 @@ namespace gum {
             __row_filter{nullptr};
 
         /// the modalities of the variables
-        std::vector<unsigned int> __modalities;
+        std::vector<Size> __modalities;
 
         /// a hashtable assigning to each variable name its NodeId
         Bijection<std::string, NodeId> __name2nodeId;
 
 /// the max number of threads authorized
 #if defined( _OPENMP ) && defined( NDEBUG )
-        unsigned int __max_threads_number{getMaxNumberOfThreads()};
+        Size __max_threads_number{getMaxNumberOfThreads()};
 #else
-        unsigned int __max_threads_number{1};
+        Size __max_threads_number{1};
 #endif /* NDEBUG */
 
         /// the minimal number of rows to parse (on average) by thread
-        unsigned int __min_nb_rows_per_thread{100};
+        Size __min_nb_rows_per_thread{100};
       };
 
       public:
@@ -346,7 +346,7 @@ namespace gum {
       const std::vector<std::string>& names() const;
 
       /// returns the names of the variables in the database
-      const std::vector<unsigned int>& modalities() noexcept;
+      const std::vector<Size>& modalities() noexcept;
 
       /// returns the node id corresponding to a variable name
       /**
@@ -391,7 +391,7 @@ namespace gum {
       /// @{
 
       /// sets the apriori weight
-      void setAprioriWeight( float weight );
+      void setAprioriWeight( double weight );
 
       /// use no apriori
       void useNoApriori();
@@ -400,7 +400,7 @@ namespace gum {
       /** @param weight pass in argument a weight if you wish to assign a weight
        * to the smoothing, else the current weight of the genericBNLearner will
        * be used. */
-      void useAprioriSmoothing( float weight = -1 );
+      void useAprioriSmoothing( double weight = -1 );
 
       /// use the Dirichlet apriori
       void useAprioriDirichlet( const std::string& filename );
@@ -419,8 +419,8 @@ namespace gum {
       /** @param tabu_size indicate the size of the tabu list
        * @param nb_decrease indicate the max number of changes decreasing the
        * score consecutively that we allow to apply */
-      void useLocalSearchWithTabuList( unsigned int tabu_size = 100,
-                                       unsigned int nb_decrease = 2 ) noexcept;
+      void useLocalSearchWithTabuList( Size tabu_size = 100,
+                                       Size nb_decrease = 2 ) noexcept;
 
       /// indicate that we wish to use K2
       void useK2( const Sequence<NodeId>& order ) noexcept;
@@ -436,10 +436,10 @@ namespace gum {
       /// @{
 
       /// sets the max indegree
-      void setMaxIndegree( unsigned int max_indegree );
+      void setMaxIndegree( Size max_indegree );
 
       /// sets a partial order on the nodes
-      void setSliceOrder( const NodeProperty<unsigned int>& slice_order );
+      void setSliceOrder( const NodeProperty<NodeId>& slice_order );
 
       /// assign a set of forbidden arcs
       void setForbiddenArcs( const ArcSet& set );
@@ -499,7 +499,7 @@ namespace gum {
       Apriori<>* __apriori{nullptr};
 
       /// the weight of the apriori
-      float __apriori_weight{1.0f};
+      double __apriori_weight{1.0f};
 
       /// the constraint for 2TBNs
       StructuralConstraintSliceOrder __constraint_SliceOrder;

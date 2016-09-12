@@ -142,7 +142,7 @@ void Parser::TYPE_UNIT() {
 		auto n = errors().error_count; 
 		if (la->kind == _type) {
 			auto t = O3Type(); 
-			TYPE_DECLARATION(t.position(), t.name(), t.super(), t.labels());
+			TYPE_DECLARATION(t.position(), t.name(), t.superLabel(), t.labels());
 			if ( __ok( n ) ) { __addO3Type( std::move(t) ); } 
 		} else if (la->kind == _int) {
 			auto t = O3IntType(); 
@@ -158,7 +158,7 @@ void Parser::TYPE_UNIT() {
 void Parser::INTERFACE_UNIT() {
 		auto n = errors().error_count; 
 		auto i = O3Interface(); 
-		INTERFACE_DECLARATION(i.position(), i.name(), i.super(), i.elements() );
+		INTERFACE_DECLARATION(i.position(), i.name(), i.superLabel(), i.elements() );
 		if (__ok(n)) { __addO3Interface( std::move( i ) ); } 
 }
 
@@ -181,7 +181,7 @@ void Parser::CLASS_DECLARATION(O3Class& c) {
 		PREFIXED_LABEL(c.name());
 		if (la->kind == _extends) {
 			Get();
-			CHAIN(c.super());
+			CHAIN(c.superLabel());
 		}
 		if (la->kind == _implements) {
 			Get();
@@ -456,13 +456,13 @@ void Parser::LABEL_OR_STAR_LIST(O3LabelList& list) {
 
 void Parser::INTERFACE_DECLARATION(O3Position& pos,
 O3Label& name,
-O3Label& super,
+O3Label& superLabel,
 O3InterfaceElementList& elts) {
 		INTERFACE(pos);
 		PREFIXED_LABEL(name);
 		if (la->kind == _extends) {
 			Get();
-			CHAIN(super);
+			CHAIN(superLabel);
 		}
 		Expect(22 /* "{" */);
 		while (la->kind == _label) {
@@ -800,7 +800,7 @@ void Parser::PARAMETER(O3InstanceParameterList& params) {
 void Parser::INTEGER_AS_FLOAT(O3Float& f) {
 		Expect(_integer);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
-		f = O3Float( pos, coco_atoi( t->val ) ); 
+		f = O3Float( pos, (float)coco_atoi( t->val ) ); 
 }
 
 void Parser::IMPORT_BODY() {

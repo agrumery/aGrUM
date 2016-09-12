@@ -69,10 +69,10 @@ namespace gum {
       if ( this->_weight != 0 ) {
         // put the weight into the countings for the targets
         // and the sum of the weight times the target for the conditioning nodes
-        const unsigned int size = this->_target_nodesets->size();
-        for ( unsigned int i = 0; i < size; ++i ) {
+        const Size size = Size(this->_target_nodesets->size());
+        for ( Idx i = 0; i < size; ++i ) {
           if ( this->_target_nodesets->operator[]( i ) != nullptr ) {
-            std::vector<float, CountAlloc>& apriori =
+            std::vector<double, CountAlloc>& apriori =
                 this->_apriori_counts[this->_target_nodesets->operator[]( i )
                                           ->second];
             for ( auto& count : apriori ) {
@@ -81,11 +81,11 @@ namespace gum {
           }
 
           if ( this->_conditioning_nodesets->operator[]( i ) != nullptr ) {
-            const float weight =
+            const double weight =
                 this->_weight *
                 ( *( this->_modalities ) )[( *( this->_target_nodesets ) )[i]
                                                ->first.back()];
-            std::vector<float, CountAlloc>& apriori =
+            std::vector<double, CountAlloc>& apriori =
                 this->_apriori_counts[this->_conditioning_nodesets->operator[](
                                                                       i )
                                           ->second];

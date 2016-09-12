@@ -47,7 +47,7 @@ namespace gum {
          varIter != __binarizedFG->variablesSequence().endSafe(); ++varIter)  {
       if( !__varMap.exists(*varIter)){
         __varMap.insert( *varIter, new  Sequence<const DiscreteVariable*>() );
-        Idx nbVar = std::ceil(std::log2((*varIter)->domainSize()));
+        Idx nbVar = Idx(std::ceil(std::log2((*varIter)->domainSize())));
         for( Idx i = 0; i < nbVar; ++i )
           __varMap[*varIter]->insert(new LabelizedVariable((*varIter)->name() + std::to_string(i)));
       }
@@ -69,8 +69,8 @@ namespace gum {
     NodeId* sonsMap = static_cast<NodeId*>(SmallObjectAllocator::instance().allocate(2*sizeof(NodeId)));
 
     if( vPos > 0 ){
-      sonsMap[0] = __recurBinarize( binarizedNode, valueModa, vPos - 1 );
-      sonsMap[1] = __recurBinarize( binarizedNode, valueModa + std::pow(2,vPos), vPos - 1 );
+      sonsMap[0] = Size(__recurBinarize( binarizedNode, valueModa, vPos - 1 ));
+      sonsMap[1] = Size(__recurBinarize( binarizedNode, valueModa + Idx(std::pow(2,vPos)), vPos - 1 ));
     } else {
 
       NodeId srcSon = __binarizedFG->node( binarizedNode )->son( valueModa );

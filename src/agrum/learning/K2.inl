@@ -87,7 +87,7 @@ namespace gum {
 
     /** @brief checks that the order passed to K2 is coherent with the variables
      * as specified by their modalities */
-    INLINE void K2::__checkOrder( const std::vector<unsigned int>& modal ) {
+    INLINE void K2::__checkOrder( const std::vector<Size>& modal ) {
       if ( modal.size() != __order.size() ) {
         GUM_ERROR( InvalidArgument,
                    "the number of elements in the order given "

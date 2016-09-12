@@ -62,7 +62,7 @@ namespace gum {
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >
        * methods. */
-      typedef MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine> __infEs;
+      using __infEs= MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>;
 
       /// @name Private initialization methods
       /// @{
@@ -95,7 +95,7 @@ namespace gum {
        * @param value The constant integer we want to binarize.
        */
       inline void __binaryRep( std::vector<bool>& toFill,
-                               const unsigned int value ) const;
+                               const Idx value ) const;
 
       /// @}
 

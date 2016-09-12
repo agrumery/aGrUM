@@ -94,7 +94,7 @@ namespace gum {
       Size __noLine;
       char __commentMarker;
       char __quoteMarker;
-      std::istream& __in;
+      std::istream& __instream;
       std::vector<std::string> __data;
       bool __emptyData;
     };

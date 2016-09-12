@@ -129,14 +129,12 @@ namespace gum {
     /// @}
 
     private:
-    void __incState( const Instantiation&, NodeId, Idx, Idx );
+    void __incState( const Instantiation&, NodeId, Idx, Size );
 
-    MultiDimFunctionGraph<int>* __counter;
+    MultiDimFunctionGraph<Size>* __counter;
 
     Set<Instantiation*> __visitedStates;
   };
 } /* namespace gum */
 
 #endif  // GUM_STATES_COUNTER_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -42,7 +42,6 @@
 
 #define INLINE inline
 
-#define ENFORCED_INLINE inline
 // ENFORCED_INLINE is a stronger version of the inline, using __forceinline on
 // MSVC, but it still doesn't use GCC's always_inline. This is useful in
 // (common) situations where MSVC needs forceinline but GCC is still doing fine
@@ -65,7 +64,7 @@
 #if GNUC_AT_LEAST( 4, 0 )
 #define ALWAYS_INLINE __attribute__( ( always_inline ) ) inline
 #else
-#define ALWAYS_INLINE EIGEN_STRONG_INLINE
+#define ALWAYS_INLINE ENFORCED_INLINE
 #endif
 
 #if ( defined __GNUC__ )
@@ -75,7 +74,7 @@
 #else
 #define NEVER_INLINE
 #endif
-#else
+#else // GUM_NO_INLINE
 #define INLINE
 #define STRONG_INLINE
 #define ALWAYS_INLINE

@@ -288,7 +288,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, (int)( ( (float)rand() / RAND_MAX ) * 100 ) );
+        t.set( i, rand() *100.0f/ RAND_MAX );
     }
   };
 

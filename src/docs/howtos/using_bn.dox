@@ -1,10 +1,10 @@
 /*!
  * \page using_bn How to use Bayesian Networks
  * \tableofcontents
- * 
+ *
  * Bayesian Networks are a probabilistic graphical model in which nodes are
  * random variables and the probability distribution is defined by the product:
- * 
+ *
  * <center>\f$P(X_1, \ldots, X_2) = \prod_{i=1}^{n} P(X_i | \pi(X_i))\f$,</center>
  *
  * where \f$\pi(X_i)\f$ is the parent of \f$X_i\f$.
@@ -17,7 +17,7 @@
  * The \ref bn_group module list all classes for using Bayesian Networks with
  * aGrUM.
  *
- * We will use the classic Asia network to illustrate how the 
+ * We will use the classic Asia network to illustrate how the
  * gum::BayesNetFactory class works.
  *
  * \dot
@@ -87,7 +87,7 @@
  * You can also use the gum::BayesNet::idFromName( const std::string& ) method to retrieve
  * variable's id from its name.
  *
- * Use the gum::BayesNet::addArc( gum::Id, gum::Id ) to add arcs between node in the Bayesian
+ * Use the gum::BayesNet::addArc( gum::NodeId, gum::NodeId ) to add arcs between node in the Bayesian
  * Network.
  *
  * \code{.cpp}
@@ -101,7 +101,7 @@
  * bn.addArc( hasBronchitis, dyspnea );
  * \endcode
  *
- * Finally, use the gumm:BayesNet::cpt( gum::Id ) to access a variable's
+ * Finally, use the gumm:BayesNet::cpt( gum::NodeId ) to access a variable's
  * conditional probability table. See \ref using_multidims to learn how to fill
  * gum::Potential. Here we use the gum::Potential::fillwith( const std::vector&
  * ) method.
@@ -109,8 +109,8 @@
  * \code{.cpp}
  * bn.cpt( visitToAsia ).fillWith( { 0.1f, 0.9f } );
  * bn.cpt( smoker ).fillWith( { 0.7f, 0.3f } );
- * bn.cpt( hasTuberculosis ).fillWith( { 
- * // True | False  == hasTuberculosis 
+ * bn.cpt( hasTuberculosis ).fillWith( {
+ * // True | False  == hasTuberculosis
  *    0.05f, 0.01f, // visitToAsia == True
  *    0.95f, 0.99f  // visitToAsia == False
  * } );
@@ -151,7 +151,7 @@
  * deserailizers for the gum::BayesNet class. You can also use it to create
  * gum:BayesNet directly in C++, you may however find that using directly the
  * gum::BayesNet class simpler.
- * 
+ *
  *
  * \subsection bn_factory_creation Instantiating the factory
  * The gum::BayesNetFactory expects a pointer toward a gum::BayesNet. The
@@ -163,7 +163,7 @@
  * auto factory = gum::BayesNetFactory<double>(&asia);
  * \endcode
  *
- * Most methods follow a start / end pattern . 
+ * Most methods follow a start / end pattern .
  * Until the end method is called, there is no guarantee that the element is
  * added or partially added to the gum::BayesNet.
  *
@@ -476,7 +476,7 @@
  *
  * The main methods for serializing an instance of gum::BayesNet are:
  *  - gum::BNWriter::write( std::ostream&, const IBayesNet<GUM_SCALAR>& ).
- *  - gum::BNWriter::write( std;;string, const IBayesNet<GUM_SCALAR>& ). 
+ *  - gum::BNWriter::write( std;;string, const IBayesNet<GUM_SCALAR>& ).
  * Both methods will raise a gum::IOError if a serialization error occurred.
  *
  *  \code{.cpp}
@@ -499,7 +499,7 @@
  * Be aware that the file will be created if it does not exists. If it
  * does exist, its content will be erased.
  *
- * \subsection bn_io_list List of supported format 
+ * \subsection bn_io_list List of supported format
  *
  * The BIF format:
  *  - gum::BIFReader.
@@ -519,6 +519,6 @@
  * The NET format:
  *  - gum::NetReader.
  *  - gum::NetWriter.
- * 
+ *
  */
 

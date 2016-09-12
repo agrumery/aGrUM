@@ -19,18 +19,18 @@
  ***************************************************************************/
 
 // ==============================================================================
+#include <cstdarg>
 #include <iostream>
 #include <string>
-#include <cstdarg>
 // ==============================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==============================================================================
+#include <agrum/FMDP/SDyna/sdyna.h>
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/simulation/fmdpSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
-#include <agrum/FMDP/SDyna/sdyna.h>
 // ==============================================================================
 
 namespace gum_tests {
@@ -39,13 +39,11 @@ namespace gum_tests {
 
     private:
     void run( gum::AbstractSimulator& sim ) {
-
       // *********************************************************************************************
       // Initialisation de l'instance de SDyna
       // *********************************************************************************************
       gum::SDYNA* sdyna = nullptr;
-              TS_GUM_ASSERT_THROWS_NOTHING ( sdyna =
-              gum::SDYNA::spimddiInstance() );
+      TS_GUM_ASSERT_THROWS_NOTHING( sdyna = gum::SDYNA::spimddiInstance() );
 
       // Enregistrement des actions possibles auprès de SDyna
       for ( auto actionIter = sim.beginActions();
@@ -53,16 +51,13 @@ namespace gum_tests {
             ++actionIter ) {
         sdyna->addAction( *actionIter, sim.actionName( *actionIter ) );
       }
-
       // Enregistrement des variables caractérisant les états auprès de SDyna
       for ( auto varIter = sim.beginVariables(); varIter != sim.endVariables();
             ++varIter ) {
         sdyna->addVariable( *varIter );
       }
-
       TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
       TS_GUM_ASSERT_THROWS_NOTHING( sdyna->initialize( sim.currentState() ) );
-
 
       gum::Idx nbObs = 0;
       for ( gum::Idx nbRun = 0; nbRun < 10; ++nbRun ) {
@@ -71,19 +66,18 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
             sdyna->setCurrentState( sim.currentState() ) );
         gum::Idx nbDec = 0;
-
         while ( !sim.hasReachEnd() && nbDec < 25 ) {
 
           nbObs++;
 
           // Normal Iteration Part
           gum::Idx actionChosenId = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING( actionChosenId = sdyna->takeAction(); )
+          TS_GUM_ASSERT_THROWS_NOTHING( actionChosenId = sdyna->takeAction(); );
           TS_GUM_ASSERT_THROWS_NOTHING( sim.perform( actionChosenId ) );
           nbDec++;
 
-          TS_GUM_ASSERT_THROWS_NOTHING (
-          sdyna->feedback(sim.currentState(), sim.reward());)
+          TS_GUM_ASSERT_THROWS_NOTHING(
+              sdyna->feedback( sim.currentState(), sim.reward() ); );
         }
         TS_GUM_ASSERT_THROWS_NOTHING( sim.setInitialStateRandomly() );
       }
@@ -95,26 +89,24 @@ namespace gum_tests {
     // Run the tests on a Coffee FMDP
     // *******************************************************************************
     void test_Coffee() {
-
       // **************************************************************
       // Chargement du fmdp servant de base
       gum::FMDPSimulator sim( GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" ) );
 
-
       // **************************************************************
-      // Définition des états finaux
+      // Définition of final states
       gum::Instantiation theEnd;
       for ( gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter =
                 sim.beginVariables();
             varIter != sim.endVariables();
-            ++varIter )
+            ++varIter ) {
         if ( ( *varIter )->name().compare( "huc" ) ) {
           theEnd.add( **varIter );
           theEnd.chgVal( **varIter, ( *varIter )->index( "yes" ) );
           break;
         }
+      }
       TS_GUM_ASSERT_THROWS_NOTHING( sim.setEndState( theEnd ) );
-
 
       // **************************************************************
       // Lancement

@@ -59,7 +59,7 @@ namespace gum_tests {
 
       auto del_vars = gum::Set<const gum::DiscreteVariable*>();
       for ( auto var : result.variablesSequence() ) {
-        if ( not product.contains( *var ) ) {
+        if ( ! product.contains( *var ) ) {
           del_vars.insert( var );
         }
       }
@@ -441,10 +441,10 @@ namespace gum_tests {
       gum::BayesNet<double>* bn = new gum::BayesNet<double>();
       gum::LabelizedVariable vc( "c", "cloudy", 2 ), vs( "s", "sprinklet", 2 );
       gum::LabelizedVariable vr( "r", "rain", 2 ), vw( "w", "wet grass", 2 );
-      gum::Id c = bn->add( vc );
-      gum::Id s = bn->add( vs );
-      gum::Id r = bn->add( vr );
-      gum::Id w = bn->add( vw );
+      gum::NodeId c = bn->add( vc );
+      gum::NodeId s = bn->add( vs );
+      gum::NodeId r = bn->add( vr );
+      gum::NodeId w = bn->add( vw );
       bn->addArc( c, s );
       bn->addArc( c, r );
       bn->addArc( s, w );
@@ -489,7 +489,7 @@ namespace gum_tests {
         i.add( bn->variable( r ) );
         i.add( bn->variable( s ) );
 
-        for ( i.setFirst(); not i.end(); i.inc() ) {
+        for ( i.setFirst(); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( clique_csr.get( i ), bucket_csr.get( i ), 1e-7 );
         }
       }
@@ -503,7 +503,7 @@ namespace gum_tests {
 
       auto del_vars = gum::Set<const gum::DiscreteVariable*>();
       for ( auto var : clique_csr.variablesSequence() ) {
-        if ( not sep_sr.contains( *var ) ) {
+        if ( ! sep_sr.contains( *var ) ) {
           del_vars.insert( var );
         }
       }
@@ -515,7 +515,7 @@ namespace gum_tests {
         i.add( bn->variable( r ) );
         i.add( bn->variable( s ) );
 
-        for ( i.setFirst(); not i.end(); i.inc() ) {
+        for ( i.setFirst(); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( sep_sr.get( i ), bucket_sr.get( i ), 1e-7 );
         }
       }
@@ -538,7 +538,7 @@ namespace gum_tests {
         i.add( bn->variable( r ) );
         i.add( bn->variable( s ) );
 
-        for ( i.setFirst(); not i.end(); i.inc() ) {
+        for ( i.setFirst(); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( clique_wsr.get( i ), bucket_wsr.get( i ), 1e-7 );
         }
       }
@@ -559,7 +559,7 @@ namespace gum_tests {
 
       del_vars = gum::Set<const gum::DiscreteVariable*>();
       for ( auto var : tmp.variablesSequence() ) {
-        if ( not marg_w.contains( *var ) ) {
+        if ( ! marg_w.contains( *var ) ) {
           del_vars.insert( var );
         }
       }
@@ -569,7 +569,7 @@ namespace gum_tests {
         gum::Instantiation i;
         i.add( bn->variable( w ) );
 
-        for ( i.setFirst(); not i.end(); i.inc() ) {
+        for ( i.setFirst(); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( marg_w.get( i ), bucket_marg_w.get( i ), 1e-7 );
         }
       }
@@ -579,7 +579,7 @@ namespace gum_tests {
       {
         gum::Instantiation i( norm_b_m_w );
 
-        for ( i.setFirst(); not i.end(); i.inc() ) {
+        for ( i.setFirst(); ! i.end(); i.inc() ) {
           norm_b_m_w.set( i, bucket_marg_w.get( i ) );
         }
       }
@@ -599,7 +599,7 @@ namespace gum_tests {
         gum::Instantiation i;
         i.add( bn->variable( w ) );
 
-        for ( i.setFirst(); not i.end(); i.inc() ) {
+        for ( i.setFirst(); ! i.end(); i.inc() ) {
           fnw.set( i, false_marg_w.get( i ) );
         }
       }
@@ -611,7 +611,7 @@ namespace gum_tests {
         gum::Instantiation i;
         i.add( bn->variable( w ) );
 
-        for ( i.setFirst(); not i.end(); i.inc() ) {
+        for ( i.setFirst(); ! i.end(); i.inc() ) {
           TS_ASSERT_DELTA( marg_w.get( i ), norm_b_m_w.get( i ), 1e-7 );
         }
       }

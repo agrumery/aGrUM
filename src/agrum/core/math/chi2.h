@@ -64,8 +64,8 @@ namespace gum {
      * @param var_modalities The variables modalities.
      * @param confidence_proba The confidence probability.
      */
-    Chi2( const std::vector<unsigned int>& var_modalities,
-          float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
+    Chi2( const std::vector<Idx>& var_modalities,
+          double confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
 
     /**
      * @brief Class destructor.
@@ -85,7 +85,7 @@ namespace gum {
      * @param db_conditioning_ids The conditioning nodes id.
      */
     void setConditioningNodes(
-        const std::vector<unsigned int>& db_conditioning_ids );
+        const std::vector<Idx>& db_conditioning_ids );
 
     /**
     * @brief Computes the critical value according to the number of degrees of
@@ -93,7 +93,7 @@ namespace gum {
     * @param pair A pair of variables ids.
     * @return Returns the critical values.
     */
-    float criticalValue( const std::pair<unsigned int, unsigned int>& pair );
+    double criticalValue( const std::pair<Idx,Idx>& pair );
 
     /**
      * @brief Computes the critical value according to the number of degrees of
@@ -102,15 +102,15 @@ namespace gum {
      * @param var2 The second variable id.
      * @return Returns the critical value.
      */
-    float criticalValue( unsigned int var1, unsigned int var2 );
+    double criticalValue( Idx var1, Idx var2 );
 
     /**
      * @brief Returns the number of degrees of freedom.
      * @param pair A pair of variables ids.
      * @return Returns the number of degrees of freedom.
      */
-    unsigned long
-    degreesOfFreedom( const std::pair<unsigned int, unsigned int>& pair );
+    Size
+    degreesOfFreedom( const std::pair<Idx,Idx>& pair );
 
     /**
      * @brief Returns the number of degrees of freedom.
@@ -118,28 +118,28 @@ namespace gum {
      * @param var2 The second variable id.
      * @return Returns the number of degrees of freedom.
      */
-    unsigned long degreesOfFreedom( unsigned int var1, unsigned int var2 );
+    Size degreesOfFreedom( Idx var1, Idx var2 );
 
     /**
      * @brief Modifies the confidence probability.
      * @param new_proba The new confidence probability
      */
-    void setConfidenceProba( float new_proba );
+    void setConfidenceProba( double new_proba );
 
     /// @}
 
     private:
     /// The modalities of the random variables.
-    const std::vector<unsigned int>& __modalities;
+    const std::vector<Idx>& __modalities;
 
     /// The confidence probability used for critical values.
-    float __confidence_proba;
+    double __confidence_proba;
 
     /// The domain size of the conditioning nodes.
-    unsigned long __conditioning_size;
+    Size __conditioning_size;
 
     /// A set of already computed critical values.
-    HashTable<unsigned int, float> __critical_values;
+    HashTable<Idx, double> __critical_values;
 
     /**
      * @brief Computes the critical value of a given chi2 test (used by the
@@ -151,7 +151,7 @@ namespace gum {
      * @param df The number of degrees of freedom.
      * @return Returns the critical value of a given chi2 test.
      */
-    static double __criticalValue( double proba, unsigned long df );
+    static double __criticalValue( double proba, Size df );
 
     /**
      * @brief Computes the probability of chi2 value.
@@ -169,7 +169,7 @@ namespace gum {
      * @param df The number of degrees of freedom.
      * @return The probability of x given df degrees of freedom.
      */
-    static double __probaChi2( double x, unsigned long df );
+    static double __probaChi2( double x, Size df );
 
     /**
      * @brief Computes the probability of normal z value.

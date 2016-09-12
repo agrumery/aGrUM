@@ -31,10 +31,10 @@ namespace gum_tests {
     void test1() {
       gum::learning::Cache4Score cache;
 
-      std::vector<unsigned int> v1{1, 6, 2};
-      std::vector<unsigned int> v2{1, 2, 6};
-      std::vector<unsigned int> v3;
-      std::vector<unsigned int> v4{1};
+      std::vector<gum::Idx> v1{1, 6, 2};
+      std::vector<gum::Idx> v2{1, 2, 6};
+      std::vector<gum::Idx> v3;
+      std::vector<gum::Idx> v4{1};
 
       cache.insert( 10, v1, 1.5 );
       TS_ASSERT_THROWS( cache.insert( 10, v1, 2.5 ), gum::DuplicateElement );

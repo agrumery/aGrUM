@@ -39,7 +39,7 @@ namespace gum {
     __functionGraph = mddg;
   }
 
-  // Destructor 
+  // Destructor
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::
       ~MultiDimFunctionGraphManager() {
@@ -101,7 +101,7 @@ namespace gum {
   MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::addTerminalNode(
       const GUM_SCALAR& value ) {
 
-    if ( __functionGraph->existsTerminalNode( value ) )
+    if ( __functionGraph->existsTerminalNodeWithValue( value ) )
       return __functionGraph->terminalNodeId( value );
 
     NodeId node = __functionGraph->__model.addNode();

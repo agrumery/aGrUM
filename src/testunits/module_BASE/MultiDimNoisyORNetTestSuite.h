@@ -34,21 +34,21 @@ namespace gum_tests {
     void testCreationNoisyOr() {
       gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 2 ), c( "c", "", 2 ),
           d( "d", "", 2 );
-      gum::MultiDimNoisyORNet<float> p( 0.2 );
+      gum::MultiDimNoisyORNet<float> p( 0.2f );
 
       // trying to change weight for a non cause
-      TS_ASSERT_THROWS( p.causalWeight( b, 0.4 ), gum::InvalidArgument );
-      TS_ASSERT_THROWS( p.causalWeight( d, 0.0 ), gum::InvalidArgument );
+      TS_ASSERT_THROWS( p.causalWeight( b, 0.4f ), gum::InvalidArgument );
+      TS_ASSERT_THROWS( p.causalWeight( d, 0.0f ), gum::InvalidArgument );
 
       // adding causes
       TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
 
       // trying to set 0 for causal weight
-      TS_ASSERT_THROWS( p.causalWeight( d, 0.0 ), gum::OutOfBounds );
+      TS_ASSERT_THROWS( p.causalWeight( d, 0.0f ), gum::OutOfBounds );
 
       // doing the right stuff :)
-      p.causalWeight( b, 0.4 );
-      p.causalWeight( d, 0.7 );
+      p.causalWeight( b, 0.4f );
+      p.causalWeight( d, 0.7f );
 
       TS_ASSERT_EQUALS(
           p.toString(),
@@ -68,29 +68,29 @@ namespace gum_tests {
       gum::LabelizedVariable malaria( "Malaria", "", 2 );
       gum::LabelizedVariable fever( "Fever", "", 2 );
 
-      gum::MultiDimNoisyORNet<float> p( 0.0 );
+      gum::MultiDimNoisyORNet<float> p( 0.0f );
       p << fever << malaria << flu << cold;
-      p.causalWeight( cold, 1.0 );
-      p.causalWeight( flu, 1.0 );
-      p.causalWeight( malaria, 1.0 );
+      p.causalWeight( cold, 1.0f );
+      p.causalWeight( flu, 1.0f );
+      p.causalWeight( malaria, 1.0f );
 
       gum::Instantiation i( p );
-      float witness[] = {1.0,
-                         0.0,
-                         0.0,
-                         1.0,
-                         0.0,
-                         1.0,
-                         0.0,
-                         1.0,
-                         0.0,
-                         1.0,
-                         0.0,
-                         1.0,
-                         0.0,
-                         1.0,
-                         0.0,
-                         1.0};
+      float witness[] = {1.0f,
+                         0.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f};
 
       int j = 0;
 
@@ -105,29 +105,29 @@ namespace gum_tests {
       gum::LabelizedVariable malaria( "Malaria", "", 2 );
       gum::LabelizedVariable fever( "Fever", "", 2 );
 
-      gum::MultiDimNoisyORNet<float> p( 0.0 );
+      gum::MultiDimNoisyORNet<float> p( 0.0f );
       p << fever << malaria << flu << cold;
-      p.causalWeight( cold, 0.4 );
-      p.causalWeight( flu, 0.8 );
-      p.causalWeight( malaria, 0.9 );
+      p.causalWeight( cold, 0.4f );
+      p.causalWeight( flu, 0.8f );
+      p.causalWeight( malaria, 0.9f );
 
       gum::Instantiation i( p );
       float witness[] = {1,
                          0,
-                         0.1,
-                         0.9,
-                         0.2,
-                         0.8,
-                         0.02,
-                         0.98,
-                         0.6,
-                         0.4,
-                         0.06,
-                         0.94,
-                         0.12,
-                         0.88,
-                         0.012,
-                         0.988};
+                         0.1f,
+                         0.9f,
+                         0.2f,
+                         0.8f,
+                         0.02f,
+                         0.98f,
+                         0.6f,
+                         0.4f,
+                         0.06f,
+                         0.94f,
+                         0.12f,
+                         0.88f,
+                         0.012f,
+                         0.988f};
 
       int j = 0;
 
@@ -152,27 +152,27 @@ namespace gum_tests {
       gum::LabelizedVariable competition( "competition", "", 2 );
       gum::LabelizedVariable unemployment( "unemployment", "", 2 );
 
-      gum::MultiDimNoisyORNet<float> p( 0.0001 );
+      gum::MultiDimNoisyORNet<float> p( 0.0001f );
       p << unemployment << competition << requirement << motivation << degree
         << lazy;
-      p.causalWeight( lazy, 0.1 );
-      p.causalWeight( degree, 0.3 );
-      p.causalWeight( motivation, 0.5 );
-      p.causalWeight( requirement, 0.7 );
-      p.causalWeight( competition, 0.9 );
+      p.causalWeight( lazy, 0.1f );
+      p.causalWeight( degree, 0.3f );
+      p.causalWeight( motivation, 0.5f );
+      p.causalWeight( requirement, 0.7f );
+      p.causalWeight( competition, 0.9f );
 
       gum::Instantiation i( p );
-      float witness[] = {
-          0.9999,   0.0001,   0.09999,  0.90001,  0.29997,  0.70003,  0.029997,
-          0.970003, 0.49995,  0.50005,  0.049995, 0.950005, 0.149985, 0.850015,
-          0.014999, 0.985002, 0.69993,  0.30007,  0.069993, 0.930007, 0.209979,
-          0.790021, 0.020998, 0.979002, 0.349965, 0.650035, 0.034997, 0.965004,
-          0.104990, 0.895011, 0.010499, 0.989501, 0.89991,  0.10009,  0.089991,
-          0.910009, 0.269973, 0.730027, 0.026997, 0.973003, 0.449955, 0.550045,
-          0.044996, 0.955005, 0.134987, 0.865014, 0.013499, 0.986501, 0.629937,
-          0.370063, 0.062994, 0.937006, 0.188981, 0.811019, 0.018898, 0.981101,
-          0.314969, 0.685032, 0.031497, 0.968503, 0.094491, 0.905509, 0.009449,
-          0.990551};
+      float witness[] = { 
+          0.9999f,   0.0001f,   0.09999f,  0.90001f,  0.29997f,  0.70003f,  0.029997f,
+          0.970003f, 0.49995f,  0.50005f,  0.049995f, 0.950005f, 0.149985f, 0.850015f,
+          0.014999f, 0.985002f, 0.69993f,  0.30007f,  0.069993f, 0.930007f, 0.209979f,
+          0.790021f, 0.020998f, 0.979002f, 0.349965f, 0.650035f, 0.034997f, 0.965004f,
+          0.104990f, 0.895011f, 0.010499f, 0.989501f, 0.89991f,  0.10009f,  0.089991f,
+          0.910009f, 0.269973f, 0.730027f, 0.026997f, 0.973003f, 0.449955f, 0.550045f,
+          0.044996f, 0.955005f, 0.134987f, 0.865014f, 0.013499f, 0.986501f, 0.629937f,
+          0.370063f, 0.062994f, 0.937006f, 0.188981f, 0.811019f, 0.018898f, 0.981101f,
+          0.314969f, 0.685032f, 0.031497f, 0.968503f, 0.094491f, 0.905509f, 0.009449f,
+          0.990551f}; 
 
       int j = 0;
 

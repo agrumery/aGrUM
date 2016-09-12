@@ -159,7 +159,7 @@ namespace gum {
    * needed to perform the ScheduleOperation */
   template <typename GUM_SCALAR>
   INLINE float ScheduleProject<GUM_SCALAR>::nbOperations() const {
-    return __table.domainSize();
+    return float(__table.domainSize());
   }
 
   /// returns the memory consumption used during the operation
@@ -175,7 +175,7 @@ namespace gum {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
-        size *= var->domainSize();
+        size *= long(var->domainSize());
       }
 
     return std::pair<long, long>( size, size );

@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include <stdio.h>
 #include <string>
 #include <string.h>
@@ -56,25 +57,46 @@ namespace gum_tests {
         getline( file1, str );
         c1++;
       }
-      file1.clear();  //  set new value for error control state  //
-      file2.seekg( 0, std::ios::beg );
       while ( !file2.eof() ) {
         getline( file2, str );
         c2++;
       }
+      
+      if ( c1 != c2 ) return false;
+      
+      //---------- compare two files line by line ------------------//
+      file1.clear();  //  set new value for error control state  //
+      file1.seekg( 0, std::ios::beg );
       file2.clear();
       file2.seekg( 0, std::ios::beg );
-
-      if ( c1 != c2 ) return false;
-
-      //---------- compare two files line by line ------------------//
+            
       char string1[256], string2[256];
       int j = 0;
       while ( !file1.eof() ) {
         file1.getline( string1, 256 );
         file2.getline( string2, 256 );
+        
+        // get rid of linux or windows eol
+        if (strlen(string1)>0) {
+        for(char *p=string1+strlen(string1)-1;p>=string1;p--) {
+          if (*p=='\n') *p='\0';
+          else if (*p=='\r') *p='\0';
+          else break;
+        }}
+        if (strlen(string2)>0) {
+        for(char *p=string2+strlen(string2)-1;p>=string2;p--) {
+          if (*p=='\n') *p='\0';
+          else if (*p=='\r') *p='\0';
+          else break;
+        }}
+      
         j++;
-        if ( strcmp( string1, string2 ) != 0 ) return false;
+        if ( strcmp( string1, string2 ) != 0 ) {
+          GUM_TRACE(f2<<":"<<j);
+          GUM_TRACE_VAR(string1);
+          GUM_TRACE_VAR(string2);
+          return false;
+        }
       }
 
       return true;
@@ -82,7 +104,7 @@ namespace gum_tests {
 
     public:
     gum::BayesNet<double>* bn;
-    gum::Id i1, i2, i3, i4, i5;
+    gum::NodeId i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<double>();
@@ -129,7 +151,7 @@ namespace gum_tests {
       try {
         writer.write( file, *bn );
         TS_ASSERT( true );
-      } catch ( gum::IOError& e ) {
+      } catch ( gum::IOError&  ) {
         TS_ASSERT( false );
       }
 

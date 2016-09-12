@@ -33,7 +33,7 @@ namespace gum {
     template <typename RowFilter>
     INLINE ParamEstimatorML<IdSetAlloc, CountAlloc>::ParamEstimatorML(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities,
+        const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
             score_internal_apriori )
@@ -77,9 +77,9 @@ namespace gum {
 
     /// returns the CPT's parameters corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    const std::vector<float, CountAlloc>&
+    const std::vector<double, CountAlloc>&
     ParamEstimatorML<IdSetAlloc, CountAlloc>::parameters(
-        unsigned int nodeset_index ) {
+        Idx nodeset_index ) {
       // if all_counts is already normalized, just return it
       if ( this->_is_normalized[nodeset_index] ) {
         return this->_getAllCounts( nodeset_index );
@@ -88,14 +88,14 @@ namespace gum {
       // now, normalize all_counts
 
       // get the nodes involved in the score as well as their modalities
-      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
+      const std::vector<Idx, IdSetAlloc>& all_nodes =
           this->_getAllNodes( nodeset_index );
-      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
+      const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes( nodeset_index );
-      const unsigned int target_modal =
+      const Idx target_modal =
           this->modalities()[all_nodes[all_nodes.size() - 1]];
-      std::vector<float, CountAlloc>& N_ijk =
-          const_cast<std::vector<float, CountAlloc>&>(
+      std::vector<double, CountAlloc>& N_ijk =
+          const_cast<std::vector<double, CountAlloc>&>(
               this->_getAllCounts( nodeset_index ) );
 
       // if we did not count yet the internal apriori of the score, do it
@@ -105,18 +105,18 @@ namespace gum {
       // without conditioning nodes
       if ( conditioning_nodes ) {
         // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float, CountAlloc>& N_ij =
+        const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const unsigned int conditioning_size = N_ij.size();
+        const Size conditioning_size = Size(N_ij.size());
 
         if ( this->_apriori->weight() ) {
-          const std::vector<float, CountAlloc>& N_prime_ijk =
+          const std::vector<double, CountAlloc>& N_prime_ijk =
               this->_getAllApriori( nodeset_index );
-          const std::vector<float, CountAlloc>& N_prime_ij =
+          const std::vector<double, CountAlloc>& N_prime_ij =
               this->_getConditioningApriori( nodeset_index );
 
           // check that all conditioning nodes have strictly positive counts
-          for ( unsigned int j = 0; j < conditioning_size; ++j ) {
+          for ( Idx j = 0; j < conditioning_size; ++j ) {
             if ( N_ij[j] + N_prime_ij[j] == 0 ) {
               GUM_ERROR( CPTError,
                          "A conditioning set has a value that never "
@@ -125,15 +125,15 @@ namespace gum {
           }
 
           // normalize the counts
-          for ( unsigned int i = 0, k = 0; i < target_modal; ++i ) {
-            for ( unsigned int j = 0; j < conditioning_size; ++k, ++j ) {
+          for ( Idx i = 0, k = 0; i < target_modal; ++i ) {
+            for ( Idx j = 0; j < conditioning_size; ++k, ++j ) {
               N_ijk[k] =
                   ( N_ijk[k] + N_prime_ijk[k] ) / ( N_ij[j] + N_prime_ij[j] );
             }
           }
         } else {
           // check that all conditioning nodes have strictly positive counts
-          for ( unsigned int j = 0; j < conditioning_size; ++j ) {
+          for ( Idx j = 0; j < conditioning_size; ++j ) {
             if ( !N_ij[j] ) {
               GUM_ERROR( CPTError,
                          "A conditioning set has a value that never "
@@ -142,26 +142,26 @@ namespace gum {
           }
 
           // normalize the counts
-          for ( unsigned int i = 0, k = 0; i < target_modal; ++i ) {
-            for ( unsigned int j = 0; j < conditioning_size; ++k, ++j ) {
+          for ( Idx i = 0, k = 0; i < target_modal; ++i ) {
+            for ( Idx j = 0; j < conditioning_size; ++k, ++j ) {
               N_ijk[k] /= N_ij[j];
             }
           }
         }
       } else {
-        float sum = 0;
+        double sum = 0;
 
         if ( this->_apriori->weight() ) {
-          const std::vector<float, CountAlloc>& N_prime_ijk =
+          const std::vector<double, CountAlloc>& N_prime_ijk =
               this->_getAllApriori( nodeset_index );
 
           // here, there are no conditioning nodes
-          for ( unsigned int k = 0; k < target_modal; ++k ) {
+          for ( Idx k = 0; k < target_modal; ++k ) {
             sum += N_ijk[k] + N_prime_ijk[k];
           }
 
           if ( sum ) {
-            for ( unsigned int k = 0; k < target_modal; ++k ) {
+            for ( Idx k = 0; k < target_modal; ++k ) {
               N_ijk[k] = ( N_ijk[k] + N_prime_ijk[k] ) / sum;
             }
           } else {
@@ -171,12 +171,12 @@ namespace gum {
           }
         } else {
           // here, there are no conditioning nodes
-          for ( unsigned int k = 0; k < target_modal; ++k ) {
+          for ( Idx k = 0; k < target_modal; ++k ) {
             sum += N_ijk[k];
           }
 
           if ( sum ) {
-            for ( unsigned int k = 0; k < target_modal; ++k ) {
+            for ( Idx k = 0; k < target_modal; ++k ) {
               N_ijk[k] /= sum;
             }
           } else {

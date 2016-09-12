@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -24,19 +24,20 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
-#include <agrum/PRM/elements/type.h>
+#include <agrum/PRM/elements/PRMType.h>
+#include <agrum/PRM/elements/PRMClass.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
- * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
- * gum::prm::ClassElement.
+ * gum::prm::PRMClassElement.
  */
 namespace gum_tests {
 
   class PRMTypeTestSuite : public CxxTest::TestSuite {
-    typedef gum::prm::Type<double> Type;
+    typedef gum::prm::PRMType<double> PRMType;
 
     gum::LabelizedVariable* __boolean;
     gum::LabelizedVariable* __state;
@@ -63,7 +64,7 @@ namespace gum_tests {
       std::string name = "boolean";
       std::string decription = "Boolean variable";
       // Act
-      auto boolean = Type::boolean();
+      auto boolean = PRMType::boolean();
       // Assert
       TS_ASSERT_EQUALS( boolean->variable().domainSize(), (gum::Size)2 );
       TS_ASSERT_EQUALS( boolean->variable().label( 0 ), labels[0] );
@@ -73,25 +74,25 @@ namespace gum_tests {
 
     void testConstructor() {
       // Arrange
-      Type* type = nullptr;
+      PRMType* type = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING( type = new Type{*__boolean} );
+      TS_ASSERT_THROWS_NOTHING( type = new PRMType{*__boolean} );
       // Assert
       TS_ASSERT_THROWS_NOTHING( delete type );
     }
 
     void testSuperConstructor() {
       // Arrange
-      Type boolean{*__boolean};
-      Type* state = nullptr;
+      PRMType boolean{*__boolean};
+      PRMType* state = nullptr;
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
       // Act
       try {
-        state = new Type{boolean, map, *__state};
+        state = new PRMType{boolean, map, *__state};
       } catch ( ... ) {
-        // TS_ASSERT_THROWS_NOTHING does not work here
+        // TS_ASSERT_THROWS_NOTHING does ! work here
         TS_FAIL( "Exception thrown" );
       }
       // Assert
@@ -100,17 +101,17 @@ namespace gum_tests {
 
     void testCopyConstructor() {
       // Arrange
-      Type boolean{*__boolean};
-      Type* copy = nullptr;
+      PRMType boolean{*__boolean};
+      PRMType* copy = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING( copy = new Type{boolean} );
+      TS_ASSERT_THROWS_NOTHING( copy = new PRMType{boolean} );
       // Assert
       TS_ASSERT_THROWS_NOTHING( delete copy );
     }
 
     void testGetVariable() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       gum::DiscreteVariable* variable = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( variable = &( boolean.variable() ) );
@@ -125,8 +126,8 @@ namespace gum_tests {
 
     void testGetVariableConst() {
       // Arrange
-      Type boolean{*__boolean};
-      const Type& const_boolean = boolean;
+      PRMType boolean{*__boolean};
+      const PRMType& const_boolean = boolean;
       gum::DiscreteVariable const* variable = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( variable = &( const_boolean.variable() ) );
@@ -141,7 +142,7 @@ namespace gum_tests {
 
     void testIndirectionOperator() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       gum::DiscreteVariable* variable = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( variable = &( *boolean ) );
@@ -156,8 +157,8 @@ namespace gum_tests {
 
     void testIndirectionOperatorConst() {
       // Arrange
-      Type boolean{*__boolean};
-      const Type& const_boolean = boolean;
+      PRMType boolean{*__boolean};
+      const PRMType& const_boolean = boolean;
       gum::DiscreteVariable const* variable = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( variable = &( *const_boolean ) );
@@ -172,9 +173,9 @@ namespace gum_tests {
 
     void testEqualityOperator() {
       // Arrange
-      Type a{*__boolean};
-      Type b{*__boolean};
-      Type c{*__state};
+      PRMType a{*__boolean};
+      PRMType b{*__boolean};
+      PRMType c{*__state};
       // Act & Assert
       TS_ASSERT( a == a );
       TS_ASSERT( a == b );
@@ -188,9 +189,9 @@ namespace gum_tests {
 
     void testInequalityOperator() {
       // Arrange
-      Type a{*__boolean};
-      Type b{*__boolean};
-      Type c{*__state};
+      PRMType a{*__boolean};
+      PRMType b{*__boolean};
+      PRMType c{*__state};
 
       // Act & Assert
       TS_ASSERT( !( a != a ) );
@@ -205,8 +206,8 @@ namespace gum_tests {
 
     void testObjType() {
       // Arrange
-      Type boolean{*__boolean};
-      auto expected = gum::prm::PRMObject::PRMType::TYPE;
+      PRMType boolean{*__boolean};
+      auto expected = gum::prm::PRMObject::prm_type::TYPE;
       // Act
       auto actual = boolean.obj_type();
       // Assert
@@ -215,7 +216,7 @@ namespace gum_tests {
 
     void testName() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       auto expected = __boolean->name();
       // Act
       auto actual = boolean.name();
@@ -225,132 +226,132 @@ namespace gum_tests {
 
     void testIsSubType() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      Type state{boolean, map, *__state};
+      PRMType state{boolean, map, *__state};
       // Act & Assert
       TS_ASSERT( state.isSubType() );
-      TS_ASSERT( not boolean.isSubType() );
+      TS_ASSERT( ! boolean.isSubType() );
     }
 
     void testIsSubTypeOf() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      Type state{boolean, map, *__state};
-      Type dummy{*__state};
+      PRMType state{boolean, map, *__state};
+      PRMType dummy{*__state};
       // Act & Assert
       TS_ASSERT( state.isSubTypeOf( boolean ) );
       TS_ASSERT( state.isSubTypeOf( state ) );
-      TS_ASSERT( not boolean.isSubTypeOf( state ) );
-      TS_ASSERT( not dummy.isSubTypeOf( boolean ) );
-      TS_ASSERT( not boolean.isSubTypeOf( dummy ) );
+      TS_ASSERT( ! boolean.isSubTypeOf( state ) );
+      TS_ASSERT( ! dummy.isSubTypeOf( boolean ) );
+      TS_ASSERT( ! boolean.isSubTypeOf( dummy ) );
       TS_ASSERT( dummy.isSubTypeOf( state ) );
       TS_ASSERT( state.isSubTypeOf( dummy ) );
     }
 
     void testIsSuperTypeOf() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      Type state{boolean, map, *__state};
-      Type dummy{*__state};
+      PRMType state{boolean, map, *__state};
+      PRMType dummy{*__state};
       // Act & Assert
       TS_ASSERT( boolean.isSuperTypeOf( state ) );
       TS_ASSERT( state.isSuperTypeOf( state ) );
-      TS_ASSERT( not state.isSuperTypeOf( boolean ) );
-      TS_ASSERT( not dummy.isSuperTypeOf( boolean ) );
-      TS_ASSERT( not boolean.isSuperTypeOf( dummy ) );
+      TS_ASSERT( ! state.isSuperTypeOf( boolean ) );
+      TS_ASSERT( ! dummy.isSuperTypeOf( boolean ) );
+      TS_ASSERT( ! boolean.isSuperTypeOf( dummy ) );
       TS_ASSERT( dummy.isSuperTypeOf( state ) );
       TS_ASSERT( state.isSuperTypeOf( dummy ) );
     }
 
     void testSuper() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      Type state{boolean, map, *__state};
-      Type* super = nullptr;
+      PRMType state{boolean, map, *__state};
+      PRMType* super = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING( super = &( state.super() ) );
+      TS_ASSERT_THROWS_NOTHING( super = &( state.superType() ) );
       // Act & Assert
       TS_ASSERT_EQUALS( *super, boolean );
     }
 
     void testSuperConst() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      Type state{boolean, map, *__state};
+      PRMType state{boolean, map, *__state};
       const auto& dummy = state;
-      Type const* super = nullptr;
+      PRMType const* super = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING( super = &( dummy.super() ) );
+      TS_ASSERT_THROWS_NOTHING( super = &( dummy.superType() ) );
       // Act & Assert
       TS_ASSERT_EQUALS( *super, boolean );
     }
 
     void testSuperNotFound() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       // Act & Assert
-      TS_ASSERT_THROWS( boolean.super(), gum::NotFound );
+      TS_ASSERT_THROWS( boolean.superType(), gum::NotFound );
     }
 
     void testSetSuper() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      Type state{boolean, map, *__state};
-      Type boolean_bis{*__boolean};
+      PRMType state{boolean, map, *__state};
+      PRMType boolean_bis{*__boolean};
       // Act
       TS_ASSERT_THROWS_NOTHING( state.setSuper( boolean_bis ) );
       // Assert
-      TS_ASSERT_EQUALS( state.super(), boolean );
-      TS_ASSERT_EQUALS( state.super(), boolean_bis );
-      TS_ASSERT_DIFFERS( &( state.super() ), &boolean );
-      TS_ASSERT_EQUALS( &( state.super() ), &boolean_bis );
+      TS_ASSERT_EQUALS( state.superType(), boolean );
+      TS_ASSERT_EQUALS( state.superType(), boolean_bis );
+      TS_ASSERT_DIFFERS( &( state.superType() ), &boolean );
+      TS_ASSERT_EQUALS( &( state.superType() ), &boolean_bis );
     }
 
     void testSetSuperWrongtype() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      Type state{boolean, map, *__state};
-      Type state_bis{*__state};
+      PRMType state{boolean, map, *__state};
+      PRMType state_bis{*__state};
       // Act & Assert
       TS_ASSERT_THROWS( state.setSuper( state_bis ), gum::WrongType );
     }
 
     void testSetSuperOperationNotAllowed() {
       // Arrange
-      Type boolean{*__boolean};
-      Type state{*__state};
+      PRMType boolean{*__boolean};
+      PRMType state{*__state};
       // Act & Assert
       TS_ASSERT_THROWS( state.setSuper( boolean ), gum::OperationNotAllowed );
     }
 
     void testLabelMap() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       std::vector<gum::Idx> map;
       map.push_back( 1 );
       map.push_back( 0 );
-      Type state{boolean, map, *__state};
+      PRMType state{boolean, map, *__state};
       // Act
       auto actual = state.label_map();
       // Assert
@@ -359,7 +360,7 @@ namespace gum_tests {
 
     void testLabelMapNotFound() {
       // Arrange
-      Type boolean{*__boolean};
+      PRMType boolean{*__boolean};
       // Act & Assert
       TS_ASSERT_THROWS( boolean.label_map(), gum::NotFound );
     }

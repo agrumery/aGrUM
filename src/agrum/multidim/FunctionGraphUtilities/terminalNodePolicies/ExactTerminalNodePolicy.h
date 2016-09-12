@@ -61,7 +61,9 @@ namespace gum {
     void eraseTerminalNode( const NodeId& n ) { __map.eraseFirst( n ); }
 
     /// Erase all terminal nodes
-    void clearAllTerminalNodes() { __map.clear(); }
+    void clearAllTerminalNodes() {
+      __map.clear();
+    }
 
     /// @}
     // ============================================================================
@@ -70,12 +72,12 @@ namespace gum {
     /// @{
 
     /// Returns true if a terminal node matching this id exists
-    bool existsTerminalNode( const NodeId& n ) const {
+    bool existsTerminalNodeWithId( const NodeId& n ) const {
       return __map.existsFirst( n );
     }
 
     /// Returns true if a terminal node matching this value exists
-    bool existsTerminalNode( const GUM_SCALAR& v ) const {
+    bool existsTerminalNodeWithValue( const GUM_SCALAR& v ) const {
       return __map.existsSecond( v );
     }
 

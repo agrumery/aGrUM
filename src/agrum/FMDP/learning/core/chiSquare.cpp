@@ -116,7 +116,7 @@ namespace gum {
   // ==========================================================================
   /// computes the probability of chi2 value (used by the cache)
   // ==========================================================================
-  double ChiSquare::probaChi2( double x, unsigned long df ) {
+  double ChiSquare::probaChi2( double x, Size df ) {
     double retVal = 0.0;
     //      ++nbChit;
 

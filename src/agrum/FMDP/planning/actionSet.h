@@ -214,7 +214,7 @@ namespace gum {
     // ============================================================================
     /// Gives the size
     // ============================================================================
-    Idx size() const { return __actionSeq->size(); }
+    Size size() const { return __actionSeq->size(); }
 
     bool exists( const Idx& elem ) const { return __actionSeq->exists( elem ); }
 

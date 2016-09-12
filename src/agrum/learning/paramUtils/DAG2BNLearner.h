@@ -73,14 +73,14 @@ namespace gum {
       /// @{
 
       /// create a BN
-      template <typename GUM_SCALAR = float,
+      template <typename GUM_SCALAR = double,
                 typename PARAM_ESTIMATOR,
                 typename CELL_TRANSLATORS>
       static BayesNet<GUM_SCALAR>
       createBN( PARAM_ESTIMATOR& estimator,
                 const DAG& dag,
                 const std::vector<std::string>& names,
-                const std::vector<unsigned int>& modal,
+                const std::vector<Size>& modal,
                 const CELL_TRANSLATORS& translator );
 
       /// @}
@@ -89,10 +89,10 @@ namespace gum {
       /// copy a potential into another whose variables' sequence differs
       /** The variables of both potential should be the same, only their
        * order differs */
-      template <typename GUM_SCALAR = float>
+      template <typename GUM_SCALAR = double>
       static void
       __probaVarReordering( gum::Potential<GUM_SCALAR>& pot,
-                            const gum::Potential<float>& other_pot );
+                            const gum::Potential<GUM_SCALAR>& other_pot );
     };
 
   } /* namespace learning */

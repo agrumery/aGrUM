@@ -42,7 +42,7 @@ namespace gum_tests {
   class UAIWriterTestSuite : public CxxTest::TestSuite {
   public:
     gum::BayesNet<double>* bn;
-    gum::Id i1, i2, i3, i4, i5;
+    gum::NodeId i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<double>();
@@ -94,7 +94,7 @@ namespace gum_tests {
       try {
         writer.write( file, *bn );
         TS_ASSERT( false );
-      } catch ( gum::IOError& e ) {
+      } catch ( gum::IOError& ) {
         TS_ASSERT( true );
       }
     }

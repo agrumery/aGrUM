@@ -28,6 +28,11 @@
 #ifndef GUM_SDYNA_H
 #define GUM_SDYNA_H
 // =========================================================================
+#include <agrum/config.h>
+#include <agrum/multidim/instantiation.h>
+// =========================================================================
+#include <agrum/variables/discreteVariable.h>
+// =========================================================================
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
@@ -41,10 +46,6 @@
 #include <agrum/FMDP/decision/randomDecider.h>
 #include <agrum/FMDP/decision/statisticalLazyDecider.h>
 #include <agrum/FMDP/planning/actionSet.h>
-// =========================================================================
-#include <agrum/multidim/instantiation.h>
-// =========================================================================
-#include <agrum/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

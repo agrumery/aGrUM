@@ -23,6 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorNumber.h>
 
 namespace gum {
 
@@ -37,7 +38,7 @@ namespace gum {
         , __values( from.__values )
         , __check_database( from.__check_database ) {
       if ( from.__user_values != nullptr ) {
-        __user_values = new Sequence<float>( *from.__user_values );
+        __user_values = new Sequence<double>( *from.__user_values );
       }
     }
 
@@ -49,7 +50,7 @@ namespace gum {
         , __values( std::move( from.__values ) )
         , __check_database( std::move( from.__check_database ) ) {
       if ( from.__user_values != nullptr ) {
-        __user_values = new Sequence<float>( std::move( *from.__user_values ) );
+        __user_values = new Sequence<double>( std::move( *from.__user_values ) );
       }
     }
 
@@ -78,7 +79,7 @@ namespace gum {
           __user_values = nullptr;
         }
         if ( from.__user_values != nullptr ) {
-          __user_values = new Sequence<float>( *from.__user_values );
+          __user_values = new Sequence<double>( *from.__user_values );
         }
       }
       return *this;
@@ -98,7 +99,7 @@ namespace gum {
         }
         if ( from.__user_values != nullptr ) {
           __user_values =
-              new Sequence<float>( std::move( *from.__user_values ) );
+              new Sequence<double>( std::move( *from.__user_values ) );
         }
       }
       return *this;
@@ -106,12 +107,12 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorNumber::translate() {
-      out( 0 ) = __values.second( in( 0 ).getFloat() );
+      out( 0 ) = __values.second( in( 0 ).getReal() );
     }
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorNumber::initialize() {
-      const float nb = in( 0 ).getFloat();
+      const double nb = in( 0 ).getReal();
       if ( !__values.existsFirst( nb ) ) {
         __values.insert( nb, __max_value );
         ++__max_value;
@@ -120,7 +121,7 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void
-    CellTranslatorNumber::modalities( std::vector<unsigned int>& modal ) const
+    CellTranslatorNumber::modalities( std::vector<Size>& modal ) const
         noexcept {
       modal.push_back( __values.size() );
     }
@@ -132,8 +133,8 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorNumber::translateBack( unsigned int col,
-                                         unsigned int translated_val ) const {
+    CellTranslatorNumber::translateBack( Idx col,
+                                         Idx translated_val ) const {
       std::stringstream str;
       str << __values.first( translated_val );
       return str.str();

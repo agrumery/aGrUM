@@ -262,13 +262,13 @@ namespace gum_tests {
         gum::Instantiation ins( cn->instantiation( id ) );
         ins.setFirst();
 
-        unsigned long int entry( 0 );
+        gum::Size entry( 0 );
 
         while ( !ins.end() ) {
           std::vector<std::vector<double>> vertices(
               lps[id][entry].solve() );  // we solve the lp
 
-          gum::Size sols_size( lps_sols[id][entry].size() );
+          gum::Size sols_size=gum::Size(lps_sols[id][entry].size() );
           TS_ASSERT_EQUALS( vertices.size(), sols_size );
 
           std::vector<bool> checked( sols_size, false );

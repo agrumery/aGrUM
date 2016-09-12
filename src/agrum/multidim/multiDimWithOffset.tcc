@@ -24,6 +24,8 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
+#include <limits>
+
 // to ease IDE parsers...
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimWithOffset.h>
@@ -66,7 +68,7 @@ namespace gum {
   INLINE void MultiDimWithOffset<GUM_SCALAR>::add( const DiscreteVariable& v ) {
     Size lg = this->domainSize();
 
-    if ( lg > GUM_MAX_SIZE / v.domainSize() ) {
+    if ( lg > std::numeric_limits<Idx>::max() / v.domainSize() ) {
       GUM_ERROR( OutOfBounds, "Out of bounds !" );
     }
 

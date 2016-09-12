@@ -50,12 +50,12 @@ namespace gum {
         for ( const auto edge : __graph->edges( &label ) ) {
           bool u_first = ( edge->l_u->id < edge->l_v->id );
           Idx u_idx = ( u_first ) ? edge->l_u->id : edge->l_v->id;
-          Idx v_idx = ( not u_first ) ? edge->l_u->id : edge->l_v->id;
+          Idx v_idx = ( ! u_first ) ? edge->l_u->id : edge->l_v->id;
 
           bool found = false;
 
           for ( const auto& elt : roots )
-            if ( ( elt.second.first == u_idx ) and
+            if ( ( elt.second.first == u_idx ) &&
                  ( elt.second.second == v_idx ) ) {
               roots_edges[elt.first]->insert( edge );
               found = true;
@@ -63,7 +63,7 @@ namespace gum {
             }
 
           /// Then we create a new pattern
-          if ( not found ) {
+          if ( ! found ) {
             Pattern* p = new Pattern();
             roots.insert( p, std::make_pair( u_idx, v_idx ) );
             roots_edges.insert( p, new Sequence<EdgeData<GUM_SCALAR>*>() );
@@ -71,7 +71,7 @@ namespace gum {
             DFSTree<GUM_SCALAR>::PatternData* data =
                 new DFSTree<GUM_SCALAR>::PatternData( p );
             NodeId u = p->addNode( ( u_first ) ? *edge->l_u : *edge->l_v );
-            NodeId v = p->addNode( ( not u_first ) ? *edge->l_u : *edge->l_v );
+            NodeId v = p->addNode( ( ! u_first ) ? *edge->l_u : *edge->l_v );
             p->addArc( u, v, label );
             __node_map.insert( DiGraph::addNode(), p );
             __data.insert( p, data );
@@ -95,13 +95,13 @@ namespace gum {
 
         for ( auto iter = edge_seq.begin(); iter != edge_seq.end(); ++iter ) {
           const auto& edge = *iter;
-          Sequence<Instance<GUM_SCALAR>*>* seq =
-              new Sequence<Instance<GUM_SCALAR>*>();
+          Sequence<PRMInstance<GUM_SCALAR>*>* seq =
+              new Sequence<PRMInstance<GUM_SCALAR>*>();
 
           // Creating the multiset of instances matching p
           bool u_first = ( edge->l_u->id < edge->l_v->id );
           seq->insert( ( u_first ) ? edge->u : edge->v );
-          seq->insert( ( not u_first ) ? edge->u : edge->v );
+          seq->insert( ( ! u_first ) ? edge->u : edge->v );
 
           NodeId an_id = data->iso_graph.addNode();
           data->iso_map.insert( an_id, seq );
@@ -125,7 +125,7 @@ namespace gum {
         Set<NodeId> removed;
 
         for ( const auto node : degree_list ) {
-          if ( not removed.exists( node ) ) {
+          if ( ! removed.exists( node ) ) {
             removed.insert( node );
 
             for ( const auto neighbor : data->iso_graph.neighbours( node ) )
@@ -138,13 +138,13 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       bool DFSTree<GUM_SCALAR>::__is_new_seq(
-          Sequence<Instance<GUM_SCALAR>*>& seq,
-          NodeProperty<Sequence<Instance<GUM_SCALAR>*>*>& iso_map ) {
+          Sequence<PRMInstance<GUM_SCALAR>*>& seq,
+          NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& iso_map ) {
         for ( const auto& elt : iso_map ) {
           bool found = false;
 
           for ( const auto& inst : seq )
-            if ( not( elt.second->exists( inst ) ) ) {
+            if ( !( elt.second->exists( inst ) ) ) {
               found = true;
               break;
             }
@@ -213,7 +213,7 @@ namespace gum {
           for ( EdgeIter iter = child->code().codes.begin();
                 ( iter + 1 ) != child->code().codes.end();
                 ++iter ) {
-            if ( ( ( ( **iter ).i == v ) or ( ( **iter ).j == v ) ) and
+            if ( ( ( ( **iter ).i == v ) || ( ( **iter ).j == v ) ) &&
                  edge < ( **iter ) ) {
               GUM_ERROR(
                   OperationNotAllowed,
@@ -223,7 +223,7 @@ namespace gum {
         }
 
         // Finally we check if child is minimal.
-        if ( not child->isMinimal() ) {
+        if ( ! child->isMinimal() ) {
           GUM_ERROR( OperationNotAllowed,
                      "the DFSCode for this growth is not minimal" );
         }
@@ -236,7 +236,7 @@ namespace gum {
 
         try {
           __checkGrowth( p, child, edge_growth );
-        } catch ( OperationNotAllowed& e ) {
+        } catch ( OperationNotAllowed& ) {
           delete child;
           throw;
         }
@@ -245,10 +245,10 @@ namespace gum {
         DFSTree<GUM_SCALAR>::PatternData* data =
             new DFSTree<GUM_SCALAR>::PatternData( child );
         std::vector<NodeId> degree_list;
-        NodeProperty<Sequence<Instance<GUM_SCALAR>*>*>& p_iso_map =
+        NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& p_iso_map =
             __data[&p]->iso_map;
-        typename NodeProperty<std::pair<Instance<GUM_SCALAR>*,
-                                        Instance<GUM_SCALAR>*>>::iterator_safe
+        typename NodeProperty<std::pair<PRMInstance<GUM_SCALAR>*,
+                                        PRMInstance<GUM_SCALAR>*>>::iterator_safe
             match;
         // Using p information to build child's isomorphism graph
         NodeId id = 0;
@@ -259,11 +259,11 @@ namespace gum {
           for ( ; match != edge_growth.matches.end(); ++match ) {
             // Adding the isomorphism in the iso_graph and building the iso_map.
             if ( child->code().codes.back()->isForward() ) {
-              if ( elt.second->exists( match.val().first ) and
-                   not( elt.second->exists( match.val().second ) ) ) {
+              if ( elt.second->exists( match.val().first ) &&
+                   !( elt.second->exists( match.val().second ) ) ) {
                 // Let's see if the new match is already matched
-                Sequence<Instance<GUM_SCALAR>*>* new_seq =
-                    new Sequence<Instance<GUM_SCALAR>*>( *elt.second );
+                Sequence<PRMInstance<GUM_SCALAR>*>* new_seq =
+                    new Sequence<PRMInstance<GUM_SCALAR>*>( *elt.second );
                 new_seq->insert( match.val().second );
 
                 if ( __is_new_seq( *new_seq, data->iso_map ) ) {
@@ -276,10 +276,10 @@ namespace gum {
                 break;
               }
             } else {
-              if ( elt.second->exists( match.val().first ) and
+              if ( elt.second->exists( match.val().first ) &&
                    elt.second->exists( match.val().second ) ) {
-                Sequence<Instance<GUM_SCALAR>*>* new_seq =
-                    new Sequence<Instance<GUM_SCALAR>*>( *elt.second );
+                Sequence<PRMInstance<GUM_SCALAR>*>* new_seq =
+                    new Sequence<PRMInstance<GUM_SCALAR>*>( *elt.second );
 
                 if ( __is_new_seq( *new_seq, data->iso_map ) ) {
                   id = data->iso_graph.addNode();
@@ -320,7 +320,7 @@ namespace gum {
         Set<NodeId> removed;
 
         for ( const auto node : degree_list ) {
-          if ( not removed.exists( node ) ) {
+          if ( ! removed.exists( node ) ) {
             removed.insert( node );
 
             for ( const auto neighbor : data->iso_graph.neighbours( node ) )
@@ -332,7 +332,7 @@ namespace gum {
 
         __data.insert( child, data );
 
-        if ( not __strategy->accept_growth( &p, child, edge_growth ) ) {
+        if ( ! __strategy->accept_growth( &p, child, edge_growth ) ) {
           __data.erase( child );
           delete data;
           delete child;
@@ -340,69 +340,13 @@ namespace gum {
         }
 
         __addChild( p, child, edge_growth );
-        // Uncomment this if you want to debug it
-        // for (UndiGraph::NodeIterator node = data->iso_graph.beginNodes();
-        // node !=
-        // data->iso_graph.endNodes(); ++node) {
-        //   __find_sub_pattern(*child, *node);
-        // }
         return *child;
       }
 
       template <typename GUM_SCALAR>
-      void DFSTree<GUM_SCALAR>::__find_sub_pattern( Pattern& p,
-                                                    NodeId iso_map ) {
-        // PatternData& data = *(__data[&p]);
-        // Sequence<Instance<GUM_SCALAR>*>& seq = *(data.iso_map[iso_map]);
-        // HashTable<ClassElement<GUM_SCALAR>*, Size>* elt_map = new
-        // HashTable<ClassElement<GUM_SCALAR>*, Size>();
-        // ClassElement<GUM_SCALAR>* elt = 0;
-        // for (Sequence<Instance<GUM_SCALAR>*>::iterator iter = seq.begin();
-        // iter !=
-        // seq.end(); ++iter) {
-        //   for (Set<SlotChain*>::iterator sc = (*iter)->slotChains().begin();
-        //        sc != (*iter)->slotChains().end(); ++sc) {
-        //     elt = const_cast<ClassElement<GUM_SCALAR>*>(&((*sc)->lastElt()));
-        //     if (not elt_map->exists(elt)) {
-        //       elt_map->insert(elt, 0);
-        //     }
-        //     for (Set<Instance<GUM_SCALAR>*>::iterator i =
-        //     (*iter)->getInstances((*sc)->id()).begin();
-        //          i != (*iter)->getInstances((*sc)->id()).end(); ++i) {
-        //       if (not seq.exists(*i)) {
-        //         ++((*elt_map)[elt]);
-        //       }
-        //     }
-        //     if ((*elt_map)[elt] == 0) {
-        //       elt_map->erase(elt);
-        //     }
-        //   }
-        // }
-        // typedef Sequence< HashTable<ClassElement<GUM_SCALAR>*, Size>*
-        // >::iterator
-        // SubPatIter;
-        // for (SubPatIter iter = data.sub_patterns.begin(); iter !=
-        // data.sub_patterns.end(); ++iter) {
-        //   if (__test_equality(**iter, *elt_map)) {
-        //     data.sub_patterns_map.insert(iso_map,
-        //     data.sub_patterns.pos(*iter));
-        //     ++(data.sub_patterns_count[data.sub_patterns.pos(*iter)]);
-        //     break;
-        //   }
-        // }
-        // if (data.sub_patterns_map.exists(iso_map)) {
-        //   delete elt_map;
-        // } else {
-        //   data.sub_patterns_map.insert(iso_map, data.sub_patterns.size());
-        //   data.sub_patterns.insert(elt_map);
-        //   data.sub_patterns_count.push_back((Size) 1);
-        // }
-      }
-
-      template <typename GUM_SCALAR>
       bool DFSTree<GUM_SCALAR>::__test_equality(
-          HashTable<ClassElement<GUM_SCALAR>*, Size>& x,
-          HashTable<ClassElement<GUM_SCALAR>*, Size>& y ) {
+          HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,
+          HashTable<PRMClassElement<GUM_SCALAR>*, Size>& y ) {
 
         try {
           for ( const auto& elt : x )
@@ -427,7 +371,7 @@ namespace gum {
 
         for ( const auto& elt : from.iso_map )
           iso_map.insert( elt.first,
-                          new Sequence<Instance<GUM_SCALAR>*>( *elt.second ) );
+                          new Sequence<PRMInstance<GUM_SCALAR>*>( *elt.second ) );
       }
 
       template <typename GUM_SCALAR>
@@ -446,7 +390,7 @@ namespace gum {
           , __strategy( strategy ) {
         GUM_CONSTRUCTOR( DFSTree );
 
-        if ( not __strategy ) __strategy = new FrequenceSearch<GUM_SCALAR>( 2 );
+        if ( ! __strategy ) __strategy = new FrequenceSearch<GUM_SCALAR>( 2 );
 
         __strategy->setTree( this );
       }
@@ -540,7 +484,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE Sequence<Instance<GUM_SCALAR>*>&
+      INLINE Sequence<PRMInstance<GUM_SCALAR>*>&
       DFSTree<GUM_SCALAR>::iso_map( const Pattern& p, NodeId node ) {
         try {
           return *( __data[const_cast<Pattern*>( &p )]->iso_map[node] );
@@ -577,24 +521,6 @@ namespace gum {
             << edge.v;
         return out;
       }
-
-      // template<typename GUM_SCALAR> INLINE
-      // Sequence< HashTable<ClassElement<GUM_SCALAR>*, Size>* >&
-      // DFSTree<GUM_SCALAR>::sub_patterns(const Pattern& p) {
-      //   return __data[const_cast<Pattern*>(&p)]->sub_patterns;
-      // }
-      //
-      // template<typename GUM_SCALAR> INLINE
-      // HashTable<NodeId, Idx>&
-      // DFSTree<GUM_SCALAR>::sub_patterns_map(const Pattern& p) {
-      //   return __data[const_cast<Pattern*>(&p)]->sub_patterns_map;
-      // }
-
-      // template<typename GUM_SCALAR> INLINE
-      // Size
-      // DFSTree<GUM_SCALAR>::EdgeGrowth::count() const {
-      //  return matches.size();
-      //}
 
       template <typename GUM_SCALAR>
       INLINE double DFSTree<GUM_SCALAR>::frequency( const Pattern& p ) const {

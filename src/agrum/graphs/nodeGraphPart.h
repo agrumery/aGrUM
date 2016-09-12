@@ -502,9 +502,10 @@ namespace gum {
 
     /// the end iterator (used to speed-up parsings of the NodeGraphPart)
     NodeGraphPartIteratorSafe __endIteratorSafe;
-
+    
     /** @brief the id below which NodeIds may belong to the NodeGraphPart */
-    NodeId __bound;
+    NodeId __boundVal;
+
   };
 
   /// for friendly displaying the content of node set

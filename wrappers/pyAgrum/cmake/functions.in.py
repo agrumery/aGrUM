@@ -105,3 +105,30 @@ def loadID(s):
   diag.setProperty("name",s)
   return diag
 
+
+def fastBN(arcs,domainSize):
+  """ 
+  rapid prototyping of BN
+  @param string arcs : dot-like simple list of arcs ("a->b->c;a->c->d" for instance)
+  @oaram int domainSize : number of modalities for each created variables
+  """
+  def getId(bn,a):
+    try:
+      ia=bn.idFromName(a)
+    except IndexError:
+      ia=bn.add(a,domainSize)
+    return ia
+    
+  bn=BayesNet()
+  for arc in arcs.split(";"):
+    if arc!="":
+      l=arc.split("->")
+      if len(l)==1: # cannot be 0
+        getId(bn,l[0])
+      else:
+        for a, b in zip(l[:-1], l[1:]):
+          ia=getId(bn,a)
+          ib=getId(bn,b)
+          bn.addArc(ia,ib)
+  bn.generateCPTs()
+  return bn

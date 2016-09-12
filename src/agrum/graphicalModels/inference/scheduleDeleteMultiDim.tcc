@@ -132,7 +132,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE std::pair<long, long>
   ScheduleDeleteMultiDim<GUM_SCALAR>::memoryUsage() const {
-    long size_table = __table.domainSize();
+    long size_table = long(__table.domainSize());
 
     if ( size_table < 0 ) {
       GUM_ERROR( OutOfBounds, "memory usage out of long int range" );

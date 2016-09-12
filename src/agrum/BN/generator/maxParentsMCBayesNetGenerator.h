@@ -21,11 +21,13 @@
  * @brief Class for generating bayesian networks using MC algorithm
  * cf. [Ide and Cozman, 2002]
  *
- * @author Ariele MAESANO
+ * @author Ariele MAESANO and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
 #define GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
+
+#include <agrum/config.h>
 
 #include <set>
 #include <vector>
@@ -34,10 +36,13 @@
 
 #include <sstream>
 
+#ifdef  HAVE_DIRENT_H
 #include <dirent.h>
-#include <sys/time.h>
+#else
+#include <agrum/core/mvsc/dirent.h>
+#endif
 
-#include <agrum/config.h>
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/generator/simpleCPTDisturber.h>
@@ -77,8 +82,8 @@ namespace gum {
    * resulting in the failure of most of the inference Methods. \n
    * */
   template <typename GUM_SCALAR,
-            template <class> class ICPTGenerator = SimpleCPTGenerator,
-            template <class> class ICPTDisturber = SimpleCPTDisturber>
+            template <typename> class ICPTGenerator = SimpleCPTGenerator,
+            template <typename> class ICPTDisturber = SimpleCPTDisturber>
   class MaxParentsMCBayesNetGenerator
       : public MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> {
 

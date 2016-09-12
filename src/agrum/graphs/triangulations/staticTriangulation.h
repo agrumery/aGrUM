@@ -37,7 +37,7 @@
 
 namespace gum {
 
-  
+
   /** @class StaticTriangulation
    * @brief base class for all non-incremental triangulation methods
    *
@@ -69,7 +69,7 @@ namespace gum {
     virtual ~StaticTriangulation ();
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -87,7 +87,7 @@ namespace gum {
      * sequence algorithm. */
     virtual void setGraph( const UndiGraph* graph,
                            const NodeProperty<Size>* domsizes );
-    
+
     /// returns the fill-ins added by the triangulation algorithm
     const EdgeSet& fillIns ();
 
@@ -100,7 +100,7 @@ namespace gum {
 
     /** @brief returns a table indicating, for each node, at which step it was
      * deleted by the triangulation process */
-    const NodeProperty<Idx>& reverseEliminationOrder ();
+    const NodeProperty<NodeId>& reverseEliminationOrder ();
 
     /// returns the triangulated graph
     const UndiGraph& triangulatedGraph ();
@@ -158,7 +158,7 @@ namespace gum {
 
     /// @}
 
-    
+
   protected:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -203,7 +203,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -223,14 +223,14 @@ namespace gum {
 
     /// @}
 
-    
+
     /// the elimination sequence strategy used by the triangulation
     EliminationSequenceStrategy* _elimination_sequence_strategy { nullptr };
 
     /// the junction tree strategy used by the triangulation
     JunctionTreeStrategy* _junction_tree_strategy { nullptr };
 
-    
+
   private:
     /// a pointer to the (external) original graph (which will be triangulated)
     const UndiGraph* __original_graph { nullptr };
@@ -245,7 +245,7 @@ namespace gum {
     std::vector<NodeId> __elim_order;
 
     /// the elimination order (access by NodeId)
-    NodeProperty<Idx> __reverse_elim_order;
+    NodeProperty<NodeId> __reverse_elim_order;
 
     /// the cliques formed by the elimination of the nodes
     NodeProperty<NodeSet> __elim_cliques;

@@ -2572,7 +2572,7 @@ inline void result::result_impl::get_ref_impl<string_type>(short column, string_
                     const_cast<string_type::value_type*>(result.data())
                     , column_size
                     , NANODBC_TEXT("%f")
-                    , *(float*)(col.pdata_ + rowset_position_ * col.clen_)) == -1)
+                    , *(double*)(col.pdata_ + rowset_position_ * col.clen_)) == -1)
                 throw type_incompatible_error();
             result.resize(NANODBC_STRLEN(result.c_str()));
             return;
@@ -2652,7 +2652,7 @@ void result::result_impl::get_ref_impl(short column, T& result) const
         case SQL_C_LONG: result = (T)*(int32_t*)(s); return;
         case SQL_C_SLONG: result = (T)*(int32_t*)(s); return;
         case SQL_C_ULONG: result = (T)*(uint32_t*)(s); return;
-        case SQL_C_FLOAT: result = (T)*(float*)(s); return;
+        case SQL_C_FLOAT: result = (T)*(double*)(s); return;
         case SQL_C_DOUBLE: result = (T)*(double*)(s); return;
         case SQL_C_SBIGINT: result = (T)*(int64_t*)(s); return;
         case SQL_C_UBIGINT: result = (T)*(uint64_t*)(s); return;

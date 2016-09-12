@@ -18,14 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#include <time.h>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 
-#include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
+#include <cxxtest/AgrumTestSuite.h>
 
 #include <agrum/core/smallobjectallocator/fixedAllocator.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
@@ -131,10 +129,10 @@ namespace gum_tests {
     void test_Small_Object_Allocator_CONST_AND_DEST() {
 
       // Test constructor
-      TS_ASSERT_THROWS_NOTHING( gum::SmallObjectAllocator::instance());
+      TS_ASSERT_THROWS_NOTHING( gum::SmallObjectAllocator::instance() );
 
       // Test destructor
-      //TS_ASSERT_THROWS_NOTHING( delete soa );
+      // TS_ASSERT_THROWS_NOTHING( delete soa );
     }
 
     // ==============================================================================
@@ -142,10 +140,12 @@ namespace gum_tests {
     // ==============================================================================
     void test_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM() {
       void* pVoid;
-      TS_ASSERT_THROWS_NOTHING( pVoid =
-                                    gum::SmallObjectAllocator::instance().allocate( 5 * sizeof( gum::Idx ) ) );
       TS_ASSERT_THROWS_NOTHING(
-          gum::SmallObjectAllocator::instance().deallocate( pVoid, 5 * sizeof( gum::Idx ) ) );
+          pVoid = gum::SmallObjectAllocator::instance().allocate(
+              5 * sizeof( gum::Idx ) ) );
+      TS_ASSERT_THROWS_NOTHING(
+          gum::SmallObjectAllocator::instance().deallocate(
+              pVoid, 5 * sizeof( gum::Idx ) ) );
     }
 
     // ==============================================================================
@@ -156,55 +156,58 @@ namespace gum_tests {
       std::vector<void*> vVoid;
       for ( std::size_t i = 1; i < 13; ++i )
         TS_ASSERT_THROWS_NOTHING(
-            vVoid.push_back( gum::SmallObjectAllocator::instance().allocate( 2 * i * sizeof( gum::Idx ) ) ) );
+            vVoid.push_back( gum::SmallObjectAllocator::instance().allocate(
+                gum::Size(2 * i * sizeof( gum::Idx ) ) )) );
 
       std::vector<std::size_t> dv = {12, 6, 3, 9, 4, 11, 2, 7, 1, 5, 8, 10};
       for ( int i = 0; i < 12; ++i )
-        TS_ASSERT_THROWS_NOTHING( gum::SmallObjectAllocator::instance().deallocate(
-            vVoid[dv[i] - 1], 2 * dv[i] * sizeof( gum::Idx ) ) );
+        TS_ASSERT_THROWS_NOTHING(
+            gum::SmallObjectAllocator::instance().deallocate(
+                vVoid[dv[i] - 1], gum::Size(2 * dv[i] * sizeof( gum::Idx ) )) );
     }
 
     // ==============================================================================
     // Test Performance
     // ==============================================================================
-//    void est_Small_Object_Allocator_Heavy_Death_Comparison() {
+    //    void est_Small_Object_Allocator_Heavy_Death_Comparison() {
 
-//      gum::Idx NbTotalSOA = 10000000;
-//      gum::Idx intervalle = 10 - 2;
+    //      gum::Idx NbTotalSOA = 10000000;
+    //      gum::Idx intervalle = 10 - 2;
 
-//      gum::SmallObjectAllocator* soa =
-//          new gum::SmallObjectAllocator( 16384, 24 * sizeof( gum::Idx ) );
+    //      gum::SmallObjectAllocator* soa =
+    //          new gum::SmallObjectAllocator( 16384, 24 * sizeof( gum::Idx ) );
 
-//      std::vector<gum::Idx> vectorSize;
-//      std::vector<gum::Idx> adsv;
-//      for ( gum::Idx i = 0; i < NbTotalSOA; ++i ) {
-//        vectorSize.push_back( rand() % ( intervalle ) + intervalle / 2 );
-//      }
+    //      std::vector<gum::Idx> vectorSize;
+    //      std::vector<gum::Idx> adsv;
+    //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i ) {
+    //        vectorSize.push_back( rand() % ( intervalle ) + intervalle / 2 );
+    //      }
 
-//      gum::Timer timy;
-//      timy.reset();
-//      std::vector<void*> vVoid;
-//      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-//        TS_ASSERT_THROWS_NOTHING( vVoid.push_back(
-//            soa->allocate( vectorSize[i] * sizeof( gum::Idx ) ) ) );
+    //      gum::Timer timy;
+    //      timy.reset();
+    //      std::vector<void*> vVoid;
+    //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
+    //        TS_ASSERT_THROWS_NOTHING( vVoid.push_back(
+    //            soa->allocate( vectorSize[i] * sizeof( gum::Idx ) ) ) );
 
-//      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-//        TS_ASSERT_THROWS_NOTHING(
-//            soa->deallocate( vVoid[i], vectorSize[i] * sizeof( gum::Idx ) ) );
-//      double soaT = timy.pause();
-//      std::cout << "Temps Alloc/Dealloc SOA: " << soaT << std::endl;
-//      TS_ASSERT_THROWS_NOTHING( delete soa );
+    //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
+    //        TS_ASSERT_THROWS_NOTHING(
+    //            soa->deallocate( vVoid[i], vectorSize[i] * sizeof( gum::Idx )
+    //            ) );
+    //      double soaT = timy.pause();
+    //      std::cout << "Temps Alloc/Dealloc SOA: " << soaT << std::endl;
+    //      TS_ASSERT_THROWS_NOTHING( delete soa );
 
-//      std::vector<std::vector<gum::Idx>*> vVector;
-//      timy.resume();
-//      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-//        TS_ASSERT_THROWS_NOTHING( vVector.push_back(
-//            new std::vector<gum::Idx>( vectorSize[i], 0 ) ) );
-//      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-//        TS_ASSERT_THROWS_NOTHING( delete vVector[i] );
-//      double vT = timy.pause();
-//      std::cout << "Temps Alloc/Dealloc SOA: " << vT - soaT << std::endl;
-//    }
+    //      std::vector<std::vector<gum::Idx>*> vVector;
+    //      timy.resume();
+    //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
+    //        TS_ASSERT_THROWS_NOTHING( vVector.push_back(
+    //            new std::vector<gum::Idx>( vectorSize[i], 0 ) ) );
+    //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
+    //        TS_ASSERT_THROWS_NOTHING( delete vVector[i] );
+    //      double vT = timy.pause();
+    //      std::cout << "Temps Alloc/Dealloc SOA: " << vT - soaT << std::endl;
+    //    }
   };
 }
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

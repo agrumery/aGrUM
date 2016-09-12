@@ -187,7 +187,7 @@ namespace gum {
   // return the size of the array storing the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE Size Heap<Val, Cmp, Alloc>::capacity() const noexcept {
-    return __heap.size();
+    return Size(__heap.size());
   }
 
   // changes the size of the array storing the heap

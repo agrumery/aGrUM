@@ -442,7 +442,6 @@ namespace gum {
   // Clears the function graph
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::clear() {
-
     __model.clear();
     // Always discard the nodeId 0
     __model.addNode();
@@ -457,7 +456,6 @@ namespace gum {
 
       delete nodeIter.val();
     }
-
     __internalNodeMap.clear();
 
     // Cleaning the list of nodes for each variables
@@ -591,9 +589,8 @@ namespace gum {
   // Indicates if given node is terminal or not
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE bool
-  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::isTerminalNode(
-      const NodeId& node ) const {
-    return this->existsTerminalNode( node );
+  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::isTerminalNode(const NodeId& node ) const {
+    return this->existsTerminalNodeWithId( node );
   }
 
   // Indicates if given node is terminal or not

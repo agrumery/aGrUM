@@ -80,7 +80,7 @@ namespace gum_tests {
       gum::InfluenceDiagram<float>* id = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-          id = gen.generateID( 25, 0.3, 0.3, 0.1, 4 ) );
+          id = gen.generateID( 25, 0.3f, 0.3f, 0.1f, 4 ) );
 
       TS_ASSERT( id->decisionOrderExists() );
 
@@ -90,7 +90,7 @@ namespace gum_tests {
     void testGenerationFloat_2() {
       gum::InfluenceDiagramGenerator<float> gen;
 
-      gum::InfluenceDiagram<float>* id = gen.generateID( 25, 0.3, 0.3, 0.1, 4 );
+      gum::InfluenceDiagram<float>* id = gen.generateID( 25, 0.3f, 0.3f, 0.1f, 4 );
       // Test for cicuits
       std::vector<gum::NodeId> stack;
       gum::Set<gum::NodeId> passed;
@@ -108,7 +108,7 @@ namespace gum_tests {
       gum::InfluenceDiagram<double>* id = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-          id = gen.generateID( 25, 0.3, 0.3, 0.1, 4 ) );
+          id = gen.generateID( 25, 0.3f, 0.3f, 0.1f, 4 ) );
 
       TS_ASSERT( id->decisionOrderExists() );
 
@@ -119,7 +119,7 @@ namespace gum_tests {
       gum::InfluenceDiagramGenerator<double> gen;
 
       gum::InfluenceDiagram<double>* id =
-          gen.generateID( 25, 0.3, 0.3, 0.1, 4 );
+          gen.generateID( 25, 0.3f, 0.3f, 0.1f, 4 );
       // Test for cicuits
       std::vector<gum::NodeId> stack;
       gum::Set<gum::NodeId> passed;

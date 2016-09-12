@@ -35,43 +35,43 @@ namespace gum {
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintMandatoryArcs::checkArcAdditionAlone(
-        NodeId x, NodeId y ) const noexcept {
+        NodeId x, NodeId y ) const  {
       return true;
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintMandatoryArcs::checkArcDeletionAlone(
-        NodeId x, NodeId y ) const noexcept {
+        NodeId x, NodeId y ) const  {
       return !_MandatoryArcs__mandatory_arcs.exists( Arc( x, y ) );
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintMandatoryArcs::checkArcReversalAlone(
-        NodeId x, NodeId y ) const noexcept {
+        NodeId x, NodeId y ) const  {
       return !_MandatoryArcs__mandatory_arcs.exists( Arc( x, y ) );
     }
 
     /// checks whether the constraints enable to add an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-        const ArcAddition& change ) const noexcept {
+        const ArcAddition& change ) const  {
       return checkArcAdditionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-        const ArcDeletion& change ) const noexcept {
+        const ArcDeletion& change ) const  {
       return checkArcDeletionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-        const ArcReversal& change ) const noexcept {
+        const ArcReversal& change ) const  {
       return checkArcReversalAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-        const GraphChange& change ) const noexcept {
+        const GraphChange& change ) const  {
       switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION:
           return checkArcAdditionAlone( change.node1(), change.node2() );
@@ -107,7 +107,7 @@ namespace gum {
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(
-        const GraphChange& change ) const noexcept {
+        const GraphChange& change ) const  {
       switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION:
           return false;
@@ -143,7 +143,7 @@ namespace gum {
 
     /// returns the set of mandatory arcs
     INLINE const ArcSet& StructuralConstraintMandatoryArcs::arcs() const
-        noexcept {
+         {
       return _MandatoryArcs__mandatory_arcs;
     }
 

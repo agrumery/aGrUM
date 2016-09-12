@@ -155,7 +155,7 @@ namespace gum {
   INLINE void MultiDimBucket<GUM_SCALAR>::setBufferSize( Size ammount ) {
     __bufferSize = ammount;
 
-    if ( ( this->domainSize() > __bufferSize ) and ( __bucket != 0 ) ) {
+    if ( ( this->domainSize() > __bufferSize ) && ( __bucket != 0 ) ) {
       __eraseBuffer();
     } else if ( __bucket == 0 ) {
       __initializeBuffer();
@@ -164,13 +164,13 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void MultiDimBucket<GUM_SCALAR>::compute( bool force ) const {
-    if ( ( __bucket ) and ( __changed or force ) ) {
+    if ( ( __bucket ) && ( __changed || force ) ) {
       Instantiation values( *__bucket );
 
       for ( values.setFirst(); !values.end(); values.inc() ) {
         __bucket->set( values, __computeValue( values ) );
       }
-    } else if ( ( __bucket == 0 ) and __changed ) {
+    } else if ( ( __bucket == 0 ) && __changed ) {
       __slavesValue.clear();
       __changed = false;
     }
@@ -187,7 +187,7 @@ namespace gum {
   INLINE void MultiDimBucket<GUM_SCALAR>::add( const DiscreteVariable& v ) {
     MultiDimImplementation<GUM_SCALAR>::add( v );
 
-    if ( not MultiDimImplementation<GUM_SCALAR>::_isInMultipleChangeMethod() ) {
+    if ( ! MultiDimImplementation<GUM_SCALAR>::_isInMultipleChangeMethod() ) {
       if ( this->domainSize() <= __bufferSize ) {
         if ( __bucket )
           __bucket->add( v );
@@ -203,7 +203,7 @@ namespace gum {
   INLINE void MultiDimBucket<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
     MultiDimImplementation<GUM_SCALAR>::erase( v );
 
-    if ( ( not MultiDimImplementation<GUM_SCALAR>::_isInMultipleChangeMethod() ) and
+    if ( ( ! MultiDimImplementation<GUM_SCALAR>::_isInMultipleChangeMethod() ) &&
          ( this->domainSize() <= __bufferSize ) ) {
       if ( __bucket ) {
         __bucket->erase( v );
@@ -402,12 +402,12 @@ namespace gum {
 
     __allVariables.clear();
 
-    while ( not __allVarsInst.empty() ) {
+    while ( ! __allVarsInst.empty() ) {
       __allVarsInst.erase( **( __allVarsInst.variablesSequence().beginSafe() ) );
     }
 
-    for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*>
-              iter = __multiDims.beginSafe();
+    for ( //HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*>
+          auto iter = __multiDims.beginSafe();
           iter != __multiDims.endSafe();
           ++iter ) {
       for ( MultiDimInterface::iterator jter = iter.key()->begin();
@@ -430,7 +430,7 @@ namespace gum {
     try {
       __allVariables.insert( var );
       __allVarsInst.add( *var );
-    } catch ( DuplicateElement& e ) {
+    } catch ( DuplicateElement& ) {
       // Nothing to do then!
     }
   }
@@ -480,7 +480,7 @@ namespace gum {
       __bucket->add( **iter );
     }
 
-    if ( not this->_slaves().empty() ) {
+    if ( ! this->_slaves().empty() ) {
       for ( List<Instantiation*>::const_iterator_safe iter = this->_slaves().cbeginSafe();
             iter != this->_slaves().cendSafe();
             ++iter ) {
@@ -516,7 +516,7 @@ namespace gum {
       GUM_SCALAR current;
       __allVarsInst.setVals( value );
 
-      for ( __allVarsInst.setFirstOut( value ); not __allVarsInst.end();
+      for ( __allVarsInst.setFirstOut( value ); ! __allVarsInst.end();
             __allVarsInst.incOut( value ) ) {
         current = (GUM_SCALAR)1;
 

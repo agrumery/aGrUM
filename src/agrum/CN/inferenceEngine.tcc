@@ -1,4 +1,29 @@
+/***************************************************************************
+*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+*   {prenom.nom}_at_lip6.fr                                               *
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+*   This program is distributed in the hope that it will be useful,       *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU General Public License for more details.                          *
+*                                                                         *
+*   You should have received a copy of the GNU General Public License     *
+*   along with this program; if not, write to the                         *
+*   Free Software Foundation, Inc.,                                       *
+*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+***************************************************************************/
+/** @file
+* @brief the class for computing G2 scores
+*
+* @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+*/
 #include <agrum/CN/inferenceEngine.h>
+#include <agrum/config.h>
 
 namespace gum {
   namespace credal {
@@ -147,7 +172,7 @@ namespace gum {
         p = strtok( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back( atof( p ) );
+          values.push_back( GUM_SCALAR( atof( p ) ) );
           p = strtok( nullptr, " " );
         }  // end of : line
 
@@ -290,7 +315,7 @@ namespace gum {
         p = strtok( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back( atof( p ) );
+          values.push_back( GUM_SCALAR( atof( p ) ) );
           p = strtok( nullptr, " " );
         }  // end of : line
 
@@ -531,12 +556,11 @@ namespace gum {
         GUM_ERROR( IOError,
                    "void InferenceEngine< GUM_SCALAR >::saveMarginals(const "
                    "std::string & path) const : could not open output file "
-                   ": "
-                       << path );
+                   ": " << path );
       }
 
       for ( const auto& elt : _marginalMin ) {
-        Size esize = elt.second.size();
+        Size esize = Size(elt.second.size());
 
         for ( Size mod = 0; mod < esize; mod++ ) {
           m_stream << _credalNet->current_bn().variable( elt.first ).name()
@@ -600,7 +624,7 @@ namespace gum {
 
       // use cbegin() when available
       for ( const auto& elt : _marginalMin ) {
-        Size esize = elt.second.size();
+        Size esize = Size(elt.second.size());
 
         for ( Size mod = 0; mod < esize; mod++ ) {
           output << "P("
@@ -726,10 +750,10 @@ namespace gum {
       if ( _dynamicExpMax.size() > 0 && _dynamicExpMin.size() > 0 ) return;
 
       // typedef typename std::map< int, GUM_SCALAR > innerMap;
-      typedef typename gum::HashTable<int, GUM_SCALAR> innerMap;
+      using innerMap = typename gum::HashTable<int, GUM_SCALAR>;
 
       // typedef typename std::map< std::string, innerMap > outerMap;
-      typedef typename gum::HashTable<std::string, innerMap> outerMap;
+      using outerMap = typename gum::HashTable<std::string, innerMap>;
 
       // typedef typename std::map< std::string, std::vector< GUM_SCALAR > >
       // mod;
@@ -994,10 +1018,8 @@ namespace gum {
       // meaning it's still a convex combination of vertices of this facet. Here
       // we
       // need lrs.
-      auto setSize = nodeCredalSet.size();
-
       LRSWrapper<GUM_SCALAR> lrsWrapper;
-      lrsWrapper.setUpV( dsize, setSize );
+      lrsWrapper.setUpV( (unsigned int)dsize, (unsigned int)(nodeCredalSet.size()) );
 
       for ( const auto& vtx : nodeCredalSet )
         lrsWrapper.fillV( vtx );
@@ -1028,11 +1050,11 @@ namespace gum {
         GUM_SCALAR delta;
 
         /// int tId = getThreadNumber();
-        auto nsize = _marginalMin.size();
+        int nsize = _marginalMin.size();
 
 #pragma omp for
 
-        for ( Size i = 0; i < nsize; i++ ) {
+        for ( int i = 0; i < nsize; i++ ) {
           auto dSize = _marginalMin[i].size();
 
           for ( Size j = 0; j < dSize; j++ ) {

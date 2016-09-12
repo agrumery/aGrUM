@@ -74,12 +74,14 @@ namespace gum {
     MultiDimArray( const MultiDimArray<GUM_SCALAR>& src );
 
     /**
+     * @todo : operator= for MultiDimArray
+     *
      * @brief Copy operator.
      * @param src The MultiDimArray to copy.
      * @return Returns this MultiDimArray.
-     */
     MultiDimArray<GUM_SCALAR>&
     operator=( const MultiDimArray<GUM_SCALAR>& src );
+     */
 
     /**
      * @brief Class destructor.

@@ -65,10 +65,10 @@ namespace gum {
   class Schedule {
     public:
     /// to identify correctly the ids that correspond to ScheduleOperation ids
-    typedef Id OperationId;
+    using OperationId=Idx;
 
     /// to identify correctly the ids that correspond to ScheduleMultiDim ids
-    typedef Id MultiDimId;
+    using MultiDimId=Idx;
 
     // ############################################################################
     /// @name Constructors / Destructors

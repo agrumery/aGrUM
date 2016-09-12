@@ -59,14 +59,14 @@ namespace gum {
 
       /**
        * Enumeration of the different types of objects handled by a PRM.
-       * The "all" type is used to tell that we want any kind of Type
+       * The "all" type is used to tell that we want any kind of PRMType
        * (useful with iterators for example). No PRMObject will ever have
        * "all" as type.
        */
-      enum class PRMType : char {
+      enum class prm_type : char {
         ALL,
         CLASS,
-        INTERFACE,
+        PRM_INTERFACE,
         CLASS_ELT,
         TYPE,
         SYSTEM,
@@ -77,25 +77,25 @@ namespace gum {
       static std::string RIGHT_CAST() { return ")"; }
 
       /// Returns the string representation of a PRMObject.
-      static std::string enum2str( PRMType type ) {
+      static std::string enum2str( prm_type type ) {
         switch ( type ) {
-          case PRMType::CLASS:
+          case prm_type::CLASS:
             return "PRMType::CLASS";
 
-          case PRMType::CLASS_ELT:
+          case prm_type::CLASS_ELT:
             return "PRMType::CLASS_ELT";
 
-          case PRMType::TYPE:
+          case prm_type::TYPE:
             return "PRMType::TYPE";
 
-          case PRMType::SYSTEM:
+          case prm_type::SYSTEM:
             return "PRMType::SYSTEM";
 
-          case PRMType::INSTANCE:
+          case prm_type::INSTANCE:
             return "PRMType::INSTANCE";
 
-          case PRMType::INTERFACE:
-            return "PRMType::INTERFACE";
+          case prm_type::PRM_INTERFACE:
+            return "PRMType::PRM_INTERFACE";
 
           default:
             return "unknown";
@@ -104,17 +104,17 @@ namespace gum {
 
       /// Returns true if obj_ptr is of type Class.
       static INLINE bool isClass( const PRMObject& obj ) {
-        return obj.obj_type() == PRMType::CLASS;
+        return obj.obj_type() == prm_type::CLASS;
       }
 
-      /// Returns true if obj_ptr is of type Interface.
+      /// Returns true if obj_ptr is of type PRMInterface.
       static INLINE bool isInterface( const PRMObject& obj ) {
-        return obj.obj_type() == PRMType::INTERFACE;
+        return obj.obj_type() == prm_type::PRM_INTERFACE;
       }
 
-      /// Returns true if obj_ptr is of type Instance.
+      /// Returns true if obj_ptr is of type PRMInstance.
       static INLINE bool isInstance( const PRMObject& obj ) {
-        return obj.obj_type() == PRMType::INSTANCE;
+        return obj.obj_type() == prm_type::INSTANCE;
       }
 
       /// @}
@@ -159,7 +159,7 @@ namespace gum {
       /**
        * Returns the type of this object.
        */
-      virtual PRMType obj_type() const = 0;
+      virtual prm_type obj_type() const = 0;
 
       /// @}
       // ==========================================================================
@@ -196,32 +196,32 @@ namespace gum {
       /// @}
     };
 
-    /// For printing Type easily.
-    std::ostream& operator<<( std::ostream& out, PRMObject::PRMType obj_type );
+    /// For printing PRMType easily.
+    std::ostream& operator<<( std::ostream& out, PRMObject::prm_type obj_type );
 
     // list of declarations of PRMObjects
     template <typename GUM_SCALAR>
-    class Type;
+    class PRMType;
     template <typename GUM_SCALAR>
-    class ClassElement;
+    class PRMClassElement;
     template <typename GUM_SCALAR>
-    class ClassElementContainer;
+    class PRMClassElementContainer;
     template <typename GUM_SCALAR>
-    class Aggregate;
+    class PRMAggregate;
     template <typename GUM_SCALAR>
-    class Interface;
+    class PRMInterface;
     template <typename GUM_SCALAR>
-    class Attribute;
+    class PRMAttribute;
     template <typename GUM_SCALAR>
-    class SlotChain;
+    class PRMSlotChain;
     template <typename GUM_SCALAR>
-    class ReferenceSlot;
+    class PRMReferenceSlot;
     template <typename GUM_SCALAR>
-    class Class;
+    class PRMClass;
     template <typename GUM_SCALAR>
-    class Instance;
+    class PRMInstance;
     template <typename GUM_SCALAR>
-    class System;
+    class PRMSystem;
 
   } /* namespace prm */
 } /* namespace gum */

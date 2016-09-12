@@ -70,9 +70,9 @@ namespace gum {
         // read a new line in the input file and convert it into a DBRow
         const std::vector<std::string>& row = parser.current();
 
-        DBRow new_row( row.size() );
+        DBRow new_row( Size(row.size()) );
 
-        for ( unsigned int i = 0; i < row.size(); ++i ) {
+        for ( Idx i = 0; i < row.size(); ++i ) {
           new_row[i].setBestTypeSafe( row[i] );
         }
 
@@ -88,7 +88,7 @@ namespace gum {
         std::vector<std::string>& names = _variableNames();
         names.resize( vect[0].size() );
 
-        for ( unsigned int i = 0; i < names.size(); ++i ) {
+        for ( Idx i = 0; i < names.size(); ++i ) {
           std::stringstream s;
           s << "node " << i;
           names[i] = s.str();

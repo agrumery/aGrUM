@@ -182,7 +182,7 @@ namespace gum {
   void InfluenceDiagramInference<GUM_SCALAR>::eraseEvidence(
       const Potential<GUM_SCALAR>* evidence ) {
 
-    if ( not( evidence->variablesSequence().size() != 1 ) )
+    if ( !( evidence->variablesSequence().size() != 1 ) )
       __cliquePropertiesMap[__nodeToCliqueMap[this->influenceDiagram().nodeId(
                                 evidence->variable( 0 ) )]]
           ->removeEvidence( evidence->variable( 0 ) );
@@ -328,7 +328,7 @@ namespace gum {
   void InfluenceDiagramInference<GUM_SCALAR>::__makeStrongJunctionTree() {
 
     // Pour chaque clique
-    for ( const auto cli : __triangulation->junctionTree().nodes() ) {
+    for ( NodeId cli : __triangulation->junctionTree().nodes() ) {
 
       Sequence<NodeId> eliminationOrder =
           __cliquePropertiesMap[cli]->cliqueEliminationOrder();
@@ -385,7 +385,7 @@ namespace gum {
           ;
 
         __cliqueEliminationMap.insert(
-            __triangulation->eliminationOrder().size() - index, cli );
+            Size(__triangulation->eliminationOrder().size() - index), cli );
       } else
         try {
           __cliqueEliminationMap.insert( 0, cli );
@@ -495,7 +495,7 @@ namespace gum {
     // For  the utility table, we need first to divide it by the potential
     Instantiation utilityMarginalInst( utilityMarginal );
 
-    for ( utilityMarginalInst.setFirst(); not utilityMarginalInst.end();
+    for ( utilityMarginalInst.setFirst(); ! utilityMarginalInst.end();
           utilityMarginalInst.inc() ) {
 
       GUM_SCALAR uVal = (GUM_SCALAR)0;
@@ -568,7 +568,7 @@ namespace gum {
         // Then we fill the new potentials over all their values by
         // marginalizing the
         // previous one
-        for ( newInstantiation.setFirst(); not newInstantiation.end();
+        for ( newInstantiation.setFirst(); ! newInstantiation.end();
               newInstantiation.inc() ) {
 
           // Various initialization
@@ -582,7 +582,7 @@ namespace gum {
           cliqueInstance.setVals( newInstantiation );
 
           for ( cliqueInstance.setFirstOut( newInstantiation );
-                not cliqueInstance.end();
+                ! cliqueInstance.end();
                 cliqueInstance.incOut( newInstantiation ) ) {
 
             // Récupération de la valeur de la cpt de la clique pour cette
@@ -728,7 +728,7 @@ namespace gum {
   void CliqueProperties<GUM_SCALAR>::addVariable( const DiscreteVariable& v ) {
     try {
       __allVarsInst.add( v );
-    } catch ( DuplicateElement& e ) {
+    } catch ( DuplicateElement& ) {
       // Nothing to do then!
     }
   }
@@ -766,7 +766,7 @@ namespace gum {
           ++iter ) {
       if ( removable && !__allVarsInst.contains( **iter ) ) try {
           __removableVarList.insert( *iter );
-        } catch ( DuplicateElement& e ) {
+        } catch ( DuplicateElement& ) {
           // Nothing to do then!
         }
 
@@ -798,7 +798,7 @@ namespace gum {
           ++iter ) {
       if ( removable && !__allVarsInst.contains( **iter ) ) try {
           __removableVarList.insert( *iter );
-        } catch ( DuplicateElement& e ) {
+        } catch ( DuplicateElement& ) {
           // Nothing to do then!
         }
 

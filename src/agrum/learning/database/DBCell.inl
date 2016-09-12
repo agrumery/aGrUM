@@ -24,6 +24,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <agrum/learning/database/DBCell.h>
 namespace gum {
 
   namespace learning {
@@ -32,8 +33,8 @@ namespace gum {
     INLINE DBCell::DBCell() { GUM_CONSTRUCTOR( DBCell ); }
 
     /// constructor for a number
-    INLINE DBCell::DBCell( float nb )
-        : __float( nb ) {
+    INLINE DBCell::DBCell( double nb )
+        : __value( nb ) {
       GUM_CONSTRUCTOR( DBCell );
     }
 
@@ -43,10 +44,10 @@ namespace gum {
       // store the string into the static list of strings
       if ( !__strings().existsFirst( str ) ) {
         __strings().insert( str, __string_max_index );
-        __int = __string_max_index;
+        __index = __string_max_index;
         ++__string_max_index;
       } else {
-        __int = __strings().second( str );
+        __index = __strings().second( str );
       }
 
       GUM_CONSTRUCTOR( DBCell );
@@ -55,7 +56,7 @@ namespace gum {
     /// copy constructor
     INLINE DBCell::DBCell( const DBCell& from )
         : __type( from.__type ) {
-      std::memcpy( &__float, &( from.__float ), sizeof( Float ) );
+      std::memcpy( &__value, &( from.__value ), sizeof( Real ) );
 
       // for debugging
       GUM_CONS_CPY( DBCell );
@@ -64,7 +65,7 @@ namespace gum {
     /// move constructor
     INLINE DBCell::DBCell( DBCell&& from )
         : __type( from.__type ) {
-      std::memcpy( &__float, &( from.__float ), sizeof( Float ) );
+      std::memcpy( &__value, &( from.__value ), sizeof( Real ) );
 
       // for debugging
       GUM_CONS_MOV( DBCell );
@@ -77,7 +78,7 @@ namespace gum {
     INLINE DBCell& DBCell::operator=( const DBCell& from ) {
       if ( this != &from ) {
         __type = from.__type;
-        std::memcpy( &__float, &( from.__float ), sizeof( Float ) );
+        std::memcpy( &__value, &( from.__value ), sizeof( Real ) );
       }
 
       return *this;
@@ -87,7 +88,7 @@ namespace gum {
     INLINE DBCell& DBCell::operator=( DBCell&& from ) {
       if ( this != &from ) {
         __type = from.__type;
-        std::memcpy( &__float, &( from.__float ), sizeof( Float ) );
+        std::memcpy( &__value, &( from.__value ), sizeof( Real ) );
       }
 
       return *this;
@@ -95,9 +96,9 @@ namespace gum {
 
     /// unsafe set operator (assumes that the preceding type is of the same
     /// type)
-    INLINE DBCell& DBCell::operator=( float x ) noexcept {
-      __type = EltType::FLOAT;
-      __float = x;
+    INLINE DBCell& DBCell::operator=( double x ) noexcept {
+      __type = EltType::REAL;
+      __value = x;
       return *this;
     }
 
@@ -106,67 +107,67 @@ namespace gum {
     INLINE DBCell& DBCell::operator=( const std::string& str ) noexcept {
       if ( !__strings().existsFirst( str ) ) {
         __strings().insert( str, __string_max_index );
-        __int = __string_max_index;
+        __index = __string_max_index;
         ++__string_max_index;
       } else {
-        __int = __strings().second( str );
+        __index = __strings().second( str );
       }
 
       return *this;
     }
 
-    /// returns the DBcell as a float (without checking its type)
-    INLINE float DBCell::getFloat() const noexcept { return __float; }
+    /// returns the DBcell as a double (without checking its type)
+    INLINE double DBCell::getReal() const noexcept { return __value; }
 
-    /// returns the DBcell as a float (safe with type checking)
-    INLINE float DBCell::getFloatSafe() const {
-      if ( __type == EltType::FLOAT )
-        return __float;
+    /// returns the DBcell as a double (safe with type checking)
+    INLINE double DBCell::getRealSafe() const {
+      if ( __type == EltType::REAL )
+        return __value;
       else
-        GUM_ERROR( TypeError, "the DBCell does not contain a float" );
+        GUM_ERROR( TypeError, "the DBCell does not contain a double" );
     }
 
     /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setFloat( float x ) { __float = x; }
+    INLINE void DBCell::setReal( double x ) { __value = x; }
 
     /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setFloatSafe( float elt ) {
-      __type = EltType::FLOAT;
-      __float = elt;
+    INLINE void DBCell::setRealSafe( double elt ) {
+      __type = EltType::REAL;
+      __value = elt;
     }
 
     /// sets the content of the DBCell from a string
-    INLINE void DBCell::__setFloatFromStringSafe( const std::string& elt ) {
-      __float = stof( elt );
-      __type = EltType::FLOAT;
+    INLINE void DBCell::__setRealFromStringSafe( const std::string& elt ) {
+      __value = stof( elt );
+      __type = EltType::REAL;
     }
 
     /// returns the DBcell as a string (without checking its type)
     INLINE const std::string& DBCell::getString() const noexcept {
-      return __strings().first( __int );
+      return __strings().first( __index );
     }
 
     /// returns the DBcell as a string (safe with type checking)
     INLINE const std::string& DBCell::getStringSafe() const {
       if ( __type == EltType::STRING )
-        return __strings().first( __int );
+        return __strings().first( __index );
       else
         GUM_ERROR( TypeError, "the DBCell does not contain a string" );
     }
 
     /// returns the DBcell as a string index (without checking its type)
-    INLINE int DBCell::getStringIndex() const noexcept { return __int; }
+    INLINE int DBCell::getStringIndex() const noexcept { return __index; }
 
     /// returns the DBcell as a string (safe with type checking)
     INLINE int DBCell::getStringIndexSafe() const {
       if ( __type == EltType::STRING )
-        return __int;
+        return __index;
       else
         GUM_ERROR( TypeError, "the DBCell does not contain a string" );
     }
 
     /// returns the DBcell as a string (without checking its type)
-    INLINE const std::string& DBCell::getString( unsigned int index ) {
+    INLINE const std::string& DBCell::getString( Idx index ) {
       return __strings().first( index );
     }
 
@@ -174,10 +175,10 @@ namespace gum {
     INLINE void DBCell::setString( const std::string& str ) {
       if ( !__strings().existsFirst( str ) ) {
         __strings().insert( str, __string_max_index );
-        __int = __string_max_index;
+        __index = __string_max_index;
         ++__string_max_index;
       } else {
-        __int = __strings().second( str );
+        __index = __strings().second( str );
       }
     }
 
@@ -185,10 +186,10 @@ namespace gum {
     INLINE void DBCell::setStringSafe( const std::string& str ) {
       if ( !__strings().existsFirst( str ) ) {
         __strings().insert( str, __string_max_index );
-        __int = __string_max_index;
+        __index = __string_max_index;
         ++__string_max_index;
       } else {
-        __int = __strings().second( str );
+        __index = __strings().second( str );
       }
       __type = EltType::STRING;
     }
@@ -198,9 +199,9 @@ namespace gum {
 
     /// safely sets the content of the DBCell with the best possible type
     INLINE void DBCell::setBestTypeSafe( const std::string& elt ) {
-      // try to convert the string into a float
+      // try to convert the string into a double
       try {
-        __setFloatFromStringSafe( elt );
+        __setRealFromStringSafe( elt );
         return;
       } catch ( std::invalid_argument& ) {
       }
@@ -217,12 +218,12 @@ namespace gum {
       if ( new_type == __type ) return true;
       switch ( new_type ) {
         // ===================================
-        case FLOAT:
+        case REAL:
           switch ( __type ) {
             case STRING:
               try {
-                __float = stof( __strings().first( __int ) );
-                __type = EltType::FLOAT;
+                __value = stof( __strings().first( __index ) );
+                __type = EltType::REAL;
                 return true;
               } catch ( std::invalid_argument& ) {
                 return false;
@@ -240,14 +241,14 @@ namespace gum {
         // ===================================
         case STRING:
           switch ( __type ) {
-            case FLOAT: {
-              std::string str = std::to_string( __float );
+            case REAL: {
+              std::string str = std::to_string( __value );
               if ( !__strings().existsFirst( str ) ) {
                 __strings().insert( str, __string_max_index );
-                __int = __string_max_index;
+                __index = __string_max_index;
                 ++__string_max_index;
               } else {
-                __int = __strings().second( str );
+                __index = __strings().second( str );
               }
               __type = EltType::STRING;
             }

@@ -55,42 +55,42 @@ GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
 /// checks whether the constraints enable to add arc (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeAddition( NodeId x,
                                                           NodeId y ) const
-    noexcept {
+     {
   return checkEdgeAdditionAlone( x, y );
 }
 
 /// checks whether the constraints enable to remove arc (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeDeletion( NodeId x,
                                                           NodeId y ) const
-    noexcept {
+     {
   return checkEdgeDeletionAlone( x, y );
 }
 
 /// checks whether the constraints enable to add an arc
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const EdgeAddition& change ) const
-    noexcept {
+     {
   return checkModificationAlone( change );
 }
 
 /// checks whether the constraints enable to remove an arc
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const EdgeDeletion& change ) const
-    noexcept {
+     {
   return checkModificationAlone( change );
 }
 
 /// checks whether the constraints enable to perform a graph change
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::checkModification( const GraphChange& change ) const
-    noexcept {
+     {
   return checkModificationAlone( change );
 }
 
 /// indicates whether a change will always violate the constraint
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid( const GraphChange& change ) const
-    noexcept {
+     {
   return isAlwaysInvalidAlone( change );
 }
 

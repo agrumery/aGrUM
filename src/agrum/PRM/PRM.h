@@ -33,28 +33,28 @@
 #include <agrum/core/sequence.h>
 
 #include <agrum/PRM/elements/PRMObject.h>
-#include <agrum/PRM/elements/type.h>
-#include <agrum/PRM/elements/class.h>
-#include <agrum/PRM/elements/instance.h>
-#include <agrum/PRM/elements/attribute.h>
-#include <agrum/PRM/elements/funcAttribute.h>
-#include <agrum/PRM/elements/aggregate.h>
-#include <agrum/PRM/elements/referenceSlot.h>
-#include <agrum/PRM/elements/slotChain.h>
+#include <agrum/PRM/elements/PRMType.h>
+#include <agrum/PRM/elements/PRMClass.h>
+#include <agrum/PRM/elements/PRMInstance.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+#include <agrum/PRM/elements/PRMFuncAttribute.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
+#include <agrum/PRM/elements/PRMReferenceSlot.h>
+#include <agrum/PRM/elements/PRMSlotChain.h>
 
-#include <agrum/PRM/elements/system.h>
+#include <agrum/PRM/elements/PRMSystem.h>
 
 namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    class System;
+    class PRMSystem;
     template <typename GUM_SCALAR>
     class PRMFactory;
     /**
      * @class PRM PRM.h <agrum/PRM/PRM.h>
      * @brief This class represents a Probabilistic Relational
-     *System<GUM_SCALAR>.
+     *PRMSystem<GUM_SCALAR>.
      *
      * @ingroup prm_group
      */
@@ -85,8 +85,8 @@ namespace gum {
       /// @{
 
       /**
-       * @param name The name of a possible Type<GUM_SCALAR> in this PRM.
-       * @return Returns true if name names a Type<GUM_SCALAR> in this PRM.
+       * @param name The name of a possible PRMType<GUM_SCALAR> in this PRM.
+       * @return Returns true if name names a PRMType<GUM_SCALAR> in this PRM.
        */
       bool isType( const std::string name ) const;
 
@@ -97,84 +97,84 @@ namespace gum {
       bool isClass( const std::string name ) const;
 
       /**
-       * @param name The name of a possible Interface<GUM_SCALAR> in this PRM.
-       * @return Returns true if name names a Interface<GUM_SCALAR> in this PRM.
+       * @param name The name of a possible PRMInterface<GUM_SCALAR> in this PRM.
+       * @return Returns true if name names a PRMInterface<GUM_SCALAR> in this PRM.
        */
       bool isInterface( const std::string name ) const;
 
       /**
-       * @param name The name of a possible System<GUM_SCALAR> in this PRM.
-       * @return Returns true if name names a System<GUM_SCALAR> in this PRM.
+       * @param name The name of a possible PRMSystem<GUM_SCALAR> in this PRM.
+       * @return Returns true if name names a PRMSystem<GUM_SCALAR> in this PRM.
        */
       bool isSystem( const std::string name ) const;
 
       /**
-       * Returns a constant reference on a Type<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMType<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no type is found with the given name.
        */
-      Type<GUM_SCALAR>& type( const std::string& name );
+      PRMType<GUM_SCALAR>& type( const std::string& name );
 
       /**
-       * Returns a constant reference on a Type<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMType<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no type is found with the given name.
        */
-      const Type<GUM_SCALAR>& type( const std::string& name ) const;
+      const PRMType<GUM_SCALAR>& type( const std::string& name ) const;
 
       /**
-       * Returns the Set of all Type<GUM_SCALAR> in this PRM.
+       * Returns the Set of all PRMType<GUM_SCALAR> in this PRM.
        */
-      const Set<Type<GUM_SCALAR>*>& types() const;
+      const Set<PRMType<GUM_SCALAR>*>& types() const;
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      Class<GUM_SCALAR>& getClass( const std::string& name );
+      PRMClass<GUM_SCALAR>& getClass( const std::string& name );
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const Class<GUM_SCALAR>& getClass( const std::string& name ) const;
+      const PRMClass<GUM_SCALAR>& getClass( const std::string& name ) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
        */
-      const Set<Class<GUM_SCALAR>*>& classes() const;
+      const Set<PRMClass<GUM_SCALAR>*>& classes() const;
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      Interface<GUM_SCALAR>& interface( const std::string& name );
+      PRMInterface<GUM_SCALAR>& getInterface( const std::string& name );
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const Interface<GUM_SCALAR>& interface( const std::string& name ) const;
+      const PRMInterface<GUM_SCALAR>& getInterface( const std::string& name ) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
        */
-      const Set<Interface<GUM_SCALAR>*>& interfaces() const;
+      const Set<PRMInterface<GUM_SCALAR>*>& interfaces() const;
 
       /**
-       * Returns a constant reference on a System<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no model is found with the given name.
        */
-      System<GUM_SCALAR>& system( const std::string& name );
+      PRMSystem<GUM_SCALAR>& getSystem( const std::string& name );
 
       /**
-       * Returns a constant reference on a System<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no model is found with the given name.
        */
-      const System<GUM_SCALAR>& system( const std::string& name ) const;
+      const PRMSystem<GUM_SCALAR>& getSystem( const std::string& name ) const;
 
       /**
        * Returns the Set of all Systems in this PRM.
        */
-      const Set<System<GUM_SCALAR>*>& systems() const;
+      const Set<PRMSystem<GUM_SCALAR>*>& systems() const;
 
       /// @}
       private:
@@ -203,28 +203,28 @@ namespace gum {
       /// @{
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
-      HashTable<std::string, Class<GUM_SCALAR>*> __classMap;
+      HashTable<std::string, PRMClass<GUM_SCALAR>*> __classMap;
 
       /// Set of all Class<GUM_SCALAR> in this PRM.
-      Set<Class<GUM_SCALAR>*> __classes;
+      Set<PRMClass<GUM_SCALAR>*> __classes;
 
       /// Mapping of all Class<GUM_SCALAR> given their name.
-      HashTable<std::string, Interface<GUM_SCALAR>*> __interfaceMap;
+      HashTable<std::string, PRMInterface<GUM_SCALAR>*> __interfaceMap;
 
       /// Set of all Class<GUM_SCALAR> in this PRM.
-      Set<Interface<GUM_SCALAR>*> __interfaces;
+      Set<PRMInterface<GUM_SCALAR>*> __interfaces;
 
-      /// Mapping of all Type<GUM_SCALAR> given their name.
-      HashTable<std::string, Type<GUM_SCALAR>*> __typeMap;
+      /// Mapping of all PRMType<GUM_SCALAR> given their name.
+      HashTable<std::string, PRMType<GUM_SCALAR>*> __typeMap;
 
-      /// Set of all Type<GUM_SCALAR> in this PRM.
-      Set<Type<GUM_SCALAR>*> __types;
+      /// Set of all PRMType<GUM_SCALAR> in this PRM.
+      Set<PRMType<GUM_SCALAR>*> __types;
 
       /// Mapping of all Systems given their name.
-      HashTable<std::string, System<GUM_SCALAR>*> __systemMap;
+      HashTable<std::string, PRMSystem<GUM_SCALAR>*> __systemMap;
 
       /// Set of all Systems in this PRM.
-      Set<System<GUM_SCALAR>*> __systems;
+      Set<PRMSystem<GUM_SCALAR>*> __systems;
 
       /// @}
     };

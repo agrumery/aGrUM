@@ -29,13 +29,24 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <dirent.h>
 #include <iostream>
 #include <string>
-#include <unistd.h>
 #include <vector>
 
 #include <agrum/config.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#else
+#include <agrum/core/mvsc/unistd.h>
+#endif
+
+#ifdef HAVE_DIRENT_H
+#include <dirent.h>
+#else
+#include <agrum/core/mvsc/dirent.h>
+#endif
+
 
 namespace gum {
 

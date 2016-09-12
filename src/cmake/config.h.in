@@ -48,6 +48,9 @@
 #cmakedefine GUM_DOUBLE_SIZE @GUM_DOUBLE_SIZE@
 
 #cmakedefine HAVE_MKSTEMP 1
+#cmakedefine HAVE_DIRENT_H 1
+#cmakedefine HAVE_UNISTD_H 1
+#cmakedefine HAVE_SYS_TIME_H 1
 
 #define GUM_AT_LEAST(x,y,z) (GUM_MAJOR_VERSION>x || (GUM_MAJOR_VERSION>=x && \
                              (GUM_MINOR_VERSION>y || (GUM_MINOR_VERSION>=y && \
@@ -75,6 +78,21 @@
 #endif
 
 #define GUM_UNUSED(expr) do { (void)(expr); } while (0)
+
+#ifdef _MSC_VER  
+
+#pragma warning(disable : 4503) // removing warning about the truncated names of type (>4096)... stupid compiler
+
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS // removing warning about using (non safe) methods instead of (safe but m$-specific) versions.
+#endif
+
+#ifndef _CRT_NONSTDC_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE  // removing warning about POSIX name (dup instead of _dup)
+#endif
+
+#endif
+
 
 #include <agrum/core/debug.h>
 #include <agrum/core/inline.h>

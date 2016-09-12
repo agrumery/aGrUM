@@ -22,7 +22,7 @@
 #***************************************************************************
 import platform
 from .configuration import cfg
-from .utils import trace,setifyString,safe_cd,critic
+from .utils import trace,setifyString,safe_cd,critic,notif
 from .multijobs import execCde
 
 def getCmake(current,target):
@@ -76,7 +76,7 @@ def getCmake(current,target):
 
     if platform.system() == "Windows":
       if current["mvsc"]:
-        line += ' -G "Visual Studio 14 2015"'
+        line += ' -G "Visual Studio 14 2015 Win64"'
       else:
         line += ' -G "MinGW Makefiles"'
 
@@ -87,30 +87,54 @@ def buildCmake(current,target):
   execFromLine(current,line)
 
 def getMake(current,target):
-  line=cfg.make
-
-  if current["action"]=="test":
-    if target =="aGrUM":
-      line+=" gumTest"
-    elif target!= "pyAgrum":
-      critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
-  elif current["action"]=="install":
-    line+=" install"
-  elif current["action"]=="uninstall":
-    line+=" uninstall"
-  elif current["action"]=="lib":
-    pass
-  elif current["action"]=="doc":
-    line+=" doc"
+  if current["mvsc"]:
+      return getForMsBuildSystem(current,target)
   else:
-    critic("Action '"+current["action"]+"' not treated for now")
+      return getForMakeSystem(current,target)
 
-  line+=" -j "+str(current["jobs"])
-
-  if target=="pyAgrum":
-    line+=" -C wrappers/pyAgrum"
-
+def getForMsBuildSystem(current,target):
+  if cfg.msbuild is None:
+    critic("MsBuild not found")
+  else:
+    if current["action"]=="test":
+      if target =="aGrUM":
+        line=cfg.msbuild+' agrum.sln /t:gumTest /p:Configuration="Release"'
+      elif target == "pyAgrum":
+        line=cfg.msbuild+' agrum.sln /t:_pyAgrum /p:Configuration="Release"'
+      else: #if target!= "pyAgrum":
+        critic("Action '"+current["action"]+"' not treated for target '"+target+"' for now in windows weird world.")
+    elif current["action"]=="install":
+      line=cfg.msbuild+' INSTALL.vcxproj /p:Configuration="Release"'
+    else:
+      critic("Action '"+current["action"]+"' not treated for now in windows weird world.")
+    line+=' /p:BuildInParallel=true /maxcpucount:'+str(current["jobs"])
   return line
+
+def getForMakeSystem(current,target):
+    line=cfg.make
+
+    if current["action"]=="test":
+      if target =="aGrUM":
+        line+=" gumTest"
+      elif target!= "pyAgrum":
+        critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
+    elif current["action"]=="install":
+      line+=" install"
+    elif current["action"]=="uninstall":
+      line+=" uninstall"
+    elif current["action"]=="lib":
+      pass
+    elif current["action"]=="doc":
+      line+=" doc"
+    else:
+      critic("Action '"+current["action"]+"' not treated for now")
+
+    line+=" -j "+str(current["jobs"])
+
+    if target=="pyAgrum":
+      line+=" -C wrappers/pyAgrum"
+
+    return line
 
 def buildMake(current,target):
   line=getMake(current,target)
@@ -120,16 +144,15 @@ def getPost(current,target):
   if current["action"]=="test":
     if target=="aGrUM":
       if cfg.os_platform=="win32":
-        line="src\\gumTest.exe"
+        line="src\\Release\\gumTest.exe" #debug or release create Release folder
       else:
         line="src/gumTest"
       return line,True
     elif target=="pyAgrum":
-      line="PYTHONPATH=wrappers "
       if cfg.os_platform=="win32":
-        line+=cfg.python+" ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
+        line='copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & '+cfg.python+" ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py wrappers"
       else:
-        line+=cfg.python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
+        line="PYTHONPATH=wrappers "+cfg.python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
       return line,False
   return "",False
 

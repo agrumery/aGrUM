@@ -38,8 +38,8 @@ namespace gum {
      * @brief the no a priori class: corresponds to 0 weight-sample
      * @ingroup learning_group
      */
-    template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float>>
+    template <typename IdSetAlloc = std::allocator<Idx>,
+              typename CountAlloc = std::allocator<double>>
     class AprioriNoApriori : public Apriori<IdSetAlloc, CountAlloc> {
       public:
       using type = AprioriNoAprioriType;
@@ -75,7 +75,7 @@ namespace gum {
       virtual const std::string& getType() const noexcept final;
 
       /// sets the weight of the a priori
-      virtual void setWeight( float weight ) final;
+      virtual void setWeight( double weight ) final;
 
       /// @}
 

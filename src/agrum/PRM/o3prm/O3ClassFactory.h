@@ -121,11 +121,11 @@ namespace gum {
             HashTable<std::string, O3ReferenceSlot*>& refMap );
 
         bool __checkImplementation( O3Label& o3_type,
-                                    const Type<GUM_SCALAR>& type );
+                                    const PRMType<GUM_SCALAR>& type );
 
         bool
         __checkImplementation( O3Label& o3_type,
-                               const ClassElementContainer<GUM_SCALAR>& type );
+                               const PRMClassElementContainer<GUM_SCALAR>& type );
         /// @}
 
         /// @name Checking and Adding Paramteters
@@ -153,28 +153,28 @@ namespace gum {
         bool __checkAttributeForCompletion( const O3Class& o3_c,
                                             O3Attribute& attr );
 
-        bool __checkParent( const Class<GUM_SCALAR>& c, const O3Label& prnt );
+        bool __checkParent( const PRMClass<GUM_SCALAR>& c, const O3Label& prnt );
 
-        bool __checkLocalParent( const Class<GUM_SCALAR>& c,
+        bool __checkLocalParent( const PRMClass<GUM_SCALAR>& c,
                                  const O3Label& prnt );
 
-        bool __checkRemoteParent( const ClassElementContainer<GUM_SCALAR>& c,
+        bool __checkRemoteParent( const PRMClassElementContainer<GUM_SCALAR>& c,
                                   const O3Label& prnt );
 
 
-        bool __checkRawCPT( const Class<GUM_SCALAR>& c, O3RawCPT& attr );
+        bool __checkRawCPT( const PRMClass<GUM_SCALAR>& c, O3RawCPT& attr );
 
-        bool __checkRuleCPT( const Class<GUM_SCALAR>& c, O3RuleCPT& attr );
+        bool __checkRuleCPT( const PRMClass<GUM_SCALAR>& c, O3RuleCPT& attr );
 
         /// @}
 
         /// @name Utility methods
         /// @{
-        const ClassElement<GUM_SCALAR>*
-        __resolveSlotChain( const ClassElementContainer<GUM_SCALAR>& c,
+        const PRMClassElement<GUM_SCALAR>*
+        __resolveSlotChain( const PRMClassElementContainer<GUM_SCALAR>& c,
                             const O3Label& chain );
 
-        bool __checkSlotChainLink( const ClassElementContainer<GUM_SCALAR>& c,
+        bool __checkSlotChainLink( const PRMClassElementContainer<GUM_SCALAR>& c,
                                    const O3Label& chain,
                                    const std::string& s );
         /// @}
@@ -187,7 +187,7 @@ namespace gum {
         bool __checkAggregateForDeclaration( O3Class& o3class, O3Aggregate& agg );
         bool __checkAggregateForCompletion( O3Class& o3class, O3Aggregate& agg );
 
-        const Type<GUM_SCALAR>* __checkAggParents( O3Class& o3class,
+        const PRMType<GUM_SCALAR>* __checkAggParents( O3Class& o3class,
                                                    O3Aggregate& agg );
 
         bool __checkAggTypeLegality( O3Class& o3class, O3Aggregate& agg );
@@ -195,12 +195,12 @@ namespace gum {
 
         bool __checkAggParameters( O3Class& o3class,
                                    O3Aggregate& agg,
-                                   const Type<GUM_SCALAR>* t );
+                                   const PRMType<GUM_SCALAR>* t );
 
-        bool __checkParametersNumber( O3Aggregate& agg, size_t n );
+        bool __checkParametersNumber( O3Aggregate& agg, Size n );
 
         bool __checkParameterValue( O3Aggregate& agg,
-                                    const gum::prm::Type<GUM_SCALAR>& t );
+                                    const gum::prm::PRMType<GUM_SCALAR>& t );
 
         // @}
       };

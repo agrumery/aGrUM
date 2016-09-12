@@ -65,19 +65,19 @@ namespace gum {
       /// @{
 
       /// Returns a unique key w.r.t. d-separation for i.
-      const std::string& key( const Instance<GUM_SCALAR>* i ) const;
+      const std::string& key( const PRMInstance<GUM_SCALAR>* i ) const;
 
       /// Returns a unique key w.r.t. d-separation for i.
-      const std::string& key( const Instance<GUM_SCALAR>& i ) const;
+      const std::string& key( const PRMInstance<GUM_SCALAR>& i ) const;
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
-      const Set<NodeId>& requisiteNodes( const Instance<GUM_SCALAR>* i ) const;
+      const Set<NodeId>& requisiteNodes( const PRMInstance<GUM_SCALAR>* i ) const;
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
-      const Set<NodeId>& requisiteNodes( const Instance<GUM_SCALAR>& i ) const;
+      const Set<NodeId>& requisiteNodes( const PRMInstance<GUM_SCALAR>& i ) const;
 
       /// Returns the number of occurrence of the given key, which is the number
-      /// of Instance<GUM_SCALAR> sharing the same set of requisite nodes.
+      /// of PRMInstance<GUM_SCALAR> sharing the same set of requisite nodes.
       Size occurrence( const std::string& key ) const;
 
       /// Returns the ratio between the total number of instances and the number
@@ -85,25 +85,25 @@ namespace gum {
       float liftRatio() const;
 
       /// Returns true if i has requisite nodes.
-      bool exists( const Instance<GUM_SCALAR>* i ) const;
+      bool exists( const PRMInstance<GUM_SCALAR>* i ) const;
 
       /// Returns true if i has requisite nodes.
-      bool exists( const Instance<GUM_SCALAR>& i ) const;
+      bool exists( const PRMInstance<GUM_SCALAR>& i ) const;
 
       /// @}
 
       /// Compute the set or requisite nodes for each required instance given
       /// the current set of observations.
       /// Discard previous computations.
-      void compute( const Instance<GUM_SCALAR>* i, NodeId n );
+      void compute( const PRMInstance<GUM_SCALAR>* i, NodeId n );
 
       /// Compute the set or requisite nodes for each required instance given
       /// the current set of observations.
       /// Discard previous computations.
-      void compute( const Instance<GUM_SCALAR>& i, NodeId n );
+      void compute( const PRMInstance<GUM_SCALAR>& i, NodeId n );
 
       /// Returns true if there is a hard evidence on i->get(n).
-      bool __isHardEvidence( const Instance<GUM_SCALAR>* i, NodeId n );
+      bool __isHardEvidence( const PRMInstance<GUM_SCALAR>* i, NodeId n );
 
       private:
       /// Copy constructor.
@@ -115,27 +115,27 @@ namespace gum {
       /// Code alias
       typedef HashTable<NodeId, std::pair<bool, bool>> MarkMap;
       /// Code alias
-      typedef HashTable<const Instance<GUM_SCALAR>*, MarkMap*> InstanceMap;
+      typedef HashTable<const PRMInstance<GUM_SCALAR>*, MarkMap*> InstanceMap;
       /// Code alias
       std::pair<bool, bool>&
-      __getMark( InstanceMap& marks, const Instance<GUM_SCALAR>* i, NodeId n );
+      __getMark( InstanceMap& marks, const PRMInstance<GUM_SCALAR>* i, NodeId n );
       /// Code alias
-      const SlotChain<GUM_SCALAR>& __getSC( const Instance<GUM_SCALAR>* i,
+      const PRMSlotChain<GUM_SCALAR>& __getSC( const PRMInstance<GUM_SCALAR>* i,
                                             NodeId n );
 
       /// Cleans this before a new computation.
       void __clean();
 
       /// The real compute method.
-      void __compute( const Instance<GUM_SCALAR>* i, NodeId n );
+      void __compute( const PRMInstance<GUM_SCALAR>* i, NodeId n );
 
       /// When the ball is received on i->get(n) from a child.
-      void __fromChild( const Instance<GUM_SCALAR>* i,
+      void __fromChild( const PRMInstance<GUM_SCALAR>* i,
                         NodeId n,
                         InstanceMap& marks );
 
       /// When the ball is receive on i->get(n) from a parent.
-      void __fromParent( const Instance<GUM_SCALAR>* i,
+      void __fromParent( const PRMInstance<GUM_SCALAR>* i,
                          NodeId n,
                          InstanceMap& marks );
 
@@ -143,17 +143,17 @@ namespace gum {
       void __fillMaps( InstanceMap& marks );
 
       /// Builds the HashKey for the given instance and requisite nodes set.
-      std::string __buildHashKey( const Instance<GUM_SCALAR>* i,
+      std::string __buildHashKey( const PRMInstance<GUM_SCALAR>* i,
                                   Set<NodeId>& req_nodes );
 
       /// The PRM at which __model belongs.
       const PRMInference<GUM_SCALAR>* __inf;
 
-      /// Associate an Instance<GUM_SCALAR> with a unique key w.r.t.
+      /// Associate an PRMInstance<GUM_SCALAR> with a unique key w.r.t.
       /// d-separation and
       /// the
       /// set of requisite nodes deduced from d-separation analysis.
-      HashTable<const Instance<GUM_SCALAR>*,
+      HashTable<const PRMInstance<GUM_SCALAR>*,
                 std::pair<std::string, Set<NodeId>*>> __keyMap;
 
       /// Associate a Key with the set of requisite nodes associated with it.

@@ -92,25 +92,25 @@ namespace gum {
   template <typename GUM_SCALAR>
   InfluenceDiagram<GUM_SCALAR>*
   InfluenceDiagramGenerator<GUM_SCALAR>::generateID( Size nbrNodes,
-                                                     float arcDensity,
-                                                     float chanceNodeDensity,
-                                                     float utilityNodeDensity,
-                                                     int max_modality ) {
+                                                      GUM_SCALAR arcDensity,
+                                                      GUM_SCALAR chanceNodeDensity,
+                                                      GUM_SCALAR utilityNodeDensity,
+                                                     Size max_modality ) {
     InfluenceDiagram<GUM_SCALAR>* influenceDiagram =
         new InfluenceDiagram<GUM_SCALAR>();
     // First we add nodes
     HashTable<Size, NodeId> map;
     std::stringstream strBuff;
-    int nb_mod;
+    Size nb_mod;
 
-    for ( Size i = 0; i < nbrNodes; ++i ) {
+    for ( Idx i = 0; i < nbrNodes; ++i ) {
       strBuff << i;
       nb_mod = ( max_modality == 2 ) ? 2 : 2 + rand() % ( max_modality - 1 );
 
-      float cnd = chanceNodeDensity * (float)RAND_MAX;
-      float und = utilityNodeDensity * (float)RAND_MAX;
+      GUM_SCALAR cnd = chanceNodeDensity * (GUM_SCALAR)RAND_MAX;
+      GUM_SCALAR und = utilityNodeDensity * (GUM_SCALAR)RAND_MAX;
 
-      float d = (float)rand();
+      GUM_SCALAR d = (GUM_SCALAR)rand();
 
       if ( d < cnd )
         map.insert( i,
@@ -129,12 +129,12 @@ namespace gum {
     }
 
     // We add arcs
-    float p = arcDensity * (float)RAND_MAX;
+    GUM_SCALAR p = arcDensity * (GUM_SCALAR)RAND_MAX;
 
     for ( Size i = 0; i < nbrNodes; ++i )
       if ( !influenceDiagram->isUtilityNode( map[i] ) )
         for ( Size j = i + 1; j < nbrNodes; ++j )
-          if ( ( (float)rand() ) < p ) {
+          if ( ( (GUM_SCALAR)rand() ) < p ) {
             influenceDiagram->addArc( map[i], map[j] );
           }
 

@@ -77,7 +77,7 @@ namespace gum {
   // vector of labels
   INLINE std::vector<std::string> DiscreteVariable::labels() const {
     std::vector<std::string> v;
-    for(unsigned int i=0;i<domainSize();i++)
+    for(Idx i=0;i<domainSize();i++)
       v.push_back(label(i));
     return v;
   }

@@ -55,7 +55,7 @@ namespace gum {
   INLINE Size HashFunc<std::string>::
   operator()( const std::string& key ) const {
     Size h = 0;
-    unsigned int size = key.size();
+    unsigned int size = (unsigned int)key.size();
     const char* char_ptr = key.c_str();
     const unsigned long* int_ptr = (const unsigned long*)char_ptr;
 
@@ -78,7 +78,7 @@ namespace gum {
     Size h = 0;
 
     const std::string& s1 = key.first;
-    unsigned int size = s1.size();
+    unsigned int size = (unsigned int)s1.size();
     const char* char_ptr = s1.c_str();
     const unsigned long* int_ptr = (const unsigned long*)char_ptr;
 
@@ -92,7 +92,7 @@ namespace gum {
     }
 
     const std::string& s2 = key.second;
-    size = s2.size();
+    size = (unsigned int) s2.size();
     char_ptr = s2.c_str();
     int_ptr = (const unsigned long*)char_ptr;
 
@@ -114,8 +114,8 @@ namespace gum {
   INLINE Size HashFunc<std::vector<Idx>>::
   operator()( const std::vector<Idx>& key ) const {
     Size h = 0;
-
-    for ( size_t i = 0; i < key.size(); ++i )
+    Size siz = Size(key.size());
+    for ( Size i = 0; i < siz; ++i )
       h += i * key[i];
 
     return ( ( h * HashFuncConst::gold ) & _hash_mask );

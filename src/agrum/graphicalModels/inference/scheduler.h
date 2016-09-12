@@ -68,7 +68,7 @@ namespace gum {
      * operations are performed
      * @return a Boolean indicating whether the k operations (or all the
      * operations of the schedule) were performed */
-    virtual bool execute( Schedule<GUM_SCALAR>&, unsigned int k ) = 0;
+    virtual bool execute( Schedule<GUM_SCALAR>&, Size k ) = 0;
 
     /** @brief returns an estimation of the number of elementary operations
      * needed
@@ -82,7 +82,7 @@ namespace gum {
      * If there are fewer than k operations in the schedule, then all those
      * operations are taken into account */
     virtual float nbOperations( const Schedule<GUM_SCALAR>&,
-                                unsigned int k ) const = 0;
+                                Size k ) const = 0;
 
     /// returns the memory consumption used during the execution of a schedule
     /** Actually, this function does not return a precise account of the memory
@@ -108,7 +108,7 @@ namespace gum {
      * one is the amount of memory still used at the end of the execution of
      * k first operations of the schedule */
     virtual std::pair<long, long> memoryUsage( const Schedule<GUM_SCALAR>&,
-                                               unsigned int k ) const = 0;
+                                               Size k ) const = 0;
 
     /// @}
   };

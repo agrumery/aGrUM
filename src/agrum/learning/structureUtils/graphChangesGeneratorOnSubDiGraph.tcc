@@ -121,9 +121,9 @@ namespace gum {
           legal_changes.resize( num_threads );
         }
 
-        const unsigned int this_thread = getThreadNumber();
+        const Size this_thread = getThreadNumber();
 
-        unsigned int i = 0;
+        Idx i = 0;
         for ( const auto node1 : _tail_nodes ) {
           if ( i == this_thread ) {
             for ( const auto node2 : _target_nodes ) {
@@ -203,9 +203,9 @@ namespace gum {
     /// assign a set of "tail" nodes
     template <typename STRUCT_CONSTRAINT>
     INLINE void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::setTails(
-        unsigned int nb_nodes ) {
+        Size nb_nodes ) {
       _tail_nodes.clear();
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( Idx i = 0; i < nb_nodes; ++i ) {
         _tail_nodes.insert( i );
       }
     }
@@ -282,7 +282,7 @@ namespace gum {
     template <typename STRUCT_CONSTRAINT>
     INLINE void
     GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::setMaxNbThreads(
-        unsigned int nb ) noexcept {
+        Size nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
       if ( nb == 0 ) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;

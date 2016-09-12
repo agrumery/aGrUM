@@ -430,9 +430,9 @@ namespace gum {
     // check if the set passed in argument is empty.
     if ( set.size() < 2 ) return std::pair<long, long>( 0, 0 );
 
-    long max_memory = 0;
+    Size max_memory = 0;
 
-    long current_memory = 0;
+    Size current_memory = 0;
 
     // create a vector with all the tables to combine
     std::vector<const Sequence<const DiscreteVariable*>*> tables( set.size() );
@@ -450,7 +450,7 @@ namespace gum {
         const Sequence<const DiscreteVariable*>* vars = *iter;
         tables[i] = vars;
 
-        long size = 0;
+        Size size = 0;
 
         for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
                   iter2 = vars->beginSafe();
@@ -502,14 +502,13 @@ namespace gum {
       const Sequence<const DiscreteVariable*>& seq1 = *( tables[ti] );
       const Sequence<const DiscreteVariable*>& seq2 = *( tables[tj] );
 
-      long new_size = 1;
+      Size new_size = 1;
 
       for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
                 seq1.beginSafe();
             iter != seq1.endSafe();
             ++iter ) {
-        if ( std::numeric_limits<long>::max() / (long)( *iter )->domainSize() <
-             new_size ) {
+        if ( std::numeric_limits<Size>::max() /  (*iter )->domainSize() <new_size ) {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
@@ -523,9 +522,7 @@ namespace gum {
             iter != seq2.endSafe();
             ++iter ) {
         if ( !seq1.exists( *iter ) ) {
-          if ( std::numeric_limits<long>::max() /
-                   (long)( *iter )->domainSize() <
-               new_size ) {
+          if ( std::numeric_limits<Size>::max() /( *iter )->domainSize() <new_size ) {
             GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
           }
 
@@ -535,7 +532,7 @@ namespace gum {
         }
       }
 
-      if ( std::numeric_limits<long>::max() - current_memory < new_size ) {
+      if ( std::numeric_limits<Size>::max() - current_memory < new_size ) {
         GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
       }
 

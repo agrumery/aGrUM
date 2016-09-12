@@ -300,8 +300,8 @@ namespace gum {
     void Gibbs<GUM_SCALAR>::__MonteCarloSample() {
       // _nodes_array is assumed to be the list of nodes to draw; in a
       // topological-compatible order
-      for ( unsigned int it = 0; it < __nodes_array.size(); it++ ) {
-        Idx id = __nodes_array[it];
+      for ( Idx it = 0; it < __nodes_array.size(); it++ ) {
+        NodeId id = __nodes_array[it];
 
         const Potential<GUM_SCALAR>& cpt = this->bn().cpt( id );
 
@@ -346,12 +346,12 @@ namespace gum {
 
       if ( __nbr_drawn_by_sample ==
            0 ) {  // means topological ordre for every sample
-        __nbr_of_iterations = __nodes_array.size();
+        __nbr_of_iterations = Size(__nodes_array.size());
       } else {  // randomly choosen set of vars of size __nbr_drawn_by_sample
         __nbr_of_iterations = __nbr_drawn_by_sample;
 
         if ( __nbr_of_iterations > __nodes_array.size() )
-          __nbr_of_iterations = __nodes_array.size();
+          __nbr_of_iterations = Size(__nodes_array.size());
 
         std::random_shuffle( __nodes_array.begin(), __nodes_array.end() );
       }

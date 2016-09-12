@@ -48,8 +48,8 @@ namespace gum {
           FilteredRow& output_row = filter.row();
 
           // assign the output row to the intput
-          for ( unsigned int i = 0, size = input_row.size(); i < size; ++i ) {
-            input_row[i].setFloat( output_row[i] );
+          for ( Idx i = 0, size = input_row.size(); i < size; ++i ) {
+            input_row[i].setReal( output_row[i] );
           }
         }
       } catch ( NotFound& ) {

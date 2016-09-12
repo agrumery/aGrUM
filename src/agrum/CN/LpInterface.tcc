@@ -854,7 +854,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       LpCol LpInterface<GUM_SCALAR>::addCol() {
-        LpCol col( __cols.size() );
+        LpCol col((unsigned int) __cols.size() );
 
         __cols.push_back( col );
 
@@ -872,7 +872,7 @@ namespace gum {
                          << " < 1" );
 
         for ( unsigned int i = 0; i < cols; i++ ) {
-          __cols.push_back( LpCol( __cols.size() ) );
+          __cols.push_back( LpCol( (unsigned int)__cols.size() ) );
         }
 
         return __cols;
@@ -990,7 +990,7 @@ namespace gum {
       std::vector<std::vector<GUM_SCALAR>> LpInterface<GUM_SCALAR>::solve() {
         LRSWrapper<GUM_SCALAR> lrs;
 
-        lrs.setUpH( __cols.size() );
+        lrs.setUpH((unsigned int) __cols.size() );
 
         std::vector<std::vector<GUM_SCALAR>> lrsMatrix;
 

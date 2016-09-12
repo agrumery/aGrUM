@@ -35,9 +35,9 @@
 #include <sstream>
 #include <string>
 
+#include <agrum/config.h>
 #include <agrum/BN/io/cnf/CNFWriter.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/config.h>
 #include <agrum/core/approximations/approximationPolicy.h>
 
 namespace gum {
@@ -55,7 +55,7 @@ namespace gum {
    *
    */
   template <typename GUM_SCALAR,
-            template <class> class IApproximationPolicy = ExactPolicy>
+            template <typename> class IApproximationPolicy = ExactPolicy>
   class ContextualDependenciesCNFWriter
       : public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
     public:

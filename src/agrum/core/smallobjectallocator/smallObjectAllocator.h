@@ -111,7 +111,7 @@ namespace gum {
     // ============================================================================
     /// Allocates a block
     // ============================================================================
-    void* allocate( const std::size_t& objectSize );
+    void* allocate( const size_t& objectSize );
 
     // ============================================================================
     /// Deallocates an object
@@ -119,7 +119,7 @@ namespace gum {
     /// @param objectSize is the size of that object (useful for faster
     /// deallocation)
     // ============================================================================
-    void deallocate( void* pDeallocatedObject, const std::size_t& objectSize );
+    void deallocate( void* pDeallocatedObject, const size_t& objectSize );
 
     /// @}
 

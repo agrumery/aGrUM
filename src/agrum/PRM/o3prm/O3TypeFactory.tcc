@@ -131,12 +131,12 @@ namespace gum {
           for ( auto type : __o3Types ) {
 
 
-            if ( not __isPrimitiveType( *type ) ) {
+            if ( ! __isPrimitiveType( *type ) ) {
 
-              if ( __solver->resolveType( type->super() ) ) {
+              if ( __solver->resolveType( type->superLabel() ) ) {
 
                 factory.startDiscreteType( type->name().label(),
-                                           type->super().label() );
+                                           type->superLabel().label() );
 
                 for ( auto& label : type->labels() ) {
                   factory.addLabel( label.first.label(), label.second.label() );
@@ -255,7 +255,7 @@ namespace gum {
             __typeMap.insert( type->name().label(), type.get() );
             __nodeMap.insert( id, type.get() );
 
-          } catch ( DuplicateElement& e ) {
+          } catch ( DuplicateElement& ) {
 
             // Raised if duplicate type names
             O3PRM_TYPE_DUPPLICATE( type->name(), *__errors );
@@ -271,29 +271,29 @@ namespace gum {
         // Adding arcs to the graph inheritance graph
         for ( auto& type : __o3_prm->types() ) {
 
-          if ( type->super().label() != "" ) {
+          if ( type->superLabel().label() != "" ) {
 
-            if ( not __solver->resolveType( type->super() ) ) {
+            if ( ! __solver->resolveType( type->superLabel() ) ) {
               return false;
             }
 
-            auto head = __nameMap[type->super().label()];
+            auto head = __nameMap[type->superLabel().label()];
             auto tail = __nameMap[type->name().label()];
 
             try {
 
               __dag.addArc( tail, head );
 
-            } catch ( InvalidDirectedCycle& e ) {
+            } catch ( InvalidDirectedCycle& ) {
 
               // Cyclic inheritance
               O3PRM_TYPE_CYCLIC_INHERITANCE(
-                  type->name(), type->super(), *__errors );
+                  type->name(), type->superLabel(), *__errors );
               return false;
             }
 
             // Check labels inheritance
-            if ( not __checkLabels( *type ) ) {
+            if ( ! __checkLabels( *type ) ) {
               return false;
             }
           }
@@ -308,14 +308,14 @@ namespace gum {
         for ( auto& pair : type.labels() ) {
 
           auto super_labels = Set<std::string>();
-          auto super = __typeMap[type.super().label()];
+          auto super = __typeMap[type.superLabel().label()];
 
           for ( auto& label : super->labels() ) {
             super_labels.insert( label.first.label() );
           }
 
-          if ( not super_labels.contains( pair.second.label() ) ) {
-            O3PRM_TYPE_UNKNOWN_LABEL( type.super(), pair.second, *__errors );
+          if ( ! super_labels.contains( pair.second.label() ) ) {
+            O3PRM_TYPE_UNKNOWN_LABEL( type.superLabel(), pair.second, *__errors );
             return false;
           }
         }

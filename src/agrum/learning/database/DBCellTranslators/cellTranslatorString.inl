@@ -121,7 +121,7 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void
-    CellTranslatorString::modalities( std::vector<unsigned int>& modal ) const
+    CellTranslatorString::modalities( std::vector<Size>& modal ) const
         noexcept {
       modal.push_back( __max_value );
     }
@@ -133,8 +133,8 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorString::translateBack( unsigned int col,
-                                         unsigned int translated_val ) const {
+    CellTranslatorString::translateBack( Idx col,
+                                         Idx translated_val ) const {
       std::stringstream str;
       str << DBCell::getString( __strings.first( translated_val ) );
       return str.str();

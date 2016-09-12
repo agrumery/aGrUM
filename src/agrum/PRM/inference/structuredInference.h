@@ -67,7 +67,7 @@ namespace gum {
 
       /// Default constructor.
       StructuredInference( const PRM<GUM_SCALAR>& prm,
-                           const System<GUM_SCALAR>& system,
+                           const PRMSystem<GUM_SCALAR>& system,
                            gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
       /// Copy constructor.
@@ -192,7 +192,7 @@ namespace gum {
         /// Returns the set of queried nodes given all the matches of pattern
         inline NodeSet& queries() { return __partial_order[3]; }
         // We use the first match for computations
-        // inline const Sequence<Instance<GUM_SCALAR>*>& match() const { return
+        // inline const Sequence<PRMInstance<GUM_SCALAR>*>& match() const { return
         // **(matches.begin());}
         // Remove any empty set in partial_order
         const List<NodeSet>* partial_order();
@@ -210,7 +210,7 @@ namespace gum {
       /// Private structure to represent data about a Class<GUM_SCALAR>.
       struct CData {
         /// The class about what this data is about.
-        const Class<GUM_SCALAR>& c;
+        const PRMClass<GUM_SCALAR>& c;
         /// The class moral graph. NodeId matches those in c.
         UndiGraph moral_graph;
         /// The class variables modalities.
@@ -218,11 +218,11 @@ namespace gum {
         /// The partial order used of variable elimination.
         List<NodeSet> partial_order;
         /// The Set of Instances reduces at class level.
-        Set<const Instance<GUM_SCALAR>*> instances;
+        Set<const PRMInstance<GUM_SCALAR>*> instances;
         /// The potential pool obtained by C elimination of inner nodes.
         Set<Potential<GUM_SCALAR>*> pool;
         /// Default constructor.
-        CData( const Class<GUM_SCALAR>& c );
+        CData( const PRMClass<GUM_SCALAR>& c );
         /// Destructor.
         ~CData();
         /// Returns the set of inner nodes.
@@ -248,22 +248,22 @@ namespace gum {
       /// Mapping between a Pattern's match and its potential pool after inner
       /// variables
       /// were eliminated.
-      HashTable<const Sequence<Instance<GUM_SCALAR>*>*,
+      HashTable<const Sequence<PRMInstance<GUM_SCALAR>*>*,
                 Set<Potential<GUM_SCALAR>*>*> __elim_map;
 
       /// Mapping between a Class<GUM_SCALAR> and data about instances reduced
       /// using
       /// only Class<GUM_SCALAR> level
       /// information.
-      HashTable<const Class<GUM_SCALAR>*, CData*> __cdata_map;
+      HashTable<const PRMClass<GUM_SCALAR>*, CData*> __cdata_map;
 
       /// Keeping track of create potentials to delete them after inference.
       Set<Potential<GUM_SCALAR>*> __trash;
 
-      HashTable<const Class<GUM_SCALAR>*, std::vector<NodeId>*> __outputs;
+      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*> __outputs;
 
       /// This keeps track of reduced instances.
-      Set<const Instance<GUM_SCALAR>*> __reducedInstances;
+      Set<const PRMInstance<GUM_SCALAR>*> __reducedInstances;
 
       /// The query
       typename PRMInference<GUM_SCALAR>::Chain __query;
@@ -287,12 +287,12 @@ namespace gum {
       void __buildReduceGraph( RGData& data );
 
       /// Add the nodes in the reduced graph.
-      void __addNodesInReducedGraph( RGData& data );
+      //MSVC void __addNodesInReducedGraph( RGData& data );
 
       /// Add edges in the reduced graph.
       void __addEdgesInReducedGraph( RGData& data );
 
-      void __removeNode( StructuredInference::PData& data,
+      void __removeNode( typename StructuredInference::PData& data,
                          NodeId id,
                          Set<Potential<GUM_SCALAR>*>& pool );
 
@@ -313,58 +313,58 @@ namespace gum {
       /// data.pattern (aka data.match) is used.
       void __buildPatternGraph( PData& data,
                                 Set<Potential<GUM_SCALAR>*>& pool,
-                                const Sequence<Instance<GUM_SCALAR>*>& match );
+                                const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       void
-      __insertNodeInElimLists( StructuredInference::PData& data,
-                               const Sequence<Instance<GUM_SCALAR>*>& match,
-                               Instance<GUM_SCALAR>* inst,
-                               Attribute<GUM_SCALAR>* attr,
+      __insertNodeInElimLists(typename StructuredInference::PData& data,
+                               const Sequence<PRMInstance<GUM_SCALAR>*>& match,
+                               PRMInstance<GUM_SCALAR>* inst,
+                               PRMAttribute<GUM_SCALAR>* attr,
                                NodeId id,
                                std::pair<Idx, std::string>& v );
 
-      bool __allInstanceNoRefAttr( StructuredInference::PData& data,
+      bool __allInstanceNoRefAttr(typename StructuredInference::PData& data,
                                    std::pair<Idx, std::string> attr );
 
-      void __removeBarrenNodes( StructuredInference::PData& data,
+      void __removeBarrenNodes(typename StructuredInference::PData& data,
                                 Set<Potential<GUM_SCALAR>*>& pool );
 
       /// Add in data.queries() any queried variable in one of data.pattern
       /// matches.
-      void __buildQuerySet( PData& data );
+      //MVSC void __buildQuerySet( PData& data );
 
       /// Proceeds with the elimination of observed variables in math and then
       /// call __translatePotSet().
       Set<Potential<GUM_SCALAR>*>*
-      __eliminateObservedNodes( StructuredInference::PData& data,
+      __eliminateObservedNodes(typename StructuredInference::PData& data,
                                 const Set<Potential<GUM_SCALAR>*>& pool,
-                                const Sequence<Instance<GUM_SCALAR>*>& match,
+                                const Sequence<PRMInstance<GUM_SCALAR>*>& match,
                                 const std::vector<NodeId>& elim_order );
 
       Set<Potential<GUM_SCALAR>*>* __eliminateObservedNodesInSource(
-          StructuredInference::PData& data,
+        typename StructuredInference::PData& data,
           const Set<Potential<GUM_SCALAR>*>& pool,
-          const Sequence<Instance<GUM_SCALAR>*>& match,
+          const Sequence<PRMInstance<GUM_SCALAR>*>& match,
           const std::vector<NodeId>& elim_order );
 
       /// Translate a given Potential Set into one w.r.t. variables in match.
       Set<Potential<GUM_SCALAR>*>*
-      __translatePotSet( StructuredInference::PData& data,
+      __translatePotSet(typename StructuredInference::PData& data,
                          const Set<Potential<GUM_SCALAR>*>& pool,
-                         const Sequence<Instance<GUM_SCALAR>*>& match );
+                         const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       /// Unreduce the match containing the query.
-      void __unreduceMatchWithQuery();
+      //MVSC void __unreduceMatchWithQuery();
 
-      std::vector<NodeId>* __getClassOutputs( const Class<GUM_SCALAR>* c );
+      //MVSC std::vector<NodeId>* __getClassOutputs( const PRMClass<GUM_SCALAR>* c );
       /// Used to create strings
       std::string __dot;
-      std::string __str( const Instance<GUM_SCALAR>* i,
-                         const Attribute<GUM_SCALAR>* a ) const;
-      std::string __str( const Instance<GUM_SCALAR>* i,
-                         const Attribute<GUM_SCALAR>& a ) const;
-      std::string __str( const Instance<GUM_SCALAR>* i,
-                         const SlotChain<GUM_SCALAR>& a ) const;
+      std::string __str( const PRMInstance<GUM_SCALAR>* i,
+                         const PRMAttribute<GUM_SCALAR>* a ) const;
+      std::string __str( const PRMInstance<GUM_SCALAR>* i,
+                         const PRMAttribute<GUM_SCALAR>& a ) const;
+      std::string __str( const PRMInstance<GUM_SCALAR>* i,
+                         const PRMSlotChain<GUM_SCALAR>& a ) const;
 
       public:
       // For bench/debug purpose.

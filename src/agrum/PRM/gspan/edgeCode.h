@@ -29,6 +29,7 @@
 #include <ostream>
 
 #include <agrum/config.h>
+#include <agrum/graphs/graphElements.h>
 
 namespace gum {
 
@@ -58,7 +59,7 @@ namespace gum {
          * @param l_ij The label of the edge in the code.
          * @param l_j The label of the second node in the code.
          */
-        EdgeCode( Size i, Size j, Size l_i, Size l_ij, Size l_j );
+        EdgeCode( NodeId i, NodeId j, Size l_i, Size l_ij, Size l_j );
 
         /**
          * Copy constructor.
@@ -70,10 +71,10 @@ namespace gum {
         ~EdgeCode();
 
         /// The DFS subscript of the first node in the code.
-        Size i;
+        NodeId i;
 
         /// The DFS subscript of the second node in the code.
-        Size j;
+        NodeId j;
 
         /// The label of the first node in the code.
         Size l_i;

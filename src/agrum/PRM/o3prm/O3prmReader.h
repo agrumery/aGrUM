@@ -74,11 +74,11 @@ namespace gum {
 
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
-        int readFile( const std::string& file, const std::string& module = "" );
+        Size readFile( const std::string& file, const std::string& module = "" );
 
         /// With readString method, you must set the current path
         /// to search from import yourself, using addClassPath.
-        int readString( const std::string& string );
+        Size readString( const std::string& string );
 
         void parseStream( std::istream& input,
                           std::ostream& output,
@@ -118,15 +118,15 @@ namespace gum {
         const ErrorsContainer& errorsContainer() const;
 
         /// line of ith error or warning
-        unsigned int errLine( unsigned int i ) const;
+        Idx errLine( Idx i ) const;
         /// col of ith error or warning
-        unsigned int errCol( unsigned int i ) const;
+        Idx errCol( Idx i ) const;
         /// filename of ith error or warning
-        std::wstring errFilename( unsigned int i ) const;
+        std::wstring errFilename( Idx i ) const;
         /// type of ith error or warning
-        bool errIsError( unsigned int i ) const;
+        bool errIsError( Idx i ) const;
         /// message of ith error or warning
-        std::string errMsg( unsigned int i ) const;
+        std::string errMsg( Idx i ) const;
 
         /// send on std::cerr the list of errors
         void showElegantErrors( std::ostream& o = std::cerr ) const;
@@ -146,9 +146,6 @@ namespace gum {
 
         // Needed when file can't be parse (can not open it for exemple)
         ErrorsContainer __errors;
-
-        // Read a file into a std::string
-        std::string __readFile( const std::string& file );
 
         void __readStream( std::istream& input,
                            const std::string& file,

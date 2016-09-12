@@ -104,7 +104,8 @@ def prettifying(line):
   s=line.split(" ... ")
   if len(s)==2:
       ss=s[0].split('(')
-      return cfg.C_WARNING+ss[0]+cfg.C_VALUE+'('+ss[1]+cfg.C_END+" ... "+s[1]
+      if len(ss)==2:
+        return cfg.C_WARNING+ss[0]+cfg.C_VALUE+'('+ss[1]+cfg.C_END+" ... "+s[1]
 
   # end of test execution
   s=line.split("##")
@@ -172,7 +173,15 @@ def threaded_execution(cde,verbose):
     if chan=='stdout' and lines is not None:
       #if len(lastline)>1:
       #  print(" ")
-      lines=(lines.decode('utf-8')).split("\n")
+      try:
+        lines=(lines.decode('utf-8')).split("\n")
+      except:
+        try:
+            lines=lines.split("\n")
+        except:
+            print('ERRROR')
+            print(lines)
+
       for i in range(len(lines)-1):
         if lines[i]!="":
           print(prettifying(lines[i]).rstrip())
@@ -210,9 +219,9 @@ def threaded_execution(cde,verbose):
   return p.returncode
 
 def execCde(commande,current):
-    if current["no_fun"]:
-      rc=call(commande,shell=True)
-    else:
-      rc=threaded_execution(commande,current["verbose"])
+  if current["no_fun"]:
+    rc=call(commande,shell=True)
+  else:
+    rc=threaded_execution(commande,current["verbose"])
 
-    return rc
+  return rc

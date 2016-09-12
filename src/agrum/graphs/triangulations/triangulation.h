@@ -67,7 +67,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -84,7 +84,7 @@ namespace gum {
      * sequence algorithm. */
     virtual void setGraph( const UndiGraph* graph,
                            const NodeProperty<Size>* domsizes ) = 0;
-    
+
     /// returns the fill-ins added by the triangulation algorithm
     virtual const EdgeSet& fillIns () = 0;
 
@@ -141,8 +141,8 @@ namespace gum {
     const NodeProperty<Size>* domainSizes () const;
 
     /// @}
-    
-    
+
+
   protected:
     /// the domain sizes of the variables/nodes of the graph
     const NodeProperty<Size>* _domain_sizes { nullptr };

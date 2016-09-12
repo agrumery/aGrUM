@@ -156,7 +156,7 @@ using O3PRM = gum::prm::o3prm::O3PRM;
 O3PRM* __prm;
 std::string __prefix;
 
-bool __ok (int n) { return errors().error_count == n; }
+bool __ok (Size n) { return errors().error_count == n; }
 
 void __addO3Type( O3Type t ) {
   get_prm()->types().emplace_back( new O3Type{std::move( t )} );
@@ -188,14 +188,14 @@ void __addO3Import( O3Import i ) {
 
 void __split( const O3Label& value, O3Label& left, O3Label& right) {
   auto idx = value.label().find_first_of('.');
-  if ( ( idx == std::string::npos ) or ( idx == value.label().size() - 1 ) ) {
+  if ( ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
     left = O3Label( value.position(), value.label() );
     right = O3Label( value.position(), value.label() );
   } else {
     left = O3Label( value.position(), value.label().substr( 0, idx ) );
     auto pos = O3Position( value.position().file(),
                          value.position().line(),
-                         value.position().column() + idx );
+                         value.position().column() + (int)idx );
     right = O3Label( pos, value.label().substr( idx + 1 ) );
   }
 }
@@ -213,7 +213,7 @@ O3PRM* get_prm() {
 // Set the prefix for types, interfaces, classes and systems parsed
 void set_prefix( const std::string& prefix ) {
   __prefix = prefix;
-  if ( __prefix.size() > 0 and __prefix[__prefix.size() - 1] != '.' ) {
+  if ( __prefix.size() > 0 && __prefix[__prefix.size() - 1] != '.' ) {
     __prefix.append( "." );
   }
 }
@@ -273,7 +273,7 @@ O3AttributeList& elts);
 	void LABEL_OR_STAR_LIST(O3LabelList& list);
 	void INTERFACE_DECLARATION(O3Position& pos,
 O3Label& name,
-O3Label& super,
+O3Label& superLabel,
 O3InterfaceElementList& elts);
 	void INTERFACE(O3Position& pos);
 	void INTERFACE_BODY(O3InterfaceElementList& elts);

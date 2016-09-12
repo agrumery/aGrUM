@@ -39,12 +39,12 @@ namespace gum {
     }
 
     /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintDAG::StructuralConstraintDAG( unsigned int nb_nodes )
+    StructuralConstraintDAG::StructuralConstraintDAG( Size nb_nodes )
         : StructuralConstraintDiGraph( nb_nodes ) {
       StructuralConstraintDiGraph::setGraph( nb_nodes );
 
       DAG g;
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+      for ( NodeId i = 0; i < nb_nodes; ++i ) {
         g.addNode( i );
       }
       _DAG__cycle_detector.setDAG( g );

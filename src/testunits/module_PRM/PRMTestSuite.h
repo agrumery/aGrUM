@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; if !, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -72,12 +72,12 @@ namespace gum_tests {
       gum::prm::InstanceBayesNet<double>* inst = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
           inst = new gum::prm::InstanceBayesNet<double>(
-              prm->system( "aSys" ).get( "c1" ) ) );
+              prm->getSystem( "aSys" ).get( "c1" ) ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete inst );
     }
 
     void testClassAccess() {
-      gum::prm::Class<double>& c = prm->getClass( "SafeComputer" );
+      gum::prm::PRMClass<double>& c = prm->getClass( "SafeComputer" );
       gum::prm::ClassBayesNet<double>* bn = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::ClassBayesNet<double>(
                                         prm->getClass( "SafeComputer" ) ) );
@@ -100,7 +100,7 @@ namespace gum_tests {
 
     void testInstanceAccess() {
       gum::prm::InstanceBayesNet<double>* bn = 0;
-      gum::prm::Instance<double>& i = prm->system( "aSys" ).get( "c1" );
+      gum::prm::PRMInstance<double>& i = prm->getSystem( "aSys" ).get( "c1" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           bn = new gum::prm::InstanceBayesNet<double>( i ) );
       TS_ASSERT_EQUALS( bn->size(), i.size() );
@@ -122,7 +122,7 @@ namespace gum_tests {
     }
 
     void testGroundedBN() {
-      gum::prm::System<double>& sys = prm->system( "aSys" );
+      gum::prm::PRMSystem<double>& sys = prm->getSystem( "aSys" );
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
@@ -142,12 +142,12 @@ namespace gum_tests {
         wount++;
         std::string var = bn.variable( node ).name();
         size_t pos = var.find_first_of( '.' );
-        gum::prm::Instance<double>& instance = sys.get( var.substr( 0, pos ) );
-        gum::prm::Attribute<double>& attr =
+        gum::prm::PRMInstance<double>& instance = sys.get( var.substr( 0, pos ) );
+        gum::prm::PRMAttribute<double>& attr =
             instance.get( var.substr( pos + 1 ) );
         TS_ASSERT_DIFFERS( bn.cpt( node ).nbrDim(), (gum::Size)0 );
 
-        if ( gum::prm::ClassElement<double>::isAggregate(
+        if ( gum::prm::PRMClassElement<double>::isAggregate(
                  instance.type().get( attr.id() ) ) ) {
           TS_ASSERT_DIFFERS( attr.cpf().nbrDim(), (gum::Size)1 );
         }
@@ -166,22 +166,22 @@ namespace gum_tests {
     }
 
     void testCPF() {
-      gum::prm::System<double>& sys = prm->system( "aSys" );
+      gum::prm::PRMSystem<double>& sys = prm->getSystem( "aSys" );
 
-      for ( gum::prm::System<double>::iterator iter = sys.begin();
+      for ( gum::prm::PRMSystem<double>::iterator iter = sys.begin();
             iter != sys.end();
             ++iter ) {
-        for ( gum::prm::Instance<double>::iterator jter =
+        for ( gum::prm::PRMInstance<double>::iterator jter =
                   ( *( iter.val() ) ).begin();
               jter != ( *( iter.val() ) ).end();
               ++jter ) {
           gum::Instantiation i( ( *( jter.val() ) ).cpf() ), var;
           var.add( ( *( jter.val() ) ).type().variable() );
 
-          for ( i.setFirstOut( var ); not i.end(); i.incOut( var ) ) {
+          for ( i.setFirstOut( var ); ! i.end(); i.incOut( var ) ) {
             double f = 0.0;
 
-            for ( i.setFirstIn( var ); not i.end(); i.incIn( var ) ) {
+            for ( i.setFirstIn( var ); ! i.end(); i.incIn( var ) ) {
               f += ( *( jter.val() ) ).cpf().get( i );
             }
 
@@ -193,7 +193,7 @@ namespace gum_tests {
     }
 
     void testNormalisedCPT() {
-      gum::prm::System<double>& sys = prm->system( "aSys" );
+      gum::prm::PRMSystem<double>& sys = prm->getSystem( "aSys" );
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
@@ -203,10 +203,10 @@ namespace gum_tests {
         gum::Instantiation i( cpt ), j;
         j.add( bn.variable( node ) );
 
-        for ( i.setFirstOut( j ); not i.end(); i.incOut( j ) ) {
+        for ( i.setFirstOut( j ); ! i.end(); i.incOut( j ) ) {
           double sum = 0.0;
 
-          for ( i.setFirstIn( j ); not i.end(); i.incIn( j ) )
+          for ( i.setFirstIn( j ); ! i.end(); i.incIn( j ) )
             sum += cpt.get( i );
 
           TS_ASSERT_DELTA( sum, 1.0, 1e-7 );

@@ -36,7 +36,7 @@ namespace gum {
     /// learns the structure of a Bayes net
     template <typename GRAPH_CHANGES_SELECTOR>
     DAG K2::learnStructure( GRAPH_CHANGES_SELECTOR& selector,
-                            const std::vector<unsigned int>& modal,
+                            const std::vector<Size>& modal,
                             DAG initial_dag ) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
@@ -64,7 +64,7 @@ namespace gum {
     BayesNet<GUM_SCALAR> K2::learnBN( GRAPH_CHANGES_SELECTOR& selector,
                                       PARAM_ESTIMATOR& estimator,
                                       const std::vector<std::string>& names,
-                                      const std::vector<unsigned int>& modal,
+                                      const std::vector<Size>& modal,
                                       const CELL_TRANSLATORS& translator,
                                       DAG initial_dag ) {
       // check that we used a selector compatible with the K2 algorithm

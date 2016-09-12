@@ -40,9 +40,9 @@ namespace gum {
      * @brief This class decorates a gum::prm::Class<GUM_SCALAR> has an
      *IBaseBayesNet.
      *
-     * This class filters Attribute and Aggregate in a way it can be interpreted
+     * This class filters PRMAttribute and PRMAggregate in a way it can be interpreted
      *as
-     * a IBayesNet. SlotChains and ReferenceSlot are not represented.
+     * a IBayesNet. SlotChains and PRMReferenceSlot are not represented.
      *
      * Remember that a ClassBayesNet<GUM_SCALAR> does not contain input nodes
      *parents
@@ -64,7 +64,7 @@ namespace gum {
       /// Default constructor.
       /// @param c The Class<GUM_SCALAR> decorated by this
       /// ClassBayesNet<GUM_SCALAR>.
-      ClassBayesNet<GUM_SCALAR>( const Class<GUM_SCALAR>& c );
+      ClassBayesNet<GUM_SCALAR>( const PRMClass<GUM_SCALAR>& c );
 
       /// Copy constructor.
       ClassBayesNet<GUM_SCALAR>( const ClassBayesNet<GUM_SCALAR>& from );
@@ -85,15 +85,15 @@ namespace gum {
       /**
        * @brief Returns the CPT of a node in this ClassBayesNet<GUM_SCALAR>.
        *
-       * If the node is an Aggregate, this will raise an OperationNotAllowed
-       * since Aggregate's CPT are define at instantiation only.
+       * If the node is an PRMAggregate, this will raise an OperationNotAllowed
+       * since PRMAggregate's CPT are define at instantiation only.
        *
        * @param varId a variable id.
        * @return the Potential of varId.
        *
        * @throw NotFound raised if varId does not match any variable in this
        *                 IBayesNet.
-       * @throw OperationNotAllowed raised if varId is an Aggregate.
+       * @throw OperationNotAllowed raised if varId is an PRMAggregate.
        */
       virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
@@ -127,25 +127,25 @@ namespace gum {
       /// @}
       private:
       /// Mapping between DiscreteVariable and their NodeId
-      HashTable<const DiscreteVariable*, const ClassElement<GUM_SCALAR>*>
+      HashTable<const DiscreteVariable*, const PRMClassElement<GUM_SCALAR>*>
           __varNodeMap;
 
       /// Private getter with type checking in case the id is not a formal
-      /// Attribute.
+      /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const ClassElement<GUM_SCALAR>& __get( NodeId id ) const;
+      const PRMClassElement<GUM_SCALAR>& __get( NodeId id ) const;
 
       /// Private getter with type checking in case the id is not a formal
-      /// Attribute.
+      /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const ClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
+      const PRMClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 
-      /// The ClassElementContainer decorated by this.
-      const Class<GUM_SCALAR>* __class;
+      /// The PRMClassElementContainer decorated by this.
+      const PRMClass<GUM_SCALAR>* __class;
 
       mutable NodeProperty<Size> __modalities;
 
-      void __init( const Class<GUM_SCALAR>& c );
+      void __init( const PRMClass<GUM_SCALAR>& c );
     };
 
 

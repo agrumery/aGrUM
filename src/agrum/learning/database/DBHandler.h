@@ -47,10 +47,10 @@ namespace gum {
        * For instance, RecordCounters cut the database into several pieces and
        * assign each piece to a handler. Then each handler is used to perform
        * countings only on a subset of the database */
-      virtual unsigned long size() const noexcept = 0;
+      virtual Size size() const noexcept = 0;
 
       /// the number of rows in the whole database
-      virtual unsigned long DBSize() const noexcept = 0;
+      virtual Size DBSize() const noexcept = 0;
 
       /// returns the current row of the database
       /** @throws OutOfBounds if the handler points to the end of its area */
@@ -87,11 +87,11 @@ namespace gum {
       virtual void reset() = 0;
 
       /// sets the range of rows in the database that the handler will parse
-      virtual void setRange( unsigned long begin,
-                             unsigned long end ) noexcept = 0;
+      virtual void setRange( Size begin,
+                             Size end ) = 0;
 
       /// returns the current range of the handler
-      virtual std::pair<unsigned long, unsigned long> range() const
+      virtual std::pair<Size,Size> range() const
           noexcept = 0;
 
       /// returns the names of the variables
@@ -99,7 +99,7 @@ namespace gum {
           noexcept = 0;
 
       /// returns the number of variables (columns) of the database
-      virtual unsigned int nbVariables() const noexcept = 0;
+      virtual Size nbVariables() const noexcept = 0;
 
       protected:
       /// a buffer to avoid cacheline problems due to parallelism

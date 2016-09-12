@@ -308,7 +308,7 @@ IDENT_OR_INTEGER<std::string& name> =
 FLOAT<float& val> =
   number  (. val=coco_atof(t->val); .)
   |
-  integer (. val=coco_atoi(t->val); .)
+  integer (. val=float(coco_atoi(t->val)); .)
 .
 
 

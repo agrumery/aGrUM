@@ -55,8 +55,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     class CNLoopyPropagation : public InferenceEngine<GUM_SCALAR> {
       public:
-      typedef std::vector<Potential<GUM_SCALAR>*> msg;
-      typedef const Arc* cArcP;
+      using msg= std::vector<Potential<GUM_SCALAR>*>;
+      using cArcP= const Arc*;
 
       /**
        * Inference type to be used by the algorithm.
@@ -363,7 +363,7 @@ namespace gum {
 
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      typedef InferenceEngine<GUM_SCALAR> __infE;
+      using __infE= InferenceEngine<GUM_SCALAR>;
 
       /** The choosen inference type. nodeToNeighbours by Default. */
       InferenceType __inferenceType;

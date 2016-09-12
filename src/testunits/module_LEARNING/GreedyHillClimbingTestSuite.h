@@ -70,12 +70,12 @@ namespace gum_tests {
         , __nbr( 0 )
         , __mess( "" ){};
 
-    void whenProgress( const void* buffer, gum::Size a, double b, double c ) {
+    void whenProgress( const void* buffer, const gum::Size a, const double b, const double c ) {
       __nbr++;
       std::cout << __nbr << ": error = " << b << std::endl;
     }
 
-    void whenStop( const void* buffer, std::string s ) { __mess = s; }
+    void whenStop( const void* buffer, const std::string s ) { __mess = s; }
 
     int getNbr() { return __nbr; }
 
@@ -102,7 +102,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -151,7 +151,7 @@ namespace gum_tests {
         database.variableNames (),
         modalities );
 
-        gum::BayesNet<float> bn2 =
+        gum::BayesNet<double> bn2 =
         search.learnBN ( selector, estimator,
         database.variableNames (),
         modalities );
@@ -164,7 +164,7 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorUniversal> translators;
       gum::learning::CellTranslatorUniversal one_translator(
-          gum::Sequence<float>{0, 1}, false );
+          gum::Sequence<double>{0, 1}, false );
       translators.insertTranslator(
           one_translator, gum::learning::Col<0>(), database.nbVariables() );
 
@@ -178,7 +178,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -231,14 +231,14 @@ namespace gum_tests {
 
       const std::string s0 = "0";
       const std::string s1 = "1";
-      for ( unsigned int i = 0; i < database.nbVariables(); ++i ) {
+      for ( gum::Idx i = 0; i < database.nbVariables(); ++i ) {
         const gum::DiscreteVariable& var = bn.variable( i );
         TS_ASSERT( var.label( 0 ) == s0 );
         TS_ASSERT( var.label( 1 ) == s1 );
       }
 
       /*
-        gum::BayesNet<float> bn2 =
+        gum::BayesNet<double> bn2 =
         search.learnBN ( selector, estimator,
         database.variableNames (),
         modalities );
@@ -251,7 +251,7 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorUniversal> translators;
       gum::learning::CellTranslatorUniversal translator_tf(
-          gum::Sequence<float>{0, 1, 2, 3}, true );
+          gum::Sequence<double>{0, 1, 2, 3}, true );
       translators.insertTranslator(
           translator_tf, gum::learning::Col<0>(), database.nbVariables() );
 
@@ -265,7 +265,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -316,8 +316,8 @@ namespace gum_tests {
       const std::string s0 = "0";
       const std::string s1 = "1";
       const std::string s2 = "2";
-      gum::Set<unsigned int> seq{1, 10, 11, 14};
-      for ( unsigned int i = 0; i < database.nbVariables(); ++i ) {
+      gum::Set<gum::Idx> seq{1, 10, 11, 14};
+      for ( gum::Idx i = 0; i < database.nbVariables(); ++i ) {
         const gum::DiscreteVariable& var = bn.variable( i );
         TS_ASSERT( var.label( 0 ) == s0 );
         TS_ASSERT( var.label( 1 ) == s1 );
@@ -327,7 +327,7 @@ namespace gum_tests {
       }
 
       /*
-        gum::BayesNet<float> bn2 =
+        gum::BayesNet<double> bn2 =
         search.learnBN ( selector, estimator,
         database.variableNames (),
         modalities );
@@ -341,10 +341,10 @@ namespace gum_tests {
           gum::learning::CellTranslatorUniversal> translators;
       translators.insertTranslator( gum::learning::Col<0>(),
                                     database.nbVariables() );
-      translators[1].setUserValues( gum::Sequence<float>{0, 1, 2}, false );
-      translators[10].setUserValues( gum::Sequence<float>{0, 1, 2}, false );
-      translators[11].setUserValues( gum::Sequence<float>{0, 1, 2}, false );
-      translators[14].setUserValues( gum::Sequence<float>{0, 1, 2}, false );
+      translators[1].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
+      translators[10].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
+      translators[11].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
+      translators[14].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
 
       // auto translators = gum::learning::make_translators
       //  ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -356,7 +356,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
@@ -407,7 +407,7 @@ namespace gum_tests {
       const std::string s0 = "0";
       const std::string s1 = "1";
       const std::string s2 = "2";
-      gum::Set<unsigned int> seq{1, 10, 11, 14};
+      gum::Set<gum::Idx> seq{1, 10, 11, 14};
       for ( auto i : seq ) {
         const gum::DiscreteVariable& var = bn.variable( i );
         TS_ASSERT( var.label( 0 ) == s0 );
@@ -416,7 +416,7 @@ namespace gum_tests {
       }
 
       /*
-        gum::BayesNet<float> bn2 =
+        gum::BayesNet<double> bn2 =
         search.learnBN ( selector, estimator,
         database.variableNames (),
         modalities );
@@ -436,7 +436,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -480,7 +480,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -524,7 +524,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -569,7 +569,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -614,7 +614,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -659,7 +659,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter(
           database, translators, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities();
+      std::vector<gum::Idx> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -675,7 +675,7 @@ namespace gum_tests {
 
       gum::NodeSet targets{0, 1, 2};
       op_set.setTargets( targets );
-      op_set.setTails( modalities.size() );
+      op_set.setTails( gum::Size(modalities.size()) );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
                                                   decltype( struct_constraint ),
@@ -690,7 +690,7 @@ namespace gum_tests {
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn_dag << std::endl;
 
-        gum::BayesNet<float> bn = search.learnBN( selector,
+        gum::BayesNet<double> bn = search.learnBN( selector,
                                                   estimator,
                                                   database.variableNames(),
                                                   modalities,

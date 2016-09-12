@@ -79,7 +79,7 @@ namespace gum {
   /// execute only k operations of a given schedule (default k = 1)
   template <typename GUM_SCALAR>
   bool SchedulerBasic<GUM_SCALAR>::execute( Schedule<GUM_SCALAR>& schedule,
-                                            unsigned int k ) {
+                                            Size k ) {
     const NodeSet& available = schedule.availableOperations();
 
     while ( !available.empty() && k ) {
@@ -131,7 +131,7 @@ namespace gum {
    * to perform the k first ScheduleOperations of a given schedule */
   template <typename GUM_SCALAR>
   float SchedulerBasic<GUM_SCALAR>::nbOperations(
-      const Schedule<GUM_SCALAR>& schedule, unsigned int k ) const {
+      const Schedule<GUM_SCALAR>& schedule, Size k ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
     float nb_operations = 0;
@@ -214,7 +214,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::pair<long, long>
   SchedulerBasic<GUM_SCALAR>::memoryUsage( const Schedule<GUM_SCALAR>& schedule,
-                                           unsigned int k ) const {
+                                           Size k ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
     long max_memory = 0;

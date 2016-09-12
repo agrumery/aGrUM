@@ -34,7 +34,7 @@ namespace gum {
     INLINE AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::
         AprioriDirichletFromDatabase(
             const RowFilter& filter,
-            const std::vector<unsigned int>& var_modalities )
+            const std::vector<Size>& var_modalities )
         : Counter<IdSetAlloc, CountAlloc>( filter, var_modalities ) {
       GUM_CONSTRUCTOR( AprioriDirichletFromDatabase );
     }
@@ -80,9 +80,8 @@ namespace gum {
       if ( this->_weight != 0 ) {
         // perform the countings
         Counter<IdSetAlloc, CountAlloc>::clear();
-        const unsigned int size =
-            Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->size();
-        for ( unsigned int i = 0; i < size; ++i ) {
+        const Size size =Size(Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->size());
+        for ( Idx i = 0; i < size; ++i ) {
           if ( Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->operator[](
                    i ) != nullptr ) {
             if ( Apriori<IdSetAlloc, CountAlloc>::_conditioning_nodesets->
@@ -106,7 +105,7 @@ namespace gum {
         }
 
         // save the countings
-        std::vector<std::vector<float, CountAlloc>>& counts =
+        std::vector<std::vector<double, CountAlloc>>& counts =
             Counter<IdSetAlloc, CountAlloc>::_getCounts();
         std::swap( this->_apriori_counts, counts );
 

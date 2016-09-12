@@ -68,13 +68,13 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// Returns the next name w.r.t. the given Type.
-      std::string nextName( PRMObject::PRMType type );
+      /// Returns the next name w.r.t. the given PRMType.
+      std::string nextName( PRMObject::prm_type type );
 
       /// @}
       private:
       /// The vector of counters.
-      std::vector<unsigned int> __counters;
+      std::vector<Size> __counters;
     };
 
   } /* namespace prm */

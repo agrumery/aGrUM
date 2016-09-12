@@ -42,8 +42,8 @@ namespace gum {
           __subgraph_mining( graph, p );
 
           for ( const auto node : __tree.iso_graph( p ).nodes() ) {
-            Instance<GUM_SCALAR>* u = __tree.iso_map( p, node ).atPos( 0 );
-            Instance<GUM_SCALAR>* v = __tree.iso_map( p, node ).atPos( 1 );
+            PRMInstance<GUM_SCALAR>* u = __tree.iso_map( p, node ).atPos( 0 );
+            PRMInstance<GUM_SCALAR>* v = __tree.iso_map( p, node ).atPos( 1 );
             graph.graph().eraseEdge( Edge( graph.id( u ), graph.id( v ) ) );
           }
         }
@@ -111,9 +111,9 @@ namespace gum {
       HashTable<std::string, gspan::EdgeGrowth<GUM_SCALAR>*>* edge_count =
           nullptr;
       gspan::EdgeGrowth<GUM_SCALAR>* edge_growth = nullptr;
-      Sequence<Instance<GUM_SCALAR>*>* seq = nullptr;
-      Instance<GUM_SCALAR>* current = nullptr;
-      Instance<GUM_SCALAR>* neighbor = nullptr;
+      Sequence<PRMInstance<GUM_SCALAR>*>* seq = nullptr;
+      PRMInstance<GUM_SCALAR>* current = nullptr;
+      PRMInstance<GUM_SCALAR>* neighbor = nullptr;
 
       // Neighbor_id is the neighbor's id in the interface graph and
       // neighbor_node
@@ -127,7 +127,7 @@ namespace gum {
       size_t idx;
       const std::list<NodeId>* children = 0;
 
-      while ( not stack.empty() ) {
+      while ( ! stack.empty() ) {
         // Getting next pattern
         p = stack.back();
         stack.pop_back();
@@ -167,7 +167,7 @@ namespace gum {
                 // We want a forward edge in any case or a backward edge if
                 // current
                 // is the rightmost vertex
-                if ( ( not seq->exists( neighbor ) ) or
+                if ( ( ! seq->exists( neighbor ) ) ||
                      ( node == r_path.back() ) ) {
                   // Things we need to know: the LabelData data of the neighbour
                   // and,
@@ -204,7 +204,7 @@ namespace gum {
             for ( const auto& elt : *edge_count ) {
               try {
                 __tree.growPattern( *p, *elt.second, 2 );
-              } catch ( OperationNotAllowed& e ) {
+              } catch ( OperationNotAllowed& ) {
                 // The child was not minimal or was not worth considering
               }
 
@@ -239,7 +239,7 @@ namespace gum {
       NodeId id = 0;
       std::list<NodeId>* children = nullptr;
 
-      while ( not stack.empty() ) {
+      while ( ! stack.empty() ) {
         id = stack.back();
         stack.pop_back();
         __patterns.push_back( &( tree().pattern( id ) ) );
@@ -251,7 +251,7 @@ namespace gum {
           stack.push_back( *child );
       }
 
-      if ( not __patterns.empty() ) {
+      if ( ! __patterns.empty() ) {
         // We sort __patterns.
         GSpan<GUM_SCALAR>::PatternSort my_sort( this );
         std::sort( __patterns.begin(), __patterns.end(), my_sort );
@@ -260,7 +260,7 @@ namespace gum {
         // __chosen
         GSpan<GUM_SCALAR>::MatchedInstances* matches =
             new GSpan<GUM_SCALAR>::MatchedInstances();
-        Sequence<Instance<GUM_SCALAR>*>* match = nullptr;
+        Sequence<PRMInstance<GUM_SCALAR>*>* match = nullptr;
 
         for ( const auto node :
               tree().max_indep_set( *( __patterns.front() ) ) ) {
@@ -293,7 +293,7 @@ namespace gum {
                 break;
               }
 
-            if ( not found ) {
+            if ( ! found ) {
               // We add the pattern to the reduced isomorphism graph to compute
               // the
               // max independent set
@@ -318,7 +318,7 @@ namespace gum {
           Set<NodeId> removed;
 
           for ( const auto node : degree_list )
-            if ( not removed.exists( node ) ) {
+            if ( ! removed.exists( node ) ) {
               // First we update removed to follow the max independent set
               // algorithm
               removed.insert( node );
@@ -359,7 +359,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE
     GSpan<GUM_SCALAR>::GSpan( const PRM<GUM_SCALAR>& prm,
-                              const System<GUM_SCALAR>& sys,
+                              const PRMSystem<GUM_SCALAR>& sys,
                               gspan::SearchStrategy<GUM_SCALAR>* strategy )
         : __graph( new gspan::InterfaceGraph<GUM_SCALAR>( sys ) )
         , __tree( *__graph, strategy )
@@ -398,10 +398,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE unsigned long
-    GSpan<GUM_SCALAR>::__cost_func( unsigned int interface,
-                                    unsigned int frequency ) {
-      return interface * frequency;
+    INLINE Idx
+    GSpan<GUM_SCALAR>::__cost_func( Size interface_size,
+                                    Size frequency ) {
+      return Idx(interface_size * frequency);
     }
 
     template <typename GUM_SCALAR>
@@ -442,8 +442,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE bool
     GSpan<GUM_SCALAR>::__isEdgeEligible( gspan::EdgeData<GUM_SCALAR>* e ) {
-      return ( __graph->edges( e->l ).size() >= 2 ) and
-             ( __graph->nodes( e->l_u ).size() >= 2 ) and
+      return ( __graph->edges( e->l ).size() >= 2 ) &&
+             ( __graph->nodes( e->l_u ).size() >= 2 ) &&
              ( __graph->nodes( e->l_v ).size() >= 2 );
     }
 

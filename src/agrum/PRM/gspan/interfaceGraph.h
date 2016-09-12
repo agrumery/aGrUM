@@ -57,7 +57,7 @@ namespace gum {
         /// The string version of this label.
         std::string l;
         /// The size in terms of tree width of the given label.
-        unsigned long tree_width;
+        Size tree_width;
         /// Equality operator.
         bool operator==( const LabelData& from ) const;
         /// Difference operator.
@@ -87,7 +87,7 @@ namespace gum {
         /// Destructor.
         ~NodeData<GUM_SCALAR>();
         /// The instance represented by this node.
-        Instance<GUM_SCALAR>* n;
+        PRMInstance<GUM_SCALAR>* n;
         /// The label of this node.
         LabelData* l;
         /// Equality operator.
@@ -121,11 +121,11 @@ namespace gum {
         /// Destructor.
         ~EdgeData();
         /// One of the two instance represented by this edge.
-        Instance<GUM_SCALAR>* u;
+        PRMInstance<GUM_SCALAR>* u;
         /// The label data of u.
         LabelData* l_u;
         /// The other instance represented by thus edge
-        Instance<GUM_SCALAR>* v;
+        PRMInstance<GUM_SCALAR>* v;
         /// The label data of v.
         LabelData* l_v;
         /// The labal data of this edge.
@@ -151,10 +151,10 @@ namespace gum {
        * @headerfile interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
        *
        * @brief This class represent the interface graph of a given
-       * gum::prm::System<GUM_SCALAR>.
+       * gum::prm::PRMSystem<GUM_SCALAR>.
        *
        * An interface graph is a labelled graph over the instances of a
-       * gum::prm::System<GUM_SCALAR>, where there exists an edge between two
+       * gum::prm::PRMSystem<GUM_SCALAR>, where there exists an edge between two
        * instance i and j if and only if their shared interface is nonempty.
        *
        * Labels assigned to edges and nodes in the interface graph are
@@ -168,7 +168,7 @@ namespace gum {
 
         public:
         /// Default constructor.
-        InterfaceGraph( const System<GUM_SCALAR>& sys );
+        InterfaceGraph( const PRMSystem<GUM_SCALAR>& sys );
 
         /// Copy constructor, proceeds with a shallow copy so for friends only.
         InterfaceGraph( const InterfaceGraph& source );
@@ -212,18 +212,18 @@ namespace gum {
         LabelData* label( Idx id );
 
         /// Returns the id of i in this interface graph
-        NodeId id( const Instance<GUM_SCALAR>& i ) const;
+        NodeId id( const PRMInstance<GUM_SCALAR>& i ) const;
 
         /// Returns the id of i in this interface graph
-        NodeId id( const Instance<GUM_SCALAR>* i ) const;
+        NodeId id( const PRMInstance<GUM_SCALAR>* i ) const;
 
         /// Returns data about a node.
         /// @throw NotFound
-        NodeData<GUM_SCALAR>& node( const Instance<GUM_SCALAR>* i );
+        NodeData<GUM_SCALAR>& node( const PRMInstance<GUM_SCALAR>* i );
 
         /// Returns data about a node.
         /// @throw NotFound
-        const NodeData<GUM_SCALAR>& node( const Instance<GUM_SCALAR>* i ) const;
+        const NodeData<GUM_SCALAR>& node( const PRMInstance<GUM_SCALAR>* i ) const;
 
         /// Returns data about a node.
         /// @throw NotFound
@@ -242,9 +242,9 @@ namespace gum {
         const EdgeData<GUM_SCALAR>& edge( NodeId u, NodeId v ) const;
 
         private:
-        /// The gum::prm::System<GUM_SCALAR> represented by this interface
+        /// The gum::prm::PRMSystem<GUM_SCALAR> represented by this interface
         /// graph.
-        const System<GUM_SCALAR>* __sys;
+        const PRMSystem<GUM_SCALAR>* __sys;
 
         /// The interface graph.
         UndiGraph __graph;
@@ -252,8 +252,8 @@ namespace gum {
         /// Data associated with a node in __graph.
         NodeProperty<NodeData<GUM_SCALAR>*> __nodes;
 
-        /// Mapping between Instance<GUM_SCALAR> dans their NodeId in __graph.
-        HashTable<Instance<GUM_SCALAR>*, NodeId> __idMap;
+        /// Mapping between PRMInstance<GUM_SCALAR> dans their id in __graph.
+        HashTable<PRMInstance<GUM_SCALAR>*, NodeId> __idMap;
 
         /// Data associated with edges in __graph.
         EdgeProperty<EdgeData<GUM_SCALAR>*> __edges;

@@ -133,7 +133,12 @@ namespace gum {
   template <typename T>
   struct AlmostDifferent {
     bool operator()( const T& t1, const T& t2 ) {
-      return ( ( t1 > t2 + (T)0.000001 ) || ( t2 > t1 + (T)0.000001 ) );
+      if (t1==t2)
+        return false;
+      else if (t1==0)
+        return (std::abs(t2)>1e-5);
+      else
+        return (std::abs(t2-t1)/t1>1e-5);
     }
   };
 

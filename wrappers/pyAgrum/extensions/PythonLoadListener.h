@@ -69,7 +69,7 @@ int __fillLoadListeners ( std::vector<PythonLoadListener>& py_listener, PyObject
   PyObject* item;
 
   if ( PySequence_Check ( l ) ) {
-    l_size = PySequence_Size ( l );
+    l_size = (int)PySequence_Size ( l );
     py_listener.resize ( l_size );
 
     for ( int i = 0 ; i < l_size ; i++ ) {

@@ -40,10 +40,11 @@ namespace gum {
 
       INLINE
       NodeId Pattern::addNode( LabelData& l ) {
-        DiGraph::addNode( size() + 1 );
-        __node_map.insert( size(), &l );
+        NodeId n = NodeId( size() + 1);
+        DiGraph::addNode( n );
+        __node_map.insert( n, &l );
         __last = &l;
-        return size();
+        return n;
       }
 
       INLINE
@@ -116,14 +117,14 @@ namespace gum {
 
       INLINE
       void Pattern::addArc( NodeId i, NodeId j, LabelData& l ) {
-        if ( not( DiGraph::exists( i ) and DiGraph::exists( j ) ) ) {
+        if ( !( DiGraph::exists( i ) && DiGraph::exists( j ) ) ) {
           GUM_ERROR( NotFound, "node not found in this pattern" );
         }
 
         EdgeCode* edge =
             new EdgeCode( i, j, __node_map[i]->id, l.id, __node_map[j]->id );
 
-        if ( ( code().codes.size() == 0 ) or
+        if ( ( code().codes.size() == 0 ) ||
              ( DFSCode::validNeighbors( code().codes.back(), edge ) ) ) {
           DiGraph::addArc( i, j );
           __arc_map.insert( Arc( i, j ), std::make_pair( &l, edge ) );
@@ -151,7 +152,7 @@ namespace gum {
 
       INLINE
       void Pattern::rightmostPath( std::list<NodeId>& r_path ) const {
-        r_path.push_back( size() );
+        r_path.push_back( NodeId( size() ) );
 
         while ( r_path.front() != 1 ) {
           for ( const auto par : parents( r_path.front() ) ) {
@@ -231,7 +232,7 @@ namespace gum {
 
       INLINE
       void Pattern::remove( NodeId node ) {
-        if ( DiGraph::parents( node ).empty() and
+        if ( DiGraph::parents( node ).empty() &&
              DiGraph::children( node ).empty() ) {
           DiGraph::eraseNode( node );
           __node_map.erase( node );

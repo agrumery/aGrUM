@@ -380,7 +380,7 @@ namespace gum {
 
     try {
       res = addUtilityNode( var, newMultiDim, varId );
-    } catch ( Exception& e ) {
+    } catch ( Exception& ) {
       delete newMultiDim;
       throw;
     }
@@ -412,7 +412,7 @@ namespace gum {
 
     try {
       res = addChanceNode( var, newMultiDim, varId );
-    } catch ( Exception& e ) {
+    } catch ( Exception& ) {
       delete newMultiDim;
       throw;
     }
@@ -773,7 +773,7 @@ namespace gum {
       std::vector<NodeId>* decisionOrder = getDecisionOrder();
       NodeSet nodeList = _dag.asNodeSet();
 
-      for ( unsigned int i = 0; i < decisionOrder->size(); i++ ) {
+      for ( Idx i = 0; i < decisionOrder->size(); i++ ) {
         NodeSet partialOrderedSet;
 
         for ( const auto par : _dag.parents( decisionOrder->at( i ) ) ) {

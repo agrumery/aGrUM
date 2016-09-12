@@ -83,11 +83,11 @@ namespace gum {
           }
 
           if ( lmin == _INF ) {  // cas infini
-            msg_p_min = 1.;
+            msg_p_min = GUM_SCALAR(1.);
           } else if ( min == 0. || lmin == 0. ) {
-            msg_p_min = 0;
+            msg_p_min = GUM_SCALAR(0.);
           } else {
-            msg_p_min = 1. / ( 1. + ( ( 1. / min - 1. ) * 1. / lmin ) );
+            msg_p_min = GUM_SCALAR(1. / ( 1. + ( ( 1. / min - 1. ) * 1. / lmin ) ));
           }
 
           // cas limites sur max
@@ -96,11 +96,11 @@ namespace gum {
           }
 
           if ( lmax == _INF ) {  // cas infini
-            msg_p_max = 1.;
+            msg_p_max = GUM_SCALAR(1.);
           } else if ( max == 0. || lmax == 0. ) {
-            msg_p_max = 0;
+            msg_p_max = GUM_SCALAR(0.);
           } else {
-            msg_p_max = 1. / ( 1. + ( ( 1. / max - 1. ) * 1. / lmax ) );
+            msg_p_max = GUM_SCALAR(1. / ( 1. + ( ( 1. / max - 1. ) * 1. / lmax ) ));
           }
         }
 
@@ -187,18 +187,18 @@ namespace gum {
           num_max_tmp = num_max;
           den_max_tmp = den_min;
         } else if ( lx[i] == (GUM_SCALAR)1. ) {
-          num_min_tmp = 1.;
-          den_min_tmp = 1.;
-          num_max_tmp = 1.;
-          den_max_tmp = 1.;
-        } else if ( lx[i] > (GUM_SCALAR)1. ) {
-          GUM_SCALAR li = 1. / ( lx[i] - 1. );
+          num_min_tmp = GUM_SCALAR(1.);
+          den_min_tmp = GUM_SCALAR(1.);
+          num_max_tmp = GUM_SCALAR(1.);
+          den_max_tmp = GUM_SCALAR(1.);
+       } else if ( lx[i] > (GUM_SCALAR)1. ) {
+          GUM_SCALAR li = GUM_SCALAR(1.) / ( lx[i] - GUM_SCALAR(1.) );
           num_min_tmp = num_min + li;
           den_min_tmp = den_max + li;
           num_max_tmp = num_max + li;
           den_max_tmp = den_min + li;
         } else if ( lx[i] < (GUM_SCALAR)1. ) {
-          GUM_SCALAR li = 1. / ( lx[i] - 1. );
+          GUM_SCALAR li = GUM_SCALAR(1.) / ( lx[i] - GUM_SCALAR(1.) );
           num_min_tmp = num_max + li;
           den_min_tmp = den_min + li;
           num_max_tmp = num_min + li;
@@ -278,13 +278,11 @@ namespace gum {
         it[i] = combi_msg_p[i].begin();
       }
 
-      Size pas = 2;
       Size pp = pos;
-      // cn->intPow( pas, pp );
-      intPow( pas, pp );
+      Size pas=Size(intPow(2,pp));
 
-      int combi_den = 0;
-      int combi_num = pp;
+      Size combi_den = 0;
+      Size combi_num = pp;
 
       // marginalisation
       while ( it[taille - 1] != combi_msg_p[taille - 1].end() ) {
@@ -409,18 +407,18 @@ namespace gum {
 
 #pragma omp for
 
-        for ( decltype( taille ) i = 0; i < taille; i++ ) {
+        for ( long  i = 0; i < long(taille); i++ ) {
           confs *= msgs_p[i].size();
         }
 
 #pragma omp atomic
         msgPerm *= confs;
 #pragma omp barrier
-#pragma omp flush( msgPerm )
+#pragma omp flush // ( msgPerm ) let the compiler choose what to flush (due to mvsc)
 
 #pragma omp for
 
-        for ( decltype( msgPerm ) j = 0; j < msgPerm; j++ ) {
+        for ( int j = 0; j < int(msgPerm); j++ ) {
           // get jth msg :
           auto jvalue = j;
 
@@ -441,8 +439,8 @@ namespace gum {
 // than during for loop
 #pragma omp critical( msgpminmax )
         {
-#pragma omp flush( msg_p_min )
-#pragma omp flush( msg_p_max )
+#pragma omp flush //( msg_p_min )
+//#pragma omp flush ( msg_p_max )  let the compiler choose what to flush (due to mvsc)
 
           if ( msg_p_min > msg_pmin ) {
             msg_p_min = msg_pmin;
@@ -454,42 +452,6 @@ namespace gum {
         }
       }
       return;
-
-      // old mono threaded version with iterators //
-
-      std::vector<typename std::vector<std::vector<GUM_SCALAR>>::iterator> it(
-          taille );
-
-      for ( decltype( taille ) i = 0; i < taille; i++ ) {
-        it[i] = msgs_p[i].begin();
-      }
-
-      auto theEnd = msgs_p[0].end();
-
-      while ( it[0] != theEnd ) {
-        std::vector<std::vector<GUM_SCALAR>> combi_msg_p( taille );
-
-        for ( decltype( taille ) i = 0; i < taille; i++ ) {
-          combi_msg_p[i] = *it[i];
-        }
-
-        _compute_ext( combi_msg_p, id, msg_p_min, msg_p_max );
-
-        if ( msg_p_min == (GUM_SCALAR)0. && msg_p_max == (GUM_SCALAR)1. ) {
-          return;
-        }
-
-        combi_msg_p.clear();
-
-        ++it[taille - 1];
-
-        for ( decltype( taille ) i = taille - 1;
-              ( i > 0 ) && ( it[i] == msgs_p[i].end() );
-              --i ) {
-          it[i] = msgs_p[i].begin();
-          ++it[i - 1];
-        }
-      }
     }
 
     /**
@@ -500,10 +462,13 @@ namespace gum {
     void CNLoopyPropagation<GUM_SCALAR>::_enum_combi(
         std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
         const NodeId& id,
-        GUM_SCALAR& msg_l_min,
-        GUM_SCALAR& msg_l_max,
+        GUM_SCALAR& real_msg_l_min,
+        GUM_SCALAR& real_msg_l_max,
         std::vector<GUM_SCALAR>& lx,
         const Idx& pos ) {
+      GUM_SCALAR msg_l_min = real_msg_l_min;
+      GUM_SCALAR msg_l_max = real_msg_l_max;
+
       auto taille = msgs_p.size();
 
       // one parent node, the one receiving the message
@@ -516,6 +481,8 @@ namespace gum {
         _compute_ext(
             msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max );
 
+        real_msg_l_min = msg_l_min;
+        real_msg_l_max = msg_l_max;
         return;
       }
 
@@ -529,7 +496,7 @@ namespace gum {
         decltype( taille ) confs = 1;
 #pragma omp for
 
-        for ( decltype( taille ) i = 0; i < taille; i++ ) {
+        for ( int i = 0; i < int(taille); i++ ) {
           confs *= msgs_p[i].size();
         }
 
@@ -541,7 +508,7 @@ namespace gum {
 // direct binary representation of config, no need for iterators
 #pragma omp for
 
-        for ( decltype( msgPerm ) j = 0; j < msgPerm; j++ ) {
+        for ( long j = 0; j < long(msgPerm); j++ ) {
           // get jth msg :
           auto jvalue = j;
 
@@ -558,8 +525,7 @@ namespace gum {
         }
 
 // there may be more threads here than in the for loop, therefor positive test
-// is
-// NECESSARY (init is -2)
+// is NECESSARY (init is -2)
 #pragma omp critical( msglminmax )
         {
 #pragma omp flush( msg_l_min )
@@ -575,43 +541,8 @@ namespace gum {
         }
       }
 
-      return;
-
-      // old mono threaded version with iterators //
-
-      std::vector<typename std::vector<std::vector<GUM_SCALAR>>::iterator> it(
-          taille );
-
-      for ( decltype( taille ) i = 0; i < taille; i++ ) {
-        it[i] = msgs_p[i].begin();
-      }
-
-      auto theEnd = msgs_p[0].end();
-
-      while ( it[0] != theEnd ) {
-        std::vector<std::vector<GUM_SCALAR>> combi_msg_p( taille );
-
-        for ( decltype( taille ) i = 0; i < taille; i++ ) {
-          combi_msg_p[i] = *it[i];
-        }
-
-        _compute_ext( combi_msg_p, id, msg_l_min, msg_l_max, lx, pos );
-
-        if ( msg_l_min == (GUM_SCALAR)0. && msg_l_max == _INF ) {
-          return;
-        }
-
-        combi_msg_p.clear();
-
-        ++it[taille - 1];
-
-        for ( decltype( taille ) i = taille - 1;
-              ( i > 0 ) && ( it[i] == msgs_p[i].end() );
-              --i ) {
-          it[i] = msgs_p[i].begin();
-          ++it[i - 1];
-        }
-      }
+      real_msg_l_min = msg_l_min;
+      real_msg_l_max = msg_l_max;
     }
 
     template <typename GUM_SCALAR>
@@ -1063,12 +994,12 @@ namespace gum {
           // (at
           // each combination of messages)
           distri[1] = _ArcsP_min[Arc( __bnet->nodeId( **jt ), Y )];
-          distri[0] = 1. - distri[1];
+          distri[0] = GUM_SCALAR(1.) - distri[1];
           msg_p.push_back( distri );
 
           if ( _ArcsP_max.exists( Arc( __bnet->nodeId( **jt ), Y ) ) ) {
             distri[1] = _ArcsP_max[Arc( __bnet->nodeId( **jt ), Y )];
-            distri[0] = 1. - distri[1];
+            distri[0] = GUM_SCALAR(1.) - distri[1];
             msg_p.push_back( distri );
           }
 
@@ -1231,12 +1162,12 @@ namespace gum {
           // (at
           // each combination of messages)
           distri[1] = _ArcsP_min[Arc( __bnet->nodeId( **jt ), X )];
-          distri[0] = 1. - distri[1];
+          distri[0] = GUM_SCALAR(1.) - distri[1];
           msg_p.push_back( distri );
 
           if ( _ArcsP_max.exists( Arc( __bnet->nodeId( **jt ), X ) ) ) {
             distri[1] = _ArcsP_max[Arc( __bnet->nodeId( **jt ), X )];
-            distri[0] = 1. - distri[1];
+            distri[0] = GUM_SCALAR(1.) - distri[1];
             msg_p.push_back( distri );
           }
 
@@ -1291,11 +1222,11 @@ namespace gum {
         }
 
         if ( lmin == _INF ) {  // cas infini
-          msg_p_min = 1.;
+          msg_p_min = GUM_SCALAR(1.);
         } else if ( min == 0. || lmin == 0. ) {
           msg_p_min = 0;
         } else {
-          msg_p_min = 1. / ( 1. + ( ( 1. / min - 1. ) * 1. / lmin ) );
+          msg_p_min = GUM_SCALAR(1. / ( 1. + ( ( 1. / min - 1. ) * 1. / lmin ) ));
         }
 
         // cas limites sur max
@@ -1304,11 +1235,11 @@ namespace gum {
         }
 
         if ( lmax == _INF ) {  // cas infini
-          msg_p_max = 1.;
+          msg_p_max = GUM_SCALAR(1.);
         } else if ( max == 0. || lmax == 0. ) {
           msg_p_max = 0;
         } else {
-          msg_p_max = 1. / ( 1. + ( ( 1. / max - 1. ) * 1. / lmax ) );
+          msg_p_max = GUM_SCALAR(1. / ( 1. + ( ( 1. / max - 1. ) * 1. / lmax ) ));
         }
 
         if ( msg_p_min != msg_p_min && msg_p_max == msg_p_max ) {
@@ -1447,12 +1378,12 @@ namespace gum {
               // times
               // (at each combination of messages)
               distri[1] = _ArcsP_min[Arc( __bnet->nodeId( **jt ), node )];
-              distri[0] = 1. - distri[1];
+              distri[0] = GUM_SCALAR(1.) - distri[1];
               msg_p.push_back( distri );
 
               if ( _ArcsP_max.exists( Arc( __bnet->nodeId( **jt ), node ) ) ) {
                 distri[1] = _ArcsP_max[Arc( __bnet->nodeId( **jt ), node )];
-                distri[0] = 1. - distri[1];
+                distri[0] = GUM_SCALAR(1.) - distri[1];
                 msg_p.push_back( distri );
               }
 
@@ -1533,11 +1464,11 @@ namespace gum {
           }
 
           if ( lmin == _INF ) {
-            msg_p_min = 1.;
+            msg_p_min = GUM_SCALAR(1.);
           } else if ( min == 0. || lmin == 0. ) {
-            msg_p_min = 0;
+            msg_p_min = GUM_SCALAR(0.);
           } else {
-            msg_p_min = 1. / ( 1. + ( ( 1. / min - 1. ) * 1. / lmin ) );
+            msg_p_min = GUM_SCALAR(1. / ( 1. + ( ( 1. / min - 1. ) * 1. / lmin ) ));
           }
 
           if ( max == _INF && lmax == 0. ) {
@@ -1546,11 +1477,11 @@ namespace gum {
           }
 
           if ( lmax == _INF ) {
-            msg_p_max = 1.;
-          } else if ( max == 0. || lmax == 0. ) {
-            msg_p_max = 0;
+            msg_p_max = GUM_SCALAR(1.);
+         } else if ( max == 0. || lmax == 0. ) {
+            msg_p_max = GUM_SCALAR(0.);
           } else {
-            msg_p_max = 1. / ( 1. + ( ( 1. / max - 1. ) * 1. / lmax ) );
+            msg_p_max = GUM_SCALAR(1. / ( 1. + ( ( 1. / max - 1. ) * 1. / lmax ) ));
           }
         }
 

@@ -82,10 +82,11 @@ namespace gum {
     if ( __parents != 0 ) delete __parents;
 
     if ( __impl != 0 ) {
-      GUM_ERROR( FatalError,
-                 "Implementation defined for a variable but not used. "
+      //@todo better than throwing an exception from inside a destructor but still ...
+      std::cerr<<"[BN factory] Implementation defined for a variable but not used. "
                  "You should call endVariableDeclaration() before "
-                 "deleting me." );
+                 "deleting me."<<std::endl;
+      exit(1000);
     }
   }
 
@@ -117,7 +118,7 @@ namespace gum {
   BayesNetFactory<GUM_SCALAR>::variableId( const std::string& name ) const {
     try {
       return __varNameMap[name];
-    } catch ( NotFound& e ) {
+    } catch ( NotFound& ) {
       GUM_ERROR( NotFound, name );
     }
   }
@@ -272,7 +273,7 @@ namespace gum {
   INLINE NodeId BayesNetFactory<GUM_SCALAR>::endVariableDeclaration() {
     if ( state() != factory_state::VARIABLE ) {
       __illegalStateError( "endVariableDeclaration" );
-    } else if ( __foo_flag and ( __stringBag.size() > 3 ) ) {
+    } else if ( __foo_flag && ( __stringBag.size() > 3 ) ) {
       LabelizedVariable* var = new LabelizedVariable(
           __stringBag[0], ( __bar_flag ) ? __stringBag[1] : "", 0 );
 
@@ -441,14 +442,14 @@ namespace gum {
     std::vector<Idx> modCounter;
 
     // initializing the array
-    for ( Idx i = 0; i < nbrVar; i++ ) {
+    for ( NodeId i = 0; i < nbrVar; i++ ) {
       modCounter.push_back( 0 );
     }
 
     Idx j = 0;
 
     do {
-      for ( Idx i = 0; i < nbrVar; i++ ) {
+      for ( NodeId i = 0; i < nbrVar; i++ ) {
         cptInst.chgVal( *( varList[i] ), modCounter[i] );
       }
 
@@ -503,7 +504,7 @@ namespace gum {
       List<const DiscreteVariable*>& varList ) {
     bool last = true;
 
-    for ( unsigned int j = 0; j < modCounter.size(); j++ ) {
+    for ( NodeId j = 0; j < modCounter.size(); j++ ) {
       last = ( modCounter[j] == ( varList[j]->domainSize() - 1 ) ) && last;
 
       if ( !last ) break;
@@ -515,7 +516,7 @@ namespace gum {
 
     bool add = false;
 
-    unsigned int i = varList.size() - 1;
+    NodeId i = NodeId(varList.size() - 1);
 
     do {
       if ( modCounter[i] == ( varList[i]->domainSize() - 1 ) ) {
@@ -636,7 +637,7 @@ namespace gum {
     } else {
       const DiscreteVariable& var =
           __bn->variable( __varNameMap[__stringBag[0]] );
-      Idx varId = __varNameMap[__stringBag[0]];
+      NodeId varId = __varNameMap[__stringBag[0]];
 
       if ( __parents->domainSize() > 0 ) {
         Instantiation inst( __bn->cpt( __varNameMap[var.name()] ) );

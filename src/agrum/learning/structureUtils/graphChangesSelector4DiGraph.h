@@ -117,7 +117,7 @@ namespace gum {
       /** @brief indicates whether the selector contains graph changes related
        * to
        * the ith node */
-      bool empty( unsigned int i );
+      bool empty( NodeId i );
 
       /// returns the best graph change to examine
       /** @throws NotFound exception is thrown if the selector is empty */
@@ -129,11 +129,11 @@ namespace gum {
        * allows to get the change that is considered the best for modifying the
        * parents' set of the ith node.
        * @throws NotFound exception is thrown if the selector is empty */
-      const GraphChange& bestChange( unsigned int i );
+      const GraphChange& bestChange( NodeId i );
 
       /// return the score of the best graph change
       /** @throws NotFound exception is thrown if the selector is empty */
-      float bestScore();
+      double bestScore();
 
       /// return the score of the best graph change related to the ith node
       /** The selector computes not only the best change possible but also the
@@ -141,7 +141,7 @@ namespace gum {
        * allows to get the score of the change that is considered the best for
        * modifying the parents' set of the ith node.
        * @throws NotFound exception is thrown if the selector is empty */
-      float bestScore( unsigned int i );
+      double bestScore( NodeId i );
 
       /// indicate to the selector that a change has been applied
       void applyChange( const GraphChange& change );
@@ -166,14 +166,14 @@ namespace gum {
       bool isChangeValid( const GraphChange& change ) const;
 
       /// sets the graph from which scores are computed
-      void setGraph( DiGraph& graph, const std::vector<unsigned int>& modal );
+      void setGraph( DiGraph& graph, const std::vector<Size>& modal );
 
       /// returns the set of queues sorted by decreasing top priority
-      std::vector<std::pair<unsigned int, float>>
+      std::vector<std::pair<NodeId, double>>
       nodesSortedByBestScore() const;
 
       /// returns the set of queues top priorities
-      std::vector<std::pair<unsigned int, float>>
+      std::vector<std::pair<Idx, double>>
       nodesUnsortedWithScore() const;
 
       /// @}
@@ -193,56 +193,56 @@ namespace gum {
 
       /// the scores for the head and tail of all the changes
       /** the scores are indexed by their index in sequence __changes */
-      std::vector<std::pair<float, float>> __change_scores;
+      std::vector<std::pair<double, double>> __change_scores;
 
       /// for each node, a priority queue sorting GraphChanges by decreasing
       /// score
       /** within each queue, the changes are determined by their index in
        * sequence __changes. */
-      std::vector<PriorityQueue<unsigned int, float, std::greater<float>>>
+      std::vector<PriorityQueue<Idx, double, std::greater<double>>>
           __change_queue_per_node;
 
       /// a global priority queue indicating for each node its best score
-      PriorityQueue<unsigned int, float, std::greater<float>> __node_queue;
+      PriorityQueue<NodeId, double, std::greater<double>> __node_queue;
 
       /// the set of changes known to be currently illegal (due to the
       /// constraints)
       /** within each queue, the changes are determined by their index in
        * sequence __changes. */
-      Set<unsigned int> __illegal_changes;
+      Set<Idx> __illegal_changes;
 
       /// the current score of each node
-      std::vector<float> __node_current_scores;
+      std::vector<double> __node_current_scores;
 
       /// the set of parents of each node (speeds-up score computations)
-      std::vector<std::vector<unsigned int>> __parents;
+      std::vector<std::vector<Idx>> __parents;
 
       /// indicates whether we need to recompute whether the queue is empty or
       /// not
       bool __queues_valid{false};
 
       /// the set of queues to update when applying several changes
-      Set<unsigned int> __queues_to_update;
+      Set<Idx> __queues_to_update;
 
       /// prepare the next pack of  score computations
-      void __addScoreToCompute( unsigned int change_index ) const;
+      void __addScoreToCompute( Idx change_index ) const;
 
       /// indicates whether a given change is valid or not
-      bool __isChangeValid( unsigned int index ) const;
+      bool __isChangeValid( Idx index ) const;
 
       /// put a change into the illegal set
-      void __invalidateChange( unsigned int change_index );
+      void __invalidateChange( Idx change_index );
 
       /// remove the now legal changes from the illegal set
-      void __illegal2LegalChanges( Set<unsigned int>& changes_to_recompute );
+      void __illegal2LegalChanges( Set<Idx>& changes_to_recompute );
 
       /// finds the changes that are affected by a given node modification
       void
-      __findLegalChangesNeedingUpdate( Set<unsigned int>& changes_to_recompute,
+      __findLegalChangesNeedingUpdate( Set<Idx>& changes_to_recompute,
                                        NodeId target_node );
 
       /// perform the necessary updates of the scores
-      void __updateScores( const Set<unsigned int>& changes_to_recompute );
+      void __updateScores( const Set<Idx>& changes_to_recompute );
 
       /// get from the graph change generator a new set of changes
       void __getNewChanges();

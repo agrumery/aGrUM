@@ -105,7 +105,7 @@ namespace gum {
        * @param initial_dag the DAG we start from for our learning */
       template <typename GRAPH_CHANGES_SELECTOR>
       DAG learnStructure( GRAPH_CHANGES_SELECTOR& selector,
-                          const std::vector<unsigned int>& modal,
+                          const std::vector<Size>& modal,
                           DAG initial_dag = DAG() );
 
       /// learns the structure and the parameters of a BN
@@ -119,14 +119,14 @@ namespace gum {
        * database
        * @param translator The cell translator to use.
        * @param initial_dag the DAG we start from for our learning */
-      template <typename GUM_SCALAR = float,
+      template <typename GUM_SCALAR = double,
                 typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR,
                 typename CELL_TRANSLATORS>
       BayesNet<GUM_SCALAR> learnBN( GRAPH_CHANGES_SELECTOR& selector,
                                     PARAM_ESTIMATOR& estimator,
                                     const std::vector<std::string>& names,
-                                    const std::vector<unsigned int>& modal,
+                                    const std::vector<Size>& modal,
                                     const CELL_TRANSLATORS& translator,
                                     DAG initial_dag = DAG() );
 

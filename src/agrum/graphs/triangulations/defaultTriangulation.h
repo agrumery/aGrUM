@@ -98,7 +98,7 @@ namespace gum {
 
     /// @}
 
-    
+
   private:
     /// the ratio above which we consider nodes to be quasi simplicial
     double __quasi_ratio;
@@ -107,7 +107,7 @@ namespace gum {
      * chosen to be eliminated */
     double __threshold;
 
-    
+
     // ############################################################################
     /// @name Operators
     // ############################################################################
@@ -119,7 +119,7 @@ namespace gum {
     /// @}
   };
 
-  
+
 } /* namespace gum */
 
 

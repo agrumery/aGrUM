@@ -41,7 +41,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, (int)( ( (float)rand() / RAND_MAX ) * 100000 ) );
+        t.set( i,  rand()* 100000.0f / RAND_MAX );
     }
 
     // the function used to combine two tables
@@ -62,7 +62,7 @@ namespace gum_tests {
     void test_op_multidimArray() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for ( unsigned int i = 0; i < 10; ++i ) {
+      for ( gum::Idx i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
@@ -112,7 +112,7 @@ namespace gum_tests {
       delete t5;
       delete t6;
 
-      for ( unsigned int i = 0; i < vars.size(); ++i )
+      for ( gum::Idx i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
   };
