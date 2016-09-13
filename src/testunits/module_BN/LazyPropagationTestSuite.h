@@ -49,7 +49,7 @@ namespace gum_tests {
     gum::NodeId i1, i2, i3, i4, i5;
     gum::Potential<float>* e_i1, *e_i4;
 
-    float __epsilon{1e-6};
+    float __epsilon{1e-6f};
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -587,7 +587,7 @@ namespace gum_tests {
 
                   try { equalPotentials( inf1.posterior( xnode ),
                                          inf2.posterior( xnode ) ); }
-                  catch ( gum::IncompatibleEvidence& e ) {
+                  catch ( gum::IncompatibleEvidence& ) {
                     // check evidence incompatibility:
                     if ( node2 == gum::NodeId ( 2 ) ) {
                       // node2 = tuberculos_or_cancer?, then node = tuberculosis?

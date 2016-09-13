@@ -68,9 +68,10 @@ namespace gum {
     __nb_adjacent_neighbours( __graph->size() ),
     __quasi_ratio( theRatio ),
     __log_threshold( std::log( 1 + theThreshold ) ) {
-    if ( graph != nullptr )
+    if (graph != nullptr) {
       // for debugging purposes
-      GUM_CONSTRUCTOR( SimplicialSet );
+      GUM_CONSTRUCTOR(SimplicialSet);
+    }
 
     // end of initialization: compute __nb_triangles, __nb_adjacent_neighbours,
     // etc

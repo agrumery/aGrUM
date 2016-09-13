@@ -502,8 +502,8 @@ namespace gum {
     // contain its conditional probability table
     __node_to_clique.clear ();
     const std::vector<NodeId>& JT_elim_order = __triangulation->eliminationOrder();
-    NodeProperty<int> elim_order( JT_elim_order.size() );
-    for ( std::size_t i = 0, size = JT_elim_order.size(); i < size; ++i )
+    NodeProperty<int> elim_order( Size(JT_elim_order.size() ));
+    for ( NodeId i = NodeId(0), size = NodeId(JT_elim_order.size()); i < size; ++i )
       elim_order.insert( JT_elim_order[i], i );
     const DAG& dag = bn.dag();
     for ( const auto node : __graph ) {
@@ -898,11 +898,11 @@ namespace gum {
     NodeSet clique_targets;
     for ( const auto node : this->targets () ) {
       try { clique_targets.insert ( __node_to_clique[node] ); }
-      catch ( Exception& e ) {}
+      catch ( Exception& ) {}
     }
     for ( const auto& set : this->setTargets () ) {
       try { clique_targets.insert ( __settarget_to_clique[set] ); }
-      catch ( Exception& e ) {}
+      catch ( Exception& ) {}
     }
 
     // put in a vector these cliques and their size

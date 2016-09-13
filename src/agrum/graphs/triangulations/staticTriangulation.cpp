@@ -217,7 +217,8 @@ namespace gum {
       R.insert( node, 0 );
 
     // the FMINT loop
-    for ( int i = __added_fill_ins.size() - 1; i >= 0; --i ) {
+    if (__added_fill_ins.size()>0) {
+    for ( auto i = __added_fill_ins.size() - 1; i >= 0; --i ) {
       if ( __added_fill_ins[i].size() ) {
         // here apply MINT to T_i = __added_fill_ins[i]
         EdgeSet& T = __added_fill_ins[i];
@@ -297,6 +298,7 @@ namespace gum {
         }
       }
     }
+    }
 
     // here, the recursive thinning has removed all the superfluous edges.
     // Hence some cliques have been split and, as a result, the elimination
@@ -310,14 +312,15 @@ namespace gum {
     numbered_neighbours( std::greater<unsigned int>(),
                          __triangulated_graph.size() );
 
-    for ( unsigned int i = 0; i < __elim_order.size(); ++i )
+    for ( auto i = 0; i < __elim_order.size(); ++i )
       numbered_neighbours.insert( __elim_order[i], 0 );
 
     // perform the maximum cardinality search
-    for ( int i = __elim_order.size() - 1; i >= 0; --i ) {
+    if (__elim_order.size()>0) {
+    for ( auto i = __elim_order.size() - 1; i >= 0; --i ) {
       NodeId node = numbered_neighbours.pop();
       __elim_order[i] = node;
-      __reverse_elim_order[node] = i;
+      __reverse_elim_order[node] = NodeId(i);
 
       for ( const auto neighbour : __triangulated_graph.neighbours( node ) ) {
         try {
@@ -327,6 +330,7 @@ namespace gum {
         catch ( NotFound& ) {
         }
       }
+    }
     }
 
     // here the elimination order is ok. We now need to update the
@@ -354,13 +358,13 @@ namespace gum {
     // create the nodes of the elimination tree
     __elim_tree.clear();
 
-    std::size_t size = __elim_order.size();
-    for ( std::size_t i = 0; i < size; ++i )
+    Size size = Size(__elim_order.size());
+    for ( NodeId i = NodeId(0); i < size; ++i )
       __elim_tree.addNode( i, __elim_cliques[__elim_order[i]] );
 
     // create the edges of the elimination tree: join a node to the one in
     // its clique that is eliminated first
-    for ( std::size_t i = 0; i < size; ++i ) {
+    for ( NodeId i = NodeId(0); i < size; ++i ) {
       NodeId clique_i_creator = __elim_order[i];
       const NodeSet& list_of_nodes = __elim_cliques[clique_i_creator];
       unsigned int child = __original_graph->bound() + 1;

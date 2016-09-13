@@ -196,7 +196,7 @@ namespace gum {
     __elimination_order.push_back( node );
 
     if ( !__reverse_elimination_order.exists( node ) )
-      __reverse_elimination_order.insert( node, __elimination_order.size() );
+      __reverse_elimination_order.insert( node, Size(__elimination_order.size() ));
 
     if ( !__created_JT_cliques.exists( node ) )
       __created_JT_cliques.insert( node, new_clique );
@@ -1117,7 +1117,6 @@ namespace gum {
 
   void IncrementalTriangulation::updateTriangulation() {
     if ( !__require_update ) return;
-
     // the set of all the cliques that should be affected by the different
     // triangulations we will perform (one by connected component)
     NodeProperty<bool> all_cliques_affected( __junction_tree.size() );

@@ -35,19 +35,19 @@ namespace gum {
   ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference(
       const IBayesNet<GUM_SCALAR>& bayesNet )
       : BayesNetInference<GUM_SCALAR>( bayesNet )
-      , __triangulation( 0 ) {
+      , __triangulation( nullptr ) {
     GUM_CONSTRUCTOR( ShaferShenoyInference );
 
     NodeProperty<Size> __modalitiesMap;
 
-    for ( const auto node : this->bn().nodes() )
+    for ( NodeId node : this->bn().nodes() )
       __modalitiesMap.insert( node, this->bn().variable( node ).domainSize() );
 
     __triangulation = new DefaultTriangulation( &( this->bn().moralGraph() ),
-                                                &__modalitiesMap );
-
+                              &__modalitiesMap );
     __triangulation->junctionTree();
     __buildCliquesTables();
+    
   }
 
   // Destructor

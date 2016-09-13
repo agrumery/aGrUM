@@ -75,12 +75,11 @@ namespace gum_tests {
         fill( *bn );
         // Testing the inference
         gum::ShaferShenoyInference<float>* inf = 0;
-        TS_ASSERT_THROWS_NOTHING(
-            inf = new gum::ShaferShenoyInference<float>( *bn ) );
-        TS_ASSERT_THROWS_NOTHING( inf->makeInference() );
+        TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference<float>( *bn ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
         if ( inf != 0 ) {
-          TS_ASSERT_THROWS_NOTHING( delete inf );
+          TS_GUM_ASSERT_THROWS_NOTHING( delete inf );
         }
       } catch ( gum::Exception e ) {
         TS_ASSERT( false );
@@ -94,12 +93,12 @@ namespace gum_tests {
       fill( *bn );
       gum::ShaferShenoyInference<float> inf( *bn );
 
-      TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i2 ) );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i3 ) );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i4 ) );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i5 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.makeInference() );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i2 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i3 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i5 ) );
     }
 
     void testMarginalWithEvidence() {
@@ -110,15 +109,15 @@ namespace gum_tests {
 
       gum::ShaferShenoyInference<float> inf( *bn );
 
-      TS_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
 
-      TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.makeInference() );
 
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i2 ) );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i3 ) );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i4 ) );
-      TS_ASSERT_THROWS_NOTHING( inf.posterior( i5 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i2 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i3 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i5 ) );
     }
 
     void testWithGenerator() {
