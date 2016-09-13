@@ -118,6 +118,8 @@ namespace gum_tests {
     // not dynamic (2U network) - with evidence
     void testCNMonteCarloSamplingInference() {
       initCNet();
+
+      std::cout << "toto1" << std::endl;
       gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>>
           mcs( *cn );
 
@@ -127,6 +129,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.eraseAllEvidence(); );
 
+
+      std::cout << "toto2" << std::endl;
       // evidence from map
       std::map<std::string, std::vector<double>> eviMap;
       std::vector<double> evi0( 2, 0 );
@@ -136,10 +140,14 @@ namespace gum_tests {
       eviMap["L"] = evi1;
       eviMap["G"] = evi0;
 
+
+      std::cout << "toto3" << std::endl;
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.insertEvidence( eviMap ); );
 
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.eraseAllEvidence(); );
 
+
+      std::cout << "toto4" << std::endl;
       mcs.setRepetitiveInd( false );
       mcs.setMaxTime( 1 );
 
@@ -149,6 +157,8 @@ namespace gum_tests {
       std::vector<double> binaryModal( 2, 0 );
       binaryModal[1] = 1;
 
+
+      std::cout << "toto5" << std::endl;
       // modalities from map
       // from file with dynamic network, not 2U
       try {
@@ -159,6 +169,8 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
 
+
+      std::cout << "toto6" << std::endl;
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.insertModals( modals ); );
       try {
         mcs.makeInference();
@@ -167,6 +179,8 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
 
+
+      std::cout << "toto7" << std::endl;
       try {
         for ( const auto node : cn->current_bn().nodes() ) {
           std::vector<double> inf( mcs.marginalMin( node ) );
@@ -179,12 +193,15 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
 
-      std::cout << "toto7" << std::endl;
 
+      std::cout << "toto8" << std::endl;
 
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.eraseAllEvidence(); );
 
       clearCNet();
+
+
+      std::cout << "toto9" << std::endl;
     }  // end of : testCNMonteCarloSamplingInference (2U network)
 
     // dynamic (dynaCheese) - strong indep

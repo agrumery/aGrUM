@@ -35,7 +35,7 @@
 
 namespace gum {
 
-  
+
   // default constructor
   StaticTriangulation::StaticTriangulation
   ( const UndiGraph* theGraph,
@@ -65,7 +65,7 @@ namespace gum {
     _junction_tree_strategy->setTriangulation( this );
   }
 
-  
+
   // default constructor
   StaticTriangulation::StaticTriangulation
   ( const EliminationSequenceStrategy& elimSeq,
@@ -103,7 +103,7 @@ namespace gum {
     __minimality_required ( from.__minimality_required ),
     __added_fill_ins ( from.__added_fill_ins ),
     __we_want_fill_ins( from.__we_want_fill_ins ) {
-    
+
     // copy the strategies
     _elimination_sequence_strategy =
       from._elimination_sequence_strategy->copyFactory ();
@@ -116,9 +116,9 @@ namespace gum {
     }
 
     // for debugging purposes
-    GUM_CONS_CPY( StaticTriangulation );      
+    GUM_CONS_CPY( StaticTriangulation );
   }
-  
+
 
   // move constructor
   StaticTriangulation::StaticTriangulation ( StaticTriangulation&& from ) :
@@ -143,21 +143,21 @@ namespace gum {
     __minimality_required ( from.__minimality_required ),
     __added_fill_ins ( std::move ( from.__added_fill_ins ) ),
     __we_want_fill_ins ( from.__we_want_fill_ins ) {
-    
+
     // move the factories contained in from
     from._elimination_sequence_strategy = new DefaultEliminationSequenceStrategy;
     from._junction_tree_strategy = new DefaultJunctionTreeStrategy;
     _junction_tree_strategy->moveTriangulation ( this );
-    
+
     // if from has a junction tree, copy it
     if ( from.__junction_tree != nullptr ) {
       __junction_tree = &( _junction_tree_strategy->junctionTree () );
     }
 
     // for debugging purposes
-    GUM_CONS_MOV( StaticTriangulation );         
+    GUM_CONS_MOV( StaticTriangulation );
   }
-  
+
 
   /// destructor
   StaticTriangulation::~StaticTriangulation() {
@@ -171,7 +171,7 @@ namespace gum {
     // they are not owned by the static triangulation class
   }
 
-  
+
   /// reinitialize the graph to be triangulated to an empty graph
   void StaticTriangulation::clear () {
     // clear the factories
@@ -201,7 +201,7 @@ namespace gum {
     __has_max_prime_junction_tree = true;
     __has_fill_ins = true;
   }
-  
+
 
   // removes redondant fill-ins and compute proper elimination cliques and order
   void StaticTriangulation::__computeRecursiveThinning () {
@@ -312,15 +312,16 @@ namespace gum {
     numbered_neighbours( std::greater<unsigned int>(),
                          __triangulated_graph.size() );
 
-    for ( auto i = 0; i < __elim_order.size(); ++i )
+    for ( Size i = 0; i < __elim_order.size(); ++i )
       numbered_neighbours.insert( __elim_order[i], 0 );
 
     // perform the maximum cardinality search
     if (__elim_order.size()>0) {
-    for ( auto i = __elim_order.size() - 1; i >= 0; --i ) {
+    for ( Size i = __elim_order.size() ; i >= 1; --i ) {
+      NodeId ni=NodeId(i-1);
       NodeId node = numbered_neighbours.pop();
-      __elim_order[i] = node;
-      __reverse_elim_order[node] = NodeId(i);
+      __elim_order[ni] = node;
+      __reverse_elim_order[node] = ni;
 
       for ( const auto neighbour : __triangulated_graph.neighbours( node ) ) {
         try {
@@ -335,7 +336,7 @@ namespace gum {
 
     // here the elimination order is ok. We now need to update the
     // __elim_cliques
-    for ( unsigned int i = 0; i < __elim_order.size(); ++i ) {
+    for ( Size i = 0; i < __elim_order.size(); ++i ) {
       NodeSet& cliques =
           __elim_cliques.insert( __elim_order[i], NodeSet() ).second;
       cliques << __elim_order[i];
@@ -346,7 +347,7 @@ namespace gum {
     }
   }
 
-  
+
   /// returns an elimination tree from a triangulated graph
   void StaticTriangulation::__computeEliminationTree () {
     // if there already exists an elimination tree, no need to compute it again
@@ -386,7 +387,7 @@ namespace gum {
     __has_elimination_tree = true;
   }
 
-  
+
   /// used for computing the junction tree of the maximal prime subgraphs
   void
   StaticTriangulation::__computeMaxPrimeMergings
@@ -423,7 +424,7 @@ namespace gum {
       }
   }
 
-  
+
   /// computes the junction tree of the maximal prime subgraphs
   void StaticTriangulation::__computeMaxPrimeJunctionTree() {
     // if there already exists a max prime junction tree, no need
@@ -502,7 +503,7 @@ namespace gum {
 
     __has_max_prime_junction_tree = true;
   }
-  
+
 
   /// returns the triangulated graph
   const UndiGraph& StaticTriangulation::triangulatedGraph () {
@@ -544,7 +545,7 @@ namespace gum {
     return __triangulated_graph;
   }
 
-  
+
   // initialize the triangulation algorithm for a new graph
   void StaticTriangulation::setGraph( const UndiGraph* graph,
                                       const NodeProperty<Size>* domsizes ) {
@@ -559,7 +560,7 @@ namespace gum {
       __added_fill_ins.resize( graph->size() );
       __node_2_max_prime_clique.resize( graph->size() );
     }
-    
+
     // keep track of the variables passed in argument
     __original_graph = graph;
     _domain_sizes = domsizes;
@@ -572,7 +573,7 @@ namespace gum {
     __has_max_prime_junction_tree = false;
     __has_fill_ins = false;
   }
-  
+
 
   /// the function that performs the triangulation
   void StaticTriangulation::__triangulate () {
@@ -704,7 +705,7 @@ namespace gum {
 
     __has_triangulation = true;
   }
-  
+
 
   /// returns the fill-ins added by the triangulation algorithm
   const EdgeSet& StaticTriangulation::fillIns() {
@@ -762,12 +763,12 @@ namespace gum {
       return __fill_ins;
     }
   }
-  
+
 
   /// the function called to initialize the triangulation process
   void StaticTriangulation::_initTriangulation( UndiGraph& graph ) {
     _elimination_sequence_strategy->setGraph( &graph, _domain_sizes );
   }
-  
+
 
 } /* namespace gum */
