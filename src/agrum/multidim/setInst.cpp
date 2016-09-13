@@ -107,66 +107,19 @@ namespace gum {
       __add( *var );
       __vals[__vars.pos( var )] = ( 1 << ( aI.val( *var ) ) );
 
-      // copy the content of aI
-      // if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
     }
   }
 
   // operator=
   SetInst& SetInst::operator=( const SetInst& aI ) {
-    /* if ( __master ) {
-       if ( ! aI.isMaster( __master ) ) { // aI as the same master.
-       if ( nbrDim()!=aI.nbrDim() ) GUM_ERROR( OperationNotAllowed, "in slave
-       SetInst" );
-
-       for ( Idx i=0;i<nbrDim();i++ ) {
-       if (( ! contains( aI.variable( i ) ) ) ||
-       ( ! aI.contains( variable( i ) ) ) ) GUM_ERROR( OperationNotAllowed, "in
-       slave
-       SetInst" );
-       }
-       }
-
-       chgValIn( aI );
-       } else {*/
     // copy the content of aI
     __vars = aI.__vars;
     __vals = aI.__vals;
     __overflow = aI.__overflow;
 
-    //  if ( aI.__master ) actAsSlave( *aI.__master );
-    //   }
-
     return *this;
   }
 
-  // function is called by the master (if any) when changes arise in its vars
-  // list
-
-  /*
-     void SetInst::changeDimCommand
-     (const Sequence<const DiscreteVariable *>& v) {
-     bool modif = false; // indicates whether we modified sequence vars
-  // first we remove all the variables belonging to this but not to v
-  for (Idx index = __vars.size() - 1; index < __vars.size(); --index)
-  if (! v.exists (__vars[index])) {
-  __erase (*(__vars[index]));
-  modif = true;
-  }
-  // next, add the missing dimensions
-  for (Sequence<const DiscreteVariable *>::iterator iter = v.begin();
-  iter != v.end(); ++iter)
-  if (! __vars.exists (v[iter])) {
-  __add (*v[iter]);
-  modif = true;
-  }
-  // if we are a slave of a master, then we should update in the latter the
-  pointer
-  // to the array's valued pointed to by the SetInst
-  if (isSlave() && modif)
-  __master->changeNotification(*this);
-  }
-  */
   // Gives a string version of a SetInst
   std::string SetInst::toString() const {
     std::stringstream sstr;
