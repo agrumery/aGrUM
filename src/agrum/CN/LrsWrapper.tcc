@@ -680,18 +680,22 @@ namespace gum {
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__coutOff() const {
       fflush( stdout );
+      /*
       __oldCout = dup( 1 );
 
       int new_cout = open( "/dev/null", O_WRONLY );
       dup2( new_cout, 1 );
-      close( new_cout );
+      close( new_cout );*/
+      freopen("NUL","w",stdout);
     }
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__coutOn() const {
       fflush( stdout );
+      /*
       dup2( __oldCout, 1 );
-      close( __oldCout );
+      close( __oldCout );*/
+      freopen("CON","w",stdout);
     }
 
   }  // end of credal namespace
