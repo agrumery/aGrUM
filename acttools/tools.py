@@ -58,6 +58,8 @@ def check_tools():
     if exe_make is None:
       exe_make=is_tool("make")
     if exe_make is None:
+      exe_make=is_tool("msbuild")
+    if exe_make is None:
       critic("No <make> utility found. Exit")
 
     exe_clangformat=None

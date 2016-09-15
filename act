@@ -27,7 +27,7 @@ from acttools import *
 from acttools.utils import notif
 
 def main():
-  ##
+  #
   # options management
   initParams()
 
@@ -38,7 +38,7 @@ def main():
   (options, args)=parseCommandLine(current)
   
   noFunForced=False
-  if current['mvsc']:
+  if options.mvsc:
     options.static_lib=True
     options.no_fun=True
     noFunForced=True
@@ -57,7 +57,7 @@ def main():
   # check current consistency and update it if necessary
   checkCurrent(current,options,args)
 
-  ##
+  #
   # from now, current contains the specification
 
   # looking at special commands (clean/show/etc.)
