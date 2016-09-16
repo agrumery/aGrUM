@@ -294,10 +294,13 @@ namespace gum {
 
       __initLrs();
 
-      /* We initiate reverse search from this dictionary       */
-      /* getting new dictionaries until the search is complete */
-      /* User can access each output line from output which is */
-      /* a vertex/ray/facet from the lrs_mp_vector output      */
+	  /* We initiate reverse search from this dictionary       */
+	  /* getting new dictionaries until the search is complete */
+	  /* User can access each output line from output which is */
+	  /* vertex/ray/facet from the lrs_mp_vector output         */
+	  /* prune is TRUE if tree should be pruned at current node */
+
+	  // pruning is not used
 
       std::vector<long int> Num; /* numerators of all vertices */
       std::vector<long int> Den; /* denominators of all vertices */
@@ -306,6 +309,7 @@ namespace gum {
         for ( decltype( __dic->d ) col = 0, end = __dic->d; col <= end; col++ )
           if ( lrs_getsolution( __dic, __dat, __lrsOutput, col ) ) {
 
+			  // iszero macro could be used here for the test on right
             if ( __dat->hull || ( ( ( ( __lrsOutput[0] )[0] == 2 ||
                                       ( __lrsOutput[0] )[0] == -2 ) &&
                                     ( __lrsOutput[0] )[1] == 0 )
@@ -647,10 +651,28 @@ namespace gum {
       /* columns are removed. User can access linearity space */
       /* from lrs_mp_matrix Lin dimensions nredundcol x d+1  */
 
+	  decltype( __dat->nredundcol ) startcol = 0;
+
+	  if ( __dat->homogeneous && __dat->hull )
+	  {
+		  startcol++;			/* col zero not treated as redundant   */
+
+		  if( ! __dat->restart )
+		  {
+			  __coutOn();
+
+			  for ( decltype( __dat->nredundcol ) col = startcol; col < __dat->nredundcol; col++ )
+				  lrs_printoutput ( __dat, __Lin[col] );
+
+			  GUM_ERROR( FatalError,
+						 "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
+		  }
+	  }
+	  /*
       if ( __dat->nredundcol > 0 ) {
         __coutOn();
 
-        for ( decltype( __dat->nredundcol ) col = 0, end = __dat->nredundcol;
+		for ( decltype( __dat->nredundcol ) col = 0, end = __dat->nredundcol;
               col < end;
               col++ )
           lrs_printoutput( __dat, __Lin[col] );
@@ -659,14 +681,29 @@ namespace gum {
             FatalError,
             "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
       }
+      */
     }
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__freeLrs() {
-      /* free space : do not change order of next 3 lines! */
+      /* free space : do not change order of next lines! */
 
       lrs_clear_mp_vector( __lrsOutput, __dat->n );
-      lrs_free_dic( __dic, __dat );
+
+	  if( __dat->nredundcol > 0 )
+		  lrs_clear_mp_matrix( __Lin, __dat->nredundcol, __dat->n );
+
+	  if( __dat->runs > 0 )
+	  {
+		  free( __dat->isave );
+		  free( __dat->jsave );
+	  }
+
+	  auto savem = __dic->m;              /* need this to clear __dat*/
+
+	  lrs_free_dic( __dic, __dat );           /* deallocate lrs_dic */
+
+	  __dat->m = savem;
       lrs_free_dat( __dat );
 
       std::string name = "LrsWrapper:";
