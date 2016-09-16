@@ -49,13 +49,15 @@
 
 // we force MP (not long or GMP)
 #undef LONG
+#undef LRSLONG
 #undef GMP
 #define MP
 // lrs stuff
-#include <agrum/core/math/lrslib/lrslib.h>
-
+extern "C" {
+	#include <agrum/core/math/lrslib/lrslib.h>
+}
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
-#ifndef B64
+#ifdef B32
 /*32 bit machines */
 #define FORMAT "%4.4lu"
 #define MAXD 2147483647L
