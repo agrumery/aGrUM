@@ -621,7 +621,7 @@ namespace gum {
       __dat->hull = ( __hull ) ? 1L : 0L;
       __dat->polytope = ( __polytope ) ? 1L : 0L;
 
-      __lrsOutput = lrs_alloc_mp_vector_wrapper( __dat->n );
+      __lrsOutput = lrs_alloc_mp_vector( __dat->n );
 
       __dic = lrs_alloc_dic( __dat );
 
@@ -665,7 +665,7 @@ namespace gum {
     void LRSWrapper<GUM_SCALAR>::__freeLrs() {
       /* free space : do not change order of next 3 lines! */
 
-      lrs_clear_mp_vector_wrapper( __lrsOutput, __dat->n );
+      lrs_clear_mp_vector( __lrsOutput, __dat->n );
       lrs_free_dic( __dic, __dat );
       lrs_free_dat( __dat );
 
@@ -680,8 +680,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__coutOff() const {
       fflush( stdout );
-#ifdef _MSC_VER 
-      freopen("NUL","w",stdout);
+#ifdef _MSC_VER
+      freopen("NUL", "w", stdout);
 #else // _MSC_VER
       __oldCout = dup( 1 );
 
@@ -694,8 +694,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__coutOn() const {
       fflush( stdout );
-#ifdef _MSC_VER 
-      freopen("CON","w",stdout);
+#ifdef _MSC_VER
+      freopen("CON", "w", stdout);
 #else // _MSC_VER
       dup2( __oldCout, 1 );
       close( __oldCout );
