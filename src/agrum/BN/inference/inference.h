@@ -20,7 +20,7 @@
 /**
  * @file
  * @brief This file contains abstract class definitions for Bayesian networks
- *        inference classes.
+ *        inference classes (that support single targets computations).
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
@@ -35,16 +35,23 @@
 
 namespace gum {
 
+
+  
+  template<typename GUM_SCALAR>
+  class JointInference;
+  
+
   
   /**
    * @class Inference inference.h
    * <agrum/BN/inference/Inference.h>
-   * @brief Implementation of a generic class for Bayes net inference.
+   * @brief Implementation of a generic class for Bayes net inference (that
+   * supports single targets computations).
    * @ingroup bn_group
    *
    * The goal of the Inference class is twofold:
    * i) handling the common resources of BN inference (bn, soft/hard
-   *    evidence and targets); and
+   *    evidence and (single, i.e., not joint) targets); and
    * ii) propose a general scheme for all inference methods.
    *
    * A specialized inference just has to specify how to prepare inference, how
@@ -160,7 +167,7 @@ namespace gum {
 
     /// assigns a new BN to the inference engine
     /** @warning By default, all the nodes of the Bayes net are targets. */
-    void setBayesNet ( const IBayesNet<GUM_SCALAR>* bn );
+    virtual void setBayesNet ( const IBayesNet<GUM_SCALAR>* bn );
 
     /// Returns a constant reference over the IBayesNet referenced by this class
     /** @throws UndefinedElement is raised if no Bayes net has been assigned to
@@ -168,43 +175,23 @@ namespace gum {
     virtual const IBayesNet<GUM_SCALAR>& BayesNet () const final;
 
     /// get the domain sizes of the random variables of the BN
-    const NodeProperty<Size>& domainSizes () const;
+    virtual const NodeProperty<Size>& domainSizes () const final;
 
-    /// Compute the posterior of a node.
+    /// Computes and returns the posterior of a node.
     /**
-     * @returns a const ref to the internal representation of the posterior
-     * probability of the node.
+     * @returns a const ref to the posterior probability of the node.
      * @param node the node for which we need a posterior probability
      *
-     * @warning for efficiency, the potential is not copied. In order to ensure
+     * @warning for efficiency reasons, the potential is stored into the
+     * inference engine and is returned by reference. In order to ensure
      * that the potential may still exist even if the Inference object is
-     * destroyed, the copy has to be explicit.
+     * destroyed, the user has to copy it explicitly.
      *
      * @warning prepareInference and makeInference may be applied if needed.
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
     virtual const Potential<GUM_SCALAR>& posterior( const NodeId node ) final;
-
-    /// Compute the joint posterior of a set of nodes.
-    /**
-     * @returns a const ref to the internal representation of the posterior
-     * probability of the set of nodes.
-     * @param nodes the set of nodes whose posterior probability is wanted
-     *
-     * @warning for efficiency, the potential is not copied. In order to ensure
-     * that the potential may still exist even if the Inference object is
-     * destroyed, the copy has to be explicit.
-     *
-     * @warning prepareInference and makeInference may be applied if needed.
-     *
-     * @throw UndefinedElement if nodes is not in the targets
-     */
-    virtual const Potential<GUM_SCALAR>&
-    jointPosterior ( const NodeSet& nodes ) final;
-
-    /// returns the probability P(e) of the evidence enterred into the BN
-    virtual GUM_SCALAR evidenceProbability () = 0;
 
     /// returns whether the inference object is in a ready state
     virtual bool isReady4Inference () const noexcept final;
@@ -213,8 +200,8 @@ namespace gum {
     /** The inference object is in a done state when the posteriors can be
      * retrieved without performing a new inference, i.e., all the heavy
      * computations have already been performed. Typically, in a junction tree
-     * algorithm, this corresponds to all the messages sent in the JT being
-     * already computed. */
+     * algorithm, this corresponds to a situation in which all the messages
+     * needed in the JT have been computed and sent. */
     virtual bool isDone () const noexcept final;
 
     /// prepare the internal inference structures for the next inference
@@ -242,14 +229,8 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// Clear all previously defined targets (single targets and sets of targets)
-    /**
-     * Clear all previously defined targets. As a result, every node is
-     * considered as a potential target (empty target sets = all nodes are
-     * targets).
-     * This is the default value for the targets manager.
-     */
-    virtual void eraseAllTargets () final;
+    /// Clear all previously defined targets
+    virtual void eraseAllTargets ();
 
     /// Add a single target to the list of targets
     /**
@@ -257,36 +238,16 @@ namespace gum {
      */
     virtual void addTarget ( const NodeId target ) final;
 
-    /// removes an existing target
+    /// removes an existing (single) target
     /** @warning If the target does not already exist, the method does nothing.
      * In particular, it does not raise any exception. */
     virtual void eraseTarget ( const NodeId target ) final;
 
-    /// return true if variable is a target
+    /// return true if variable is a (single) target
     virtual bool isTarget( const NodeId variable ) const final;
 
     /// returns the list of single targets
-    /**
-     * If the NodeSet is empty, then every node is a potential target.
-     */
     virtual const NodeSet& targets() const noexcept final;
-
-    /// Add a set of nodes as a new target
-    /**
-     * @throw UndefinedElement if some node(s) do not belong to the Bayes net
-     */
-    virtual void addSetTarget ( const NodeSet& target ) final;
-    
-    /// removes an existing set target
-    /** @warning If the set target does not already exist, the method does
-     * nothing. In particular, it does not raise any exception. */
-    virtual void eraseSetTarget ( const NodeSet& target ) final;
-
-    /// return true if target is a nodeset target.
-    virtual bool isSetTarget ( const NodeSet& target ) const final;
-
-    /// returns the list of target sets
-    virtual const Set<NodeSet>& setTargets() const noexcept final;
 
     /// @}
 
@@ -393,19 +354,19 @@ namespace gum {
     virtual void eraseAllEvidence() final;
 
     /// removed the evidence, if any, corresponding to node id
-    virtual void eraseEvidence( NodeId id ) final;
+    virtual void eraseEvidence( const NodeId id ) final;
 
     /// indicates whether some node(s) have received evidence
     virtual bool hasEvidence () const final;
 
     /// indicates whether node id has received an evidence
-    virtual bool hasEvidence( NodeId id ) const final;
+    virtual bool hasEvidence( const NodeId id ) const final;
 
     /// indicates whether node id has received a hard evidence
-    virtual bool hasHardEvidence( NodeId id ) const final;
+    virtual bool hasHardEvidence( const NodeId id ) const final;
 
     /// indicates whether node id has received a soft evidence
-    virtual bool hasSoftEvidence( NodeId id ) const final;
+    virtual bool hasSoftEvidence( const NodeId id ) const final;
 
     /// returns the number of evidence entered into the Bayesian network
     virtual Size nbrEvidence() const final;
@@ -455,27 +416,19 @@ namespace gum {
     virtual void _onEvidenceChanged( const NodeId id,
                                      bool hasChangedSoftHard ) = 0;
 
-    /// fired after a new target is inserted
+    /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    virtual void _onTargetAdded ( const NodeId id ) = 0;
+    virtual void _onSingleTargetAdded ( const NodeId id ) = 0;
 
-    /// fired before a target is removed
+    /// fired before a single target is removed
     /** @param id The target variable's id. */
-    virtual void _onTargetErased ( const NodeId id ) = 0;
-
-    /// fired after a new set target is inserted
-    /** @param set The set of target variable's ids. */
-    virtual void _onSetTargetAdded ( const NodeSet& set ) = 0;
-
-    /// fired before a set target is removed
-    /** @param set The set of target variable's ids. */
-    virtual void _onSetTargetErased ( const NodeSet& set ) = 0;
+    virtual void _onSingleTargetErased ( const NodeId id ) = 0;
 
     /// fired after all the nodes of the BN are added as single targets
-    virtual void _onAllTargetsAdded () = 0;
+    virtual void _onAllSingleTargetsAdded () = 0;
 
-    /// fired before a all targets and settargets are removed
-    virtual void _onAllTargetsErased () = 0;
+    /// fired before a all single targets are removed
+    virtual void _onAllSingleTargetsErased () = 0;
 
     /// prepares inference when the latter is in UnpreparedStructure state
     /** Note that the values of evidence are not necessarily
@@ -497,12 +450,6 @@ namespace gum {
     /** @param id The variable's id. */
     virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id ) = 0;
 
-    /// asks derived classes for the posterior of a given set of variables
-    /** @param set The set of ids of the variables whose joint posterior is
-     * looked for. */
-    virtual const Potential<GUM_SCALAR>&
-    _jointPosterior( const NodeSet& set ) = 0;
-
     /// put the inference into an unprepared state
     void _setUnpreparedStructureState ();
 
@@ -523,9 +470,6 @@ namespace gum {
 
     /// the set of single targets
     NodeSet __targets;
-
-    /// the set of set targets (joint targets)
-    Set<NodeSet> __settargets;
 
     /// the set of evidence entered into the network
     NodeProperty<const Potential<GUM_SCALAR>*> __evidence;
@@ -555,7 +499,12 @@ namespace gum {
     void __computeDomainSizes ();
 
     /// sets all the nodes of the Bayes net as targets
-    void __setAllTargets ();
+    void __setAllSingleTargets ();
+
+
+    
+    /// allow JointInference to access the single targets and inference states
+    friend JointInference<GUM_SCALAR>;
     
   };
 

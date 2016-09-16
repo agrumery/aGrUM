@@ -29,7 +29,7 @@
 
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
-#include <agrum/BN/inference/inference.h>
+#include <agrum/BN/inference/jointInference.h>
 
 namespace gum {
 
@@ -96,7 +96,7 @@ namespace gum {
    * @ingroup bn_inference
    */
   template <typename GUM_SCALAR>
-  class LazyPropagation : public Inference<GUM_SCALAR> {
+  class LazyPropagation : public JointInference<GUM_SCALAR> {
     public:
 
     // ############################################################################
@@ -220,28 +220,34 @@ namespace gum {
     virtual void _onEvidenceChanged( const NodeId id,
                                      bool hasChangedSoftHard );
 
-    /// fired after a new target is inserted
+    /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    virtual void _onTargetAdded ( const NodeId id );
+    virtual void _onSingleTargetAdded ( const NodeId id );
 
-    /// fired before a target is removed
+    /// fired before a single target is removed
     /** @param id The target variable's id. */
-    virtual void _onTargetErased ( const NodeId id );
+    virtual void _onSingleTargetErased ( const NodeId id );
 
-    /// fired after a new set target is inserted
+    /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
-    virtual void _onSetTargetAdded ( const NodeSet& set );
+    virtual void _onJointTargetAdded ( const NodeSet& set );
 
-    /// fired before a set target is removed
+    /// fired before a joint target is removed
     /** @param set The set of target variable's ids. */
-    virtual void _onSetTargetErased ( const NodeSet& set );
+    virtual void _onJointTargetErased ( const NodeSet& set );
 
     /// fired after all the nodes of the BN are added as single targets
-    virtual void _onAllTargetsAdded ();
+    virtual void _onAllSingleTargetsAdded ();
 
-    /// fired before a all targets and settargets are removed
+    /// fired before a all the single targets are removed
+    virtual void _onAllSingleTargetsErased ();
+
+    /// fired before a all the joint targets are removed
+    virtual void _onAllJointTargetsErased ();
+
+    /// fired before a all single and joint_targets are removed
     virtual void _onAllTargetsErased ();
-
+    
     /// prepares inference when the latter is in UnpreparedStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _prepareInferenceStructure and
@@ -335,7 +341,7 @@ namespace gum {
     HashTable<NodeId, NodeId> __node_to_clique;
 
     /// for each set target, assign a clique in the JT that contains it
-    HashTable<NodeSet, NodeId> __settarget_to_clique;
+    HashTable<NodeSet, NodeId> __joint_target_to_clique;
 
     /// the list of all potentials stored in the cliques
     /** This structure contains a list for each clique in the join tree. If
@@ -364,7 +370,7 @@ namespace gum {
 
     /// the set of set target posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
-    HashTable<NodeSet, const Potential<GUM_SCALAR>*> __settarget_posteriors;
+    HashTable<NodeSet, const Potential<GUM_SCALAR>*> __joint_target_posteriors;
 
     /** @brief the constants resulting from the projections of CPTs defined
      * over only hard evidence nodes

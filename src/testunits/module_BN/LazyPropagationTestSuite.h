@@ -217,7 +217,7 @@ namespace gum_tests {
       gum::NodeSet nodeset;
       nodeset.insert( 2 );
       nodeset.insert( 4 );
-      inf.addSetTarget ( nodeset );
+      inf.addJointTarget ( nodeset );
 
       TS_ASSERT_THROWS_NOTHING( inf.jointPosterior ( nodeset ) );
     }
@@ -230,11 +230,11 @@ namespace gum_tests {
       gum::NodeSet nodeset;
       nodeset.insert( 0 );
       nodeset.insert( 4 );
-      inf.addSetTarget ( nodeset );
+      inf.addJointTarget ( nodeset );
       nodeset.clear ();
       nodeset.insert( 2 );
       nodeset.insert( 4 );
-      inf.addSetTarget ( nodeset );
+      inf.addJointTarget ( nodeset );
       inf.makeInference();
 
       TS_GUM_ASSERT_THROWS_NOTHING( inf.H( (gum::NodeId)2 ) );

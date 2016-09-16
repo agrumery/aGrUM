@@ -97,7 +97,7 @@ namespace gum {
     clear ();
     __bn = bn;
     __computeDomainSizes ();
-    __setAllTargets ();
+    __setAllSingleTargets ();
     __state = StateOfInference::UnpreparedStructure;
   }
 
@@ -151,30 +151,11 @@ namespace gum {
   }
   
 
-  // return true if target is a nodeset target.
-  template <typename GUM_SCALAR>
-  INLINE bool Inference<GUM_SCALAR>::isSetTarget( const NodeSet& vars ) const {
-    if ( __bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
-
-    const auto& dag = __bn->dag ();
-    for ( const auto var : vars ) {
-      if ( ! dag.exists( var ) ) {
-        GUM_ERROR( UndefinedElement, var << " is not a NodeId in the bn" );
-      }
-    }
-
-    return __settargets.contains( vars );
-  }
-
-
   // Clear all previously defined targets (single targets and sets of targets)
   template <typename GUM_SCALAR>
   INLINE void Inference<GUM_SCALAR>::eraseAllTargets () {
-    _onAllTargetsErased ();
+    _onAllSingleTargetsErased ();
     __targets.clear();
-    __settargets.clear();
     __state = StateOfInference::UnpreparedStructure;
   }
   
@@ -194,40 +175,15 @@ namespace gum {
     // add the new target
     if ( ! __targets.contains ( target ) ) {
       __targets.insert( target );
-      _onTargetAdded ( target );
+      _onSingleTargetAdded ( target );
       __state = StateOfInference::UnpreparedStructure;
     }
   }
 
 
-  // Add a set of nodes as a new target
-  template <typename GUM_SCALAR>
-  void Inference<GUM_SCALAR>::addSetTarget ( const NodeSet& settarget ) {
-    // check if the nodes in the target belong to the Bayesian network
-    if ( __bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
-
-    const auto& dag = __bn->dag ();
-    for ( const auto node : settarget ) {
-      if ( ! dag.exists( node ) ) {
-        GUM_ERROR( UndefinedElement, "at least one one in " << settarget
-                   << " does not belong to the bn" );
-      }
-    }
-
-    // check that the settarget set does not contain the new target
-    if ( ! __settargets.contains ( settarget ) ) {
-      __settargets.insert ( settarget );
-      _onSetTargetAdded ( settarget );
-      __state = StateOfInference::UnpreparedStructure;
-    }
-  }
-
-  
   // removes an existing target
   template <typename GUM_SCALAR>
-  void Inference<GUM_SCALAR>::eraseTarget ( NodeId target ) {
+  void Inference<GUM_SCALAR>::eraseTarget ( const NodeId target ) {
     // check if the node belongs to the Bayesian network
     if ( __bn == nullptr )
       GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
@@ -238,37 +194,12 @@ namespace gum {
     }
     
     if ( __targets.contains ( target ) ) {
-      _onTargetErased ( target );
+      _onSingleTargetErased ( target );
       __targets.erase ( target );
       __state = StateOfInference::UnpreparedStructure;
     }
   }
 
-  
-  // removes an existing set target
-  template <typename GUM_SCALAR>
-  void Inference<GUM_SCALAR>::eraseSetTarget ( const NodeSet& settarget ) {
-    // check if the nodes in the target belong to the Bayesian network
-    if ( __bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
-
-    const auto& dag = __bn->dag ();
-    for ( const auto node : settarget ) {
-      if ( ! dag.exists( node ) ) {
-        GUM_ERROR( UndefinedElement, "at least one one in " << settarget
-                   << " does not belong to the bn" );
-      }
-    }
-
-    // check that the settarget set does not contain the new target
-    if ( __settargets.contains ( settarget ) ) {
-      _onSetTargetErased ( settarget );
-      __settargets.erase ( settarget );
-      __state = StateOfInference::UnpreparedStructure;
-    }
-  }
-  
   
   // returns the list of single targets
   template <typename GUM_SCALAR>
@@ -277,20 +208,13 @@ namespace gum {
   }
   
   
-  /// returns the list of target sets
-  template <typename GUM_SCALAR>
-  INLINE const Set<NodeSet>& Inference<GUM_SCALAR>::setTargets () const noexcept {
-    return __settargets;
-  }
-
-
   /// sets all the nodes of the Bayes net as targets
   template <typename GUM_SCALAR>
-  void Inference<GUM_SCALAR>::__setAllTargets () {
+  void Inference<GUM_SCALAR>::__setAllSingleTargets () {
     __targets.clear ();
     if ( __bn != nullptr ) {
       __targets = __bn->dag().asNodeSet ();
-      _onAllTargetsAdded ();
+      _onAllSingleTargetsAdded ();
     }
   }
 
@@ -773,24 +697,6 @@ namespace gum {
     }
 
     return _posterior ( var );
-  }
-
-
-  // Compute the posterior of a nodeset.
-  template <typename GUM_SCALAR>
-  const Potential<GUM_SCALAR>&
-  Inference<GUM_SCALAR>::jointPosterior( const NodeSet& vars ) {
-    for ( const auto var : vars ) {
-      if ( ! isTarget ( var ) ) { // throws UndefinedElement if var is not a target
-        GUM_ERROR( UndefinedElement, var << " is not a target set" );
-      }
-    }
-
-    if ( ! isDone () ) {
-      makeInference();
-    }
-
-    return _jointPosterior ( vars );
   }
 
 

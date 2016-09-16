@@ -48,7 +48,7 @@ namespace gum {
     FindRelevantPotentialsType relevant_type,
     FindBarrenNodesType barren_type,
     bool use_binary_join_tree ) :
-    Inference<GUM_SCALAR>( BN ),
+    JointInference<GUM_SCALAR>( BN ),
     __use_binary_join_tree ( use_binary_join_tree ) {
     // sets the relevant potential and the barren nodes finding algorithm
     setFindRelevantPotentialsType ( relevant_type );
@@ -78,7 +78,7 @@ namespace gum {
     // remove all the posteriors computed
     for ( const auto& pot : __target_posteriors )
       delete pot.second;
-    for ( const auto& pot : __settarget_posteriors )
+    for ( const auto& pot : __joint_target_posteriors )
       delete pot.second;
     
      // remove the junction tree and the triangulation algorithm
@@ -167,7 +167,7 @@ namespace gum {
     // remove all the posteriors
     for ( const auto& pot : __target_posteriors )
       delete pot.second;
-    for ( const auto& pot : __settarget_posteriors )
+    for ( const auto& pot : __joint_target_posteriors )
       delete pot.second;
 
     // indicate that new messages need be computed
@@ -305,45 +305,59 @@ namespace gum {
   /// fired after a new target is inserted
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onTargetAdded ( const NodeId id ) {
+  LazyPropagation<GUM_SCALAR>::_onSingleTargetAdded ( const NodeId id ) {
   }
 
 
   /// fired before a target is removed
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onTargetErased ( const NodeId id ) {
+  LazyPropagation<GUM_SCALAR>::_onSingleTargetErased ( const NodeId id ) {
   }
 
   
   /// fired after a new set target is inserted
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onSetTargetAdded ( const NodeSet& set ) {
+  LazyPropagation<GUM_SCALAR>::_onJointTargetAdded ( const NodeSet& set ) {
   }
 
 
   /// fired before a set target is removed
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onSetTargetErased ( const NodeSet& set ) {
+  LazyPropagation<GUM_SCALAR>::_onJointTargetErased ( const NodeSet& set ) {
   }
   
 
   /// fired after all the nodes of the BN are added as single targets
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onAllTargetsAdded () {
+  LazyPropagation<GUM_SCALAR>::_onAllSingleTargetsAdded () {
   }
-  
 
-  /// fired before a all targets and settargets are removed
+
+  /// fired before a all the single_targets are removed
+  template <typename GUM_SCALAR>
+  INLINE void
+  LazyPropagation<GUM_SCALAR>::_onAllSingleTargetsErased () {
+  }
+
+  
+  /// fired before a all the joint_targets are removed
+  template <typename GUM_SCALAR>
+  INLINE void
+  LazyPropagation<GUM_SCALAR>::_onAllJointTargetsErased () {
+  }
+
+
+  /// fired before a all the single and joint_targets are removed
   template <typename GUM_SCALAR>
   INLINE void
   LazyPropagation<GUM_SCALAR>::_onAllTargetsErased () {
   }
 
-
+  
   // check whether a new junction tree is really needed for the next inference
   template <typename GUM_SCALAR>
   bool LazyPropagation<GUM_SCALAR>::__isNewJTNeeded () const {
@@ -362,7 +376,7 @@ namespace gum {
       if ( ! __graph.exists ( node ) && ! hard_ev_nodes.exists ( node ) )
         return true;
     }
-    for ( const auto& nodes : this->setTargets() ) {
+    for ( const auto& nodes : this->jointTargets() ) {
       // here, we need to check that at least one clique contains all the nodes.
       bool containing_clique_found = false;
       for ( const auto node : nodes ) {
@@ -426,7 +440,7 @@ namespace gum {
     if ( __barren_nodes_type == FindBarrenNodesType::FIND_BARREN_NODES ) {
       // identify the barren nodes
       NodeSet target_nodes = this->targets ();
-      for ( const auto& nodeset : this->setTargets () ) {
+      for ( const auto& nodeset : this->jointTargets () ) {
         target_nodes += nodeset;
       }
 
@@ -465,7 +479,7 @@ namespace gum {
 
     // 4/ if there exist some set targets, we shall add new edges into the moral
     // graph in order to ensure that there exists a clique containing each set
-    for ( const auto& nodeset : this->setTargets () ) {
+    for ( const auto& nodeset : this->jointTargets () ) {
       for ( auto iter1 = nodeset.cbegin (); iter1 != nodeset.cend (); ++iter1 ) {
         auto iter2 = iter1;
         for ( ++iter2; iter2 != nodeset.cend (); ++iter2 ) {
@@ -503,7 +517,8 @@ namespace gum {
     __node_to_clique.clear ();
     const std::vector<NodeId>& JT_elim_order = __triangulation->eliminationOrder();
     NodeProperty<int> elim_order( Size(JT_elim_order.size() ));
-    for ( NodeId i = NodeId(0), size = NodeId(JT_elim_order.size()); i < size; ++i )
+    for ( NodeId i = NodeId(0), size = NodeId(JT_elim_order.size());
+          i < size; ++i )
       elim_order.insert( JT_elim_order[i], i );
     const DAG& dag = bn.dag();
     for ( const auto node : __graph ) {
@@ -558,9 +573,9 @@ namespace gum {
       }
     }
 
-    // indicate for each settarget a clique that contains it
-    __settarget_to_clique.clear ();
-    for ( const auto& set : this->setTargets() ) {
+    // indicate for each joint_target a clique that contains it
+    __joint_target_to_clique.clear ();
+    for ( const auto& set : this->jointTargets() ) {
       // remove from set all the nodes that received hard evidence (since they
       // do not belong to the join tree)
       NodeSet nodeset = set;
@@ -577,7 +592,7 @@ namespace gum {
             first_eliminated_node = node;
           }
         }
-        __settarget_to_clique.insert ( set,
+        __joint_target_to_clique.insert ( set,
                                        __node_to_clique[first_eliminated_node] );
       }
     }
@@ -627,9 +642,9 @@ namespace gum {
     for ( const auto& pot : __target_posteriors )
       delete pot.second;
     __target_posteriors.clear ();
-    for ( const auto& pot : __settarget_posteriors )
+    for ( const auto& pot : __joint_target_posteriors )
       delete pot.second;
-    __settarget_posteriors.clear ();
+    __joint_target_posteriors.clear ();
 
     
     // put all the CPT's of the Bayes net nodes into the cliques
@@ -788,11 +803,11 @@ namespace gum {
         __target_posteriors.erase ( iter );
       }
     }
-    for ( auto iter = __settarget_posteriors.beginSafe ();
-          iter != __settarget_posteriors.endSafe (); ++iter ) {
-      if ( invalidated_cliques.exists ( __settarget_to_clique[iter.key()] ) ) {
+    for ( auto iter = __joint_target_posteriors.beginSafe ();
+          iter != __joint_target_posteriors.endSafe (); ++iter ) {
+      if ( invalidated_cliques.exists ( __joint_target_to_clique[iter.key()] ) ) {
         delete iter.val ();
-        __settarget_posteriors.erase ( iter );
+        __joint_target_posteriors.erase ( iter );
       }
     }
     
@@ -894,14 +909,14 @@ namespace gum {
   /// compute a root for each connected component of __JT
   template <typename GUM_SCALAR>
   void LazyPropagation<GUM_SCALAR>::__computeJoinTreeRoots () {
-    // get the set of cliques in which we can find the targets and settargets
+    // get the set of cliques in which we can find the targets and joint_targets
     NodeSet clique_targets;
     for ( const auto node : this->targets () ) {
       try { clique_targets.insert ( __node_to_clique[node] ); }
       catch ( Exception& ) {}
     }
-    for ( const auto& set : this->setTargets () ) {
-      try { clique_targets.insert ( __settarget_to_clique[set] ); }
+    for ( const auto& set : this->jointTargets () ) {
+      try { clique_targets.insert ( __joint_target_to_clique[set] ); }
       catch ( Exception& ) {}
     }
 
@@ -1190,10 +1205,10 @@ namespace gum {
     }
 
     // collect messages for all set targets
-    // by parsing  __settarget_to_clique, we ensure that the cliques that
+    // by parsing  __joint_target_to_clique, we ensure that the cliques that
     // are referenced belong to the join tree (even if some of the nodes in
-    // their associated settarget do not belong to __graph)
-    for ( const auto set : __settarget_to_clique )
+    // their associated joint_target do not belong to __graph)
+    for ( const auto set : __joint_target_to_clique )
       __collectMessage ( set.second, set.second );
   }
 
@@ -1329,7 +1344,7 @@ namespace gum {
 
     
     // if we still need to perform some inference task, do it
-    const NodeId clique_of_set = __settarget_to_clique[set];
+    const NodeId clique_of_set = __joint_target_to_clique[set];
     __collectMessage ( clique_of_set, clique_of_set );
     
     // now we just need to create the product of the potentials of the clique
@@ -1415,14 +1430,14 @@ namespace gum {
   const Potential<GUM_SCALAR>&
   LazyPropagation<GUM_SCALAR>::_jointPosterior( const NodeSet& set ) {
     // check if we have already computed the posterior
-    if ( __settarget_posteriors.exists ( set ) ) {
-      return *( __settarget_posteriors[set] );
+    if ( __joint_target_posteriors.exists ( set ) ) {
+      return *( __joint_target_posteriors[set] );
     }
 
     // compute the joint posterior and normalize
     auto joint = __computeJointPosterior ( set );
     joint->normalize();
-    __settarget_posteriors.insert ( set, joint );
+    __joint_target_posteriors.insert ( set, joint );
 
     return *joint;
   }
