@@ -317,7 +317,7 @@ namespace gum {
 
     // perform the maximum cardinality search
     if (__elim_order.size()>0) {
-    for ( Size i = __elim_order.size() ; i >= 1; --i ) {
+    for ( Size i = Size(__elim_order.size()) ; i >= 1; --i ) {
       NodeId ni=NodeId(i-1);
       NodeId node = numbered_neighbours.pop();
       __elim_order[ni] = node;
