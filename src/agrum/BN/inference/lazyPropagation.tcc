@@ -48,7 +48,7 @@ namespace gum {
     FindRelevantPotentialsType relevant_type,
     FindBarrenNodesType barren_type,
     bool use_binary_join_tree ) :
-    JointInference<GUM_SCALAR>( BN ),
+    JointTargetedInference<GUM_SCALAR>( BN ),
     __use_binary_join_tree ( use_binary_join_tree ) {
     // sets the relevant potential and the barren nodes finding algorithm
     setFindRelevantPotentialsType ( relevant_type );
@@ -305,14 +305,14 @@ namespace gum {
   /// fired after a new target is inserted
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onSingleTargetAdded ( const NodeId id ) {
+  LazyPropagation<GUM_SCALAR>::_onMarginalTargetAdded ( const NodeId id ) {
   }
 
 
   /// fired before a target is removed
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onSingleTargetErased ( const NodeId id ) {
+  LazyPropagation<GUM_SCALAR>::_onMarginalTargetErased ( const NodeId id ) {
   }
 
   
@@ -333,14 +333,14 @@ namespace gum {
   /// fired after all the nodes of the BN are added as single targets
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onAllSingleTargetsAdded () {
+  LazyPropagation<GUM_SCALAR>::_onAllMarginalTargetsAdded () {
   }
 
 
   /// fired before a all the single_targets are removed
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagation<GUM_SCALAR>::_onAllSingleTargetsErased () {
+  LazyPropagation<GUM_SCALAR>::_onAllMarginalTargetsErased () {
   }
 
   

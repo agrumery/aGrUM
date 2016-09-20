@@ -25,12 +25,12 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 
-#ifndef GUM_BAYES_NET_JOINT_INFERENCE_H
-#define GUM_BAYES_NET_JOINT_INFERENCE_H
+#ifndef GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
+#define GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
 
 
 #include <agrum/config.h>
-#include <agrum/BN/inference/inference.h>
+#include <agrum/BN/inference/marginalTargetedInference.h>
 
 
 namespace gum {
@@ -93,7 +93,7 @@ namespace gum {
    */
 
   template <typename GUM_SCALAR>
-  class JointInference : public Inference<GUM_SCALAR> {
+  class JointTargetedInference : public MarginalTargetedInference<GUM_SCALAR> {
   public:
 
     // ############################################################################
@@ -105,10 +105,10 @@ namespace gum {
     /** @warning By default, all the nodes of the Bayes net are targets.
      * @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    JointInference( const IBayesNet<GUM_SCALAR>* bn );
+    JointTargetedInference( const IBayesNet<GUM_SCALAR>* bn );
 
     /// destructor
-    virtual ~JointInference();
+    virtual ~JointTargetedInference();
 
     /// @}
 
@@ -117,10 +117,6 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-
-    /// assigns a new BN to the inference engine
-    /** @warning By default, all the nodes of the Bayes net are targets. */
-    virtual void setBayesNet ( const IBayesNet<GUM_SCALAR>* bn );
 
     /// Compute the joint posterior of a set of nodes.
     /**
@@ -156,13 +152,13 @@ namespace gum {
      * computed (since we can only compute the posteriors of the single or joint
      * targets that have been added by the user).
      */
-    virtual void eraseAllTargets () final;
+    virtual void eraseAllTargets ();
 
     /// Clear all previously defined joint targets
     virtual void eraseAllJointTargets () final;
 
     /// Clear all the previously defined single targets
-    virtual void eraseAllSingleTargets () final;
+    virtual void eraseAllMarginalTargets () final;
 
     /// Add a set of nodes as a new joint target
     /**
@@ -185,6 +181,9 @@ namespace gum {
 
     
   protected:
+    /// fired after a new Bayes net has been assigned to the engine
+    virtual void _onBayesNetChanged ( const IBayesNet<GUM_SCALAR>* bn );
+
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
     virtual void _onJointTargetAdded ( const NodeSet& set ) = 0;
@@ -217,7 +216,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/jointInference.tcc>
+#include <agrum/BN/inference/jointTargetedInference.tcc>
 
 
-#endif  // GUM_BAYES_NET_JOINT_INFERENCE_H
+#endif  // GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H

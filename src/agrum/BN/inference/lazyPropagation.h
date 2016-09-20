@@ -29,7 +29,7 @@
 
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
-#include <agrum/BN/inference/jointInference.h>
+#include <agrum/BN/inference/jointTargetedInference.h>
 
 namespace gum {
 
@@ -96,7 +96,7 @@ namespace gum {
    * @ingroup bn_inference
    */
   template <typename GUM_SCALAR>
-  class LazyPropagation : public JointInference<GUM_SCALAR> {
+  class LazyPropagation : public JointTargetedInference<GUM_SCALAR> {
     public:
 
     // ############################################################################
@@ -222,11 +222,11 @@ namespace gum {
 
     /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    virtual void _onSingleTargetAdded ( const NodeId id );
+    virtual void _onMarginalTargetAdded ( const NodeId id );
 
     /// fired before a single target is removed
     /** @param id The target variable's id. */
-    virtual void _onSingleTargetErased ( const NodeId id );
+    virtual void _onMarginalTargetErased ( const NodeId id );
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
@@ -237,10 +237,10 @@ namespace gum {
     virtual void _onJointTargetErased ( const NodeSet& set );
 
     /// fired after all the nodes of the BN are added as single targets
-    virtual void _onAllSingleTargetsAdded ();
+    virtual void _onAllMarginalTargetsAdded ();
 
     /// fired before a all the single targets are removed
-    virtual void _onAllSingleTargetsErased ();
+    virtual void _onAllMarginalTargetsErased ();
 
     /// fired before a all the joint targets are removed
     virtual void _onAllJointTargetsErased ();
