@@ -32,7 +32,7 @@ namespace gum {
   ( const IBayesNet<GUM_SCALAR>* bn ) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if ( this->__bn == nullptr ) {
-      Inference<GUM_SCALAR>::setBayesNet ( bn );
+      Inference<GUM_SCALAR>::__setBayesNet ( bn );
     }
     
     // sets all the nodes as targets

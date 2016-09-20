@@ -103,6 +103,15 @@ namespace gum {
     __state = StateOfInference::UnpreparedStructure;
   }
 
+
+  // assigns a BN to a newly constructed inference engine
+  template <typename GUM_SCALAR>
+  void Inference<GUM_SCALAR>::__setBayesNet ( const IBayesNet<GUM_SCALAR>* bn ) {
+    __bn = bn;
+    __computeDomainSizes ();
+    __state = StateOfInference::UnpreparedStructure;
+  }
+
   
   // clears all the data structures allocated for the last inference
   template <typename GUM_SCALAR>
@@ -463,7 +472,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void Inference<GUM_SCALAR>::eraseAllEvidence() {
     bool has_hard_evidence = ! __hard_evidence.empty ();
-    _onAllEvidenceErased ( has_hard_evidence );
+    this->_onAllEvidenceErased ( has_hard_evidence );
 
     for ( const auto& pair : __evidence ) {
       if ( pair.second != nullptr ) {

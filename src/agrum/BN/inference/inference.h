@@ -441,6 +441,10 @@ namespace gum {
     /// computes the domain sizes of the random variables
     void __computeDomainSizes ();
 
+    /// assigns a BN to the inference engine
+    /** @warning By default, all the nodes of the Bayes net are targets. */
+    void __setBayesNet ( const IBayesNet<GUM_SCALAR>* bn );
+
     
     
     /// allow JointInference to access the single targets and inference states
