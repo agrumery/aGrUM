@@ -42,12 +42,17 @@ class Aggregate;
 class PRMexplorer {
 public:
   /**
-  * Create an explorer from a filename and a classpath
+  * Create an explorer 
+  */
+  PRMexplorer(void){}
+  
+  /**
+  * Fill an explorer from a filename and a classpath
   * @param filename
   * @param classpath
   * @param verbose to print warnings and errors
   */
-  PRMexplorer( std::string filename,
+  void load(std::string filename,
     std::string classpath = "",
     bool verbose = false ) {
 
