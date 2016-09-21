@@ -22,7 +22,7 @@
  * @brief This file contains abstract class definitions for Bayesian networks
  *        inference classes.
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_BAYES_NET_INFERENCE_H
@@ -37,67 +37,80 @@ namespace gum {
 
 
   // JointTargetedInference, the class for computing joint posteriors, should
-  // have access to the states of Inference and change them when needed
+  // have access to the states of Inference and change them when needed: this
+  // will be a friend of Inference
   template<typename GUM_SCALAR>
   class JointTargetedInference;
 
-  // MarginalTargetedInference, the class for computing joint posteriors, should
-  // have access to the states of Inference and change them when needed
+  // MarginalTargetedInference, the class for computing marginal posteriors,
+  // should have access to the states of Inference and change them when needed:
+  // this should be a friend of Inference
   template<typename GUM_SCALAR>
   class MarginalTargetedInference;
   
+  // EvidenceInference, the class for computing the probability of evidence,
+  // should have access to the states of Inference and change them when needed:
+  // this will be a friend of Inference
+  template<typename GUM_SCALAR>
+  class EvidenceInference;
+
 
   
   /**
    * @class Inference inference.h
    * <agrum/BN/inference/Inference.h>
    * @brief A generic class for Bayes net inference: handles evidence and the
-   * state of the inference 
+   * current state of the (incremental) inference 
    * @ingroup bn_group
    *
    * The goal of the Inference class is twofold:
    * i) handling the common resources of BN inference (bn, soft/hard evidence);
-   * ii) propose a general scheme for all inference methods.
+   * ii) propose a general high-level scheme for all the inference methods.
    *
    * A specialized inference just has to specify how to prepare inference, how
-   * to make inference and how to get the posteriors for nodes in
-   * pure virtual protected methods. and the scheme for every inference
-   * derived from Inference will be the same:
+   * to make inference and how to get the posteriors for nodes and set of nodes.
+   * The scheme for every inference derived from Inference will be the same:
    *
-   * 1- ie=SpecificInference(bn);              // state <- UnpreparedStructure
+   * 1- ie=SpecificInference(bn);              // state <- OutdatedBNStructure
    * 2- set targets and evidence in ie
    * 3- ie.prepareInference();                 // state <- Ready4Inference
-   * 4.a- change values of evidence in ie      // state <- OutdatedPotentials
-   * 4.b- change some hard evidence or targets // state <- UnpreparedStructure
+   * 4.a- change values of evidence in ie      // state <- OutdatedBNPotentials
+   * 4.b- change some hard evidence or targets // state <- OutdatedBNStructure
    * 5- ie.makeInference();                    // state <- Done
    * 6- get posteriors
    * 7- goto 2 or 4
    *
    * Inference can be in one of 4 different states:
-   * - UnpreparedStructure: in this state, the inference is fully unprepared
-   *   to be applied. It (probably) needs a significant amount of preparation
-   *   to be ready. In a Lazy propagation, for instance, this step amounts to
-   *   compute a new junction tree, hence a new structure in which inference
+   * - OutdatedBNStructure: in this state, the inference is fully unprepared
+   *   to be applied because some events changed the "logical" structure of the
+   *   BN: for instance a node received a hard evidence, which implies that
+   *   its outgoing arcs can be removed from the BN, hence involving a
+   *   structural change in the BN. As a consequence, the (incremental) inference
+   *   (probably) needs a significant amount of preparation to be ready for the
+   *   next inference. In a Lazy propagation, for instance, this step amounts to
+   *   compute a new join tree, hence a new structure in which inference
    *   will be applied. Note that classes that inherit from Inference may be
    *   smarter than Inference and may, in some situations, find out that their
    *   data structures are still ok for inference and, therefore, only resort to
-   *   perform the actions related to the OutdatedPotentials state. As an example,
-   *   consider a LazyPropagation inference in Bayes Net A->B->C->D->E in which
-   *   C has received hard evidence e_C and E is the only target. In this case, A
-   *   and B are not needed for inference, the only potentials that matter are
-   *   P(D|e_C) and P(E|D). So the smallest junction tree needed for inference
-   *   contains only one clique DE. Now, adding new evidence e_A on A has no
-   *   impact on E given hard evidence e_C. In this case, LazyPropagation should
-   *   be smart and not update its junction tree.
-   * - OutdatedPotentials: in this state, the inference just needs to invalidate
-   *   some already computed potentials to be ready. Only a light amount of
-   *   preparation is needed to be able to perform inference.
+   *   perform the actions related to the OutdatedBNPotentials state. As an
+   *   example, consider a LazyPropagation inference in Bayes Net A->B->C->D->E
+   *   in which C has received hard evidence e_C and E is the only target. In
+   *   this case, A and B are not needed for inference, the only potentials that
+   *   matter are P(D|e_C) and P(E|D). So the smallest join tree needed for
+   *   inference contains only one clique DE. Now, adding new evidence e_A on A
+   *   has no impact on E given hard evidence e_C. In this case, LazyPropagation
+   *   can be smart and not update its join tree.
+   * - OutdatedBNPotentials: in this state, the structure of the BN remains
+   *   unchanged, only some potentials stored in it have changed. Therefore,
+   *   the inference probably just needs to invalidate some already computed
+   *   potentials to be ready. Only a light amount of preparation is needed to
+   *   be able to perform inference.
    * - Ready4Inference: in this state, all the data structures are ready for
    *   inference. There just remains to perform the inference computations.
    * - Done: the heavy computations of inference have been done. There might
    *   still remain a few light computations to perform to get the posterior
    *   potentials we need. Typically, in Lazy Propagation, all the messages in
-   *   the junction tree have been computed but, to get the potentials, we still
+   *   the join tree have been computed but, to get the potentials, we still
    *   need to perform the combinations of the potentials in the cliques with
    *   the messages sent to the cliques. In some inference algorithms, this
    *   step may even be empty.
@@ -108,41 +121,47 @@ namespace gum {
   public:
     /**
      * current state of the inference
-     * Unprepared/Outdated [addEvidence] --(prepareInference)--> Ready
+     * Outdated [addEvidence] --(prepareInference)--> Ready
      * [changeEvidence]--(makeInference)--> Done
      *
      * Inference can be in one of 4 different states:
-     * - UnpreparedStructure: in this state, the inference is fully unprepared
-     *   to be applied. It needs a significant amount of preparation to be
-     *   ready. In a Lazy propagation, for instance, this step amounts to
-     *   compute a new junction tree, hence a new structure in which inference
+     * - OutdatedBNStructure: in this state, the inference is fully unprepared
+     *   to be applied because some events changed the "logical" structure of the
+     *   BN: for instance a node received a hard evidence, which implies that
+     *   its outgoing arcs can be removed from the BN, hence involving a
+     *   structural change in the BN. As a consequence, the (incremental) inference
+     *   (probably) needs a significant amount of preparation to be ready for the
+     *   next inference. In a Lazy propagation, for instance, this step amounts to
+     *   compute a new join tree, hence a new structure in which inference
      *   will be applied. Note that classes that inherit from Inference may be
      *   smarter than Inference and may, in some situations, find out that their
-     *   data structures are still ok for inference and, therefore, only resort
-     *   to perform the actions related to the OutdatedPotentials state. As an
+     *   data structures are still ok for inference and, therefore, only resort to
+     *   perform the actions related to the OutdatedBNPotentials state. As an
      *   example, consider a LazyPropagation inference in Bayes Net A->B->C->D->E
-     *   in which C has received hard evidence e_C and E is the only target.
-     *   In this case, A and B are not needed for inference, the only potentials
-     *   that matter are P(D|e_C) and P(E|D). So the smallest junction tree
-     *   needed for inference contains only one clique DE. Now, adding new
-     *   evidence e_A on A has no impact on E given hard evidence e_C. In this
-     *   case, LazyPropagation should be smart and not update its junction tree.
-     * - OutdatedPotentials: in this state, the inference just needs to
-     *   invalidate some already computed potentials to be ready. Only a light
-     *   amount of preparation is needed to be able to perform inference.
+     *   in which C has received hard evidence e_C and E is the only target. In
+     *   this case, A and B are not needed for inference, the only potentials that
+     *   matter are P(D|e_C) and P(E|D). So the smallest join tree needed for
+     *   inference contains only one clique DE. Now, adding new evidence e_A on A
+     *   has no impact on E given hard evidence e_C. In this case, LazyPropagation
+     *   can be smart and not update its join tree.
+     * - OutdatedBNPotentials: in this state, the structure of the BN remains
+     *   unchanged, only some potentials stored in it have changed. Therefore,
+     *   the inference probably just needs to invalidate some already computed
+     *   potentials to be ready. Only a light amount of preparation is needed to
+     *   be able to perform inference.
      * - Ready4Inference: in this state, all the data structures are ready for
      *   inference. There just remains to perform the inference computations.
      * - Done: the heavy computations of inference have been done. There might
      *   still remain a few light computations to perform to get the posterior
      *   potentials we need. Typically, in Lazy Propagation, all the messages in
-     *   the junction tree have been computed but, to get the potentials, we
-     *   still need to perform the combinations of the potentials in the cliques
-     *   with the messages sent to the cliques. In some inference algorithms,
-     *   this step may even be empty.
+     *   the join tree have been computed but, to get the potentials, we still
+     *   need to perform the combinations of the potentials in the cliques with
+     *   the messages sent to the cliques. In some inference algorithms, this
+     *   step may even be empty.
      */
     enum class StateOfInference {
-      UnpreparedStructure,
-      OutdatedPotentials,
+      OutdatedBNStructure,
+      OutdatedBNPotentials,
       Ready4Inference,
       Done
     };
@@ -154,13 +173,19 @@ namespace gum {
     /// @{
 
     /// default constructor
-    /** @warning By default, all the nodes of the Bayes net are targets.
-     * @warning note that, by aGrUM's rule, the BN is not copied but only
+    /** @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
     Inference( const IBayesNet<GUM_SCALAR>* bn );
 
-    /// default constructor with a null BN
-    Inference();
+    /// default constructor with a null BN (useful for virtual inheritance)
+    /** @warning Inference is virtually inherited by MarginalTargetedInference.
+     * As a result, the lowest descendant of Inference will create the latter. To
+     * avoid requiring developpers to add in the constructors of their inference
+     * algorithms a call to Inference( bn ), we added constructor Inference(),
+     * which will be called automatically by the lowest descendant.
+     * Then, MarginalTargetedInference and JointTargetedInference will take care
+     * of setting the appropriate bn into Inference. */
+    Inference ();
 
     /// destructor
     virtual ~Inference();
@@ -174,7 +199,11 @@ namespace gum {
     /// @{
 
     /// assigns a new BN to the inference engine
-    /** @warning By default, all the nodes of the Bayes net are targets. */
+    /** Assigns a new BN to the Inference engine and sends messages to the
+     * descendants of Inference to inform them that the BN has changed.
+     * @warning By default, all the nodes of the Bayes net are targets.
+     * @warning note that, by aGrUM's rule, the bn is not copied into the
+     * inference engine but only referenced. */
     virtual void setBayesNet ( const IBayesNet<GUM_SCALAR>* bn );
 
     /// Returns a constant reference over the IBayesNet referenced by this class
@@ -383,13 +412,13 @@ namespace gum {
     /// fired after a new Bayes net has been assigned to the engine
     virtual void _onBayesNetChanged ( const IBayesNet<GUM_SCALAR>* bn ) = 0;
 
-    /// prepares inference when the latter is in UnpreparedStructure state
+    /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _prepareInferenceStructure and
      * _makeInference. */
     virtual void _prepareInferenceStructure () = 0;
 
-    /// prepares inference when the latter is in OutdatedPotentials state
+    /// prepares inference when the latter is in OutdatedBNPotentials state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _prepareInferenceStructure and
      * _makeInference. */
@@ -399,17 +428,43 @@ namespace gum {
     /** Once the inference is done, _fillPosterior can be called. */
     virtual void _makeInference() = 0;
 
-    /// put the inference into an unprepared state
-    void _setUnpreparedStructureState ();
+    /// put the inference into an outdated BN structure state
+    /** OutdatedBNStructure: in this state, the inference is fully unprepared
+     * to be applied because some events changed the "logical" structure of the
+     * BN: for instance a node received a hard evidence, which implies that
+     * its outgoing arcs can be removed from the BN, hence involving a
+     * structural change in the BN. As a consequence, the (incremental) inference
+     * (probably) needs a significant amount of preparation to be ready for the
+     * next inference. In a Lazy propagation, for instance, this step amounts to
+     * compute a new join tree, hence a new structure in which inference
+     * will be applied. Note that classes that inherit from Inference may be
+     * smarter than Inference and may, in some situations, find out that their
+     * data structures are still ok for inference and, therefore, only resort to
+     * perform the actions related to the OutdatedBNPotentials state. As an
+     * example, consider a LazyPropagation inference in Bayes Net A->B->C->D->E
+     * in which C has received hard evidence e_C and E is the only target. In
+     * this case, A and B are not needed for inference, the only potentials that
+     * matter are P(D|e_C) and P(E|D). So the smallest join tree needed for
+     * inference contains only one clique DE. Now, adding new evidence e_A on A
+     * has no impact on E given hard evidence e_C. In this case, LazyPropagation
+     * can be smart and not update its join tree.*/
+    void _setOutdatedBNStructureState ();
 
-    /** puts the inference into an OutdatedPotentials state if it is not
-     *  already in an UnpreparedStructure state */
-    void _setOutdatedPotentialsState ();
+    /** @brief puts the inference into an OutdatedBNPotentials state if it is
+     * not already in an OutdatedBNStructure state
+     *
+     * OutdatedBNPotentials: in this state, the structure of the BN remains
+     * unchanged, only some potentials stored in it have changed. Therefore,
+     * the inference probably just needs to invalidate some already computed
+     * potentials to be ready. Only a light amount of preparation is needed to
+     * be able to perform inference.
+     */
+    void _setOutdatedBNPotentialsState ();
 
     
   private:
-    /// the current state of the inference (unprepared/ready/done)
-    StateOfInference __state { StateOfInference::UnpreparedStructure };
+    /// the current state of the inference (outdated/ready/done)
+    StateOfInference __state { StateOfInference::OutdatedBNStructure };
 
     /// the Bayes net on which we perform inferences
     const IBayesNet<GUM_SCALAR>* __bn { nullptr };
@@ -441,15 +496,15 @@ namespace gum {
     /// computes the domain sizes of the random variables
     void __computeDomainSizes ();
 
-    /// assigns a BN to the inference engine
-    /** @warning By default, all the nodes of the Bayes net are targets. */
-    void __setBayesNet ( const IBayesNet<GUM_SCALAR>* bn );
+    /// assigns a BN during the inference engine construction
+    void __setBayesNetDuringConstruction ( const IBayesNet<GUM_SCALAR>* bn );
 
     
     
     /// allow JointInference to access the single targets and inference states
     friend MarginalTargetedInference<GUM_SCALAR>;
     friend JointTargetedInference<GUM_SCALAR>;
+    friend EvidenceInference<GUM_SCALAR>;
     
   };
 

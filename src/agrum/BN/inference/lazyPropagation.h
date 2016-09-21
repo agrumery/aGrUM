@@ -30,6 +30,7 @@
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/jointTargetedInference.h>
+#include <agrum/BN/inference/evidenceInference.h>
 
 namespace gum {
 
@@ -96,7 +97,9 @@ namespace gum {
    * @ingroup bn_inference
    */
   template <typename GUM_SCALAR>
-  class LazyPropagation : public JointTargetedInference<GUM_SCALAR> {
+  class LazyPropagation :
+    public JointTargetedInference<GUM_SCALAR>,
+    public EvidenceInference<GUM_SCALAR> {
     public:
 
     // ############################################################################

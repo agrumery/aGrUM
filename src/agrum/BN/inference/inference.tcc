@@ -100,16 +100,17 @@ namespace gum {
     __bn = bn;
     __computeDomainSizes ();
     _onBayesNetChanged ( bn );
-    __state = StateOfInference::UnpreparedStructure;
+    __state = StateOfInference::OutdatedBNStructure;
   }
 
 
   // assigns a BN to a newly constructed inference engine
   template <typename GUM_SCALAR>
-  void Inference<GUM_SCALAR>::__setBayesNet ( const IBayesNet<GUM_SCALAR>* bn ) {
+  void Inference<GUM_SCALAR>::__setBayesNetDuringConstruction
+  ( const IBayesNet<GUM_SCALAR>* bn ) {
     __bn = bn;
     __computeDomainSizes ();
-    __state = StateOfInference::UnpreparedStructure;
+    __state = StateOfInference::OutdatedBNStructure;
   }
 
   
@@ -117,7 +118,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void Inference<GUM_SCALAR>::clear () {
     eraseAllEvidence ();
-    __state = StateOfInference::UnpreparedStructure;
+    __state = StateOfInference::OutdatedBNStructure;
   }
 
   
@@ -278,7 +279,7 @@ namespace gum {
       __soft_evidence_nodes.insert ( id );
     }
 
-    __state = StateOfInference::UnpreparedStructure;
+    __state = StateOfInference::OutdatedBNStructure;
     _onEvidenceAdded ( id, is_hard_evidence );
   }
 
@@ -432,13 +433,13 @@ namespace gum {
     }
     
     if ( hasChangedSoftHard ) {
-      __state = StateOfInference::UnpreparedStructure;
+      __state = StateOfInference::OutdatedBNStructure;
     }
     else {
-      // if status = UnpreparedStructure, remain in that state, otherwise,
+      // if status = OutdatedBNStructure, remain in that state, otherwise,
       // go into an outdatedPotential state
-      if ( __state != StateOfInference::UnpreparedStructure )
-        __state = StateOfInference::OutdatedPotentials;
+      if ( __state != StateOfInference::OutdatedBNStructure )
+        __state = StateOfInference::OutdatedBNPotentials;
     }
 
     _onEvidenceChanged ( id, hasChangedSoftHard );
@@ -453,13 +454,13 @@ namespace gum {
         _onEvidenceErased ( id, true );
         __hard_evidence.erase ( id );
         __hard_evidence_nodes.erase ( id );
-        __state = StateOfInference::UnpreparedStructure;
+        __state = StateOfInference::OutdatedBNStructure;
       }
       else {
         _onEvidenceErased ( id, false );
         __soft_evidence_nodes.erase ( id );
-        if ( __state != StateOfInference::UnpreparedStructure )
-          __state = StateOfInference::OutdatedPotentials;
+        if ( __state != StateOfInference::OutdatedBNStructure )
+          __state = StateOfInference::OutdatedBNPotentials;
       }
 
       delete ( __evidence[id] );
@@ -486,10 +487,10 @@ namespace gum {
     __soft_evidence_nodes.clear ();
 
     if ( has_hard_evidence ||
-         ( __state == StateOfInference::UnpreparedStructure ) )
-      __state = StateOfInference::UnpreparedStructure;
+         ( __state == StateOfInference::OutdatedBNStructure ) )
+      __state = StateOfInference::OutdatedBNStructure;
     else
-      __state = StateOfInference::OutdatedPotentials;
+      __state = StateOfInference::OutdatedBNPotentials;
   }
   
 
@@ -554,17 +555,17 @@ namespace gum {
 
   // put the inference into an unprepared state
   template <typename GUM_SCALAR>
-  INLINE void Inference<GUM_SCALAR>::_setUnpreparedStructureState () {
-    __state = StateOfInference::UnpreparedStructure;
+  INLINE void Inference<GUM_SCALAR>::_setOutdatedBNStructureState () {
+    __state = StateOfInference::OutdatedBNStructure;
   }
 
   
-  /** puts the inference into an OutdatedPotentials state if it is not
-   *  already in an UnpreparedStructure state */
+  /** puts the inference into an OutdatedBNPotentials state if it is not
+   *  already in an OutdatedBNStructure state */
   template <typename GUM_SCALAR>
-  INLINE void Inference<GUM_SCALAR>::_setOutdatedPotentialsState () {
-    if ( __state != StateOfInference::UnpreparedStructure )
-      __state = StateOfInference::OutdatedPotentials;
+  INLINE void Inference<GUM_SCALAR>::_setOutdatedBNPotentialsState () {
+    if ( __state != StateOfInference::OutdatedBNStructure )
+      __state = StateOfInference::OutdatedBNPotentials;
   }
 
 
@@ -579,7 +580,7 @@ namespace gum {
       GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
                   "inference algorithm" );
 
-    if ( __state == StateOfInference::UnpreparedStructure )
+    if ( __state == StateOfInference::OutdatedBNStructure )
       _prepareInferenceStructure ();
     else
       _updateInferencePotentials ();

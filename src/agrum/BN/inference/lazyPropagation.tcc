@@ -49,6 +49,7 @@ namespace gum {
     FindBarrenNodesType barren_type,
     bool use_binary_join_tree ) :
     JointTargetedInference<GUM_SCALAR>( BN ),
+    EvidenceInference<GUM_SCALAR>( BN ),
     __use_binary_join_tree ( use_binary_join_tree ) {
     // sets the relevant potential and the barren nodes finding algorithm
     setFindRelevantPotentialsType ( relevant_type );
@@ -97,7 +98,7 @@ namespace gum {
     delete __triangulation;
     __triangulation = new_triangulation.newFactory ();
     __is_new_jt_needed = true;
-    this->_setUnpreparedStructureState ();
+    this->_setOutdatedBNStructureState ();
   }
   
   
@@ -172,7 +173,7 @@ namespace gum {
 
     // indicate that new messages need be computed
     if ( this->isReady4Inference () || this->isDone () )
-      this->_setOutdatedPotentialsState ();
+      this->_setOutdatedBNPotentialsState ();
   }
   
   
@@ -197,7 +198,7 @@ namespace gum {
       __barren_nodes_type = type;
 
       // potentially, we may need to reconstruct a junction tree
-      this->_setUnpreparedStructureState ();
+      this->_setOutdatedBNStructureState ();
     }
   }
 
