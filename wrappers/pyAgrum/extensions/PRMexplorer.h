@@ -42,10 +42,15 @@ class Aggregate;
 class PRMexplorer {
 public:
   /**
-  * Create an explorer 
+  * Create an explorer
   */
-  PRMexplorer(void){}
-  
+  PRMexplorer(void){
+    __prm=nullptr;
+  }
+
+  ~PRMexplorer(void) {
+    if (__prm!=nullptr) delete __prm;
+  }
   /**
   * Fill an explorer from a filename and a classpath
   * @param filename
@@ -72,8 +77,9 @@ public:
         std::cout << stream.str() << std::endl;
       }
 
+      if (__prm!=nullptr) delete __prm;
       __prm = reader.prm();
-    };
+    }
 
     /**
     * @param name The name of a possible Type<GUM_SCALAR> in this PRM.
@@ -112,7 +118,7 @@ public:
       PyList_Append( q, PyString_FromString( c->name().c_str() ) );
 
       return q;
-    };
+    }
 
     /**
     * @return a list of Tuplet(typename, attribute_name, depenson)
