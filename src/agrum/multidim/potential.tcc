@@ -153,9 +153,11 @@ namespace gum {
   // entropy of this
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR Potential<GUM_SCALAR>::entropy() const {
-    return this->reduce( []( GUM_SCALAR z, GUM_SCALAR p ) {
-      return ( p == 0.0 ) ? z : ( z - p * log2( p ) );
-    }, 0.0 );
+    return this->reduce(
+        []( GUM_SCALAR z, GUM_SCALAR p ) {
+          return ( p == 0.0 ) ? z : ( z - p * log2( p ) );
+        },
+        0.0 );
   }
 
   template <typename GUM_SCALAR>
@@ -210,6 +212,15 @@ namespace gum {
     }
     return *this;
   }
+
+  template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>
+  Potential<GUM_SCALAR>::scale( GUM_SCALAR v ) const {
+    auto p = Potential<GUM_SCALAR>( *this );
+    p.apply( [v]( GUM_SCALAR x ) { return x * v; } );
+    return p;
+  }
+
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margSumOut(
@@ -284,7 +295,8 @@ namespace gum {
       GUM_ERROR( InvalidArgument,
                  "The vector contains " << vars.size()
                                         << " variables instead of "
-                                        << this->nbrDim() << "." );
+                                        << this->nbrDim()
+                                        << "." );
     for ( const auto var : vars ) {
       if ( !this->contains( *var ) )
         GUM_ERROR(

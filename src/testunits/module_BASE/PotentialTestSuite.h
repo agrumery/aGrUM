@@ -20,8 +20,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/variables/discretizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimArray.h>
@@ -111,7 +111,7 @@ namespace gum_tests {
       gum::Size cpt = 0;
 
       for ( i.setFirst(); !i.end(); ++i ) {
-        m.set( i, double(cpt) );
+        m.set( i, double( cpt ) );
         cpt++;
       }
 
@@ -470,6 +470,63 @@ namespace gum_tests {
       r << a << b;
       r.fillWith( {3, 6, 9, 12, 15, 18, 21, 24, 27} );
       TS_ASSERT( pot.reorganize( {&b, &c, &a} ).extract( I ) == r );
+    }
+    void testOperatorEqual() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<float> p;
+      {  // empty potentials are equal
+        gum::Potential<float> q;
+        TS_ASSERT_EQUALS( p, q );
+      }
+      p << a;
+      p.fillWith( {1, 2, 3} );
+      TS_ASSERT_EQUALS( p, p );
+
+      {  // same potential
+        gum::Potential<float> q;
+        q << a;
+        q.fillWith( {1, 2, 3} );
+        TS_ASSERT_EQUALS( p, q );
+      }
+
+      {  // difference values
+        gum::Potential<float> q;
+        q << a;
+        q.fillWith( {3, 6, 9} );
+        TS_ASSERT_DIFFERS( p, q );
+      }
+
+      {  // same values, different variables
+        gum::Potential<float> q;
+        q << b;
+        q.fillWith( {1, 2, 3} );
+        TS_ASSERT_DIFFERS( p, q );
+      }
+
+      {  // different dimensions
+        gum::Potential<float> q;
+        q << b << a;
+        q.fillWith( 1 );
+        TS_ASSERT_DIFFERS( p, q );
+      }
+    }
+
+    void testScale() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+
+      gum::Potential<float> p;
+      p << a;
+      p.fillWith( {1, 2, 3} );
+      gum::Potential<float> p3;
+      p3 << a;
+      p3.fillWith( {3, 6, 9} );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.scale( 3.0 ) );
+
+      TS_ASSERT( p.scale( 3.0 ) == p3 );
+      TS_ASSERT_EQUALS( p.scale( 3.0 ), p3 );
     }
   };
 }

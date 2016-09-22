@@ -252,6 +252,7 @@ namespace gum {
      */
     const Potential<GUM_SCALAR>& normalize() const;
 
+
     /**
      * @brief apply $x^2$ on every element of the container
      */
@@ -265,6 +266,11 @@ namespace gum {
     ///@{
 
 
+    /**
+     * @brief create a new potential multiplied by v from *this
+     */
+    const Potential<GUM_SCALAR> scale( GUM_SCALAR v ) const;
+
     /// the function to be used to add two Potentials
     Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p2 ) const {
       if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
@@ -276,7 +282,8 @@ namespace gum {
     /// the function to be used to subtract two Potentials
     Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p2 ) const {
       if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
-      if ( this->nbrDim() == 0 ) GUM_ERROR(FatalError,"Undefined substraction");
+      if ( this->nbrDim() == 0 )
+        GUM_ERROR( FatalError, "Undefined substraction" );
 
       return Potential<GUM_SCALAR>( *this->content() - *p2.content() );
     }
@@ -292,7 +299,7 @@ namespace gum {
     /// the function to be used to divide two Potentials
     Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p2 ) const {
       if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
-      if ( this->nbrDim() == 0 ) GUM_ERROR(FatalError,"Undefined division");
+      if ( this->nbrDim() == 0 ) GUM_ERROR( FatalError, "Undefined division" );
 
       return Potential<GUM_SCALAR>( *this->content() / *p2.content() );
     }
@@ -303,7 +310,7 @@ namespace gum {
     }
 
     Potential<GUM_SCALAR>& operator*=( const Potential<GUM_SCALAR>& r ) {
-      *this = *this* r;
+      *this = *this * r;
       return *this;
     }
 
@@ -316,6 +323,15 @@ namespace gum {
       *this = *this / r;
       return *this;
     }
+
+    bool operator==( const Potential<GUM_SCALAR>& r ) const {
+      return ( *this->_content ) == ( *r._content );
+    }
+
+    bool operator!=( const Potential<GUM_SCALAR>& r ) const {
+      return !operator==( r );
+    }
+
     ///@}
 
     protected:

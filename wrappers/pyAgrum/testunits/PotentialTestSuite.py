@@ -499,6 +499,39 @@ class TestOperators(pyAgrumTestCase):
     except gum.InvalidArgument:
       self.assertTrue(True)
 
+  def testOperatorEqual(self):
+    a,b=[gum.LabelizedVariable(s,s,3) for s in "ab"]
+    p=gum.Potential()
+    q=gum.Potential()
+
+    self.assertTrue(p==q)
+
+    p.add(a).fillWith([1,2,3])
+    self.assertTrue(p==p)
+
+    q=gum.Potential().add(a).fillWith([1,2,3])
+    self.assertTrue(p==q)
+    self.assertEqual(p,q)
+
+    q=gum.Potential().add(a).fillWith([3,6,9])
+    self.assertTrue(p!=q)
+
+    q=gum.Potential().add(b).fillWith([1,2,3])
+    self.assertTrue(p!=q)
+
+    q=gum.Potential().add(a).add(b).fillWith(1)
+    self.assertTrue(p!=q)
+
+
+  def testScale(self):
+    a=gum.LabelizedVariable("a","a",3)
+
+    p=gum.Potential().add(a).fillWith([1,2,3])
+    q=gum.Potential().add(a).fillWith([3,6,9])
+
+    self.assertEqual(p.scale(3),q)
+
+
 
 
 
@@ -526,3 +559,5 @@ ts.addTest(TestOperators('testReorganizePotential'))
 ts.addTest(TestOperators('testPutFirstPotential'))
 ts.addTest(TestOperators('testExtraction'))
 ts.addTest(TestOperators('testExtractionWithDict'))
+ts.addTest(TestOperators('testOperatorEqual'))
+ts.addTest(TestOperators('testScale'))
