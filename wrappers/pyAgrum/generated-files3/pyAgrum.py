@@ -8059,6 +8059,18 @@ class Potential_double(_object):
         return val
 
 
+    def normalizeAsCPT(self) -> "void":
+        """
+        normalizeAsCPT(Potential_double self)
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double_normalizeAsCPT(self)
+
+
     def scale(self, v: 'double') -> "gum::Potential< double > const":
         """
         scale(Potential_double self, double v) -> Potential_double
