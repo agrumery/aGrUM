@@ -540,9 +540,10 @@ namespace gum_tests {
       auto q=p/p.margSumOut({&a});
       p.normalizeAsCPT();
       TS_ASSERT_EQUALS(p,q);
-            TS_ASSERT_EQUALS(q,p);
+      TS_ASSERT_EQUALS(q,p);
 
       gum::Potential<float> p2;
+      TS_ASSERT_THROWS(p2.normalizeAsCPT(),gum::FatalError);
       p2 << a << b;
       p2.fill( 0.0f );
       TS_ASSERT_THROWS(p2.normalizeAsCPT(),gum::FatalError);

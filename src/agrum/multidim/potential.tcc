@@ -215,6 +215,10 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void Potential<GUM_SCALAR>::normalizeAsCPT() const {
+    if (this->nbrDim()==0) {
+      GUM_ERROR(FatalError,"Normalization for an empty potential");
+    }
+    
     Instantiation inst(*this);
     const auto& v=this->variable(0);
 
