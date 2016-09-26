@@ -528,5 +528,39 @@ namespace gum_tests {
       TS_ASSERT( p.scale( 3.0 ) == p3 );
       TS_ASSERT_EQUALS( p.scale( 3.0 ), p3 );
     }
+
+    void testNormalizeAsCPT() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      auto q=p/p.margSumOut({&a});
+      p.normalizeAsCPT();
+      TS_ASSERT_EQUALS(p,q);
+            TS_ASSERT_EQUALS(q,p);
+
+      gum::Potential<float> p2;
+      p2 << a << b;
+      p2.fill( 0.0f );
+      TS_ASSERT_THROWS(p2.normalizeAsCPT(),gum::FatalError);
+
+      gum::Potential<float> p3;
+      p3 << a << b;
+      p3.fillWith( {1, 2, 3, 0, 0, 0, 7, 8, 9} );
+      TS_ASSERT_THROWS(p2.normalizeAsCPT(),gum::FatalError);
+
+      gum::Potential<float> p4;
+      p4 << a ;
+      p4.fillWith( {1, 3, 6} );
+      p4.normalizeAsCPT();
+      gum::Potential<float> witness;
+      witness << a ;
+      witness.fillWith( {0.1f, 0.3f, 0.6f} );
+      TS_ASSERT_EQUALS(p4,witness);
+
+    }
   };
 }

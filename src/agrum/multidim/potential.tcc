@@ -214,6 +214,26 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
+  INLINE void Potential<GUM_SCALAR>::normalizeAsCPT() const {
+    Instantiation inst(*this);
+    const auto& v=this->variable(0);
+
+    for(inst.setFirst(); ! inst.end(); inst.incNotVar(v)) {
+      GUM_SCALAR s=(GUM_SCALAR)0.0;
+      for(inst.setFirstVar(v);! inst.end();inst.incVar(v))
+        s+=this->get(inst);
+      if (s==(GUM_SCALAR)0.0) {
+        GUM_ERROR(FatalError,"Normalization for a potential that sum to 0 in "<<*this);
+      }
+      if (s!=(GUM_SCALAR)1.0) {
+        for(inst.setFirstVar(v);! inst.end();inst.incVar(v))
+          this->set(inst,this->get(inst)/s);
+      }
+      inst.setFirstVar(v); // to remove inst.end()
+    }
+  }
+
+  template <typename GUM_SCALAR>
   INLINE const Potential<GUM_SCALAR>
   Potential<GUM_SCALAR>::scale( GUM_SCALAR v ) const {
     auto p = Potential<GUM_SCALAR>( *this );

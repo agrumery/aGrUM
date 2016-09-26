@@ -252,11 +252,16 @@ namespace gum {
      */
     const Potential<GUM_SCALAR>& normalize() const;
 
-
     /**
      * @brief apply $x^2$ on every element of the container
      */
     const Potential<GUM_SCALAR>& sq() const;
+
+    /**
+     * @brief normalisation of this as a CPT
+     * @throw FatalError it some distribution sums to 0
+     */
+    void normalizeAsCPT() const;
 
     ///@}
 
