@@ -531,6 +531,43 @@ class TestOperators(pyAgrumTestCase):
 
     self.assertEqual(p.scale(3),q)
 
+  def testNormalizeAsCPT(self):
+    a,b=[gum.LabelizedVariable(s,s,3) for s in "ab"]
+
+    p=gum.Potential().add(a).add(b).fillWith([1,2,3,4,5,6,7,8,9])
+    q=p/p.margSumOut(["a"])
+    p.normalizeAsCPT()
+    self.assertTrue(p==q)
+
+    p2=gum.Potential()
+    try:
+      p2.normalizeAsCPT()
+      self.assertTrue(False)
+    except gum.FatalError:
+      self.assertTrue(True)
+    p2.add(a).add(b).fill(0)
+    try:
+      p2.normalizeAsCPT()
+      self.assertTrue(False)
+    except gum.FatalError:
+      self.assertTrue(True)
+
+    p3=gum.Potential().add(a).add(b).fillWith([1,2,3,0,0,0,7,8,9])
+    try:
+      p3.normalizeAsCPT()
+      self.assertTrue(False)
+    except gum.FatalError:
+      self.assertTrue(True)
+
+    p4=gum.Potential().add(a).fillWith([1,3,6])
+    witness=gum.Potential().add(a).fillWith([0.1,0.3,0.6])
+    p4.normalizeAsCPT()
+    self.assertTrue(p4==witness)
+
+
+
+
+
 
 
 
@@ -561,3 +598,4 @@ ts.addTest(TestOperators('testExtraction'))
 ts.addTest(TestOperators('testExtractionWithDict'))
 ts.addTest(TestOperators('testOperatorEqual'))
 ts.addTest(TestOperators('testScale'))
+ts.addTest(TestOperators('testNormalizeAsCPT'))
