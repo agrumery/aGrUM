@@ -24,17 +24,17 @@
 #define _AMD64_
 #endif
 
-#include <errno.h>
-#include <malloc.h>
-#include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <wchar.h>
-#include <winbase.h>
+#include <stdarg.h>
 #include <windef.h>
+#include <winbase.h>
+#include <wchar.h>
+#include <string.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 /* Indicates that d_type field is available in dirent structure */
 #define _DIRENT_HAVE_D_TYPE
