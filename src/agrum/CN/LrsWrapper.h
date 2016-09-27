@@ -74,6 +74,15 @@ extern "C" {
 #define INTSIZE 16L
 #define BIT "64bit"
 #endif
+
+// 64 bits for windows (long is 32 bits)
+#ifdef _MSC_VER
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+#else
+#include <stdint.h>
+#endif
+
 /* ************ */
 
 #define enumStringify( name ) #name
@@ -234,8 +243,8 @@ namespace gum {
        */
       void __getLRSWrapperOutput( lrs_mp Nin,
                                   lrs_mp Din,
-                                  std::vector<long int>& Num,
-                                  std::vector<long int>& Den ) const;
+                                  std::vector<int64_t>& Num,
+								  std::vector<int64_t>& Den ) const;
 
       /// @}
 
