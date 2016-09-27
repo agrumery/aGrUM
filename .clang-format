@@ -1,6 +1,6 @@
 #
-# aGrUM clang-format specification (version clang-format-3.6)
-# Pierre-Henri Wuillemin - summer 2015
+# aGrUM clang-format specification (version clang-format-3.8)
+# Pierre-Henri Wuillemin - september 2016
 #
 BasedOnStyle: LLVM
 
@@ -20,25 +20,29 @@ SpacesBeforeTrailingComments: 2
 
 Cpp11BracedListStyle: true
 BreakBeforeBraces: Attach
-Cpp11BracedListStyle: true
 SpacesInParentheses: true
+SpaceInEmptyParentheses: false
 
 AlwaysBreakTemplateDeclarations: true
 BreakBeforeBinaryOperators: NonAssignment
 BreakConstructorInitializersBeforeComma: true
 BreakBeforeBinaryOperators: false
+BreakStringLiterals: true
 
 PointerAlignment: Left
-AlignAfterOpenBracket: true
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: true
+AlignOperands: true
 AlignEscapedNewlinesLeft: true
 AlignTrailingComments: true
 #for clang-format-3.9
-#AlignConsecutiveAssignments: true
 #AlignConsecutiveDeclarations: true
 
 BinPackArguments: false
 BinPackParameters: false
 
-AllowShortFunctionsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
+
+SortInclude: false
