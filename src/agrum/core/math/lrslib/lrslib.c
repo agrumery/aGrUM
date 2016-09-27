@@ -34,26 +34,26 @@ FILE *lrs_ifp;			/* input file pointer       */
 FILE *lrs_ofp;			/* output file pointer      */
 
 
-static unsigned long dict_count, dict_limit, cache_tries, cache_misses;
+static uint64_t dict_count, dict_limit, cache_tries, cache_misses;
 
 /* Variables and functions global to this file only */
-static long lrs_checkpoint_seconds = 0;
+static int64_t lrs_checkpoint_seconds = 0;
 
-static long lrs_global_count = 0;	/* Track how many lrs_dat records are
+static int64_t lrs_global_count = 0;	/* Track how many lrs_dat records are
 					   allocated */
 
 static lrs_dat_p *lrs_global_list[MAX_LRS_GLOBALS + 1];
 
-static lrs_dic *new_lrs_dic (long m, long d, long m_A);
+static lrs_dic *new_lrs_dic (int64_t m, int64_t d, int64_t m_A);
 
 
-static void cache_dict (lrs_dic ** D_p, lrs_dat * global, long i, long j);
-static long check_cache (lrs_dic ** D_p, lrs_dat * global, long *i_p, long *j_p);
+static void cache_dict (lrs_dic ** D_p, lrs_dat * global, int64_t i, int64_t j);
+static int64_t check_cache (lrs_dic ** D_p, lrs_dat * global, int64_t *i_p, int64_t *j_p);
 static void save_basis (lrs_dic * D, lrs_dat * Q);
 
 static void lrs_dump_state ();
 
-static void pushQ (lrs_dat * global, long m, long d, long m_A);
+static void pushQ (lrs_dat * global, int64_t m, int64_t d, int64_t m_A);
 
 #ifdef TIMES
 static void ptimes ();
@@ -79,7 +79,7 @@ static void timecheck ();
 /* lrs_main is driver for lrs.c does H/V enumeration   */
 /* showing function calls intended for public use      */
 /*******************************************************/
-long
+int64_t
 lrs_main (int argc, char *argv[])
 
 {
@@ -89,9 +89,9 @@ lrs_main (int argc, char *argv[])
 
 	lrs_mp_vector output;		/* holds one line of output; ray,vertex,facet,linearity */
 	lrs_mp_matrix Lin;		/* holds input linearities if any are found             */
-	long col;			/* output column index for dictionary                   */
-	long startcol = 0;
-	long prune = FALSE;		/* if TRUE, getnextbasis will prune tree and backtrack  */
+	int64_t col;			/* output column index for dictionary                   */
+	int64_t startcol = 0;
+	int64_t prune = FALSE;		/* if TRUE, getnextbasis will prune tree and backtrack  */
 
 /* global variables lrs_ifp and lrs_ofp are file pointers for input and output   */
 /* they default to stdin and stdout, but may be overidden by command line parms. */
@@ -223,7 +223,7 @@ Q = lrs_alloc_dat ("");	/* allocate and init structure for static problem data *
       free(Q->isave);
       free(Q->jsave);
     }
-  long savem=P->m;              /* need this to clear Q*/
+  int64_t savem=P->m;              /* need this to clear Q*/
   lrs_free_dic (P,Q);           /* deallocate lrs_dic */
   Q->m=savem;
 
@@ -266,7 +266,7 @@ void plrs_read_dat (lrs_dat * Q, std::ifstream &input_file)
 				Q->hull = TRUE;
 		   		Q->polytope = TRUE;
 			}else if(line.find("digits")!= string::npos){
-				long dec_digits;
+				int64_t dec_digits;
 				istringstream ss(line);
 				if(!(ss>>dec_digits) && !lrs_set_digits(dec_digits)){
 					printf("\nError reading digits data!\n");
@@ -338,7 +338,7 @@ void plrs_read_dic (lrs_dic * P, lrs_dat * Q, std::ifstream &input_file)
 	lrs_mp Temp, mpone;
 	lrs_mp_vector oD;		/* Denom for objective function */
 
-	long i, j;
+	int64_t i, j;
 	string line;
 
 
@@ -346,8 +346,8 @@ void plrs_read_dic (lrs_dic * P, lrs_dat * Q, std::ifstream &input_file)
 
 	lrs_mp_matrix A;
 	lrs_mp_vector Gcd, Lcm;
-	long hull = Q->hull;
-	long m, d;
+	int64_t hull = Q->hull;
+	int64_t m, d;
 
 	lrs_alloc_mp(Temp); lrs_alloc_mp(mpone);
 	A = P->A;
@@ -665,12 +665,12 @@ void plrs_read_dic (lrs_dic * P, lrs_dat * Q, std::ifstream &input_file)
 
 /* read and check facet list for obvious errors during start/restart */
 /* this must be done after linearity option is processed!! */
-void plrs_readfacets (lrs_dat * Q, long facet[], string facets)
+void plrs_readfacets (lrs_dat * Q, int64_t facet[], string facets)
 {
-	long i, j;
+	int64_t i, j;
 	/* assign local variables to structures */
-	long m, d;
-	long *linearity = Q->linearity;
+	int64_t m, d;
+	int64_t *linearity = Q->linearity;
 	m = Q->m;
 	d = Q->inputd;
 
@@ -727,26 +727,26 @@ extern int PLRS_DEBUG;
 /* redundant rows from an H or V-representation        */
 /* showing function calls intended for public use      */
 /*******************************************************/
-long
+int64_t
 redund_main (int argc, char *argv[])
 
 {
   lrs_mp_matrix Ain;		/* holds a copy of the input matrix to output at the end */
 
-  long *redineq;		/* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
-  long ineq;			/* input inequality number of current index             */
+  int64_t *redineq;		/* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
+  int64_t ineq;			/* input inequality number of current index             */
 
   lrs_dic *P;			/* structure for holding current dictionary and indices */
   lrs_dat *Q;			/* structure for holding static problem data            */
 
   lrs_mp_matrix Lin;		/* holds input linearities if any are found             */
 
-  long i, j, d, m;
-  long nlinearity;		/* number of linearities in input file                  */
-  long nredund;			/* number of redundant rows in input file               */
-  long lastdv;
-  long debug;
-  long index;			/* basic index for redundancy test */
+  int64_t i, j, d, m;
+  int64_t nlinearity;		/* number of linearities in input file                  */
+  int64_t nredund;			/* number of redundant rows in input file               */
+  int64_t lastdv;
+  int64_t debug;
+  int64_t index;			/* basic index for redundancy test */
 
 /* global variables lrs_ifp and lrs_ofp are file pointers for input and output   */
 /* they default to stdin and stdout, but may be overidden by command line parms. */
@@ -793,7 +793,7 @@ redund_main (int argc, char *argv[])
   d = P->d;
   debug = Q->debug;
 
-  redineq = (long *) calloc ((m + 1), sizeof (long));
+  redineq = (int64_t *) calloc ((m + 1), sizeof (int64_t));
   Ain = lrs_alloc_mp_matrix (m, d);	/* make a copy of A matrix for output later            */
 
   for (i = 1; i <= m; i++)
@@ -896,7 +896,7 @@ redund_main (int argc, char *argv[])
   fprintf (lrs_ofp, ": %ld row(s) redundant", m - nredund);
 
 /* 2015.9.9  fix memory leak on Gcd Lcm */
-  long savem=P->m;              /* need this to clear Q*/
+  int64_t savem=P->m;              /* need this to clear Q*/
   lrs_free_dic (P,Q);           /* deallocate lrs_dic */
   Q->m=savem;
 
@@ -943,7 +943,7 @@ if (Q->countonly)
 	//post output in a nonblocking manner (a consumer thread will manage output)
 	post_output(type, ss.str().c_str());
 #else
-  long i;
+  int64_t i;
 
   fprintf (lrs_ofp, "\n");
 
@@ -976,7 +976,7 @@ void lrs_lpoutput(lrs_dic * P,lrs_dat * Q, lrs_mp_vector output)
 
 #ifndef LRS_QUIET
   lrs_mp Temp1, Temp2;
-  long i;
+  int64_t i;
 
   lrs_alloc_mp (Temp1);
   lrs_alloc_mp (Temp2);
@@ -1013,13 +1013,13 @@ void lrs_lpoutput(lrs_dic * P,lrs_dat * Q, lrs_mp_vector output)
 /* end of lrs_lpoutput */
 /***********************/
 void
-lrs_printrow (char name[], lrs_dat * Q, lrs_mp_vector output, long rowd)
+lrs_printrow (char name[], lrs_dat * Q, lrs_mp_vector output, int64_t rowd)
 /* print a row of A matrix in output in "original" form  */
 /* rowd+1 is the dimension of output vector                */
 /* if input is H-rep. output[0] contains the RHS      */
 /* if input is V-rep. vertices are scaled by 1/output[1] */
 {
-  long i;
+  int64_t i;
 
   fprintf (lrs_ofp, "\n%s", name);
   if (!Q->hull)			/* input was inequalities, print directly */
@@ -1050,18 +1050,18 @@ lrs_printrow (char name[], lrs_dat * Q, lrs_mp_vector output, long rowd)
 
 }				/* end of lrs_printrow */
 
-long
-lrs_getsolution (lrs_dic * P, lrs_dat * Q, lrs_mp_vector output, long col)
+int64_t
+lrs_getsolution (lrs_dic * P, lrs_dat * Q, lrs_mp_vector output, int64_t col)
    /* check if column indexed by col in this dictionary */
    /* contains output                                   */
    /* col=0 for vertex 1....d for ray/facet             */
 {
 
 
-  long j;			/* cobasic index     */
+  int64_t j;			/* cobasic index     */
 
   lrs_mp_matrix A = P->A;
-  long *Row = P->Row;
+  int64_t *Row = P->Row;
 
   if (col == ZERO)		/* check for lexmin vertex */
     return lrs_getvertex (P, Q, output);
@@ -1095,7 +1095,7 @@ lrs_getsolution (lrs_dic * P, lrs_dat * Q, lrs_mp_vector output, long col)
 }				/* end of lrs_getsolution */
 
 
-long
+int64_t
 lrs_init (char *name)       /* returns TRUE if successful, else FALSE */
 {
 
@@ -1153,7 +1153,7 @@ lrs_dat *
 lrs_alloc_dat (const char *name)
 {
   lrs_dat *Q;
-  long i;
+  int64_t i;
 
 
   if (lrs_global_count >= MAX_LRS_GLOBALS)
@@ -1245,13 +1245,13 @@ lrs_alloc_dat (const char *name)
 /*******************************/
 /*  lrs_read_dat               */
 /*******************************/
-long
+int64_t
 lrs_read_dat (lrs_dat * Q, int argc, char *argv[])
 {
   char name[100];
-  long dec_digits = 0;
-  long infile=0;                /*input file number to open if any        */
-  long firstline = TRUE;	/*flag for picking off name at line 1     */
+  int64_t dec_digits = 0;
+  int64_t infile=0;                /*input file number to open if any        */
+  int64_t firstline = TRUE;	/*flag for picking off name at line 1     */
 
   int c;			/* for fgetc */
 
@@ -1376,7 +1376,7 @@ lrs_read_dat (lrs_dat * Q, int argc, char *argv[])
 /****************************/
 /* set up lrs_dic structure */
 /****************************/
-long
+int64_t
 lrs_read_dic (lrs_dic * P, lrs_dat * Q)
 /* read constraint matrix and set up problem and dictionary  */
 
@@ -1384,7 +1384,7 @@ lrs_read_dic (lrs_dic * P, lrs_dat * Q)
   lrs_mp Temp,Tempn,Tempd, mpone, mpten;
   lrs_mp_vector oD;		/* Denom for objective function */
 
-  long i, j;
+  int64_t i, j;
   char name[100];
   int c; /* fgetc actually returns an int. db */
 
@@ -1392,9 +1392,9 @@ lrs_read_dic (lrs_dic * P, lrs_dat * Q)
 
   lrs_mp_matrix A;
   lrs_mp_vector Gcd, Lcm;
-  long hull = Q->hull;
-  long m, d;
-  long dualperturb=FALSE;    /* dualperturb=TRUE: objective function perturbed */
+  int64_t hull = Q->hull;
+  int64_t m, d;
+  int64_t dualperturb=FALSE;    /* dualperturb=TRUE: objective function perturbed */
 
   lrs_alloc_mp(Temp); lrs_alloc_mp(mpone);
   lrs_alloc_mp(Tempn); lrs_alloc_mp(Tempd); lrs_alloc_mp(mpten);
@@ -1475,7 +1475,7 @@ lrs_read_dic (lrs_dic * P, lrs_dat * Q)
 
       if (strcmp (name, "checkpoint") == 0)
 	{
-	  long seconds;
+	  int64_t seconds;
 
 	  if(fscanf (lrs_ifp, "%ld", &seconds) == EOF)
             {
@@ -1814,24 +1814,24 @@ lrs_read_dic (lrs_dic * P, lrs_dat * Q)
 
 #define D (*D_p)
 
-long
-lrs_getfirstbasis (lrs_dic ** D_p, lrs_dat * Q, lrs_mp_matrix * Lin, long no_output)
+int64_t
+lrs_getfirstbasis (lrs_dic ** D_p, lrs_dat * Q, lrs_mp_matrix * Lin, int64_t no_output)
 /* gets first basis, FALSE if none              */
 /* P may get changed if lin. space Lin found    */
 /* no_output is TRUE supresses output headers   */
 {
   lrs_mp scale, Temp;
 
-  long i, j, k;
+  int64_t i, j, k;
 
 /* assign local variables to structures */
 
   lrs_mp_matrix A;
-  long *B, *C, *Col;
-  long *inequality;
-  long *linearity;
-  long hull = Q->hull;
-  long m, d, lastdv, nlinearity, nredundcol;
+  int64_t *B, *C, *Col;
+  int64_t *inequality;
+  int64_t *linearity;
+  int64_t hull = Q->hull;
+  int64_t m, d, lastdv, nlinearity, nredundcol;
 
   lrs_alloc_mp(Temp); lrs_alloc_mp(scale);
 
@@ -1875,8 +1875,8 @@ lrs_getfirstbasis (lrs_dic ** D_p, lrs_dat * Q, lrs_mp_matrix * Lin, long no_out
 
   if (Q->runs > 0)		/* arrays for estimator */
     {
-      Q->isave = (long *) CALLOC ((unsigned) (m * d), sizeof (long));
-      Q->jsave = (long *) CALLOC ((unsigned) (m * d), sizeof (long));
+      Q->isave = (int64_t *) CALLOC ((unsigned) (m * d), sizeof (int64_t));
+      Q->jsave = (int64_t *) CALLOC ((unsigned) (m * d), sizeof (int64_t));
     }
 /* default is to look for starting cobasis using linearies first, then     */
 /* filling in from last rows of input as necessary                         */
@@ -2267,19 +2267,19 @@ lrs_getfirstbasis (lrs_dic ** D_p, lrs_dat * Q, lrs_mp_matrix * Lin, long no_out
 /*****************************************/
 
 
-long
-lrs_getnextbasis (lrs_dic ** D_p, lrs_dat * Q, long backtrack)
+int64_t
+lrs_getnextbasis (lrs_dic ** D_p, lrs_dat * Q, int64_t backtrack)
 	 /* gets next reverse search tree basis, FALSE if none  */
 	 /* switches to estimator if maxdepth set               */
 	 /* backtrack TRUE means backtrack from here            */
 
 {
   /* assign local variables to structures */
-  long i = 0L, j = 0L;
-  long m = D->m;
-  long d = D->d;
-  long saveflag;
-  long cob_est=0;     /* estimated number of cobases in subtree from current node */
+  int64_t i = 0L, j = 0L;
+  int64_t m = D->m;
+  int64_t d = D->d;
+  int64_t saveflag;
+  int64_t cob_est=0;     /* estimated number of cobases in subtree from current node */
 
 
   if (backtrack && D->depth == 0)
@@ -2407,26 +2407,26 @@ lrs_getnextbasis (lrs_dic ** D_p, lrs_dat * Q, long backtrack)
 /*************************************/
 /* print out one line of output file */
 /*************************************/
-long
+int64_t
 lrs_getvertex (lrs_dic * P, lrs_dat * Q, lrs_mp_vector output)
 /*Print out current vertex if it is lexmin and return it in output */
 /* return FALSE if no output generated  */
 {
   lrs_mp_matrix A = P->A;
 
-  long i;
-  long ind;			/* output index                                  */
-  long ired;			/* counts number of redundant columns            */
+  int64_t i;
+  int64_t ind;			/* output index                                  */
+  int64_t ired;			/* counts number of redundant columns            */
 /* assign local variables to structures */
-  long *redundcol = Q->redundcol;
-  long *count = Q->count;
-  long *B = P->B;
-  long *Row = P->Row;
+  int64_t *redundcol = Q->redundcol;
+  int64_t *count = Q->count;
+  int64_t *B = P->B;
+  int64_t *Row = P->Row;
 
-  long lastdv = Q->lastdv;
+  int64_t lastdv = Q->lastdv;
 
-  long hull;
-  long lexflag;
+  int64_t hull;
+  int64_t lexflag;
 
 
 
@@ -2527,25 +2527,25 @@ lrs_getvertex (lrs_dic * P, lrs_dat * Q, lrs_mp_vector output)
   return TRUE;
 }				/* end of lrs_getvertex */
 
-long
-lrs_getray (lrs_dic * P, lrs_dat * Q, long col, long redcol, lrs_mp_vector output)
+int64_t
+lrs_getray (lrs_dic * P, lrs_dat * Q, int64_t col, int64_t redcol, lrs_mp_vector output)
 /*Print out solution in col and return it in output   */
 /*redcol =n for ray/facet 0..n-1 for linearity column */
 /*hull=1 implies facets will be recovered             */
 /* return FALSE if no output generated in column col  */
 {
-  long i;
-  long ind;			/* output index                                  */
-  long ired;			/* counts number of redundant columns            */
+  int64_t i;
+  int64_t ind;			/* output index                                  */
+  int64_t ired;			/* counts number of redundant columns            */
 /* assign local variables to structures */
-  long *redundcol = Q->redundcol;
-  long *count = Q->count;
-  long hull = Q->hull;
-  long n = Q->n;
+  int64_t *redundcol = Q->redundcol;
+  int64_t *count = Q->count;
+  int64_t hull = Q->hull;
+  int64_t n = Q->n;
 
-  long *B = P->B;
-  long *Row = P->Row;
-  long lastdv = Q->lastdv;
+  int64_t *B = P->B;
+  int64_t *Row = P->Row;
+  int64_t lastdv = Q->lastdv;
 
 #ifdef PLRS
         // do not print vertex again in PLRS at root
@@ -2625,17 +2625,17 @@ lrs_getray (lrs_dic * P, lrs_dat * Q, long col, long redcol, lrs_mp_vector outpu
 
 
 void
-getnextoutput (lrs_dic * P, lrs_dat * Q, long i, long col, lrs_mp out)
+getnextoutput (lrs_dic * P, lrs_dat * Q, int64_t i, int64_t col, lrs_mp out)
       /* get A[B[i][col] and copy to out */
 {
-  long row;
-  long m = P->m;
-  long d = P->d;
-  long lastdv = Q->lastdv;
+  int64_t row;
+  int64_t m = P->m;
+  int64_t d = P->d;
+  int64_t lastdv = Q->lastdv;
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *Row = P->Row;
-  long j;
+  int64_t *B = P->B;
+  int64_t *Row = P->Row;
+  int64_t j;
 
   if (i == d && Q->voronoi)
     return;			/* skip last column if voronoi set */
@@ -2669,29 +2669,29 @@ getnextoutput (lrs_dic * P, lrs_dat * Q, long i, long col, lrs_mp out)
 }				/* end of getnextoutput */
 
 void
-lrs_printcobasis (lrs_dic * P, lrs_dat * Q, long col)
+lrs_printcobasis (lrs_dic * P, lrs_dat * Q, int64_t col)
 /* col is output column being printed */
 {
 
 	#ifdef PLRS
-	long i;
-	long rflag;/* used to find inequality number for ray column */
+	int64_t i;
+	int64_t rflag;/* used to find inequality number for ray column */
 	/* assign local variables to structures */
 	lrs_mp_matrix A = P->A;
 	lrs_mp Nvol, Dvol;	/* hold rescaled det of current basis */
-	long *B = P->B;
-	long *C = P->C;
-	long *Col = P->Col;
-	long *Row = P->Row;
-	long *inequality = Q->inequality;
-	long *temparray = Q->temparray;
-	long *count = Q->count;
-	long hull = Q->hull;
-	long d = P->d;
-	long lastdv = Q->lastdv;
-	long m=P->m;
-	long firstime=TRUE;
-	long nincidence;	/* count number of tight inequalities */
+	int64_t *B = P->B;
+	int64_t *C = P->C;
+	int64_t *Col = P->Col;
+	int64_t *Row = P->Row;
+	int64_t *inequality = Q->inequality;
+	int64_t *temparray = Q->temparray;
+	int64_t *count = Q->count;
+	int64_t hull = Q->hull;
+	int64_t d = P->d;
+	int64_t lastdv = Q->lastdv;
+	int64_t m=P->m;
+	int64_t firstime=TRUE;
+	int64_t nincidence;	/* count number of tight inequalities */
 
 	//Make new output node
 	char *type = "cobasis";
@@ -2764,24 +2764,24 @@ lrs_printcobasis (lrs_dic * P, lrs_dat * Q, long col)
 
 
 	#else
-	long i;
-	long rflag;			/* used to find inequality number for ray column */
+	int64_t i;
+	int64_t rflag;			/* used to find inequality number for ray column */
 	/* assign local variables to structures */
 	lrs_mp_matrix A = P->A;
 	lrs_mp Nvol, Dvol;		/* hold rescaled det of current basis */
-	long *B = P->B;
-	long *C = P->C;
-	long *Col = P->Col;
-	long *Row = P->Row;
-	long *inequality = Q->inequality;
-	long *temparray = Q->temparray;
-	long *count = Q->count;
-	long hull = Q->hull;
-	long d = P->d;
-	long lastdv = Q->lastdv;
-	long m=P->m;
-	long firstime=TRUE;
-	long nincidence;       /* count number of tight inequalities */
+	int64_t *B = P->B;
+	int64_t *C = P->C;
+	int64_t *Col = P->Col;
+	int64_t *Row = P->Row;
+	int64_t *inequality = Q->inequality;
+	int64_t *temparray = Q->temparray;
+	int64_t *count = Q->count;
+	int64_t hull = Q->hull;
+	int64_t d = P->d;
+	int64_t lastdv = Q->lastdv;
+	int64_t m=P->m;
+	int64_t firstime=TRUE;
+	int64_t nincidence;       /* count number of tight inequalities */
 
 	lrs_alloc_mp(Nvol); lrs_alloc_mp(Dvol);
 
@@ -2855,8 +2855,8 @@ lrs_printtotals (lrs_dic * P, lrs_dat * Q)
 
 #ifdef PLRS
 
-	long *count = Q->count;
-	long *startcount = Q->startcount;
+	int64_t *count = Q->count;
+	int64_t *startcount = Q->startcount;
 	std::stringstream ss;
 
 	//output node number of basis
@@ -2904,22 +2904,22 @@ lrs_printtotals (lrs_dic * P, lrs_dat * Q)
 	}
 
 #else
-  long i;
+  int64_t i;
   double x;
 /* local assignments */
   double *cest = Q->cest;
-  long *count = Q->count;
-  long *inequality = Q->inequality;
-  long *linearity = Q->linearity;
-  long *temparray = Q->temparray;
+  int64_t *count = Q->count;
+  int64_t *inequality = Q->inequality;
+  int64_t *linearity = Q->linearity;
+  int64_t *temparray = Q->temparray;
 
-  long *C = P->C;
+  int64_t *C = P->C;
 
-  long hull = Q->hull;
-  long homogeneous = Q->homogeneous;
-  long nlinearity = Q->nlinearity;
-  long nredundcol = Q->nredundcol;
-  long d, lastdv;
+  int64_t hull = Q->hull;
+  int64_t homogeneous = Q->homogeneous;
+  int64_t nlinearity = Q->nlinearity;
+  int64_t nredundcol = Q->nredundcol;
+  int64_t d, lastdv;
   d = P->d;
   lastdv = Q->lastdv;
 
@@ -3109,7 +3109,7 @@ lrs_printtotals (lrs_dic * P, lrs_dat * Q)
 /************************/
 /*  Estimation function */
 /************************/
-long
+int64_t
 lrs_estimate (lrs_dic * P, lrs_dat * Q)
 		   /*returns estimate of subtree size (no. cobases) from current node    */
 		   /*current node is not counted.                   */
@@ -3119,20 +3119,20 @@ lrs_estimate (lrs_dic * P, lrs_dat * Q)
 
   lrs_mp_vector output;		/* holds one line of output; ray,vertex,facet,linearity */
   lrs_mp Nvol, Dvol;		/* hold volume of current basis */
-  long estdepth = 0;		/* depth of basis/vertex in subtree for estimate */
-  long i = 0, j = 0, k, nchild, runcount, col;
+  int64_t estdepth = 0;		/* depth of basis/vertex in subtree for estimate */
+  int64_t i = 0, j = 0, k, nchild, runcount, col;
   double prod = 0.0;
   double cave[] =
   {0.0, 0.0, 0.0, 0.0, 0.0};
   double nvertices, nbases, nrays, nvol, nivertices;
-  long rays = 0;
+  int64_t rays = 0;
   double newvol = 0.0;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *isave = Q->isave;
-  long *jsave = Q->jsave;
+  int64_t *isave = Q->isave;
+  int64_t *jsave = Q->jsave;
   double *cest = Q->cest;
-  long d = P->d;
+  int64_t d = P->d;
   lrs_alloc_mp(Nvol); lrs_alloc_mp(Dvol);
 /* Main Loop of Estimator */
 
@@ -3247,7 +3247,7 @@ lrs_estimate (lrs_dic * P, lrs_dat * Q)
 
     }				/* end of for loop on runcount */
 
-  j=(long) cave[2]/Q->runs;
+  j=(int64_t) cave[2]/Q->runs;
 
 //2015.2.9   Do not update totals if we do iterative estimating and subtree is too big
   if(Q->subtreesize == 0  || j <= Q->subtreesize )
@@ -3267,20 +3267,20 @@ lrs_estimate (lrs_dic * P, lrs_dat * Q)
 /* Basic Dictionary functions    */
 /******************************* */
 
-long
-reverse (lrs_dic * P, lrs_dat * Q, long *r, long s)
+int64_t
+reverse (lrs_dic * P, lrs_dat * Q, int64_t *r, int64_t s)
 /*  find reverse indices  */
 /* TRUE if B[*r] C[s] is a reverse lexicographic pivot */
 {
-  long i, j, enter, row, col;
+  int64_t i, j, enter, row, col;
 
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *C = P->C;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long d = P->d;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t d = P->d;
 
   enter = C[s];
   col = Col[s];
@@ -3338,17 +3338,17 @@ reverse (lrs_dic * P, lrs_dat * Q, long *r, long s)
   return (TRUE);
 }				/* end of reverse */
 
-long
-selectpivot (lrs_dic * P, lrs_dat * Q, long *r, long *s)
+int64_t
+selectpivot (lrs_dic * P, lrs_dat * Q, int64_t *r, int64_t *s)
 /* select pivot indices using lexicographic rule   */
 /* returns TRUE if pivot found else FALSE          */
 /* pivot variables are B[*r] C[*s] in locations Row[*r] Col[*s] */
 {
-  long j, col;
+  int64_t j, col;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *Col = P->Col;
-  long d = P->d;
+  int64_t *Col = P->Col;
+  int64_t d = P->d;
 
   *r = 0;
   *s = d;
@@ -3373,23 +3373,23 @@ selectpivot (lrs_dic * P, lrs_dat * Q, long *r, long *s)
 /******************************************************* */
 
 void
-pivot (lrs_dic * P, lrs_dat * Q, long bas, long cob)
+pivot (lrs_dic * P, lrs_dat * Q, int64_t bas, int64_t cob)
 		     /* Qpivot routine for array A              */
 		     /* indices bas, cob are for Basis B and CoBasis C    */
 		     /* corresponding to row Row[bas] and column       */
 		     /* Col[cob]   respectively                       */
 {
-  long r, s;
-  long i, j;
+  int64_t r, s;
+  int64_t i, j;
   lrs_mp Ns, Nt, Ars;
 /* assign local variables to structures */
 
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *C = P->C;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long d, m_A;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t d, m_A;
 
   lrs_alloc_mp(Ns); lrs_alloc_mp(Nt); lrs_alloc_mp(Ars);
 
@@ -3465,18 +3465,18 @@ pivot (lrs_dic * P, lrs_dat * Q, long bas, long cob)
   lrs_clear_mp(Ns); lrs_clear_mp(Nt); lrs_clear_mp(Ars);
 }				/* end of pivot */
 
-long
+int64_t
 primalfeasible (lrs_dic * P, lrs_dat * Q)
 /* Do dual pivots to get primal feasibility */
 /* Note that cost row is all zero, so no ratio test needed for Dual Bland's rule */
 {
-  long primalinfeasible = TRUE;
-  long i, j;
+  int64_t primalinfeasible = TRUE;
+  int64_t i, j;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long m, d, lastdv;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t m, d, lastdv;
   m = P->m;
   d = P->d;
   lastdv = Q->lastdv;
@@ -3505,14 +3505,14 @@ primalfeasible (lrs_dic * P, lrs_dat * Q)
 }				/* end of primalfeasible */
 
 
-long
-lrs_solvelp (lrs_dic * P, lrs_dat * Q, long maximize)
+int64_t
+lrs_solvelp (lrs_dic * P, lrs_dat * Q, int64_t maximize)
 /* Solve primal feasible lp by Dantzig`s rule and lexicographic ratio test */
 /* return TRUE if bounded, FALSE if unbounded                              */
 {
-  long i, j;
+  int64_t i, j;
 /* assign local variables to structures */
-  long d = P->d;
+  int64_t d = P->d;
 
   while (dan_selectpivot (P, Q, &i, &j))
     {
@@ -3534,8 +3534,8 @@ lrs_solvelp (lrs_dic * P, lrs_dat * Q, long maximize)
   return TRUE;
 }				/* end of lrs_solvelp  */
 
-long
-getabasis (lrs_dic * P, lrs_dat * Q, long order[])
+int64_t
+getabasis (lrs_dic * P, lrs_dat * Q, int64_t order[])
 
 /* Pivot Ax<=b to standard form */
 /*Try to find a starting basis by pivoting in the variables x[1]..x[d]        */
@@ -3547,17 +3547,17 @@ getabasis (lrs_dic * P, lrs_dat * Q, long order[])
 /*            and will be removed.                                            */
 
 {
-  long i, j, k;
+  int64_t i, j, k;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *C = P->C;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long *linearity = Q->linearity;
-  long *redundcol = Q->redundcol;
-  long m, d, nlinearity;
-  long nredundcol = 0L;		/* will be calculated here */
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t *linearity = Q->linearity;
+  int64_t *redundcol = Q->redundcol;
+  int64_t m, d, nlinearity;
+  int64_t nredundcol = 0L;		/* will be calculated here */
   m = P->m;
   d = P->d;
   nlinearity = Q->nlinearity;
@@ -3694,18 +3694,18 @@ getabasis (lrs_dic * P, lrs_dat * Q, long order[])
   return TRUE;
 }				/*  end of getabasis */
 
-long
-removecobasicindex (lrs_dic * P, lrs_dat * Q, long k)
+int64_t
+removecobasicindex (lrs_dic * P, lrs_dat * Q, int64_t k)
 /* remove the variable C[k] from the problem */
 /* used after detecting column dependency    */
 {
-  long i, j, cindex, deloc;
+  int64_t i, j, cindex, deloc;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *C = P->C;
-  long *Col = P->Col;
-  long m, d;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t *Col = P->Col;
+  int64_t m, d;
   m = P->m;
   d = P->d;
 
@@ -3751,8 +3751,8 @@ resize (lrs_dic * P, lrs_dat * Q)
 {
   lrs_dic *P1;			/* to hold new dictionary in case of resizing */
 
-  long i, j;
-  long m, d, m_A;
+  int64_t i, j;
+  int64_t m, d, m_A;
 
 
   m = P->m;
@@ -3814,28 +3814,28 @@ resize (lrs_dic * P, lrs_dat * Q)
 /********* resize                    ***************/
 
 
-long
+int64_t
 restartpivots (lrs_dic * P, lrs_dat * Q)
 /* facet contains a list of the inequalities in the cobasis for the restart */
 /* inequality contains the relabelled inequalities after initialization     */
 {
-  long i, j, k;
-  long *Cobasic;		/* when restarting, Cobasic[j]=1 if j is in cobasis */
+  int64_t i, j, k;
+  int64_t *Cobasic;		/* when restarting, Cobasic[j]=1 if j is in cobasis */
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *C = P->C;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long *inequality = Q->inequality;
-  long *facet = Q->facet;
-  long nlinearity = Q->nlinearity;
-  long m, d, lastdv;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t *inequality = Q->inequality;
+  int64_t *facet = Q->facet;
+  int64_t nlinearity = Q->nlinearity;
+  int64_t m, d, lastdv;
   m = P->m;
   d = P->d;
   lastdv = Q->lastdv;
 
-  Cobasic = (long *) CALLOC ((unsigned) m + d + 2, sizeof (long));
+  Cobasic = (int64_t *) CALLOC ((unsigned) m + d + 2, sizeof (int64_t));
 
   if (Q->debug)
     fprintf(lrs_ofp,"\nCobasic flags in restartpivots");
@@ -3893,7 +3893,7 @@ restartpivots (lrs_dic * P, lrs_dat * Q)
            /*da replies: modifying i only makes is larger, and so      */
            /*the second while loop will put it back where it was       */
            /*faster (and safer) as done below                          */
-       long  ii=i;
+       int64_t  ii=i;
        pivot (P, Q, ii, k);
        update (P, Q, &ii, &k);
       } else {
@@ -3922,23 +3922,23 @@ restartpivots (lrs_dic * P, lrs_dat * Q)
 }				/* end of restartpivots */
 
 
-long
-lrs_ratio (lrs_dic * P, lrs_dat * Q, long col)	/*find lex min. ratio */
+int64_t
+lrs_ratio (lrs_dic * P, lrs_dat * Q, int64_t col)	/*find lex min. ratio */
 		  /* find min index ratio -aig/ais, ais<0 */
 		  /* if multiple, checks successive basis columns */
 		  /* recoded Dec 1997                     */
 {
-  long i, j, comp, ratiocol, basicindex, start, nstart, cindex, bindex;
-  long firstime;		/*For ratio test, true on first pass,else false */
+  int64_t i, j, comp, ratiocol, basicindex, start, nstart, cindex, bindex;
+  int64_t firstime;		/*For ratio test, true on first pass,else false */
   lrs_mp Nmin, Dmin;
-  long degencount, ndegencount;
+  int64_t degencount, ndegencount;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long *minratio = Q->minratio;
-  long m, d, lastdv;
+  int64_t *B = P->B;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t *minratio = Q->minratio;
+  int64_t m, d, lastdv;
 
   m = P->m;
   d = P->d;
@@ -4046,21 +4046,21 @@ lrs_ratio (lrs_dic * P, lrs_dat * Q, long col)	/*find lex min. ratio */
 
 
 
-long
-lexmin (lrs_dic * P, lrs_dat * Q, long col)
+int64_t
+lexmin (lrs_dic * P, lrs_dat * Q, int64_t col)
   /*test if basis is lex-min for vertex or ray, if so TRUE */
   /* FALSE if a_r,g=0, a_rs !=0, r > s          */
 {
 /*do lexmin test for vertex if col=0, otherwise for ray */
-  long r, s, i, j;
+  int64_t r, s, i, j;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *C = P->C;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long m = P->m;
-  long d = P->d;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t m = P->m;
+  int64_t d = P->d;
 
   for (i = Q->lastdv + 1; i <= m; i++)
     {
@@ -4091,14 +4091,14 @@ lexmin (lrs_dic * P, lrs_dat * Q, long col)
   return (TRUE);
 }				/* end of lexmin */
 
-long
-ismin (lrs_dic * P, lrs_dat * Q, long r, long s)
+int64_t
+ismin (lrs_dic * P, lrs_dat * Q, int64_t r, int64_t s)
 /*test if A[r][s] is a min ratio for col s */
 {
-  long i;
+  int64_t i;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long m_A = P->m_A;
+  int64_t m_A = P->m_A;
 
   for (i = 1; i <= m_A; i++)
     if ((i != r) &&
@@ -4111,19 +4111,19 @@ ismin (lrs_dic * P, lrs_dat * Q, long r, long s)
 }
 
 void
-update (lrs_dic * P, lrs_dat * Q, long *i, long *j)
+update (lrs_dic * P, lrs_dat * Q, int64_t *i, int64_t *j)
  /*update the B,C arrays after a pivot */
  /*   involving B[bas] and C[cob]           */
 {
 
-  long leave, enter;
+  int64_t leave, enter;
 /* assign local variables to structures */
-  long *B = P->B;
-  long *C = P->C;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long m = P->m;
-  long d = P->d;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t m = P->m;
+  int64_t d = P->d;
 
   leave = B[*i];
   enter = C[*j];
@@ -4136,17 +4136,17 @@ update (lrs_dic * P, lrs_dat * Q, long *i, long *j)
   for (*j = 0; C[*j] != leave; (*j)++);		/*Find co-basis index */
 }				/* end of update */
 
-long
+int64_t
 lrs_degenerate (lrs_dic * P, lrs_dat * Q)
 /* TRUE if the current dictionary is primal degenerate */
 /* not thoroughly tested   2000/02/15                  */
 {
-  long i;
-  long *Row;
+  int64_t i;
+  int64_t *Row;
 
   lrs_mp_matrix A = P->A;
-  long d = P->d;
-  long m = P->m;
+  int64_t d = P->d;
+  int64_t m = P->m;
 
   Row = P->Row;
 
@@ -4163,10 +4163,10 @@ lrs_degenerate (lrs_dic * P, lrs_dat * Q)
 /******************************************************* */
 
 void
-reorder (long a[], long range)
+reorder (int64_t a[], int64_t range)
 /*reorder array in increasing order with one misplaced element */
 {
-  long i, temp;
+  int64_t i, temp;
   for (i = 0; i < range - 1; i++)
     if (a[i] > a[i + 1])
       {
@@ -4185,11 +4185,11 @@ reorder (long a[], long range)
 }				/* end of reorder */
 
 void
-reorder1 (long a[], long b[], long newone, long range)
+reorder1 (int64_t a[], int64_t b[], int64_t newone, int64_t range)
 /*reorder array a in increasing order with one misplaced element at index newone */
 /*elements of array b are updated to stay aligned with a */
 {
-  long temp;
+  int64_t temp;
   while (newone > 0 && a[newone] < a[newone - 1])
     {
       temp = a[newone];
@@ -4217,11 +4217,11 @@ rescaledet (lrs_dic * P, lrs_dat * Q, lrs_mp Vnum, lrs_mp Vden)
   /* Vnum/Vden is volume of current basis  */
 {
   lrs_mp gcdprod;		/* to hold scale factors */
-  long i;
+  int64_t i;
 /* assign local variables to structures */
-  long *B = P->B;
-  long *C = P->C;
-  long m, d, lastdv;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t m, d, lastdv;
 
   lrs_alloc_mp(gcdprod);
   m = P->m;
@@ -4247,7 +4247,7 @@ rescalevolume (lrs_dic * P, lrs_dat * Q, lrs_mp Vnum, lrs_mp Vden)
 {
   lrs_mp temp, dfactorial;
 /* assign local variables to structures */
-  long lastdv = Q->lastdv;
+  int64_t lastdv = Q->lastdv;
 
   lrs_alloc_mp(temp); lrs_alloc_mp(dfactorial);
 
@@ -4290,20 +4290,20 @@ updatevolume (lrs_dic * P, lrs_dat * Q)		/* rescale determinant and update the v
 /* Routines for redundancy checking                */
 /***************************************************/
 
-long
+int64_t
 checkredund (lrs_dic * P, lrs_dat * Q)
 /* Solve primal feasible lp by least subscript and lex min basis method */
 /* to check redundancy of a row in objective function                   */
 /* returns TRUE if redundant, else FALSE                                */
 {
   lrs_mp Ns, Nt;
-  long i, j;
-  long r, s;
+  int64_t i, j;
+  int64_t r, s;
 
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *Row, *Col;
-  long d = P->d;
+  int64_t *Row, *Col;
+  int64_t d = P->d;
 
   lrs_alloc_mp(Ns); lrs_alloc_mp(Nt);
   Row = P->Row;
@@ -4340,8 +4340,8 @@ checkredund (lrs_dic * P, lrs_dat * Q)
 
 }				/* end of checkredund  */
 
-long
-checkcobasic (lrs_dic * P, lrs_dat * Q, long index)
+int64_t
+checkcobasic (lrs_dic * P, lrs_dat * Q, int64_t index)
 /* TRUE if index is cobasic and nonredundant                         */
 /* FALSE if basic, or degen. cobasic, where it will get pivoted out  */
 
@@ -4350,13 +4350,13 @@ checkcobasic (lrs_dic * P, lrs_dat * Q, long index)
 /* assign local variables to structures */
 
   lrs_mp_matrix A = P->A;
-  long *B, *C, *Row, *Col;
-  long d = P->d;
-  long m = P->m;
-  long debug = Q->debug;
-  long i = 0;
-  long j = 0;
-  long s;
+  int64_t *B, *C, *Row, *Col;
+  int64_t d = P->d;
+  int64_t m = P->m;
+  int64_t debug = Q->debug;
+  int64_t i = 0;
+  int64_t j = 0;
+  int64_t s;
 
   B = P->B;
   C = P->C;
@@ -4397,24 +4397,24 @@ checkcobasic (lrs_dic * P, lrs_dat * Q, long index)
   pivot (P, Q, i, j);
   update (P, Q, &i, &j);	/*Update B,C,i,j */
 
-  return FALSE;			/*index is no longer cobasic */
+  return FALSE;			/*index is no int64_ter cobasic */
 
 }				/* end of checkcobasic */
 
-long
-checkindex (lrs_dic * P, lrs_dat * Q, long index)
+int64_t
+checkindex (lrs_dic * P, lrs_dat * Q, int64_t index)
 /* 0 if index is non-redundant inequality */
 /* 1 if index is redundant     inequality */
 /* 2 if index is input linearity          */
 /*NOTE: row is returned all zero if redundant!! */
 {
-  long i, j;
+  int64_t i, j;
 
   lrs_mp_matrix A = P->A;
-  long *Row = P->Row;
-  long *B = P->B;
-  long d = P->d;
-  long m = P->m;
+  int64_t *Row = P->Row;
+  int64_t *B = P->B;
+  int64_t d = P->d;
+  int64_t m = P->m;
 
   if (Q->debug)
     printA (P, Q);
@@ -4469,7 +4469,7 @@ checkindex (lrs_dic * P, lrs_dat * Q, long index)
 /***************************************************************/
 
 void
-lprat (const char *name, long Nt, long Dt)
+lprat (const char *name, int64_t Nt, int64_t Dt)
 /*print the long precision rational Nt/Dt without reducing  */
 {
   if ( Nt > 0 )
@@ -4480,8 +4480,8 @@ lprat (const char *name, long Nt, long Dt)
   fprintf (lrs_ofp, " ");
 }                               /* lprat */
 
-long
-lreadrat (long *Num, long *Den)
+int64_t
+lreadrat (int64_t *Num, int64_t *Den)
  /* read a rational string and convert to long    */
  /* returns true if denominator is not one        */
 {
@@ -4500,10 +4500,10 @@ lreadrat (long *Num, long *Den)
 }
 
 void
-lrs_getinput(lrs_dic *P,lrs_dat *Q,long *num,long *den, long m, long d)
+lrs_getinput(lrs_dic *P,lrs_dat *Q,int64_t *num,int64_t *den, int64_t m, int64_t d)
 /* code for reading data matrix in lrs/cdd format */
 {
-  long j,row;
+  int64_t j,row;
 
   printf("\nEnter each row: b_i  a_ij j=1..%ld",d);
   for (row=1;row<=m;row++)
@@ -4530,11 +4530,11 @@ lrs_getinput(lrs_dic *P,lrs_dat *Q,long *num,long *den, long m, long d)
 }
 
 
-long
+int64_t
 readlinearity (lrs_dat * Q)	/* read in and check linearity list */
 {
-  long i, j;
-  long nlinearity;
+  int64_t i, j;
+  int64_t nlinearity;
   if(fscanf (lrs_ifp, "%ld", &nlinearity)==EOF )
     {
       fprintf (lrs_ofp, "\nLinearity option invalid, no indices ");
@@ -4546,7 +4546,7 @@ readlinearity (lrs_dat * Q)	/* read in and check linearity list */
       return (FALSE);
     }
 
-  Q->linearity  = (long int*) CALLOC ((nlinearity + 1), sizeof (long));
+  Q->linearity  = (int64_t*) CALLOC ((nlinearity + 1), sizeof (int64_t));
 
   for (i = 0; i < nlinearity; i++)
     {
@@ -4569,7 +4569,7 @@ readlinearity (lrs_dat * Q)	/* read in and check linearity list */
 #ifdef PLRS
 void plrs_readlinearity(lrs_dat *Q, string line){
 	istringstream ss(line);
-	long nlinearity;
+	int64_t nlinearity;
 	if(!(ss>>nlinearity)){
 		printf("\nLinearity option invalid, no indices\n");
 		exit(1);
@@ -4580,7 +4580,7 @@ void plrs_readlinearity(lrs_dat *Q, string line){
 		exit(1);
 	}
 
-	Q->linearity = (long int*) CALLOC ((nlinearity + 1), sizeof (long));
+	Q->linearity = (int64_t int*) CALLOC ((nlinearity + 1), sizeof (int64_t));
 
 	for (int i = 0; i < nlinearity; i++)
 	{
@@ -4599,15 +4599,15 @@ void plrs_readlinearity(lrs_dat *Q, string line){
 }
 #endif
 
-long
-readfacets (lrs_dat * Q, long facet[])
+int64_t
+readfacets (lrs_dat * Q, int64_t facet[])
 /* read and check facet list for obvious errors during start/restart */
 /* this must be done after linearity option is processed!! */
 {
-  long i, j;
+  int64_t i, j;
 /* assign local variables to structures */
-  long m, d;
-  long *linearity = Q->linearity;
+  int64_t m, d;
+  int64_t *linearity = Q->linearity;
   m = Q->m;
   d = Q->inputd;
 
@@ -4657,14 +4657,14 @@ void
 printA (lrs_dic * P, lrs_dat * Q)	/* print the integer m by n array A
 					   with B,C,Row,Col vectors         */
 {
-  long i, j;
+  int64_t i, j;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *B = P->B;
-  long *C = P->C;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long m, d;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t m, d;
   m = P->m;
   d = P->d;
 
@@ -4698,11 +4698,11 @@ printA (lrs_dic * P, lrs_dat * Q)	/* print the integer m by n array A
 
 
 void
-pimat (lrs_dic * P, long r, long s, lrs_mp Nt, char name[])
- /*print the long precision integer in row r col s of matrix A */
+pimat (lrs_dic * P, int64_t r, int64_t s, lrs_mp Nt, char name[])
+ /*print the int64_t precision integer in row r col s of matrix A */
 {
-  long *B = P->B;
-  long *C = P->C;
+  int64_t *B = P->B;
+  int64_t *C = P->C;
   if (s == 0)
     fprintf (lrs_ofp, "%s[%ld][%ld]=", name, B[r], C[s]);
   else
@@ -4720,7 +4720,7 @@ pimat (lrs_dic * P, long r, long s, lrs_mp Nt, char name[])
 /* From here mostly Bremner's handiwork */
 
 static void
-cache_dict (lrs_dic ** D_p, lrs_dat * global, long i, long j)
+cache_dict (lrs_dic ** D_p, lrs_dat * global, int64_t i, int64_t j)
 {
 
   if (dict_limit > 1)
@@ -4742,10 +4742,10 @@ cache_dict (lrs_dic ** D_p, lrs_dat * global, long i, long j)
 void
 copy_dict (lrs_dat * global, lrs_dic * dest, lrs_dic * src)
 {
-  long m = src->m;
-  long m_A = src->m_A;        /* number of rows in A */
-  long d = src->d;
-  long r,s;
+  int64_t m = src->m;
+  int64_t m_A = src->m_A;        /* number of rows in A */
+  int64_t d = src->d;
+  int64_t r,s;
 
 #ifdef GMP
   for ( r=0;r<=m_A;r++)
@@ -4765,7 +4765,7 @@ copy_dict (lrs_dat * global, lrs_dic * dest, lrs_dic * src)
   }
   else
   memcpy (dest->A[0][0], (global->Qtail->prev)->A[0][0],
-          (d + 1) * (lrs_digits + 1) * (m_A + 1) * sizeof (long));
+          (d + 1) * (lrs_digits + 1) * (m_A + 1) * sizeof (int64_t));
 
 #endif
 
@@ -4785,10 +4785,10 @@ copy_dict (lrs_dat * global, lrs_dic * dest, lrs_dic * src)
   if (global->debug)
     fprintf (lrs_ofp, "\nSaving dict at depth %ld\n", src->depth);
 
-  memcpy (dest->B, src->B, (m + 1) * sizeof (long));
-  memcpy (dest->C, src->C, (d + 1) * sizeof (long));
-  memcpy (dest->Row, src->Row, (m + 1) * sizeof (long));
-  memcpy (dest->Col, src->Col, (d + 1) * sizeof (long));
+  memcpy (dest->B, src->B, (m + 1) * sizeof (int64_t));
+  memcpy (dest->C, src->C, (d + 1) * sizeof (int64_t));
+  memcpy (dest->Row, src->Row, (m + 1) * sizeof (int64_t));
+  memcpy (dest->Col, src->Col, (d + 1) * sizeof (int64_t));
 }
 
 /*
@@ -4806,7 +4806,7 @@ copy_dict (lrs_dat * global, lrs_dic * dest, lrs_dic * src)
 #endif
 
 static void
-pushQ (lrs_dat * global, long m, long d ,long m_A)
+pushQ (lrs_dat * global, int64_t m, int64_t d ,int64_t m_A)
 {
 
   if ((global->Qtail->next) == global->Qhead)
@@ -4871,7 +4871,7 @@ lrs_getdic(lrs_dat *Q)
 {
 lrs_dic *p;
 
-  long m;
+  int64_t m;
 
   m = Q->m;
 
@@ -4898,18 +4898,18 @@ lrs_dic *p;
 #define NULLRETURN(e) if (!(e)) return NULL;
 
 static lrs_dic *
-new_lrs_dic (long m, long d, long m_A)
+new_lrs_dic (int64_t m, int64_t d, int64_t m_A)
 {
   lrs_dic *p;
 
   NULLRETURN (p = (lrs_dic *) malloc (sizeof (lrs_dic)));
 
 
-  NULLRETURN (p->B = (long int*) calloc ((m + 1), sizeof (long)));
-  NULLRETURN (p->Row = (long int*) calloc ((m + 1), sizeof (long)));
+  NULLRETURN (p->B = (int64_t*) calloc ((m + 1), sizeof (int64_t)));
+  NULLRETURN (p->Row = (int64_t*) calloc ((m + 1), sizeof (int64_t)));
 
-  NULLRETURN (p->C =  (long int*) calloc ((d + 1), sizeof (long)));
-  NULLRETURN (p->Col = (long int*) calloc ((d + 1), sizeof (long)));
+  NULLRETURN (p->C =  (int64_t*) calloc ((d + 1), sizeof (int64_t)));
+  NULLRETURN (p->Col = (int64_t*) calloc ((d + 1), sizeof (int64_t)));
 
 #ifdef GMP
   lrs_alloc_mp(p->det);
@@ -4938,8 +4938,8 @@ lrs_free_dic (lrs_dic * P, lrs_dat *Q)
     /* I moved these here because I'm not certain the cached dictionaries
        need to be the same size. Well, it doesn't cost anything to be safe. db */
 
-  long d = P->d_orig;
-  long m_A = P->m_A;
+  int64_t d = P->d_orig;
+  int64_t m_A = P->m_A;
 
   lrs_clear_mp_matrix (P->A,m_A,d);
 
@@ -4973,8 +4973,8 @@ lrs_free_dic2 (lrs_dic * P, lrs_dat *Q)
     /* I moved these here because I'm not certain the cached dictionaries
        need to be the same size. Well, it doesn't cost anything to be safe. db */
 
-  long d = P->d_orig;
-  long m_A = P->m_A;
+  int64_t d = P->d_orig;
+  int64_t m_A = P->m_A;
 
 
   lrs_clear_mp_matrix (P->A,m_A,d);
@@ -5001,7 +5001,7 @@ printf("\n hello 2"); fflush(stdout);
 void
 lrs_free_dat ( lrs_dat *Q )
 {
-   long m=Q->m;
+   int64_t m=Q->m;
 
 /* most of these items were allocated in lrs_alloc_dic */
 
@@ -5031,8 +5031,8 @@ lrs_free_dat ( lrs_dat *Q )
 }
 
 
-static long
-check_cache (lrs_dic ** D_p, lrs_dat * global, long *i_p, long *j_p)
+static int64_t
+check_cache (lrs_dic ** D_p, lrs_dat * global, int64_t *i_p, int64_t *j_p)
 {
 /* assign local variables to structures */
 
@@ -5069,8 +5069,8 @@ lrs_alloc_dic (lrs_dat * Q)
 {
 
   lrs_dic *p;
-  long i, j;
-  long m, d, m_A;
+  int64_t i, j;
+  int64_t m, d, m_A;
 
   if (Q->hull)                       /* d=col dimension of A */
     Q->inputd = Q->n;                /* extra column for hull */
@@ -5119,20 +5119,20 @@ lrs_alloc_dic (lrs_dat * Q)
     for (j = 0; j <= d; j++)
       itomp (ZERO, p->A[i][j]);
 
-  Q->inequality = (long int*) CALLOC ((m + 1), sizeof (long));
+  Q->inequality = (int64_t*) CALLOC ((m + 1), sizeof (int64_t));
   if (Q->nlinearity == ZERO)   /* linearity may already be allocated */
-      Q->linearity  = (long int*) CALLOC ((m + 1), sizeof (long));
+	  Q->linearity  = (int64_t*) CALLOC ((m + 1), sizeof (int64_t));
 
-  Q->facet =  (long int*) CALLOC ((unsigned) d + 1, sizeof (long));
-  Q->redundcol = (long int*) CALLOC ((d + 1), sizeof (long));
-  Q->minratio = (long int*) CALLOC ((m + 1), sizeof (long));
+  Q->facet =  (int64_t*) CALLOC ((unsigned) d + 1, sizeof (int64_t));
+  Q->redundcol = (int64_t*) CALLOC ((d + 1), sizeof (int64_t));
+  Q->minratio = (int64_t*) CALLOC ((m + 1), sizeof (int64_t));
                          /*  2011.7.14  minratio[m]=0 for degen =1 for nondegen pivot*/
-  Q->temparray = (long int*) CALLOC ((unsigned) d + 1, sizeof (long));
+  Q->temparray = (int64_t*) CALLOC ((unsigned) d + 1, sizeof (int64_t));
 
   Q->inequality[0] = 2L;
   Q->Gcd = lrs_alloc_mp_vector(m);
   Q->Lcm = lrs_alloc_mp_vector(m);
-  Q->saved_C = (long int*) CALLOC (d + 1, sizeof (long));
+  Q->saved_C = (int64_t*) CALLOC (d + 1, sizeof (int64_t));
 
   Q->lastdv = d;      /* last decision variable may be decreased */
                       /* if there are redundant columns          */
@@ -5188,8 +5188,8 @@ save_basis (lrs_dic * P, lrs_dat * Q)
 {
   int i;
 /* assign local variables to structures */
-  long *C = P->C;
-  long d;
+  int64_t *C = P->C;
+  int64_t d;
 
 #ifdef SIGNALS
   sigset_t oset, blockset;
@@ -5235,7 +5235,7 @@ digits_overflow ()
 static void
 lrs_dump_state ()
 {
-  long i;
+  int64_t i;
 
   fprintf (stderr, "\n\nlrs_lib: checkpointing:\n");
 
@@ -5366,12 +5366,12 @@ static double get_time()
 /* Routines based on lp_solve */
 
 void
-lrs_set_row(lrs_dic *P, lrs_dat *Q, long row, long num[], long den[], long ineq)
+lrs_set_row(lrs_dic *P, lrs_dat *Q, int64_t row, int64_t num[], int64_t den[], int64_t ineq)
 /* convert to lrs_mp then call lrs_set_row */
 {
  lrs_mp_vector Num, Den;
- long d;
- long j;
+ int64_t d;
+ int64_t j;
 
   d = P->d;
 
@@ -5392,7 +5392,7 @@ lrs_set_row(lrs_dic *P, lrs_dat *Q, long row, long num[], long den[], long ineq)
 }
 
 void
-lrs_set_row_mp(lrs_dic *P, lrs_dat *Q, long row, lrs_mp_vector num, lrs_mp_vector den, long ineq)
+lrs_set_row_mp(lrs_dic *P, lrs_dat *Q, int64_t row, lrs_mp_vector num, lrs_mp_vector den, int64_t ineq)
 /* set row of dictionary using num and den arrays for rational input */
 /* ineq = 1 (GE)   - ordinary row  */
 /*      = 0 (EQ)   - linearity     */
@@ -5400,14 +5400,14 @@ lrs_set_row_mp(lrs_dic *P, lrs_dat *Q, long row, lrs_mp_vector num, lrs_mp_vecto
   lrs_mp Temp, mpone;
   lrs_mp_vector oD;             /* denominator for row  */
 
-  long i, j;
+  int64_t i, j;
 
 /* assign local variables to structures */
 
   lrs_mp_matrix A;
   lrs_mp_vector Gcd, Lcm;
-  long hull;
-  long m, d;
+  int64_t hull;
+  int64_t m, d;
   lrs_alloc_mp(Temp); lrs_alloc_mp(mpone);
   hull = Q->hull;
   A = P->A;
@@ -5473,9 +5473,9 @@ lrs_set_row_mp(lrs_dic *P, lrs_dat *Q, long row, lrs_mp_vector num, lrs_mp_vecto
 }          /* end of lrs_set_row_mp */
 
 void
-lrs_set_obj(lrs_dic *P, lrs_dat *Q, long num[], long den[], long max)
+lrs_set_obj(lrs_dic *P, lrs_dat *Q, int64_t num[], int64_t den[], int64_t max)
 {
-  long i;
+  int64_t i;
 
   if (max == MAXIMIZE)
        Q->maximize=TRUE;
@@ -5490,9 +5490,9 @@ lrs_set_obj(lrs_dic *P, lrs_dat *Q, long num[], long den[], long max)
 }
 
 void
-lrs_set_obj_mp(lrs_dic *P, lrs_dat *Q, lrs_mp_vector num, lrs_mp_vector den, long max)
+lrs_set_obj_mp(lrs_dic *P, lrs_dat *Q, lrs_mp_vector num, lrs_mp_vector den, int64_t max)
 {
-  long i;
+  int64_t i;
 
   if (max == MAXIMIZE)
        Q->maximize=TRUE;
@@ -5507,12 +5507,12 @@ lrs_set_obj_mp(lrs_dic *P, lrs_dat *Q, lrs_mp_vector num, lrs_mp_vector den, lon
 }
 
 
-long
+int64_t
 lrs_solve_lp(lrs_dic *P, lrs_dat *Q)
 /* user callable function to solve lp only */
 {
   lrs_mp_matrix Lin;		/* holds input linearities if any are found             */
-  long col;
+  int64_t col;
 
   Q->lponly = TRUE;
 
@@ -5531,20 +5531,20 @@ lrs_solve_lp(lrs_dic *P, lrs_dat *Q)
 } /* end of lrs_solve_lp */
 
 
-long
-dan_selectpivot (lrs_dic * P, lrs_dat * Q, long *r, long *s)
+int64_t
+dan_selectpivot (lrs_dic * P, lrs_dat * Q, int64_t *r, int64_t *s)
 /* select pivot indices using dantzig simplex method             */
 /* largest coefficient with lexicographic rule to avoid cycling  */
 /* Bohdan Kaluzny's handiwork                                    */
 /* returns TRUE if pivot found else FALSE                        */
 /* pivot variables are B[*r] C[*s] in locations Row[*r] Col[*s]  */
 {
-  long j,k,col;
+  int64_t j,k,col;
   lrs_mp coeff;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *Col = P->Col;
-  long d = P->d;
+  int64_t *Col = P->Col;
+  int64_t d = P->d;
 
   lrs_alloc_mp (coeff);
   *r = 0;
@@ -5582,17 +5582,17 @@ dan_selectpivot (lrs_dic * P, lrs_dat * Q, long *r, long *s)
 }				/* end of dan_selectpivot        */
 
 
-long
+int64_t
 phaseone (lrs_dic * P, lrs_dat * Q)
 /* Do a dual pivot to get primal feasibility (pivot in X_0)*/
 /* Bohdan Kaluzny's handiwork                                    */
 {
-  long i, j, k;
+  int64_t i, j, k;
 /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
-  long *Row = P->Row;
-  long *Col = P->Col;
-  long m, d;
+  int64_t *Row = P->Row;
+  int64_t *Col = P->Col;
+  int64_t m, d;
   lrs_mp b_vector;
   lrs_alloc_mp (b_vector);
   m = P->m;
@@ -5633,8 +5633,8 @@ phaseone (lrs_dic * P, lrs_dat * Q)
 }
 
 
-long
-lrs_set_digits(long dec_digits)
+int64_t
+lrs_set_digits(int64_t dec_digits)
 {
 /* convert user specified decimal digits to mp digits */
 
@@ -5651,7 +5651,7 @@ lrs_set_digits(long dec_digits)
   return (TRUE);
 }
 
-long
+int64_t
 lrs_checkbound(lrs_dic *P, lrs_dat *Q)
 {
 /* check bound on objective and return TRUE if exceeded */
@@ -5685,12 +5685,12 @@ lrs_checkbound(lrs_dic *P, lrs_dat *Q)
 }
 
 
-long
+int64_t
 lrs_leaf(lrs_dic *P, lrs_dat *Q)
 {
 /* check if current dictionary is a leaf of reverse search tree */
-  long    col=0;
-  long    tmp=0;
+  int64_t    col=0;
+  int64_t    tmp=0;
 
   while (col < P->d && !reverse(P,Q,&tmp,col))
                  col++;

@@ -28,8 +28,8 @@
 #include <string.h>
 #include "lrsmp.h"
 
-long lrs_digits;		/* max permitted no. of digits   */
-long lrs_record_digits;		/* this is the biggest acheived so far.     */
+int64_t lrs_digits;		/* max permitted no. of digits   */
+int64_t lrs_record_digits;		/* this is the biggest acheived so far.     */
 
 
 /******************************************************************/
@@ -44,8 +44,8 @@ long lrs_record_digits;		/* this is the biggest acheived so far.     */
 /* Initialization and allocation procedures - must use!  */
 /******************************************************* */
 
-long
-lrs_mp_init (long dec_digits, FILE * fpin, FILE * fpout)
+int64_t
+lrs_mp_init (int64_t dec_digits, FILE * fpin, FILE * fpout)
 /* max number of decimal digits for the computation */
 {
 /* global variables lrs_ifp and lrs_ofp are file pointers for input and output   */
@@ -82,52 +82,52 @@ lrs_alloc_mp_t ()
  /* dynamic allocation of lrs_mp number */
 {
   lrs_mp_t p;
-  p=(long *)calloc (lrs_digits+1, sizeof (long));
+  p=(int64_t *)calloc (lrs_digits+1, sizeof (int64_t));
   return p;
 }
 
 lrs_mp_vector
-lrs_alloc_mp_vector (long n)
+lrs_alloc_mp_vector (int64_t n)
  /* allocate lrs_mp_vector for n+1 lrs_mp numbers */
 {
   lrs_mp_vector p;
-  long i;
+  int64_t i;
 
   p = (lrs_mp_vector) CALLOC ((n + 1), sizeof (lrs_mp *));
   for (i = 0; i <= n; i++)
-    p[i] = (long int *)CALLOC (1, sizeof (lrs_mp));
+    p[i] = (int64_t *)CALLOC (1, sizeof (lrs_mp));
 
   return p;
 }
 
 void
-lrs_clear_mp_vector (lrs_mp_vector p, long n)
+lrs_clear_mp_vector (lrs_mp_vector p, int64_t n)
 /* free space allocated to p */
 {
-  long i;
+  int64_t i;
   for (i=0; i<=n; i++)
      free (p[i] );
   free (p);
 }
 
 lrs_mp_matrix
-lrs_alloc_mp_matrix (long m, long n)
+lrs_alloc_mp_matrix (int64_t m, int64_t n)
 /* allocate lrs_mp_matrix for m+1 x n+1 lrs_mp numbers */
 {
   lrs_mp_matrix a;
-  long *araw;
-  int mp_width, row_width;
-  int i, j;
+  int64_t *araw;
+  int64_t mp_width, row_width;
+  int64_t i, j;
 
   mp_width = lrs_digits + 1;
   row_width = (n + 1) * mp_width;
 
-  araw = (long int*)calloc ((m + 1) * row_width, sizeof (long));
+  araw = (int64_t*)calloc ((m + 1) * row_width, sizeof (int64_t));
   a = (lrs_mp_matrix) calloc ((m + 1), sizeof (lrs_mp_vector));
 
   for (i = 0; i < m + 1; i++)
     {
-      a[i] = (long int **)calloc ((n + 1), sizeof (lrs_mp *));
+      a[i] = (int64_t **)calloc ((n + 1), sizeof (lrs_mp *));
 
       for (j = 0; j < n + 1; j++)
 	a[i][j] = (araw + i * row_width + j * mp_width);
@@ -136,10 +136,10 @@ lrs_alloc_mp_matrix (long m, long n)
 }
 
 void
-lrs_clear_mp_matrix (lrs_mp_matrix p, long m, long n)
+lrs_clear_mp_matrix (lrs_mp_matrix p, int64_t m, int64_t n)
 /* free space allocated to lrs_mp_matrix p */
 {
-  long i;
+  int64_t i;
 
 /* p[0][0] is araw, the actual matrix storage address */
 
@@ -156,7 +156,7 @@ lrs_clear_mp_matrix (lrs_mp_matrix p, long m, long n)
 
 void copy (lrs_mp a, lrs_mp b)	/* assigns a=b  */
 {
-  long i;
+  int64_t i;
   for (i = 0; i <= length (b); i++)
     a[i] = b[i];
 }
@@ -170,8 +170,8 @@ void copy (lrs_mp a, lrs_mp b)	/* assigns a=b  */
 void
 divint (lrs_mp a, lrs_mp b, lrs_mp c)	/* c=a/b, a contains remainder on return */
 {
-  long cy, la, lb, lc, d1, s, t, sig;
-  long i, j, qh;
+  int64_t cy, la, lb, lc, d1, s, t, sig;
+  int64_t i, j, qh;
 
 /*  figure out and save sign, do everything with positive numbers */
   sig = sign (a) * sign (b);
@@ -330,15 +330,15 @@ gcd (lrs_mp u, lrs_mp v)	/*returns u=gcd(u,v) destroying v */
 	        Switches to single precision when possible for greater speed */
 {
   lrs_mp r;
-  unsigned long ul, vl;
-  long i;
-  static unsigned long maxspval = MAXD;		/* Max value for the last digit to guarantee */
-  /* fitting into a single long integer. */
+  uint64_t ul, vl;
+  int64_t i;
+  static uint64_t maxspval = MAXD;		/* Max value for the last digit to guarantee */
+  /* fitting into a single int64_t integer. */
 
-  static long maxsplen;		/* Maximum digits for a number that will fit */
+  static int64_t maxsplen;		/* Maximum digits for a number that will fit */
   /* into a single long integer. */
 
-  static long firstime = TRUE;
+  static int64_t firstime = TRUE;
 
   if (firstime)			/* initialize constants */
     {
@@ -405,10 +405,10 @@ qv:
   goto qu;
 }
 
-long
+int64_t
 compare (lrs_mp a, lrs_mp b)	/* a ? b and returns -1,0,1 for <,=,> */
 {
-  long i;
+  int64_t i;
 
   if (a[0] > b[0])
     return 1L;
@@ -436,9 +436,9 @@ compare (lrs_mp a, lrs_mp b)	/* a ? b and returns -1,0,1 for <,=,> */
 }
 
 
-long mp_greater (lrs_mp a, lrs_mp b)	/* tests if a > b and returns (TRUE=POS) */
+int64_t mp_greater (lrs_mp a, lrs_mp b)	/* tests if a > b and returns (TRUE=POS) */
 {
-  long i;
+  int64_t i;
 
   if (a[0] > b[0])
     return (TRUE);
@@ -465,10 +465,10 @@ long mp_greater (lrs_mp a, lrs_mp b)	/* tests if a > b and returns (TRUE=POS) */
   return (0);
 }
 void
-itomp (long in, lrs_mp a)
+itomp (int64_t in, lrs_mp a)
     /* convert integer i to multiple precision with base BASE */
 {
-  long i;
+  int64_t i;
   a[0] = 2;			/* initialize to zero */
   for (i = 1; i < lrs_digits; i++)
     a[i] = 0;
@@ -489,10 +489,10 @@ itomp (long in, lrs_mp a)
 
 
 void
-linint (lrs_mp a, long ka, lrs_mp b, long kb)	/*compute a*ka+b*kb --> a */
+linint (lrs_mp a, int64_t ka, lrs_mp b, int64_t kb)	/*compute a*ka+b*kb --> a */
 /***Handbook of Algorithms and Data Structures P.239 ***/
 {
-  long i, la, lb;
+  int64_t i, la, lb;
   la = length (a);
   lb = length (b);
   for (i = 1; i < la; i++)
@@ -515,7 +515,7 @@ linint (lrs_mp a, long ka, lrs_mp b, long kb)	/*compute a*ka+b*kb --> a */
 void
 mptodouble (lrs_mp a, double *x)	/* convert lrs_mp to double */
 {
-  long i, la;
+  int64_t i, la;
   double y = 1.0;
 
   (*x) = 0;
@@ -534,7 +534,7 @@ mulint (lrs_mp a, lrs_mp b, lrs_mp c)	/* multiply two integers a*b --> c */
 
 /***Handbook of Algorithms and Data Structures, p239  ***/
 {
-  long nlength, i, j, la, lb;
+  int64_t nlength, i, j, la, lb;
 /*** b and c may coincide ***/
   la = length (a);
   lb = length (b);
@@ -548,7 +548,7 @@ mulint (lrs_mp a, lrs_mp b, lrs_mp c)	/* multiply two integers a*b --> c */
     {
       for (j = 2; j < la; j++)
 	if ((c[i + j - 1] += b[i] * a[j]) >
-	    MAXD - (BASE - 1) * (BASE - 1) - MAXD / BASE)
+		MAXD - (BASE - (int64_t)1) * (BASE - (int64_t)1) - MAXD / BASE)
 	  {
 	    c[i + j - 1] -= (MAXD / BASE) * BASE;
 	    c[i + j] += MAXD / BASE;
@@ -564,7 +564,7 @@ mulint (lrs_mp a, lrs_mp b, lrs_mp c)	/* multiply two integers a*b --> c */
 void
 normalize (lrs_mp a)
 {
-  long cy, i, la;
+  int64_t cy, i, la;
   la = length (a);
 start:
   cy = 0;
@@ -603,17 +603,17 @@ start:
     storesign (a, POS);
 }				/* end of normalize */
 
-long
+int64_t
 length (lrs_mp a)
 {
 /* formerly a macro but conflicts with string length */
   return ((a[0] > 0) ? a[0] : -a[0]);
 }
 
-long
+int64_t
 mptoi (lrs_mp a)		/* convert lrs_mp to long integer */
 {
-  long len = length (a);
+  int64_t len = length (a);
   if (len == 2)
     return sign (a) * a[1];
   if (len == 3)
@@ -629,7 +629,7 @@ string prat (char name[], lrs_mp Nin, lrs_mp Din)	/*reduce and print Nin/Din  */
 
 
   	lrs_mp Nt, Dt;
-	long i;
+	int64_t i;
 	//create stream to collect output
 	stringstream ss;
 	string str;
@@ -666,7 +666,7 @@ string prat (char name[], lrs_mp Nin, lrs_mp Din)	/*reduce and print Nin/Din  */
 char *cprat (char name[], lrs_mp Nin, lrs_mp Din)
 {
         char *ret;
-        unsigned long len;
+        uint64_t len;
         int i, offset=0;
 	string s;
         const char *cstr;
@@ -693,7 +693,7 @@ char *cprat (char name[], lrs_mp Nin, lrs_mp Din)
 string pmp (char name[], lrs_mp a)	/*print the long precision integer a */
 {
 
-  	long i;
+  	int64_t i;
 	//create stream to collect output
 	stringstream ss;
 	string str;
@@ -718,7 +718,7 @@ string pmp (char name[], lrs_mp a)	/*print the long precision integer a */
 void prat (char name[], lrs_mp Nin, lrs_mp Din)	/*reduce and print Nin/Din  */
 {
 	 lrs_mp Nt, Dt;
-	long i;
+	int64_t i;
 	fprintf (lrs_ofp, "%s", name);
 	/* reduce fraction */
 	copy (Nt, Nin);
@@ -746,7 +746,7 @@ void prat (char name[], lrs_mp Nin, lrs_mp Din)	/*reduce and print Nin/Din  */
 void pmp (char name[], lrs_mp a)	/*print the long precision integer a */
 {
 
-	long i;
+	int64_t i;
 	fprintf (lrs_ofp, "%s", name);
 	if (sign (a) == NEG)
 	fprintf (lrs_ofp, "-");
@@ -761,7 +761,7 @@ void pmp (char name[], lrs_mp a)	/*print the long precision integer a */
 
 
 
-long
+int64_t
 readrat (lrs_mp Na, lrs_mp Da)
  /* read a rational or integer and convert to lrs_mp with base BASE */
  /* returns true if denominator is not one                      */
@@ -801,7 +801,7 @@ void
 atomp (char s[], lrs_mp a)	/*convert string to lrs_mp integer */
 {
   lrs_mp mpone;
-  long diff, ten, i, sig;
+  int64_t diff, ten, i, sig;
   itomp (1L, mpone);
   ten = 10L;
   for (i = 0; s[i] == ' ' || s[i] == '\n' || s[i] == '\t'; i++);
@@ -842,21 +842,21 @@ decint (lrs_mp a, lrs_mp b)	/* compute a=a-b */
 }
 
 
-long
-myrandom (long num, long nrange)
+int64_t
+myrandom (int64_t num, int64_t nrange)
 /* return a random number in range 0..nrange-1 */
 
 {
-  long i;
+  int64_t i;
   i = (num * 401 + 673) % nrange;
   return (i);
 }
 
 
-long
+int64_t
 atos (char s[])			/* convert s to integer */
 {
-  long i, j;
+  int64_t i, j;
   j = 0;
   for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
     j = 10 * j + s[i] - '0';
@@ -885,7 +885,7 @@ void
 atoaa (char in[], char num[], char den[])
 /* convert rational string in to num/den strings */
 {
-  long i, j;
+  int64_t i, j;
   for (i = 0; in[i] != '\0' && in[i] != '/'; i++)
     num[i] = in[i];
   num[i] = '\0';
@@ -912,12 +912,12 @@ lcm (lrs_mp a, lrs_mp b)
 }				/* end of lcm */
 
 void
-reducearray (lrs_mp_vector p, long n)
+reducearray (lrs_mp_vector p, int64_t n)
 /* find largest gcd of p[0]..p[n-1] and divide through */
 {
   lrs_mp divisor;
   lrs_mp Temp;
-  long i = 0L;
+  int64_t i = 0L;
 
   while ((i < n) && iszero (p[i]))
     i++;
@@ -970,7 +970,7 @@ reduce (lrs_mp Na, lrs_mp Da)	/* reduces Na Da by gcd(Na,Da) */
 }
 
 
-long
+int64_t
 comprod (lrs_mp Na, lrs_mp Nb, lrs_mp Nc, lrs_mp Nd)	/* +1 if Na*Nb > Nc*Nd  */
 			  /* -1 if Na*Nb < Nc*Nd  */
 			  /*  0 if Na*Nb = Nc*Nd  */
@@ -996,10 +996,10 @@ notimpl (char s[])
 }
 
 void
-getfactorial (lrs_mp factorial, long k)		/* compute k factorial in lrs_mp */
+getfactorial (lrs_mp factorial, int64_t k)		/* compute k factorial in lrs_mp */
 {
   lrs_mp temp;
-  long i;
+  int64_t i;
   itomp (ONE, factorial);
   for (i = 2; i <= k; i++)
     {
@@ -1012,7 +1012,7 @@ getfactorial (lrs_mp factorial, long k)		/* compute k factorial in lrs_mp */
 /***************************************************************/
 
 void
-scalerat (lrs_mp Na, lrs_mp Da, long ka)	/* scales rational by ka */
+scalerat (lrs_mp Na, lrs_mp Da, int64_t ka)	/* scales rational by ka */
 {
   lrs_mp Nt;
   copy (Nt, Na);
@@ -1022,7 +1022,7 @@ scalerat (lrs_mp Na, lrs_mp Da, long ka)	/* scales rational by ka */
 }
 
 void
-linrat (lrs_mp Na, lrs_mp Da, long ka, lrs_mp Nb, lrs_mp Db, long kb, lrs_mp Nc, lrs_mp Dc)
+linrat (lrs_mp Na, lrs_mp Da, int64_t ka, lrs_mp Nb, lrs_mp Db, int64_t kb, lrs_mp Nc, lrs_mp Dc)
 /* computes Nc/Dc = ka*Na/Da  +kb* Nb/Db
    and reduces answer by gcd(Nc,Dc) */
 {
@@ -1063,7 +1063,7 @@ mulrat (lrs_mp Na, lrs_mp Da, lrs_mp Nb, lrs_mp Db, lrs_mp Nc, lrs_mp Dc)
 
 
 void *
-xcalloc (long n, long s, long l, char *f)
+xcalloc (int64_t n, int64_t s, int64_t l, char *f)
 {
   void *tmp;
 
@@ -1080,7 +1080,7 @@ xcalloc (long n, long s, long l, char *f)
 }
 
 void
-lrs_getdigits (long *a, long *b)
+lrs_getdigits (int64_t *a, int64_t *b)
 {
 /* send digit information to user */
   *a = DIG2DEC (lrs_digits);
@@ -1102,7 +1102,7 @@ lrs_default_digits_overflow ()
 /* read a rational or integer and convert to lrs_mp with base BASE */
 /* returns true if denominator is not one                      */
 /* returns 999 if premature end of file                        */
-long plrs_readrat (lrs_mp Na, lrs_mp Da, const char* rat)
+int64_t plrs_readrat (lrs_mp Na, lrs_mp Da, const char* rat)
 {
   	char in[MAXINPUT], num[MAXINPUT], den[MAXINPUT];
  	strcpy(in, rat);
