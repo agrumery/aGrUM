@@ -36,8 +36,8 @@
 #ifndef GUM_LEARNING_DB_TRANSFORM_IDENTITY_H
 #define GUM_LEARNING_DB_TRANSFORM_IDENTITY_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <agrum/config.h>
 #include <agrum/learning/database/DBTransform.h>

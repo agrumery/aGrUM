@@ -34,5 +34,4 @@ namespace gum {
   template class MultiDimBijArray<double>;
 
 
-} // namespace gum
-
+}  // namespace gum

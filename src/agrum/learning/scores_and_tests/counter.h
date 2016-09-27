@@ -53,10 +53,10 @@
 #ifndef GUM_LEARNING_COUNTER_H
 #define GUM_LEARNING_COUNTER_H
 
-#include <vector>
 #include <agrum/config.h>
 #include <agrum/core/math/math.h>
 #include <agrum/learning/scores_and_tests/recordCounter.h>
+#include <vector>
 
 namespace gum {
 
@@ -120,11 +120,10 @@ namespace gum {
        * @param max_range The maximal range
        */
       template <typename RowFilter>
-      Counter(
-          const RowFilter& filter,
-          const std::vector<Size>& var_modalities,
-          Size min_range = 0,
-          Size max_range = std::numeric_limits<Size>::max() );
+      Counter( const RowFilter& filter,
+               const std::vector<Size>& var_modalities,
+               Size min_range = 0,
+               Size max_range = std::numeric_limits<Size>::max() );
       /// copy constructor
       Counter( const Counter<IdSetAlloc, CountAlloc>& );
 
@@ -196,8 +195,7 @@ namespace gum {
        * _getAllCounts and _getConditioningCounts to get the observed
        * countings of (vars.second, vars.first) [in this order] and
        * vars.second respectively. */
-      Idx
-      addNodeSet( const std::pair<Idx, Idx>& vars );
+      Idx addNodeSet( const std::pair<Idx, Idx>& vars );
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
@@ -214,9 +212,7 @@ namespace gum {
        * _getConditioningCounts to get the counting vectors of
        * (conditioning_ids,vars) [in this order] and conditioning_ids
        * respectively. */
-      Idx
-      addNodeSet( Idx var,
-                  const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet( Idx var, const std::vector<Idx>& conditioning_ids );
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
@@ -233,32 +229,7 @@ namespace gum {
        * _getConditioningCounts to get the counting vectors of
        * (conditioning_ids,vars) [in this order] and conditioning_ids
        * respectively. */
-      Idx addNodeSet( Idx var,
-                               std::vector<Idx>&& conditioning_ids );
-
-      /// add a target conditioned by other variables to be counted
-      /** @param var1 represents the index of the target variable in the
-       * filtered rows produced by the database cell filters
-       * @param var2 represents the index of the last conditioning variable in
-       * the
-       * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the
-       * conditioning
-       * set in the filtered rows (minus var2, which is subsequently
-       * apended to it).
-       * @return the index of the produced counting vector: the user should use
-       * class Counter to compute in one pass several scores. These and their
-       * corresponding countings in the database are stored into a vector and
-       * the
-       * value returned by method addNodeSet is the index of the counts in
-       * this vector. The user shall pass this index as argument to methods
-       * _getAllCounts and _getConditioningCounts to get the countings of
-       * (conditioning_ids, var2, var1) [in this order] and
-       * (conditioning_ids, var2) [in this order] respectively. */
-      Idx
-      addNodeSet( Idx var1,
-                  Idx var2,
-                  const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet( Idx var, std::vector<Idx>&& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -280,8 +251,29 @@ namespace gum {
        * (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
       Idx addNodeSet( Idx var1,
-                               Idx var2,
-                               std::vector<Idx>&& conditioning_ids );
+                      Idx var2,
+                      const std::vector<Idx>& conditioning_ids );
+
+      /// add a target conditioned by other variables to be counted
+      /** @param var1 represents the index of the target variable in the
+       * filtered rows produced by the database cell filters
+       * @param var2 represents the index of the last conditioning variable in
+       * the
+       * filtered rows produced by the database cell filters
+       * @param conditioning_ids the indices of the variables of the
+       * conditioning
+       * set in the filtered rows (minus var2, which is subsequently
+       * apended to it).
+       * @return the index of the produced counting vector: the user should use
+       * class Counter to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and
+       * the
+       * value returned by method addNodeSet is the index of the counts in
+       * this vector. The user shall pass this index as argument to methods
+       * _getAllCounts and _getConditioningCounts to get the countings of
+       * (conditioning_ids, var2, var1) [in this order] and
+       * (conditioning_ids, var2) [in this order] respectively. */
+      Idx addNodeSet( Idx var1, Idx var2, std::vector<Idx>&& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -299,9 +291,8 @@ namespace gum {
        * _getAllCounts and _getConditioningCounts to get the observed countings
        * of (conditioning_ids, vars.second, vars.first) [in this order] and
        * (conditioning_ids, vars.second) [in this order] respectively. */
-      Idx
-      addNodeSet( const std::pair<Idx, Idx>& vars,
-                  const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet( const std::pair<Idx, Idx>& vars,
+                      const std::vector<Idx>& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -319,9 +310,8 @@ namespace gum {
        * _getAllCounts and _getConditioningCounts to get the observed countings
        * of (conditioning_ids, vars.second, vars.first) [in this order] and
        * (conditioning_ids, vars.second) [in this order] respectively. */
-      Idx
-      addNodeSet( const std::pair<Idx, Idx>& vars,
-                  std::vector<Idx>&& conditioning_ids );
+      Idx addNodeSet( const std::pair<Idx, Idx>& vars,
+                      std::vector<Idx>&& conditioning_ids );
 
       /// @}
 
@@ -363,13 +353,13 @@ namespace gum {
       RecordCounter<IdSetAlloc, CountAlloc> _record_counter;
 
       /// the target id sets to count and their indices in the record counter
-      std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                            Idx>*> _target_nodesets;
+      std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>
+          _target_nodesets;
 
       /// the conditioning id sets to count and their indices in the record
       /// counter
-      std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                            Idx>*> _conditioning_nodesets;
+      std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>
+          _conditioning_nodesets;
 
 
       /// perform the computation of the countings
@@ -406,15 +396,14 @@ namespace gum {
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      const std::vector<Idx, IdSetAlloc>&
-      _getAllNodes( Idx index ) const noexcept;
+      const std::vector<Idx, IdSetAlloc>& _getAllNodes( Idx index ) const
+          noexcept;
 
       /// returns all the sets of target + cond nodes, and their counting
       /// indices
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      const std::vector<
-          std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
       _getAllNodes() const noexcept;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
@@ -422,8 +411,7 @@ namespace gum {
       _getConditioningNodes( Idx index ) const noexcept;
 
       /// returns all the sets of conditioning nodes
-      const std::vector<
-          std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
       _getConditioningNodes() const noexcept;
 
       // ##########################################################################

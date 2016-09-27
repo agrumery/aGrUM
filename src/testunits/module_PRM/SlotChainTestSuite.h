@@ -21,10 +21,10 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/PRM/elements/PRMSlotChain.h>
+#include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMFormAttribute.h>
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
-#include <agrum/PRM/elements/PRMClass.h>
+#include <agrum/PRM/elements/PRMSlotChain.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
@@ -174,8 +174,8 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING( slot =
-                                    new PRMSlotChain( "slot", *__booleanChain ) );
+      TS_ASSERT_THROWS_NOTHING(
+          slot = new PRMSlotChain( "slot", *__booleanChain ) );
       TS_ASSERT_THROWS_NOTHING( delete slot );
     }
 
@@ -183,8 +183,8 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING( slot =
-                                    new PRMSlotChain( __booleanChain, "slot" ) );
+      TS_ASSERT_THROWS_NOTHING(
+          slot = new PRMSlotChain( __booleanChain, "slot" ) );
       TS_ASSERT_THROWS_NOTHING( delete slot );
     }
 
@@ -192,7 +192,8 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING( slot = new PRMSlotChain( "slot", *__stateChain ) );
+      TS_ASSERT_THROWS_NOTHING( slot =
+                                    new PRMSlotChain( "slot", *__stateChain ) );
       TS_ASSERT_THROWS_NOTHING( delete slot );
     }
 
@@ -200,7 +201,8 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain* slot = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING( slot = new PRMSlotChain( __stateChain, "slot" ) );
+      TS_ASSERT_THROWS_NOTHING( slot =
+                                    new PRMSlotChain( __stateChain, "slot" ) );
       TS_ASSERT_THROWS_NOTHING( delete slot );
     }
     /// @}
@@ -212,7 +214,7 @@ namespace gum_tests {
       PRMSlotChain simple( "simple", *__booleanChain );
       PRMSlotChain multiple( "multiple", *__stateChain );
       // Act & Assert
-      TS_ASSERT( ! simple.isMultiple() );
+      TS_ASSERT( !simple.isMultiple() );
       TS_ASSERT( multiple.isMultiple() );
     }
 
@@ -301,7 +303,7 @@ namespace gum_tests {
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( ! child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT( !child.cpf().contains( parent.type().variable() ) );
     }
 
     void testAddParentDupplicateError() {
@@ -315,7 +317,7 @@ namespace gum_tests {
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( ! child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT( !child.cpf().contains( parent.type().variable() ) );
     }
 
     void testAddChild() {
@@ -328,7 +330,7 @@ namespace gum_tests {
       // Assert
       auto after = parent.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( ! parent.cpf().contains( child.type().variable() ) );
+      TS_ASSERT( !parent.cpf().contains( child.type().variable() ) );
     }
     /// @}
   };

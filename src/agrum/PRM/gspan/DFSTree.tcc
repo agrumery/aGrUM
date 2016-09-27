@@ -50,7 +50,7 @@ namespace gum {
         for ( const auto edge : __graph->edges( &label ) ) {
           bool u_first = ( edge->l_u->id < edge->l_v->id );
           Idx u_idx = ( u_first ) ? edge->l_u->id : edge->l_v->id;
-          Idx v_idx = ( ! u_first ) ? edge->l_u->id : edge->l_v->id;
+          Idx v_idx = ( !u_first ) ? edge->l_u->id : edge->l_v->id;
 
           bool found = false;
 
@@ -63,7 +63,7 @@ namespace gum {
             }
 
           /// Then we create a new pattern
-          if ( ! found ) {
+          if ( !found ) {
             Pattern* p = new Pattern();
             roots.insert( p, std::make_pair( u_idx, v_idx ) );
             roots_edges.insert( p, new Sequence<EdgeData<GUM_SCALAR>*>() );
@@ -71,7 +71,7 @@ namespace gum {
             DFSTree<GUM_SCALAR>::PatternData* data =
                 new DFSTree<GUM_SCALAR>::PatternData( p );
             NodeId u = p->addNode( ( u_first ) ? *edge->l_u : *edge->l_v );
-            NodeId v = p->addNode( ( ! u_first ) ? *edge->l_u : *edge->l_v );
+            NodeId v = p->addNode( ( !u_first ) ? *edge->l_u : *edge->l_v );
             p->addArc( u, v, label );
             __node_map.insert( DiGraph::addNode(), p );
             __data.insert( p, data );
@@ -101,7 +101,7 @@ namespace gum {
           // Creating the multiset of instances matching p
           bool u_first = ( edge->l_u->id < edge->l_v->id );
           seq->insert( ( u_first ) ? edge->u : edge->v );
-          seq->insert( ( ! u_first ) ? edge->u : edge->v );
+          seq->insert( ( !u_first ) ? edge->u : edge->v );
 
           NodeId an_id = data->iso_graph.addNode();
           data->iso_map.insert( an_id, seq );
@@ -125,7 +125,7 @@ namespace gum {
         Set<NodeId> removed;
 
         for ( const auto node : degree_list ) {
-          if ( ! removed.exists( node ) ) {
+          if ( !removed.exists( node ) ) {
             removed.insert( node );
 
             for ( const auto neighbor : data->iso_graph.neighbours( node ) )
@@ -223,7 +223,7 @@ namespace gum {
         }
 
         // Finally we check if child is minimal.
-        if ( ! child->isMinimal() ) {
+        if ( !child->isMinimal() ) {
           GUM_ERROR( OperationNotAllowed,
                      "the DFSCode for this growth is not minimal" );
         }
@@ -247,9 +247,9 @@ namespace gum {
         std::vector<NodeId> degree_list;
         NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& p_iso_map =
             __data[&p]->iso_map;
-        typename NodeProperty<std::pair<PRMInstance<GUM_SCALAR>*,
-                                        PRMInstance<GUM_SCALAR>*>>::iterator_safe
-            match;
+        typename NodeProperty<
+            std::pair<PRMInstance<GUM_SCALAR>*,
+                      PRMInstance<GUM_SCALAR>*>>::iterator_safe match;
         // Using p information to build child's isomorphism graph
         NodeId id = 0;
 
@@ -320,7 +320,7 @@ namespace gum {
         Set<NodeId> removed;
 
         for ( const auto node : degree_list ) {
-          if ( ! removed.exists( node ) ) {
+          if ( !removed.exists( node ) ) {
             removed.insert( node );
 
             for ( const auto neighbor : data->iso_graph.neighbours( node ) )
@@ -332,7 +332,7 @@ namespace gum {
 
         __data.insert( child, data );
 
-        if ( ! __strategy->accept_growth( &p, child, edge_growth ) ) {
+        if ( !__strategy->accept_growth( &p, child, edge_growth ) ) {
           __data.erase( child );
           delete data;
           delete child;
@@ -370,8 +370,9 @@ namespace gum {
         GUM_CONS_CPY( DFSTree<GUM_SCALAR>::PatternData );
 
         for ( const auto& elt : from.iso_map )
-          iso_map.insert( elt.first,
-                          new Sequence<PRMInstance<GUM_SCALAR>*>( *elt.second ) );
+          iso_map.insert(
+              elt.first,
+              new Sequence<PRMInstance<GUM_SCALAR>*>( *elt.second ) );
       }
 
       template <typename GUM_SCALAR>
@@ -390,7 +391,7 @@ namespace gum {
           , __strategy( strategy ) {
         GUM_CONSTRUCTOR( DFSTree );
 
-        if ( ! __strategy ) __strategy = new FrequenceSearch<GUM_SCALAR>( 2 );
+        if ( !__strategy ) __strategy = new FrequenceSearch<GUM_SCALAR>( 2 );
 
         __strategy->setTree( this );
       }

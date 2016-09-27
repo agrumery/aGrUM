@@ -29,9 +29,9 @@
 
 #include <agrum/core/sequence.h>
 
-#include <agrum/multidim/multiDimBijArray.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/multidim/multiDimBijArray.h>
 
 #include <agrum/PRM/elements/PRMClassElement.h>
 
@@ -51,12 +51,14 @@ namespace gum {
      *where
      *        the n-1 first gum::prm::PRMClassElement<GUM_SCALAR> are
      *gum::prm::PRMReferenceSlot and
-     *        the last gum::prm::PRMClassElement<GUM_SCALAR> an gum::prm::PRMAttribute
+     *        the last gum::prm::PRMClassElement<GUM_SCALAR> an
+     *gum::prm::PRMAttribute
      *or
      *an
      *        gum::prm::PRMAggregate.
      *
-     * A PRMSlotChain behaves as an gum::prm::PRMAttribute or an gum::prm::PRMAggregate
+     * A PRMSlotChain behaves as an gum::prm::PRMAttribute or an
+     *gum::prm::PRMAggregate
      * (depending the gum::prm::PRMClassElement<GUM_SCALAR> type of it's last
      *element)
      *regarding
@@ -75,7 +77,8 @@ namespace gum {
 
       /** @brief Default constructor.
        *
-       * Chain's n-1 first elements must be PRMReferenceSlot and the last element
+       * Chain's n-1 first elements must be PRMReferenceSlot and the last
+       *element
        * must either be an PRMAttribute or an PRMAggregate.
        *
        * Warning: the last element in chain is copied !
@@ -90,11 +93,12 @@ namespace gum {
        *PRMClassElement<GUM_SCALAR>.
        */
       PRMSlotChain( const std::string& name,
-                 const Sequence<PRMClassElement<GUM_SCALAR>*>& chain );
+                    const Sequence<PRMClassElement<GUM_SCALAR>*>& chain );
 
       /** @brief Tweak constructor.
        *
-       * Chain's n-1 first elements must be PRMReferenceSlot and the last element
+       * Chain's n-1 first elements must be PRMReferenceSlot and the last
+       *element
        * must either be an PRMAttribute or an PRMAggregate.
        *
        * Warning: the last element in chain is copied !
@@ -109,7 +113,7 @@ namespace gum {
        *PRMClassElement<GUM_SCALAR>.
        */
       PRMSlotChain( Sequence<PRMClassElement<GUM_SCALAR>*>* chain,
-                 const std::string& name );
+                    const std::string& name );
 
       /**
        * Copy constructor.

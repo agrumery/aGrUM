@@ -56,14 +56,14 @@ namespace gum {
 
     /**
      * @brief Copy constructor.
-     */ 
+     */
     Parent( const Parent& src );
 
     // ============================================================================
     /// @name Allocators and Deallocators redefinition
     // ============================================================================
     /// @{
-    
+
     /**
      * @brief New operator.
      */
@@ -99,7 +99,6 @@ namespace gum {
   // clang-format on
   class InternalNode {
     private:
-
     /// Variable associated to such node
     const DiscreteVariable* __nodeVar;
 
@@ -122,7 +121,7 @@ namespace gum {
 
     /// The list of the node's parent
     LinkedList<Parent> __nodeParents;
- 
+
     /// @brief Set the node variable.
     void __setNodeVar( const DiscreteVariable* v );
 

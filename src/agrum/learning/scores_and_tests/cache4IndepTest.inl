@@ -96,9 +96,7 @@ namespace gum {
 
     /// removes a score (if it exists)
     INLINE void Cache4IndepTest::erase(
-        Idx var1,
-        Idx var2,
-        const std::vector<Idx>& conditioning_set ) {
+        Idx var1, Idx var2, const std::vector<Idx>& conditioning_set ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
       __scores.erase( std::tuple<IdSet<>, Idx, Idx>(
           IdSet<>( conditioning_set, 0 ), var1, var2 ) );
@@ -110,15 +108,13 @@ namespace gum {
                                         Idx var2,
                                         const IdSet<Alloc>& conditioning_set ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
-      __scores.erase( std::tuple<IdSet<>, Idx, Idx>(
-          conditioning_set, var1, var2 ) );
+      __scores.erase(
+          std::tuple<IdSet<>, Idx, Idx>( conditioning_set, var1, var2 ) );
     }
 
     /// indicates whether a given score exists
     INLINE bool Cache4IndepTest::exists(
-        Idx var1,
-        Idx var2,
-        const std::vector<Idx>& conditioning_set ) {
+        Idx var1, Idx var2, const std::vector<Idx>& conditioning_set ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
       return __scores.exists( std::tuple<IdSet<>, Idx, Idx>(
           IdSet<>( conditioning_set, 0 ), var1, var2 ) );
@@ -126,9 +122,7 @@ namespace gum {
 
     /// returns a given score
     INLINE double Cache4IndepTest::score(
-        Idx var1,
-        Idx var2,
-        const std::vector<Idx>& conditioning_set ) {
+        Idx var1, Idx var2, const std::vector<Idx>& conditioning_set ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
       return __scores[std::tuple<IdSet<>, Idx, Idx>(
           IdSet<>( conditioning_set, 0 ), var1, var2 )];

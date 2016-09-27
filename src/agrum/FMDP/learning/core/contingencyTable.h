@@ -42,7 +42,8 @@
 namespace gum {
 
   /**
-   * @class ContingencyTable contingencyTable.h <agrum/FMDP/learning/core/contingencyTable.h>
+   * @class ContingencyTable contingencyTable.h
+   * <agrum/FMDP/learning/core/contingencyTable.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -132,7 +133,6 @@ namespace gum {
     HashTableConstIteratorSafe<GUM_SCALAR_A, Idx> attrAEndSafe() const {
       return __attrAMarginalTable.cendSafe();
     }
-
 
 
     /// Returns the number of samples for column ivalue

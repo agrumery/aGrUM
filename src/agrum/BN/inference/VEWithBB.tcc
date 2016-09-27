@@ -68,10 +68,10 @@ namespace gum {
 
       NodeId varId =
           this->bn().nodeId( *( pot->variablesSequence().atPos( 0 ) ) );
-      //size_t count = 0;
-      //Instantiation i( *pot );
+      // size_t count = 0;
+      // Instantiation i( *pot );
 
-      //for ( i.setFirst(); ! i.end(); i.inc() ) {
+      // for ( i.setFirst(); ! i.end(); i.inc() ) {
       //  if ( pot->get( i ) == (GUM_SCALAR)1 ) {
       //    ++count;
       //  }
@@ -81,7 +81,7 @@ namespace gum {
       //  }
       //}
 
-      //if ( count == 1 ) {
+      // if ( count == 1 ) {
       if ( __evidence.exists( varId ) ) {
         __evidence[varId] = pot;
       } else {
@@ -119,8 +119,8 @@ namespace gum {
   INLINE bool
   VEWithBB<GUM_SCALAR>::__isHardEvidence( const Potential<GUM_SCALAR>* e ) {
     auto sum = 0.0;
-    for ( Instantiation i( e ); ! i.end(); i.inc(), sum += e->get(i) ) {
-      if ( !( e->get(i) == 0.0 || e->get(i) == 1.0 ) ) {
+    for ( Instantiation i( e ); !i.end(); i.inc(), sum += e->get( i ) ) {
+      if ( !( e->get( i ) == 0.0 || e->get( i ) == 1.0 ) ) {
         return false;
       }
     }
@@ -161,7 +161,7 @@ namespace gum {
     for ( auto node : requisite_nodes ) {
 
       const auto& pot = this->bn().cpt( node );
-      pool.push_back(&pot);
+      pool.push_back( &pot );
 
       if ( __evidence.exists( node ) ) {
         pool.push_back( __evidence[node] );
@@ -177,7 +177,7 @@ namespace gum {
           auto node_j = this->bn().nodeId( *( pot.variablesSequence()[j] ) );
           __addNodeToMoralGraph( node_j, moral_graph, modalities );
 
-          if ( ! moral_graph.existsEdge( node_i, node_j ) ) {
+          if ( !moral_graph.existsEdge( node_i, node_j ) ) {
             moral_graph.addEdge( node_i, node_j );
           }
         }
@@ -188,7 +188,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void VEWithBB<GUM_SCALAR>::__addNodeToMoralGraph(
       NodeId node, UndiGraph& moral_graph, NodeProperty<Size>& modalities ) {
-    if ( ! moral_graph.exists( node ) ) {
+    if ( !moral_graph.exists( node ) ) {
       moral_graph.addNode( node );
       modalities.insert( node, this->bn().variable( node ).domainSize() );
     }
@@ -207,7 +207,7 @@ namespace gum {
     DefaultTriangulation triang( &moral_graph, &modalities );
     const auto& elim_order = triang.eliminationOrder();
 
-    for ( auto node: elim_order ) {
+    for ( auto node : elim_order ) {
       if ( node != id ) {
         __eliminateNode( node, pool, trash );
       }
@@ -246,7 +246,7 @@ namespace gum {
     Set<const Potential<GUM_SCALAR>*> factors;
 
     std::vector<const Potential<GUM_SCALAR>*> tmp;
-    for ( auto p: pool) {
+    for ( auto p : pool ) {
       if ( p->contains( *var ) ) {
         factors.insert( p );
       } else {

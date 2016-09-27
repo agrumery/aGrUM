@@ -134,7 +134,7 @@ namespace gum {
                       : data;
               v = ( u != data ) ? data : __nodes[__idMap[inst]];
 
-              if ( ! __graph.existsEdge( __idMap[u->n], __idMap[v->n] ) ) {
+              if ( !__graph.existsEdge( __idMap[u->n], __idMap[v->n] ) ) {
                 EdgeData<GUM_SCALAR>* edge = new EdgeData<GUM_SCALAR>();
                 edge->u = u->n;
                 edge->l_u = u->l;
@@ -200,7 +200,7 @@ namespace gum {
       void InterfaceGraph<GUM_SCALAR>::__label(
           NodeData<GUM_SCALAR>* node,
           HashTable<std::string, LabelData*>& label_map ) {
-        Size size = Size(1);
+        Size size = Size( 1 );
         std::stringstream sBuff;
         sBuff << node->n->type().name();
 
@@ -230,7 +230,7 @@ namespace gum {
         }
 
         // Label is ready
-        if ( ! label_map.exists( sBuff.str() ) ) {
+        if ( !label_map.exists( sBuff.str() ) ) {
           LabelData* label = new LabelData();
           label_map.insert( sBuff.str(), label );
           label->id = ++__counter;
@@ -248,7 +248,7 @@ namespace gum {
       void InterfaceGraph<GUM_SCALAR>::__label(
           EdgeData<GUM_SCALAR>* edge,
           HashTable<std::string, LabelData*>& label_map ) {
-        Size size = Size(1);
+        Size size = Size( 1 );
         std::stringstream sBuff;
         sBuff << edge->u->type().name() << "-" << edge->v->type().name();
 
@@ -270,7 +270,7 @@ namespace gum {
           }
 
         // Label is ready
-        if ( ! label_map.exists( sBuff.str() ) ) {
+        if ( !label_map.exists( sBuff.str() ) ) {
           LabelData* label = new LabelData();
           label_map.insert( sBuff.str(), label );
           label->id = ++__counter;
@@ -362,8 +362,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE const NodeData<GUM_SCALAR>&
-      InterfaceGraph<GUM_SCALAR>::node( const PRMInstance<GUM_SCALAR>* i ) const {
+      INLINE const NodeData<GUM_SCALAR>& InterfaceGraph<GUM_SCALAR>::node(
+          const PRMInstance<GUM_SCALAR>* i ) const {
         return node( id( i ) );
       }
 

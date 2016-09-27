@@ -23,8 +23,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/graphs/triangulations/staticTriangulation.h>
 #include <agrum/core/priorityQueue.h>
+#include <agrum/graphs/triangulations/staticTriangulation.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/triangulations/staticTriangulation.inl>
@@ -151,8 +151,7 @@ namespace gum {
       R.insert( node, 0 );
 
     // the FMINT loop
-    for ( auto i = __added_fill_ins.size() - 1;
-          i < __added_fill_ins.size();
+    for ( auto i = __added_fill_ins.size() - 1; i < __added_fill_ins.size();
           --i ) {
       if ( __added_fill_ins[i].size() ) {
         // here apply MINT to T_i = __added_fill_ins[i]
@@ -246,16 +245,16 @@ namespace gum {
     // elimination that does not require any edge addition
 
     // a structure storing the number of neighbours previously processed
-    PriorityQueue<NodeId, Idx, std::greater<Idx>>
-    numbered_neighbours( std::greater<Idx>(),
-                         __triangulated_graph.size() );
+    PriorityQueue<NodeId, Idx, std::greater<Idx>> numbered_neighbours(
+        std::greater<Idx>(), __triangulated_graph.size() );
 
     for ( Idx i = 0; i < __elim_order.size(); ++i )
       numbered_neighbours.insert( __elim_order[i], 0 );
 
     //@beforeMerging : it this correct, christophe ?
     // perform the maximum cardinality search
-    for ( NodeId i = Size(__elim_order.size()) - 1; i < __elim_order.size(); --i ) {
+    for ( NodeId i = Size( __elim_order.size() ) - 1; i < __elim_order.size();
+          --i ) {
       NodeId node = numbered_neighbours.pop();
       __elim_order[i] = node;
       __reverse_elim_order[node] = i;

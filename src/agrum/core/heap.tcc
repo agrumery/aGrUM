@@ -23,8 +23,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <string>
 #include <sstream>
+#include <string>
 
 // to ease IDE parser
 #include <agrum/core/heap.h>
@@ -187,7 +187,7 @@ namespace gum {
   // return the size of the array storing the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE Size Heap<Val, Cmp, Alloc>::capacity() const noexcept {
-    return Size(__heap.size());
+    return Size( __heap.size() );
   }
 
   // changes the size of the array storing the heap

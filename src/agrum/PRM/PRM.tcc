@@ -88,7 +88,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMType<GUM_SCALAR>& PRM<GUM_SCALAR>::type( const std::string& name ) {
+    INLINE PRMType<GUM_SCALAR>&
+    PRM<GUM_SCALAR>::type( const std::string& name ) {
       return *( __typeMap[name] );
     }
 

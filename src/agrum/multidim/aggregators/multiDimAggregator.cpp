@@ -28,4 +28,3 @@
 
 template class gum::aggregator::MultiDimAggregator<float>;
 template class gum::aggregator::MultiDimAggregator<double>;
-

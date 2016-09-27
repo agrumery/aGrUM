@@ -27,8 +27,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
 #include <agrum/config.h>
+#include <limits>
 
 namespace gum {
 

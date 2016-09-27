@@ -7,9 +7,9 @@
 // member functions called void test*();
 //
 
+#include <cxxtest/Descriptions.h>
 #include <cxxtest/Flags.h>
 #include <cxxtest/TestTracker.h>
-#include <cxxtest/Descriptions.h>
 #include <cxxtest/ValueTraits.h>
 
 #ifdef _CXXTEST_HAVE_STD
@@ -226,7 +226,7 @@ namespace CxxTest {
 #ifdef _CXXTEST_HAVE_EH
 #define _TS_TRY try
 #define _TS_CATCH_TYPE( t, b ) catch t b
-#define _TS_CATCH_ABORT( b ) _TS_CATCH_TYPE( ( const CxxTest::AbortTest& ), b )
+#define _TS_CATCH_ABORT( b ) _TS_CATCH_TYPE( (const CxxTest::AbortTest&), b )
 #define _TS_LAST_CATCH( b ) _TS_CATCH_TYPE( ( ... ), b )
 #define _TSM_LAST_CATCH( f, l, m ) \
   _TS_LAST_CATCH( { ( CxxTest::tracker() ).failedTest( f, l, m ); } )
@@ -544,11 +544,10 @@ namespace CxxTest {
   {                                                          \
     bool _ts_threw_expected = false, _ts_threw_else = false; \
     _TS_TRY { e; }                                           \
-    _TS_CATCH_TYPE( ( t ),                                   \
-                    {                                        \
-                      a;                                     \
-                      _ts_threw_expected = true;             \
-                    } )                                      \
+    _TS_CATCH_TYPE( ( t ), {                                 \
+      a;                                                     \
+      _ts_threw_expected = true;                             \
+    } )                                                      \
     _TS_CATCH_ABORT( { throw; } )                            \
     _TS_LAST_CATCH( { _ts_threw_else = true; } )             \
     if ( !_ts_threw_expected ) {                             \

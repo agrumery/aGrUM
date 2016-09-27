@@ -54,7 +54,6 @@ namespace gum {
     if ( __mutableMoralGraph ) {
       delete __mutableMoralGraph;
     }
-
   }
 
   void DAGmodel::__moralGraph() const {

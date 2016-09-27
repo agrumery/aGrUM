@@ -29,8 +29,8 @@
 #define GUM_ABSTRACT_LEAF_H
 // =========================================================================
 #include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
 #include <agrum/core/multiPriorityQueue.h>
+#include <agrum/core/sequence.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/graphs/graphElements.h>
@@ -72,7 +72,7 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s);
+      return SmallObjectAllocator::instance().allocate( s );
     }
     void operator delete( void* p ) {
       SmallObjectAllocator::instance().deallocate( p, sizeof( AbstractLeaf ) );

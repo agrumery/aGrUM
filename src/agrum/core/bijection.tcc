@@ -98,8 +98,8 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc, bool Gen>
   INLINE BijectionImplementation<T1, T2, Alloc, Gen>::BijectionImplementation(
       std::initializer_list<std::pair<T1, T2>> list )
-      : __firstToSecond( Size(list.size()) / 2, true, false )
-      , __secondToFirst( Size(list.size()) / 2, true, false ) {
+      : __firstToSecond( Size( list.size() ) / 2, true, false )
+      , __secondToFirst( Size( list.size() ) / 2, true, false ) {
     GUM_CONSTRUCTOR( BijectionImplementation );
 
     for ( const auto& elt : list ) {
@@ -161,8 +161,8 @@ namespace gum {
   // Copy operator
   template <typename T1, typename T2, typename Alloc, bool Gen>
   INLINE BijectionImplementation<T1, T2, Alloc, Gen>&
-      BijectionImplementation<T1, T2, Alloc, Gen>::
-      operator=( const BijectionImplementation<T1, T2, Alloc, Gen>& toCopy ) {
+  BijectionImplementation<T1, T2, Alloc, Gen>::
+  operator=( const BijectionImplementation<T1, T2, Alloc, Gen>& toCopy ) {
     // avoid self assignment
     if ( this != &toCopy ) {
       clear();
@@ -179,9 +179,8 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc, bool Gen>
   template <typename OtherAlloc>
   INLINE BijectionImplementation<T1, T2, Alloc, Gen>&
-      BijectionImplementation<T1, T2, Alloc, Gen>::
-      operator=(
-          const BijectionImplementation<T1, T2, OtherAlloc, Gen>& toCopy ) {
+  BijectionImplementation<T1, T2, Alloc, Gen>::
+  operator=( const BijectionImplementation<T1, T2, OtherAlloc, Gen>& toCopy ) {
     clear();
     __copy( toCopy.__firstToSecond );
 
@@ -194,8 +193,8 @@ namespace gum {
   // move operator
   template <typename T1, typename T2, typename Alloc, bool Gen>
   INLINE BijectionImplementation<T1, T2, Alloc, Gen>&
-      BijectionImplementation<T1, T2, Alloc, Gen>::
-      operator=( BijectionImplementation<T1, T2, Alloc, Gen>&& from ) {
+  BijectionImplementation<T1, T2, Alloc, Gen>::
+  operator=( BijectionImplementation<T1, T2, Alloc, Gen>&& from ) {
     // avoid self assignment
     if ( this != &from ) {
       clear();
@@ -542,8 +541,8 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc>
   INLINE BijectionImplementation<T1, T2, Alloc, true>::BijectionImplementation(
       std::initializer_list<std::pair<T1, T2>> list )
-      : __firstToSecond( Size(list.size()) / 2, true, false )
-      , __secondToFirst( Size(list.size()) / 2, true, false ) {
+      : __firstToSecond( Size( list.size() ) / 2, true, false )
+      , __secondToFirst( Size( list.size() ) / 2, true, false ) {
     GUM_CONSTRUCTOR( BijectionImplementation );
 
     for ( const auto& elt : list ) {
@@ -691,8 +690,8 @@ namespace gum {
   // Copy operator
   template <typename T1, typename T2, typename Alloc>
   INLINE BijectionImplementation<T1, T2, Alloc, true>&
-      BijectionImplementation<T1, T2, Alloc, true>::
-      operator=( const BijectionImplementation<T1, T2, Alloc, true>& toCopy ) {
+  BijectionImplementation<T1, T2, Alloc, true>::
+  operator=( const BijectionImplementation<T1, T2, Alloc, true>& toCopy ) {
     // avoid self assignment
     if ( this != &toCopy ) {
       clear();
@@ -709,9 +708,8 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc>
   template <typename OtherAlloc>
   INLINE BijectionImplementation<T1, T2, Alloc, true>&
-      BijectionImplementation<T1, T2, Alloc, true>::
-      operator=(
-          const BijectionImplementation<T1, T2, OtherAlloc, true>& toCopy ) {
+  BijectionImplementation<T1, T2, Alloc, true>::
+  operator=( const BijectionImplementation<T1, T2, OtherAlloc, true>& toCopy ) {
     clear();
     __copy( toCopy.__firstToSecond );
 
@@ -724,8 +722,8 @@ namespace gum {
   // move operator
   template <typename T1, typename T2, typename Alloc>
   INLINE BijectionImplementation<T1, T2, Alloc, true>&
-      BijectionImplementation<T1, T2, Alloc, true>::
-      operator=( BijectionImplementation<T1, T2, Alloc, true>&& toCopy ) {
+  BijectionImplementation<T1, T2, Alloc, true>::
+  operator=( BijectionImplementation<T1, T2, Alloc, true>&& toCopy ) {
     // avoid self assignment
     if ( this != &toCopy ) {
       clear();
@@ -1007,7 +1005,7 @@ namespace gum {
   template <typename T1, typename T2>
   INLINE BijectionIteratorSafe<T1, T2> BijectionIteratorSafe<T1, T2>::
   operator+( unsigned int nb ) noexcept {
-    return BijectionIteratorSafe<T1, T2>{* this} += nb;
+    return BijectionIteratorSafe<T1, T2>{*this} += nb;
   }
 
   /// Comparison of iterators
@@ -1125,7 +1123,7 @@ namespace gum {
   template <typename T1, typename T2>
   INLINE BijectionIterator<T1, T2> BijectionIterator<T1, T2>::
   operator+( unsigned int nb ) noexcept {
-    return BijectionIterator<T1, T2>{* this} += nb;
+    return BijectionIterator<T1, T2>{*this} += nb;
   }
 
   /// Comparison of iterators
@@ -1178,7 +1176,7 @@ namespace gum {
                                 T2,
                                 Alloc,
                                 std::is_scalar<T1>::value &&
-                                    std::is_scalar<T2>::value>(list) {
+                                    std::is_scalar<T2>::value>( list ) {
     GUM_CONSTRUCTOR( Bijection );
   }
 

@@ -27,8 +27,8 @@
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H
 // ============================================================================
-#include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/chiSquare.h>
+#include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 #include <agrum/FMDP/learning/core/tupleHashFunc.h>
 // ============================================================================
@@ -74,7 +74,7 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate(s);
+      return SmallObjectAllocator::instance().allocate( s );
     }
 
     void operator delete( void* p ) {
@@ -143,9 +143,7 @@ namespace gum {
     /// Returns contingency table (needed for the merging of GTestPolicy
     /// instances)
     // ============================================================================
-    const ContingencyTable<Idx, GUM_SCALAR>& ct() const {
-      return __conTab;
-    }
+    const ContingencyTable<Idx, GUM_SCALAR>& ct() const { return __conTab; }
 
 
     /// @}

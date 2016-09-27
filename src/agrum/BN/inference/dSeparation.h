@@ -28,8 +28,8 @@
 #define GUM_D_SEPARATION_H
 
 
-#include <agrum/config.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/config.h>
 
 
 namespace gum {

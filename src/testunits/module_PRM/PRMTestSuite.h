@@ -20,18 +20,18 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/BN/inference/variableElimination.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/VEWithBB.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/PRM/instanceBayesNet.h>
 #include <agrum/PRM/classBayesNet.h>
-#include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/inference/SVED.h>
+#include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/structuredBayesBall.h>
 #include <agrum/PRM/inference/structuredInference.h>
+#include <agrum/PRM/instanceBayesNet.h>
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
@@ -142,7 +142,8 @@ namespace gum_tests {
         wount++;
         std::string var = bn.variable( node ).name();
         size_t pos = var.find_first_of( '.' );
-        gum::prm::PRMInstance<double>& instance = sys.get( var.substr( 0, pos ) );
+        gum::prm::PRMInstance<double>& instance =
+            sys.get( var.substr( 0, pos ) );
         gum::prm::PRMAttribute<double>& attr =
             instance.get( var.substr( pos + 1 ) );
         TS_ASSERT_DIFFERS( bn.cpt( node ).nbrDim(), (gum::Size)0 );
@@ -178,10 +179,10 @@ namespace gum_tests {
           gum::Instantiation i( ( *( jter.val() ) ).cpf() ), var;
           var.add( ( *( jter.val() ) ).type().variable() );
 
-          for ( i.setFirstOut( var ); ! i.end(); i.incOut( var ) ) {
+          for ( i.setFirstOut( var ); !i.end(); i.incOut( var ) ) {
             double f = 0.0;
 
-            for ( i.setFirstIn( var ); ! i.end(); i.incIn( var ) ) {
+            for ( i.setFirstIn( var ); !i.end(); i.incIn( var ) ) {
               f += ( *( jter.val() ) ).cpf().get( i );
             }
 
@@ -203,10 +204,10 @@ namespace gum_tests {
         gum::Instantiation i( cpt ), j;
         j.add( bn.variable( node ) );
 
-        for ( i.setFirstOut( j ); ! i.end(); i.incOut( j ) ) {
+        for ( i.setFirstOut( j ); !i.end(); i.incOut( j ) ) {
           double sum = 0.0;
 
-          for ( i.setFirstIn( j ); ! i.end(); i.incIn( j ) )
+          for ( i.setFirstIn( j ); !i.end(); i.incIn( j ) )
             sum += cpt.get( i );
 
           TS_ASSERT_DELTA( sum, 1.0, 1e-7 );

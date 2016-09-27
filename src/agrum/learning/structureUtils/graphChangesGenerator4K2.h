@@ -59,13 +59,13 @@
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H
 
 #include <agrum/config.h>
-#include <agrum/core/set.h>
 #include <agrum/core/OMPThreads.h>
 #include <agrum/core/sequence.h>
+#include <agrum/core/set.h>
 
 #include <agrum/graphs/diGraph.h>
-#include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/IGraphChangesGenerator4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
 

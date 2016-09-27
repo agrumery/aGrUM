@@ -51,8 +51,7 @@ namespace gum {
    * (0 = first node eliminated) */
 
   INLINE
-  const NodeProperty<NodeId>&
-  StaticTriangulation::reverseEliminationOrder() {
+  const NodeProperty<NodeId>& StaticTriangulation::reverseEliminationOrder() {
     if ( !__has_triangulation ) __triangulate();
 
     return __reverse_elim_order;

@@ -158,9 +158,9 @@ namespace gum {
 }  // namespace gum
 
 // Macro used to shorten code in classes using SmallObjectAllocator
-#define SOA_ALLOCATE(x ) SmallObjectAllocator::instance().allocate(x )
-#define SOA_DEALLOCATE(x, y ) \
-  SmallObjectAllocator::instance().deallocate(x, y )
+#define SOA_ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
+#define SOA_DEALLOCATE( x, y ) \
+  SmallObjectAllocator::instance().deallocate( x, y )
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.inl>

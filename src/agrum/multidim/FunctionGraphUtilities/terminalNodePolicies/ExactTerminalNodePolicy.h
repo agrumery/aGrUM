@@ -61,9 +61,7 @@ namespace gum {
     void eraseTerminalNode( const NodeId& n ) { __map.eraseFirst( n ); }
 
     /// Erase all terminal nodes
-    void clearAllTerminalNodes() {
-      __map.clear();
-    }
+    void clearAllTerminalNodes() { __map.clear(); }
 
     /// @}
     // ============================================================================

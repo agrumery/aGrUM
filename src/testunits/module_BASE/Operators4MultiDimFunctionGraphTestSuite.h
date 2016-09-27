@@ -694,5 +694,5 @@ namespace gum_tests {
 ////                << "Temps Génération : " << tempsGene
 ////                << "s - Temps Calcul : " << tempsCalcul
 ////                << "s - Temps Evaluation " << tempsEval << "s " <<
-///std::endl;
+/// std::endl;
 //}

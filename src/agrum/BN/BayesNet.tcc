@@ -43,8 +43,8 @@
 #include <agrum/multidim/aggregators/or.h>
 
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
 
@@ -132,13 +132,16 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::add(const std::string& name,unsigned int nbrmod) {
-    if (nbrmod<2) {
-      GUM_ERROR(OperationNotAllowed, "Variable " << name << "needs more than " << nbrmod << " modalities");
+  INLINE NodeId BayesNet<GUM_SCALAR>::add( const std::string& name,
+                                           unsigned int nbrmod ) {
+    if ( nbrmod < 2 ) {
+      GUM_ERROR( OperationNotAllowed,
+                 "Variable " << name << "needs more than " << nbrmod
+                             << " modalities" );
     }
 
-    LabelizedVariable v(name,name,nbrmod);
-    return add(v);
+    LabelizedVariable v( name, name, nbrmod );
+    return add( v );
   }
 
   template <typename GUM_SCALAR>
@@ -154,15 +157,15 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var, NodeId id ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var,
+                                           NodeId id ) {
     MultiDimArray<GUM_SCALAR>* ptr = new MultiDimArray<GUM_SCALAR>();
     NodeId res = 0;
 
     try {
       res = add( var, ptr, id );
 
-    } catch ( Exception&) {
+    } catch ( Exception& ) {
       delete ptr;
       throw;
     }
@@ -267,7 +270,7 @@ namespace gum {
       DAG d = dag();
       d.eraseArc( arc );
       d.addArc( head, tail );
-    } catch ( Exception&  ) {
+    } catch ( Exception& ) {
       GUM_ERROR( InvalidArc,
                  "this arc reversal would induce a directed cycle" );
     }
@@ -342,14 +345,14 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addCOUNT( const DiscreteVariable& var, Idx value ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addCOUNT( const DiscreteVariable& var,
+                                                Idx value ) {
     return add( var, new aggregator::Count<GUM_SCALAR>( value ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addEXISTS( const DiscreteVariable& var, Idx value ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addEXISTS( const DiscreteVariable& var,
+                                                 Idx value ) {
     if ( var.domainSize() > 2 )
       GUM_ERROR( SizeError, "an EXISTS has to be boolean" );
 
@@ -357,8 +360,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addFORALL( const DiscreteVariable& var, Idx value ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addFORALL( const DiscreteVariable& var,
+                                                 Idx value ) {
     if ( var.domainSize() > 2 )
       GUM_ERROR( SizeError, "an EXISTS has to be boolean" );
 
@@ -399,24 +402,21 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addNoisyORCompound( const DiscreteVariable& var,
-                                            GUM_SCALAR external_weight ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyORCompound(
+      const DiscreteVariable& var, GUM_SCALAR external_weight ) {
     return add( var,
                 new MultiDimNoisyORCompound<GUM_SCALAR>( external_weight ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addNoisyORNet( const DiscreteVariable& var,
-                                       GUM_SCALAR external_weight ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyORNet(
+      const DiscreteVariable& var, GUM_SCALAR external_weight ) {
     return add( var, new MultiDimNoisyORNet<GUM_SCALAR>( external_weight ) );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addNoisyAND( const DiscreteVariable& var,
-                                     GUM_SCALAR external_weight ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyAND(
+      const DiscreteVariable& var, GUM_SCALAR external_weight ) {
     return add( var, new MultiDimNoisyAND<GUM_SCALAR>( external_weight ) );
   }
 
@@ -448,19 +448,15 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addNoisyORCompound( const DiscreteVariable& var,
-                                            GUM_SCALAR external_weight,
-                                            NodeId id ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyORCompound(
+      const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id ) {
     return add(
         var, new MultiDimNoisyORCompound<GUM_SCALAR>( external_weight ), id );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addNoisyORNet( const DiscreteVariable& var,
-                                       GUM_SCALAR external_weight,
-                                       NodeId id ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyORNet(
+      const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id ) {
     return add(
         var, new MultiDimNoisyORNet<GUM_SCALAR>( external_weight ), id );
   }
@@ -565,7 +561,10 @@ namespace gum {
       if ( &cpt( id ).variable( i ) != &( newPot->variable( i ) ) ) {
         GUM_ERROR( OperationNotAllowed,
                    "cannot exchange potentials because, for variable with id "
-                       << id << ", dimension " << i << " differs. " );
+                       << id
+                       << ", dimension "
+                       << i
+                       << " differs. " );
       }
     }
 

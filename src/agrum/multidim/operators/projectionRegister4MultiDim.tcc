@@ -135,11 +135,10 @@ namespace gum {
 
   // a function to more easily register new projection functions in MultiDims
   template <typename GUM_SCALAR>
-  void registerProjection(
-      const std::string& projection_name,
-      const std::string& type_multidim,
-      typename ProjectionRegister4MultiDim<GUM_SCALAR>::ProjectionPtr
-          function ) {
+  void registerProjection( const std::string& projection_name,
+                           const std::string& type_multidim,
+                           typename ProjectionRegister4MultiDim<
+                               GUM_SCALAR>::ProjectionPtr function ) {
     ProjectionRegister4MultiDim<GUM_SCALAR>::Register().insert(
         projection_name, type_multidim, function );
   }

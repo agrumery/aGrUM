@@ -27,20 +27,20 @@
 #ifndef GUM_CLASS_H
 #define GUM_CLASS_H
 
-#include <utility>
 #include <set>
+#include <utility>
 
-#include <agrum/core/sequence.h>
-#include <agrum/core/set.h>
-#include <agrum/core/bijection.h>
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimSparse.h>
-#include <agrum/PRM/elements/PRMClassElementContainer.h>
-#include <agrum/PRM/elements/PRMAttribute.h>
 #include <agrum/PRM/elements/PRMAggregate.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+#include <agrum/PRM/elements/PRMClassElementContainer.h>
 #include <agrum/PRM/elements/PRMParameter.h>
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
+#include <agrum/core/bijection.h>
+#include <agrum/core/sequence.h>
+#include <agrum/core/set.h>
+#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/multiDimSparse.h>
 
 namespace gum {
   namespace prm {
@@ -76,8 +76,8 @@ namespace gum {
        * @param delayInheritance If true, inheritance will be delayed.
        */
       PRMClass( const std::string& name,
-             PRMClass<GUM_SCALAR>& super,
-             bool delayInheritance = false );
+                PRMClass<GUM_SCALAR>& super,
+                bool delayInheritance = false );
 
       /**
        * Constructor for building a Class<GUM_SCALAR> implementing several each
@@ -88,8 +88,8 @@ namespace gum {
        * @param delayInheritance If true, inheritance will be delayed.
        */
       PRMClass( const std::string& name,
-             const Set<PRMInterface<GUM_SCALAR>*>& set,
-             bool delayInheritance = false );
+                const Set<PRMInterface<GUM_SCALAR>*>& set,
+                bool delayInheritance = false );
 
       /**
        * Constructor for building a subclass of super and implementing each
@@ -100,9 +100,9 @@ namespace gum {
        * @param delayInheritance If true, inheritance will be delayed.
        */
       PRMClass( const std::string& name,
-             PRMClass<GUM_SCALAR>& super,
-             const Set<PRMInterface<GUM_SCALAR>*>& set,
-             bool delayInheritance = false );
+                PRMClass<GUM_SCALAR>& super,
+                const Set<PRMInterface<GUM_SCALAR>*>& set,
+                bool delayInheritance = false );
 
       /// Copy constructor.
       PRMClass( const PRMClass<GUM_SCALAR>& source ) = delete;
@@ -111,10 +111,12 @@ namespace gum {
       PRMClass( const PRMClass<GUM_SCALAR>&& source ) = delete;
 
       /// Copy operator. Don't use it.
-      PRMClass<GUM_SCALAR>& operator=( const PRMClass<GUM_SCALAR>& source ) = delete;
+      PRMClass<GUM_SCALAR>&
+      operator=( const PRMClass<GUM_SCALAR>& source ) = delete;
 
       /// Move operator. Don't use it.
-      PRMClass<GUM_SCALAR>& operator=( const PRMClass<GUM_SCALAR>&& source ) = delete;
+      PRMClass<GUM_SCALAR>&
+      operator=( const PRMClass<GUM_SCALAR>&& source ) = delete;
 
       /// Destructor.
       virtual ~PRMClass();
@@ -149,7 +151,8 @@ namespace gum {
       /**
        * @brief Return true if the attribute named safe_name is a cast
        * descendant.
-       * Cast descendant are automatically added PRMAttribute<GUM_SCALAR> for type
+       * Cast descendant are automatically added PRMAttribute<GUM_SCALAR> for
+       * type
        * casting.
        * @param safe_name The safe name of an PRMAttribute<GUM_SCALAR> of this
        * class.
@@ -203,7 +206,8 @@ namespace gum {
       const Set<PRMAggregate<GUM_SCALAR>*>& aggregates() const;
 
       /**
-       * Returns the set of PRMReferenceSlot<GUM_SCALAR> of this Class<GUM_SCALAR>.
+       * Returns the set of PRMReferenceSlot<GUM_SCALAR> of this
+       * Class<GUM_SCALAR>.
        * @return Returns the set of PRMReferenceSlot<GUM_SCALAR> of this
        * Class<GUM_SCALAR>.
        */
@@ -236,7 +240,8 @@ namespace gum {
        *Class<GUM_SCALAR> which
        * implements cec.
        *
-       * @param cec The PRMClassElementContainer<GUM_SCALAR> for which we determine
+       * @param cec The PRMClassElementContainer<GUM_SCALAR> for which we
+       *determine
        *if this
        *            Class<GUM_SCALAR> is a subclass of it.
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
@@ -271,10 +276,12 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
+      /// See
+      /// gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
       PRMClassElement<GUM_SCALAR>& operator[]( NodeId id );
 
-      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
+      /// See
+      /// gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
       const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
@@ -391,16 +398,16 @@ namespace gum {
 
       /// Proceed with the copy when this inherits c.
       void __inheritClass( const PRMClass<GUM_SCALAR>& c );
-   
+
       /// Proceed with the implementation of interfaces
-      void __implementInterfaces(bool delayInheritance);
+      void __implementInterfaces( bool delayInheritance );
 
       /// Check that a given element respects all the class interfaces
       void __checkInterfaces( PRMClassElement<GUM_SCALAR>* elt );
 
       /// Check that a given element respects a specific interface
       void __checkInterface( PRMClassElement<GUM_SCALAR>* elt,
-                            PRMInterface<GUM_SCALAR>* i );
+                             PRMInterface<GUM_SCALAR>* i );
 
       /// Check that a given element respects all the class interfaces
       void __checkRefInterfaces( PRMReferenceSlot<GUM_SCALAR>* elt );

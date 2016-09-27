@@ -24,11 +24,11 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <string>
 #include <sstream>
+#include <string>
 
-#include <agrum/config.h>
 #include <agrum/PRM/elements/PRMObject.h>
+#include <agrum/config.h>
 
 #ifndef GUM_NAME_GENERATOR_H
 #define GUM_NAME_GENERATOR_H

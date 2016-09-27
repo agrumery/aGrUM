@@ -29,5 +29,3 @@
 
 
 template class gum::AVLSearchTree<int>;
-
-

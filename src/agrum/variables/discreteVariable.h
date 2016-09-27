@@ -26,8 +26,8 @@
 #ifndef GUM_DISCRETE_VARIABLE_H
 #define GUM_DISCRETE_VARIABLE_H
 
-#include <string>
 #include <ostream>
+#include <string>
 
 #include <agrum/config.h>
 
@@ -107,7 +107,7 @@ namespace gum {
      */
     virtual const std::string label( Idx indice ) const = 0;
 
-    ///vector of labels
+    /// vector of labels
     std::vector<std::string> labels() const;
 
     /// get a numerical representation of the indice-th value.

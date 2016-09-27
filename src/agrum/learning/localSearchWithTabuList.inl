@@ -77,8 +77,7 @@ namespace gum {
 
     /// set the max number of changes decreasing the score that we allow to
     /// apply
-    INLINE void
-    LocalSearchWithTabuList::setMaxNbDecreasingChanges( Size nb ) {
+    INLINE void LocalSearchWithTabuList::setMaxNbDecreasingChanges( Size nb ) {
       __MaxNbDecreasing = nb;
     }
 

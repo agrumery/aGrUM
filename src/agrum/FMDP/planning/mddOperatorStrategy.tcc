@@ -25,18 +25,18 @@
 */
 
 // =========================================================================
-#include <cmath>
-#include <thread>
-#include <vector>
-#include <queue>
 #include <algorithm>
+#include <cmath>
+#include <queue>
+#include <thread>
 #include <utility>
+#include <vector>
 // =========================================================================
 #include <agrum/core/functors.h>
 // =========================================================================
-#include <agrum/multidim/potential.h>
-#include <agrum/multidim/FunctionGraphUtilities/operators/regress.h>
 #include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/regress.h>
+#include <agrum/multidim/potential.h>
 // =========================================================================
 #include <agrum/FMDP/planning/mddOperatorStrategy.h>
 // =========================================================================
@@ -167,7 +167,8 @@ namespace gum {
 
     MultiDimFunctionGraphOperator<ArgMaxSet<GUM_SCALAR, Idx>,
                                   ArgumentMaximisesAction,
-                                  SetTerminalNodePolicy> argmaxope( f1, f2 );
+                                  SetTerminalNodePolicy>
+        argmaxope( f1, f2 );
     MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
         ret = argmaxope.compute();
     this->_deleteFunctionGraph( f1, f2, del );

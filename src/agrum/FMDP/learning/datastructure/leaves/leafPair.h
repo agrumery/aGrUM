@@ -37,7 +37,8 @@
 namespace gum {
 
   /**
-   * @class LeafPair leafPair.h <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
+   * @class LeafPair leafPair.h
+   * <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
    * @brief Handles a pair of leaves
    * @ingroup fmdp_group
    *

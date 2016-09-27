@@ -27,12 +27,12 @@
 #ifndef GUM_PARTIAL_INSTANTIATION_REGISTER_4_MULTI_DIM_H
 #define GUM_PARTIAL_INSTANTIATION_REGISTER_4_MULTI_DIM_H
 
-#include <iostream>
-#include <string>
-#include <utility>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
 #include <agrum/variables/discreteVariable.h>
+#include <iostream>
+#include <string>
+#include <utility>
 
 namespace gum {
 
@@ -64,7 +64,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   class PartialInstantiationRegister4MultiDim {
     public:
-
     /// The type of functions used by the register
     typedef MultiDimImplementation<GUM_SCALAR>* ( *PartialInstantiationPtr )(
         const MultiDimImplementation<GUM_SCALAR>*,
@@ -75,8 +74,8 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    /// 
-    /** 
+    ///
+    /**
      * @brief Adds a new entry into the register.
      *
      * This method inserts a new function (\e newFunction) taking a multiDim of
@@ -95,13 +94,13 @@ namespace gum {
      * @param instantiation_func_name The name of the instantiation function.
      * @param type_multidim The \e real type of the multiDim taken in argument
      * by function \e newFunction.
-     * @param newFunction A pointer to the new function to register.  
+     * @param newFunction A pointer to the new function to register.
      */
     void insert( const std::string& instantiation_func_name,
                  const std::string& type_multidim,
                  PartialInstantiationPtr newFunction );
 
-    /** 
+    /**
      * @brief Removes a given entry from the register.
      *
      * Removes the function, if any, that performs the instantiation described
@@ -116,8 +115,8 @@ namespace gum {
     void erase( const std::string& instantiation_func_name,
                 const std::string& type_multidim );
 
-    /** 
-     * @brief Indicates whether a given entry exists in the register. 
+    /**
+     * @brief Indicates whether a given entry exists in the register.
      *
      * Indicates if the register contains a function that performs the
      * instantiation described by \e instantiation_func_name, and that takes in
@@ -140,7 +139,8 @@ namespace gum {
      * instantiation performed by the function we look for.
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function we look for
-     * @returns Returns The function, if any, that performs the partial instantiation
+     * @returns Returns The function, if any, that performs the partial
+     * instantiation
      * described by \e instantiation_name, and that takes in argument a multiDim
      * of type \e type_multidim.
      *

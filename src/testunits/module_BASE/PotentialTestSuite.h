@@ -537,31 +537,30 @@ namespace gum_tests {
       p << a << b;
       p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
 
-      auto q=p/p.margSumOut({&a});
+      auto q = p / p.margSumOut( {&a} );
       p.normalizeAsCPT();
-      TS_ASSERT_EQUALS(p,q);
-      TS_ASSERT_EQUALS(q,p);
+      TS_ASSERT_EQUALS( p, q );
+      TS_ASSERT_EQUALS( q, p );
 
       gum::Potential<float> p2;
-      TS_ASSERT_THROWS(p2.normalizeAsCPT(),gum::FatalError);
+      TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
       p2 << a << b;
       p2.fill( 0.0f );
-      TS_ASSERT_THROWS(p2.normalizeAsCPT(),gum::FatalError);
+      TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
 
       gum::Potential<float> p3;
       p3 << a << b;
       p3.fillWith( {1, 2, 3, 0, 0, 0, 7, 8, 9} );
-      TS_ASSERT_THROWS(p2.normalizeAsCPT(),gum::FatalError);
+      TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
 
       gum::Potential<float> p4;
-      p4 << a ;
+      p4 << a;
       p4.fillWith( {1, 3, 6} );
       p4.normalizeAsCPT();
       gum::Potential<float> witness;
-      witness << a ;
+      witness << a;
       witness.fillWith( {0.1f, 0.3f, 0.6f} );
-      TS_ASSERT_EQUALS(p4,witness);
-
+      TS_ASSERT_EQUALS( p4, witness );
     }
   };
 }

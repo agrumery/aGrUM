@@ -36,8 +36,8 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/config.h>
 #include <agrum/BN/io/BNWriter.h>
+#include <agrum/config.h>
 
 namespace gum {
 

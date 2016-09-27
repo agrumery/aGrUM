@@ -47,8 +47,8 @@
 #include <agrum/config.h>
 
 #include <agrum/core/utils_dir.h>
-#include <agrum/core/utils_string.h>
 #include <agrum/core/utils_random.h>
+#include <agrum/core/utils_string.h>
 
 namespace std {
 
@@ -133,12 +133,12 @@ namespace gum {
   template <typename T>
   struct AlmostDifferent {
     bool operator()( const T& t1, const T& t2 ) {
-      if (t1==t2)
+      if ( t1 == t2 )
         return false;
-      else if (t1==0)
-        return (std::abs(t2)>1e-5);
+      else if ( t1 == 0 )
+        return ( std::abs( t2 ) > 1e-5 );
       else
-        return (std::abs(t2-t1)/t1>1e-5);
+        return ( std::abs( t2 - t1 ) / t1 > 1e-5 );
     }
   };
 

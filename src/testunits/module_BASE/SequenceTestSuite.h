@@ -21,8 +21,8 @@
 #include <cxxtest/testsuite_utils.h>
 #include <ressources/myalloc.h>
 
-#include <string>
 #include <agrum/core/sequence.h>
+#include <string>
 
 namespace gum_tests {
   class SequenceTestSuite : public CxxTest::TestSuite {

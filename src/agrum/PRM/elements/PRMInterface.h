@@ -27,11 +27,11 @@
 #ifndef GUM_INTERFACE_H
 #define GUM_INTERFACE_H
 
-#include <utility>
 #include <set>
+#include <utility>
 
-#include <agrum/core/set.h>
 #include <agrum/core/sequence.h>
+#include <agrum/core/set.h>
 
 #include <agrum/PRM/elements/PRMClassElementContainer.h>
 
@@ -40,9 +40,11 @@ namespace gum {
 
     /**
      * @class PRMInterface interface.h <agrum/PRM/interface.h>
-     * @brief An PRMInterface is implemented by a Class<GUM_SCALAR> and defines a
+     * @brief An PRMInterface is implemented by a Class<GUM_SCALAR> and defines
+     *a
      *set of
-     *        PRMReferenceSlot<GUM_SCALAR> and PRMAttribute<GUM_SCALAR> which the
+     *        PRMReferenceSlot<GUM_SCALAR> and PRMAttribute<GUM_SCALAR> which
+     *the
      *implementing Class<GUM_SCALAR> must contain.
      *
      * @see PRM Class<GUM_SCALAR> PRMClassElement<GUM_SCALAR>
@@ -71,8 +73,8 @@ namespace gum {
        * @param delayInheritance If true, inheritance will be delayed.
        */
       PRMInterface( const std::string& name,
-                 PRMInterface& super,
-                 bool delayInheritance = false );
+                    PRMInterface& super,
+                    bool delayInheritance = false );
 
       /// Copy constructor.
       PRMInterface( const PRMInterface& source );
@@ -141,7 +143,8 @@ namespace gum {
       NodeId add( PRMClassElement<GUM_SCALAR>* elt );
 
       /**
-       * @brief Add a new PRMClassElement<GUM_SCALAR> which overload an inherited
+       * @brief Add a new PRMClassElement<GUM_SCALAR> which overload an
+       *inherited
        *PRMClassElement<GUM_SCALAR>.
        *
        * The pointer is "given" to this class, which will delete it when
@@ -180,19 +183,23 @@ namespace gum {
       /**
        * @brief Test if this PRMInterface is a sub PRMInterface of cec.
        *
-       * PRMInterface can not be a sub PRMInterface of a Class<GUM_SCALAR>, so if cec
+       * PRMInterface can not be a sub PRMInterface of a Class<GUM_SCALAR>, so
+       *if cec
        *is a
        *Class<GUM_SCALAR>
        * this method will return false.
        *
-       * If cec is an PRMInterface then this PRMInterface is a sub PRMInterface of cec if
+       * If cec is an PRMInterface then this PRMInterface is a sub PRMInterface
+       *of cec if
        *they
        *are
-       * equal or there exists a super PRMInterface of this PRMInterface which is
+       * equal or there exists a super PRMInterface of this PRMInterface which
+       *is
        *equal to
        *cec.
        *
-       * @param cec The PRMClassElementContainer<GUM_SCALAR> for which we determine
+       * @param cec The PRMClassElementContainer<GUM_SCALAR> for which we
+       *determine
        *if
        *this
        *            PRMInterface is a sub PRMInterface of it.
@@ -237,10 +244,12 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
+      /// See
+      /// gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
       PRMClassElement<GUM_SCALAR>& operator[]( NodeId id );
 
-      /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
+      /// See
+      /// gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
       const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
@@ -263,8 +272,9 @@ namespace gum {
       ClassEltIterator begin();
       const ClassEltIterator& end();
 
-      typedef typename NodeProperty<PRMClassElement<GUM_SCALAR>*>::const_iterator
-          const_ClassEltIterator;
+      typedef
+          typename NodeProperty<PRMClassElement<GUM_SCALAR>*>::const_iterator
+              const_ClassEltIterator;
       const_ClassEltIterator begin() const;
       const const_ClassEltIterator& end() const;
 

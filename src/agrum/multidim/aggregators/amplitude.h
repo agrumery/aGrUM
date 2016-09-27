@@ -51,11 +51,10 @@ namespace gum {
     template <typename GUM_SCALAR>
     class Amplitude : public MultiDimAggregator<GUM_SCALAR> {
       public:
-
       Amplitude();
 
       Amplitude( const Amplitude<GUM_SCALAR>& from );
-      
+
       virtual ~Amplitude();
 
       virtual std::string aggregatorName( void ) const;

@@ -26,8 +26,8 @@
 
 #ifndef GUM_PRM_GENERATOR_H
 #define GUM_PRM_GENERATOR_H
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/generator/nameGenerator.h>

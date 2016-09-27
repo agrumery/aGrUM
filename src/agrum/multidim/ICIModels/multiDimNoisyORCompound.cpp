@@ -26,5 +26,3 @@
 
 template class gum::MultiDimNoisyORCompound<float>;
 template class gum::MultiDimNoisyORCompound<double>;
-
-

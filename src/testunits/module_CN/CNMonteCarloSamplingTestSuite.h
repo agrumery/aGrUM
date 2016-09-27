@@ -21,13 +21,13 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/CN/credalNet.h>
 #include <agrum/CN/CNMonteCarloSampling.h>
+#include <agrum/CN/credalNet.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/core/approximations/approximationSchemeListener.h>
 #include <agrum/core/OMPThreads.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>

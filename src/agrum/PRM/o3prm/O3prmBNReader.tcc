@@ -150,8 +150,8 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  void
-  O3prmBNReader<GUM_SCALAR>::__generateBN( prm::PRMSystem<GUM_SCALAR>& system ) {
+  void O3prmBNReader<GUM_SCALAR>::__generateBN(
+      prm::PRMSystem<GUM_SCALAR>& system ) {
     system.instantiate();
     BayesNetFactory<GUM_SCALAR> factory( __bn );
     system.groundedBN( factory );

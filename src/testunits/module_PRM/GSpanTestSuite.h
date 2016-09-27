@@ -40,7 +40,7 @@ namespace gum_tests {
 
       if ( __driver->errors() == 0 ) {
         ig = new gum::prm::gspan::InterfaceGraph<double>(
-            __driver->prm()->getSystem( "m" ));
+            __driver->prm()->getSystem( "m" ) );
       } else {
         __driver->showElegantErrorsAndWarnings();
         TS_ASSERT( false );

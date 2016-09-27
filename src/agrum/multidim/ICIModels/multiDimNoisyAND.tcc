@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/core/exceptions.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 
 namespace gum {
 

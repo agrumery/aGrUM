@@ -32,15 +32,15 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
 
-#include <agrum/PRM/elements/PRMObject.h>
-#include <agrum/PRM/elements/PRMType.h>
-#include <agrum/PRM/elements/PRMClass.h>
-#include <agrum/PRM/elements/PRMInstance.h>
-#include <agrum/PRM/elements/PRMAttribute.h>
-#include <agrum/PRM/elements/PRMFuncAttribute.h>
 #include <agrum/PRM/elements/PRMAggregate.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+#include <agrum/PRM/elements/PRMClass.h>
+#include <agrum/PRM/elements/PRMFuncAttribute.h>
+#include <agrum/PRM/elements/PRMInstance.h>
+#include <agrum/PRM/elements/PRMObject.h>
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
+#include <agrum/PRM/elements/PRMType.h>
 
 #include <agrum/PRM/elements/PRMSystem.h>
 
@@ -97,8 +97,10 @@ namespace gum {
       bool isClass( const std::string name ) const;
 
       /**
-       * @param name The name of a possible PRMInterface<GUM_SCALAR> in this PRM.
-       * @return Returns true if name names a PRMInterface<GUM_SCALAR> in this PRM.
+       * @param name The name of a possible PRMInterface<GUM_SCALAR> in this
+       * PRM.
+       * @return Returns true if name names a PRMInterface<GUM_SCALAR> in this
+       * PRM.
        */
       bool isInterface( const std::string name ) const;
 
@@ -152,7 +154,8 @@ namespace gum {
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const PRMInterface<GUM_SCALAR>& getInterface( const std::string& name ) const;
+      const PRMInterface<GUM_SCALAR>&
+      getInterface( const std::string& name ) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
@@ -160,13 +163,15 @@ namespace gum {
       const Set<PRMInterface<GUM_SCALAR>*>& interfaces() const;
 
       /**
-       * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's
+       * name.
        * @throw NotFound Raised if no model is found with the given name.
        */
       PRMSystem<GUM_SCALAR>& getSystem( const std::string& name );
 
       /**
-       * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's
+       * name.
        * @throw NotFound Raised if no model is found with the given name.
        */
       const PRMSystem<GUM_SCALAR>& getSystem( const std::string& name ) const;

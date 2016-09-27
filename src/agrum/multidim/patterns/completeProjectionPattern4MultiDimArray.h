@@ -144,7 +144,7 @@ namespace gum {
         instantiation->add( *var );
 
       // return the result
-      table->fromOffset( *instantiation, Size(current_ptr - deb_ptr) );
+      table->fromOffset( *instantiation, Size( current_ptr - deb_ptr ) );
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
       return *current_ptr;
 #else

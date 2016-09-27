@@ -26,12 +26,12 @@
 #ifndef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_H
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_H
 
-#include <utility>
 #include <agrum/core/set.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecorator.h>
+#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/partialInstantiationRegister4MultiDim.h>
+#include <agrum/variables/discreteVariable.h>
+#include <utility>
 
 namespace gum {
 
@@ -125,7 +125,8 @@ namespace gum {
      * @warning If inst_vars is precisely equal to the variables of table, the
      * result is an empty table.
      *
-     * @param container Placeholder of the instantiation of table given inst_vars.
+     * @param container Placeholder of the instantiation of table given
+     * inst_vars.
      * @param table The table to parially instantiate.
      * @param inst_vars A mapping between variables and their instantiation.
      */

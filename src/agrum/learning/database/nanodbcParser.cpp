@@ -28,8 +28,8 @@
 
 #include <agrum/learning/database/nanodbcParser.h>
 
-#include <stdexcept>
 #include <agrum/core/exceptions.h>
+#include <stdexcept>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/database/nanodbcParser.inl>
@@ -70,4 +70,4 @@ namespace gum {
 
 }  // namespace gum
 
-#endif // _ODBC
+#endif  // _ODBC

@@ -29,8 +29,8 @@
 #ifndef GUM_TYPES_H
 #define GUM_TYPES_H
 
-#include <cstddef>
 #include <climits>
+#include <cstddef>
 
 namespace gum {
 
@@ -40,14 +40,14 @@ namespace gum {
   /**
    * Type for indexes.
    */
-  typedef unsigned long Idx; //std::size_t Idx;
+  typedef unsigned long Idx;  // std::size_t Idx;
 
   /**
    * In aGrUM, hashed values are unsigned long int. This is sufficient to deal
    * with Bayes nets and other graphs already big enough to be unmanageable
    * from a computational point of view.
    */
-  typedef unsigned long Size; // std::size_t Size;
+  typedef unsigned long Size;  // std::size_t Size;
 
   /// @}
 

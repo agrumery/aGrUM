@@ -18,18 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
-#include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
+#include <iostream>
+#include <sstream>
 
 #include <agrum/core/set.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreBIC.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
-#include <agrum/learning/aprioris/aprioriSmoothing.h>
-#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum_tests {
 

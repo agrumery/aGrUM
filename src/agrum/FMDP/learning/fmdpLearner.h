@@ -30,11 +30,11 @@
 // =========================================================================
 #include <agrum/core/hashTable.h>
 // =========================================================================
-#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
-#include <agrum/FMDP/learning/observation.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/learning/datastructure/imddi.h>
 #include <agrum/FMDP/learning/datastructure/iti.h>
+#include <agrum/FMDP/learning/observation.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================

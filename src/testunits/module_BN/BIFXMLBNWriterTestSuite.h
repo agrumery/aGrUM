@@ -25,9 +25,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -110,7 +110,7 @@ namespace gum_tests {
                0.5, 0.5,
                0.5, 0.5,
                1.0, 0.0} );  // clang-format on
-      bn.cpt( i5 ).fillWith(// clang-format off
+      bn.cpt( i5 ).fillWith(                           // clang-format off
               {0.3, 0.6, 0.1,
                0.5, 0.5, 0.0,
                0.5, 0.5, 0.0,

@@ -38,12 +38,12 @@
 #include <agrum/core/mvsc/unistd.h>
 #endif
 
-#include <fcntl.h>
-#include <cstdio>
-#include <vector>
-#include <unordered_set>
-#include <fstream>
 #include <chrono>
+#include <cstdio>
+#include <fcntl.h>
+#include <fstream>
+#include <unordered_set>
+#include <vector>
 
 #include <agrum/core/math/rational.h>
 
@@ -54,7 +54,7 @@
 #define MP
 // lrs stuff
 extern "C" {
-	#include <agrum/core/math/lrslib/lrslib.h>
+#include <agrum/core/math/lrslib/lrslib.h>
 }
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifdef B32
@@ -94,7 +94,7 @@ namespace gum {
     class LRSWrapper {
       private:
       /** @brief Shortcut for dynamic matrix using vectors. */
-      using matrix= typename std::vector<std::vector<GUM_SCALAR>>;
+      using matrix = typename std::vector<std::vector<GUM_SCALAR>>;
 
       /** @brief Input matrix - either a V-representation or an
        * H-representation. */

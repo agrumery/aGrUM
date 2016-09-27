@@ -27,8 +27,8 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
-#include <agrum/multidim/multiDimAdressable.h>
 #include <agrum/multidim/instantiation.h>
+#include <agrum/multidim/multiDimAdressable.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/multidim/instantiation.inl>

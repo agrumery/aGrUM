@@ -21,9 +21,9 @@
 #define GUM_DISCRETIZED_VARIABLE_H
 
 #include <iostream>
+#include <limits>
 #include <sstream>
 #include <vector>
-#include <limits>
 
 #include <agrum/config.h>
 

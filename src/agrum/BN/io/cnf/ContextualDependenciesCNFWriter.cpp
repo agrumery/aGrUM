@@ -23,4 +23,3 @@
 
 template class gum::ContextualDependenciesCNFWriter<float>;
 template class gum::ContextualDependenciesCNFWriter<double>;
-

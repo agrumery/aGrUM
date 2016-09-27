@@ -26,8 +26,8 @@
 #include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/structuredInference.h>
 
-#include <agrum/PRM/generator/layerGenerator.h>
 #include <agrum/PRM/generator/clusteredLayerGenerator.h>
+#include <agrum/PRM/generator/layerGenerator.h>
 
 #include <agrum/PRM/gspan/DFSTree.h>
 
@@ -142,7 +142,7 @@ namespace gum_tests {
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); ! inst.end(); inst.inc() )
+        for ( inst.setFirst(); !inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
@@ -174,7 +174,7 @@ namespace gum_tests {
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); ! inst.end(); inst.inc() )
+        for ( inst.setFirst(); !inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
@@ -206,7 +206,7 @@ namespace gum_tests {
         double sum = 0.0;
         gum::Instantiation inst( m );
 
-        for ( inst.setFirst(); ! inst.end(); inst.inc() )
+        for ( inst.setFirst(); !inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );

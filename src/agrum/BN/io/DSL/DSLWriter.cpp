@@ -23,4 +23,3 @@
 
 template class gum::DSLWriter<float>;
 template class gum::DSLWriter<double>;
-

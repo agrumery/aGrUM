@@ -28,4 +28,3 @@
 
 template class gum::aggregator::Median<float>;
 template class gum::aggregator::Median<double>;
-

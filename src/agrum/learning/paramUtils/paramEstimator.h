@@ -34,10 +34,10 @@
 #define GUM_LEARNING_PARAM_ESTIMATOR_H
 
 #include <agrum/config.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/learning/aprioris/apriori.h>
 #include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
-#include <agrum/learning/aprioris/apriori.h>
+#include <agrum/multidim/potential.h>
 
 namespace gum {
 
@@ -132,9 +132,7 @@ namespace gum {
        * index as argument to methods _getAllCounts and _getConditioningCounts
        * to
        * get the corresponding counting vectors. */
-      Idx
-      addNodeSet( Idx var,
-                  const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet( Idx var, const std::vector<Idx>& conditioning_ids );
 
       /// clears all the data structures from memory
       void clear();
@@ -159,7 +157,7 @@ namespace gum {
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
        * are assumed to be identical */
-      template<typename GUM_SCALAR>
+      template <typename GUM_SCALAR>
       void setParameters( Idx nodeset_index, Potential<GUM_SCALAR>& pot );
 
       /// sets the range of records taken into account by the counter
@@ -221,8 +219,7 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<double, CountAlloc>&
-      _getAllApriori( Idx index );
+      const std::vector<double, CountAlloc>& _getAllApriori( Idx index );
 
       /// returns the apriori vector for a conditioning set
       const std::vector<double, CountAlloc>&

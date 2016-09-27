@@ -28,4 +28,3 @@
 
 template class gum::aggregator::Max<float>;
 template class gum::aggregator::Max<double>;
-

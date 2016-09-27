@@ -33,12 +33,12 @@
 
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/multiDimSparse.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 #include <agrum/multidim/operators/projections4MultiDim.h>
+#include <agrum/multidim/potential.h>
 
 #include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
 
@@ -192,7 +192,8 @@ namespace gum {
         /// Returns the set of queried nodes given all the matches of pattern
         inline NodeSet& queries() { return __partial_order[3]; }
         // We use the first match for computations
-        // inline const Sequence<PRMInstance<GUM_SCALAR>*>& match() const { return
+        // inline const Sequence<PRMInstance<GUM_SCALAR>*>& match() const {
+        // return
         // **(matches.begin());}
         // Remove any empty set in partial_order
         const List<NodeSet>* partial_order();
@@ -249,7 +250,8 @@ namespace gum {
       /// variables
       /// were eliminated.
       HashTable<const Sequence<PRMInstance<GUM_SCALAR>*>*,
-                Set<Potential<GUM_SCALAR>*>*> __elim_map;
+                Set<Potential<GUM_SCALAR>*>*>
+          __elim_map;
 
       /// Mapping between a Class<GUM_SCALAR> and data about instances reduced
       /// using
@@ -287,7 +289,7 @@ namespace gum {
       void __buildReduceGraph( RGData& data );
 
       /// Add the nodes in the reduced graph.
-      //MSVC void __addNodesInReducedGraph( RGData& data );
+      // MSVC void __addNodesInReducedGraph( RGData& data );
 
       /// Add edges in the reduced graph.
       void __addEdgesInReducedGraph( RGData& data );
@@ -311,52 +313,54 @@ namespace gum {
       /// all the Potentials of all variables in data.pattern. The first match
       /// of
       /// data.pattern (aka data.match) is used.
-      void __buildPatternGraph( PData& data,
-                                Set<Potential<GUM_SCALAR>*>& pool,
-                                const Sequence<PRMInstance<GUM_SCALAR>*>& match );
+      void
+      __buildPatternGraph( PData& data,
+                           Set<Potential<GUM_SCALAR>*>& pool,
+                           const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       void
-      __insertNodeInElimLists(typename StructuredInference::PData& data,
+      __insertNodeInElimLists( typename StructuredInference::PData& data,
                                const Sequence<PRMInstance<GUM_SCALAR>*>& match,
                                PRMInstance<GUM_SCALAR>* inst,
                                PRMAttribute<GUM_SCALAR>* attr,
                                NodeId id,
                                std::pair<Idx, std::string>& v );
 
-      bool __allInstanceNoRefAttr(typename StructuredInference::PData& data,
+      bool __allInstanceNoRefAttr( typename StructuredInference::PData& data,
                                    std::pair<Idx, std::string> attr );
 
-      void __removeBarrenNodes(typename StructuredInference::PData& data,
+      void __removeBarrenNodes( typename StructuredInference::PData& data,
                                 Set<Potential<GUM_SCALAR>*>& pool );
 
       /// Add in data.queries() any queried variable in one of data.pattern
       /// matches.
-      //MVSC void __buildQuerySet( PData& data );
+      // MVSC void __buildQuerySet( PData& data );
 
       /// Proceeds with the elimination of observed variables in math and then
       /// call __translatePotSet().
       Set<Potential<GUM_SCALAR>*>*
-      __eliminateObservedNodes(typename StructuredInference::PData& data,
+      __eliminateObservedNodes( typename StructuredInference::PData& data,
                                 const Set<Potential<GUM_SCALAR>*>& pool,
                                 const Sequence<PRMInstance<GUM_SCALAR>*>& match,
                                 const std::vector<NodeId>& elim_order );
 
       Set<Potential<GUM_SCALAR>*>* __eliminateObservedNodesInSource(
-        typename StructuredInference::PData& data,
+          typename StructuredInference::PData& data,
           const Set<Potential<GUM_SCALAR>*>& pool,
           const Sequence<PRMInstance<GUM_SCALAR>*>& match,
           const std::vector<NodeId>& elim_order );
 
       /// Translate a given Potential Set into one w.r.t. variables in match.
       Set<Potential<GUM_SCALAR>*>*
-      __translatePotSet(typename StructuredInference::PData& data,
+      __translatePotSet( typename StructuredInference::PData& data,
                          const Set<Potential<GUM_SCALAR>*>& pool,
                          const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       /// Unreduce the match containing the query.
-      //MVSC void __unreduceMatchWithQuery();
+      // MVSC void __unreduceMatchWithQuery();
 
-      //MVSC std::vector<NodeId>* __getClassOutputs( const PRMClass<GUM_SCALAR>* c );
+      // MVSC std::vector<NodeId>* __getClassOutputs( const
+      // PRMClass<GUM_SCALAR>* c );
       /// Used to create strings
       std::string __dot;
       std::string __str( const PRMInstance<GUM_SCALAR>* i,

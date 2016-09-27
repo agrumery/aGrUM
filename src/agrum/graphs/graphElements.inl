@@ -22,8 +22,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 #include <agrum/config.h>
 

@@ -66,8 +66,9 @@ namespace gum {
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
   MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
-  MultiDimFunctionGraphProjector<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::
-      project() {
+  MultiDimFunctionGraphProjector<GUM_SCALAR,
+                                 FUNCTOR,
+                                 TerminalNodePolicy>::project() {
 
     __rd->copy( *__src );
 

@@ -31,9 +31,9 @@
 #ifndef GUM_PARTIAL_ORDERED_TRIANGULATION_H
 #define GUM_PARTIAL_ORDERED_TRIANGULATION_H
 
-#include <agrum/graphs/triangulations/staticTriangulation.h>
-#include <agrum/graphs/eliminations/defaultPartialOrderedEliminationSequenceStrategy.h>
 #include <agrum/graphs/defaultJunctionTreeStrategy.h>
+#include <agrum/graphs/eliminations/defaultPartialOrderedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/staticTriangulation.h>
 
 namespace gum {
 

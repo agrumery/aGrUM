@@ -69,12 +69,12 @@
 
 #if ( defined __GNUC__ )
 #define NO_INLINE __attribute__( ( noinline ) )
-#elif( defined _MSC_VER )
+#elif ( defined _MSC_VER )
 #define NEVER_INLINE __declspec( noinline )
 #else
 #define NEVER_INLINE
 #endif
-#else // GUM_NO_INLINE
+#else  // GUM_NO_INLINE
 #define INLINE
 #define STRONG_INLINE
 #define ALWAYS_INLINE

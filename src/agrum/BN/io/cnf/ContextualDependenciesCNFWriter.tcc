@@ -221,10 +221,10 @@ namespace gum {
           if ( newSeq ) {
             ( itpvall.val() )->insert( newSeq );
 
-            for ( Idx itelem = pv->size() ; itelem > 0; itelem-- ) {
-              if ( elimination.exists( itelem -1) ) {
-                delete ( ( *pv )[itelem-1] );
-                pv->erase( ( *pv )[itelem-1] );
+            for ( Idx itelem = pv->size(); itelem > 0; itelem-- ) {
+              if ( elimination.exists( itelem - 1 ) ) {
+                delete ( ( *pv )[itelem - 1] );
+                pv->erase( ( *pv )[itelem - 1] );
               }
             }
           }
@@ -290,7 +290,8 @@ namespace gum {
     clausstr << str2.str();
 
     output << "p cnf " << num << " " << clause << "\neclauses " << numvar
-           << "\n" << clausstr.str() << clausstr2.str() << std::endl;
+           << "\n"
+           << clausstr.str() << clausstr2.str() << std::endl;
     output.flush();
   }
 
@@ -499,10 +500,10 @@ namespace gum {
 
             ( itpvall.val() )->insert( newSeq );
 
-            for ( Idx itelem = pv->size() ; itelem >0; itelem-- ) {
-              if ( elimination.exists( itelem-1 ) ) {
-                delete ( ( *pv )[itelem-1] );
-                pv->erase( ( *pv )[itelem-1] );
+            for ( Idx itelem = pv->size(); itelem > 0; itelem-- ) {
+              if ( elimination.exists( itelem - 1 ) ) {
+                delete ( ( *pv )[itelem - 1] );
+                pv->erase( ( *pv )[itelem - 1] );
               }
             }
           }
@@ -549,8 +550,8 @@ namespace gum {
             str2 << " 0\n";
             clause++;
             delete ( *itseqv );
-            ( *itpv )
-                ->erase( ( *itpv )->beginSafe() );  // safe iterator needed here
+            ( *itpv )->erase(
+                ( *itpv )->beginSafe() );  // safe iterator needed here
           }
 
           delete ( *itpv );
@@ -572,7 +573,8 @@ namespace gum {
     clausstr << str2.str();
 
     output << "p cnf " << num << " " << clause << "\neclauses " << numvar
-           << "\n" << clausstr.str() << clausstr2.str() << std::endl;
+           << "\n"
+           << clausstr.str() << clausstr2.str() << std::endl;
     output.flush();
     outputvar << strfile.str();
     outputvar.flush();

@@ -27,8 +27,8 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/DAGCycleDetector.h>
-#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 namespace gum {
 
@@ -145,36 +145,36 @@ namespace gum {
        * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone( const GraphChange& change ) const ;
+      bool isAlwaysInvalidAlone( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and would not create a cycle
        */
-      bool checkArcAdditionAlone( NodeId x, NodeId y ) const ;
+      bool checkArcAdditionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletionAlone( NodeId x, NodeId y ) const ;
+      bool checkArcDeletionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** An arc (x,y) can be reversed if and only if it exists and, after
        * deleting it, the addition of arc (y,x) does not induce a
        * directed cycle. */
-      bool checkArcReversalAlone( NodeId x, NodeId y ) const ;
+      bool checkArcReversalAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkModificationAlone( const ArcAddition& change ) const ;
+      bool checkModificationAlone( const ArcAddition& change ) const;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone( const ArcDeletion& change ) const ;
+      bool checkModificationAlone( const ArcDeletion& change ) const;
 
       /// checks whether the constraints enable to reverse an arc
       /** An arc can be reversed if, after deleting arc (x,y), the addition of
        * arc (y,x) does not induce a directed cycle. */
-      bool checkModificationAlone( const ArcReversal& change ) const ;
+      bool checkModificationAlone( const ArcReversal& change ) const;
 
       /// checks whether the constraints enable to perform a graph change
       /** an arc can be added if and only if its extremal nodes belong to the
@@ -182,7 +182,7 @@ namespace gum {
        * An arc can be removed if and only if the arc exists.
        * An arc can be reversed if, after deleting arc (x,y), the addition of
        * arc (y,x) does not induce a directed cycle. */
-      bool checkModificationAlone( const GraphChange& change ) const ;
+      bool checkModificationAlone( const GraphChange& change ) const;
 
       /// sets a new graph from which we will perform checkings
       void setGraph( const DAG& graph );

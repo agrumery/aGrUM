@@ -40,261 +40,289 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 namespace gum {
-namespace UAI {
+  namespace UAI {
 
 
-void Parser::SynErr( int n ) {
-  if ( errDist >= minErrDist ) SynErr( scanner->filename(),la->line, la->col, n );
+    void Parser::SynErr( int n ) {
+      if ( errDist >= minErrDist )
+        SynErr( scanner->filename(), la->line, la->col, n );
 
-  errDist = 0;
-}
-
-
-const ErrorsContainer& Parser::errors( void ) const {
-  return __errors;
-}
-ErrorsContainer& Parser::errors( void ) {
-  return __errors;
-}
-
-void Parser::Get() {
-  for ( ;; ) {
-    t = la;
-    la = scanner->Scan();
-
-    if ( la->kind <= maxT ) { ++errDist; break; }
-
-    
-
-    if ( dummyToken != t ) {
-      dummyToken->kind = t->kind;
-      dummyToken->pos = t->pos;
-      dummyToken->col = t->col;
-      dummyToken->line = t->line;
-      dummyToken->next = NULL;
-      coco_string_delete( dummyToken->val );
-      dummyToken->val = coco_string_create( t->val );
-      t = dummyToken;
+      errDist = 0;
     }
 
-    la = t;
-  }
-}
 
-void Parser::Expect( int n ) {
-  if ( la->kind==n ) Get(); else { SynErr( n ); }
-}
+    const ErrorsContainer& Parser::errors( void ) const { return __errors; }
+    ErrorsContainer& Parser::errors( void ) { return __errors; }
 
-void Parser::ExpectWeak( int n, int follow ) {
-  if ( la->kind == n ) Get();
-  else {
-    SynErr( n );
+    void Parser::Get() {
+      for ( ;; ) {
+        t = la;
+        la = scanner->Scan();
 
-    while ( !StartOf( follow ) ) Get();
-  }
-}
+        if ( la->kind <= maxT ) {
+          ++errDist;
+          break;
+        }
 
-bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
-  if ( la->kind == n ) {Get(); return true;}
-  else if ( StartOf( repFol ) ) {return false;}
-  else {
-    SynErr( n );
 
-    while ( !( StartOf( syFol ) || StartOf( repFol ) || StartOf( 0 ) ) ) {
+        if ( dummyToken != t ) {
+          dummyToken->kind = t->kind;
+          dummyToken->pos = t->pos;
+          dummyToken->col = t->col;
+          dummyToken->line = t->line;
+          dummyToken->next = NULL;
+          coco_string_delete( dummyToken->val );
+          dummyToken->val = coco_string_create( t->val );
+          t = dummyToken;
+        }
+
+        la = t;
+      }
+    }
+
+    void Parser::Expect( int n ) {
+      if ( la->kind == n )
+        Get();
+      else {
+        SynErr( n );
+      }
+    }
+
+    void Parser::ExpectWeak( int n, int follow ) {
+      if ( la->kind == n )
+        Get();
+      else {
+        SynErr( n );
+
+        while ( !StartOf( follow ) )
+          Get();
+      }
+    }
+
+    bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
+      if ( la->kind == n ) {
+        Get();
+        return true;
+      } else if ( StartOf( repFol ) ) {
+        return false;
+      } else {
+        SynErr( n );
+
+        while ( !( StartOf( syFol ) || StartOf( repFol ) || StartOf( 0 ) ) ) {
+          Get();
+        }
+
+        return StartOf( syFol );
+      }
+    }
+
+    void Parser::NUMBER() {
+      if ( la->kind == _float ) {
+        Get();
+        quartets.push_back(
+            std::make_tuple( coco_atof( t->val ), -1, t->line, t->col ) );
+      } else if ( la->kind == _integer ) {
+        Get();
+        quartets.push_back(
+            std::make_tuple( -1.0, coco_atoi( t->val ), t->line, t->col ) );
+      } else
+        SynErr( 6 );
+    }
+
+    void Parser::LISTE() {
+      NUMBER();
+      if ( la->kind == _integer || la->kind == _float ) {
+        LISTE();
+      }
+    }
+
+    void Parser::UAI() {
+      Expect( 4 /* "BAYES" */ );
+      LISTE();
+    }
+
+
+    // If the user declared a method Init and a mehtod Destroy they should
+    // be called in the contructur and the destructor respctively.
+    //
+    // The following templates are used to recognize if the user declared
+    // the methods Init and Destroy.
+
+    template <typename T>
+    struct ParserInitExistsRecognizer {
+      template <typename U, void ( U::* )() = &U::Init>
+      struct ExistsIfInitIsDefinedMarker {};
+
+      struct InitIsMissingType {
+        char dummy1;
+      };
+
+      struct InitExistsType {
+        char dummy1;
+        char dummy2;
+      };
+
+      // exists always
+      template <typename U>
+      static InitIsMissingType is_here( ... );
+
+      // exist only if ExistsIfInitIsDefinedMarker is defined
+      template <typename U>
+      static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
+
+      enum {
+        InitExists =
+            ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
+      };
+    };
+
+    template <typename T>
+    struct ParserDestroyExistsRecognizer {
+      template <typename U, void ( U::* )() = &U::Destroy>
+      struct ExistsIfDestroyIsDefinedMarker {};
+
+      struct DestroyIsMissingType {
+        char dummy1;
+      };
+
+      struct DestroyExistsType {
+        char dummy1;
+        char dummy2;
+      };
+
+      // exists always
+      template <typename U>
+      static DestroyIsMissingType is_here( ... );
+
+      // exist only if ExistsIfDestroyIsDefinedMarker is defined
+      template <typename U>
+      static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
+
+      enum {
+        DestroyExists =
+            ( sizeof( is_here<T>( NULL ) ) == sizeof( DestroyExistsType ) )
+      };
+    };
+
+    // The folloing templates are used to call the Init and Destroy methods if
+    // they exist.
+
+    // Generic case of the ParserInitCaller, gets used if the Init method is
+    // missing
+    template <typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
+    struct ParserInitCaller {
+      static void CallInit( T* t ) {
+        // nothing to do
+      }
+    };
+
+    // True case of the ParserInitCaller, gets used if the Init method exists
+    template <typename T>
+    struct ParserInitCaller<T, true> {
+      static void CallInit( T* t ) { t->Init(); }
+    };
+
+    // Generic case of the ParserDestroyCaller, gets used if the Destroy method
+    // is missing
+    template <typename T,
+              bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+    struct ParserDestroyCaller {
+      static void CallDestroy( T* t ) {
+        // nothing to do
+      }
+    };
+
+    // True case of the ParserDestroyCaller, gets used if the Destroy method
+    // exists
+    template <typename T>
+    struct ParserDestroyCaller<T, true> {
+      static void CallDestroy( T* t ) { t->Destroy(); }
+    };
+    void Parser::Parse() {
+      t = NULL;
+      la = dummyToken = new Token();
+      la->val = coco_string_create( L"Dummy Token" );
       Get();
+      UAI();
+      Expect( 0 );
     }
 
-    return StartOf( syFol );
-  }
-}
+    Parser::Parser( Scanner* scanner ) {
+      maxT = 5;
 
-void Parser::NUMBER() {
-		if (la->kind == _float) {
-			Get();
-			quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col)); 
-		} else if (la->kind == _integer) {
-			Get();
-			quartets.push_back(std::make_tuple(-1.0             ,coco_atoi(t->val),t->line,t->col)); 
-		} else SynErr(6);
-}
-
-void Parser::LISTE() {
-		NUMBER();
-		if (la->kind == _integer || la->kind == _float) {
-			LISTE();
-		}
-}
-
-void Parser::UAI() {
-		Expect(4 /* "BAYES" */);
-		LISTE();
-}
-
-
-
-// If the user declared a method Init and a mehtod Destroy they should
-// be called in the contructur and the destructor respctively.
-//
-// The following templates are used to recognize if the user declared
-// the methods Init and Destroy.
-
-template<typename T>
-struct ParserInitExistsRecognizer {
-  template<typename U, void ( U::* )() = &U::Init>
-  struct ExistsIfInitIsDefinedMarker {};
-
-  struct InitIsMissingType {
-    char dummy1;
-  };
-
-  struct InitExistsType {
-    char dummy1; char dummy2;
-  };
-
-  // exists always
-  template<typename U>
-  static InitIsMissingType is_here( ... );
-
-  // exist only if ExistsIfInitIsDefinedMarker is defined
-  template<typename U>
-  static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
-
-  enum { InitExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) ) };
-};
-
-template<typename T>
-struct ParserDestroyExistsRecognizer {
-  template<typename U, void ( U::* )() = &U::Destroy>
-  struct ExistsIfDestroyIsDefinedMarker {};
-
-  struct DestroyIsMissingType {
-    char dummy1;
-  };
-
-  struct DestroyExistsType {
-    char dummy1; char dummy2;
-  };
-
-  // exists always
-  template<typename U>
-  static DestroyIsMissingType is_here( ... );
-
-  // exist only if ExistsIfDestroyIsDefinedMarker is defined
-  template<typename U>
-  static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
-
-  enum { DestroyExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( DestroyExistsType ) ) };
-};
-
-// The folloing templates are used to call the Init and Destroy methods if they exist.
-
-// Generic case of the ParserInitCaller, gets used if the Init method is missing
-template<typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
-struct ParserInitCaller {
-  static void CallInit( T* t ) {
-    // nothing to do
-  }
-};
-
-// True case of the ParserInitCaller, gets used if the Init method exists
-template<typename T>
-struct ParserInitCaller<T, true> {
-  static void CallInit( T* t ) {
-    t->Init();
-  }
-};
-
-// Generic case of the ParserDestroyCaller, gets used if the Destroy method is missing
-template<typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
-struct ParserDestroyCaller {
-  static void CallDestroy( T* t ) {
-    // nothing to do
-  }
-};
-
-// True case of the ParserDestroyCaller, gets used if the Destroy method exists
-template<typename T>
-struct ParserDestroyCaller<T, true> {
-  static void CallDestroy( T* t ) {
-    t->Destroy();
-  }
-};
-void Parser::Parse() {
-  t = NULL;
-  la = dummyToken = new Token();
-  la->val = coco_string_create( L"Dummy Token" );
-  Get();
-  	UAI();
-	Expect(0);
-}
-
-Parser::Parser( Scanner* scanner ) {
-  	maxT = 5;
-
-  ParserInitCaller<Parser>::CallInit( this );
-  dummyToken = NULL;
-  t = la = NULL;
-  minErrDist = 2;
-  errDist = minErrDist;
-  this->scanner = scanner;
-}
-
-bool Parser::StartOf( int s ) {
-  const bool T = true;
-  const bool x = false;
-
-  	static bool set[1][7] = {
-		{T,x,x,x, x,x,x}
-	};
-
-
-
-  return set[s][la->kind];
-}
-
-Parser::~Parser() {
-  ParserDestroyCaller<Parser>::CallDestroy( this );
-  delete dummyToken;
-}
-void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) __errors.Error( scanner->filename(),t->line, t->col, msg );
-
-  errDist = 0;
-}
-
-void Parser::Warning( const wchar_t* msg ) {
-  __errors.Warning( scanner->filename(),t->line, t->col, msg );
-}
-
-void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
-  wchar_t* s;
-
-  switch ( n ) {
-      			case 0: s = coco_string_create(L"EOF expected"); break;
-			case 1: s = coco_string_create(L"eol expected"); break;
-			case 2: s = coco_string_create(L"integer expected"); break;
-			case 3: s = coco_string_create(L"float expected"); break;
-			case 4: s = coco_string_create(L"\"BAYES\" expected"); break;
-			case 5: s = coco_string_create(L"??? expected"); break;
-			case 6: s = coco_string_create(L"invalid NUMBER"); break;
-
-
-    default: {
-      wchar_t format[20];
-      coco_swprintf( format, 20, L"error %d", n );
-      s = coco_string_create( format );
+      ParserInitCaller<Parser>::CallInit( this );
+      dummyToken = NULL;
+      t = la = NULL;
+      minErrDist = 2;
+      errDist = minErrDist;
+      this->scanner = scanner;
     }
-    break;
-  }
 
-  //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-  std::wstring ss=L"Syntax error : "+std::wstring( s );
-  __errors.Error( filename,line,col,ss.c_str() );
-  coco_string_delete( s );
-}
+    bool Parser::StartOf( int s ) {
+      const bool T = true;
+      const bool x = false;
 
-} // namespace
-} // namespace
+      static bool set[1][7] = {{T, x, x, x, x, x, x}};
 
 
+      return set[s][la->kind];
+    }
 
+    Parser::~Parser() {
+      ParserDestroyCaller<Parser>::CallDestroy( this );
+      delete dummyToken;
+    }
+    void Parser::SemErr( const wchar_t* msg ) {
+      if ( errDist >= minErrDist )
+        __errors.Error( scanner->filename(), t->line, t->col, msg );
+
+      errDist = 0;
+    }
+
+    void Parser::Warning( const wchar_t* msg ) {
+      __errors.Warning( scanner->filename(), t->line, t->col, msg );
+    }
+
+    void
+    Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
+      wchar_t* s;
+
+      switch ( n ) {
+        case 0:
+          s = coco_string_create( L"EOF expected" );
+          break;
+        case 1:
+          s = coco_string_create( L"eol expected" );
+          break;
+        case 2:
+          s = coco_string_create( L"integer expected" );
+          break;
+        case 3:
+          s = coco_string_create( L"float expected" );
+          break;
+        case 4:
+          s = coco_string_create( L"\"BAYES\" expected" );
+          break;
+        case 5:
+          s = coco_string_create( L"??? expected" );
+          break;
+        case 6:
+          s = coco_string_create( L"invalid NUMBER" );
+          break;
+
+
+        default: {
+          wchar_t format[20];
+          coco_swprintf( format, 20, L"error %d", n );
+          s = coco_string_create( format );
+        } break;
+      }
+
+      // wprintf(L"-- line %d col %d: %ls\n", line, col, s);
+      std::wstring ss = L"Syntax error : " + std::wstring( s );
+      __errors.Error( filename, line, col, ss.c_str() );
+      coco_string_delete( s );
+    }
+
+  }  // namespace
+}  // namespace

@@ -17,16 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <cmath>
 #include <iostream>
 #include <string>
-#include <cmath>
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/DSL/DSLReader.h>
 #include <agrum/BN/io/DSL/DSLWriter.h>
+#include <agrum/variables/labelizedVariable.h>
+#include <cxxtest/AgrumTestSuite.h>
+#include <cxxtest/testsuite_utils.h>
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -305,7 +305,7 @@ namespace gum_tests {
         var_inst << lvedvolume;
         inst.chgVal( hypovolemia, 0 );
         inst.chgVal( lvfailure, 0 );
-        float array_1[] = {0.95f , 0.04f , 0.01f };
+        float array_1[] = {0.95f, 0.04f, 0.01f};
         size_t i = 0;
 
         for ( inst.setFirstIn( var_inst ); !inst.end();
@@ -315,7 +315,7 @@ namespace gum_tests {
 
         inst.chgVal( hypovolemia, 1 );
         inst.chgVal( lvfailure, 0 );
-        float array_2[] = {0.98f , 0.01f , 0.01f };
+        float array_2[] = {0.98f, 0.01f, 0.01f};
         i = 0;
 
         for ( inst.setFirstIn( var_inst ); !inst.end();
@@ -325,7 +325,7 @@ namespace gum_tests {
 
         inst.chgVal( hypovolemia, 0 );
         inst.chgVal( lvfailure, 1 );
-        float array_3[] = {0.01f , 0.09f , 0.9f };
+        float array_3[] = {0.01f, 0.09f, 0.9f};
         i = 0;
 
         for ( inst.setFirstIn( var_inst ); !inst.end();
@@ -335,7 +335,7 @@ namespace gum_tests {
 
         inst.chgVal( hypovolemia, 1 );
         inst.chgVal( lvfailure, 1 );
-        float array_4[] = {0.05f , 0.9f , 0.05f };
+        float array_4[] = {0.05f, 0.9f, 0.05f};
         i = 0;
 
         for ( inst.setFirstIn( var_inst ); !inst.end();

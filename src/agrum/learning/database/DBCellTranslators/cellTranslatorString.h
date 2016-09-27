@@ -25,13 +25,13 @@
 #ifndef GUM_LEARNING_CELL_TRANSLATOR_STRING_H
 #define GUM_LEARNING_CELL_TRANSLATOR_STRING_H
 
+#include <algorithm>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 #include <agrum/config.h>
-#include <agrum/core/sequence.h>
 #include <agrum/core/bijection.h>
+#include <agrum/core/sequence.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 
 namespace gum {
@@ -139,8 +139,7 @@ namespace gum {
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack( Idx col,
-                                 Idx translated_val ) const;
+      std::string translateBack( Idx col, Idx translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames( const std::vector<std::string>& db_var,

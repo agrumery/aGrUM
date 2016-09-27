@@ -23,4 +23,3 @@
 
 template class gum::BIFWriter<float>;
 template class gum::BIFWriter<double>;
-

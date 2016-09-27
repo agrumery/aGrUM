@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
+#include <iostream>
 
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/scores_and_tests/counter.h>
 
 namespace gum_tests {
@@ -60,8 +60,8 @@ namespace gum_tests {
       }
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      const std::vector<gum::Idx>*
-      getConditioningNodes( gum::Idx index ) const noexcept {
+      const std::vector<gum::Idx>* getConditioningNodes( gum::Idx index ) const
+          noexcept {
         return gum::learning::Counter<>::_getConditioningNodes( index );
       }
 
@@ -73,12 +73,12 @@ namespace gum_tests {
 
     void test1() {
       gum::learning::DatabaseFromCSV database(
-              GET_RESSOURCES_PATH("asia.csv"));
+          GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
-              gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                      gum::learning::Col<0>,
-                      8>());
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );

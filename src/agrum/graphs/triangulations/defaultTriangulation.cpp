@@ -24,9 +24,9 @@
  */
 
 #include <agrum/config.h>
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
-#include <agrum/graphs/eliminations/defaultEliminationSequenceStrategy.h>
 #include <agrum/graphs/defaultJunctionTreeStrategy.h>
+#include <agrum/graphs/eliminations/defaultEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

@@ -22,9 +22,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/PRM/generator/layerGenerator.h>
 #include <agrum/PRM/gspan/interfaceGraph.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
-#include <agrum/PRM/generator/layerGenerator.h>
 
 namespace gum_tests {
 

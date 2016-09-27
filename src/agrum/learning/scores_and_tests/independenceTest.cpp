@@ -28,5 +28,3 @@
 
 
 template class gum::learning::IndependenceTest<>;
-
-

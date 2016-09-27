@@ -28,4 +28,3 @@
 
 template class gum::aggregator::Forall<float>;
 template class gum::aggregator::Forall<double>;
-

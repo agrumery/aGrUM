@@ -194,8 +194,7 @@ namespace gum {
       void translate();
 
       /// returns the name of the jth value of the ith column
-      std::string translateBack( Idx col,
-                                 Idx translated_val ) const;
+      std::string translateBack( Idx col, Idx translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       /** If initialization is required, this method is called for each row
@@ -280,8 +279,7 @@ namespace gum {
           BasicDBRowTranslatorSetStatic<0, Translators...>;
 
       /// the size of the output filtered row
-      static constexpr Size output_size =
-          TranslatorSetStatic::output_size;
+      static constexpr Size output_size = TranslatorSetStatic::output_size;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -337,8 +335,7 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which will be stored into the
        * Bayesian network) */
-      std::string translateBack( Idx col,
-                                 Idx translated_val ) const;
+      std::string translateBack( Idx col, Idx translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       void initialize();

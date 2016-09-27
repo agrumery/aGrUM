@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <agrum/CN/credalNet.h>
 #include <agrum/config.h>
 #include <agrum/core/utils_string.h>
-#include <agrum/CN/credalNet.h>
 
 namespace gum {
   namespace credal {
@@ -590,9 +590,9 @@ namespace gum {
           if ( beta == 0 )
             epsilon = 0;
           else if ( den == 0 || beta == 1 )
-            epsilon = GUM_SCALAR(1.0);
+            epsilon = GUM_SCALAR( 1.0 );
           else
-            epsilon = GUM_SCALAR(std::pow( beta, std::log( den + 1 ) ));
+            epsilon = GUM_SCALAR( std::pow( beta, std::log( den + 1 ) ) );
 
           epsi_moy += epsilon;
           epsi_den += 1;
@@ -605,17 +605,17 @@ namespace gum {
 
           for ( Size modality = 0; modality < var_dSize; modality++ ) {
             if ( ( vertex[modality] > 0 && nbm > 1 ) || !keepZeroes ) {
-              min = GUM_SCALAR(( 1. - epsilon ) * vertex[modality]);
+              min = GUM_SCALAR( ( 1. - epsilon ) * vertex[modality] );
 
-              if ( oneNet ) min = GUM_SCALAR(min * 1.0 / den);
+              if ( oneNet ) min = GUM_SCALAR( min * 1.0 / den );
 
-              max = GUM_SCALAR(min + epsilon);
+              max = GUM_SCALAR( min + epsilon );
             } else {  // if ( ( vertex[modality] == 0 && keepZeroes ) || (
               // vertex[modality] > 0 && nbm <= 1 ) || ( vertex[modality] == 0
               // && nbm <= 1 ) ) {
               min = vertex[modality];
 
-              if ( oneNet ) min = GUM_SCALAR(min * 1.0 / den);
+              if ( oneNet ) min = GUM_SCALAR( min * 1.0 / den );
 
               max = min;
             }
@@ -747,8 +747,8 @@ namespace gum {
               max += s;
             }
 
-            min = GUM_SCALAR(min * 1.0 / den);
-            max =GUM_SCALAR( max * 1.0 / den);
+            min = GUM_SCALAR( min * 1.0 / den );
+            max = GUM_SCALAR( max * 1.0 / den );
 
             potential_min->set( ins_min, min );
             potential_max->set( ins_max, max );
@@ -761,9 +761,9 @@ namespace gum {
 
       }  // end of : for each variable
 
-      __epsilonMin = GUM_SCALAR(s);
-      __epsilonMax = GUM_SCALAR(s);
-      __epsilonMoy = GUM_SCALAR(s);
+      __epsilonMin = GUM_SCALAR( s );
+      __epsilonMax = GUM_SCALAR( s );
+      __epsilonMoy = GUM_SCALAR( s );
       __intervalToCredal();
     }
 
@@ -1095,10 +1095,10 @@ namespace gum {
         auto var_dSize = __current_bn->variable( node ).domainSize();
 
         if ( var_dSize != 2 ) {
-          unsigned long b,c;
-          superiorPow( var_dSize, b,c);
-          Size nb_bits{Size(b)};
-          Size new_card{Size(c)};
+          unsigned long b, c;
+          superiorPow( var_dSize, b, c );
+          Size nb_bits{Size( b )};
+          Size new_card{Size( c )};
 
           std::string bit_name;
           std::vector<NodeId> bits( nb_bits );
@@ -1133,10 +1133,10 @@ namespace gum {
 
         if ( !parents.empty() ) {
           for ( auto par : __current_bn->dag().parents( node ) ) {
-            for ( Size parent_bit = 0, spbits = Size(__var_bits[par].size());
+            for ( Size parent_bit = 0, spbits = Size( __var_bits[par].size() );
                   parent_bit < spbits;
                   parent_bit++ )
-              for ( Size var_bit = 0, mbits = Size(__var_bits[node].size());
+              for ( Size var_bit = 0, mbits = Size( __var_bits[node].size() );
                     var_bit < mbits;
                     var_bit++ )
                 __bin_bn->addArc( __var_bits[par][parent_bit],
@@ -1193,7 +1193,7 @@ namespace gum {
                     ins.pos( __bin_bn->variable( __var_bits[var][preced] ) );
                 auto val = ins.val( bit_pos );
 
-                Size pas=Size(int2Pow(preced));
+                Size pas = Size( int2Pow( preced ) );
                 Size elem;
 
                 if ( val == 0 )
@@ -1209,7 +1209,7 @@ namespace gum {
                 }
               }
 
-              Size pas=Size(int2Pow( i ));
+              Size pas = Size( int2Pow( i ) );
 
               std::vector<GUM_SCALAR> distri( 2, 0 );
               int pos = 1;
@@ -1306,7 +1306,7 @@ namespace gum {
             __bin_bn->addArc( __var_bits[i][bit], indic );
 
           // cpt
-          Size num=Size(int2Pow(long(bitsize)));
+          Size num = Size( int2Pow( long( bitsize ) ) );
 
           std::vector<std::vector<std::vector<GUM_SCALAR>>> icpt( num );
 
@@ -1510,19 +1510,19 @@ namespace gum {
       __epsilonMax = 0;
       __epsilonMoy = 0;
 
-      __epsRedund = GUM_SCALAR(1e-6);
+      __epsRedund = GUM_SCALAR( 1e-6 );
 
       // farey algorithm
-      __epsF = GUM_SCALAR(1e-6);
-      __denMax = GUM_SCALAR(1e6);  // beware LRSWrapper
+      __epsF = GUM_SCALAR( 1e-6 );
+      __denMax = GUM_SCALAR( 1e6 );  // beware LRSWrapper
 
       // continued fractions, beware LRSWrapper
       // decimal paces (__epsC * __precisionC == 1)
-      __precisionC = GUM_SCALAR(1e6);
+      __precisionC = GUM_SCALAR( 1e6 );
       __deltaC = 5;
 
       // old custom algorithm
-      __precision = GUM_SCALAR(1e6);  // beware LRSWrapper
+      __precision = GUM_SCALAR( 1e6 );  // beware LRSWrapper
 
       __current_bn = nullptr;
       __credalNet_current_cpt = nullptr;
@@ -1589,7 +1589,8 @@ namespace gum {
       for ( auto entry = var_cpt.cbegin(), theEnd = var_cpt.cend();
             entry != theEnd;
             ++entry ) {
-        if ( entry->size() > vertices_size ) vertices_size = Size(entry->size());
+        if ( entry->size() > vertices_size )
+          vertices_size = Size( entry->size() );
       }
 
       return vertices_size;
@@ -1705,8 +1706,11 @@ namespace gum {
           // get integer fraction from decimal value
           // smallest numerator & denominator is farley, also
           // best precision
-          Rational<GUM_SCALAR>::farey(
-              num, den, ( ( *it2 > 0 ) ? *it2 : -*it2 ), long(__denMax), __epsF );
+          Rational<GUM_SCALAR>::farey( num,
+                                       den,
+                                       ( ( *it2 > 0 ) ? *it2 : -*it2 ),
+                                       long( __denMax ),
+                                       __epsF );
 
           h_file << ( ( *it2 > 0 ) ? num : -num ) << '/' << den << ' ';
         }
@@ -1803,11 +1807,12 @@ namespace gum {
           tmp = p;
 
           if ( tmp.compare( "1" ) == 0 || tmp.compare( "0" ) == 0 )
-            probability = GUM_SCALAR(atof( tmp.c_str() ));
+            probability = GUM_SCALAR( atof( tmp.c_str() ) );
           else {
             pos = tmp.find( "/" );
-            probability = GUM_SCALAR(atof( tmp.substr( 0, pos ).c_str() ) /
-                          atof( tmp.substr( pos + 1, tmp.size() ).c_str() ));
+            probability =
+                GUM_SCALAR( atof( tmp.substr( 0, pos ).c_str() ) /
+                            atof( tmp.substr( pos + 1, tmp.size() ).c_str() ) );
           }
 
           vertex.push_back( probability );

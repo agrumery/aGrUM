@@ -257,28 +257,28 @@ namespace gum {
       void modifyGraph( const GraphChange& change );
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid( const GraphChange& change ) const ;
+      bool isAlwaysInvalid( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition( NodeId x, NodeId y ) const ;
+      bool checkArcAddition( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion( NodeId x, NodeId y ) const ;
+      bool checkArcDeletion( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal( NodeId x, NodeId y ) const ;
+      bool checkArcReversal( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification( const ArcAddition& change ) const ;
+      bool checkModification( const ArcAddition& change ) const;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification( const ArcDeletion& change ) const ;
+      bool checkModification( const ArcDeletion& change ) const;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification( const ArcReversal& change ) const ;
+      bool checkModification( const ArcReversal& change ) const;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification( const GraphChange& change ) const ;
+      bool checkModification( const GraphChange& change ) const;
 
       /// @}
     };
@@ -363,28 +363,28 @@ namespace gum {
       void modifyGraph( const GraphChange& change );
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid( const GraphChange& change ) const ;
+      bool isAlwaysInvalid( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition( NodeId x, NodeId y ) const ;
+      bool checkArcAddition( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion( NodeId x, NodeId y ) const ;
+      bool checkArcDeletion( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal( NodeId x, NodeId y ) const ;
+      bool checkArcReversal( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification( const ArcAddition& change ) const ;
+      bool checkModification( const ArcAddition& change ) const;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification( const ArcDeletion& change ) const ;
+      bool checkModification( const ArcDeletion& change ) const;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification( const ArcReversal& change ) const ;
+      bool checkModification( const ArcReversal& change ) const;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification( const GraphChange& change ) const ;
+      bool checkModification( const GraphChange& change ) const;
 
       /// @}
     };
@@ -479,28 +479,28 @@ namespace gum {
       void modifyGraph( const GraphChange& change );
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid( const GraphChange& change ) const ;
+      bool isAlwaysInvalid( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition( NodeId x, NodeId y ) const ;
+      bool checkArcAddition( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion( NodeId x, NodeId y ) const ;
+      bool checkArcDeletion( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal( NodeId x, NodeId y ) const ;
+      bool checkArcReversal( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification( const ArcAddition& change ) const ;
+      bool checkModification( const ArcAddition& change ) const;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification( const ArcDeletion& change ) const ;
+      bool checkModification( const ArcDeletion& change ) const;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification( const ArcReversal& change ) const ;
+      bool checkModification( const ArcReversal& change ) const;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification( const GraphChange& change ) const ;
+      bool checkModification( const GraphChange& change ) const;
 
       /// @}
     };
@@ -564,28 +564,28 @@ namespace gum {
       void modifyGraph( const GraphChange& change );
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid( const GraphChange& change ) const ;
+      bool isAlwaysInvalid( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition( NodeId x, NodeId y ) const ;
+      bool checkArcAddition( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion( NodeId x, NodeId y ) const ;
+      bool checkArcDeletion( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal( NodeId x, NodeId y ) const ;
+      bool checkArcReversal( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification( const ArcAddition& change ) const ;
+      bool checkModification( const ArcAddition& change ) const;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification( const ArcDeletion& change ) const ;
+      bool checkModification( const ArcDeletion& change ) const;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification( const ArcReversal& change ) const ;
+      bool checkModification( const ArcReversal& change ) const;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification( const GraphChange& change ) const ;
+      bool checkModification( const GraphChange& change ) const;
 
       /// @}
     };

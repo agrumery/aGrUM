@@ -27,8 +27,8 @@
 // WARNING : Do not include this file directlty : instead include
 // <agrum/config.h>
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <string>
 
 #include <agrum/core/types.h>
@@ -97,7 +97,7 @@ namespace gum {
     Exception( const std::string aMsg = "",
                const std::string aType = "Generic error" );
 
-    Exception( const Exception& e);
+    Exception( const Exception& e );
 
     ~Exception() {}
 

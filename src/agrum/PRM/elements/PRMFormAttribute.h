@@ -35,7 +35,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class PRMFormAttribute formAttribute.h <agrum/PRM/elements/formAttribute.h>
+     * @class PRMFormAttribute formAttribute.h
+     *<agrum/PRM/elements/formAttribute.h>
      * @brief PRMFormAttribute is a member of a Class in a PRM.
      *
      * @see PRM PRMFactory Class PRMClassElement PRMType<GUM_SCALAR> Potential
@@ -46,10 +47,10 @@ namespace gum {
     class PRMFormAttribute : public PRMAttribute<GUM_SCALAR> {
       public:
       PRMFormAttribute( const PRMClass<GUM_SCALAR>& c,
-                     const std::string& name,
-                     const PRMType<GUM_SCALAR>& type,
-                     MultiDimImplementation<std::string>* impl =
-                         new MultiDimArray<std::string>() );
+                        const std::string& name,
+                        const PRMType<GUM_SCALAR>& type,
+                        MultiDimImplementation<std::string>* impl =
+                            new MultiDimArray<std::string>() );
 
       virtual ~PRMFormAttribute();
 

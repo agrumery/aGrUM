@@ -25,8 +25,8 @@
 
 #include <agrum/config.h>
 
-#include <agrum/graphs/graphElements.h>
 #include <agrum/core/signal/signaler.h>
+#include <agrum/graphs/graphElements.h>
 
 namespace gum {
 

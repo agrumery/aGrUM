@@ -23,12 +23,12 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/multidim/multiDimArray.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

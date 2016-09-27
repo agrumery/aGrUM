@@ -29,4 +29,3 @@
 
 template class gum::credal::CredalNet<float>;
 template class gum::credal::CredalNet<double>;
-

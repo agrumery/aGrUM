@@ -31,10 +31,10 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
-#include <agrum/FMDP/learning/datastructure/variableselector.h>
-#include <agrum/FMDP/learning/datastructure/leaves/leafAggregator.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
 #include <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>
+#include <agrum/FMDP/learning/datastructure/leaves/leafAggregator.h>
+#include <agrum/FMDP/learning/datastructure/variableselector.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================

@@ -29,27 +29,27 @@
 
 #include <agrum/config.h>
 
+#include <fstream>
+#include <iostream>
 #include <set>
 #include <vector>
-#include <iostream>
-#include <fstream>
 
 #include <sstream>
 
-#ifdef  HAVE_DIRENT_H
+#ifdef HAVE_DIRENT_H
 #include <dirent.h>
 #else
 #include <agrum/core/mvsc/dirent.h>
 #endif
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/generator/simpleCPTDisturber.h>
-#include <agrum/core/hashTable.h>
 #include <agrum/BN/generator/IBayesNetGenerator.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/BN/generator/simpleCPTDisturber.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum {
   /**
@@ -153,7 +153,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR,
             template <typename> class ICPTGenerator = SimpleCPTGenerator,
-    template <typename> class ICPTDisturber = SimpleCPTDisturber>
+            template <typename> class ICPTDisturber = SimpleCPTDisturber>
   class MCBayesNetGenerator
       : public IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>,
         public ICPTDisturber<GUM_SCALAR> {
@@ -367,9 +367,10 @@ namespace gum {
      **/
     virtual bool __checkConditions();
 
-    //NOT USED ? void __createDAG( Size BNSize, Size iniRoot );
+    // NOT USED ? void __createDAG( Size BNSize, Size iniRoot );
 
-    // NOT USED ? std::vector<Idx>* __createPartDAG( Size BNSize, Size iniRoot );
+    // NOT USED ? std::vector<Idx>* __createPartDAG( Size BNSize, Size iniRoot
+    // );
 
     /**
      * The internal function used by the previous __connect. It asserts the

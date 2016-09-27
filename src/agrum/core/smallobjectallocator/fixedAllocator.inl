@@ -92,7 +92,7 @@ namespace gum {
   // ============================================================================
   INLINE void
   FixedAllocator::__Chunk::__deallocat( void* pDeallocatedBlock,
-                                         const std::size_t& blockSize ) {
+                                        const std::size_t& blockSize ) {
 
     // first, ensure that deallocated is in this chunk
     assert( pDeallocatedBlock >= __pData );
@@ -121,9 +121,7 @@ namespace gum {
   // ============================================================================
   // Releases the allocated memory
   // ============================================================================
-  INLINE void FixedAllocator::__Chunk::__release() {
-    delete[] __pData;
-  }
+  INLINE void FixedAllocator::__Chunk::__release() { delete[] __pData; }
 
 
   // ############################################################################
@@ -135,7 +133,7 @@ namespace gum {
   // ============================================================================
   INLINE FixedAllocator::FixedAllocator( const std::size_t& blockSize,
                                          const unsigned char& numBlocks ) {
-//    GUM_CONSTRUCTOR(FixedAllocator)
+    //    GUM_CONSTRUCTOR(FixedAllocator)
     __blockSize = blockSize;
     __numBlocks = numBlocks;
     __allocChunk = __chunks.begin();
@@ -150,7 +148,7 @@ namespace gum {
           chunkIter != __chunks.end();
           ++chunkIter )
       chunkIter->__release();
-//    GUM_DESTRUCTOR(FixedAllocator)
+    //    GUM_DESTRUCTOR(FixedAllocator)
   }
 
   // ############################################################################

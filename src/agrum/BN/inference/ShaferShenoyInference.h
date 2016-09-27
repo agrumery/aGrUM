@@ -27,10 +27,10 @@
 #ifndef GUM_SHAFER_SHENOY_INFERENCE_H
 #define GUM_SHAFER_SHENOY_INFERENCE_H
 
-#include <vector>
-#include <utility>
 #include <iostream>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <agrum/config.h>
 
@@ -168,7 +168,7 @@ namespace gum {
     void __buildCliquesTables();
 
     /// Add the evidences to the clique's table
-    //void __addEvidences();
+    // void __addEvidences();
 
     /// Starting collect w.r.t. a clique
     void __collectFromClique( NodeId source );

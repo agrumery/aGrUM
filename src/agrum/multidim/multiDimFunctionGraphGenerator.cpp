@@ -26,11 +26,11 @@
  *
  */
 
-#include <random>
 #include <cstdlib>
+#include <random>
 
-#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
 #include <agrum/core/priorityQueue.h>
+#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
 
 namespace gum {
   // Constructor
@@ -150,13 +150,13 @@ namespace gum {
 
   bool MultiDimFunctionGraphGenerator::__createLeaf(
       NodeId currentNodeId, HashTable<NodeId, Idx>& node2MinVar ) {
-    return !( currentNodeId == 1 ||
-              ( (double)std::rand() / (double)RAND_MAX <
-                    0.9 +
-                        0.01 * ( float( __nbTotalVar -
-                                        node2MinVar[currentNodeId] ) /
-                                 float( __nbTotalVar ) ) &&
-                node2MinVar[currentNodeId] < __nbTotalVar - 1 ) );
+    return !(
+        currentNodeId == 1 ||
+        ( (double)std::rand() / (double)RAND_MAX <
+              0.9 +
+                  0.01 * ( float( __nbTotalVar - node2MinVar[currentNodeId] ) /
+                           float( __nbTotalVar ) ) &&
+          node2MinVar[currentNodeId] < __nbTotalVar - 1 ) );
   }
 
   Idx MultiDimFunctionGraphGenerator::__generateVarPos( Idx offset, Idx span ) {
@@ -165,7 +165,7 @@ namespace gum {
 
     if ( span != 0 ) {
       auto generator = gum::getRandomGenerator();
-      std::weibull_distribution<double> distribution( double(span), 1.0 );
+      std::weibull_distribution<double> distribution( double( span ), 1.0 );
       randOut = ( Idx )( distribution( generator ) * span / 2 );
       if ( randOut > span ) randOut = span;
     }

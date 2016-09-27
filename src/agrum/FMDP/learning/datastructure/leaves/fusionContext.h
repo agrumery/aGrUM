@@ -33,8 +33,8 @@
 #include <agrum/graphs/graphElements.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
-#include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
+#include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
 // =========================================================================
 
 namespace gum {
@@ -74,7 +74,7 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate(s );
+      return SmallObjectAllocator::instance().allocate( s );
     }
     void operator delete( void* p ) {
       SmallObjectAllocator::instance().deallocate( p, sizeof( FusionContext ) );

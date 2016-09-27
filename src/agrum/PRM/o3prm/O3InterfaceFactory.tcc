@@ -133,7 +133,7 @@ namespace gum {
             __interfaceMap.insert( i->name().label(), i.get() );
             __nodeMap.insert( id, i.get() );
 
-          } catch ( DuplicateElement&  ) {
+          } catch ( DuplicateElement& ) {
             // Raised if duplicate type names
             O3PRM_INTERFACE_DUPLICATE( i->name(), *__errors );
             return false;
@@ -150,7 +150,7 @@ namespace gum {
 
           if ( i->superLabel().label() != "" ) {
 
-            if ( ! __solver->resolveInterface( i->superLabel() ) ) {
+            if ( !__solver->resolveInterface( i->superLabel() ) ) {
               return false;
             }
 
@@ -161,7 +161,7 @@ namespace gum {
 
               __dag.addArc( tail, head );
 
-            } catch ( InvalidDirectedCycle&  ) {
+            } catch ( InvalidDirectedCycle& ) {
               // Cyclic inheritance
               O3PRM_INTERFACE_CYCLIC_INHERITANCE(
                   i->name(), i->superLabel(), *__errors );
@@ -223,7 +223,7 @@ namespace gum {
       INLINE bool O3InterfaceFactory<GUM_SCALAR>::__checkInterfaceElement(
           O3Interface& i, O3InterfaceElement& elt ) {
 
-        if ( ! __solver->resolveClassElement( elt.type() ) ) {
+        if ( !__solver->resolveClassElement( elt.type() ) ) {
           return false;
         }
 
@@ -235,12 +235,12 @@ namespace gum {
         const auto& real_i = __prm->getInterface( i.name().label() );
 
         if ( real_i.exists( elt.name().label() ) ) {
-          if ( ! __checkOverloadLegality( i, elt ) ) {
+          if ( !__checkOverloadLegality( i, elt ) ) {
             return false;
           }
         }
 
-        if ( ! __checkCyclicReference( i, elt ) ) {
+        if ( !__checkCyclicReference( i, elt ) ) {
           return false;
         }
 
@@ -276,7 +276,7 @@ namespace gum {
         const auto& sub_type = __prm->type( elt.type().label() );
         const auto& super_type = real_elt.type();
 
-        if ( ! sub_type.isSubTypeOf( super_type ) ) {
+        if ( !sub_type.isSubTypeOf( super_type ) ) {
           O3PRM_INTERFACE_ILLEGAL_OVERLOAD( elt, *__errors );
           return false;
         }
@@ -307,7 +307,7 @@ namespace gum {
 
         auto super_type = &( real_elt.slotType() );
 
-        if ( ! sub_type->isSubTypeOf( *super_type ) ) {
+        if ( !sub_type->isSubTypeOf( *super_type ) ) {
           O3PRM_INTERFACE_ILLEGAL_OVERLOAD( elt, *__errors );
           return false;
         }
@@ -354,4 +354,3 @@ namespace gum {
     }  // o3prm
   }    // prm
 }  // gum
-

@@ -610,4 +610,3 @@ namespace gum {
 }  // gum
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-

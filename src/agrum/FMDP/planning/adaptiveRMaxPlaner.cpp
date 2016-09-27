@@ -26,17 +26,17 @@
 
 // =========================================================================
 #include <cmath>
-#include <vector>
 #include <queue>
+#include <vector>
 //#include <algorithm>
 //#include <utility>
 // =========================================================================
 #include <agrum/core/functors.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/potential.h>
 // =========================================================================
 #include <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
 // =========================================================================
@@ -59,10 +59,11 @@ namespace gum {
   // ===========================================================================
   // Default constructor
   // ===========================================================================
-  AdaptiveRMaxPlaner::AdaptiveRMaxPlaner(IOperatorStrategy<double>* opi,
-                          double discountFactor,
-                          double epsilon,
-                          const ILearningStrategy* learner , bool verbose)
+  AdaptiveRMaxPlaner::AdaptiveRMaxPlaner( IOperatorStrategy<double>* opi,
+                                          double discountFactor,
+                                          double epsilon,
+                                          const ILearningStrategy* learner,
+                                          bool verbose )
       : StructuredPlaner( opi, discountFactor, epsilon, verbose )
       , IDecisionStrategy()
       , __fmdpLearner( learner )
@@ -328,9 +329,9 @@ namespace gum {
   // ===========================================================================
   std::pair<NodeId, NodeId>
   AdaptiveRMaxPlaner::__visitLearner( const IVisitableGraphLearner* visited,
-                              NodeId currentNodeId,
-                              MultiDimFunctionGraph<double>* rmax,
-                              MultiDimFunctionGraph<double>* boolQ ) {
+                                      NodeId currentNodeId,
+                                      MultiDimFunctionGraph<double>* rmax,
+                                      MultiDimFunctionGraph<double>* boolQ ) {
 
     std::pair<NodeId, NodeId> rep;
     if ( visited->isTerminal( currentNodeId ) ) {

@@ -27,23 +27,23 @@
 #ifndef GUM_DFS_TREE_H
 #define GUM_DFS_TREE_H
 
-#include <utility>
 #include <cmath>
 #include <list>
-#include <vector>
 #include <ostream>
+#include <utility>
+#include <vector>
 
+#include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/set.h>
-#include <agrum/core/bijection.h>
 
 #include <agrum/graphs/diGraph.h>
 
 #include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
 
+#include <agrum/PRM/gspan/edgeGrowth.h>
 #include <agrum/PRM/gspan/interfaceGraph.h>
 #include <agrum/PRM/gspan/pattern.h>
-#include <agrum/PRM/gspan/edgeGrowth.h>
 
 #include <agrum/PRM/gspan/searchStrategy.h>
 
@@ -290,9 +290,9 @@ namespace gum {
                          EdgeGrowth<GUM_SCALAR>& edge_growth );
 
         /// Check if an instance match is redundant.
-        bool
-        __is_new_seq( Sequence<PRMInstance<GUM_SCALAR>*>& seq,
-                      NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& iso_map );
+        bool __is_new_seq(
+            Sequence<PRMInstance<GUM_SCALAR>*>& seq,
+            NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& iso_map );
 
         /// This initialize the DSFTree with a new root.
         /// @param p A Pattern.
@@ -301,8 +301,9 @@ namespace gum {
                                  Sequence<EdgeData<GUM_SCALAR>*>& seq );
 
         // Used by __find_sub_pattern.
-        bool __test_equality( HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,
-                              HashTable<PRMClassElement<GUM_SCALAR>*, Size>& y );
+        bool
+        __test_equality( HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,
+                         HashTable<PRMClassElement<GUM_SCALAR>*, Size>& y );
       };
 
 

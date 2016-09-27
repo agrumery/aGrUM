@@ -27,10 +27,10 @@
 #ifndef GUM_INFLUENCE_DIAGRAM_INFERENCE_H
 #define GUM_INFLUENCE_DIAGRAM_INFERENCE_H
 
-#include <vector>
-#include <utility>
 #include <iostream>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <agrum/config.h>
 

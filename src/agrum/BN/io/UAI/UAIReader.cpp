@@ -23,4 +23,3 @@
 
 template class gum::UAIReader<float>;
 template class gum::UAIReader<double>;
-

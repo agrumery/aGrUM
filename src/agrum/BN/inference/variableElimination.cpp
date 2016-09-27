@@ -23,4 +23,3 @@
 
 template class gum::VariableElimination<float>;
 template class gum::VariableElimination<double>;
-

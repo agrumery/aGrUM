@@ -27,21 +27,21 @@
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_H
 
-#include <agrum/core/types.h>
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
-#include <agrum/core/list.h>
 #include <agrum/core/bijection.h>
+#include <agrum/core/list.h>
+#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/core/types.h>
 
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 
 #include <agrum/graphs/graphElements.h>
 
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimFunctionGraphManager.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 #include <agrum/multidim/FunctionGraphUtilities/link.h>
-#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraphManager.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 
@@ -73,7 +73,8 @@ namespace gum {
    * MultiDimFunctionGraph.
    */
   template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
+            template <typename> class TerminalNodePolicy =
+                ExactTerminalNodePolicy>
   class MultiDimFunctionGraph : public MultiDimImplementation<GUM_SCALAR>,
                                 public TerminalNodePolicy<GUM_SCALAR> {
 
@@ -107,8 +108,8 @@ namespace gum {
      * @param from The MultiDimFunctionGraph to copy.
      * @return Returns this MultiDimFunctionGraph.
      */
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>&
-    operator=( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& operator=(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
 
     /**
      * @brief Class destructor.
@@ -204,7 +205,8 @@ namespace gum {
      *
      * @param src The MultiDimFunctionGraph to copy.
      */
-    void copy( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
+    void
+    copy( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
 
     /**
      * @brief Copies src diagrams structure into this diagrams.
@@ -221,7 +223,8 @@ namespace gum {
      */
     void copyAndReassign(
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
-        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& reassign );
+        const Bijection<const DiscreteVariable*, const DiscreteVariable*>&
+            reassign );
 
     /**
      * @brief Copies src diagrams and multiply every value by the given scalar.
@@ -345,7 +348,8 @@ namespace gum {
      * @brief Returns an arborescent instance
      * @return Returns an arborescent instance
      */
-    static MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* getTreeInstance();
+    static MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
+    getTreeInstance();
 
     /// @}
 
@@ -392,10 +396,8 @@ namespace gum {
   };
 
 
-  //extern template class MultiDimFunctionGraph<float>;
-  //extern template class MultiDimFunctionGraph<double>;
-
-
+  // extern template class MultiDimFunctionGraph<float>;
+  // extern template class MultiDimFunctionGraph<double>;
 }
 
 #include <agrum/multidim/multiDimFunctionGraph.tcc>

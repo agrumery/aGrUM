@@ -33,8 +33,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE IndepTestG2<IdSetAlloc, CountAlloc>::IndepTestG2(
-        const RowFilter& filter,
-        const std::vector<Size>& var_modalities )
+        const RowFilter& filter, const std::vector<Size>& var_modalities )
         : IndependenceTest<IdSetAlloc, CountAlloc>( filter, var_modalities )
         , __chi2( var_modalities ) {
       // for debugging purposes
@@ -50,8 +49,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    double
-    IndepTestG2<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
+    double IndepTestG2<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -83,21 +81,20 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nz =
             this->_getConditioningCounts( nodeset_index + 1 );
 
-        const Size Z_size = Size(Nz.size());
-        const Size Y_size = Size(modals[all_nodes[all_nodes.size() - 2]]);
-        const Size X_size = Size(modals[all_nodes[all_nodes.size() - 1]]);
+        const Size Z_size = Size( Nz.size() );
+        const Size Y_size = Size( modals[all_nodes[all_nodes.size() - 2]] );
+        const Size X_size = Size( modals[all_nodes[all_nodes.size() - 1]] );
 
         double score = 0;
 
         for ( Idx x = 0, beg_zx = 0, zyx = 0; x < X_size;
               ++x, beg_zx += Z_size ) {
-          for ( Idx y = 0, zy = 0, zx = beg_zx; y < Y_size;
-                ++y, zx = beg_zx ) {
+          for ( Idx y = 0, zy = 0, zx = beg_zx; y < Y_size; ++y, zx = beg_zx ) {
             for ( Idx z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
               const double tmp1 = Nzyx[zyx] * Nz[z];
-              if ( tmp1!=0.0 ) {
+              if ( tmp1 != 0.0 ) {
                 const double tmp2 = Nzy[zy] * Nzx[zx];
-                if ( tmp2!=0.0 ) {
+                if ( tmp2 != 0.0 ) {
                   score += Nzyx[zyx] * std::log( tmp1 / tmp2 );
                 }
               }
@@ -135,8 +132,8 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nx =
             this->_getAllCounts( nodeset_index + 1 );
 
-        const Size Y_size = Size(Ny.size());
-        const Size X_size = Size(Nx.size());
+        const Size Y_size = Size( Ny.size() );
+        const Size X_size = Size( Nx.size() );
 
         // count N
         double N = 0;
@@ -150,7 +147,7 @@ namespace gum {
           const double tmp_Nx = Nx[x];
           for ( Idx y = 0; y < Y_size; ++y, ++yx ) {
             const double tmp = tmp_Nx * Ny[y];
-            if ( tmp!=0.0 ) {
+            if ( tmp != 0.0 ) {
               score += Nyx[yx] * std::log( ( Nyx[yx] * N ) / tmp );
             }
           }

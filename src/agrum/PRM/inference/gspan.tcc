@@ -23,8 +23,8 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-#include <agrum/PRM/inference/gspan.h>
 #include <agrum/PRM/gspan/edgeGrowth.h>
+#include <agrum/PRM/inference/gspan.h>
 
 namespace gum {
   namespace prm {
@@ -127,7 +127,7 @@ namespace gum {
       size_t idx;
       const std::list<NodeId>* children = 0;
 
-      while ( ! stack.empty() ) {
+      while ( !stack.empty() ) {
         // Getting next pattern
         p = stack.back();
         stack.pop_back();
@@ -167,7 +167,7 @@ namespace gum {
                 // We want a forward edge in any case or a backward edge if
                 // current
                 // is the rightmost vertex
-                if ( ( ! seq->exists( neighbor ) ) ||
+                if ( ( !seq->exists( neighbor ) ) ||
                      ( node == r_path.back() ) ) {
                   // Things we need to know: the LabelData data of the neighbour
                   // and,
@@ -239,7 +239,7 @@ namespace gum {
       NodeId id = 0;
       std::list<NodeId>* children = nullptr;
 
-      while ( ! stack.empty() ) {
+      while ( !stack.empty() ) {
         id = stack.back();
         stack.pop_back();
         __patterns.push_back( &( tree().pattern( id ) ) );
@@ -251,7 +251,7 @@ namespace gum {
           stack.push_back( *child );
       }
 
-      if ( ! __patterns.empty() ) {
+      if ( !__patterns.empty() ) {
         // We sort __patterns.
         GSpan<GUM_SCALAR>::PatternSort my_sort( this );
         std::sort( __patterns.begin(), __patterns.end(), my_sort );
@@ -293,7 +293,7 @@ namespace gum {
                 break;
               }
 
-            if ( ! found ) {
+            if ( !found ) {
               // We add the pattern to the reduced isomorphism graph to compute
               // the
               // max independent set
@@ -318,7 +318,7 @@ namespace gum {
           Set<NodeId> removed;
 
           for ( const auto node : degree_list )
-            if ( ! removed.exists( node ) ) {
+            if ( !removed.exists( node ) ) {
               // First we update removed to follow the max independent set
               // algorithm
               removed.insert( node );
@@ -398,10 +398,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx
-    GSpan<GUM_SCALAR>::__cost_func( Size interface_size,
-                                    Size frequency ) {
-      return Idx(interface_size * frequency);
+    INLINE Idx GSpan<GUM_SCALAR>::__cost_func( Size interface_size,
+                                               Size frequency ) {
+      return Idx( interface_size * frequency );
     }
 
     template <typename GUM_SCALAR>

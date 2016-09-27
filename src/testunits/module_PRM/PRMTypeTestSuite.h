@@ -23,9 +23,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/core/exceptions.h>
-#include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMClass.h>
+#include <agrum/PRM/elements/PRMType.h>
+#include <agrum/core/exceptions.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
@@ -233,7 +233,7 @@ namespace gum_tests {
       PRMType state{boolean, map, *__state};
       // Act & Assert
       TS_ASSERT( state.isSubType() );
-      TS_ASSERT( ! boolean.isSubType() );
+      TS_ASSERT( !boolean.isSubType() );
     }
 
     void testIsSubTypeOf() {
@@ -247,9 +247,9 @@ namespace gum_tests {
       // Act & Assert
       TS_ASSERT( state.isSubTypeOf( boolean ) );
       TS_ASSERT( state.isSubTypeOf( state ) );
-      TS_ASSERT( ! boolean.isSubTypeOf( state ) );
-      TS_ASSERT( ! dummy.isSubTypeOf( boolean ) );
-      TS_ASSERT( ! boolean.isSubTypeOf( dummy ) );
+      TS_ASSERT( !boolean.isSubTypeOf( state ) );
+      TS_ASSERT( !dummy.isSubTypeOf( boolean ) );
+      TS_ASSERT( !boolean.isSubTypeOf( dummy ) );
       TS_ASSERT( dummy.isSubTypeOf( state ) );
       TS_ASSERT( state.isSubTypeOf( dummy ) );
     }
@@ -265,9 +265,9 @@ namespace gum_tests {
       // Act & Assert
       TS_ASSERT( boolean.isSuperTypeOf( state ) );
       TS_ASSERT( state.isSuperTypeOf( state ) );
-      TS_ASSERT( ! state.isSuperTypeOf( boolean ) );
-      TS_ASSERT( ! dummy.isSuperTypeOf( boolean ) );
-      TS_ASSERT( ! boolean.isSuperTypeOf( dummy ) );
+      TS_ASSERT( !state.isSuperTypeOf( boolean ) );
+      TS_ASSERT( !dummy.isSuperTypeOf( boolean ) );
+      TS_ASSERT( !boolean.isSuperTypeOf( dummy ) );
       TS_ASSERT( dummy.isSuperTypeOf( state ) );
       TS_ASSERT( state.isSuperTypeOf( dummy ) );
     }

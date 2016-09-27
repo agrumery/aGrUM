@@ -25,8 +25,8 @@
 #ifndef GUM_TRIANGULATION_H
 #define GUM_TRIANGULATION_H
 
-#include <vector>
 #include <agrum/graphs/cliqueGraph.h>
+#include <vector>
 
 namespace gum {
 

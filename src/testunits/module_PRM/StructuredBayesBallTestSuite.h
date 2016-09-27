@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/BayesBall.h>
+#include <agrum/BN/inference/variableElimination.h>
 
 #include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/inference/structuredBayesBall.h>
@@ -93,12 +93,12 @@ namespace gum_tests {
 
             for ( auto j = sys->begin(); j != sys->end(); ++j ) {
               if ( ( j.val() ) != ( i.val() ) ) {
-                TS_ASSERT( ! bb->exists( j.val() ) );
+                TS_ASSERT( !bb->exists( j.val() ) );
               } else if ( bb->exists( j.val() ) ) {
                 TS_ASSERT_EQUALS( bb->requisiteNodes( j.val() ).size(),
                                   (gum::Size)1 );
-                TS_ASSERT( bb->requisiteNodes( j.val() )
-                               .contains( ( *( a.val() ) ).id() ) );
+                TS_ASSERT( bb->requisiteNodes( j.val() ).contains(
+                    ( *( a.val() ) ).id() ) );
               } else {
                 TS_ASSERT( false );
               }
@@ -132,12 +132,12 @@ namespace gum_tests {
                   j != small_sys->end();
                   ++j ) {
               if ( ( j.val() ) != ( i.val() ) ) {
-                TS_ASSERT( ! bb->exists( j.val() ) );
+                TS_ASSERT( !bb->exists( j.val() ) );
               } else if ( bb->exists( j.val() ) ) {
                 TS_ASSERT_EQUALS( bb->requisiteNodes( j.val() ).size(),
                                   (gum::Size)1 );
-                TS_ASSERT( bb->requisiteNodes( j.val() )
-                               .contains( ( *( a.val() ) ).id() ) );
+                TS_ASSERT( bb->requisiteNodes( j.val() ).contains(
+                    ( *( a.val() ) ).id() ) );
               } else {
                 TS_ASSERT( false );
               }

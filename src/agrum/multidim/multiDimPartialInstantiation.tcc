@@ -23,8 +23,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <typeinfo>
 #include <agrum/config.h>
+#include <typeinfo>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -64,8 +64,8 @@ namespace gum {
   // copy operator
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimPartialInstantiation<GUM_SCALAR, TABLE>&
-      MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::
-      operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& from ) {
+  MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::
+  operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& from ) {
     return *this;
   }
 

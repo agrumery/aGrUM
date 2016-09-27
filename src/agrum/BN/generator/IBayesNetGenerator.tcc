@@ -61,7 +61,9 @@ namespace gum {
   template <typename GUM_SCALAR, template <typename> class ICPTGenerator>
   void IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::fillCPT() {
     for ( auto node : _bayesNet.nodes() )
-      this->generateCPT(_bayesNet.cpt( node ).pos( _bayesNet.variable( node ) ),_bayesNet.cpt( node ) );  // TODO ASSERT THE LINE
+      this->generateCPT(
+          _bayesNet.cpt( node ).pos( _bayesNet.variable( node ) ),
+          _bayesNet.cpt( node ) );  // TODO ASSERT THE LINE
   }
 
   template <typename GUM_SCALAR, template <typename> class ICPTGenerator>

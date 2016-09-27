@@ -256,7 +256,7 @@ namespace gum {
     size_t __function_argc() const;
   };
 
-  //extern class gum::formula::Parser;
+  // extern class gum::formula::Parser;
   /**
    * @brief Evaluates a string as a algebraic formula.
    * @ingroup math_group

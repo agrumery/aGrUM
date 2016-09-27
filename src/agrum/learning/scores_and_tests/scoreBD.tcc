@@ -144,7 +144,7 @@ namespace gum {
       // get the counts for all the targets and the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const Size targets_modal =Size( N_ijk.size());
+      const Size targets_modal = Size( N_ijk.size() );
       double score = 0;
 
       // here, we distinguish nodesets with conditioning nodes from those
@@ -153,7 +153,7 @@ namespace gum {
         // get the count of the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const Idx conditioning_modal = Size(N_ij.size());
+        const Idx conditioning_modal = Size( N_ij.size() );
 
         const std::vector<double, CountAlloc>& N_prime_ijk =
             this->_getAllApriori( nodeset_index );

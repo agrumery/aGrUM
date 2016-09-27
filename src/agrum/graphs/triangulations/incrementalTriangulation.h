@@ -31,8 +31,8 @@
 #include <sstream>
 #include <vector>
 
-#include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/cliqueGraph.h>
+#include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/triangulations/unconstrainedTriangulation.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

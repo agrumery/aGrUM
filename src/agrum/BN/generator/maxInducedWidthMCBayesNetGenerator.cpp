@@ -29,4 +29,3 @@
 
 template class gum::MaxInducedWidthMCBayesNetGenerator<float>;
 template class gum::MaxInducedWidthMCBayesNetGenerator<double>;
-

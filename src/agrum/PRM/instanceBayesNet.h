@@ -38,7 +38,8 @@ namespace gum {
 
     /**
      * @class InstanceBayesNet instanceBayesNet.h <agrum/PRM/instanceBayesNet.h>
-     * @brief This class decorates an PRMInstance<GUM_SCALAR> as an IBaseBayesNet.
+     * @brief This class decorates an PRMInstance<GUM_SCALAR> as an
+     *IBaseBayesNet.
      *
      * Remember that an InstanceBayesNet does not contain input nodes parents
      *and
@@ -57,7 +58,8 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      /// @param i The PRMInstance<GUM_SCALAR> decorated by this InstanceBayesNet.
+      /// @param i The PRMInstance<GUM_SCALAR> decorated by this
+      /// InstanceBayesNet.
       InstanceBayesNet( const PRMInstance<GUM_SCALAR>& i );
 
       /// Copy constructor.

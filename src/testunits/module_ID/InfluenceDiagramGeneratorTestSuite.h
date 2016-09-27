@@ -24,10 +24,10 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/ID/influenceDiagram.h>
-#include <agrum/ID/generator/influenceDiagramGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/ID/generator/influenceDiagramGenerator.h>
 #include <agrum/ID/generator/simpleUTGenerator.h>
+#include <agrum/ID/influenceDiagram.h>
 
 namespace gum_tests {
 
@@ -90,7 +90,8 @@ namespace gum_tests {
     void testGenerationFloat_2() {
       gum::InfluenceDiagramGenerator<float> gen;
 
-      gum::InfluenceDiagram<float>* id = gen.generateID( 25, 0.3f, 0.3f, 0.1f, 4 );
+      gum::InfluenceDiagram<float>* id =
+          gen.generateID( 25, 0.3f, 0.3f, 0.1f, 4 );
       // Test for cicuits
       std::vector<gum::NodeId> stack;
       gum::Set<gum::NodeId> passed;

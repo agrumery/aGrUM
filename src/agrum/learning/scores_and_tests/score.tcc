@@ -79,8 +79,7 @@ namespace gum {
 
     /// add a new single variable to be counted
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx
-    Score<IdSetAlloc, CountAlloc>::addNodeSet( Idx var ) {
+    INLINE Idx Score<IdSetAlloc, CountAlloc>::addNodeSet( Idx var ) {
       if ( __use_cache ) {
         try {
           double score = __cache.score( var, __empty_conditioning_set );
@@ -129,8 +128,9 @@ namespace gum {
 
     /// indicates whether a score belongs to the cache
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE bool Score<IdSetAlloc, CountAlloc>::_isInCache(
-        Idx nodeset_index ) const noexcept {
+    INLINE bool
+    Score<IdSetAlloc, CountAlloc>::_isInCache( Idx nodeset_index ) const
+        noexcept {
       return ( ( nodeset_index < __is_cached_score.size() ) &&
                __is_cached_score[nodeset_index] );
     }
@@ -161,8 +161,9 @@ namespace gum {
 
     /// returns a cached score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE double Score<IdSetAlloc, CountAlloc>::_cachedScore(
-        Idx nodeset_index ) const noexcept {
+    INLINE double
+    Score<IdSetAlloc, CountAlloc>::_cachedScore( Idx nodeset_index ) const
+        noexcept {
       return __cached_score[nodeset_index];
     }
 
@@ -206,8 +207,7 @@ namespace gum {
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<double, CountAlloc>&
-    Score<IdSetAlloc, CountAlloc>::_getConditioningApriori(
-        Idx index ) {
+    Score<IdSetAlloc, CountAlloc>::_getConditioningApriori( Idx index ) {
       if ( !__apriori_computed ) {
         _apriori->setParameters( this->_modalities,
                                  Counter<IdSetAlloc, CountAlloc>::_getCounts(),
@@ -223,9 +223,8 @@ namespace gum {
 
     /// sets the range of records taken into account by the counter
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void
-    Score<IdSetAlloc, CountAlloc>::setRange( Size min_range,
-                                             Size max_range ) {
+    INLINE void Score<IdSetAlloc, CountAlloc>::setRange( Size min_range,
+                                                         Size max_range ) {
       Counter<IdSetAlloc, CountAlloc>::setRange( min_range, max_range );
     }
 

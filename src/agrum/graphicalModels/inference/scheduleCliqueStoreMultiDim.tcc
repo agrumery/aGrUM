@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <sstream>
 #include <agrum/config.h>
+#include <sstream>
 
 namespace gum {
 
@@ -79,8 +79,8 @@ namespace gum {
   /// copy operator
   template <typename GUM_SCALAR>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>&
-      ScheduleCliqueStoreMultiDim<GUM_SCALAR>::
-      operator=( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& from ) {
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::
+  operator=( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& from ) {
     // avoid self assignment
     if ( &from != this ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );

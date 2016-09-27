@@ -23,8 +23,8 @@
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
-#include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/BayesNetFragment.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum {

@@ -35,8 +35,8 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
 // =========================================================================
@@ -44,7 +44,8 @@
 namespace gum {
 
   /**
-   * @struct ArgumentMaximisesAction actionSet.h <agrum/FMDP/planning/actionSet.h>
+   * @struct ArgumentMaximisesAction actionSet.h
+   * <agrum/FMDP/planning/actionSet.h>
    * @brief Argument Maximization function object class
    * @ingroup core
    *

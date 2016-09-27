@@ -184,14 +184,14 @@ namespace gum {
   template <typename Key>
   INLINE SequenceIteratorSafe<Key> SequenceIteratorSafe<Key>::
   operator+( unsigned int nb ) noexcept {
-    return SequenceIteratorSafe<Key>{* this} += nb;
+    return SequenceIteratorSafe<Key>{*this} += nb;
   }
 
   // returns a new iterator
   template <typename Key>
   INLINE SequenceIteratorSafe<Key> SequenceIteratorSafe<Key>::
   operator-( unsigned int nb ) noexcept {
-    return SequenceIteratorSafe<Key>{* this} -= nb;
+    return SequenceIteratorSafe<Key>{*this} -= nb;
   }
 
   // checks whether two iterators are pointing to the same element
@@ -367,8 +367,8 @@ namespace gum {
   // copy operator
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>&
-      SequenceImplementation<Key, Alloc, Gen>::
-      operator=( const SequenceImplementation<Key, Alloc, Gen>& aSeq ) {
+  SequenceImplementation<Key, Alloc, Gen>::
+  operator=( const SequenceImplementation<Key, Alloc, Gen>& aSeq ) {
     // avoid self assignment
     if ( &aSeq != this ) {
       __copy( aSeq );  // performs the __update_end ()
@@ -381,8 +381,8 @@ namespace gum {
   template <typename Key, typename Alloc, bool Gen>
   template <typename OtherAlloc>
   INLINE SequenceImplementation<Key, Alloc, Gen>&
-      SequenceImplementation<Key, Alloc, Gen>::
-      operator=( const SequenceImplementation<Key, OtherAlloc, Gen>& aSeq ) {
+  SequenceImplementation<Key, Alloc, Gen>::
+  operator=( const SequenceImplementation<Key, OtherAlloc, Gen>& aSeq ) {
     __copy( aSeq );  // performs the __update_end ()
     return *this;
   }
@@ -390,8 +390,8 @@ namespace gum {
   // move operator
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>&
-      SequenceImplementation<Key, Alloc, Gen>::
-      operator=( SequenceImplementation<Key, Alloc, Gen>&& aSeq ) {
+  SequenceImplementation<Key, Alloc, Gen>::
+  operator=( SequenceImplementation<Key, Alloc, Gen>&& aSeq ) {
     // avoid self assignment
     if ( &aSeq != this ) {
       __h = std::move( aSeq.__h );
@@ -443,8 +443,7 @@ namespace gum {
   // insert k in the sequence (synonym for insert)
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>&
-      SequenceImplementation<Key, Alloc, Gen>::
-      operator<<( const Key& k ) {
+  SequenceImplementation<Key, Alloc, Gen>::operator<<( const Key& k ) {
     insert( k );
     return *this;
   }
@@ -452,8 +451,7 @@ namespace gum {
   // insert k in the sequence (synonym for insert)
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>&
-      SequenceImplementation<Key, Alloc, Gen>::
-      operator<<( Key&& k ) {
+  SequenceImplementation<Key, Alloc, Gen>::operator<<( Key&& k ) {
     insert( std::move( k ) );
     return *this;
   }
@@ -502,8 +500,7 @@ namespace gum {
   // remove k in the sequence (synonym for erase)
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>&
-      SequenceImplementation<Key, Alloc, Gen>::
-      operator>>( const Key& k ) {
+  SequenceImplementation<Key, Alloc, Gen>::operator>>( const Key& k ) {
     erase( k );
     return *this;
   }
@@ -822,8 +819,8 @@ namespace gum {
   // copy operator
   template <typename Key, typename Alloc>
   INLINE SequenceImplementation<Key, Alloc, true>&
-      SequenceImplementation<Key, Alloc, true>::
-      operator=( const SequenceImplementation<Key, Alloc, true>& aSeq ) {
+  SequenceImplementation<Key, Alloc, true>::
+  operator=( const SequenceImplementation<Key, Alloc, true>& aSeq ) {
     // avoid self assignment
     if ( &aSeq != this ) {
       __copy( aSeq );
@@ -836,8 +833,8 @@ namespace gum {
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
   INLINE SequenceImplementation<Key, Alloc, true>&
-      SequenceImplementation<Key, Alloc, true>::
-      operator=( const SequenceImplementation<Key, OtherAlloc, true>& aSeq ) {
+  SequenceImplementation<Key, Alloc, true>::
+  operator=( const SequenceImplementation<Key, OtherAlloc, true>& aSeq ) {
     __copy( aSeq );
     return *this;
   }
@@ -845,8 +842,8 @@ namespace gum {
   // move operator
   template <typename Key, typename Alloc>
   INLINE SequenceImplementation<Key, Alloc, true>&
-      SequenceImplementation<Key, Alloc, true>::
-      operator=( SequenceImplementation<Key, Alloc, true>&& aSeq ) {
+  SequenceImplementation<Key, Alloc, true>::
+  operator=( SequenceImplementation<Key, Alloc, true>&& aSeq ) {
     // avoid self assignment
     if ( &aSeq != this ) {
       __h = std::move( aSeq.__h );
@@ -886,8 +883,7 @@ namespace gum {
   // insert k in the sequence (synonym for insert)
   template <typename Key, typename Alloc>
   INLINE SequenceImplementation<Key, Alloc, true>&
-      SequenceImplementation<Key, Alloc, true>::
-      operator<<( Key k ) {
+  SequenceImplementation<Key, Alloc, true>::operator<<( Key k ) {
     insert( k );
     return *this;
   }
@@ -936,8 +932,7 @@ namespace gum {
   // remove k in the sequence (synonym for erase)
   template <typename Key, typename Alloc>
   INLINE SequenceImplementation<Key, Alloc, true>&
-      SequenceImplementation<Key, Alloc, true>::
-      operator>>( Key k ) {
+  SequenceImplementation<Key, Alloc, true>::operator>>( Key k ) {
     erase( k );
     return *this;
   }
@@ -1144,7 +1139,7 @@ namespace gum {
   // initializer list constructor
   template <typename Key, typename Alloc>
   INLINE Sequence<Key, Alloc>::Sequence( std::initializer_list<Key> list )
-      : SequenceImplementation<Key, Alloc, std::is_scalar<Key>::value>(list) {
+      : SequenceImplementation<Key, Alloc, std::is_scalar<Key>::value>( list ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Sequence );
   }

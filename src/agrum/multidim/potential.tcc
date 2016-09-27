@@ -215,25 +215,26 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void Potential<GUM_SCALAR>::normalizeAsCPT() const {
-    if (this->nbrDim()==0) {
-      GUM_ERROR(FatalError,"Normalization for an empty potential");
+    if ( this->nbrDim() == 0 ) {
+      GUM_ERROR( FatalError, "Normalization for an empty potential" );
     }
-    
-    Instantiation inst(*this);
-    const auto& v=this->variable(0);
 
-    for(inst.setFirst(); ! inst.end(); inst.incNotVar(v)) {
-      GUM_SCALAR s=(GUM_SCALAR)0.0;
-      for(inst.setFirstVar(v);! inst.end();inst.incVar(v))
-        s+=this->get(inst);
-      if (s==(GUM_SCALAR)0.0) {
-        GUM_ERROR(FatalError,"Normalization for a potential that sum to 0 in "<<*this);
+    Instantiation inst( *this );
+    const auto& v = this->variable( 0 );
+
+    for ( inst.setFirst(); !inst.end(); inst.incNotVar( v ) ) {
+      GUM_SCALAR s = (GUM_SCALAR)0.0;
+      for ( inst.setFirstVar( v ); !inst.end(); inst.incVar( v ) )
+        s += this->get( inst );
+      if ( s == (GUM_SCALAR)0.0 ) {
+        GUM_ERROR( FatalError,
+                   "Normalization for a potential that sum to 0 in " << *this );
       }
-      if (s!=(GUM_SCALAR)1.0) {
-        for(inst.setFirstVar(v);! inst.end();inst.incVar(v))
-          this->set(inst,this->get(inst)/s);
+      if ( s != (GUM_SCALAR)1.0 ) {
+        for ( inst.setFirstVar( v ); !inst.end(); inst.incVar( v ) )
+          this->set( inst, this->get( inst ) / s );
       }
-      inst.setFirstVar(v); // to remove inst.end()
+      inst.setFirstVar( v );  // to remove inst.end()
     }
   }
 

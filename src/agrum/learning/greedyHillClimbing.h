@@ -31,13 +31,13 @@
 #ifndef GUM_LEARNING_GREEDY_HILL_CLIMBING_H
 #define GUM_LEARNING_GREEDY_HILL_CLIMBING_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
-#include <agrum/config.h>
-#include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/config.h>
 #include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/graphs/DAG.h>
 
 namespace gum {
 

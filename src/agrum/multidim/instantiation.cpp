@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/multidim/multiDimAdressable.h>
 #include <agrum/multidim/instantiation.h>
+#include <agrum/multidim/multiDimAdressable.h>
 
 namespace gum {
 
@@ -195,4 +195,3 @@ namespace gum {
 #ifdef GUM_NO_INLINE
 // Inline file added in agrum/multidim/multiDimAdressable.cpp
 #endif /* GUM_NO_INLINE */
-

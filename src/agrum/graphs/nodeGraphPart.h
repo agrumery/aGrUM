@@ -32,8 +32,8 @@
 
 #include <agrum/graphs/graphElements.h>
 
-#include <agrum/core/signal/signaler.h>
 #include <agrum/core/signal/listener.h>
+#include <agrum/core/signal/signaler.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -111,7 +111,7 @@ namespace gum {
     NodeGraphPartIterator& operator++() noexcept;
 
     /// dereferencing operator
-    value_type operator*( void ) const;
+    value_type operator*(void)const;
 
     /// @}
 
@@ -502,10 +502,9 @@ namespace gum {
 
     /// the end iterator (used to speed-up parsings of the NodeGraphPart)
     NodeGraphPartIteratorSafe __endIteratorSafe;
-    
+
     /** @brief the id below which NodeIds may belong to the NodeGraphPart */
     NodeId __boundVal;
-
   };
 
   /// for friendly displaying the content of node set

@@ -28,12 +28,12 @@
 #ifndef GUM_COMPLETE_PROJECTION_REGISTER_4_MULTI_DIM_H
 #define GUM_COMPLETE_PROJECTION_REGISTER_4_MULTI_DIM_H
 
-#include <iostream>
-#include <string>
-#include <utility>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
 #include <agrum/variables/discreteVariable.h>
+#include <iostream>
+#include <string>
+#include <utility>
 
 namespace gum {
 
@@ -70,7 +70,7 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Adds a new entry into the register.
      *
      * This method inserts a new function (\e newFunction) taking a multiDim of
@@ -96,7 +96,7 @@ namespace gum {
                  const std::string& type_multidim,
                  CompleteProjectionPtr newFunction );
 
-    /** 
+    /**
      * @brief Removes a given entry from the register.
      *
      * removes the function, if any, that performs the projection described by
@@ -113,7 +113,7 @@ namespace gum {
     void erase( const std::string& projection_name,
                 const std::string& type_multidim );
 
-    /** 
+    /**
      * @brief Indicates whether a given entry exists in the register.
      *
      * Indicates if the register contains a function that performs the

@@ -46,7 +46,8 @@ namespace gum {
       public:
       /// Association between a class element and it's holding class.
       typedef std::pair<const PRMClassElementContainer<GUM_SCALAR>*,
-                        const PRMClassElement<GUM_SCALAR>*> EltPair;
+                        const PRMClassElement<GUM_SCALAR>*>
+          EltPair;
 
       // ========================================================================
       /// @name Constructors and Destructor.
@@ -80,7 +81,8 @@ namespace gum {
       /// @throw NotFound Raised if no nodes matches id.
       const EltPair& get( NodeId id ) const;
 
-      /// @brief Returns the NodeId assign to the given PRMClassElement<GUM_SCALAR>
+      /// @brief Returns the NodeId assign to the given
+      /// PRMClassElement<GUM_SCALAR>
       /// of a
       ///        given Class.
       /// Is is necessary to give both Class and PRMClassElement<GUM_SCALAR>
@@ -106,9 +108,10 @@ namespace gum {
                       const PRMClassElement<GUM_SCALAR>& elt );
 
       /// Add arcs in __graph.
-      void __addArcs( const PRMClassElementContainer<GUM_SCALAR>& c,
-                      NodeId node,
-                      HashTable<const PRMClassElement<GUM_SCALAR>*, NodeId>& map );
+      void
+      __addArcs( const PRMClassElementContainer<GUM_SCALAR>& c,
+                 NodeId node,
+                 HashTable<const PRMClassElement<GUM_SCALAR>*, NodeId>& map );
 
       /// The graph itself.
       DAG __graph;
@@ -120,7 +123,8 @@ namespace gum {
       /// ClassDependencyGraph<GUM_SCALAR>.
       NodeProperty<Size> __modalitites;
 
-      /// Mapping between the nodes in __graph with the PRMClassElement<GUM_SCALAR>
+      /// Mapping between the nodes in __graph with the
+      /// PRMClassElement<GUM_SCALAR>
       /// in
       /// the
       /// PRM<GUM_SCALAR>.

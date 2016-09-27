@@ -66,7 +66,8 @@ namespace gum {
         std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l ) {
       for ( Size lvl = 0; lvl < __layers.size(); ++lvl ) {
         l.push_back( ClusteredLayerGenerator<GUM_SCALAR>::MyData() );
-        l[lvl].i = this->_name_gen.nextName( PRMObject::prm_type::PRM_INTERFACE );
+        l[lvl].i =
+            this->_name_gen.nextName( PRMObject::prm_type::PRM_INTERFACE );
         f.startInterface( l[lvl].i );
 
         for ( Size a = 0; a < __layers[lvl].a; ++a ) {
@@ -132,7 +133,8 @@ namespace gum {
           __generateClass( f, type, l, lvl, i );
           first = l[lvl].c.back();
           v->push_back( first );
-          v->push_back( this->_name_gen.nextName( PRMObject::prm_type::CLASS ) );
+          v->push_back(
+              this->_name_gen.nextName( PRMObject::prm_type::CLASS ) );
           f.startClass( v->back() );
           v->push_back(
               this->_name_gen.nextName( PRMObject::prm_type::CLASS_ELT ) );
@@ -568,8 +570,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE ClusteredLayerGenerator<GUM_SCALAR>&
-        ClusteredLayerGenerator<GUM_SCALAR>::
-        operator=( const ClusteredLayerGenerator<GUM_SCALAR>& source ) {
+    ClusteredLayerGenerator<GUM_SCALAR>::
+    operator=( const ClusteredLayerGenerator<GUM_SCALAR>& source ) {
       __layers = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;
@@ -587,8 +589,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Size
-    ClusteredLayerGenerator<GUM_SCALAR>::getMaxParents() const {
+    INLINE Size ClusteredLayerGenerator<GUM_SCALAR>::getMaxParents() const {
       return __max_parents;
     }
 

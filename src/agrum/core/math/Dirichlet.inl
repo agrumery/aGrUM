@@ -27,7 +27,7 @@ namespace gum {
 
   // default constructor
   INLINE Dirichlet::Dirichlet( const param_type& params, unsigned int seed )
-      : __generator( gum::getRandomGenerator(seed) )
+      : __generator( gum::getRandomGenerator( seed ) )
       , __params( params ) {
     GUM_CONSTRUCTOR( Dirichlet );
   }
@@ -73,7 +73,7 @@ namespace gum {
 
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::operator()() {
-    Size size = Size(__params.size());
+    Size size = Size( __params.size() );
     result_type res( size );
     float sum = 0.0f;
     while ( sum == 0.0f ) {
@@ -93,7 +93,7 @@ namespace gum {
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::
   operator()( const Dirichlet::param_type& parm ) {
-    Size size = Size(parm.size());
+    Size size = Size( parm.size() );
     result_type res( size );
     float sum = 0.0f;
     while ( sum == 0.0f ) {

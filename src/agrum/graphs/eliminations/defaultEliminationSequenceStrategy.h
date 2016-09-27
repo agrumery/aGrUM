@@ -42,9 +42,9 @@
 #ifndef GUM_DEFAULT_ELIMINATION_SEQUENCE_STRATEGY_H
 #define GUM_DEFAULT_ELIMINATION_SEQUENCE_STRATEGY_H
 
+#include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/simplicialSet.h>
-#include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
 
 namespace gum {
 

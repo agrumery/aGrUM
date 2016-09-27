@@ -20,15 +20,15 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/potential.h>
 #include <agrum/multidim/operators/multiDimCombinationDefault.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 
@@ -41,7 +41,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i,  rand()* 100000.0f / RAND_MAX );
+        t.set( i, rand() * 100000.0f / RAND_MAX );
     }
 
     // the function used to combine two tables

@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_formula_COCO_PARSER_H__)
+#if !defined( gum_formula_COCO_PARSER_H__ )
 #define gum_formula_COCO_PARSER_H__
 
 #include <algorithm>
@@ -45,90 +45,83 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <string>
 #include <vector>
 
-#include <agrum/core/utils_dir.h>
 #include <agrum/core/math/formula.h>
+#include <agrum/core/utils_dir.h>
 
+#include "Scanner.h"
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <fstream>
-#include "Scanner.h"
 
 namespace gum {
-namespace formula {
+  namespace formula {
 
 
-class Parser {
-  private:
-    	enum {
-		_EOF=0,
-		_integer=1,
-		_float=2,
-		_scifloat=3,
-		_operator=4,
-		_eol=5,
-		_ident=6
-	};
-	int maxT;
+    class Parser {
+      private:
+      enum {
+        _EOF = 0,
+        _integer = 1,
+        _float = 2,
+        _scifloat = 3,
+        _operator = 4,
+        _eol = 5,
+        _ident = 6
+      };
+      int maxT;
 
-    Token* dummyToken;
-    int errDist;
-    int minErrDist;
+      Token* dummyToken;
+      int errDist;
+      int minErrDist;
 
-    void SynErr( int n );
-    void Get();
-    void Expect( int n );
-    bool StartOf( int s );
-    void ExpectWeak( int n, int follow );
-    bool WeakSeparator( int n, int syFol, int repFol );
+      void SynErr( int n );
+      void Get();
+      void Expect( int n );
+      bool StartOf( int s );
+      void ExpectWeak( int n, int follow );
+      bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+      ErrorsContainer __errors;
 
-  public:
-    Scanner* scanner;
+      public:
+      Scanner* scanner;
 
-    Token* t;     // last recognized token
-    Token* la;      // lookahead token
+      Token* t;   // last recognized token
+      Token* la;  // lookahead token
 
-    private:
-  gum::Formula* __formula;
+      private:
+      gum::Formula* __formula;
 
-public:
-  void formula( gum::Formula* f ) {
-    __formula = f;
-  }
+      public:
+      void formula( gum::Formula* f ) { __formula = f; }
 
-  gum::Formula& formula() { 
-    return *__formula; 
-  }
+      gum::Formula& formula() { return *__formula; }
 
-  const gum::Formula& formula() const {
-    return *__formula; 
-  }
+      const gum::Formula& formula() const { return *__formula; }
 
-// =============================================================================
-//                              SCANNER RULES
-// =============================================================================
+      // =============================================================================
+      //                              SCANNER RULES
+      // =============================================================================
 
-//________________________
+      //________________________
 
-    Parser( Scanner* scanner );
-    ~Parser();
-    void SemErr( const wchar_t* msg );
-    void SynErr( const std::wstring& filename,int line, int col, int n );
-    void Warning( const wchar_t* msg );
-    const ErrorsContainer& errors() const;
-    ErrorsContainer& errors();
+      Parser( Scanner* scanner );
+      ~Parser();
+      void SemErr( const wchar_t* msg );
+      void SynErr( const std::wstring& filename, int line, int col, int n );
+      void Warning( const wchar_t* msg );
+      const ErrorsContainer& errors() const;
+      ErrorsContainer& errors();
 
-    	void EVAL();
-	void expression();
+      void EVAL();
+      void expression();
 
-    void Parse();
+      void Parse();
 
-}; // end Parser
+    };  // end Parser
 
-} // namespace
-} // namespace
+  }  // namespace
+}  // namespace
 
 
-#endif // !defined(COCO_PARSER_H__)
-
+#endif  // !defined(COCO_PARSER_H__)

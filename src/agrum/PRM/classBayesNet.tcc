@@ -23,8 +23,8 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-#include <agrum/core/inline.h>
 #include <agrum/PRM/classBayesNet.h>  // to ease IDE parser
+#include <agrum/core/inline.h>
 
 namespace gum {
   namespace prm {
@@ -149,7 +149,7 @@ namespace gum {
     ClassBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
         for ( const auto node : this->nodes() ) {
-          __modalities.insert( node,(Size)variable( node ).domainSize() );
+          __modalities.insert( node, (Size)variable( node ).domainSize() );
         }
       }
 

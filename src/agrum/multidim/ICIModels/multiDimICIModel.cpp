@@ -24,4 +24,3 @@
 
 template class gum::MultiDimICIModel<float>;
 template class gum::MultiDimICIModel<double>;
-

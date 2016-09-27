@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <sstream>
 #include <agrum/variables/discreteVariable.h>
+#include <sstream>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/variables/discreteVariable.inl>

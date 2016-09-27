@@ -27,8 +27,8 @@
 #include <cmath>
 #include <complex>
 
-#include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/BN/algorithms/divergence/KL.h>
 
 namespace gum {
   template <typename GUM_SCALAR>

@@ -25,4 +25,3 @@
  */
 
 #include <agrum/multidim/multiDimWithOffset.h>
-

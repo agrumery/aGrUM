@@ -28,4 +28,3 @@
 
 template class gum::MultiDimNoisyAND<float>;
 template class gum::MultiDimNoisyAND<double>;
-

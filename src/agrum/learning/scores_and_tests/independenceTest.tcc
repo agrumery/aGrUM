@@ -35,8 +35,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE IndependenceTest<IdSetAlloc, CountAlloc>::IndependenceTest(
-        const RowFilter& filter,
-        const std::vector<Size>& var_modalities )
+        const RowFilter& filter, const std::vector<Size>& var_modalities )
         : Counter<IdSetAlloc, CountAlloc>( filter, var_modalities ) {
       GUM_CONSTRUCTOR( IndependenceTest );
     }
@@ -50,8 +49,7 @@ namespace gum {
     /// add a new pair of target unconditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Idx
-    IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet( Idx var1,
-                                                          Idx var2 ) {
+    IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet( Idx var1, Idx var2 ) {
       if ( __use_cache ) {
         // check whether the score is already in the cache
         try {
@@ -95,9 +93,7 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        Idx var1,
-        Idx var2,
-        const std::vector<Idx>& conditioning_ids ) {
+        Idx var1, Idx var2, const std::vector<Idx>& conditioning_ids ) {
       if ( __use_cache ) {
         try {
           double score = __cache.score( var1, var2, conditioning_ids );
@@ -112,8 +108,7 @@ namespace gum {
       // size of the database (basically, if there are fewer than an average
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
-      Size cpt_size =
-          this->_modalities[var1] * this->_modalities[var2] * 5;
+      Size cpt_size = this->_modalities[var1] * this->_modalities[var2] * 5;
       for ( auto node : conditioning_ids ) {
         cpt_size *= this->_modalities[node];
       }
@@ -145,9 +140,7 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        Idx var1,
-        Idx var2,
-        std::vector<Idx>&& conditioning_ids ) {
+        Idx var1, Idx var2, std::vector<Idx>&& conditioning_ids ) {
       if ( __use_cache ) {
         try {
           double score = __cache.score( var1, var2, conditioning_ids );
@@ -162,8 +155,7 @@ namespace gum {
       // size of the database (basically, if there are fewer than an average
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
-      Size cpt_size =
-          this->_modalities[var1] * this->_modalities[var2] * 5;
+      Size cpt_size = this->_modalities[var1] * this->_modalities[var2] * 5;
       for ( auto node : conditioning_ids ) {
         cpt_size *= this->_modalities[node];
       }
@@ -188,8 +180,7 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::pair<Idx, Idx>& vars,
-        std::vector<Idx>&& conditioning_ids ) {
+        const std::pair<Idx, Idx>& vars, std::vector<Idx>&& conditioning_ids ) {
       return addNodeSet(
           vars.first, vars.second, std::move( conditioning_ids ) );
     }

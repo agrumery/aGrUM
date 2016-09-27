@@ -48,14 +48,14 @@ NodeImp.
 #ifndef TICPP_INCLUDED
 #define TICPP_INCLUDED
 
-#include "tinyxml.h"
 #include "ticpprc.h"
+#include "tinyxml.h"
 
-#include <sstream>
-#include <vector>
-#include <memory>
 #include <exception>
+#include <memory>
+#include <sstream>
 #include <typeinfo>
+#include <vector>
 
 /**
 @subpage ticpp is a TinyXML wrapper that uses a lot more C++ ideals.

@@ -23,9 +23,9 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <algorithm>
 #include <sstream>
 #include <string>
-#include <algorithm>
 
 #define INFERENCE_DEFAULT_MAXITER 10000000
 #define INFERENCE_DEFAULT_EPSILON 1e-4 * std::log( 2 )
@@ -35,8 +35,8 @@
 #define INFERENCE_DEFAULT_BURNIN 3000
 
 // to ease parsing for IDE
-#include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/particles/Gibbs.h>
 
 namespace gum {
@@ -172,10 +172,9 @@ namespace gum {
     posterior.normalize();
   }
 
-  inline
-  void add_and_instancie( Instantiation& I,
-                          const DiscreteVariable& v,
-                          const Instantiation& __current_sample ) {
+  inline void add_and_instancie( Instantiation& I,
+                                 const DiscreteVariable& v,
+                                 const Instantiation& __current_sample ) {
     try {
       I << v;
       I.chgVal( v, __current_sample.val( v ) );

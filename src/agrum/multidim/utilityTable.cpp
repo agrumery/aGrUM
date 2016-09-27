@@ -32,5 +32,4 @@ namespace gum {
   template class UtilityTable<double>;
 
 
-} // namespace gum
-
+}  // namespace gum

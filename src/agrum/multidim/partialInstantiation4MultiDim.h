@@ -27,8 +27,8 @@
 #ifndef GUM_PARTIAL_INSTANTIATION_4_MULTI_DIM_H
 #define GUM_PARTIAL_INSTANTIATION_4_MULTI_DIM_H
 
-#include <agrum/core/set.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/set.h>
 #include <agrum/variables/discreteVariable.h>
 //#include <agrum/multidim/multiDimImplementation.h>
 //#include <agrum/multidim/multiDimArray.h>
@@ -45,7 +45,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   class MultiDimDecorator;
 
-  /** 
+  /**
    * @brief A specialized function for instantiating variables in a
    * multiDimArray.
    *
@@ -57,7 +57,7 @@ namespace gum {
    * The function instantiates some variables in a multiDimArray. For instance,
    * if table is a MultiDimArray defined over A,B,C,D and if inst_vars =
    * {<A=a1>,<C=c2>}, then the function returns a table over B,D defined as
-   * table (a1,B,c2,D).  
+   * table (a1,B,c2,D).
    *
    * @param table The table to instantiate.
    * @param inst_vars The variables instantiation.
@@ -68,7 +68,7 @@ namespace gum {
       const MultiDimArray<GUM_SCALAR>* table,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
-  /** 
+  /**
    * @brief A specialized function for instantiating variables in a
    * MultiDimImplementation.
    *
@@ -80,7 +80,7 @@ namespace gum {
    * The function instantiates some variables in a multiDimArray. For instance,
    * if table is a MultiDimArray defined over A,B,C,D and if inst_vars =
    * {<A=a1>,<C=c2>}, then the function returns a table over B,D defined as
-   * table (a1,B,c2,D).  
+   * table (a1,B,c2,D).
    *
    * @param table The table to instantiate.
    * @param inst_vars The variables instantiation.
@@ -92,7 +92,7 @@ namespace gum {
       const MultiDimImplementation<GUM_SCALAR>* table,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
-  /** 
+  /**
    * @brief A specialized function for instantiating variables in a
    * MultiDimArray.
    *
@@ -104,7 +104,7 @@ namespace gum {
    * The function instantiates some variables in a multiDimArray. For instance,
    * if table is a MultiDimArray defined over A,B,C,D and if inst_vars =
    * {<A=a1>,<C=c2>}, then the function returns a table over B,D defined as
-   * table (a1,B,c2,D).  
+   * table (a1,B,c2,D).
    *
    * @param table The table to instantiate.
    * @param inst_vars The variables instantiation.
@@ -116,7 +116,7 @@ namespace gum {
       const MultiDimArray<GUM_SCALAR*>* table,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
-  /** 
+  /**
    * @brief A specialized function for instantiating variables in a
    * MultiDimArray.
    *
@@ -128,7 +128,7 @@ namespace gum {
    * The function instantiates some variables in a multiDimArray. For instance,
    * if table is a MultiDimArray defined over A,B,C,D and if inst_vars =
    * {<A=a1>,<C=c2>}, then the function returns a table over B,D defined as
-   * table (a1,B,c2,D).  
+   * table (a1,B,c2,D).
    *
    * @param table The table to instantiate.
    * @param inst_vars The variables instantiation.
@@ -186,7 +186,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void pointerPartialInstantiation4MultiDimInit();
 
-  /** 
+  /**
    * @class PartialInstantiation4MultiDimInitialize
    * @brief A class used to register instantiation functions over non-pointers
    * types.
@@ -212,7 +212,7 @@ namespace gum {
     void init() { partialInstantiation4MultiDimInit<GUM_SCALAR>(); };
   };
 
-  /** 
+  /**
    * @class PartialInstantiation4MultiDimInitialize
    * @brief A class used to register instantiation functions over pointers
    * types.

@@ -29,8 +29,8 @@
 #include <vector>
 
 // to ease parser in IDEs
-#include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/aggregators/median.h>
+#include <agrum/multidim/aggregators/multiDimAggregator.h>
 
 namespace gum {
 
@@ -67,8 +67,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Idx Median<GUM_SCALAR>::_buildValue( const gum::Instantiation& i ) const {
-      if (i.nbrDim()<2)
-        return i.nbrDim()/2; // arbitrary. Guess = (max-min)/2 .
+      if ( i.nbrDim() < 2 )
+        return i.nbrDim() / 2;  // arbitrary. Guess = (max-min)/2 .
 
       // we assume that every (parent) variable has the same domainSize
       Idx maxVal = i.variable( 1 ).domainSize();

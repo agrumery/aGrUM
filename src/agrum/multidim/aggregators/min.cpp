@@ -28,4 +28,3 @@
 
 template class gum::aggregator::Min<float>;
 template class gum::aggregator::Min<double>;
-

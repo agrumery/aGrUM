@@ -54,7 +54,7 @@ namespace gum {
       case '_': {
         return false;
       }
-      default: { return ! isLeftAssociative(); }
+      default: { return !isLeftAssociative(); }
     }
   }
 
@@ -280,7 +280,7 @@ namespace gum {
       }
 
       case FormulaPart::token_type::PARENTHESIS: {
-        return (o == '-')&& (__last_token.character == '(');
+        return ( o == '-' ) && ( __last_token.character == '(' );
       }
 
       default: { return false; }
@@ -316,7 +316,7 @@ namespace gum {
   INLINE
   void Formula::__push_rightParenthesis() {
 
-    while ( ( ! __stack.empty() ) && ( __stack.top().character != '(' ) ) {
+    while ( ( !__stack.empty() ) && ( __stack.top().character != '(' ) ) {
       __push_output( __stack.top() );
       __stack.pop();
     }
@@ -344,7 +344,7 @@ namespace gum {
   INLINE
   void Formula::__finalize() {
 
-    while ( ! __stack.empty() ) {
+    while ( !__stack.empty() ) {
 
       if ( __stack.top().character == '(' ) {
 
@@ -429,7 +429,7 @@ namespace gum {
 
   INLINE
   void Formula::__push_comma() {
-    while ( ( ! __stack.empty() ) && ( __stack.top().character != '(' ) ) {
+    while ( ( !__stack.empty() ) && ( __stack.top().character != '(' ) ) {
       __push_output( __stack.top() );
       __stack.pop();
     }
@@ -468,13 +468,13 @@ namespace gum {
 
       __push_function( ident );
 
-    } catch ( OperationNotAllowed&  ) {
+    } catch ( OperationNotAllowed& ) {
 
       try {
 
         __push_variable( ident );
 
-      } catch ( OperationNotAllowed&  ) {
+      } catch ( OperationNotAllowed& ) {
 
         GUM_ERROR( OperationNotAllowed, "unknown identifier" );
       }

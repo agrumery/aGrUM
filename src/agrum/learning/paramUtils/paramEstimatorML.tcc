@@ -78,8 +78,7 @@ namespace gum {
     /// returns the CPT's parameters corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     const std::vector<double, CountAlloc>&
-    ParamEstimatorML<IdSetAlloc, CountAlloc>::parameters(
-        Idx nodeset_index ) {
+    ParamEstimatorML<IdSetAlloc, CountAlloc>::parameters( Idx nodeset_index ) {
       // if all_counts is already normalized, just return it
       if ( this->_is_normalized[nodeset_index] ) {
         return this->_getAllCounts( nodeset_index );
@@ -107,7 +106,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const Size conditioning_size = Size(N_ij.size());
+        const Size conditioning_size = Size( N_ij.size() );
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =

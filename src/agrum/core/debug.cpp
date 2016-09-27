@@ -26,12 +26,12 @@
 
 #include <agrum/config.h>
 
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <sstream>
-#include <vector>
 #include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -46,20 +46,20 @@ namespace gum {
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& __sizeof() {
-	// This function is not thread-safe ! (but only in debug mode)
+      // This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* sizeOf = new DEBUG_MAP();
       return *sizeOf;
     }
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& __creation() {
-	// @todo This function is not thread-safe ! (but only in debug mode)
+      // @todo This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* creation = new DEBUG_MAP();
       return *creation;
     }
 
     static DEBUG_MAP& __deletion() {
-	// @todo This function is not thread-safe ! (but only in debug mode)
+      // @todo This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* deletion = new DEBUG_MAP();
       return *deletion;
     }

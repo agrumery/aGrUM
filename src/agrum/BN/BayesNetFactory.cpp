@@ -29,4 +29,3 @@
 
 template class gum::BayesNetFactory<float>;
 template class gum::BayesNetFactory<double>;
-

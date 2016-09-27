@@ -37,9 +37,9 @@
 #include <string>
 #include <vector>
 
-#include <agrum/learning/database/databaseVectInRAM.h>
 #include <agrum/learning/database/DBTransform.h>
 #include <agrum/learning/database/DBTransformIdentity.h>
+#include <agrum/learning/database/databaseVectInRAM.h>
 
 namespace gum {
 

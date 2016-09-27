@@ -27,8 +27,8 @@ distribution.
 #include <ctype.h>
 
 #ifdef TIXML_USE_STL
-#include <sstream>
 #include <iostream>
+#include <sstream>
 #endif
 
 bool TiXmlBase::condenseWhiteSpace = true;

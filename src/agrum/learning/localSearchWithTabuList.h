@@ -32,12 +32,12 @@
 #ifndef GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H
 #define GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
-#include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/graphs/DAG.h>
 
 namespace gum {
 

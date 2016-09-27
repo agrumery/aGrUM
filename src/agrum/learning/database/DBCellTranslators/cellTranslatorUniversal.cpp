@@ -103,13 +103,12 @@ namespace gum {
         }
 
         // reorder user_vals in increasing order of the second argument
-        std::sort(
-            user_vals.begin(),
-            user_vals.end(),
-            []( const std::pair<Idx, Idx>& elt1,
-                const std::pair<Idx, Idx>& elt2 ) -> bool {
-              return elt1.second < elt2.second;
-            } );
+        std::sort( user_vals.begin(),
+                   user_vals.end(),
+                   []( const std::pair<Idx, Idx>& elt1,
+                       const std::pair<Idx, Idx>& elt2 ) -> bool {
+                     return elt1.second < elt2.second;
+                   } );
 
         // restore in the appropriate order the element of __strings
         __strings.clear();
@@ -147,8 +146,8 @@ namespace gum {
         for ( auto iter = __numbers.begin(); iter != __numbers.end(); ++iter ) {
           const double val = iter.first();
           if ( __num_user_values->exists( val ) ) {
-            user_vals.push_back( std::pair<double, Idx>(
-                val, __num_user_values->pos( val ) ) );
+            user_vals.push_back(
+                std::pair<double, Idx>( val, __num_user_values->pos( val ) ) );
           } else {
             no_user_vals.push_back( val );
           }

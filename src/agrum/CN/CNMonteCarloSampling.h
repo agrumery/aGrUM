@@ -28,8 +28,8 @@
 #ifndef __CN_MC_SAMPLING__H__
 #define __CN_MC_SAMPLING__H__
 
-#include <limits>
 #include <agrum/CN/multipleInferenceEngine.h>
+#include <limits>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 
@@ -62,7 +62,7 @@ namespace gum {
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >
        * methods. */
-      using __infEs= MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>;
+      using __infEs = MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>;
 
       /// @name Private initialization methods
       /// @{

@@ -30,9 +30,9 @@
 #include <agrum/config.h>
 
 #include <agrum/graphs/cliqueGraph.h>
-#include <agrum/graphs/triangulations/triangulation.h>
 #include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
 #include <agrum/graphs/junctionTreeStrategy.h>
+#include <agrum/graphs/triangulations/triangulation.h>
 
 namespace gum {
 

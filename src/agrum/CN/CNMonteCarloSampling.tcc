@@ -70,7 +70,7 @@ namespace gum {
         do {
           eps = 0;
 
-          int iters = int(( remaining < psize ) ? remaining : psize);
+          int iters = int( ( remaining < psize ) ? remaining : psize );
 
 #pragma omp parallel for
 
@@ -99,12 +99,12 @@ namespace gum {
 // less overheads with high periodSize
 #pragma omp parallel for
 
-          for ( int iter = 0; iter < int(psize); iter++ ) {
+          for ( int iter = 0; iter < int( psize ); iter++ ) {
             __threadInference();
             __threadUpdate();
           }  // end of : parallel periodSize
 
-          this->updateApproximationScheme( int(psize) );
+          this->updateApproximationScheme( int( psize ) );
 
           this->_updateMarginals();  // fusion threads + update margi
 
@@ -280,7 +280,7 @@ namespace gum {
 
       const auto cpt = &this->_credalNet->credalNet_currentCpt();
 
-      using dBN= std::vector<std::vector<std::vector<bool>>>;
+      using dBN = std::vector<std::vector<std::vector<bool>>>;
 
       dBN sample;
 
@@ -298,7 +298,7 @@ namespace gum {
               &working_bn->cpt( elt.first ) ) );
           std::vector<GUM_SCALAR> var_cpt( potential->domainSize() );
 
-          Size pconfs = Size(( *cpt )[elt.first].size());
+          Size pconfs = Size( ( *cpt )[elt.first].size() );
 
           for ( Size pconf = 0; pconf < pconfs; pconf++ ) {
             Size choosen_vertex = rand() % ( *cpt )[elt.first][pconf].size();
@@ -315,7 +315,7 @@ namespace gum {
 
           potential->fillWith( var_cpt );
 
-          Size t0esize = Size(elt.second.size());
+          Size t0esize = Size( elt.second.size() );
 
           for ( Size pos = 0; pos < t0esize; pos++ ) {
             if ( __infEs::_storeBNOpt ) {
@@ -336,7 +336,8 @@ namespace gum {
           std::vector<GUM_SCALAR> var_cpt( potential->domainSize() );
 
           for ( Size pconf = 0; pconf < ( *cpt )[elt.first].size(); pconf++ ) {
-            Idx choosen_vertex = Idx(rand() % ( *cpt )[elt.first][pconf].size());
+            Idx choosen_vertex =
+                Idx( rand() % ( *cpt )[elt.first][pconf].size() );
 
             if ( __infEs::_storeBNOpt ) {
               __binaryRep( sample[elt.first][pconf], choosen_vertex );
@@ -377,8 +378,8 @@ namespace gum {
           auto pConfs = ( *cpt )[node].size();
 
           for ( decltype( pConfs ) pconf = 0; pconf < pConfs; pconf++ ) {
-            Size nVertices = Size(( *cpt )[node][pconf].size());
-            Idx choosen_vertex = Idx(rand() % nVertices);
+            Size nVertices = Size( ( *cpt )[node][pconf].size() );
+            Idx choosen_vertex = Idx( rand() % nVertices );
 
             if ( __infEs::_storeBNOpt ) {
               __binaryRep( sample[node][pconf], choosen_vertex );

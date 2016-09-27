@@ -23,10 +23,10 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/multidim/multiDimArray.h>
+#include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/core/approximations/approximationSchemeListener.h>
 
@@ -50,7 +50,10 @@ namespace gum_tests {
         : gum::ApproximationSchemeListener( sch )
         , __nbr( 0 )
         , __mess( "" ){};
-    void whenProgress( const void* buffer, const gum::Size a, const double b, const double c ) {
+    void whenProgress( const void* buffer,
+                       const gum::Size a,
+                       const double b,
+                       const double c ) {
       __nbr++;
     }
     void whenStop( const void* buffer, const std::string s ) { __mess = s; }
@@ -63,7 +66,7 @@ namespace gum_tests {
     public:
     gum::BayesNet<float>* bn;
     gum::NodeId i1, i2, i3, i4, i5;
-    gum::Potential<float>* e_i1, *e_i4;
+    gum::Potential<float> *e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -123,7 +126,8 @@ namespace gum_tests {
         TS_ASSERT_DELTA( p3.get( j ), 1.0f, 1e-5 );
 
       TS_ASSERT( bn->cpt( i4 ).nbrDim() == 3 );
-      bn->cpt( i4 ).fillWith( {0.4f, 0.6f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f, 0.0f} );
+      bn->cpt( i4 ).fillWith(
+          {0.4f, 0.6f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f, 0.0f} );
       // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
       auto p4 = bn->cpt( i4 ).margSumOut( {&( bn->variable( i4 ) )} );
       for ( gum::Instantiation j( p4 ); !j.end(); ++j )
@@ -302,7 +306,8 @@ namespace gum_tests {
               {0.4f, 0.6f,
                0.5f, 0.5f,
                0.5f, 0.5f,
-               1.0f, 0.0f} );  // clang-format on
+               1.0f, 0.0f} );  // clang-format
+                                                               // on
       bn.cpt( i5 ).fillWith(  // clang-format off
               {0.3f, 0.6f, 0.1f,
                0.5f, 0.5f, 0.0f,
@@ -311,7 +316,7 @@ namespace gum_tests {
                0.4f, 0.6f, 0.0f,
                0.5f, 0.5f, 0.0f,
                0.5f, 0.5f, 0.0f,
-               0.0f, 0.0f, 1.0f} );                                     // clang-format on
+               0.0f, 0.0f, 1.0f} );  // clang-format on
     }
 
     // Uncomment this to have some outputs.

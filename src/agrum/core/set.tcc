@@ -123,7 +123,7 @@ namespace gum {
   template <typename Key>
   INLINE SetIteratorSafe<Key> SetIteratorSafe<Key>::
   operator+( unsigned int nb ) const {
-    return SetIteratorSafe<Key>{* this} += nb;
+    return SetIteratorSafe<Key>{*this} += nb;
   }
 
   // indicates whether two iterators point to different elements or sets
@@ -242,7 +242,7 @@ namespace gum {
   template <typename Key>
   INLINE SetIterator<Key> SetIterator<Key>::operator+( unsigned int nb ) const
       noexcept {
-    return SetIterator<Key>{* this} += nb;
+    return SetIterator<Key>{*this} += nb;
   }
 
   // indicates whether two iterators point to different elements or sets
@@ -332,7 +332,7 @@ namespace gum {
   // initializer list constructor
   template <typename Key, typename Alloc>
   INLINE Set<Key, Alloc>::Set( std::initializer_list<Key> list )
-      : __inside( Size(list.size()) / 2, true, false ) {
+      : __inside( Size( list.size() ) / 2, true, false ) {
     GUM_CONSTRUCTOR( Set );
     for ( const auto& elt : list ) {
       insert( elt );
@@ -787,7 +787,7 @@ namespace gum {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
-    if ( size == 0 ) size = std::max( Size(2), __inside.size() / 2 );
+    if ( size == 0 ) size = std::max( Size( 2 ), __inside.size() / 2 );
 
     // create a new table
     HashTable<Key, NewKey, NewAlloc> table( size );
@@ -810,7 +810,7 @@ namespace gum {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
-    if ( size == 0 ) size = std::max( Size(2), __inside.size() / 2 );
+    if ( size == 0 ) size = std::max( Size( 2 ), __inside.size() / 2 );
 
     // create a new table
     HashTable<Key, NewKey, NewAlloc> table( size );

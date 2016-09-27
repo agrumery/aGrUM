@@ -24,14 +24,14 @@
 
 #include <agrum/core/exceptions.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/variables/rangeVariable.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/multidim/ICIModels/multiDimLogit.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/rangeVariable.h>
 
 namespace gum_tests {
 

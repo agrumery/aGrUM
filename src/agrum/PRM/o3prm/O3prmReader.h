@@ -43,9 +43,9 @@
 #include <agrum/PRM/o3prm/O3SystemFactory.h>
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
 #include <agrum/PRM/o3prm/O3prm.h>
-#include <agrum/core/errorsContainer.h>
 #include <agrum/PRM/o3prm/cocoR/Parser.h>
 #include <agrum/PRM/o3prm/cocoR/Scanner.h>
+#include <agrum/core/errorsContainer.h>
 
 namespace gum {
   namespace prm {
@@ -74,7 +74,8 @@ namespace gum {
 
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
-        Size readFile( const std::string& file, const std::string& module = "" );
+        Size readFile( const std::string& file,
+                       const std::string& module = "" );
 
         /// With readString method, you must set the current path
         /// to search from import yourself, using addClassPath.
@@ -177,4 +178,3 @@ extern template class gum::prm::o3prm::O3prmReader<double>;
 
 
 #endif  // GUM_PRM_O3PRM_O3PRM_FACTORY_H
-

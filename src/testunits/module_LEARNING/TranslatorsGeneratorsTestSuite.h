@@ -18,21 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
+#include <iostream>
 
-#include <agrum/graphs/DAG.h>
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/graphs/DAG.h>
+#include <agrum/learning/database/CSVParser.h>
+#include <agrum/learning/database/DBCellTranslator.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
+#include <agrum/learning/database/DBRowTranslatorSetStatic.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
-#include <agrum/learning/database/DBCellTranslator.h>
-#include <agrum/learning/database/DBRowTranslatorSetStatic.h>
-#include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
-#include <agrum/learning/database/CSVParser.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/scores_and_tests/scoreK2.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 
@@ -54,7 +54,8 @@ namespace gum_tests {
           database, translators1, generators1 );
 
       gum::learning::DBRowTranslatorSetDynamic<
-          gum::learning::CellTranslatorCompactIntId> translators2;
+          gum::learning::CellTranslatorCompactIntId>
+          translators2;
       translators2.insertTranslator( gum::learning::Col<0>(), 8 );
 
       auto generators2 = gum::learning::make_generators(
@@ -160,8 +161,8 @@ namespace gum_tests {
           GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSetDynamic<
-          gum::learning::CellTranslatorCompactIntId> translators1,
-          translators2, translators3;
+          gum::learning::CellTranslatorCompactIntId>
+          translators1, translators2, translators3;
 
       translators1.insertTranslator( gum::learning::Col<0>(),
                                      database.nbVariables() );

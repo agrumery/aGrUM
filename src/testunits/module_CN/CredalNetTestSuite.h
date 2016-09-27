@@ -26,8 +26,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/CN/credalNet.h>
 #include <agrum/CN/LpInterface.h>
+#include <agrum/CN/credalNet.h>
 
 #include <agrum/core/OMPThreads.h>
 
@@ -142,8 +142,8 @@ namespace gum_tests {
       lps[0][0].addRow( 0.1 <= A[0] <= 0.7 );
       lps[0][0].addRow( 0.1 <= A[1] <= 0.5 );
       lps[0][0].addRow( 0.1 <= A[2] <= 0.6 );
-      lps[0][0]
-          .addSumIsOne();  // positivity constraints are obviously redundant
+      lps[0]
+         [0].addSumIsOne();  // positivity constraints are obviously redundant
 
       lps_sols[0][0] = {{7. / 10, 1. / 5, 1. / 10},
                         {7. / 10, 1. / 10, 1. / 5},
@@ -201,8 +201,8 @@ namespace gum_tests {
       A = lps[2][3].addCols( 3 );
       lps[2][3].addProba();
 
-      lps_sols[2][3] = {
-          {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:0 B:1
+      lps_sols[2]
+              [3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:0 B:1
 
       /// C : ins idx = 4, A:1 B:1
       /// x0 <= x1 <= x2
@@ -244,8 +244,8 @@ namespace gum_tests {
       A = lps[2][7].addCols( 3 );
       lps[2][7].addProba();
 
-      lps_sols[2][7] = {
-          {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:1 B:2
+      lps_sols[2]
+              [7] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:1 B:2
 
       /// C : ins idx = 8, A:2 B:2
       /// x2 = 1 / 3 * x0 + 2 / 3 * x1
@@ -268,7 +268,7 @@ namespace gum_tests {
           std::vector<std::vector<double>> vertices(
               lps[id][entry].solve() );  // we solve the lp
 
-          gum::Size sols_size=gum::Size(lps_sols[id][entry].size() );
+          gum::Size sols_size = gum::Size( lps_sols[id][entry].size() );
           TS_ASSERT_EQUALS( vertices.size(), sols_size );
 
           std::vector<bool> checked( sols_size, false );

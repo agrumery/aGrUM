@@ -36,11 +36,11 @@ distribution.
 
 #include <cctype>
 
+#include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 // Help out windows:
 #if defined( _DEBUG ) && !defined( DEBUG )
@@ -54,9 +54,9 @@ distribution.
 #endif
 
 #ifdef TIXML_USE_STL
-#include <string>
 #include <iostream>
 #include <sstream>
+#include <string>
 #define TIXML_STRING std::string
 #else
 #include "tinystr.h"

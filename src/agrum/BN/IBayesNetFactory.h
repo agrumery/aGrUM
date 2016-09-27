@@ -29,9 +29,9 @@
 #include <string>
 #include <vector>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/multiDimAdressable.h>
 #include <agrum/graphicalModels/variableNodeMap.h>
+#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum {
   /**

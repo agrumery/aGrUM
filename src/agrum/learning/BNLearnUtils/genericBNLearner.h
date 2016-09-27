@@ -32,17 +32,17 @@
 
 #include <sstream>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/config.h>
 #include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>
-#include <agrum/BN/BayesNet.h>
 
-#include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
 #include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
 #include <agrum/learning/database/DBTransformCompactInt.h>
+#include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 
 #include <agrum/learning/scores_and_tests/scoreAIC.h>
@@ -52,29 +52,29 @@
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
+#include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
 #include <agrum/learning/aprioris/aprioriNoApriori.h>
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
-#include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
 
-#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
-#include <agrum/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
-#include <agrum/learning/constraints/structuralConstraintTabuList.h>
+#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintForbiddenArcs.h>
+#include <agrum/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/learning/constraints/structuralConstraintMandatoryArcs.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
+#include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
+#include <agrum/learning/constraints/structuralConstraintTabuList.h>
 
 #include <agrum/learning/structureUtils/graphChange.h>
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 
-#include <agrum/core/approximations/approximationSchemeListener.h>
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
 
 #include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>

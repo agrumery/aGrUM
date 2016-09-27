@@ -34,11 +34,11 @@ namespace gum {
         _sampleDef[node].resize( pConfs );
 
         for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
-          Size nVertices = Size(( *cpt )[node][pconf].size());
-          unsigned long b,c; // needed by superiorPow
-          superiorPow( static_cast<unsigned long>(nVertices), b, c );
-          Size nBits=Size(b);
-          Size newCard=Size(c);
+          Size nVertices = Size( ( *cpt )[node][pconf].size() );
+          unsigned long b, c;  // needed by superiorPow
+          superiorPow( static_cast<unsigned long>( nVertices ), b, c );
+          Size nBits = Size( b );
+          Size newCard = Size( c );
           _sampleDef[node][pconf].resize( nBits );
         }
       }
@@ -47,10 +47,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    bool
-    VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<bool>& bn,
-                                       const std::vector<Size>& key ) {
-      _currentHash = Size(_vectHash( bn ));
+    bool VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<bool>& bn,
+                                            const std::vector<Size>& key ) {
+      _currentHash = Size( _vectHash( bn ) );
       std::list<Size>& nets =
           _myVarHashs.getWithDefault( key, std::list<Size>() );  //[ key ];
 
@@ -64,16 +63,16 @@ namespace gum {
       // insert net hash in our key net list
       nets.push_back( _currentHash );
       // insert out key in the hash key list
-      _myHashVars.getWithDefault(
-                     _currentHash,
-                     std::list<varKey>() ) /*[_currentHash]*/.push_back( key );
+      _myHashVars
+          .getWithDefault(
+              _currentHash,
+              std::list<varKey>() ) /*[_currentHash]*/.push_back( key );
       return true;
     }
 
     template <typename GUM_SCALAR>
-    bool
-    VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<Size>& key,
-                                       const bool isBetter ) {
+    bool VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<Size>& key,
+                                            const bool isBetter ) {
       if ( isBetter ) {
         // get all nets of this key (maybe entry does not exists)
         std::list<Size>& old_nets =
@@ -112,8 +111,9 @@ namespace gum {
         // insert net hash in our key net list
         old_nets.push_back( _currentHash );
         // insert out key in the hash key list
-        _myHashVars.getWithDefault( _currentHash,
-                                    std::list<varKey>() ) /*[_currentHash]*/
+        _myHashVars
+            .getWithDefault( _currentHash,
+                             std::list<varKey>() ) /*[_currentHash]*/
             .push_back( key );
         return true;
 
@@ -162,7 +162,7 @@ namespace gum {
       // std::cout << sample << std::endl;
       // std::cout << _currentSample << std::endl;
 
-      _currentHash = Size(_vectHash( _currentSample ));
+      _currentHash = Size( _vectHash( _currentSample ) );
     }
 
     template <typename GUM_SCALAR>

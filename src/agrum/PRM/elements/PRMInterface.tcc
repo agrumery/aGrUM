@@ -26,9 +26,9 @@
 #include <agrum/PRM/elements/PRMInterface.h>
 
 #include <agrum/PRM/elements/PRMAttribute.h>
-#include <agrum/PRM/elements/PRMScalarAttribute.h>
-#include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMClass.h>
+#include <agrum/PRM/elements/PRMReferenceSlot.h>
+#include <agrum/PRM/elements/PRMScalarAttribute.h>
 
 namespace gum {
   namespace prm {
@@ -42,18 +42,19 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMInterface<GUM_SCALAR>::PRMInterface( const std::string& name,
-                                      PRMInterface<GUM_SCALAR>& super,
-                                      bool delayInheritance )
+                                            PRMInterface<GUM_SCALAR>& super,
+                                            bool delayInheritance )
         : PRMClassElementContainer<GUM_SCALAR>( name )
         , __superInterface( &super ) {
       GUM_CONSTRUCTOR( PRMInterface );
-      if ( ! delayInheritance ) {
+      if ( !delayInheritance ) {
         __inheritInterface( super );
       }
     }
 
     template <typename GUM_SCALAR>
-    PRMInterface<GUM_SCALAR>::PRMInterface( const PRMInterface<GUM_SCALAR>& source )
+    PRMInterface<GUM_SCALAR>::PRMInterface(
+        const PRMInterface<GUM_SCALAR>& source )
         : PRMClassElementContainer<GUM_SCALAR>( source.name() )
         , __dag( source.__dag )
         , __superInterface( source.__superInterface ) {
@@ -72,7 +73,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMInterface<GUM_SCALAR>::inheritInterface() {
-      if (__superInterface != nullptr) {
+      if ( __superInterface != nullptr ) {
         __inheritInterface( *__superInterface );
       }
     }
@@ -82,8 +83,8 @@ namespace gum {
         const PRMInterface<GUM_SCALAR>& i ) {
       // Copying attributes
       for ( const auto i_attr : i.__attributes ) {
-        auto attr =
-            new PRMScalarAttribute<GUM_SCALAR>( i_attr->name(), i_attr->type() );
+        auto attr = new PRMScalarAttribute<GUM_SCALAR>( i_attr->name(),
+                                                        i_attr->type() );
         attr->setId( i_attr->id() );
         __nodeIdMap.insert( attr->id(), attr );
         __attributes.insert( attr );
@@ -100,7 +101,8 @@ namespace gum {
       for ( const auto i_ref : i.__referenceSlots ) {
         auto ref = new PRMReferenceSlot<GUM_SCALAR>(
             i_ref->name(),
-            const_cast<PRMClassElementContainer<GUM_SCALAR>&>( i_ref->slotType() ),
+            const_cast<PRMClassElementContainer<GUM_SCALAR>&>(
+                i_ref->slotType() ),
             i_ref->isArray() );
 
         ref->setId( i_ref->id() );
@@ -158,10 +160,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    NodeId
-    PRMInterface<GUM_SCALAR>::overload( PRMClassElement<GUM_SCALAR>* overloader ) {
+    NodeId PRMInterface<GUM_SCALAR>::overload(
+        PRMClassElement<GUM_SCALAR>* overloader ) {
       try {
-        if ( ! super().exists( overloader->name() ) ) {
+        if ( !super().exists( overloader->name() ) ) {
           GUM_ERROR( OperationNotAllowed,
                      "found no ClassElement<GUM_SCALAR> to overload" );
         }
@@ -174,7 +176,7 @@ namespace gum {
       if ( overloaded == overloader ) {
         GUM_ERROR( DuplicateElement, "dupplicate ClassElement" );
       }
-      if ( ! __checkOverloadLegality( overloaded, overloader ) ) {
+      if ( !__checkOverloadLegality( overloaded, overloader ) ) {
         GUM_ERROR( OperationNotAllowed, "illegal overload" );
       }
 
@@ -214,7 +216,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMInterface<GUM_SCALAR>::__overloadAttribute(
-        PRMAttribute<GUM_SCALAR>* overloader, PRMAttribute<GUM_SCALAR>* overloaded ) {
+        PRMAttribute<GUM_SCALAR>* overloader,
+        PRMAttribute<GUM_SCALAR>* overloaded ) {
       if ( overloader->type() != overloaded->type() ) {
         overloader->setId( nextNodeId() );
         __dag.addNode( overloader->id() );
@@ -230,7 +233,8 @@ namespace gum {
         __nameMap[overloader->safeName()] = overloader;
         __attributes.erase( overloaded );
         __attributes.insert( overloader );
-        // Swapping types, ugly but necessary to preserve the PRMType<GUM_SCALAR>
+        // Swapping types, ugly but necessary to preserve the
+        // PRMType<GUM_SCALAR>
         // pointer of overloaded
         overloader->overload( overloaded );
         delete overloaded;
@@ -254,9 +258,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void
-    PRMInterface<GUM_SCALAR>::__addCastDescendants( PRMAttribute<GUM_SCALAR>* start,
-                                                 PRMAttribute<GUM_SCALAR>* end ) {
+    void PRMInterface<GUM_SCALAR>::__addCastDescendants(
+        PRMAttribute<GUM_SCALAR>* start, PRMAttribute<GUM_SCALAR>* end ) {
       PRMAttribute<GUM_SCALAR>* parent = start;
       PRMAttribute<GUM_SCALAR>* child = 0;
 
@@ -284,8 +287,9 @@ namespace gum {
         return false;
       }
 
-      if ( overloaded->elt_type() == PRMClassElement<GUM_SCALAR>::prm_attribute ) {
-        if ( ! overloader->type().isSubTypeOf( overloaded->type() ) ) {
+      if ( overloaded->elt_type() ==
+           PRMClassElement<GUM_SCALAR>::prm_attribute ) {
+        if ( !overloader->type().isSubTypeOf( overloaded->type() ) ) {
           return false;
         }
       } else if ( overloaded->elt_type() ==
@@ -294,7 +298,7 @@ namespace gum {
             static_cast<const PRMReferenceSlot<GUM_SCALAR>*>( overloader );
         auto ref_overloaded =
             static_cast<const PRMReferenceSlot<GUM_SCALAR>*>( overloaded );
-        if ( ! ref_overloader->slotType().isSubTypeOf(
+        if ( !ref_overloader->slotType().isSubTypeOf(
                  ref_overloaded->slotType() ) ) {
           return false;
         }
@@ -371,7 +375,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void PRMInterface<GUM_SCALAR>::addArc( const std::string& tail,
-                                               const std::string& head ) {
+                                                  const std::string& head ) {
       GUM_ERROR( OperationNotAllowed, "an Interface does ! have arcs" );
     }
 
@@ -384,7 +388,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const PRMInterface<GUM_SCALAR>& PRMInterface<GUM_SCALAR>::super() const {
+    INLINE const PRMInterface<GUM_SCALAR>&
+    PRMInterface<GUM_SCALAR>::super() const {
       if ( __superInterface )
         return *__superInterface;
       else
@@ -427,7 +432,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename PRMObject::prm_type PRMInterface<GUM_SCALAR>::obj_type() const {
+    INLINE typename PRMObject::prm_type
+    PRMInterface<GUM_SCALAR>::obj_type() const {
       return PRMObject::prm_type::PRM_INTERFACE;
     }
 
@@ -442,7 +448,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMClassElement<GUM_SCALAR>& PRMInterface<GUM_SCALAR>::get( NodeId id ) {
+    INLINE PRMClassElement<GUM_SCALAR>&
+    PRMInterface<GUM_SCALAR>::get( NodeId id ) {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
@@ -497,7 +504,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Set<PRMClass<GUM_SCALAR>*>& PRMInterface<GUM_SCALAR>::implementations() {
+    INLINE Set<PRMClass<GUM_SCALAR>*>&
+    PRMInterface<GUM_SCALAR>::implementations() {
       return __implementations;
     }
 
@@ -525,7 +533,7 @@ namespace gum {
     INLINE bool PRMInterface<GUM_SCALAR>::isOutputNode(
         const PRMClassElement<GUM_SCALAR>& elt ) const {
       try {
-        if ( ! this->_getIOFlag( elt ).second ) {
+        if ( !this->_getIOFlag( elt ).second ) {
 
           for ( auto i : __implementations ) {
             if ( i->isOutputNode( elt ) ) {

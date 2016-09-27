@@ -175,7 +175,7 @@ namespace gum {
      *                        gum::BayesNet.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string& name,unsigned int nbrmod);
+    NodeId add( const std::string& name, unsigned int nbrmod );
 
     /**
      * @brief Add a variable to the gum::BayesNet.
@@ -396,7 +396,7 @@ namespace gum {
     void endTopologyTransformation();
     ///@}
 
-    /** 
+    /**
      * @brief Reverses an arc while preserving the same joint distribution.
      *
      * This method uses Shachter's 1986 algorithm for reversing an arc in

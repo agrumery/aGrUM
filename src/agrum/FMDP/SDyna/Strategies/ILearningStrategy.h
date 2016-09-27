@@ -34,8 +34,8 @@
 #include <agrum/core/types.h>
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
-#include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
+#include <agrum/FMDP/learning/observation.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================

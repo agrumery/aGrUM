@@ -28,9 +28,9 @@
 #ifndef GUM_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
 #define GUM_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
 
-#include <vector>
 #include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
 #include <agrum/graphs/undiGraph.h>
+#include <vector>
 
 namespace gum {
 

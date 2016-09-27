@@ -41,8 +41,7 @@ namespace gum {
               GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE ) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
-      for ( NodeId i = 0;
-            i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
+      for ( NodeId i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
             ++i ) {
         _TabuList__changes.insert(
             ArcAddition( std::numeric_limits<NodeId>::max() - i,
@@ -60,8 +59,7 @@ namespace gum {
               GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE ) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
-      for ( NodeId i = 0;
-            i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
+      for ( NodeId i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
             ++i ) {
         _TabuList__changes.insert(
             ArcAddition( std::numeric_limits<NodeId>::max() - i,

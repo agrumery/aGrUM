@@ -30,10 +30,10 @@
 #ifndef GUM_BN_WRITER_H
 #define GUM_BN_WRITER_H
 
+#include <agrum/BN/IBayesNet.h>
+#include <agrum/config.h>
 #include <iostream>
 #include <string>
-#include <agrum/config.h>
-#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 

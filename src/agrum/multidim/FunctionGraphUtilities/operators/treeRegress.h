@@ -30,8 +30,8 @@
 
 #include <functional>
 
-#include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 
 namespace gum {
 
@@ -84,7 +84,8 @@ namespace gum {
     const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
     const Bijection<
         const DiscreteVariable*,
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*> __pxi;
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*>
+        __pxi;
     HashTable<const DiscreteVariable*, Idx> __context;
   };
 
@@ -94,4 +95,4 @@ namespace gum {
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.tcc>
 
-#endif // GUM_REGRESS_H
+#endif  // GUM_REGRESS_H

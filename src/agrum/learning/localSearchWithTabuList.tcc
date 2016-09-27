@@ -24,8 +24,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
 
@@ -33,10 +33,10 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template <typename GRAPH_CHANGES_SELECTOR>
-    DAG LocalSearchWithTabuList::learnStructure(
-        GRAPH_CHANGES_SELECTOR& selector,
-        const std::vector<Size>& modal,
-        DAG dag ) {
+    DAG
+    LocalSearchWithTabuList::learnStructure( GRAPH_CHANGES_SELECTOR& selector,
+                                             const std::vector<Size>& modal,
+                                             DAG dag ) {
       selector.setGraph( dag, modal );
 
       Size nb_changes_applied;

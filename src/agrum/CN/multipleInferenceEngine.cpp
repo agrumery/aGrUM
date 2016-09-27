@@ -31,4 +31,3 @@ template class gum::credal::
     MultipleInferenceEngine<float, gum::LazyPropagation<float>>;
 template class gum::credal::
     MultipleInferenceEngine<double, gum::LazyPropagation<double>>;
-

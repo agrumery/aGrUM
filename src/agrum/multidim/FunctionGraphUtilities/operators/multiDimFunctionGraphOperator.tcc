@@ -82,8 +82,9 @@ namespace gum {
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
   MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
-  MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::
-      compute() {
+  MultiDimFunctionGraphOperator<GUM_SCALAR,
+                                FUNCTOR,
+                                TerminalNodePolicy>::compute() {
 
     __establishVarOrder();
     __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
@@ -242,7 +243,7 @@ namespace gum {
           HashTable<NodeId, short int*>& dgInstNeed ) {
 
     HashTable<NodeId, short int*> nodesVarDescendant;
-    Size tableSize = Size(__nbVar * sizeof( short int ));
+    Size tableSize = Size( __nbVar * sizeof( short int ) );
 
     for ( auto varIter = dg->variablesSequence().rbeginSafe();
           varIter != dg->variablesSequence().rendSafe();
@@ -587,8 +588,9 @@ namespace gum {
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy>
   INLINE Idx
-  MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::
-      sizeVarRetroDomain() {
+  MultiDimFunctionGraphOperator<GUM_SCALAR,
+                                FUNCTOR,
+                                TerminalNodePolicy>::sizeVarRetroDomain() {
     return __sizeVarRetro;
   }
 

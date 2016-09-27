@@ -62,12 +62,12 @@ between 0 and 100
 #ifndef BIF_READER_H
 #define BIF_READER_H
 
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <fstream>
 
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/io/BNReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

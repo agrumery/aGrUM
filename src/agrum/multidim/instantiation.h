@@ -26,8 +26,8 @@
 #ifndef GUM_INSTANTIATION_H
 #define GUM_INSTANTIATION_H
 
-#include <sstream>
 #include <ostream>
+#include <sstream>
 
 #include <agrum/config.h>
 
@@ -1051,7 +1051,6 @@ namespace gum {
     /// @}
 
     protected:
-
     /**
      * @brief Replace x by y.
      * @param x The variable to replace.

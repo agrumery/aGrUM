@@ -25,16 +25,16 @@
 #ifndef GUM_INF_DIAG_GENERATOR_H
 #define GUM_INF_DIAG_GENERATOR_H
 
-#include <cstdlib>
 #include <cstdio>
-#include <vector>
+#include <cstdlib>
 #include <iostream>
+#include <vector>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/generator/UTGenerator.h>
 #include <agrum/ID/generator/simpleUTGenerator.h>
+#include <agrum/ID/influenceDiagram.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum {
 
@@ -110,9 +110,9 @@ namespace gum {
      * @return A IDs randomly generated.
      */
     InfluenceDiagram<GUM_SCALAR>* generateID( Size nbrNodes,
-      GUM_SCALAR arcDensity,
-      GUM_SCALAR chanceNodeDensity,
-      GUM_SCALAR utilityNodeDensity,
+                                              GUM_SCALAR arcDensity,
+                                              GUM_SCALAR chanceNodeDensity,
+                                              GUM_SCALAR utilityNodeDensity,
                                               Size max_modality = 2 );
 
     /// @}

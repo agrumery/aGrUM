@@ -37,7 +37,8 @@ namespace gum {
 
     /**
      * @class MultiDimAggregator
-     * @headerfile multiDimAggregator.h <agrum/multidim/aggregators/multiDimAggregator.h>
+     * @headerfile multiDimAggregator.h
+     * <agrum/multidim/aggregators/multiDimAggregator.h>
      * @ingroup multidim_agg_group
      *
      * @brief Abstract base class for all multi dimensionnal aggregator.
@@ -67,7 +68,7 @@ namespace gum {
       /**
        * Default constructor.
        */
-      MultiDimAggregator(  );
+      MultiDimAggregator();
 
       /**
        * Copy constructor.
@@ -114,7 +115,7 @@ namespace gum {
       virtual void changeNotification( gum::Instantiation&,
                                        const gum::DiscreteVariable* const,
                                        const gum::Idx&,
-                                       const gum::Idx& ) override {};
+                                       const gum::Idx& ) override{};
 
       virtual void setFirstNotification( gum::Instantiation& ){};
 
@@ -137,7 +138,7 @@ namespace gum {
        */
       virtual Size realSize() const { return 0; };
 
-      /** 
+      /**
        * @brief Returns the real name of the multiDimArray.
        *
        * In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -152,7 +153,6 @@ namespace gum {
 
       /// @}
       protected:
-
       /// by default, _buildValue uses a "fold" scheme and the user has to
       /// implement _neutralElt and _fold
       /// but if necessary (as for @ref Median), _buildValue can be

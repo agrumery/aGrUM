@@ -72,4 +72,4 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif // _ODBC
+#endif  // _ODBC

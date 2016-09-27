@@ -30,5 +30,3 @@
 
 template class gum::LinearApproximationPolicy<float>;
 template class gum::LinearApproximationPolicy<double>;
-
-

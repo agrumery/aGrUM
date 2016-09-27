@@ -31,11 +31,11 @@
 #ifndef GUM_BIJECTION_H
 #define GUM_BIJECTION_H
 
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <type_traits>
 #include <initializer_list>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <type_traits>
 
 #include <agrum/core/hashTable.h>
 

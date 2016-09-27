@@ -208,7 +208,7 @@ namespace gum {
         NodeId v = 0;
         bool go = true;
 
-        while ( ! stack.empty() ) {
+        while ( !stack.empty() ) {
           go = true;
           u = stack.back().first;
           v = stack.back().second;

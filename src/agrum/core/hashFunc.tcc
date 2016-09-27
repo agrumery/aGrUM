@@ -45,7 +45,7 @@ namespace gum {
     }
 
     _hash_log2_size = __hashTableLog2( new_size );
-    _hash_size = Size(1) << _hash_log2_size;
+    _hash_size = Size( 1 ) << _hash_log2_size;
     _hash_mask = _hash_size - 1;
   }
 

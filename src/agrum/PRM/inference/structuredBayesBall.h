@@ -24,9 +24,9 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <utility>
-#include <string>
 #include <sstream>
+#include <string>
+#include <utility>
 
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
@@ -71,10 +71,12 @@ namespace gum {
       const std::string& key( const PRMInstance<GUM_SCALAR>& i ) const;
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
-      const Set<NodeId>& requisiteNodes( const PRMInstance<GUM_SCALAR>* i ) const;
+      const Set<NodeId>&
+      requisiteNodes( const PRMInstance<GUM_SCALAR>* i ) const;
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
-      const Set<NodeId>& requisiteNodes( const PRMInstance<GUM_SCALAR>& i ) const;
+      const Set<NodeId>&
+      requisiteNodes( const PRMInstance<GUM_SCALAR>& i ) const;
 
       /// Returns the number of occurrence of the given key, which is the number
       /// of PRMInstance<GUM_SCALAR> sharing the same set of requisite nodes.
@@ -117,11 +119,12 @@ namespace gum {
       /// Code alias
       typedef HashTable<const PRMInstance<GUM_SCALAR>*, MarkMap*> InstanceMap;
       /// Code alias
-      std::pair<bool, bool>&
-      __getMark( InstanceMap& marks, const PRMInstance<GUM_SCALAR>* i, NodeId n );
+      std::pair<bool, bool>& __getMark( InstanceMap& marks,
+                                        const PRMInstance<GUM_SCALAR>* i,
+                                        NodeId n );
       /// Code alias
       const PRMSlotChain<GUM_SCALAR>& __getSC( const PRMInstance<GUM_SCALAR>* i,
-                                            NodeId n );
+                                               NodeId n );
 
       /// Cleans this before a new computation.
       void __clean();
@@ -154,7 +157,8 @@ namespace gum {
       /// the
       /// set of requisite nodes deduced from d-separation analysis.
       HashTable<const PRMInstance<GUM_SCALAR>*,
-                std::pair<std::string, Set<NodeId>*>> __keyMap;
+                std::pair<std::string, Set<NodeId>*>>
+          __keyMap;
 
       /// Associate a Key with the set of requisite nodes associated with it.
       /// The Size value is the number of instance with the same key.

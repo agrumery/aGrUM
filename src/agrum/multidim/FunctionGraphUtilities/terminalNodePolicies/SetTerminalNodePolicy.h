@@ -79,7 +79,7 @@ namespace gum {
 
     /// Returns true if a terminal node matching this id exists
     bool existsTerminalNodeWithId( const NodeId& n ) const {
-      return __map.exists(n);
+      return __map.exists( n );
     }
 
     /// Returns true if a terminal node matching this value exists

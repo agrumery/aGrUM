@@ -38,10 +38,10 @@ namespace gum {
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::
       MultiDimCombineAndProjectDefault(
-          TABLE<GUM_SCALAR>* ( *combine )( const TABLE<GUM_SCALAR>&,
-                                           const TABLE<GUM_SCALAR>& ),
-          TABLE<GUM_SCALAR>* ( *project )(
-              const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) )
+          TABLE<GUM_SCALAR>* ( *combine )(const TABLE<GUM_SCALAR>&,
+                                          const TABLE<GUM_SCALAR>&),
+          TABLE<GUM_SCALAR>* ( *project )(const TABLE<GUM_SCALAR>&,
+                                          const Set<const DiscreteVariable*>&))
       : MultiDimCombineAndProject<GUM_SCALAR, TABLE>()
       , __combination(
             new MultiDimCombinationDefault<GUM_SCALAR, TABLE>( combine ) )
@@ -342,8 +342,8 @@ namespace gum {
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::setCombineFunction(
-      TABLE<GUM_SCALAR>* ( *combine )( const TABLE<GUM_SCALAR>&,
-                                       const TABLE<GUM_SCALAR>& ) ) {
+      TABLE<GUM_SCALAR>* ( *combine )(const TABLE<GUM_SCALAR>&,
+                                      const TABLE<GUM_SCALAR>&)) {
     __combination->setCombineFunction( combine );
   }
 
@@ -368,8 +368,8 @@ namespace gum {
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void
   MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>::setProjectFunction(
-      TABLE<GUM_SCALAR>* ( *proj )( const TABLE<GUM_SCALAR>&,
-                                    const Set<const DiscreteVariable*>& ) ) {
+      TABLE<GUM_SCALAR>* ( *proj )(const TABLE<GUM_SCALAR>&,
+                                   const Set<const DiscreteVariable*>&)) {
     __projection->setProjectFunction( proj );
   }
 
@@ -980,7 +980,7 @@ namespace gum {
             del_size *= ( *iter_del )->domainSize();
           }
 
-          current_memory -= long(del_size);
+          current_memory -= long( del_size );
 
           delete *iter;
           tmp_marginals.erase( *iter );

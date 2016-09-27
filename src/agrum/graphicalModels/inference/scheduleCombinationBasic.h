@@ -75,8 +75,8 @@
 #define GUM_SCHEDULE_COMBINATION_BASIC_H
 
 #include <agrum/core/sequence.h>
-#include <agrum/variables/discreteVariable.h>
 #include <agrum/graphicalModels/inference/scheduleCombination.h>
+#include <agrum/variables/discreteVariable.h>
 
 namespace gum {
 
@@ -91,7 +91,7 @@ namespace gum {
     /// default constructor
     ScheduleCombinationBasic( MultiDimImplementation<GUM_SCALAR>* ( *combine )(
         const MultiDimImplementation<GUM_SCALAR>&,
-        const MultiDimImplementation<GUM_SCALAR>& ) );
+        const MultiDimImplementation<GUM_SCALAR>&));
 
     /// copy constructor
     ScheduleCombinationBasic( const ScheduleCombinationBasic<GUM_SCALAR>& );
@@ -128,8 +128,8 @@ namespace gum {
 
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction( MultiDimImplementation<GUM_SCALAR>* (
-        *combine )( const MultiDimImplementation<GUM_SCALAR>&,
-                    const MultiDimImplementation<GUM_SCALAR>& ) );
+        *combine )(const MultiDimImplementation<GUM_SCALAR>&,
+                   const MultiDimImplementation<GUM_SCALAR>&));
 
     /// returns the combination function currently used by the combinator
     virtual MultiDimImplementation<GUM_SCALAR>* ( *combineFunction() )(

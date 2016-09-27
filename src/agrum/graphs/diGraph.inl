@@ -53,7 +53,7 @@ namespace gum {
       NodeGraphPart::operator=( g );
       ArcGraphPart::operator=( g );
 
-      if (__mutableTopologicalOrder != nullptr) {
+      if ( __mutableTopologicalOrder != nullptr ) {
         delete __mutableTopologicalOrder;
         __mutableTopologicalOrder = nullptr;
       }

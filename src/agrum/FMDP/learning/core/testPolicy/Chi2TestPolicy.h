@@ -28,8 +28,8 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_CHI2_TEST_POLICY_H
 
 // ============================================================================
-#include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/chiSquare.h>
+#include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
 

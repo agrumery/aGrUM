@@ -21,13 +21,13 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/aggregators/or.h>
 #include <agrum/multidim/aggregators/and.h>
 #include <agrum/multidim/aggregators/count.h>
+#include <agrum/multidim/aggregators/or.h>
+#include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/PRM/elements/PRMFormAttribute.h>
 #include <agrum/PRM/elements/PRMAggregate.h>
+#include <agrum/PRM/elements/PRMFormAttribute.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
@@ -254,7 +254,7 @@ namespace gum_tests {
       // Assert
       auto after = parent.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( ! parent.cpf().contains( child.type().variable() ) );
+      TS_ASSERT( !parent.cpf().contains( child.type().variable() ) );
     }
 
     void testAddChild() {
@@ -267,7 +267,7 @@ namespace gum_tests {
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( ! child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT( !child.cpf().contains( parent.type().variable() ) );
     }
 
     void testCpf() {

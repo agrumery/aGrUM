@@ -70,16 +70,16 @@ between 0 and 100
 
 #define TIXML_USE_TICPP
 
+#include <list>
 #include <sstream>
 #include <string>
-#include <list>
 
+#include <agrum/BN/io/BNReader.h>
 #include <agrum/config.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/signal/signaler2.h>
 #include <agrum/core/tinyxml/ticpp/ticpp.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/BN/io/BNReader.h>
 
 namespace gum {
 

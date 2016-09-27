@@ -15,21 +15,21 @@
  *   (gumSize) 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.   *
  ***************************************************************************/
 #include <cstdio>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/ID/inference/influenceDiagramInference.h>
+#include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
+#include <agrum/graphs/graphElements.h>
+#include <agrum/variables/discreteVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //           D1
@@ -70,8 +70,7 @@ namespace gum_tests {
         id.addArc( idList[3], idList[5] );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }

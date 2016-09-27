@@ -24,30 +24,30 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <memory>
 #include <climits>
+#include <memory>
 
 #include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
 #include <agrum/PRM/elements/PRMType.h>
 
-#include <agrum/multidim/aggregators/min.h>
-#include <agrum/multidim/aggregators/max.h>
+#include <agrum/multidim/aggregators/amplitude.h>
+#include <agrum/multidim/aggregators/and.h>
+#include <agrum/multidim/aggregators/count.h>
 #include <agrum/multidim/aggregators/exists.h>
 #include <agrum/multidim/aggregators/forall.h>
-#include <agrum/multidim/aggregators/count.h>
-#include <agrum/multidim/aggregators/or.h>
-#include <agrum/multidim/aggregators/and.h>
-#include <agrum/multidim/aggregators/amplitude.h>
+#include <agrum/multidim/aggregators/max.h>
 #include <agrum/multidim/aggregators/median.h>
+#include <agrum/multidim/aggregators/min.h>
+#include <agrum/multidim/aggregators/or.h>
 
 namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
     PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
-                                      AggregateType aggType,
-                                      const PRMType<GUM_SCALAR>& rvType )
+                                            AggregateType aggType,
+                                            const PRMType<GUM_SCALAR>& rvType )
         : PRMClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new PRMType<GUM_SCALAR>( rvType ) )
@@ -60,9 +60,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
-                                      AggregateType aggType,
-                                      const PRMType<GUM_SCALAR>& rvType,
-                                      Idx label )
+                                            AggregateType aggType,
+                                            const PRMType<GUM_SCALAR>& rvType,
+                                            Idx label )
         : PRMClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new PRMType<GUM_SCALAR>( rvType ) )
@@ -70,7 +70,7 @@ namespace gum {
       GUM_CONSTRUCTOR( PRMAggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
-      this->__type->variable().setName( name ); 
+      this->__type->variable().setName( name );
     }
 
     template <typename GUM_SCALAR>
@@ -80,8 +80,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    PRMAggregate<GUM_SCALAR>::PRMAggregate( const PRMAggregate<GUM_SCALAR>& source )
-        : PRMClassElement<GUM_SCALAR>( source ){
+    PRMAggregate<GUM_SCALAR>::PRMAggregate(
+        const PRMAggregate<GUM_SCALAR>& source )
+        : PRMClassElement<GUM_SCALAR>( source ) {
       GUM_CONS_CPY( PRMAggregate );
       GUM_ERROR( FatalError,
                  "illegal call to gum::PRMAggregate copy constructor." );
@@ -90,7 +91,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     PRMAggregate<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::
     operator=( const PRMAggregate<GUM_SCALAR>& source ) {
-      GUM_ERROR( FatalError, "illegal call to gum::PRMAggregate copy operator." );
+      GUM_ERROR( FatalError,
+                 "illegal call to gum::PRMAggregate copy operator." );
     }
 
     template <typename GUM_SCALAR>
@@ -117,8 +119,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-   INLINE void PRMAggregate<GUM_SCALAR>::setLabel( Idx idx ) {
-        ( *__label ) = idx;
+    INLINE void PRMAggregate<GUM_SCALAR>::setLabel( Idx idx ) {
+      ( *__label ) = idx;
     }
 
     template <typename GUM_SCALAR>
@@ -182,29 +184,29 @@ namespace gum {
         case AggregateType::COUNT: {
           return new aggregator::Count<GUM_SCALAR>( label() );
         }
-        default: {
-          GUM_ERROR( OperationNotAllowed, "Unknown aggregator." );
-        }
+        default: { GUM_ERROR( OperationNotAllowed, "Unknown aggregator." ); }
       }
       return nullptr;
     }
 
     // See gum::PRMClassElement<GUM_SCALAR>::_addParent().
     template <typename GUM_SCALAR>
-    INLINE void
-    PRMAggregate<GUM_SCALAR>::addParent( const PRMClassElement<GUM_SCALAR>& elt ) {}
+    INLINE void PRMAggregate<GUM_SCALAR>::addParent(
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     // See gum::PRMClassElement<GUM_SCALAR>::_addChild().
     template <typename GUM_SCALAR>
-    INLINE void
-    PRMAggregate<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {}
+    INLINE void PRMAggregate<GUM_SCALAR>::addChild(
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    PRMAttribute<GUM_SCALAR>* PRMAggregate<GUM_SCALAR>::getCastDescendant() const {
+    PRMAttribute<GUM_SCALAR>*
+    PRMAggregate<GUM_SCALAR>::getCastDescendant() const {
       PRMScalarAttribute<GUM_SCALAR>* cast = 0;
 
       try {
-        cast = new PRMScalarAttribute<GUM_SCALAR>( this->name(), type().superType() );
+        cast = new PRMScalarAttribute<GUM_SCALAR>( this->name(),
+                                                   type().superType() );
       } catch ( NotFound& ) {
         GUM_ERROR( OperationNotAllowed,
                    "this PRMAggregate can not have cast descendant" );
@@ -215,7 +217,7 @@ namespace gum {
       DiscreteVariable& cast_var = cast->type().variable();
       Instantiation inst( cast->cpf() );
 
-      for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); !inst.end(); inst.inc() ) {
         if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
           cast->cpf().set( inst, 1 );
         } else {

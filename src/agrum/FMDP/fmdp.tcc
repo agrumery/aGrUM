@@ -393,9 +393,9 @@ namespace gum {
       for ( auto varIter = beginVariables(); varIter != endVariables();
             ++varIter )
         if ( this->transition( *actionIter, *varIter ) )
-          fmdpCore << RECAST( this->transition( *actionIter, *varIter ) )
-                          ->toDot()
-                   << std::endl;
+          fmdpCore
+              << RECAST( this->transition( *actionIter, *varIter ) )->toDot()
+              << std::endl;
       if ( this->reward( *actionIter ) )
         fmdpCore << RECAST( this->reward( *actionIter ) )->toDot() << std::endl;
     }

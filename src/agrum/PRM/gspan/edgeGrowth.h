@@ -27,15 +27,15 @@
 #ifndef GUM_EDGE_GROWTH_H
 #define GUM_EDGE_GROWTH_H
 
-#include <utility>
 #include <cmath>
 #include <list>
-#include <vector>
 #include <ostream>
+#include <utility>
+#include <vector>
 
+#include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/set.h>
-#include <agrum/core/bijection.h>
 
 #include <agrum/graphs/diGraph.h>
 
@@ -76,7 +76,8 @@ namespace gum {
         void insert( PRMInstance<GUM_SCALAR>* u, PRMInstance<GUM_SCALAR>* v );
         /// The mapping between the u and v for each match in the interface
         /// graph.
-        NodeProperty<std::pair<PRMInstance<GUM_SCALAR>*, PRMInstance<GUM_SCALAR>*>>
+        NodeProperty<
+            std::pair<PRMInstance<GUM_SCALAR>*, PRMInstance<GUM_SCALAR>*>>
             matches;
         /// Return a string representation of this
         std::string toString();

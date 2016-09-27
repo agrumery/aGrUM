@@ -28,9 +28,9 @@
 #ifndef SKOORSYNTAXTREE_H
 #define SKOORSYNTAXTREE_H
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include <agrum/PRM/elements/PRMSystem.h>
 

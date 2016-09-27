@@ -26,19 +26,22 @@
 
 // to help IDE parser
 #include <agrum/core/utils.h>
-#include <tuple>
 #include <iostream>
 #include <string>
+#include <tuple>
 #include <type_traits>
 
-namespace std {    
+namespace std {
   template <typename T>
   ostream& operator<<( ostream& stream, const vector<T>& val ) {
     bool deja = false;
     stream << "[";
 
-    for ( const auto& v : val) {
-      if ( deja ) stream << " , "; else deja = true;
+    for ( const auto& v : val ) {
+      if ( deja )
+        stream << " , ";
+      else
+        deja = true;
       stream << v;
     }
 

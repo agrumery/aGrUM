@@ -40,7 +40,8 @@ namespace gum {
      * @brief This class decorates a gum::prm::Class<GUM_SCALAR> has an
      *IBaseBayesNet.
      *
-     * This class filters PRMAttribute and PRMAggregate in a way it can be interpreted
+     * This class filters PRMAttribute and PRMAggregate in a way it can be
+     *interpreted
      *as
      * a IBayesNet. SlotChains and PRMReferenceSlot are not represented.
      *

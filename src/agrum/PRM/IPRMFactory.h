@@ -27,20 +27,20 @@
 #ifndef GUM_IPRM_FACTORY_H
 #define GUM_IPRM_FACTORY_H
 
-#include <string>
-#include <sstream>
-#include <vector>
 #include <iostream>
 #include <limits>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include <agrum/config.h>
 
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/multidim/multiDimSparse.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/multidim/multiDimSparse.h>
+#include <agrum/variables/discreteVariable.h>
 
-#include <agrum/PRM/utils_prm.h>
 #include <agrum/PRM/PRM.h>
+#include <agrum/PRM/utils_prm.h>
 
 namespace gum {
 
@@ -72,11 +72,10 @@ namespace gum {
       virtual void addLabel( const std::string& l,
                              std::string extends = "" ) = 0;
       virtual void endDiscreteType() = 0;
-      virtual void
-      startClass( const std::string& c,
-                  const std::string& extends = "",
-                  const Set<std::string>* implements = nullptr,
-                  bool delayInheritance = false ) = 0;
+      virtual void startClass( const std::string& c,
+                               const std::string& extends = "",
+                               const Set<std::string>* implements = nullptr,
+                               bool delayInheritance = false ) = 0;
       virtual void continueClass( const std::string& c ) = 0;
       virtual void endClass( bool checkImplementations = true ) = 0;
       virtual void startInterface( const std::string& i,
@@ -98,7 +97,7 @@ namespace gum {
       virtual void setCPFByFloatRule( const std::vector<std::string>& labels,
                                       const std::vector<float>& values ) = 0;
       virtual void setCPFByRule( const std::vector<std::string>& labels,
-                                 const std::vector<std::string>& values ) =0;
+                                 const std::vector<std::string>& values ) = 0;
       virtual void
       setRawCPFByColumns( const std::vector<std::string>& array ) = 0;
       virtual void
@@ -111,7 +110,7 @@ namespace gum {
                                   const std::string& agg_type,
                                   const std::vector<std::string>& chains,
                                   const std::vector<std::string>& params,
-                                  std::string type="" ) = 0;
+                                  std::string type = "" ) = 0;
       virtual void
       addNoisyOrCompound( const std::string& name,
                           const std::vector<std::string>& chains,

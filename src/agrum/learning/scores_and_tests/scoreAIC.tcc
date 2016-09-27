@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <sstream>
 #include <agrum/learning/scores_and_tests/scoreAIC.h>
+#include <sstream>
 
 namespace gum {
 
@@ -121,8 +121,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    double
-    ScoreAIC<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
+    double ScoreAIC<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -131,7 +130,7 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const Size targets_modal =Size( N_ijk.size());
+      const Size targets_modal = Size( N_ijk.size() );
       double score = 0;
 
       // get the nodes involved in the score as well as their modalities
@@ -147,13 +146,13 @@ namespace gum {
         // get the counts for the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const Size conditioning_modal =Size(  N_ij.size());
+        const Size conditioning_modal = Size( N_ij.size() );
 
         // initialize the score: this should be the penalty of the AIC score,
         // i.e.,
         // -(ri-1 ) * qi
         const double penalty =
-            double(conditioning_modal * ( modalities[all_nodes.back()] - 1 ));
+            double( conditioning_modal * ( modalities[all_nodes.back()] - 1 ) );
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =
@@ -212,7 +211,7 @@ namespace gum {
         // initialize the score: this should be the penalty of the AIC score,
         // i.e.,
         // -(ri-1 )
-        const double penalty = double(modalities[all_nodes.back()]) - 1;
+        const double penalty = double( modalities[all_nodes.back()] ) - 1;
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =

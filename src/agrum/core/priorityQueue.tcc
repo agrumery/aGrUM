@@ -57,7 +57,7 @@ namespace gum {
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::
       PriorityQueueImplementation(
           std::initializer_list<std::pair<Val, Priority>> list )
-      : __indices( Size(list.size()) / 2, true, true ) {
+      : __indices( Size( list.size() ) / 2, true, true ) {
     // fill the queue
     __heap.reserve( list.size() );
     for ( const auto& elt : list ) {
@@ -159,10 +159,9 @@ namespace gum {
             typename Alloc,
             bool Gen>
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
-      PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::
-      operator=(
-          const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
-              from ) {
+  PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::
+  operator=( const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
+                 from ) {
     // avoid self assignment
     if ( this != &from ) {
       // for debugging purposes
@@ -201,12 +200,9 @@ namespace gum {
             bool Gen>
   template <typename OtherAlloc>
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
-      PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::
-      operator=( const PriorityQueueImplementation<Val,
-                                                   Priority,
-                                                   Cmp,
-                                                   OtherAlloc,
-                                                   Gen>& from ) {
+  PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::operator=(
+      const PriorityQueueImplementation<Val, Priority, Cmp, OtherAlloc, Gen>&
+          from ) {
     // for debugging purposes
     GUM_OP_CPY( PriorityQueueImplementation );
 
@@ -246,9 +242,8 @@ namespace gum {
             typename Alloc,
             bool Gen>
   INLINE PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
-      PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::
-      operator=(
-          PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&& from ) {
+  PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::operator=(
+      PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&& from ) {
     // avoid self assignment
     if ( this != &from ) {
       // for debugging purposes
@@ -315,7 +310,7 @@ namespace gum {
   INLINE Size
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>::capacity() const
       noexcept {
-    return Size(__heap.capacity());
+    return Size( __heap.capacity() );
   }
 
   // changes the size of the array storing the priority queue
@@ -789,7 +784,7 @@ namespace gum {
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::
       PriorityQueueImplementation(
           std::initializer_list<std::pair<Val, Priority>> list )
-      : __indices(Size( list.size()) / 2, true, true ) {
+      : __indices( Size( list.size() ) / 2, true, true ) {
     // fill the queue
     __heap.reserve( list.size() );
     for ( const auto& elt : list ) {
@@ -863,10 +858,9 @@ namespace gum {
   // copy operator
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
-      PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::
-      operator=(
-          const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
-              from ) {
+  PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::
+  operator=( const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
+                 from ) {
     // avoid self assignment
     if ( this != &from ) {
       // for debugging purposes
@@ -896,12 +890,9 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   template <typename OtherAlloc>
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
-      PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::
-      operator=( const PriorityQueueImplementation<Val,
-                                                   Priority,
-                                                   Cmp,
-                                                   OtherAlloc,
-                                                   true>& from ) {
+  PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::operator=(
+      const PriorityQueueImplementation<Val, Priority, Cmp, OtherAlloc, true>&
+          from ) {
     // for debugging purposes
     GUM_OP_CPY( PriorityQueueImplementation );
 
@@ -934,9 +925,8 @@ namespace gum {
   // move operator
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
-      PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::
-      operator=( PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&&
-                     from ) {
+  PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::operator=(
+      PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&& from ) {
     // avoid self assignment
     if ( this != &from ) {
       // for debugging purposes
@@ -987,7 +977,7 @@ namespace gum {
   INLINE Size
   PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>::capacity() const
       noexcept {
-    return Size(__heap.capacity());
+    return Size( __heap.capacity() );
   }
 
   // changes the size of the array storing the priority queue
@@ -1419,8 +1409,8 @@ namespace gum {
   // copy operator
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE PriorityQueue<Val, Priority, Cmp, Alloc>&
-      PriorityQueue<Val, Priority, Cmp, Alloc>::
-      operator=( const PriorityQueue<Val, Priority, Cmp, Alloc>& from ) {
+  PriorityQueue<Val, Priority, Cmp, Alloc>::
+  operator=( const PriorityQueue<Val, Priority, Cmp, Alloc>& from ) {
     Implementation::operator=( from );
     return *this;
   }
@@ -1429,8 +1419,8 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   template <typename OtherAlloc>
   INLINE PriorityQueue<Val, Priority, Cmp, Alloc>&
-      PriorityQueue<Val, Priority, Cmp, Alloc>::
-      operator=( const PriorityQueue<Val, Priority, Cmp, OtherAlloc>& from ) {
+  PriorityQueue<Val, Priority, Cmp, Alloc>::
+  operator=( const PriorityQueue<Val, Priority, Cmp, OtherAlloc>& from ) {
     Implementation::operator=( from );
     return *this;
   }
@@ -1438,8 +1428,8 @@ namespace gum {
   // move operator
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE PriorityQueue<Val, Priority, Cmp, Alloc>&
-      PriorityQueue<Val, Priority, Cmp, Alloc>::
-      operator=( PriorityQueue<Val, Priority, Cmp, Alloc>&& from ) {
+  PriorityQueue<Val, Priority, Cmp, Alloc>::
+  operator=( PriorityQueue<Val, Priority, Cmp, Alloc>&& from ) {
     Implementation::operator=( std::move( from ) );
     return *this;
   }

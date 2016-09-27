@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/multidim/multiDimWithOffset.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/multiDimWithOffset.h>
 
 namespace gum {
 

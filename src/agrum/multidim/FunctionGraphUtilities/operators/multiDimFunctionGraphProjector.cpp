@@ -28,4 +28,3 @@
 #include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 
 template class gum::MultiDimFunctionGraphProjector<double, std::plus>;
-

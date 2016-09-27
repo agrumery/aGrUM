@@ -29,8 +29,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMParameter<GUM_SCALAR>::PRMParameter( const std::string& name,
-                                      ParameterType type,
-                                      GUM_SCALAR value )
+                                            ParameterType type,
+                                            GUM_SCALAR value )
         : PRMClassElement<GUM_SCALAR>( name )
         , __type( type )
         , __value( value ) {
@@ -39,7 +39,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    PRMParameter<GUM_SCALAR>::PRMParameter( const PRMParameter<GUM_SCALAR>& source )
+    PRMParameter<GUM_SCALAR>::PRMParameter(
+        const PRMParameter<GUM_SCALAR>& source )
         : PRMClassElement<GUM_SCALAR>( source.name() )
         , __type( source.valueType() )
         , __value( source.value() ) {
@@ -112,7 +113,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    PRMAttribute<GUM_SCALAR>* PRMParameter<GUM_SCALAR>::getCastDescendant() const {
+    PRMAttribute<GUM_SCALAR>*
+    PRMParameter<GUM_SCALAR>::getCastDescendant() const {
       GUM_ERROR( OperationNotAllowed, "Parameters can have cast descendants" );
     }
 

@@ -54,7 +54,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     Idx MultiDimAggregator<GUM_SCALAR>::_buildValue(
         const Instantiation& i ) const {
-      if (this->nbrDim()==1) return _neutralElt();
+      if ( this->nbrDim() == 1 ) return _neutralElt();
 
       // is i equal to f(f(f(f...(j_,neutral_elt))))
       Idx current = _neutralElt();

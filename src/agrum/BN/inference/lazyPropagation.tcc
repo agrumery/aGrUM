@@ -24,16 +24,16 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <agrum/config.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/BayesBall.h>
+#include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/dSeparation.h>
-#include <agrum/multidim/operators/multiDimProjection.h>
-#include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/config.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
 #include <agrum/graphs/triangulations/orderedTriangulation.h>
-#include <agrum/BN/inference/barrenNodesFinder.h>
+#include <agrum/multidim/instantiation.h>
+#include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
+#include <agrum/multidim/operators/multiDimProjection.h>
 
 // to ease IDE parsers
 #include <agrum/BN/inference/BayesNetInference.h>
@@ -73,7 +73,7 @@ namespace gum {
     // indicate, for each node of the BN, a clique in __JT that can contain its
     // conditional probability table
     const std::vector<NodeId>& JT_elim_order = triangulation.eliminationOrder();
-    HashTable<NodeId, Idx> elim_order( Size(JT_elim_order.size()) );
+    HashTable<NodeId, Idx> elim_order( Size( JT_elim_order.size() ) );
 
     for ( Idx i = 0; i < JT_elim_order.size(); ++i )
       elim_order.insert( JT_elim_order[i], i );

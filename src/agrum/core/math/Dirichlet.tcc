@@ -30,7 +30,7 @@ namespace gum {
   template <class URNG>
   INLINE Dirichlet::result_type Dirichlet::
   operator()( URNG& generator, const Dirichlet::param_type& parm ) {
-    Size size = Size(parm.size());
+    Size size = Size( parm.size() );
     result_type res( size );
     float sum = 0.0f;
     while ( sum == 0.0f ) {

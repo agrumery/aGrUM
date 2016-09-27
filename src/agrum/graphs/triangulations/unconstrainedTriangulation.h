@@ -26,8 +26,8 @@
 #ifndef GUM_UNCONSTRAINED_TRIANGULATION_H
 #define GUM_UNCONSTRAINED_TRIANGULATION_H
 
-#include <agrum/graphs/triangulations/staticTriangulation.h>
 #include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/staticTriangulation.h>
 
 namespace gum {
 

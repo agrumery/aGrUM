@@ -23,4 +23,3 @@
 
 template class gum::ShaferShenoyInference<float>;
 template class gum::ShaferShenoyInference<double>;
-

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
@@ -79,7 +79,8 @@ namespace gum_tests {
               break;
             }
             nb_arcs /= g.size() * g.size();
-            gum::Size nb_del_arc = (gum::Size)(distrib_arc( generator ) * nb_arcs);
+            gum::Size nb_del_arc =
+                ( gum::Size )( distrib_arc( generator ) * nb_arcs );
             if ( nb_del_arc >= gg.sizeArcs() ) nb_del_arc = gg.sizeArcs() - 1;
             for ( auto iter = gg.arcs().begin(); iter != gg.arcs().end();
                   ++iter, --nb_del_arc ) {
@@ -108,13 +109,14 @@ namespace gum_tests {
           } break;
 
           case 2: {  // reversal
-            float nb_arcs = float(gg.sizeArcs());
+            float nb_arcs = float( gg.sizeArcs() );
             if ( !nb_arcs ) {
               ++length;
               break;
             }
             nb_arcs /= g.size() * g.size();
-            gum::Size nb_del_arc = gum::Size(distrib_arc( generator ) * nb_arcs);
+            gum::Size nb_del_arc =
+                gum::Size( distrib_arc( generator ) * nb_arcs );
             if ( nb_del_arc >= gg.sizeArcs() ) nb_del_arc = gg.sizeArcs() - 1;
             for ( auto iter = gg.arcs().begin(); iter != gg.arcs().end();
                   ++iter, --nb_del_arc ) {
@@ -131,8 +133,10 @@ namespace gum_tests {
         }
       }
 
-      gum::HashTable<gum::Arc, gum::Idx> deletions(gum::Size(changes.size()));
-      gum::HashTable<gum::Arc, gum::Idx> additions( gum::Size(changes.size()));
+      gum::HashTable<gum::Arc, gum::Idx> deletions(
+          gum::Size( changes.size() ) );
+      gum::HashTable<gum::Arc, gum::Idx> additions(
+          gum::Size( changes.size() ) );
       for ( const auto& modif : changes ) {
         gum::Arc arc( modif.tail(), modif.head() );
 

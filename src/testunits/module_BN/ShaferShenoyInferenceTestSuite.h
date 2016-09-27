@@ -17,19 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <iostream>
-#include <string>
-#include <sstream>
 #include <cstdlib>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/multidim/multiDimArray.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -84,8 +84,7 @@ namespace gum_tests {
         }
       } catch ( gum::Exception e ) {
         TS_ASSERT( false );
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -153,7 +152,8 @@ namespace gum_tests {
               {0.4f, 0.6f,
                0.5f, 0.5f,
                0.5f, 0.5f,
-               1.0f, 0.0f} );  // clang-format on
+               1.0f, 0.0f} );  // clang-format
+                                                               // on
       bn.cpt( i5 ).fillWith(  // clang-format off
               {0.3f, 0.6f, 0.1f,
                0.5f, 0.5f, 0.0f,
@@ -162,7 +162,7 @@ namespace gum_tests {
                0.4f, 0.6f, 0.0f,
                0.5f, 0.5f, 0.0f,
                0.5f, 0.5f, 0.0f,
-               0.0f, 0.0f, 1.0f} );                                     // clang-format on
+               0.0f, 0.0f, 1.0f} );  // clang-format on
     }
 
     // Uncomment this to have some outputs.

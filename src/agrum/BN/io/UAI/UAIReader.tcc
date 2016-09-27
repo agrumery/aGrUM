@@ -87,7 +87,7 @@ namespace gum {
     if ( !__parseDone ) {
       try {
         __parser->Parse();
-	buildFromQuartets(__parser->getQuartets());
+        buildFromQuartets( __parser->getQuartets() );
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         return 1 + __parser->errors().error_count;
@@ -99,72 +99,96 @@ namespace gum {
     return ( __parser->errors().error_count );
   }
 
-template <typename GUM_SCALAR>
-void UAIReader<GUM_SCALAR>::buildFromQuartets(std::vector<std::tuple<float,int,int,int>> quartets) {
-  Idx current;
-  Size max=Size(quartets.size());
-  if (max==0) {
-    __addWarning(1,1,"Empty BayesNet");
-    return;
-  }
-
-  auto isInt = [&] () ->bool {return (std::get<0>(quartets[current])==-1);};
-  auto lig = [&] () ->int {return std::get<2>(quartets[current]);};
-  auto col = [&] () ->int {return std::get<3>(quartets[current]);};
-
-  auto getInt = [&] () -> int {if (! isInt()) this->__addFatalError(lig(),col(),"int expected");return std::get<1>(quartets[current]);};
-  auto getVal = [&] () -> GUM_SCALAR {return (isInt())?(std::get<1>(quartets[current])):(std::get<0>(quartets[current]));};
-  auto incCurrent = [&] () {current+=1;if (current>=max) this->__addFatalError(lig(),col(),"Not enough data in UAI file");};
-
-  current=0;
-  Size nbrNode=getInt();
-
-  for(NodeId i=0;i<nbrNode;i++) {
-    incCurrent();
-    int mod=getInt();
-    if (mod<2) __addError(lig(),col(),"Number of modalities should be greater than 2.");
-    __bn->add(gum::LabelizedVariable(std::to_string(i),"",mod));
-  }
-
-  incCurrent();
-  Size nbrPot=getInt();
-  if (nbrPot!=nbrNode) __addWarning(lig(),col(),"Number of CPTs should be the same as number of nodes");
-
-  Set<NodeId> s;
-  for(NodeId i=0;i<nbrPot;i++) {
-    incCurrent();
-    Size nbrPar=getInt();
-    if (nbrPar==0) __addError(lig(),col(),"0 is not possible here");
-
-    incCurrent();
-    NodeId nodePot=getInt();
-    if (nodePot>=nbrNode) __addError(lig(),col(),"Not enough variables in the BayesNet");
-    if (s.contains(nodePot)) __addError(lig(),col(),"Parents already defined");
-    s.insert(nodePot);
-
-    for(NodeId j=1;j<nbrPar;j++) {
-      incCurrent();
-      NodeId papa=getInt();
-      if (papa>=nbrNode) __addError(lig(),col(),"Not enough variables in the BayesNet");
-
-      __bn->addArc(papa,nodePot);
+  template <typename GUM_SCALAR>
+  void UAIReader<GUM_SCALAR>::buildFromQuartets(
+      std::vector<std::tuple<float, int, int, int>> quartets ) {
+    Idx current;
+    Size max = Size( quartets.size() );
+    if ( max == 0 ) {
+      __addWarning( 1, 1, "Empty BayesNet" );
+      return;
     }
-  }
 
-  std::vector<GUM_SCALAR> v;
-  for(NodeId i=0;i<nbrPot;i++) {
-    incCurrent();
-    Size nbrParam=getInt();
-    if (nbrParam!=__bn->cpt(i).domainSize()) __addFatalError(lig(),col(),"Size does not fit between parents and parameters");
-    for(Idx j=0;j<nbrParam;j++) {
+    auto isInt = [&]() -> bool {
+      return ( std::get<0>( quartets[current] ) == -1 );
+    };
+    auto lig = [&]() -> int { return std::get<2>( quartets[current] ); };
+    auto col = [&]() -> int { return std::get<3>( quartets[current] ); };
+
+    auto getInt = [&]() -> int {
+      if ( !isInt() ) this->__addFatalError( lig(), col(), "int expected" );
+      return std::get<1>( quartets[current] );
+    };
+    auto getVal = [&]() -> GUM_SCALAR {
+      return ( isInt() ) ? ( std::get<1>( quartets[current] ) )
+                         : ( std::get<0>( quartets[current] ) );
+    };
+    auto incCurrent = [&]() {
+      current += 1;
+      if ( current >= max )
+        this->__addFatalError( lig(), col(), "Not enough data in UAI file" );
+    };
+
+    current = 0;
+    Size nbrNode = getInt();
+
+    for ( NodeId i = 0; i < nbrNode; i++ ) {
       incCurrent();
-      v.push_back(getVal());
+      int mod = getInt();
+      if ( mod < 2 )
+        __addError(
+            lig(), col(), "Number of modalities should be greater than 2." );
+      __bn->add( gum::LabelizedVariable( std::to_string( i ), "", mod ) );
     }
-    __bn->cpt(i).fillWith(v);
-    v.clear();
-  }
 
-  if (current!=max-1) __addError(lig(),col(),"Too many data in this file");
+    incCurrent();
+    Size nbrPot = getInt();
+    if ( nbrPot != nbrNode )
+      __addWarning( lig(),
+                    col(),
+                    "Number of CPTs should be the same as number of nodes" );
+
+    Set<NodeId> s;
+    for ( NodeId i = 0; i < nbrPot; i++ ) {
+      incCurrent();
+      Size nbrPar = getInt();
+      if ( nbrPar == 0 ) __addError( lig(), col(), "0 is not possible here" );
+
+      incCurrent();
+      NodeId nodePot = getInt();
+      if ( nodePot >= nbrNode )
+        __addError( lig(), col(), "Not enough variables in the BayesNet" );
+      if ( s.contains( nodePot ) )
+        __addError( lig(), col(), "Parents already defined" );
+      s.insert( nodePot );
+
+      for ( NodeId j = 1; j < nbrPar; j++ ) {
+        incCurrent();
+        NodeId papa = getInt();
+        if ( papa >= nbrNode )
+          __addError( lig(), col(), "Not enough variables in the BayesNet" );
+
+        __bn->addArc( papa, nodePot );
+      }
+    }
+
+    std::vector<GUM_SCALAR> v;
+    for ( NodeId i = 0; i < nbrPot; i++ ) {
+      incCurrent();
+      Size nbrParam = getInt();
+      if ( nbrParam != __bn->cpt( i ).domainSize() )
+        __addFatalError(
+            lig(), col(), "Size does not fit between parents and parameters" );
+      for ( Idx j = 0; j < nbrParam; j++ ) {
+        incCurrent();
+        v.push_back( getVal() );
+      }
+      __bn->cpt( i ).fillWith( v );
+      v.clear();
+    }
+
+    if ( current != max - 1 )
+      __addError( lig(), col(), "Too many data in this file" );
   }
 
   // @{
@@ -253,17 +277,22 @@ void UAIReader<GUM_SCALAR>::buildFromQuartets(std::vector<std::tuple<float,int,i
   }
 
   template <typename GUM_SCALAR>
-  INLINE void UAIReader<GUM_SCALAR>::__addFatalError(int lig,int col,const std::string& s) {
-    __parser->errors().addError( s, __streamName,lig,col);
-    GUM_ERROR(gum::OperationNotAllowed,"");
+  INLINE void UAIReader<GUM_SCALAR>::__addFatalError( int lig,
+                                                      int col,
+                                                      const std::string& s ) {
+    __parser->errors().addError( s, __streamName, lig, col );
+    GUM_ERROR( gum::OperationNotAllowed, "" );
   }
   template <typename GUM_SCALAR>
-  INLINE void UAIReader<GUM_SCALAR>::__addError(int lig,int col,const std::string& s) {
-    __parser->errors().addError( s, __streamName,lig,col);
+  INLINE void
+  UAIReader<GUM_SCALAR>::__addError( int lig, int col, const std::string& s ) {
+    __parser->errors().addError( s, __streamName, lig, col );
   }
   template <typename GUM_SCALAR>
-  INLINE void UAIReader<GUM_SCALAR>::__addWarning(int lig,int col,const std::string& s) {
-    __parser->errors().addWarning( s, __streamName,lig,col);
+  INLINE void UAIReader<GUM_SCALAR>::__addWarning( int lig,
+                                                   int col,
+                                                   const std::string& s ) {
+    __parser->errors().addWarning( s, __streamName, lig, col );
   }
 
   // @}

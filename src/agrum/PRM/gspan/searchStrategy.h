@@ -27,23 +27,23 @@
 #ifndef GUM_SEARCHSTRATEGY_H
 #define GUM_SEARCHSTRATEGY_H
 
-#include <utility>
 #include <cmath>
 #include <list>
-#include <vector>
 #include <ostream>
+#include <utility>
+#include <vector>
 
+#include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/set.h>
-#include <agrum/core/bijection.h>
 
 #include <agrum/graphs/diGraph.h>
 
 #include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
 
+#include <agrum/PRM/gspan/edgeGrowth.h>
 #include <agrum/PRM/gspan/interfaceGraph.h>
 #include <agrum/PRM/gspan/pattern.h>
-#include <agrum/PRM/gspan/edgeGrowth.h>
 
 namespace gum {
   namespace prm {

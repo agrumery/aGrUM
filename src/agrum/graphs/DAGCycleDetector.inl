@@ -325,10 +325,9 @@ namespace gum {
 
   /// adds a nodeset to another (nodes are weighted, so weights are added)
   INLINE
-  void DAGCycleDetector::__addWeightedSet(
-      NodeProperty<Size>& nodeset,
-      const NodeProperty<Size>& set_to_add,
-      Size multiplier ) const {
+  void DAGCycleDetector::__addWeightedSet( NodeProperty<Size>& nodeset,
+                                           const NodeProperty<Size>& set_to_add,
+                                           Size multiplier ) const {
     for ( auto iter = set_to_add.cbegin(); iter != set_to_add.cend(); ++iter ) {
       if ( nodeset.exists( iter.key() ) ) {
         nodeset[iter.key()] += iter.val() * multiplier;
@@ -340,10 +339,9 @@ namespace gum {
 
   /// removes a weighted nodeset from another (weights are subtracted)
   INLINE
-  void DAGCycleDetector::__delWeightedSet(
-      NodeProperty<Size>& nodeset,
-      const NodeProperty<Size>& set_to_del,
-      Size multiplier ) const {
+  void DAGCycleDetector::__delWeightedSet( NodeProperty<Size>& nodeset,
+                                           const NodeProperty<Size>& set_to_del,
+                                           Size multiplier ) const {
     for ( auto iter = set_to_del.cbegin(); iter != set_to_del.cend(); ++iter ) {
       if ( nodeset.exists( iter.key() ) ) {
         Size& weight = nodeset[iter.key()];

@@ -33,8 +33,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE
-  UtilityTable<GUM_SCALAR>::UtilityTable( MultiDimImplementation<GUM_SCALAR>* aContent )
+  INLINE UtilityTable<GUM_SCALAR>::UtilityTable(
+      MultiDimImplementation<GUM_SCALAR>* aContent )
       : MultiDimDecorator<GUM_SCALAR>( aContent ) {
     GUM_CONSTRUCTOR( UtilityTable );
   }
@@ -45,12 +45,16 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>::UtilityTable( const UtilityTable<GUM_SCALAR>& toCopy )
-      : MultiDimDecorator<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>(
-            toCopy.content()->newFactory() ) ) {
-    const Sequence<const DiscreteVariable*>& varSeq = toCopy.variablesSequence();
+  INLINE UtilityTable<GUM_SCALAR>::UtilityTable(
+      const UtilityTable<GUM_SCALAR>& toCopy )
+      : MultiDimDecorator<GUM_SCALAR>(
+            static_cast<MultiDimImplementation<GUM_SCALAR>*>(
+                toCopy.content()->newFactory() ) ) {
+    const Sequence<const DiscreteVariable*>& varSeq =
+        toCopy.variablesSequence();
 
-    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = varSeq.beginSafe();
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
+              varSeq.beginSafe();
           iter != varSeq.endSafe();
           ++iter ) {
       this->add( **iter );
@@ -59,7 +63,8 @@ namespace gum {
     Instantiation i1( toCopy );
     Instantiation i2( *this );
 
-    for ( i1.setFirst(), i2.setFirstIn( i1 ); !i1.end(); ++i1, i2.incIn( i1 ) ) {
+    for ( i1.setFirst(), i2.setFirstIn( i1 ); !i1.end();
+          ++i1, i2.incIn( i1 ) ) {
       this->set( i2, toCopy[i1] );
     }
 
@@ -69,15 +74,18 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE UtilityTable<GUM_SCALAR>& UtilityTable<GUM_SCALAR>::
   operator=( const UtilityTable<GUM_SCALAR>& toCopy ) {
-    GUM_ERROR( OperationNotAllowed,
-               "No copy for UtilityTable : how to choose the implementation ?" );
+    GUM_ERROR(
+        OperationNotAllowed,
+        "No copy for UtilityTable : how to choose the implementation ?" );
     return *this;
   }
 
   template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>* UtilityTable<GUM_SCALAR>::newFactory() const {
-    return new UtilityTable<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>(
-        this->content()->newFactory() ) );
+  INLINE UtilityTable<GUM_SCALAR>*
+  UtilityTable<GUM_SCALAR>::newFactory() const {
+    return new UtilityTable<GUM_SCALAR>(
+        static_cast<MultiDimImplementation<GUM_SCALAR>*>(
+            this->content()->newFactory() ) );
   }
 
   template <typename GUM_SCALAR>

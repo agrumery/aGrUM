@@ -23,4 +23,3 @@
 
 template class gum::IBayesNet<float>;
 template class gum::IBayesNet<double>;
-

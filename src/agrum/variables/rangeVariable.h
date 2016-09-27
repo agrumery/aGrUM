@@ -27,9 +27,9 @@
 #ifndef GUM_RANGE_VARIABLE_H
 #define GUM_RANGE_VARIABLE_H
 
-#include <string>
-#include <sstream>
 #include <ostream>
+#include <sstream>
+#include <string>
 
 #include <agrum/config.h>
 

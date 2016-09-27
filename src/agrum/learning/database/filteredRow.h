@@ -25,8 +25,8 @@
 #ifndef GUM_LEARNING_FILTERED_ROW_H
 #define GUM_LEARNING_FILTERED_ROW_H
 
-#include <vector>
 #include <agrum/config.h>
+#include <vector>
 
 namespace gum {
 
@@ -77,9 +77,7 @@ namespace gum {
       /// returns the value at the ith column
       /** by convention, unobserved columns should have value
        * std::numeric_limits<Idx>::max () */
-      Idx operator[]( Idx i ) const noexcept {
-        return __row[i];
-      }
+      Idx operator[]( Idx i ) const noexcept { return __row[i]; }
 
       /// @}
 

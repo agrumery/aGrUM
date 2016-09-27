@@ -40,15 +40,15 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMType<GUM_SCALAR>::PRMType( PRMType<GUM_SCALAR>& super_type,
-                            const std::vector<Idx>& label_map,
-                            const DiscreteVariable& var )
+                                  const std::vector<Idx>& label_map,
+                                  const DiscreteVariable& var )
         : PRMObject( var.name() )
         , __var( var.clone() )
         , __superType( &super_type )
         , __label_map( new std::vector<Idx>( label_map ) ) {
       GUM_CONSTRUCTOR( PRMType );
 
-      if ( ! __isValid() ) {
+      if ( !__isValid() ) {
         delete __label_map;
         __label_map = 0;
         GUM_ERROR( OperationNotAllowed, "Invalid label map." );
@@ -78,7 +78,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    bool PRMType<GUM_SCALAR>::isSubTypeOf( const PRMType<GUM_SCALAR>& super ) const {
+    bool
+    PRMType<GUM_SCALAR>::isSubTypeOf( const PRMType<GUM_SCALAR>& super ) const {
       if ( ( *this ) == super ) {
         return true;
       } else if ( __superType ) {
@@ -90,7 +91,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool PRMType<GUM_SCALAR>::__isValid() const {
-      if ( ! __superType ) {
+      if ( !__superType ) {
         return __var->domainSize() > 1;
       }
 
@@ -190,7 +191,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMType<GUM_SCALAR>::isSubType() const {
-      return __superType!=nullptr;
+      return __superType != nullptr;
     }
 
     template <typename GUM_SCALAR>

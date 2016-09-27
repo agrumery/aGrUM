@@ -73,13 +73,13 @@ namespace gum {
     ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
         const std::vector<Size>& modalities,
         std::vector<std::vector<double, CountAlloc>>& counts,
-        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                    Idx>*>& target_nodesets,
-        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                    Idx>*>& conditioning_nodesets ) {
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+            target_nodesets,
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+            conditioning_nodesets ) {
       // put 1's into the countings for the targets
       // and the sum of the weight times the target for the conditioning nodes
-      const Size size = Size(target_nodesets.size());
+      const Size size = Size( target_nodesets.size() );
       for ( Idx i = 0; i < size; ++i ) {
         if ( target_nodesets[i] != nullptr ) {
           std::vector<double, CountAlloc>& countings =
@@ -90,7 +90,8 @@ namespace gum {
         }
 
         if ( conditioning_nodesets[i] != nullptr ) {
-          const double weight = double(modalities[target_nodesets[i]->first.back()]);
+          const double weight =
+              double( modalities[target_nodesets[i]->first.back()] );
           std::vector<double, CountAlloc>& countings =
               counts[conditioning_nodesets[i]->second];
           for ( auto& count : countings ) {

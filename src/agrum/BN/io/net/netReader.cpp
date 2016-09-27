@@ -23,4 +23,3 @@
 
 template class gum::NetReader<float>;
 template class gum::NetReader<double>;
-

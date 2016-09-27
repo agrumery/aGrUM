@@ -25,8 +25,8 @@
  */
 
 // to ease parser in IDEs
-#include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/aggregators/min.h>
+#include <agrum/multidim/aggregators/multiDimAggregator.h>
 
 namespace gum {
 

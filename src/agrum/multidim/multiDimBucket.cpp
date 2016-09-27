@@ -33,5 +33,4 @@ namespace gum {
   template class MultiDimBucket<double>;
 
 
-} // namespace gum
-
+}  // namespace gum

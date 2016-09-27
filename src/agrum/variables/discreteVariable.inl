@@ -31,28 +31,28 @@ namespace gum {
   /* =========================================================================*/
 
   // Default constructor
-  INLINE DiscreteVariable::DiscreteVariable(const std::string &aName,
-                                            const std::string &aDesc)
-          : Variable(aName, aDesc) {
-    GUM_CONSTRUCTOR(DiscreteVariable);
+  INLINE DiscreteVariable::DiscreteVariable( const std::string& aName,
+                                             const std::string& aDesc )
+      : Variable( aName, aDesc ) {
+    GUM_CONSTRUCTOR( DiscreteVariable );
   }
 
   // Copy constructor
-  INLINE DiscreteVariable::DiscreteVariable(const DiscreteVariable &aDRV)
-          : Variable(aDRV) {
-    GUM_CONSTRUCTOR(DiscreteVariable);
+  INLINE DiscreteVariable::DiscreteVariable( const DiscreteVariable& aDRV )
+      : Variable( aDRV ) {
+    GUM_CONSTRUCTOR( DiscreteVariable );
   }
 
   // destructor
   INLINE DiscreteVariable::~DiscreteVariable() {
-    GUM_DESTRUCTOR(DiscreteVariable);
+    GUM_DESTRUCTOR( DiscreteVariable );
   }
 
   // Copy operator
-  INLINE DiscreteVariable &DiscreteVariable::
-  operator=(const DiscreteVariable &aRV) {
-    if (&aRV != this) {
-      Variable::operator=(aRV);
+  INLINE DiscreteVariable& DiscreteVariable::
+  operator=( const DiscreteVariable& aRV ) {
+    if ( &aRV != this ) {
+      Variable::operator=( aRV );
     }
 
     return *this;
@@ -60,15 +60,15 @@ namespace gum {
 
   // equality operator
   INLINE bool DiscreteVariable::
-  operator==(const DiscreteVariable &aRV) const {
-    return (Variable::operator==(aRV) &&
-            (domainSize() == aRV.domainSize()));
+  operator==( const DiscreteVariable& aRV ) const {
+    return ( Variable::operator==( aRV ) &&
+             ( domainSize() == aRV.domainSize() ) );
   }
 
   // inequality operator
   INLINE bool DiscreteVariable::
-  operator!=(const DiscreteVariable &aRV) const {
-    return (!operator==(aRV));
+  operator!=( const DiscreteVariable& aRV ) const {
+    return ( !operator==( aRV ) );
   }
 
   // empty() <==> domainSize()<2
@@ -77,8 +77,8 @@ namespace gum {
   // vector of labels
   INLINE std::vector<std::string> DiscreteVariable::labels() const {
     std::vector<std::string> v;
-    for(Idx i=0;i<domainSize();i++)
-      v.push_back(label(i));
+    for ( Idx i = 0; i < domainSize(); i++ )
+      v.push_back( label( i ) );
     return v;
   }
 } /* namespace gum */

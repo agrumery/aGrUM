@@ -22,11 +22,11 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <sstream>
-#include <limits>
-#include <cmath>
 #include "graphElements.h"
 #include <agrum/graphs/simplicialSet.h>
+#include <cmath>
+#include <limits>
+#include <sstream>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/simplicialSet.inl>
@@ -78,11 +78,11 @@ namespace gum {
       , __log_threshold( std::log( 1 + theThreshold ) )
       , __we_want_fill_ins( false ) {
 
-    if (!theGraph) {
-      GUM_ERROR(OperationNotAllowed, "Graph can not be nullptr");
+    if ( !theGraph ) {
+      GUM_ERROR( OperationNotAllowed, "Graph can not be nullptr" );
     }
-      // for debugging purposes
-      GUM_CONSTRUCTOR( SimplicialSet );
+    // for debugging purposes
+    GUM_CONSTRUCTOR( SimplicialSet );
 
     // end of initialization: compute __nb_triangles, __nb_adjacent_neighbours,
     // etc
@@ -790,8 +790,8 @@ namespace gum {
 
     // initialize the __nb_triangles so that there is no need to check whether
     // __nb_triangles need new insertions
-    __nb_triangles = __graph->edgesProperty( Size(0) );
-    __nb_adjacent_neighbours = __graph->nodesProperty( Size(0) );
+    __nb_triangles = __graph->edgesProperty( Size( 0 ) );
+    __nb_adjacent_neighbours = __graph->nodesProperty( Size( 0 ) );
     __containing_list = __graph->nodesProperty( __Belong::NO_LIST );
     __changed_status = __graph->asNodeSet();
 
@@ -802,16 +802,14 @@ namespace gum {
     // node X the set of its neighbours Y,Z that are adjacent to each other and
     // such that the Id of Y and Z are greater than X.
     for ( const auto nodeX : __graph->nodes() ) {
-      Size& nb_adjacent_neighbours_idX =
-          __nb_adjacent_neighbours[nodeX];
+      Size& nb_adjacent_neighbours_idX = __nb_adjacent_neighbours[nodeX];
 
       const NodeSet& nei = __graph->neighbours( nodeX );
 
       for ( auto iterY = nei.begin(); iterY != nei.end(); ++iterY )
         if ( *iterY > nodeX ) {
           NodeId node_idY = *iterY;
-          Size& nb_adjacent_neighbours_idY =
-              __nb_adjacent_neighbours[node_idY];
+          Size& nb_adjacent_neighbours_idY = __nb_adjacent_neighbours[node_idY];
 
           auto iterZ = iterY;
 

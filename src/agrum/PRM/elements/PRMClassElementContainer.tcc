@@ -24,8 +24,8 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/PRM/elements/PRMClassElementContainer.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/PRM/elements/PRMClassElementContainer.h>
 
 namespace gum {
 
@@ -51,8 +51,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE PRMClassElementContainer<GUM_SCALAR>&
-        PRMClassElementContainer<GUM_SCALAR>::
-        operator=( const PRMClassElementContainer<GUM_SCALAR>& source ) {
+    PRMClassElementContainer<GUM_SCALAR>::
+    operator=( const PRMClassElementContainer<GUM_SCALAR>& source ) {
       GUM_ERROR( FatalError,
                  "illegal call to ClassElementContainer copy operator" );
     }
@@ -79,7 +79,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMClassElementContainer<GUM_SCALAR>::setInputNode(
         const PRMClassElement<GUM_SCALAR>& elt, bool b ) {
-      if ( ! exists( elt.safeName() ) ) {
+      if ( !exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound,
                    ": <" + elt.safeName() + "> is not in <" + name() + ">" );
       } else if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ||
@@ -98,7 +98,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMClassElementContainer<GUM_SCALAR>::setOutputNode(
         const PRMClassElement<GUM_SCALAR>& elt, bool b ) {
-      if ( ! exists( elt.safeName() ) ) {
+      if ( !exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound,
                    "<" + elt.safeName() + "> is not in <" + name() + ">" );
       } else if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ||
@@ -136,7 +136,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::pair<bool, bool>& PRMClassElementContainer<GUM_SCALAR>::_getIOFlag(
+    INLINE std::pair<bool, bool>&
+    PRMClassElementContainer<GUM_SCALAR>::_getIOFlag(
         const PRMClassElement<GUM_SCALAR>& elt ) {
       try {
         return __IOFlags[elt.safeName()];
@@ -170,13 +171,14 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool PRMClassElementContainer<GUM_SCALAR>::exists( NodeId id ) const {
+    INLINE bool
+    PRMClassElementContainer<GUM_SCALAR>::exists( NodeId id ) const {
       return dag().exists( id );
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool
-    PRMClassElementContainer<GUM_SCALAR>::exists( const std::string& name ) const {
+    INLINE bool PRMClassElementContainer<GUM_SCALAR>::exists(
+        const std::string& name ) const {
       try {
         get( name );
         return true;

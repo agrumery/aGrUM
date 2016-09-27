@@ -29,8 +29,8 @@
 #include <algorithm>
 
 #include <agrum/config.h>
-#include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
+#include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
@@ -44,8 +44,7 @@ namespace gum {
   namespace learning {
 
     genericBNLearner::Database::Database( const std::string& filename )
-        : Database( genericBNLearner::__readFile(filename ) ) {
-    }
+        : Database( genericBNLearner::__readFile( filename ) ) {}
 
     genericBNLearner::Database::Database( const DatabaseVectInRAM& db )
         : __database( db )
@@ -124,7 +123,7 @@ namespace gum {
 
         // determine the number of threads to use for the parsing
         Size max_nb_threads =
-            std::max( Size(1),
+            std::max( Size( 1 ),
                       std::min( db_size / __min_nb_rows_per_thread,
                                 __max_threads_number ) );
 
@@ -269,8 +268,8 @@ namespace gum {
           score_database.__database.variableNames();
       const std::vector<std::string>& apriori_vars = __database.variableNames();
 
-      Size size = Size(score_vars.size());
-      for (Idx i = 0; i < size; ++i) {
+      Size size = Size( score_vars.size() );
+      for ( Idx i = 0; i < size; ++i ) {
         if ( score_vars[i] != apriori_vars[i] ) {
           GUM_ERROR( InvalidArgument,
                      "some a priori variables do not match "
@@ -585,7 +584,7 @@ namespace gum {
 
     DatabaseVectInRAM readFile( const std::string& filename ) {
       // get the extension of the file
-      Size filename_size = Size(filename.size());
+      Size filename_size = Size( filename.size() );
 
       if ( filename_size < 4 ) {
         GUM_ERROR( FormatNotFound,
@@ -609,7 +608,7 @@ namespace gum {
     DatabaseVectInRAM
     genericBNLearner::__readFile( const std::string& filename ) {
       // get the extension of the file
-      Size filename_size = Size(filename.size());
+      Size filename_size = Size( filename.size() );
 
       if ( filename_size < 4 ) {
         GUM_ERROR( FormatNotFound,
@@ -809,7 +808,8 @@ namespace gum {
               gen_constraint );
 
           StructuralConstraintSetStatic<StructuralConstraintIndegree,
-                                        StructuralConstraintDAG> sel_constraint;
+                                        StructuralConstraintDAG>
+              sel_constraint;
           static_cast<StructuralConstraintIndegree&>( sel_constraint ) =
               __constraint_Indegree;
 
@@ -841,7 +841,8 @@ namespace gum {
 
           StructuralConstraintSetStatic<StructuralConstraintTabuList,
                                         StructuralConstraintIndegree,
-                                        StructuralConstraintDAG> sel_constraint;
+                                        StructuralConstraintDAG>
+              sel_constraint;
           static_cast<StructuralConstraintTabuList&>( sel_constraint ) =
               __constraint_TabuList;
           static_cast<StructuralConstraintIndegree&>( sel_constraint ) =

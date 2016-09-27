@@ -29,8 +29,8 @@
 
 #include <agrum/config.h>
 
-#include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/cliqueGraph.h>
+#include <agrum/graphs/graphElements.h>
 
 namespace gum {
 

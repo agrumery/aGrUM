@@ -54,11 +54,11 @@
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
 
 #include <agrum/config.h>
-#include <agrum/core/set.h>
 #include <agrum/core/OMPThreads.h>
+#include <agrum/core/set.h>
 #include <agrum/graphs/undiGraph.h>
-#include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/IGraphChangesGenerator4UndiGraph.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
 

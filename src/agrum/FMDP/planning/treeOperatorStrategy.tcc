@@ -26,17 +26,17 @@
 */
 
 // =========================================================================
-#include <cmath>
-#include <vector>
-#include <queue>
 #include <algorithm>
+#include <cmath>
+#include <queue>
 #include <utility>
+#include <vector>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/FMDP/planning/treeOperatorStrategy.h>
-#include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.h>
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only
@@ -173,7 +173,8 @@ namespace gum {
 
     TreeOperator<ArgMaxSet<GUM_SCALAR, Idx>,
                  ArgumentMaximisesAction,
-                 SetTerminalNodePolicy> argmaxope( f1, f2 );
+                 SetTerminalNodePolicy>
+        argmaxope( f1, f2 );
     MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
         ret = argmaxope.compute();
     this->_deleteFunctionGraph( f1, f2, del );

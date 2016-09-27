@@ -27,9 +27,9 @@
 #ifndef GUM_UTILS_STRING_H
 #define GUM_UTILS_STRING_H
 
-#include <vector>
-#include <string>
 #include <cstdlib>
+#include <string>
+#include <vector>
 
 #include <agrum/config.h>
 

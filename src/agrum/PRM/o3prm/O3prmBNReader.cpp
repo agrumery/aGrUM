@@ -29,5 +29,3 @@
 
 template class gum::O3prmBNReader<float>;
 template class gum::O3prmBNReader<double>;
-
-

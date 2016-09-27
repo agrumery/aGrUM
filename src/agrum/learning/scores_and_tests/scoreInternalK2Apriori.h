@@ -102,10 +102,9 @@ namespace gum {
       virtual void insertScoreApriori(
           const std::vector<Size>& modalities,
           std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                      Idx>*>& target_nodesets,
-          const std::vector<
-              std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+              target_nodesets,
+          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
               conditioning_nodesets ) final;
 
       /// @}

@@ -26,8 +26,8 @@
 #define GUM_BINARY_JOIN_TREE_CONVERTER_H
 
 #include <agrum/core/set.h>
-#include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/cliqueGraph.h>
+#include <agrum/graphs/graphElements.h>
 
 namespace gum {
 

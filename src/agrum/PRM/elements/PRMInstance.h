@@ -27,13 +27,13 @@
 #ifndef GUM_INSTANCE_H
 #define GUM_INSTANCE_H
 
-#include <utility>
 #include <set>
+#include <utility>
 
 #include <agrum/core/bijection.h>
 
-#include <agrum/PRM/elements/PRMClassElementContainer.h>
 #include <agrum/PRM/elements/PRMClass.h>
+#include <agrum/PRM/elements/PRMClassElementContainer.h>
 
 namespace gum {
   namespace prm {
@@ -42,7 +42,8 @@ namespace gum {
     /**
      * @class PRMInstance<GUM_SCALAR> instance.h <agrum/PRM/elements/instance.h>
      *
-     * @brief An PRMInstance<GUM_SCALAR> is a Bayesian Network fragment defined by
+     * @brief An PRMInstance<GUM_SCALAR> is a Bayesian Network fragment defined
+     *by
      *a Class<GUM_SCALAR> and
      *        used in a PRMSystem.
      *
@@ -71,14 +72,16 @@ namespace gum {
        *
        * When you create an PRMInstance<GUM_SCALAR> all
        *gum::prm::PRMAttribute<GUM_SCALAR> in it's type are
-       * added, except for gum::prm::PRMAggregate<GUM_SCALAR> and parameters which
+       * added, except for gum::prm::PRMAggregate<GUM_SCALAR> and parameters
+       *which
        *are
        * instantiated.
        *
        * However neither of their children or parents are updated (i.e.
        * DiscreteVariable pointers are inconsistent).
        */
-      PRMInstance<GUM_SCALAR>( const std::string& name, PRMClass<GUM_SCALAR>& type );
+      PRMInstance<GUM_SCALAR>( const std::string& name,
+                               PRMClass<GUM_SCALAR>& type );
 
       /// Destructor.
       virtual ~PRMInstance<GUM_SCALAR>();
@@ -117,13 +120,15 @@ namespace gum {
       bool exists( const std::string& name ) const;
 
       /**
-       * @brief Getter on an PRMAttribute<GUM_SCALAR> of this PRMInstance<GUM_SCALAR>.
+       * @brief Getter on an PRMAttribute<GUM_SCALAR> of this
+       *PRMInstance<GUM_SCALAR>.
        *
        * Recall that PRMAggregate<GUM_SCALAR> are instantiated as
        *PRMAttribute<GUM_SCALAR>
        * when an PRMInstance<GUM_SCALAR> is created. Thus any random variable
        *contained
-       * in this PRMInstance<GUM_SCALAR> is mapped to an PRMAttribute<GUM_SCALAR>.
+       * in this PRMInstance<GUM_SCALAR> is mapped to an
+       *PRMAttribute<GUM_SCALAR>.
        *
        * @param id The PRMAttribute<GUM_SCALAR> id.
        * @return Returns a constant reference on an PRMAttribute<GUM_SCALAR>.
@@ -143,13 +148,15 @@ namespace gum {
       PRMAttribute<GUM_SCALAR>& get( const std::string& name );
 
       /**
-       * @brief Getter on an PRMAttribute<GUM_SCALAR> of this PRMInstance<GUM_SCALAR>.
+       * @brief Getter on an PRMAttribute<GUM_SCALAR> of this
+       *PRMInstance<GUM_SCALAR>.
        *
        * Recall that PRMAggregate<GUM_SCALAR> are instantiated has
        *PRMAttribute<GUM_SCALAR>
        * when an PRMInstance<GUM_SCALAR> is created. Thus any random variable
        *contained
-       * in this PRMInstance<GUM_SCALAR> is mapped to an PRMAttribute<GUM_SCALAR>.
+       * in this PRMInstance<GUM_SCALAR> is mapped to an
+       *PRMAttribute<GUM_SCALAR>.
        *
        * @param id The PRMAttribute<GUM_SCALAR> id.
        * @return Returns a constant reference on an PRMAttribute<GUM_SCALAR>.
@@ -223,13 +230,16 @@ namespace gum {
        * Three type of nodes can be associated with an PRMInstance<GUM_SCALAR>.
        *When an PRMInstance<GUM_SCALAR>
        * is associated with a PRMReferenceSlot, it represents an arc in the
-       * relational skeleton. For a PRMSlotChain<GUM_SCALAR>, it is a placeholder
+       * relational skeleton. For a PRMSlotChain<GUM_SCALAR>, it is a
+       *placeholder
        *of referenced
-       * PRMClassElement by this PRMInstance<GUM_SCALAR>. Finally, for an output node
+       * PRMClassElement by this PRMInstance<GUM_SCALAR>. Finally, for an output
+       *node
        *it indicates
        * that an PRMInstance<GUM_SCALAR> has an PRMClassElement referring it.
        *
-       * @param id The NodeId of a PRMReferenceSlot of this PRMInstance<GUM_SCALAR>.
+       * @param id The NodeId of a PRMReferenceSlot of this
+       *PRMInstance<GUM_SCALAR>.
        * @param instance The instance added as references by id in this
        *PRMInstance<GUM_SCALAR>.
        *
@@ -248,9 +258,11 @@ namespace gum {
        *
        * This is equivalent to **(this->getInstance(id).begin()) and should be
        *use
-       * when dealing with non multiple PRMReferenceSlot or PRMSlotChain<GUM_SCALAR>.
+       * when dealing with non multiple PRMReferenceSlot or
+       *PRMSlotChain<GUM_SCALAR>.
        *
-       * @param id The NodeId of a PRMReferenceSlot or PRMSlotChain<GUM_SCALAR> in
+       * @param id The NodeId of a PRMReferenceSlot or PRMSlotChain<GUM_SCALAR>
+       *in
        *this PRMInstance<GUM_SCALAR>.
        *
        * @throw NotFound Raised if there is no PRMClassElement given id.
@@ -262,7 +274,8 @@ namespace gum {
       /**
        * @brief Returns the Set of PRMInstance<GUM_SCALAR> referenced by id.
        *
-       * @param id The NodeId of a PRMReferenceSlot or PRMSlotChain<GUM_SCALAR> in
+       * @param id The NodeId of a PRMReferenceSlot or PRMSlotChain<GUM_SCALAR>
+       *in
        *this.
        * @return Returns the Set of PRMInstance<GUM_SCALAR> referenced by id.
        *
@@ -298,7 +311,8 @@ namespace gum {
 
       /// Alias to iterate over the gum::prm::PRMAttribute<GUM_SCALAR> in this
       /// PRMInstance<GUM_SCALAR>.
-      typedef typename NodeProperty<PRMAttribute<GUM_SCALAR>*>::iterator iterator;
+      typedef
+          typename NodeProperty<PRMAttribute<GUM_SCALAR>*>::iterator iterator;
 
       /// Returns an iterator at the begining of the list of
       /// gum::prm::PRMAttribute<GUM_SCALAR> in
@@ -324,7 +338,8 @@ namespace gum {
       const const_iterator& end() const;
 
       /**
-       * Nested class to iterate over PRMReferenceSlot and PRMSlotChain<GUM_SCALAR>
+       * Nested class to iterate over PRMReferenceSlot and
+       * PRMSlotChain<GUM_SCALAR>
        * instantiations.
        */
       class RefIterator {
@@ -355,11 +370,14 @@ namespace gum {
       };
 
       /**
-       * Returns an iterator at the beginning of the set of PRMInstance<GUM_SCALAR>
+       * Returns an iterator at the beginning of the set of
+       *PRMInstance<GUM_SCALAR>
        *associated
-       * to a given gum::prm::PRMReferenceSlot or gum::prm::PRMSlotChain<GUM_SCALAR>.
+       * to a given gum::prm::PRMReferenceSlot or
+       *gum::prm::PRMSlotChain<GUM_SCALAR>.
        *
-       * @param id A gum::prm::PRMReferenceSlot or gum::prm::PRMSlotChain<GUM_SCALAR>
+       * @param id A gum::prm::PRMReferenceSlot or
+       *gum::prm::PRMSlotChain<GUM_SCALAR>
        *in this
        *           PRMInstance<GUM_SCALAR> type.
        *
@@ -372,7 +390,8 @@ namespace gum {
       RefIterator begin( NodeId id );
 
       /**
-       * Nested class to iterate over PRMReferenceSlot and PRMSlotChain<GUM_SCALAR>
+       * Nested class to iterate over PRMReferenceSlot and
+       * PRMSlotChain<GUM_SCALAR>
        * instantiations.
        */
       class RefConstIterator {
@@ -402,11 +421,14 @@ namespace gum {
       };
 
       /**
-       * Returns an iterator at the beginning of the set of PRMInstance<GUM_SCALAR>
+       * Returns an iterator at the beginning of the set of
+       *PRMInstance<GUM_SCALAR>
        *associated
-       * to a given gum::prm::PRMReferenceSlot or gum::prm::PRMSlotChain<GUM_SCALAR>.
+       * to a given gum::prm::PRMReferenceSlot or
+       *gum::prm::PRMSlotChain<GUM_SCALAR>.
        *
-       * @param id A gum::prm::PRMReferenceSlot or gum::prm::PRMSlotChain<GUM_SCALAR>
+       * @param id A gum::prm::PRMReferenceSlot or
+       *gum::prm::PRMSlotChain<GUM_SCALAR>
        *in this
        *           PRMInstance<GUM_SCALAR> type.
        *
@@ -418,8 +440,8 @@ namespace gum {
        */
       RefConstIterator begin( NodeId id ) const;
 
-      typedef typename NodeProperty<
-          std::vector<std::pair<PRMInstance<GUM_SCALAR>*, std::string>>*>::iterator
+      typedef typename NodeProperty<std::vector<
+          std::pair<PRMInstance<GUM_SCALAR>*, std::string>>*>::iterator
           InvRefIterator;
       typedef typename NodeProperty<std::vector<
           std::pair<PRMInstance<GUM_SCALAR>*, std::string>>*>::const_iterator
@@ -450,7 +472,7 @@ namespace gum {
       /// Used at construction to instantiate attributes.
       /// @param source An attribute in __type.
       void __copyAttribute( PRMAttribute<GUM_SCALAR>* source );
-      
+
       /**
        * @brief Starts this instance instantiations.
        */
@@ -463,7 +485,8 @@ namespace gum {
 
       /// @brief Copy the content of an PRMAttribute<GUM_SCALAR> from its
       /// Class<GUM_SCALAR> counterpart.
-      /// @param attr An PRMAttribute<GUM_SCALAR> of this PRMInstance<GUM_SCALAR>.
+      /// @param attr An PRMAttribute<GUM_SCALAR> of this
+      /// PRMInstance<GUM_SCALAR>.
       /// @throw OperationNotAllowed If the MultiDimImplementation is of an
       /// unknown type.
       void __copyAttributeCPF( PRMAttribute<GUM_SCALAR>* attr );

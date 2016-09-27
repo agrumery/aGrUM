@@ -26,8 +26,8 @@
 #ifndef GUM_SCHEDULER_H
 #define GUM_SCHEDULER_H
 
-#include <utility>
 #include <agrum/graphicalModels/inference/schedule.h>
+#include <utility>
 
 namespace gum {
 
@@ -81,8 +81,7 @@ namespace gum {
      *
      * If there are fewer than k operations in the schedule, then all those
      * operations are taken into account */
-    virtual float nbOperations( const Schedule<GUM_SCALAR>&,
-                                Size k ) const = 0;
+    virtual float nbOperations( const Schedule<GUM_SCALAR>&, Size k ) const = 0;
 
     /// returns the memory consumption used during the execution of a schedule
     /** Actually, this function does not return a precise account of the memory

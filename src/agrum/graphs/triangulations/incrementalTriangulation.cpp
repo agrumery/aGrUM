@@ -24,15 +24,15 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <utility>
-#include <limits>
 #include <cmath>
+#include <limits>
+#include <utility>
 
 #include <agrum/config.h>
 
 #include <agrum/core/list.h>
-#include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/triangulations/incrementalTriangulation.h>
+#include <agrum/graphs/undiGraph.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/triangulations/incrementalTriangulation.inl>
@@ -206,7 +206,8 @@ namespace gum {
     __elimination_order.push_back( node );
 
     if ( !__reverse_elimination_order.exists( node ) )
-      __reverse_elimination_order.insert( node,Size( __elimination_order.size() ));
+      __reverse_elimination_order.insert( node,
+                                          Size( __elimination_order.size() ) );
 
     if ( !__created_JT_cliques.exists( node ) )
       __created_JT_cliques.insert( node, new_clique );
@@ -889,8 +890,7 @@ namespace gum {
         // the tmp_junction_tree that results from the elimination (during the
         // triangulation process) of the first eliminated node in the separator
         // between R and S is an admissible candidate
-        for ( Idx i = 0; i < notAffectedneighbourCliques.size();
-              ++i ) {
+        for ( Idx i = 0; i < notAffectedneighbourCliques.size(); ++i ) {
           // check that the separator is not empty. If this is the case, do not
           // link the new junction tree to the old one
           const NodeSet& sep =

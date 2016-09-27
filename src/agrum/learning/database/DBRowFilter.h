@@ -29,8 +29,8 @@
 
 #include <agrum/config.h>
 #include <agrum/learning/database/DBHandler.h>
-#include <agrum/learning/database/DBRowTranslatorSetStatic.h>
 #include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
+#include <agrum/learning/database/DBRowTranslatorSetStatic.h>
 #include <agrum/learning/database/filteredRowGeneratorSet.h>
 
 namespace gum {
@@ -229,11 +229,11 @@ namespace gum {
     constexpr DBRowFilter<typename Database::Handler,
                           TranslatorSet,
                           GeneratorSet>
-    make_DB_row_filter( const Database& database,
-                        const TranslatorSet& translator_set,
-                        const GeneratorSet& generator_set,
-                        Size initialization_range =
-                            std::numeric_limits<Size>::max() ) {
+    make_DB_row_filter(
+        const Database& database,
+        const TranslatorSet& translator_set,
+        const GeneratorSet& generator_set,
+        Size initialization_range = std::numeric_limits<Size>::max() ) {
       return DBRowFilter<typename Database::Handler,
                          TranslatorSet,
                          GeneratorSet>( database.handler(),

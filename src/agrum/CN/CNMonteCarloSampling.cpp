@@ -31,4 +31,3 @@ template class gum::credal::CNMonteCarloSampling<float,
                                                  gum::LazyPropagation<float>>;
 template class gum::credal::CNMonteCarloSampling<double,
                                                  gum::LazyPropagation<double>>;
-

@@ -31,8 +31,8 @@
 #include <functional>
 
 #include <agrum/config.h>
-#include <agrum/core/signal/signaler.h>
 #include <agrum/core/list.h>
+#include <agrum/core/signal/signaler.h>
 
 namespace gum {
 

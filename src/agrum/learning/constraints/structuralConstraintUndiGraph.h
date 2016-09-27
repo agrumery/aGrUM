@@ -28,8 +28,8 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/undiGraph.h>
-#include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/constraints/structuralConstraint.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
 
@@ -132,31 +132,31 @@ namespace gum {
        * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone( const GraphChange& change ) const ;
+      bool isAlwaysInvalidAlone( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add edge (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the edge does not already exist. */
-      bool checkEdgeAdditionAlone( NodeId x, NodeId y ) const ;
+      bool checkEdgeAdditionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove edge (x,y)
       /** an edge can be removed if and only if the edge exists. */
-      bool checkEdgeDeletionAlone( NodeId x, NodeId y ) const ;
+      bool checkEdgeDeletionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to perform a graph change
       /** An edge can be added if and only if its extremal nodes belong to the
        * graph and the edge does not already exist.
        * An edge can be removed if and only if the edge exists. */
-      bool checkModificationAlone( const GraphChange& change ) const ;
+      bool checkModificationAlone( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add an edge
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the edge does not already exist. */
-      bool checkModificationAlone( const EdgeAddition& change ) const ;
+      bool checkModificationAlone( const EdgeAddition& change ) const;
 
       /// checks whether the constraints enable to remove an edge
       /** an edge can be removed if and only if the edge exists. */
-      bool checkModificationAlone( const EdgeDeletion& change ) const ;
+      bool checkModificationAlone( const EdgeDeletion& change ) const;
 
 /// @}
 

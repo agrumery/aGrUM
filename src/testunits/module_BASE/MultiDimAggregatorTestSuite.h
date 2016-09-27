@@ -542,7 +542,7 @@ namespace gum_tests {
     void testMin_ZeroParent() {
       gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 );
 
-      std::string res0 = "0-0-0-1"; // min of zero value is +infinity
+      std::string res0 = "0-0-0-1";  // min of zero value is +infinity
       std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
       gum::aggregator::Min<float> p;
 
@@ -564,7 +564,7 @@ namespace gum_tests {
     void testMax_ZeroParent() {
       gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 );
 
-      std::string res0 = "1-0-0-0"; // max of zero value is -infinity
+      std::string res0 = "1-0-0-0";  // max of zero value is -infinity
       std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
       gum::aggregator::Max<float> p;
 
@@ -588,7 +588,7 @@ namespace gum_tests {
 
       std::string res0 = "1-0-0-0";
       std::string res1 = "1-0-0-0-0-1-0-0";
-      gum::aggregator::Count<float> p(1);
+      gum::aggregator::Count<float> p( 1 );
 
       gum::Instantiation ind( p );
       std::string s;

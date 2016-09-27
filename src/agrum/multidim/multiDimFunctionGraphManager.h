@@ -30,8 +30,8 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/nodeGraphPart.h>
-#include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 
 namespace gum {
 
@@ -66,7 +66,8 @@ namespace gum {
    * auto manager = dg->manager();
    * @endcode
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
+   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
   template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
@@ -288,14 +289,12 @@ namespace gum {
     bool __isRedundant( const DiscreteVariable* var, NodeId* sons );
 
     public:
-
     /**
      * @brief Ensures that every isomorphic subgraphs are merged together.
      */
     virtual void reduce() = 0;
 
     protected:
-
     /**
      * @brief Ensures that every isomorphic subgraphs are merged together.
      */
@@ -304,7 +303,6 @@ namespace gum {
     /// @}
 
     public:
-
     /**
      * @brief Removes var without nodes in the diagram
      */
@@ -330,7 +328,8 @@ namespace gum {
    * #include <agrum/multidim/multiDimFunctionGraphManager.h>
    * @endcode
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
+   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
   template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
@@ -384,14 +383,15 @@ namespace gum {
    * #include <agrum/multidim/multiDimFunctionGraphManager.h>
    * @endcode
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional table.
+   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
   template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
   class MultiDimFunctionGraphROManager
       : public MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy> {
 
-    /// This friend methods from is the only way to get an instance of a 
+    /// This friend methods from is the only way to get an instance of a
     /// manager.
     friend MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>*
     MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::manager();
@@ -415,7 +415,7 @@ namespace gum {
     virtual NodeId addInternalNode( const DiscreteVariable* var, NodeId* sons );
 
     virtual void reduce();
- 
+
     /// @}
   };
 

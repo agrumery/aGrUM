@@ -26,9 +26,9 @@
 #ifndef GUM_MULTI_DIM_SPARSE_H
 #define GUM_MULTI_DIM_SPARSE_H
 
-#include <vector>
 #include <agrum/config.h>
 #include <agrum/multidim/multiDimWithOffset.h>
+#include <vector>
 
 namespace gum {
 
@@ -73,7 +73,8 @@ namespace gum {
      *
      * @brief Copy operator.
      * @param from The MultiDimSparse to copy.
-    MultiDimSparse<GUM_SCALAR>& operator=( const MultiDimSparse<GUM_SCALAR>& from );
+    MultiDimSparse<GUM_SCALAR>& operator=( const MultiDimSparse<GUM_SCALAR>&
+    from );
      */
 
     /**

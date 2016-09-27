@@ -56,7 +56,7 @@ namespace gum {
           e->add( *( elt2.second->variablesSequence().front() ) );
           Instantiation i( *e );
 
-          for ( i.setFirst(); ! i.end(); i.inc() )
+          for ( i.setFirst(); !i.end(); i.inc() )
             e->set( i, elt2.second->get( i ) );
 
           __evidences[elt.first]->insert( elt2.first, e );
@@ -79,7 +79,7 @@ namespace gum {
           e->add( *( elt2.second->variablesSequence().front() ) );
           Instantiation i( *e );
 
-          for ( i.setFirst(); ! i.end(); i.inc() ) {
+          for ( i.setFirst(); !i.end(); i.inc() ) {
             e->set( i, elt2.second->get( i ) );
           }
 
@@ -107,7 +107,7 @@ namespace gum {
                                            const Potential<GUM_SCALAR>& p ) {
       if ( chain.first->exists( chain.second->id() ) ) {
         if ( ( p.nbrDim() != 1 ) ||
-             ( ! p.contains( chain.second->type().variable() ) ) )
+             ( !p.contains( chain.second->type().variable() ) ) )
           GUM_ERROR( OperationNotAllowed,
                      "illegal evidence for the given PRMAttribute." );
 
@@ -115,7 +115,7 @@ namespace gum {
         e->add( chain.second->type().variable() );
         Instantiation i( *e );
 
-        for ( i.setFirst(); ! i.end(); i.inc() )
+        for ( i.setFirst(); !i.end(); i.inc() )
           e->set( i, p.get( i ) );
 
         PRMInference<GUM_SCALAR>::EMap& emap = __EMap( chain.first );
@@ -136,9 +136,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE
-    PRMInference<GUM_SCALAR>::PRMInference( const PRM<GUM_SCALAR>& prm,
-                                            const PRMSystem<GUM_SCALAR>& system )
+    INLINE PRMInference<GUM_SCALAR>::PRMInference(
+        const PRM<GUM_SCALAR>& prm, const PRMSystem<GUM_SCALAR>& system )
         : _prm( &prm )
         , _sys( &system ) {
       GUM_CONSTRUCTOR( PRMInference );
@@ -162,7 +161,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const typename PRMInference<GUM_SCALAR>::EMap&
-    PRMInference<GUM_SCALAR>::evidence( const PRMInstance<GUM_SCALAR>& i ) const {
+    PRMInference<GUM_SCALAR>::evidence(
+        const PRMInstance<GUM_SCALAR>& i ) const {
       try {
         return *( __evidences[&i] );
       } catch ( NotFound& ) {
@@ -182,7 +182,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const typename PRMInference<GUM_SCALAR>::EMap&
-    PRMInference<GUM_SCALAR>::evidence( const PRMInstance<GUM_SCALAR>* i ) const {
+    PRMInference<GUM_SCALAR>::evidence(
+        const PRMInstance<GUM_SCALAR>* i ) const {
       try {
         return *( __evidences[i] );
       } catch ( NotFound& ) {
@@ -212,7 +213,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool PRMInference<GUM_SCALAR>::hasEvidence() const {
-      return (__evidences.size()!=(Size)0);
+      return ( __evidences.size() != (Size)0 );
     }
 
     template <typename GUM_SCALAR>
@@ -242,7 +243,7 @@ namespace gum {
             *( evidence( chain.first )[chain.second->id()] );
         Instantiation i( m ), j( e );
 
-        for ( i.setFirst(), j.setFirst(); ! i.end(); i.inc(), j.inc() )
+        for ( i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc() )
           m.set( i, e.get( j ) );
       } else {
         if ( chain.second !=

@@ -36,10 +36,10 @@
 
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/multidim/multiDimBucket.h>
-#include <agrum/multidim/potential.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/multiDimBucket.h>
 #include <agrum/multidim/multiDimSparse.h>
+#include <agrum/multidim/potential.h>
 
 #include <agrum/PRM/inference/PRMInference.h>
 
@@ -114,7 +114,8 @@ namespace gum {
       typedef typename Set<MultiDimArray<GUM_SCALAR>*>::iterator_safe
           ArraySetIterator;
 
-      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
+      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*>
+          __elim_orders;
 
       HashTable<const PRMClass<GUM_SCALAR>*, BucketSet*> __lifted_pools;
 
@@ -123,7 +124,8 @@ namespace gum {
       HashTable<const PRMInstance<GUM_SCALAR>*, Set<const DiscreteVariable*>*>
           __delayedVariables;
 
-      /// Some variable must be delayed for more than one PRMInstance<GUM_SCALAR>,
+      /// Some variable must be delayed for more than one
+      /// PRMInstance<GUM_SCALAR>,
       /// when
       /// the delayed
       /// variable counter reach 0 it can be eliminated.
@@ -140,14 +142,14 @@ namespace gum {
                              BucketSet& pool,
                              BucketSet& trash );
 
-      void
-      __eliminateNodesDownward( const PRMInstance<GUM_SCALAR>* from,
-                                const PRMInstance<GUM_SCALAR>* i,
-                                BucketSet& pool,
-                                BucketSet& trash,
-                                List<const PRMInstance<GUM_SCALAR>*>& elim_list,
-                                Set<const PRMInstance<GUM_SCALAR>*>& ignore,
-                                Set<const PRMInstance<GUM_SCALAR>*>& eliminated );
+      void __eliminateNodesDownward(
+          const PRMInstance<GUM_SCALAR>* from,
+          const PRMInstance<GUM_SCALAR>* i,
+          BucketSet& pool,
+          BucketSet& trash,
+          List<const PRMInstance<GUM_SCALAR>*>& elim_list,
+          Set<const PRMInstance<GUM_SCALAR>*>& ignore,
+          Set<const PRMInstance<GUM_SCALAR>*>& eliminated );
 
       void
       __eliminateNodesUpward( const PRMInstance<GUM_SCALAR>* i,
@@ -181,7 +183,8 @@ namespace gum {
 
       void __initElimOrder();
 
-      void __insertEvidence( const PRMInstance<GUM_SCALAR>* i, BucketSet& pool );
+      void __insertEvidence( const PRMInstance<GUM_SCALAR>* i,
+                             BucketSet& pool );
 
       /// When there is a loop in the references some variable elimination
       /// must be delayed, this methods add such variable to __delayedVariables

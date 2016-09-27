@@ -28,8 +28,8 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/diGraph.h>
-#include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/constraints/structuralConstraint.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
 
@@ -97,7 +97,7 @@ namespace gum {
       void eraseArc( const Arc& arc );
 
       /// returns the set of mandatory arcs
-      const ArcSet& arcs() const ;
+      const ArcSet& arcs() const;
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone( const DiGraph& graph );
@@ -142,21 +142,21 @@ namespace gum {
        * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone( const GraphChange& change ) const ;
+      bool isAlwaysInvalidAlone( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkArcAdditionAlone( NodeId x, NodeId y ) const ;
+      bool checkArcAdditionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
       /** an arc can be removed if and only if the arc exists. */
-      bool checkArcDeletionAlone( NodeId x, NodeId y ) const ;
+      bool checkArcDeletionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkArcReversalAlone( NodeId x, NodeId y ) const ;
+      bool checkArcReversalAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to perform a graph change
       /** An arc can be added if and only if its extremal nodes belong to the
@@ -164,21 +164,21 @@ namespace gum {
        * An arc can be removed if and only if the arc exists.
        * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkModificationAlone( const GraphChange& change ) const ;
+      bool checkModificationAlone( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkModificationAlone( const ArcAddition& change ) const ;
+      bool checkModificationAlone( const ArcAddition& change ) const;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone( const ArcDeletion& change ) const ;
+      bool checkModificationAlone( const ArcDeletion& change ) const;
 
       /// checks whether the constraints enable to reverse an arc
       /** an arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkModificationAlone( const ArcReversal& change ) const ;
+      bool checkModificationAlone( const ArcReversal& change ) const;
 
 /// @}
 

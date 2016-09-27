@@ -39,7 +39,7 @@ namespace gum {
     bool isNegative = ( number < 0 ) ? true : false;
     GUM_SCALAR pnumber = ( isNegative ) ? -number : number;
 
-    if ( std::abs( pnumber - GUM_SCALAR(1.) ) < zero ) {
+    if ( std::abs( pnumber - GUM_SCALAR( 1. ) ) < zero ) {
       numerator = ( isNegative ) ? -1 : 1;
       denominator = 1;
       return;
@@ -53,7 +53,7 @@ namespace gum {
     double mediant( 0.0F );
 
     while ( b <= den_max && d <= den_max ) {
-      mediant = (GUM_SCALAR)( a + c ) / (GUM_SCALAR)( b + d );
+      mediant = ( GUM_SCALAR )( a + c ) / ( GUM_SCALAR )( b + d );
 
       if ( std::fabs( pnumber - mediant ) < zero ) {
         if ( b + d <= den_max ) {
@@ -124,15 +124,15 @@ namespace gum {
       delta = std::fabs( pnumber - (GUM_SCALAR)p.back() / q.back() );
 
       if ( delta < zero ) {
-        numerator = ( long)p.back();
-        if (number < 0) numerator = -numerator;
+        numerator = (long)p.back();
+        if ( number < 0 ) numerator = -numerator;
         denominator = q.back();
         break;
       }
 
       if ( std::abs( rnumber - a.back() ) < 1e-6 ) break;
 
-      rnumber = GUM_SCALAR(1.) / ( rnumber - a.back() );
+      rnumber = GUM_SCALAR( 1. ) / ( rnumber - a.back() );
     }  /// end of while
 
     if ( a.size() < 2 ) return;
@@ -140,7 +140,7 @@ namespace gum {
     /// we can start looking at the semi-convergents made of the last two
     /// convergents
     /// before the one within precision zero of number found previously
-    Idx i = Idx(p.size() - 2);
+    Idx i = Idx( p.size() - 2 );
     /// the last convergent has already been computed previously : end of for is
     /// p.size() - 2
     /// for ( ; i < p.size() - 1; ++i ) {
@@ -154,14 +154,14 @@ namespace gum {
 
     if ( delta < zero ) {
       numerator = (long)p[i];
-      if (number < 0) numerator=-numerator;
+      if ( number < 0 ) numerator = -numerator;
       denominator = q[i];
       return;
     }
 
     if ( delta_tmp < zero ) {
       numerator = (long)p_tmp;
-      if (number < 0) numerator = -numerator;
+      if ( number < 0 ) numerator = -numerator;
       denominator = q_tmp;
       return;
     }
@@ -177,7 +177,7 @@ namespace gum {
 
       if ( delta_tmp < zero ) {
         numerator = (long)p_tmp;
-        if (number < 0) numerator = -numerator;
+        if ( number < 0 ) numerator = -numerator;
         denominator = q_tmp;
         return;
       }
@@ -225,12 +225,12 @@ namespace gum {
 
       if ( std::fabs( rnumber - a.back() ) < 1e-6 ) break;
 
-      rnumber = GUM_SCALAR(1.) / ( rnumber - a.back() );
+      rnumber = GUM_SCALAR( 1. ) / ( rnumber - a.back() );
     }  /// end of while
 
     if ( a.size() < 2 || q.back() == denMax || p.back() == denMax ) {
       numerator = p.back();
-      if (number < 0) numerator = -numerator;
+      if ( number < 0 ) numerator = -numerator;
       denominator = q.back();
       return;
     }
@@ -238,7 +238,7 @@ namespace gum {
     /// we can start looking at the semi-convergents made of the last two
     /// convergents
     /// before the one within precision zero of number found previously
-    Idx i = Idx(p.size() - 1);
+    Idx i = Idx( p.size() - 1 );
 
     /// the last convergent has already been computed previously : end of for is
     /// p.size() - 2
@@ -251,7 +251,7 @@ namespace gum {
       if ( q_tmp > denMax || p_tmp > denMax ) continue;
 
       numerator = (long)p_tmp;
-      if (number < 0) numerator = -numerator;
+      if ( number < 0 ) numerator = -numerator;
       denominator = q_tmp;
       return;
     }  // end of for
@@ -266,11 +266,11 @@ namespace gum {
 
     if ( delta_tmp < delta && q_tmp <= denMax && p_tmp <= denMax ) {
       numerator = (long)p_tmp;
-      if (number < 0) numerator=-numerator;
+      if ( number < 0 ) numerator = -numerator;
       denominator = q_tmp;
     } else {
       numerator = (long)p[i];
-      if (number<0) numerator=-numerator;
+      if ( number < 0 ) numerator = -numerator;
 
       denominator = q[i];
     }

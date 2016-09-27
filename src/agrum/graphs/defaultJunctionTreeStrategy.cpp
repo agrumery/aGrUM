@@ -122,7 +122,8 @@ namespace gum {
     // neighbour can be included in C_j (and conversely).
     // NodeSetIterator iter;
     //@before merging ARGGGGG
-    for ( NodeId i = Size(elim_order.size()) - 1; i < elim_order.size(); --i ) {
+    for ( NodeId i = Size( elim_order.size() ) - 1; i < elim_order.size();
+          --i ) {
       NodeId C_i = i;
       Size card_C_i = __junction_tree.clique( C_i ).size();
 

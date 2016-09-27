@@ -34,9 +34,9 @@
 #include <iostream>
 #include <vector>
 
-#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/config.h>
 
 #include <agrum/variables/labelizedVariable.h>
 

@@ -36,8 +36,8 @@
 #include <agrum/learning/database/DBTransform.h>
 #include <agrum/learning/database/DBTransformIdentity.h>
 #include <agrum/learning/database/databaseVectInRAM.h>
-#include <agrum/learning/database/nanodbcParser.h>
 #include <agrum/learning/database/nanodbc/nanodbc.h>
+#include <agrum/learning/database/nanodbcParser.h>
 
 namespace gum {
 
@@ -83,8 +83,7 @@ namespace gum {
                        const std::string& query,
                        long timeout = 0,
                        const DBTransform& transform = DBTransformIdentity(),
-                       const std::vector<std::string> missingVal = {
-                           "NULL"} );
+                       const std::vector<std::string> missingVal = {"NULL"} );
 
       /// Copy constructor
       DatabaseFromSQL( const DatabaseFromSQL& from );
@@ -122,4 +121,4 @@ namespace gum {
 
 #endif /* GUM_DATABASE_FROM_SQL_H */
 
-#endif // _ODBC
+#endif  // _ODBC

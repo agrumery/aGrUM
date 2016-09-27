@@ -144,7 +144,7 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const Size targets_modal = Size(N_ijk.size());
+      const Size targets_modal = Size( N_ijk.size() );
       double score = 0;
 
       // get the nodes involved in the score as well as their modalities
@@ -159,7 +159,7 @@ namespace gum {
       if ( conditioning_nodes ) {
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const Size conditioning_modal =Size( N_ij.size());
+        const Size conditioning_modal = Size( N_ij.size() );
 
         if ( this->_apriori->weight() ) {
           // the score to compute is that of BD with aprioris N'_ijk + 1
@@ -175,7 +175,7 @@ namespace gum {
           //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + 1 ) -
           //                             gammalog2 ( N'_ijk + 1 ) } ]
 
-          const double r_i = double(modalities[all_nodes.back()]);
+          const double r_i = double( modalities[all_nodes.back()] );
           for ( Idx j = 0; j < conditioning_modal; ++j ) {
             score += __gammalog2( N_prime_ij[j] + r_i ) -
                      __gammalog2( N_ij[j] + N_prime_ij[j] + r_i );
@@ -190,7 +190,7 @@ namespace gum {
           //                                   sum_k=1^ri log { N_ijk! } ]
 
           // put the first term: qi log {(ri - 1)!} into the score
-          const double r_i = double(modalities[all_nodes.back()]);
+          const double r_i = double( modalities[all_nodes.back()] );
           score = conditioning_modal * __gammalog2( r_i );
 
           for ( Idx k = 0; k < targets_modal; ++k ) {
@@ -222,7 +222,7 @@ namespace gum {
           // gammalog2 ( N' + r_i ) - gammalog2 ( N + N' + r_i )
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
           // }
-          const double r_i = double(modalities[all_nodes.back()]);
+          const double r_i = double( modalities[all_nodes.back()] );
           double N = 0;
           double N_prime = 0;
           for ( Idx k = 0; k < targets_modal; ++k ) {
@@ -238,7 +238,7 @@ namespace gum {
           // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
 
           // put the first term: log {(ri - 1)!} into the score
-          const double r_i = double(modalities[all_nodes.back()]);
+          const double r_i = double( modalities[all_nodes.back()] );
           score = __gammalog2( r_i );
 
           double N = 0;

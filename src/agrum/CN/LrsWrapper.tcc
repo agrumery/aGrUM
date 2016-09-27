@@ -1,7 +1,7 @@
 #include <string.h>
 
-#include <agrum/config.h>
 #include <agrum/CN/LrsWrapper.h>
+#include <agrum/config.h>
 
 namespace gum {
   namespace credal {
@@ -28,12 +28,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    auto LRSWrapper<GUM_SCALAR>::getInput() const -> const matrix & {
+    auto LRSWrapper<GUM_SCALAR>::getInput() const -> const matrix& {
       return __input;
     }
 
     template <typename GUM_SCALAR>
-    auto LRSWrapper<GUM_SCALAR>::getOutput() const -> const matrix & {
+    auto LRSWrapper<GUM_SCALAR>::getOutput() const -> const matrix& {
       return __output;
     }
 
@@ -294,13 +294,13 @@ namespace gum {
 
       __initLrs();
 
-	  /* We initiate reverse search from this dictionary       */
-	  /* getting new dictionaries until the search is complete */
-	  /* User can access each output line from output which is */
-	  /* vertex/ray/facet from the lrs_mp_vector output         */
-	  /* prune is TRUE if tree should be pruned at current node */
+      /* We initiate reverse search from this dictionary       */
+      /* getting new dictionaries until the search is complete */
+      /* User can access each output line from output which is */
+      /* vertex/ray/facet from the lrs_mp_vector output         */
+      /* prune is TRUE if tree should be pruned at current node */
 
-	  // pruning is not used
+      // pruning is not used
 
       std::vector<long int> Num; /* numerators of all vertices */
       std::vector<long int> Den; /* denominators of all vertices */
@@ -309,7 +309,7 @@ namespace gum {
         for ( decltype( __dic->d ) col = 0, end = __dic->d; col <= end; col++ )
           if ( lrs_getsolution( __dic, __dat, __lrsOutput, col ) ) {
 
-			  // iszero macro could be used here for the test on right
+            // iszero macro could be used here for the test on right
             if ( __dat->hull || ( ( ( ( __lrsOutput[0] )[0] == 2 ||
                                       ( __lrsOutput[0] )[0] == -2 ) &&
                                     ( __lrsOutput[0] )[1] == 0 )
@@ -332,7 +332,8 @@ namespace gum {
       std::vector<GUM_SCALAR> vertex( __card );
 
       for ( decltype( vtx ) i = 1; i <= vtx; i++ ) {
-        vertex[( i - 1 ) % __card] = GUM_SCALAR( Num[i - 1] * 1.0 / Den[i - 1] );
+        vertex[( i - 1 ) % __card] =
+            GUM_SCALAR( Num[i - 1] * 1.0 / Den[i - 1] );
 
         if ( i % __card == 0 ) {
           __output.push_back( vertex );
@@ -550,14 +551,14 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__fill() const {
-      long cols = long(__input[0].size());
+      long cols = long( __input[0].size() );
 
       long int* num =
           new long int[cols];  // ISO C++ forbids variable length array,
                                // we need to do this instead
       long int* den = new long int[cols];
 
-      long rows = long(__input.size());
+      long rows = long( __input.size() );
 
       long int numerator, denominator;
 
@@ -618,8 +619,8 @@ namespace gum {
             "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dat" );
       }
 
-      __dat->n = Size(__input[0].size());
-      __dat->m = Size(__input.size());
+      __dat->n = Size( __input[0].size() );
+      __dat->m = Size( __input.size() );
 
       __dat->getvolume = ( __getVolume ) ? 1L : 0L;
       __dat->hull = ( __hull ) ? 1L : 0L;
@@ -651,37 +652,39 @@ namespace gum {
       /* columns are removed. User can access linearity space */
       /* from lrs_mp_matrix Lin dimensions nredundcol x d+1  */
 
-	  decltype( __dat->nredundcol ) startcol = 0;
+      decltype( __dat->nredundcol ) startcol = 0;
 
-	  if ( __dat->homogeneous && __dat->hull )
-	  {
-		  startcol++;			/* col zero not treated as redundant   */
+      if ( __dat->homogeneous && __dat->hull ) {
+        startcol++; /* col zero not treated as redundant   */
 
-		  if( ! __dat->restart )
-		  {
-			  __coutOn();
+        if ( !__dat->restart ) {
+          __coutOn();
 
-			  for ( decltype( __dat->nredundcol ) col = startcol; col < __dat->nredundcol; col++ )
-				  lrs_printoutput ( __dat, __Lin[col] );
+          for ( decltype( __dat->nredundcol ) col = startcol;
+                col < __dat->nredundcol;
+                col++ )
+            lrs_printoutput( __dat, __Lin[col] );
 
-			  GUM_ERROR( FatalError,
-						 "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
-		  }
-	  }
-	  /*
-      if ( __dat->nredundcol > 0 ) {
-        __coutOn();
-
-		for ( decltype( __dat->nredundcol ) col = 0, end = __dat->nredundcol;
-              col < end;
-              col++ )
-          lrs_printoutput( __dat, __Lin[col] );
-
-        GUM_ERROR(
-            FatalError,
-            "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
+          GUM_ERROR(
+              FatalError,
+              "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
+        }
       }
-      */
+      /*
+  if ( __dat->nredundcol > 0 ) {
+    __coutOn();
+
+            for ( decltype( __dat->nredundcol ) col = 0, end =
+  __dat->nredundcol;
+          col < end;
+          col++ )
+      lrs_printoutput( __dat, __Lin[col] );
+
+    GUM_ERROR(
+        FatalError,
+        "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
+  }
+  */
     }
 
     template <typename GUM_SCALAR>
@@ -690,20 +693,19 @@ namespace gum {
 
       lrs_clear_mp_vector( __lrsOutput, __dat->n );
 
-	  if( __dat->nredundcol > 0 )
-		  lrs_clear_mp_matrix( __Lin, __dat->nredundcol, __dat->n );
+      if ( __dat->nredundcol > 0 )
+        lrs_clear_mp_matrix( __Lin, __dat->nredundcol, __dat->n );
 
-	  if( __dat->runs > 0 )
-	  {
-		  free( __dat->isave );
-		  free( __dat->jsave );
-	  }
+      if ( __dat->runs > 0 ) {
+        free( __dat->isave );
+        free( __dat->jsave );
+      }
 
-	  auto savem = __dic->m;              /* need this to clear __dat*/
+      auto savem = __dic->m; /* need this to clear __dat*/
 
-	  lrs_free_dic( __dic, __dat );           /* deallocate lrs_dic */
+      lrs_free_dic( __dic, __dat ); /* deallocate lrs_dic */
 
-	  __dat->m = savem;
+      __dat->m = savem;
       lrs_free_dat( __dat );
 
       std::string name = "LrsWrapper:";
@@ -718,8 +720,8 @@ namespace gum {
     void LRSWrapper<GUM_SCALAR>::__coutOff() const {
       fflush( stdout );
 #ifdef _MSC_VER
-      freopen("NUL", "w", stdout);
-#else // _MSC_VER
+      freopen( "NUL", "w", stdout );
+#else   // _MSC_VER
       __oldCout = dup( 1 );
 
       int new_cout = open( "/dev/null", O_WRONLY );
@@ -732,8 +734,8 @@ namespace gum {
     void LRSWrapper<GUM_SCALAR>::__coutOn() const {
       fflush( stdout );
 #ifdef _MSC_VER
-      freopen("CON", "w", stdout);
-#else // _MSC_VER
+      freopen( "CON", "w", stdout );
+#else   // _MSC_VER
       dup2( __oldCout, 1 );
       close( __oldCout );
 #endif  // _MSC_VER

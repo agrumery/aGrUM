@@ -116,28 +116,23 @@ namespace gum {
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      void erase( Idx var1,
-                  Idx var2,
-                  const std::vector<Idx>& conditioning_set );
+      void
+      erase( Idx var1, Idx var2, const std::vector<Idx>& conditioning_set );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
       template <typename Alloc>
-      void erase( Idx var1,
-                  Idx var2,
-                  const IdSet<Alloc>& conditioning_set );
+      void erase( Idx var1, Idx var2, const IdSet<Alloc>& conditioning_set );
 
       /// indicates whether a given score exists
-      bool exists( Idx var1,
-                   Idx var2,
-                   const std::vector<Idx>& conditioning_set );
+      bool
+      exists( Idx var1, Idx var2, const std::vector<Idx>& conditioning_set );
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      double score( Idx var1,
-                   Idx var2,
-                   const std::vector<Idx>& conditioning_set );
+      double
+      score( Idx var1, Idx var2, const std::vector<Idx>& conditioning_set );
 
       /// removes all the stored scores
       void clear();
@@ -146,8 +141,7 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable<std::tuple<IdSet<>, Idx, Idx>, double>
-          __scores;
+      HashTable<std::tuple<IdSet<>, Idx, Idx>, double> __scores;
     };
 
   } /* namespace learning */
