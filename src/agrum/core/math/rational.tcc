@@ -31,10 +31,10 @@
 namespace gum {
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::farey( long int& numerator,
-                                    long int& denominator,
+  void Rational<GUM_SCALAR>::farey( int64_t& numerator,
+                                    int64_t& denominator,
                                     const GUM_SCALAR& number,
-                                    const long int& den_max,
+                                    const int64_t& den_max,
                                     const GUM_SCALAR& zero ) {
     bool isNegative = ( number < 0 ) ? true : false;
     GUM_SCALAR pnumber = ( isNegative ) ? -number : number;
@@ -90,8 +90,8 @@ namespace gum {
   }  /// end of farey func
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::continuedFracFirst( long int& numerator,
-                                                 long int& denominator,
+  void Rational<GUM_SCALAR>::continuedFracFirst( int64_t& numerator,
+                                                 int64_t& denominator,
                                                  const GUM_SCALAR& number,
                                                  const double& zero ) {
     const GUM_SCALAR pnumber = ( number > 0 ) ? number : -number;
@@ -100,15 +100,15 @@ namespace gum {
     GUM_SCALAR rnumber = pnumber;
 
     /// convergents
-    std::vector<unsigned long int> p( {0, 1} );
-    std::vector<unsigned long int> q( {1, 0} );
+    std::vector<uint64_t> p( {0, 1} );
+    std::vector<uint64_t> q( {1, 0} );
 
     /// quotients
-    std::vector<unsigned long int> a;
+    std::vector<uint64_t> a;
 
-    unsigned long int p_tmp, q_tmp;
+    uint64_t p_tmp, q_tmp;
 
-    unsigned long int n;
+    uint64_t n;
     double delta, delta_tmp;
 
     /// we find all convergents until we found a best one
@@ -124,7 +124,7 @@ namespace gum {
       delta = std::fabs( pnumber - (GUM_SCALAR)p.back() / q.back() );
 
       if ( delta < zero ) {
-        numerator = (long)p.back();
+        numerator = (int64_t)p.back();
         if ( number < 0 ) numerator = -numerator;
         denominator = q.back();
         break;
@@ -153,14 +153,14 @@ namespace gum {
     delta_tmp = std::fabs( pnumber - ( (double)p_tmp ) / q_tmp );
 
     if ( delta < zero ) {
-      numerator = (long)p[i];
+      numerator = (int64_t)p[i];
       if ( number < 0 ) numerator = -numerator;
       denominator = q[i];
       return;
     }
 
     if ( delta_tmp < zero ) {
-      numerator = (long)p_tmp;
+      numerator = (int64_t)p_tmp;
       if ( number < 0 ) numerator = -numerator;
       denominator = q_tmp;
       return;
@@ -176,7 +176,7 @@ namespace gum {
       delta_tmp = std::fabs( pnumber - ( (double)p_tmp ) / q_tmp );
 
       if ( delta_tmp < zero ) {
-        numerator = (long)p_tmp;
+        numerator = (int64_t)p_tmp;
         if ( number < 0 ) numerator = -numerator;
         denominator = q_tmp;
         return;
@@ -187,28 +187,28 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::continuedFracBest( long int& numerator,
-                                                long int& denominator,
+  void Rational<GUM_SCALAR>::continuedFracBest( int64_t& numerator,
+                                                int64_t& denominator,
                                                 const GUM_SCALAR& number,
-                                                const long int& den_max ) {
+                                                const int64_t& den_max ) {
     const GUM_SCALAR pnumber = ( number > 0 ) ? number : -number;
 
-    const unsigned long int denMax = (unsigned long int)
+    const uint64_t denMax = (uint64_t)
         den_max;  /// signed and unsigned comparison resolution ...
 
     /// reciprocal over iterations
     GUM_SCALAR rnumber = pnumber;
 
     /// convergents
-    std::vector<unsigned long int> p( {0, 1} );
-    std::vector<unsigned long int> q( {1, 0} );
+    std::vector<uint64_t> p( {0, 1} );
+    std::vector<uint64_t> q( {1, 0} );
 
     /// quotients
-    std::vector<unsigned long int> a;
+    std::vector<uint64_t> a;
 
-    unsigned long int p_tmp, q_tmp;
+    uint64_t p_tmp, q_tmp;
 
-    unsigned long int n;
+    uint64_t n;
     double delta, delta_tmp;
 
     /// we find all convergents until we met den_max
@@ -250,7 +250,7 @@ namespace gum {
 
       if ( q_tmp > denMax || p_tmp > denMax ) continue;
 
-      numerator = (long)p_tmp;
+      numerator = (int64_t)p_tmp;
       if ( number < 0 ) numerator = -numerator;
       denominator = q_tmp;
       return;
@@ -265,11 +265,11 @@ namespace gum {
     delta = std::fabs( pnumber - ( (double)p[i] ) / q[i] );
 
     if ( delta_tmp < delta && q_tmp <= denMax && p_tmp <= denMax ) {
-      numerator = (long)p_tmp;
+      numerator = (int64_t)p_tmp;
       if ( number < 0 ) numerator = -numerator;
       denominator = q_tmp;
     } else {
-      numerator = (long)p[i];
+      numerator = (int64_t)p[i];
       if ( number < 0 ) numerator = -numerator;
 
       denominator = q[i];
