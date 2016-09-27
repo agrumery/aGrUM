@@ -414,6 +414,9 @@ namespace gum {
      * since the last inference */
     NodeProperty<EvidenceChangeType> __evidence_changes;
 
+    /// for comparisons with 1 - epsilon
+    const GUM_SCALAR __1_minus_epsilon { GUM_SCALAR ( 1.0 - 1e-6 ) };
+
 
 
     /// check whether a new join tree is really needed for the next inference

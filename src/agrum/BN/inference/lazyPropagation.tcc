@@ -39,6 +39,25 @@
 
 
 namespace gum {
+
+
+  template<typename GUM_SCALAR>
+  static void print_pot ( const Set<const Potential<GUM_SCALAR>*>& potset,
+                          bool details ) {
+    std::cout << "   pots = " << std::endl;
+    for ( const auto pot : potset ) {
+      if ( ! details ) {
+        const auto& vars = pot->variablesSequence ();
+        std::cout << "         ";
+        for ( const auto var : vars )
+          std::cout << *var << "  ";
+        std::cout << std::endl;
+      }
+      else {
+        std::cout << "       " << *pot << std::endl; 
+      }
+    }
+  }
   
   
   // default constructor
@@ -543,6 +562,8 @@ namespace gum {
           __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
     }
 
+    std::cout << "nodes 2 cliques = " <<  __node_to_clique << std::endl;
+
     // do the same for the nodes that received evidence. Here, we only store
     // the nodes whose at least one parent belongs to __graph (otherwise
     // their CPT is just a constant real number).
@@ -596,6 +617,8 @@ namespace gum {
                                        __node_to_clique[first_eliminated_node] );
       }
     }
+
+    std::cout << "joint target 2 clique = " << __joint_target_to_clique << std::endl;
 
     // compute the roots of __JT's connected components
     __computeJoinTreeRoots ();
@@ -724,9 +747,25 @@ namespace gum {
       __clique_potentials[__node_to_clique[node]].insert ( evidence[node] );
     }
 
+    for ( auto iter = __clique_potentials.cbegin ();
+          iter != __clique_potentials.cend (); ++iter ) {
+      std::cout << "clique[ " << iter.key() << " ] = " << std::endl;
+      for ( const auto pot : iter.val () ) {
+        const auto& vars = pot->variablesSequence ();
+        std::cout << "   ";
+        for ( const auto& var : vars ) {
+          std::cout << *var << "  ";
+        }
+        std::cout << std::endl;
+      }
+    }
+
+      
     // indicate that the data structures are up to date.
     __evidence_changes.clear ();
     __is_new_jt_needed = false;
+
+    std::cout << "\n" << *__JT << "\n" << std::endl;
   }
 
 
@@ -1170,20 +1209,54 @@ namespace gum {
       }
     }
 
+    std::cout << "message from " << from_id << " -> " << to_id << " : del = ";
+    for ( const auto var : del_vars )
+      std::cout << *var << "  ";
+    std::cout << "  kept vars = ";
+    for ( const auto var : kept_vars )
+      std::cout << *var << "  ";
+    std::cout << std::endl << std::endl;
+
     // pot_list now contains all the potentials to multiply and marginalize
     // => combine the messages
     __PotentialSet new_pot_list =
       __marginalizeOut( pot_list, del_vars, kept_vars );
 
-    // keep track of the newly created potentials
+    // keep track of the newly created potentials but remove first all the
+    // potentials that are equal to ones (as probability matrix multiplications
+    // are tensorial, such potentials are useless)
     const Arc arc (  from_id, to_id );
-    for ( auto pot : new_pot_list ) {
+    for ( auto iter = new_pot_list.beginSafe ();
+          iter != new_pot_list.endSafe (); ++iter ) {
+      const auto pot = *iter;
+      if ( pot->variablesSequence().size() == 1 ) {
+        bool is_all_ones = true;
+        for ( Instantiation inst ( *pot ); ! inst.end (); ++inst ) {
+          if ( (*pot)[inst] < __1_minus_epsilon ) {
+            is_all_ones = false;
+            break;
+          }
+        }
+        if ( is_all_ones ) {
+          if (  ! pot_list.exists( pot ) )
+            delete pot;
+          new_pot_list.erase ( iter );
+          continue;
+        }
+      }
+
       if ( ! pot_list.exists( pot ) ) {
         if ( ! __created_potentials.exists ( arc ) )
           __created_potentials.insert ( arc, __PotentialSet () );
         __created_potentials[arc].insert( pot );
       }
     }
+
+    print_pot ( pot_list, false );
+    std::cout << "projecting" << std::endl;
+    print_pot ( new_pot_list, true );
+    
+
     
     __separator_potentials[arc] = std::move ( new_pot_list );
     __messages_computed[arc] = true;
