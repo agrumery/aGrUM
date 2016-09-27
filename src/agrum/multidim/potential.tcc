@@ -239,19 +239,17 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE const Potential<GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>&
   Potential<GUM_SCALAR>::scale( GUM_SCALAR v ) const {
-    auto p = Potential<GUM_SCALAR>( *this );
-    p.apply( [v]( GUM_SCALAR x ) { return x * v; } );
-    return p;
+    this->apply( [v]( GUM_SCALAR x ) { return x * v; } );
+    return *this;
   }
 
     template <typename GUM_SCALAR>
-    INLINE const Potential<GUM_SCALAR>
-    Potential<GUM_SCALAR>::scale( GUM_SCALAR v ) const {
-        auto p = Potential<GUM_SCALAR>( *this );
-        p.apply( [v]( GUM_SCALAR x ) { return x + v; } );
-        return p;
+    INLINE const Potential<GUM_SCALAR>&
+    Potential<GUM_SCALAR>::translate( GUM_SCALAR v ) const {
+      this->apply( [v]( GUM_SCALAR x ) { return x + v; } );
+      return *this;
     }
 
 

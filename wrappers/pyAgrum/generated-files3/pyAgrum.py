@@ -8083,6 +8083,18 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_scale(self, v)
 
 
+    def translate(self, v: 'double') -> "gum::Potential< double > const":
+        """
+        translate(Potential_double self, double v) -> Potential_double
+
+        Parameters
+        ----------
+        v: double
+
+        """
+        return _pyAgrum.Potential_double_translate(self, v)
+
+
     def __add__(self, p2: 'Potential_double') -> "gum::Potential< double >":
         """
         __add__(Potential_double self, Potential_double p2) -> Potential_double

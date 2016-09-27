@@ -513,7 +513,7 @@ namespace gum_tests {
       }
     }
 
-    void testScaleAndTranslater() {
+    void testScaleAndTranslate() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
 
       gum::Potential<float> p;
@@ -524,16 +524,29 @@ namespace gum_tests {
       p3.fillWith( {3, 6, 9} );
 
       TS_GUM_ASSERT_THROWS_NOTHING( p.scale( 3.0 ) );
-      TS_ASSERT( p.scale( 3.0 ) == p3 );
-      TS_ASSERT_EQUALS( p.scale( 3.0 ), p3 );
+      TS_ASSERT( p == p3 );
+      TS_ASSERT_EQUALS( p, p3 );
 
+      p.fillWith( {1, 2, 3} );
       gum::Potential<float> p2;
       p2 << a;
       p2.fillWith( {2, 3, 4} );
 
       TS_GUM_ASSERT_THROWS_NOTHING( p.translate( 1.0 ) );
-      TS_ASSERT( p.scale( 1.0 ) == p2 );
-      TS_ASSERT_EQUALS( p.scale( 1.0 ), p3 );
+      TS_ASSERT( p == p2 );
+      TS_ASSERT_EQUALS( p, p2 );
+
+
+      p.fillWith( {1, 2, 3} );
+      gum::Potential<float> p1;
+      p1 << a;
+      p1.fillWith( {4, 7, 10} );
+        p.scale(3.0).translate(1.0);
+      //TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0));
+        GUM_TRACE_VAR(p);
+        GUM_TRACE_VAR(p1);
+      TS_ASSERT( p == p1 );
+      TS_ASSERT_EQUALS( p, p1 );
     }
 
     void testNormalizeAsCPT() {

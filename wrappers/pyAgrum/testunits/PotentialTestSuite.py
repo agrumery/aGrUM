@@ -523,13 +523,17 @@ class TestOperators(pyAgrumTestCase):
     self.assertTrue(p!=q)
 
 
-  def testScale(self):
+  def testScaleAndTranslate(self):
     a=gum.LabelizedVariable("a","a",3)
 
-    p=gum.Potential().add(a).fillWith([1,2,3])
+    p=gum.Potential().add(a)
     q=gum.Potential().add(a).fillWith([3,6,9])
+    r=gum.Potential().add(a).fillWith([2,3,4])
+    s=gum.Potential().add(a).fillWith([4,7,10])
 
-    self.assertEqual(p.scale(3),q)
+    self.assertEqual(p.fillWith([1,2,3]).scale(3),q)
+    self.assertEqual(p.fillWith([1,2,3]).translate(1),r)
+    self.assertEqual(p.fillWith([1,2,3]).scale(3).translate(1),s)
 
   def testNormalizeAsCPT(self):
     a,b=[gum.LabelizedVariable(s,s,3) for s in "ab"]
@@ -597,5 +601,5 @@ ts.addTest(TestOperators('testPutFirstPotential'))
 ts.addTest(TestOperators('testExtraction'))
 ts.addTest(TestOperators('testExtractionWithDict'))
 ts.addTest(TestOperators('testOperatorEqual'))
-ts.addTest(TestOperators('testScale'))
+ts.addTest(TestOperators('testScaleAndTranslate'))
 ts.addTest(TestOperators('testNormalizeAsCPT'))
