@@ -1680,7 +1680,7 @@ namespace gum {
         const std::vector<std::vector<GUM_SCALAR>>& h_rep,
         std::vector<std::vector<GUM_SCALAR>>& v_rep ) const {
       // write H rep file
-      long int num, den;
+      int64_t num, den;
 
       std::string sinefile =
           getUniqueFileName();  // generate unique file name, we
@@ -1709,7 +1709,7 @@ namespace gum {
           Rational<GUM_SCALAR>::farey( num,
                                        den,
                                        ( ( *it2 > 0 ) ? *it2 : -*it2 ),
-                                       long( __denMax ),
+                                       int64_t( __denMax ),
                                        __epsF );
 
           h_file << ( ( *it2 > 0 ) ? num : -num ) << '/' << den << ' ';
