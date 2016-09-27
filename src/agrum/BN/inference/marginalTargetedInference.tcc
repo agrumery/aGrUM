@@ -19,7 +19,8 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of the non pure virtual methods of class Inference.
+ * @brief Implementation of the generic class for the computation of
+ * (possibly incrementally) marginal posteriors
  */
 
 
@@ -29,10 +30,11 @@ namespace gum {
   // Default Constructor
   template <typename GUM_SCALAR>
   MarginalTargetedInference<GUM_SCALAR>::MarginalTargetedInference
-  ( const IBayesNet<GUM_SCALAR>* bn ) {
+  ( const IBayesNet<GUM_SCALAR>* bn ) :
+    Inference<GUM_SCALAR> ( bn ) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if ( this->__bn == nullptr ) {
-      Inference<GUM_SCALAR>::__setBayesNet ( bn );
+      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction ( bn );
     }
     
     // sets all the nodes as targets
@@ -84,7 +86,7 @@ namespace gum {
   INLINE void MarginalTargetedInference<GUM_SCALAR>::eraseAllTargets () {
     _onAllMarginalTargetsErased ();
     __targets.clear();
-    this->__state = Inference<GUM_SCALAR>::StateOfInference::UnpreparedStructure;
+    this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
   
 
@@ -104,7 +106,7 @@ namespace gum {
     if ( ! __targets.contains ( target ) ) {
       __targets.insert( target );
       _onMarginalTargetAdded ( target );
-      this->__state = Inference<GUM_SCALAR>::StateOfInference::UnpreparedStructure;
+      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
@@ -124,7 +126,7 @@ namespace gum {
     if ( __targets.contains ( target ) ) {
       _onMarginalTargetErased ( target );
       __targets.erase ( target );
-      this->__state = Inference<GUM_SCALAR>::StateOfInference::UnpreparedStructure;
+      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 

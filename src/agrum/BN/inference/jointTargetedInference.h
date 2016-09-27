@@ -19,10 +19,10 @@
  ***************************************************************************/
 /**
  * @file
- * @brief This file contains abstract class definitions for Bayesian networks
- *        inference classes that support computations relative to joint targets.
+ * @brief This file contains the abstract inference class definition for
+ * computing (incrementally) joint posteriors.
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
@@ -37,61 +37,19 @@ namespace gum {
 
   
   /**
-   * @class Inference inference.h
-   * <agrum/BN/inference/Inference.h>
-   * @brief Implementation of a generic class for Bayes net inference that
-   * supports computations relative to joint targets.
+   * @class JointTargetedInference jointTargetedInference.h
+   * <agrum/BN/inference/jointTargetedInference.h>
+   * @brief A generic class for the computation of (possibly incrementally)
+   * joint posteriors
    * @ingroup bn_group
    *
-   * The goal of the Inference class is twofold:
-   * i) handling the common resources of BN inference (bn, soft/hard
-   *    evidence and targets); and
-   * ii) propose a general scheme for all inference methods.
-   *
-   * A specialized inference just has to specify how to prepare inference, how
-   * to make inference and how to get the posteriors for nodes in
-   * pure virtual protected methods. and the scheme for every inference
-   * derived from Inference will be the same:
-   *
-   * 1- ie=SpecificInference(bn);              // state <- UnpreparedStructure
-   * 2- set targets and evidence in ie
-   * 3- ie.prepareInference();                 // state <- Ready4Inference
-   * 4.a- change values of evidence in ie      // state <- OutdatedPotentials
-   * 4.b- change some hard evidence or targets // state <- UnpreparedStructure
-   * 5- ie.makeInference();                    // state <- Done
-   * 6- get posteriors
-   * 7- goto 2 or 4
-   *
-   * Inference can be in one of 4 different states:
-   * - UnpreparedStructure: in this state, the inference is fully unprepared
-   *   to be applied. It (probably) needs a significant amount of preparation
-   *   to be ready. In a Lazy propagation, for instance, this step amounts to
-   *   compute a new junction tree, hence a new structure in which inference
-   *   will be applied. Note that classes that inherit from Inference may be
-   *   smarter than Inference and may, in some situations, find out that their
-   *   data structures are still ok for inference and, therefore, only resort to
-   *   perform the actions related to the OutdatedPotentials state. As an example,
-   *   consider a LazyPropagation inference in Bayes Net A->B->C->D->E in which
-   *   C has received hard evidence e_C and E is the only target. In this case, A
-   *   and B are not needed for inference, the only potentials that matter are
-   *   P(D|e_C) and P(E|D). So the smallest junction tree needed for inference
-   *   contains only one clique DE. Now, adding new evidence e_A on A has no
-   *   impact on E given hard evidence e_C. In this case, LazyPropagation should
-   *   be smart and not update its junction tree.
-   * - OutdatedPotentials: in this state, the inference just needs to invalidate
-   *   some already computed potentials to be ready. Only a light amount of
-   *   preparation is needed to be able to perform inference.
-   * - Ready4Inference: in this state, all the data structures are ready for
-   *   inference. There just remains to perform the inference computations.
-   * - Done: the heavy computations of inference have been done. There might
-   *   still remain a few light computations to perform to get the posterior
-   *   potentials we need. Typically, in Lazy Propagation, all the messages in
-   *   the junction tree have been computed but, to get the potentials, we still
-   *   need to perform the combinations of the potentials in the cliques with
-   *   the messages sent to the cliques. In some inference algorithms, this
-   *   step may even be empty.
+   * The goal of this class is to take care of the joint targets used
+   * for computing joint posteriors. The JointTargetedInference class
+   * inherits from Inference that takes care of handling both evidence and
+   * the current state of the inference and from MarginalTargetedInference
+   * for the handling of marginal targets. Note that the JointTargetedInference
+   * is designed to be used in incremental inference engines.
    */
-
   template <typename GUM_SCALAR>
   class JointTargetedInference : public MarginalTargetedInference<GUM_SCALAR> {
   public:
@@ -102,8 +60,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    /** @warning By default, all the nodes of the Bayes net are targets.
-     * @warning note that, by aGrUM's rule, the BN is not copied but only
+    /** @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
     JointTargetedInference( const IBayesNet<GUM_SCALAR>* bn );
 
@@ -114,7 +71,7 @@ namespace gum {
 
     
     // ############################################################################
-    /// @name Accessors / Modifiers
+    /// @name Probability computations
     // ############################################################################
     /// @{
 
@@ -135,9 +92,6 @@ namespace gum {
     virtual const Potential<GUM_SCALAR>&
     jointPosterior ( const NodeSet& nodes ) final;
 
-    /// returns the probability P(e) of the evidence enterred into the BN
-    virtual GUM_SCALAR evidenceProbability () = 0;
-
     /// @}
 
     
@@ -146,10 +100,10 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// Clear all previously defined targets (single and joint targets)
+    /// Clear all previously defined targets (marginal and joint targets)
     /**
      * Clear all previously defined targets. As a result, no posterior can be
-     * computed (since we can only compute the posteriors of the single or joint
+     * computed (since we can only compute the posteriors of the marginal or joint
      * targets that have been added by the user).
      */
     virtual void eraseAllTargets ();
@@ -157,7 +111,7 @@ namespace gum {
     /// Clear all previously defined joint targets
     virtual void eraseAllJointTargets () final;
 
-    /// Clear all the previously defined single targets
+    /// Clear all the previously defined marginal targets
     virtual void eraseAllMarginalTargets () final;
 
     /// Add a set of nodes as a new joint target
@@ -174,7 +128,7 @@ namespace gum {
     /// return true if target is a joint target.
     virtual bool isJointTarget ( const NodeSet& target ) const final;
 
-    /// returns the list of target sets
+    /// returns the list of joint targets
     virtual const Set<NodeSet>& jointTargets() const noexcept final;
 
     /// @}
@@ -192,14 +146,14 @@ namespace gum {
     /** @param set The set of target variable's ids. */
     virtual void _onJointTargetErased ( const NodeSet& set ) = 0;
 
-    /// fired before a all the single and joint targets are removed
+    /// fired before a all the marginal and joint targets are removed
     virtual void _onAllTargetsErased () = 0;
 
     ///  fired before a all the joint targets are removed
     virtual void _onAllJointTargetsErased () = 0;
 
 
-    /// asks derived classes for the posterior of a given set of variables
+    /// asks derived classes for the joint posterior of a given set of variables
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
     virtual const Potential<GUM_SCALAR>&
