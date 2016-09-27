@@ -513,7 +513,7 @@ namespace gum_tests {
       }
     }
 
-    void testScale() {
+    void testScaleAndTranslater() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
 
       gum::Potential<float> p;
@@ -524,9 +524,16 @@ namespace gum_tests {
       p3.fillWith( {3, 6, 9} );
 
       TS_GUM_ASSERT_THROWS_NOTHING( p.scale( 3.0 ) );
-
       TS_ASSERT( p.scale( 3.0 ) == p3 );
       TS_ASSERT_EQUALS( p.scale( 3.0 ), p3 );
+
+      gum::Potential<float> p2;
+      p2 << a;
+      p2.fillWith( {2, 3, 4} );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.translate( 1.0 ) );
+      TS_ASSERT( p.scale( 1.0 ) == p2 );
+      TS_ASSERT_EQUALS( p.scale( 1.0 ), p3 );
     }
 
     void testNormalizeAsCPT() {

@@ -246,6 +246,15 @@ namespace gum {
     return p;
   }
 
+    template <typename GUM_SCALAR>
+    INLINE const Potential<GUM_SCALAR>
+    Potential<GUM_SCALAR>::scale( GUM_SCALAR v ) const {
+        auto p = Potential<GUM_SCALAR>( *this );
+        p.apply( [v]( GUM_SCALAR x ) { return x + v; } );
+        return p;
+    }
+
+
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margSumOut(
