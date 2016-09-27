@@ -49,7 +49,7 @@ namespace gum {
       return;
     }
 
-    int a( 0 ), b( 1 ), c( 1 ), d( 1 );
+    int64_t a( 0 ), b( 1 ), c( 1 ), d( 1 );
     double mediant( 0.0F );
 
     while ( b <= den_max && d <= den_max ) {
