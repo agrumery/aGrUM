@@ -473,10 +473,15 @@ namespace gum {
     void __findRelevantPotentialsXX
     ( __PotentialSet& pot_list,
       Set<const DiscreteVariable*>& kept_vars );
+
+    // remove barren variables and return the newly created projected potentials
+    __PotentialSet
+    __removeBarrenVariables ( __PotentialSet& pot_list,
+                              Set<const DiscreteVariable*>& del_vars );
     
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    __PotentialSet __marginalizeOut( __PotentialSet& pot_list,
+    __PotentialSet __marginalizeOut( __PotentialSet pot_list,
                                      Set<const DiscreteVariable*>& del_vars,
                                      Set<const DiscreteVariable*>& kept_vars );
 

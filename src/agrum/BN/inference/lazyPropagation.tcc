@@ -1140,21 +1140,96 @@ namespace gum {
       GUM_ERROR ( FatalError, "not implemented yet" );
     }
   }
-  
+
+
+  // remove barren variables
+  template <typename GUM_SCALAR>
+  Set<const Potential<GUM_SCALAR>*>
+  LazyPropagation<GUM_SCALAR>::__removeBarrenVariables
+  ( __PotentialSet& pot_list,
+    Set<const DiscreteVariable*>& del_vars ) {
+    // remove from del_vars the variables that received some evidence:
+    // only those that did not received evidence can be barren variables
+    Set<const DiscreteVariable*> the_del_vars = del_vars;
+    for ( auto iter = the_del_vars.beginSafe();
+          iter != the_del_vars.endSafe(); ++iter ) {
+      NodeId id = this->BayesNet().nodeId( **iter );
+      if ( this->hardEvidenceNodes ().exists( id ) ||
+           this->softEvidenceNodes ().exists( id ) ) {
+        the_del_vars.erase( iter );
+      }
+    }
+
+    // assign to each random variable the set of potentials that contain it
+    HashTable<const DiscreteVariable*, __PotentialSet> var2pots;
+    __PotentialSet empty_pot_set;
+    for ( const auto pot : pot_list ) {
+      const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
+      for ( const auto var : vars ) {
+        if ( the_del_vars.exists( var ) ) {
+          if ( !var2pots.exists( var ) ) {
+            var2pots.insert( var, empty_pot_set );
+          }
+          var2pots[var].insert( pot );
+        }
+      }
+    }
+
+    // each variable with only one potential is a barren variable
+    // assign to each potential with barren nodes its set of barren variables
+    HashTable<const Potential<GUM_SCALAR>*, Set<const DiscreteVariable*>>
+      pot2barren_var;
+    Set<const DiscreteVariable*> empty_var_set;
+    for ( auto elt : var2pots ) {
+      if ( elt.second.size() == 1 ) {  // here we have a barren variable
+        const Potential<GUM_SCALAR>* pot = *( elt.second.begin() );
+        if ( !pot2barren_var.exists( pot ) ) {
+          pot2barren_var.insert( pot, empty_var_set );
+        }
+        pot2barren_var[pot].insert( elt.first );  // insert the barren variable
+      }
+    }
+
+    // for each potential with barren variables, marginalize them.
+    // if the potential has only barren variables, simply remove them from the
+    // set of potentials, else just project the potential
+    MultiDimProjection<GUM_SCALAR, Potential> projector( LPNewprojPotential );
+    __PotentialSet projected_pots;
+    for ( auto elt : pot2barren_var ) {
+      // remove the current potential from pot_list as, anyway, we will change it
+      const Potential<GUM_SCALAR>* pot = elt.first;
+      pot_list.erase( pot );
+
+      // check whether we need to add a projected new potential or not (i.e.,
+      // whether there exist non-barren variables or not)
+      if ( pot->variablesSequence().size() != elt.second.size() ) {
+        auto new_pot = projector.project( *pot, elt.second );
+        pot_list.insert( new_pot );
+        projected_pots.insert ( new_pot );
+      }
+    }
+
+    return projected_pots;
+  }
+
 
   // remove variables del_vars from the list of potentials pot_list
   template <typename GUM_SCALAR>
   Set<const Potential<GUM_SCALAR>*>
   LazyPropagation<GUM_SCALAR>::__marginalizeOut
-  ( Set<const Potential<GUM_SCALAR>*>& pot_list,
+  ( Set<const Potential<GUM_SCALAR>*> pot_list,
     Set<const DiscreteVariable*>& del_vars,
     Set<const DiscreteVariable*>& kept_vars ) {
     // use d-separation analysis to check which potentials shall be combined
     __findRelevantPotentialsXX ( pot_list, kept_vars );
       
-    // remove the potentials corresponding to barren variables
-    //__removeBarrenVariables( pot_list, del_vars );
-
+    // remove the potentials corresponding to barren variables if we want
+    // to exploit barren nodes
+    __PotentialSet barren_projected_potentials;
+    if ( __barren_nodes_type == FindBarrenNodesType::FIND_BARREN_NODES ) {
+      barren_projected_potentials = __removeBarrenVariables( pot_list, del_vars );
+    }
+    
     // create a combine and project operator that will perform the
     // marginalization
     MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
@@ -1162,9 +1237,16 @@ namespace gum {
     __PotentialSet new_pot_list =
       combine_and_project.combineAndProject( pot_list, del_vars );
 
-    // determine which new potentials we have created and put them into the
-    // set of potentials created during inference. In addition, remove all the
-    // potentials that have no dimension
+    // remove all the potentials that were created due to projections of
+    // barren nodes and that are not part of the new_pot_list: these
+    // potentials were just temporary potentials
+    for ( auto iter = barren_projected_potentials.beginSafe ();
+          iter != barren_projected_potentials.endSafe (); ++iter ) {
+      if ( ! new_pot_list.exists ( *iter ) )
+        delete *iter;
+    }
+    
+    // remove all the potentials that have no dimension
     for ( auto iter_pot = new_pot_list.beginSafe();
           iter_pot != new_pot_list.endSafe(); ++iter_pot ) {
       if ( ( *iter_pot )->variablesSequence().size() == 0 ) {

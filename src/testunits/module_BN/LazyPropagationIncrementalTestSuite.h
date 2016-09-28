@@ -48,23 +48,30 @@ namespace gum_tests {
 
     
 
-    gum::BayesNet<double> bn;
+    gum::BayesNet<double>* bn;
     std::vector<gum::NodeId> BN_node_index;
     std::vector<const gum::DiscreteVariable*> BN_variable;
-    gum::Set<const gum::DiscreteVariable*> BN_variable_set;
+    gum::Set<const gum::DiscreteVariable*>* BN_variable_set;
 
     double __epsilon{1e-6};
 
     gum::Potential<double>* joint;
 
-    gum::MultiDimCombinationDefault<double,gum::Potential>
-    combination { LPIncrmultiPotential };
-
-    gum::MultiDimProjection<double,gum::Potential>
-    proj { LPIncrprojPotential };
+    gum::MultiDimCombinationDefault<double,gum::Potential>* combination;
+    gum::MultiDimProjection<double,gum::Potential>*  proj;
 
     
     void setUp() {
+      combination =
+        new gum::MultiDimCombinationDefault<double,gum::Potential>
+        ( LPIncrmultiPotential );
+
+      proj = new gum::MultiDimProjection<double,gum::Potential>
+        ( LPIncrprojPotential );
+
+      BN_variable_set = new gum::Set<const gum::DiscreteVariable*>;
+
+      
       // create the BN
       std::vector<gum::LabelizedVariable> variables { 
         gum::LabelizedVariable ( "A", "", 2 ),
@@ -76,58 +83,64 @@ namespace gum_tests {
         gum::LabelizedVariable ( "G", "", 4 ),
         gum::LabelizedVariable ( "H", "", 3 ) };
 
+      bn = new gum::BayesNet<double>;
+      
       for ( unsigned int i = 0; i < variables.size (); ++i ) {
-        BN_node_index.push_back ( bn.add( variables[i] ) );
-        BN_variable.push_back ( &( bn.variable ( BN_node_index[i] ) ) );
-        BN_variable_set.insert ( BN_variable[i] );
+        BN_node_index.push_back ( bn->add( variables[i] ) );
+        BN_variable.push_back ( &( bn->variable ( BN_node_index[i] ) ) );
+        BN_variable_set->insert ( BN_variable[i] );
       }
 
-      bn.addArc( BN_node_index[0], BN_node_index[1] );
-      bn.addArc( BN_node_index[1], BN_node_index[2] );
-      bn.addArc( BN_node_index[2], BN_node_index[3] );
-      bn.addArc( BN_node_index[2], BN_node_index[4] );
-      bn.addArc( BN_node_index[3], BN_node_index[5] );
-      bn.addArc( BN_node_index[6], BN_node_index[2] );
-      bn.addArc( BN_node_index[6], BN_node_index[7] );
+      bn->addArc( BN_node_index[0], BN_node_index[1] );
+      bn->addArc( BN_node_index[1], BN_node_index[2] );
+      bn->addArc( BN_node_index[2], BN_node_index[3] );
+      bn->addArc( BN_node_index[2], BN_node_index[4] );
+      bn->addArc( BN_node_index[3], BN_node_index[5] );
+      bn->addArc( BN_node_index[6], BN_node_index[2] );
+      bn->addArc( BN_node_index[6], BN_node_index[7] );
 
-      bn.cpt( BN_node_index[0] ).fillWith( {0.2, 0.8} );
-      bn.cpt( BN_node_index[1] ).fillWith( {0.3, 0.4, 0.3,
-                                            0.1, 0.3, 0.6} );
-      bn.cpt( BN_node_index[2] ).fillWith( {0.1, 0.9,  // 1
-                                            0.2, 0.8,  // 2
-                                            0.3, 0.7,  // 3
-                                            0.4, 0.6,  // 4
-                                            0.5, 0.5,  // 5
-                                            0.6, 0.4,  // 6
-                                            0.7, 0.3,  // 7
-                                            0.8, 0.2,  // 8
-                                            0.9, 0.1,  // 9
-                                            0.8, 0.2,  // 10
-                                            0.7, 0.3,  // 11
-                                            0.6, 0.4} );  // 12
-      bn.cpt( BN_node_index[3] ).fillWith( {0.3, 0.2, 0.5,
-                                            0.7, 0.1, 0.2 } ); 
-      bn.cpt( BN_node_index[4] ).fillWith( {0.4, 0.6, 0.9, 0.1} );
-      bn.cpt( BN_node_index[5] ).fillWith( {0.2, 0.4, 0.4,
-                                            0.4, 0.1, 0.5,
-                                            0.7, 0.2, 0.1} );
-      bn.cpt( BN_node_index[6] ).fillWith( {0.1, 0.4, 0.2, 0.3} );
-      bn.cpt( BN_node_index[7] ).fillWith( {0.4, 0.3, 0.3,
-                                            0.1, 0.8, 0.1,
-                                            0.3, 0.4, 0.3,
-                                            0.7, 0.1, 0.2} );
+      bn->cpt( BN_node_index[0] ).fillWith( {0.2, 0.8} );
+      bn->cpt( BN_node_index[1] ).fillWith( {0.3, 0.4, 0.3,
+                                             0.1, 0.3, 0.6} );
+      bn->cpt( BN_node_index[2] ).fillWith( {0.1, 0.9,  // 1
+                                             0.2, 0.8,  // 2
+                                             0.3, 0.7,  // 3
+                                             0.4, 0.6,  // 4
+                                             0.5, 0.5,  // 5
+                                             0.6, 0.4,  // 6
+                                             0.7, 0.3,  // 7
+                                             0.8, 0.2,  // 8
+                                             0.9, 0.1,  // 9
+                                             0.8, 0.2,  // 10
+                                             0.7, 0.3,  // 11
+                                             0.6, 0.4} );  // 12
+      bn->cpt( BN_node_index[3] ).fillWith( {0.3, 0.2, 0.5,
+                                             0.7, 0.1, 0.2 } ); 
+      bn->cpt( BN_node_index[4] ).fillWith( {0.4, 0.6, 0.9, 0.1} );
+      bn->cpt( BN_node_index[5] ).fillWith( {0.2, 0.4, 0.4,
+                                             0.4, 0.1, 0.5,
+                                             0.7, 0.2, 0.1} );
+      bn->cpt( BN_node_index[6] ).fillWith( {0.1, 0.4, 0.2, 0.3} );
+      bn->cpt( BN_node_index[7] ).fillWith( {0.4, 0.3, 0.3,
+                                             0.1, 0.8, 0.1,
+                                             0.3, 0.4, 0.3,
+                                             0.7, 0.1, 0.2} );
 
       // create the joint probability
       gum::Set<const gum::Potential<double>*> potset;
       for ( unsigned int i = 0; i < BN_node_index.size (); ++i ) {
-        potset.insert ( &( bn.cpt ( i ) ) );
+        potset.insert ( &( bn->cpt ( i ) ) );
       }
 
-      joint = combination.combine ( potset );
+      joint = combination->combine ( potset );
     }
 
     void tearDown() {
+      delete combination;
+      delete proj;
       delete joint;
+      delete bn;
+      delete BN_variable_set;
     }
 
 
@@ -148,7 +161,7 @@ namespace gum_tests {
     posterior_joint ( const gum::Potential<double>* joint,
                       gum::Set<const gum::Potential<double>*> evidence ) {
       evidence.insert ( joint );
-      gum::Potential<double>* joint_pot = combination.combine ( evidence );
+      gum::Potential<double>* joint_pot = combination->combine ( evidence );
 
       return joint_pot;
     }
@@ -159,8 +172,8 @@ namespace gum_tests {
                                            const gum::NodeId target_id ) {
       // get the set of variables to erase
       auto myset = BN_variable_set;
-      myset.erase ( BN_variable[target_id] );
-      return LPIncrprojPotential ( *joint, myset );
+      myset->erase ( BN_variable[target_id] );
+      return LPIncrprojPotential ( *joint, *myset );
     }
 
 
@@ -170,8 +183,8 @@ namespace gum_tests {
       // get the set of variables to erase
       auto myset = BN_variable_set;
       for ( auto target_id : target_ids ) 
-        myset.erase ( BN_variable[target_id] );
-      return proj.project ( *joint, myset );
+        myset->erase ( BN_variable[target_id] );
+      return proj->project ( *joint, *myset );
     }
 
 
@@ -200,8 +213,8 @@ namespace gum_tests {
     // ============================================================================
     // ============================================================================
     void test_prior () {
-      gum::LazyPropagation<double> inf ( &bn );
-      gum::ShaferShenoyInference<double> inf2( bn );
+      gum::LazyPropagation<double> inf ( bn );
+      gum::ShaferShenoyInference<double> inf2( *bn );
       TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
       inf2.makeInference ();
       
@@ -211,7 +224,7 @@ namespace gum_tests {
       gum::Potential<double>* pd = get_marginal ( joint, BN_node_index[3] );
       gum::Potential<double>* ph = get_marginal ( joint, BN_node_index[7] );
 
-      std::cout << bn.cpt ( 2 ) << std::endl;
+      std::cout << bn->cpt ( 2 ) << std::endl;
 
       std::cout << *pa << std::endl
                 << inf.posterior ( BN_node_index[0] ) << std::endl
@@ -229,6 +242,11 @@ namespace gum_tests {
       TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
       TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[7] ), *ph ) );
 
+      delete pa;
+      delete pc;
+      delete pd;
+      delete ph;
+      
     }
     
   };
