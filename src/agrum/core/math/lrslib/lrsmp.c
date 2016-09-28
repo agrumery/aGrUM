@@ -729,15 +729,15 @@ void prat (char name[], lrs_mp Nin, lrs_mp Din)	/*reduce and print Nin/Din  */
 	fprintf (lrs_ofp, "-");
 	else
 	fprintf (lrs_ofp, " ");
-	fprintf (lrs_ofp, "%lu", Nt[length (Nt) - 1]);
+	fprintf (lrs_ofp, "%lld", (long long int)(Nt[length (Nt) - 1]));
 	for (i = length (Nt) - 2; i >= 1; i--)
-	fprintf (lrs_ofp, FORMAT, Nt[i]);
+	fprintf (lrs_ofp, "%lld", (long long int)(Nt[i]));
 	if (!(Dt[0] == 2 && Dt[1] == 1))	/* rational */
 	{
 	fprintf (lrs_ofp, "/");
-	fprintf (lrs_ofp, "%lu", Dt[length (Dt) - 1]);
+	fprintf (lrs_ofp, "%lld", (long long int)(Dt[length (Dt) - 1]));
 	for (i = length (Dt) - 2; i >= 1; i--)
-	fprintf (lrs_ofp, FORMAT, Dt[i]);
+	fprintf (lrs_ofp, "%lld", (long long int)(Dt[i]));
 	}
 	fprintf (lrs_ofp, " ");
 
@@ -752,9 +752,9 @@ void pmp (char name[], lrs_mp a)	/*print the long precision integer a */
 	fprintf (lrs_ofp, "-");
 	else
 	fprintf (lrs_ofp, " ");
-	fprintf (lrs_ofp, "%lu", a[length (a) - 1]);
+	fprintf (lrs_ofp, "%lld", (long long int)(a[length (a) - 1]));
 	for (i = length (a) - 2; i >= 1; i--)
-	fprintf (lrs_ofp, FORMAT, a[i]);
+	fprintf (lrs_ofp, "%lld", (long long int)(a[i]));
 	fprintf (lrs_ofp, " ");
 }
 #endif
@@ -1072,7 +1072,7 @@ xcalloc (int64_t n, int64_t s, int64_t l, char *f)
     {
       char buf[200];
 
-      sprintf (buf, "\n\nFatal error on line %ld of %s", l, f);
+      sprintf (buf, "\n\nFatal error on line %lld of %s", (long long int)(l), f);
       perror (buf);
       exit (1);
     }
@@ -1091,8 +1091,8 @@ lrs_getdigits (int64_t *a, int64_t *b)
 void
 lrs_default_digits_overflow ()
 {
-  fprintf (stdout, "\nOverflow at digits=%ld", DIG2DEC (lrs_digits));
-  fprintf (stdout, "\nInitialize lrs_mp_init with  n > %ldL\n", DIG2DEC (lrs_digits));
+  fprintf (stdout, "\nOverflow at digits=%lld", (long long int)(DIG2DEC (lrs_digits)));
+  fprintf (stdout, "\nInitialize lrs_mp_init with  n > %lldL\n", (long long int)(DIG2DEC (lrs_digits)));
 
   exit (1);
 }
