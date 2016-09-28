@@ -349,7 +349,7 @@ namespace gum {
   class HashFunc<Edge> : public HashFuncSmallKeyPair<NodeId, NodeId> {
     public:
     /**
-     * @throw HashSize
+     * @throw SizeError
      */
     Size operator()( const Edge& key ) const;
 
@@ -361,7 +361,7 @@ namespace gum {
   class HashFunc<Arc> : public HashFuncSmallKeyPair<NodeId, NodeId> {
     public:
     /**
-     * @throw HashSize
+     * @throw SizeError
      */
     Size operator()( const Arc& key ) const;
 

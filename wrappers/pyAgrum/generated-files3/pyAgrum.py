@@ -2175,6 +2175,18 @@ class GumException(Exception):
     __swig_destroy__ = _pyAgrum.delete_GumException
     __del__ = lambda self: None
 
+    def __str__(self) -> "std::string const":
+        """
+        __str__(GumException self) -> std::string const
+
+        Parameters
+        ----------
+        self: gum::Exception const *
+
+        """
+        return _pyAgrum.GumException___str__(self)
+
+
     def errorContent(self) -> "std::string const":
         """
         errorContent(GumException self) -> std::string const
@@ -2460,45 +2472,6 @@ class UndefinedElement(GumException):
     __del__ = lambda self: None
 UndefinedElement_swigregister = _pyAgrum.UndefinedElement_swigregister
 UndefinedElement_swigregister(UndefinedElement)
-
-class HashSize(GumException):
-    """Proxy of C++ gum::HashSize class."""
-
-    __swig_setmethods__ = {}
-    for _s in [GumException]:
-        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, HashSize, name, value)
-    __swig_getmethods__ = {}
-    for _s in [GumException]:
-        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
-    __getattr__ = lambda self, name: _swig_getattr(self, HashSize, name)
-    __repr__ = _swig_repr
-
-    def __init__(self, *args):
-        """
-        __init__(gum::HashSize self, std::string aMsg, std::string aType) -> HashSize
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::HashSize self, std::string aMsg) -> HashSize
-
-        Parameters
-        ----------
-        aMsg: std::string
-
-        """
-        this = _pyAgrum.new_HashSize(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
-    __swig_destroy__ = _pyAgrum.delete_HashSize
-    __del__ = lambda self: None
-HashSize_swigregister = _pyAgrum.HashSize_swigregister
-HashSize_swigregister(HashSize)
 
 class SizeError(GumException):
     """Proxy of C++ gum::SizeError class."""

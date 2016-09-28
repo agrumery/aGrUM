@@ -1,13 +1,12 @@
 /* EXCEPTION HANDLING */
-%exception {
+%{
+static void SetPythonizeAgrumException() {
   try {
-    $action
+    throw;
   } catch ( std::bad_cast& e ) {
     PyErr_SetString ( PyExc_RuntimeError, "C++ Bad Cast" );
-    SWIG_fail;
   } catch ( gum::NotFound& e ) {
     PyErr_SetString ( PyExc_IndexError, e.errorContent().c_str() );
-    SWIG_fail;
   } catch ( gum::DefaultInLabel& e ) {
     gum::DefaultInLabel* ecopy = new gum::DefaultInLabel ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -15,7 +14,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__DefaultInLabel ), err );
-    SWIG_fail;
   } catch ( gum::IdError& e ) {
     gum::IdError* ecopy = new gum::IdError ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -23,7 +21,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__IdError ), err );
-    SWIG_fail;
   } catch ( gum::IOError& e ) {
     gum::IOError* ecopy = new gum::IOError ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -32,7 +29,6 @@
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__IOError ),
       err );
-    SWIG_fail;
   } catch ( gum::OperationNotAllowed& e ) {
     gum::OperationNotAllowed* ecopy = new gum::OperationNotAllowed ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -41,7 +37,6 @@
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__OperationNotAllowed ),
       err );
-    SWIG_fail;
   } catch ( gum::InvalidDirectedCycle& e ) {
     gum::InvalidDirectedCycle* ecopy = new gum::InvalidDirectedCycle ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -49,7 +44,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidDirectedCycle ), err );
-    SWIG_fail;
   } catch ( gum::InvalidNode& e ) {
     gum::InvalidNode* ecopy = new gum::InvalidNode ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -57,7 +51,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidNode ), err );
-    SWIG_fail;
   } catch ( gum::InvalidArc& e ) {
     gum::InvalidArc* ecopy = new gum::InvalidArc ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -65,7 +58,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidArc ), err );
-    SWIG_fail;
   } catch ( gum::InvalidEdge& e ) {
     gum::InvalidEdge* ecopy = new gum::InvalidEdge ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -73,7 +65,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidEdge ), err );
-    SWIG_fail;
   } catch ( gum::DuplicateLabel& e ) {
     gum::DuplicateLabel* ecopy = new gum::DuplicateLabel ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -81,7 +72,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__DuplicateLabel ), err );
-    SWIG_fail;
   } catch ( gum::DuplicateElement& e ) {
     gum::DuplicateElement* ecopy = new gum::DuplicateElement ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -89,7 +79,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__DuplicateElement ), err );
-    SWIG_fail;
   } catch ( gum::OutOfLowerBound& e ) {
     gum::OutOfLowerBound* ecopy = new gum::OutOfLowerBound ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -97,7 +86,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__OutOfLowerBound ), err );
-    SWIG_fail;
   } catch ( gum::OutOfUpperBound& e ) {
     gum::OutOfUpperBound* ecopy = new gum::OutOfUpperBound ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -105,7 +93,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__OutOfUpperBound ), err );
-    SWIG_fail;
   } catch ( gum::OutOfBounds& e ) {
     gum::OutOfBounds* ecopy = new gum::OutOfBounds ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -113,7 +100,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__OutOfBounds ), err );
-    SWIG_fail;
   } catch ( gum::UnknownLabelInDatabase& e ) {
     gum::UnknownLabelInDatabase* ecopy = new gum::UnknownLabelInDatabase ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -121,7 +107,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__UnknownLabelInDatabase ), err );
-    SWIG_fail;
   } catch ( gum::FatalError& e ) {
     gum::FatalError* ecopy = new gum::FatalError ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -129,7 +114,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__FatalError ), err );
-    SWIG_fail;
   } catch ( gum::UndefinedElement& e ) {
     gum::UndefinedElement* ecopy = new gum::UndefinedElement ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -137,7 +121,6 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__UndefinedElement ), err );
-    SWIG_fail;
   } catch ( gum::InvalidArgument& e ) {
     gum::InvalidArgument* ecopy = new gum::InvalidArgument ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,
@@ -145,20 +128,20 @@
     1 );
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__InvalidArgument ), err );
-    SWIG_fail;
   } catch ( gum::Exception& e ) {
     PyErr_SetString ( PyExc_Exception, e.errorContent().c_str() );
-    SWIG_fail;
   } catch ( std::exception& e ) {
     PyErr_SetString ( PyExc_Exception, e.what() );
+  }
+}
+%}
+
+%exception {
+  try {
+    $action
+  } catch (...) {
+    SetPythonizeAgrumException();
     SWIG_fail;
   }
 }
 
-
-/* CLASS EXTENSIONS */
-%extend gum::GumException {
-  const char * __str__() {
-    return self->errorContent().c_str();
-  }
-}
