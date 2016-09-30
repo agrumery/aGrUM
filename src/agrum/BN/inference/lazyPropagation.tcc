@@ -563,8 +563,6 @@ namespace gum {
           __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
     }
 
-    std::cout << "nodes 2 cliques = " <<  __node_to_clique << std::endl;
-
     // do the same for the nodes that received evidence. Here, we only store
     // the nodes whose at least one parent belongs to __graph (otherwise
     // their CPT is just a constant real number).
@@ -619,7 +617,6 @@ namespace gum {
       }
     }
 
-    std::cout << "joint target 2 clique = " << __joint_target_to_clique << std::endl;
 
     // compute the roots of __JT's connected components
     __computeJoinTreeRoots ();
@@ -747,26 +744,10 @@ namespace gum {
       __node_to_soft_evidence.insert ( node, evidence[node] );
       __clique_potentials[__node_to_clique[node]].insert ( evidence[node] );
     }
-
-    for ( auto iter = __clique_potentials.cbegin ();
-          iter != __clique_potentials.cend (); ++iter ) {
-      std::cout << "clique[ " << iter.key() << " ] = " << std::endl;
-      for ( const auto pot : iter.val () ) {
-        const auto& vars = pot->variablesSequence ();
-        std::cout << "   ";
-        for ( const auto& var : vars ) {
-          std::cout << *var << "  ";
-        }
-        std::cout << std::endl;
-      }
-    }
-
       
     // indicate that the data structures are up to date.
     __evidence_changes.clear ();
     __is_new_jt_needed = false;
-
-    std::cout << "\n" << *__JT << "\n" << std::endl;
   }
 
 
@@ -1292,13 +1273,13 @@ namespace gum {
       }
     }
 
-    std::cout << "message from " << from_id << " -> " << to_id << " : del = ";
-    for ( const auto var : del_vars )
-      std::cout << *var << "  ";
-    std::cout << "  kept vars = ";
-    for ( const auto var : kept_vars )
-      std::cout << *var << "  ";
-    std::cout << std::endl << std::endl;
+    // std::cout << "message from " << from_id << " -> " << to_id << " : del = ";
+    // for ( const auto var : del_vars )
+    //   std::cout << *var << "  ";
+    // std::cout << "  kept vars = ";
+    // for ( const auto var : kept_vars )
+    //   std::cout << *var << "  ";
+    // std::cout << std::endl << std::endl;
 
     // pot_list now contains all the potentials to multiply and marginalize
     // => combine the messages
@@ -1334,13 +1315,7 @@ namespace gum {
         __created_potentials[arc].insert( pot );
       }
     }
-
-    print_pot ( pot_list, false );
-    std::cout << "projecting" << std::endl;
-    print_pot ( new_pot_list, true );
-    
-
-    
+   
     __separator_potentials[arc] = std::move ( new_pot_list );
     __messages_computed[arc] = true;
   }

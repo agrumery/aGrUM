@@ -171,9 +171,9 @@ namespace gum_tests {
     gum::Potential<double>* get_marginal ( const gum::Potential<double>* joint,
                                            const gum::NodeId target_id ) {
       // get the set of variables to erase
-      auto myset = BN_variable_set;
-      myset->erase ( BN_variable[target_id] );
-      return LPIncrprojPotential ( *joint, *myset );
+      gum::Set<const gum::DiscreteVariable*> myset = *BN_variable_set;
+      myset.erase ( BN_variable[target_id] );
+      return LPIncrprojPotential ( *joint, myset );
     }
 
 
@@ -181,10 +181,10 @@ namespace gum_tests {
     gum::Potential<double>* get_joint ( const gum::Potential<double>* joint,
                                         const gum::NodeSet& target_ids ) {
       // get the set of variables to erase
-      auto myset = BN_variable_set;
+      gum::Set<const gum::DiscreteVariable*> myset = *BN_variable_set;
       for ( auto target_id : target_ids ) 
-        myset->erase ( BN_variable[target_id] );
-      return proj->project ( *joint, *myset );
+        myset.erase ( BN_variable[target_id] );
+      return proj->project ( *joint, myset );
     }
 
 
@@ -224,18 +224,18 @@ namespace gum_tests {
       gum::Potential<double>* pd = get_marginal ( joint, BN_node_index[3] );
       gum::Potential<double>* ph = get_marginal ( joint, BN_node_index[7] );
 
-      std::cout << bn->cpt ( 2 ) << std::endl;
+      // std::cout << bn->cpt ( 2 ) << std::endl;
 
-      std::cout << *pa << std::endl
-                << inf.posterior ( BN_node_index[0] ) << std::endl
-                << inf2.posterior ( BN_node_index[0] ) << std::endl;
-      std::cout << *pc << std::endl
-                << inf.posterior ( BN_node_index[2] ) << std::endl
-                << inf2.posterior ( BN_node_index[2] ) << std::endl;
-      std::cout << *pd << std::endl << inf.posterior ( BN_node_index[3] )
-                << std::endl;
-      std::cout << *ph << std::endl << inf.posterior ( BN_node_index[7] )
-                << std::endl;
+      // std::cout << *pa << std::endl
+      //           << inf.posterior ( BN_node_index[0] ) << std::endl
+      //           << inf2.posterior ( BN_node_index[0] ) << std::endl;
+      // std::cout << *pc << std::endl
+      //           << inf.posterior ( BN_node_index[2] ) << std::endl
+      //           << inf2.posterior ( BN_node_index[2] ) << std::endl;
+      // std::cout << *pd << std::endl << inf.posterior ( BN_node_index[3] )
+      //           << std::endl;
+      // std::cout << *ph << std::endl << inf.posterior ( BN_node_index[7] )
+      //           << std::endl;
       
       TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
       TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[2] ), *pc ) );
