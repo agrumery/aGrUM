@@ -175,7 +175,7 @@ namespace gum {
         << "network \"" << bn.propertyWithDefault( "name", "unnamedBN" )
         << "\" {" << std::endl;
     str << tab << "property"
-        << " software aGrUM" << GUM_VERSION << ";" << std::endl;
+        << " software aGrUM" << ";" << std::endl;
     str << "}" << std::endl;
     return str.str();
   }
