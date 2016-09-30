@@ -99,26 +99,21 @@ namespace gum_tests {
 
     void test_isreadable() {
       std::string file = GET_RESSOURCES_PATH( "NetWriter_RO_TestFile.net" );
-      GUM_TRACE_VAR(file);
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
       gum::NetReader<float> reader( net, file );
-GUM_TRACE("go");
       TS_GUM_ASSERT_THROWS_NOTHING( reader.trace( false ));
-GUM_TRACE("done");
 
       gum::Size nbrErr = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
       reader.showElegantErrors();
 
-GUM_TRACE("yo");
       TS_ASSERT( nbrErr == 0 );
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       // 0 warnings : no properties
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 )
 
-GUM_TRACE("hop");
       TS_ASSERT( net != nullptr );
 
       if ( net != nullptr ) {
