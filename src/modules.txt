@@ -16,7 +16,7 @@ set(BASE_DEPS)
 set(BN_DEPS)
 set(CN_DEPS "BN")
 set(FMDP_DEPS)
-set(ID_DEPS)
+set(ID_DEPS "BN")
 set(PRM_DEPS "BN")
 set(LEARNING_DEPS "BN")
 
