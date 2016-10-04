@@ -112,7 +112,7 @@ namespace gum_tests {
         test_waiting();
         inf_ValElim.makeInference();
 
-        gum::GibbsInference<double> inf_gibbs( *bn );
+        gum::GibbsInference<double> inf_gibbs( bn );
         inf_gibbs.setVerbosity( false );
         inf_gibbs.setEpsilon( 1e-3 );
         inf_gibbs.setMinEpsilonRate( 1e-3 );
@@ -183,8 +183,9 @@ namespace gum_tests {
       test_waiting();
       inf_VarElim.makeInference();
 
-      gum::GibbsInference<double> inf_gibbs( *bn );
-      inf_gibbs.insertEvidence( list_pot );
+      gum::GibbsInference<double> inf_gibbs( bn );
+      for ( auto pot : list_pot )
+        inf_gibbs.addEvidence( *pot );
       inf_gibbs.setVerbosity( false );
       inf_gibbs.setEpsilon( 1e-3 );
       inf_gibbs.setMinEpsilonRate( 1e-3 );
@@ -251,8 +252,9 @@ namespace gum_tests {
       test_waiting();
       inf_VarElim.makeInference();
 
-      gum::GibbsInference<double> inf_gibbs( *bn );
-      inf_gibbs.insertEvidence( list_pot );
+      gum::GibbsInference<double> inf_gibbs( bn );
+      for ( auto pot : list_pot )
+        inf_gibbs.addEvidence( *pot );
       inf_gibbs.setVerbosity( false );
       inf_gibbs.setEpsilon( 1e-3 );
       inf_gibbs.setMinEpsilonRate( 1e-3 );
@@ -324,7 +326,7 @@ namespace gum_tests {
       list_pot.insert( &e_i4 );
 
       {
-        gum::GibbsInference<float> inf( bn );
+        gum::GibbsInference<float> inf( &bn );
         inf.setVerbosity( false );
         inf.makeInference();
         {
@@ -336,7 +338,8 @@ namespace gum_tests {
         }
 
         inf.eraseAllEvidence();
-        inf.insertEvidence( list_pot );
+      for ( auto pot : list_pot )
+        inf.addEvidence( *pot );
         inf.makeInference();
         {
           const gum::Potential<float>& p = inf.posterior( w );

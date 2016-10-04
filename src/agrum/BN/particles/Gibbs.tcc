@@ -227,7 +227,7 @@ namespace gum {
     /// remove a given evidence from the graph
     template <typename GUM_SCALAR>
     INLINE void
-    Gibbs<GUM_SCALAR>::eraseEvidence( const Potential<GUM_SCALAR>* pot ) {
+    Gibbs<GUM_SCALAR>::eraseEvidenceParticle( const Potential<GUM_SCALAR>* pot ) {
       const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
 
       if ( vars.size() != 1 ) {
@@ -243,14 +243,14 @@ namespace gum {
 
     /// remove all evidence from the graph
     template <typename GUM_SCALAR>
-    INLINE void Gibbs<GUM_SCALAR>::eraseAllEvidence() {
+    INLINE void Gibbs<GUM_SCALAR>::eraseAllEvidenceParticle() {
       __evidences.clear();
       __hard_evidences.clear();
     }
 
     /// insert new evidence in the graph
     template <typename GUM_SCALAR>
-    void Gibbs<GUM_SCALAR>::insertEvidence(
+    void Gibbs<GUM_SCALAR>::insertEvidenceParticle(
         const List<const Potential<GUM_SCALAR>*>& pot_list ) {
       for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
                 pot_list.cbeginSafe();

@@ -152,7 +152,7 @@ namespace gum_tests {
       //       try {
       //         fill( *bn );
       //         // Testing the inference
-      //         gum::GibbsInference<float> inf( *bn );
+      //         gum::GibbsInference<float> inf( bn );
       //         inf.setVerbosity( false );
       //         inf.makeInference();
       //       } catch ( gum::Exception e ) {
@@ -164,7 +164,7 @@ namespace gum_tests {
 
     void testGibbsInf_2() {
       fill( *bn );
-      gum::GibbsInference<float> inf( *bn );
+      gum::GibbsInference<float> inf( bn );
       inf.setVerbosity( false );
 
       try {
@@ -217,11 +217,12 @@ namespace gum_tests {
       e_list.insert( e_i1 );
       e_list.insert( e_i4 );
 
-      gum::GibbsInference<float> inf( *bn );
+      gum::GibbsInference<float> inf( bn );
       inf.setVerbosity( false );
 
       try {
-        inf.insertEvidence( e_list );
+      for ( auto pot : e_list )
+        inf.addEvidence( *pot );
       } catch ( gum::Exception e ) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         TS_ASSERT( false );
@@ -276,7 +277,7 @@ namespace gum_tests {
       e_list.insert( e_i1 );
       e_list.insert( e_i4 );
 
-      gum::GibbsInference<float> inf( *bn );
+      gum::GibbsInference<float> inf( bn );
 
       aSimpleGibbsListener agsl( inf );
 

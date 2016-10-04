@@ -63,17 +63,17 @@ namespace gum {
           * evidence w.r.t. this node is onserted, the old evidence is removed.
           */
       virtual void
-      insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
+      insertEvidenceParticle( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
       /**
        * Remove a given evidence from the graph.
        */
-      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
+      virtual void eraseEvidenceParticle( const Potential<GUM_SCALAR>* e );
 
       /**
        * Remove all evidence from the graph.
        */
-      virtual void eraseAllEvidence();
+      virtual void eraseAllEvidenceParticle();
 
       /** @} */
 
