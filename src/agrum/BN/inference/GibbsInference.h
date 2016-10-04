@@ -25,9 +25,9 @@
 #ifndef GUM_GIBBS_INFERENCE_H
 #define GUM_GIBBS_INFERENCE_H
 
-#include <agrum/BN/particles/Gibbs.h>
-#include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/BN/inference/marginalTargetedInference.h>
+#include <agrum/BN/samplers/GibbsSampler.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
 
@@ -42,7 +42,7 @@ namespace gum {
 
   class GibbsInference : public ApproximationScheme,
                          public MarginalTargetedInference<GUM_SCALAR>,
-                         public particle::Gibbs<GUM_SCALAR> {
+                         public samplers::GibbsSampler<GUM_SCALAR> {
 
     public:
     /**
@@ -55,30 +55,32 @@ namespace gum {
      */
     virtual ~GibbsInference();
 
-    using particle::Gibbs<GUM_SCALAR>::particle;
-    using particle::Gibbs<GUM_SCALAR>::initParticle;
-    using particle::Gibbs<GUM_SCALAR>::nextParticle;
-    using particle::Gibbs<GUM_SCALAR>::bn;
-    
-  protected:
-      
-    virtual void _onEvidenceAdded ( const NodeId id,
-                                    bool isHardEvidence ) {};
-    virtual void _onEvidenceErased ( const NodeId id,
-                                     bool isHardEvidence ) {};
-    virtual void _onAllEvidenceErased ( bool contains_hard_evidence ) {};
-    
-    virtual void _onEvidenceChanged( const NodeId id,
-                                     bool hasChangedSoftHard ) {};
-    virtual void _onBayesNetChanged ( const IBayesNet<GUM_SCALAR>* bn ) {};
-    virtual void _prepareInferenceStructure () {};
-    virtual void _updateInferencePotentials () {};
-    virtual void _makeInference();        
-    
-    virtual void _onMarginalTargetAdded ( const NodeId id ) {};
-    virtual void _onMarginalTargetErased ( const NodeId id ) {};
-    virtual void _onAllMarginalTargetsAdded () {};
-    virtual void _onAllMarginalTargetsErased () {};
+    using samplers::GibbsSampler<GUM_SCALAR>::particle;
+    using samplers::GibbsSampler<GUM_SCALAR>::initParticle;
+    using samplers::GibbsSampler<GUM_SCALAR>::nextParticle;
+    using samplers::GibbsSampler<GUM_SCALAR>::bn;
+    using samplers::GibbsSampler<GUM_SCALAR>::addSoftEvidenceSampler;
+    using samplers::GibbsSampler<GUM_SCALAR>::addHardEvidenceSampler;
+    using samplers::GibbsSampler<GUM_SCALAR>::eraseSoftEvidenceSampler;
+    using samplers::GibbsSampler<GUM_SCALAR>::eraseHardEvidenceSampler;
+    using samplers::GibbsSampler<GUM_SCALAR>::eraseAllEvidenceSampler;
+
+    protected:
+    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence );
+    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence );
+    virtual void _onAllEvidenceErased( bool contains_hard_evidence );
+
+    virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard );
+    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn );
+
+    virtual void _prepareInferenceStructure(){};
+    virtual void _updateInferencePotentials(){};
+    virtual void _makeInference();
+
+    virtual void _onMarginalTargetAdded( const NodeId id ){};
+    virtual void _onMarginalTargetErased( const NodeId id ){};
+    virtual void _onAllMarginalTargetsAdded(){};
+    virtual void _onAllMarginalTargetsErased(){};
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */

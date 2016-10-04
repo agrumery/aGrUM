@@ -45,7 +45,7 @@ namespace gum {
 
   /// namespace for all particles for approximation inference based on
   /// simulation
-  namespace particle {}
+  namespace samplers {}
 
   /// namespace for all probabilistic relational models entities
   namespace prm {}

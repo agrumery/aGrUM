@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief KL divergence between BNs brute force implementation
+ * @brief KL divergence between BNs -- implementation using Gibbs sampling
  *
  * @author Pierre-Henri WUILLEMIN
  */
@@ -31,7 +31,7 @@
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
-#include <agrum/BN/particles/Gibbs.h>
+#include <agrum/BN/samplers/GibbsSampler.h>
 #include <agrum/core/approximations/approximationScheme.h>
 
 #define KL_DEFAULT_MAXITER 10000000
@@ -48,7 +48,7 @@ namespace gum {
                                 const IBayesNet<GUM_SCALAR>& Q )
       : KL<GUM_SCALAR>( P, Q )
       , ApproximationScheme()
-      , particle::Gibbs<GUM_SCALAR>( P ) {
+      , samplers::GibbsSampler<GUM_SCALAR>( P ) {
     GUM_CONSTRUCTOR( GibbsKL );
 
     setEpsilon( KL_DEFAULT_EPSILON );
@@ -63,7 +63,7 @@ namespace gum {
   GibbsKL<GUM_SCALAR>::GibbsKL( const KL<GUM_SCALAR>& kl )
       : KL<GUM_SCALAR>( kl )
       , ApproximationScheme()
-      , particle::Gibbs<GUM_SCALAR>( kl.p() ) {
+      , samplers::GibbsSampler<GUM_SCALAR>( kl.p() ) {
     GUM_CONSTRUCTOR( GibbsKL );
 
     setEpsilon( KL_DEFAULT_EPSILON );

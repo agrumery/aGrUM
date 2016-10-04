@@ -47,7 +47,7 @@ namespace gum {
   // this should be a friend of Inference
   template<typename GUM_SCALAR>
   class MarginalTargetedInference;
-  
+
   // EvidenceInference, the class for computing the probability of evidence,
   // should have access to the states of Inference and change them when needed:
   // this will be a friend of Inference
@@ -55,12 +55,12 @@ namespace gum {
   class EvidenceInference;
 
 
-  
+
   /**
    * @class Inference inference.h
    * <agrum/BN/inference/Inference.h>
    * @brief A generic class for Bayes net inference: handles evidence and the
-   * current state of the (incremental) inference 
+   * current state of the (incremental) inference
    * @ingroup bn_group
    *
    * The goal of the Inference class is twofold:
@@ -192,7 +192,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -244,7 +244,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Evidence
     // ############################################################################
@@ -290,7 +290,7 @@ namespace gum {
      */
     virtual void addEvidence( Potential<GUM_SCALAR>&& pot ) final;
 
-    /// adds a new list of evidence
+    /// adds a new set of evidence
     /**
      * @throw UndefinedElement if some potential is defined over several nodes
      * @throw UndefinedElement if the node on which some potential is defined
@@ -301,7 +301,7 @@ namespace gum {
     virtual void addSetOfEvidence
     ( const Set<Potential<GUM_SCALAR>*>& potlist ) final;
 
-    /// adds a new set of evidence
+    /// adds a new list of evidence
     /**
      * @throw UndefinedElement if some potential is defined over several nodes
      * @throw UndefinedElement if the node on which some potential is defined
@@ -331,7 +331,7 @@ namespace gum {
      */
     virtual void chgEvidence( const NodeId id,
                               const std::vector<GUM_SCALAR>& vals ) final;
-    
+
     /// change the value of an already existing evidence (might be soft or hard)
     /**
      * @throw UndefinedElement if the potential is defined over several nodes
@@ -385,7 +385,7 @@ namespace gum {
     /// @}
 
 
-    
+
   protected:
     /// fired after a new evidence is inserted
     virtual void _onEvidenceAdded ( const NodeId id,
@@ -397,7 +397,7 @@ namespace gum {
 
     /// fired before all the evidence are erased
     virtual void _onAllEvidenceErased ( bool contains_hard_evidence ) = 0;
-    
+
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
      *
@@ -423,7 +423,7 @@ namespace gum {
      * known and can be changed between _prepareInferenceStructure and
      * _makeInference. */
     virtual void _updateInferencePotentials () = 0;
-    
+
     /// called when the inference has to be performed effectively
     /** Once the inference is done, _fillPosterior can be called. */
     virtual void _makeInference() = 0;
@@ -461,7 +461,7 @@ namespace gum {
      */
     void _setOutdatedBNPotentialsState ();
 
-    
+
   private:
     /// the current state of the inference (outdated/ready/done)
     StateOfInference __state { StateOfInference::OutdatedBNStructure };
@@ -499,13 +499,13 @@ namespace gum {
     /// assigns a BN during the inference engine construction
     void __setBayesNetDuringConstruction ( const IBayesNet<GUM_SCALAR>* bn );
 
-    
-    
+
+
     /// allow JointInference to access the single targets and inference states
     friend MarginalTargetedInference<GUM_SCALAR>;
     friend JointTargetedInference<GUM_SCALAR>;
     friend EvidenceInference<GUM_SCALAR>;
-    
+
   };
 
 

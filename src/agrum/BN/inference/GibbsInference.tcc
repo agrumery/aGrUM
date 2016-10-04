@@ -23,9 +23,9 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <algorithm>
 #include <sstream>
 #include <string>
-#include <algorithm>
 
 #define INFERENCE_DEFAULT_MAXITER 10000000
 #define INFERENCE_DEFAULT_EPSILON 1e-4 * std::log( 2 )
@@ -35,17 +35,17 @@
 #define INFERENCE_DEFAULT_BURNIN 3000
 
 // to ease parsing for IDE
-#include <agrum/BN/particles/Gibbs.h>
-#include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/BN/samplers/GibbsSampler.h>
 
 namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
   GibbsInference<GUM_SCALAR>::GibbsInference( const IBayesNet<GUM_SCALAR>* BN )
       : ApproximationScheme()
-      , MarginalTargetedInference<GUM_SCALAR>( BN)
-      , particle::Gibbs<GUM_SCALAR>( *BN ) {
+      , MarginalTargetedInference<GUM_SCALAR>( BN )
+      , samplers::GibbsSampler<GUM_SCALAR>( *BN ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( GibbsInference );
 
@@ -57,8 +57,8 @@ namespace gum {
     setPeriodSize( INFERENCE_DEFAULT_PERIOD_SIZE );
 
     for ( auto node : bn().dag().nodes() ) {
-      __sampling_nbr.insert( node, Potential<GUM_SCALAR>());
-      __sampling_nbr[node].add(BN->variable( node ));
+      __sampling_nbr.insert( node, Potential<GUM_SCALAR>() );
+      __sampling_nbr[node].add( BN->variable( node ) );
     }
   }
 
@@ -71,7 +71,8 @@ namespace gum {
 
   /// Returns the probability of the variable.
   template <typename GUM_SCALAR>
-  INLINE const Potential<GUM_SCALAR>& GibbsInference<GUM_SCALAR>::_posterior(NodeId id ) {
+  INLINE const Potential<GUM_SCALAR>&
+  GibbsInference<GUM_SCALAR>::_posterior( NodeId id ) {
     return __sampling_nbr[id];
   }
 
@@ -118,10 +119,9 @@ namespace gum {
     }
   }
 
-  inline
-  void add_and_instancie( Instantiation& I,
-                          const DiscreteVariable& v,
-                          const Instantiation& __current_sample ) {
+  INLINE void add_and_instancie( Instantiation& I,
+                                 const DiscreteVariable& v,
+                                 const Instantiation& __current_sample ) {
     try {
       I << v;
       I.chgVal( v, __current_sample.val( v ) );
@@ -149,9 +149,57 @@ namespace gum {
       else
         __updateStats_without_err();
     } while ( continueApproximationScheme( error ) );
+
+    for ( auto& elt : __sampling_nbr ) {
+      elt.second.normalize();
+    }
   }
 
+
+  template <typename GUM_SCALAR>
+  INLINE void
+  GibbsInference<GUM_SCALAR>::_onEvidenceAdded( const NodeId id,
+                                                bool isHardEvidence ) {
+    if ( isHardEvidence ) {
+      addHardEvidenceSampler( id, this->hardEvidence()[id] );
+    } else {
+      addSoftEvidenceSampler( *( this->evidence()[id] ) );
+    }
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE void
+  GibbsInference<GUM_SCALAR>::_onEvidenceErased( const NodeId id,
+                                                 bool isHardEvidence ) {
+    if ( isHardEvidence ) {
+      eraseHardEvidenceSampler( id );
+    }
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE void GibbsInference<GUM_SCALAR>::_onAllEvidenceErased(
+      bool contains_hard_evidence ) {
+    eraseAllEvidenceSampler();
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE void
+  GibbsInference<GUM_SCALAR>::_onEvidenceChanged( const NodeId id,
+                                                  bool hasChangedSoftHard ) {
+    if ( this->hardEvidence().exists( id ) ) {
+      // soft evidence has been removed
+      eraseSoftEvidenceSampler( id );
+      addHardEvidenceSampler( id, this->hardEvidence()[id] );
+    } else {
+      // hard evidence has been removed
+      eraseHardEvidenceSampler( id );
+      addSoftEvidenceSampler( *(this->evidence()[id] ));
+    }
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE void GibbsInference<GUM_SCALAR>::_onBayesNetChanged(
+      const IBayesNet<GUM_SCALAR>* bn ) {}
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -30,7 +30,7 @@
 #define GUM_GIBBS_KL_H
 
 #include <agrum/BN/algorithms/divergence/KL.h>
-#include <agrum/BN/particles/Gibbs.h>
+#include <agrum/BN/samplers/GibbsSampler.h>
 #include <agrum/core/approximations/approximationScheme.h>
 
 #include <agrum/core/signal/signaler.h>
@@ -73,7 +73,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   class GibbsKL : public KL<GUM_SCALAR>,
                   public ApproximationScheme,
-                  public particle::Gibbs<GUM_SCALAR> {
+                  public samplers::GibbsSampler<GUM_SCALAR> {
     public:
     /* no default constructor */
 
@@ -91,10 +91,10 @@ namespace gum {
     /** destructor */
     ~GibbsKL();
 
-    using particle::Gibbs<GUM_SCALAR>::particle;
-    using particle::Gibbs<GUM_SCALAR>::initParticle;
-    using particle::Gibbs<GUM_SCALAR>::nextParticle;
-    using particle::Gibbs<GUM_SCALAR>::bn;
+    using samplers::GibbsSampler<GUM_SCALAR>::particle;
+    using samplers::GibbsSampler<GUM_SCALAR>::initParticle;
+    using samplers::GibbsSampler<GUM_SCALAR>::nextParticle;
+    using samplers::GibbsSampler<GUM_SCALAR>::bn;
 
     protected:
     void _computeKL( void );
