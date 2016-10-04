@@ -224,13 +224,14 @@ namespace gum_tests {
 
     void testInferencesWithSoftEvidence() {
       begin_test_waiting();
+
       gum::Potential<double> e_i1;
       e_i1 << bn->variable( i1 );
-      e_i1.fillWith( {0.6, 1.5} );
+      e_i1.fillWith( {0.6, 1} );
 
       gum::Potential<double> e_i4;
       e_i4 << bn->variable( i4 );
-      e_i4.fillWith( {2, 3} );
+      e_i4.fillWith( {0.2, 0.3} );
 
       gum::List<gum::Potential<double> const*> list_pot;
       list_pot.insert( &e_i1 );
