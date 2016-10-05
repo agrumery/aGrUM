@@ -107,8 +107,8 @@ namespace gum {
     /** @brief sets the columns of the output vector which will be written
      * by the translator */
     template <class Translator, typename Cols>
-    INLINE void CreateOnce<Translator, Cols>::setOutputCols(
-        Idx first_col ) noexcept {
+    INLINE void
+    CreateOnce<Translator, Cols>::setOutputCols( Idx first_col ) noexcept {
       __translator.setOutputCols( first_col );
     }
 
@@ -133,8 +133,9 @@ namespace gum {
 
     /// back-translate a given output (i.e., returns its input)
     template <class Translator, typename Cols>
-    INLINE std::string CreateOnce<Translator, Cols>::translateBack(
-        Idx col, Idx translated_val ) const {
+    INLINE std::string
+    CreateOnce<Translator, Cols>::translateBack( Idx col,
+                                                 Idx translated_val ) const {
       return __translator.translateBack( col, translated_val );
     }
 
@@ -189,15 +190,13 @@ namespace gum {
 
     /// returns the size of the input for this cell translator
     template <class Translator, typename Cols>
-    INLINE Size CreateOnce<Translator, Cols>::inputSize() const
-        noexcept {
+    INLINE Size CreateOnce<Translator, Cols>::inputSize() const noexcept {
       return __translator.inputSize();
     }
 
     /// returns the size of the output for this cell translator
     template <class Translator, typename Cols>
-    INLINE Size CreateOnce<Translator, Cols>::outputSize() const
-        noexcept {
+    INLINE Size CreateOnce<Translator, Cols>::outputSize() const noexcept {
       return __translator.outputSize();
     }
 
@@ -251,8 +250,8 @@ namespace gum {
               int nb_times,
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>&
-        Create<Translator, Cols, nb_times, ColsIncr>::
-        operator=( const Create<Translator, Cols, nb_times, ColsIncr>& from ) {
+    Create<Translator, Cols, nb_times, ColsIncr>::
+    operator=( const Create<Translator, Cols, nb_times, ColsIncr>& from ) {
       if ( this != &from ) {
         CurrentTranslator::operator=( from );
         NextTranslators::operator=( from );
@@ -266,8 +265,8 @@ namespace gum {
               int nb_times,
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>&
-        Create<Translator, Cols, nb_times, ColsIncr>::
-        operator=( Create<Translator, Cols, nb_times, ColsIncr>&& from ) {
+    Create<Translator, Cols, nb_times, ColsIncr>::
+    operator=( Create<Translator, Cols, nb_times, ColsIncr>&& from ) {
       if ( this != &from ) {
         CurrentTranslator::operator=( std::move( from ) );
         NextTranslators::operator=( std::move( from ) );
@@ -417,8 +416,8 @@ namespace gum {
               typename Cols,
               int nb_times,
               typename ColsIncr>
-    INLINE Size
-    Create<Translator, Cols, nb_times, ColsIncr>::inputSize() const noexcept {
+    INLINE Size Create<Translator, Cols, nb_times, ColsIncr>::inputSize() const
+        noexcept {
       return nb_times * CurrentTranslator::inputSize();
     }
 
@@ -427,8 +426,8 @@ namespace gum {
               typename Cols,
               int nb_times,
               typename ColsIncr>
-    INLINE Size
-    Create<Translator, Cols, nb_times, ColsIncr>::outputSize() const noexcept {
+    INLINE Size Create<Translator, Cols, nb_times, ColsIncr>::outputSize() const
+        noexcept {
       return nb_times * CurrentTranslator::outputSize();
     }
 

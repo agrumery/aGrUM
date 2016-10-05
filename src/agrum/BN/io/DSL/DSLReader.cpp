@@ -23,4 +23,3 @@
 
 template class gum::DSLReader<float>;
 template class gum::DSLReader<double>;
-

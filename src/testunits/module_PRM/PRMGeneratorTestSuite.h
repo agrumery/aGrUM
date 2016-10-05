@@ -22,8 +22,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/PRM/generator/layerGenerator.h>
 #include <agrum/PRM/generator/clusteredLayerGenerator.h>
+#include <agrum/PRM/generator/layerGenerator.h>
 
 namespace gum_tests {
 
@@ -69,7 +69,8 @@ namespace gum_tests {
       gum::prm::PRM<double>* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
       // testing interfaces
-      const gum::Set<gum::prm::PRMInterface<double>*>& i_set = prm->interfaces();
+      const gum::Set<gum::prm::PRMInterface<double>*>& i_set =
+          prm->interfaces();
       TS_ASSERT_EQUALS( i_set.size(), (gum::Size)10 );
 
       for ( auto iter = i_set.begin(); iter != i_set.end(); ++iter ) {
@@ -148,7 +149,8 @@ namespace gum_tests {
       gum::prm::PRM<double>* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
       // testing interfaces
-      const gum::Set<gum::prm::PRMInterface<double>*>& i_set = prm->interfaces();
+      const gum::Set<gum::prm::PRMInterface<double>*>& i_set =
+          prm->interfaces();
       TS_ASSERT_EQUALS( i_set.size(), (gum::Size)10 );
 
       for ( gum::Set<gum::prm::PRMInterface<double>*>::const_iterator iter =

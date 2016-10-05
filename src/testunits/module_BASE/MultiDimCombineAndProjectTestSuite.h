@@ -20,19 +20,19 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/set.h>
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/potential.h>
 #include <agrum/multidim/operators/multiDimCombinationDefault.h>
-#include <agrum/multidim/operators/multiDimProjection.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
+#include <agrum/multidim/operators/multiDimProjection.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

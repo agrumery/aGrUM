@@ -20,12 +20,12 @@
 #ifndef UAIREADER_H
 #define UAIREADER_H
 
-#include <iostream>
-#include <string>
-#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 #include <agrum/BN/io/BNReader.h>
+#include <agrum/config.h>
+#include <iostream>
+#include <string>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
@@ -82,7 +82,8 @@ namespace gum {
     /// @throws IOError if file not exists
     Size proceed( void );
 
-    void buildFromQuartets(std::vector<std::tuple<float,int,int,int>> quartets);
+    void
+    buildFromQuartets( std::vector<std::tuple<float, int, int, int>> quartets );
 
     /// @{
     /// publishing Errors API
@@ -128,9 +129,11 @@ namespace gum {
     // proceed()
     bool __ioerror;
 
-    void __addFatalError(int lig,int col,const std::string& s); // throw an exception
-    void __addError(int lig,int col,const std::string& s);
-    void __addWarning(int lig,int col,const std::string& s);
+    void __addFatalError( int lig,
+                          int col,
+                          const std::string& s );  // throw an exception
+    void __addError( int lig, int col, const std::string& s );
+    void __addWarning( int lig, int col, const std::string& s );
   };
 
 

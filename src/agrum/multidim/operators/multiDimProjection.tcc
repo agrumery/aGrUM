@@ -27,16 +27,16 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
 #include <agrum/config.h>
+#include <limits>
 
 namespace gum {
 
   // constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimProjection<GUM_SCALAR, TABLE>::MultiDimProjection(
-      TABLE<GUM_SCALAR>* ( *proj )( const TABLE<GUM_SCALAR>&,
-                                    const Set<const DiscreteVariable*>& ) )
+      TABLE<GUM_SCALAR>* ( *proj )(const TABLE<GUM_SCALAR>&,
+                                   const Set<const DiscreteVariable*>&))
       : _proj( proj ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( MultiDimProjection );
@@ -87,8 +87,8 @@ namespace gum {
   // changes the function used for projecting TABLES
   template <typename GUM_SCALAR, template <typename> class TABLE>
   void MultiDimProjection<GUM_SCALAR, TABLE>::setProjectFunction(
-      TABLE<GUM_SCALAR>* ( *proj )( const TABLE<GUM_SCALAR>&,
-                                    const Set<const DiscreteVariable*>& ) ) {
+      TABLE<GUM_SCALAR>* ( *proj )(const TABLE<GUM_SCALAR>&,
+                                   const Set<const DiscreteVariable*>&)) {
     _proj = proj;
   }
 
@@ -106,7 +106,7 @@ namespace gum {
   INLINE float MultiDimProjection<GUM_SCALAR, TABLE>::nbOperations(
       const TABLE<GUM_SCALAR>& table,
       const Set<const DiscreteVariable*>& del_vars ) const {
-    return float(table.domainSize());
+    return float( table.domainSize() );
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
@@ -144,7 +144,7 @@ namespace gum {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
-        res *= long(( *iter )->domainSize());
+        res *= long( ( *iter )->domainSize() );
       }
     }
 

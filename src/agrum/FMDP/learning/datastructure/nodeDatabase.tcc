@@ -131,8 +131,8 @@ namespace gum {
   // ###################################################################
   template <TESTNAME AttributeSelection, bool isScalar>
   NodeDatabase<AttributeSelection, isScalar>&
-      NodeDatabase<AttributeSelection, isScalar>::
-      operator+=( const NodeDatabase<AttributeSelection, isScalar>& src ) {
+  NodeDatabase<AttributeSelection, isScalar>::
+  operator+=( const NodeDatabase<AttributeSelection, isScalar>& src ) {
     this->__nbObservation += src.nbObservation();
 
     for ( auto varIter = __attrTable.beginSafe();

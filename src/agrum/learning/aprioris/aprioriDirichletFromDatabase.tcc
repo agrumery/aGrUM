@@ -32,9 +32,8 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::
-        AprioriDirichletFromDatabase(
-            const RowFilter& filter,
-            const std::vector<Size>& var_modalities )
+        AprioriDirichletFromDatabase( const RowFilter& filter,
+                                      const std::vector<Size>& var_modalities )
         : Counter<IdSetAlloc, CountAlloc>( filter, var_modalities ) {
       GUM_CONSTRUCTOR( AprioriDirichletFromDatabase );
     }
@@ -80,23 +79,27 @@ namespace gum {
       if ( this->_weight != 0 ) {
         // perform the countings
         Counter<IdSetAlloc, CountAlloc>::clear();
-        const Size size =Size(Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->size());
+        const Size size =
+            Size( Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->size() );
         for ( Idx i = 0; i < size; ++i ) {
           if ( Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->operator[](
                    i ) != nullptr ) {
             if ( Apriori<IdSetAlloc, CountAlloc>::_conditioning_nodesets->
                  operator[]( i ) != nullptr ) {
               Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-                  Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->operator[](
-                                                                       i )
+                  Apriori<IdSetAlloc, CountAlloc>::_target_nodesets
+                      ->
+                      operator[]( i )
                       ->first.back(),
-                  Apriori<IdSetAlloc, CountAlloc>::_conditioning_nodesets->
-                  operator[]( i )
+                  Apriori<IdSetAlloc, CountAlloc>::_conditioning_nodesets
+                      ->
+                      operator[]( i )
                       ->first );
             } else {
               Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-                  Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->operator[](
-                                                                       i )
+                  Apriori<IdSetAlloc, CountAlloc>::_target_nodesets
+                      ->
+                      operator[]( i )
                       ->first.back() );
             }
           } else {

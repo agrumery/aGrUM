@@ -30,8 +30,8 @@
 // =========================================================================
 #include <agrum/config.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
 #include <agrum/core/multiPriorityQueue.h>
+#include <agrum/core/sequence.h>
 // =========================================================================
 #include <agrum/graphs/graphElements.h>
 // =========================================================================
@@ -54,8 +54,7 @@ namespace gum {
   template <TESTNAME AttributeSelection, bool isScalar>
   class ConcreteLeaf : public AbstractLeaf {
 
-    typedef typename ValueSelect<isScalar, double, Idx>::type
-        ValueType;
+    typedef typename ValueSelect<isScalar, double, Idx>::type ValueType;
 
     public:
     // ==========================================================================
@@ -101,7 +100,7 @@ namespace gum {
 
     private:
     double __effectif( Idx moda, Int2Type<true> ) const {
-      return (double)__n1->effectif( Idx(__valueDomain->atPos( moda )) );
+      return (double)__n1->effectif( Idx( __valueDomain->atPos( moda ) ) );
     }
     double __effectif( Idx moda, Int2Type<false> ) const {
       return (double)__n1->effectif( moda );

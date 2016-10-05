@@ -28,9 +28,9 @@
 
 #include <vector>
 
-#include <agrum/core/set.h>
-#include <agrum/core/sequence.h>
 #include <agrum/core/priorityQueue.h>
+#include <agrum/core/sequence.h>
+#include <agrum/core/set.h>
 #include <agrum/graphs/diGraph.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 
@@ -169,12 +169,10 @@ namespace gum {
       void setGraph( DiGraph& graph, const std::vector<Size>& modal );
 
       /// returns the set of queues sorted by decreasing top priority
-      std::vector<std::pair<NodeId, double>>
-      nodesSortedByBestScore() const;
+      std::vector<std::pair<NodeId, double>> nodesSortedByBestScore() const;
 
       /// returns the set of queues top priorities
-      std::vector<std::pair<Idx, double>>
-      nodesUnsortedWithScore() const;
+      std::vector<std::pair<Idx, double>> nodesUnsortedWithScore() const;
 
       /// @}
 
@@ -237,9 +235,8 @@ namespace gum {
       void __illegal2LegalChanges( Set<Idx>& changes_to_recompute );
 
       /// finds the changes that are affected by a given node modification
-      void
-      __findLegalChangesNeedingUpdate( Set<Idx>& changes_to_recompute,
-                                       NodeId target_node );
+      void __findLegalChangesNeedingUpdate( Set<Idx>& changes_to_recompute,
+                                            NodeId target_node );
 
       /// perform the necessary updates of the scores
       void __updateScores( const Set<Idx>& changes_to_recompute );

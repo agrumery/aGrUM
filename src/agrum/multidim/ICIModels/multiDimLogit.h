@@ -105,7 +105,7 @@ namespace gum {
 
     const std::string toString( void ) const;
 
-    /** 
+    /**
      * @brief Returns the real name of the multiDimArray.
      *
      * In aGrUM, all the types of multi-dimensional arrays/functionals have a

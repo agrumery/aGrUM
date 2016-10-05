@@ -24,4 +24,3 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 #include <agrum/multidim/multiDimContainer.h>
-

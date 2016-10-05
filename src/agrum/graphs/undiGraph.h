@@ -30,8 +30,8 @@
 
 #include <agrum/config.h>
 
-#include <agrum/graphs/nodeGraphPart.h>
 #include <agrum/graphs/edgeGraphPart.h>
+#include <agrum/graphs/nodeGraphPart.h>
 
 namespace gum {
 

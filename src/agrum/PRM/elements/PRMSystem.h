@@ -29,9 +29,9 @@
 
 #include <utility>
 
-#include <agrum/core/set.h>
-#include <agrum/core/sequence.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/sequence.h>
+#include <agrum/core/set.h>
 
 #include <agrum/graphs/diGraph.h>
 
@@ -44,7 +44,8 @@ namespace gum {
 
     /**
      * @class PRMSystem system.h <agrum/PRM/system.h>
-     * @brief A PRMSystem is a container of PRMInstance and describe a relational
+     * @brief A PRMSystem is a container of PRMInstance and describe a
+     * relational
      *        skeleton.
      */
     template <typename GUM_SCALAR>
@@ -103,10 +104,12 @@ namespace gum {
       /// Returns the number of PRMInstance in this PRMSystem.
       Size size() const;
 
-      /// Retruns true either if name is an instance or an array in this PRMSystem.
+      /// Retruns true either if name is an instance or an array in this
+      /// PRMSystem.
       bool exists( const std::string& name ) const;
 
-      /// Returns true if the given Class<GUM_SCALAR> has at least one PRMInstance
+      /// Returns true if the given Class<GUM_SCALAR> has at least one
+      /// PRMInstance
       /// in this PRMSystem.
       bool isInstantiated( const PRMClass<GUM_SCALAR>& c ) const;
 
@@ -173,14 +176,16 @@ namespace gum {
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
       /// @throw TypeError Raised if i is not of the good type.
-      /// @throw DuplicateElement Raised if an PRMInstance with same name already
+      /// @throw DuplicateElement Raised if an PRMInstance with same name
+      /// already
       /// exists.
       NodeId add( const std::string& array, PRMInstance<GUM_SCALAR>* i );
 
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
       /// @throw TypeError Raised if i is not of the good type.
-      /// @throw DuplicateElement Raised if an PRMInstance with same name already
+      /// @throw DuplicateElement Raised if an PRMInstance with same name
+      /// already
       /// exists.
       NodeId add( const std::string& array, PRMInstance<GUM_SCALAR>& i );
 
@@ -198,7 +203,8 @@ namespace gum {
       /// @{
 
       /// Iterator over the PRMInstance of this PRMSystem.
-      typedef typename NodeProperty<PRMInstance<GUM_SCALAR>*>::iterator iterator;
+      typedef
+          typename NodeProperty<PRMInstance<GUM_SCALAR>*>::iterator iterator;
 
       /// Returns an iterator over the instances in this system.
       iterator begin();
@@ -219,7 +225,8 @@ namespace gum {
       const const_iterator& end() const;
 
       /// Iterator over the PRMInstance in an array in this PRMSystem.
-      typedef typename Sequence<PRMInstance<GUM_SCALAR>*>::iterator array_iterator;
+      typedef
+          typename Sequence<PRMInstance<GUM_SCALAR>*>::iterator array_iterator;
 
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
@@ -269,12 +276,14 @@ namespace gum {
       HashTable<std::string, PRMInstance<GUM_SCALAR>*> __nameMap;
 
       /// Mapping between a class and all it's PRMInstance in this system
-      HashTable<PRMClass<GUM_SCALAR>*, Set<PRMInstance<GUM_SCALAR>*>*> __instanceMap;
+      HashTable<PRMClass<GUM_SCALAR>*, Set<PRMInstance<GUM_SCALAR>*>*>
+          __instanceMap;
 
       /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
       /// instantiation.
       typedef std::pair<PRMClassElementContainer<GUM_SCALAR>*,
-                        Sequence<PRMInstance<GUM_SCALAR>*>*> model_pair;
+                        Sequence<PRMInstance<GUM_SCALAR>*>*>
+          model_pair;
 
       /// Mapping between arrays and their name. The first element of the pair
       /// is the type of the array.
@@ -286,7 +295,8 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      /// @brief Method which ground PRMReferenceSlot of an PRMInstance and add arcs
+      /// @brief Method which ground PRMReferenceSlot of an PRMInstance and add
+      /// arcs
       ///        in the IBayesNet.
       /// @param instance The PRMInstance grounded by this method.
       /// @param factory  The factory used to build the grounded IBayesNet.
@@ -304,7 +314,8 @@ namespace gum {
       /// grounded
       ///        Bayesian Network.
       /// @param instance The PRMInstance currently grounded.
-      /// @param attr     The PRMAttribute<GUM_SCALAR> for which the Potential is
+      /// @param attr     The PRMAttribute<GUM_SCALAR> for which the Potential
+      /// is
       /// grounded.
       /// @param factory  The factory used to build the grounded IBayesNet.
       void __groundPotential( const PRMInstance<GUM_SCALAR>& instance,

@@ -28,8 +28,8 @@
 #ifndef GUM_INF_DIAG_H
 #define GUM_INF_DIAG_H
 
-#include <utility>
 #include <string>
+#include <utility>
 
 #include <agrum/config.h>
 

@@ -23,10 +23,10 @@
 #include <cxxtest/testsuite_utils.h>
 #include <ressources/myalloc.h>
 
-#include <agrum/core/priorityQueue.h>
-#include <agrum/core/multiPriorityQueue.h>
-#include <agrum/core/set.h>
 #include <agrum/core/hashFunc.h>
+#include <agrum/core/multiPriorityQueue.h>
+#include <agrum/core/priorityQueue.h>
+#include <agrum/core/set.h>
 
 namespace gum {
   template <>

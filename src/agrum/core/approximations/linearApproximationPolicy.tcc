@@ -58,7 +58,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR LinearApproximationPolicy<GUM_SCALAR>::fromExact(
       const GUM_SCALAR& value ) const {
-    return __decode( GUM_SCALAR(encode( value )) );
+    return __decode( GUM_SCALAR( encode( value ) ) );
   }
 
   // @brief Combine using addition with the given gum::ApproximationPolicy.
@@ -221,7 +221,7 @@ namespace gum {
       if ( newHighLimit < newVal ) newHighLimit = newVal;
 
       if ( newLowLimit > newVal ) newLowLimit = newVal;
-    } catch ( const std::bad_cast&  ) {
+    } catch ( const std::bad_cast& ) {
     }
   }
 
@@ -256,7 +256,7 @@ namespace gum {
       if ( newHighLimit < newVal ) newHighLimit = newVal;
 
       if ( newLowLimit > newVal ) newLowLimit = newVal;
-    } catch ( const std::bad_cast&  ) {
+    } catch ( const std::bad_cast& ) {
     }
   }
 
@@ -311,7 +311,7 @@ namespace gum {
           "Interval Number asked is higher than total number of interval" );
     }
 
-    return __decode( GUM_SCALAR(representation) );
+    return __decode( GUM_SCALAR( representation ) );
   }
 
   // Sets approximation factor
@@ -386,7 +386,7 @@ namespace gum {
 
     if ( value >= this->_highLimit ) return _nbInterval;
 
-    return 1+ Idx( ( ( value - this->_lowLimit ) / this->_epsilon ) ) ;
+    return 1 + Idx( ( ( value - this->_lowLimit ) / this->_epsilon ) );
   }
 
   // Concretely computes the approximate value from representation
@@ -398,14 +398,15 @@ namespace gum {
 
     if ( representation == _nbInterval ) return this->_highLimit;
 
-    return (GUM_SCALAR)(( ( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) +
-           this->_lowLimit);
+    return ( GUM_SCALAR )(
+        ( ( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) +
+        this->_lowLimit );
   }
 
   // get the number of interval
   template <typename GUM_SCALAR>
   INLINE void LinearApproximationPolicy<GUM_SCALAR>::_computeNbInterval() {
     _nbInterval =
-      1+Idx( ( this->_highLimit - this->_lowLimit ) / this->_epsilon ) ;
+        1 + Idx( ( this->_highLimit - this->_lowLimit ) / this->_epsilon );
   }
 }

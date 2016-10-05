@@ -28,10 +28,10 @@
 #ifndef GUM_ID_WRITER_H
 #define GUM_ID_WRITER_H
 
+#include <agrum/ID/influenceDiagram.h>
+#include <agrum/config.h>
 #include <iostream>
 #include <string>
-#include <agrum/config.h>
-#include <agrum/ID/influenceDiagram.h>
 
 namespace gum {
 

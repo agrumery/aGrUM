@@ -44,7 +44,6 @@ namespace gum {
       template class QueryCommand<double>;
       template class O3prmrSession<double>;
       template class O3prmrContext<double>;
-
     }
   }
 }

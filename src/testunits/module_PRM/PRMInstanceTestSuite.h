@@ -23,8 +23,8 @@
 
 #include <sstream>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/PRM/elements/PRMInstance.h>
+#include <agrum/variables/labelizedVariable.h>
 
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
@@ -44,7 +44,8 @@ namespace gum_tests {
     typedef gum::prm::PRMSlotChain<double> PRMSlotChain;
     typedef gum::prm::PRMObject PRMObject;
     typedef gum::Bijection<const gum::DiscreteVariable*,
-                           const gum::DiscreteVariable*> Bijection;
+                           const gum::DiscreteVariable*>
+        Bijection;
 
     PRMType* __boolean;
     PRMType* __state;

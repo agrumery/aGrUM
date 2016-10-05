@@ -144,9 +144,9 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-  // ==========================================================================
-  //                          MultiDimFunctionGraphs functions
-  // ==========================================================================
+// ==========================================================================
+//                          MultiDimFunctionGraphs functions
+// ==========================================================================
 
 // ///////////////////////////////////////////////////////
 // a specialized function for summing two multiDimFunctionGraphs

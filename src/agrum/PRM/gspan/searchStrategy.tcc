@@ -39,8 +39,8 @@ namespace gum {
         for ( const auto inst : seq ) {
           for ( const auto input : inst->type().slotChains() )
             for ( const auto inst2 : inst->getInstances( input->id() ) )
-              if ( ( ! seq.exists( inst2 ) ) &&
-                   ( ! input_set.exists(
+              if ( ( !seq.exists( inst2 ) ) &&
+                   ( !input_set.exists(
                        &( inst2->get( input->lastElt().safeName() ) ) ) ) ) {
                 cost += std::log( input->type().variable().domainSize() );
                 input_set.insert(
@@ -50,7 +50,7 @@ namespace gum {
           for ( auto vec = inst->beginInvRef(); vec != inst->endInvRef();
                 ++vec )
             for ( const auto inverse : *vec.val() )
-              if ( ! seq.exists( inverse.first ) ) {
+              if ( !seq.exists( inverse.first ) ) {
                 cost += std::log(
                     inst->get( vec.key() ).type().variable().domainSize() );
                 break;
@@ -109,10 +109,10 @@ namespace gum {
                     if ( match.exists( inst2 ) )
                       data.graph.addEdge(
                           node,
-                          data.node2attr.first(
-                              __str( inst2,
-                                     static_cast<const PRMSlotChain<GUM_SCALAR>&>(
-                                         inst->type().get( par ) ) ) ) );
+                          data.node2attr.first( __str(
+                              inst2,
+                              static_cast<const PRMSlotChain<GUM_SCALAR>&>(
+                                  inst->type().get( par ) ) ) ) );
 
                   break;
                 }
@@ -124,8 +124,9 @@ namespace gum {
 
             // Referring PRMAttribute<GUM_SCALAR>
             if ( inst->hasRefAttr( elt.second->id() ) ) {
-              const std::vector<std::pair<PRMInstance<GUM_SCALAR>*, std::string>>&
-                  ref_attr = inst->getRefAttr( elt.second->id() );
+              const std::vector<
+                  std::pair<PRMInstance<GUM_SCALAR>*, std::string>>& ref_attr =
+                  inst->getRefAttr( elt.second->id() );
 
               for ( auto pair = ref_attr.begin(); pair != ref_attr.end();
                     ++pair ) {
@@ -380,23 +381,23 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE std::string
-      StrictSearch<GUM_SCALAR>::__str( const PRMInstance<GUM_SCALAR>* i,
-                                       const PRMAttribute<GUM_SCALAR>* a ) const {
+      INLINE std::string StrictSearch<GUM_SCALAR>::__str(
+          const PRMInstance<GUM_SCALAR>* i,
+          const PRMAttribute<GUM_SCALAR>* a ) const {
         return i->name() + __dot + a->safeName();
       }
 
       template <typename GUM_SCALAR>
-      INLINE std::string
-      StrictSearch<GUM_SCALAR>::__str( const PRMInstance<GUM_SCALAR>* i,
-                                       const PRMAttribute<GUM_SCALAR>& a ) const {
+      INLINE std::string StrictSearch<GUM_SCALAR>::__str(
+          const PRMInstance<GUM_SCALAR>* i,
+          const PRMAttribute<GUM_SCALAR>& a ) const {
         return i->name() + __dot + a.safeName();
       }
 
       template <typename GUM_SCALAR>
-      INLINE std::string
-      StrictSearch<GUM_SCALAR>::__str( const PRMInstance<GUM_SCALAR>* i,
-                                       const PRMSlotChain<GUM_SCALAR>& a ) const {
+      INLINE std::string StrictSearch<GUM_SCALAR>::__str(
+          const PRMInstance<GUM_SCALAR>* i,
+          const PRMSlotChain<GUM_SCALAR>& a ) const {
         return i->name() + __dot + a.lastElt().safeName();
       }
 

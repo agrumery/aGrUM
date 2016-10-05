@@ -805,9 +805,19 @@ class PRMexplorer(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, PRMexplorer, name)
     __repr__ = _swig_repr
 
-    def __init__(self, *args):
+    def __init__(self):
+        """__init__(PRMexplorer self) -> PRMexplorer"""
+        this = _pyAgrum.new_PRMexplorer()
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_PRMexplorer
+    __del__ = lambda self: None
+
+    def load(self, *args):
         """
-        __init__(PRMexplorer self, std::string filename, std::string classpath, bool verbose=False) -> PRMexplorer
+        load(PRMexplorer self, std::string filename, std::string classpath, bool verbose=False)
 
         Parameters
         ----------
@@ -815,14 +825,14 @@ class PRMexplorer(_object):
         classpath: std::string
         verbose: bool
 
-        __init__(PRMexplorer self, std::string filename, std::string classpath) -> PRMexplorer
+        load(PRMexplorer self, std::string filename, std::string classpath)
 
         Parameters
         ----------
         filename: std::string
         classpath: std::string
 
-        __init__(PRMexplorer self, std::string filename) -> PRMexplorer
+        load(PRMexplorer self, std::string filename)
 
         Parameters
         ----------
@@ -1171,8 +1181,6 @@ class PRMexplorer(_object):
         """
         return _pyAgrum.PRMexplorer_getImplementations(self, interface_name)
 
-    __swig_destroy__ = _pyAgrum.delete_PRMexplorer
-    __del__ = lambda self: None
 PRMexplorer_swigregister = _pyAgrum.PRMexplorer_swigregister
 PRMexplorer_swigregister(PRMexplorer)
 
@@ -2169,6 +2177,18 @@ class GumException(Exception):
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_GumException
     __del__ = lambda self: None
+
+    def __str__(self):
+        """
+        __str__(GumException self) -> std::string const
+
+        Parameters
+        ----------
+        self: gum::Exception const *
+
+        """
+        return _pyAgrum.GumException___str__(self)
+
 
     def errorContent(self):
         """
@@ -8099,6 +8119,42 @@ class Potential_double(_object):
         return val
 
 
+    def normalizeAsCPT(self):
+        """
+        normalizeAsCPT(Potential_double self)
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double_normalizeAsCPT(self)
+
+
+    def scale(self, v):
+        """
+        scale(Potential_double self, double v) -> Potential_double
+
+        Parameters
+        ----------
+        v: double
+
+        """
+        return _pyAgrum.Potential_double_scale(self, v)
+
+
+    def translate(self, v):
+        """
+        translate(Potential_double self, double v) -> Potential_double
+
+        Parameters
+        ----------
+        v: double
+
+        """
+        return _pyAgrum.Potential_double_translate(self, v)
+
+
     def __add__(self, p2):
         """
         __add__(Potential_double self, Potential_double p2) -> Potential_double
@@ -8357,8 +8413,14 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___div__(self, *args)
 
 
-    def __eq__(self, b):
+    def __eq__(self, *args):
         """
+        __eq__(Potential_double self, Potential_double r) -> bool
+
+        Parameters
+        ----------
+        r: gum::Potential< double > const &
+
         __eq__(Potential_double self, Potential_double b) -> bool
 
         Parameters
@@ -8366,11 +8428,17 @@ class Potential_double(_object):
         b: gum::Potential< double > const &
 
         """
-        return _pyAgrum.Potential_double___eq__(self, b)
+        return _pyAgrum.Potential_double___eq__(self, *args)
 
 
-    def __ne__(self, b):
+    def __ne__(self, *args):
         """
+        __ne__(Potential_double self, Potential_double r) -> bool
+
+        Parameters
+        ----------
+        r: gum::Potential< double > const &
+
         __ne__(Potential_double self, Potential_double b) -> bool
 
         Parameters
@@ -8378,7 +8446,7 @@ class Potential_double(_object):
         b: gum::Potential< double > const &
 
         """
-        return _pyAgrum.Potential_double___ne__(self, b)
+        return _pyAgrum.Potential_double___ne__(self, *args)
 
 
 

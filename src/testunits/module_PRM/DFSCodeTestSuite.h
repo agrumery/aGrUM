@@ -20,8 +20,8 @@
 
 #include <iostream>
 
-#include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
+#include <cxxtest/AgrumTestSuite.h>
 
 #include <agrum/PRM/gspan/DFSCode.h>
 

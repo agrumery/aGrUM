@@ -20,17 +20,17 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 
-#include <agrum/core/utils_random.h>
 #include <agrum/core/sequence.h>
+#include <agrum/core/utils_random.h>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 
@@ -919,7 +919,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t->set( i, 100000.0f*float(gum::randomProba()) );
+        t->set( i, 100000.0f * float( gum::randomProba() ) );
     }
 
     // ==========================================================================
@@ -929,7 +929,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t->set( i, new float( 100000.0f* float( gum::randomProba()) ) );
+        t->set( i, new float( 100000.0f * float( gum::randomProba() ) ) );
     }
 
     // ==========================================================================

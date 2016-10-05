@@ -26,13 +26,13 @@
 #ifndef GUM_INTERFACE_GRAPH_H
 #define GUM_INTERFACE_GRAPH_H
 
-#include <string>
-#include <sstream>
 #include <list>
+#include <sstream>
+#include <string>
 
+#include <agrum/PRM/PRM.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/graphs/undiGraph.h>
-#include <agrum/PRM/PRM.h>
 
 namespace gum {
   namespace prm {
@@ -223,7 +223,8 @@ namespace gum {
 
         /// Returns data about a node.
         /// @throw NotFound
-        const NodeData<GUM_SCALAR>& node( const PRMInstance<GUM_SCALAR>* i ) const;
+        const NodeData<GUM_SCALAR>&
+        node( const PRMInstance<GUM_SCALAR>* i ) const;
 
         /// Returns data about a node.
         /// @throw NotFound

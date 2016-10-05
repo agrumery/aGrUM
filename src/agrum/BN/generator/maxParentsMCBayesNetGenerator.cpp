@@ -29,4 +29,3 @@
 
 template class gum::MaxParentsMCBayesNetGenerator<float>;
 template class gum::MaxParentsMCBayesNetGenerator<double>;
-

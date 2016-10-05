@@ -52,14 +52,14 @@
 #ifndef GUM_LEARNING_DB_CELL_TRANSLATOR_CREATE_H
 #define GUM_LEARNING_DB_CELL_TRANSLATOR_CREATE_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <agrum/config.h>
-#include <agrum/learning/database/column.h>
-#include <agrum/learning/database/DBRow.h>
-#include <agrum/learning/database/filteredRow.h>
 #include <agrum/learning/database/DBCellTranslator.h>
+#include <agrum/learning/database/DBRow.h>
+#include <agrum/learning/database/column.h>
+#include <agrum/learning/database/filteredRow.h>
 
 namespace gum {
 
@@ -155,8 +155,7 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      std::string translateBack( Idx col,
-                                 Idx translated_val ) const;
+      std::string translateBack( Idx col, Idx translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       /** If initialization is required, this method is called for each row
@@ -335,8 +334,7 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      std::string translateBack( Idx col,
-                                 Idx translated_val ) const;
+      std::string translateBack( Idx col, Idx translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       void initialize();

@@ -91,11 +91,12 @@ namespace gum {
   // @return A IDs randomly generated.
   template <typename GUM_SCALAR>
   InfluenceDiagram<GUM_SCALAR>*
-  InfluenceDiagramGenerator<GUM_SCALAR>::generateID( Size nbrNodes,
-                                                      GUM_SCALAR arcDensity,
-                                                      GUM_SCALAR chanceNodeDensity,
-                                                      GUM_SCALAR utilityNodeDensity,
-                                                     Size max_modality ) {
+  InfluenceDiagramGenerator<GUM_SCALAR>::generateID(
+      Size nbrNodes,
+      GUM_SCALAR arcDensity,
+      GUM_SCALAR chanceNodeDensity,
+      GUM_SCALAR utilityNodeDensity,
+      Size max_modality ) {
     InfluenceDiagram<GUM_SCALAR>* influenceDiagram =
         new InfluenceDiagram<GUM_SCALAR>();
     // First we add nodes

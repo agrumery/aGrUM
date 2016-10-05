@@ -25,8 +25,9 @@
  * @author Jean-Christophe Magnan
  *
  */
-#include <agrum/multidim/multiDimFunctionGraphManager.h>
+#include <agrum/core/sequence.h>
 #include <agrum/multidim/FunctionGraphUtilities/link.h>
+#include <agrum/multidim/multiDimFunctionGraphManager.h>
 
 namespace gum {
 
@@ -120,8 +121,7 @@ namespace gum {
 
     if ( __functionGraph->isTerminalNode( eraseId ) ) {
 
-      for ( SequenceIterator<const DiscreteVariable*> iterVar =
-                __functionGraph->variablesSequence().begin();
+      for ( auto iterVar =__functionGraph->variablesSequence().begin();
             iterVar != __functionGraph->variablesSequence().end();
             ++iterVar ) {
 
@@ -154,9 +154,10 @@ namespace gum {
         }
       }
 
-      __functionGraph->__var2NodeIdMap
-          [__functionGraph->__internalNodeMap[eraseId]->nodeVar()]
-              ->searchAndRemoveLink( eraseId );
+      __functionGraph
+          ->__var2NodeIdMap[__functionGraph->__internalNodeMap[eraseId]
+                                ->nodeVar()]
+          ->searchAndRemoveLink( eraseId );
 
       delete __functionGraph->__internalNodeMap[eraseId];
       __functionGraph->__internalNodeMap.erase( eraseId );
@@ -421,9 +422,10 @@ namespace gum {
               ++i )
           if ( __functionGraph->__internalNodeMap.exists(
                    __functionGraph->__internalNodeMap[curId]->son( i ) ) )
-            __functionGraph->__internalNodeMap
-                [__functionGraph->__internalNodeMap[curId]->son( i )]
-                    ->removeParent( curId, i );
+            __functionGraph
+                ->__internalNodeMap[__functionGraph->__internalNodeMap[curId]
+                                        ->son( i )]
+                ->removeParent( curId, i );
         delete __functionGraph->__internalNodeMap[curId];
         __functionGraph->__internalNodeMap.erase( curId );
         __functionGraph->__model.eraseNode( curId );

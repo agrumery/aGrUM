@@ -152,8 +152,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    double
-    ScoreBDeu<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
+    double ScoreBDeu<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -162,7 +161,7 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const Size targets_modal = Size(N_ijk.size());
+      const Size targets_modal = Size( N_ijk.size() );
       double score = 0;
 
       // get the nodes involved in the score as well as their modalities
@@ -178,7 +177,7 @@ namespace gum {
         // get the count of the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const Size conditioning_modal =Size(N_ij.size());
+        const Size conditioning_modal = Size( N_ij.size() );
 
         if ( this->_apriori->weight() ) {
           // the score to compute is that of BD with aprioris
@@ -215,7 +214,7 @@ namespace gum {
           // ]
 
           // precompute ess / qi and ess / ( ri * qi )
-          const double ri = double(modalities[all_nodes.back()]);
+          const double ri = double( modalities[all_nodes.back()] );
           const double ess_qi = __ess / conditioning_modal;
           const double ess_qiri = ess_qi / ri;
 
@@ -254,7 +253,7 @@ namespace gum {
           //                - gammalog2 ( N'_i + ESS / ri ) }
 
           // precompute ess / ri
-          const double ri = double(modalities[all_nodes.back()]);
+          const double ri = double( modalities[all_nodes.back()] );
           const double ess_ri = __ess / ri;
 
           double N = 0;
@@ -274,7 +273,7 @@ namespace gum {
           // + sum_k=1^ri log [ gammalog2 ( N_ijk + ess / ri ) ]
 
           // precompute ess / ri
-          const double ri = double(modalities[all_nodes.back()]);
+          const double ri = double( modalities[all_nodes.back()] );
           const double ess_ri = __ess / ri;
 
           score = __gammalog2( __ess ) - ri * __gammalog2( ess_ri );

@@ -120,14 +120,13 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities( std::vector<Size>& modal ) const ;
+      void modalities( std::vector<Size>& modal ) const;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack( Idx col,
-                                 Idx translated_val ) const;
+      std::string translateBack( Idx col, Idx translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames( const std::vector<std::string>& db_var,

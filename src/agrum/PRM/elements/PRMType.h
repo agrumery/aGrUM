@@ -29,13 +29,13 @@
 
 #include <vector>
 
+#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimArray.h>
 
-#include <agrum/PRM/utils_prm.h>
 #include <agrum/PRM/elements/PRMObject.h>
+#include <agrum/PRM/utils_prm.h>
 
 namespace gum {
   namespace prm {
@@ -97,8 +97,8 @@ namespace gum {
        * @throw OperationNotAllowed Raised if label_map is invalid.
        */
       PRMType( PRMType& super_type,
-            const std::vector<Idx>& label_map,
-            const DiscreteVariable& var );
+               const std::vector<Idx>& label_map,
+               const DiscreteVariable& var );
 
       /**
        * Copy constructor.
@@ -207,11 +207,13 @@ namespace gum {
       /**
        * @brief Changes the PRMType of this PRMType super.
        *
-       * You can only change this PRMType super only if t and this->superType() are
+       * You can only change this PRMType super only if t and this->superType()
+       * are
        * equal. Thus you should use this method only if you want to change the
        * DiscreteVariable pointer of this PRMType super.
        *
-       * This is useful to maintain consistence between PRMAttribute's PRMType and
+       * This is useful to maintain consistence between PRMAttribute's PRMType
+       * and
        * their CPF.
        *
        * @param t The PRMType to replace this PRMType super.

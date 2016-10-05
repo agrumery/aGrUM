@@ -35,7 +35,7 @@ namespace gum {
 
       if ( __inf != nullptr ) delete __inf;
 
-      if ( ! __obs.empty() )
+      if ( !__obs.empty() )
         for ( const auto pot : __obs )
           // We used const ptrs only because of BayesNetInference::addEvidence()
           // requires it
@@ -55,7 +55,7 @@ namespace gum {
           this->evidence( chain.first )[chain.second->id()];
       Instantiation i( *bn_obs ), j( *prm_obs );
 
-      for ( i.setFirst(), j.setFirst(); ! i.end(); i.inc(), j.inc() ) {
+      for ( i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc() ) {
         bn_obs->set( i, prm_obs->get( j ) );
       }
 
@@ -135,7 +135,7 @@ namespace gum {
 
       std::stringstream sBuff;
 
-      if ( ! __obs.empty() ) {
+      if ( !__obs.empty() ) {
         __inf->insertEvidence( __obs );
       }
 

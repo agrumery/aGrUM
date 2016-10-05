@@ -37,8 +37,8 @@
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
 
 #include <agrum/config.h>
-#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 namespace gum {
 
@@ -117,7 +117,7 @@ namespace gum {
       void setSliceOrder( const NodeProperty<NodeId>& slice );
 
       /// returns the current slice order
-      const NodeProperty<NodeId>& sliceOrder() const ;
+      const NodeProperty<NodeId>& sliceOrder() const;
 
       /// adds a new node in the slice order
       void addNode( NodeId node, NodeId slice );
@@ -175,37 +175,37 @@ namespace gum {
        * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone( const GraphChange& change ) const ;
+      bool isAlwaysInvalidAlone( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and is not a
        * backward-time arc. */
-      bool checkArcAdditionAlone( NodeId x, NodeId y ) const ;
+      bool checkArcAdditionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
       /** an arc can be removed if and only if the arc exists. */
-      bool checkArcDeletionAlone( NodeId x, NodeId y ) const ;
+      bool checkArcDeletionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkArcReversalAlone( NodeId x, NodeId y ) const ;
+      bool checkArcReversalAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and is not a
        * backward-time arc. */
-      bool checkModificationAlone( const ArcAddition& change ) const ;
+      bool checkModificationAlone( const ArcAddition& change ) const;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone( const ArcDeletion& change ) const ;
+      bool checkModificationAlone( const ArcDeletion& change ) const;
 
       /// checks whether the constraints enable to reverse an arc
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkModificationAlone( const ArcReversal& change ) const ;
+      bool checkModificationAlone( const ArcReversal& change ) const;
 
       /// checks whether the constraints enable to perform a graph change
       /** An arc can be added if and only if its extremal nodes belong to the
@@ -214,7 +214,7 @@ namespace gum {
        * An arc can be removed if and only if the arc exists.
        * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkModificationAlone( const GraphChange& change ) const ;
+      bool checkModificationAlone( const GraphChange& change ) const;
 
 /// @}
 

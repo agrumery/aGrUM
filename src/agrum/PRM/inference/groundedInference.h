@@ -26,8 +26,8 @@
 #ifndef GUM_GROUNDED_INFERENCE_H
 #define GUM_GROUNDED_INFERENCE_H
 
-#include <agrum/PRM/inference/PRMInference.h>
 #include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/PRM/inference/PRMInference.h>
 
 namespace gum {
   namespace prm {

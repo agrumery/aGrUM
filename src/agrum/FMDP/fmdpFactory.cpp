@@ -23,4 +23,3 @@
 
 template class gum::FMDPFactory<float>;
 template class gum::FMDPFactory<double>;
-

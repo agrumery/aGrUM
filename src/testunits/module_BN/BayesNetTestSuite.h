@@ -25,11 +25,11 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/simpleBayesNetGenerator.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>
+#include <agrum/graphs/graphElements.h>
+#include <agrum/variables/discreteVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -60,8 +60,7 @@ namespace gum_tests {
         bn.addArc( idList[1], idList[4] );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -96,8 +95,7 @@ namespace gum_tests {
                        0.0f,0.0f,1.0f} );  // clang-format on
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -121,7 +119,7 @@ namespace gum_tests {
     }
 
     public:
-    gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
+    gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
     void setUp() {
       var1 = new gum::LabelizedVariable( "var1", "1", 2 );
@@ -480,29 +478,37 @@ namespace gum_tests {
             {std::make_pair( "A", "C" ), std::make_pair( "B", "C" )} ) {
         bn.addArc( a.first, a.second );
       }
-      TS_ASSERT_EQUALS(bn.toString(),"BN{nodes: 3, arcs: 2, domainSize: 8, parameters: 12, compression ratio: -50% }");
+      TS_ASSERT_EQUALS( bn.toString(), "BN{nodes: 3, arcs: 2, domainSize: 8, "
+                                       "parameters: 12, compression ratio: "
+                                       "-50% }" );
 
-      bn.cpt("A").fillWith  (1.0f).normalize();
-      bn.generateCPT("B");
-      bn.generateCPT("C");
-      TS_ASSERT_THROWS(bn.cpt("XXX"),gum::NotFound);
+      bn.cpt( "A" ).fillWith( 1.0f ).normalize();
+      bn.generateCPT( "B" );
+      bn.generateCPT( "C" );
+      TS_ASSERT_THROWS( bn.cpt( "XXX" ), gum::NotFound );
 
-      bn.reverseArc("A","C");
-      TS_ASSERT_EQUALS(bn.toString(),"BN{nodes: 3, arcs: 3, domainSize: 8, parameters: 14, compression ratio: -75% }");
+      bn.reverseArc( "A", "C" );
+      TS_ASSERT_EQUALS( bn.toString(), "BN{nodes: 3, arcs: 3, domainSize: 8, "
+                                       "parameters: 14, compression ratio: "
+                                       "-75% }" );
 
-      TS_ASSERT_THROWS(bn.reverseArc("A","C"),gum::InvalidArc);
-      TS_ASSERT_THROWS(bn.reverseArc("A","C"), gum::GraphError);
-      TS_ASSERT_THROWS(bn.reverseArc("A","X"),gum::NotFound);
+      TS_ASSERT_THROWS( bn.reverseArc( "A", "C" ), gum::InvalidArc );
+      TS_ASSERT_THROWS( bn.reverseArc( "A", "C" ), gum::GraphError );
+      TS_ASSERT_THROWS( bn.reverseArc( "A", "X" ), gum::NotFound );
 
-      bn.erase("A");
-      TS_ASSERT_EQUALS(bn.toString(),"BN{nodes: 2, arcs: 1, domainSize: 4, parameters: 6, compression ratio: -50% }");
+      bn.erase( "A" );
+      TS_ASSERT_EQUALS( bn.toString(), "BN{nodes: 2, arcs: 1, domainSize: 4, "
+                                       "parameters: 6, compression ratio: -50% "
+                                       "}" );
 
-      TS_ASSERT_THROWS(bn.erase("A"), gum::NotFound);
+      TS_ASSERT_THROWS( bn.erase( "A" ), gum::NotFound );
 
-      bn.eraseArc("B","C");
-      TS_ASSERT_EQUALS(bn.toString(),"BN{nodes: 2, arcs: 0, domainSize: 4, parameters: 4, compression ratio: 0% }");
+      bn.eraseArc( "B", "C" );
+      TS_ASSERT_EQUALS( bn.toString(), "BN{nodes: 2, arcs: 0, domainSize: 4, "
+                                       "parameters: 4, compression ratio: 0% "
+                                       "}" );
 
-      TS_ASSERT_THROWS(bn.eraseArc("B","C"),gum::NotFound);
+      TS_ASSERT_THROWS( bn.eraseArc( "B", "C" ), gum::NotFound );
     }
 
 
@@ -802,27 +808,28 @@ namespace gum_tests {
       fill( bn, idList );
 
       TS_ASSERT_EQUALS( bn.variable( 0 ).toString(), "var1<0,1>" );
-      TS_ASSERT_THROWS_NOTHING( dynamic_cast<const gum::LabelizedVariable&>(
-                                    bn.variable( 0 ) ).changeLabel( 0, "x" ) );
+      TS_ASSERT_THROWS_NOTHING(
+          dynamic_cast<const gum::LabelizedVariable&>( bn.variable( 0 ) )
+              .changeLabel( 0, "x" ) );
       TS_ASSERT_EQUALS( bn.variable( 0 ).toString(), "var1<x,1>" );
     }
 
     void testShortCutAddLabelized() {
       gum::BayesNet<float> bn;
 
-      gum::NodeId i1,i2,i3;
+      gum::NodeId i1, i2, i3;
 
-      TS_ASSERT_THROWS_NOTHING( i1=bn.add("A",2));
-      TS_ASSERT_THROWS_NOTHING( i2=bn.add("B",3));
-      TS_ASSERT_EQUALS(i1, gum::NodeId(0));
-      TS_ASSERT_EQUALS(i2, gum::NodeId(1));
+      TS_ASSERT_THROWS_NOTHING( i1 = bn.add( "A", 2 ) );
+      TS_ASSERT_THROWS_NOTHING( i2 = bn.add( "B", 3 ) );
+      TS_ASSERT_EQUALS( i1, gum::NodeId( 0 ) );
+      TS_ASSERT_EQUALS( i2, gum::NodeId( 1 ) );
 
-      TS_ASSERT_THROWS(i3=bn.add("A",5), gum::DuplicateLabel);
-      TS_ASSERT_THROWS(i3=bn.add("C",1), gum::OperationNotAllowed);
-      GUM_UNUSED(i3);
+      TS_ASSERT_THROWS( i3 = bn.add( "A", 5 ), gum::DuplicateLabel );
+      TS_ASSERT_THROWS( i3 = bn.add( "C", 1 ), gum::OperationNotAllowed );
+      GUM_UNUSED( i3 );
 
-      TS_ASSERT_THROWS_NOTHING(bn.addArc(i1,i2));
-      TS_ASSERT_EQUALS(bn.log10DomainSize(), std::log10(2.0*3.0));
+      TS_ASSERT_THROWS_NOTHING( bn.addArc( i1, i2 ) );
+      TS_ASSERT_EQUALS( bn.log10DomainSize(), std::log10( 2.0 * 3.0 ) );
     }
   };
 

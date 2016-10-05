@@ -20,9 +20,9 @@
 // floating point env
 #include <cfenv>
 
-#include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
+#include <iostream>
 
 #include <agrum/learning/BNLearner.h>
 #include <agrum/learning/database/databaseFromSQL.h>
@@ -41,7 +41,10 @@ namespace gum_tests {
         : gum::ApproximationSchemeListener( sch )
         , __nbr( 0 )
         , __mess( "" ){};
-    void whenProgress( const void* buffer, const gum::Size a, const double b, const double c ) {
+    void whenProgress( const void* buffer,
+                       const gum::Size a,
+                       const double b,
+                       const double c ) {
       __nbr++;
     }
     void whenStop( const void* buffer, const std::string s ) { __mess = s; }
@@ -115,7 +118,8 @@ namespace gum_tests {
     //     learner.setMaxIndegree( 10 );
     //     learner.useScoreLog2Likelihood();
 
-    //     TS_ASSERT_THROWS( learner.useScoreBD(), gum::IncompatibleScoreApriori );
+    //     TS_ASSERT_THROWS( learner.useScoreBD(), gum::IncompatibleScoreApriori
+    //     );
     //     TS_GUM_ASSERT_THROWS_NOTHING( learner.useScoreBDeu() );
     //     learner.useScoreLog2Likelihood();
 
@@ -660,7 +664,7 @@ namespace gum_tests {
 
         gum::BayesNet<double> bn = learner.learnBN();
 
-        TS_ASSERT_DELTA( listen.getNbr(), 74 ,1); // 75 ?
+        TS_ASSERT_DELTA( listen.getNbr(), 74, 1 );  // 75 ?
         TS_ASSERT_EQUALS( listen.getMess(), "stopped on request" );
         TS_ASSERT_EQUALS( learner.messageApproximationScheme(),
                           "stopped on request" );
@@ -676,7 +680,7 @@ namespace gum_tests {
 
         gum::BayesNet<double> bn = learner.learnBN();
 
-        TS_ASSERT_DELTA( listen.getNbr(), 3 ,1 ); // 2?
+        TS_ASSERT_DELTA( listen.getNbr(), 3, 1 );  // 2?
         TS_ASSERT_EQUALS( listen.getMess(), "stopped on request" );
         TS_ASSERT_EQUALS( learner.messageApproximationScheme(),
                           "stopped on request" );

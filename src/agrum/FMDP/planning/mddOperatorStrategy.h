@@ -34,7 +34,8 @@
 namespace gum {
 
   /**
-   * @class MDDOperatorStrategy mddOperatorStrategy.h <agrum/FMDP/planning/mddOperatorStrategy.h>
+   * @class MDDOperatorStrategy mddOperatorStrategy.h
+   * <agrum/FMDP/planning/mddOperatorStrategy.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *

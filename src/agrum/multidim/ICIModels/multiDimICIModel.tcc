@@ -27,9 +27,9 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
-#include <agrum/multidim/multiDimReadOnly.h>
-#include <agrum/multidim/ICIModels/multiDimICIModel.h>
 #include <agrum/core/bijection.h>
+#include <agrum/multidim/ICIModels/multiDimICIModel.h>
+#include <agrum/multidim/multiDimReadOnly.h>
 
 namespace gum {
 
@@ -152,4 +152,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

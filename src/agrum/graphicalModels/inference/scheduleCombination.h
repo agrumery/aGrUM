@@ -74,11 +74,11 @@
 #ifndef GUM_SCHEDULE_COMBINATION_H
 #define GUM_SCHEDULE_COMBINATION_H
 
-#include <utility>
 #include <agrum/core/set.h>
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/schedule.h>
+#include <agrum/graphicalModels/inference/scheduleMultiDim.h>
+#include <agrum/multidim/multiDimImplementation.h>
+#include <utility>
 
 namespace gum {
 
@@ -128,8 +128,8 @@ namespace gum {
 
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction( MultiDimImplementation<GUM_SCALAR>* (
-        *combine )( const MultiDimImplementation<GUM_SCALAR>&,
-                    const MultiDimImplementation<GUM_SCALAR>& ) ) = 0;
+        *combine )(const MultiDimImplementation<GUM_SCALAR>&,
+                   const MultiDimImplementation<GUM_SCALAR>&)) = 0;
 
     /// returns the combination function currently used by the combinator
     virtual MultiDimImplementation<GUM_SCALAR>* ( *combineFunction() )(

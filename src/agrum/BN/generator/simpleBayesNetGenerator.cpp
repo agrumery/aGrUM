@@ -27,4 +27,3 @@
 
 template class gum::SimpleBayesNetGenerator<float>;
 template class gum::SimpleBayesNetGenerator<double>;
-

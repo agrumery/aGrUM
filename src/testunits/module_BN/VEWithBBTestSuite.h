@@ -24,11 +24,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
@@ -46,7 +44,7 @@ namespace gum_tests {
     public:
     gum::BayesNet<float>* bn;
     gum::NodeId i1, i2, i3, i4, i5;
-    gum::Potential<float>* e_i1, *e_i4;
+    gum::Potential<float> *e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -89,7 +87,7 @@ namespace gum_tests {
     }
 
     //// Testing when there is no evidence
-    //void testMakeInference() {
+    // void testMakeInference() {
     //  fill( *bn );
     //  // Testing the inference
     //  gum::VEWithBB<float>* inf = 0;
@@ -102,7 +100,7 @@ namespace gum_tests {
     //  }
     //}
 
-    //void testVEWithBB() {
+    // void testVEWithBB() {
     //  fill( *bn );
     //  gum::VEWithBB<float>* inf = 0;
     //  TS_GUM_ASSERT_THROWS_NOTHING(
@@ -112,31 +110,36 @@ namespace gum_tests {
     //    TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
     //    const gum::Potential<float>* posterior_1 = 0;
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) )
+    //    );
 
     //    if ( posterior_1 != 0 ) printProba( *posterior_1 );
 
     //    const gum::Potential<float>* posterior_2 = 0;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_2 = &( inf->posterior( i2 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_2 = &( inf->posterior( i2 ) )
+    //    );
 
     //    if ( posterior_2 != 0 ) printProba( *posterior_2 );
 
     //    const gum::Potential<float>* posterior_3 = 0;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_3 = &( inf->posterior( i3 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_3 = &( inf->posterior( i3 ) )
+    //    );
 
     //    if ( posterior_3 != 0 ) printProba( *posterior_3 );
 
     //    const gum::Potential<float>* posterior_4 = 0;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_4 = &( inf->posterior( i4 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_4 = &( inf->posterior( i4 ) )
+    //    );
 
     //    if ( posterior_4 != 0 ) printProba( *posterior_4 );
 
     //    const gum::Potential<float>* posterior_5 = 0;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_5 = &( inf->posterior( i5 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_5 = &( inf->posterior( i5 ) )
+    //    );
 
     //    if ( posterior_5 != 0 ) printProba( *posterior_5 );
 
@@ -144,7 +147,7 @@ namespace gum_tests {
     //  }
     //}
 
-    //void testShaferShenoyInf_3() {
+    // void testShaferShenoyInf_3() {
     //  fill( *bn );
     //  gum::List<const gum::Potential<float>*> e_list;
     //  e_list.insert( e_i1 );
@@ -158,31 +161,36 @@ namespace gum_tests {
     //    TS_GUM_ASSERT_THROWS_NOTHING( inf->insertEvidence( e_list ) );
 
     //    const gum::Potential<float>* posterior_1 = 0;
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) )
+    //    );
 
     //    if ( posterior_1 != 0 ) printProba( *posterior_1 );
 
     //    const gum::Potential<float>* posterior_2 = 0;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_2 = &( inf->posterior( i2 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_2 = &( inf->posterior( i2 ) )
+    //    );
 
     //    if ( posterior_2 != 0 ) printProba( *posterior_2 );
 
     //    const gum::Potential<float>* posterior_3 = 0;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_3 = &( inf->posterior( i3 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_3 = &( inf->posterior( i3 ) )
+    //    );
 
     //    if ( posterior_3 != 0 ) printProba( *posterior_3 );
 
     //    const gum::Potential<float>* posterior_4 = 0;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_4 = &( inf->posterior( i4 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_4 = &( inf->posterior( i4 ) )
+    //    );
 
     //    if ( posterior_4 != 0 ) printProba( *posterior_4 );
 
     //    const gum::Potential<float>* posterior_5 = 0;
 
-    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_5 = &( inf->posterior( i5 ) ) );
+    //    TS_GUM_ASSERT_THROWS_NOTHING( posterior_5 = &( inf->posterior( i5 ) )
+    //    );
 
     //    if ( posterior_5 != 0 ) printProba( *posterior_5 );
 
@@ -190,7 +198,7 @@ namespace gum_tests {
     //  }
     //}
 
-    //void testAsiaWithHardEvidence() {
+    // void testAsiaWithHardEvidence() {
     //  // Arrange
     //  std::string file = GET_RESSOURCES_PATH( "asia.bif" );
     //  gum::BayesNet<double> bn;
@@ -248,7 +256,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p_vebb.domainSize(), p_ss.domainSize() );
 
       gum::Instantiation i_ve( p_vebb );
-      for ( gum::Instantiation i( p_vebb ); ! i.end(); i.inc() ) {
+      for ( gum::Instantiation i( p_vebb ); !i.end(); i.inc() ) {
         TS_ASSERT_DELTA( p_vebb[i], p_ss[i], 1e-6 );
         TS_ASSERT_DELTA( p_vebb[i], p_lazy[i], 1e-6 );
       }

@@ -28,8 +28,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimSparse.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

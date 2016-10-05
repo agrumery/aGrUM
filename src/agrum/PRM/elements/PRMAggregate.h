@@ -27,8 +27,8 @@
 #ifndef GUM_AGGREGATE_H
 #define GUM_AGGREGATE_H
 
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 #include <agrum/PRM/elements/PRMClassElement.h>
 
@@ -124,8 +124,8 @@ namespace gum {
        * copied.
        */
       PRMAggregate( const std::string& name,
-                 AggregateType aggType,
-                 const PRMType<GUM_SCALAR>& rvType );
+                    AggregateType aggType,
+                    const PRMType<GUM_SCALAR>& rvType );
 
       /**
        * Default constructor.
@@ -136,9 +136,9 @@ namespace gum {
        * @param label The index of the label on which this aggregate applies.
        */
       PRMAggregate( const std::string& name,
-                 AggregateType aggType,
-                 const PRMType<GUM_SCALAR>& rvType,
-                 Idx label );
+                    AggregateType aggType,
+                    const PRMType<GUM_SCALAR>& rvType,
+                    Idx label );
 
       /// Destructor.
       virtual ~PRMAggregate();
@@ -166,14 +166,14 @@ namespace gum {
 
       /**
        * @brief Returns the shared_ptr holding this Aggregate label.
-       * 
+       *
        * This is used for inherited Aggregates to share labels in O3PRM.
        */
       std::shared_ptr<Idx> sharedLabel() const;
 
       /**
        * @brief Sets the shared_ptr of this Aggregate.
-       * 
+       *
        * This is used for inherited aggregates to share labels in O3PRM.
        */
       void sharedLabel( std::shared_ptr<Idx> label );
@@ -181,8 +181,8 @@ namespace gum {
       /**
        * @brief Set the aggregator's label.
        */
-      void setLabel(Idx idx);
-      void setLabel(const std::string& label);
+      void setLabel( Idx idx );
+      void setLabel( const std::string& label );
 
       /**
        * @brief Returns true if the label is defined.
@@ -254,9 +254,9 @@ namespace gum {
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
       std::shared_ptr<Idx> __label;
-      //Idx* __label;
+      // Idx* __label;
       std::string __label_value;
- 
+
       /// @}
     };
 

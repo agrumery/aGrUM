@@ -30,8 +30,8 @@
 #define GUM_PRM_O3PRM_BNREADER_H
 
 #include <algorithm>
-#include <string>
 #include <regex>
+#include <string>
 
 #include <agrum/BN/io/BNReader.h>
 #include <agrum/core/errorsContainer.h>
@@ -74,7 +74,7 @@ namespace gum {
     /// # of errors
     Size warnings() { return __errors.warning_count; }
 
-    Idx errLine(  Idx i ) { return __errors.error( i ).line; }
+    Idx errLine( Idx i ) { return __errors.error( i ).line; }
     /// col of ith error or warning
     Idx errCol( Idx i ) { return __errors.error( i ).column; }
     /// type of ith error or warning

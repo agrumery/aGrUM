@@ -23,9 +23,9 @@
  */
 #include <limits>
 
+#include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/core/list.h>
 #include <agrum/core/sequence.h>
-#include <agrum/BN/inference/barrenNodesFinder.h>
 
 
 #ifdef GUM_NO_INLINE
@@ -212,8 +212,7 @@ namespace gum {
           // find the child with the smallest number of parents
           const auto& children = sweep_dag.children( node );
           NodeId smallest_child = 0;
-          Size smallest_nb_par =
-              std::numeric_limits<Size>::max();
+          Size smallest_nb_par = std::numeric_limits<Size>::max();
           for ( const auto child : children ) {
             const auto new_nb = sweep_dag.parents( child ).size();
             if ( new_nb < smallest_nb_par ) {

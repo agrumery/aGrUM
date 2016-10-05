@@ -25,8 +25,8 @@
 #ifndef GUM_SCHEDULE_OPERATION_H
 #define GUM_SCHEDULE_OPERATION_H
 
-#include <utility>
 #include <string>
+#include <utility>
 
 #include <agrum/config.h>
 

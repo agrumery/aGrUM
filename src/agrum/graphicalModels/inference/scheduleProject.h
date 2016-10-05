@@ -30,12 +30,12 @@
 
 #include <agrum/config.h>
 
-#include <agrum/core/set.h>
 #include <agrum/core/sequence.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/core/set.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/scheduleOperation.h>
+#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/variables/discreteVariable.h>
 
 namespace gum {
 
@@ -54,7 +54,7 @@ namespace gum {
                      const Set<const DiscreteVariable*>& del_vars,
                      MultiDimImplementation<GUM_SCALAR>* ( *project )(
                          const MultiDimImplementation<GUM_SCALAR>&,
-                         const Set<const DiscreteVariable*>& ) );
+                         const Set<const DiscreteVariable*>&));
 
     /// copy constructor
     ScheduleProject( const ScheduleProject<GUM_SCALAR>& );

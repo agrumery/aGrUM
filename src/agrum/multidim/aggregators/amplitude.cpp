@@ -28,4 +28,3 @@
 
 template class gum::aggregator::Amplitude<float>;
 template class gum::aggregator::Amplitude<double>;
-

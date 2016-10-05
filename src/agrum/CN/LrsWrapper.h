@@ -38,24 +38,26 @@
 #include <agrum/core/mvsc/unistd.h>
 #endif
 
-#include <fcntl.h>
-#include <cstdio>
-#include <vector>
-#include <unordered_set>
-#include <fstream>
 #include <chrono>
+#include <cstdio>
+#include <fcntl.h>
+#include <fstream>
+#include <unordered_set>
+#include <vector>
 
 #include <agrum/core/math/rational.h>
 
 // we force MP (not long or GMP)
 #undef LONG
+#undef LRSLONG
 #undef GMP
 #define MP
 // lrs stuff
+extern "C" {
 #include <agrum/core/math/lrslib/lrslib.h>
-
+}
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
-#ifndef B64
+#ifdef B32
 /*32 bit machines */
 #define FORMAT "%4.4lu"
 #define MAXD 2147483647L
@@ -72,6 +74,15 @@
 #define INTSIZE 16L
 #define BIT "64bit"
 #endif
+
+// 64 bits for windows (long is 32 bits)
+#ifdef _MSC_VER
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+#else
+#include <stdint.h>
+#endif
+
 /* ************ */
 
 #define enumStringify( name ) #name
@@ -92,7 +103,7 @@ namespace gum {
     class LRSWrapper {
       private:
       /** @brief Shortcut for dynamic matrix using vectors. */
-      using matrix= typename std::vector<std::vector<GUM_SCALAR>>;
+      using matrix = typename std::vector<std::vector<GUM_SCALAR>>;
 
       /** @brief Input matrix - either a V-representation or an
        * H-representation. */
@@ -232,8 +243,8 @@ namespace gum {
        */
       void __getLRSWrapperOutput( lrs_mp Nin,
                                   lrs_mp Din,
-                                  std::vector<long int>& Num,
-                                  std::vector<long int>& Den ) const;
+                                  std::vector<int64_t>& Num,
+								  std::vector<int64_t>& Den ) const;
 
       /// @}
 

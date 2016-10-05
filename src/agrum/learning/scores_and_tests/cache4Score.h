@@ -98,22 +98,19 @@ namespace gum {
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert( Idx var,
-                   const std::vector<Idx>& conditioning_set,
-                   double score );
+      void
+      insert( Idx var, const std::vector<Idx>& conditioning_set, double score );
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       template <typename Alloc>
-      void
-      insert( Idx var, IdSet<Alloc>& conditioning_set, double score );
+      void insert( Idx var, IdSet<Alloc>& conditioning_set, double score );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      void erase( Idx var,
-                  const std::vector<Idx>& conditioning_set );
+      void erase( Idx var, const std::vector<Idx>& conditioning_set );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
@@ -122,13 +119,11 @@ namespace gum {
       void erase( Idx var, const IdSet<Alloc>& conditioning_set );
 
       /// indicates whether a given score exists
-      bool exists( Idx var,
-                   const std::vector<Idx>& conditioning_set );
+      bool exists( Idx var, const std::vector<Idx>& conditioning_set );
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      double score( Idx var,
-                   const std::vector<Idx>& conditioning_set );
+      double score( Idx var, const std::vector<Idx>& conditioning_set );
 
       /// removes all the stored scores
       void clear();

@@ -19,18 +19,18 @@
  ***************************************************************************/
 #define TIXML_USE_TICPP
 
-#include <iostream>
-#include <string>
 #include <fstream>
 #include <iostream>
+#include <iostream>
+#include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/graphs/graphElements.h>
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
+#include <agrum/graphs/graphElements.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //           D1

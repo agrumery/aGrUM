@@ -28,4 +28,3 @@
 
 template class gum::aggregator::Count<float>;
 template class gum::aggregator::Count<double>;
-

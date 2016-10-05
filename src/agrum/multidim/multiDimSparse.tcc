@@ -39,7 +39,8 @@ namespace gum {
   // copy constructor
 
   template <typename GUM_SCALAR>
-  MultiDimSparse<GUM_SCALAR>::MultiDimSparse( const MultiDimSparse<GUM_SCALAR>& from )
+  MultiDimSparse<GUM_SCALAR>::MultiDimSparse(
+      const MultiDimSparse<GUM_SCALAR>& from )
       : MultiDimWithOffset<GUM_SCALAR>( from )
       , _params( from._params )
       , _default( from._default ) {
@@ -59,7 +60,8 @@ namespace gum {
   // data access operator
 
   template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR MultiDimSparse<GUM_SCALAR>::get( const Instantiation& i ) const {
+  INLINE GUM_SCALAR
+  MultiDimSparse<GUM_SCALAR>::get( const Instantiation& i ) const {
     Size key;
 
     if ( i.isMaster( this ) ) {
@@ -129,7 +131,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE MultiDimContainer<GUM_SCALAR>* MultiDimSparse<GUM_SCALAR>::newFactory() const {
+  INLINE MultiDimContainer<GUM_SCALAR>*
+  MultiDimSparse<GUM_SCALAR>::newFactory() const {
     return new MultiDimSparse<GUM_SCALAR>( _default );
   }
 
@@ -147,8 +150,10 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR& MultiDimSparse<GUM_SCALAR>::_get( const Instantiation& i ) const {
-    GUM_ERROR( OperationNotAllowed, "Do not use this with the MultiDimSparse class." );
+  INLINE GUM_SCALAR&
+  MultiDimSparse<GUM_SCALAR>::_get( const Instantiation& i ) const {
+    GUM_ERROR( OperationNotAllowed,
+               "Do not use this with the MultiDimSparse class." );
   }
 
 } /* namespace gum */

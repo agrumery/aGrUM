@@ -27,4 +27,3 @@
 
 template class gum::BNReader<float>;
 template class gum::BNReader<double>;
-

@@ -306,10 +306,9 @@ namespace gum {
     /// presents at the leaves the associated ActionSet
     /// @warning deallocate the argmax optimal value function
     // ==========================================================================
-    void _extractOptimalPolicy(
-        const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>,
-                                    SetTerminalNodePolicy>*
-            optimalValueFunction );
+    void _extractOptimalPolicy( const MultiDimFunctionGraph<
+                                ArgMaxSet<GUM_SCALAR, Idx>,
+                                SetTerminalNodePolicy>* optimalValueFunction );
 
     private:
     // ==========================================================================

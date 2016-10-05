@@ -152,7 +152,7 @@ namespace gum {
     i = 0;
 
     Instantiation iter( *bn.cpt( id ).content() );
-    for ( iter.setFirst(); i < bn.cpt( id ).domainSize(); ++iter,++i ) {
+    for ( iter.setFirst(); i < bn.cpt( id ).domainSize(); ++iter, ++i ) {
       if ( i != 0 ) oss << ", ";
       oss << bn.cpt( id )[iter];
     }

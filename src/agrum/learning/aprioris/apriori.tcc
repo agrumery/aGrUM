@@ -71,10 +71,10 @@ namespace gum {
     void Apriori<IdSetAlloc, CountAlloc>::setParameters(
         const std::vector<Size>& modalities,
         std::vector<std::vector<double, CountAlloc>>& counts,
-        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                    Idx>*>& target_nodesets,
-        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                    Idx>*>& conditioning_nodesets ) {
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+            target_nodesets,
+        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+            conditioning_nodesets ) {
       if ( _weight != 0 ) {
         _modalities = &modalities;
         _unapriori_counts = &counts;
@@ -82,8 +82,8 @@ namespace gum {
         _conditioning_nodesets = &conditioning_nodesets;
 
         // reserve the _apriori_counts
-        Size apriori_size = Size(_apriori_counts.size());
-        const Size count_size = Size(counts.size());
+        Size apriori_size = Size( _apriori_counts.size() );
+        const Size count_size = Size( counts.size() );
 
         while ( apriori_size > count_size ) {
           _apriori_counts.pop_back();
@@ -97,8 +97,8 @@ namespace gum {
         if ( apriori_size < count_size ) {
           _apriori_counts.reserve( count_size );
           do {
-            _apriori_counts.push_back(
-                std::vector<double, CountAlloc>( counts[apriori_size].size() ) );
+            _apriori_counts.push_back( std::vector<double, CountAlloc>(
+                counts[apriori_size].size() ) );
             ++apriori_size;
           } while ( apriori_size < count_size );
         }
@@ -137,8 +137,7 @@ namespace gum {
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<double, CountAlloc>&
-    Apriori<IdSetAlloc, CountAlloc>::getConditioningApriori(
-        Idx index ) {
+    Apriori<IdSetAlloc, CountAlloc>::getConditioningApriori( Idx index ) {
       if ( _weight ) {
         return _apriori_counts[_conditioning_nodesets->operator[]( index )
                                    ->second];

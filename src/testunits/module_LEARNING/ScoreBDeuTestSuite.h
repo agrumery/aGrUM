@@ -18,16 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
+#include <iostream>
 
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
-#include <agrum/learning/aprioris/aprioriSmoothing.h>
-#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum_tests {
 
@@ -76,26 +76,26 @@ namespace gum_tests {
       score.setEffectiveSampleSize( 2 );
       gum::Idx id1 = score.addNodeSet( 3 );
       gum::Idx id2 = score.addNodeSet( 1 );
-      TS_ASSERT_DELTA(score.score( id1), -996.781, 0.05 );
-      TS_ASSERT_DELTA(score.score( id2), -3030.73, 0.05 );
+      TS_ASSERT_DELTA( score.score( id1 ), -996.781, 0.05 );
+      TS_ASSERT_DELTA( score.score( id2 ), -3030.73, 0.05 );
 
       score.clear();
       id1 = score.addNodeSet( 0 );
       id2 = score.addNodeSet( 2 );
-      TS_ASSERT_DELTA(score.score( id1), -10006.1, 0.05 );
-      TS_ASSERT_DELTA(score.score( id2), -9935.8, 0.05 );
+      TS_ASSERT_DELTA( score.score( id1 ), -10006.1, 0.05 );
+      TS_ASSERT_DELTA( score.score( id2 ), -9935.8, 0.05 );
 
       score.clear();
       score.setEffectiveSampleSize( 4 );
       id1 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
       id2 = score.addNodeSet( 1, std::vector<gum::Idx>{4} );
-      TS_ASSERT_DELTA(score.score( id1), -991.062, 0.05 );
-      TS_ASSERT_DELTA(score.score( id2), -3030.55, 0.05 );
+      TS_ASSERT_DELTA( score.score( id1 ), -991.062, 0.05 );
+      TS_ASSERT_DELTA( score.score( id2 ), -3030.55, 0.05 );
 
       score.clear();
       score.setEffectiveSampleSize( 8 );
       id1 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-      TS_ASSERT_DELTA(score.score( id1), -1014.4, 0.05 );
+      TS_ASSERT_DELTA( score.score( id1 ), -1014.4, 0.05 );
 
       /*
       gum::Idx id3, id4, id5, id6, id7;
@@ -142,10 +142,10 @@ namespace gum_tests {
         id2 = score.addNodeSet( 1 );
         id4 = score.addNodeSet( 2 );
         id6 = score.addNodeSet( 2 );
-        TS_ASSERT_DELTA(score.score( id1), -996.781, 0.05 );
-        TS_ASSERT_DELTA(score.score( id2), -3030.73, 0.05 );
-        TS_ASSERT_DELTA(score.score( id4), -9935.8, 0.05 );
-        TS_ASSERT_DELTA(score.score( id6), -9935.8, 0.05 );
+        TS_ASSERT_DELTA( score.score( id1 ), -996.781, 0.05 );
+        TS_ASSERT_DELTA( score.score( id2 ), -3030.73, 0.05 );
+        TS_ASSERT_DELTA( score.score( id4 ), -9935.8, 0.05 );
+        TS_ASSERT_DELTA( score.score( id6 ), -9935.8, 0.05 );
       }
     }
 
@@ -173,10 +173,10 @@ namespace gum_tests {
         id2 = score.addNodeSet( 1 );
         id4 = score.addNodeSet( 2 );
         id6 = score.addNodeSet( 2 );
-        TS_ASSERT_DELTA(score.score( id1), -996.781, 0.05 );
-        TS_ASSERT_DELTA(score.score( id2), -3030.73, 0.05 );
-        TS_ASSERT_DELTA(score.score( id4), -9935.8, 0.05 );
-        TS_ASSERT_DELTA(score.score( id6), -9935.8, 0.05 );
+        TS_ASSERT_DELTA( score.score( id1 ), -996.781, 0.05 );
+        TS_ASSERT_DELTA( score.score( id2 ), -3030.73, 0.05 );
+        TS_ASSERT_DELTA( score.score( id4 ), -9935.8, 0.05 );
+        TS_ASSERT_DELTA( score.score( id6 ), -9935.8, 0.05 );
       }
     }
   };

@@ -107,4 +107,3 @@ extern template class gum::prm::o3prm::O3NameSolver<double>;
 #include <agrum/PRM/o3prm/O3NameSolver.tcc>
 
 #endif  // GUM_PRM_O3PRM_O3NAMESOLVER_H
-

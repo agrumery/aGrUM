@@ -23,4 +23,3 @@
 
 template class gum::BIFReader<float>;
 template class gum::BIFReader<double>;
-

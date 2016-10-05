@@ -22,4 +22,3 @@
 
 template class gum::BayesNetInference<float>;
 template class gum::BayesNetInference<double>;
-

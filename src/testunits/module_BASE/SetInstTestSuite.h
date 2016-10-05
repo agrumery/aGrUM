@@ -20,11 +20,11 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/variables/discretizedVariable.h>
+#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/setInst.h>
-#include <agrum/multidim/instantiation.h>
+#include <agrum/variables/discretizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

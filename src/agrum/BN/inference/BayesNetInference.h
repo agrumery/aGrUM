@@ -28,8 +28,8 @@
 #ifndef GUM_INFERENCE_H
 #define GUM_INFERENCE_H
 
-#include <agrum/config.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/config.h>
 
 namespace gum {
   /**

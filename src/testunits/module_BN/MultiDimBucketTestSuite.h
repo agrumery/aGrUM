@@ -22,13 +22,13 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimBucket.h>
 #include <agrum/multidim/operators/operators4MultiDim.h>
 #include <agrum/multidim/operators/projections4MultiDim.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/instantiation.h>
 
 namespace gum_tests {
 
@@ -59,7 +59,7 @@ namespace gum_tests {
 
       auto del_vars = gum::Set<const gum::DiscreteVariable*>();
       for ( auto var : result.variablesSequence() ) {
-        if ( ! product.contains( *var ) ) {
+        if ( !product.contains( *var ) ) {
           del_vars.insert( var );
         }
       }
@@ -425,8 +425,7 @@ namespace gum_tests {
             else
               outBucket++;
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl
-                    << e.errorContent() << std::endl;
+          std::cerr << std::endl << e.errorContent() << std::endl;
           TS_ASSERT( false );
         }
 
@@ -489,7 +488,7 @@ namespace gum_tests {
         i.add( bn->variable( r ) );
         i.add( bn->variable( s ) );
 
-        for ( i.setFirst(); ! i.end(); i.inc() ) {
+        for ( i.setFirst(); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( clique_csr.get( i ), bucket_csr.get( i ), 1e-7 );
         }
       }
@@ -503,7 +502,7 @@ namespace gum_tests {
 
       auto del_vars = gum::Set<const gum::DiscreteVariable*>();
       for ( auto var : clique_csr.variablesSequence() ) {
-        if ( ! sep_sr.contains( *var ) ) {
+        if ( !sep_sr.contains( *var ) ) {
           del_vars.insert( var );
         }
       }
@@ -515,7 +514,7 @@ namespace gum_tests {
         i.add( bn->variable( r ) );
         i.add( bn->variable( s ) );
 
-        for ( i.setFirst(); ! i.end(); i.inc() ) {
+        for ( i.setFirst(); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( sep_sr.get( i ), bucket_sr.get( i ), 1e-7 );
         }
       }
@@ -538,7 +537,7 @@ namespace gum_tests {
         i.add( bn->variable( r ) );
         i.add( bn->variable( s ) );
 
-        for ( i.setFirst(); ! i.end(); i.inc() ) {
+        for ( i.setFirst(); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( clique_wsr.get( i ), bucket_wsr.get( i ), 1e-7 );
         }
       }
@@ -559,7 +558,7 @@ namespace gum_tests {
 
       del_vars = gum::Set<const gum::DiscreteVariable*>();
       for ( auto var : tmp.variablesSequence() ) {
-        if ( ! marg_w.contains( *var ) ) {
+        if ( !marg_w.contains( *var ) ) {
           del_vars.insert( var );
         }
       }
@@ -569,7 +568,7 @@ namespace gum_tests {
         gum::Instantiation i;
         i.add( bn->variable( w ) );
 
-        for ( i.setFirst(); ! i.end(); i.inc() ) {
+        for ( i.setFirst(); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( marg_w.get( i ), bucket_marg_w.get( i ), 1e-7 );
         }
       }
@@ -579,7 +578,7 @@ namespace gum_tests {
       {
         gum::Instantiation i( norm_b_m_w );
 
-        for ( i.setFirst(); ! i.end(); i.inc() ) {
+        for ( i.setFirst(); !i.end(); i.inc() ) {
           norm_b_m_w.set( i, bucket_marg_w.get( i ) );
         }
       }
@@ -599,7 +598,7 @@ namespace gum_tests {
         gum::Instantiation i;
         i.add( bn->variable( w ) );
 
-        for ( i.setFirst(); ! i.end(); i.inc() ) {
+        for ( i.setFirst(); !i.end(); i.inc() ) {
           fnw.set( i, false_marg_w.get( i ) );
         }
       }
@@ -611,7 +610,7 @@ namespace gum_tests {
         gum::Instantiation i;
         i.add( bn->variable( w ) );
 
-        for ( i.setFirst(); ! i.end(); i.inc() ) {
+        for ( i.setFirst(); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( marg_w.get( i ), norm_b_m_w.get( i ), 1e-7 );
         }
       }

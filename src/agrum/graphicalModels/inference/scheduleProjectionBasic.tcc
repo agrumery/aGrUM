@@ -27,9 +27,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
 #include <agrum/config.h>
 #include <agrum/graphicalModels/inference/scheduleProject.h>
+#include <limits>
 
 namespace gum {
 
@@ -38,7 +38,7 @@ namespace gum {
   ScheduleProjectionBasic<GUM_SCALAR>::ScheduleProjectionBasic(
       MultiDimImplementation<GUM_SCALAR>* ( *proj )(
           const MultiDimImplementation<GUM_SCALAR>&,
-          const Set<const DiscreteVariable*>& ) )
+          const Set<const DiscreteVariable*>&))
       : ScheduleProjection<GUM_SCALAR>()
       , _proj( proj ) {
     /// for debugging purposes
@@ -108,7 +108,7 @@ namespace gum {
   void ScheduleProjectionBasic<GUM_SCALAR>::setProjectFunction(
       MultiDimImplementation<GUM_SCALAR>* ( *proj )(
           const MultiDimImplementation<GUM_SCALAR>&,
-          const Set<const DiscreteVariable*>& ) ) {
+          const Set<const DiscreteVariable*>&)) {
     _proj = proj;
   }
 
@@ -177,7 +177,7 @@ namespace gum {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
-        res *= long(var->domainSize());
+        res *= long( var->domainSize() );
       }
 
     return std::pair<long, long>( res, res );

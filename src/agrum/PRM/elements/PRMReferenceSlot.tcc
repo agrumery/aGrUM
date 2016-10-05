@@ -95,7 +95,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const PRMType<GUM_SCALAR>& PRMReferenceSlot<GUM_SCALAR>::type() const {
+    INLINE const PRMType<GUM_SCALAR>&
+    PRMReferenceSlot<GUM_SCALAR>::type() const {
       GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
     }
 
@@ -105,7 +106,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Potential<GUM_SCALAR>& PRMReferenceSlot<GUM_SCALAR>::cpf() const {
+    INLINE const Potential<GUM_SCALAR>&
+    PRMReferenceSlot<GUM_SCALAR>::cpf() const {
       GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
     }
 
@@ -121,9 +123,8 @@ namespace gum {
         const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    INLINE void
-    PRMReferenceSlot<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {
-    }
+    INLINE void PRMReferenceSlot<GUM_SCALAR>::addChild(
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
   } /* namespace prm */
 } /* namespace gum */

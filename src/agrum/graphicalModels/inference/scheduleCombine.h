@@ -30,9 +30,9 @@
 #include <agrum/config.h>
 
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/scheduleOperation.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 
@@ -53,7 +53,7 @@ namespace gum {
                      const ScheduleMultiDim<GUM_SCALAR>& table2,
                      MultiDimImplementation<GUM_SCALAR>* ( *combine )(
                          const MultiDimImplementation<GUM_SCALAR>&,
-                         const MultiDimImplementation<GUM_SCALAR>& ) );
+                         const MultiDimImplementation<GUM_SCALAR>&));
 
     /// copy constructor
     ScheduleCombine( const ScheduleCombine<GUM_SCALAR>& );

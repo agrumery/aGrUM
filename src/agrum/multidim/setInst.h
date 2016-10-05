@@ -33,8 +33,8 @@
 #include <agrum/config.h>
 
 #include <agrum/core/bijection.h>
-#include <agrum/multidim/multiDimInterface.h>
 #include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/multiDimInterface.h>
 
 namespace gum {
 

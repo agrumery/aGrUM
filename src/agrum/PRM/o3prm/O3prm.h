@@ -584,10 +584,10 @@ namespace gum {
 
         O3Label& name();
         const O3Label& name() const;
-        
+
         O3LabelList& parents();
         const O3LabelList& parents() const;
-        
+
         O3LabelList& parameters();
         const O3LabelList& parameters() const;
 
@@ -933,4 +933,3 @@ namespace gum {
 }  // gum
 
 #endif  // GUM_PRM_O3PRM_PRM_H
-

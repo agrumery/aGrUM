@@ -30,8 +30,8 @@
 /// @todo virtual for all functions that MAY be one day redefined in any derived
 /// class
 
-#include <agrum/CN/inferenceEngine.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/CN/inferenceEngine.h>
 
 namespace gum {
   namespace credal {

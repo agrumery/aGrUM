@@ -33,9 +33,9 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
 //======================================================================
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/variables/discreteVariable.h>
 //======================================================================
 
 namespace gum {

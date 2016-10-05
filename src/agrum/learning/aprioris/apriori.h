@@ -25,8 +25,8 @@
 #ifndef GUM_LEARNING_A_PRIORI_H
 #define GUM_LEARNING_A_PRIORI_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <agrum/config.h>
 #include <agrum/core/exceptions.h>
@@ -81,10 +81,10 @@ namespace gum {
       void setParameters(
           const std::vector<Size>& modalities,
           std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                      Idx>*>& target_nodesets,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                      Idx>*>& conditioning_nodesets );
+          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+              target_nodesets,
+          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+              conditioning_nodesets );
 
       /// compute the apriori into a given set of counts
       virtual void compute() = 0;
@@ -119,14 +119,13 @@ namespace gum {
        * the countings have already been processed and have been put into a
        * cache.
        * So, for these pointers, no a priori operation needs be performed. */
-      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                  Idx>*>* _target_nodesets{nullptr};
+      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>*
+          _target_nodesets{nullptr};
 
       /// the set of conditioning nodesets
       /** for details, see _target_nodesets */
-      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                  Idx>*>* _conditioning_nodesets{
-          nullptr};
+      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>*
+          _conditioning_nodesets{nullptr};
 
       /// the a priori
       std::vector<std::vector<double, CountAlloc>> _apriori_counts;

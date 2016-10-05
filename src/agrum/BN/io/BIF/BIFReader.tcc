@@ -25,8 +25,8 @@
  */
 
 
-#include <agrum/BN/io/BNReader.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
+#include <agrum/BN/io/BNReader.h>
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {

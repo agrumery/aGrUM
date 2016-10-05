@@ -48,9 +48,8 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  INLINE void
-  UAIWriter<GUM_SCALAR>::write( std::ostream& output,
-                                  const IBayesNet<GUM_SCALAR>& bn ) {
+  INLINE void UAIWriter<GUM_SCALAR>::write( std::ostream& output,
+                                            const IBayesNet<GUM_SCALAR>& bn ) {
     if ( !output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -79,9 +78,8 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  INLINE void
-  UAIWriter<GUM_SCALAR>::write( std::string filePath,
-                                  const IBayesNet<GUM_SCALAR>& bn ) {
+  INLINE void UAIWriter<GUM_SCALAR>::write( std::string filePath,
+                                            const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
     write( output, bn );
@@ -112,9 +110,9 @@ namespace gum {
       const auto& p = bn.cpt( node );
       str << p.nbrDim() << " ";
       for ( auto k : p.variablesSequence() ) {
-        str << bn.idFromName(k->name()) << " ";
+        str << bn.idFromName( k->name() ) << " ";
       }
-      str << "  # "<<bn.variable(node).name()<< std::endl;
+      str << "  # " << bn.variable( node ).name() << std::endl;
     }
     str << std::endl;
 
@@ -123,18 +121,17 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE std::string
   UAIWriter<GUM_SCALAR>::__cptBloc( const IBayesNet<GUM_SCALAR>& bn,
-                                      NodeId node ) {
+                                    NodeId node ) {
     std::stringstream str;
 
     const auto& p = bn.cpt( node );
-    str<<p.domainSize();
-    Instantiation I(p);
-    for(I.setFirst();!I.end();++I) {
-      if (I.val(0)==0)
-        str<<std::endl<<"  ";
-      str<<p[I]<<" ";
+    str << p.domainSize();
+    Instantiation I( p );
+    for ( I.setFirst(); !I.end(); ++I ) {
+      if ( I.val( 0 ) == 0 ) str << std::endl << "  ";
+      str << p[I] << " ";
     }
-    str<<std::endl;
+    str << std::endl;
 
     return str.str();
   }

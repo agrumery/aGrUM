@@ -23,10 +23,10 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/net/netWriter.h>
 #include <agrum/BN/io/net/netReader.h>
+#include <agrum/BN/io/net/netWriter.h>
+#include <agrum/variables/labelizedVariable.h>
 
 #include <cxxtest/testsuite_utils.h>
 
@@ -102,8 +102,7 @@ namespace gum_tests {
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
       gum::NetReader<float> reader( net, file );
-
-      reader.trace( false );
+      TS_GUM_ASSERT_THROWS_NOTHING( reader.trace( false ));
 
       gum::Size nbrErr = 0;
 
@@ -115,9 +114,9 @@ namespace gum_tests {
       // 0 warnings : no properties
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 )
 
-      TS_ASSERT( net != 0 );
+      TS_ASSERT( net != nullptr );
 
-      if ( net != 0 ) {
+      if ( net != nullptr ) {
         TS_ASSERT( !net->empty() );
 
         delete net;

@@ -37,12 +37,12 @@
 #include <agrum/config.h>
 #include <agrum/core/math/math.h>
 
-#include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/cache4Score.h>
+#include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
 
-#include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/aprioris/apriori.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
 
@@ -87,12 +87,11 @@ namespace gum {
        * @param max_range The maximal range.
        */
       template <typename RowFilter>
-      Score(
-          const RowFilter& filter,
-          const std::vector<Size>& var_modalities,
-          Apriori<IdSetAlloc, CountAlloc>& apriori,
-          Size min_range = 0,
-          Size max_range = std::numeric_limits<Size>::max() );
+      Score( const RowFilter& filter,
+             const std::vector<Size>& var_modalities,
+             Apriori<IdSetAlloc, CountAlloc>& apriori,
+             Size min_range = 0,
+             Size max_range = std::numeric_limits<Size>::max() );
 
       /// virtual copy factory
       virtual Score<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
@@ -138,9 +137,7 @@ namespace gum {
        * _getConditioningCounts to get the counting vectors of
        * (conditioning_ids,vars) [in this order] and conditioning_ids
        * respectively. */
-      Idx
-      addNodeSet( Idx var,
-                  const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet( Idx var, const std::vector<Idx>& conditioning_ids );
 
       /// clears all the data structures from memory
       void clear();
@@ -244,8 +241,7 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<double, CountAlloc>&
-      _getAllApriori( Idx index );
+      const std::vector<double, CountAlloc>& _getAllApriori( Idx index );
 
       /// returns the apriori vector for a conditioning set
       const std::vector<double, CountAlloc>&

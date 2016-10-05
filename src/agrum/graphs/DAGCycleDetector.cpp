@@ -30,8 +30,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/graphs/DAGCycleDetector.h>
 #include <agrum/core/sequence.h>
+#include <agrum/graphs/DAGCycleDetector.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/DAGCycleDetector.inl>
@@ -119,8 +119,8 @@ namespace gum {
     // a deletion + an insertion) and we check that no insertion also exists
     // as a deletion (if so, we remove both operations). In addition, if
     // we try to add an arc (X,X) we return that it induces a cycle
-    HashTable<Arc, Size> deletions( Size(modifs.size()) );
-    HashTable<Arc, Size> additions( Size(modifs.size()) );
+    HashTable<Arc, Size> deletions( Size( modifs.size() ) );
+    HashTable<Arc, Size> additions( Size( modifs.size() ) );
 
     for ( const auto& modif : modifs ) {
       Arc arc( modif.tail(), modif.head() );
@@ -200,25 +200,21 @@ namespace gum {
     for ( const auto& modif : modifs ) {
       if ( !ancestors.exists( modif.tail() ) ) {
         NodeProperty<Size>& anc =
-            ancestors.insert( modif.tail(), NodeProperty<Size>() )
-                .second;
+            ancestors.insert( modif.tail(), NodeProperty<Size>() ).second;
         __restrictWeightedSet( anc, __ancestors[modif.tail()], extremities );
 
         NodeProperty<Size>& desc =
-            descendants.insert( modif.tail(), NodeProperty<Size>() )
-                .second;
+            descendants.insert( modif.tail(), NodeProperty<Size>() ).second;
         __restrictWeightedSet( desc, __descendants[modif.tail()], extremities );
       }
 
       if ( !ancestors.exists( modif.head() ) ) {
         NodeProperty<Size>& anc =
-            ancestors.insert( modif.head(), NodeProperty<Size>() )
-                .second;
+            ancestors.insert( modif.head(), NodeProperty<Size>() ).second;
         __restrictWeightedSet( anc, __ancestors[modif.head()], extremities );
 
         NodeProperty<Size>& desc =
-            descendants.insert( modif.head(), NodeProperty<Size>() )
-                .second;
+            descendants.insert( modif.head(), NodeProperty<Size>() ).second;
         __restrictWeightedSet( desc, __descendants[modif.head()], extremities );
       }
     }

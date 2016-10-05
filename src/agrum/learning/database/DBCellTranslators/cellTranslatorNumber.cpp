@@ -68,8 +68,8 @@ namespace gum {
         for ( Idx i = 0; i < __max_value; ++i ) {
           const double val = __values.first( i );
           if ( __user_values->exists( val ) ) {
-            user_vals.push_back( std::pair<double, Idx>(
-                val, __user_values->pos( val ) ) );
+            user_vals.push_back(
+                std::pair<double, Idx>( val, __user_values->pos( val ) ) );
           } else {
             no_user_vals.push_back( val );
           }

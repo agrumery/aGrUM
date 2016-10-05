@@ -29,8 +29,8 @@
 
 #include <agrum/config.h>
 
-#include <agrum/core/binTreeNode.h>
 #include <agrum/core/binSearchTree.h>
+#include <agrum/core/binTreeNode.h>
 #include <agrum/core/binTreeNode4AVL.h>
 
 namespace gum {

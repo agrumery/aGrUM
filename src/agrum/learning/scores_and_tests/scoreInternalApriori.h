@@ -36,8 +36,8 @@
 #ifndef GUM_LEARNING_SCORE_INTERNAL_APRIORI_H
 #define GUM_LEARNING_SCORE_INTERNAL_APRIORI_H
 
-#include <vector>
 #include <agrum/config.h>
+#include <vector>
 
 namespace gum {
 
@@ -91,10 +91,9 @@ namespace gum {
       virtual void insertScoreApriori(
           const std::vector<Size>& modalities,
           std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>,
-                                      Idx>*>& target_nodesets,
-          const std::vector<
-              std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
+              target_nodesets,
+          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
               conditioning_nodesets ) = 0;
 
       /// indicates whether the apriori is potentially informative

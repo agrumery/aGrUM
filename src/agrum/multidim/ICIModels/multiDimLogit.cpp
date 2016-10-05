@@ -30,4 +30,3 @@
 
 template class gum::MultiDimLogit<float>;
 template class gum::MultiDimLogit<double>;
-

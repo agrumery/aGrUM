@@ -109,4 +109,3 @@ extern template class gum::prm::o3prm::O3SystemFactory<double>;
 
 
 #endif  // GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H
-

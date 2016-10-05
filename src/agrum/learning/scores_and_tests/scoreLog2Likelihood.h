@@ -80,12 +80,11 @@ namespace gum {
        * @param max_range The maximal range.
        */
       template <typename RowFilter>
-      ScoreLog2Likelihood(
-          const RowFilter& filter,
-          const std::vector<Size>& var_modalities,
-          Apriori<IdSetAlloc, CountAlloc>& apriori,
-          Size min_range = 0,
-          Size max_range = std::numeric_limits<Size>::max() );
+      ScoreLog2Likelihood( const RowFilter& filter,
+                           const std::vector<Size>& var_modalities,
+                           Apriori<IdSetAlloc, CountAlloc>& apriori,
+                           Size min_range = 0,
+                           Size max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       ScoreLog2Likelihood( const ScoreLog2Likelihood<IdSetAlloc, CountAlloc>& );

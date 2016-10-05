@@ -33,19 +33,19 @@
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
-#include <agrum/FMDP/fmdp.h>
-#include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
-#include <agrum/FMDP/learning/fmdpLearner.h>
-#include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
-#include <agrum/FMDP/planning/structuredPlaner.h>
-#include <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
+#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
+#include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/decision/E_GreedyDecider.h>
 #include <agrum/FMDP/decision/lazyDecider.h>
 #include <agrum/FMDP/decision/randomDecider.h>
 #include <agrum/FMDP/decision/statisticalLazyDecider.h>
+#include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/learning/fmdpLearner.h>
+#include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/planning/actionSet.h>
+#include <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
+#include <agrum/FMDP/planning/structuredPlaner.h>
 // =========================================================================
 
 namespace gum {
@@ -315,11 +315,12 @@ namespace gum {
 
     // ==========================================================================
     /**
-     * @return actionId the id of the action the SDyna instance wish to be performed
+     * @return actionId the id of the action the SDyna instance wish to be
+     * performed
      * @param curState the state in which we currently are
      */
     // ==========================================================================
-    Idx takeAction( const Instantiation& curState);
+    Idx takeAction( const Instantiation& curState );
 
     // ==========================================================================
     /**

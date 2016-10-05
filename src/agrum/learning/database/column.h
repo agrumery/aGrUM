@@ -32,8 +32,8 @@
 #define GUM_LEARNING_COLUMNS_H
 
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace gum {
 

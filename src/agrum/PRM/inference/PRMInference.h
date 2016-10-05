@@ -49,7 +49,8 @@ namespace gum {
       public:
       /// Code alias.
       typedef std::pair<const PRMInstance<GUM_SCALAR>*,
-                        const PRMAttribute<GUM_SCALAR>*> Chain;
+                        const PRMAttribute<GUM_SCALAR>*>
+          Chain;
 
       /// Code alias.
       typedef NodeProperty<const Potential<GUM_SCALAR>*> EMap;
@@ -173,7 +174,7 @@ namespace gum {
 
       /// Remove all evidences.
       void clearEvidence();
-      
+
       /// @}
       protected:
       // ========================================================================

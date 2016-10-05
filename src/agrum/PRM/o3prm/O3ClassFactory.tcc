@@ -652,7 +652,7 @@ namespace gum {
         }
 
         // Checking parameters numbers
-        if ( ! __checkAggParameters( c, agg, t ) ) {
+        if ( !__checkAggParameters( c, agg, t ) ) {
           return false;
         }
 

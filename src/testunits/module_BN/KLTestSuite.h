@@ -28,8 +28,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
+#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

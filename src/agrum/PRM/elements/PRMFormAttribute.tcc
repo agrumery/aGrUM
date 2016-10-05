@@ -27,8 +27,8 @@
 
 #include <agrum/core/math/formula.h>
 
-#include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
+#include <agrum/PRM/elements/PRMType.h>
 
 // to ease IDE parser
 #include <agrum/PRM/elements/PRMFormAttribute.h>
@@ -51,7 +51,7 @@ namespace gum {
       __formulas->add( __type->variable() );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
-      this->__type->variable().setName( this->name() ); 
+      this->__type->variable().setName( this->name() );
     }
 
     template <typename GUM_SCALAR>
@@ -63,8 +63,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    PRMAttribute<GUM_SCALAR>*
-    PRMFormAttribute<GUM_SCALAR>::newFactory( const PRMClass<GUM_SCALAR>& c ) const {
+    PRMAttribute<GUM_SCALAR>* PRMFormAttribute<GUM_SCALAR>::newFactory(
+        const PRMClass<GUM_SCALAR>& c ) const {
       auto impl = static_cast<MultiDimImplementation<std::string>*>(
           this->__formulas->newFactory() );
       return new PRMFormAttribute( c, this->name(), this->type(), impl );
@@ -74,8 +74,8 @@ namespace gum {
     PRMAttribute<GUM_SCALAR>* PRMFormAttribute<GUM_SCALAR>::copy(
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
         const {
-      auto copy =
-          new PRMFormAttribute<GUM_SCALAR>( *__class, this->name(), this->type() );
+      auto copy = new PRMFormAttribute<GUM_SCALAR>(
+          *__class, this->name(), this->type() );
       for ( auto var : __formulas->variablesSequence() ) {
         if ( var != &( __type->variable() ) ) {
           copy->__formulas->add( *var );
@@ -137,7 +137,7 @@ namespace gum {
       }
 
       GUM_ASSERT( __formulas->contains( __type->variable() ) );
-      GUM_ASSERT(!__formulas->contains( source.type().variable() ) );
+      GUM_ASSERT( !__formulas->contains( source.type().variable() ) );
     }
 
     template <typename GUM_SCALAR>
@@ -188,9 +188,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void
-    PRMFormAttribute<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {
-    }
+    void PRMFormAttribute<GUM_SCALAR>::addChild(
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     PRMAttribute<GUM_SCALAR>*
@@ -198,7 +197,8 @@ namespace gum {
       PRMScalarAttribute<GUM_SCALAR>* cast = 0;
 
       try {
-        cast = new PRMScalarAttribute<GUM_SCALAR>( this->name(), type().superType() );
+        cast = new PRMScalarAttribute<GUM_SCALAR>( this->name(),
+                                                   type().superType() );
       } catch ( NotFound& ) {
         GUM_ERROR( OperationNotAllowed,
                    "this ScalarAttribute can not have cast descendant" );
@@ -210,7 +210,7 @@ namespace gum {
       DiscreteVariable& cast_var = cast->type().variable();
       Instantiation inst( cast->cpf() );
 
-      for ( inst.setFirst();!inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); !inst.end(); inst.inc() ) {
         if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
           cast->cpf().set( inst, 1 );
         } else {
@@ -250,7 +250,7 @@ namespace gum {
 
       Instantiation inst( __formulas );
 
-      for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); !inst.end(); inst.inc() ) {
         auto my_pos = inst.pos( subtype.variable() );
         if ( subtype.label_map()[my_pos] == inst.pos( type().variable() ) ) {
           __formulas->set( inst, "1" );
@@ -266,7 +266,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    PRMFormAttribute<GUM_SCALAR>::PRMFormAttribute( const PRMFormAttribute& source )
+    PRMFormAttribute<GUM_SCALAR>::PRMFormAttribute(
+        const PRMFormAttribute& source )
         : PRMAttribute<GUM_SCALAR>( source.name() ) {
       GUM_CONS_CPY( PRMFormAttribute );
       GUM_ERROR( OperationNotAllowed, "Cannot copy FormAttribute" );
@@ -297,7 +298,7 @@ namespace gum {
         Instantiation inst( __formulas );
         Instantiation jnst( __cpf );
 
-        for ( inst.begin(), jnst.begin(); !( inst.end() ||jnst.end() );
+        for ( inst.begin(), jnst.begin(); !( inst.end() || jnst.end() );
               inst.inc(), jnst.inc() ) {
 
           // With CPT defined using rules, empty values can appear
@@ -324,7 +325,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    MultiDimImplementation<std::string>& PRMFormAttribute<GUM_SCALAR>::formulas() {
+    MultiDimImplementation<std::string>&
+    PRMFormAttribute<GUM_SCALAR>::formulas() {
       if ( __cpf ) {
         delete __cpf;
         __cpf = 0;
@@ -339,8 +341,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void PRMFormAttribute<GUM_SCALAR>::swap( const PRMType<GUM_SCALAR>& old_type,
-                                          const PRMType<GUM_SCALAR>& new_type ) {
+    void
+    PRMFormAttribute<GUM_SCALAR>::swap( const PRMType<GUM_SCALAR>& old_type,
+                                        const PRMType<GUM_SCALAR>& new_type ) {
       if ( &( old_type ) == __type ) {
         GUM_ERROR( OperationNotAllowed, "Cannot swap attribute own type" );
       }
@@ -348,7 +351,7 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed,
                    "Cannot swap types with difference domain size" );
       }
-      if (!__formulas->contains( old_type.variable() ) ) {
+      if ( !__formulas->contains( old_type.variable() ) ) {
         GUM_ERROR( NotFound, "could not find variable " + old_type.name() );
       }
 
@@ -380,7 +383,7 @@ namespace gum {
 
       GUM_ASSERT( inst.end() && jnst.end() );
       GUM_ASSERT( __formulas->contains( __type->variable() ) );
-      GUM_ASSERT(!__formulas->contains( new_type.variable() ) );
+      GUM_ASSERT( !__formulas->contains( new_type.variable() ) );
       GUM_ASSERT( __formulas->contains( new_type.variable() ) );
     }
 

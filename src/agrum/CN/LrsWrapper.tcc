@@ -1,7 +1,7 @@
 #include <string.h>
 
-#include <agrum/config.h>
 #include <agrum/CN/LrsWrapper.h>
+#include <agrum/config.h>
 
 namespace gum {
   namespace credal {
@@ -28,12 +28,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    auto LRSWrapper<GUM_SCALAR>::getInput() const -> const matrix & {
+    auto LRSWrapper<GUM_SCALAR>::getInput() const -> const matrix& {
       return __input;
     }
 
     template <typename GUM_SCALAR>
-    auto LRSWrapper<GUM_SCALAR>::getOutput() const -> const matrix & {
+    auto LRSWrapper<GUM_SCALAR>::getOutput() const -> const matrix& {
       return __output;
     }
 
@@ -297,15 +297,19 @@ namespace gum {
       /* We initiate reverse search from this dictionary       */
       /* getting new dictionaries until the search is complete */
       /* User can access each output line from output which is */
-      /* a vertex/ray/facet from the lrs_mp_vector output      */
+      /* vertex/ray/facet from the lrs_mp_vector output         */
+      /* prune is TRUE if tree should be pruned at current node */
 
-      std::vector<long int> Num; /* numerators of all vertices */
-      std::vector<long int> Den; /* denominators of all vertices */
+      // pruning is not used
+
+      std::vector<int64_t> Num; /* numerators of all vertices */
+      std::vector<int64_t> Den; /* denominators of all vertices */
 
       do {
         for ( decltype( __dic->d ) col = 0, end = __dic->d; col <= end; col++ )
           if ( lrs_getsolution( __dic, __dat, __lrsOutput, col ) ) {
 
+            // iszero macro could be used here for the test on right
             if ( __dat->hull || ( ( ( ( __lrsOutput[0] )[0] == 2 ||
                                       ( __lrsOutput[0] )[0] == -2 ) &&
                                     ( __lrsOutput[0] )[1] == 0 )
@@ -328,7 +332,8 @@ namespace gum {
       std::vector<GUM_SCALAR> vertex( __card );
 
       for ( decltype( vtx ) i = 1; i <= vtx; i++ ) {
-        vertex[( i - 1 ) % __card] = GUM_SCALAR( Num[i - 1] * 1.0 / Den[i - 1] );
+        vertex[( i - 1 ) % __card] =
+            GUM_SCALAR( Num[i - 1] * 1.0 / Den[i - 1] );
 
         if ( i % __card == 0 ) {
           __output.push_back( vertex );
@@ -372,13 +377,13 @@ namespace gum {
           lrs_getsolution( __dic, __dat, __lrsOutput, col );
       } while ( lrs_getnextbasis( &__dic, __dat, 0L ) );
 
-      long int Nsize =
+      int64_t Nsize =
           ( __dat->Nvolume[0] > 0 ) ? __dat->Nvolume[0] : -__dat->Nvolume[0];
-      long int Dsize =
+      int64_t Dsize =
           ( __dat->Dvolume[0] > 0 ) ? __dat->Dvolume[0] : -__dat->Dvolume[0];
 
-      long int num = 0L, den = 0L;
-      long int tmp;
+      int64_t num = 0L, den = 0L;
+      int64_t tmp;
 
       for ( decltype( Nsize ) i = Nsize - 1; i > 0; i-- ) {
         tmp = __dat->Nvolume[i];
@@ -419,7 +424,7 @@ namespace gum {
 
       __initLrs();
 
-      long* redineq; /* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
+      int64_t* redineq; /* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
 
       /*********************************************************************************/
       /* Test each row of the dictionary to see if it is redundant */
@@ -434,7 +439,7 @@ namespace gum {
       auto lastdv = __dat->lastdv;
 
       /* linearities are not considered for redundancy */
-      redineq = (long int*)calloc( ( m + 1 ), sizeof( long ) );
+      redineq = (int64_t*)calloc( ( m + 1 ), sizeof( int64_t ) );
 
       for ( decltype( nlinearity ) i = 0; i < nlinearity; i++ )
         redineq[__dat->linearity[i]] = 2L;
@@ -488,16 +493,16 @@ namespace gum {
     void LRSWrapper<GUM_SCALAR>::__getLRSWrapperOutput(
         lrs_mp Nin,
         lrs_mp Din,
-        std::vector<long int>& Num,
-        std::vector<long int>& Den ) const {
+        std::vector<int64_t>& Num,
+        std::vector<int64_t>& Den ) const {
 
-      long int Nsize = ( Nin[0] > 0 ) ? Nin[0] : -Nin[0];
-      long int Dsize = ( Din[0] > 0 ) ? Din[0] : -Din[0];
+      int64_t Nsize = ( Nin[0] > 0 ) ? Nin[0] : -Nin[0];
+      int64_t Dsize = ( Din[0] > 0 ) ? Din[0] : -Din[0];
 
-      long int num = 0L;
-      long int den = 0L;
+      int64_t num = 0L;
+      int64_t den = 0L;
 
-      long int tmp;
+      int64_t tmp;
 
       for ( decltype( Nsize ) i = Nsize - 1; i > 0; i-- ) {
         tmp = Nin[i];
@@ -521,8 +526,8 @@ namespace gum {
         den = 1L;
       }
 
-      long int Nsign = ( ( Nin[0] < 0 ) ? -1L : 1L );
-      long int Dsign = ( ( Din[0] < 0 ) ? -1L : 1L );
+      int64_t Nsign = ( ( Nin[0] < 0 ) ? -1L : 1L );
+      int64_t Dsign = ( ( Din[0] < 0 ) ? -1L : 1L );
 
       if ( ( Nsign * Dsign ) == -1L ) num = -num;
 
@@ -532,7 +537,7 @@ namespace gum {
 
     /*
     void pmp (char name[], lrs_mp a) {
-         long i;
+         int64_t i;
          fprintf (lrs_ofp, "%s", name);
          if (sign (a) == NEG)
            fprintf (lrs_ofp, "-");
@@ -546,19 +551,19 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__fill() const {
-      long cols = long(__input[0].size());
+      int64_t cols = int64_t( __input[0].size() );
 
-      long int* num =
-          new long int[cols];  // ISO C++ forbids variable length array,
+      int64_t* num =
+          new int64_t[cols];  // ISO C++ forbids variable length array,
                                // we need to do this instead
-      long int* den = new long int[cols];
+      int64_t* den = new int64_t[cols];
 
-      long rows = long(__input.size());
+      int64_t rows = int64_t( __input.size() );
 
-      long int numerator, denominator;
+      int64_t numerator, denominator;
 
-      for ( long row = 0; row < rows; row++ ) {
-        for ( long col = 0; col < cols; col++ ) {
+      for ( int64_t row = 0; row < rows; row++ ) {
+        for ( int64_t col = 0; col < cols; col++ ) {
           Rational<GUM_SCALAR>::continuedFracFirst(
               numerator, denominator, __input[row][col] );
 
@@ -614,14 +619,14 @@ namespace gum {
             "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dat" );
       }
 
-      __dat->n = Size(__input[0].size());
-      __dat->m = Size(__input.size());
+      __dat->n = Size( __input[0].size() );
+      __dat->m = Size( __input.size() );
 
       __dat->getvolume = ( __getVolume ) ? 1L : 0L;
       __dat->hull = ( __hull ) ? 1L : 0L;
       __dat->polytope = ( __polytope ) ? 1L : 0L;
 
-      __lrsOutput = lrs_alloc_mp_vector_wrapper( __dat->n );
+      __lrsOutput = lrs_alloc_mp_vector( __dat->n );
 
       __dic = lrs_alloc_dic( __dat );
 
@@ -647,26 +652,60 @@ namespace gum {
       /* columns are removed. User can access linearity space */
       /* from lrs_mp_matrix Lin dimensions nredundcol x d+1  */
 
-      if ( __dat->nredundcol > 0 ) {
-        __coutOn();
+      decltype( __dat->nredundcol ) startcol = 0;
 
-        for ( decltype( __dat->nredundcol ) col = 0, end = __dat->nredundcol;
-              col < end;
-              col++ )
-          lrs_printoutput( __dat, __Lin[col] );
+      if ( __dat->homogeneous && __dat->hull ) {
+        startcol++; /* col zero not treated as redundant   */
 
-        GUM_ERROR(
-            FatalError,
-            "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
+        if ( !__dat->restart ) {
+          __coutOn();
+
+          for ( decltype( __dat->nredundcol ) col = startcol;
+                col < __dat->nredundcol;
+                col++ )
+            lrs_printoutput( __dat, __Lin[col] );
+
+          GUM_ERROR(
+              FatalError,
+              "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
+        }
       }
+      /*
+  if ( __dat->nredundcol > 0 ) {
+    __coutOn();
+
+            for ( decltype( __dat->nredundcol ) col = 0, end =
+  __dat->nredundcol;
+          col < end;
+          col++ )
+      lrs_printoutput( __dat, __Lin[col] );
+
+    GUM_ERROR(
+        FatalError,
+        "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
+  }
+  */
     }
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__freeLrs() {
-      /* free space : do not change order of next 3 lines! */
+      /* free space : do not change order of next lines! */
 
-      lrs_clear_mp_vector_wrapper( __lrsOutput, __dat->n );
-      lrs_free_dic( __dic, __dat );
+      lrs_clear_mp_vector( __lrsOutput, __dat->n );
+
+      if ( __dat->nredundcol > 0 )
+        lrs_clear_mp_matrix( __Lin, __dat->nredundcol, __dat->n );
+
+      if ( __dat->runs > 0 ) {
+        free( __dat->isave );
+        free( __dat->jsave );
+      }
+
+      auto savem = __dic->m; /* need this to clear __dat*/
+
+      lrs_free_dic( __dic, __dat ); /* deallocate lrs_dic */
+
+      __dat->m = savem;
       lrs_free_dat( __dat );
 
       std::string name = "LrsWrapper:";

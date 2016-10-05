@@ -71,21 +71,20 @@ namespace gum {
           const Idx str_index = __strings.first( i );
           const std::string& str = DBCell::getString( str_index );
           if ( __user_values->exists( str ) ) {
-            user_vals.push_back( std::pair<Idx, Idx>(
-                str_index, __user_values->pos( str ) ) );
+            user_vals.push_back(
+                std::pair<Idx, Idx>( str_index, __user_values->pos( str ) ) );
           } else {
             no_user_vals.push_back( str_index );
           }
         }
 
         // reorder user_vals in increasing order of the second argument
-        std::sort(
-            user_vals.begin(),
-            user_vals.end(),
-            []( const std::pair<Idx, Idx>& elt1,
-                const std::pair<Idx, Idx>& elt2 ) -> bool {
-              return elt1.second < elt2.second;
-            } );
+        std::sort( user_vals.begin(),
+                   user_vals.end(),
+                   []( const std::pair<Idx, Idx>& elt1,
+                       const std::pair<Idx, Idx>& elt2 ) -> bool {
+                     return elt1.second < elt2.second;
+                   } );
 
         // restore in the appropriate order the element of __strings
         __strings.clear();

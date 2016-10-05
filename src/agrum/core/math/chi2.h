@@ -84,8 +84,7 @@ namespace gum {
      *
      * @param db_conditioning_ids The conditioning nodes id.
      */
-    void setConditioningNodes(
-        const std::vector<Idx>& db_conditioning_ids );
+    void setConditioningNodes( const std::vector<Idx>& db_conditioning_ids );
 
     /**
     * @brief Computes the critical value according to the number of degrees of
@@ -93,7 +92,7 @@ namespace gum {
     * @param pair A pair of variables ids.
     * @return Returns the critical values.
     */
-    double criticalValue( const std::pair<Idx,Idx>& pair );
+    double criticalValue( const std::pair<Idx, Idx>& pair );
 
     /**
      * @brief Computes the critical value according to the number of degrees of
@@ -109,8 +108,7 @@ namespace gum {
      * @param pair A pair of variables ids.
      * @return Returns the number of degrees of freedom.
      */
-    Size
-    degreesOfFreedom( const std::pair<Idx,Idx>& pair );
+    Size degreesOfFreedom( const std::pair<Idx, Idx>& pair );
 
     /**
      * @brief Returns the number of degrees of freedom.

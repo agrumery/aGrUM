@@ -34,22 +34,19 @@ INLINE void GUM_CONSTRAINT_CLASS_NAME::setGraph( const DiGraph& graph ) {
 
 /// checks whether the constraints enable to add arc (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcAddition( NodeId x,
-                                                         NodeId y ) const
-     {
+                                                         NodeId y ) const {
   return constraints::checkArcAddition( x, y ) && checkArcAdditionAlone( x, y );
 }
 
 /// checks whether the constraints enable to remove arc (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcDeletion( NodeId x,
-                                                         NodeId y ) const
-     {
+                                                         NodeId y ) const {
   return constraints::checkArcDeletion( x, y ) && checkArcDeletionAlone( x, y );
 }
 
 /// checks whether the constraints enable to reverse arc (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcReversal( NodeId x,
-                                                         NodeId y ) const
-     {
+                                                         NodeId y ) const {
   return constraints::checkArcReversal( x, y ) && checkArcReversalAlone( x, y );
 }
 
@@ -83,37 +80,32 @@ GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
 
 /// indicates whether a change will always violate the constraint
 INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid( const GraphChange& change ) const
-     {
+GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid( const GraphChange& change ) const {
   return constraints::isAlwaysInvalid( change ) ||
          isAlwaysInvalidAlone( change );
 }
 
 /// checks whether the constraints enable to add an arc
-INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::checkModification( const ArcAddition& change ) const
-     {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
+    const ArcAddition& change ) const {
   return checkArcAddition( change.node1(), change.node2() );
 }
 
 /// checks whether the constraints enable to remove an arc
-INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::checkModification( const ArcDeletion& change ) const
-     {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
+    const ArcDeletion& change ) const {
   return checkArcDeletion( change.node1(), change.node2() );
 }
 
 /// checks whether the constraints enable to reverse an arc
-INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::checkModification( const ArcReversal& change ) const
-     {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
+    const ArcReversal& change ) const {
   return checkArcReversal( change.node1(), change.node2() );
 }
 
 /// checks whether the constraints enable to perform a graph change
-INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::checkModification( const GraphChange& change ) const
-     {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
+    const GraphChange& change ) const {
   switch ( change.type() ) {
     case GraphChangeType::ARC_ADDITION:
       return checkArcAddition( change.node1(), change.node2() );

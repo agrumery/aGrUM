@@ -87,9 +87,7 @@ namespace gum {
     INLINE DBCell& DBRow::operator[]( Idx i ) { return _row[i]; }
 
     /// returns the ith DBCell of the row
-    INLINE const DBCell& DBRow::operator[]( Idx i ) const {
-      return _row[i];
-    }
+    INLINE const DBCell& DBRow::operator[]( Idx i ) const { return _row[i]; }
 
     /// returns the current row
     INLINE const std::vector<DBCell>& DBRow::row() const noexcept {
@@ -119,12 +117,10 @@ namespace gum {
     INLINE void DBRow::setWeight( double new_weight ) { _weight = new_weight; }
 
     /// returns the size of the row
-    INLINE Size DBRow::size() const noexcept { return Size(_row.size()); }
+    INLINE Size DBRow::size() const noexcept { return Size( _row.size() ); }
 
     /// resize a given row
-    INLINE void DBRow::resize( Size new_size ) {
-      _row.resize( new_size );
-    }
+    INLINE void DBRow::resize( Size new_size ) { _row.resize( new_size ); }
 
   } /* namespace learning */
 

@@ -41,11 +41,11 @@ namespace gum {
   INLINE void HashFuncBase<Key>::resize( Size new_size ) {
     // things work properly only for hashtables with at least 2 elements
     if ( new_size < 2 ) {
-      GUM_ERROR( HashSize, "the size of the hashtable is too small" );
+      GUM_ERROR( SizeError, "the size of the hashtable is too small" );
     }
 
     _hash_log2_size = __hashTableLog2( new_size );
-    _hash_size = Size(1) << _hash_log2_size;
+    _hash_size = Size( 1 ) << _hash_log2_size;
     _hash_mask = _hash_size - 1;
   }
 

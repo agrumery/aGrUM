@@ -80,7 +80,7 @@ namespace gum {
   const void* const __list_end = __get_list_end();
 
 } /* namespace gum */
-  
+
 
 template class gum::List<bool>;
 template class gum::List<int>;

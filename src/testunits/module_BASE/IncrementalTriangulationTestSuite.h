@@ -185,7 +185,7 @@ namespace gum_tests {
             triang.addEdge( id1, id2 );
           }
 
-          nb = (gum::Size)( ( (float)rand() / RAND_MAX ) * 20 );
+          nb = ( gum::Size )( ( (float)rand() / RAND_MAX ) * 20 );
 
           if ( nb <= 3 ) {
             triang.updateTriangulation();

@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
 #include <agrum/config.h>
+#include <limits>
 
 namespace gum {
 
@@ -37,7 +37,7 @@ namespace gum {
       const Set<const DiscreteVariable*>& del_vars,
       MultiDimImplementation<GUM_SCALAR>* ( *project )(
           const MultiDimImplementation<GUM_SCALAR>&,
-          const Set<const DiscreteVariable*>& ) )
+          const Set<const DiscreteVariable*>&))
       : ScheduleOperation<GUM_SCALAR>(
             ScheduleOperation<GUM_SCALAR>::Type::PROJECT_MULTIDIM )
       , __table( table )
@@ -159,7 +159,7 @@ namespace gum {
    * needed to perform the ScheduleOperation */
   template <typename GUM_SCALAR>
   INLINE float ScheduleProject<GUM_SCALAR>::nbOperations() const {
-    return float(__table.domainSize());
+    return float( __table.domainSize() );
   }
 
   /// returns the memory consumption used during the operation
@@ -175,7 +175,7 @@ namespace gum {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
-        size *= long(var->domainSize());
+        size *= long( var->domainSize() );
       }
 
     return std::pair<long, long>( size, size );

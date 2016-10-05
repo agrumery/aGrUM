@@ -60,7 +60,7 @@ namespace gum {
   // Destructor.
   // ============================================================================
   INLINE SmallObjectAllocator::~SmallObjectAllocator() {
-    GUM_DESTRUCTOR(SmallObjectAllocator)
+    GUM_DESTRUCTOR( SmallObjectAllocator )
 
     for ( __Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit )
       delete pit.val();
@@ -82,7 +82,7 @@ namespace gum {
 
     assert( objectSize > 0 &&
             "Small Object Allocator called for an object of size equals to 0" );
-    
+
     // If objectSize is greater than maxObjectSize, normal new is called
     if ( objectSize > __maxObjectSize ) return new unsigned char[objectSize];
 
@@ -90,18 +90,19 @@ namespace gum {
 #pragma omp critical( soa )
     {
       //
-      if ( !__pool.exists(Size( objectSize) ) ) {
+      if ( !__pool.exists( Size( objectSize ) ) ) {
         // Calcul du nombre de block par chunk pour des objets de cette taille
-        std::size_t nb = __chunkSize / Size(objectSize);
-		if (nb > UCHAR_MAX) nb = UCHAR_MAX;
-		unsigned char numBlocks = static_cast<unsigned char>(nb);
+        std::size_t nb = __chunkSize / Size( objectSize );
+        if ( nb > UCHAR_MAX ) nb = UCHAR_MAX;
+        unsigned char numBlocks = static_cast<unsigned char>( nb );
 
-        FixedAllocator* newFa = new FixedAllocator(Size(objectSize), numBlocks );
-        __pool.set(Size(objectSize), newFa );
+        FixedAllocator* newFa =
+            new FixedAllocator( Size( objectSize ), numBlocks );
+        __pool.set( Size( objectSize ), newFa );
       }
       nbAllocation++;
 
-      ret = __pool[Size(objectSize)]->allocate();
+      ret = __pool[Size( objectSize )]->allocate();
     }
     return ret;
   }
@@ -112,16 +113,15 @@ namespace gum {
   // @param objectSize is the size of that object (useful for faster
   // deallocation)
   // ============================================================================
-  INLINE void
-  SmallObjectAllocator::deallocate( void* pDeallocatedObject,
-                                    const size_t& objectSize ) {
+  INLINE void SmallObjectAllocator::deallocate( void* pDeallocatedObject,
+                                                const size_t& objectSize ) {
 
     assert( objectSize > 0 &&
             "Small Object Allocator called for an object of size equals to 0" );
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if ( objectSize > __maxObjectSize ) {
-      delete[](unsigned char*)pDeallocatedObject;
+      delete[]( unsigned char* ) pDeallocatedObject;
       return;
     }
 
@@ -129,7 +129,7 @@ namespace gum {
     {
 
       //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
-      __pool[Size(objectSize)]->deallocate( pDeallocatedObject );
+      __pool[Size( objectSize )]->deallocate( pDeallocatedObject );
       nbDeallocation++;
     }
   }

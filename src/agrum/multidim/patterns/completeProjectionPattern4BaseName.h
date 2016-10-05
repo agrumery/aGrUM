@@ -80,7 +80,7 @@ namespace gum {
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
     Instantiation* instantiation = 0;
-#endif // GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
+#endif  // GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
 
     // first, compute the domain size of the table:
     Size nb_elt = table->domainSize();
@@ -101,7 +101,7 @@ namespace gum {
 #else
         GUM_MULTI_DIM_COMPLETE_PROJECTION( current_val,
                                            table->get( table_inst ) );
-#endif // GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
+#endif  // GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
 
         if ( current_val != old_val ) {
           old_val = current_val;

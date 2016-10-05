@@ -27,8 +27,8 @@
 #define GUM_MULTI_DIM_COMBINE_AND_PROJECT_DEFAULT_H
 
 #include <agrum/multidim/operators/multiDimCombinationDefault.h>
-#include <agrum/multidim/operators/multiDimProjection.h>
 #include <agrum/multidim/operators/multiDimCombineAndProject.h>
+#include <agrum/multidim/operators/multiDimProjection.h>
 
 namespace gum {
 
@@ -53,10 +53,10 @@ namespace gum {
 
     /// Default constructor
     MultiDimCombineAndProjectDefault(
-        TABLE<GUM_SCALAR>* ( *combine )( const TABLE<GUM_SCALAR>&,
-                                         const TABLE<GUM_SCALAR>& ),
-        TABLE<GUM_SCALAR>* ( *project )(
-            const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) );
+        TABLE<GUM_SCALAR>* ( *combine )(const TABLE<GUM_SCALAR>&,
+                                        const TABLE<GUM_SCALAR>&),
+        TABLE<GUM_SCALAR>* ( *project )(const TABLE<GUM_SCALAR>&,
+                                        const Set<const DiscreteVariable*>&));
 
     /// Copy constructor
     MultiDimCombineAndProjectDefault(
@@ -65,7 +65,7 @@ namespace gum {
     /// Destructor
     virtual ~MultiDimCombineAndProjectDefault();
 
-    /** 
+    /**
      * @brief virtual constructor
      *
      * @return a new fresh MultiDimCombineAndProjectDefault with the same
@@ -96,9 +96,9 @@ namespace gum {
 
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction( TABLE<GUM_SCALAR>* ( *combine )(
-        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) );
+        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>&));
 
-    /** 
+    /**
      * @brief changes the class that performs the combinations
      *
      * Combinations are performed by pair, the CombineFunction being the
@@ -121,9 +121,9 @@ namespace gum {
 
     /// Changes the function used for projecting TABLES
     virtual void setProjectFunction( TABLE<GUM_SCALAR>* ( *proj )(
-        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) );
+        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
 
-    /** 
+    /**
      * @brief Changes the class that performs the projections.
      *
      * As for the combination class, it is possible to change the projection
@@ -152,7 +152,7 @@ namespace gum {
     nbOperations( const Set<const Sequence<const DiscreteVariable*>*>& set,
                   Set<const DiscreteVariable*> del_vars ) const;
 
-    /** 
+    /**
      * @brief returns the memory consumption used during the combinations and
      * projections
      *
@@ -169,7 +169,7 @@ namespace gum {
     memoryUsage( const Set<const TABLE<GUM_SCALAR>*>& set,
                  const Set<const DiscreteVariable*>& del_vars ) const;
 
-    /** 
+    /**
      * @brief returns the memory consumption used during the combinations and
      * projections
      *

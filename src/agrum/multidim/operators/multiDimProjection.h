@@ -25,9 +25,9 @@
 #ifndef GUM_MULTI_DIM_PROJECTION_H
 #define GUM_MULTI_DIM_PROJECTION_H
 
-#include <utility>
 #include <agrum/core/set.h>
 #include <agrum/variables/discreteVariable.h>
+#include <utility>
 
 namespace gum {
 
@@ -81,8 +81,7 @@ namespace gum {
    */
   // clang-format on
   template <typename GUM_SCALAR, template <typename> class TABLE>
-  class
-  MultiDimProjection {
+  class MultiDimProjection {
     public:
     // ========================================================================
     /// @name Constructors / Destructors
@@ -91,7 +90,7 @@ namespace gum {
 
     /// Default constructor
     MultiDimProjection( TABLE<GUM_SCALAR>* ( *proj )(
-        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) );
+        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
 
     /// Copy constructor
     MultiDimProjection( const MultiDimProjection<GUM_SCALAR, TABLE>& );
@@ -99,7 +98,7 @@ namespace gum {
     /// Destructor
     virtual ~MultiDimProjection();
 
-    /** 
+    /**
      * @brief virtual constructor
      *
      * @return a new fresh MultiDimCombinator with the same projection
@@ -113,7 +112,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Creates and returns the projection of the table over a subset of
      * its vars.
      *
@@ -133,7 +132,7 @@ namespace gum {
 
     /// Changes the function used for projecting TABLES
     void setProjectFunction( TABLE<GUM_SCALAR>* ( *proj )(
-        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) );
+        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
 
     /// Returns the projection function currently used by the projector
     TABLE<GUM_SCALAR>* ( *projectFunction() )(
@@ -153,7 +152,7 @@ namespace gum {
     float nbOperations( const Sequence<const DiscreteVariable*>& vars,
                         const Set<const DiscreteVariable*>& del_vars ) const;
 
-    /** 
+    /**
      * @brief Returns the memory consumption used during the projection.
      *
      * Actually, this function does not return a precise account of the memory
@@ -169,7 +168,7 @@ namespace gum {
     memoryUsage( const TABLE<GUM_SCALAR>& table,
                  const Set<const DiscreteVariable*>& del_vars ) const;
 
-    /** 
+    /**
      * @brief Returns the memory consumption used during the projection.
      *
      * Actually, this function does not return a precise account of the memory

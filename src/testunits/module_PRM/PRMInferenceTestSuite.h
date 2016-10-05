@@ -20,18 +20,18 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/BN/inference/variableElimination.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/VEWithBB.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/PRM/instanceBayesNet.h>
 #include <agrum/PRM/classBayesNet.h>
-#include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/inference/SVED.h>
+#include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/structuredBayesBall.h>
 #include <agrum/PRM/inference/structuredInference.h>
+#include <agrum/PRM/instanceBayesNet.h>
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
@@ -165,15 +165,16 @@ namespace gum_tests {
 
     void testSmallSVEInference() {
       gum::prm::SVE<double>* sve = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING( sve = new gum::prm::SVE<double>(
-                                        *small, small->getSystem( "microSys" ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          sve = new gum::prm::SVE<double>( *small,
+                                           small->getSystem( "microSys" ) ) );
       {
         gum::BayesNet<double> bn;
         gum::BayesNetFactory<double> bn_factory( &bn );
         small->getSystem( "microSys" ).groundedBN( bn_factory );
         auto ve = new gum::VariableElimination<double>( bn );
-        gum::prm::GroundedInference<double> g_ve( *small,
-                                                  small->getSystem( "microSys" ) );
+        gum::prm::GroundedInference<double> g_ve(
+            *small, small->getSystem( "microSys" ) );
         g_ve.setBNInference( ve );
 
         const gum::prm::PRMInstance<double>& instance =
@@ -229,8 +230,9 @@ namespace gum_tests {
 
     void testSmallSVEDInference() {
       gum::prm::SVED<double>* sved = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING( sved = new gum::prm::SVED<double>(
-                                        *small, small->getSystem( "microSys" ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          sved = new gum::prm::SVED<double>( *small,
+                                             small->getSystem( "microSys" ) ) );
       {
         const gum::prm::PRMInstance<double>& instance =
             small->getSystem( "microSys" ).get( "c" );
@@ -368,8 +370,8 @@ namespace gum_tests {
         try {
           size_t pos = bn.variableNodeMap().name( node ).find_first_of( '.' );
           const gum::prm::PRMInstance<double>& instance =
-              prm->getSystem( "aSys" )
-                  .get( bn.variableNodeMap().name( node ).substr( 0, pos ) );
+              prm->getSystem( "aSys" ).get(
+                  bn.variableNodeMap().name( node ).substr( 0, pos ) );
           const gum::prm::PRMAttribute<double>& attribute = instance.get(
               bn.variableNodeMap().name( node ).substr( pos + 1 ) );
           gum::prm::PRMInference<double>::Chain chain =
@@ -396,8 +398,7 @@ namespace gum_tests {
           gum::Instantiation inst( m_ve ), jnst( m_sve );
           std::string foo = instance.name() + dot + attribute.safeName();
 
-          for ( inst.setFirst(), jnst.setFirst();
-                !( inst.end() || jnst.end() );
+          for ( inst.setFirst(), jnst.setFirst(); !( inst.end() || jnst.end() );
                 inst.inc(), jnst.inc() ) {
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_ss.nbrDim() );
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_sve.nbrDim() );
@@ -418,7 +419,7 @@ namespace gum_tests {
 
           bool zero = true;
 
-          for ( jnst.setFirst(); ! jnst.end(); jnst.inc() ) {
+          for ( jnst.setFirst(); !jnst.end(); jnst.inc() ) {
             if ( m_sved.get( jnst ) != (double)0.0 ) {
               zero = false;
               break;

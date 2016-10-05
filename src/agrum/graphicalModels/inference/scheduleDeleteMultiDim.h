@@ -31,9 +31,9 @@
 #include <agrum/config.h>
 
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/scheduleOperation.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 

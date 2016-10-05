@@ -46,7 +46,7 @@ namespace gum {
       , ArcGraphPart( g )
       , __mutableTopologicalOrder( nullptr ) {
     GUM_CONS_CPY( DiGraph );
-    if (g.__mutableTopologicalOrder != nullptr) {
+    if ( g.__mutableTopologicalOrder != nullptr ) {
       __mutableTopologicalOrder =
           new Sequence<NodeId>( *( g.__mutableTopologicalOrder ) );
     }
@@ -54,7 +54,7 @@ namespace gum {
 
   DiGraph::~DiGraph() {
     GUM_DESTRUCTOR( DiGraph );
-    if (__mutableTopologicalOrder != nullptr) {
+    if ( __mutableTopologicalOrder != nullptr ) {
       delete __mutableTopologicalOrder;
     }
   }

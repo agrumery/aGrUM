@@ -82,11 +82,14 @@ namespace gum {
     if ( __parents != 0 ) delete __parents;
 
     if ( __impl != 0 ) {
-      //@todo better than throwing an exception from inside a destructor but still ...
-      std::cerr<<"[BN factory] Implementation defined for a variable but not used. "
-                 "You should call endVariableDeclaration() before "
-                 "deleting me."<<std::endl;
-      exit(1000);
+      //@todo better than throwing an exception from inside a destructor but
+      //still ...
+      std::cerr
+          << "[BN factory] Implementation defined for a variable but not used. "
+             "You should call endVariableDeclaration() before "
+             "deleting me."
+          << std::endl;
+      exit( 1000 );
     }
   }
 
@@ -516,7 +519,7 @@ namespace gum {
 
     bool add = false;
 
-    NodeId i = NodeId(varList.size() - 1);
+    NodeId i = NodeId( varList.size() - 1 );
 
     do {
       if ( modCounter[i] == ( varList[i]->domainSize() - 1 ) ) {

@@ -26,10 +26,10 @@
 #ifndef GUM_MULTI_DIM_COMPLETE_PROJECTION_H
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_H
 
-#include <utility>
 #include <agrum/core/set.h>
-#include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/instantiation.h>
+#include <agrum/variables/discreteVariable.h>
+#include <utility>
 
 namespace gum {
 
@@ -62,7 +62,7 @@ namespace gum {
     /// Destructor
     virtual ~MultiDimCompleteProjection();
 
-    /** 
+    /**
      * @brief Virtual constructor
      *
      * @return a new fresh MultiDimCombinator with the same projection

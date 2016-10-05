@@ -30,5 +30,3 @@
 
 template class gum::MultiPriorityQueue<std::string>;
 template class gum::MultiPriorityQueue<int, int>;
-
-

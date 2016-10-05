@@ -137,8 +137,7 @@ namespace gum {
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack( Idx col,
-                                 Idx translated_val ) const;
+      std::string translateBack( Idx col, Idx translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames( const std::vector<std::string>& db_var,

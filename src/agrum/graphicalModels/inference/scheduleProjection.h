@@ -62,11 +62,11 @@
 #ifndef GUM_SCHEDULE_PROJECTION_H
 #define GUM_SCHEDULE_PROJECTION_H
 
-#include <utility>
 #include <agrum/core/set.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/schedule.h>
+#include <agrum/graphicalModels/inference/scheduleMultiDim.h>
+#include <agrum/variables/discreteVariable.h>
+#include <utility>
 
 namespace gum {
 
@@ -123,8 +123,8 @@ namespace gum {
 
     /// changes the function used for projecting tables
     virtual void setProjectFunction( MultiDimImplementation<GUM_SCALAR>* (
-        *proj )( const MultiDimImplementation<GUM_SCALAR>&,
-                 const Set<const DiscreteVariable*>& ) ) = 0;
+        *proj )(const MultiDimImplementation<GUM_SCALAR>&,
+                const Set<const DiscreteVariable*>&)) = 0;
 
     /// returns the projection function currently used by the projector
     virtual MultiDimImplementation<GUM_SCALAR>* ( *projectFunction() )(

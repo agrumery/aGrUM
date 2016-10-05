@@ -23,9 +23,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/potential.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/variables/labelizedVariable.h>
 namespace gum_tests {
 
   class ScheduleMultiDimTestSuite : public CxxTest::TestSuite {

@@ -28,4 +28,3 @@
 
 template class gum::SimpleCPTGenerator<float>;
 template class gum::SimpleCPTGenerator<double>;
-

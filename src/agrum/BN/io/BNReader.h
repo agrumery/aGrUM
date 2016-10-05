@@ -30,10 +30,10 @@
 #ifndef GUM_BN_READER_H
 #define GUM_BN_READER_H
 
+#include <agrum/BN/BayesNet.h>
+#include <agrum/config.h>
 #include <iostream>
 #include <string>
-#include <agrum/config.h>
-#include <agrum/BN/BayesNet.h>
 
 namespace gum {
   /* =========================================================================*/

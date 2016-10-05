@@ -301,7 +301,7 @@ namespace gum_tests {
             GET_RESSOURCES_PATH( "o3prmr/AsiaOneFile/myRequest.o3prmr" ) );
         // si->showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS( si->count(), (gum::Size)0 );
-        if ( ! si->count() ) {
+        if ( !si->count() ) {
           auto prm = si->prm();
           const auto& sys = prm->getSystem( "Asia.Asia" );
           auto bn = new gum::BayesNet<double>( "plop" );
@@ -430,7 +430,6 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
-
   };
 
 }  // namespace gum_tests

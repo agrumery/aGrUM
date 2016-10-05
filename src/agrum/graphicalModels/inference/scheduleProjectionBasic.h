@@ -77,7 +77,7 @@ namespace gum {
     /// default constructor
     ScheduleProjectionBasic( MultiDimImplementation<GUM_SCALAR>* ( *proj )(
         const MultiDimImplementation<GUM_SCALAR>&,
-        const Set<const DiscreteVariable*>& ) );
+        const Set<const DiscreteVariable*>&));
 
     /// copy constructor
     ScheduleProjectionBasic( const ScheduleProjectionBasic<GUM_SCALAR>& );
@@ -122,7 +122,7 @@ namespace gum {
     /// changes the function used for projecting tables
     void setProjectFunction( MultiDimImplementation<GUM_SCALAR>* ( *proj )(
         const MultiDimImplementation<GUM_SCALAR>&,
-        const Set<const DiscreteVariable*>& ) );
+        const Set<const DiscreteVariable*>&));
 
     /// returns the projection function currently used by the projector
     MultiDimImplementation<GUM_SCALAR>* ( *projectFunction() )(

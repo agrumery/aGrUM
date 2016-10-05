@@ -1017,7 +1017,8 @@ namespace gum {
       std::vector<PRMObject*> __stack;
 
       /// A mapping between aggregators and their parameters
-      HashTable<PRMAggregate<GUM_SCALAR>*, std::vector<std::string>> __agg_params;
+      HashTable<PRMAggregate<GUM_SCALAR>*, std::vector<std::string>>
+          __agg_params;
 
       /// @}
     };

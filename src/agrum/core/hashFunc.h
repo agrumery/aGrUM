@@ -160,7 +160,7 @@ namespace gum {
      *
      * @param s The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
-     * @throw HashSize Raised if s is too small.
+     * @throw SizeError Raised if s is too small.
      */
     virtual void resize( Size s );
 
@@ -221,7 +221,7 @@ namespace gum {
      *
      * @param s The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
-     * @throw HashSize Raised if s is too small.
+     * @throw SizeError Raised if s is too small.
      */
     void resize( Size s );
 
@@ -265,7 +265,7 @@ namespace gum {
      *
      * @param s The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
-     * @throw HashSize Raised if s is too small.
+     * @throw SizeError Raised if s is too small.
      */
     void resize( Size s );
 
@@ -320,7 +320,7 @@ namespace gum {
      *
      * @param s The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
-     * @throw HashSize Raised if s is too small.
+     * @throw SizeError Raised if s is too small.
      */
     void resize( Size s );
 
@@ -370,7 +370,7 @@ namespace gum {
      *
      * @param s The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
-     * @throw HashSize Raised if s is too small.
+     * @throw SizeError Raised if s is too small.
      */
     void resize( Size s );
 
@@ -437,7 +437,7 @@ namespace gum {
      *
      * @param s The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
-     * @throw HashSize Raised if s is too small.
+     * @throw SizeError Raised if s is too small.
      */
     void resize( Size s );
 
@@ -479,7 +479,7 @@ namespace gum {
      *
      * @param s The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
-     * @throw HashSize Raised if s is too small.
+     * @throw SizeError Raised if s is too small.
      */
     void resize( Size s );
 

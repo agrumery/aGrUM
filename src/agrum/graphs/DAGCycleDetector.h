@@ -330,10 +330,9 @@ namespace gum {
     /** @brief put into a weighted nodeset the nodes of another weighted set
      * that
      * belong to a set of arc extremities */
-    void
-    __restrictWeightedSet( NodeProperty<Size>& result_set,
-                           const NodeProperty<Size>& set_to_restrict,
-                           const NodeSet& extrmities ) const;
+    void __restrictWeightedSet( NodeProperty<Size>& result_set,
+                                const NodeProperty<Size>& set_to_restrict,
+                                const NodeSet& extrmities ) const;
   };
 
 } /* namespace gum */

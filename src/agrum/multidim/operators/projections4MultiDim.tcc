@@ -28,6 +28,7 @@
 // allow projectionPatterns to be used
 #define GUM_PROJECTION_PATTERN_ALLOWED 1
 
+#include <agrum/core/functors.h>
 #include <agrum/multidim/operators/projectionRegister4MultiDim.h>
 
 // a specialized max projection function for multiDimArrays

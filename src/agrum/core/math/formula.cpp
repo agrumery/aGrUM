@@ -34,7 +34,7 @@ namespace gum {
   void print_stack( std::stack<FormulaPart> s ) {
     std::cout << std::endl;
     std::list<FormulaPart> l;
-    while ( ! s.empty() ) {
+    while ( !s.empty() ) {
       l.push_front( s.top() );
       s.pop();
     }
@@ -130,7 +130,7 @@ namespace gum {
   FormulaPart::~FormulaPart() { GUM_DESTRUCTOR( FormulaPart ); }
 
   FormulaPart& FormulaPart::operator=( const FormulaPart& source ) {
-    if ( this == &source) {
+    if ( this == &source ) {
       return *this;
     }
 
@@ -142,18 +142,17 @@ namespace gum {
     return *this;
   }
 
-  FormulaPart& FormulaPart::operator=( FormulaPart&& source) {
-    if ( this == &source) {
+  FormulaPart& FormulaPart::operator=( FormulaPart&& source ) {
+    if ( this == &source ) {
       return *this;
     }
 
-    type = std::move(source.type);
-    number = std::move(source.number);
-    character = std::move(source.character);
-    function = std::move(source.function);
+    type = std::move( source.type );
+    number = std::move( source.number );
+    character = std::move( source.character );
+    function = std::move( source.function );
 
     return *this;
-
   }
 
   std::string FormulaPart::str() const {
@@ -298,9 +297,7 @@ namespace gum {
     __parser->formula( this );
   }
 
-  Formula::~Formula() {
-    GUM_DESTRUCTOR( Formula );
-  }
+  Formula::~Formula() { GUM_DESTRUCTOR( Formula ); }
 
   Formula& Formula::operator=( const Formula& source ) {
     if ( this == &source ) {
@@ -380,4 +377,3 @@ namespace gum {
 #ifdef GUM_NO_INLINE
 #include <agrum/core/math/formula.inl>
 #endif  // GUM_NO_INLINE
-

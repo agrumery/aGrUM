@@ -21,9 +21,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMFormAttribute.h>
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
-#include <agrum/PRM/elements/PRMClass.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
@@ -125,7 +125,8 @@ namespace gum_tests {
       // Arrange
       PRMReferenceSlot* ref = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING( ref = new PRMReferenceSlot( "ref", *__A, false ) );
+      TS_ASSERT_THROWS_NOTHING(
+          ref = new PRMReferenceSlot( "ref", *__A, false ) );
       delete ref;
     }
 
@@ -133,7 +134,8 @@ namespace gum_tests {
       // Arrange
       PRMReferenceSlot* ref = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING( ref = new PRMReferenceSlot( "ref", *__A, true ) );
+      TS_ASSERT_THROWS_NOTHING( ref =
+                                    new PRMReferenceSlot( "ref", *__A, true ) );
       delete ref;
     }
     /// @}
@@ -163,7 +165,7 @@ namespace gum_tests {
       // Arrange
       PRMReferenceSlot ref( "ref", *__A, false );
       // Act & Assert
-      TS_ASSERT( ! ref.isArray() );
+      TS_ASSERT( !ref.isArray() );
     }
 
     void testIsArrayTrue() {

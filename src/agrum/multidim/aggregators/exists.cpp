@@ -28,4 +28,3 @@
 
 template class gum::aggregator::Exists<float>;
 template class gum::aggregator::Exists<double>;
-

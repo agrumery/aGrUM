@@ -173,8 +173,8 @@ namespace gum_tests {
 
       for ( gum::Idx i = 0; i < 8; i += 2 ) {
         gum::NodeSet nodes;
-        nodes << gum::NodeId(( 8 - i ) * 10);
-        nodes << gum::NodeId(( 8 - i - 1 ) * 10);
+        nodes << gum::NodeId( ( 8 - i ) * 10 );
+        nodes << gum::NodeId( ( 8 - i - 1 ) * 10 );
         partial_order.pushBack( nodes );
       }
 
@@ -194,7 +194,7 @@ namespace gum_tests {
         graph.addNode( i );
 
       for ( gum::NodeId i = 1; i <= 7; ++i )
-        graph.addEdge( i, gum::NodeId(i + 1) );
+        graph.addEdge( i, gum::NodeId( i + 1 ) );
 
       graph.addEdge( 8, 1 );
 

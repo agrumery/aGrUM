@@ -29,4 +29,3 @@
 
 template class gum::credal::InferenceEngine<float>;
 template class gum::credal::InferenceEngine<double>;
-

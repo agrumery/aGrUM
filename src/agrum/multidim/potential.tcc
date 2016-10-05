@@ -153,9 +153,11 @@ namespace gum {
   // entropy of this
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR Potential<GUM_SCALAR>::entropy() const {
-    return this->reduce( []( GUM_SCALAR z, GUM_SCALAR p ) {
-      return ( p == 0.0 ) ? z : ( z - p * log2( p ) );
-    }, 0.0 );
+    return this->reduce(
+        []( GUM_SCALAR z, GUM_SCALAR p ) {
+          return ( p == 0.0 ) ? z : ( z - p * log2( p ) );
+        },
+        0.0 );
   }
 
   template <typename GUM_SCALAR>
@@ -210,6 +212,47 @@ namespace gum {
     }
     return *this;
   }
+
+  template <typename GUM_SCALAR>
+  INLINE void Potential<GUM_SCALAR>::normalizeAsCPT() const {
+    if ( this->nbrDim() == 0 ) {
+      GUM_ERROR( FatalError, "Normalization for an empty potential" );
+    }
+
+    Instantiation inst( *this );
+    const auto& v = this->variable( 0 );
+
+    for ( inst.setFirst(); !inst.end(); inst.incNotVar( v ) ) {
+      GUM_SCALAR s = (GUM_SCALAR)0.0;
+      for ( inst.setFirstVar( v ); !inst.end(); inst.incVar( v ) )
+        s += this->get( inst );
+      if ( s == (GUM_SCALAR)0.0 ) {
+        GUM_ERROR( FatalError,
+                   "Normalization for a potential that sum to 0 in " << *this );
+      }
+      if ( s != (GUM_SCALAR)1.0 ) {
+        for ( inst.setFirstVar( v ); !inst.end(); inst.incVar( v ) )
+          this->set( inst, this->get( inst ) / s );
+      }
+      inst.setFirstVar( v );  // to remove inst.end()
+    }
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>&
+  Potential<GUM_SCALAR>::scale( GUM_SCALAR v ) const {
+    this->apply( [v]( GUM_SCALAR x ) { return x * v; } );
+    return *this;
+  }
+
+    template <typename GUM_SCALAR>
+    INLINE const Potential<GUM_SCALAR>&
+    Potential<GUM_SCALAR>::translate( GUM_SCALAR v ) const {
+      this->apply( [v]( GUM_SCALAR x ) { return x + v; } );
+      return *this;
+    }
+
+
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margSumOut(
@@ -284,7 +327,8 @@ namespace gum {
       GUM_ERROR( InvalidArgument,
                  "The vector contains " << vars.size()
                                         << " variables instead of "
-                                        << this->nbrDim() << "." );
+                                        << this->nbrDim()
+                                        << "." );
     for ( const auto var : vars ) {
       if ( !this->contains( *var ) )
         GUM_ERROR(

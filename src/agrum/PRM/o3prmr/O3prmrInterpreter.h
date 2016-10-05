@@ -29,9 +29,9 @@
 #define SKOORINTERPRETER_H
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <agrum/PRM/o3prmr/O3prmrContext.h>
-#include <agrum/PRM/o3prm/O3prmReader.h>
 #include <agrum/PRM/inference/PRMInference.h>
+#include <agrum/PRM/o3prm/O3prmReader.h>
+#include <agrum/PRM/o3prmr/O3prmrContext.h>
 
 #include <agrum/core/errorsContainer.h>
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

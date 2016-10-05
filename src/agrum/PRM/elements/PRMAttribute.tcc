@@ -46,7 +46,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void PRMAttribute<GUM_SCALAR>::overload( PRMAttribute<GUM_SCALAR>* source ) {
+    void
+    PRMAttribute<GUM_SCALAR>::overload( PRMAttribute<GUM_SCALAR>* source ) {
       auto old_type = this->_type();
       this->_type( source->_type() );
       source->_type( old_type );

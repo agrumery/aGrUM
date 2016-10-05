@@ -28,10 +28,10 @@
 
 namespace gum {
 
-#ifdef _MSC_VER 
+#ifdef _MSC_VER
 #define MCBG MCBayesNetGenerator
 #else
-#define MCBG MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>
+#define MCBG MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>
 #endif
 
   // Default constructor.
@@ -48,7 +48,7 @@ namespace gum {
                                      Idx iteration,
                                      Idx p,
                                      Idx q )
-      : MCBG(nbrNodes, maxArcs, max_modality, iteration, p, q ) {
+      : MCBG( nbrNodes, maxArcs, max_modality, iteration, p, q ) {
     if ( maxParents == 0 )
       GUM_ERROR(
           OperationNotAllowed,
@@ -68,7 +68,7 @@ namespace gum {
                                      Idx iteration,
                                      Idx p,
                                      Idx q )
-      : MCBG(bayesNet, iteration, p, q ) {
+      : MCBG( bayesNet, iteration, p, q ) {
     _maxParents = maxParents;
     GUM_CONSTRUCTOR( MaxParentsMCBayesNetGenerator );
   }
@@ -86,7 +86,9 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
-  bool MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__checkConditions() {
+  bool MaxParentsMCBayesNetGenerator<GUM_SCALAR,
+                                     ICPTGenerator,
+                                     ICPTDisturber>::__checkConditions() {
     for ( auto node : this->_bayesNet.nodes() )
       if ( this->_bayesNet.dag().parents( node ).size() > _maxParents )
         return false;

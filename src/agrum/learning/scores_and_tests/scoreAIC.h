@@ -81,12 +81,11 @@ namespace gum {
        * @param max_range The maximal range.
        */
       template <typename RowFilter>
-      ScoreAIC(
-          const RowFilter& filter,
-          const std::vector<Size>& var_modalities,
-          Apriori<IdSetAlloc, CountAlloc>& apriori,
-          Size min_range = 0,
-          Size max_range = std::numeric_limits<Size>::max() );
+      ScoreAIC( const RowFilter& filter,
+                const std::vector<Size>& var_modalities,
+                Apriori<IdSetAlloc, CountAlloc>& apriori,
+                Size min_range = 0,
+                Size max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       ScoreAIC( const ScoreAIC<IdSetAlloc, CountAlloc>& );

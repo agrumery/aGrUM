@@ -25,9 +25,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/UAI/UAIWriter.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -40,7 +40,7 @@
 namespace gum_tests {
 
   class UAIWriterTestSuite : public CxxTest::TestSuite {
-  public:
+    public:
     gum::BayesNet<double>* bn;
     gum::NodeId i1, i2, i3, i4, i5;
 
@@ -48,7 +48,7 @@ namespace gum_tests {
       bn = new gum::BayesNet<double>();
 
       gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
-              n3( "3", "", 2 );
+          n3( "3", "", 2 );
       gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
       i1 = bn->add( n1 );
@@ -71,15 +71,14 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::UAIWriter<double>* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING( writer =
-                                            new gum::UAIWriter<double>() );
+      TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::UAIWriter<double>() );
       delete writer;
     }
 
     void testWriter_ostream() {
       gum::UAIWriter<double> writer;
       // Uncomment this to check the ouput
-      //TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
     void testWriter_string() {
@@ -99,7 +98,7 @@ namespace gum_tests {
       }
     }
 
-  private:
+    private:
     // Builds a BN to test the inference
     void fill( gum::BayesNet<double>& bn ) {
       const gum::Potential<double>& p1 = bn.cpt( i1 );

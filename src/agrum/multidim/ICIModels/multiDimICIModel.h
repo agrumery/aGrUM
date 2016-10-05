@@ -101,7 +101,7 @@ namespace gum {
     virtual void changeNotification( gum::Instantiation&,
                                      const gum::DiscreteVariable* const,
                                      const gum::Idx&,
-                                     const gum::Idx& ) override {};
+                                     const gum::Idx& ) override{};
 
     virtual void setFirstNotification( gum::Instantiation& ){};
 
@@ -131,7 +131,7 @@ namespace gum {
 
     void externalWeight( GUM_SCALAR w ) const;
 
-    /** 
+    /**
      * @brief returns the real name of the multiDimArray
      *
      * In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -146,7 +146,6 @@ namespace gum {
 
     /// @}
     protected:
-
     /// \f$ p_0 \f$ in Henrion (89).
     mutable GUM_SCALAR __external_weight;
 

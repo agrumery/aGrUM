@@ -29,8 +29,8 @@
 #include <limits>
 
 #include <agrum/config.h>
-#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 namespace gum {
 
@@ -56,12 +56,10 @@ namespace gum {
       StructuralConstraintIndegree();
 
       /// constructor starting with an empty graph with a given number of nodes
-      StructuralConstraintIndegree( Size nb_nodes,
-                                    Size max_indegree );
+      StructuralConstraintIndegree( Size nb_nodes, Size max_indegree );
 
       /// constructor starting with a given graph
-      StructuralConstraintIndegree( const DiGraph& graph,
-                                    Size max_indegree );
+      StructuralConstraintIndegree( const DiGraph& graph, Size max_indegree );
 
       /// copy constructor
       StructuralConstraintIndegree( const StructuralConstraintIndegree& from );
@@ -99,8 +97,7 @@ namespace gum {
 
       /** @brief resets the default max indegree and possibly updates the
        * indegree of all nodes */
-      void setMaxIndegree( Size max_indegree,
-                           bool update_all_node = false );
+      void setMaxIndegree( Size max_indegree, bool update_all_node = false );
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone( const DiGraph& graph );
@@ -151,39 +148,39 @@ namespace gum {
        * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone( const GraphChange& change ) const ;
+      bool isAlwaysInvalidAlone( const GraphChange& change ) const;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and its addition would not
        * violate the indegree constraint of y. */
-      bool checkArcAdditionAlone( NodeId x, NodeId y ) const ;
+      bool checkArcAdditionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
       /** an arc can be removed if and only if the arc exists. */
-      bool checkArcDeletionAlone( NodeId x, NodeId y ) const ;
+      bool checkArcDeletionAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not and its addition would not violate the indegree
        * constraint of x. */
-      bool checkArcReversalAlone( NodeId x, NodeId y ) const ;
+      bool checkArcReversalAlone( NodeId x, NodeId y ) const;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and its addition would not
        * violate the indegree constraint of y. */
-      bool checkModificationAlone( const ArcAddition& change ) const ;
+      bool checkModificationAlone( const ArcAddition& change ) const;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone( const ArcDeletion& change ) const ;
+      bool checkModificationAlone( const ArcDeletion& change ) const;
 
       /// checks whether the constraints enable to reverse an arc
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not and its addition would not violate the indegree
        * constraint of x. */
-      bool checkModificationAlone( const ArcReversal& change ) const ;
+      bool checkModificationAlone( const ArcReversal& change ) const;
 
       /// checks whether the constraints enable to perform a graph change
       /** An arc can be added if and only if its extremal nodes belong to the
@@ -193,7 +190,7 @@ namespace gum {
        * An arc can be reversed if and only if it exists and arc (y,x)
        * does not and its addition would not violate the indegree
        * constraint of x. */
-      bool checkModificationAlone( const GraphChange& change ) const ;
+      bool checkModificationAlone( const GraphChange& change ) const;
 
 /// @}
 
@@ -211,8 +208,7 @@ namespace gum {
       NodeProperty<Size> _Indegree__max_parents;
 
       /// a default max indegree to assign for nodes without specified indegree
-      Size _Indegree__max_indegree{
-          std::numeric_limits<Size>::max()};
+      Size _Indegree__max_indegree{std::numeric_limits<Size>::max()};
     };
 
   } /* namespace learning */

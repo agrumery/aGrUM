@@ -18,35 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
+#include <iostream>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/BN/BayesNet.h>
 
-#include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 
-#include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
 
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
 
-#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
+#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
-#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/localSearchWithTabuList.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 #define MY_ALARM GET_RESSOURCES_PATH( "alarm.csv" )
 
@@ -66,7 +66,8 @@ namespace gum_tests {
       // auto translators = translators1;
 
       gum::learning::DBRowTranslatorSetDynamic<
-          gum::learning::CellTranslatorCompactIntId> translators;
+          gum::learning::CellTranslatorCompactIntId>
+          translators;
       translators.insertTranslator( gum::learning::Col<0>(), 8 );
 
       auto generators1 = gum::learning::make_generators(
@@ -93,7 +94,8 @@ namespace gum_tests {
           gum::learning::StructuralConstraintDAG,
           gum::learning::StructuralConstraintIndegree,
           gum::learning::StructuralConstraintSliceOrder,
-          gum::learning::StructuralConstraintTabuList> struct_constraint;
+          gum::learning::StructuralConstraintTabuList>
+          struct_constraint;
 
       struct_constraint.setMaxIndegree( 2 );
       struct_constraint.setTabuListSize( 100 );
@@ -108,7 +110,8 @@ namespace gum_tests {
           filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph<decltype(
-          struct_constraint )> op_set( struct_constraint );
+          struct_constraint )>
+          op_set( struct_constraint );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
                                                   decltype( struct_constraint ),
@@ -119,11 +122,12 @@ namespace gum_tests {
       search.setMaxNbDecreasingChanges( 2 );
 
       try {
-        gum::BayesNet<float> bn = search.learnBN<float>( selector,
-                                                  estimator,
-                                                  database.variableNames(),
-                                                  modalities,
-                                                  filter.translatorSet() );
+        gum::BayesNet<float> bn =
+            search.learnBN<float>( selector,
+                                   estimator,
+                                   database.variableNames(),
+                                   modalities,
+                                   filter.translatorSet() );
         gum::BayesNet<double> bn2 =
             search.learnBN<double>( selector,
                                     estimator,
@@ -159,7 +163,8 @@ namespace gum_tests {
           gum::learning::StructuralConstraintDAG,
           gum::learning::StructuralConstraintIndegree,
           gum::learning::StructuralConstraintSliceOrder,
-          gum::learning::StructuralConstraintTabuList> struct_constraint;
+          gum::learning::StructuralConstraintTabuList>
+          struct_constraint;
 
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
@@ -174,7 +179,8 @@ namespace gum_tests {
           filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph<decltype(
-          struct_constraint )> op_set( struct_constraint );
+          struct_constraint )>
+          op_set( struct_constraint );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
                                                   decltype( struct_constraint ),
@@ -197,7 +203,8 @@ namespace gum_tests {
       gum::learning::DatabaseFromCSV database( MY_ALARM );
 
       gum::learning::DBRowTranslatorSetDynamic<
-          gum::learning::CellTranslatorCompactIntId> translators;
+          gum::learning::CellTranslatorCompactIntId>
+          translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
                                     gum::learning::Col<0>(),
                                     37 );
@@ -217,7 +224,8 @@ namespace gum_tests {
           gum::learning::StructuralConstraintDAG,
           gum::learning::StructuralConstraintIndegree,
           gum::learning::StructuralConstraintSliceOrder,
-          gum::learning::StructuralConstraintTabuList> struct_constraint;
+          gum::learning::StructuralConstraintTabuList>
+          struct_constraint;
 
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
@@ -232,7 +240,8 @@ namespace gum_tests {
           filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph<decltype(
-          struct_constraint )> op_set( struct_constraint );
+          struct_constraint )>
+          op_set( struct_constraint );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
                                                   decltype( struct_constraint ),
@@ -255,7 +264,8 @@ namespace gum_tests {
       gum::learning::DatabaseFromCSV database( MY_ALARM );
 
       gum::learning::DBRowTranslatorSetDynamic<
-          gum::learning::DBCellTranslator<1, 1>> translators;
+          gum::learning::DBCellTranslator<1, 1>>
+          translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
                                     gum::learning::Col<0>(),
                                     37 );
@@ -275,7 +285,8 @@ namespace gum_tests {
           gum::learning::StructuralConstraintDAG,
           gum::learning::StructuralConstraintIndegree,
           gum::learning::StructuralConstraintSliceOrder,
-          gum::learning::StructuralConstraintTabuList> struct_constraint;
+          gum::learning::StructuralConstraintTabuList>
+          struct_constraint;
 
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
@@ -291,7 +302,8 @@ namespace gum_tests {
           filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph<decltype(
-          struct_constraint )> op_set( struct_constraint );
+          struct_constraint )>
+          op_set( struct_constraint );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
                                                   decltype( struct_constraint ),

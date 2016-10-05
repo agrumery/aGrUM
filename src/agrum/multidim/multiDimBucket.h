@@ -28,13 +28,13 @@
 #ifndef GUM_MULTIDIM_BUCKET_H
 #define GUM_MULTIDIM_BUCKET_H
 
-#include <sstream>
 #include <climits>
+#include <sstream>
 
-#include <agrum/core/set.h>
+#include <agrum/core/bijection.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
-#include <agrum/core/bijection.h>
+#include <agrum/core/set.h>
 
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimReadOnly.h>
@@ -286,7 +286,8 @@ namespace gum {
     MultiDimArray<GUM_SCALAR>* __bucket;
 
     /// The set of MultiDimContainer in this bucket.
-    mutable HashTable<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> __multiDims;
+    mutable HashTable<const MultiDimContainer<GUM_SCALAR>*, Instantiation*>
+        __multiDims;
 
     /// The set of all variables of the multidims in this bucket.
     Set<const DiscreteVariable*> __allVariables;
@@ -295,14 +296,16 @@ namespace gum {
     mutable Instantiation __allVarsInst;
 
     /**
-     * @brief Add a variable to __allVariables, and do nothing if var is already in
+     * @brief Add a variable to __allVariables, and do nothing if var is already
+     * in
      * the set.
      * @param var The DiscreteVariable to add.
      */
     void __addVariable( const DiscreteVariable* var );
 
     /**
-     * @brief Erase a variable from __allVariables if no other multidimensional table
+     * @brief Erase a variable from __allVariables if no other multidimensional
+     * table
      * uses it in this bucket.
      * @param var The DiscreteVariable to remove.
      */

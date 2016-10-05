@@ -26,8 +26,8 @@
 #include <ressources/myalloc.h>
 
 #include <agrum/core/bijection.h>
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/graphs/graphElements.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

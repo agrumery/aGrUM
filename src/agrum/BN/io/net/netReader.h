@@ -20,11 +20,11 @@
 #ifndef NETREADER_H
 #define NETREADER_H
 
-#include <iostream>
-#include <string>
-#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BNReader.h>
+#include <agrum/config.h>
+#include <iostream>
+#include <string>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER

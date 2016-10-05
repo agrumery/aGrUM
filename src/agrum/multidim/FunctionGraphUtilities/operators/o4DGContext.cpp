@@ -87,9 +87,8 @@ namespace gum {
   // Default Destructor.
   O4DGContext::~O4DGContext() { GUM_DESTRUCTOR( O4DGContext ); }
 
-} // namespace gum
+}  // namespace gum
 
 #ifdef GUM_NO_INLINE
 #include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.inl>
 #endif
-

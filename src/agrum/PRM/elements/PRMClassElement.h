@@ -33,8 +33,8 @@
 
 #include <agrum/multidim/potential.h>
 
-#include <agrum/PRM/utils_prm.h>
 #include <agrum/PRM/elements/PRMObject.h>
+#include <agrum/PRM/utils_prm.h>
 
 namespace gum {
   namespace prm {
@@ -190,7 +190,8 @@ namespace gum {
       virtual PRMType<GUM_SCALAR>& type() = 0;
 
       /**
-       * Return a constant reference over the gum::PRMType of this class element.
+       * Return a constant reference over the gum::PRMType of this class
+       * element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
        *                            any gum::Potential (like a
        * gum::PRMReferenceSlot).

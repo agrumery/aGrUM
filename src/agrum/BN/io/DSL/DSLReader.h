@@ -20,11 +20,11 @@
 #ifndef DSLREADER_H
 #define DSLREADER_H
 
-#include <iostream>
-#include <string>
-#include <agrum/config.h>
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/io/BNReader.h>
+#include <agrum/config.h>
+#include <iostream>
+#include <string>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER

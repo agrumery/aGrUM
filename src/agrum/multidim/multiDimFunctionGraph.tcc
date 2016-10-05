@@ -71,9 +71,8 @@ namespace gum {
   // Copy Operator.
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>&
-      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::
-      operator=(
-          const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from ) {
+  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::operator=(
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from ) {
     copy( from );
     return *this;
   }
@@ -136,12 +135,12 @@ namespace gum {
   }
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE void MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::populate(
-          std::initializer_list<GUM_SCALAR> l ) const {
+      std::initializer_list<GUM_SCALAR> l ) const {
     GUM_ERROR( OperationNotAllowed,
                "Function Graph can't be edited so "
-                       "easily.\nMultiDimFunctionGraphManager "
-                       "provides the framework to edit a "
-                       "Function Graph." )
+               "easily.\nMultiDimFunctionGraphManager "
+               "provides the framework to edit a "
+               "Function Graph." )
   }
 
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
@@ -589,7 +588,8 @@ namespace gum {
   // Indicates if given node is terminal or not
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE bool
-  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::isTerminalNode(const NodeId& node ) const {
+  MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::isTerminalNode(
+      const NodeId& node ) const {
     return this->existsTerminalNodeWithId( node );
   }
 

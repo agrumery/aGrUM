@@ -42,10 +42,10 @@
 #include <vector>
 
 #include <agrum/config.h>
-#include <agrum/learning/database/column.h>
-#include <agrum/learning/database/DBRow.h>
-#include <agrum/learning/database/filteredRow.h>
 #include <agrum/learning/database/DBCellTranslator.h>
+#include <agrum/learning/database/DBRow.h>
+#include <agrum/learning/database/column.h>
+#include <agrum/learning/database/filteredRow.h>
 
 namespace gum {
 
@@ -159,9 +159,8 @@ namespace gum {
        * If we wish to insert several translators, use an nb_times different
        * from 1. In this case, the other translators will read columns of the
        * database deduced from deb_col by applying increment "increment". */
-      void insertTranslator( Idx deb_col,
-                             Size nb_times = 1,
-                             Idx increment = 1 );
+      void
+      insertTranslator( Idx deb_col, Size nb_times = 1, Idx increment = 1 );
 
       /// execute all the translations on the current database row
       void translate();
@@ -196,8 +195,7 @@ namespace gum {
       void clear() noexcept;
 
       /// returns the name of the jth value of the ith column
-      std::string translateBack( Idx col,
-                                 Idx translated_val ) const;
+      std::string translateBack( Idx col, Idx translated_val ) const;
 
       /// returns the size of the input as used by the cell translators
       Size inputSize() const noexcept;

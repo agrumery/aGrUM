@@ -31,10 +31,10 @@
 #include <agrum/core/inline.h>
 
 #include <agrum/core/sequence.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/scheduleOperation.h>
+#include <agrum/graphs/graphElements.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 

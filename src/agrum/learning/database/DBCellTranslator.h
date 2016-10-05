@@ -64,13 +64,13 @@
 #ifndef GUM_LEARNING_DB_CELL_TRANSLATOR_H
 #define GUM_LEARNING_DB_CELL_TRANSLATOR_H
 
+#include <cstring>
 #include <iostream>
 #include <vector>
-#include <cstring>
 
 #include <agrum/config.h>
-#include <agrum/learning/database/column.h>
 #include <agrum/learning/database/DBRow.h>
+#include <agrum/learning/database/column.h>
 #include <agrum/learning/database/filteredRow.h>
 
 namespace gum {
@@ -273,8 +273,8 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      virtual std::string
-      translateBack( Idx col, Idx translated_val ) const = 0;
+      virtual std::string translateBack( Idx col,
+                                         Idx translated_val ) const = 0;
 
       /// returns the size of the input for this cell translator
       Size inputSize() const noexcept;

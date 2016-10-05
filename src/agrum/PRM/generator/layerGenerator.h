@@ -28,9 +28,9 @@
 #define GUM_LAYER_GENERATOR_H
 #include <cstdlib>
 #include <ctime>
-#include <string>
-#include <sstream>
 #include <list>
+#include <sstream>
+#include <string>
 #include <vector>
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
@@ -144,10 +144,11 @@ namespace gum {
                               const std::string& type,
                               std::vector<typename LayerGenerator::MyData>& l );
 
-      void __generateClassDag( Size lvl,
-                               DAG& dag,
-                               Bijection<std::string, NodeId>& names,
-                               std::vector<typename LayerGenerator::MyData>& l );
+      void
+      __generateClassDag( Size lvl,
+                          DAG& dag,
+                          Bijection<std::string, NodeId>& names,
+                          std::vector<typename LayerGenerator::MyData>& l );
 
       void __generateSystem( PRMFactory<GUM_SCALAR>& factory,
                              std::vector<typename LayerGenerator::MyData>& l );

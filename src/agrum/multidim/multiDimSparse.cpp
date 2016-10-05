@@ -33,5 +33,4 @@ namespace gum {
   template class MultiDimSparse<double>;
 
 
-} // namespace gum
-
+}  // namespace gum

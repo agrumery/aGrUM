@@ -27,11 +27,11 @@
 #ifndef GUM_CLASS_ELEMENT_CONTAINER_H
 #define GUM_CLASS_ELEMENT_CONTAINER_H
 
-#include <agrum/core/set.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/set.h>
 
-#include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/DAG.h>
+#include <agrum/graphs/graphElements.h>
 
 #include <agrum/PRM/utils_prm.h>
 
@@ -54,7 +54,8 @@ namespace gum {
      *gum::PRMClassElement<GUM_SCALAR>.
      *
      * To print a PRMClassElementContainer you can use the following operator:
-     * gum::operator<<(std::ostream&, const PRMClassElementContainer&) which print
+     * gum::operator<<(std::ostream&, const PRMClassElementContainer&) which
+     *print
      * the PRMClassElementContainer in the graphviz-dot format.
      *
      * @ingroup prm_group
@@ -114,7 +115,8 @@ namespace gum {
       get( const std::string& name ) const = 0;
 
       /**
-       * @brief Add a PRMClassElement<GUM_SCALAR> to this PRMClassElementContainer.
+       * @brief Add a PRMClassElement<GUM_SCALAR> to this
+       *PRMClassElementContainer.
        *
        * The pointer is "given" to this class, which will delete it when
        * ~Class() is called.
@@ -151,18 +153,23 @@ namespace gum {
        *
        * You can only overload inherited PRMClassElement<GUM_SCALAR> and only if
        *elt is
-       * a subtype of the inherited PRMClassElement<GUM_SCALAR>. Thus you can only
-       * overload PRMReferenceSlot and PRMAttribute. In the case of PRMAttribute you can
-       * overload an inherited PRMAttribute even if they are of the same type: this
+       * a subtype of the inherited PRMClassElement<GUM_SCALAR>. Thus you can
+       *only
+       * overload PRMReferenceSlot and PRMAttribute. In the case of PRMAttribute
+       *you can
+       * overload an inherited PRMAttribute even if they are of the same type:
+       *this
        *is
        * useful when you want to redefine the dependencies of an PRMAttribute or
        *its
-       * CPF. You can also overload an PRMAttribute with an PRMAggregate, as long as
+       * CPF. You can also overload an PRMAttribute with an PRMAggregate, as
+       *long as
        *their
        * respective PRMType allow it.
        *
        * @param elt The PRMClassElement<GUM_SCALAR> overloading an inherited
-       *            PRMClassElement<GUM_SCALAR> in this PRMClassElementContainer.
+       *            PRMClassElement<GUM_SCALAR> in this
+       *PRMClassElementContainer.
        * @return the NodeId assigned to elt.
        *
        * @throw OperationNotAllowed Raised if  overloading is illegal.
@@ -199,13 +206,16 @@ namespace gum {
        * @param elt A PRMClassElement<GUM_SCALAR>.
        * @param b The flag value.
        *
-       * @throw NotFound Raised if id does'nt match any PRMClassElement<GUM_SCALAR>
+       * @throw NotFound Raised if id does'nt match any
+       *PRMClassElement<GUM_SCALAR>
        *in
        *this.
-       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
+       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute
+       *nor
        *                          an PRMAggregate.
        */
-      virtual void setInputNode( const PRMClassElement<GUM_SCALAR>& elt, bool b );
+      virtual void setInputNode( const PRMClassElement<GUM_SCALAR>& elt,
+                                 bool b );
 
       /**
        * @brief Returns true if the node is an output node.
@@ -232,13 +242,16 @@ namespace gum {
        * @param elt A PRMClassElement<GUM_SCALAR>.
        * @param b The flag value.
        *
-       * @throw NotFound Raised if id does'nt match any PRMClassElement<GUM_SCALAR>
+       * @throw NotFound Raised if id does'nt match any
+       *PRMClassElement<GUM_SCALAR>
        *in
        *this.
-       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
+       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute
+       *nor
        *                          an PRMAggregate.
        */
-      virtual void setOutputNode( const PRMClassElement<GUM_SCALAR>& elt, bool b );
+      virtual void setOutputNode( const PRMClassElement<GUM_SCALAR>& elt,
+                                  bool b );
 
       /**
        * @brief Returns true if the node is an inner node.
@@ -254,7 +267,8 @@ namespace gum {
        * @throw NotFound Raised if NodeId does'nt match any
        *PRMClassElement<GUM_SCALAR>
        *in this.
-       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute nor
+       * @throw WrongClassElement Raised if NodeId is neither an PRMAttribute
+       *nor
        *                          an PRMAggregate.
        */
       virtual bool isInnerNode( const PRMClassElement<GUM_SCALAR>& elt ) const;
@@ -267,9 +281,11 @@ namespace gum {
       /**
        * @brief Returns the gum::DAG of this PRMClassElementContainer.
        *
-       * Be very careful when using NodeId with PRMClassElement<GUM_SCALAR>: there
+       * Be very careful when using NodeId with PRMClassElement<GUM_SCALAR>:
+       *there
        *is no
-       * guarantee that an inherited PRMClassElement<GUM_SCALAR> will have the same
+       * guarantee that an inherited PRMClassElement<GUM_SCALAR> will have the
+       *same
        * NodeId
        * than its superclass counterpart.
        *
@@ -325,7 +341,8 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const = 0;
+      virtual const PRMClassElement<GUM_SCALAR>&
+      operator[]( NodeId id ) const = 0;
 
       /**
        * Getter on a member of this PRMClassElementContainer.
@@ -355,7 +372,8 @@ namespace gum {
        * @brief Test if this PRMClassElementContainer is a subtype of cec.
        *
        * @param cec
-       * @return return true if this PRMClassElementContainer is a subtype of cec.
+       * @return return true if this PRMClassElementContainer is a subtype of
+       * cec.
        */
       virtual bool isSubTypeOf( const PRMClassElementContainer& cec ) const = 0;
 
@@ -374,7 +392,8 @@ namespace gum {
 
       protected:
       /// Copy operator. Don't use it.
-      PRMClassElementContainer& operator=( const PRMClassElementContainer& source );
+      PRMClassElementContainer&
+      operator=( const PRMClassElementContainer& source );
 
       /// Copy constructor. Don't use it.
       PRMClassElementContainer( const PRMClassElementContainer& source );
@@ -416,7 +435,8 @@ namespace gum {
       /// @param c A PRMClassElementContainer.
       virtual void _copyIOFlags( const PRMClassElementContainer& c );
 
-      /// When a PRMClassElement<GUM_SCALAR> becomes an Output node we must update
+      /// When a PRMClassElement<GUM_SCALAR> becomes an Output node we must
+      /// update
       /// any the IO flags of every descendant of this PRMClassElementContainer.
       /// Note that after its declaration, input flags can not be changed and
       /// output flags can only become true.

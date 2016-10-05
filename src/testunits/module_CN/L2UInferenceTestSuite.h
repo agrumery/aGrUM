@@ -24,8 +24,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/CN/credalNet.h>
 #include <agrum/CN/CNLoopyPropagation.h>
+#include <agrum/CN/credalNet.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>

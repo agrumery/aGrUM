@@ -28,7 +28,6 @@ namespace gum_tests {
 
   class O3prmBNReaderTestSuite : public CxxTest::TestSuite {
     public:
-
     void testClassWithoutSystem() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
@@ -92,7 +91,7 @@ namespace gum_tests {
           &bn, GET_RESSOURCES_PATH( "o3prm/DoesNotExists.o3prm" ), "Asia" );
       gum::Size res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
-      TS_ASSERT_EQUALS( res, (gum::Size)1 );                         // file not found
+      TS_ASSERT_EQUALS( res, (gum::Size)1 );              // file not found
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)1 );  // file not found
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)0 );
 

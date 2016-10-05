@@ -27,8 +27,8 @@
 #ifndef GUM_ERRORS_CONTAINERS_H
 #define GUM_ERRORS_CONTAINERS_H
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <vector>
 
 #include <agrum/config.h>

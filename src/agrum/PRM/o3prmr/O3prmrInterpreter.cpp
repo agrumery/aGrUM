@@ -24,18 +24,18 @@
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
-#include <agrum/config.h>
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
+#include <agrum/config.h>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/BayesNetInference.h>
-#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/variableElimination.h>
 
+#include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/inference/SVED.h>
 #include <agrum/PRM/inference/groundedInference.h>
-#include <agrum/PRM/inference/SVE.h>
 
 #include <agrum/PRM/o3prmr/cocoR/Parser.h>
 
@@ -65,7 +65,7 @@ namespace gum {
         if ( m_bn ) {
           delete m_bn;
         }
-        for (auto p: m_inf_map) {
+        for ( auto p : m_inf_map ) {
           delete p.second;
         }
         delete m_reader->prm();
@@ -162,7 +162,7 @@ namespace gum {
           // On vérifie la syntaxe
           unsigned char* buffer = new unsigned char[file_content.length() + 1];
           strcpy( (char*)buffer, file_content.c_str() );
-          Scanner s( buffer, int(file_content.length() + 1) );
+          Scanner s( buffer, int( file_content.length() + 1 ) );
           Parser p( &s );
           p.setO3prmrContext( &c );
           p.Parse();
@@ -203,7 +203,7 @@ namespace gum {
         if ( istream ) {
           // get length of file:
           istream.seekg( 0, istream.end );
-          int length = int(istream.tellg());
+          int length = int( istream.tellg() );
           istream.seekg( 0, istream.beg );
 
           std::string str;
@@ -465,7 +465,7 @@ namespace gum {
           Instantiation i( command->potentiel );
           bool found = false;
 
-          for ( i.setFirst(); ! i.end(); i.inc() ) {
+          for ( i.setFirst(); !i.end(); i.inc() ) {
             if ( chain.second->type().variable().label(
                      i.val( chain.second->type().variable() ) ) == right_val ) {
               command->potentiel.set( i, (double)1.0 );
@@ -672,7 +672,7 @@ namespace gum {
             }
           }
 
-          if ( ! found ) {
+          if ( !found ) {
             if ( m_verbose ) {
               m_log << "Finished with errors." << std::endl;
             }
@@ -767,9 +767,8 @@ namespace gum {
         return name;
       }
 
-      std::string
-      O3prmrInterpreter::findAttributeName( const std::string& s,
-                                            const PRMInstance<double>& instance ) {
+      std::string O3prmrInterpreter::findAttributeName(
+          const std::string& s, const PRMInstance<double>& instance ) {
         if ( !instance.exists( s ) )
           throw "'" + s + "' is not an attribute of instance '" +
               instance.name() + "'.";
@@ -784,7 +783,7 @@ namespace gum {
         } catch ( const std::string& ) {
         }
 
-        if (( m_context->mainImport() != 0) &&
+        if ( ( m_context->mainImport() != 0 ) &&
              prm()->isSystem( m_context->mainImport()->value ) )
           return prm()->getSystem( m_context->mainImport()->value );
 
@@ -902,11 +901,11 @@ namespace gum {
         Instantiation j( m );
         const PRMAttribute<double>& attr = *( command->chain.second );
 
-        for ( j.setFirst(); ! j.end(); j.inc() ) {
+        for ( j.setFirst(); !j.end(); j.inc() ) {
           // auto label_value = j.val ( attr.type().variable() );
           auto label_value = j.val( 0 );
           std::string label = attr.type().variable().label( label_value );
-          float value = float(m.get( j ));
+          float value = float( m.get( j ) );
 
           SingleResult singleResult;
           singleResult.label = label;
@@ -945,7 +944,8 @@ namespace gum {
       }
 
       ///
-      void O3prmrInterpreter::generateInfEngine( const PRMSystem<double>& sys ) {
+      void
+      O3prmrInterpreter::generateInfEngine( const PRMSystem<double>& sys ) {
         if ( m_verbose )
           m_log << "# Building the inference engine... " << std::flush;
 
@@ -977,13 +977,12 @@ namespace gum {
 
           if ( m_verbose ) m_log << "Finished)" << std::flush;
 
-          //bn_inf = new LazyPropagation<double>( *m_bn );
+          // bn_inf = new LazyPropagation<double>( *m_bn );
           bn_inf = new VariableElimination<double>( *m_bn );
 
           auto grd_inf = new GroundedInference<double>( *( prm() ), sys );
           grd_inf->setBNInference( bn_inf );
           m_inf = grd_inf;
-
         }
 
         m_inf_map.insert( &sys, m_inf );
@@ -1000,7 +999,9 @@ namespace gum {
       Size O3prmrInterpreter::errors() const { return m_errors.error_count; }
 
       ///
-      Size O3prmrInterpreter::warnings() const { return m_errors.warning_count; }
+      Size O3prmrInterpreter::warnings() const {
+        return m_errors.warning_count;
+      }
 
       ///
       ParseError O3prmrInterpreter::error( Idx i ) const {

@@ -28,10 +28,10 @@
 
 #include <agrum/PRM/elements/PRMInstance.h>
 
-#include <agrum/multidim/aggregators/min.h>
-#include <agrum/multidim/aggregators/max.h>
 #include <agrum/multidim/aggregators/exists.h>
 #include <agrum/multidim/aggregators/forall.h>
+#include <agrum/multidim/aggregators/max.h>
+#include <agrum/multidim/aggregators/min.h>
 
 namespace gum {
   namespace prm {
@@ -103,8 +103,10 @@ namespace gum {
         const PRMInstance<GUM_SCALAR>& instance,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( const auto node : instance.type().dag() ) {
-        // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR> are
-        // instantiated as PRMAttribute<GUM_SCALAR> in an PRMInstance<GUM_SCALAR>
+        // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR>
+        // are
+        // instantiated as PRMAttribute<GUM_SCALAR> in an
+        // PRMInstance<GUM_SCALAR>
         switch ( instance.type().get( node ).elt_type() ) {
           case PRMClassElement<GUM_SCALAR>::prm_attribute: {
             // TODO: make a special case for noisy-or
@@ -332,7 +334,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE NodeId PRMSystem<GUM_SCALAR>::add( const std::string& array,
-                                           PRMInstance<GUM_SCALAR>& i ) {
+                                              PRMInstance<GUM_SCALAR>& i ) {
       return add( array, &i );
     }
 
@@ -366,7 +368,8 @@ namespace gum {
     INLINE NodeId
     PRMSystem<GUM_SCALAR>::get( const PRMInstance<GUM_SCALAR>& i ) const {
       try {
-        return __nodeIdMap.keyByVal( const_cast<PRMInstance<GUM_SCALAR>*>( &i ) );
+        return __nodeIdMap.keyByVal(
+            const_cast<PRMInstance<GUM_SCALAR>*>( &i ) );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,
                    "found no Instance<GUM_SCALAR> matching the given id" );
@@ -384,8 +387,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool
-    PRMSystem<GUM_SCALAR>::isInstantiated( const PRMClass<GUM_SCALAR>& c ) const {
+    INLINE bool PRMSystem<GUM_SCALAR>::isInstantiated(
+        const PRMClass<GUM_SCALAR>& c ) const {
       return __instanceMap.exists( const_cast<PRMClass<GUM_SCALAR>*>( &c ) );
     }
 
@@ -396,7 +399,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool PRMSystem<GUM_SCALAR>::isArray( const std::string& name ) const {
+    INLINE bool
+    PRMSystem<GUM_SCALAR>::isArray( const std::string& name ) const {
       return __arrayMap.exists( name );
     }
 
@@ -473,7 +477,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE NodeId PRMSystem<GUM_SCALAR>::add( const std::string& array,
-                                           PRMInstance<GUM_SCALAR>* i ) {
+                                              PRMInstance<GUM_SCALAR>* i ) {
       try {
         if ( i->type().isSubTypeOf( *( __arrayMap[array].first ) ) ) {
           NodeId id = add( i );
@@ -490,21 +494,22 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void
-    PRMSystem<GUM_SCALAR>::addArray( const std::string& array,
-                                  PRMClassElementContainer<GUM_SCALAR>& type ) {
+    INLINE void PRMSystem<GUM_SCALAR>::addArray(
+        const std::string& array, PRMClassElementContainer<GUM_SCALAR>& type ) {
       if ( __arrayMap.exists( array ) ) {
         GUM_ERROR( DuplicateElement,
                    "an array with the same is already in this System" );
       }
 
-      __arrayMap.insert( array,
-                         PRMSystem<GUM_SCALAR>::model_pair(
-                             &type, new Sequence<PRMInstance<GUM_SCALAR>*>() ) );
+      __arrayMap.insert(
+          array,
+          PRMSystem<GUM_SCALAR>::model_pair(
+              &type, new Sequence<PRMInstance<GUM_SCALAR>*>() ) );
     }
 
     template <typename GUM_SCALAR>
-    INLINE typename PRMSystem<GUM_SCALAR>::iterator PRMSystem<GUM_SCALAR>::begin() {
+    INLINE typename PRMSystem<GUM_SCALAR>::iterator
+    PRMSystem<GUM_SCALAR>::begin() {
       return __nodeIdMap.begin();
     }
 

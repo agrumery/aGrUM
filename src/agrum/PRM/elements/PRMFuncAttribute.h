@@ -27,14 +27,15 @@
 #ifndef GUM_FUNC_ATTRIBUTE_H
 #define GUM_FUNC_ATTRIBUTE_H
 
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
   namespace prm {
 
     /**
-     * @class PRMFuncAttribute funcAttribute.h <agrum/PRM/elements/funcAttribute.h>
+     * @class PRMFuncAttribute funcAttribute.h
+     *<agrum/PRM/elements/funcAttribute.h>
      * @brief This class overload gum::prm::PRMClassElement::_addParent() and
      *        gum::prm::PRMClassElement::_addChild with empty methods.
      *
@@ -52,7 +53,8 @@ namespace gum {
       public:
       /**
        * @brief Constructor used by gum::Class.
-       * This will create an PRMFuncAttribute with only one variable: type and with
+       * This will create an PRMFuncAttribute with only one variable: type and
+       *with
        *the given
        * implementation.
        *
@@ -63,9 +65,9 @@ namespace gum {
        *             it will be deleted after the call of ~PRMFuncAttribute.
        */
       PRMFuncAttribute( const std::string& name,
-                     const PRMType<GUM_SCALAR>& type,
-                     MultiDimImplementation<GUM_SCALAR>* impl =
-                         new MultiDimArray<GUM_SCALAR>() );
+                        const PRMType<GUM_SCALAR>& type,
+                        MultiDimImplementation<GUM_SCALAR>* impl =
+                            new MultiDimArray<GUM_SCALAR>() );
 
       /// Destructor.
       virtual ~PRMFuncAttribute();

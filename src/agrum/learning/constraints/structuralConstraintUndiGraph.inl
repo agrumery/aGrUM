@@ -36,34 +36,36 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to add edge (x,y)
-    INLINE bool StructuralConstraintUndiGraph::checkEdgeAdditionAlone(
-        NodeId x, NodeId y ) const  {
+    INLINE bool
+    StructuralConstraintUndiGraph::checkEdgeAdditionAlone( NodeId x,
+                                                           NodeId y ) const {
       return _UndiGraph__graph.existsNode( x ) &&
              _UndiGraph__graph.existsNode( y ) &&
              !_UndiGraph__graph.existsEdge( x, y );
     }
 
     /// checks whether the constraints enable to remove edge (x,y)
-    INLINE bool StructuralConstraintUndiGraph::checkEdgeDeletionAlone(
-        NodeId x, NodeId y ) const  {
+    INLINE bool
+    StructuralConstraintUndiGraph::checkEdgeDeletionAlone( NodeId x,
+                                                           NodeId y ) const {
       return _UndiGraph__graph.existsEdge( x, y );
     }
 
     /// checks whether the constraints enable to add an edge
     INLINE bool StructuralConstraintUndiGraph::checkModificationAlone(
-        const EdgeAddition& change ) const  {
+        const EdgeAddition& change ) const {
       return checkEdgeAdditionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to remove an edge
     INLINE bool StructuralConstraintUndiGraph::checkModificationAlone(
-        const EdgeDeletion& change ) const  {
+        const EdgeDeletion& change ) const {
       return checkEdgeDeletionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintUndiGraph::checkModificationAlone(
-        const GraphChange& change ) const  {
+        const GraphChange& change ) const {
       switch ( change.type() ) {
         case GraphChangeType::EDGE_ADDITION:
           return checkEdgeAdditionAlone( change.node1(), change.node2() );
@@ -111,13 +113,12 @@ namespace gum {
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintUndiGraph::isAlwaysInvalidAlone(
-        const GraphChange& ) const  {
+        const GraphChange& ) const {
       return false;
     }
 
     /// sets a new graph from which we will perform checkings
-    INLINE void
-    StructuralConstraintUndiGraph::setGraph( Size nb_nodes ) {
+    INLINE void StructuralConstraintUndiGraph::setGraph( Size nb_nodes ) {
       _UndiGraph__graph.clear();
       for ( NodeId i = 0; i < nb_nodes; ++i ) {
         _UndiGraph__graph.addNode( i );

@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <algorithm>
 #include <agrum/config.h>
+#include <algorithm>
 
 
 namespace gum {
@@ -131,6 +131,8 @@ namespace gum {
   bool MultiDimContainer<GUM_SCALAR>::
   operator==( const MultiDimContainer<GUM_SCALAR>& p ) const {
     if ( ( nbrDim() == p.nbrDim() ) && ( domainSize() == p.domainSize() ) ) {
+      if ( nbrDim() == 0 ) return true;
+
       typedef Sequence<const DiscreteVariable*>::const_iterator_safe
           var_iterator;
 
@@ -141,21 +143,21 @@ namespace gum {
           return false;
         }
       }
-
-      Instantiation i( *this );
-
-      AlmostDifferent<GUM_SCALAR> cmp;
-
-      for ( i.setFirst(); !i.end(); ++i ) {
-        if ( cmp( get( i ), p.get( i ) ) ) {
-          return false;
-        }
-      }
-
-      return true;
     } else {
       return false;
     }
+
+    Instantiation i( *this );
+
+    AlmostDifferent<GUM_SCALAR> cmp;
+
+    for ( i.setFirst(); !i.end(); ++i ) {
+      if ( cmp( get( i ), p.get( i ) ) ) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   // Test if this potential is different of p.
@@ -258,8 +260,8 @@ namespace gum {
         this->add( src.variable( i ) );
     }
 
-    if ( this->nbrDim()==0) {
-      GUM_ERROR(FatalError, "Empty potential");
+    if ( this->nbrDim() == 0 ) {
+      GUM_ERROR( FatalError, "Empty potential" );
     }
 
     this->endMultipleChanges();

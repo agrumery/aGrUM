@@ -30,5 +30,3 @@
 
 template class gum::ExactPolicy<float>;
 template class gum::ExactPolicy<double>;
-
-

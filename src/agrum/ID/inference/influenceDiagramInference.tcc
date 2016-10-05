@@ -385,7 +385,7 @@ namespace gum {
           ;
 
         __cliqueEliminationMap.insert(
-            Size(__triangulation->eliminationOrder().size() - index), cli );
+            Size( __triangulation->eliminationOrder().size() - index ), cli );
       } else
         try {
           __cliqueEliminationMap.insert( 0, cli );
@@ -495,7 +495,7 @@ namespace gum {
     // For  the utility table, we need first to divide it by the potential
     Instantiation utilityMarginalInst( utilityMarginal );
 
-    for ( utilityMarginalInst.setFirst(); ! utilityMarginalInst.end();
+    for ( utilityMarginalInst.setFirst(); !utilityMarginalInst.end();
           utilityMarginalInst.inc() ) {
 
       GUM_SCALAR uVal = (GUM_SCALAR)0;
@@ -568,7 +568,7 @@ namespace gum {
         // Then we fill the new potentials over all their values by
         // marginalizing the
         // previous one
-        for ( newInstantiation.setFirst(); ! newInstantiation.end();
+        for ( newInstantiation.setFirst(); !newInstantiation.end();
               newInstantiation.inc() ) {
 
           // Various initialization
@@ -582,7 +582,7 @@ namespace gum {
           cliqueInstance.setVals( newInstantiation );
 
           for ( cliqueInstance.setFirstOut( newInstantiation );
-                ! cliqueInstance.end();
+                !cliqueInstance.end();
                 cliqueInstance.incOut( newInstantiation ) ) {
 
             // Récupération de la valeur de la cpt de la clique pour cette

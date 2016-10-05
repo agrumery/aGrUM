@@ -32,8 +32,8 @@
 
 //#include <tr1/functional>
 
-#include <agrum/core/math/pow.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/math/pow.h>
 
 #include <agrum/CN/credalNet.h>
 
@@ -119,8 +119,7 @@ namespace gum {
        * the
        * net.
        */
-      bool insert( const std::vector<bool>& bn,
-                   const std::vector<Size>& key );
+      bool insert( const std::vector<bool>& bn, const std::vector<Size>& key );
 
       /**
        * Thread insert.
@@ -171,8 +170,7 @@ namespace gum {
        * max.
        * @return The constant vector of not yet constant pointers to the nets.
        */
-      const std::vector<dBN*>
-      getBNOptsFromKey( const std::vector<Size>& key );
+      const std::vector<dBN*> getBNOptsFromKey( const std::vector<Size>& key );
 
       /**
       * Get optimum IBayesNet (s) with structure of the given variable, modality

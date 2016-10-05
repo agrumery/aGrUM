@@ -27,6 +27,9 @@
 #include <cmath>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/simplicialSet.h>
+#include <cmath>
+#include <limits>
+#include <sstream>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/simplicialSet.inl>
@@ -778,8 +781,8 @@ namespace gum {
 
     // initialize the __nb_triangles so that there is no need to check whether
     // __nb_triangles need new insertions
-    __nb_triangles = __graph->edgesProperty( Size(0) );
-    __nb_adjacent_neighbours = __graph->nodesProperty( Size(0) );
+    __nb_triangles = __graph->edgesProperty( Size( 0 ) );
+    __nb_adjacent_neighbours = __graph->nodesProperty( Size( 0 ) );
     __containing_list = __graph->nodesProperty( __Belong::NO_LIST );
     __changed_status = __graph->asNodeSet();
 

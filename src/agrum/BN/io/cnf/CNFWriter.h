@@ -36,12 +36,13 @@
 #include <string>
 
 #include <agrum/BN/io/BNWriter.h>
-#include <agrum/core/hashTable.h>
 #include <agrum/config.h>
 #include <agrum/core/approximations/approximationPolicy.h>
+#include <agrum/core/hashTable.h>
 
 // Ajout sur branche DDE pour pouvoir compiler (à retirer très probablement)
-// problème sur template <typename> class IApproximationPolicy = ExactPolicy sinon
+// problème sur template <typename> class IApproximationPolicy = ExactPolicy
+// sinon
 // (reconnaissance de ExactPolicy?)
 #include <agrum/core/approximations/exactPolicy.h>
 

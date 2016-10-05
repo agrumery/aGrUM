@@ -27,10 +27,10 @@
 #ifndef GUM_OPERATORS_4_MULTI_DIM_H
 #define GUM_OPERATORS_4_MULTI_DIM_H
 
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/core/timer.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/core/timer.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 
@@ -39,7 +39,7 @@ namespace gum {
   // ==========================================================================
   /// @{
 
-  /** 
+  /**
    * @brief a specialized function for summing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -59,7 +59,7 @@ namespace gum {
   MultiDimArray<T>* add2MultiDimArrays( const MultiDimArray<T>* t1,
                                         const MultiDimArray<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for summing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -80,7 +80,7 @@ namespace gum {
   add2MultiDimArrays( const MultiDimImplementation<T>* t1,
                       const MultiDimImplementation<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for summing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -100,7 +100,7 @@ namespace gum {
   MultiDimArray<T*>* add2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
                                                   const MultiDimArray<T*>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for summing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -121,7 +121,7 @@ namespace gum {
   add2MultiDimArrays4Pointers( const MultiDimImplementation<T*>* t1,
                                const MultiDimImplementation<T*>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for summing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -142,7 +142,7 @@ namespace gum {
   add2MultiDimFunctionGraphs( const MultiDimFunctionGraph<T>* t1,
                               const MultiDimFunctionGraph<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for summing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -169,7 +169,7 @@ namespace gum {
   // ==========================================================================
   /// @{
 
-  /** 
+  /**
    * @brief a specialized function for subtracting two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -189,7 +189,7 @@ namespace gum {
   MultiDimArray<T>* subtract2MultiDimArrays( const MultiDimArray<T>* t1,
                                              const MultiDimArray<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for subtracting two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -210,7 +210,7 @@ namespace gum {
   subtract2MultiDimArrays( const MultiDimImplementation<T>* t1,
                            const MultiDimImplementation<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for subtracting two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -231,7 +231,7 @@ namespace gum {
   subtract2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
                                     const MultiDimArray<T*>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for subtracting two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -252,7 +252,7 @@ namespace gum {
   subtract2MultiDimArrays4Pointers( const MultiDimImplementation<T*>* t1,
                                     const MultiDimImplementation<T*>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for subtracting two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -273,7 +273,7 @@ namespace gum {
   subtract2MultiDimFunctionGraphs( const MultiDimFunctionGraph<T>* t1,
                                    const MultiDimFunctionGraph<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for subtracting two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -300,7 +300,7 @@ namespace gum {
   // ==========================================================================
   /// @{
 
-  /** 
+  /**
    * @brief a specialized function for multiplying two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -320,7 +320,7 @@ namespace gum {
   MultiDimArray<T>* multiply2MultiDimArrays( const MultiDimArray<T>* t1,
                                              const MultiDimArray<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for multiplying two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -341,7 +341,7 @@ namespace gum {
   multiply2MultiDimArrays( const MultiDimImplementation<T>* t1,
                            const MultiDimImplementation<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for multiplying two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -362,7 +362,7 @@ namespace gum {
   multiply2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
                                     const MultiDimArray<T*>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for multiplying two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -383,7 +383,7 @@ namespace gum {
   multiply2MultiDimArrays4Pointers( const MultiDimImplementation<T*>* t1,
                                     const MultiDimImplementation<T*>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for multiplying two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -404,7 +404,7 @@ namespace gum {
   multiply2MultiDimFunctionGraphs( const MultiDimFunctionGraph<T>* t1,
                                    const MultiDimFunctionGraph<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for multiplying two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -431,7 +431,7 @@ namespace gum {
   // ==========================================================================
   /// @{
 
-  /** 
+  /**
    * @brief a specialized function for dividing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -451,7 +451,7 @@ namespace gum {
   MultiDimArray<T>* divide2MultiDimArrays( const MultiDimArray<T>* t1,
                                            const MultiDimArray<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for dividing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -472,7 +472,7 @@ namespace gum {
   divide2MultiDimArrays( const MultiDimImplementation<T>* t1,
                          const MultiDimImplementation<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for dividing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -493,7 +493,7 @@ namespace gum {
   divide2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
                                   const MultiDimArray<T*>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for dividing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -514,7 +514,7 @@ namespace gum {
   divide2MultiDimArrays4Pointers( const MultiDimImplementation<T*>* t1,
                                   const MultiDimImplementation<T*>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for dividing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -535,7 +535,7 @@ namespace gum {
   divide2MultiDimFunctionGraphs( const MultiDimFunctionGraph<T>* t1,
                                  const MultiDimFunctionGraph<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for dividing two multiDimArrays
    * @ingroup multidim_op_group
    *
@@ -562,9 +562,9 @@ namespace gum {
   // ==========================================================================
   /// @{
 
-  /** 
+  /**
    * @brief a specialized function for compare value from two
-   * multiDimFunctionGraphs and gets the maximal 
+   * multiDimFunctionGraphs and gets the maximal
    * @ingroup multidim_op_group
    *
    * The function produces a tensorial comparison between t1 and t2, that is,
@@ -581,7 +581,7 @@ namespace gum {
   maximise2MultiDimFunctionGraphs( const MultiDimFunctionGraph<T>* t1,
                                    const MultiDimFunctionGraph<T>* t2 );
 
-  /** 
+  /**
    * @brief a specialized function for compare value from two
    * multiDimFunctionGraphs and gets the maximal
    * @ingroup multidim_op_group
@@ -653,7 +653,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void pointerOperators4MultiDimInit();
 
-  /** 
+  /**
    * @brief a class used to register operators over non-pointers types
    * @ingroup multidim_op_group
    *
@@ -672,7 +672,7 @@ namespace gum {
     void init() { operators4MultiDimInit<GUM_SCALAR>(); };
   };
 
-  /** 
+  /**
    * @brief a class used to register operators over pointers types
    * @ingroup multidim_op_group
    *

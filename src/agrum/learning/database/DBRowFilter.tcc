@@ -76,9 +76,8 @@ namespace gum {
     /// copy operator
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-        DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
-        operator=( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-                       filter ) {
+    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::operator=(
+        const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter ) {
       if ( this != &filter ) {
         __handler = filter.__handler;
         __translator_set = filter.__translator_set;
@@ -90,9 +89,8 @@ namespace gum {
     /// move operator
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-        DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
-        operator=(
-            DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& filter ) {
+    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
+    operator=( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& filter ) {
       if ( this != &filter ) {
         __handler = std::move( filter.__handler );
         __translator_set = std::move( filter.__translator_set );
@@ -113,8 +111,7 @@ namespace gum {
     void DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::__initCellFilters(
         Size db_range ) {
       // keep track of the previous range to restore it later
-      std::pair<Size,Size> previous_range =
-          __handler.range();
+      std::pair<Size, Size> previous_range = __handler.range();
 
       // set the handler to the appropriate range
       if ( __handler.size() != db_range ) {

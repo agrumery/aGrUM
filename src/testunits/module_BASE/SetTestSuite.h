@@ -562,7 +562,7 @@ namespace gum_tests {
     void testInitializerList() {
       gum::Set<int> t{1};
       TS_ASSERT_EQUALS( t.size(), 1u );
-      TS_ASSERT_EQUALS(t.toString(),"{1}");
+      TS_ASSERT_EQUALS( t.toString(), "{1}" );
     }
 
     private:

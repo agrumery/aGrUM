@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
 #include <agrum/config.h>
+#include <limits>
 
 #include <agrum/graphicalModels/inference/scheduleCombinationBasic.h>
 
@@ -37,7 +37,7 @@ namespace gum {
   ScheduleCombinationBasic<GUM_SCALAR>::ScheduleCombinationBasic(
       MultiDimImplementation<GUM_SCALAR>* ( *combine )(
           const MultiDimImplementation<GUM_SCALAR>&,
-          const MultiDimImplementation<GUM_SCALAR>& ) )
+          const MultiDimImplementation<GUM_SCALAR>&))
       : ScheduleCombination<GUM_SCALAR>()
       , _combine( combine ) {
     /// for debugging purposes
@@ -73,7 +73,7 @@ namespace gum {
   void ScheduleCombinationBasic<GUM_SCALAR>::setCombineFunction(
       MultiDimImplementation<GUM_SCALAR>* ( *combine )(
           const MultiDimImplementation<GUM_SCALAR>&,
-          const MultiDimImplementation<GUM_SCALAR>& ) ) {
+          const MultiDimImplementation<GUM_SCALAR>&)) {
     _combine = combine;
   }
 
@@ -138,7 +138,7 @@ namespace gum {
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair<Idx,Idx> pair;
+    std::pair<Idx, Idx> pair;
 
     PriorityQueue<std::pair<Idx, Idx>, Size> queue;
 
@@ -506,7 +506,7 @@ namespace gum {
              new_size )
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
 
-        new_size *= long(var->domainSize());
+        new_size *= long( var->domainSize() );
         new_seq->insert( var );
       }
 
@@ -516,7 +516,7 @@ namespace gum {
                new_size )
             GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
 
-          new_size *= long(var->domainSize());
+          new_size *= long( var->domainSize() );
           new_seq->insert( var );
         }
       }
@@ -534,12 +534,12 @@ namespace gum {
       // substitute tables[pair.first] by the result
       if ( tables[ti] && is_t_new[ti] ) {
         delete tables[ti];
-        current_memory -= long(table_size[ti]);
+        current_memory -= long( table_size[ti] );
       }
 
       if ( tables[tj] && is_t_new[tj] ) {
         delete tables[tj];
-        current_memory -= long(table_size[tj]);
+        current_memory -= long( table_size[tj] );
       }
 
       tables[ti] = new_seq;

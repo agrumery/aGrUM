@@ -17,16 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <cmath>
 #include <iostream>
 #include <string>
-#include <cmath>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

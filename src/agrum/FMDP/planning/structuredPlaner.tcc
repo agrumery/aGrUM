@@ -294,7 +294,7 @@ namespace gum {
       // And eventually we update pointers for next loop
       delete _vFunction;
       _vFunction = newVFunction;
-      }
+    }
 
     // *****************************************************************************************
     // Policy matching value function research

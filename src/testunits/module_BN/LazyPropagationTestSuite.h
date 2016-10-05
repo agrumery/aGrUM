@@ -17,9 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <cmath>
 #include <iostream>
 #include <string>
-#include <cmath>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
@@ -27,11 +27,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
+#include <agrum/multidim/multiDimArray.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -47,7 +47,7 @@ namespace gum_tests {
     public:
     gum::BayesNet<float>* bn;
     gum::NodeId i1, i2, i3, i4, i5;
-    gum::Potential<float>* e_i1, *e_i4;
+    gum::Potential<float> *e_i1, *e_i4;
 
     float __epsilon{1e-6f};
 
@@ -618,7 +618,8 @@ namespace gum_tests {
                   {0.4f, 0.6f,
                    0.5f, 0.5f,
                    0.5f, 0.5f,
-                   1.0f, 0.0f} );  // clang-format on
+                   1.0f, 0.0f} );  // clang-format
+                                                               // on
       bn.cpt( i5 ).fillWith(  // clang-format off
                   {0.3f, 0.6f, 0.1f,
                    0.5f, 0.5f, 0.0f,
@@ -627,7 +628,7 @@ namespace gum_tests {
                    0.4f, 0.6f, 0.0f,
                    0.5f, 0.5f, 0.0f,
                    0.5f, 0.5f, 0.0f,
-                   0.0f, 0.0f, 1.0f} );                                     // clang-format on
+                   0.0f, 0.0f, 1.0f} );  // clang-format on
     }
 
     // Uncomment this to have some outputs.

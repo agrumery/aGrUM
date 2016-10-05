@@ -26,13 +26,13 @@
 #define GUM_LABELIZED_DISCRETE_VARIABLE_H
 
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <agrum/config.h>
 
-#include <agrum/variables/discreteVariable.h>
 #include <agrum/core/sequence.h>
+#include <agrum/variables/discreteVariable.h>
 
 namespace gum {
   /* =========================================================================*/

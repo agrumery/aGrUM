@@ -17,19 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <iostream>
-#include <fstream>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
 #include <stdio.h>
-#include <string>
 #include <string.h>
+#include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -61,40 +61,48 @@ namespace gum_tests {
         getline( file2, str );
         c2++;
       }
-      
+
       if ( c1 != c2 ) return false;
-      
+
       //---------- compare two files line by line ------------------//
       file1.clear();  //  set new value for error control state  //
       file1.seekg( 0, std::ios::beg );
       file2.clear();
       file2.seekg( 0, std::ios::beg );
-            
+
       char string1[256], string2[256];
       int j = 0;
       while ( !file1.eof() ) {
         file1.getline( string1, 256 );
         file2.getline( string2, 256 );
-        
+
         // get rid of linux or windows eol
-        if (strlen(string1)>0) {
-        for(char *p=string1+strlen(string1)-1;p>=string1;p--) {
-          if (*p=='\n') *p='\0';
-          else if (*p=='\r') *p='\0';
-          else break;
-        }}
-        if (strlen(string2)>0) {
-        for(char *p=string2+strlen(string2)-1;p>=string2;p--) {
-          if (*p=='\n') *p='\0';
-          else if (*p=='\r') *p='\0';
-          else break;
-        }}
-      
+        if ( strlen( string1 ) > 0 ) {
+          for ( char* p = string1 + strlen( string1 ) - 1; p >= string1; p-- ) {
+            if ( *p == '\n' )
+              *p = '\0';
+            else if ( *p == '\r' )
+              *p = '\0';
+            else
+              break;
+          }
+        }
+        if ( strlen( string2 ) > 0 ) {
+          for ( char* p = string2 + strlen( string2 ) - 1; p >= string2; p-- ) {
+            if ( *p == '\n' )
+              *p = '\0';
+            else if ( *p == '\r' )
+              *p = '\0';
+            else
+              break;
+          }
+        }
+
         j++;
         if ( strcmp( string1, string2 ) != 0 ) {
-          GUM_TRACE(f2<<":"<<j);
-          GUM_TRACE_VAR(string1);
-          GUM_TRACE_VAR(string2);
+          GUM_TRACE( f2 << ":" << j );
+          GUM_TRACE_VAR( string1 );
+          GUM_TRACE_VAR( string2 );
           return false;
         }
       }
@@ -151,7 +159,7 @@ namespace gum_tests {
       try {
         writer.write( file, *bn );
         TS_ASSERT( true );
-      } catch ( gum::IOError&  ) {
+      } catch ( gum::IOError& ) {
         TS_ASSERT( false );
       }
 
@@ -170,7 +178,7 @@ namespace gum_tests {
                               0.5, 0.5,
                               0.5, 0.5,
                               1.0, 0.0} );  // clang-format on
-      bn.cpt( i5 ).fillWith(// clang-format off
+      bn.cpt( i5 ).fillWith(                           // clang-format off
                              {0.3, 0.6, 0.1,
                               0.5, 0.5, 0.0,
                               0.5, 0.5, 0.0,

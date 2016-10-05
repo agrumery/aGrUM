@@ -73,12 +73,12 @@
 #ifndef GUM_DATABASE_VECT_IN_RAM_H
 #define GUM_DATABASE_VECT_IN_RAM_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <agrum/config.h>
-#include <agrum/learning/database/DBRow.h>
 #include <agrum/learning/database/DBHandler.h>
+#include <agrum/learning/database/DBRow.h>
 
 namespace gum {
 
@@ -239,7 +239,7 @@ namespace gum {
         void setRange( Size begin, Size end );
 
         /// returns the current range of the handler [begin,end)
-        std::pair<Size,Size> range() const noexcept;
+        std::pair<Size, Size> range() const noexcept;
 
         /// returns the names of the variables
         const std::vector<std::string>& variableNames() const noexcept;

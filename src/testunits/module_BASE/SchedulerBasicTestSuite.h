@@ -23,11 +23,11 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 #include <agrum/graphicalModels/inference/scheduleCombinationBasic.h>
 #include <agrum/graphicalModels/inference/schedulerBasic.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

@@ -23,13 +23,13 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/BN/BayesNetFragment.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/config.h>
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/BayesNetFragment.h>
-#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -71,8 +71,7 @@ namespace gum_tests {
         bn.addArc( bn.idFromName( "v4" ), bn.idFromName( "v5" ) );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
 
@@ -121,8 +120,7 @@ namespace gum_tests {
         gum::SimpleCPTGenerator<float> generator;
         generator.generateCPT( 0, bn.cpt( bn.idFromName( "v5" ) ) );
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }

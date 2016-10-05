@@ -23,9 +23,9 @@
 
 #include <sstream>
 
+#include <agrum/PRM/elements/PRMSystem.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/PRM/elements/PRMSystem.h>
 
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
@@ -225,7 +225,7 @@ namespace gum_tests {
         const gum::Potential<double>* cpt = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( node ) ) );
         gum::Instantiation inst( *cpt );
-        for ( inst.begin(); ! inst.end(); inst.inc() ) {
+        for ( inst.begin(); !inst.end(); inst.inc() ) {
           TS_GUM_ASSERT_THROWS_NOTHING( cpt->get( inst ) );
         }
       }
@@ -265,8 +265,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
+      for ( i.begin(), j.begin(); !( i.end() || j.end() ); i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
       delete bn;
@@ -290,8 +289,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
+      for ( i.begin(), j.begin(); !( i.end() || j.end() ); i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
       delete bn;
@@ -315,8 +313,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
+      for ( i.begin(), j.begin(); !( i.end() || j.end() ); i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
       delete bn;
@@ -340,8 +337,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
+      for ( i.begin(), j.begin(); !( i.end() || j.end() ); i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
       delete bn;
@@ -365,8 +361,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
+      for ( i.begin(), j.begin(); !( i.end() || j.end() ); i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
       delete bn;
@@ -390,8 +385,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
+      for ( i.begin(), j.begin(); !( i.end() || j.end() ); i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
       delete bn;
@@ -415,8 +409,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
+      for ( i.begin(), j.begin(); !( i.end() || j.end() ); i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
       delete bn;
@@ -440,8 +433,7 @@ namespace gum_tests {
       // Assert
       gum::Instantiation i( cpf );
       gum::Instantiation j( cpt );
-      for ( i.begin(), j.begin(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
+      for ( i.begin(), j.begin(); !( i.end() || j.end() ); i.inc(), j.inc() ) {
         TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
       delete bn;

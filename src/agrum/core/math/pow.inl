@@ -28,7 +28,7 @@
 #include <agrum/core/math/pow.h>
 
 namespace gum {
-//@beforeMerging is this really faster ?
+  //@beforeMerging is this really faster ?
   // Specialized pow function with integers (faster implementation).
   INLINE unsigned long intPow( unsigned long base, unsigned long exponent ) {
     if ( exponent == 0 ) {
@@ -43,13 +43,13 @@ namespace gum {
     return out;
   }
 
-//@beforeMerging is this really faster ?
+  //@beforeMerging is this really faster ?
   // Specialized base 2 pow function with integer.
   INLINE unsigned long int2Pow( unsigned long exponent ) {
     return 1UL << exponent;
   }
 
-//@beforeMerging is this really faster ?
+  //@beforeMerging is this really faster ?
   // Given an integer, compute it's - superior - and closest power of two, i.e.
   // the number of bits necessary to represent this integer as well as the
   // maximum integer that can be represented by those bits.

@@ -29,8 +29,8 @@
 
 #include <agrum/config.h>
 
-#include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/multiDimDecorator.h>
 
 namespace gum {
 
@@ -77,7 +77,8 @@ namespace gum {
      * @param toCopy The UtilityTable to copy.
      * @return This UtilityTable.
      */
-    UtilityTable<GUM_SCALAR>& operator=( const UtilityTable<GUM_SCALAR>& toCopy );
+    UtilityTable<GUM_SCALAR>&
+    operator=( const UtilityTable<GUM_SCALAR>& toCopy );
 
     virtual UtilityTable<GUM_SCALAR>* newFactory() const;
 
@@ -88,8 +89,6 @@ namespace gum {
 
   extern template class UtilityTable<float>;
   extern template class UtilityTable<double>;
-
-
 
 
 } /* namespace gum */

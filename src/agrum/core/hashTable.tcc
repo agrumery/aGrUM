@@ -468,7 +468,7 @@ namespace gum {
 
   template <typename Key, typename Val, typename Alloc>
   INLINE void HashTable<Key, Val, Alloc>::__clearIterators() {
-    Size len = Size(__safe_iterators.size());
+    Size len = Size( __safe_iterators.size() );
     for ( Size i = 0; i < len; ++i )
       __safe_iterators[i]->clear();
   }

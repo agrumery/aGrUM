@@ -24,10 +24,10 @@
 
 #include <agrum/core/exceptions.h>
 
+#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/variables/rangeVariable.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 
 namespace gum_tests {
 
@@ -80,8 +80,22 @@ namespace gum_tests {
       p.causalWeight( malaria, 1.0f );
 
       gum::Instantiation i( p );
-      float witness[] = {
-          1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f};
+      float witness[] = {1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         1.0f,
+                         0.0f,
+                         0.0f,
+                         1.0f};
 
       int j = 0;
 

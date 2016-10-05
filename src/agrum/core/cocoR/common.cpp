@@ -77,7 +77,7 @@ namespace gum {
 
     wchar_t* newData = new wchar_t[dataLen + 1];
 
-    for ( int i = 0; i <= int(dataLen); i++ ) {
+    for ( int i = 0; i <= int( dataLen ); i++ ) {
       if ( ( L'a' <= data[i] ) && ( data[i] <= L'z' ) ) {
         newData[i] = data[i] + ( L'A' - L'a' );
       } else {
@@ -95,7 +95,7 @@ namespace gum {
     }
 
     std::size_t dataLen = wcslen( data );
-    return coco_string_create_lower( data, 0, int(dataLen) );
+    return coco_string_create_lower( data, 0, int( dataLen ) );
   }
 
   wchar_t*

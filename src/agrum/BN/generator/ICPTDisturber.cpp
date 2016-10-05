@@ -29,4 +29,3 @@
 
 template class gum::ICPTDisturber<float>;
 template class gum::ICPTDisturber<double>;
-

@@ -70,14 +70,14 @@ namespace gum {
           continue;
         }
 
-        if ( ! marks[node].first ) {
+        if ( !marks[node].first ) {
           marks[node].first = true;  // top marked
           for ( const auto par : dag.parents( node ) ) {
             nodes_to_visit.insert( std::pair<NodeId, bool>( par, true ) );
           }
         }
 
-        if ( ! marks[node].second ) {
+        if ( !marks[node].second ) {
           marks[node].second = true;  // bottom marked
           for ( const auto chi : dag.children( node ) ) {
             nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );

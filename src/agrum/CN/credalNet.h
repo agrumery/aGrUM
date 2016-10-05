@@ -29,8 +29,8 @@
 
 #include <agrum/config.h>
 
-#include <vector>
 #include <iostream>
+#include <vector>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -39,15 +39,15 @@
 #endif
 
 //#include <sys/wait.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <set>
-#include <string>
-#include <sstream>
-#include <fstream>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
+#include <fcntl.h>
+#include <fstream>
+#include <set>
+#include <sstream>
+#include <string>
+#include <sys/stat.h>
 
 #include <utility>  /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
@@ -56,12 +56,20 @@
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/core/exceptions.h>
 
-#include <agrum/core/math/rational.h>  // custom decimal to rational
 #include <agrum/core/math/pow.h>  // custom pow functions with integers, faster implementation
+#include <agrum/core/math/rational.h>  // custom decimal to rational
 
 #include <agrum/CN/LrsWrapper.h>
 
 #include <agrum/core/OMPThreads.h>
+
+// 64 bits for windows (long is 32 bits)
+#ifdef _MSC_VER
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+#else
+#include <stdint.h>
+#endif
 
 namespace gum {
   namespace credal {
@@ -70,7 +78,8 @@ namespace gum {
      * @class CredalNet credalNet.h <agrum/CN/credalNet.h>
      * @brief Class template representing a Credal Network.
      * @ingroup cn_group
-     * @tparam GUM_SCALAR A floating type ( float, GUM_SCALAR, long GUM_SCALAR ... ).
+     * @tparam GUM_SCALAR A floating type ( float, GUM_SCALAR, long GUM_SCALAR
+     * ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
     template <typename GUM_SCALAR>
@@ -397,8 +406,7 @@ namespace gum {
        *zeroes
        *are not kept.
        */
-      void idmLearning( const Idx s = 0,
-                        const bool keepZeroes = false );
+      void idmLearning( const Idx s = 0, const bool keepZeroes = false );
 
       /**
        * Approximate binarization. Each bit has a lower and upper probability

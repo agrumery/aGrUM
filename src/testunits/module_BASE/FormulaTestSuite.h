@@ -426,8 +426,8 @@ namespace gum_tests {
       try {
         // Arrange
         auto a = gum::Formula( "2*5-6" );
-        auto expected = 2.0 * 5.0 - 6.0 ;
-        auto result = 0.0; 
+        auto expected = 2.0 * 5.0 - 6.0;
+        auto result = 0.0;
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( result = (double)a );
         // Assert
@@ -441,8 +441,8 @@ namespace gum_tests {
       try {
         // Arrange
         auto a = gum::Formula( "2*5-6" );
-        auto expected = 2.0 * 5.0 - 6.0 ;
-        auto result = 0.0; 
+        auto expected = 2.0 * 5.0 - 6.0;
+        auto result = 0.0;
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( result = static_cast<double>( a ) );
         // Assert
@@ -467,8 +467,8 @@ namespace gum_tests {
 
     void testToString() {
       // Arrange
-      auto f = gum::Formula("2*5+6");
-      auto expected = std::to_string( 2.0*5.0+6.0 );
+      auto f = gum::Formula( "2*5+6" );
+      auto expected = std::to_string( 2.0 * 5.0 + 6.0 );
       auto result = std::string();
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( result = gum::to_string( f ) );
@@ -478,14 +478,13 @@ namespace gum_tests {
 
     void testToStream() {
       // Arrange
-      auto f = gum::Formula("2*5+6");
-      auto expected = std::to_string( 2*5+6 );
+      auto f = gum::Formula( "2*5+6" );
+      auto expected = std::to_string( 2 * 5 + 6 );
       auto result = std::stringstream();
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( result << f );
       // Assert
       TS_ASSERT_EQUALS( result.str(), expected );
     }
-
   };
 }

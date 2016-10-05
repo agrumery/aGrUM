@@ -27,8 +27,8 @@
 #ifndef GUM_ATTRIBUTE_H
 #define GUM_ATTRIBUTE_H
 
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
   namespace prm {
@@ -73,7 +73,8 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      virtual PRMAttribute* newFactory( const PRMClass<GUM_SCALAR>& c ) const = 0;
+      virtual PRMAttribute*
+      newFactory( const PRMClass<GUM_SCALAR>& c ) const = 0;
       virtual PRMAttribute*
       copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
           const = 0;
@@ -127,17 +128,22 @@ namespace gum {
        * a proper cast descendant.
        *
        * Furthermore it is necessary to change the DiscreteVariable used
-       * by this PRMAttribute's super PRMType<GUM_SCALAR> in order to have the same
+       * by this PRMAttribute's super PRMType<GUM_SCALAR> in order to have the
+       *same
        *pointers in
-       * both super PRMType<GUM_SCALAR> (i.e. this->type().super().variable()) and
+       * both super PRMType<GUM_SCALAR> (i.e. this->type().super().variable())
+       *and
        *the
        * cast descendant CPF (i.e. attr->cpf()).
        *
-       * This can only be done if attr PRMType<GUM_SCALAR> is a direct subtype of
+       * This can only be done if attr PRMType<GUM_SCALAR> is a direct subtype
+       *of
        *this
-       * PRMAttribute PRMType<GUM_SCALAR> (i.e. this->type().super() == attr->type()).
+       * PRMAttribute PRMType<GUM_SCALAR> (i.e. this->type().super() ==
+       *attr->type()).
        *
-       * @param attr The PRMAttribute which is transformed to be this PRMAttribute
+       * @param attr The PRMAttribute which is transformed to be this
+       *PRMAttribute
        *             cast descendant.
        *
        * @throw OperationNotAllowed Raised if this PRMAttribute can not have any

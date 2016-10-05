@@ -32,8 +32,8 @@
 // to help IDE parser
 #include <agrum/learning/BNLearner.h>
 
-#include <agrum/learning/database/CSVParser.h>
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
+#include <agrum/learning/database/CSVParser.h>
 
 namespace gum {
 

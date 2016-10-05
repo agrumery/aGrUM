@@ -33,8 +33,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE IndepTestChi2<IdSetAlloc, CountAlloc>::IndepTestChi2(
-        const RowFilter& filter,
-        const std::vector<Size>& var_modalities )
+        const RowFilter& filter, const std::vector<Size>& var_modalities )
         : IndependenceTest<IdSetAlloc, CountAlloc>( filter, var_modalities )
         , __chi2( var_modalities ) {
       // for debugging purposes
@@ -50,8 +49,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    double
-    IndepTestChi2<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
+    double IndepTestChi2<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -83,16 +81,15 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nz =
             this->_getConditioningCounts( nodeset_index + 1 );
 
-        const auto Z_size = Size(Nz.size());
-        const auto Y_size = Size(modals[all_nodes[all_nodes.size() - 2]]);
-        const auto X_size = Size(modals[all_nodes[all_nodes.size() - 1]]);
+        const auto Z_size = Size( Nz.size() );
+        const auto Y_size = Size( modals[all_nodes[all_nodes.size() - 2]] );
+        const auto X_size = Size( modals[all_nodes[all_nodes.size() - 1]] );
 
         double score = 0.0;
 
         for ( Idx x = 0, beg_zx = 0, zyx = 0; x < X_size;
               ++x, beg_zx += Z_size ) {
-          for ( Idx y = 0, zy = 0, zx = beg_zx; y < Y_size;
-                ++y, zx = beg_zx ) {
+          for ( Idx y = 0, zy = 0, zx = beg_zx; y < Y_size; ++y, zx = beg_zx ) {
             for ( Idx z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
               if ( Nz[z] ) {
                 const double tmp1 = ( Nzy[zy] * Nzx[zx] ) / Nz[z];
@@ -135,8 +132,8 @@ namespace gum {
         const std::vector<double, CountAlloc>& Nx =
             this->_getAllCounts( nodeset_index + 1 );
 
-        const Size Y_size = Size(Ny.size());
-        const Size X_size = Size(Nx.size());
+        const Size Y_size = Size( Ny.size() );
+        const Size X_size = Size( Nx.size() );
 
         // count N
         double N = 0;

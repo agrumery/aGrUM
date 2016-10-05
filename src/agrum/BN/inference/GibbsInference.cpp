@@ -23,4 +23,3 @@
 
 template class gum::GibbsInference<float>;
 template class gum::GibbsInference<double>;
-

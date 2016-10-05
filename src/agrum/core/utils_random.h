@@ -27,12 +27,12 @@
 #ifndef GUM_UTILS_RANDOM_H
 #define GUM_UTILS_RANDOM_H
 
-#include <random>
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <numeric>
+#include <random>
 #include <utility>
 #include <vector>
 
@@ -67,12 +67,12 @@ namespace gum {
   /**
    * @brief Initialize random generator seed.
    */
-  void initRandom(unsigned int seed=0 );
+  void initRandom( unsigned int seed = 0 );
 
   /**
    * define a random_engine with correct seed
    */
-  std::default_random_engine getRandomGenerator(unsigned int seed=0);
+  std::default_random_engine getRandomGenerator( unsigned int seed = 0 );
 
   /// @}
 } /* namespace gum */

@@ -26,10 +26,9 @@
 
 #include <cmath>
 
-#include <agrum/core/hashTable.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/core/hashTable.h>
 
-#include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/samplers/GibbsSampler.h>
 #include <agrum/core/approximations/approximationScheme.h>

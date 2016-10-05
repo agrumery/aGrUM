@@ -25,14 +25,14 @@
 #ifndef GUM_LEARNING_ID_SET_H
 #define GUM_LEARNING_ID_SET_H
 
-#include <iostream>
-#include <type_traits>
-#include <vector>
-#include <string>
-#include <sstream>
 #include <cstring>
 #include <initializer_list>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <type_traits>
 #include <utility>
+#include <vector>
 
 #include <agrum/config.h>
 #include <agrum/core/hashFunc.h>
@@ -69,8 +69,7 @@ namespace gum {
 
       /// default constructor
       template <typename OtherAlloc>
-      IdSet( const std::vector<Idx, OtherAlloc>& ids,
-             Size sz );
+      IdSet( const std::vector<Idx, OtherAlloc>& ids, Size sz );
 
       /// copy constructor
       IdSet( const IdSet<Alloc>& from );
@@ -170,20 +169,17 @@ namespace gum {
       : public HashFuncBase<std::pair<learning::IdSet<Alloc>, Idx>> {
     public:
     /// computes the hashed value of a key
-    Size operator()(
-        const std::pair<learning::IdSet<Alloc>, Idx>& key ) const;
+    Size operator()( const std::pair<learning::IdSet<Alloc>, Idx>& key ) const;
   };
 
   /// the hash function for pairs (idSet,pair<Idx,Idx>)
   template <typename Alloc>
   class HashFunc<std::tuple<learning::IdSet<Alloc>, Idx, Idx>>
-      : public HashFuncBase<
-            std::tuple<learning::IdSet<Alloc>, Idx, Idx>> {
+      : public HashFuncBase<std::tuple<learning::IdSet<Alloc>, Idx, Idx>> {
     public:
     /// computes the hashed value of a key
-    Size operator()(
-        const std::tuple<learning::IdSet<Alloc>, Idx, Idx>&
-            key ) const;
+    Size
+    operator()( const std::tuple<learning::IdSet<Alloc>, Idx, Idx>& key ) const;
   };
 
 } /* namespace gum */
@@ -192,13 +188,11 @@ namespace gum {
 extern template class gum::HashFunc<
     std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>>>;
 extern template class gum::HashFunc<
-    std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>,
-               gum::Idx>>;
+    std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx>>;
 extern template class gum::HashFunc<
     std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>,
                gum::Idx,
                gum::Idx>>;
-
 
 
 // always include the template implementation

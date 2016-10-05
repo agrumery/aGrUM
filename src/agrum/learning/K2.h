@@ -25,12 +25,12 @@
 #ifndef GUM_LEARNING_K2_H
 #define GUM_LEARNING_K2_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>
-#include <agrum/BN/BayesNet.h>
 #include <agrum/learning/greedyHillClimbing.h>
 
 namespace gum {

@@ -29,4 +29,3 @@
 
 template class gum::MCBayesNetGenerator<float>;
 template class gum::MCBayesNetGenerator<double>;
-

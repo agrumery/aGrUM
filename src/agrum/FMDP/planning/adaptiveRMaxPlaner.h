@@ -28,8 +28,8 @@
 #ifndef GUM_ADAPTIVE_RMAX_PLANER_H
 #define GUM_ADAPTIVE_RMAX_PLANER_H
 // =========================================================================
-#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
 #include <agrum/FMDP/simulation/statesCounter.h>

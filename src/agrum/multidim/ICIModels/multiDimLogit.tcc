@@ -22,8 +22,8 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/core/exceptions.h>
+#include <agrum/multidim/ICIModels/multiDimLogit.h>
 
 namespace gum {
 
@@ -72,8 +72,8 @@ namespace gum {
 
     for ( Idx j = 1; j < this->nbrDim(); j++ ) {
       const DiscreteVariable& v = this->variable( j );
-      fact += GUM_SCALAR(
-          this->causalWeight( v ) * this->variable( j ).numerical( i.val( v ) ));
+      fact += GUM_SCALAR( this->causalWeight( v ) *
+                          this->variable( j ).numerical( i.val( v ) ) );
     }
 
     fact =

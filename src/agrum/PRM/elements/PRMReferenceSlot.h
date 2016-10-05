@@ -39,7 +39,8 @@ namespace gum {
      *
      * A reference slot is a relation between two PRMClassElementContainer in a
      *PRM. A
-     * PRMReferenceSlot is considered as an element of a PRMClassElementContainer
+     * PRMReferenceSlot is considered as an element of a
+     *PRMClassElementContainer
      *which
      * slot type is a PRMClassElementContainer.
      *
@@ -67,8 +68,8 @@ namespace gum {
        * @param isArray Determine if this reference slot is multiple or not.
        */
       PRMReferenceSlot( const std::string& name,
-                     PRMClassElementContainer<GUM_SCALAR>& type,
-                     bool isArray = false );
+                        PRMClassElementContainer<GUM_SCALAR>& type,
+                        bool isArray = false );
 
       /**
        * Destructor.

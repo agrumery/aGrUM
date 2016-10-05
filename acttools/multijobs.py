@@ -52,9 +52,12 @@ def prettifying(line):
 
   for eop in ['done','works','Success','found']:
     leop=len(eop)
-    if line[-leop:]==eop:
-      line=line[:-leop]+cfg.C_VALUE+eop+cfg.C_END
-      break
+    try:
+      if line[-leop:]==eop:
+        line=line[:-leop]+cfg.C_VALUE+eop+cfg.C_END
+        break
+    except TypeError:
+      return "((("+line+")))"
 
   # prettifying compilation
   s=line.split("%]")

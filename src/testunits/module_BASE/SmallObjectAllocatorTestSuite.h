@@ -157,13 +157,14 @@ namespace gum_tests {
       for ( std::size_t i = 1; i < 13; ++i )
         TS_ASSERT_THROWS_NOTHING(
             vVoid.push_back( gum::SmallObjectAllocator::instance().allocate(
-                gum::Size(2 * i * sizeof( gum::Idx ) ) )) );
+                gum::Size( 2 * i * sizeof( gum::Idx ) ) ) ) );
 
       std::vector<std::size_t> dv = {12, 6, 3, 9, 4, 11, 2, 7, 1, 5, 8, 10};
       for ( int i = 0; i < 12; ++i )
         TS_ASSERT_THROWS_NOTHING(
             gum::SmallObjectAllocator::instance().deallocate(
-                vVoid[dv[i] - 1], gum::Size(2 * dv[i] * sizeof( gum::Idx ) )) );
+                vVoid[dv[i] - 1],
+                gum::Size( 2 * dv[i] * sizeof( gum::Idx ) ) ) );
     }
 
     // ==============================================================================

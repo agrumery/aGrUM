@@ -154,8 +154,9 @@ namespace gum {
     }
 
     // indicate that we wish to use a local search with tabu list
-    INLINE void genericBNLearner::useLocalSearchWithTabuList(
-        Size tabu_size, Size nb_decrease ) noexcept {
+    INLINE void
+    genericBNLearner::useLocalSearchWithTabuList( Size tabu_size,
+                                                  Size nb_decrease ) noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
       __constraint_TabuList.setTabuListSize( tabu_size );
       __local_search_with_tabu_list.setMaxNbDecreasingChanges( nb_decrease );
@@ -240,9 +241,9 @@ namespace gum {
     }
 
     // sets a partial order on the nodes
-    INLINE void genericBNLearner::setSliceOrder(
-        const NodeProperty<NodeId>& slice_order ) {
-      __constraint_SliceOrder =StructuralConstraintSliceOrder(slice_order);
+    INLINE void
+    genericBNLearner::setSliceOrder( const NodeProperty<NodeId>& slice_order ) {
+      __constraint_SliceOrder = StructuralConstraintSliceOrder( slice_order );
     }
 
     // sets the apriori weight
@@ -305,8 +306,7 @@ namespace gum {
     }
 
     // returns the modalities  of the variables in the database
-    INLINE const std::vector<Size>&
-    genericBNLearner::modalities() noexcept {
+    INLINE const std::vector<Size>& genericBNLearner::modalities() noexcept {
       return __score_database.modalities();
     }
 

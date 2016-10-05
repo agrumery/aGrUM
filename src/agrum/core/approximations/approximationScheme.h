@@ -36,9 +36,9 @@
 #include <cmath>
 
 #include <agrum/config.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/timer.h>
-#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 
 namespace gum {
 

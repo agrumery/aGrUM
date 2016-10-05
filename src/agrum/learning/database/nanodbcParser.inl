@@ -46,7 +46,7 @@ namespace gum {
       if ( __data.size() ) {
         return __data;
       }
-        
+
       GUM_ERROR( NullElement, "No parsed data" );
     }
 
@@ -54,4 +54,4 @@ namespace gum {
 
 }  // namespace gum
 
-#endif // _ODBC
+#endif  // _ODBC

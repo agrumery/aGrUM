@@ -25,9 +25,9 @@
  */
 
 // include the operators that will be used by the decorators
+#include <agrum/multidim/operators/completeProjections4MultiDim.h>
 #include <agrum/multidim/operators/operators4MultiDim.h>
 #include <agrum/multidim/operators/projections4MultiDim.h>
-#include <agrum/multidim/operators/completeProjections4MultiDim.h>
 #include <agrum/multidim/partialInstantiation4MultiDim.h>
 
 #include <agrum/multidim/multiDimDecorator.h>
@@ -86,7 +86,7 @@ namespace gum {
     GUM_OP_MOV( MultiDimDecorator );
 
     if ( this != &from ) {
-      if ( _content != nullptr ) delete ( _content ); //should be the case
+      if ( _content != nullptr ) delete ( _content );  // should be the case
       _content = from._content;
       from._content = nullptr;
     }
@@ -102,8 +102,8 @@ namespace gum {
             std::forward<MultiDimContainer<GUM_SCALAR>>( from ) ) {
     GUM_CONS_MOV( MultiDimDecorator );
 
-      _content = from._content;
-      from._content = nullptr;
+    _content = from._content;
+    from._content = nullptr;
   }
 
 

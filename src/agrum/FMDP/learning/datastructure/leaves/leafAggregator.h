@@ -29,18 +29,18 @@
 #define GUM_LEAF_AGGREGATOR_H
 // =========================================================================
 #include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
 #include <agrum/core/multiPriorityQueue.h>
+#include <agrum/core/sequence.h>
 // =========================================================================
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/nodeGraphPart.h>
 // =========================================================================
 #include <agrum/multidim/FunctionGraphUtilities/link.h>
 // =========================================================================
-#include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
 #include <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>
 #include <agrum/FMDP/learning/datastructure/leaves/fusionContext.h>
+#include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
 // =========================================================================
 
 namespace gum {

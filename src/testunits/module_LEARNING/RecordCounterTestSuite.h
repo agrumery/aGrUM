@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
+#include <iostream>
 
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/recordCounter.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 
 namespace gum_tests {
 
@@ -308,8 +308,8 @@ namespace gum_tests {
       for ( gum::Idx j = 0; j < 2; ++j ) {
         for ( gum::Idx i = 0; i < 2; ++i ) {
           index2 = i + j * 2;
-          index1 =
-              i * ( gum::Idx(1) << ( order[0] - 1 ) ) + j * (gum::Idx(1) << ( order[1] - 1 ) );
+          index1 = i * ( gum::Idx( 1 ) << ( order[0] - 1 ) ) +
+                   j * ( gum::Idx( 1 ) << ( order[1] - 1 ) );
           if ( v1[index1] != v2[index2] ) return false;
         }
       }

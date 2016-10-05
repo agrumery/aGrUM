@@ -64,9 +64,9 @@
 #ifndef FMDP_DAT_READER_H
 #define FMDP_DAT_READER_H
 // ======================================================================================================
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <fstream>
 // ======================================================================================================
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/fmdpFactory.h>

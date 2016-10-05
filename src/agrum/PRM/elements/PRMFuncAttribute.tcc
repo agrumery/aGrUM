@@ -51,9 +51,8 @@ namespace gum {
         const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    INLINE void
-    PRMFuncAttribute<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {
-    }
+    INLINE void PRMFuncAttribute<GUM_SCALAR>::addChild(
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     INLINE PRMFuncAttribute<GUM_SCALAR>::PRMFuncAttribute(

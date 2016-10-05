@@ -23,4 +23,3 @@
 
 template class gum::LazyPropagation<float>;
 template class gum::LazyPropagation<double>;
-

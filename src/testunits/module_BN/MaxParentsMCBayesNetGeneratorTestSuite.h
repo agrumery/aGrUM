@@ -25,12 +25,12 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/generator/simpleCPTDisturber.h>
-#include <agrum/core/set.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/core/exceptions.h>
+#include <agrum/core/set.h>
 
 namespace gum_tests {
 

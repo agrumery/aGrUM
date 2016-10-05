@@ -23,9 +23,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/UAI/UAIReader.h>
+#include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -56,7 +56,7 @@ namespace gum_tests {
       TS_ASSERT( net != nullptr );
 
       gum::UAIReader<float> reader( net, file );
-      auto err=reader.proceed();
+      auto err = reader.proceed();
 
       if ( net != nullptr ) {
         TS_ASSERT( net->empty() );
@@ -71,7 +71,7 @@ namespace gum_tests {
 
       gum::Size isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
+      TS_ASSERT_EQUALS( isOK, gum::Size( 0 ) );
 
       TS_ASSERT( net != nullptr );
 
@@ -80,8 +80,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( net->size(), (gum::Size)5 );
 
         gum::NodeId node_1 = 0, node_2 = 0;
-	node_1=net->idFromName("0");
-	node_2=net->idFromName("1");
+        node_1 = net->idFromName( "0" );
+        node_2 = net->idFromName( "1" );
 
         const gum::DiscreteVariable& var_1 = net->variable( node_1 );
 
@@ -109,7 +109,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( proba_2[inst_2], 0.3, 0.001 );
         inst_2.setLast();
         TS_ASSERT_DELTA( proba_2[inst_2], 0.7, 0.001 );
-	delete net;
+        delete net;
       }
     }
 
@@ -121,7 +121,7 @@ namespace gum_tests {
 
       gum::Size isOK = false;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
+      TS_ASSERT_EQUALS( isOK, gum::Size( 0 ) );
 
       TS_ASSERT( net != nullptr );
 
@@ -144,10 +144,10 @@ namespace gum_tests {
 
       gum::Size isOK = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-      TS_ASSERT_EQUALS( isOK, gum::Size(0) );
+      TS_ASSERT_EQUALS( isOK, gum::Size( 0 ) );
       TS_ASSERT( net != nullptr );
 
-      if ( net != nullptr) {
+      if ( net != nullptr ) {
         gum::HashTable<std::string, gum::NodeId> idMap;
 
         for ( const auto node : net->nodes() )

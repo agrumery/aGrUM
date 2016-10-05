@@ -118,4 +118,3 @@ extern template class gum::prm::o3prm::O3TypeFactory<double>;
 
 
 #endif  // GUM_PRM_O3PRM_O3TYPE_FACTORY_H
-

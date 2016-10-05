@@ -31,5 +31,3 @@
 
 template class gum::prm::o3prm::O3prmReader<float>;
 template class gum::prm::o3prm::O3prmReader<double>;
-
-

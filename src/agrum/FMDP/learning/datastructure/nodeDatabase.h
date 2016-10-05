@@ -31,11 +31,11 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
 // =========================================================================
-#include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/learning/core/templateStrategy.h>
-#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
+#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
 #include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
+#include <agrum/FMDP/learning/observation.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -54,8 +54,7 @@ namespace gum {
   template <TESTNAME AttributeSelection, bool isScalar>
   class NodeDatabase {
 
-    typedef typename ValueSelect<isScalar, double, Idx>::type
-        ValueType;
+    typedef typename ValueSelect<isScalar, double, Idx>::type ValueType;
 
     template <typename GUM_SCALAR>
     using TestPolicy =
@@ -85,7 +84,7 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s);
+      return SmallObjectAllocator::instance().allocate( s );
     }
     void operator delete( void* p ) {
       SmallObjectAllocator::instance().deallocate( p, sizeof( NodeDatabase ) );

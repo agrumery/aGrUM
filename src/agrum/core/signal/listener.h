@@ -29,8 +29,8 @@
 #ifndef GUM_LISTENER_H
 #define GUM_LISTENER_H
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include <agrum/config.h>
 #include <agrum/core/debug.h>

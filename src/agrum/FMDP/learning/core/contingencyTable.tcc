@@ -84,8 +84,8 @@ namespace gum {
 
   template <typename GUM_SCALAR_A, typename GUM_SCALAR_B>
   ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>&
-      ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::
-      operator+=( const ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& src ) {
+  ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::
+  operator+=( const ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& src ) {
 
     // Ajout dans marginal A et table joint des valeurs pour src
     for ( auto aTer = src.attrABeginSafe(); aTer != src.attrAEndSafe();

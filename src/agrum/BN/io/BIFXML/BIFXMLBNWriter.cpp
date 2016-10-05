@@ -28,4 +28,3 @@
 
 template class gum::BIFXMLBNWriter<float>;
 template class gum::BIFXMLBNWriter<double>;
-

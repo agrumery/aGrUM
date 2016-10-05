@@ -29,12 +29,12 @@
 
 #include <limits>
 
-#include <iostream>
-#include <utility>
 #include <cstddef>
-#include <string>
-#include <vector>
 #include <initializer_list>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <agrum/config.h>
 #include <agrum/core/hashFunc.h>
@@ -2162,7 +2162,7 @@ namespace gum {
     /**
      * @brief Removes the iterator from its hashtable' safe iterators list.
      */
-    void __removeFromSafeList() const ;
+    void __removeFromSafeList() const;
 
     /**
      * @brief Insert the iterator into the hashtable's list of safe iterators.

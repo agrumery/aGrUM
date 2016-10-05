@@ -30,7 +30,8 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    void InstanceBayesNet<GUM_SCALAR>::__init( const PRMInstance<GUM_SCALAR>& i ) {
+    void
+    InstanceBayesNet<GUM_SCALAR>::__init( const PRMInstance<GUM_SCALAR>& i ) {
       for ( const auto node : i.type().dag().nodes() ) {
         try {
           // Adding the attribute

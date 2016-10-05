@@ -107,5 +107,3 @@ template class gum::Set<unsigned long>;
 template class gum::Set<float>;
 template class gum::Set<double>;
 template class gum::Set<std::string>;
-
-

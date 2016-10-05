@@ -58,7 +58,7 @@ namespace gum {
           Instantiation inst( e );
           Size count = 0;
 
-          for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
+          for ( inst.setFirst(); !inst.end(); inst.inc() ) {
             if ( ( e->get( inst ) == (GUM_SCALAR)1.0 ) )
               ++count;
             else if ( e->get( inst ) != (GUM_SCALAR)0.0 )
@@ -75,9 +75,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void
-    StructuredBayesBall<GUM_SCALAR>::__compute( const PRMInstance<GUM_SCALAR>* i,
-                                                NodeId n ) {
+    void StructuredBayesBall<GUM_SCALAR>::__compute(
+        const PRMInstance<GUM_SCALAR>* i, NodeId n ) {
       __clean();
       /// Key = instance.PRMClassElement<GUM_DATA>
       /// pair = <upper mark, lower mark>
@@ -92,18 +91,18 @@ namespace gum {
     template <typename GUM_SCALAR>
     void StructuredBayesBall<GUM_SCALAR>::__fromChild(
         const PRMInstance<GUM_SCALAR>* i, NodeId n, InstanceMap& marks ) {
-      if ( ! marks.exists( i ) ) {
+      if ( !marks.exists( i ) ) {
         marks.insert( i, new StructuredBayesBall<GUM_SCALAR>::MarkMap() );
       }
 
-      if ( ! marks[i]->exists( n ) ) {
+      if ( !marks[i]->exists( n ) ) {
         marks[i]->insert( n, std::pair<bool, bool>( false, false ) );
       }
 
       // Sending message to parents
       switch ( i->type().get( n ).elt_type() ) {
         case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
-          if ( ! __getMark( marks, i, n ).first ) {
+          if ( !__getMark( marks, i, n ).first ) {
             __getMark( marks, i, n ).first = true;
 
             for ( const auto inst : i->getInstances( n ) )
@@ -113,7 +112,7 @@ namespace gum {
                   marks );
           }
 
-          if ( ! __getMark( marks, i, n ).second ) {
+          if ( !__getMark( marks, i, n ).second ) {
             __getMark( marks, i, n ).second = true;
 
             for ( const auto chi : i->type().dag().children( n ) )
@@ -125,15 +124,15 @@ namespace gum {
 
         case PRMClassElement<GUM_SCALAR>::prm_aggregate:
         case PRMClassElement<GUM_SCALAR>::prm_attribute: {
-          if ( ! __getMark( marks, i, n ).first ) {
+          if ( !__getMark( marks, i, n ).first ) {
             __getMark( marks, i, n ).first = true;
 
-            if ( ! __isHardEvidence( i, n ) )
+            if ( !__isHardEvidence( i, n ) )
               for ( const auto par : i->type().dag().parents( n ) )
                 __fromChild( i, par, marks );
           }
 
-          if ( ! __getMark( marks, i, n ).second ) {
+          if ( !__getMark( marks, i, n ).second ) {
             __getMark( marks, i, n ).second = true;
 
             // In i.
@@ -157,7 +156,8 @@ namespace gum {
         }
 
         default: {
-          // We shouldn't reach any other PRMClassElement<GUM_DATA> than PRMAttribute
+          // We shouldn't reach any other PRMClassElement<GUM_DATA> than
+          // PRMAttribute
           // or
           // PRMSlotChain<GUM_SCALAR>.
           GUM_ERROR( FatalError, "This case is impossible." );
@@ -168,22 +168,22 @@ namespace gum {
     template <typename GUM_SCALAR>
     void StructuredBayesBall<GUM_SCALAR>::__fromParent(
         const PRMInstance<GUM_SCALAR>* i, NodeId n, InstanceMap& marks ) {
-      if ( ! marks.exists( i ) ) {
+      if ( !marks.exists( i ) ) {
         marks.insert( i, new StructuredBayesBall<GUM_SCALAR>::MarkMap() );
       }
 
-      if ( ! marks[i]->exists( n ) ) {
+      if ( !marks[i]->exists( n ) ) {
         marks[i]->insert( n, std::pair<bool, bool>( false, false ) );
       }
 
       // Concerns only PRMAttribute (because of the hard evidence)
       if ( ( __isHardEvidence( i, n ) ) &&
-           ( ! __getMark( marks, i, n ).first ) ) {
+           ( !__getMark( marks, i, n ).first ) ) {
         __getMark( marks, i, n ).first = true;
 
         for ( const auto par : i->type().dag().parents( n ) )
           __fromChild( i, par, marks );
-      } else if ( ! __getMark( marks, i, n ).second ) {
+      } else if ( !__getMark( marks, i, n ).second ) {
         __getMark( marks, i, n ).second = true;
 
         // In i.

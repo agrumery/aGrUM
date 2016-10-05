@@ -34,12 +34,12 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/graphElements.h>
 
-#include <agrum/graphicalModels/inference/scheduleOperation.h>
-#include <agrum/graphicalModels/inference/scheduleCombine.h>
-#include <agrum/graphicalModels/inference/scheduleProject.h>
 #include <agrum/graphicalModels/inference/scheduleCliqueStoreMultiDim.h>
-#include <agrum/graphicalModels/inference/scheduleSeparatorStoreMultiDim.h>
+#include <agrum/graphicalModels/inference/scheduleCombine.h>
 #include <agrum/graphicalModels/inference/scheduleDeleteMultiDim.h>
+#include <agrum/graphicalModels/inference/scheduleOperation.h>
+#include <agrum/graphicalModels/inference/scheduleProject.h>
+#include <agrum/graphicalModels/inference/scheduleSeparatorStoreMultiDim.h>
 
 namespace gum {
 
@@ -65,10 +65,10 @@ namespace gum {
   class Schedule {
     public:
     /// to identify correctly the ids that correspond to ScheduleOperation ids
-    using OperationId=Idx;
+    using OperationId = Idx;
 
     /// to identify correctly the ids that correspond to ScheduleMultiDim ids
-    using MultiDimId=Idx;
+    using MultiDimId = Idx;
 
     // ############################################################################
     /// @name Constructors / Destructors

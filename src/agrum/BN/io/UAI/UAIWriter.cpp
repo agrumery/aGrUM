@@ -28,4 +28,3 @@
 
 template class gum::UAIWriter<float>;
 template class gum::UAIWriter<double>;
-

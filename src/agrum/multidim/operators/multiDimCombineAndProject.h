@@ -26,9 +26,9 @@
 #ifndef GUM_MULTI_DIM_COMBINE_AND_PROJECT_H
 #define GUM_MULTI_DIM_COMBINE_AND_PROJECT_H
 
-#include <utility>
 #include <agrum/core/set.h>
 #include <agrum/variables/discreteVariable.h>
+#include <utility>
 
 namespace gum {
 
@@ -59,7 +59,7 @@ namespace gum {
     /// destructor
     virtual ~MultiDimCombineAndProject();
 
-    /** 
+    /**
      * @brief virtual constructor
      *
      * @return a new fresh MultiDimCombineAndProject with the same combination
@@ -90,7 +90,7 @@ namespace gum {
 
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction( TABLE<GUM_SCALAR>* ( *combine )(
-        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) ) = 0;
+        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>&)) = 0;
 
     /// returns the current combination function
     virtual TABLE<GUM_SCALAR>* ( *combineFunction() )(
@@ -98,7 +98,7 @@ namespace gum {
 
     /// changes the function used for projecting TABLES
     virtual void setProjectFunction( TABLE<GUM_SCALAR>* ( *proj )(
-        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) ) = 0;
+        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>&)) = 0;
 
     /// returns the current projection function
     virtual TABLE<GUM_SCALAR>* ( *projectFunction() )(

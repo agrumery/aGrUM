@@ -29,16 +29,16 @@
 #ifndef GUM_LEARNING_RECORD_COUNTER_H
 #define GUM_LEARNING_RECORD_COUNTER_H
 
+#include <algorithm>
+#include <climits>
+#include <cstring>
+#include <initializer_list>
 #include <type_traits>
 #include <vector>
-#include <cstring>
-#include <algorithm>
-#include <initializer_list>
-#include <climits>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/bijection.h>
 #include <agrum/core/OMPThreads.h>
+#include <agrum/core/bijection.h>
+#include <agrum/core/hashTable.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/learning/database/DBRowFilter.h>
 #include <agrum/learning/scores_and_tests/idSet.h>
@@ -78,8 +78,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      RecordCounterThreadBase(
-          const std::vector<Size>& var_modalities );
+      RecordCounterThreadBase( const std::vector<Size>& var_modalities );
 
       /// copy constructor
       RecordCounterThreadBase(
@@ -105,8 +104,7 @@ namespace gum {
 
       /// adds a new target nodeset to be counted
       /** @return the id of the nodeset counter created */
-      Idx
-      addNodeSet( const std::vector<Idx, IdSetAlloc>& ids );
+      Idx addNodeSet( const std::vector<Idx, IdSetAlloc>& ids );
 
       /// remove all the current target nodesets
       void clearNodeSets() noexcept;
@@ -118,12 +116,11 @@ namespace gum {
       virtual Size DBSize() noexcept = 0;
 
       /// sets the interval of records on which countings should be performed
-      virtual void setRange( Size min_index,
-                             Size max_index ) = 0;
+      virtual void setRange( Size min_index, Size max_index ) = 0;
 
       /// returns the countings for the nodeset specified in argument
-      const std::vector<double, CountAlloc>&
-      getCounts( Idx nodeset_id ) const noexcept;
+      const std::vector<double, CountAlloc>& getCounts( Idx nodeset_id ) const
+          noexcept;
 
       /// @}
 
@@ -256,11 +253,10 @@ namespace gum {
 
       /// default constructor
       template <typename RowFilter>
-      RecordCounter(
-          const RowFilter& filter,
-          const std::vector<Size>& var_modalities,
-          Size min_range = 0,
-          Size max_range = std::numeric_limits<Size>::max() );
+      RecordCounter( const RowFilter& filter,
+                     const std::vector<Size>& var_modalities,
+                     Size min_range = 0,
+                     Size max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       RecordCounter( const RecordCounter<IdSetAlloc, CountAlloc>& from );
@@ -279,8 +275,7 @@ namespace gum {
       /// @{
 
       /// add a new nodeset to count
-      Idx
-      addNodeSet( const std::vector<Idx, IdSetAlloc>& ids );
+      Idx addNodeSet( const std::vector<Idx, IdSetAlloc>& ids );
 
       /// returns the size of the database taken into account by the counter
       Size DBParsedSize() noexcept;
@@ -312,8 +307,8 @@ namespace gum {
       void count();
 
       /// returns the counts performed for a given idSet
-      const std::vector<double, CountAlloc>&
-      getCounts( Idx idset ) const noexcept;
+      const std::vector<double, CountAlloc>& getCounts( Idx idset ) const
+          noexcept;
 
       /// resets the counter, i.e., remove all its sets of ids and counting
       /// vectors
@@ -357,8 +352,7 @@ namespace gum {
       /// a table associating to each variable the IdSets that contain it
       /** This table is used to quickly compute the IdSets that are contained
        * in other IdSets */
-      HashTable<Idx, std::vector<const IdSet<IdSetAlloc>*>>
-          __var2idsets;
+      HashTable<Idx, std::vector<const IdSet<IdSetAlloc>*>> __var2idsets;
 
       /// the possible states of a set of ids
       enum SetState {
@@ -391,8 +385,7 @@ namespace gum {
       /** For the IdSets which are subsets of other IdSets, the index
        * corresponds
        * to that of its superset in __set2thread_id */
-      std::vector<std::pair<const IdSet<IdSetAlloc>*, Idx>>
-          __set2thread_id;
+      std::vector<std::pair<const IdSet<IdSetAlloc>*, Idx>> __set2thread_id;
 
       /// a partial lattice indicating the relations between subsets and
       /// supersets

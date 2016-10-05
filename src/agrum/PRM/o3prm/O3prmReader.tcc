@@ -25,8 +25,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  * @author Lionel TORTI
  */
-#include <agrum/config.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
+#include <agrum/config.h>
 
 namespace gum {
   namespace prm {
@@ -50,8 +50,8 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__print( const ParseError& err ) const {
         std::stringstream s;
         s << err.filename << "|" << err.line << " col " << err.column << "| "
-          << __clean(err.msg);
-        return std::move(s.str());
+          << __clean( err.msg );
+        return std::move( s.str() );
       }
 
       template <typename GUM_SCALAR>
@@ -59,7 +59,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__readStream( std::istream& inputstr ) {
         if ( inputstr ) {
           inputstr.seekg( 0, inputstr.end );
-          int length = int(inputstr.tellg());
+          int length = int( inputstr.tellg() );
           inputstr.seekg( 0, inputstr.beg );
 
           auto str = std::string();
@@ -68,7 +68,7 @@ namespace gum {
 
           inputstr.read( begin, length );
 
-          return std::move(str);
+          return std::move( str );
         }
         GUM_ERROR( OperationNotAllowed, "Could not open file" );
       }
@@ -183,20 +183,17 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE Idx
-      O3prmReader<GUM_SCALAR>::errLine( Idx i ) const {
+      INLINE Idx O3prmReader<GUM_SCALAR>::errLine( Idx i ) const {
         return __errors.error( i ).line;
       }
 
       template <typename GUM_SCALAR>
-      INLINE Idx
-      O3prmReader<GUM_SCALAR>::errCol( Idx i ) const {
+      INLINE Idx O3prmReader<GUM_SCALAR>::errCol( Idx i ) const {
         return __errors.error( i ).column;
       }
 
       template <typename GUM_SCALAR>
-      INLINE std::wstring
-      O3prmReader<GUM_SCALAR>::errFilename( Idx i ) const {
+      INLINE std::wstring O3prmReader<GUM_SCALAR>::errFilename( Idx i ) const {
         return widen( __errors.error( i ).filename );
       }
 
@@ -206,8 +203,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE std::string
-      O3prmReader<GUM_SCALAR>::errMsg( Idx i ) const {
+      INLINE std::string O3prmReader<GUM_SCALAR>::errMsg( Idx i ) const {
         return __errors.error( i ).msg;
       }
 
@@ -260,9 +256,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE Size
-      O3prmReader<GUM_SCALAR>::readFile( const std::string& file,
-                                          const std::string& module ) {
+      INLINE Size O3prmReader<GUM_SCALAR>::readFile(
+          const std::string& file, const std::string& module ) {
         try {
           auto lastSlashIndex = file.find_last_of( '/' );
 
@@ -297,8 +292,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE void O3prmReader<GUM_SCALAR>::parseStream( std::istream& input,
-                                                         std::ostream& output,
-                                                         std::string module ) {
+                                                        std::ostream& output,
+                                                        std::string module ) {
         __readStream( input, "", module );
 
         showElegantErrorsAndWarnings( output );
@@ -307,14 +302,14 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void
       O3prmReader<GUM_SCALAR>::__parseStream( std::istream& input,
-                                               const std::string& filename,
-                                               const std::string& module ) {
+                                              const std::string& filename,
+                                              const std::string& module ) {
         auto sBuff = __readStream( input );
         auto buffer = std::unique_ptr<unsigned char[]>(
             new unsigned char[sBuff.length() + 1] );
         strcpy( (char*)buffer.get(), sBuff.c_str() );
         auto s =
-            o3prm_scanner( buffer.get(), int(sBuff.length() + 1), filename );
+            o3prm_scanner( buffer.get(), int( sBuff.length() + 1 ), filename );
         auto p = o3prm_parser( &s );
         p.set_prm( __o3_prm.get() );
         p.set_prefix( module );
@@ -327,7 +322,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__parseImport( const O3Import& i,
                                               const std::string& module ) {
 
-        if ( ! __imported.exists( i.import().label() ) ) {
+        if ( !__imported.exists( i.import().label() ) ) {
           __imported.insert( i.import().label() );
 
           auto module_path = module;
@@ -377,7 +372,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__copyImports() {
         auto copy = std::vector<const O3Import*>();
         for ( const auto& i : __o3_prm->imports() ) {
-          if ( ! __imported.exists( i->import().label() ) ) {
+          if ( !__imported.exists( i->import().label() ) ) {
             copy.push_back( i.get() );
           }
         }
@@ -434,8 +429,8 @@ namespace gum {
             if ( __errors.count() == 0 ) {
               __errors.addException( "an unknown error occured", file );
             }
-            //GUM_TRACE_NEWLINE;
-            //GUM_SHOWERROR( e );
+            // GUM_TRACE_NEWLINE;
+            // GUM_SHOWERROR( e );
 
           } catch ( ... ) {
             __errors.addException( "an unknown exception occured", file );

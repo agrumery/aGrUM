@@ -25,7 +25,7 @@
 #ifndef NDEBUG
 #ifdef HAVE_EXECINFO_H
 #include <execinfo.h>
-#endif  //HAVE_EXECINFO_H
+#endif  // HAVE_EXECINFO_H
 #endif  // NDEBUG
 
 #include <agrum/config.h>
@@ -70,9 +70,9 @@ namespace gum {
 
     free( strings );
     _callstack = stream.str();
-#else   //HAVE_EXECINFO_H
+#else   // HAVE_EXECINFO_H
     _callstack = "Callstack only in linux debug mode when execinfo.h available";
-#endif  //HAVE_EXECINFO_H
+#endif  // HAVE_EXECINFO_H
 #else   // NDEBUG
     _callstack = "Callstack only in linux debug mod ewhen execinfo.h available";
 #endif  // NDEBUG

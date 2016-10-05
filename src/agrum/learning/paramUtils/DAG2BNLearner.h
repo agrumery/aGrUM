@@ -28,8 +28,8 @@
 
 #include <vector>
 
-#include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/graphs/DAG.h>
 
 namespace gum {
 

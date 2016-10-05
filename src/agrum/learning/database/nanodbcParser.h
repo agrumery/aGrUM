@@ -47,7 +47,7 @@ namespace gum {
        * @brief Default constructor.
        * @param result An SQL query result.
        */
-      NanodbcParser( nanodbc::result &result );
+      NanodbcParser( nanodbc::result& result );
 
       /**
        * @brief Class destructor.
@@ -72,10 +72,8 @@ namespace gum {
       const Size noLine() const;
 
       private:
-
-      nanodbc::result &__result;
+      nanodbc::result& __result;
       std::vector<std::string> __data;
-
     };
 
   }  // namespace learning
@@ -88,4 +86,4 @@ namespace gum {
 
 #endif  // GUM_NANODBC_H
 
-#endif // _ODBC
+#endif  // _ODBC

@@ -121,8 +121,8 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    double ScoreLog2Likelihood<IdSetAlloc, CountAlloc>::score(
-        Idx nodeset_index ) {
+    double
+    ScoreLog2Likelihood<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache( nodeset_index ) ) {
         return this->_cachedScore( nodeset_index );
@@ -131,7 +131,7 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
-      const Size targets_modal = Size(N_ijk.size());
+      const Size targets_modal = Size( N_ijk.size() );
       double score = 0;
 
       // get the nodes involved in the score
@@ -144,7 +144,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<double, CountAlloc>& N_ij =
             this->_getConditioningCounts( nodeset_index );
-        const Size conditioning_modal =Size( N_ij.size());
+        const Size conditioning_modal = Size( N_ij.size() );
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =
@@ -200,7 +200,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<double, CountAlloc>& N_ijk =
             this->_getAllCounts( nodeset_index );
-        const Size targets_modal =Size( N_ijk.size());
+        const Size targets_modal = Size( N_ijk.size() );
 
         if ( this->_apriori->weight() ) {
           const std::vector<double, CountAlloc>& N_prime_ijk =

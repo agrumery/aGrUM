@@ -23,8 +23,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 #include <agrum/learning/database/CSVParser.h>
@@ -70,7 +70,7 @@ namespace gum {
         // read a new line in the input file and convert it into a DBRow
         const std::vector<std::string>& row = parser.current();
 
-        DBRow new_row( Size(row.size()) );
+        DBRow new_row( Size( row.size() ) );
 
         for ( Idx i = 0; i < row.size(); ++i ) {
           new_row[i].setBestTypeSafe( row[i] );

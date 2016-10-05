@@ -25,13 +25,13 @@
 #ifndef GUM_LEARNING_A_PRIORI_DIRICHLET_FROM_DATABASE_H
 #define GUM_LEARNING_A_PRIORI_DIRICHLET_FROM_DATABASE_H
 
-#include <vector>
 #include <algorithm>
 #include <utility>
+#include <vector>
 
 #include <agrum/config.h>
-#include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/aprioris/apriori.h>
+#include <agrum/learning/scores_and_tests/counter.h>
 
 namespace gum {
 
@@ -56,9 +56,8 @@ namespace gum {
 
       /// default constructor
       template <typename RowFilter>
-      AprioriDirichletFromDatabase(
-          const RowFilter& filter,
-          const std::vector<Size>& var_modalities );
+      AprioriDirichletFromDatabase( const RowFilter& filter,
+                                    const std::vector<Size>& var_modalities );
 
       /// virtual copy constructor
       virtual AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>*

@@ -36,8 +36,8 @@
 #ifndef GUM_LEARNING_INDEPENDENCE_TEST_H
 #define GUM_LEARNING_INDEPENDENCE_TEST_H
 
-#include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/cache4IndepTest.h>
+#include <agrum/learning/scores_and_tests/counter.h>
 
 namespace gum {
 
@@ -120,31 +120,7 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * observed countings of (vars.second, vars.first) [in this order] and
        * vars.second respectively. */
-      Idx
-      addNodeSet( const std::pair<Idx, Idx>& vars );
-
-      /// add a target conditioned by other variables to be counted
-      /** @param var1 represents the index of the target variable in the
-       * filtered rows produced by the database cell filters
-       * @param var2 represents the index of the last conditioning variable in
-       * the
-       * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the
-       * conditioning
-       * set in the filtered rows (minus var2, which is subsequently
-       * apended to it).
-       * @return the index of the produced counting vector: the user should use
-       * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the counts in this vector. The user shall pass this index as
-       * argument to methods _getAllCounts and _getConditioningCounts to get the
-       * countings of (conditioning_ids, var2, var1) [in this order] and
-       * (conditioning_ids, var2) [in this order] respectively. */
-      Idx
-      addNodeSet( Idx var1,
-                  Idx var2,
-                  const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet( const std::pair<Idx, Idx>& vars );
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -165,8 +141,28 @@ namespace gum {
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
       Idx addNodeSet( Idx var1,
-                               Idx var2,
-                               std::vector<Idx>&& conditioning_ids );
+                      Idx var2,
+                      const std::vector<Idx>& conditioning_ids );
+
+      /// add a target conditioned by other variables to be counted
+      /** @param var1 represents the index of the target variable in the
+       * filtered rows produced by the database cell filters
+       * @param var2 represents the index of the last conditioning variable in
+       * the
+       * filtered rows produced by the database cell filters
+       * @param conditioning_ids the indices of the variables of the
+       * conditioning
+       * set in the filtered rows (minus var2, which is subsequently
+       * apended to it).
+       * @return the index of the produced counting vector: the user should use
+       * class IndependenceTest to compute in one pass several independence
+       * tests. These and their corresponding countings in the database are
+       * stored into a vector and the value returned by method addNodeSet is the
+       * index of the counts in this vector. The user shall pass this index as
+       * argument to methods _getAllCounts and _getConditioningCounts to get the
+       * countings of (conditioning_ids, var2, var1) [in this order] and
+       * (conditioning_ids, var2) [in this order] respectively. */
+      Idx addNodeSet( Idx var1, Idx var2, std::vector<Idx>&& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -184,9 +180,8 @@ namespace gum {
        * observed countings of (conditioning_ids, vars.second, vars.first) [in
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
-      Idx
-      addNodeSet( const std::pair<Idx, Idx>& vars,
-                  const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet( const std::pair<Idx, Idx>& vars,
+                      const std::vector<Idx>& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -204,9 +199,8 @@ namespace gum {
        * observed countings of (conditioning_ids, vars.second, vars.first) [in
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
-      Idx
-      addNodeSet( const std::pair<Idx, Idx>& vars,
-                  std::vector<Idx>&& conditioning_ids );
+      Idx addNodeSet( const std::pair<Idx, Idx>& vars,
+                      std::vector<Idx>&& conditioning_ids );
 
       /// clears all the data structures from memory
       void clear();

@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <vector>
 #include <iostream>
+#include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/cliqueGraph.h>
+#include <agrum/graphs/graphElements.h>
 
 /* The graphs used for the tests:
  * G1:          G2:       G3:

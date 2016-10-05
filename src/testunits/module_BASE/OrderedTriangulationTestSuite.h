@@ -61,7 +61,7 @@ namespace gum_tests {
       std::vector<gum::NodeId> sequence( 8 );
 
       for ( gum::Idx i = 0; i < 8; ++i )
-        sequence[i] = gum::NodeId(( 8 - i ) * 10);
+        sequence[i] = gum::NodeId( ( 8 - i ) * 10 );
 
       gum::OrderedTriangulation triang;
 
@@ -88,7 +88,7 @@ namespace gum_tests {
       triang.clear();
 
       for ( gum::Idx i = 0; i < 8; ++i )
-        sequence[i] = gum::NodeId(( i + 1 ) * 10);
+        sequence[i] = gum::NodeId( ( i + 1 ) * 10 );
 
       triang.setGraph( &graph, &dom );
       triang.setOrder ( &sequence );
@@ -148,7 +148,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( clique3, cc3 );
 
       for ( gum::Idx i = 0; i < 8; ++i )
-        sequence[i] = gum::NodeId(( 8 - i ) * 10);
+        sequence[i] = gum::NodeId( ( 8 - i ) * 10 );
 
       graph.eraseEdge( gum::Edge( 20, 50 ) );
 
@@ -187,7 +187,7 @@ namespace gum_tests {
       std::vector<gum::NodeId> sequence( 8 );
 
       for ( gum::Idx i = 0; i < 8; ++i )
-        sequence[i] = gum::NodeId(8 - i);
+        sequence[i] = gum::NodeId( 8 - i );
 
       gum::OrderedTriangulation triang;
 

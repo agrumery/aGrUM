@@ -34,8 +34,8 @@
 
 #include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/IfmdpFactory.h>
+#include <agrum/FMDP/fmdp.h>
 
 
 namespace gum {

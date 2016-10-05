@@ -98,12 +98,11 @@ namespace gum {
        * @param max_range The maximal range.
        */
       template <typename RowFilter>
-      ScoreK2(
-          const RowFilter& filter,
-          const std::vector<Size>& var_modalities,
-          Apriori<IdSetAlloc, CountAlloc>& apriori,
-          Size min_range = 0,
-          Size max_range = std::numeric_limits<Size>::max() );
+      ScoreK2( const RowFilter& filter,
+               const std::vector<Size>& var_modalities,
+               Apriori<IdSetAlloc, CountAlloc>& apriori,
+               Size min_range = 0,
+               Size max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
       ScoreK2( const ScoreK2<IdSetAlloc, CountAlloc>& );

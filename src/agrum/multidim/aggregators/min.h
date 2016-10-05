@@ -34,10 +34,10 @@ namespace gum {
   namespace aggregator {
 
     // =========================================================================
-    // ===                     GUM_MIN_AGGREGATOR                            === 
+    // ===                     GUM_MIN_AGGREGATOR                            ===
     // =========================================================================
 
-    /** 
+    /**
      * @class Min
      * @headerfile min.h <agrum/multidim/aggregators/min.h>
      * @ingroup multidim_agg_group
@@ -58,7 +58,7 @@ namespace gum {
        * (including variable), you must use this method if you want to ensure
        * that the generated object has the same type than the object containing
        * the called newFactory()
-       * 
+       *
        * For example :
        * @code
        *   MultiDimArray<double> y;

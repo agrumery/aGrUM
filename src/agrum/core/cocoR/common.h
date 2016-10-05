@@ -32,21 +32,21 @@ Coco/R itself) does not fall under the GNU General Public License.
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/config.h>
 
-#include <iostream>
-#include <cstring>
 #include <climits>
-#include <locale>
-#include <sstream>
 #include <cstdio>
 #include <cstdlib>
-#include <string>
+#include <cstring>
 #include <cwchar>
+#include <iostream>
 #include <locale>
+#include <locale>
+#include <sstream>
+#include <string>
 
 // io.h and fcntl are used to ensure binary read from streams on windows
 #if _MSC_VER >= 1300
-#include <io.h>
 #include <fcntl.h>
+#include <io.h>
 #endif
 
 #if _MSC_VER >= 1400
@@ -119,7 +119,8 @@ namespace gum {
         std::use_facet<std::ctype<wchar_t>>( stm.getloc() );
 
     for ( size_t i = 0; i < str.size(); ++i )
-      stm << ctfacet.narrow(str.at(i),0); //std::ctype<char>::_Elem(str[i]), 0 );
+      stm << ctfacet.narrow( str.at( i ),
+                             0 );  // std::ctype<char>::_Elem(str[i]), 0 );
 
     return stm.str();
   }

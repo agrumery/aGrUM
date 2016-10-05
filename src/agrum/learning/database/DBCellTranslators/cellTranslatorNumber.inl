@@ -50,7 +50,8 @@ namespace gum {
         , __values( std::move( from.__values ) )
         , __check_database( std::move( from.__check_database ) ) {
       if ( from.__user_values != nullptr ) {
-        __user_values = new Sequence<double>( std::move( *from.__user_values ) );
+        __user_values =
+            new Sequence<double>( std::move( *from.__user_values ) );
       }
     }
 
@@ -133,8 +134,7 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorNumber::translateBack( Idx col,
-                                         Idx translated_val ) const {
+    CellTranslatorNumber::translateBack( Idx col, Idx translated_val ) const {
       std::stringstream str;
       str << __values.first( translated_val );
       return str.str();

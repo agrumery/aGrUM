@@ -27,10 +27,10 @@
 #ifndef CAST_UNICODE_H
 #define CAST_UNICODE_H
 
-#include <locale>
 #include <iostream>
-#include <string>
+#include <locale>
 #include <sstream>
+#include <string>
 
 /**
  * @brief Cast a std::string into a std::wstring.

@@ -62,7 +62,8 @@ namespace gum {
         GUM_CONSTRUCTOR( MAKE_NAME( BasicSignaler ) );
       }
 
-      MAKE_NAME( BasicSignaler )( const MAKE_NAME( BasicSignaler ) & s )
+      MAKE_NAME( BasicSignaler )
+      ( const MAKE_NAME( BasicSignaler ) & s )
           : ISignaler( s ) {
         GUM_CONS_CPY( MAKE_NAME( BasicSignaler ) );
 
@@ -192,8 +193,9 @@ namespace gum {
 
     MAKE_NAME( Signaler )() { GUM_CONSTRUCTOR( MAKE_NAME( Signaler ) ); }
 
-    MAKE_NAME( Signaler )( const MAKE_NAME( Signaler ) & s )
-        : __sig__::MAKE_NAME( BasicSignaler ) <LIST_CLASSES>( s ) {
+    MAKE_NAME( Signaler )
+    ( const MAKE_NAME( Signaler ) & s )
+        : __sig__::MAKE_NAME( BasicSignaler )<LIST_CLASSES>( s ) {
       GUM_CONS_CPY( MAKE_NAME( Signaler ) );
     }
 

@@ -23,7 +23,7 @@
 //  *
 //  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 //  */
-// 
+//
 // // =========================================================================
 // #ifndef GUM_PMDDOperatorStrategy_H
 // #define GUM_PMDDOperatorStrategy_H
@@ -39,10 +39,10 @@
 // // =========================================================================
 // #include <agrum/FMDP/fmdp.h>
 // // =========================================================================
-// 
+//
 // namespace gum {
-// 
-// 
+//
+//
 //   /**
 //    * @class PMDDOperatorStrategy pspumdd.h <agrum/FMDP/planning/pspumdd.h>
 //    * @brief A class to find optimal policy for a given FMDP.
@@ -55,60 +55,65 @@
 //    */
 //   template <typename GUM_SCALAR>
 //   class PMDDOperatorStrategy : public MDDOperatorStrategy<GUM_SCALAR> {
-// 
+//
 //     public:
-//     // ==========================================================================
+//     //
+//     ==========================================================================
 //     /// @name Constructor & destructor.
-//     // ==========================================================================
+//     //
+//     ==========================================================================
 //     /// @{
-// 
+//
 //     /**
 //      * Default constructor
 //      */
 //     PMDDOperatorStrategy( FMDP<GUM_SCALAR>* fmdp,
 //                           GUM_SCALAR epsilon = 0.00001 );
-// 
+//
 //     /**
 //      * Default destructor
 //      */
 //     ~PMDDOperatorStrategy();
-// 
+//
 //     /// @}
-// 
-//     // ==========================================================================
+//
+//     //
+//     ==========================================================================
 //     /// @name Planning Methods
-//     // ==========================================================================
+//     //
+//     ==========================================================================
 //     /// @{
-// 
+//
 //     /**
 //      * Initializes data structure needed for making the planning
-//      * @warning No calling this methods before starting the first makePlaninng
+//      * @warning No calling this methods before starting the first
+//      makePlaninng
 //      * will surely and definitely result in a crash
 //      */
 //     void initialize();
-// 
+//
 //     /// @}
-// 
-// 
+//
+//
 //     protected:
 //     /// Performs a single step of value iteration
 //     MultiDimFunctionGraph<GUM_SCALAR>* _valueIteration();
-// 
+//
 //     MultiDimFunctionGraph<GUM_SCALAR>*
 //     _evalQaction( const MultiDimFunctionGraph<GUM_SCALAR>*, Idx );
-// 
+//
 //     private:
 //     /// A map to ensure all FMDP actions are correctly iterrated over during
 //     /// value iteration
 //     Bijection<Idx, Idx> __actionCpt2actionId;
 //   };
-// 
+//
 
 //   extern template class PMDDOperatorStrategy<float>;
 //   extern template class PMDDOperatorStrategy<double>;
 
 // } /* namespace gum */
-// 
+//
 // #include <agrum/FMDP/planning/pspumdd.tcc>
-// 
+//
 // #endif  // GUM_PMDDOperatorStrategy_H

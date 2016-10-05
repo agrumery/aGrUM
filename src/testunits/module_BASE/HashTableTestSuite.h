@@ -25,8 +25,8 @@
 #include <cxxtest/testsuite_utils.h>
 #include <ressources/myalloc.h>
 
-#include <agrum/core/list.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/list.h>
 
 namespace gum_tests {
 
@@ -563,7 +563,7 @@ namespace gum_tests {
 
       for ( gum::Idx i = 0; i < size; ++i ) {
         TS_ASSERT( t1.exists( vect[i] ) );
-        TS_ASSERT_EQUALS( t1[vect[i]] , i * 1000 + i );
+        TS_ASSERT_EQUALS( t1[vect[i]], i * 1000 + i );
       }
     }
 
@@ -573,8 +573,8 @@ namespace gum_tests {
 
       for ( unsigned int i = 0; i < size; ++i ) {
         float nb1 = i + i * 0.01f;
-        float nb2 = float(i * 2);
-        t1.insert( std::pair<float, float>( nb1, nb2 ),i * 1000 + i);
+        float nb2 = float( i * 2 );
+        t1.insert( std::pair<float, float>( nb1, nb2 ), i * 1000 + i );
       }
 
       std::vector<float> vect( size + 1 );
@@ -584,9 +584,9 @@ namespace gum_tests {
       }
 
       for ( gum::Idx i = 0; i < size; ++i ) {
-        std::pair<float, float> thepair( vect[i], float(2.0 * i) );
+        std::pair<float, float> thepair( vect[i], float( 2.0 * i ) );
         TS_ASSERT( t1.exists( thepair ) );
-        TS_ASSERT_EQUALS( t1[thepair] , i * 1000 + i );
+        TS_ASSERT_EQUALS( t1[thepair], i * 1000 + i );
       }
     }
 
@@ -607,7 +607,7 @@ namespace gum_tests {
 
       for ( gum::Idx i = 0; i < size; ++i ) {
         TS_ASSERT( t1.exists( vect[i] ) );
-        TS_ASSERT_EQUALS( t1[vect[i]] , i * 1000 + i );
+        TS_ASSERT_EQUALS( t1[vect[i]], i * 1000 + i );
       }
     }
 
@@ -628,9 +628,9 @@ namespace gum_tests {
       }
 
       for ( gum::Idx i = 0; i < size; ++i ) {
-        std::pair<double, double> thepair( vect[i], double(2.0 * i ));
+        std::pair<double, double> thepair( vect[i], double( 2.0 * i ) );
         TS_ASSERT( t1.exists( thepair ) );
-        TS_ASSERT_EQUALS( t1[thepair] , i * 1000 + i );
+        TS_ASSERT_EQUALS( t1[thepair], i * 1000 + i );
       }
     }
 
@@ -681,7 +681,7 @@ namespace gum_tests {
           k += iter.key();
         }
 
-        TS_ASSERT_EQUALS( k , 21 );
+        TS_ASSERT_EQUALS( k, 21 );
 
         k = 0;
 
@@ -691,7 +691,7 @@ namespace gum_tests {
           k += iter.key();
         }
 
-        TS_ASSERT_EQUALS( k , 21 );
+        TS_ASSERT_EQUALS( k, 21 );
 
         k = 0;
 
@@ -700,7 +700,7 @@ namespace gum_tests {
           k += iter.key();
         }
 
-        TS_ASSERT_EQUALS( k , 21 );
+        TS_ASSERT_EQUALS( k, 21 );
 
         k = 0;
 
@@ -709,7 +709,7 @@ namespace gum_tests {
           k += iter.key();
         }
 
-        TS_ASSERT_EQUALS( k , 21 );
+        TS_ASSERT_EQUALS( k, 21 );
 
         k = 0;
 
@@ -718,7 +718,7 @@ namespace gum_tests {
           k += elt.first;
         }
 
-        TS_ASSERT_EQUALS( k , 21 );
+        TS_ASSERT_EQUALS( k, 21 );
 
         gum::HashTableConstIterator<int, std::string> iter1 = table.cbegin();
         gum::HashTableIterator<int, std::string> iter2 = table.begin();

@@ -69,7 +69,8 @@ namespace gum {
     FillUp = 6
   };
   /**
-   * @class Factory factorySimulator.h <agrum/FMDP/simulation/factorySimulator.h>
+   * @class Factory factorySimulator.h
+   * <agrum/FMDP/simulation/factorySimulator.h>
    * @brief A class to simulate the Factory problem
    * @ingroup fmdp_group
    *

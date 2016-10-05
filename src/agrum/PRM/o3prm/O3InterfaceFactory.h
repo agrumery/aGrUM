@@ -120,4 +120,3 @@ extern template class gum::prm::o3prm::O3InterfaceFactory<double>;
 
 
 #endif  // GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
-

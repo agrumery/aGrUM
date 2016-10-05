@@ -29,14 +29,14 @@
 
 #include <agrum/config.h>
 
+#include <fstream>
+#include <iostream>
 #include <set>
 #include <vector>
-#include <iostream>
-#include <fstream>
 
 #include <sstream>
 
-#ifdef  HAVE_DIRENT_H
+#ifdef HAVE_DIRENT_H
 #include <dirent.h>
 #else
 #include <agrum/core/mvsc/dirent.h>
@@ -44,9 +44,9 @@
 
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/generator/simpleCPTDisturber.h>
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
+#include <agrum/BN/generator/simpleCPTDisturber.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/variables/labelizedVariable.h>
 
 namespace gum {

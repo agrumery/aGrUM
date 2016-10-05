@@ -25,10 +25,10 @@
 #ifndef GUM_LEARNING_DB_CELL_H
 #define GUM_LEARNING_DB_CELL_H
 
-#include <string>
 #include <cstring>
-#include <type_traits>
 #include <stdexcept>
+#include <string>
+#include <type_traits>
 
 #include <agrum/config.h>
 #include <agrum/core/bijection.h>
@@ -167,7 +167,8 @@ namespace gum {
 
       private:
       using Real = double;
-      //typename std::conditional<sizeof( double ) >= sizeof( int ),double,double>::type;
+      // typename std::conditional<sizeof( double ) >= sizeof( int
+      // ),double,double>::type;
 
       /// the real type of the last element read from the database
       EltType __type{EltType::REAL};

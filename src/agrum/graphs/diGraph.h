@@ -26,14 +26,14 @@
 #define GUM_DIGRAPH_H
 
 #include <iostream>
-#include <utility>
 #include <sstream>
+#include <utility>
 
 #include <agrum/config.h>
 #include <agrum/core/sequence.h>
 
-#include <agrum/graphs/nodeGraphPart.h>
 #include <agrum/graphs/arcGraphPart.h>
+#include <agrum/graphs/nodeGraphPart.h>
 
 namespace gum {
 

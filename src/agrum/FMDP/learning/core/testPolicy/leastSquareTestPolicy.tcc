@@ -51,7 +51,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void LeastSquareTestPolicy<GUM_SCALAR>::addObservation( Idx attr,
                                                           GUM_SCALAR value ) {
-    ITestPolicy<GUM_SCALAR>::addObservation(attr, value);
+    ITestPolicy<GUM_SCALAR>::addObservation( attr, value );
     __sumO += value;
 
     if ( __sumAttrTable.exists( attr ) )

@@ -56,15 +56,15 @@ namespace gum {
     class InferenceEngine : public ApproximationScheme {
       private:
       //@beforeMerging swapping from typedef to using
-      using credalSet= NodeProperty<std::vector<std::vector<GUM_SCALAR>>>;
-      using margi= NodeProperty<std::vector<GUM_SCALAR>>;
-      using expe= NodeProperty<GUM_SCALAR>;
+      using credalSet = NodeProperty<std::vector<std::vector<GUM_SCALAR>>>;
+      using margi = NodeProperty<std::vector<GUM_SCALAR>>;
+      using expe = NodeProperty<GUM_SCALAR>;
 
-      using dynExpe=
+      using dynExpe =
           typename gum::HashTable<std::string, std::vector<GUM_SCALAR>>;
 
-      using query= NodeProperty<std::vector<bool>>;
-      using cluster= NodeProperty<std::vector<NodeId>>;
+      using query = NodeProperty<std::vector<bool>>;
+      using cluster = NodeProperty<std::vector<NodeId>>;
 
       protected:
       /** @brief A pointer to the Credal Net used. */
@@ -519,7 +519,6 @@ namespace gum {
 
     extern template class InferenceEngine<float>;
     extern template class InferenceEngine<double>;
-
   }
 }  // namespace gum
 

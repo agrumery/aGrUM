@@ -59,9 +59,9 @@ namespace gum {
                                       Size& next_token,
                                       Size& last_letter_token,
                                       Size from ) const {
-      first_letter_token = Size(str.find_first_not_of( __spaces, from ));
+      first_letter_token = Size( str.find_first_not_of( __spaces, from ) );
 
-      if ( first_letter_token == Size(std::string::npos) ) {
+      if ( first_letter_token == Size( std::string::npos ) ) {
         next_token = last_letter_token = first_letter_token;
         return;
       }
@@ -70,49 +70,54 @@ namespace gum {
         last_letter_token =
             __correspondingQuoteMarker( str, first_letter_token );
 
-        if ( last_letter_token == Size(std::string::npos) )
+        if ( last_letter_token == Size( std::string::npos ) )
           GUM_SYNTAX_ERROR(
               "String quote missing", noLine(), first_letter_token );
 
-        next_token = Size(str.find_first_of( __delimiter, last_letter_token + 1 ));
+        next_token =
+            Size( str.find_first_of( __delimiter, last_letter_token + 1 ) );
         Size next_char =
-            Size(str.find_first_not_of( __spaces, last_letter_token + 1 ));
+            Size( str.find_first_not_of( __spaces, last_letter_token + 1 ) );
 
         if ( next_char < next_token ) {
           GUM_SYNTAX_ERROR( "Delimiter missing at line", noLine(), next_char );
         }
       } else {
-        next_token = Size(str.find_first_of( __delimiter, first_letter_token ));
+        next_token =
+            Size( str.find_first_of( __delimiter, first_letter_token ) );
 
-        if ( next_token == Size(std::string::npos) ) {
-          last_letter_token = Size(str.find_last_not_of( __spaces, next_token ));
+        if ( next_token == Size( std::string::npos ) ) {
+          last_letter_token =
+              Size( str.find_last_not_of( __spaces, next_token ) );
         } else if ( next_token == first_letter_token ) {
           last_letter_token = first_letter_token;
         } else {
-          last_letter_token =
-              Size(str.find_last_not_of( __delimiterPlusSpaces, next_token - 1 ));
+          last_letter_token = Size(
+              str.find_last_not_of( __delimiterPlusSpaces, next_token - 1 ) );
         }
       }
     }
 
     void CSVParser::__tokenize( const std::string& s ) {
       // looking for first commentMarker not in a string
-      Size commentMarker = Size(s.find_first_of( __commentMarker, 0 ));
-      Size quoteMarker = Size(s.find_first_of( __quoteMarker, 0 ));
+      Size commentMarker = Size( s.find_first_of( __commentMarker, 0 ) );
+      Size quoteMarker = Size( s.find_first_of( __quoteMarker, 0 ) );
       Size quoteMarkerEnd;
 
       while ( quoteMarker < commentMarker ) {
         quoteMarkerEnd = __correspondingQuoteMarker( s, quoteMarker );
 
-        if ( quoteMarkerEnd == Size(std::string::npos) )
+        if ( quoteMarkerEnd == Size( std::string::npos ) )
           GUM_SYNTAX_ERROR( "String quote missing", noLine(), quoteMarker );
 
         while ( commentMarker <
                 quoteMarkerEnd ) {  // the comment was in the quote
-          commentMarker = Size(s.find_first_of( __commentMarker, commentMarker + 1 ));
+          commentMarker =
+              Size( s.find_first_of( __commentMarker, commentMarker + 1 ) );
         }
 
-        quoteMarker = Size(s.find_first_of( __quoteMarker, quoteMarkerEnd + 1 ));
+        quoteMarker =
+            Size( s.find_first_of( __quoteMarker, quoteMarkerEnd + 1 ) );
       }
 
       std::string str = s.substr( 0, commentMarker );
@@ -122,8 +127,8 @@ namespace gum {
       __getNextTriplet(
           str, first_letter_token, next_token, last_letter_token, 0 );
 
-      while ( Size(std::string::npos) != first_letter_token &&
-              Size(std::string::npos) != last_letter_token ) {
+      while ( Size( std::string::npos ) != first_letter_token &&
+              Size( std::string::npos ) != last_letter_token ) {
         if ( __data.size() <= counter ) __data.resize( counter + 1 );
 
         if ( first_letter_token == next_token ) {
@@ -138,7 +143,7 @@ namespace gum {
 
         counter++;
 
-        if ( next_token == Size(std::string::npos) ) break;
+        if ( next_token == Size( std::string::npos ) ) break;
 
         __getNextTriplet( str,
                           first_letter_token,
@@ -148,7 +153,7 @@ namespace gum {
       }
 
       // case where we end up with an empty field ...
-      if ( first_letter_token == Size(std::string::npos) &&
+      if ( first_letter_token == Size( std::string::npos ) &&
            last_letter_token == first_letter_token &&
            next_token == first_letter_token ) {
         counter++;

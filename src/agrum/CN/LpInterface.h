@@ -28,14 +28,14 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
-#include <string>
 #include <iostream>
 #include <sstream>
+#include <string>
 
-#include <agrum/core/utils.h>
 #include <agrum/CN/LrsWrapper.h>
 #include <agrum/core/hashFunc.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/utils.h>
 
 namespace gum {
   namespace credal {

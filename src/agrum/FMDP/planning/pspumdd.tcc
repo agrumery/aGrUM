@@ -38,7 +38,8 @@
 //#include <agrum/multidim/potential.h>
 //#include <agrum/multidim/instantiation.h>
 //#include <agrum/multidim/multiDimFunctionGraph.h>
-//#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
+//#include
+//<agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 //// =========================================================================
 //#include <agrum/FMDP/fmdp.h>
 //#include <agrum/FMDP/planning/pspumdd.h>
@@ -49,20 +50,24 @@
 //#define RECAST( x ) \
 //  reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( x )
 //
-//namespace gum {
+// namespace gum {
 //
 //
-//  /* **************************************************************************************************
+//  /*
+//  **************************************************************************************************
 //   * **/
 //  /* ** **/
 //  /* **                                Constructors / Destructors **/
 //  /* ** **/
-//  /* **************************************************************************************************
+//  /*
+//  **************************************************************************************************
 //   * **/
 //
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  // Default constructor
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  template <typename GUM_SCALAR>
 //  INLINE PMDDOperatorStrategy<GUM_SCALAR>::PMDDOperatorStrategy(
 //      FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon )
@@ -71,26 +76,32 @@
 //    GUM_CONSTRUCTOR( PMDDOperatorStrategy );
 //  }
 //
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  // Default destructor
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  template <typename GUM_SCALAR>
 //  INLINE PMDDOperatorStrategy<GUM_SCALAR>::~PMDDOperatorStrategy() {
 //    GUM_DESTRUCTOR( PMDDOperatorStrategy );
 //  }
 //
 //
-//  /* **************************************************************************************************
+//  /*
+//  **************************************************************************************************
 //   * **/
 //  /* ** **/
 //  /* **                                   Planning Methods **/
 //  /* ** **/
-//  /* **************************************************************************************************
+//  /*
+//  **************************************************************************************************
 //   * **/
 //
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  // Initializes data structure needed for making the planning
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  template <typename GUM_SCALAR>
 //  void PMDDOperatorStrategy<GUM_SCALAR>::initialize() {
 //
@@ -108,21 +119,25 @@
 //  }
 //
 //
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  // Performs a single step of value iteration
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  template <typename GUM_SCALAR>
 //  MultiDimFunctionGraph<GUM_SCALAR>*
 //  PMDDOperatorStrategy<GUM_SCALAR>::_valueIteration() {
 //
-//    // *****************************************************************************************
+//    //
+//    *****************************************************************************************
 //    // Loop reset
 //    MultiDimFunctionGraph<GUM_SCALAR>* newVFunction =
 //        new MultiDimFunctionGraph<GUM_SCALAR>();
 //    newVFunction->copyAndReassign( *this->_vFunction,
 //                                   this->_fmdp->mapMainPrime() );
 //
-//// *****************************************************************************************
+////
+///*****************************************************************************************
 //// For each action
 //#pragma omp parallel for
 //    for ( Idx actionId = 0; actionId < __actionCpt2actionId.size();
@@ -138,7 +153,8 @@
 //    delete newVFunction;
 //
 //
-//    // *****************************************************************************************
+//    //
+//    *****************************************************************************************
 //    // Next to evaluate main value function, we take maximise over all action
 //    // value, ...
 //    newVFunction = this->_qFunctionSet.back();
@@ -239,7 +255,8 @@
 //          }*/
 //
 //
-//    // *******************************************************************************************
+//    //
+//    *******************************************************************************************
 //    // Next, we eval the new function value
 //    // MultiDimFunctionGraph< GUM_SCALAR >* vTemp = newVFunction;
 //    vTemp = newVFunction;
@@ -250,21 +267,25 @@
 //  }
 //
 //
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  // Evals the q function for current fmdp action
-//  // ===========================================================================
+//  //
+//  ===========================================================================
 //  template <typename GUM_SCALAR>
 //  MultiDimFunctionGraph<GUM_SCALAR>*
 //  PMDDOperatorStrategy<GUM_SCALAR>::_evalQaction(
 //      const MultiDimFunctionGraph<GUM_SCALAR>* Vold, Idx actionId ) {
 //
 //    //      std::cout <<
-//    //      "==========================================================================================="
+//    //
+//    "==========================================================================================="
 //    //      << std::endl;
 //    //      std::cout << "Thread " << actionId << " - " <<
 //    //      planer->fmdp()->actionName(actionId)  << std::endl;
 //
-//    // ******************************************************************************
+//    //
+//    ******************************************************************************
 //    // Initialisation :
 //    // Creating a copy of last Vfunction to deduce from the new Qaction
 //    // And finding the first var to eleminate (the one at the end)
@@ -332,18 +353,22 @@
 //    //      std::cout << "FIN " << actionId << " - " <<
 //    //      planer->fmdp()->actionName(actionId)  << std::endl;
 //    //      std::cout <<
-//    //      "==========================================================================================="
+//    //
+//    "==========================================================================================="
 //    //      << std::endl;
 //    return qAction;
 //  }
 //
 //
-//  /* **************************************************************************************************
+//  /*
+//  **************************************************************************************************
 //   * **/
 //  /* ** **/
-//  /* **                                   Optimal Policy Evaluation Methods **/
+//  /* **                                   Optimal Policy Evaluation Methods
+//  **/
 //  /* ** **/
-//  /* **************************************************************************************************
+//  /*
+//  **************************************************************************************************
 //**
 //
 //    //
@@ -359,21 +384,22 @@
 //*****************************************************************************************
 //      // Loop reset
 //      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new
-//MultiDimFunctionGraph< GUM_SCALAR >();
+// MultiDimFunctionGraph< GUM_SCALAR >();
 //      newVFunction->copyAndReassign ( *_this->_vFunction,
-//this->_fmdp->mapMainPrime() );
+// this->_fmdp->mapMainPrime() );
 //
 //      //
 //*****************************************************************************************
 //      // For each action
 ////      std::vector<std::future<Multi>> workers;
 //      for ( auto actionIter = this->_fmdp->beginActions(); actionIter !=
-//this->_fmdp->endActions(); ++actionIter  ) {
+// this->_fmdp->endActions(); ++actionIter  ) {
 //        NodeId threadActionId = *actionIter;
 ////        std::cout << "Launching Thread " << threadActionId << std::endl;
-////        workers.push_back( std::thread([this, newVFunction, threadActionId](){
+////        workers.push_back( std::thread([this, newVFunction,
+///threadActionId](){
 //        MultiDimFunctionGraph<GUM_SCALAR>* qAction = evalQaction( this,
-//newVFunction, threadActionId );
+// newVFunction, threadActionId );
 //
 //        //
 //*******************************************************************************************
@@ -388,13 +414,14 @@
 //      }
 //      delete newVFunction;
 ////      std::for_each(workers.begin(), workers.end(), [](std::thread &w){
-//w.join(); });
+// w.join(); });
 //
 //
 //      //
 //*****************************************************************************************
-//      // Next to evaluate main value function, we take maximise over all action
-//value, ...
+//      // Next to evaluate main value function, we take maximise over all
+//      action
+// value, ...
 //
 //      MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy
 //>* argMaxVFunction = __argMaxQFunctionSet.back();
@@ -405,7 +432,7 @@
 //      while ( !__argMaxQFunctionSet.empty() ) {
 //        argMaxvTemp = argMaxVFunction;
 //        MultiDimFunctionGraphOperator< ArgMaxSet<GUM_SCALAR, Idx>,
-//ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
+// ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
 //              argMaxVFunction, __argMaxQFunctionSet.back() );
 //        argMaxVFunction = argmaxope.compute();
 //
@@ -427,7 +454,7 @@
 //    template<typename GUM_SCALAR>
 //    void
 //    PMDDOperatorStrategy<GUM_SCALAR>::addQaction(MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR,
-//Idx>, SetTerminalNodePolicy> *qaction ) {
+// Idx>, SetTerminalNodePolicy> *qaction ) {
 //        __argMaxQFunctionSet.push_back ( qaction );
 //    }
 //
@@ -435,24 +462,26 @@
 //    //
 //===========================================================================
 //    // Creates a copy of given in parameter decision Graph and replaces leaves
-//    // of that Graph by a pair containing value of the leaf and action to which
+//    // of that Graph by a pair containing value of the leaf and action to
+//    which
 //    // is bind this Graph (given in parameter).
 //    //
 //===========================================================================
 //    template<typename GUM_SCALAR>
-//    MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
+//    MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy
+//    >*
 //    PMDDOperatorStrategy<GUM_SCALAR>::__createArgMaxCopy ( const
-//MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
+// MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
 //
 //      MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy
 //>* amcpy
 //          = new MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>,
-//SetTerminalNodePolicy >();
+// SetTerminalNodePolicy >();
 //
 //      // Insertion des nouvelles variables
 //      for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-//qAction->variablesSequence().beginSafe(); varIter !=
-//qAction->variablesSequence().endSafe(); ++varIter)
+// qAction->variablesSequence().beginSafe(); varIter !=
+// qAction->variablesSequence().endSafe(); ++varIter)
 //        amcpy->add(**varIter);
 //
 //      std::vector<NodeId> lifo;
@@ -460,11 +489,11 @@
 //
 //      if(qAction->isTerminalNode(qAction->root())){
 //        ArgMaxSet<GUM_SCALAR, Idx> leaf( qAction->nodeValue(qAction->root()),
-//actionId );
+// actionId );
 //        amcpy->manager()->setRootNode(amcpy->manager()->addTerminalNode(leaf));
 //      } else {
 //        amcpy->manager()->setRootNode(amcpy->manager()->addInternalNode(
-//qAction->node(qAction->root())->nodeVar() ));
+// qAction->node(qAction->root())->nodeVar() ));
 //        src2dest.insert( qAction->root(), amcpy->root() );
 //        lifo.push_back(qAction->root());
 //      }
@@ -478,20 +507,22 @@
 //
 //        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
 //          if( !src2dest.existsFirst(currentSrcNode->son(index)) ){
-//            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+//            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId =
+//            0;
 //            if( qAction->isTerminalNode(srcSonNodeId) ){
-//              ArgMaxSet<GUM_SCALAR, Idx> leaf( qAction->nodeValue(srcSonNodeId),
-//actionId );
+//              ArgMaxSet<GUM_SCALAR, Idx> leaf(
+//              qAction->nodeValue(srcSonNodeId),
+// actionId );
 //              destSonNodeId = amcpy->manager()->addTerminalNode(leaf);
 //            } else {
 //              destSonNodeId =
-//amcpy->manager()->addInternalNode(qAction->node(srcSonNodeId)->nodeVar());
+// amcpy->manager()->addInternalNode(qAction->node(srcSonNodeId)->nodeVar());
 //              lifo.push_back(srcSonNodeId);
 //            }
 //            src2dest.insert( srcSonNodeId, destSonNodeId );
 //          }
 //          amcpy->manager()->setSon( src2dest.second(currentSrcNodeId), index,
-//src2dest.second(currentSrcNode->son(index)));
+// src2dest.second(currentSrcNode->son(index)));
 //        }
 //      }
 //
@@ -501,7 +532,8 @@
 //    //
 //===========================================================================
 //    // Creates a copy of given in parameter decision Graph and replaces leaves
-//    // of that Graph by a pair containing value of the leaf and action to which
+//    // of that Graph by a pair containing value of the leaf and action to
+//    which
 //    // is bind this Graph (given in parameter).
 //    //
 //===========================================================================
@@ -509,15 +541,15 @@
 //    void
 //    PMDDOperatorStrategy<GUM_SCALAR>::__extractOptimalPolicy (
 //        const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>,
-//SetTerminalNodePolicy >* argMaxOptimalPolicy ) {
+// SetTerminalNodePolicy >* argMaxOptimalPolicy ) {
 //
 ////      std::cout << argMaxOptimalPolicy->toDot() << std::endl;
 //      __optimalPolicy->clear();
 //
 //      // Insertion des nouvelles variables
 //      for( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-//argMaxOptimalPolicy->variablesSequence().beginSafe(); varIter !=
-//argMaxOptimalPolicy->variablesSequence().endSafe(); ++varIter)
+// argMaxOptimalPolicy->variablesSequence().beginSafe(); varIter !=
+// argMaxOptimalPolicy->variablesSequence().endSafe(); ++varIter)
 //        __optimalPolicy->add(**varIter);
 //
 //      std::vector<NodeId> lifo;
@@ -526,12 +558,13 @@
 //      if(argMaxOptimalPolicy->isTerminalNode(argMaxOptimalPolicy->root())){
 //        ActionSet leaf;
 //        __transferActionIds( argMaxOptimalPolicy->nodeValue(
-//argMaxOptimalPolicy->root() ), leaf );
+// argMaxOptimalPolicy->root() ), leaf );
 //        __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addTerminalNode(leaf));
 //      } else {
 //        __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addInternalNode(
-//argMaxOptimalPolicy->node(argMaxOptimalPolicy->root())->nodeVar() ));
-//        src2dest.insert( argMaxOptimalPolicy->root(), __optimalPolicy->root() );
+// argMaxOptimalPolicy->node(argMaxOptimalPolicy->root())->nodeVar() ));
+//        src2dest.insert( argMaxOptimalPolicy->root(), __optimalPolicy->root()
+//        );
 //        lifo.push_back(argMaxOptimalPolicy->root());
 //      }
 //
@@ -541,17 +574,20 @@
 //        lifo.pop_back();
 //
 //        const InternalNode* currentSrcNode =
-//argMaxOptimalPolicy->node(currentSrcNodeId);
+// argMaxOptimalPolicy->node(currentSrcNodeId);
 //
 //        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
 //          if( !src2dest.exists(currentSrcNode->son(index)) ){
-//            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+//            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId =
+//            0;
 //            if( argMaxOptimalPolicy->isTerminalNode(srcSonNodeId) ){
 ////                std::cout << "N : " << srcSonNodeId << std::endl;
 //              ActionSet leaf;
-//              __transferActionIds( argMaxOptimalPolicy->nodeValue( srcSonNodeId
+//              __transferActionIds( argMaxOptimalPolicy->nodeValue(
+//              srcSonNodeId
 //), leaf );
-//              destSonNodeId = __optimalPolicy->manager()->addTerminalNode(leaf);
+//              destSonNodeId =
+//              __optimalPolicy->manager()->addTerminalNode(leaf);
 ////              std::cout << "Done" << std::endl;
 //            } else {
 //              destSonNodeId =
@@ -560,8 +596,9 @@
 //            }
 //            src2dest.insert( srcSonNodeId, destSonNodeId );
 //          }
-//          __optimalPolicy->manager()->setSon( src2dest[currentSrcNodeId], index,
-//src2dest[currentSrcNode->son(index)] );
+//          __optimalPolicy->manager()->setSon( src2dest[currentSrcNodeId],
+//          index,
+// src2dest[currentSrcNode->son(index)] );
 //        }
 //      }
 //      __optimalPolicy->manager()->reduce();
@@ -571,7 +608,7 @@
 //
 //    template<typename GUM_SCALAR>
 //    void PMDDOperatorStrategy<GUM_SCALAR>::__transferActionIds( const
-//ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
+// ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
 //      for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
 //        dest += *idi;
 //    }
@@ -603,24 +640,26 @@
 //
 //        if ( __optimalPolicy->isTerminalNode( currentNodeId ) ){
 //          ActionSet ase = __optimalPolicy->nodeValue(currentNodeId);
-//          terminalStream << tab << currentNodeId << ";" << tab << currentNodeId
+//          terminalStream << tab << currentNodeId << ";" << tab <<
+//          currentNodeId
 //<< " [label=\""<< currentNodeId << " - ";
 //          for( SequenceIteratorSafe<Idx> valIter = ase.beginSafe(); valIter !=
-//ase.endSafe(); ++valIter )
+// ase.endSafe(); ++valIter )
 //            terminalStream << this->_fmdp->actionName(*valIter) << " ";
 //          terminalStream << "\"];"<< std::endl;
 //        } else {
 //          const InternalNode* currentNode =
 //__optimalPolicy->node(currentNodeId);
 //          nonTerminalStream << tab << currentNodeId << ";" << tab <<
-//currentNodeId  << " [label=\""<< currentNodeId << " - "
+// currentNodeId  << " [label=\""<< currentNodeId << " - "
 //                            << currentNode->nodeVar()->name() << "\"];" <<
-//std::endl;
+// std::endl;
 //
 //          for ( Idx sonIter = 0; sonIter < currentNode->nbSons(); ++sonIter ){
 //            arcstream << tab <<  currentNodeId << " -> " <<
-//currentNode->son(sonIter)
-//                      << " [label=\"" << currentNode->nodeVar()->label ( sonIter
+// currentNode->son(sonIter)
+//                      << " [label=\"" << currentNode->nodeVar()->label (
+//                      sonIter
 //) << "\",color=\"#0000ff\"];" << std::endl;
 //            if( !visited.exists(currentNode->son(sonIter)) ){
 //              fifo.push(currentNode->son(sonIter));
@@ -630,8 +669,9 @@
 //        }
 //      }
 //
-//      output << terminalStream.str() << std::endl << nonTerminalStream.str() <<
-//std::endl <<  arcstream.str() << std::endl << "}" << std::endl;
+//      output << terminalStream.str() << std::endl << nonTerminalStream.str()
+//      <<
+// std::endl <<  arcstream.str() << std::endl << "}" << std::endl;
 //
 //      return output.str();
 //    }

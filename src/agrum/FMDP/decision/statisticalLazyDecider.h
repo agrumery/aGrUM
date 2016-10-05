@@ -38,7 +38,8 @@ namespace gum {
   /**
    * @class StatisticalLazyDecider statisticalLazyDecider.h
    * <agrum/FMDP/decision/statisticalLazyDecider.h>
-   * @brief Class to make no decision at all yet performing statistic on visited states.
+   * @brief Class to make no decision at all yet performing statistic on visited
+   * states.
    * Actions are randomly chosen among all actions available
    * @ingroup fmdp_group
    *

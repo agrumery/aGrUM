@@ -28,10 +28,10 @@
 #ifndef GUM_OPERATOR_REGISTER_4_MULTI_DIM_H
 #define GUM_OPERATOR_REGISTER_4_MULTI_DIM_H
 
+#include <agrum/core/hashTable.h>
 #include <iostream>
 #include <string>
 #include <utility>
-#include <agrum/core/hashTable.h>
 
 namespace gum {
 
@@ -65,7 +65,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    /** 
+    /**
      * @brief adds a new entry into the register
      *
      * This method inserts a new function (\e newFunction) taking two multiDim
@@ -95,7 +95,7 @@ namespace gum {
                  const std::string& type2,
                  OperatorPtr newFunction );
 
-    /** 
+    /**
      * @brief removes a given entry from the register
      *
      * removes the function, if any, that performs the operation described by
@@ -116,7 +116,7 @@ namespace gum {
                 const std::string& type1,
                 const std::string& type2 );
 
-    /** 
+    /**
      * @brief Indicates whether a given entry exists in the register.
      *
      * Indicates if the register contains a function that performs the
@@ -199,7 +199,7 @@ namespace gum {
     typedef HashTable<std::pair<std::string, std::string>, OperatorPtr>
         OperatorSet;
 
-    /** 
+    /**
      * @brief A mapping from pairs of types of MultiDimImplementations to
      * operators.
      *

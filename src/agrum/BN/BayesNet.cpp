@@ -17,9 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/config.h>
 
 template class gum::BayesNet<float>;
 template class gum::BayesNet<double>;
-

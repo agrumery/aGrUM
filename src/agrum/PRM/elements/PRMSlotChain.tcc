@@ -23,10 +23,10 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-#include <agrum/PRM/elements/PRMSlotChain.h>
-#include <agrum/PRM/elements/PRMReferenceSlot.h>
-#include <agrum/PRM/elements/PRMAttribute.h>
 #include <agrum/PRM/elements/PRMAggregate.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+#include <agrum/PRM/elements/PRMReferenceSlot.h>
+#include <agrum/PRM/elements/PRMSlotChain.h>
 
 namespace gum {
   namespace prm {
@@ -61,7 +61,7 @@ namespace gum {
 
       this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name() +
                         PRMObject::RIGHT_CAST() + name;
-      this->lastElt().type().variable().setName( name ); 
+      this->lastElt().type().variable().setName( name );
     }
 
     // Parameters are inverse to prevent unwanted constructors calls (it
@@ -144,9 +144,11 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    PRMSlotChain<GUM_SCALAR>::PRMSlotChain( const PRMSlotChain<GUM_SCALAR>& source )
+    PRMSlotChain<GUM_SCALAR>::PRMSlotChain(
+        const PRMSlotChain<GUM_SCALAR>& source )
         : PRMClassElement<GUM_SCALAR>( source.name() )
-        , __chain( new Sequence<PRMClassElement<GUM_SCALAR>*>( source.chain() ) )
+        , __chain(
+              new Sequence<PRMClassElement<GUM_SCALAR>*>( source.chain() ) )
         , __isMultiple( source.isMultiple() ) {
       GUM_CONS_CPY( PRMSlotChain );
       __copyLastElt();
@@ -182,7 +184,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMClassElementContainer<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::end() {
+    INLINE PRMClassElementContainer<GUM_SCALAR>&
+    PRMSlotChain<GUM_SCALAR>::end() {
       return static_cast<PRMReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
           ->slotType();
@@ -208,7 +211,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Sequence<PRMClassElement<GUM_SCALAR>*>& PRMSlotChain<GUM_SCALAR>::chain() {
+    INLINE Sequence<PRMClassElement<GUM_SCALAR>*>&
+    PRMSlotChain<GUM_SCALAR>::chain() {
       return *__chain;
     }
 
@@ -219,12 +223,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void
-    PRMSlotChain<GUM_SCALAR>::addParent( const PRMClassElement<GUM_SCALAR>& elt ) {}
+    INLINE void PRMSlotChain<GUM_SCALAR>::addParent(
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    INLINE void
-    PRMSlotChain<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {}
+    INLINE void PRMSlotChain<GUM_SCALAR>::addChild(
+        const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     INLINE bool PRMSlotChain<GUM_SCALAR>::isMultiple() const {

@@ -72,7 +72,7 @@ namespace gum_tests {
       gum::learning::ScoreK2<> score( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintDAG struct_constraint(
-          gum::Size(modalities.size()) );
+          gum::Size( modalities.size() ) );
 
       gum::learning::ParamEstimatorML<> estimator(
           filter, modalities, apriori );

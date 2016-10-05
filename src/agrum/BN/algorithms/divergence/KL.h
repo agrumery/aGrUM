@@ -27,8 +27,8 @@
 #ifndef GUM_KL_H
 #define GUM_KL_H
 
-#include <agrum/core/sequence.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/core/sequence.h>
 
 namespace gum {
 

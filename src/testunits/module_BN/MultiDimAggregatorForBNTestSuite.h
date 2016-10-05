@@ -86,7 +86,7 @@ namespace gum_tests {
             }
 
             TS_ASSERT_EQUALS( bn.cpt( idList[0] )[i],
-                              ( res == i.val( (gum::Idx)0 ) ) ? 1.0f: 0.0f );
+                              ( res == i.val( (gum::Idx)0 ) ) ? 1.0f : 0.0f );
           }
         }
       }

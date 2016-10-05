@@ -32,8 +32,8 @@
 
 #include <agrum/core/bijection.h>
 
-#include <agrum/multidim/multiDimWithOffset.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/multiDimWithOffset.h>
 
 namespace gum {
 

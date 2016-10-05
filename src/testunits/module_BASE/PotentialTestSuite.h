@@ -20,8 +20,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/variables/discretizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimArray.h>
@@ -111,7 +111,7 @@ namespace gum_tests {
       gum::Size cpt = 0;
 
       for ( i.setFirst(); !i.end(); ++i ) {
-        m.set( i, double(cpt) );
+        m.set( i, double( cpt ) );
         cpt++;
       }
 
@@ -470,6 +470,115 @@ namespace gum_tests {
       r << a << b;
       r.fillWith( {3, 6, 9, 12, 15, 18, 21, 24, 27} );
       TS_ASSERT( pot.reorganize( {&b, &c, &a} ).extract( I ) == r );
+    }
+    void testOperatorEqual() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<float> p;
+      {  // empty potentials are equal
+        gum::Potential<float> q;
+        TS_ASSERT_EQUALS( p, q );
+      }
+      p << a;
+      p.fillWith( {1, 2, 3} );
+      TS_ASSERT_EQUALS( p, p );
+
+      {  // same potential
+        gum::Potential<float> q;
+        q << a;
+        q.fillWith( {1, 2, 3} );
+        TS_ASSERT_EQUALS( p, q );
+      }
+
+      {  // difference values
+        gum::Potential<float> q;
+        q << a;
+        q.fillWith( {3, 6, 9} );
+        TS_ASSERT_DIFFERS( p, q );
+      }
+
+      {  // same values, different variables
+        gum::Potential<float> q;
+        q << b;
+        q.fillWith( {1, 2, 3} );
+        TS_ASSERT_DIFFERS( p, q );
+      }
+
+      {  // different dimensions
+        gum::Potential<float> q;
+        q << b << a;
+        q.fillWith( 1 );
+        TS_ASSERT_DIFFERS( p, q );
+      }
+    }
+
+    void testScaleAndTranslate() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+
+      gum::Potential<float> p;
+      p << a;
+      p.fillWith( {1, 2, 3} );
+      gum::Potential<float> p3;
+      p3 << a;
+      p3.fillWith( {3, 6, 9} );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.scale( 3.0 ) );
+      TS_ASSERT( p == p3 );
+      TS_ASSERT_EQUALS( p, p3 );
+
+      p.fillWith( {1, 2, 3} );
+      gum::Potential<float> p2;
+      p2 << a;
+      p2.fillWith( {2, 3, 4} );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.translate( 1.0 ) );
+      TS_ASSERT( p == p2 );
+      TS_ASSERT_EQUALS( p, p2 );
+
+
+      p.fillWith( {1, 2, 3} );
+      gum::Potential<float> p1;
+      p1 << a;
+      p1.fillWith( {4, 7, 10} );
+      p.scale(3.0).translate(1.0);
+      //TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0));
+      TS_ASSERT( p == p1 );
+      TS_ASSERT_EQUALS( p, p1 );
+    }
+
+    void testNormalizeAsCPT() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      auto q = p / p.margSumOut( {&a} );
+      p.normalizeAsCPT();
+      TS_ASSERT_EQUALS( p, q );
+      TS_ASSERT_EQUALS( q, p );
+
+      gum::Potential<float> p2;
+      TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
+      p2 << a << b;
+      p2.fill( 0.0f );
+      TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
+
+      gum::Potential<float> p3;
+      p3 << a << b;
+      p3.fillWith( {1, 2, 3, 0, 0, 0, 7, 8, 9} );
+      TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
+
+      gum::Potential<float> p4;
+      p4 << a;
+      p4.fillWith( {1, 3, 6} );
+      p4.normalizeAsCPT();
+      gum::Potential<float> witness;
+      witness << a;
+      witness.fillWith( {0.1f, 0.3f, 0.6f} );
+      TS_ASSERT_EQUALS( p4, witness );
     }
   };
 }

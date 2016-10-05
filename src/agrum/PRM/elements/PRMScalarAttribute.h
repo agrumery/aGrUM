@@ -37,7 +37,8 @@ namespace gum {
      *<agrum/PRM/elements/scalarAttribute.h>
      * @brief PRMScalarAttribute is a member of a Class in a PRM.
      *
-     * A PRMScalarAttribute is defined by its name, its containing class, its type
+     * A PRMScalarAttribute is defined by its name, its containing class, its
+     *type
      *and
      * by a Conditional Probability Function (aka CPF but represented by a
      * Potential).
@@ -66,7 +67,8 @@ namespace gum {
 
       /**
        * @brief Constructor used by gum::Class.
-       * This will create an PRMAttribute with only one variable: type and with the
+       * This will create an PRMAttribute with only one variable: type and with
+       * the
        * given
        * implementation.
        * @param name The name of this PRMAttribute.
@@ -76,9 +78,9 @@ namespace gum {
        *             it will be deleted after the call of ~PRMAttribute.
        */
       PRMScalarAttribute( const std::string& name,
-                       const PRMType<GUM_SCALAR>& type,
-                       MultiDimImplementation<GUM_SCALAR>* impl =
-                           new MultiDimArray<GUM_SCALAR>() );
+                          const PRMType<GUM_SCALAR>& type,
+                          MultiDimImplementation<GUM_SCALAR>* impl =
+                              new MultiDimArray<GUM_SCALAR>() );
 
       /// Destructor.
       virtual ~PRMScalarAttribute();

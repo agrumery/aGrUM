@@ -92,7 +92,7 @@ namespace gum {
     }
 
     const std::string& s2 = key.second;
-    size = (unsigned int) s2.size();
+    size = (unsigned int)s2.size();
     char_ptr = s2.c_str();
     int_ptr = (const unsigned long*)char_ptr;
 
@@ -114,7 +114,7 @@ namespace gum {
   INLINE Size HashFunc<std::vector<Idx>>::
   operator()( const std::vector<Idx>& key ) const {
     Size h = 0;
-    Size siz = Size(key.size());
+    Size siz = Size( key.size() );
     for ( Size i = 0; i < siz; ++i )
       h += i * key[i];
 

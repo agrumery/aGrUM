@@ -25,8 +25,8 @@
 #ifndef GUM_LEARNING_DB_ROW_H
 #define GUM_LEARNING_DB_ROW_H
 
-#include <vector>
 #include <initializer_list>
+#include <vector>
 
 #include <agrum/learning/database/DBCell.h>
 

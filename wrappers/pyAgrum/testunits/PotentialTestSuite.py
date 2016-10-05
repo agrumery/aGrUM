@@ -499,6 +499,80 @@ class TestOperators(pyAgrumTestCase):
     except gum.InvalidArgument:
       self.assertTrue(True)
 
+  def testOperatorEqual(self):
+    a,b=[gum.LabelizedVariable(s,s,3) for s in "ab"]
+    p=gum.Potential()
+    q=gum.Potential()
+
+    self.assertTrue(p==q)
+
+    p.add(a).fillWith([1,2,3])
+    self.assertTrue(p==p)
+
+    q=gum.Potential().add(a).fillWith([1,2,3])
+    self.assertTrue(p==q)
+    self.assertEqual(p,q)
+
+    q=gum.Potential().add(a).fillWith([3,6,9])
+    self.assertTrue(p!=q)
+
+    q=gum.Potential().add(b).fillWith([1,2,3])
+    self.assertTrue(p!=q)
+
+    q=gum.Potential().add(a).add(b).fillWith(1)
+    self.assertTrue(p!=q)
+
+
+  def testScaleAndTranslate(self):
+    a=gum.LabelizedVariable("a","a",3)
+
+    p=gum.Potential().add(a)
+    q=gum.Potential().add(a).fillWith([3,6,9])
+    r=gum.Potential().add(a).fillWith([2,3,4])
+    s=gum.Potential().add(a).fillWith([4,7,10])
+
+    self.assertEqual(p.fillWith([1,2,3]).scale(3),q)
+    self.assertEqual(p.fillWith([1,2,3]).translate(1),r)
+    self.assertEqual(p.fillWith([1,2,3]).scale(3).translate(1),s)
+
+  def testNormalizeAsCPT(self):
+    a,b=[gum.LabelizedVariable(s,s,3) for s in "ab"]
+
+    p=gum.Potential().add(a).add(b).fillWith([1,2,3,4,5,6,7,8,9])
+    q=p/p.margSumOut(["a"])
+    p.normalizeAsCPT()
+    self.assertTrue(p==q)
+
+    p2=gum.Potential()
+    try:
+      p2.normalizeAsCPT()
+      self.assertTrue(False)
+    except gum.FatalError:
+      self.assertTrue(True)
+    p2.add(a).add(b).fill(0)
+    try:
+      p2.normalizeAsCPT()
+      self.assertTrue(False)
+    except gum.FatalError:
+      self.assertTrue(True)
+
+    p3=gum.Potential().add(a).add(b).fillWith([1,2,3,0,0,0,7,8,9])
+    try:
+      p3.normalizeAsCPT()
+      self.assertTrue(False)
+    except gum.FatalError:
+      self.assertTrue(True)
+
+    p4=gum.Potential().add(a).fillWith([1,3,6])
+    witness=gum.Potential().add(a).fillWith([0.1,0.3,0.6])
+    p4.normalizeAsCPT()
+    self.assertTrue(p4==witness)
+
+
+
+
+
+
 
 
 
@@ -526,3 +600,6 @@ ts.addTest(TestOperators('testReorganizePotential'))
 ts.addTest(TestOperators('testPutFirstPotential'))
 ts.addTest(TestOperators('testExtraction'))
 ts.addTest(TestOperators('testExtractionWithDict'))
+ts.addTest(TestOperators('testOperatorEqual'))
+ts.addTest(TestOperators('testScaleAndTranslate'))
+ts.addTest(TestOperators('testNormalizeAsCPT'))

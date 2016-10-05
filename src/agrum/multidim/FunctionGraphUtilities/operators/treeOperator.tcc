@@ -70,8 +70,9 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class TerminalNodePolicy>
-  INLINE TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::
-      ~TreeOperator() {
+  INLINE TreeOperator<GUM_SCALAR,
+                      COMBINEOPERATOR,
+                      TerminalNodePolicy>::~TreeOperator() {
 
     GUM_DESTRUCTOR( TreeOperator );
   }

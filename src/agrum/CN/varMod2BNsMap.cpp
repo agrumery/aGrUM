@@ -29,4 +29,3 @@
 
 template class gum::credal::VarMod2BNsMap<float>;
 template class gum::credal::VarMod2BNsMap<double>;
-

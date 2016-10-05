@@ -28,12 +28,12 @@
 
 #include <agrum/BN/IBayesNet.h>
 
-#include <agrum/multidim/aggregators/or.h>
 #include <agrum/multidim/aggregators/and.h>
+#include <agrum/multidim/aggregators/or.h>
 
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/multidim/potential.h>
@@ -245,7 +245,7 @@ namespace gum {
       Instantiation i( cpt( node ) );
       Instantiation j( from.cpt( fromnode ) );
 
-      for ( i.setFirst(); ! i.end(); i.inc() ) {
+      for ( i.setFirst(); !i.end(); i.inc() ) {
         for ( Idx indice = 0; indice < cpt( node ).nbrDim(); ++indice ) {
           const DiscreteVariable* p = &( i.variable( indice ) );
           j.chgVal( *( alignment.second( p ) ), i.val( *p ) );
@@ -263,7 +263,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   bool IBayesNet<GUM_SCALAR>::operator!=( const IBayesNet& from ) const {
-    return ! this->operator==( from );
+    return !this->operator==( from );
   }
 
   template <typename GUM_SCALAR>

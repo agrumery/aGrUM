@@ -25,9 +25,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
 #include <agrum/config.h>
 #include <agrum/graphicalModels/inference/scheduleCombine.h>
+#include <limits>
 
 namespace gum {
 
@@ -38,7 +38,7 @@ namespace gum {
       const ScheduleMultiDim<GUM_SCALAR>& table2,
       MultiDimImplementation<GUM_SCALAR>* ( *combine )(
           const MultiDimImplementation<GUM_SCALAR>&,
-          const MultiDimImplementation<GUM_SCALAR>& ) )
+          const MultiDimImplementation<GUM_SCALAR>&))
       : ScheduleOperation<GUM_SCALAR>(
             ScheduleOperation<GUM_SCALAR>::Type::COMBINE_MULTIDIM )
       , __table1( table1 )
@@ -204,7 +204,7 @@ namespace gum {
         GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
       }
 
-      size *= long(var->domainSize());
+      size *= long( var->domainSize() );
     }
 
     for ( const auto var : seq2 )
@@ -214,7 +214,7 @@ namespace gum {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
-        size *= long(var->domainSize());
+        size *= long( var->domainSize() );
       }
 
     return std::pair<long, long>( size, size );

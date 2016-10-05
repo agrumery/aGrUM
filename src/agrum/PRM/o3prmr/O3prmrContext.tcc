@@ -47,11 +47,11 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       O3prmrContext<GUM_SCALAR>::~O3prmrContext() {
-        for ( Idx i = Size(m_imports.size()) ; i > 0; i-- )
-          delete m_imports[i-1];
+        for ( Idx i = Size( m_imports.size() ); i > 0; i-- )
+          delete m_imports[i - 1];
 
-        for ( Size i = Size(m_sessions.size()) ; i > 0; i-- )
-          delete m_sessions[i-1];
+        for ( Size i = Size( m_sessions.size() ); i > 0; i-- )
+          delete m_sessions[i - 1];
       }
 
       template <typename GUM_SCALAR>
@@ -72,8 +72,9 @@ namespace gum {
       template <typename GUM_SCALAR>
       std::string
       O3prmrContext<GUM_SCALAR>::aliasToImport( const std::string& alias ) {
-        for ( Idx i = Size(m_imports.size()) ; i > 0; i-- )
-          if ( m_imports[i-1]->alias == alias ) return m_imports[i-1]->value;
+        for ( Idx i = Size( m_imports.size() ); i > 0; i-- )
+          if ( m_imports[i - 1]->alias == alias )
+            return m_imports[i - 1]->value;
 
         return std::string();
       }
@@ -170,8 +171,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       O3prmrSession<GUM_SCALAR>::~O3prmrSession() {
-        for ( Idx i = Size(m_commands.size()) ; i >= 1; i-- )
-          delete m_commands[i-1];
+        for ( Idx i = Size( m_commands.size() ); i >= 1; i-- )
+          delete m_commands[i - 1];
 
         m_commands.clear();
       }

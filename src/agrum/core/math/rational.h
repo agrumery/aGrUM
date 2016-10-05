@@ -34,6 +34,14 @@
 #include <stdlib.h>
 #include <vector>
 
+// 64 bits for windows (long is 32 bits)
+#ifdef _MSC_VER
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+#else
+#include <stdint.h>
+#endif
+
 namespace gum {
 
   /**
@@ -69,10 +77,10 @@ namespace gum {
      * @param zero The positive value below which a number is considered zero.
      * 1e-6 by default.
      */
-    static void farey( long int& numerator,
-                       long int& denominator,
+    static void farey( int64_t& numerator,
+                       int64_t& denominator,
                        const GUM_SCALAR& number,
-                       const long int& den_max = 1000000,
+                       const int64_t& den_max = 1000000L,
                        const GUM_SCALAR& zero = 1e-6 );
 
     /**
@@ -96,8 +104,8 @@ namespace gum {
      * @param zero The positive value below which a number is considered zero.
      * 1e-6 by default.
      */
-    static void continuedFracFirst( long int& numerator,
-                                    long int& denominator,
+    static void continuedFracFirst( int64_t& numerator,
+                                    int64_t& denominator,
                                     const GUM_SCALAR& number,
                                     const double& zero = 1e-6 );
 
@@ -117,10 +125,10 @@ namespace gum {
      * @param den_max The constant highest authorized denominator. 1000000 by
      * default.
      */
-    static void continuedFracBest( long int& numerator,
-                                   long int& denominator,
+    static void continuedFracBest( int64_t& numerator,
+                                   int64_t& denominator,
                                    const GUM_SCALAR& number,
-                                   const long int& den_max = 1000000 );
+                                   const int64_t& den_max = 1000000 );
 
     /// @}
   };

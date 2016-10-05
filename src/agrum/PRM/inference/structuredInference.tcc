@@ -111,10 +111,10 @@ namespace gum {
       __query = chain;
       typename StructuredInference<GUM_SCALAR>::RGData data;
 
-      if ( ! this->hasEvidence() && ( chain.second->cpf().nbrDim() == 1 ) ) {
+      if ( !this->hasEvidence() && ( chain.second->cpf().nbrDim() == 1 ) ) {
         Instantiation i( m );
 
-        for ( i.setFirst(); ! i.end(); i.inc() )
+        for ( i.setFirst(); !i.end(); i.inc() )
           m.set( i, chain.second->cpf().get( i ) );
 
         return;
@@ -123,7 +123,7 @@ namespace gum {
         const Potential<GUM_SCALAR>* e =
             this->evidence( __query.first )[__query.second->id()];
 
-        for ( i.setFirst(); ! i.end(); i.inc() )
+        for ( i.setFirst(); !i.end(); i.inc() )
           m.set( i, e->get( i ) );
 
         return;
@@ -144,7 +144,7 @@ namespace gum {
           GUM_ASSERT( pot->variablesSequence().size() == 1 );
           Instantiation i( *pot ), j( m );
 
-          for ( i.setFirst(), j.setFirst(); ! i.end(); i.inc(), j.inc() )
+          for ( i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc() )
             m.set( j, pot->get( i ) );
         } else {
           MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb(
@@ -152,7 +152,7 @@ namespace gum {
           Potential<GUM_SCALAR>* tmp = Comb.combine( pots );
           Instantiation i( m ), j( *tmp );
 
-          for ( i.setFirst(), j.setFirst(); ! i.end(); i.inc(), j.inc() )
+          for ( i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc() )
             m.set( i, tmp->get( j ) );
 
           delete tmp;
@@ -163,7 +163,7 @@ namespace gum {
         GUM_ASSERT( pot->variablesSequence().size() == 1 );
         Instantiation i( *pot ), j( m );
 
-        for ( i.setFirst(), j.setFirst(); ! i.end(); i.inc(), j.inc() )
+        for ( i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc() )
           m.set( j, pot->get( i ) );
       }
 
@@ -253,7 +253,8 @@ namespace gum {
     void StructuredInference<GUM_SCALAR>::__reducePattern(
         const gspan::Pattern* p ) {
       Set<Potential<GUM_SCALAR>*> pool;
-      typename StructuredInference<GUM_SCALAR>::PData data( *p, __gspan->matches( *p ) );
+      typename StructuredInference<GUM_SCALAR>::PData data(
+          *p, __gspan->matches( *p ) );
       __buildPatternGraph( data, pool, **( data.matches.begin() ) );
       __removeBarrenNodes( data, pool );
       PartialOrderedTriangulation t(
@@ -261,7 +262,7 @@ namespace gum {
       const std::vector<NodeId>& elim_order = t.eliminationOrder();
 
       for ( size_t i = 0; i < data.inners().size(); ++i )
-        if ( ! data.barren.exists( elim_order[i] ) )
+        if ( !data.barren.exists( elim_order[i] ) )
           eliminateNode( data.vars.second( elim_order[i] ), pool, __trash );
 
       typename GSpan<GUM_SCALAR>::MatchedInstances fake_patterns;
@@ -334,7 +335,7 @@ namespace gum {
             inst->getRefAttr( inst->get( v.second ).id() );
 
         for ( auto r = refs.begin(); r != refs.end(); ++r ) {
-          if ( ! match.exists( r->first ) ) {
+          if ( !match.exists( r->first ) ) {
             data.outputs().insert( id );
             break;
           }
@@ -399,12 +400,12 @@ namespace gum {
         }
       }
 
-      if ( ! __found_query ) {
+      if ( !__found_query ) {
         for ( const auto mat : data.matches ) {
           if ( mat->exists(
                    const_cast<PRMInstance<GUM_SCALAR>*>( __query.first ) ) ) {
-            Idx pos =
-                mat->pos( const_cast<PRMInstance<GUM_SCALAR>*>( __query.first ) );
+            Idx pos = mat->pos(
+                const_cast<PRMInstance<GUM_SCALAR>*>( __query.first ) );
             DiscreteVariable& var = match.atPos( pos )
                                         ->get( __query.second->safeName() )
                                         .type()
@@ -425,7 +426,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool StructuredInference<GUM_SCALAR>::__allInstanceNoRefAttr(
-      typename StructuredInference<GUM_SCALAR>::PData& data,
+        typename StructuredInference<GUM_SCALAR>::PData& data,
         std::pair<Idx, std::string> attr ) {
       for ( const auto mat : data.matches )
         if ( mat->atPos( attr.first )
@@ -438,7 +439,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void StructuredInference<GUM_SCALAR>::__removeBarrenNodes(
-      typename StructuredInference<GUM_SCALAR>::PData& data,
+        typename StructuredInference<GUM_SCALAR>::PData& data,
         Set<Potential<GUM_SCALAR>*>& pool ) {
       Sequence<NodeId> candidates;
 
@@ -493,7 +494,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     Set<Potential<GUM_SCALAR>*>*
     StructuredInference<GUM_SCALAR>::__eliminateObservedNodesInSource(
-      typename StructuredInference<GUM_SCALAR>::PData& data,
+        typename StructuredInference<GUM_SCALAR>::PData& data,
         const Set<Potential<GUM_SCALAR>*>& pool,
         const Sequence<PRMInstance<GUM_SCALAR>*>& match,
         const std::vector<NodeId>& elim_order ) {
@@ -517,7 +518,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     Set<Potential<GUM_SCALAR>*>*
     StructuredInference<GUM_SCALAR>::__eliminateObservedNodes(
-      typename StructuredInference<GUM_SCALAR>::PData& data,
+        typename StructuredInference<GUM_SCALAR>::PData& data,
         const Set<Potential<GUM_SCALAR>*>& pool,
         const Sequence<PRMInstance<GUM_SCALAR>*>& match,
         const std::vector<NodeId>& elim_order ) {
@@ -541,7 +542,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     Set<Potential<GUM_SCALAR>*>*
     StructuredInference<GUM_SCALAR>::__translatePotSet(
-      typename StructuredInference<GUM_SCALAR>::PData& data,
+        typename StructuredInference<GUM_SCALAR>::PData& data,
         const Set<Potential<GUM_SCALAR>*>& pool,
         const Sequence<PRMInstance<GUM_SCALAR>*>& match ) {
 #ifdef DEBUG
@@ -647,7 +648,7 @@ namespace gum {
       for ( const auto& elt : *this->_sys ) {
         inst = elt.second;
 
-        if ( ! __reducedInstances.exists( inst ) ) {
+        if ( !__reducedInstances.exists( inst ) ) {
           // Checking if its not an empty class
           if ( inst->size() ) {
             Set<Potential<GUM_SCALAR>*> pool;
@@ -766,7 +767,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void StructuredInference<GUM_SCALAR>::__addEdgesInReducedGraph(
-      typename StructuredInference<GUM_SCALAR>::RGData& data ) {
+        typename StructuredInference<GUM_SCALAR>::RGData& data ) {
       // We first add edges between variables already in pool (i.e. those of the
       // reduced instances)
       NodeId id_1, id_2;
@@ -878,7 +879,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     const List<NodeSet>*
     StructuredInference<GUM_SCALAR>::PData::partial_order() {
-      if ( ! __real_order ) {
+      if ( !__real_order ) {
         __real_order = new List<NodeSet>();
 
         for ( const auto set : __partial_order )
@@ -929,7 +930,8 @@ namespace gum {
             ++marry;
 
             while ( marry != parents.end() ) {
-              if ( PRMClassElement<GUM_SCALAR>::isAttribute( c.get( *marry ) ) ||
+              if ( PRMClassElement<GUM_SCALAR>::isAttribute(
+                       c.get( *marry ) ) ||
                    PRMClassElement<GUM_SCALAR>::isAggregate( c.get( *marry ) ) )
                 moral_graph.addEdge( *tail, *marry );
 
@@ -952,7 +954,7 @@ namespace gum {
             for ( const auto par : c.dag().parents( node ) ) {
               const auto& prnt = c.get( par );
 
-              if ( ( ! c.isOutputNode( prnt ) ) &&
+              if ( ( !c.isOutputNode( prnt ) ) &&
                    ( PRMClassElement<GUM_SCALAR>::isAttribute( prnt ) ||
                      PRMClassElement<GUM_SCALAR>::isAggregate( prnt ) ) ) {
                 inners().erase( prnt.id() );
@@ -969,7 +971,7 @@ namespace gum {
 
             if ( c.isOutputNode( c.get( node ) ) )
               outputs().insert( node );
-            else if ( ! aggregators().exists( node ) )
+            else if ( !aggregators().exists( node ) )
               inners().insert( node );
 
             break;
@@ -1019,19 +1021,22 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::string StructuredInference<GUM_SCALAR>::__str(
-        const PRMInstance<GUM_SCALAR>* i, const PRMAttribute<GUM_SCALAR>* a ) const {
+        const PRMInstance<GUM_SCALAR>* i,
+        const PRMAttribute<GUM_SCALAR>* a ) const {
       return i->name() + __dot + a->safeName();
     }
 
     template <typename GUM_SCALAR>
     INLINE std::string StructuredInference<GUM_SCALAR>::__str(
-        const PRMInstance<GUM_SCALAR>* i, const PRMAttribute<GUM_SCALAR>& a ) const {
+        const PRMInstance<GUM_SCALAR>* i,
+        const PRMAttribute<GUM_SCALAR>& a ) const {
       return i->name() + __dot + a.safeName();
     }
 
     template <typename GUM_SCALAR>
     INLINE std::string StructuredInference<GUM_SCALAR>::__str(
-        const PRMInstance<GUM_SCALAR>* i, const PRMSlotChain<GUM_SCALAR>& a ) const {
+        const PRMInstance<GUM_SCALAR>* i,
+        const PRMSlotChain<GUM_SCALAR>& a ) const {
       return i->name() + __dot + a.lastElt().safeName();
     }
 
@@ -1067,21 +1072,21 @@ namespace gum {
         NodeId id,
         Set<Potential<GUM_SCALAR>*>& pool ) {
       data.graph.eraseNode( id );
-      GUM_ASSERT( ! data.graph.exists( id ) );
+      GUM_ASSERT( !data.graph.exists( id ) );
       data.mod.erase( id );
-      GUM_ASSERT( ! data.mod.exists( id ) );
+      GUM_ASSERT( !data.mod.exists( id ) );
       data.node2attr.eraseFirst( id );
-      GUM_ASSERT( ! data.node2attr.existsFirst( id ) );
+      GUM_ASSERT( !data.node2attr.existsFirst( id ) );
       data.map.erase( id );
-      GUM_ASSERT( ! data.map.exists( id ) );
+      GUM_ASSERT( !data.map.exists( id ) );
       data.vars.eraseFirst( id );
-      GUM_ASSERT( ! data.vars.existsFirst( id ) );
+      GUM_ASSERT( !data.vars.existsFirst( id ) );
       data.inners().erase( id );
-      GUM_ASSERT( ! data.inners().exists( id ) );
+      GUM_ASSERT( !data.inners().exists( id ) );
       pool.erase( data.pots[id] );
-      GUM_ASSERT( ! pool.exists( data.pots[id] ) );
+      GUM_ASSERT( !pool.exists( data.pots[id] ) );
       data.pots.erase( id );
-      GUM_ASSERT( ! data.pots.exists( id ) );
+      GUM_ASSERT( !data.pots.exists( id ) );
     }
 
   } /* namespace prm */

@@ -755,9 +755,7 @@ namespace gum {
       O3Label& O3Attribute::name() { return __name; }
       const O3Label& O3Attribute::name() const { return __name; }
 
-      O3Attribute::O3LabelList& O3Attribute::parents() {
-        return __parents;
-      }
+      O3Attribute::O3LabelList& O3Attribute::parents() { return __parents; }
       const O3Attribute::O3LabelList& O3Attribute::parents() const {
         return __parents;
       }
@@ -1095,9 +1093,7 @@ namespace gum {
       O3Float& O3Parameter::value() { return __value; }
       const O3Float& O3Parameter::value() const { return __value; }
 
-      O3ReferenceSlot::O3ReferenceSlot( ) {
-        GUM_CONSTRUCTOR( O3ReferenceSlot );
-      }
+      O3ReferenceSlot::O3ReferenceSlot() { GUM_CONSTRUCTOR( O3ReferenceSlot ); }
 
       O3ReferenceSlot::O3ReferenceSlot( const O3Label& type,
                                         const O3Label& name,
@@ -1307,9 +1303,7 @@ namespace gum {
 
       O3Integer& O3Assignment::rightIndex() { return __rightIndex; }
 
-      const O3Integer& O3Assignment::rightIndex() const {
-        return __rightIndex;
-      }
+      const O3Integer& O3Assignment::rightIndex() const { return __rightIndex; }
 
       O3Increment::O3Increment() { GUM_CONSTRUCTOR( O3Increment ); }
 
@@ -1317,7 +1311,7 @@ namespace gum {
           : __leftInstance( src.__leftInstance )
           , __leftIndex( src.__leftIndex )
           , __leftReference( src.__leftReference )
-          , __rightInstance( src.__rightInstance ) 
+          , __rightInstance( src.__rightInstance )
           , __rightIndex( src.__rightIndex ) {
         GUM_CONS_CPY( O3Increment );
       }
@@ -1326,7 +1320,7 @@ namespace gum {
           : __leftInstance( std::move( src.__leftInstance ) )
           , __leftIndex( std::move( src.__leftIndex ) )
           , __leftReference( std::move( src.__leftReference ) )
-          , __rightInstance( std::move( src.__rightInstance ) ) 
+          , __rightInstance( std::move( src.__rightInstance ) )
           , __rightIndex( std::move( src.__rightIndex ) ) {
         GUM_CONS_CPY( O3Increment );
       }

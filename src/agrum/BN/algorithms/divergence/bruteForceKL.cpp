@@ -24,10 +24,9 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <cmath>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+#include <cmath>
 
 
 template class gum::BruteForceKL<float>;
 template class gum::BruteForceKL<double>;
-

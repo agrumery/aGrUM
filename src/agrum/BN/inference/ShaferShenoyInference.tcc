@@ -131,7 +131,7 @@ namespace gum {
 
     Instantiation inst( posterior );
 
-    for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
+    for ( inst.setFirst(); !inst.end(); inst.inc() ) {
       posterior.set( inst, bucket.get( inst ) );
     }
 
@@ -268,7 +268,7 @@ namespace gum {
       __removeDiffusedMessages( current );
       __sendMessage( current, source );
       return true;
-    } else if ( ! __messageExists( current, source ) ) {
+    } else if ( !__messageExists( current, source ) ) {
       // There is new evidence (or first call)
       __sendMessage( current, source );
       return true;
@@ -303,7 +303,7 @@ namespace gum {
                                                      bool recompute ) {
     for ( const auto nei : __getNeighbours( current ) )
       if ( nei != source ) {
-        if ( recompute || ( ! __messageExists( current, nei ) ) ) {
+        if ( recompute || ( !__messageExists( current, nei ) ) ) {
           // New evidence or first call
           __sendMessage( current, nei );
           __diffuse( current, nei, true );
@@ -459,7 +459,7 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed, msg.str() );
     }
 
-    if ( ! __potential->variablesSequence().exists(
+    if ( !__potential->variablesSequence().exists(
              evidence.variablesSequence().atPos( 0 ) ) ) {
       std::stringstream msg;
       msg << ": " << evidence.variablesSequence().atPos( 0 )->name();

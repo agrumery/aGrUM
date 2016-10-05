@@ -29,4 +29,3 @@
 
 template class gum::BayesNetFragment<float>;
 template class gum::BayesNetFragment<double>;
-

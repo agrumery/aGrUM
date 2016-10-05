@@ -31,9 +31,9 @@
 
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecorator.h>
+#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/variables/discreteVariable.h>
 
 namespace gum {
 
@@ -219,7 +219,8 @@ namespace gum {
     static HashTable<Idx, Idx>& __id2refs();
 
     /// returns a table with the variables of the table corresponding to id
-    static HashTable<Idx, const Sequence<const DiscreteVariable*>*>& __id2vars();
+    static HashTable<Idx, const Sequence<const DiscreteVariable*>*>&
+    __id2vars();
 
     /// returns a table with the domain size of the table corresponding to id
     static HashTable<Idx, Size>& __id2size();

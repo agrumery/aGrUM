@@ -23,9 +23,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/potential.h>
 #include <agrum/graphicalModels/inference/scheduleProject.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
 
@@ -89,7 +89,7 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, rand()* 100000.0f / RAND_MAX);
+        t.set( i, rand() * 100000.0f / RAND_MAX );
     }
 
     // projection of a table over a set

@@ -28,4 +28,3 @@
 
 template class gum::aggregator::Or<float>;
 template class gum::aggregator::Or<double>;
-

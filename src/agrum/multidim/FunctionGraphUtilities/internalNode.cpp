@@ -117,4 +117,3 @@ namespace gum {
 #ifdef GUM_NO_INLINE
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.inl>
 #endif /* GUM_NO_INLINE */
-

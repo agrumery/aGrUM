@@ -27,11 +27,11 @@
 #ifndef GUM_MULTIDIM_CONTAINER_H
 #define GUM_MULTIDIM_CONTAINER_H
 
+#include <cmath>
 #include <functional>
+#include <initializer_list>
 #include <iostream>
 #include <vector>
-#include <cmath>
-#include <initializer_list>
 
 #include <agrum/config.h>
 

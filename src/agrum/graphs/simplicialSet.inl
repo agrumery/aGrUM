@@ -22,9 +22,9 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <sstream>
-#include <limits>
 #include <cmath>
+#include <limits>
+#include <sstream>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

@@ -47,7 +47,7 @@ namespace gum {
 
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
-      this->__type->variable().setName( this->name() ); 
+      this->__type->variable().setName( this->name() );
     }
 
     template <typename GUM_SCALAR>
@@ -83,9 +83,10 @@ namespace gum {
     PRMAttribute<GUM_SCALAR>* PRMScalarAttribute<GUM_SCALAR>::copy(
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
         const {
-      auto copy = new PRMScalarAttribute<GUM_SCALAR>( this->name(), this->type() );
+      auto copy =
+          new PRMScalarAttribute<GUM_SCALAR>( this->name(), this->type() );
 
-      if ( ! bij.existsFirst( &( type().variable() ) ) ) {
+      if ( !bij.existsFirst( &( type().variable() ) ) ) {
         bij.insert( &( type().variable() ), &( copy->type().variable() ) );
       }
 
@@ -116,7 +117,7 @@ namespace gum {
 
       GUM_ASSERT( inst.end() && jnst.end() );
       GUM_ASSERT( __cpf->contains( __type->variable() ) );
-      GUM_ASSERT( ! __cpf->contains( source.type().variable() ) );
+      GUM_ASSERT( !__cpf->contains( source.type().variable() ) );
     }
 
     template <typename GUM_SCALAR>
@@ -138,7 +139,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const PRMType<GUM_SCALAR>& PRMScalarAttribute<GUM_SCALAR>::type() const {
+    INLINE const PRMType<GUM_SCALAR>&
+    PRMScalarAttribute<GUM_SCALAR>::type() const {
       return *__type;
     }
 
@@ -176,7 +178,8 @@ namespace gum {
       PRMScalarAttribute<GUM_SCALAR>* cast = 0;
 
       try {
-        cast = new PRMScalarAttribute<GUM_SCALAR>( this->name(), type().superType() );
+        cast = new PRMScalarAttribute<GUM_SCALAR>( this->name(),
+                                                   type().superType() );
       } catch ( NotFound& ) {
         GUM_ERROR( OperationNotAllowed,
                    "this ScalarAttribute can not have cast descendant" );
@@ -187,7 +190,7 @@ namespace gum {
       DiscreteVariable& cast_var = cast->type().variable();
       Instantiation inst( cast->cpf() );
 
-      for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); !inst.end(); inst.inc() ) {
         if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
           cast->cpf().set( inst, 1 );
         } else {
@@ -224,7 +227,7 @@ namespace gum {
 
       Instantiation inst( *__cpf );
 
-      for ( inst.setFirst(); ! inst.end(); inst.inc() ) {
+      for ( inst.setFirst(); !inst.end(); inst.inc() ) {
         auto my_pos = inst.pos( subtype.variable() );
         if ( subtype.label_map()[my_pos] == inst.pos( type().variable() ) ) {
           __cpf->set( inst, 1 );
@@ -235,8 +238,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void PRMScalarAttribute<GUM_SCALAR>::swap( const PRMType<GUM_SCALAR>& old_type,
-                                            const PRMType<GUM_SCALAR>& new_type ) {
+    void PRMScalarAttribute<GUM_SCALAR>::swap(
+        const PRMType<GUM_SCALAR>& old_type,
+        const PRMType<GUM_SCALAR>& new_type ) {
       if ( &( old_type ) == __type ) {
         GUM_ERROR( OperationNotAllowed, "Cannot swap attribute own type" );
       }
@@ -244,7 +248,7 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed,
                    "Cannot swap types with difference domain size" );
       }
-      if ( ! __cpf->contains( old_type.variable() ) ) {
+      if ( !__cpf->contains( old_type.variable() ) ) {
         GUM_ERROR( NotFound, "could not find variable " + old_type.name() );
       }
 
@@ -272,7 +276,7 @@ namespace gum {
       GUM_ASSERT( inst.end() && jnst.end() );
       GUM_ASSERT( __cpf->contains( __type->variable() ) );
       GUM_ASSERT( __cpf->contains( new_type.variable() ) );
-      GUM_ASSERT( ! __cpf->contains( old_type.variable() ) );
+      GUM_ASSERT( !__cpf->contains( old_type.variable() ) );
     }
 
     template <typename GUM_SCALAR>

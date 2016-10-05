@@ -31,5 +31,3 @@
 
 template class gum::prm::o3prm::O3InterfaceFactory<float>;
 template class gum::prm::o3prm::O3InterfaceFactory<double>;
-
-

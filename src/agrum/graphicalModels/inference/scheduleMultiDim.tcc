@@ -45,7 +45,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*>&
   ScheduleMultiDim<GUM_SCALAR>::__id2multidim() {
-    static HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*> __multidims;
+    static HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*>
+        __multidims;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the

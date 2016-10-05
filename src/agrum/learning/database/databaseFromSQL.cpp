@@ -90,4 +90,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif // _ODBC
+#endif  // _ODBC

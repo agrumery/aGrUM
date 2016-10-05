@@ -29,5 +29,3 @@
 
 
 template class gum::BinTreeNode<int>;
-
-

@@ -26,11 +26,11 @@
 // =======================================================
 #include <cmath>
 // =======================================================
-#include <agrum/core/types.h>
 #include <agrum/core/priorityQueue.h>
+#include <agrum/core/types.h>
 // =======================================================
-#include <agrum/FMDP/learning/datastructure/iti.h>
 #include <agrum/FMDP/learning/core/chiSquare.h>
+#include <agrum/FMDP/learning/datastructure/iti.h>
 // =======================================================
 #include <agrum/variables/labelizedVariable.h>
 // =======================================================

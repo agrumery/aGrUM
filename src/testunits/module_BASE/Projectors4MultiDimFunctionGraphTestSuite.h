@@ -20,17 +20,17 @@
 *********************************************************************************/
 
 // ==========================================================================
-#include <fstream>
 #include <cmath>
+#include <fstream>
 // ==========================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==========================================================================
 #include <agrum/core/timer.h>
 // ==========================================================================
-#include <agrum/multidim/potential.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/multiDimFunctionGraphGenerator.h>
+#include <agrum/multidim/potential.h>
 // ==========================================================================
 #include <agrum/variables/labelizedVariable.h>
 // ==========================================================================
@@ -147,7 +147,7 @@ namespace gum_tests {
         const gum::Sequence<const gum::DiscreteVariable*>* varList,
         double lowLimit = -100,
         double highLimit = 100 ) {
-      
+
       gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList );
 
       return gene.generate();
@@ -419,7 +419,7 @@ namespace gum_tests {
 
         gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << varList->atPos( 0 );
-//        del_vars << varList->atPos( 1 );
+        //        del_vars << varList->atPos( 1 );
 
         tempsGene += time.step();
 
@@ -455,26 +455,22 @@ namespace gum_tests {
 
 
       {
-        gum::LabelizedVariable* vA = new gum::LabelizedVariable ( "A",
-        "", 3 );
-        gum::LabelizedVariable* vB = new gum::LabelizedVariable ( "B",
-        "", 5 );
-        gum::LabelizedVariable* vC = new gum::LabelizedVariable ( "C",
-        "", 2 );
-        gum::LabelizedVariable* vD = new gum::LabelizedVariable ( "D",
-        "", 4 );
+        gum::LabelizedVariable* vA = new gum::LabelizedVariable( "A", "", 3 );
+        gum::LabelizedVariable* vB = new gum::LabelizedVariable( "B", "", 5 );
+        gum::LabelizedVariable* vC = new gum::LabelizedVariable( "C", "", 2 );
+        gum::LabelizedVariable* vD = new gum::LabelizedVariable( "D", "", 4 );
 
         gum::MultiDimFunctionGraph<double>* dg1 =
-        gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
+            gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-        dg1->add(*vA);
-        dg1->add(*vB);
-        dg1->add(*vC);
-        dg1->add(*vD);
+        dg1->add( *vA );
+        dg1->add( *vB );
+        dg1->add( *vC );
+        dg1->add( *vD );
 
-        gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10,
-        n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, n22,
-        n23, n24, n25, n26, n27, n28, n29, n30, n31, n32;
+        gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12,
+            n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23, n24, n25,
+            n26, n27, n28, n29, n30, n31, n32;
 
 
         n01 = dg1->manager()->addInternalNode( vA );
@@ -565,12 +561,12 @@ namespace gum_tests {
 
         dg1->manager()->setRootNode( n01 );
 
-        gum::Set< const gum::DiscreteVariable* > del_vars;
+        gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << vB;
 
         double a = 0.0, b = 0.0, c = 0.0;
-        TS_GUM_ASSERT_THROWS_NOTHING ( __evalOperation ( 1, dg1,
-        del_vars, a, b, c ) );
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            __evalOperation( 1, dg1, del_vars, a, b, c ) );
 
         delete dg1;
         del_vars.clear();
@@ -582,26 +578,22 @@ namespace gum_tests {
       }
 
       {
-        gum::LabelizedVariable* vA = new gum::LabelizedVariable ( "A",
-        "", 3 );
-        gum::LabelizedVariable* vB = new gum::LabelizedVariable ( "B",
-        "", 5 );
-        gum::LabelizedVariable* vC = new gum::LabelizedVariable ( "C",
-        "", 2 );
-        gum::LabelizedVariable* vD = new gum::LabelizedVariable ( "D",
-        "", 4 );
+        gum::LabelizedVariable* vA = new gum::LabelizedVariable( "A", "", 3 );
+        gum::LabelizedVariable* vB = new gum::LabelizedVariable( "B", "", 5 );
+        gum::LabelizedVariable* vC = new gum::LabelizedVariable( "C", "", 2 );
+        gum::LabelizedVariable* vD = new gum::LabelizedVariable( "D", "", 4 );
 
         gum::MultiDimFunctionGraph<double>* dg1 =
-        gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
+            gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-        dg1->add(*vA);
-        dg1->add(*vB);
-        dg1->add(*vC);
-        dg1->add(*vD);
+        dg1->add( *vA );
+        dg1->add( *vB );
+        dg1->add( *vC );
+        dg1->add( *vD );
 
-        gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10,
-        n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, n22,
-        n23, n24, n25, n26, n27, n28, n29;
+        gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12,
+            n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23, n24, n25,
+            n26, n27, n28, n29;
 
 
         n01 = dg1->manager()->addInternalNode( vA );
@@ -687,14 +679,14 @@ namespace gum_tests {
 
         dg1->manager()->setRootNode( n01 );
 
-        gum::Set< const gum::DiscreteVariable* > del_vars;
+        gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << vD;
         del_vars << vB;
         del_vars << vC;
 
         double a = 0.0, b = 0.0, c = 0.01;
-        TS_GUM_ASSERT_THROWS_NOTHING ( __evalOperation ( 1, dg1,
-        del_vars, a, b, c ) );
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            __evalOperation( 1, dg1, del_vars, a, b, c ) );
 
         delete dg1;
         del_vars.clear();
@@ -706,37 +698,36 @@ namespace gum_tests {
       }
 
       {
-        gum::LabelizedVariable* v0 = new gum::LabelizedVariable (
-        "var0", "", 4 );
-        gum::LabelizedVariable* v1 = new gum::LabelizedVariable (
-        "var1", "", 3 );
-        gum::LabelizedVariable* v2 = new gum::LabelizedVariable (
-        "var2", "", 4 );
-        gum::LabelizedVariable* v3 = new gum::LabelizedVariable (
-        "var3", "", 4 );
-        gum::LabelizedVariable* v4 = new gum::LabelizedVariable (
-        "var4", "", 4 );
-        gum::LabelizedVariable* v5 = new gum::LabelizedVariable (
-        "var5", "", 5 );
-        gum::LabelizedVariable* v6 = new gum::LabelizedVariable (
-        "var6", "", 4 );
+        gum::LabelizedVariable* v0 =
+            new gum::LabelizedVariable( "var0", "", 4 );
+        gum::LabelizedVariable* v1 =
+            new gum::LabelizedVariable( "var1", "", 3 );
+        gum::LabelizedVariable* v2 =
+            new gum::LabelizedVariable( "var2", "", 4 );
+        gum::LabelizedVariable* v3 =
+            new gum::LabelizedVariable( "var3", "", 4 );
+        gum::LabelizedVariable* v4 =
+            new gum::LabelizedVariable( "var4", "", 4 );
+        gum::LabelizedVariable* v5 =
+            new gum::LabelizedVariable( "var5", "", 5 );
+        gum::LabelizedVariable* v6 =
+            new gum::LabelizedVariable( "var6", "", 4 );
 
         gum::MultiDimFunctionGraph<double>* dg1 =
             gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
-        dg1->add(*v0);
-        dg1->add(*v1);
-        dg1->add(*v2);
-        dg1->add(*v3);
-        dg1->add(*v4);
-        dg1->add(*v5);
+        dg1->add( *v0 );
+        dg1->add( *v1 );
+        dg1->add( *v2 );
+        dg1->add( *v3 );
+        dg1->add( *v4 );
+        dg1->add( *v5 );
 
-        gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10,
-        n11, n12, n13, n14, n15, n16, n17, n18, n19, n20,
-                n21, n22, n23, n24, n25, n26, n27, n28, n29, n30, n31,
-                n32, n33, n34, n35, n36, n37, n38, n39, n40,
-                n41, n42, n43, n44, n45, n46, n47, n48, n49, n50, n51,
-                n52, n53, n54, n55, n56, n57, n58, n59, n60;
+        gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12,
+            n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23, n24, n25,
+            n26, n27, n28, n29, n30, n31, n32, n33, n34, n35, n36, n37, n38,
+            n39, n40, n41, n42, n43, n44, n45, n46, n47, n48, n49, n50, n51,
+            n52, n53, n54, n55, n56, n57, n58, n59, n60;
 
 
         n01 = dg1->manager()->addInternalNode( v0 );
@@ -921,7 +912,7 @@ namespace gum_tests {
 
         dg1->manager()->setRootNode( n01 );
 
-        gum::Set< const gum::DiscreteVariable* > del_vars;
+        gum::Set<const gum::DiscreteVariable*> del_vars;
         del_vars << v4;
         del_vars << v2;
         del_vars << v5;
@@ -930,8 +921,8 @@ namespace gum_tests {
         del_vars << v1;
 
         double a = 0.0, b = 0.0, c = 0.01;
-        TS_GUM_ASSERT_THROWS_NOTHING ( __evalOperation ( 1, dg1,
-        del_vars, a, b, c ) );
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            __evalOperation( 1, dg1, del_vars, a, b, c ) );
 
         delete dg1;
         del_vars.clear();
@@ -988,7 +979,8 @@ namespace gum_tests {
 
 //        //        std::cout << a1->toDot() << std::endl;
 //        //        for( gum::SetIteratorSafe<const gum::DiscreteVariable*>
-//        //        varIter = del_vars.beginSafe(); varIter != del_vars.endSafe();
+//        //        varIter = del_vars.beginSafe(); varIter !=
+//        del_vars.endSafe();
 //        //        ++varIter )
 //        //            std::cout << (*varIter)->name() << "     ";
 //        //        std::cout << std::endl;

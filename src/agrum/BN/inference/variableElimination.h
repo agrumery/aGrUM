@@ -30,8 +30,8 @@
 #include <vector>
 
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/multidim/multiDimBucket.h>
 //#include <agrum/PRM/utils_prm.h>
 

@@ -26,10 +26,10 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
-#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
   class DocumentationTestSuite : public CxxTest::TestSuite {
@@ -313,14 +313,14 @@ namespace gum_tests {
         auto id = asia.idFromName( "Has Lung Cancer" );
         const auto& marginal = inference.posterior( id );
         // To prevent warning for unused variable
-        TS_ASSERT_EQUALS( marginal.domainSize(), gum::Size(2) );
+        TS_ASSERT_EQUALS( marginal.domainSize(), gum::Size( 2 ) );
         // We can add some evidence
         // Index 0 is False, 1 True
         inference.addHardEvidence( asia.idFromName( "Visit to Asia" ), 0 );
         inference.addHardEvidence( asia.idFromName( "Dyspnea" ), 0 );
         const auto& updated_marginal = inference.posterior( id );
         // To prevent warning for unused variable
-        TS_ASSERT_EQUALS( updated_marginal.domainSize(), gum::Size(2) );
+        TS_ASSERT_EQUALS( updated_marginal.domainSize(), gum::Size( 2 ) );
       } catch ( gum::Exception& e ) {
         TS_FAIL( e.errorContent() );
       }
@@ -397,11 +397,11 @@ namespace gum_tests {
 
           // This will write the asia BayesNet in the given file
           writer.write( buff, asia );
-        } catch ( gum::IOError& e) {
-        TS_FAIL( e.errorContent() );
+        } catch ( gum::IOError& e ) {
+          TS_FAIL( e.errorContent() );
           // A gum::IOError will be raised if an error occured
         }
-      } catch ( gum::Exception&e ) {
+      } catch ( gum::Exception& e ) {
         TS_FAIL( e.errorContent() );
       }
     }
