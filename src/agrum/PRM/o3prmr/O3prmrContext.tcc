@@ -34,13 +34,13 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       O3prmrContext<GUM_SCALAR>::O3prmrContext( const std::string& filename ) {
-        m_filename = filename;
+        m_filename   = filename;
         m_mainImport = 0;
       }
 
       template <typename GUM_SCALAR>
       O3prmrContext<GUM_SCALAR>::O3prmrContext( const O3prmrContext& s ) {
-        m_filename = s.m_filename;
+        m_filename   = s.m_filename;
         m_mainImport = s.m_mainImport;
         *this += s;
       }

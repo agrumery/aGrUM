@@ -26,53 +26,53 @@
 
 namespace gum {
 
-  
+
   // Default Constructor
   template <typename GUM_SCALAR>
-  JointTargetedInference<GUM_SCALAR>::JointTargetedInference
-  ( const IBayesNet<GUM_SCALAR>* bn ) :
-    MarginalTargetedInference<GUM_SCALAR> ( bn ) {
+  JointTargetedInference<GUM_SCALAR>::JointTargetedInference(
+      const IBayesNet<GUM_SCALAR>* bn )
+      : MarginalTargetedInference<GUM_SCALAR>( bn ) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if ( this->__bn == nullptr ) {
-      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction ( bn );
+      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction( bn );
     }
     GUM_CONSTRUCTOR( JointTargetedInference );
   }
 
-  
+
   // Destructor
   template <typename GUM_SCALAR>
-  JointTargetedInference<GUM_SCALAR>::~JointTargetedInference () {
+  JointTargetedInference<GUM_SCALAR>::~JointTargetedInference() {
     GUM_DESTRUCTOR( JointTargetedInference );
   }
-  
+
 
   // assigns a new BN to the inference engine
   template <typename GUM_SCALAR>
-  void JointTargetedInference<GUM_SCALAR>::_onBayesNetChanged
-  ( const IBayesNet<GUM_SCALAR>* bn ) {
-    MarginalTargetedInference<GUM_SCALAR>::_onBayesNetChanged ( bn );
-    _onAllJointTargetsErased ();
-    __joint_targets.clear ();
+  void JointTargetedInference<GUM_SCALAR>::_onBayesNetChanged(
+      const IBayesNet<GUM_SCALAR>* bn ) {
+    MarginalTargetedInference<GUM_SCALAR>::_onBayesNetChanged( bn );
+    _onAllJointTargetsErased();
+    __joint_targets.clear();
   }
 
-   
-  
+
   // ##############################################################################
   // Targets
   // ##############################################################################
 
   // return true if target is a nodeset target.
   template <typename GUM_SCALAR>
-  INLINE bool
-  JointTargetedInference<GUM_SCALAR>::isJointTarget( const NodeSet& vars ) const {
+  INLINE bool JointTargetedInference<GUM_SCALAR>::isJointTarget(
+      const NodeSet& vars ) const {
     if ( this->__bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
+      GUM_ERROR( NullElement,
+                 "No Bayes net has been assigned to the "
+                 "inference algorithm" );
 
-    const auto& dag = this->__bn->dag ();
+    const auto& dag = this->__bn->dag();
     for ( const auto var : vars ) {
-      if ( ! dag.exists( var ) ) {
+      if ( !dag.exists( var ) ) {
         GUM_ERROR( UndefinedElement, var << " is not a NodeId in the bn" );
       }
     }
@@ -83,90 +83,95 @@ namespace gum {
 
   // Clear all previously defined single targets
   template <typename GUM_SCALAR>
-  INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllMarginalTargets () {
-    MarginalTargetedInference<GUM_SCALAR>::eraseAllTargets ();
+  INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllMarginalTargets() {
+    MarginalTargetedInference<GUM_SCALAR>::eraseAllTargets();
   }
 
 
   // Clear all previously defined targets (single targets and sets of targets)
   template <typename GUM_SCALAR>
-  INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllJointTargets () {
-    _onAllJointTargetsErased ();
+  INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllJointTargets() {
+    _onAllJointTargetsErased();
     __joint_targets.clear();
-    this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    this->__state =
+        Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
 
 
   // Clear all previously defined targets (single and joint targets)
   template <typename GUM_SCALAR>
-  INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllTargets () {
-    eraseAllMarginalTargets ();
-    eraseAllJointTargets ();
+  INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllTargets() {
+    eraseAllMarginalTargets();
+    eraseAllJointTargets();
   }
 
-  
+
   // Add a set of nodes as a new target
   template <typename GUM_SCALAR>
-  void JointTargetedInference<GUM_SCALAR>::addJointTarget
-  ( const NodeSet& joint_target ) {
+  void JointTargetedInference<GUM_SCALAR>::addJointTarget(
+      const NodeSet& joint_target ) {
     // check if the nodes in the target belong to the Bayesian network
     if ( this->__bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
+      GUM_ERROR( NullElement,
+                 "No Bayes net has been assigned to the "
+                 "inference algorithm" );
 
-    const auto& dag = this->__bn->dag ();
+    const auto& dag = this->__bn->dag();
     for ( const auto node : joint_target ) {
-      if ( ! dag.exists( node ) ) {
-        GUM_ERROR( UndefinedElement, "at least one one in " << joint_target
-                   << " does not belong to the bn" );
+      if ( !dag.exists( node ) ) {
+        GUM_ERROR( UndefinedElement,
+                   "at least one one in " << joint_target
+                                          << " does not belong to the bn" );
       }
     }
 
     // check that the joint_target set does not contain the new target
-    if ( ! __joint_targets.contains ( joint_target ) ) {
-      __joint_targets.insert ( joint_target );
-      _onJointTargetAdded ( joint_target );
-      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    if ( !__joint_targets.contains( joint_target ) ) {
+      __joint_targets.insert( joint_target );
+      _onJointTargetAdded( joint_target );
+      this->__state =
+          Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
-  
+
   // removes an existing set target
   template <typename GUM_SCALAR>
-  void
-  JointTargetedInference<GUM_SCALAR>::eraseJointTarget
-  ( const NodeSet& joint_target ) {
+  void JointTargetedInference<GUM_SCALAR>::eraseJointTarget(
+      const NodeSet& joint_target ) {
     // check if the nodes in the target belong to the Bayesian network
     if ( this->__bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
+      GUM_ERROR( NullElement,
+                 "No Bayes net has been assigned to the "
+                 "inference algorithm" );
 
-    const auto& dag = this->__bn->dag ();
+    const auto& dag = this->__bn->dag();
     for ( const auto node : joint_target ) {
-      if ( ! dag.exists( node ) ) {
-        GUM_ERROR( UndefinedElement, "at least one one in " << joint_target
-                   << " does not belong to the bn" );
+      if ( !dag.exists( node ) ) {
+        GUM_ERROR( UndefinedElement,
+                   "at least one one in " << joint_target
+                                          << " does not belong to the bn" );
       }
     }
 
     // check that the joint_target set does not contain the new target
-    if ( __joint_targets.contains ( joint_target ) ) {
-      _onJointTargetErased ( joint_target );
-      __joint_targets.erase ( joint_target );
-      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    if ( __joint_targets.contains( joint_target ) ) {
+      _onJointTargetErased( joint_target );
+      __joint_targets.erase( joint_target );
+      this->__state =
+          Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
-  
-  
+
+
   /// returns the list of target sets
   template <typename GUM_SCALAR>
   INLINE const Set<NodeSet>&
-  JointTargetedInference<GUM_SCALAR>::jointTargets () const noexcept {
+  JointTargetedInference<GUM_SCALAR>::jointTargets() const noexcept {
     return __joint_targets;
   }
 
 
-  
   // ##############################################################################
   // Inference
   // ##############################################################################
@@ -175,17 +180,16 @@ namespace gum {
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
   JointTargetedInference<GUM_SCALAR>::jointPosterior( const NodeSet& vars ) {
-    if ( ! __joint_targets.contains ( vars ) ) {
-        GUM_ERROR( UndefinedElement, vars << " is not a joint target" );
+    if ( !__joint_targets.contains( vars ) ) {
+      GUM_ERROR( UndefinedElement, vars << " is not a joint target" );
     }
 
-    if ( ! this->isDone () ) {
+    if ( !this->isDone() ) {
       this->makeInference();
     }
 
-    return _jointPosterior ( vars );
+    return _jointPosterior( vars );
   }
 
 
 } /* namespace gum */
-

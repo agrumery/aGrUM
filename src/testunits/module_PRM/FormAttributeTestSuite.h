@@ -45,7 +45,7 @@ namespace gum_tests {
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract;
-      __boolean = gum::prm::PRMType<double>::boolean();
+      __boolean           = gum::prm::PRMType<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );
       state.addLabel( "NOK" );
@@ -176,7 +176,7 @@ namespace gum_tests {
     /// @{
     void testClassConstructor() {
       // Arrange
-      std::string name = "my_state";
+      std::string name   = "my_state";
       PRMAttribute* attr = nullptr;
       // Act & Assert
       try {
@@ -205,7 +205,7 @@ namespace gum_tests {
       // Arrange
       PRMAttribute attr( *__class, "attr", *__boolean );
       const auto& attr_const = attr;
-      const auto& expected = *__boolean;
+      const auto& expected   = *__boolean;
       // Act
       const auto& actual = attr_const.type();
       // Assert

@@ -27,10 +27,10 @@
 
 #include <cmath>
 
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
-#include <agrum/BN/inference/jointTargetedInference.h>
 #include <agrum/BN/inference/evidenceInference.h>
+#include <agrum/BN/inference/jointTargetedInference.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 namespace gum {
 
@@ -52,8 +52,6 @@ namespace gum {
   }
 
 
-
-
   /** @brief type of algorithm for determining the relevant potentials for
    * combinations using some d-separation analysis
    *
@@ -70,7 +68,7 @@ namespace gum {
                                   // potentials
   };
 
-  
+
   /** @brief type of algorithm to determine barren nodes
    *
    * When constructing messages from one clique to its neighbor, we can
@@ -88,7 +86,6 @@ namespace gum {
   };
 
 
-
   /**
    * @class LazyPropagation lazyPropagation.h
    * <agrum/BN/inference/lazyPropagation.h>
@@ -97,28 +94,27 @@ namespace gum {
    * @ingroup bn_inference
    */
   template <typename GUM_SCALAR>
-  class LazyPropagation :
-    public JointTargetedInference<GUM_SCALAR>,
-    public EvidenceInference<GUM_SCALAR> {
+  class LazyPropagation : public JointTargetedInference<GUM_SCALAR>,
+                          public EvidenceInference<GUM_SCALAR> {
     public:
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-    LazyPropagation ( const IBayesNet<GUM_SCALAR>* BN,
-                      FindRelevantPotentialsType =
-                      FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
-                      FindBarrenNodesType = FIND_BARREN_NODES,
-                      bool use_binary_join_tree = true );
+    LazyPropagation(
+        const IBayesNet<GUM_SCALAR>* BN,
+        FindRelevantPotentialsType =
+            FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
+        FindBarrenNodesType       = FIND_BARREN_NODES,
+        bool use_binary_join_tree = true );
 
     /// destructor
-    virtual ~LazyPropagation ();
+    virtual ~LazyPropagation();
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -126,7 +122,7 @@ namespace gum {
     /// @{
 
     /// use a new triangulation algorithm
-    void setTriangulation ( const Triangulation& new_triangulation );
+    void setTriangulation( const Triangulation& new_triangulation );
 
     /// sets how we determine the relevant potentials to combine
     /** When a clique sends a message to a separator, it first constitute the
@@ -145,17 +141,15 @@ namespace gum {
      * speeds-up inference. However, there are some cases in which we do not
      * want to remove barren nodes, typically when we want to answer queries
      * such as Most Probable Explanations (MPE). */
-    void setFindBarrenNodesType ( FindBarrenNodesType type );
+    void setFindBarrenNodesType( FindBarrenNodesType type );
 
     /// sets the operator for performing the projections
-    void setProjectionFunction ( Potential<GUM_SCALAR>* (* proj)
-                                 ( const Potential<GUM_SCALAR>&,
-                                   const Set<const DiscreteVariable*>& ) );
+    void setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
+        const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
 
     /// sets the operator for performing the combinations
-    void setCombinationFunction ( Potential<GUM_SCALAR>* (* comb)
-                                  ( const Potential<GUM_SCALAR>&,
-                                    const Potential<GUM_SCALAR>& ) );
+    void setCombinationFunction( Potential<GUM_SCALAR>* ( *comb )(
+        const Potential<GUM_SCALAR>&, const Potential<GUM_SCALAR>&));
 
     /// returns the current join tree used
     /** Lazy Propagation does not use a junction tree but a binary join tree
@@ -168,7 +162,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Information Theory related functions
     // ############################################################################
@@ -197,22 +191,20 @@ namespace gum {
      * @throw OperationNotAllowed in these cases
      */
     GUM_SCALAR VI( NodeId X, NodeId Y );
-    
+
     /// @}
-    
-    
-  protected:
+
+
+    protected:
     /// fired after a new evidence is inserted
-    virtual void _onEvidenceAdded ( const NodeId id,
-                                    bool isHardEvidence );
+    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence );
 
     /// fired before an evidence is removed
-    virtual void _onEvidenceErased ( const NodeId id,
-                                     bool isHardEvidence );
+    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence );
 
     /// fired before all the evidence are erased
-    virtual void _onAllEvidenceErased ( bool contains_hard_evidence );
-    
+    virtual void _onAllEvidenceErased( bool contains_hard_evidence );
+
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
      *
@@ -220,49 +212,48 @@ namespace gum {
      * @param hasChangedSoftHard true if the evidence has changed from Soft to
      * Hard or from Hard to Soft
      */
-    virtual void _onEvidenceChanged( const NodeId id,
-                                     bool hasChangedSoftHard );
+    virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard );
 
     /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded ( const NodeId id );
+    virtual void _onMarginalTargetAdded( const NodeId id );
 
     /// fired before a single target is removed
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased ( const NodeId id );
+    virtual void _onMarginalTargetErased( const NodeId id );
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetAdded ( const NodeSet& set );
+    virtual void _onJointTargetAdded( const NodeSet& set );
 
     /// fired before a joint target is removed
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetErased ( const NodeSet& set );
+    virtual void _onJointTargetErased( const NodeSet& set );
 
     /// fired after all the nodes of the BN are added as single targets
-    virtual void _onAllMarginalTargetsAdded ();
+    virtual void _onAllMarginalTargetsAdded();
 
     /// fired before a all the single targets are removed
-    virtual void _onAllMarginalTargetsErased ();
+    virtual void _onAllMarginalTargetsErased();
 
     /// fired before a all the joint targets are removed
-    virtual void _onAllJointTargetsErased ();
+    virtual void _onAllJointTargetsErased();
 
     /// fired before a all single and joint_targets are removed
-    virtual void _onAllTargetsErased ();
-    
+    virtual void _onAllTargetsErased();
+
     /// prepares inference when the latter is in UnpreparedStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _prepareInferenceStructure and
      * _makeInference. */
-    virtual void _prepareInferenceStructure ();
+    virtual void _prepareInferenceStructure();
 
     /// prepares inference when the latter is in OutdatedPotentials state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _prepareInferenceStructure and
      * _makeInference. */
-    virtual void _updateInferencePotentials ();
-    
+    virtual void _updateInferencePotentials();
+
     /// called when the inference has to be performed effectively
     /** Once the inference is done, _fillPosterior can be called. */
     virtual void _makeInference();
@@ -277,42 +268,41 @@ namespace gum {
      * looked for. */
     virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set );
 
-    
 
-  private:
+    private:
     typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
     typedef SetIteratorSafe<const Potential<GUM_SCALAR>*>
         __PotentialSetIterator;
-    
-    
+
+
     /// the type of relevant potential finding algorithm to be used
     FindRelevantPotentialsType __find_relevant_potential_type;
-    
+
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void ( LazyPropagation<GUM_SCALAR>::*__findRelevantPotentials )
-    ( Set<const Potential<GUM_SCALAR>*>& pot_list,
-      Set<const DiscreteVariable*>& kept_vars );
+    void ( LazyPropagation<GUM_SCALAR>::*__findRelevantPotentials )(
+        Set<const Potential<GUM_SCALAR>*>& pot_list,
+        Set<const DiscreteVariable*>& kept_vars );
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType __barren_nodes_type;
 
     /// the operator for performing the projections
-    Potential<GUM_SCALAR>* (* __projection_op )
-      ( const Potential<GUM_SCALAR>&,
-        const Set<const DiscreteVariable*>& ) { LPNewprojPotential };
-    
+    Potential<GUM_SCALAR>* ( *__projection_op )(
+        const Potential<GUM_SCALAR>&,
+        const Set<const DiscreteVariable*>& ){LPNewprojPotential};
+
     /// the operator for performing the combinations
-    Potential<GUM_SCALAR>* (* __combination_op )
-      ( const Potential<GUM_SCALAR>&,
-        const Potential<GUM_SCALAR>& ) { LPNewmultiPotential };
-    
+    Potential<GUM_SCALAR>* ( *__combination_op )(
+        const Potential<GUM_SCALAR>&,
+        const Potential<GUM_SCALAR>& ){LPNewmultiPotential};
+
     /// the triangulation class creating the junction tree used for inference
     Triangulation* __triangulation;
 
     /** @brief indicates whether we should transform junction trees into
      * binary join trees */
-    bool __use_binary_join_tree { true };
+    bool __use_binary_join_tree{true};
 
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
@@ -323,13 +313,13 @@ namespace gum {
     UndiGraph __graph;
 
     /// the junction tree used to answer the last inference query
-    JoinTree* __JT { nullptr };
+    JoinTree* __JT{nullptr};
 
     /// indicates whether a new join tree is needed for the next inference
     /** when modifying the set of hard evidence, we can determine that
      * the current JT is no more appropriate for inference. This variable
      * enables us to keep track of this. */
-    bool __is_new_jt_needed { true };
+    bool __is_new_jt_needed{true};
 
     /// a clique node used as a root in each connected component of __JT
     /** For usual probabilistic inference, roots is useless. This is useful
@@ -380,16 +370,20 @@ namespace gum {
      * @TODO remove this constant and insert the notion of a constant into
      * potentials/multidim arrays */
     NodeProperty<GUM_SCALAR> __constants;
-   
-    /// indicates whether a message (from one clique to another) has been computed
+
+    /// indicates whether a message (from one clique to another) has been
+    /// computed
     /** Here, all the messages, computed or not, are put into the property, only
      * the Boolean makes the difference between messages computed and those that
      * were not computed */
     ArcProperty<bool> __messages_computed;
 
-    /// the soft evidence stored in the cliques per their assigned node in the BN
-    /** This variable is useful for method _updateInferencePotentials: it enables
-     * to know which soft evidence should be removed/added into the cliques of the
+    /// the soft evidence stored in the cliques per their assigned node in the
+    /// BN
+    /** This variable is useful for method _updateInferencePotentials: it
+     * enables
+     * to know which soft evidence should be removed/added into the cliques of
+     * the
      * join tree.
      * @warning These potentials are not owned by LazyPropagation, they are only
      * referenced by it. Only the cliques that contain evidence are
@@ -406,79 +400,74 @@ namespace gum {
     /// the hard evidence nodes which were projected in CPTs
     NodeSet __hard_ev_nodes;
 
-    /// the possible types of evidence changes 
+    /// the possible types of evidence changes
     enum EvidenceChangeType {
       EVIDENCE_ADDED,
       EVIDENCE_ERASED,
       EVIDENCE_MODIFIED
     };
-    
+
     /** @brief indicates which nodes of the BN have evidence that changed
      * since the last inference */
     NodeProperty<EvidenceChangeType> __evidence_changes;
 
     /// for comparisons with 1 - epsilon
-    const GUM_SCALAR __1_minus_epsilon { GUM_SCALAR ( 1.0 - 1e-6 ) };
-
+    const GUM_SCALAR __1_minus_epsilon{GUM_SCALAR( 1.0 - 1e-6 )};
 
 
     /// check whether a new join tree is really needed for the next inference
-    bool __isNewJTNeeded () const;
+    bool __isNewJTNeeded() const;
 
     /// create a new junction tree as well as its related data structures
-    void __createNewJT ();
+    void __createNewJT();
 
     /// invalidate all the messages sent from a given clique
-    void __diffuseMessageInvalidations ( const NodeId from,
-                                         const NodeId to,
-                                         NodeSet& cliques_invalidated );
+    void __diffuseMessageInvalidations( const NodeId from,
+                                        const NodeId to,
+                                        NodeSet& cliques_invalidated );
 
     /// invalidate all messages, posteriors and created potentials
-    void __invalidateAllMessages ();
+    void __invalidateAllMessages();
 
     /// compute a root for each connected component of __JT
-    void __computeJoinTreeRoots ();
+    void __computeJoinTreeRoots();
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation(
-        __PotentialSet& pot_list,
-        Set<const DiscreteVariable*>& kept_vars );
+        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation2(
-        __PotentialSet& pot_list,
-        Set<const DiscreteVariable*>& kept_vars );
+        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation3(
-        __PotentialSet& pot_list,
-        Set<const DiscreteVariable*>& kept_vars );
+        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsGetAll
-    ( __PotentialSet& pot_list,
-      Set<const DiscreteVariable*>& kept_vars );
-    
+    void
+    __findRelevantPotentialsGetAll( __PotentialSet& pot_list,
+                                    Set<const DiscreteVariable*>& kept_vars );
+
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsXX
-    ( __PotentialSet& pot_list,
-      Set<const DiscreteVariable*>& kept_vars );
+    void __findRelevantPotentialsXX( __PotentialSet& pot_list,
+                                     Set<const DiscreteVariable*>& kept_vars );
 
     // remove barren variables and return the newly created projected potentials
     __PotentialSet
-    __removeBarrenVariables ( __PotentialSet& pot_list,
-                              Set<const DiscreteVariable*>& del_vars );
-    
+    __removeBarrenVariables( __PotentialSet& pot_list,
+                             Set<const DiscreteVariable*>& del_vars );
+
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
     __PotentialSet __marginalizeOut( __PotentialSet pot_list,
@@ -486,26 +475,23 @@ namespace gum {
                                      Set<const DiscreteVariable*>& kept_vars );
 
     /// creates the message sent by clique from_id to clique to_id
-    void __produceMessage( const NodeId from_id,
-                           const NodeId to_id );
+    void __produceMessage( const NodeId from_id, const NodeId to_id );
 
     /// actually perform the collect phase
-    void __collectMessage( const NodeId id,
-                           const NodeId from );
+    void __collectMessage( const NodeId id, const NodeId from );
 
     /// returns a fresh potential equal to P(1st arg,evidence)
-    Potential<GUM_SCALAR>* __computeJointPosterior ( const NodeId id );
-    
+    Potential<GUM_SCALAR>* __computeJointPosterior( const NodeId id );
+
     /// returns a fresh potential equal to P(1st arg,evidence)
-    Potential<GUM_SCALAR>* __computeJointPosterior ( const NodeSet& set );
-    
+    Potential<GUM_SCALAR>* __computeJointPosterior( const NodeSet& set );
+
     /// avoid copy constructors
     LazyPropagation( const LazyPropagation<GUM_SCALAR>& );
 
     /// avoid copy operators
     LazyPropagation<GUM_SCALAR>&
     operator=( const LazyPropagation<GUM_SCALAR>& );
-    
   };
 
 

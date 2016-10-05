@@ -44,7 +44,7 @@ namespace gum {
       , __similarityThreshold( similarityThreshold ) {
     GUM_CONSTRUCTOR( LeafAggregator )
     __initialContext = new FusionContext<true>( nullptr );
-    __needsUpdate = false;
+    __needsUpdate    = false;
   }
 
   // ============================================================================
@@ -172,7 +172,7 @@ namespace gum {
         bag.clear();
         if ( ( *fusIter )->updateAllAssociatedLeaves() )
           __removeContext( fusIter.pos() + 1 );
-        bag = ( *fusIter )->associatedPairs();
+        bag     = ( *fusIter )->associatedPairs();
         curLeaf = ( *fusIter )->leaf();
         continue;
       }
@@ -275,12 +275,12 @@ namespace gum {
   void LeafAggregator::update() {
 
     LeafPair* nextPair = __initialContext->top();
-    pair_iterator pb = __initialContext->beginPairs();
-    pair_iterator pe = __initialContext->endPairs();
+    pair_iterator pb   = __initialContext->beginPairs();
+    pair_iterator pe   = __initialContext->endPairs();
     if ( !__fusionSeq.empty() ) {
       nextPair = __fusionSeq.back()->top();
-      pb = __fusionSeq.back()->beginPairs();
-      pe = __fusionSeq.back()->endPairs();
+      pb       = __fusionSeq.back()->beginPairs();
+      pe       = __fusionSeq.back()->endPairs();
     }
 
 
@@ -304,8 +304,8 @@ namespace gum {
 
       __fusionSeq.insert( newContext );
       nextPair = __fusionSeq.back()->top();
-      pb = __fusionSeq.back()->beginPairs();
-      pe = __fusionSeq.back()->endPairs();
+      pb       = __fusionSeq.back()->beginPairs();
+      pe       = __fusionSeq.back()->endPairs();
     }
     __needsUpdate = false;
   }

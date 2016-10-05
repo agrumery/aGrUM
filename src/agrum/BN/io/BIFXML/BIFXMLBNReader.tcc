@@ -33,7 +33,7 @@ namespace gum {
                                               const std::string& filePath )
       : BNReader<GUM_SCALAR>( bn, filePath ) {
     GUM_CONSTRUCTOR( BIFXMLBNReader );
-    __bn = bn;
+    __bn       = bn;
     __filePath = filePath;
   }
 
@@ -122,7 +122,7 @@ namespace gum {
 
       // Getting variable name
       ticpp::Element* varNameElement = currentVar->FirstChildElement( "NAME" );
-      std::string varName = varNameElement->GetTextOrDefault( "" );
+      std::string varName            = varNameElement->GetTextOrDefault( "" );
 
       // Getting variable description
       ticpp::Element* varDescrElement =
@@ -189,7 +189,7 @@ namespace gum {
       for ( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end();
             ++givenIte ) {
         std::string parentNode = givenIte->GetTextOrDefault( "" );
-        NodeId parentId = __bn->idFromName( parentNode );
+        NodeId parentId        = __bn->idFromName( parentNode );
         parentList.pushBack( parentId );
       }
 

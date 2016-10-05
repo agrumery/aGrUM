@@ -324,7 +324,7 @@ namespace gum {
         }
 
         if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
-          auto& attr = static_cast<PRMAttribute<GUM_SCALAR>&>( elt );
+          auto& attr       = static_cast<PRMAttribute<GUM_SCALAR>&>( elt );
           auto& super_attr = static_cast<const PRMAttribute<GUM_SCALAR>&>(
               super().get( name ) );
           attr.copyCpf( *__bijection, super_attr );
@@ -525,8 +525,9 @@ namespace gum {
 
       if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) ||
            ( head->elt_type() == PRMClassElement<GUM_SCALAR>::prm_refslot ) ) {
-        GUM_ERROR( OperationNotAllowed, "a PRMReferenceSlot<GUM_SCALAR> can "
-                                        "not on neither side of an arc" );
+        GUM_ERROR( OperationNotAllowed,
+                   "a PRMReferenceSlot<GUM_SCALAR> can "
+                   "not on neither side of an arc" );
       }
 
       if ( ( tail->elt_type() == PRMClassElement<GUM_SCALAR>::prm_slotchain ) &&
@@ -575,8 +576,8 @@ namespace gum {
     PRMClass<GUM_SCALAR>::__checkInterface( PRMClassElement<GUM_SCALAR>* elt,
                                             PRMInterface<GUM_SCALAR>* i ) {
       const auto& i_elt = i->get( elt->name() );
-      bool is_attr = PRMClassElement<GUM_SCALAR>::isAttribute( i_elt );
-      bool is_agg = PRMClassElement<GUM_SCALAR>::isAggregate( i_elt );
+      bool is_attr      = PRMClassElement<GUM_SCALAR>::isAttribute( i_elt );
+      bool is_agg       = PRMClassElement<GUM_SCALAR>::isAggregate( i_elt );
 
       if ( !( is_attr || is_agg ) ) {
         GUM_ERROR( OperationNotAllowed,
@@ -734,7 +735,7 @@ namespace gum {
     void PRMClass<GUM_SCALAR>::__addCastDescendants(
         PRMClassElement<GUM_SCALAR>* attr ) {
 
-      auto parent = attr;
+      auto parent                     = attr;
       PRMAttribute<GUM_SCALAR>* child = 0;
 
       while ( parent->type().isSubType() ) {
@@ -861,8 +862,8 @@ namespace gum {
         __addCastDescendants( overloader, overloaded );
       } else {
         overloader->setId( overloaded->id() );
-        __nodeIdMap[overloader->id()] = overloader;
-        __nameMap[overloader->name()] = overloader;
+        __nodeIdMap[overloader->id()]     = overloader;
+        __nameMap[overloader->name()]     = overloader;
         __nameMap[overloader->safeName()] = overloader;
         __attributes.erase( overloaded );
         __attributes.insert( overloader );
@@ -881,7 +882,7 @@ namespace gum {
       __nameMap[overloader->name()] = overloader;
       __nameMap.insert( overloader->safeName(), overloader );
       __referenceSlots.insert( overloader );
-      PRMSlotChain<GUM_SCALAR>* sc = 0;
+      PRMSlotChain<GUM_SCALAR>* sc      = 0;
       PRMReferenceSlot<GUM_SCALAR>* ref = 0;
       PRMClassElement<GUM_SCALAR>* next = 0;
       std::vector<PRMSlotChain<GUM_SCALAR> *> toRemove, toAdd;
@@ -899,7 +900,7 @@ namespace gum {
           auto elt = ++( slotchain->chain().begin() );
 
           while ( elt != slotchain->chain().end() ) {
-            ref = static_cast<PRMReferenceSlot<GUM_SCALAR>*>( seq.back() );
+            ref  = static_cast<PRMReferenceSlot<GUM_SCALAR>*>( seq.back() );
             next = &( ref->slotType().get( ( *elt )->name() ) );
             seq.insert( next );
             ++elt;
@@ -929,7 +930,7 @@ namespace gum {
             for ( const auto child : this->dag().children( sc->id() ) ) {
               auto& elt = get( child );
               if ( PRMClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
-                auto& attr = static_cast<PRMAttribute<GUM_SCALAR>&>( elt );
+                auto& attr     = static_cast<PRMAttribute<GUM_SCALAR>&>( elt );
                 auto& old_type = slotchain->lastElt().type().variable();
                 auto& new_type = sc->lastElt().type().variable();
                 attr.swap( old_type, new_type );
@@ -973,8 +974,8 @@ namespace gum {
         PRMParameter<GUM_SCALAR>* overloader,
         PRMParameter<GUM_SCALAR>* overloaded ) {
       overloader->setId( overloaded->id() );
-      __nodeIdMap[overloader->id()] = overloader;
-      __nameMap[overloader->name()] = overloader;
+      __nodeIdMap[overloader->id()]     = overloader;
+      __nameMap[overloader->name()]     = overloader;
       __nameMap[overloader->safeName()] = overloader;
       __parameters.erase( overloaded );
       __parameters.insert( overloader );
@@ -986,7 +987,7 @@ namespace gum {
         PRMAttribute<GUM_SCALAR>* start, PRMAttribute<GUM_SCALAR>* end ) {
 
       PRMAttribute<GUM_SCALAR>* parent = start;
-      PRMAttribute<GUM_SCALAR>* child = 0;
+      PRMAttribute<GUM_SCALAR>* child  = 0;
 
       while ( parent->type().superType() != end->type() ) {
         child = parent->getCastDescendant();
@@ -1139,7 +1140,7 @@ namespace gum {
                       const PRMReferenceSlot<GUM_SCALAR>& ref,
                       Idx d ) {
         prefix = s + ref.name() + ".";
-        c = static_cast<const PRMClass<GUM_SCALAR>*>( &( ref.slotType() ) );
+        c     = static_cast<const PRMClass<GUM_SCALAR>*>( &( ref.slotType() ) );
         depth = d;
       }
     };

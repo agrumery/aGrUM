@@ -263,15 +263,15 @@ namespace gum {
      */
     void normalizeAsCPT() const;
 
-      /**
-       * @brief create a new potential multiplied by v from *this
-       */
-      const Potential<GUM_SCALAR>& scale( GUM_SCALAR v ) const;
+    /**
+     * @brief create a new potential multiplied by v from *this
+     */
+    const Potential<GUM_SCALAR>& scale( GUM_SCALAR v ) const;
 
-      /**
-      * @brief create a new potential added with v from *this
-      */
-      const Potential<GUM_SCALAR>& translate( GUM_SCALAR v ) const;
+    /**
+    * @brief create a new potential added with v from *this
+    */
+    const Potential<GUM_SCALAR>& translate( GUM_SCALAR v ) const;
 
     ///@}
 
@@ -279,7 +279,6 @@ namespace gum {
     /// @name Potential algebra operators
     // ========================================================================
     ///@{
-
 
 
     /// the function to be used to add two Potentials

@@ -97,7 +97,7 @@ namespace gum {
         PRMFactory<GUM_SCALAR>& f,
         const std::string& type,
         std::vector<typename LayerGenerator<GUM_SCALAR>::MyData>& l ) {
-      Size size = 0;
+      Size size      = 0;
       GUM_SCALAR sum = 0.0;
       Set<std::string> i;
 
@@ -153,7 +153,7 @@ namespace gum {
                 sum += val[idx];
               }
 
-              for ( size_t idx = 0; idx < getDomainSize(); ++idx )
+              for ( size_t idx   = 0; idx < getDomainSize(); ++idx )
                 cpf[norms + idx] = val[idx] / sum;
             }
 
@@ -251,7 +251,7 @@ namespace gum {
                   chain.str(), o[lvl - 1][std::rand() % o[lvl - 1].size()] );
 
             while ( ref2add.size() > getMaxParents() ) {
-              idx = std::rand() % ref2add.size();
+              idx          = std::rand() % ref2add.size();
               ref2add[idx] = ref2add.back();
               ref2add.pop_back();
             }
@@ -292,7 +292,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE LayerGenerator<GUM_SCALAR>& LayerGenerator<GUM_SCALAR>::
     operator=( const LayerGenerator<GUM_SCALAR>& source ) {
-      __layers = source.__layers;
+      __layers      = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;
       return *this;

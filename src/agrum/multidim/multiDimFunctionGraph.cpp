@@ -29,7 +29,6 @@
 
 namespace gum {
 
-
   // template class MultiDimFunctionGraph<float>;
   // template class MultiDimFunctionGraph<double>;
 

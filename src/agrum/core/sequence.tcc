@@ -123,7 +123,7 @@ namespace gum {
   INLINE SequenceIteratorSafe<Key>& SequenceIteratorSafe<Key>::
   operator=( const SequenceIteratorSafe<Key>& source ) noexcept {
     __iterator = source.__iterator;
-    __seq = source.__seq;
+    __seq      = source.__seq;
     return *this;
   }
 
@@ -132,7 +132,7 @@ namespace gum {
   INLINE SequenceIteratorSafe<Key>& SequenceIteratorSafe<Key>::
   operator=( SequenceIteratorSafe<Key>&& source ) noexcept {
     __iterator = source.__iterator;
-    __seq = source.__seq;
+    __seq      = source.__seq;
     return *this;
   }
 
@@ -485,7 +485,7 @@ namespace gum {
     if ( iter.pos() >= size() ) return;
 
     // erase the element
-    Idx pos = iter.pos();
+    Idx pos  = iter.pos();
     Key* key = __v[pos];
     __v.erase( __v.begin() + pos );
 

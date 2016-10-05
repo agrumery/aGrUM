@@ -87,7 +87,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 5, "e" ) );
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 6, "f" ) );
 
-      int nb = 7;
+      int nb          = 7;
       std::string str = "kkk";
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( nb, str ) );
       TS_ASSERT( table.exists( 1 ) );
@@ -721,7 +721,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( k, 21 );
 
         gum::HashTableConstIterator<int, std::string> iter1 = table.cbegin();
-        gum::HashTableIterator<int, std::string> iter2 = table.begin();
+        gum::HashTableIterator<int, std::string> iter2      = table.begin();
         gum::HashTableConstIteratorSafe<int, std::string> iter3 =
             table.cbeginSafe();  // safe iterator needed here
         gum::HashTableIteratorSafe<int, std::string> iter4 =

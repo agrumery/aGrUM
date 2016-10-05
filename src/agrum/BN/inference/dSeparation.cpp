@@ -27,11 +27,9 @@
 #include <agrum/BN/inference/dSeparation.h>
 #include <agrum/core/list.h>
 
-
 #ifdef GUM_NO_INLINE
 #include <agrum/BN/inference/dSeparation.inl>
 #endif  // GUM_NO_INLINE
-
 
 namespace gum {
 
@@ -83,7 +81,7 @@ namespace gum {
     // the ball to
     while ( !nodes_to_visit.empty() ) {
       // get the next node to visit
-      const NodeId node = nodes_to_visit.front().first;
+      const NodeId node    = nodes_to_visit.front().first;
       const bool direction = nodes_to_visit.front().second;
       nodes_to_visit.popFront();
 
@@ -137,6 +135,5 @@ namespace gum {
       }
     }
   }
-
 
 } /* namespace gum */

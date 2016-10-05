@@ -28,7 +28,7 @@ namespace gum {
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
         const Potential<GUM_SCALAR>& source ) {
       const MultiDimImplementation<GUM_SCALAR>* impl = source.content();
-      Potential<GUM_SCALAR>* p = 0;
+      Potential<GUM_SCALAR>* p                       = 0;
 
       try {
         if ( dynamic_cast<const MultiDimReadOnly<GUM_SCALAR>*>( impl ) ) {

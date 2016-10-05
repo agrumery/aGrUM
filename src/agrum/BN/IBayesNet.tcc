@@ -94,7 +94,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE std::string IBayesNet<GUM_SCALAR>::toString( void ) const {
-    Size param = 0;
+    Size param   = 0;
     double dSize = log10DomainSize();
 
     for ( auto node : nodes() )

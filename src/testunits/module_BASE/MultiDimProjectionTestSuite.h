@@ -308,7 +308,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -363,7 +363,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -416,7 +416,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -469,7 +469,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -522,7 +522,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> tt1;
@@ -578,7 +578,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* t1 = new gum::MultiDimArray<float*>;
@@ -635,7 +635,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* tt1 = new gum::MultiDimArray<float*>;
@@ -698,7 +698,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -721,7 +721,7 @@ namespace gum_tests {
       del_vars.insert( vars[1] );
 
       gum::MultiDimImplementation<float>* t2 = projectMax( t1, del_vars );
-      gum::MultiDimArray<float>* t3 = proj( t1, del_vars, 0.0f );
+      gum::MultiDimArray<float>* t3          = proj( t1, del_vars, 0.0f );
       TS_ASSERT( *t2 == *t3 );
 
       delete t2;
@@ -751,7 +751,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::Potential<float> t1;
@@ -812,7 +812,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* t1 = new gum::MultiDimArray<float*>;
@@ -835,7 +835,7 @@ namespace gum_tests {
       del_vars.insert( vars[1] );
 
       gum::MultiDimImplementation<float*>* t2 = projectMax( *t1, del_vars );
-      gum::MultiDimArray<float*>* t3 = proj( *t1, del_vars, 0.0f );
+      gum::MultiDimArray<float*>* t3          = proj( *t1, del_vars, 0.0f );
 
       TS_ASSERT( equal( *t2, *t3 ) );
 
@@ -868,7 +868,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 4 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 4 );
       }
 
       gum::Potential<float*>* t1 = new gum::Potential<float*>;
@@ -932,7 +932,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::Potential<float> t1;

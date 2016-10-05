@@ -71,7 +71,7 @@ namespace gum {
           dynamic_cast<const LinearApproximationPolicy<GUM_SCALAR>*>( ap );
 
       GUM_SCALAR newHighLimit = _lowLimit + lap->lowLimit();
-      GUM_SCALAR newLowLimit = _lowLimit + lap->lowLimit();
+      GUM_SCALAR newLowLimit  = _lowLimit + lap->lowLimit();
 
       GUM_SCALAR newVal = _lowLimit + lap->highLimit();
 
@@ -103,7 +103,7 @@ namespace gum {
           dynamic_cast<const LinearApproximationPolicy<GUM_SCALAR>*>( ap );
 
       GUM_SCALAR newHighLimit = _lowLimit - lap->lowLimit();
-      GUM_SCALAR newLowLimit = _lowLimit - lap->lowLimit();
+      GUM_SCALAR newLowLimit  = _lowLimit - lap->lowLimit();
 
       GUM_SCALAR newVal = _lowLimit - lap->highLimit();
 
@@ -135,7 +135,7 @@ namespace gum {
           dynamic_cast<const LinearApproximationPolicy<GUM_SCALAR>*>( ap );
 
       GUM_SCALAR newHighLimit = _lowLimit * lap->lowLimit();
-      GUM_SCALAR newLowLimit = _lowLimit * lap->lowLimit();
+      GUM_SCALAR newLowLimit  = _lowLimit * lap->lowLimit();
 
       GUM_SCALAR newVal = _lowLimit * lap->highLimit();
 
@@ -167,7 +167,7 @@ namespace gum {
           dynamic_cast<const LinearApproximationPolicy<GUM_SCALAR>*>( ap );
 
       GUM_SCALAR newHighLimit = _lowLimit / lap->lowLimit();
-      GUM_SCALAR newLowLimit = _lowLimit / lap->lowLimit();
+      GUM_SCALAR newLowLimit  = _lowLimit / lap->lowLimit();
 
       GUM_SCALAR newVal = _lowLimit / lap->highLimit();
 
@@ -331,7 +331,7 @@ namespace gum {
                  "Asked low value is higher than asked high value" );
     }
 
-    _lowLimit = newLowLimit;
+    _lowLimit  = newLowLimit;
     _highLimit = newHighLimit;
     _computeNbInterval();
   }

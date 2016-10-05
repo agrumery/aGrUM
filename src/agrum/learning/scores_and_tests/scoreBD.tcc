@@ -145,7 +145,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
       const Size targets_modal = Size( N_ijk.size() );
-      double score = 0;
+      double score             = 0;
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
@@ -181,7 +181,7 @@ namespace gum {
         // gammalog2 ( N' ) - gammalog2 ( N + N' )
         // + sum_k=1^ri { gammlog2 ( N_i + N'_i ) - gammalog2 ( N'_i ) }
 
-        double N = 0;
+        double N       = 0;
         double N_prime = 0;
         for ( Idx k = 0; k < targets_modal; ++k ) {
           score += __gammalog2( N_ijk[k] + N_prime_ijk[k] ) -

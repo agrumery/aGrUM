@@ -27,14 +27,11 @@
 #include <agrum/core/list.h>
 #include <agrum/core/sequence.h>
 
-
 #ifdef GUM_NO_INLINE
 #include <agrum/BN/inference/barrenNodesFinder.inl>
 #endif  // GUM_NO_INLINE
 
-
 namespace gum {
-
 
   /// returns the set of barren nodes in the messages sent in a junction tree
   ArcProperty<NodeSet>
@@ -66,7 +63,6 @@ namespace gum {
         }
       }
     }
-
 
     // create the data structure that will contain the result of the
     // method. By default, we assume that, for each pair of adjacent cliques,
@@ -100,7 +96,6 @@ namespace gum {
                      std::move( non_barren2 ) );
     }
 
-
     // for each node in the DAG, indicate which are the arcs in the result
     // structure whose separator contain it: the separators are actually the
     // targets of the queries.
@@ -118,7 +113,6 @@ namespace gum {
         }
       }
     }
-
 
     // To determine the set of non-barren nodes w.r.t. a given single node
     // query, we rely on the fact that those are precisely all the ancestors of
@@ -168,7 +162,7 @@ namespace gum {
         nodes_to_mark.popFront();
 
         if ( !mark[node] ) {  // mark the node and all its ancestors
-          mark[node] = 1;
+          mark[node]  = 1;
           Size nb_par = 0;
           for ( auto par : __dag->parents( node ) ) {
             Size parent_mark = mark[par];
@@ -187,7 +181,6 @@ namespace gum {
       }
     }
 
-
     // perform step 2/
     DAG sweep_dag = *__dag;
     for ( const auto node : *__dag ) {  // keep only nodes marked with 1
@@ -196,7 +189,7 @@ namespace gum {
       }
     }
     for ( const auto node : sweep_dag ) {
-      const Size nb_parents = sweep_dag.parents( node ).size();
+      const Size nb_parents  = sweep_dag.parents( node ).size();
       const Size nb_children = sweep_dag.children( node ).size();
       if ( ( nb_parents > 1 ) || ( nb_children > 1 ) ) {
         // perform the matching
@@ -210,14 +203,14 @@ namespace gum {
           }
         } else {
           // find the child with the smallest number of parents
-          const auto& children = sweep_dag.children( node );
+          const auto& children  = sweep_dag.children( node );
           NodeId smallest_child = 0;
-          Size smallest_nb_par = std::numeric_limits<Size>::max();
+          Size smallest_nb_par  = std::numeric_limits<Size>::max();
           for ( const auto child : children ) {
             const auto new_nb = sweep_dag.parents( child ).size();
             if ( new_nb < smallest_nb_par ) {
               smallest_nb_par = new_nb;
-              smallest_child = child;
+              smallest_child  = child;
             }
           }
 
@@ -234,7 +227,8 @@ namespace gum {
               }
             }
           } else {
-            const Size nb_match = Size(std::min( nb_parents, nb_children ) - 1);
+            const Size nb_match =
+                Size( std::min( nb_parents, nb_children ) - 1 );
             auto iter_par = parents.beginSafe();
             ++iter_par;  // skip the first parent, whose arc with node will
                          // remain
@@ -262,7 +256,6 @@ namespace gum {
         }
       }
     }
-
 
     // step 3: sweep the paths from the roots of sweep_dag
     // here, the idea is that, for each path of sweep_dag, the mark we put
@@ -318,39 +311,36 @@ namespace gum {
     return result;
   }
 
-  
   /// returns the set of barren nodes
-  NodeSet BarrenNodesFinder::barrenNodes () {
+  NodeSet BarrenNodesFinder::barrenNodes() {
     // mark all the nodes in the dag as barren (true)
-    NodeProperty<bool> barren_mark = __dag->nodesProperty ( true );
+    NodeProperty<bool> barren_mark = __dag->nodesProperty( true );
 
     // mark all the ancestors of the evidence and targets as non-barren
     List<NodeId> nodes_to_examine;
     int nb_non_barren = 0;
     for ( const auto node : *__observed_nodes )
-      nodes_to_examine.insert ( node );
+      nodes_to_examine.insert( node );
     for ( const auto node : *__target_nodes )
-      nodes_to_examine.insert ( node );
+      nodes_to_examine.insert( node );
 
-    while ( ! nodes_to_examine.empty () ) {
-      const NodeId node = nodes_to_examine.front ();
-      nodes_to_examine.popFront ();
+    while ( !nodes_to_examine.empty() ) {
+      const NodeId node = nodes_to_examine.front();
+      nodes_to_examine.popFront();
       if ( barren_mark[node] ) {
         barren_mark[node] = false;
         ++nb_non_barren;
-        for ( const auto par : __dag->parents ( node ) )
-          nodes_to_examine.insert ( par );
+        for ( const auto par : __dag->parents( node ) )
+          nodes_to_examine.insert( par );
       }
     }
 
     // here, all the nodes marked true are barren
-    NodeSet barren_nodes ( __dag->sizeNodes () - nb_non_barren );
+    NodeSet barren_nodes( __dag->sizeNodes() - nb_non_barren );
     for ( const auto& marked_pair : barren_mark )
-      if ( marked_pair.second )
-        barren_nodes.insert ( marked_pair.first );
-    
+      if ( marked_pair.second ) barren_nodes.insert( marked_pair.first );
+
     return barren_nodes;
   }
-  
 
 } /* namespace gum */

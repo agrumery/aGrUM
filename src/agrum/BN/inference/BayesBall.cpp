@@ -24,7 +24,6 @@
 
 #include <agrum/BN/inference/BayesBall.h>
 
-
 #ifdef GUM_NO_INLINE
 #include <agrum/BN/inference/BayesBall.inl>
 #endif  // GUM_NO_INLINE
@@ -109,6 +108,5 @@ namespace gum {
       }
     }
   }
-
 
 } /* namespace gum */

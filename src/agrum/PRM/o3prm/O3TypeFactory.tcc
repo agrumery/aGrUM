@@ -79,11 +79,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = src.__prm;
+        __prm    = src.__prm;
         __o3_prm = src.__o3_prm;
         __solver = src.__solver;
         __errors = src.__errors;
-        __build = src.__build;
+        __build  = src.__build;
         return *this;
       }
 
@@ -93,11 +93,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = std::move( src.__prm );
+        __prm    = std::move( src.__prm );
         __o3_prm = std::move( src.__o3_prm );
         __solver = std::move( src.__solver );
         __errors = std::move( src.__errors );
-        __build = std::move( src.__build );
+        __build  = std::move( src.__build );
         return *this;
       }
 
@@ -308,7 +308,7 @@ namespace gum {
         for ( auto& pair : type.labels() ) {
 
           auto super_labels = Set<std::string>();
-          auto super = __typeMap[type.superLabel().label()];
+          auto super        = __typeMap[type.superLabel().label()];
 
           for ( auto& label : super->labels() ) {
             super_labels.insert( label.first.label() );

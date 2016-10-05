@@ -47,7 +47,6 @@
 
 namespace gum {
 
-
   /* **************************************************************************************************
    * **/
   /* ** **/
@@ -86,7 +85,6 @@ namespace gum {
       delete scIter.val();
   }
 
-
   /* **************************************************************************************************
    * **/
   /* ** **/
@@ -112,7 +110,6 @@ namespace gum {
     }
   }
 
-
   // ===========================================================================
   // Performs a value iteration
   // ===========================================================================
@@ -125,7 +122,6 @@ namespace gum {
     __clearTables();
   }
 
-
   /* **************************************************************************************************
    * **/
   /* ** **/
@@ -133,7 +129,6 @@ namespace gum {
   /* ** **/
   /* **************************************************************************************************
    * **/
-
 
   // ===========================================================================
   // Performs a single step of value iteration
@@ -190,7 +185,6 @@ namespace gum {
     return newVFunction;
   }
 
-
   /* **************************************************************************************************
    * **/
   /* ** **/
@@ -234,7 +228,6 @@ namespace gum {
     }
     delete newVFunction;
 
-
     // *****************************************************************************************
     // Next to evaluate main value function, we take maximise over all action
     // value, ...
@@ -246,7 +239,6 @@ namespace gum {
     // value, ...
     _extractOptimalPolicy( argMaxVFunction );
   }
-
 
   // ===========================================================================
   //
@@ -323,7 +315,6 @@ namespace gum {
     }
   }
 
-
   // ===========================================================================
   //
   // ===========================================================================
@@ -344,7 +335,6 @@ namespace gum {
       return rep;
     }
 
-
     NodeId* rmaxsons = static_cast<NodeId*>( SOA_ALLOCATE(
         sizeof( NodeId ) * visited->nodeVar( currentNodeId )->domainSize() ) );
     NodeId* bqsons = static_cast<NodeId*>( SOA_ALLOCATE(
@@ -355,7 +345,7 @@ namespace gum {
       std::pair<NodeId, NodeId> sonp = __visitLearner(
           visited, visited->nodeSon( currentNodeId, moda ), rmax, boolQ );
       rmaxsons[moda] = sonp.first;
-      bqsons[moda] = sonp.second;
+      bqsons[moda]   = sonp.second;
     }
 
     rep.first = rmax->manager()->addInternalNode(
@@ -364,7 +354,6 @@ namespace gum {
         visited->nodeVar( currentNodeId ), bqsons );
     return rep;
   }
-
 
   // ===========================================================================
   //

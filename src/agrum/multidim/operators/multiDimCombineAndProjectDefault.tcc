@@ -229,7 +229,7 @@ namespace gum {
             *( tables_to_combine.beginSafe() ) );
         joint_to_delete = false;
       } else {
-        joint = __combination->combine( tables_to_combine );
+        joint           = __combination->combine( tables_to_combine );
         joint_to_delete = true;
       }
 
@@ -263,7 +263,7 @@ namespace gum {
             // product_size, tables_per_var and tables_vars_per_var
             HashTable<const DiscreteVariable*, unsigned int>&
                 table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
-            float div_size = 1.0f;
+            float div_size          = 1.0f;
 
             for ( unsigned int j = 0; j < table_vars.size(); ++j ) {
               unsigned int k = --table_vars_of_var_i[table_vars[j]];
@@ -607,7 +607,7 @@ namespace gum {
             // product_size, tables_per_var and tables_vars_per_var
             HashTable<const DiscreteVariable*, unsigned int>&
                 table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
-            float div_size = 1.0f;
+            float div_size          = 1.0f;
 
             for ( unsigned int j = 0; j < table_vars.size(); ++j ) {
               unsigned int k = --table_vars_of_var_i[table_vars[j]];
@@ -948,7 +948,7 @@ namespace gum {
             // product_size, tables_per_var and tables_vars_per_var
             HashTable<const DiscreteVariable*, unsigned int>&
                 table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
-            float div_size = 1.0f;
+            float div_size          = 1.0f;
 
             for ( unsigned int j = 0; j < table_vars.size(); ++j ) {
               unsigned int k = --table_vars_of_var_i[table_vars[j]];
@@ -970,7 +970,7 @@ namespace gum {
         }
 
         if ( tmp_marginals.contains( *iter ) ) {
-          Size del_size = 1;
+          Size del_size                                = 1;
           const Sequence<const DiscreteVariable*>& del = **iter;
 
           for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe

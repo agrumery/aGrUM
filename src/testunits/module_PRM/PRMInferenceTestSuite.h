@@ -72,7 +72,7 @@ namespace gum_tests {
 
     void testEvidence() {
       gum::prm::GroundedInference<double>* g_ve = nullptr;
-      gum::VariableElimination<double>* ve = nullptr;
+      gum::VariableElimination<double>* ve      = nullptr;
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -103,7 +103,7 @@ namespace gum_tests {
     void testSmallGrdInference() {
       // Creating the inference engine
       gum::prm::GroundedInference<double>* g_ve = 0;
-      gum::VariableElimination<double>* ve = 0;
+      gum::VariableElimination<double>* ve      = 0;
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -336,12 +336,12 @@ namespace gum_tests {
 
     void testInference() {
       // GUM_TRACE_VAR(UINT_MAX);
-      gum::prm::GroundedInference<double>* g_ve = 0;
-      gum::prm::GroundedInference<double>* g_ss = 0;
+      gum::prm::GroundedInference<double>* g_ve   = 0;
+      gum::prm::GroundedInference<double>* g_ss   = 0;
       gum::prm::GroundedInference<double>* g_vebb = 0;
-      gum::VariableElimination<double>* ve = 0;
-      gum::ShaferShenoyInference<double>* ss = 0;
-      gum::VEWithBB<double>* vebb = 0;
+      gum::VariableElimination<double>* ve        = 0;
+      gum::ShaferShenoyInference<double>* ss      = 0;
+      gum::VEWithBB<double>* vebb                 = 0;
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -459,7 +459,7 @@ namespace gum_tests {
 
     void testEvidenceSioux() {
       gum::prm::GroundedInference<double>* g_ve = 0;
-      gum::VariableElimination<double>* ve = 0;
+      gum::VariableElimination<double>* ve      = 0;
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING(

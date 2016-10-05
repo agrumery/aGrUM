@@ -160,7 +160,7 @@ namespace gum {
       if ( __varNameMap.exists( name ) )
         GUM_ERROR( DuplicateElement, "Name already used: " + name );
 
-      __foo_flag = true;
+      __foo_flag     = true;
       __stringBag[0] = name;
       //         VERBOSITY ( "  -- variable " << name );
     }
@@ -176,7 +176,7 @@ namespace gum {
     if ( state() != FMDPfactory_state::VARIABLE )
       __illegalStateError( "variableDescription" );
     else {
-      __bar_flag = true;
+      __bar_flag     = true;
       __stringBag[1] = desc;
     }
   }

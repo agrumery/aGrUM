@@ -172,8 +172,8 @@ namespace gum {
         __cmp = from.__cmp;
 
         // copy the indices and the heap
-        __indices = from.__indices;
-        __heap = from.__heap;
+        __indices     = from.__indices;
+        __heap        = from.__heap;
         __nb_elements = from.__nb_elements;
 
         // restore the link between __indices and __heap
@@ -211,7 +211,7 @@ namespace gum {
       __cmp = from.__cmp;
 
       // copy the indices and the heap
-      __indices = from.__indices;
+      __indices     = from.__indices;
       __nb_elements = from.__nb_elements;
 
       __heap.clear();
@@ -249,9 +249,9 @@ namespace gum {
       // for debugging purposes
       GUM_OP_MOV( PriorityQueueImplementation );
 
-      __indices = std::move( from.__indices );
-      __heap = std::move( from.__heap );
-      __cmp = std::move( from.__cmp );
+      __indices     = std::move( from.__indices );
+      __heap        = std::move( from.__heap );
+      __cmp         = std::move( from.__cmp );
       __nb_elements = std::move( from.__nb_elements );
     }
 
@@ -376,12 +376,12 @@ namespace gum {
       if ( __cmp( last.first, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                        = std::move( __heap[j] );
       __indices[*( __heap[i].second )] = i;
     }
 
     // put "last" back into the heap
-    __heap[i] = std::move( last );
+    __heap[i]                        = std::move( last );
     __indices[*( __heap[i].second )] = i;
   }
 
@@ -473,14 +473,14 @@ namespace gum {
     for ( Size j = ( i - 1 ) >> 1;
           i && __cmp( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                        = std::move( __heap[j] );
       __indices[*( __heap[i].second )] = i;
     }
 
     // put the new bucket into the heap
-    __heap[i].first = std::move( new_heap_val.first );
+    __heap[i].first  = std::move( new_heap_val.first );
     __heap[i].second = &( new_elt.first );
-    new_elt.second = i;
+    new_elt.second   = i;
 
     return i;
   }
@@ -517,14 +517,14 @@ namespace gum {
     for ( Size j = ( i - 1 ) >> 1;
           i && __cmp( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                        = std::move( __heap[j] );
       __indices[*( __heap[i].second )] = i;
     }
 
     // put the new bucket into the heap
-    __heap[i].first = std::move( new_heap_val.first );
+    __heap[i].first  = std::move( new_heap_val.first );
     __heap[i].second = &( new_elt.first );
-    new_elt.second = i;
+    new_elt.second   = i;
 
     return i;
   }
@@ -633,7 +633,7 @@ namespace gum {
     // move val upward if needed
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( new_priority, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                        = std::move( __heap[j] );
       __indices[*( __heap[i].second )] = i;
     }
 
@@ -649,14 +649,14 @@ namespace gum {
       if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                        = std::move( __heap[j] );
       __indices[*( __heap[i].second )] = i;
     }
 
     // update the index of val
-    __heap[i].first = new_priority;
+    __heap[i].first  = new_priority;
     __heap[i].second = val;
-    __indices[*val] = i;
+    __indices[*val]  = i;
 
     return i;
   }
@@ -685,7 +685,7 @@ namespace gum {
     // move val upward if needed
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( new_priority, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                        = std::move( __heap[j] );
       __indices[*( __heap[i].second )] = i;
     }
 
@@ -701,14 +701,14 @@ namespace gum {
       if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                        = std::move( __heap[j] );
       __indices[*( __heap[i].second )] = i;
     }
 
     // update the index of val
-    __heap[i].first = std::move( new_priority );
+    __heap[i].first  = std::move( new_priority );
     __heap[i].second = val;
-    __indices[*val] = i;
+    __indices[*val]  = i;
 
     return i;
   }
@@ -871,8 +871,8 @@ namespace gum {
         __cmp = from.__cmp;
 
         // copy the indices and the heap
-        __indices = from.__indices;
-        __heap = from.__heap;
+        __indices     = from.__indices;
+        __heap        = from.__heap;
         __nb_elements = from.__nb_elements;
       } catch ( ... ) {
         __heap.clear();
@@ -901,7 +901,7 @@ namespace gum {
       __cmp = from.__cmp;
 
       // copy the indices and the heap
-      __indices = from.__indices;
+      __indices     = from.__indices;
       __nb_elements = from.__nb_elements;
 
       __heap.clear();
@@ -932,9 +932,9 @@ namespace gum {
       // for debugging purposes
       GUM_OP_MOV( PriorityQueueImplementation );
 
-      __indices = std::move( from.__indices );
-      __heap = std::move( from.__heap );
-      __cmp = std::move( from.__cmp );
+      __indices     = std::move( from.__indices );
+      __heap        = std::move( from.__heap );
+      __cmp         = std::move( from.__cmp );
       __nb_elements = std::move( from.__nb_elements );
     }
 
@@ -1030,12 +1030,12 @@ namespace gum {
       if ( __cmp( last.first, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                   = std::move( __heap[j] );
       __indices[__heap[i].second] = i;
     }
 
     // put "last" back into the heap
-    __heap[i] = std::move( last );
+    __heap[i]                   = std::move( last );
     __indices[__heap[i].second] = i;
   }
 
@@ -1105,14 +1105,14 @@ namespace gum {
     for ( Size j = ( i - 1 ) >> 1;
           i && __cmp( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                   = std::move( __heap[j] );
       __indices[__heap[i].second] = i;
     }
 
     // put the new bucket into the heap
-    __heap[i].first = std::move( new_heap_val.first );
+    __heap[i].first  = std::move( new_heap_val.first );
     __heap[i].second = val;
-    new_elt.second = i;
+    new_elt.second   = i;
 
     return i;
   }
@@ -1144,14 +1144,14 @@ namespace gum {
     for ( Size j = ( i - 1 ) >> 1;
           i && __cmp( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                   = std::move( __heap[j] );
       __indices[__heap[i].second] = i;
     }
 
     // put the new bucket into the heap
-    __heap[i].first = std::move( new_heap_val.first );
+    __heap[i].first  = std::move( new_heap_val.first );
     __heap[i].second = val;
-    new_elt.second = i;
+    new_elt.second   = i;
 
     return i;
   }
@@ -1235,7 +1235,7 @@ namespace gum {
     // move val upward if needed
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( new_priority, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                   = std::move( __heap[j] );
       __indices[__heap[i].second] = i;
     }
 
@@ -1251,14 +1251,14 @@ namespace gum {
       if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                   = std::move( __heap[j] );
       __indices[__heap[i].second] = i;
     }
 
     // update the index of val
-    __heap[i].first = new_priority;
+    __heap[i].first  = new_priority;
     __heap[i].second = val;
-    __indices[val] = i;
+    __indices[val]   = i;
 
     return i;
   }
@@ -1282,7 +1282,7 @@ namespace gum {
     // move val upward if needed
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( new_priority, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                   = std::move( __heap[j] );
       __indices[__heap[i].second] = i;
     }
 
@@ -1298,14 +1298,14 @@ namespace gum {
       if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                   = std::move( __heap[j] );
       __indices[__heap[i].second] = i;
     }
 
     // update the index of val
-    __heap[i].first = std::move( new_priority );
+    __heap[i].first  = std::move( new_priority );
     __heap[i].second = val;
-    __indices[val] = i;
+    __indices[val]   = i;
 
     return i;
   }

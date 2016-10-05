@@ -25,7 +25,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void VarMod2BNsMap<GUM_SCALAR>::setCNet( const CredalNet<GUM_SCALAR>& cn ) {
-      auto* cpt = &cn.credalNet_currentCpt();
+      auto* cpt   = &cn.credalNet_currentCpt();
       auto nNodes = cpt->size();
       _sampleDef.resize( nNodes );
 
@@ -37,7 +37,7 @@ namespace gum {
           Size nVertices = Size( ( *cpt )[node][pconf].size() );
           unsigned long b, c;  // needed by superiorPow
           superiorPow( static_cast<unsigned long>( nVertices ), b, c );
-          Size nBits = Size( b );
+          Size nBits   = Size( b );
           Size newCard = Size( c );
           _sampleDef[node][pconf].resize( nBits );
         }

@@ -88,9 +88,9 @@ namespace gum {
     operator=( const CellTranslatorUniversal& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( from );
-        __max_value = from.__max_value;
-        __numbers = from.__numbers;
-        __strings = from.__strings;
+        __max_value      = from.__max_value;
+        __numbers        = from.__numbers;
+        __strings        = from.__strings;
         __check_database = from.__check_database;
 
         if ( __str_user_values ) {
@@ -121,9 +121,9 @@ namespace gum {
     operator=( CellTranslatorUniversal&& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( std::move( from ) );
-        __max_value = std::move( from.__max_value );
-        __numbers = std::move( from.__numbers );
-        __strings = std::move( from.__strings );
+        __max_value      = std::move( from.__max_value );
+        __numbers        = std::move( from.__numbers );
+        __strings        = std::move( from.__strings );
         __check_database = from.__check_database;
 
         if ( __str_user_values ) {

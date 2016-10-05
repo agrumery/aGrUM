@@ -44,10 +44,9 @@ namespace gum {
       __modalitiesMap.insert( node, this->bn().variable( node ).domainSize() );
 
     __triangulation = new DefaultTriangulation( &( this->bn().moralGraph() ),
-                              &__modalitiesMap );
+                                                &__modalitiesMap );
     __triangulation->junctionTree();
     __buildCliquesTables();
-    
   }
 
   // Destructor
@@ -469,7 +468,7 @@ namespace gum {
 
     if ( __varsPotential == 0 ) {
       __varsPotential = __potential;
-      __potential = new MultiDimBucket<GUM_SCALAR>();
+      __potential     = new MultiDimBucket<GUM_SCALAR>();
 
       for ( const auto var : __varsPotential->variablesSequence() )
         __potential->add( *var );
@@ -490,7 +489,7 @@ namespace gum {
 
     if ( __evidences.size() == 0 ) {
       delete __potential;
-      __potential = __varsPotential;
+      __potential     = __varsPotential;
       __varsPotential = 0;
     }
   }
@@ -500,7 +499,7 @@ namespace gum {
   INLINE void CliqueProp<GUM_SCALAR>::removeAllEvidence() {
     if ( __evidences.size() != 0 ) {
       delete __potential;
-      __potential = __varsPotential;
+      __potential     = __varsPotential;
       __varsPotential = 0;
       __evidences.clear();
     }

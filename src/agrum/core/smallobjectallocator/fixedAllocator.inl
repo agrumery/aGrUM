@@ -134,9 +134,9 @@ namespace gum {
   INLINE FixedAllocator::FixedAllocator( const std::size_t& blockSize,
                                          const unsigned char& numBlocks ) {
     //    GUM_CONSTRUCTOR(FixedAllocator)
-    __blockSize = blockSize;
-    __numBlocks = numBlocks;
-    __allocChunk = __chunks.begin();
+    __blockSize    = blockSize;
+    __numBlocks    = numBlocks;
+    __allocChunk   = __chunks.begin();
     __deallocChunk = __chunks.begin();
   }
 

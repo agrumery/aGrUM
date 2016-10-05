@@ -138,9 +138,9 @@ namespace gum {
        * avoid
        * making - invisible - mistakes. */
       enum class __states : char {
-        none = char( 0 ),
-        Hup = char( 1 ),
-        Vup = char( 2 ),
+        none     = char( 0 ),
+        Hup      = char( 1 ),
+        Vup      = char( 2 ),
         H2Vready = char( 3 ),
         V2Hready = char( 4 ),
       };
@@ -244,7 +244,7 @@ namespace gum {
       void __getLRSWrapperOutput( lrs_mp Nin,
                                   lrs_mp Din,
                                   std::vector<int64_t>& Num,
-								  std::vector<int64_t>& Den ) const;
+                                  std::vector<int64_t>& Den ) const;
 
       /// @}
 

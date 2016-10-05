@@ -94,7 +94,7 @@ namespace gum {
     /// @name Class constructors & destructors
     // ====================================================================
     /// @{
-    Exception( const std::string aMsg = "",
+    Exception( const std::string aMsg  = "",
                const std::string aType = "Generic error" );
 
     Exception( const Exception& e );
@@ -104,7 +104,7 @@ namespace gum {
     /// @}
 
     const std::string toString() const { return _msg; }
-    
+
     /**
      * @brief Returns the message content.
      * @return Returns the message content.
@@ -454,86 +454,52 @@ namespace gum {
                                  const std::string& msg );
   GUM_MAKE_ERROR( IdError, Exception, "ID error" )
   GUM_MAKE_ERROR( FatalError, Exception, "Fatal error" )
-  GUM_MAKE_ERROR( UndefinedIteratorValue,
-                  Exception,
-                  "Undefined iterator" )
-  GUM_MAKE_ERROR( UndefinedIteratorKey,
-                  Exception,
-                  "Undefined iterator's key" )
+  GUM_MAKE_ERROR( UndefinedIteratorValue, Exception, "Undefined iterator" )
+  GUM_MAKE_ERROR( UndefinedIteratorKey, Exception, "Undefined iterator's key" )
   GUM_MAKE_ERROR( NullElement, Exception, "Null element" )
-  GUM_MAKE_ERROR( UndefinedElement,
-                  Exception,
-                  "Undefined element" )
+  GUM_MAKE_ERROR( UndefinedElement, Exception, "Undefined element" )
   GUM_MAKE_ERROR( SizeError, Exception, "incorrect size" )
-  GUM_MAKE_ERROR( EmptySet,
-                  Exception,
-                  "Empty set" )
-  GUM_MAKE_ERROR(
-      InvalidArgumentsNumber,
-      Exception,
-      "Invalid argument number" )
-  GUM_MAKE_ERROR(
-      InvalidArgument,
-      Exception,
-      "Invalid argument" )
+  GUM_MAKE_ERROR( EmptySet, Exception, "Empty set" )
+  GUM_MAKE_ERROR( InvalidArgumentsNumber, Exception, "Invalid argument number" )
+  GUM_MAKE_ERROR( InvalidArgument, Exception, "Invalid argument" )
   GUM_MAKE_ERROR( IOError, Exception, "I/O Error" )
-  GUM_MAKE_ERROR( FormatNotFound,
-                  IOError,
-                  "Format not found" )
-  GUM_MAKE_ERROR( OperationNotAllowed,
-                  Exception,
-                  "Operation not allowed" )
+  GUM_MAKE_ERROR( FormatNotFound, IOError, "Format not found" )
+  GUM_MAKE_ERROR( OperationNotAllowed, Exception, "Operation not allowed" )
   GUM_MAKE_ERROR( NotFound, Exception, "Object not found" )
   GUM_MAKE_ERROR( ReferenceError, Exception, "Reference error" )
   GUM_MAKE_ERROR( OutOfBounds, ReferenceError, "Out of bound error" )
   GUM_MAKE_ERROR( OutOfLowerBound, OutOfBounds, "Out of lower bound error" )
   GUM_MAKE_ERROR( OutOfUpperBound, OutOfBounds, "Out of upper bound error" )
-  GUM_MAKE_ERROR( DuplicateElement,
-                  ReferenceError,
-                  "Duplicate element" )
-  GUM_MAKE_ERROR( DuplicateLabel,
-                  ReferenceError,
-                  "Duplicate label" )
+  GUM_MAKE_ERROR( DuplicateElement, ReferenceError, "Duplicate element" )
+  GUM_MAKE_ERROR( DuplicateLabel, ReferenceError, "Duplicate label" )
   GUM_MAKE_ERROR( GraphError, Exception, "Graph error" )
-  GUM_MAKE_ERROR( NoNeighbour,
-                  GraphError,
-                  "No neighbour found" )
-  GUM_MAKE_ERROR( NoParent,
-                  GraphError,
-                  "No parent found" )
-  GUM_MAKE_ERROR( NoChild,
-                  GraphError,
-                  "No child found" )
+  GUM_MAKE_ERROR( NoNeighbour, GraphError, "No neighbour found" )
+  GUM_MAKE_ERROR( NoParent, GraphError, "No parent found" )
+  GUM_MAKE_ERROR( NoChild, GraphError, "No child found" )
   GUM_MAKE_ERROR( InvalidEdge, GraphError, "Edge invalid" )
   GUM_MAKE_ERROR( InvalidArc, GraphError, "Arc invalid" )
   GUM_MAKE_ERROR( InvalidNode, GraphError, "Node invalid" )
   GUM_MAKE_ERROR( EmptyBSTree, GraphError, "Empty binary search tree" )
   GUM_MAKE_ERROR( DefaultInLabel, GraphError, "Error on label" )
-  GUM_MAKE_ERROR( InvalidDirectedCycle,
-                  GraphError,
-                  "Directed cycle detected" )
+  GUM_MAKE_ERROR( InvalidDirectedCycle, GraphError, "Directed cycle detected" )
   GUM_MAKE_ERROR( CPTError, Exception, "CPT error" )
   GUM_MAKE_ERROR( CPTNoSumTo1, CPTError, "CPT does not sum to 1" )
-  GUM_MAKE_ERROR( IncompatibleEvidence, Exception,
+  GUM_MAKE_ERROR( IncompatibleEvidence,
+                  Exception,
                   "several evidence are incompatible together (proba=0)" )
   GUM_MAKE_ERROR( FactoryError, Exception, "factory error" )
   GUM_MAKE_ERROR( FactoryInvalidState, FactoryError, "invalid state error" )
   GUM_MAKE_ERROR( WrongType, FactoryError, "wrong type for this operation" )
-  GUM_MAKE_ERROR( WrongClassElement,
-                  FactoryError,
-                  "Wrong ClassElement" )
+  GUM_MAKE_ERROR( WrongClassElement, FactoryError, "Wrong ClassElement" )
   GUM_MAKE_ERROR( TypeError, FactoryError, "Wrong subtype or subclass" )
   GUM_MAKE_ERROR( LearningError, Exception, "Factory error" )
   GUM_MAKE_ERROR( IncompatibleScoreApriori,
                   LearningError,
                   "Incompatbile (maybe implicit) priors" )
-  GUM_MAKE_ERROR(
-      PossiblyIncompatibleScoreApriori,
-      LearningError,
-      "Possible incompatibilty between score and prior" )
-  GUM_MAKE_ERROR( DatabaseError,
+  GUM_MAKE_ERROR( PossiblyIncompatibleScoreApriori,
                   LearningError,
-                  "Database error" )
+                  "Possible incompatibilty between score and prior" )
+  GUM_MAKE_ERROR( DatabaseError, LearningError, "Database error" )
   GUM_MAKE_ERROR( MissingVariableInDatabase,
                   LearningError,
                   "Missing variable name in database" )

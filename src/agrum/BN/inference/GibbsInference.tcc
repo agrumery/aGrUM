@@ -94,7 +94,7 @@ namespace gum {
   */
   template <typename GUM_SCALAR>
   INLINE double GibbsInference<GUM_SCALAR>::__updateStats_with_err( Size nb ) {
-    Size nbr = nb + 1;  // we compute the new iteration
+    Size nbr           = nb + 1;  // we compute the new iteration
     double sum_entropy = 0;
 
     for ( auto& elt : __sampling_nbr ) {
@@ -193,7 +193,7 @@ namespace gum {
     } else {
       // hard evidence has been removed
       eraseHardEvidenceSampler( id );
-      addSoftEvidenceSampler( *(this->evidence()[id] ));
+      addSoftEvidenceSampler( *( this->evidence()[id] ) );
     }
   }
 

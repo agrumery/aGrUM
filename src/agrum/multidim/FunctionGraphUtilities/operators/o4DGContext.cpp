@@ -30,7 +30,6 @@
 
 namespace gum {
 
-
   // First 140 prime numbers...
   // see e.g.
   // http://en.wikipedia.org/wiki/List_of_prime_numbers#The_first_500_prime_numbers
@@ -81,7 +80,7 @@ namespace gum {
 
     GUM_CONSTRUCTOR( O4DGContext );
     __varInstantiation = varInst;
-    __nbVar = nbVar;
+    __nbVar            = nbVar;
   }
 
   // Default Destructor.

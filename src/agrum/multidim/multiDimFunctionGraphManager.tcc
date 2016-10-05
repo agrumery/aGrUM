@@ -75,7 +75,7 @@ namespace gum {
   MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::addInternalNode(
       const DiscreteVariable* var ) {
     InternalNode* newNodeStruct = new InternalNode( var );
-    NodeId nid = __functionGraph->__model.addNode();
+    NodeId nid                  = __functionGraph->__model.addNode();
     __functionGraph->__internalNodeMap.insert( nid, newNodeStruct );
     __functionGraph->__var2NodeIdMap[var]->addLink( nid );
 
@@ -86,7 +86,7 @@ namespace gum {
   INLINE NodeId MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::
       _addInternalNode( const DiscreteVariable* var, NodeId* sons ) {
     InternalNode* newNodeStruct = new InternalNode( var, sons );
-    NodeId nid = __functionGraph->__model.addNode();
+    NodeId nid                  = __functionGraph->__model.addNode();
     __functionGraph->__internalNodeMap.insert( nid, newNodeStruct );
     __functionGraph->__var2NodeIdMap[var]->addLink( nid );
     for ( Idx i = 0; i < newNodeStruct->nbSons(); i++ )
@@ -121,7 +121,7 @@ namespace gum {
 
     if ( __functionGraph->isTerminalNode( eraseId ) ) {
 
-      for ( auto iterVar =__functionGraph->variablesSequence().begin();
+      for ( auto iterVar = __functionGraph->variablesSequence().begin();
             iterVar != __functionGraph->variablesSequence().end();
             ++iterVar ) {
 
@@ -256,8 +256,8 @@ namespace gum {
 
       // Initialization
       Idx currentPos = __functionGraph->variablesSequence().pos( *sifIter );
-      Idx bestSize = __functionGraph->realSize();
-      Idx bestPos = currentPos;
+      Idx bestSize   = __functionGraph->realSize();
+      Idx bestPos    = currentPos;
 
 
       // Sifting towards upper places
@@ -265,7 +265,7 @@ namespace gum {
         moveTo( *sifIter, currentPos - 1 );
         currentPos = __functionGraph->variablesSequence().pos( *sifIter );
         if ( __functionGraph->realSize() < bestSize ) {
-          bestPos = currentPos;
+          bestPos  = currentPos;
           bestSize = __functionGraph->realSize();
         }
       }
@@ -275,7 +275,7 @@ namespace gum {
         moveTo( *sifIter, currentPos + 1 );
         currentPos = __functionGraph->variablesSequence().pos( *sifIter );
         if ( __functionGraph->realSize() < bestSize ) {
-          bestPos = currentPos;
+          bestPos  = currentPos;
           bestSize = __functionGraph->realSize();
         }
       }
@@ -323,19 +323,19 @@ namespace gum {
   MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::__adjacentSwap(
       const DiscreteVariable* x, const DiscreteVariable* y ) {
 
-    LinkedList<NodeId>* oldxNodes = __functionGraph->__var2NodeIdMap[x];
+    LinkedList<NodeId>* oldxNodes       = __functionGraph->__var2NodeIdMap[x];
     __functionGraph->__var2NodeIdMap[x] = new LinkedList<NodeId>();
-    LinkedList<NodeId>* oldyNodes = __functionGraph->__var2NodeIdMap[y];
+    LinkedList<NodeId>* oldyNodes       = __functionGraph->__var2NodeIdMap[y];
     __functionGraph->__var2NodeIdMap[y] = new LinkedList<NodeId>();
 
 
     InternalNode* currentOldXNode = nullptr;
-    NodeId* currentNewXNodeSons = nullptr;
-    Idx indx = 0;
+    NodeId* currentNewXNodeSons   = nullptr;
+    Idx indx                      = 0;
 
     NodeId* currentNewYNodeSons = nullptr;
-    NodeId currentNewYNodeId = 0;
-    Idx indy = 0;
+    NodeId currentNewYNodeId    = 0;
+    Idx indy                    = 0;
 
     while ( oldxNodes->list() ) {
 
@@ -492,7 +492,7 @@ namespace gum {
       __checkIsomorphism( const DiscreteVariable* var, NodeId* sons ) {
 
     const InternalNode* nody = nullptr;
-    Idx i = 0;
+    Idx i                    = 0;
 
     // Check abscence of identical node
     Link<NodeId>* currentElem = __functionGraph->__var2NodeIdMap[var]->list();
@@ -526,9 +526,9 @@ namespace gum {
   INLINE void
   MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::_reduce() {
     Link<NodeId>* currentNodeId = nullptr;
-    Link<NodeId>* nextNodeId = nullptr;
-    InternalNode* currentNode = nullptr;
-    bool theSame = true;
+    Link<NodeId>* nextNodeId    = nullptr;
+    InternalNode* currentNode   = nullptr;
+    bool theSame                = true;
     Idx currentInd;
 
     for ( SequenceIterator<const DiscreteVariable*> varIter =
@@ -567,8 +567,8 @@ namespace gum {
         // variable and same children
         if ( nextNodeId ) {
           Link<NodeId>* anotherNodeId = currentNodeId->nextLink();
-          InternalNode* anotherNode = nullptr;
-          Idx modality = 0;
+          InternalNode* anotherNode   = nullptr;
+          Idx modality                = 0;
           while ( anotherNodeId->nextLink() != nullptr ) {
 
             nextNodeId = anotherNodeId->nextLink();

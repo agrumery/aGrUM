@@ -207,7 +207,7 @@ namespace gum {
       cast->addParent( *this );
 
       const DiscreteVariable& my_var = type().variable();
-      DiscreteVariable& cast_var = cast->type().variable();
+      DiscreteVariable& cast_var     = cast->type().variable();
       Instantiation inst( cast->cpf() );
 
       for ( inst.setFirst(); !inst.end(); inst.inc() ) {

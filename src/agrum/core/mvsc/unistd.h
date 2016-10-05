@@ -6,11 +6,11 @@
  *  Please add functionality as neeeded
  */
 
-#include <stdlib.h>
 #include <io.h>
+#include <stdlib.h>
 //#include <getopt.h> /* getopt at: https://gist.github.com/ashelly/7776712 */
+#include <direct.h>  /* for _getcwd() and _chdir() */
 #include <process.h> /* for getpid() and the exec..() family */
-#include <direct.h> /* for _getcwd() and _chdir() */
 
 #define srandom srand
 #define random rand

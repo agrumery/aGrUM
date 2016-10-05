@@ -125,7 +125,7 @@ namespace gum {
     virtual const IVisitableGraphLearner*
     varLearner( Idx actionId, const DiscreteVariable* var ) const = 0;
 
-    virtual double rMax() const = 0;
+    virtual double rMax() const    = 0;
     virtual double modaMax() const = 0;
 
     /// @}

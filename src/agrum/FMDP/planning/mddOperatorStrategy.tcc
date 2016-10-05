@@ -108,7 +108,7 @@ namespace gum {
       MultiDimFunctionGraph<GUM_SCALAR>* temp = r.compute();
       delete qAction;
       qAction = temp;
-      xip = this->_lastVar( qAction );
+      xip     = this->_lastVar( qAction );
     }
 
     return qAction;

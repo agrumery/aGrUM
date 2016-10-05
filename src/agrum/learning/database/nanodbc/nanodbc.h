@@ -530,7 +530,7 @@ namespace nanodbc {
     class result execute_direct( class connection& conn,
                                  const string_type& query,
                                  long batch_operations = 1,
-                                 long timeout = 0 );
+                                 long timeout          = 0 );
 
     //! \brief Immediately opens, prepares, and executes the given query
     //! directly on the given connection, in asynchronous mode.
@@ -557,7 +557,7 @@ namespace nanodbc {
                                void* event_handle,
                                const string_type& query,
                                long batch_operations = 1,
-                               long timeout = 0 );
+                               long timeout          = 0 );
 
     //! \brief Completes a previously initiated asynchronous query operation,
     //! returning the result.
@@ -589,7 +589,7 @@ namespace nanodbc {
     void just_execute_direct( class connection& conn,
                               const string_type& query,
                               long batch_operations = 1,
-                              long timeout = 0 );
+                              long timeout          = 0 );
 
     //! \brief Execute the previously prepared query now.
     //! \param batch_operations Numbers of rows to fetch per rowset, or the
@@ -1421,9 +1421,9 @@ namespace nanodbc {
     //! Since this function is implemented in terms of the SQLTables, it returns
     //! result set ordered by TABLE_TYPE, TABLE_CAT, TABLE_SCHEM, and
     //! TABLE_NAME.
-    catalog::tables find_tables( const string_type& table = string_type(),
-                                 const string_type& type = string_type(),
-                                 const string_type& schema = string_type(),
+    catalog::tables find_tables( const string_type& table   = string_type(),
+                                 const string_type& type    = string_type(),
+                                 const string_type& schema  = string_type(),
                                  const string_type& catalog = string_type() );
 
     //! \brief Creates result set with columns information in specified tables.
@@ -1435,9 +1435,9 @@ namespace nanodbc {
     //! returns
     //! result set ordered by TABLE_CAT, TABLE_SCHEM, TABLE_NAME, and
     //! ORDINAL_POSITION.
-    catalog::columns find_columns( const string_type& column = string_type(),
-                                   const string_type& table = string_type(),
-                                   const string_type& schema = string_type(),
+    catalog::columns find_columns( const string_type& column  = string_type(),
+                                   const string_type& table   = string_type(),
+                                   const string_type& schema  = string_type(),
                                    const string_type& catalog = string_type() );
 
     //! \brief Creates result set with primary key information.
@@ -1450,7 +1450,7 @@ namespace nanodbc {
     //! connection.
     catalog::primary_keys
     find_primary_keys( const string_type& table,
-                       const string_type& schema = string_type(),
+                       const string_type& schema  = string_type(),
                        const string_type& catalog = string_type() );
 
     private:
@@ -1495,7 +1495,7 @@ namespace nanodbc {
   result execute( connection& conn,
                   const string_type& query,
                   long batch_operations = 1,
-                  long timeout = 0 );
+                  long timeout          = 0 );
 
   //! \brief Immediately opens, prepares, and executes the given query directly
   //! on the given connection without creating result object.
@@ -1513,7 +1513,7 @@ namespace nanodbc {
   void just_execute( connection& conn,
                      const string_type& query,
                      long batch_operations = 1,
-                     long timeout = 0 );
+                     long timeout          = 0 );
 
   //! \brief Execute the previously prepared query now.
   //! \param stmt The prepared statement that will be executed.

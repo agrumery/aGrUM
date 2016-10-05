@@ -591,7 +591,7 @@ namespace gum {
       __class_elim_order = new Sequence<std::string>();
       for ( auto c : class_elim_order ) {
         std::string name = c->name();
-        auto pos = name.find_first_of( "<" );
+        auto pos         = name.find_first_of( "<" );
         if ( pos != std::string::npos ) {
           name = name.substr( 0, pos );
         }
@@ -605,7 +605,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void SVE<GUM_SCALAR>::_marginal( const Chain& chain,
                                      Potential<GUM_SCALAR>& m ) {
-      const PRMInstance<GUM_SCALAR>* i = chain.first;
+      const PRMInstance<GUM_SCALAR>* i    = chain.first;
       const PRMAttribute<GUM_SCALAR>* elt = chain.second;
       SVE<GUM_SCALAR>::BucketSet pool, trash;
 
@@ -682,7 +682,7 @@ namespace gum {
         __initElimOrder();
       }
 
-      auto first_name = __trim( first->type().name() );
+      auto first_name  = __trim( first->type().name() );
       auto second_name = __trim( second->type().name() );
       return ( __class_elim_order->pos( first_name ) <=
                __class_elim_order->pos( second_name ) );

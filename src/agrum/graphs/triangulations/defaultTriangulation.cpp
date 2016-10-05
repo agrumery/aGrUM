@@ -32,78 +32,72 @@
 
 namespace gum {
 
-
   /// basic constructor. initialize the triangulation
-  DefaultTriangulation::DefaultTriangulation( const UndiGraph* theGraph,
-                                              const NodeProperty<Size>* domsizes,
-                                              bool minimality,
-                                              double theRatio,
-                                              double theThreshold ) :
-    UnconstrainedTriangulation( theGraph, domsizes,
-                                DefaultEliminationSequenceStrategy(),
-                                DefaultJunctionTreeStrategy(),
-                                minimality ),
-    __quasi_ratio( theRatio ),
-    __threshold( theThreshold ) {
+  DefaultTriangulation::DefaultTriangulation(
+      const UndiGraph* theGraph,
+      const NodeProperty<Size>* domsizes,
+      bool minimality,
+      double theRatio,
+      double theThreshold )
+      : UnconstrainedTriangulation( theGraph,
+                                    domsizes,
+                                    DefaultEliminationSequenceStrategy(),
+                                    DefaultJunctionTreeStrategy(),
+                                    minimality )
+      , __quasi_ratio( theRatio )
+      , __threshold( theThreshold ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultTriangulation );
   }
-  
 
   /// default constructor: initialize the triangulation for an empty graph
   DefaultTriangulation::DefaultTriangulation( bool minimality,
                                               double theRatio,
-                                              double theThreshold ) :
-    UnconstrainedTriangulation( DefaultEliminationSequenceStrategy(),
-                                DefaultJunctionTreeStrategy(),
-                                minimality ),
-    __quasi_ratio( theRatio ),
-    __threshold( theThreshold ) {
+                                              double theThreshold )
+      : UnconstrainedTriangulation( DefaultEliminationSequenceStrategy(),
+                                    DefaultJunctionTreeStrategy(),
+                                    minimality )
+      , __quasi_ratio( theRatio )
+      , __threshold( theThreshold ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultTriangulation );
   }
 
-  
   /// copy constructor
-  DefaultTriangulation::DefaultTriangulation ( const DefaultTriangulation& from ) :
-    UnconstrainedTriangulation ( from ),
-    __quasi_ratio ( from.__quasi_ratio ),
-    __threshold ( from.__threshold ) {
+  DefaultTriangulation::DefaultTriangulation( const DefaultTriangulation& from )
+      : UnconstrainedTriangulation( from )
+      , __quasi_ratio( from.__quasi_ratio )
+      , __threshold( from.__threshold ) {
     // for debugging purposes
     GUM_CONS_CPY( DefaultTriangulation );
   }
-  
 
   /// move constructor
-  DefaultTriangulation::DefaultTriangulation ( DefaultTriangulation&& from ) :
-    UnconstrainedTriangulation ( std::move ( from ) ),
-    __quasi_ratio ( from.__quasi_ratio ),
-    __threshold ( from.__threshold ) {
+  DefaultTriangulation::DefaultTriangulation( DefaultTriangulation&& from )
+      : UnconstrainedTriangulation( std::move( from ) )
+      , __quasi_ratio( from.__quasi_ratio )
+      , __threshold( from.__threshold ) {
     // for debugging purposes
     GUM_CONS_MOV( DefaultTriangulation );
   }
-  
-  
+
   /// destructor
   DefaultTriangulation::~DefaultTriangulation() {
     // for debugging purposes
     GUM_DESTRUCTOR( DefaultTriangulation );
   }
 
-  
   /// virtual clone constructor
-  DefaultTriangulation* DefaultTriangulation::newFactory () const {
-    return new DefaultTriangulation ( isMinimalityRequired (),
-                                      __quasi_ratio, __threshold );
+  DefaultTriangulation* DefaultTriangulation::newFactory() const {
+    return new DefaultTriangulation(
+        isMinimalityRequired(), __quasi_ratio, __threshold );
   }
 
-  
   /// virtual copy constructor
-  DefaultTriangulation* DefaultTriangulation::copyFactory () const {
-    return new DefaultTriangulation ( *this );
+  DefaultTriangulation* DefaultTriangulation::copyFactory() const {
+    return new DefaultTriangulation( *this );
   }
 
-  
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

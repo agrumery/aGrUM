@@ -143,8 +143,7 @@ namespace gum {
     str << "<NETWORK>" << std::endl;
     str << "<NAME>" << bn.propertyWithDefault( "name", "unnamedBN" )
         << "</NAME>" << std::endl;
-    str << "<PROPERTY>software aGrUM</PROPERTY>"
-        << std::endl;
+    str << "<PROPERTY>software aGrUM</PROPERTY>" << std::endl;
 
     return str.str();
   }

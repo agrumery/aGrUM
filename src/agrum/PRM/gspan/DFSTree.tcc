@@ -49,8 +49,8 @@ namespace gum {
 
         for ( const auto edge : __graph->edges( &label ) ) {
           bool u_first = ( edge->l_u->id < edge->l_v->id );
-          Idx u_idx = ( u_first ) ? edge->l_u->id : edge->l_v->id;
-          Idx v_idx = ( !u_first ) ? edge->l_u->id : edge->l_v->id;
+          Idx u_idx    = ( u_first ) ? edge->l_u->id : edge->l_v->id;
+          Idx v_idx    = ( !u_first ) ? edge->l_u->id : edge->l_v->id;
 
           bool found = false;
 

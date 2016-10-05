@@ -83,7 +83,7 @@ namespace gum {
   INLINE NodeGraphPartIterator& NodeGraphPartIterator::
   operator=( const NodeGraphPartIterator& it ) noexcept {
     _nodes = it._nodes;
-    _pos = it._pos;
+    _pos   = it._pos;
     _valid = it._valid;
     GUM_OP_CPY( NodeGraphPartIterator );
 
@@ -94,7 +94,7 @@ namespace gum {
   INLINE NodeGraphPartIterator& NodeGraphPartIterator::
   operator=( NodeGraphPartIterator&& it ) noexcept {
     _nodes = it._nodes;
-    _pos = it._pos;
+    _pos   = it._pos;
     _valid = it._valid;
     GUM_OP_MOV( NodeGraphPartIterator );
 
@@ -137,7 +137,7 @@ namespace gum {
     _pos = id;
 
     if ( _pos >= _nodes->bound() ) {
-      _pos = _nodes->bound();
+      _pos   = _nodes->bound();
       _valid = false;
     } else {
       _valid = _nodes->exists( _pos );
@@ -193,7 +193,7 @@ namespace gum {
     //  avoid self assignment
     if ( &it != this ) {
       NodeGraphPartIterator::operator=( it );
-      Listener::operator=( it );
+      Listener::operator             =( it );
       GUM_OP_CPY( NodeGraphPartIteratorSafe );
     }
 
@@ -206,7 +206,7 @@ namespace gum {
     //  avoid self assignment
     if ( &it != this ) {
       NodeGraphPartIterator::operator=( std::move( it ) );
-      Listener::operator=( std::move( it ) );
+      Listener::operator             =( std::move( it ) );
       GUM_OP_MOV( NodeGraphPartIteratorSafe );
     }
 

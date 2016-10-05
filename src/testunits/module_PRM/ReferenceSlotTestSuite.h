@@ -45,9 +45,9 @@ namespace gum_tests {
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract();
-      __A = new gum::prm::PRMClass<double>( "A" );
-      __B = new gum::prm::PRMClass<double>( "B" );
-      __boolean = gum::prm::PRMType<double>::boolean();
+      __A                 = new gum::prm::PRMClass<double>( "A" );
+      __B                 = new gum::prm::PRMClass<double>( "B" );
+      __boolean           = gum::prm::PRMType<double>::boolean();
     }
 
     void tearDown() {

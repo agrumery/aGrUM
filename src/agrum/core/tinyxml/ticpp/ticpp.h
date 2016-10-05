@@ -789,7 +789,7 @@ It will take care of the conversion and throwing the exception.
       *first = 0;
 
       for ( Node* child = FirstChild( value, false ); child;
-            child = child->NextSibling( value, false ) ) {
+            child       = child->NextSibling( value, false ) ) {
         *first = dynamic_cast<T*>( child );
 
         if ( 0 != *first ) {
@@ -812,11 +812,11 @@ It will take care of the conversion and throwing the exception.
     template <class T>
     void IterateNext( const std::string& value, T** next ) const {
       Node* sibling = NextSibling( value, false );
-      *next = dynamic_cast<T*>( sibling );
+      *next         = dynamic_cast<T*>( sibling );
 
       while ( ( 0 != sibling ) && ( 0 == *next ) ) {
         sibling = sibling->NextSibling( value, false );
-        *next = dynamic_cast<T*>( sibling );
+        *next   = dynamic_cast<T*>( sibling );
       }
     }
 
@@ -830,10 +830,10 @@ It will take care of the conversion and throwing the exception.
     template <class T>
     void IteratePrevious( const std::string& value, T** previous ) const {
       Node* sibling = PreviousSibling( value, false );
-      *previous = dynamic_cast<T*>( sibling );
+      *previous     = dynamic_cast<T*>( sibling );
 
       while ( ( 0 != sibling ) && ( 0 == *previous ) ) {
-        sibling = sibling->PreviousSibling( value, false );
+        sibling   = sibling->PreviousSibling( value, false );
         *previous = dynamic_cast<T*>( sibling );
       }
     }
@@ -967,9 +967,9 @@ It will take care of the conversion and throwing the exception.
       T* pointer = dynamic_cast<T*>( this );
 
       if ( 0 == pointer ) {
-        std::string thisType = typeid( this ).name();
+        std::string thisType   = typeid( this ).name();
         std::string targetType = typeid( T ).name();
-        std::string thatType = typeid( *this ).name();
+        std::string thatType   = typeid( *this ).name();
         TICPPTHROW( "The " << thisType.substr( 6 )
                            << " could not be casted to a "
                            << targetType.substr( 6 )
@@ -1083,7 +1083,7 @@ It will take care of the conversion and throwing the exception.
     Constructs the correct child of Node, based on the Type of the TiXmlNode*.
     */
     Node* NodeFactory( TiXmlNode* tiXmlNode,
-                       bool throwIfNull = true,
+                       bool throwIfNull            = true,
                        bool rememberSpawnedWrapper = true ) const;
   };
 
@@ -1177,7 +1177,7 @@ It will take care of the conversion and throwing the exception.
 
     /** Sets internal pointer */
     Iterator& operator=( const Iterator& it ) {
-      m_p = it.m_p;
+      m_p     = it.m_p;
       m_value = it.m_value;
       return *this;
     }
@@ -1565,7 +1565,7 @@ It will take care of the conversion and throwing the exception.
       *first = 0;
 
       for ( Attribute* child = FirstAttribute( false ); child;
-            child = child->Next( false ) ) {
+            child            = child->Next( false ) ) {
         *first = dynamic_cast<Attribute*>( child );
 
         if ( 0 != *first ) {

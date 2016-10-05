@@ -97,7 +97,7 @@ namespace gum {
               ++iter, ++jter ) {
           if ( ( **iter ) != ( **jter ) ) {
             EdgeCode& alpha = **iter;
-            EdgeCode& beta = **jter;
+            EdgeCode& beta  = **jter;
 
             if ( alpha.isBackward() ) {
               if ( beta.isForward() ) {

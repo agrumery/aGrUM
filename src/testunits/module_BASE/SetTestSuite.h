@@ -71,9 +71,9 @@ namespace gum_tests {
       gum::Set<int> set4{20, 50};
 
       gum::Set<int> set5 = std::move( set4 );
-      set4 = std::move( set3 );
-      set3 = std::move( set2 );
-      set2 = std::move( set1 );
+      set4               = std::move( set3 );
+      set3               = std::move( set2 );
+      set2               = std::move( set1 );
 
       TS_ASSERT( set2.size() == 3 );
     }

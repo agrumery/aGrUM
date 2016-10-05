@@ -168,7 +168,7 @@ namespace gum {
       const Set<const DiscreteVariable*>& del_vars,
       const Schedule<GUM_SCALAR>& schedule ) {
     const Sequence<const DiscreteVariable*>& vars = table.variablesSequence();
-    long res = 1;
+    long res                                      = 1;
 
     for ( const auto var : vars )
       if ( !del_vars.contains( var ) ) {

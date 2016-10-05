@@ -62,7 +62,7 @@ namespace gum {
    *
    */
   template <typename Val,
-            class Cmp = std::less<Val>,
+            class Cmp  = std::less<Val>,
             class Node = BinTreeNode<Val>>
   class BinSearchTree {
     public:
@@ -335,7 +335,7 @@ namespace gum {
      * @param dir The direction of the edge parent->copy.
      */
     Node* _copy( Node* root_from,
-                 Node* parent = 0,
+                 Node* parent   = 0,
                  BinTreeDir dir = BinTreeDir::LEFT_CHILD );
 
     /**

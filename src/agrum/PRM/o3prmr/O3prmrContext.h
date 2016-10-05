@@ -62,7 +62,7 @@ namespace gum {
             : line( c.line ) {}
         virtual ~O3prmrCommand() {}
 
-        virtual RequestType type() const = 0;
+        virtual RequestType type() const     = 0;
         virtual std::string toString() const = 0;
       };
 

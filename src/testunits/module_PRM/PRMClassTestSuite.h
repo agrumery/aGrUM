@@ -83,9 +83,9 @@ namespace gum_tests {
       seq << ref << a;
       auto chain = new PRMSlotChain( "rho.a", seq );
       PRMClass super( "super" );
-      auto b = new PRMAttribute( "b", *__boolean );
+      auto b    = new PRMAttribute( "b", *__boolean );
       auto b_id = super.add( b );
-      auto c = new PRMAttribute( "c", *__boolean );
+      auto c    = new PRMAttribute( "c", *__boolean );
       auto c_id = super.add( c );
       super.addArc( "b", "c" );
       super.add( ref );
@@ -222,7 +222,7 @@ namespace gum_tests {
       // Arra,ge
       PRMClass c( "class" );
       PRMAttribute* attr = new PRMAttribute( "attr", *__boolean );
-      gum::NodeId id = 100;  // Id generation starts at 0
+      gum::NodeId id     = 100;  // Id generation starts at 0
       // Act & assert
       TS_ASSERT_THROWS_NOTHING( id = c.add( attr ) );
       TS_ASSERT( c.exists( attr->name() ) );
@@ -330,8 +330,8 @@ namespace gum_tests {
         std::stringstream sbuff;
         sbuff << "type_" << i;
         auto name = sbuff.str();
-        auto var = gum::LabelizedVariable( name, "", 2 );
-        auto t = new PRMType( super, map, var );
+        auto var  = gum::LabelizedVariable( name, "", 2 );
+        auto t    = new PRMType( super, map, var );
         types.push_back( t );
       }
       PRMClass c( "class" );
@@ -348,8 +348,8 @@ namespace gum_tests {
 
         for ( int j = i + 1; j < size; j++ ) {
           std::string j_name = "(" + types[j]->name() + ")attr";
-          auto i_attr = sub_c.get( i_name ).type();
-          auto j_attr = sub_c.get( j_name ).type();
+          auto i_attr        = sub_c.get( i_name ).type();
+          auto j_attr        = sub_c.get( j_name ).type();
           TS_ASSERT_DIFFERS( i_attr, j_attr );
         }
       }
@@ -390,8 +390,8 @@ namespace gum_tests {
         std::stringstream sbuff;
         sbuff << "type_" << i;
         auto name = sbuff.str();
-        auto var = gum::LabelizedVariable( name, "", 2 );
-        auto t = new PRMType( super, map, var );
+        auto var  = gum::LabelizedVariable( name, "", 2 );
+        auto t    = new PRMType( super, map, var );
         types.push_back( t );
       }
       PRMClass c( "class" );
@@ -411,8 +411,8 @@ namespace gum_tests {
 
         for ( int j = i + 1; j < size; j++ ) {
           std::string j_name = "(" + types[j]->name() + ")attr";
-          auto i_attr = sub_c.get( i_name ).type();
-          auto j_attr = sub_c.get( j_name ).type();
+          auto i_attr        = sub_c.get( i_name ).type();
+          auto j_attr        = sub_c.get( j_name ).type();
           TS_ASSERT_DIFFERS( i_attr, j_attr );
         }
       }
@@ -510,7 +510,7 @@ namespace gum_tests {
       PRMAttribute* a = new PRMAttribute( "attr", *__boolean );
       c.add( a );
       bool before = c.isInputNode( *a );
-      bool after = false;
+      bool after  = false;
       // Act
       TS_ASSERT_THROWS_NOTHING( c.setInputNode( *a, true ) );
       // Assert
@@ -537,7 +537,7 @@ namespace gum_tests {
       PRMAttribute* a = new PRMAttribute( "attr", *__boolean );
       c.add( a );
       bool before = c.isOutputNode( *a );
-      bool after = false;
+      bool after  = false;
       // Act
       TS_ASSERT_THROWS_NOTHING( c.setOutputNode( *a, true ) );
       // Assert

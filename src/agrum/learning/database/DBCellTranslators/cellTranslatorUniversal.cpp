@@ -92,7 +92,7 @@ namespace gum {
         std::vector<int> no_user_vals;
         std::vector<std::pair<Idx, Idx>> user_vals;
         for ( auto iter = __strings.begin(); iter != __strings.end(); ++iter ) {
-          const int str_index = iter.first();
+          const int str_index    = iter.first();
           const std::string& str = DBCell::getString( str_index );
           if ( __str_user_values->exists( str ) ) {
             user_vals.push_back( std::pair<Idx, Idx>(

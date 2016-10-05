@@ -168,7 +168,7 @@ namespace gum {
             new IndexedTree<Key, Data>( index[i], (Data*)0 );
         current_node->children.insert( index[i], new_node );
         new_node->parent = this;
-        current_node = new_node;
+        current_node     = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -222,7 +222,7 @@ namespace gum {
             new IndexedTree<Key, Data>( index[i], (Data*)0 );
         current_node->children.insert( index[i], new_node );
         new_node->parent = this;
-        current_node = new_node;
+        current_node     = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -276,7 +276,7 @@ namespace gum {
             new IndexedTree<Key, Data>( index[i], (Data*)0 );
         current_node->children.insert( index[i], new_node );
         new_node->parent = this;
-        current_node = new_node;
+        current_node     = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -332,7 +332,7 @@ namespace gum {
             new IndexedTree<Key, Data>( index[i], (Data*)0 );
         current_node->children.insert( index[i], new_node );
         new_node->parent = this;
-        current_node = new_node;
+        current_node     = new_node;
       } else
         current_node = current_node->children[index[i]];
     }

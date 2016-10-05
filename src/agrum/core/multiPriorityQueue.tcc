@@ -69,7 +69,7 @@ namespace gum {
 
     // fill the heap structure
     for ( const auto& val_and_index : __indices ) {
-      const Val* val = &( val_and_index.first );
+      const Val* val                = &( val_and_index.first );
       const std::vector<Size>& vect = val_and_index.second;
       for ( auto index : vect ) {
         __heap[index].second = val;
@@ -95,7 +95,7 @@ namespace gum {
         __heap.push_back( elt );
       }
       for ( const auto& val_and_index : __indices ) {
-        const Val* val = &( val_and_index.first );
+        const Val* val                = &( val_and_index.first );
         const std::vector<Size>& vect = val_and_index.second;
         for ( auto index : vect ) {
           __heap[index].second = val;
@@ -136,13 +136,13 @@ namespace gum {
       __cmp = from.__cmp;
 
       // copy the indices and the heap
-      __indices = from.__indices;
-      __heap = from.__heap;
+      __indices     = from.__indices;
+      __heap        = from.__heap;
       __nb_elements = from.__nb_elements;
 
       // restore the link between __indices and __heap
       for ( const auto& val_and_index : __indices ) {
-        const Val* val = &( val_and_index.first );
+        const Val* val                = &( val_and_index.first );
         const std::vector<Size>& vect = val_and_index.second;
         for ( auto index : vect ) {
           __heap[index].second = val;
@@ -173,7 +173,7 @@ namespace gum {
       __cmp = from.__cmp;
 
       // copy the indices and the heap
-      __indices = from.__indices;
+      __indices     = from.__indices;
       __nb_elements = from.__nb_elements;
 
       // restore the link between __indices and __heap
@@ -183,7 +183,7 @@ namespace gum {
         __heap.push_back( elt );
       }
       for ( const auto& val_and_index : __indices ) {
-        const Val* val = &( val_and_index.first );
+        const Val* val                = &( val_and_index.first );
         const std::vector<Size>& vect = val_and_index.second;
         for ( auto index : vect ) {
           __heap[index].second = val;
@@ -210,9 +210,9 @@ namespace gum {
       // for debugging purposes
       GUM_OP_MOV( MultiPriorityQueue );
 
-      __cmp = std::move( from.__cmp );
-      __indices = std::move( from.__indices );
-      __heap = std::move( from.__heap );
+      __cmp         = std::move( from.__cmp );
+      __indices     = std::move( from.__indices );
+      __heap        = std::move( from.__heap );
       __nb_elements = std::move( from.__nb_elements );
     }
 
@@ -278,7 +278,7 @@ namespace gum {
     if ( index >= __nb_elements ) return;
 
     // remove the element from the hashtable
-    const Val& del_val = *( __heap[index].second );
+    const Val& del_val            = *( __heap[index].second );
     std::vector<Size>& vect_index = __indices[del_val];
     if ( vect_index.size() == 1 )
       __indices.erase( del_val );
@@ -313,7 +313,7 @@ namespace gum {
       if ( __cmp( last.first, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                     = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& v_index : vect_index ) {
         if ( v_index == j ) {
@@ -324,7 +324,7 @@ namespace gum {
     }
 
     // put "last" back into the heap
-    __heap[i] = std::move( last );
+    __heap[i]                       = std::move( last );
     std::vector<Size>& last_indices = __indices[*( __heap[i].second )];
     for ( auto& v_index : last_indices ) {
       if ( v_index == __nb_elements ) {
@@ -380,10 +380,10 @@ namespace gum {
     std::vector<Size>* new_vect;
     if ( !__indices.exists( val ) ) {
       auto& new_elt = __indices.insert( val, std::vector<Size>() );
-      new_val = &( new_elt.first );
-      new_vect = &( new_elt.second );
+      new_val       = &( new_elt.first );
+      new_vect      = &( new_elt.second );
     } else {
-      new_val = &( __indices.key( val ) );
+      new_val  = &( __indices.key( val ) );
       new_vect = &( __indices[val] );
     }
 
@@ -415,7 +415,7 @@ namespace gum {
     for ( Size j = ( i - 1 ) >> 1;
           i && __cmp( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                     = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& index : vect_index ) {
         if ( index == j ) {
@@ -426,7 +426,7 @@ namespace gum {
     }
 
     // put the new bucket into the heap
-    __heap[i].first = std::move( new_heap_val.first );
+    __heap[i].first  = std::move( new_heap_val.first );
     __heap[i].second = new_val;
     new_vect->back() = i;
 
@@ -443,10 +443,10 @@ namespace gum {
     std::vector<Size>* new_vect;
     if ( !__indices.exists( val ) ) {
       auto& new_elt = __indices.insert( std::move( val ), std::vector<Size>() );
-      new_val = &( new_elt.first );
-      new_vect = &( new_elt.second );
+      new_val       = &( new_elt.first );
+      new_vect      = &( new_elt.second );
     } else {
-      new_val = &( __indices.key( val ) );
+      new_val  = &( __indices.key( val ) );
       new_vect = &( __indices[val] );
     }
 
@@ -479,7 +479,7 @@ namespace gum {
     for ( Size j = ( i - 1 ) >> 1;
           i && __cmp( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                     = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& index : vect_index ) {
         if ( index == j ) {
@@ -490,7 +490,7 @@ namespace gum {
     }
 
     // put the new bucket into the heap
-    __heap[i].first = std::move( new_heap_val.first );
+    __heap[i].first  = std::move( new_heap_val.first );
     __heap[i].second = new_val;
     new_vect->back() = i;
 
@@ -568,7 +568,7 @@ namespace gum {
     // move val upward if needed
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( new_priority, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                     = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& idx : vect_index ) {
         if ( idx == j ) {
@@ -590,7 +590,7 @@ namespace gum {
       if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                     = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& idx : vect_index ) {
         if ( idx == j ) {
@@ -601,8 +601,8 @@ namespace gum {
     }
 
     // update the index of val
-    __heap[i].first = new_priority;
-    __heap[i].second = val;
+    __heap[i].first               = new_priority;
+    __heap[i].second              = val;
     std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
     for ( auto& idx : vect_index ) {
       if ( idx == index ) {
@@ -632,7 +632,7 @@ namespace gum {
     // move val upward if needed
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( new_priority, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                     = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& idx : vect_index ) {
         if ( idx == j ) {
@@ -654,7 +654,7 @@ namespace gum {
       if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i] = std::move( __heap[j] );
+      __heap[i]                     = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& idx : vect_index ) {
         if ( idx == j ) {
@@ -665,8 +665,8 @@ namespace gum {
     }
 
     // update the index of val
-    __heap[i].first = std::move( new_priority );
-    __heap[i].second = val;
+    __heap[i].first               = std::move( new_priority );
+    __heap[i].second              = val;
     std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
     for ( auto& idx : vect_index ) {
       if ( idx == index ) {

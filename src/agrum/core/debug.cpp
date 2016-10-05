@@ -114,12 +114,12 @@ namespace gum {
     }
 
     void __dumpObjects( void ) {
-      Size nb_err = 0;
+      Size nb_err       = 0;
       double total_size = 0.0;
 
-      char fillChar = '_';
-      int widthColLibelle = 50;
-      int widthColSizeOf = 5;
+      char fillChar           = '_';
+      int widthColLibelle     = 50;
+      int widthColSizeOf      = 5;
       int widthColItemsNumber = 8;
 
       std::cout << std::setfill( '=' ) << "|"
@@ -147,9 +147,9 @@ namespace gum {
             xx != __creation().end();
             ++xx ) {
         std::stringstream stream;
-        int zeCreatedObjs = xx->second;
+        int zeCreatedObjs  = xx->second;
         int zeDeletedObjts = -1;
-        int size = __sizeof()[xx->first];
+        int size           = __sizeof()[xx->first];
 
         stream << std::setfill( fillChar = ( fillChar == '_' ) ? ' ' : '_' )
                << "| " << std::setw( widthColLibelle ) << std::left << xx->first

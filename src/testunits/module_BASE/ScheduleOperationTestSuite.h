@@ -38,7 +38,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 2 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -50,7 +50,7 @@ namespace gum_tests {
 
       gum::ScheduleProject<float> real_myproj( f1, del_vars, gum::projectMax );
       const gum::ScheduleMultiDim<float>& res = real_myproj.result();
-      gum::ScheduleOperation<float>& myproj = real_myproj;
+      gum::ScheduleOperation<float>& myproj   = real_myproj;
 
       gum::Sequence<const gum::ScheduleMultiDim<float>*> multidims =
           myproj.multiDimArgs();
@@ -63,7 +63,7 @@ namespace gum_tests {
       TS_ASSERT( s1.str() == myproj.toString() );
 
       gum::ScheduleProject<float> real_myproj2 = real_myproj;
-      gum::ScheduleOperation<float>& myproj2 = real_myproj2;
+      gum::ScheduleOperation<float>& myproj2   = real_myproj2;
       TS_ASSERT( real_myproj2.result().isAbstract() );
       TS_ASSERT( myproj2 == myproj );
       TS_ASSERT( !( myproj2 != myproj ) );

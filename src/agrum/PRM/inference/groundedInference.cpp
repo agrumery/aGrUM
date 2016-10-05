@@ -30,10 +30,8 @@
 namespace gum {
   namespace prm {
 
-
     template class GroundedInference<float>;
     template class GroundedInference<double>;
-
 
   } /* namespace prm */
 } /* namespace gum */

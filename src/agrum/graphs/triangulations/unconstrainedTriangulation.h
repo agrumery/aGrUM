@@ -26,8 +26,8 @@
 #ifndef GUM_UNCONSTRAINED_TRIANGULATION_H
 #define GUM_UNCONSTRAINED_TRIANGULATION_H
 
-#include <agrum/graphs/triangulations/staticTriangulation.h>
 #include <agrum/graphs/triangulations/eliminationStrategies/unconstrainedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/staticTriangulation.h>
 
 namespace gum {
 
@@ -40,7 +40,7 @@ namespace gum {
    *
    */
   class UnconstrainedTriangulation : public StaticTriangulation {
-  public:
+    public:
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -65,8 +65,8 @@ namespace gum {
 
     /// @}
 
-    
-  protected:
+
+    protected:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -78,10 +78,10 @@ namespace gum {
      * trees
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
-    UnconstrainedTriangulation
-    ( const UnconstrainedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy,
-      bool minimality = false );
+    UnconstrainedTriangulation(
+        const UnconstrainedEliminationSequenceStrategy& elimSeq,
+        const JunctionTreeStrategy& JTStrategy,
+        bool minimality = false );
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -94,12 +94,12 @@ namespace gum {
      * the triangulation is minimal w.r.t. inclusion
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
-    UnconstrainedTriangulation
-    ( const UndiGraph* graph,
-      const NodeProperty<Size>* dom,
-      const UnconstrainedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy,
-      bool minimality = false );
+    UnconstrainedTriangulation(
+        const UndiGraph* graph,
+        const NodeProperty<Size>* dom,
+        const UnconstrainedEliminationSequenceStrategy& elimSeq,
+        const JunctionTreeStrategy& JTStrategy,
+        bool minimality = false );
 
     /// forbid copy constructor except in newfactory
     UnconstrainedTriangulation( const UnconstrainedTriangulation& );
@@ -108,9 +108,9 @@ namespace gum {
     UnconstrainedTriangulation( UnconstrainedTriangulation&& );
 
     /// @}
-    
 
-  private:
+
+    private:
     /// forbid copy operator
     UnconstrainedTriangulation& operator=( const UnconstrainedTriangulation& );
   };

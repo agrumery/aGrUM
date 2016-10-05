@@ -191,7 +191,7 @@ namespace gum {
             }
 
           if ( pot->domainSize() > max ) {
-            max = pot->domainSize();
+            max       = pot->domainSize();
             max_count = 1;
           } else if ( pot->domainSize() == max ) {
             ++max_count;

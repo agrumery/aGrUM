@@ -64,7 +64,7 @@ namespace gum {
 
   void NodeGraphPart::populateNodes( const NodeGraphPart& s ) {
     clear();  // "virtual" flush of the nodes set
-    __holes_size = s.__holes_size;
+    __holes_size          = s.__holes_size;
     __holes_resize_policy = s.__holes_resize_policy;
 
     if ( s.__holes ) __holes = new NodeSet( *s.__holes );
@@ -156,7 +156,7 @@ namespace gum {
 
   void NodeGraphPart::__clearNodes( void ) {
     NodeId bound = __boundVal;
-    __boundVal = 0;
+    __boundVal   = 0;
 
     if ( onNodeDeleted.hasListener() ) {
       for ( NodeId n = 0; n < bound; ++n ) {
@@ -178,7 +178,7 @@ namespace gum {
     }
 
     if ( _pos >= _nodes->bound() ) {  // moreover, it was the last position
-      _pos = _nodes->bound();
+      _pos   = _nodes->bound();
       _valid = false;
     }
   }

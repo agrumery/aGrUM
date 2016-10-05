@@ -28,14 +28,13 @@
 
 namespace gum {
 
-  
+
   /// returns the modalities of the variables of the graph to be triangulated
-  INLINE const NodeProperty<Size>*
-  Triangulation::domainSizes () const {
+  INLINE const NodeProperty<Size>* Triangulation::domainSizes() const {
     return _domain_sizes;
   }
 
-  
+
 } /* namespace gum */
 
 

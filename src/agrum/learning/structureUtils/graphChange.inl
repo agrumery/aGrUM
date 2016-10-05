@@ -64,7 +64,7 @@ namespace gum {
     /// copy constructor
     INLINE GraphChange& GraphChange::
     operator=( const GraphChange& from ) noexcept {
-      __type = from.__type;
+      __type  = from.__type;
       __node1 = from.__node1;
       __node2 = from.__node2;
       return *this;
@@ -72,7 +72,7 @@ namespace gum {
 
     /// move operator
     INLINE GraphChange& GraphChange::operator=( GraphChange&& from ) noexcept {
-      __type = from.__type;
+      __type  = from.__type;
       __node1 = from.__node1;
       __node2 = from.__node2;
       return *this;

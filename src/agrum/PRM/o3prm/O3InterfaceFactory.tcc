@@ -76,7 +76,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = src.__prm;
+        __prm    = src.__prm;
         __o3_prm = src.__o3_prm;
         __solver = src.__solver;
         __errors = src.__errors;
@@ -89,7 +89,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = std::move( src.__prm );
+        __prm    = std::move( src.__prm );
         __o3_prm = std::move( src.__o3_prm );
         __solver = std::move( src.__solver );
         __errors = std::move( src.__errors );
@@ -251,7 +251,7 @@ namespace gum {
       INLINE bool O3InterfaceFactory<GUM_SCALAR>::__checkOverloadLegality(
           O3Interface& i, O3InterfaceElement& elt ) {
 
-        const auto& real_i = __prm->getInterface( i.name().label() );
+        const auto& real_i   = __prm->getInterface( i.name().label() );
         const auto& real_elt = real_i.get( elt.name().label() );
 
         if ( PRMClassElement<GUM_SCALAR>::isAttribute( real_elt ) ) {
@@ -270,10 +270,10 @@ namespace gum {
       O3InterfaceFactory<GUM_SCALAR>::__checkAttributeOverloadLegality(
           O3Interface& i, O3InterfaceElement& elt ) {
 
-        const auto& real_i = __prm->getInterface( i.name().label() );
+        const auto& real_i   = __prm->getInterface( i.name().label() );
         const auto& real_elt = real_i.get( elt.name().label() );
 
-        const auto& sub_type = __prm->type( elt.type().label() );
+        const auto& sub_type   = __prm->type( elt.type().label() );
         const auto& super_type = real_elt.type();
 
         if ( !sub_type.isSubTypeOf( super_type ) ) {
@@ -293,7 +293,7 @@ namespace gum {
       INLINE bool
       O3InterfaceFactory<GUM_SCALAR>::__checkReferenceOverloadLegality(
           O3Interface& i, O3InterfaceElement& elt ) {
-        const auto& real_i = __prm->getInterface( i.name().label() );
+        const auto& real_i   = __prm->getInterface( i.name().label() );
         const auto& real_elt = static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
             real_i.get( elt.name().label() ) );
 

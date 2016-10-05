@@ -29,10 +29,8 @@
 namespace gum {
   namespace prm {
 
-
     template class SVED<float>;
     template class SVED<double>;
-
 
   } /* namespace prm */
 } /* namespace gum */

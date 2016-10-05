@@ -52,7 +52,7 @@ namespace gum {
       , __maxObjectSize( GUM_DEFAULT_MAX_OBJECT_SIZE ) {
     __pool.setKeyUniquenessPolicy( false );
     GUM_CONSTRUCTOR( SmallObjectAllocator );
-    nbAllocation = 0;
+    nbAllocation   = 0;
     nbDeallocation = 0;
   }
 
@@ -92,9 +92,9 @@ namespace gum {
       //
       if ( !__pool.exists( Size( objectSize ) ) ) {
         // Calcul du nombre de block par chunk pour des objets de cette taille
-        std::size_t nb = __chunkSize / Size( objectSize );
+        std::size_t nb           = __chunkSize / Size( objectSize );
         if ( nb > UCHAR_MAX ) nb = UCHAR_MAX;
-        unsigned char numBlocks = static_cast<unsigned char>( nb );
+        unsigned char numBlocks  = static_cast<unsigned char>( nb );
 
         FixedAllocator* newFa =
             new FixedAllocator( Size( objectSize ), numBlocks );

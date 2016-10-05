@@ -22,28 +22,28 @@ namespace gum {
 
 
   /// default constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder( const DAG* dag ) :
-    __dag( dag ) {
+  INLINE BarrenNodesFinder::BarrenNodesFinder( const DAG* dag )
+      : __dag( dag ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( BarrenNodesFinder );
   }
 
 
   /// copy constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder( const BarrenNodesFinder& from ) :
-    __dag( from.__dag ),
-    __observed_nodes( from.__observed_nodes ),
-    __target_nodes ( from.__target_nodes ) {
+  INLINE BarrenNodesFinder::BarrenNodesFinder( const BarrenNodesFinder& from )
+      : __dag( from.__dag )
+      , __observed_nodes( from.__observed_nodes )
+      , __target_nodes( from.__target_nodes ) {
     // for debugging purposes
     GUM_CONS_CPY( BarrenNodesFinder );
   }
 
 
   /// move constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder( BarrenNodesFinder&& from ) :
-    __dag( from.__dag ),
-    __observed_nodes( from.__observed_nodes ),
-    __target_nodes ( from.__target_nodes ) {
+  INLINE BarrenNodesFinder::BarrenNodesFinder( BarrenNodesFinder&& from )
+      : __dag( from.__dag )
+      , __observed_nodes( from.__observed_nodes )
+      , __target_nodes( from.__target_nodes ) {
     // for debugging purposes
     GUM_CONS_MOV( BarrenNodesFinder );
   }
@@ -60,9 +60,9 @@ namespace gum {
   INLINE BarrenNodesFinder& BarrenNodesFinder::
   operator=( const BarrenNodesFinder& from ) {
     if ( this != &from ) {
-      __dag = from.__dag;
+      __dag            = from.__dag;
       __observed_nodes = from.__observed_nodes;
-      __target_nodes = from.__target_nodes;
+      __target_nodes   = from.__target_nodes;
     }
     return *this;
   }
@@ -72,9 +72,9 @@ namespace gum {
   INLINE BarrenNodesFinder& BarrenNodesFinder::
   operator=( BarrenNodesFinder&& from ) {
     if ( this != &from ) {
-      __dag = from.__dag;
+      __dag            = from.__dag;
       __observed_nodes = from.__observed_nodes;
-      __target_nodes = from.__target_nodes;
+      __target_nodes   = from.__target_nodes;
     }
     return *this;
   }
@@ -91,9 +91,9 @@ namespace gum {
     __observed_nodes = observed_nodes;
   }
 
-  
+
   /// sets the set of target nodes we are interested in
-  INLINE void BarrenNodesFinder::setTargets ( const NodeSet* target_nodes ) {
+  INLINE void BarrenNodesFinder::setTargets( const NodeSet* target_nodes ) {
     __target_nodes = target_nodes;
   }
 

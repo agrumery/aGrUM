@@ -77,7 +77,7 @@ namespace gum {
   static constexpr const void* __get_list_end() { return &__static_list_end; }
 
   const void* const __list_end_safe = __get_list_end_safe();
-  const void* const __list_end = __get_list_end();
+  const void* const __list_end      = __get_list_end();
 
 } /* namespace gum */
 

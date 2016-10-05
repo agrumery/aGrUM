@@ -272,11 +272,11 @@ namespace gum_tests {
                    size_t layer_count ) {
       for ( size_t lvl = 0; lvl < layer_count; ++lvl ) {
         v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
-        v[lvl].a = 30;
-        v[lvl].g = 2;
-        v[lvl].c = 1;
-        v[lvl].o = 10;
-        v[lvl].inner_density = 0.2f;
+        v[lvl].a              = 30;
+        v[lvl].g              = 2;
+        v[lvl].c              = 1;
+        v[lvl].o              = 10;
+        v[lvl].inner_density  = 0.2f;
         v[lvl].outter_density = 0.05f;
       }
     }

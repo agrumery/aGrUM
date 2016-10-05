@@ -84,7 +84,7 @@ namespace gum {
 
       // transform each column
       bool conversion_ok = true;
-      Size cols = db[0].size();
+      Size cols          = db[0].size();
       for ( Idx i = 0; i < cols; ++i ) {
         // count all the observations to determine whether there exists
         // a type which appears much more frequently than the others

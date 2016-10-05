@@ -42,8 +42,7 @@ namespace gum {
    *
    */
   class Triangulation {
-  public:
-
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -55,13 +54,13 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual Triangulation* newFactory () const = 0;
+    virtual Triangulation* newFactory() const = 0;
 
     /// virtual copy constructor
     /** note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual Triangulation* copyFactory () const = 0;
+    virtual Triangulation* copyFactory() const = 0;
 
     /// destructor
     virtual ~Triangulation();
@@ -87,23 +86,23 @@ namespace gum {
                            const NodeProperty<Size>* domsizes ) = 0;
 
     /// returns the fill-ins added by the triangulation algorithm
-    virtual const EdgeSet& fillIns () = 0;
+    virtual const EdgeSet& fillIns() = 0;
 
     /// returns an elimination ordering compatible with the triangulated graph
-    virtual const std::vector<NodeId>& eliminationOrder () = 0;
+    virtual const std::vector<NodeId>& eliminationOrder() = 0;
 
     /** @brief returns the index of a given node in the elimination order
      * (0 = first node eliminated) */
     virtual Idx eliminationOrder( const NodeId ) = 0;
 
     /// returns the triangulated graph
-    virtual const UndiGraph& triangulatedGraph () = 0;
+    virtual const UndiGraph& triangulatedGraph() = 0;
 
     /// returns the elimination tree of a compatible ordering
-    virtual const CliqueGraph& eliminationTree () = 0;
+    virtual const CliqueGraph& eliminationTree() = 0;
 
     /// returns a compatible junction tree
-    virtual const CliqueGraph& junctionTree () = 0;
+    virtual const CliqueGraph& junctionTree() = 0;
 
     /// returns the max of log10DomainSize of the cliques in the junction tree.
     /** This is usefull for instance to estimate the complexity (both in space
@@ -112,15 +111,15 @@ namespace gum {
      * This method is not 'const' since it can be called before building any
      * junction tree and hence it needs to build it...
      */
-    double maxLog10CliqueDomainSize ();
+    double maxLog10CliqueDomainSize();
 
     /** @brief returns the Id of the clique created by the
      * elimination of a given node during the triangulation process */
-    virtual NodeId createdJunctionTreeClique ( const NodeId id ) = 0;
+    virtual NodeId createdJunctionTreeClique( const NodeId id ) = 0;
 
     /** @brief returns the Ids of the cliques of the junction tree created by
      * the elimination of the nodes */
-    virtual const NodeProperty<NodeId>& createdJunctionTreeCliques () = 0;
+    virtual const NodeProperty<NodeId>& createdJunctionTreeCliques() = 0;
 
     /// returns a junction tree of maximal prime subgraphs
     /** @warning Actually, the cliques of the junction tree are guarranteed to
@@ -129,33 +128,34 @@ namespace gum {
      * removing any edge in the triangulated graph results in a nontriangulated
      * graph). This can be ensured by requiring minimality of the
      * triangulation. */
-    virtual const CliqueGraph& maxPrimeSubgraphTree () = 0;
+    virtual const CliqueGraph& maxPrimeSubgraphTree() = 0;
 
     /** @brief returns the Id of the maximal prime subgraph created by the
      * elimination of a given node during the triangulation process */
-    virtual NodeId createdMaxPrimeSubgraph ( const NodeId id ) = 0;
+    virtual NodeId createdMaxPrimeSubgraph( const NodeId id ) = 0;
 
     /// reinitialize the graph to be triangulated to an empty graph
-    virtual void clear () = 0;
+    virtual void clear() = 0;
 
-    /// returns the domain sizes of the variables of the graph to be triangulated
-    const NodeProperty<Size>* domainSizes () const;
+    /// returns the domain sizes of the variables of the graph to be
+    /// triangulated
+    const NodeProperty<Size>* domainSizes() const;
 
     /// @}
 
 
-  protected:
+    protected:
     /// the domain sizes of the variables/nodes of the graph
-    const NodeProperty<Size>* _domain_sizes { nullptr };
+    const NodeProperty<Size>* _domain_sizes{nullptr};
 
 
     /// default constructor
-    Triangulation ();
+    Triangulation();
 
     /// constructor with a domain size specified
     /** @warning note that, by aGrUM's rule, domsizes is not copied but only
      * referenced by the triangulation algorithm. */
-   Triangulation ( const NodeProperty<Size>* domsizes );
+    Triangulation( const NodeProperty<Size>* domsizes );
 
     /// prevent copy constructor except when using newFactory
     Triangulation( const Triangulation& );
@@ -164,7 +164,7 @@ namespace gum {
     Triangulation( Triangulation&& );
 
 
-  private:
+    private:
     /// prevent copy operator
     Triangulation& operator=( const Triangulation& );
   };
@@ -174,7 +174,7 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/triangulations/triangulation.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 
 #endif /* GUM_TRIANGULATION_H */

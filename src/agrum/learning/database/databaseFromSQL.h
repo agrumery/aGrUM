@@ -81,7 +81,7 @@ namespace gum {
                        const std::string& login,
                        const std::string& password,
                        const std::string& query,
-                       long timeout = 0,
+                       long timeout                 = 0,
                        const DBTransform& transform = DBTransformIdentity(),
                        const std::vector<std::string> missingVal = {"NULL"} );
 

@@ -26,27 +26,26 @@
 
 namespace gum {
 
-  
+
   // Default Constructor
   template <typename GUM_SCALAR>
-  EvidenceInference<GUM_SCALAR>::EvidenceInference
-  ( const IBayesNet<GUM_SCALAR>* bn ) :
-    Inference<GUM_SCALAR> ( bn ) {
+  EvidenceInference<GUM_SCALAR>::EvidenceInference(
+      const IBayesNet<GUM_SCALAR>* bn )
+      : Inference<GUM_SCALAR>( bn ) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if ( this->__bn == nullptr ) {
-      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction ( bn );
+      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction( bn );
     }
-    
+
     GUM_CONSTRUCTOR( EvidenceInference );
   }
 
-  
+
   // Destructor
   template <typename GUM_SCALAR>
-  EvidenceInference<GUM_SCALAR>::~EvidenceInference () {
+  EvidenceInference<GUM_SCALAR>::~EvidenceInference() {
     GUM_DESTRUCTOR( EvidenceInference );
   }
-  
+
 
 } /* namespace gum */
-

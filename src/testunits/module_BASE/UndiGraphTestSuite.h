@@ -366,8 +366,8 @@ namespace gum_tests {
 
     void testUndirectedPaths() {
       gum::UndiGraph graph = buildGraph();
-      gum::NodeId id6 = graph.addNode();
-      gum::NodeId id7 = graph.addNode();
+      gum::NodeId id6      = graph.addNode();
+      gum::NodeId id7      = graph.addNode();
       graph.addEdge( id6, id7 );
 
       std::vector<gum::NodeId> path = graph.undirectedPath( 0, 1 );

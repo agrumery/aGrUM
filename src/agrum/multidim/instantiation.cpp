@@ -90,8 +90,8 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY( Instantiation );
     // copy the content of aI
-    __vars = aI.__vars;
-    __vals = aI.__vals;
+    __vars     = aI.__vars;
+    __vals     = aI.__vals;
     __overflow = aI.__overflow;
 
     if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
@@ -116,8 +116,8 @@ namespace gum {
       setVals( aI );
     } else {
       // copy the content of aI
-      __vars = aI.__vars;
-      __vals = aI.__vals;
+      __vars     = aI.__vars;
+      __vals     = aI.__vals;
       __overflow = aI.__overflow;
 
       if ( aI.__master ) actAsSlave( *aI.__master );

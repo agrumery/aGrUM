@@ -79,9 +79,9 @@ namespace gum {
     DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::operator=(
         const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter ) {
       if ( this != &filter ) {
-        __handler = filter.__handler;
+        __handler        = filter.__handler;
         __translator_set = filter.__translator_set;
-        __generator_set = filter.__generator_set;
+        __generator_set  = filter.__generator_set;
       }
       return *this;
     }
@@ -92,9 +92,9 @@ namespace gum {
     DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
     operator=( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& filter ) {
       if ( this != &filter ) {
-        __handler = std::move( filter.__handler );
+        __handler        = std::move( filter.__handler );
         __translator_set = std::move( filter.__translator_set );
-        __generator_set = std::move( filter.__generator_set );
+        __generator_set  = std::move( filter.__generator_set );
       }
       return *this;
     }

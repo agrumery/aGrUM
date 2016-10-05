@@ -57,9 +57,9 @@ namespace gum_tests {
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract();
-      __A = new gum::prm::PRMClass<double>( "A" );
-      __B = new gum::prm::PRMClass<double>( "B" );
-      __C = new gum::prm::PRMClass<double>( "C" );
+      __A                 = new gum::prm::PRMClass<double>( "A" );
+      __B                 = new gum::prm::PRMClass<double>( "B" );
+      __C                 = new gum::prm::PRMClass<double>( "C" );
 
       __refI = new gum::prm::PRMReferenceSlot<double>( "refA", *__B );
       __A->add( __refI );
@@ -231,7 +231,7 @@ namespace gum_tests {
     void testLastEltSimpleConst() {
       // Arrange
       PRMSlotChain simple( "simple", *__booleanChain );
-      const auto& const_simple = simple;
+      const auto& const_simple                     = simple;
       gum::prm::PRMClassElement<double> const* elt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( elt = &( const_simple.lastElt() ) );

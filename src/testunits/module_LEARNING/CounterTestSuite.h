@@ -128,7 +128,7 @@ namespace gum_tests {
       }
 
       counter.clear();
-      gum::Idx id = counter.addNodeSet( 0, set4 );
+      gum::Idx id               = counter.addNodeSet( 0, set4 );
       std::vector<double> vectx = counter.getAllCounts( id );
       std::vector<double> vecty = counter.getConditioningCounts( id );
 

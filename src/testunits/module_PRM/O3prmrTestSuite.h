@@ -129,7 +129,7 @@ namespace gum_tests {
                                                    &c2.get( "can_print" ) ) ) );
 
         const auto& e = si->inference()->evidence( c2 );
-        const auto p = e[c1.get( "equipState" ).id()];
+        const auto p  = e[c1.get( "equipState" ).id()];
 
         gum::Instantiation j( *p );
         const auto& c2_equipState = c2.get( "equipState" );
@@ -253,7 +253,7 @@ namespace gum_tests {
         si->addPath( GET_RESSOURCES_PATH( "o3prmr/Asia/" ) );
         si->interpretFile(
             GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
-        auto prm = si->prm();
+        auto prm                               = si->prm();
         gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia.Asia" ) ) );
@@ -274,9 +274,9 @@ namespace gum_tests {
         si->addPath( GET_RESSOURCES_PATH( "o3prmr/Asia/" ) );
         si->interpretFile(
             GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
-        auto prm = si->prm();
+        auto prm        = si->prm();
         const auto& sys = prm->getSystem( "system.Asia" );
-        auto bn = new gum::BayesNet<double>( "plop" );
+        auto bn         = new gum::BayesNet<double>( "plop" );
         gum::BayesNetFactory<double> factory( bn );
         // Act
         TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
@@ -302,9 +302,9 @@ namespace gum_tests {
         // si->showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS( si->count(), (gum::Size)0 );
         if ( !si->count() ) {
-          auto prm = si->prm();
+          auto prm        = si->prm();
           const auto& sys = prm->getSystem( "Asia.Asia" );
-          auto bn = new gum::BayesNet<double>( "plop" );
+          auto bn         = new gum::BayesNet<double>( "plop" );
           gum::BayesNetFactory<double> factory( bn );
           // Act
           TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
@@ -329,9 +329,9 @@ namespace gum_tests {
         si->addPath( GET_RESSOURCES_PATH( "o3prmr/ComplexPrinters/" ) );
         si->interpretFile( GET_RESSOURCES_PATH(
             "o3prmr/ComplexPrinters/fr/lip6/printers/request.o3prmr" ) );
-        auto prm = si->prm();
+        auto prm        = si->prm();
         const auto& sys = prm->getSystem( "fr.lip6.printers.system.Work" );
-        auto bn = new gum::BayesNet<double>( "plop" );
+        auto bn         = new gum::BayesNet<double>( "plop" );
         gum::BayesNetFactory<double> factory( bn );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );

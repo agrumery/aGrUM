@@ -45,28 +45,28 @@ namespace gum {
    *
    */
   class EliminationSequenceStrategy {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// destructor
-    virtual ~EliminationSequenceStrategy ();
+    virtual ~EliminationSequenceStrategy();
 
     /** @brief creates a new elimination sequence of the same type as the
      * current object, but this sequence contains only an empty graph
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
-    virtual EliminationSequenceStrategy* newFactory () const = 0;
+    virtual EliminationSequenceStrategy* newFactory() const = 0;
 
     /// virtual copy constructor
     /** @return a full clone of the current object */
-    virtual EliminationSequenceStrategy* copyFactory () const = 0;
+    virtual EliminationSequenceStrategy* copyFactory() const = 0;
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -74,7 +74,7 @@ namespace gum {
 
     /// sets a new graph to be triangulated
     /** The elimination sequence algorithms reinitializes its data to start a
-     * new triangulation with graph Graph  
+     * new triangulation with graph Graph
      * @param graph the new graph to be triangulated
      * @param dom_sizes the domain sizes of the variables/nodes
      * @return true if the data structures were modified (if the graph or the
@@ -87,13 +87,13 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the elimination sequence algorithm.
      */
-    virtual bool setGraph ( UndiGraph* graph,
-                            const NodeProperty<Size>* dom_sizes );
+    virtual bool setGraph( UndiGraph* graph,
+                           const NodeProperty<Size>* dom_sizes );
 
     /// returns the new node to be eliminated within the triangulation algorithm
     /** @throws NotFound exception is thrown if there is no more node to
      * eliminate in the graph */
-    virtual NodeId nextNodeToEliminate () = 0;
+    virtual NodeId nextNodeToEliminate() = 0;
 
     /** @brief if the elimination sequence is able to compute fill-ins, we
      *indicate
@@ -136,28 +136,28 @@ namespace gum {
      * due to all the nodes eliminated so far */
     virtual const EdgeSet& fillIns();
 
-    /// clears the sequence (to prepare, for instance, a new elimination sequence)
+    /// clears the sequence (to prepare, for instance, a new elimination
+    /// sequence)
     virtual void clear();
 
     /// returns the current graph
-    UndiGraph* graph () const noexcept;
+    UndiGraph* graph() const noexcept;
 
     /// returns the current domain sizes
-    const NodeProperty<Size>* domainSizes () const noexcept;
+    const NodeProperty<Size>* domainSizes() const noexcept;
 
     /// @}
 
-    
-  protected:
+
+    protected:
     /// the graph to be triangulated
-    UndiGraph* _graph { nullptr };
+    UndiGraph* _graph{nullptr};
 
     /// the domain sizes of the variables/nodes
-    const NodeProperty<Size>* _domain_sizes { nullptr };
+    const NodeProperty<Size>* _domain_sizes{nullptr};
 
     /// the log of the domain sizes of the variables/nodes
     NodeProperty<double> _log_domain_sizes;
-
 
 
     // ############################################################################
@@ -166,27 +166,26 @@ namespace gum {
     /// @{
 
     /// default constructor
-    EliminationSequenceStrategy ();
+    EliminationSequenceStrategy();
 
     /// constructor for an a priori non empty graph
-    EliminationSequenceStrategy ( UndiGraph* graph,
-                                  const NodeProperty<Size>* domain_sizes );
-    
+    EliminationSequenceStrategy( UndiGraph* graph,
+                                 const NodeProperty<Size>* domain_sizes );
+
     /// copy constructor
-    EliminationSequenceStrategy ( const EliminationSequenceStrategy& from );
+    EliminationSequenceStrategy( const EliminationSequenceStrategy& from );
 
     /// move constructor
-    EliminationSequenceStrategy ( EliminationSequenceStrategy&& from );
+    EliminationSequenceStrategy( EliminationSequenceStrategy&& from );
 
     /// @}
 
-  private:
+    private:
     /// an empty fill-ins set used by default
     static const EdgeSet& __empty_fill_ins();
-    
   };
 
-  
+
 } /* namespace gum */
 
 

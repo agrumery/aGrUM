@@ -172,7 +172,7 @@ namespace gum_tests {
 
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id2 ) );
 
@@ -191,7 +191,7 @@ namespace gum_tests {
 
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_ASSERT_EQUALS( nodeCount, (gum::Size)5 );
       TS_ASSERT_EQUALS( edgeCount, (gum::Size)3 );
@@ -255,7 +255,7 @@ namespace gum_tests {
       TS_ASSERT( graph.existsArc( id5, id2 ) );
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+      gum::Size arcCount  = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( gum::Arc( id5, id2 ) ) );
 

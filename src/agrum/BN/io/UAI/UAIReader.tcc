@@ -27,15 +27,15 @@ namespace gum {
                                     const std::string& filename )
       : BNReader<GUM_SCALAR>( bn, filename ) {
     GUM_CONSTRUCTOR( UAIReader );
-    __bn = bn;
+    __bn         = bn;
     __streamName = filename;
-    __parseDone = false;
+    __parseDone  = false;
 
     __ioerror = false;
 
     try {
       __scanner = new UAI::Scanner( __streamName.c_str() );
-      __parser = new UAI::Parser( __scanner );
+      __parser  = new UAI::Parser( __scanner );
     } catch ( IOError e ) {
       __ioerror = true;
     }
@@ -129,7 +129,7 @@ namespace gum {
         this->__addFatalError( lig(), col(), "Not enough data in UAI file" );
     };
 
-    current = 0;
+    current      = 0;
     Size nbrNode = getInt();
 
     for ( NodeId i = 0; i < nbrNode; i++ ) {

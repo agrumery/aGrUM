@@ -26,46 +26,39 @@
 
 #include <agrum/graphs/triangulations/junctionTreeStrategies/junctionTreeStrategy.h>
 
-
 namespace gum {
 
-  
   // default constructor
-  JunctionTreeStrategy::JunctionTreeStrategy () {
+  JunctionTreeStrategy::JunctionTreeStrategy() {
     // for debugging purposes
     GUM_CONSTRUCTOR( JunctionTreeStrategy );
   }
 
-  
   // copy constructor
-  JunctionTreeStrategy::JunctionTreeStrategy ( const JunctionTreeStrategy& from ) :
-    _triangulation ( from._triangulation ) {
+  JunctionTreeStrategy::JunctionTreeStrategy( const JunctionTreeStrategy& from )
+      : _triangulation( from._triangulation ) {
     // for debugging purposes
     GUM_CONS_CPY( JunctionTreeStrategy );
   }
 
-  
   // move constructor
-  JunctionTreeStrategy::JunctionTreeStrategy ( JunctionTreeStrategy&& from ) :
-  _triangulation ( from._triangulation ) {
+  JunctionTreeStrategy::JunctionTreeStrategy( JunctionTreeStrategy&& from )
+      : _triangulation( from._triangulation ) {
     // for debugging purposes
     GUM_CONS_MOV( JunctionTreeStrategy );
   }
 
-  
   // destructor
-  JunctionTreeStrategy::~JunctionTreeStrategy () {
+  JunctionTreeStrategy::~JunctionTreeStrategy() {
     // for debugging purposes
     GUM_DESTRUCTOR( JunctionTreeStrategy );
   }
 
-  
   /** @brief assigns a new triangulation to the junction tree strategy
    * during a move construction */
-  void JunctionTreeStrategy::moveTriangulation
-  ( StaticTriangulation* triangulation ) {
+  void JunctionTreeStrategy::moveTriangulation(
+      StaticTriangulation* triangulation ) {
     _triangulation = triangulation;
   }
-  
 
 } /* namespace gum */

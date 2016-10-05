@@ -37,7 +37,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 4 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 4 );
       }
 
       gum::Sequence<const gum::DiscreteVariable*> seq;
@@ -92,7 +92,7 @@ namespace gum_tests {
       TS_ASSERT( f6.multiDim() == *pot2.content() );
 
       std::string str = f3.toString();
-      f3 = f5;
+      f3              = f5;
       TS_ASSERT( f5 == f3 );
 
       for ( unsigned int i = 0; i < vars.size(); ++i )

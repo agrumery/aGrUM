@@ -119,13 +119,13 @@ namespace gum_tests {
         *BOvar, *Cprimevar;
 
     void setUp() {
-      Cvar = new gum::LabelizedVariable( "C", "C", 2 );
-      PLvar = new gum::LabelizedVariable( "PL", "PL", 2 );
-      APUvar = new gum::LabelizedVariable( "APU", "APU", 2 );
-      BPUvar = new gum::LabelizedVariable( "BPU", "BPU", 2 );
-      ADRvar = new gum::LabelizedVariable( "ADR", "ADR", 2 );
-      BDRvar = new gum::LabelizedVariable( "BDR", "BDR", 2 );
-      BOvar = new gum::LabelizedVariable( "BO", "BO", 2 );
+      Cvar      = new gum::LabelizedVariable( "C", "C", 2 );
+      PLvar     = new gum::LabelizedVariable( "PL", "PL", 2 );
+      APUvar    = new gum::LabelizedVariable( "APU", "APU", 2 );
+      BPUvar    = new gum::LabelizedVariable( "BPU", "BPU", 2 );
+      ADRvar    = new gum::LabelizedVariable( "ADR", "ADR", 2 );
+      BDRvar    = new gum::LabelizedVariable( "BDR", "BDR", 2 );
+      BOvar     = new gum::LabelizedVariable( "BO", "BO", 2 );
       Cprimevar = new gum::LabelizedVariable( "C'", "C'", 2 );
     }
 

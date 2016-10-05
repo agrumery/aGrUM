@@ -97,7 +97,7 @@ namespace gum {
     /// unsafe set operator (assumes that the preceding type is of the same
     /// type)
     INLINE DBCell& DBCell::operator=( double x ) noexcept {
-      __type = EltType::REAL;
+      __type  = EltType::REAL;
       __value = x;
       return *this;
     }
@@ -132,14 +132,14 @@ namespace gum {
 
     /// sets the content of the DBCell (safe type checking)
     INLINE void DBCell::setRealSafe( double elt ) {
-      __type = EltType::REAL;
+      __type  = EltType::REAL;
       __value = elt;
     }
 
     /// sets the content of the DBCell from a string
     INLINE void DBCell::__setRealFromStringSafe( const std::string& elt ) {
       __value = stof( elt );
-      __type = EltType::REAL;
+      __type  = EltType::REAL;
     }
 
     /// returns the DBcell as a string (without checking its type)
@@ -223,7 +223,7 @@ namespace gum {
             case STRING:
               try {
                 __value = stof( __strings().first( __index ) );
-                __type = EltType::REAL;
+                __type  = EltType::REAL;
                 return true;
               } catch ( std::invalid_argument& ) {
                 return false;

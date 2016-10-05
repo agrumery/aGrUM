@@ -86,14 +86,14 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = src.__prm;
-        __o3_prm = src.__o3_prm;
-        __solver = src.__solver;
-        __errors = src.__errors;
-        __nameMap = src.__nameMap;
-        __classMap = src.__classMap;
-        __nodeMap = src.__nodeMap;
-        __dag = src.__dag;
+        __prm       = src.__prm;
+        __o3_prm    = src.__o3_prm;
+        __solver    = src.__solver;
+        __errors    = src.__errors;
+        __nameMap   = src.__nameMap;
+        __classMap  = src.__classMap;
+        __nodeMap   = src.__nodeMap;
+        __dag       = src.__dag;
         __o3Classes = src.__o3Classes;
         return *this;
       }
@@ -104,14 +104,14 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = std::move( src.__prm );
-        __o3_prm = std::move( src.__o3_prm );
-        __solver = std::move( src.__solver );
-        __errors = std::move( src.__errors );
-        __nameMap = std::move( src.__nameMap );
-        __classMap = std::move( src.__classMap );
-        __nodeMap = std::move( src.__nodeMap );
-        __dag = std::move( src.__dag );
+        __prm       = std::move( src.__prm );
+        __o3_prm    = std::move( src.__o3_prm );
+        __solver    = std::move( src.__solver );
+        __errors    = std::move( src.__errors );
+        __nameMap   = std::move( src.__nameMap );
+        __classMap  = std::move( src.__classMap );
+        __nodeMap   = std::move( src.__nodeMap );
+        __dag       = std::move( src.__dag );
         __o3Classes = std::move( src.__o3Classes );
         return *this;
       }
@@ -225,8 +225,8 @@ namespace gum {
       }
 
       using AttrMap = HashTable<std::string, O3Attribute*>;
-      using RefMap = HashTable<std::string, O3ReferenceSlot*>;
-      using AggMap = HashTable<std::string, O3Aggregate*>;
+      using RefMap  = HashTable<std::string, O3ReferenceSlot*>;
+      using AggMap  = HashTable<std::string, O3Aggregate*>;
 
       template <typename GUM_SCALAR>
       INLINE bool
@@ -547,7 +547,7 @@ namespace gum {
           }
 
           const auto& super_type = super.get( attr.name().label() ).type();
-          const auto& type = __prm->type( attr.type().label() );
+          const auto& type       = __prm->type( attr.type().label() );
 
           if ( !type.isSubTypeOf( super_type ) ) {
 
@@ -574,7 +574,7 @@ namespace gum {
 
           if ( c->superLabel().label() != "" ) {
 
-            auto& super = __prm->getClass( c->superLabel().label() );
+            auto& super      = __prm->getClass( c->superLabel().label() );
             auto to_complete = Set<std::string>();
 
             for ( auto a : super.attributes() ) {
@@ -883,7 +883,7 @@ namespace gum {
 
         // Check that CPT sums to 1
         Size parent_size = domainSize / type->domainSize();
-        auto values = std::vector<GUM_SCALAR>( parent_size, 0.0f );
+        auto values      = std::vector<GUM_SCALAR>( parent_size, 0.0f );
 
         for ( std::size_t i = 0; i < attr.values().size(); ++i ) {
           try {
@@ -924,9 +924,9 @@ namespace gum {
           const O3Label& chain ) {
 
         auto link_regex = std::regex( R"d((\([\w\.]*\))?\w+)d" );
-        auto s = chain.label();
-        auto current = &c;
-        auto match = std::smatch();
+        auto s          = chain.label();
+        auto current    = &c;
+        auto match      = std::smatch();
 
         while ( std::regex_search( s, match, link_regex ) ) {
           auto link = match[0];
@@ -1020,7 +1020,7 @@ namespace gum {
                                                      O3Aggregate& agg ) {
 
         const auto& c = __prm->getClass( o3class.name().label() );
-        auto t = (const PRMType<GUM_SCALAR>*)nullptr;
+        auto t        = (const PRMType<GUM_SCALAR>*)nullptr;
 
         for ( const auto& prnt : agg.parents() ) {
 
@@ -1156,7 +1156,7 @@ namespace gum {
           O3Aggregate& agg, const gum::prm::PRMType<GUM_SCALAR>& t ) {
 
         const auto& param = agg.parameters().front();
-        bool found = false;
+        bool found        = false;
         for ( Size idx = 0; idx < t.variable().domainSize(); ++idx ) {
           if ( t.variable().label( idx ) == param.label() ) {
             found = true;

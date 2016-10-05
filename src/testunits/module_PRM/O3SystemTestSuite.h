@@ -40,7 +40,7 @@ namespace gum_tests {
       try {
         {
           // printers.o3prm
-          auto path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
+          auto path       = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
           simple_printers = new gum::prm::PRM<double>();
           auto factory =
               gum::prm::o3prm::O3prmReader<double>( *simple_printers );
@@ -79,7 +79,7 @@ namespace gum_tests {
       // Arrange
       auto input = std::stringstream();
       input << "system Foo { }";
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -106,7 +106,7 @@ namespace gum_tests {
             << "Equipment e;" << std::endl
             << "e.room = r;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -124,7 +124,7 @@ namespace gum_tests {
       input << "system microSys {" << std::endl
             << "PowerSupply;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -143,7 +143,7 @@ namespace gum_tests {
       input << "system microSys {" << std::endl
             << "FOO bar;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -162,7 +162,7 @@ namespace gum_tests {
       input << "system {" << std::endl
             << "PowerSupply pow;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -182,7 +182,7 @@ namespace gum_tests {
             << "PowerSupply pow" << std::endl
             << "Room r;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -205,7 +205,7 @@ namespace gum_tests {
             << "Computer c;" << std::endl
             << "r.power   pow;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -231,7 +231,7 @@ namespace gum_tests {
             << "//c.room = r;" << std::endl
             << "c.printers += p;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -259,7 +259,7 @@ namespace gum_tests {
             << "//c.room = r;" << std::endl
             << "c.printers = p;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -302,7 +302,7 @@ namespace gum_tests {
             << "  another_computer.printers = printers;" << std::endl
             << "  another_computer.printers += another_printer;" << std::endl
             << "}";
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -338,7 +338,7 @@ namespace gum_tests {
             << "  ParamClass paramBis(lambda=0.001);" << std::endl
             << "  paramBis.room = r;" << std::endl
             << "}";
-      auto output = std::stringstream();
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( *complex_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );

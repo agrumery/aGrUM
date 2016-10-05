@@ -415,7 +415,7 @@ namespace gum_tests {
       if ( bucket != 0 ) {
         TS_ASSERT_THROWS_NOTHING( __fillBucket( bucket ) );
         TS_ASSERT_EQUALS( bucket->allVariables().size(), (gum::Size)10 );
-        gum::Size inBucket = 0;
+        gum::Size inBucket  = 0;
         gum::Size outBucket = 0;
 
         try {

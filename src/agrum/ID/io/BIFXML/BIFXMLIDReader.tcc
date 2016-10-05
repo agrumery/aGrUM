@@ -36,7 +36,7 @@ namespace gum {
       InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath )
       : IDReader<GUM_SCALAR>( infdiag, filePath ) {
     GUM_CONSTRUCTOR( BIFXMLIDReader );
-    __infdiag = infdiag;
+    __infdiag  = infdiag;
     __filePath = filePath;
   }
 
@@ -123,7 +123,7 @@ namespace gum {
 
       // Getting variable name
       ticpp::Element* varNameElement = currentVar->FirstChildElement( "NAME" );
-      std::string varName = varNameElement->GetTextOrDefault( "" );
+      std::string varName            = varNameElement->GetTextOrDefault( "" );
 
       // Getting variable description
       ticpp::Element* varDescrElement =
@@ -193,7 +193,7 @@ namespace gum {
       for ( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end();
             ++givenIte ) {
         std::string parentNode = givenIte->GetTextOrDefault( "" );
-        NodeId parentId = __infdiag->idFromName( parentNode );
+        NodeId parentId        = __infdiag->idFromName( parentNode );
         parentList.pushBack( parentId );
       }
 

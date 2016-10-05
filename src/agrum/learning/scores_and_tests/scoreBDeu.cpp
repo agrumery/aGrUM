@@ -26,5 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 
-
 template class gum::learning::ScoreBDeu<>;

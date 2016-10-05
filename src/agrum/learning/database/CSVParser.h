@@ -55,8 +55,8 @@ namespace gum {
       public:
       CSVParser( std::istream& in,
                  const std::string& delimiter = ",",
-                 const char commentmarker = '#',
-                 const char quoteMarker = '"' );
+                 const char commentmarker     = '#',
+                 const char quoteMarker       = '"' );
       virtual ~CSVParser();
 
       /**

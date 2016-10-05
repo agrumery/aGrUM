@@ -68,7 +68,7 @@ namespace gum {
     /// copy operator
     INLINE DBRow& DBRow::operator=( const DBRow& from ) {
       if ( this != &from ) {
-        _row = from._row;
+        _row    = from._row;
         _weight = from._weight;
       }
       return *this;
@@ -77,7 +77,7 @@ namespace gum {
     /// move operator
     INLINE DBRow& DBRow::operator=( DBRow&& from ) {
       if ( this != &from ) {
-        _row = std::move( from._row );
+        _row    = std::move( from._row );
         _weight = from._weight;
       }
       return *this;

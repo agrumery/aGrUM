@@ -66,8 +66,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __file = src.__file;
-        __line = src.__line;
+        __file   = src.__file;
+        __line   = src.__line;
         __column = src.__column;
         return *this;
       }
@@ -76,8 +76,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __file = std::move( src.__file );
-        __line = std::move( src.__line );
+        __file   = std::move( src.__file );
+        __line   = std::move( src.__line );
         __column = std::move( src.__column );
         return *this;
       }
@@ -121,7 +121,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = src.__pos;
+        __pos   = src.__pos;
         __value = src.__value;
         return *this;
       }
@@ -130,14 +130,13 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = std::move( src.__pos );
+        __pos   = std::move( src.__pos );
         __value = std::move( src.__value );
         return *this;
       }
 
       const O3Position& O3Integer::position() const { return __pos; }
       O3Position& O3Integer::position() { return __pos; }
-
 
       int O3Integer::value() const { return __value; }
       int& O3Integer::value() { return __value; }
@@ -168,7 +167,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = src.__pos;
+        __pos   = src.__pos;
         __value = src.__value;
         return *this;
       }
@@ -177,7 +176,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = std::move( src.__pos );
+        __pos   = std::move( src.__pos );
         __value = std::move( src.__value );
         return *this;
       }
@@ -219,7 +218,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = src.__pos;
+        __pos     = src.__pos;
         __formula = std::unique_ptr<Formula>( new Formula( src.formula() ) );
         return *this;
       }
@@ -228,7 +227,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = std::move( src.__pos );
+        __pos     = std::move( src.__pos );
         __formula = std::move( src.__formula );
         return *this;
       }
@@ -269,7 +268,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = src.__pos;
+        __pos   = src.__pos;
         __label = src.__label;
         return *this;
       }
@@ -278,7 +277,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = std::move( src.__pos );
+        __pos   = std::move( src.__pos );
         __label = std::move( src.__label );
         return *this;
       }
@@ -313,10 +312,10 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = src.__pos;
-        __name = src.__name;
+        __pos        = src.__pos;
+        __name       = src.__name;
         __superLabel = src.__superLabel;
-        __labels = src.__labels;
+        __labels     = src.__labels;
         return *this;
       }
 
@@ -324,10 +323,10 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = std::move( src.__pos );
-        __name = std::move( src.__name );
+        __pos        = std::move( src.__pos );
+        __name       = std::move( src.__name );
         __superLabel = std::move( src.__superLabel );
-        __labels = std::move( src.__labels );
+        __labels     = std::move( src.__labels );
         return *this;
       }
 
@@ -367,10 +366,10 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = src.__pos;
-        __name = src.__name;
+        __pos   = src.__pos;
+        __name  = src.__name;
         __start = src.__start;
-        __end = src.__end;
+        __end   = src.__end;
         return *this;
       }
 
@@ -378,10 +377,10 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = std::move( src.__pos );
-        __name = std::move( src.__name );
+        __pos   = std::move( src.__pos );
+        __name  = std::move( src.__name );
         __start = std::move( src.__start );
-        __end = std::move( src.__end );
+        __end   = std::move( src.__end );
         return *this;
       }
 
@@ -420,8 +419,8 @@ namespace gum {
           return *this;
         }
 
-        __pos = src.__pos;
-        __name = src.__name;
+        __pos    = src.__pos;
+        __name   = src.__name;
         __values = src.__values;
         return *this;
       }
@@ -431,8 +430,8 @@ namespace gum {
           return *this;
         }
 
-        __pos = std::move( src.__pos );
-        __name = std::move( src.__name );
+        __pos    = std::move( src.__pos );
+        __name   = std::move( src.__name );
         __values = std::move( src.__values );
         return *this;
       }
@@ -450,18 +449,17 @@ namespace gum {
         return __values;
       }
 
-
       O3PRM::O3PRM() {
         GUM_CONSTRUCTOR( O3PRM );
         // Creating the boolean type
-        auto name = O3Label( O3Position(), "boolean" );
-        auto f = O3Label( O3Position(), "false" );
-        auto t = O3Label( O3Position(), "true" );
+        auto name   = O3Label( O3Position(), "boolean" );
+        auto f      = O3Label( O3Position(), "false" );
+        auto t      = O3Label( O3Position(), "true" );
         auto labels = O3Type::LabelMap();
         labels.push_back( O3Type::LabelPair( f, O3Label() ) );
         labels.push_back( O3Type::LabelPair( t, O3Label() ) );
-        auto boolean = std::unique_ptr<O3Type>( new O3Type() );
-        boolean->name() = std::move( name );
+        auto boolean      = std::unique_ptr<O3Type>( new O3Type() );
+        boolean->name()   = std::move( name );
         boolean->labels() = std::move( labels );
         __types.push_back( std::move( boolean ) );
       }
@@ -536,13 +534,13 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __types = std::move( src.__types );
-        __int_types = std::move( src.__int_types );
+        __types      = std::move( src.__types );
+        __int_types  = std::move( src.__int_types );
         __real_types = std::move( src.__real_types );
         __interfaces = std::move( src.__interfaces );
-        __classes = std::move( src.__classes );
-        __systems = std::move( src.__systems );
-        __imports = std::move( src.__imports );
+        __classes    = std::move( src.__classes );
+        __systems    = std::move( src.__systems );
+        __imports    = std::move( src.__imports );
         return *this;
       }
 
@@ -613,8 +611,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = src.__type;
-        __name = src.__name;
+        __type    = src.__type;
+        __name    = src.__name;
         __isArray = src.__isArray;
         return *this;
       }
@@ -624,8 +622,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = std::move( src.__type );
-        __name = std::move( src.__name );
+        __type    = std::move( src.__type );
+        __name    = std::move( src.__name );
         __isArray = std::move( src.__isArray );
         return *this;
       }
@@ -650,7 +648,7 @@ namespace gum {
           , __superLabel( src.__superLabel ) {
         GUM_CONS_CPY( O3Interface );
         auto copy = new O3InterfaceElementList( src.elements() );
-        __elts = std::unique_ptr<O3InterfaceElementList>( copy );
+        __elts    = std::unique_ptr<O3InterfaceElementList>( copy );
       }
 
       O3Interface::O3Interface( O3Interface&& src )
@@ -667,11 +665,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = src.__pos;
-        __name = src.__name;
+        __pos        = src.__pos;
+        __name       = src.__name;
         __superLabel = src.__superLabel;
-        auto copy = new O3InterfaceElementList( src.elements() );
-        __elts = std::unique_ptr<O3InterfaceElementList>( copy );
+        auto copy    = new O3InterfaceElementList( src.elements() );
+        __elts       = std::unique_ptr<O3InterfaceElementList>( copy );
         return *this;
       }
 
@@ -679,10 +677,10 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = std::move( src.__pos );
-        __name = std::move( src.__name );
+        __pos        = std::move( src.__pos );
+        __name       = std::move( src.__name );
         __superLabel = std::move( src.__superLabel );
-        __elts = std::move( src.__elts );
+        __elts       = std::move( src.__elts );
         return *this;
       }
 
@@ -733,8 +731,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = src.__type;
-        __name = src.__name;
+        __type    = src.__type;
+        __name    = src.__name;
         __parents = src.__parents;
         return *this;
       }
@@ -743,8 +741,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = std::move( src.__type );
-        __name = std::move( src.__name );
+        __type    = std::move( src.__type );
+        __name    = std::move( src.__name );
         __parents = std::move( src.__parents );
         return *this;
       }
@@ -773,14 +771,14 @@ namespace gum {
           : O3Attribute( type, name, parents ) {
         GUM_CONSTRUCTOR( O3RawCPT );
         auto copy = new O3FormulaList( values );
-        __values = std::unique_ptr<O3FormulaList>( copy );
+        __values  = std::unique_ptr<O3FormulaList>( copy );
       }
 
       O3RawCPT::O3RawCPT( const O3RawCPT& src )
           : O3Attribute( src ) {
         GUM_CONS_CPY( O3RawCPT );
         auto copy = new O3FormulaList( *( src.__values ) );
-        __values = std::unique_ptr<O3FormulaList>( copy );
+        __values  = std::unique_ptr<O3FormulaList>( copy );
       }
 
       O3RawCPT::O3RawCPT( O3RawCPT&& src )
@@ -796,8 +794,8 @@ namespace gum {
           return *this;
         }
         O3Attribute::operator=( src );
-        auto copy = new O3FormulaList( *( src.__values ) );
-        __values = std::unique_ptr<O3FormulaList>( copy );
+        auto copy            = new O3FormulaList( *( src.__values ) );
+        __values             = std::unique_ptr<O3FormulaList>( copy );
         return *this;
       }
 
@@ -806,7 +804,7 @@ namespace gum {
           return *this;
         }
         O3Attribute::operator=( src );
-        __values = std::move( src.__values );
+        __values             = std::move( src.__values );
         return *this;
       }
 
@@ -867,7 +865,7 @@ namespace gum {
         }
 
         O3Attribute::operator=( src );
-        __rules = std::move( src.__rules );
+        __rules              = std::move( src.__rules );
         return *this;
       }
 
@@ -882,16 +880,16 @@ namespace gum {
       O3Class::O3Class() {
         GUM_CONSTRUCTOR( O3Class );
 
-        auto i = new O3LabelList();
+        auto i       = new O3LabelList();
         __interfaces = std::unique_ptr<O3LabelList>( i );
 
-        auto p = new O3ParameterList();
+        auto p   = new O3ParameterList();
         __params = std::unique_ptr<O3ParameterList>( p );
 
         auto r = new O3ReferenceSlotList();
         __refs = std::unique_ptr<O3ReferenceSlotList>( r );
 
-        auto e = new O3AttributeList();
+        auto e  = new O3AttributeList();
         __attrs = std::unique_ptr<O3AttributeList>( e );
 
         auto a = new O3AggregateList();
@@ -903,16 +901,16 @@ namespace gum {
           , __name( src.__name )
           , __superLabel( src.__superLabel ) {
         GUM_CONS_CPY( O3Class );
-        auto i = new O3LabelList( src.interfaces() );
+        auto i       = new O3LabelList( src.interfaces() );
         __interfaces = std::unique_ptr<O3LabelList>( i );
 
-        auto p = new O3ParameterList( src.parameters() );
+        auto p   = new O3ParameterList( src.parameters() );
         __params = std::unique_ptr<O3ParameterList>( p );
 
         auto r = new O3ReferenceSlotList( src.referenceSlots() );
         __refs = std::unique_ptr<O3ReferenceSlotList>( r );
 
-        auto e = new O3AttributeList();
+        auto e  = new O3AttributeList();
         __attrs = std::unique_ptr<O3AttributeList>( e );
         for ( const auto& elt : src.attributes() ) {
           __attrs->push_back( elt->copy() );
@@ -940,20 +938,20 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = src.__pos;
-        __name = src.__name;
+        __pos        = src.__pos;
+        __name       = src.__name;
         __superLabel = src.__superLabel;
 
-        auto i = new O3LabelList( src.interfaces() );
+        auto i       = new O3LabelList( src.interfaces() );
         __interfaces = std::unique_ptr<O3LabelList>( i );
 
-        auto p = new O3ParameterList( src.parameters() );
+        auto p   = new O3ParameterList( src.parameters() );
         __params = std::unique_ptr<O3ParameterList>( p );
 
         auto r = new O3ReferenceSlotList( src.referenceSlots() );
         __refs = std::unique_ptr<O3ReferenceSlotList>( r );
 
-        auto e = new O3AttributeList();
+        auto e  = new O3AttributeList();
         __attrs = std::unique_ptr<O3AttributeList>( e );
         for ( const auto& elt : src.attributes() ) {
           __attrs->push_back( elt->copy() );
@@ -968,14 +966,14 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __pos = std::move( src.__pos );
-        __name = std::move( src.__name );
+        __pos        = std::move( src.__pos );
+        __name       = std::move( src.__name );
         __superLabel = std::move( src.__superLabel );
         __interfaces = std::move( src.__interfaces );
-        __params = std::move( src.__params );
-        __refs = std::move( src.__refs );
-        __attrs = std::move( src.__attrs );
-        __aggs = std::move( src.__aggs );
+        __params     = std::move( src.__params );
+        __refs       = std::move( src.__refs );
+        __attrs      = std::move( src.__attrs );
+        __aggs       = std::move( src.__aggs );
         return *this;
       }
 
@@ -1063,9 +1061,9 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = src.__type;
-        __pos = src.__pos;
-        __name = src.__name;
+        __type  = src.__type;
+        __pos   = src.__pos;
+        __name  = src.__name;
         __value = src.__value;
         return *this;
       }
@@ -1074,9 +1072,9 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = std::move( src.__type );
-        __pos = std::move( src.__pos );
-        __name = std::move( src.__name );
+        __type  = std::move( src.__type );
+        __pos   = std::move( src.__pos );
+        __name  = std::move( src.__name );
         __value = std::move( src.__value );
         return *this;
       }
@@ -1125,8 +1123,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = src.__type;
-        __name = src.__name;
+        __type    = src.__type;
+        __name    = src.__name;
         __isArray = src.__isArray;
         return *this;
       }
@@ -1135,8 +1133,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = std::move( src.__type );
-        __name = std::move( src.__name );
+        __type    = std::move( src.__type );
+        __name    = std::move( src.__name );
         __isArray = std::move( src.__isArray );
         return *this;
       }
@@ -1184,10 +1182,10 @@ namespace gum {
           return *this;
         }
         __aggregateType = src.__aggregateType;
-        __variableType = src.__variableType;
-        __name = src.__name;
-        __parents = src.__parents;
-        __parameters = src.__parameters;
+        __variableType  = src.__variableType;
+        __name          = src.__name;
+        __parents       = src.__parents;
+        __parameters    = src.__parameters;
         return *this;
       }
 
@@ -1196,10 +1194,10 @@ namespace gum {
           return *this;
         }
         __aggregateType = std::move( src.__aggregateType );
-        __variableType = std::move( src.__variableType );
-        __name = std::move( src.__name );
-        __parents = std::move( src.__parents );
-        __parameters = std::move( src.__parameters );
+        __variableType  = std::move( src.__variableType );
+        __name          = std::move( src.__name );
+        __parents       = std::move( src.__parents );
+        __parameters    = std::move( src.__parameters );
         return *this;
       }
 
@@ -1259,11 +1257,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __leftInstance = src.__leftInstance;
-        __leftIndex = src.__leftIndex;
+        __leftInstance  = src.__leftInstance;
+        __leftIndex     = src.__leftIndex;
         __leftReference = src.__leftReference;
         __rightInstance = src.__rightInstance;
-        __rightIndex = src.__rightIndex;
+        __rightIndex    = src.__rightIndex;
         return *this;
       }
 
@@ -1271,11 +1269,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __leftInstance = std::move( src.__leftInstance );
-        __leftIndex = std::move( src.__leftIndex );
+        __leftInstance  = std::move( src.__leftInstance );
+        __leftIndex     = std::move( src.__leftIndex );
         __leftReference = std::move( src.__leftReference );
         __rightInstance = std::move( src.__rightInstance );
-        __rightIndex = std::move( src.__rightIndex );
+        __rightIndex    = std::move( src.__rightIndex );
         return *this;
       }
 
@@ -1331,11 +1329,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __leftInstance = src.__leftInstance;
-        __leftIndex = src.__leftIndex;
+        __leftInstance  = src.__leftInstance;
+        __leftIndex     = src.__leftIndex;
         __leftReference = src.__leftReference;
         __rightInstance = src.__rightInstance;
-        __rightIndex = src.__rightIndex;
+        __rightIndex    = src.__rightIndex;
         return *this;
       }
 
@@ -1343,11 +1341,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __leftInstance = std::move( src.__leftInstance );
-        __leftIndex = std::move( src.__leftIndex );
+        __leftInstance  = std::move( src.__leftInstance );
+        __leftIndex     = std::move( src.__leftIndex );
         __leftReference = std::move( src.__leftReference );
         __rightInstance = std::move( src.__rightInstance );
-        __rightIndex = std::move( src.__rightIndex );
+        __rightIndex    = std::move( src.__rightIndex );
         return *this;
       }
 
@@ -1400,9 +1398,9 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = src.__type;
-        __name = src.__name;
-        __size = src.__size;
+        __type       = src.__type;
+        __name       = src.__name;
+        __size       = src.__size;
         __parameters = src.__parameters;
         return *this;
       }
@@ -1411,9 +1409,9 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __type = std::move( src.__type );
-        __name = std::move( src.__name );
-        __size = std::move( src.__size );
+        __type       = std::move( src.__type );
+        __name       = std::move( src.__name );
+        __size       = std::move( src.__size );
         __parameters = std::move( src.__parameters );
         return *this;
       }
@@ -1463,8 +1461,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __name = src.__name;
-        __instances = src.__instances;
+        __name       = src.__name;
+        __instances  = src.__instances;
         __assigments = src.__assigments;
         __increments = src.__increments;
         return *this;
@@ -1474,8 +1472,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __name = std::move( src.__name );
-        __instances = std::move( src.__instances );
+        __name       = std::move( src.__name );
+        __instances  = std::move( src.__instances );
         __assigments = std::move( src.__assigments );
         __increments = std::move( src.__increments );
         return *this;
@@ -1538,8 +1536,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __name = src.__name;
-        __value = src.__value;
+        __name      = src.__name;
+        __value     = src.__value;
         __isInteger = src.__isInteger;
         return *this;
       }
@@ -1549,8 +1547,8 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __name = std::move( src.__name );
-        __value = std::move( src.__value );
+        __name      = std::move( src.__name );
+        __value     = std::move( src.__value );
         __isInteger = std::move( src.__isInteger );
         return *this;
       }

@@ -48,7 +48,7 @@ namespace gum {
       ignore.insert( query );
       // Extracting required attributes and slotchains
       Set<NodeId>& attr_set = __getAttrSet( query );
-      Set<NodeId>& sc_set = __getSCSet( query );
+      Set<NodeId>& sc_set   = __getSCSet( query );
       // Downward elimination
       List<const PRMInstance<GUM_SCALAR>*> elim_list;
 
@@ -118,7 +118,7 @@ namespace gum {
       ignore.insert( i );
       // Extracting required attributes and slotchains
       Set<NodeId>& attr_set = __getAttrSet( i );
-      Set<NodeId>& sc_set = __getSCSet( i );
+      Set<NodeId>& sc_set   = __getSCSet( i );
       // Calling elimination over child instance
       List<const PRMInstance<GUM_SCALAR>*> my_list;
 
@@ -187,7 +187,7 @@ namespace gum {
       ignore.insert( i );
       // Extracting required attributes and slotchains
       Set<NodeId>& attr_set = __getAttrSet( i );
-      Set<NodeId>& sc_set = __getSCSet( i );
+      Set<NodeId>& sc_set   = __getSCSet( i );
 
       // Downward elimination
       for ( const auto attr : attr_set ) {
@@ -293,7 +293,7 @@ namespace gum {
     void SVED<GUM_SCALAR>::__initLiftedNodes( const PRMInstance<GUM_SCALAR>* i,
                                               BucketSet& trash ) {
       PRMClass<GUM_SCALAR>& c = const_cast<PRMClass<GUM_SCALAR>&>( i->type() );
-      BucketSet* lifted_pool = new BucketSet();
+      BucketSet* lifted_pool  = new BucketSet();
       __lifted_pools.insert( &( __bb.requisiteNodes( i ) ), lifted_pool );
 
       for ( const auto node : __bb.requisiteNodes( i ) )
@@ -394,7 +394,7 @@ namespace gum {
       __class_elim_order = new Sequence<std::string>();
       for ( auto c : class_elim_order ) {
         std::string name = c->name();
-        auto pos = name.find_first_of( "<" );
+        auto pos         = name.find_first_of( "<" );
         if ( pos != std::string::npos ) {
           name = name.substr( 0, pos );
         }
@@ -408,7 +408,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::_marginal( const Chain& chain,
                                       Potential<GUM_SCALAR>& m ) {
-      const PRMInstance<GUM_SCALAR>* i = chain.first;
+      const PRMInstance<GUM_SCALAR>* i    = chain.first;
       const PRMAttribute<GUM_SCALAR>* elt = chain.second;
       SVED<GUM_SCALAR>::BucketSet pool, trash;
       __bb.compute( i, elt->id() );
@@ -466,7 +466,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::__initReqSets( const PRMInstance<GUM_SCALAR>* i ) {
       Set<NodeId>* attr_set = new Set<NodeId>();
-      Set<NodeId>* sc_set = new Set<NodeId>();
+      Set<NodeId>* sc_set   = new Set<NodeId>();
 
       for ( const auto node : __bb.requisiteNodes( i ) ) {
         switch ( i->type().get( node ).elt_type() ) {
@@ -543,7 +543,7 @@ namespace gum {
         __initElimOrder();
       }
 
-      auto first_name = __trim( first->type().name() );
+      auto first_name  = __trim( first->type().name() );
       auto second_name = __trim( second->type().name() );
       return ( __class_elim_order->pos( first_name ) <=
                __class_elim_order->pos( second_name ) );

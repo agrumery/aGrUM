@@ -122,13 +122,13 @@ namespace gum_tests {
       std::vector<gum::Idx> setx3{3};
       gum::Idx Idx13 = counter.addNodeSet( setx13 );
       gum::Idx Idx23 = counter.addNodeSet( setx23 );
-      gum::Idx Idx2 = counter.addNodeSet( setx2 );
-      gum::Idx Idx3 = counter.addNodeSet( setx3 );
+      gum::Idx Idx2  = counter.addNodeSet( setx2 );
+      gum::Idx Idx3  = counter.addNodeSet( setx3 );
       counter.count();
       std::vector<double> vectx13 = counter.getCounts( Idx13 );
       std::vector<double> vectx23 = counter.getCounts( Idx23 );
-      std::vector<double> vectx2 = counter.getCounts( Idx2 );
-      std::vector<double> vectx3 = counter.getCounts( Idx3 );
+      std::vector<double> vectx2  = counter.getCounts( Idx2 );
+      std::vector<double> vectx3  = counter.getCounts( Idx3 );
 
       counter.clearNodeSets();
       {

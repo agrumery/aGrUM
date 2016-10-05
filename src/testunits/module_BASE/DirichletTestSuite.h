@@ -51,7 +51,7 @@ namespace gum_tests {
 
       param[0] = 10000;
       param[1] = 1;
-      sum = 0;
+      sum      = 0;
       res[0] = res[1] = 0;
       for ( gum::Idx i = 0; i < 10000; ++i ) {
         std::vector<float> sample = dir( gen, param );
@@ -65,7 +65,7 @@ namespace gum_tests {
       }
       TS_ASSERT( 1 - res[0] < 0.01 );
 
-      sum = 0;
+      sum    = 0;
       res[0] = res[1] = 0;
       for ( gum::Idx i = 0; i < 10000; ++i ) {
         std::vector<float> sample = dir( param );
@@ -79,7 +79,7 @@ namespace gum_tests {
       }
       TS_ASSERT( 1 - res[0] < 0.01 );
 
-      sum = 0;
+      sum    = 0;
       res[0] = res[1] = 0;
       for ( gum::Idx i = 0; i < 10000; ++i ) {
         std::vector<float> sample = dir( gen, dir.param() );

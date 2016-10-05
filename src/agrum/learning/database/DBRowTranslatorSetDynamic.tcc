@@ -98,7 +98,7 @@ namespace gum {
 
         __translators = from.__translators;
         __output_size = from.__output_size;
-        __output_row = from.__output_row;
+        __output_row  = from.__output_row;
 
         // create the translators
         Size size = Size( __translators.size() );
@@ -121,7 +121,7 @@ namespace gum {
 
         __translators = std::move( from.__translators );
         __output_size = std::move( from.__output_size );
-        __output_row = std::move( from.__output_row );
+        __output_row  = std::move( from.__output_row );
         from.__translators.clear();
         Size size = Size( __translators.size() );
         for ( Idx i = 0; i < size; ++i ) {

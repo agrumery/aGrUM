@@ -38,8 +38,8 @@ namespace gum {
       , __slaveInstantiations() {
     GUM_CONSTRUCTOR( MultiDimImplementation );
     __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
-    __internalChangeState = __InternalChangeState::NO_CHANGE;
-    __domainSize = 1;
+    __internalChangeState  = __InternalChangeState::NO_CHANGE;
+    __domainSize           = 1;
   }
 
   // Copy constructor

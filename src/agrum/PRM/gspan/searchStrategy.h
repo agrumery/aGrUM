@@ -100,7 +100,7 @@ namespace gum {
                                     const EdgeGrowth<GUM_SCALAR>& growth ) = 0;
 
         virtual bool operator()( LabelData* i, LabelData* j ) = 0;
-        virtual bool operator()( Pattern* i, Pattern* j ) = 0;
+        virtual bool operator()( Pattern* i, Pattern* j )     = 0;
         /// @}
 
         protected:

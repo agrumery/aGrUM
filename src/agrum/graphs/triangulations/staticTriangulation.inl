@@ -41,7 +41,7 @@ namespace gum {
   /** @brief returns the index of a given node in the elimination order
    * (0 = first node eliminated) */
   INLINE
-  Idx StaticTriangulation::eliminationOrder ( const NodeId id ) {
+  Idx StaticTriangulation::eliminationOrder( const NodeId id ) {
     if ( !__has_triangulation ) __triangulate();
 
     return __reverse_elim_order[id];
@@ -72,7 +72,7 @@ namespace gum {
   const CliqueGraph& StaticTriangulation::junctionTree() {
     // checks if junctionTree already exists
     if ( !__has_junction_tree ) {
-      __junction_tree = &( _junction_tree_strategy->junctionTree() );
+      __junction_tree     = &( _junction_tree_strategy->junctionTree() );
       __has_junction_tree = true;
     }
 
@@ -133,20 +133,20 @@ namespace gum {
 
   /// returns the elimination sequence strategy used by the triangulation
   INLINE EliminationSequenceStrategy&
-  StaticTriangulation::eliminationSequenceStrategy () const {
+  StaticTriangulation::eliminationSequenceStrategy() const {
     return *_elimination_sequence_strategy;
   }
 
 
   /// returns the junction tree strategy used by the triangulation
   INLINE JunctionTreeStrategy&
-  StaticTriangulation::junctionTreeStrategy () const {
+  StaticTriangulation::junctionTreeStrategy() const {
     return *_junction_tree_strategy;
   }
 
 
   /// indicates wether minimality is required
-  INLINE bool StaticTriangulation::isMinimalityRequired () const {
+  INLINE bool StaticTriangulation::isMinimalityRequired() const {
     return __minimality_required;
   }
 

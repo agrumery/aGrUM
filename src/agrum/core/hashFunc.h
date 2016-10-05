@@ -72,14 +72,14 @@ namespace gum {
   struct HashFuncConst {
 #if ULONG_MAX == 4294967295UL  // unsigned long = 32 bits
     static constexpr unsigned long gold = 2654435769UL;
-    static constexpr unsigned long pi = 3373259426UL;
+    static constexpr unsigned long pi   = 3373259426UL;
     static constexpr unsigned long mask = 4294967295UL;
-    static constexpr size_t offset = 32;
+    static constexpr size_t offset      = 32;
 #else  // unsigned long = 64 bits
     static constexpr unsigned long gold = 11400714819323198486UL;
-    static constexpr unsigned long pi = 14488038916154245684UL;
+    static constexpr unsigned long pi   = 14488038916154245684UL;
     static constexpr unsigned long mask = 18446744073709551615UL;
-    static constexpr size_t offset = 64;
+    static constexpr size_t offset      = 64;
 #endif /* unsigned long = 32 bits */
   };
 

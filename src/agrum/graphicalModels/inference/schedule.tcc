@@ -86,11 +86,11 @@ namespace gum {
         delete elt.second;
 
       // fill all the data structures with the elements of from
-      __dag = from.__dag;
-      __operation2node = from.__operation2node;
-      __created_multidims = from.__created_multidims;
+      __dag                           = from.__dag;
+      __operation2node                = from.__operation2node;
+      __created_multidims             = from.__created_multidims;
       __operations_with_wrong_parents = from.__operations_with_wrong_parents;
-      __operations_available = from.__operations_available;
+      __operations_available          = from.__operations_available;
 
       __node2operation.clear();
 
@@ -131,7 +131,7 @@ namespace gum {
     for ( const auto par : operation->multiDimArgs() ) {
       if ( par->isAbstract() ) {
         // here we shall have a parent in the graph
-        operation_available = false;
+        operation_available    = false;
         MultiDimId multidim_id = par->id();
 
         if ( __created_multidims.exists( multidim_id ) ) {

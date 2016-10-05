@@ -376,7 +376,7 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::addUtilityNode( const DiscreteVariable& var,
                                                 NodeId varId ) {
     MultiDimArray<GUM_SCALAR>* newMultiDim = new MultiDimArray<GUM_SCALAR>();
-    NodeId res = 0;
+    NodeId res                             = 0;
 
     try {
       res = addUtilityNode( var, newMultiDim, varId );
@@ -408,7 +408,7 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::addChanceNode( const DiscreteVariable& var,
                                                NodeId varId ) {
     MultiDimArray<GUM_SCALAR>* newMultiDim = new MultiDimArray<GUM_SCALAR>();
-    NodeId res = 0;
+    NodeId res                             = 0;
 
     try {
       res = addChanceNode( var, newMultiDim, varId );
@@ -771,7 +771,7 @@ namespace gum {
       __temporalOrder.clear();
 
       std::vector<NodeId>* decisionOrder = getDecisionOrder();
-      NodeSet nodeList = _dag.asNodeSet();
+      NodeSet nodeList                   = _dag.asNodeSet();
 
       for ( Idx i = 0; i < decisionOrder->size(); i++ ) {
         NodeSet partialOrderedSet;

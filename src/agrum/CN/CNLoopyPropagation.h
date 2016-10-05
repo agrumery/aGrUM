@@ -55,7 +55,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     class CNLoopyPropagation : public InferenceEngine<GUM_SCALAR> {
       public:
-      using msg = std::vector<Potential<GUM_SCALAR>*>;
+      using msg   = std::vector<Potential<GUM_SCALAR>*>;
       using cArcP = const Arc*;
 
       /**

@@ -60,12 +60,12 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type = NodeId;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = NodeId;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ############################################################################
@@ -145,12 +145,12 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type = NodeId;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = NodeId;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ############################################################################
@@ -257,9 +257,9 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using node_iterator = NodeGraphPartIterator;
-    using node_const_iterator = NodeGraphPartIterator;
-    using node_iterator_safe = NodeGraphPartIteratorSafe;
+    using node_iterator            = NodeGraphPartIterator;
+    using node_const_iterator      = NodeGraphPartIterator;
+    using node_iterator_safe       = NodeGraphPartIteratorSafe;
     using node_const_iterator_safe = NodeGraphPartIteratorSafe;
     /// @}
 

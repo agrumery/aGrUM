@@ -20,6 +20,5 @@
 
 #include <agrum/BN/inference/VEWithBB.h>
 
-
 template class gum::VEWithBB<float>;
 template class gum::VEWithBB<double>;

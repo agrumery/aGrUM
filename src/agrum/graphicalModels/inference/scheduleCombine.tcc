@@ -108,10 +108,10 @@ namespace gum {
     // avoid self assignment
     if ( this != &from ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );
-      __table1 = from.__table1;
-      __table2 = from.__table2;
-      *__result = *( from.__result );
-      __combine = from.__combine;
+      __table1                               = from.__table1;
+      __table2                               = from.__table2;
+      *__result                              = *( from.__result );
+      __combine                              = from.__combine;
 
       // update __args and __results if they were already created
       if ( __args ) {

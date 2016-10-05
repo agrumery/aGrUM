@@ -541,8 +541,8 @@ namespace gum_tests {
       gum::Potential<float> p1;
       p1 << a;
       p1.fillWith( {4, 7, 10} );
-      p.scale(3.0).translate(1.0);
-      //TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0));
+      p.scale( 3.0 ).translate( 1.0 );
+      // TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0));
       TS_ASSERT( p == p1 );
       TS_ASSERT_EQUALS( p, p1 );
     }

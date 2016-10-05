@@ -19,6 +19,5 @@
  ***************************************************************************/
 #include <agrum/BN/inference/BayesNetInference.h>
 
-
 template class gum::BayesNetInference<float>;
 template class gum::BayesNetInference<double>;

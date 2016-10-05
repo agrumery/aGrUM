@@ -7,7 +7,7 @@ namespace gum {
     void
     CNLoopyPropagation<GUM_SCALAR>::saveInference( const std::string& path ) {
       std::string path_name = path.substr( 0, path.size() - 4 );
-      path_name = path_name + ".res";
+      path_name             = path_name + ".res";
 
       std::ofstream res( path_name.c_str(), std::ios::out | std::ios::trunc );
 
@@ -195,16 +195,16 @@ namespace gum {
           den_max_tmp = GUM_SCALAR( 1. );
         } else if ( lx[i] > (GUM_SCALAR)1. ) {
           GUM_SCALAR li = GUM_SCALAR( 1. ) / ( lx[i] - GUM_SCALAR( 1. ) );
-          num_min_tmp = num_min + li;
-          den_min_tmp = den_max + li;
-          num_max_tmp = num_max + li;
-          den_max_tmp = den_min + li;
+          num_min_tmp   = num_min + li;
+          den_min_tmp   = den_max + li;
+          num_max_tmp   = num_max + li;
+          den_max_tmp   = den_min + li;
         } else if ( lx[i] < (GUM_SCALAR)1. ) {
           GUM_SCALAR li = GUM_SCALAR( 1. ) / ( lx[i] - GUM_SCALAR( 1. ) );
-          num_min_tmp = num_max + li;
-          den_min_tmp = den_min + li;
-          num_max_tmp = num_min + li;
-          den_max_tmp = den_max + li;
+          num_min_tmp   = num_max + li;
+          den_min_tmp   = den_min + li;
+          num_max_tmp   = num_min + li;
+          den_max_tmp   = den_max + li;
         }
 
         if ( den_min_tmp == 0. && num_min_tmp == 0. ) {
@@ -280,7 +280,7 @@ namespace gum {
         it[i] = combi_msg_p[i].begin();
       }
 
-      Size pp = pos;
+      Size pp  = pos;
       Size pas = Size( intPow( 2, pp ) );
 
       Size combi_den = 0;
@@ -344,7 +344,7 @@ namespace gum {
         it[i] = combi_msg_p[i].begin();
       }
 
-      int combi = 0;
+      int combi   = 0;
       auto theEnd = combi_msg_p[taille - 1].end();
 
       while ( it[taille - 1] != theEnd ) {
@@ -444,7 +444,7 @@ namespace gum {
         {
 #pragma omp flush  //( msg_p_min )
           //#pragma omp flush ( msg_p_max )  let the compiler choose what to
-          //flush (due to mvsc)
+          // flush (due to mvsc)
 
           if ( msg_p_min > msg_pmin ) {
             msg_p_min = msg_pmin;
@@ -1607,10 +1607,10 @@ namespace gum {
                    "this credal net" );
       }
 
-      __cn = &cnet;
+      __cn   = &cnet;
       __bnet = &cnet.current_bn();
 
-      __inferenceType = InferenceType::nodeToNeighbours;
+      __inferenceType    = InferenceType::nodeToNeighbours;
       _InferenceUpToDate = false;
 
       GUM_CONSTRUCTOR( CNLoopyPropagation );

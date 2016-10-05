@@ -66,12 +66,12 @@ namespace gum {
           nullptr;  // parent_dir can not be NO_PARENT (... sure ?)
 
     if ( _children[0] ) {
-      _children[0]->_parent = nullptr;
+      _children[0]->_parent     = nullptr;
       _children[0]->_parent_dir = BinTreeDir::NO_PARENT;
     }
 
     if ( _children[1] ) {
-      _children[1]->_parent = nullptr;
+      _children[1]->_parent     = nullptr;
       _children[1]->_parent_dir = BinTreeDir::NO_PARENT;
     }
   }
@@ -137,7 +137,7 @@ namespace gum {
     }
 
     // proceed to the chaining
-    new_child._parent = this;
+    new_child._parent     = this;
     new_child._parent_dir = BinTreeDir::LEFT_CHILD;
     _children[static_cast<int>( BinTreeDir::LEFT_CHILD )] = &new_child;
   }
@@ -151,7 +151,7 @@ namespace gum {
     BinTreeNode<Val>* new_child = new BinTreeNode<Val>( val );
 
     // proceed to the chaining
-    new_child->_parent = this;
+    new_child->_parent     = this;
     new_child->_parent_dir = BinTreeDir::LEFT_CHILD;
     _children[static_cast<int>( BinTreeDir::LEFT_CHILD )] = new_child;
 
@@ -170,7 +170,7 @@ namespace gum {
     }
 
     // proceed to the chaining
-    new_child._parent = this;
+    new_child._parent     = this;
     new_child._parent_dir = BinTreeDir::RIGHT_CHILD;
     _children[static_cast<int>( BinTreeDir::RIGHT_CHILD )] = &new_child;
   }
@@ -185,7 +185,7 @@ namespace gum {
     BinTreeNode<Val>* new_child = new BinTreeNode<Val>( val );
 
     // proceed to the chaining
-    new_child->_parent = this;
+    new_child->_parent     = this;
     new_child->_parent_dir = BinTreeDir::RIGHT_CHILD;
     _children[static_cast<int>( BinTreeDir::RIGHT_CHILD )] = new_child;
 
@@ -204,8 +204,8 @@ namespace gum {
     }
 
     // proceed to the chaining
-    new_child._parent = this;
-    new_child._parent_dir = child_dir;
+    new_child._parent                        = this;
+    new_child._parent_dir                    = child_dir;
     _children[static_cast<int>( child_dir )] = &new_child;
   }
 
@@ -219,8 +219,8 @@ namespace gum {
     BinTreeNode<Val>* new_child = new BinTreeNode<Val>( val );
 
     // proceed to the chaining
-    new_child->_parent = this;
-    new_child->_parent_dir = child_dir;
+    new_child->_parent                       = this;
+    new_child->_parent_dir                   = child_dir;
     _children[static_cast<int>( child_dir )] = new_child;
 
     return new_child;

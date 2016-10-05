@@ -56,7 +56,7 @@ namespace gum {
 
     void Parser::Get() {
       for ( ;; ) {
-        t = la;
+        t  = la;
         la = scanner->Scan();
 
         if ( la->kind <= maxT ) {
@@ -67,13 +67,13 @@ namespace gum {
 
         if ( dummyToken != t ) {
           dummyToken->kind = t->kind;
-          dummyToken->pos = t->pos;
-          dummyToken->col = t->col;
+          dummyToken->pos  = t->pos;
+          dummyToken->col  = t->col;
           dummyToken->line = t->line;
           dummyToken->next = NULL;
           coco_string_delete( dummyToken->val );
           dummyToken->val = coco_string_create( t->val );
-          t = dummyToken;
+          t               = dummyToken;
         }
 
         la = t;
@@ -270,9 +270,9 @@ namespace gum {
       static void CallDestroy( T* t ) { t->Destroy(); }
     };
     void Parser::Parse() {
-      t = NULL;
+      t  = NULL;
       la = dummyToken = new Token();
-      la->val = coco_string_create( L"Dummy Token" );
+      la->val         = coco_string_create( L"Dummy Token" );
       Get();
       EVAL();
     }
@@ -282,9 +282,9 @@ namespace gum {
 
       ParserInitCaller<Parser>::CallInit( this );
       dummyToken = NULL;
-      t = la = NULL;
-      minErrDist = 2;
-      errDist = minErrDist;
+      t = la        = NULL;
+      minErrDist    = 2;
+      errDist       = minErrDist;
       this->scanner = scanner;
     }
 

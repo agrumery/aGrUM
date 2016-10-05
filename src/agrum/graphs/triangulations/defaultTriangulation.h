@@ -57,7 +57,7 @@ namespace gum {
    * of 2 ints).
    */
   class DefaultTriangulation : public UnconstrainedTriangulation {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -66,20 +66,20 @@ namespace gum {
     /// basic constructor. initialize the triangulation
     explicit DefaultTriangulation( const UndiGraph* graph,
                                    const NodeProperty<Size>* dom_sizes,
-                                   bool minimality = false,
-                                   double theRatio = GUM_QUASI_RATIO,
+                                   bool minimality     = false,
+                                   double theRatio     = GUM_QUASI_RATIO,
                                    double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// default constructor: initialize the triangulation for an empty graph
-    explicit DefaultTriangulation( bool minimality = false,
-                                   double theRatio = GUM_QUASI_RATIO,
+    explicit DefaultTriangulation( bool minimality     = false,
+                                   double theRatio     = GUM_QUASI_RATIO,
                                    double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
-    DefaultTriangulation ( const DefaultTriangulation& from );
+    DefaultTriangulation( const DefaultTriangulation& from );
 
     /// move constructor
-    DefaultTriangulation ( DefaultTriangulation&& from );
+    DefaultTriangulation( DefaultTriangulation&& from );
 
     /// destructor
     ~DefaultTriangulation();
@@ -99,7 +99,7 @@ namespace gum {
     /// @}
 
 
-  private:
+    private:
     /// the ratio above which we consider nodes to be quasi simplicial
     double __quasi_ratio;
 

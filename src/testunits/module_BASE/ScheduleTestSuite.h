@@ -44,7 +44,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 2 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -103,7 +103,7 @@ namespace gum_tests {
       TS_ASSERT( 3 == schedule.nodeId( comb1 ) );
 
       const gum::NodeSet& ops1 = schedule.operationsInvolving( result1 );
-      gum::NodeId del1_id = schedule.insert( del1 );
+      gum::NodeId del1_id      = schedule.insert( del1 );
       schedule.forceAfter( del1_id, ops1 );
 
       schedule.insert( del2 );
@@ -173,7 +173,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 2 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;

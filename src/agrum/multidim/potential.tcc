@@ -245,13 +245,12 @@ namespace gum {
     return *this;
   }
 
-    template <typename GUM_SCALAR>
-    INLINE const Potential<GUM_SCALAR>&
-    Potential<GUM_SCALAR>::translate( GUM_SCALAR v ) const {
-      this->apply( [v]( GUM_SCALAR x ) { return x + v; } );
-      return *this;
-    }
-
+  template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>&
+  Potential<GUM_SCALAR>::translate( GUM_SCALAR v ) const {
+    this->apply( [v]( GUM_SCALAR x ) { return x + v; } );
+    return *this;
+  }
 
 
   template <typename GUM_SCALAR>

@@ -46,8 +46,8 @@ namespace gum {
       __checker->add( **varIter );
 
     __nbVisitedStates = 1;
-    __checkerFalseId = __checker->manager()->addTerminalNode( false );
-    __checkerTrueId = __checker->manager()->addTerminalNode( true );
+    __checkerFalseId  = __checker->manager()->addTerminalNode( false );
+    __checkerTrueId   = __checker->manager()->addTerminalNode( true );
 
     __insertState( initialState, 0, 0 );
   }
@@ -57,9 +57,9 @@ namespace gum {
     __nbVisitedStates++;
 
     NodeId parId = __checker->root();
-    Idx parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
+    Idx parModa  = state.valFromPtr( __checker->node( parId )->nodeVar() );
     while ( __checker->node( parId )->son( parModa ) != __checkerFalseId ) {
-      parId = __checker->node( parId )->son( parModa );
+      parId   = __checker->node( parId )->son( parModa );
       parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
     }
     __insertState( state, parId, parModa );

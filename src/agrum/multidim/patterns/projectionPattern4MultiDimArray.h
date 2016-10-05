@@ -132,12 +132,12 @@ namespace gum {
       std::vector<Idx> table_and_result_domain;
       std::vector<Idx> before_incr;
       unsigned int nb_positive_before_incr = 0;
-      Idx table_alone_domain_size = 1;
-      Idx result_domain_size = 1;
-      Idx table_domain_size = 1;
+      Idx table_alone_domain_size          = 1;
+      Idx result_domain_size               = 1;
+      Idx table_domain_size                = 1;
       Sequence<const DiscreteVariable*> result_varSeq;
       {
-        Idx tmp_before_incr = 1;
+        Idx tmp_before_incr  = 1;
         bool has_before_incr = false;
 
         for ( const auto var : table_vars ) {
@@ -165,8 +165,8 @@ namespace gum {
         }
       }
       std::vector<Idx> table_and_result_value = table_and_result_domain;
-      std::vector<Idx> current_incr = before_incr;
-      std::vector<Idx> table_and_result_down = table_and_result_offset;
+      std::vector<Idx> current_incr           = before_incr;
+      std::vector<Idx> table_and_result_down  = table_and_result_offset;
 
       for ( unsigned int i = 0; i < table_and_result_down.size(); ++i ) {
         table_and_result_down[i] *= ( table_and_result_domain[i] - 1 );
@@ -300,7 +300,7 @@ namespace gum {
       // these variables.
       std::vector<Idx> table_alone_offset;
       std::vector<Idx> table_alone_domain;
-      Idx offset = 1;
+      Idx offset                  = 1;
       Idx table_alone_domain_size = 1;
       HashTable<const DiscreteVariable*, Idx> var1offset( table_vars.size() );
 
@@ -316,7 +316,7 @@ namespace gum {
       }
 
       std::vector<Idx> table_alone_value = table_alone_domain;
-      std::vector<Idx> table_alone_down = table_alone_offset;
+      std::vector<Idx> table_alone_down  = table_alone_offset;
 
       for ( unsigned int i = 0; i < table_alone_down.size(); ++i )
         table_alone_down[i] *= ( table_alone_domain[i] - 1 );
@@ -334,8 +334,8 @@ namespace gum {
       std::vector<Idx> table_and_result_offset;
       std::vector<Idx> table_and_result_domain;
       Idx result_domain_size = 1;
-      bool has_before_incr = false;
-      bool found_proj_var = false;
+      bool has_before_incr   = false;
+      bool found_proj_var    = false;
 
       for ( const auto var : table_vars ) {
         if ( !del_vars.exists( var ) ) {
@@ -350,7 +350,7 @@ namespace gum {
       }
 
       std::vector<Idx> table_and_result_value = table_and_result_domain;
-      std::vector<Idx> table_and_result_down = table_and_result_offset;
+      std::vector<Idx> table_and_result_down  = table_and_result_offset;
 
       for ( unsigned int i = 0; i < table_and_result_down.size(); ++i ) {
         table_and_result_down[i] *= ( table_and_result_domain[i] - 1 );

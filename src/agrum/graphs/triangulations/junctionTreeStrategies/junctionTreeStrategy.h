@@ -43,7 +43,7 @@ namespace gum {
    * \ingroup graph_group
    */
   class JunctionTreeStrategy {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -63,7 +63,7 @@ namespace gum {
     copyFactory( StaticTriangulation* triangulation = nullptr ) const = 0;
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -109,28 +109,27 @@ namespace gum {
 
     /// @}
 
-    
-  protected:
-    /// the triangulation to which the junction tree is associated
-    StaticTriangulation* _triangulation { nullptr };
 
-    
+    protected:
+    /// the triangulation to which the junction tree is associated
+    StaticTriangulation* _triangulation{nullptr};
+
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-    JunctionTreeStrategy ();
+    JunctionTreeStrategy();
 
     /// copy constructor
-    JunctionTreeStrategy ( const JunctionTreeStrategy& from );
+    JunctionTreeStrategy( const JunctionTreeStrategy& from );
 
     /// move constructor
-    JunctionTreeStrategy ( JunctionTreeStrategy&& from );
+    JunctionTreeStrategy( JunctionTreeStrategy&& from );
 
     /// @}
-    
   };
 
 } /* namespace gum */

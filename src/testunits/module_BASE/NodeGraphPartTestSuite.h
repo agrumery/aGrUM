@@ -47,7 +47,7 @@ namespace gum_tests {
       ngp.addNode();
       TS_ASSERT_EQUALS( ngp.size(), (gum::Size)3 );
 
-      gum::NodeId next = ngp.nextNodeId();
+      gum::NodeId next  = ngp.nextNodeId();
       gum::NodeId next2 = ngp.addNode();
       TS_ASSERT_EQUALS( next, next2 );
 

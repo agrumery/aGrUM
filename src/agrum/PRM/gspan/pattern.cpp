@@ -206,12 +206,12 @@ namespace gum {
         stack.push_back( std::make_pair( a_u, a_v ) );
         NodeId u = 0;
         NodeId v = 0;
-        bool go = true;
+        bool go  = true;
 
         while ( !stack.empty() ) {
           go = true;
-          u = stack.back().first;
-          v = stack.back().second;
+          u  = stack.back().first;
+          v  = stack.back().second;
           stack.pop_back();
 
           if ( ( u == 0 ) && ( v == 0 ) ) {

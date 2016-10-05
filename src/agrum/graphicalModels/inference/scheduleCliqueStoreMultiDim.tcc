@@ -84,9 +84,9 @@ namespace gum {
     // avoid self assignment
     if ( &from != this ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );
-      __table = from.__table;
-      __tableSet = from.__tableSet;
-      __clique = from.__clique;
+      __table                                = from.__table;
+      __tableSet                             = from.__tableSet;
+      __clique                               = from.__clique;
 
       if ( __args ) {
         __args->clear();

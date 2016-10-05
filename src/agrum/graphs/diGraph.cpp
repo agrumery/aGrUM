@@ -106,7 +106,7 @@ namespace gum {
   }
 
   void DiGraph::__topologicalOrder() const {
-    auto dag = *this;
+    auto dag   = *this;
     auto roots = std::vector<NodeId>();
 
     for ( const auto node : dag.nodes() ) {
@@ -124,7 +124,7 @@ namespace gum {
       roots.pop_back();
 
       while ( dag.children( __mutableTopologicalOrder->back() ).size() ) {
-        auto back = __mutableTopologicalOrder->back();
+        auto back  = __mutableTopologicalOrder->back();
         auto child = *( dag.children( back ).begin() );
         dag.eraseArc( Arc( back, child ) );
 

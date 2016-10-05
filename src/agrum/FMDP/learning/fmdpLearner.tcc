@@ -98,7 +98,7 @@ namespace gum {
     __fmdp = fmdp;
 
     __modaMax = 0;
-    __rmax = 0.0;
+    __rmax    = 0.0;
 
     Set<const DiscreteVariable*> mainVariables;
     for ( auto varIter = __fmdp->beginVariables();

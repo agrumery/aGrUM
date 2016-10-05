@@ -24,7 +24,7 @@ namespace gum {
   /// protected copy
 
   INLINE void Variable::_copy( const Variable& aRV ) {
-    __name = aRV.__name;
+    __name        = aRV.__name;
     __description = aRV.__description;
   }
 

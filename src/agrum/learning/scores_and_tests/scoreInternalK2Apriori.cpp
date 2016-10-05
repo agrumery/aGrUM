@@ -26,5 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/scoreInternalK2Apriori.h>
 
-
 template class gum::learning::ScoreInternalK2Apriori<>;

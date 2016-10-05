@@ -55,8 +55,8 @@ namespace gum {
   INLINE Dirichlet& Dirichlet::operator=( const Dirichlet& from ) {
     if ( &from != this ) {
       __generator = from.__generator;
-      __gamma = from.__gamma;
-      __params = from.__params;
+      __gamma     = from.__gamma;
+      __params    = from.__params;
     }
     return *this;
   }
@@ -65,8 +65,8 @@ namespace gum {
   INLINE Dirichlet& Dirichlet::operator=( Dirichlet&& from ) {
     if ( &from != this ) {
       __generator = std::move( from.__generator );
-      __gamma = std::move( from.__gamma );
-      __params = std::move( from.__params );
+      __gamma     = std::move( from.__gamma );
+      __params    = std::move( from.__params );
     }
     return *this;
   }

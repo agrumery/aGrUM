@@ -26,5 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 
-
 template class gum::learning::ScoreK2<>;

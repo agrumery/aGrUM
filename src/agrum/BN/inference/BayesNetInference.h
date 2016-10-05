@@ -41,7 +41,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class BayesNetInference {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -120,7 +120,7 @@ namespace gum {
      */
     const IBayesNet<GUM_SCALAR>& bn() const;
 
-  protected:
+    protected:
     /**
      * @brief Fill the potential with the computed posterior
      *
@@ -151,7 +151,7 @@ namespace gum {
      */
     NodeProperty<Potential<GUM_SCALAR>*> _posteriors;
 
-  private:
+    private:
     /**
      * The Bayes net we wish to perform inference on.
      */

@@ -235,7 +235,7 @@ namespace gum {
         return new Potential<GUM_SCALAR>( t1 * t2 );
       } );
       auto tmp = Comb.combine( factors );
-      result = tmp->margSumOut( var_set );
+      result   = tmp->margSumOut( var_set );
       delete tmp;
     }
 

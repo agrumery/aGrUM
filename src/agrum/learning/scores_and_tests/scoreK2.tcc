@@ -145,7 +145,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
       const Size targets_modal = Size( N_ijk.size() );
-      double score = 0;
+      double score             = 0;
 
       // get the nodes involved in the score as well as their modalities
       const std::vector<Idx, IdSetAlloc>& all_nodes =
@@ -191,7 +191,7 @@ namespace gum {
 
           // put the first term: qi log {(ri - 1)!} into the score
           const double r_i = double( modalities[all_nodes.back()] );
-          score = conditioning_modal * __gammalog2( r_i );
+          score            = conditioning_modal * __gammalog2( r_i );
 
           for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + 1 );
@@ -223,8 +223,8 @@ namespace gum {
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
           // }
           const double r_i = double( modalities[all_nodes.back()] );
-          double N = 0;
-          double N_prime = 0;
+          double N         = 0;
+          double N_prime   = 0;
           for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + N_prime_ijk[k] + 1 ) -
                      __gammalog2( N_prime_ijk[k] + 1 );
@@ -239,7 +239,7 @@ namespace gum {
 
           // put the first term: log {(ri - 1)!} into the score
           const double r_i = double( modalities[all_nodes.back()] );
-          score = __gammalog2( r_i );
+          score            = __gammalog2( r_i );
 
           double N = 0;
           for ( Idx k = 0; k < targets_modal; ++k ) {

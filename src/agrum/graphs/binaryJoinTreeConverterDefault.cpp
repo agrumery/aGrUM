@@ -133,7 +133,7 @@ namespace gum {
     PriorityQueue<std::pair<NodeId, NodeId>, float> queue;
 
     for ( NodeId i = 0; i < cliques.size(); ++i ) {
-      pair.first = i;
+      pair.first            = i;
       const NodeSet& nodes1 = JT.separator( cliques[i], clique );
 
       for ( NodeId j = i + 1; j < cliques.size(); ++j ) {
@@ -152,7 +152,7 @@ namespace gum {
     // available.
     for ( NodeId k = 2; k < cliques.size(); ++k ) {
       // get the combination to perform and do it
-      pair = queue.pop();
+      pair      = queue.pop();
       NodeId ti = pair.first;
       NodeId tj = pair.second;
 
@@ -160,7 +160,7 @@ namespace gum {
       // and remove the edges between ti, tj and clique
       const NodeSet& nodes1 = JT.separator( cliques[ti], clique );
       const NodeSet& nodes2 = JT.separator( cliques[tj], clique );
-      NodeId new_node = JT.addNode( nodes1 + nodes2 );
+      NodeId new_node       = JT.addNode( nodes1 + nodes2 );
       JT.addEdge( cliques[ti], new_node );
       JT.addEdge( cliques[tj], new_node );
       JT.addEdge( clique, new_node );
@@ -193,13 +193,13 @@ namespace gum {
       // update the "combined" size of all the pairs involving "new_node"
       {
         const NodeSet& nodes1 = JT.separator( cliques[ti], clique );
-        pair.second = ti;
+        pair.second           = ti;
         float newsize;
 
         for ( NodeId ind = 0; ind < ti; ++ind ) {
           if ( is_cliques_relevant[ind] ) {
             pair.first = ind;
-            newsize = __combinedSize(
+            newsize    = __combinedSize(
                 nodes1, JT.separator( cliques[ind], clique ), domain_sizes );
             queue.setPriority( pair, newsize );
           }
@@ -210,7 +210,7 @@ namespace gum {
         for ( NodeId ind = ti + 1; ind < cliques.size(); ++ind ) {
           if ( is_cliques_relevant[ind] ) {
             pair.second = ind;
-            newsize = __combinedSize(
+            newsize     = __combinedSize(
                 nodes1, JT.separator( cliques[ind], clique ), domain_sizes );
             queue.setPriority( pair, newsize );
           }

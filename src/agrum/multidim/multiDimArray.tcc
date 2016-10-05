@@ -113,7 +113,7 @@ namespace gum {
       if ( !this->_isInMultipleChangeMethod() ) _values.clear();
     } else {
       Size v_size = v.domainSize();
-      Size size = this->domainSize();
+      Size size   = this->domainSize();
       // here, the variable does belong to the array.
       // => if pos = variables.size() - 1 then we just have to extract the
       // beginning of the array (actually the first gap of variable v)
@@ -130,7 +130,7 @@ namespace gum {
           for ( Idx i = 0, j = 0; i < size; i += gap_w ) {
             Idx last = i + gap_v;
 
-            for ( Idx k = i; k < last; ++k, ++j )
+            for ( Idx k  = i; k < last; ++k, ++j )
               _values[j] = _values[k];
           }
         }

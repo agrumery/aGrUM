@@ -116,7 +116,7 @@ namespace gum {
     template <typename CONSTRAINT>
     struct __ConstraintSet<CONSTRAINT> {
       using minset = __ConstraintSet<CONSTRAINT>;
-      using set = __StructuralConstraintSetStatic<CONSTRAINT>;
+      using set    = __StructuralConstraintSetStatic<CONSTRAINT>;
     };
 
     // ============================================================================

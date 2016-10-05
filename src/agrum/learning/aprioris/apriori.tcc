@@ -76,13 +76,13 @@ namespace gum {
         const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
             conditioning_nodesets ) {
       if ( _weight != 0 ) {
-        _modalities = &modalities;
-        _unapriori_counts = &counts;
-        _target_nodesets = &target_nodesets;
+        _modalities            = &modalities;
+        _unapriori_counts      = &counts;
+        _target_nodesets       = &target_nodesets;
         _conditioning_nodesets = &conditioning_nodesets;
 
         // reserve the _apriori_counts
-        Size apriori_size = Size( _apriori_counts.size() );
+        Size apriori_size     = Size( _apriori_counts.size() );
         const Size count_size = Size( counts.size() );
 
         while ( apriori_size > count_size ) {

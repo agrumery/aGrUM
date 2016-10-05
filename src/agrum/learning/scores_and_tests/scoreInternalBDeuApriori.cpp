@@ -26,5 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/scoreInternalBDeuApriori.h>
 
-
 template class gum::learning::ScoreInternalBDeuApriori<>;

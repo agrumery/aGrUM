@@ -135,12 +135,12 @@ namespace gum {
     /// @warning : proba is a probability for variable id
     template <typename GUM_SCALAR>
     void GibbsSampler<GUM_SCALAR>::__drawVar( NodeId id ) {
-      const DiscreteVariable& v = this->bn().variable( id );
+      const DiscreteVariable& v    = this->bn().variable( id );
       Potential<GUM_SCALAR>& proba = *__sampling_posterior[id];
-      GUM_SCALAR p = (GUM_SCALAR)randomProba();
+      GUM_SCALAR p                 = (GUM_SCALAR)randomProba();
       // use of __sampling_idx for shrink the number of temporary Instantiation
       Instantiation& I = *__sampling_idx[id];
-      Idx choice = 0;
+      Idx choice       = 0;
       // normalisation
       GUM_SCALAR s = (GUM_SCALAR)0;
 
@@ -180,7 +180,7 @@ namespace gum {
       // posterior
       // see Pearl'88, 4.71 p218
       Potential<GUM_SCALAR>& posterior = *__sampling_posterior[id];
-      Instantiation& posterior_idx = *__sampling_idx[id];
+      Instantiation& posterior_idx     = *__sampling_idx[id];
 
       Instantiation* tmp;
       GUM_SCALAR value;
@@ -188,7 +188,7 @@ namespace gum {
       for ( posterior_idx.setFirst(); !posterior_idx.end();
             posterior_idx.inc() ) {
         Idx current_mod_id = posterior_idx.val( v );
-        tmp = __cpt_idx[id];
+        tmp                = __cpt_idx[id];
         tmp->chgVal( v, current_mod_id );
         posterior.set( posterior_idx, value = this->bn().cpt( id )[*tmp] );
 
@@ -249,7 +249,7 @@ namespace gum {
     /// insert new evidence in the graph
     template <typename GUM_SCALAR>
     void GibbsSampler<GUM_SCALAR>::addHardEvidenceSampler( NodeId id,
-                                                            Idx pos ) {
+                                                           Idx pos ) {
       __hard_evidences.insert( id, pos );
     }
 

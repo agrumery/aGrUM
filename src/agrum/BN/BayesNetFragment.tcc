@@ -295,7 +295,7 @@ namespace gum {
                  "The node " << id << " is not part of this fragment" );
 
     const auto& parents = dag().parents( id );
-    const auto& cpt = this->cpt( id );
+    const auto& cpt     = this->cpt( id );
     NodeSet cpt_parents;
 
     for ( Idx i = 1; i < cpt.nbrDim(); i++ ) {

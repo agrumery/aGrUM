@@ -115,20 +115,20 @@ namespace gum {
    * @tparam Alloc The allocator of elements stored in the gum::Heap.
    */
   template <typename Val,
-            typename Cmp = std::less<Val>,
+            typename Cmp   = std::less<Val>,
             typename Alloc = std::allocator<Val>>
   class Heap {
     public:
     /// Types for STL compliance
     /// @{
-    using value_type = Val;
-    using reference = Val&;
+    using value_type      = Val;
+    using reference       = Val&;
     using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
-    using size_type = std::size_t;
+    using pointer         = Val*;
+    using const_pointer   = const Val*;
+    using size_type       = std::size_t;
     using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
+    using allocator_type  = Alloc;
     /// @}
 
     // ============================================================================
@@ -144,7 +144,7 @@ namespace gum {
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables).
      */
-    explicit Heap( Cmp compare = Cmp(),
+    explicit Heap( Cmp compare   = Cmp(),
                    Size capacity = GUM_HEAP_DEFAULT_CAPACITY );
 
     /**

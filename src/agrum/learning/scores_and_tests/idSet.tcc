@@ -105,7 +105,7 @@ namespace gum {
     template <typename Alloc>
     INLINE IdSet<Alloc>& IdSet<Alloc>::operator=( const IdSet<Alloc>& from ) {
       if ( this != &from ) {
-        __ids = from.__ids;
+        __ids  = from.__ids;
         __size = from.__size;
       }
 
@@ -132,7 +132,7 @@ namespace gum {
     template <typename Alloc>
     INLINE IdSet<Alloc>& IdSet<Alloc>::operator=( IdSet<Alloc>&& from ) {
       if ( this != &from ) {
-        __ids = std::move( from.__ids );
+        __ids  = std::move( from.__ids );
         __size = from.__size;
       }
 

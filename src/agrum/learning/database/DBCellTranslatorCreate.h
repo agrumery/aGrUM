@@ -86,7 +86,7 @@ namespace gum {
        * required by the translator to execute @b once. If you wish to apply the
        * translator several times, use class Create instead. */
       CreateOnce( const Translator& translator = Translator(),
-                  const Cols& s = Cols() );
+                  const Cols& s                = Cols() );
 
       /// copy constructor
       CreateOnce( const CreateOnce<Translator, Cols>& call );
@@ -233,7 +233,7 @@ namespace gum {
     // This is the REAL definition of class gum::learning::Create
     template <typename Translator,
               typename Cols,
-              int nb_times = 1,
+              int nb_times      = 1,
               typename ColsIncr = typename Make_Default_Incr<Cols>::type>
     class Create : CreateOnce<Translator, Cols>,
                    Create<Translator,
@@ -245,7 +245,7 @@ namespace gum {
     // This is for Doxygen which does not deal well with recursive inheritance
     template <typename Translator,
               typename Cols,
-              int nb_times = 1,
+              int nb_times      = 1,
               typename ColsIncr = typename Make_Default_Incr<Cols>::type>
     class Create : CreateOnce<Translator, Cols> {
 #endif

@@ -60,8 +60,8 @@ namespace gum_tests {
 
     void testStaticBoolean() {
       // Arrange
-      std::string labels[] = {"false", "true"};
-      std::string name = "boolean";
+      std::string labels[]   = {"false", "true"};
+      std::string name       = "boolean";
       std::string decription = "Boolean variable";
       // Act
       auto boolean = PRMType::boolean();
@@ -127,7 +127,7 @@ namespace gum_tests {
     void testGetVariableConst() {
       // Arrange
       PRMType boolean{*__boolean};
-      const PRMType& const_boolean = boolean;
+      const PRMType& const_boolean          = boolean;
       gum::DiscreteVariable const* variable = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( variable = &( const_boolean.variable() ) );
@@ -158,7 +158,7 @@ namespace gum_tests {
     void testIndirectionOperatorConst() {
       // Arrange
       PRMType boolean{*__boolean};
-      const PRMType& const_boolean = boolean;
+      const PRMType& const_boolean          = boolean;
       gum::DiscreteVariable const* variable = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( variable = &( *const_boolean ) );
@@ -293,7 +293,7 @@ namespace gum_tests {
       map.push_back( 1 );
       map.push_back( 0 );
       PRMType state{boolean, map, *__state};
-      const auto& dummy = state;
+      const auto& dummy    = state;
       PRMType const* super = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING( super = &( dummy.superType() ) );

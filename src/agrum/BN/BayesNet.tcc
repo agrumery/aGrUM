@@ -78,7 +78,7 @@ namespace gum {
   operator=( const BayesNet<GUM_SCALAR>& source ) {
     if ( this != &source ) {
       IBayesNet<GUM_SCALAR>::operator=( source );
-      __varMap = source.__varMap;
+      __varMap                       = source.__varMap;
 
       __clearPotentials();
       __copyPotentials( source );
@@ -118,7 +118,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE NodeId BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var ) {
     MultiDimArray<GUM_SCALAR>* ptr = new MultiDimArray<GUM_SCALAR>();
-    NodeId res = 0;
+    NodeId res                     = 0;
 
     try {
       res = add( var, ptr );
@@ -149,7 +149,7 @@ namespace gum {
   BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var,
                              MultiDimImplementation<GUM_SCALAR>* aContent ) {
     NodeId proposedId = dag().nextNodeId();
-    NodeId res = 0;
+    NodeId res        = 0;
 
     res = add( var, aContent, proposedId );
 
@@ -160,7 +160,7 @@ namespace gum {
   INLINE NodeId BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var,
                                            NodeId id ) {
     MultiDimArray<GUM_SCALAR>* ptr = new MultiDimArray<GUM_SCALAR>();
-    NodeId res = 0;
+    NodeId res                     = 0;
 
     try {
       res = add( var, ptr, id );

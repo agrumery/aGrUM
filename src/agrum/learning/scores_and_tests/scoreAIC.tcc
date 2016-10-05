@@ -131,7 +131,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
       const Size targets_modal = Size( N_ijk.size() );
-      double score = 0;
+      double score             = 0;
 
       // get the nodes involved in the score as well as their modalities
       const std::vector<Idx, IdSetAlloc>& all_nodes =

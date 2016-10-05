@@ -50,14 +50,14 @@ namespace gum {
     pere = 0;
 
     if ( from.fg ) {
-      fg = new SplayBinaryNode<Element>( *from.fg, addr );
+      fg       = new SplayBinaryNode<Element>( *from.fg, addr );
       fg->pere = this;
     } else {
       fg = 0;
     }
 
     if ( from.fd ) {
-      fd = new SplayBinaryNode<Element>( *from.fd, addr );
+      fd       = new SplayBinaryNode<Element>( *from.fd, addr );
       fd->pere = this;
     } else {
       fd = 0;
@@ -439,8 +439,8 @@ namespace gum {
       // The element exists
       // Find it
       SplayBinaryNode<Element>* act = root;
-      int pos_act = val - 1;
-      bool next = true;
+      int pos_act                   = val - 1;
+      bool next                     = true;
 
       while ( next ) {
         if ( !act->fg )
@@ -476,8 +476,8 @@ namespace gum {
       // The element exists
       // Find it
       SplayBinaryNode<Element>* act = root;
-      int pos_act = val - 1;
-      bool next = true;
+      int pos_act                   = val - 1;
+      bool next                     = true;
 
       while ( next ) {
         if ( !act->fg )
@@ -697,7 +697,7 @@ namespace gum {
     } else {
       // We will find the node at position i
       SplayBinaryNode<Element>* act = root;
-      int pos = root->position();
+      int pos                       = root->position();
 
       while ( pos != i ) {
         GUM_ASSERT( act != 0 );

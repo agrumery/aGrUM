@@ -66,7 +66,7 @@ namespace gum {
     GUM_CONS_CPY( BinSearchTreeIterator );
 
     if ( _tree ) {
-      _next_iter = _tree->_iterator_list;
+      _next_iter            = _tree->_iterator_list;
       _tree->_iterator_list = this;
     } else
       _next_iter = 0;
@@ -84,7 +84,7 @@ namespace gum {
     _node = const_cast<Node*>( current_node );
 
     if ( add_to_iterator_list && _tree ) {
-      _next_iter = _tree->_iterator_list;
+      _next_iter            = _tree->_iterator_list;
       _tree->_iterator_list = this;
     }
   }
@@ -94,7 +94,7 @@ namespace gum {
     if ( _tree ) {
       BinSearchTreeIterator<Val, Cmp, Node> *iter, *prev_iter = 0;
 
-      for ( iter = _tree->_iterator_list; iter != this && iter;
+      for ( iter      = _tree->_iterator_list; iter != this && iter;
             prev_iter = iter, iter = iter->_next_iter ) {
       }
 
@@ -121,14 +121,14 @@ namespace gum {
     _detachFromTree();
 
     // reset the iterator
-    _node = 0;
-    _next_node = 0;
-    _prev_node = 0;
-    _parent = 0;
-    _left_child = 0;
+    _node        = 0;
+    _next_node   = 0;
+    _prev_node   = 0;
+    _parent      = 0;
+    _left_child  = 0;
     _right_child = 0;
-    _tree = 0;
-    _next_iter = 0;
+    _tree        = 0;
+    _next_iter   = 0;
   }
 
   template <typename Val, class Cmp, class Node>
@@ -146,18 +146,18 @@ namespace gum {
         _tree = from._tree;
 
         if ( _tree ) {
-          _next_iter = _tree->_iterator_list;
+          _next_iter            = _tree->_iterator_list;
           _tree->_iterator_list = this;
         } else
           _next_iter = 0;
       }
 
       // make the iterators point to the same element
-      _node = from._node;
-      _next_node = from._next_node;
-      _prev_node = from._prev_node;
-      _parent = from._parent;
-      _left_child = from._left_child;
+      _node        = from._node;
+      _next_node   = from._next_node;
+      _prev_node   = from._prev_node;
+      _parent      = from._parent;
+      _left_child  = from._left_child;
       _right_child = from._right_child;
     }
 
@@ -202,7 +202,7 @@ namespace gum {
 
     while ( par && ( node->parentDir() == BinTreeDir::RIGHT_CHILD ) ) {
       node = par;
-      par = par->parent();
+      par  = par->parent();
     }
 
     return par;
@@ -218,7 +218,7 @@ namespace gum {
 
     while ( par && ( node->parentDir() == BinTreeDir::LEFT_CHILD ) ) {
       node = par;
-      par = par->parent();
+      par  = par->parent();
     }
 
     return par;
@@ -233,10 +233,10 @@ namespace gum {
     _node = _node ? _tree->_succNode( _node ) : _next_node;
 
     if ( !_node ) {
-      _next_node = 0;
-      _prev_node = 0;
-      _parent = 0;
-      _left_child = 0;
+      _next_node   = 0;
+      _prev_node   = 0;
+      _parent      = 0;
+      _left_child  = 0;
       _right_child = 0;
     }
 
@@ -253,10 +253,10 @@ namespace gum {
     _node = _node ? _tree->_prevNode( _node ) : _prev_node;
 
     if ( !_node ) {
-      _next_node = 0;
-      _prev_node = 0;
-      _parent = 0;
-      _left_child = 0;
+      _next_node   = 0;
+      _prev_node   = 0;
+      _parent      = 0;
+      _left_child  = 0;
       _right_child = 0;
     }
 
@@ -300,10 +300,10 @@ namespace gum {
     _node = _node ? _node->parent() : _parent;
 
     if ( !_node ) {
-      _next_node = 0;
-      _prev_node = 0;
-      _parent = 0;
-      _left_child = 0;
+      _next_node   = 0;
+      _prev_node   = 0;
+      _parent      = 0;
+      _left_child  = 0;
       _right_child = 0;
     }
 
@@ -319,10 +319,10 @@ namespace gum {
     _node = _node ? _node->leftChild() : _left_child;
 
     if ( !_node ) {
-      _next_node = 0;
-      _prev_node = 0;
-      _parent = 0;
-      _left_child = 0;
+      _next_node   = 0;
+      _prev_node   = 0;
+      _parent      = 0;
+      _left_child  = 0;
       _right_child = 0;
     }
 
@@ -338,10 +338,10 @@ namespace gum {
     _node = _node ? _node->rightChild() : _right_child;
 
     if ( !_node ) {
-      _next_node = 0;
-      _prev_node = 0;
-      _parent = 0;
-      _left_child = 0;
+      _next_node   = 0;
+      _prev_node   = 0;
+      _parent      = 0;
+      _left_child  = 0;
       _right_child = 0;
     }
 
@@ -374,7 +374,7 @@ namespace gum {
     GUM_CONS_CPY( BinSearchTree );
 
     // copy the content of BinSearchTree "from"
-    _root = _copy( from._root );
+    _root        = _copy( from._root );
     _nb_elements = from._nb_elements;
 
     // initialize the end/rend iterator
@@ -392,7 +392,7 @@ namespace gum {
 
     // now, delete the whole tree
     _deleteSubTree( _root );
-    _root = 0;
+    _root        = 0;
     _nb_elements = 0;
 
     // note that there is no need to redefined end/rend as they do not rely
@@ -773,7 +773,7 @@ namespace gum {
       } else {
         // rechain node's parent with its successor
         BinTreeDir par_dir = node->parentDir();
-        Node* parent = node->parent();
+        Node* parent       = node->parent();
         parent->eraseLink( par_dir );
         parent->insertChild( *successor, par_dir );
       }
@@ -798,7 +798,7 @@ namespace gum {
       } else {
         // rechain node's parent with its successor
         BinTreeDir par_dir = node->parentDir();
-        Node* parent = node->parent();
+        Node* parent       = node->parent();
         parent->eraseLink( par_dir );
         parent->insertChild( *successor, par_dir );
       }
@@ -826,11 +826,11 @@ namespace gum {
       // if the iterator points toward the node to be deleted, make its _node
       // field point to 0 and update accordingly its other fields
       if ( iter->_node == node ) {
-        iter->_node = 0;
-        iter->_next_node = _succNode( node );
-        iter->_prev_node = _prevNode( node );
-        iter->_parent = node->parent();
-        iter->_left_child = node->leftChild();
+        iter->_node        = 0;
+        iter->_next_node   = _succNode( node );
+        iter->_prev_node   = _prevNode( node );
+        iter->_parent      = node->parent();
+        iter->_left_child  = node->leftChild();
         iter->_right_child = node->rightChild();
       } else if ( !iter->_node ) {
         if ( iter->_next_node == node ) iter->_next_node = _succNode( node );

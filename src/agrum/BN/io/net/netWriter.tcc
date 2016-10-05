@@ -184,7 +184,8 @@ namespace gum {
     str << std::endl << "net {" << std::endl;
     str << "  name = " << bn.propertyWithDefault( "name", "unnamedBN" ) << ";"
         << std::endl;
-    str << "  software = \"aGrUM " << "\";" << std::endl;
+    str << "  software = \"aGrUM "
+        << "\";" << std::endl;
     str << "  node_size = (50 50);" << std::endl;
     str << "}" << std::endl;
     return str.str();

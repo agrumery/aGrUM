@@ -57,13 +57,13 @@ namespace gum {
       private:
       //@beforeMerging swapping from typedef to using
       using credalSet = NodeProperty<std::vector<std::vector<GUM_SCALAR>>>;
-      using margi = NodeProperty<std::vector<GUM_SCALAR>>;
-      using expe = NodeProperty<GUM_SCALAR>;
+      using margi     = NodeProperty<std::vector<GUM_SCALAR>>;
+      using expe      = NodeProperty<GUM_SCALAR>;
 
       using dynExpe =
           typename gum::HashTable<std::string, std::vector<GUM_SCALAR>>;
 
-      using query = NodeProperty<std::vector<bool>>;
+      using query   = NodeProperty<std::vector<bool>>;
       using cluster = NodeProperty<std::vector<NodeId>>;
 
       protected:

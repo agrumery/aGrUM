@@ -110,20 +110,20 @@ namespace gum_tests {
     gum::LabelizedVariable *utilityVar1, *utilityVar2;
 
     void setUp() {
-      id = new gum::InfluenceDiagram<double>();
+      id        = new gum::InfluenceDiagram<double>();
       idListPtr = new gum::List<gum::NodeId>();
 
       decisionVar1 = new gum::LabelizedVariable( "decisionVar1", "D1", 2 );
       decisionVar2 = new gum::LabelizedVariable( "decisionVar2", "D2", 2 );
       decisionVar3 = new gum::LabelizedVariable( "decisionVar3", "D3", 2 );
       decisionVar4 = new gum::LabelizedVariable( "decisionVar4", "D4", 2 );
-      chanceVar1 = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
-      chanceVar2 = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
-      chanceVar3 = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
-      chanceVar4 = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
-      chanceVar5 = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
-      utilityVar1 = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
-      utilityVar2 = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
+      chanceVar1   = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
+      chanceVar2   = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
+      chanceVar3   = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
+      chanceVar4   = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
+      chanceVar5   = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
+      utilityVar1  = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
+      utilityVar2  = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
 
       fill( *id, *idListPtr );
     }

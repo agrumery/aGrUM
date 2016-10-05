@@ -32,7 +32,8 @@
  * For instance, computing a strong junction tree for an influence diagram
  * requires the knowledge of a partial ordering on the nodes to be eliminated.
  * For such cases, classes derived from UnconstrainedEliminationSequenceStrategy
- * are not appropriate and those should be derived from other elimination sequence
+ * are not appropriate and those should be derived from other elimination
+ * sequence
  * factories, for from instance PartialOrderedEliminationSequenceStrategy.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -74,7 +75,7 @@ namespace gum {
     virtual UnconstrainedEliminationSequenceStrategy* copyFactory() const = 0;
 
     /// @}
-    
+
 
     protected:
     // ############################################################################
@@ -95,20 +96,18 @@ namespace gum {
      * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not copied but only referenced by the elimination sequence algorithm. */
-    UnconstrainedEliminationSequenceStrategy
-    ( UndiGraph* graph,
-      const NodeProperty<Size>* dom_sizes );
+    UnconstrainedEliminationSequenceStrategy(
+        UndiGraph* graph, const NodeProperty<Size>* dom_sizes );
 
     /// copy constructor
-    UnconstrainedEliminationSequenceStrategy
-    ( const UnconstrainedEliminationSequenceStrategy& );
+    UnconstrainedEliminationSequenceStrategy(
+        const UnconstrainedEliminationSequenceStrategy& );
 
     /// move constructor
-    UnconstrainedEliminationSequenceStrategy
-    ( UnconstrainedEliminationSequenceStrategy&& );
+    UnconstrainedEliminationSequenceStrategy(
+        UnconstrainedEliminationSequenceStrategy&& );
 
     /// @}
-    
   };
 
 } /* namespace gum */

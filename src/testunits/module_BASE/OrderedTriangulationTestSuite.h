@@ -61,12 +61,12 @@ namespace gum_tests {
       std::vector<gum::NodeId> sequence( 8 );
 
       for ( gum::Idx i = 0; i < 8; ++i )
-        sequence[i] = gum::NodeId( ( 8 - i ) * 10 );
+        sequence[i]    = gum::NodeId( ( 8 - i ) * 10 );
 
       gum::OrderedTriangulation triang;
 
       triang.setGraph( &graph, &dom );
-      triang.setOrder ( &sequence );
+      triang.setOrder( &sequence );
 
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
@@ -77,7 +77,7 @@ namespace gum_tests {
       triang.clear();
 
       triang.setGraph( &graph, &dom );
-      triang.setOrder ( &sequence );
+      triang.setOrder( &sequence );
 
       const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
@@ -88,10 +88,10 @@ namespace gum_tests {
       triang.clear();
 
       for ( gum::Idx i = 0; i < 8; ++i )
-        sequence[i] = gum::NodeId( ( i + 1 ) * 10 );
+        sequence[i]    = gum::NodeId( ( i + 1 ) * 10 );
 
       triang.setGraph( &graph, &dom );
-      triang.setOrder ( &sequence );
+      triang.setOrder( &sequence );
 
       const gum::UndiGraph& gr5 = triang.triangulatedGraph();
 
@@ -148,12 +148,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( clique3, cc3 );
 
       for ( gum::Idx i = 0; i < 8; ++i )
-        sequence[i] = gum::NodeId( ( 8 - i ) * 10 );
+        sequence[i]    = gum::NodeId( ( 8 - i ) * 10 );
 
       graph.eraseEdge( gum::Edge( 20, 50 ) );
 
       triang.setGraph( &graph, &dom );
-      triang.setOrder ( &sequence );
+      triang.setOrder( &sequence );
 
       const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
@@ -187,12 +187,12 @@ namespace gum_tests {
       std::vector<gum::NodeId> sequence( 8 );
 
       for ( gum::Idx i = 0; i < 8; ++i )
-        sequence[i] = gum::NodeId( 8 - i );
+        sequence[i]    = gum::NodeId( 8 - i );
 
       gum::OrderedTriangulation triang;
 
       triang.setGraph( &graph, &dom );
-      triang.setOrder ( &sequence );
+      triang.setOrder( &sequence );
 
       const gum::CliqueGraph& elim = triang.eliminationTree();
 

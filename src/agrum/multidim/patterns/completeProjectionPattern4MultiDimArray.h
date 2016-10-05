@@ -117,9 +117,9 @@ namespace gum {
     GUM_SCALAR current_val = GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
 
     if ( instantiation ) {
-      GUM_SCALAR old_val = current_val;
+      GUM_SCALAR old_val                                  = current_val;
       GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* current_ptr = ptable;
-      GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* deb_ptr = ptable;
+      GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* deb_ptr     = ptable;
 
       for ( Size i = 0; i < nb_elt; ++i, ++ptable ) {
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
@@ -129,7 +129,7 @@ namespace gum {
 #endif
 
         if ( current_val != old_val ) {
-          old_val = current_val;
+          old_val     = current_val;
           current_ptr = ptable;
         }
       }
@@ -152,14 +152,14 @@ namespace gum {
 #endif /* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER */
     } else {
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-      GUM_SCALAR old_val = current_val;
+      GUM_SCALAR old_val                                  = current_val;
       GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* current_ptr = ptable;
 
       for ( Size i = 0; i < nb_elt; ++i, ++ptable ) {
         GUM_MULTI_DIM_COMPLETE_PROJECTION( &current_val, *ptable );
 
         if ( current_val != old_val ) {
-          old_val = current_val;
+          old_val     = current_val;
           current_ptr = ptable;
         }
       }

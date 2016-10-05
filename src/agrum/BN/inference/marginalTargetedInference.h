@@ -28,13 +28,13 @@
 #ifndef GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
 #define GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
 
-#include <agrum/config.h>
 #include <agrum/BN/inference/inference.h>
+#include <agrum/config.h>
 
 
 namespace gum {
 
-  
+
   /**
    * @class MarginalTargetedInference marginalTargetedInference.h
    * <agrum/BN/inference/marginalTargetedInference.h>
@@ -50,7 +50,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class MarginalTargetedInference : public virtual Inference<GUM_SCALAR> {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -67,7 +67,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Probability computations
     // ############################################################################
@@ -92,25 +92,25 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Targets
     // ############################################################################
     /// @{
 
     /// Clear all previously defined targets
-    virtual void eraseAllTargets ();
+    virtual void eraseAllTargets();
 
     /// Add a marginal target to the list of targets
     /**
      * @throw UndefinedElement if target is not a NodeId in the Bayes net
      */
-    virtual void addTarget ( const NodeId target ) final;
+    virtual void addTarget( const NodeId target ) final;
 
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
      * In particular, it does not raise any exception. */
-    virtual void eraseTarget ( const NodeId target ) final;
+    virtual void eraseTarget( const NodeId target ) final;
 
     /// return true if variable is a (marginal) target
     virtual bool isTarget( const NodeId variable ) const final;
@@ -120,31 +120,31 @@ namespace gum {
 
     /// @}
 
-    
-  protected:
+
+    protected:
     /// fired after a new marginal target is inserted
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded ( const NodeId id ) = 0;
+    virtual void _onMarginalTargetAdded( const NodeId id ) = 0;
 
     /// fired before a marginal target is removed
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased ( const NodeId id ) = 0;
+    virtual void _onMarginalTargetErased( const NodeId id ) = 0;
 
     /// fired after all the nodes of the BN are added as marginal targets
-    virtual void _onAllMarginalTargetsAdded () = 0;
+    virtual void _onAllMarginalTargetsAdded() = 0;
 
     /// fired before a all marginal targets are removed
-    virtual void _onAllMarginalTargetsErased () = 0;
+    virtual void _onAllMarginalTargetsErased() = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged ( const IBayesNet<GUM_SCALAR>* bn );
+    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn );
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
     virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id ) = 0;
 
-    
-  private:
+
+    private:
     /// the set of marginal targets
     NodeSet __targets;
 
@@ -152,9 +152,8 @@ namespace gum {
     /// remove all the marginal posteriors computed
     void __invalidatePosteriors() noexcept;
 
-     /// sets all the nodes of the Bayes net as targets
-    void __setAllMarginalTargets ();
-
+    /// sets all the nodes of the Bayes net as targets
+    void __setAllMarginalTargets();
   };
 
 
@@ -164,5 +163,4 @@ namespace gum {
 #include <agrum/BN/inference/marginalTargetedInference.tcc>
 
 
-
-#endif // GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
+#endif  // GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H

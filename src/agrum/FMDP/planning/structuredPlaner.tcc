@@ -70,8 +70,8 @@ namespace gum {
 
     GUM_CONSTRUCTOR( StructuredPlaner );
 
-    __threshold = epsilon;
-    _vFunction = nullptr;
+    __threshold    = epsilon;
+    _vFunction     = nullptr;
     _optimalPolicy = nullptr;
   }
 
@@ -248,9 +248,9 @@ namespace gum {
       _elVarSeq << _fmdp->main2prime( *varIter );
 
     // Initialisation of the value function
-    _vFunction = _operator->getFunctionInstance();
+    _vFunction     = _operator->getFunctionInstance();
     _optimalPolicy = _operator->getAggregatorInstance();
-    __firstTime = true;
+    __firstTime    = true;
   }
 
 
@@ -267,7 +267,7 @@ namespace gum {
     // *****************************************************************************************
     // Main loop
     // *****************************************************************************************
-    Idx nbIte = 0;
+    Idx nbIte      = 0;
     GUM_SCALAR gap = __threshold + 1;
     while ( ( gap > __threshold ) && ( nbIte < nbStep ) ) {
 
@@ -542,9 +542,9 @@ namespace gum {
       nody = argMaxCpy->manager()->addTerminalNode( leaf );
     } else {
       const InternalNode* currentNode = src->node( currentNodeId );
-      NodeId* sonsMap = static_cast<NodeId*>( SOA_ALLOCATE(
+      NodeId* sonsMap                 = static_cast<NodeId*>( SOA_ALLOCATE(
           sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
-      for ( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
+      for ( Idx moda  = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
         sonsMap[moda] = __recurArgMaxCopy(
             currentNode->son( moda ), actionId, src, argMaxCpy, visitedNodes );
       nody = argMaxCpy->manager()->addInternalNode( currentNode->nodeVar(),
@@ -628,9 +628,9 @@ namespace gum {
       nody = _optimalPolicy->manager()->addTerminalNode( leaf );
     } else {
       const InternalNode* currentNode = argMaxOptVFunc->node( currentNodeId );
-      NodeId* sonsMap = static_cast<NodeId*>( SOA_ALLOCATE(
+      NodeId* sonsMap                 = static_cast<NodeId*>( SOA_ALLOCATE(
           sizeof( NodeId ) * currentNode->nodeVar()->domainSize() ) );
-      for ( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
+      for ( Idx moda  = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
         sonsMap[moda] = __recurExtractOptPol(
             currentNode->son( moda ), argMaxOptVFunc, visitedNodes );
       nody = _optimalPolicy->manager()->addInternalNode( currentNode->nodeVar(),

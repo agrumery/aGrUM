@@ -102,7 +102,7 @@ namespace gum_tests {
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
       gum::NetReader<float> reader( net, file );
-      TS_GUM_ASSERT_THROWS_NOTHING( reader.trace( false ));
+      TS_GUM_ASSERT_THROWS_NOTHING( reader.trace( false ) );
 
       gum::Size nbrErr = 0;
 
@@ -130,7 +130,7 @@ namespace gum_tests {
       {
         // FILLING PARAMS
         const double t[2] = {0.2, 0.8};
-        int n = 2;
+        int n             = 2;
         const std::vector<double> v( t, t + n );
         p1.fillWith( v );
       }
@@ -139,7 +139,7 @@ namespace gum_tests {
       {
         // FILLING PARAMS
         const double t[2] = {0.3, 0.7};
-        int n = 2;
+        int n             = 2;
         const std::vector<double> v( t, t + n );
         p2.fillWith( v );
       }
@@ -148,7 +148,7 @@ namespace gum_tests {
       {
         // FILLING PARAMS
         const double t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;
+        int n             = 4;
         const std::vector<double> v( t, t + n );
         p3.fillWith( v );
       }
@@ -157,7 +157,7 @@ namespace gum_tests {
       {
         // FILLING PARAMS
         const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;
+        int n             = 8;
         const std::vector<double> v( t, t + n );
         p4.fillWith( v );
       }

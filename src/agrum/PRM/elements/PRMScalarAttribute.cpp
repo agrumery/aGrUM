@@ -30,10 +30,8 @@
 namespace gum {
   namespace prm {
 
-
     template class PRMScalarAttribute<float>;
     template class PRMScalarAttribute<double>;
-
 
   } /* namespace prm */
 } /* namespace gum */

@@ -29,19 +29,18 @@
 
 namespace gum {
 
-  
+
   /// returns the current graph
-  INLINE UndiGraph*
-  EliminationSequenceStrategy::graph () const noexcept {
+  INLINE UndiGraph* EliminationSequenceStrategy::graph() const noexcept {
     return _graph;
   }
-  
+
 
   /// returns the current domain sizes
   INLINE const NodeProperty<Size>*
-  EliminationSequenceStrategy::domainSizes () const noexcept {
-    return  _domain_sizes;
+  EliminationSequenceStrategy::domainSizes() const noexcept {
+    return _domain_sizes;
   }
 
-  
+
 } /* namespace gum */

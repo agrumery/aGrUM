@@ -134,10 +134,10 @@ namespace gum {
       return *this;
     }
 
-    type = source.type;
-    number = source.number;
+    type      = source.type;
+    number    = source.number;
     character = source.character;
-    function = source.function;
+    function  = source.function;
 
     return *this;
   }
@@ -147,10 +147,10 @@ namespace gum {
       return *this;
     }
 
-    type = std::move( source.type );
-    number = std::move( source.number );
+    type      = std::move( source.type );
+    number    = std::move( source.number );
     character = std::move( source.character );
-    function = std::move( source.function );
+    function  = std::move( source.function );
 
     return *this;
   }
@@ -188,12 +188,12 @@ namespace gum {
   // ==========================================================================
 
   void Formula::__initialise() {
-    auto c_str = (unsigned char*)__formula.c_str();
+    auto c_str   = (unsigned char*)__formula.c_str();
     auto scanner = new gum::formula::Scanner( c_str, (int)__formula.size() );
-    __scanner = std::unique_ptr<gum::formula::Scanner>( scanner );
+    __scanner    = std::unique_ptr<gum::formula::Scanner>( scanner );
 
     auto parser = new gum::formula::Parser( scanner );
-    __parser = std::unique_ptr<gum::formula::Parser>( parser );
+    __parser    = std::unique_ptr<gum::formula::Parser>( parser );
     __parser->formula( this );
   }
 
@@ -304,10 +304,10 @@ namespace gum {
       return *this;
     }
 
-    __formula = source.__formula;
+    __formula    = source.__formula;
     __last_token = source.__last_token;
-    __output = source.__output;
-    __stack = source.__stack;
+    __output     = source.__output;
+    __stack      = source.__stack;
 
     __initialise();
 
@@ -321,11 +321,11 @@ namespace gum {
 
     __formula = std::move( source.__formula );
     __scanner = std::move( source.__scanner );
-    __parser = std::move( source.__parser );
+    __parser  = std::move( source.__parser );
     __parser->formula( this );
     __last_token = std::move( source.__last_token );
-    __output = std::move( source.__output );
-    __stack = std::move( source.__stack );
+    __output     = std::move( source.__output );
+    __stack      = std::move( source.__stack );
 
     return *this;
   }

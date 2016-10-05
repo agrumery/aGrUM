@@ -54,9 +54,9 @@ namespace gum {
   /// by strings
   INLINE Size HashFunc<std::string>::
   operator()( const std::string& key ) const {
-    Size h = 0;
-    unsigned int size = (unsigned int)key.size();
-    const char* char_ptr = key.c_str();
+    Size h                       = 0;
+    unsigned int size            = (unsigned int)key.size();
+    const char* char_ptr         = key.c_str();
     const unsigned long* int_ptr = (const unsigned long*)char_ptr;
 
     for ( ; size >= sizeof( unsigned long );
@@ -77,9 +77,9 @@ namespace gum {
   operator()( const std::pair<std::string, std::string>& key ) const {
     Size h = 0;
 
-    const std::string& s1 = key.first;
-    unsigned int size = (unsigned int)s1.size();
-    const char* char_ptr = s1.c_str();
+    const std::string& s1        = key.first;
+    unsigned int size            = (unsigned int)s1.size();
+    const char* char_ptr         = s1.c_str();
     const unsigned long* int_ptr = (const unsigned long*)char_ptr;
 
     for ( ; size >= sizeof( unsigned long );
@@ -92,9 +92,9 @@ namespace gum {
     }
 
     const std::string& s2 = key.second;
-    size = (unsigned int)s2.size();
-    char_ptr = s2.c_str();
-    int_ptr = (const unsigned long*)char_ptr;
+    size                  = (unsigned int)s2.size();
+    char_ptr              = s2.c_str();
+    int_ptr               = (const unsigned long*)char_ptr;
 
     for ( ; size >= sizeof( unsigned long );
           size -= sizeof( unsigned long ), ++int_ptr ) {
@@ -113,7 +113,7 @@ namespace gum {
 
   INLINE Size HashFunc<std::vector<Idx>>::
   operator()( const std::vector<Idx>& key ) const {
-    Size h = 0;
+    Size h   = 0;
     Size siz = Size( key.size() );
     for ( Size i = 0; i < siz; ++i )
       h += i * key[i];

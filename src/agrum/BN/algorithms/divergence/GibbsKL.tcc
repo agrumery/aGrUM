@@ -105,7 +105,7 @@ namespace gum {
     /// bool check_rate;
     GUM_SCALAR delta, ratio, error;
     delta = ratio = error = (GUM_SCALAR)-1;
-    GUM_SCALAR oldPQ = 0.0;
+    GUM_SCALAR oldPQ      = 0.0;
     GUM_SCALAR pp, pq;
 
     do {
@@ -154,9 +154,9 @@ namespace gum {
       }
     } while ( continueApproximationScheme( error /*,check_rate*/ ) );
 
-    _klPQ = -_klPQ / ( nbrIterations() );
-    _klQP = -_klQP / ( nbrIterations() );
-    _hellinger = std::sqrt( _hellinger / nbrIterations() );
+    _klPQ         = -_klPQ / ( nbrIterations() );
+    _klQP         = -_klQP / ( nbrIterations() );
+    _hellinger    = std::sqrt( _hellinger / nbrIterations() );
     _bhattacharya = -std::log( _bhattacharya );
   }
 

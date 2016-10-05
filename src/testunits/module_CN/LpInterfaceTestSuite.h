@@ -34,7 +34,7 @@ namespace gum_tests {
     public:
     void testLpExpr() {
       gum::credal::lp::LpInterface<double> pl;
-      auto v = pl.addCols( 3 );
+      auto v                          = pl.addCols( 3 );
       const gum::credal::lp::LpCol& a = v[0];
 
       gum::credal::lp::LpExpr expr = 2 + a <= 5;

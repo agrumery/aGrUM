@@ -119,8 +119,8 @@ namespace gum_tests {
       gum::Sequence<int> seq3{7, 8, 9, 6};
 
       gum::Sequence<int> seq4 = std::move( seq3 );
-      seq3 = std::move( seq2 );
-      seq2 = std::move( seq1 );
+      seq3                    = std::move( seq2 );
+      seq2                    = std::move( seq1 );
 
       TS_ASSERT( seq2.size() == 3 );
       TS_ASSERT( seq2.atPos( 1 ) == 2 );

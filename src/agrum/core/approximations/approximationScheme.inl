@@ -42,7 +42,7 @@ namespace gum {
       GUM_ERROR( OutOfLowerBound, "eps should be >=0" );
     }
 
-    _eps = eps;
+    _eps         = eps;
     _enabled_eps = true;
   }
 
@@ -67,7 +67,7 @@ namespace gum {
       GUM_ERROR( OutOfLowerBound, "rate should be >=0" );
     }
 
-    _min_rate_eps = rate;
+    _min_rate_eps         = rate;
     _enabled_min_rate_eps = true;
   }
 
@@ -97,7 +97,7 @@ namespace gum {
     if ( max < 1 ) {
       GUM_ERROR( OutOfLowerBound, "max should be >=1" );
     }
-    _max_iter = max;
+    _max_iter         = max;
     _enabled_max_iter = true;
   }
 
@@ -124,7 +124,7 @@ namespace gum {
     if ( timeout <= 0. ) {
       GUM_ERROR( OutOfLowerBound, "timeout should be >0." );
     }
-    _max_time = timeout;
+    _max_time         = timeout;
     _enabled_max_time = true;
   }
 
@@ -213,8 +213,8 @@ namespace gum {
 
   // initialise the scheme
   INLINE void ApproximationScheme::initApproximationScheme() {
-    _current_state = ApproximationSchemeSTATE::Continue;
-    _current_step = 0;
+    _current_state   = ApproximationSchemeSTATE::Continue;
+    _current_step    = 0;
     _current_epsilon = _current_rate = -1.0;
     _history.clear();
     _timer.reset();
@@ -290,7 +290,7 @@ namespace gum {
       }
     }
 
-    _last_epsilon = _current_epsilon;
+    _last_epsilon    = _current_epsilon;
     _current_epsilon = error;  // eps rate isEnabled needs it so affectation was
     // moved from eps isEnabled below
 

@@ -63,7 +63,7 @@ namespace gum {
    * __SetIterEnd.
    */
   class SetIteratorStaticEnd {
-  private:
+    private:
     /**
      * @brief The safe iterator used by everyone.
      * @return Returns the safe iterator used by everyone.
@@ -158,20 +158,20 @@ namespace gum {
    */
   template <typename Key, typename Alloc = std::allocator<Key>>
   class Set {
-  public:
+    public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Key;
-    using reference = Key&;
-    using const_reference = const Key&;
-    using pointer = Key*;
-    using const_pointer = const Key*;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = SetIterator<Key>;
-    using const_iterator = SetIterator<Key>;
-    using iterator_safe = SetIteratorSafe<Key>;
+    using value_type          = Key;
+    using reference           = Key&;
+    using const_reference     = const Key&;
+    using pointer             = Key*;
+    using const_pointer       = const Key*;
+    using size_type           = std::size_t;
+    using difference_type     = std::ptrdiff_t;
+    using allocator_type      = Alloc;
+    using iterator            = SetIterator<Key>;
+    using const_iterator      = SetIterator<Key>;
+    using iterator_safe       = SetIteratorSafe<Key>;
     using const_iterator_safe = SetIteratorSafe<Key>;
     /// @}
 
@@ -192,7 +192,7 @@ namespace gum {
      * automatically when its number of elements is sufficiently high that it
      * induces slow retrievals of elements.
      */
-    explicit Set( Size capacity = HashTableConst::default_size,
+    explicit Set( Size capacity      = HashTableConst::default_size,
                   bool resize_policy = true );
 
     /**
@@ -272,7 +272,7 @@ namespace gum {
      */
     template <typename OtherAlloc>
     bool operator!=( const Set<Key, OtherAlloc>& s2 ) const;
-    
+
     /**
      * @brief Intersection update operator
      * @tparam OtherAlloc The other gum::Set allocator.
@@ -281,7 +281,7 @@ namespace gum {
      * both to this and s2.
      */
     template <typename OtherAlloc>
-    const Set<Key, Alloc>& operator*= ( const Set<Key, OtherAlloc>& s2 );
+    const Set<Key, Alloc>& operator*=( const Set<Key, OtherAlloc>& s2 );
 
     /**
      * @brief Intersection operator.
@@ -292,7 +292,7 @@ namespace gum {
      */
     template <typename OtherAlloc>
     Set<Key, Alloc> operator*( const Set<Key, OtherAlloc>& s2 ) const;
-    
+
     /**
      * @brief Union update operator
      * @tparam OtherAlloc The other gum::Set allocator.
@@ -301,8 +301,8 @@ namespace gum {
      * both to this or to s2.
      */
     template <typename OtherAlloc>
-    const Set<Key, Alloc>& operator+= ( const Set<Key, OtherAlloc>& s2 );
-    
+    const Set<Key, Alloc>& operator+=( const Set<Key, OtherAlloc>& s2 );
+
     /**
      * @brief Union operator.
      * @tparam OtherAlloc The other gum::Set allocator.
@@ -698,8 +698,8 @@ namespace gum {
      * consumption and efficiency of new elements insertions.
      */
     template <
-      typename NewKey,
-      typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+        typename NewKey,
+        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     HashTable<Key, NewKey, NewAlloc> hashMap( NewKey ( *f )( const Key& ),
                                               Size capacity = 0 ) const;
 
@@ -717,8 +717,8 @@ namespace gum {
      * consumption and efficiency of new elements insertions.
      */
     template <
-      typename NewKey,
-      typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+        typename NewKey,
+        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     HashTable<Key, NewKey, NewAlloc> hashMap( const NewKey& val,
                                               Size size = 0 ) const;
 
@@ -731,13 +731,13 @@ namespace gum {
      * @param f A function that maps a Key into a NewKey
      */
     template <
-      typename NewKey,
-      typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+        typename NewKey,
+        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     List<NewKey, NewAlloc> listMap( NewKey ( *f )( const Key& ) ) const;
 
     /// @}
 
-  private:
+    private:
     /// Friends to speed up access
     /// @{
     friend class SetIterator<Key>;
@@ -753,7 +753,6 @@ namespace gum {
     Set( const HashTable<Key, bool, Alloc>& h );
   };
 
-  
 
   // ===========================================================================
   // ===                          SAFE SET ITERATORS                         ===
@@ -792,16 +791,16 @@ namespace gum {
    */
   template <typename Key>
   class SetIteratorSafe {
-  public:
+    public:
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type = Key;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = Key;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     /**
@@ -955,7 +954,7 @@ namespace gum {
 
     /// @}
 
-  private:
+    private:
     /// For efficiency, Set should be able to modify the hash table iterator.
     template <typename K, typename A>
     friend class Set;
@@ -1005,16 +1004,16 @@ namespace gum {
    */
   template <typename Key>
   class SetIterator {
-  public:
+    public:
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type = Key;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using value_type        = Key;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     /**
@@ -1155,7 +1154,7 @@ namespace gum {
 
     /// @}
 
-  private:
+    private:
     /// For efficiency, Set should be able to modify the hash table iterator.
     template <typename K, typename A>
     friend class Set;
@@ -1170,66 +1169,60 @@ namespace gum {
   std::ostream& operator<<( std::ostream&, const Set<Key, Alloc>& );
 
 
-  
-
   /// the hash function for sets of int
   template <typename Alloc>
-  class HashFunc<Set<int,Alloc>> :
-    public HashFuncBase<Set<int,Alloc>> {
-  public:
+  class HashFunc<Set<int, Alloc>> : public HashFuncBase<Set<int, Alloc>> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const Set<int,Alloc>& key ) const;
+    Size operator()( const Set<int, Alloc>& key ) const;
   };
 
   /// the hash function for sets of unsigned int
   template <typename Alloc>
-  class HashFunc<Set<unsigned int,Alloc>> :
-    public HashFuncBase<Set<unsigned int,Alloc>> {
-  public:
+  class HashFunc<Set<unsigned int, Alloc>>
+      : public HashFuncBase<Set<unsigned int, Alloc>> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const Set<unsigned int,Alloc>& key ) const;
+    Size operator()( const Set<unsigned int, Alloc>& key ) const;
   };
 
   /// the hash function for sets of long
   template <typename Alloc>
-  class HashFunc<Set<long,Alloc>> :
-    public HashFuncBase<Set<long,Alloc>> {
-  public:
+  class HashFunc<Set<long, Alloc>> : public HashFuncBase<Set<long, Alloc>> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const Set<long,Alloc>& key ) const;
+    Size operator()( const Set<long, Alloc>& key ) const;
   };
 
   /// the hash function for sets of unsigned long
   template <typename Alloc>
-  class HashFunc<Set<unsigned long,Alloc>> :
-    public HashFuncBase<Set<unsigned long,Alloc>> {
-  public:
+  class HashFunc<Set<unsigned long, Alloc>>
+      : public HashFuncBase<Set<unsigned long, Alloc>> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const Set<unsigned long,Alloc>& key ) const;
+    Size operator()( const Set<unsigned long, Alloc>& key ) const;
   };
 
   /// the hash function for sets of float
   template <typename Alloc>
-  class HashFunc<Set<float,Alloc>> :
-    public HashFuncBase<Set<float,Alloc>> {
-  public:
+  class HashFunc<Set<float, Alloc>> : public HashFuncBase<Set<float, Alloc>> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const Set<float,Alloc>& key ) const;
+    Size operator()( const Set<float, Alloc>& key ) const;
 
-  private:
+    private:
     /// used for casting floats to Size
     typename HashFuncCastKey<float>::type __casting;
   };
-  
+
   /// the hash function for sets of double
   template <typename Alloc>
-  class HashFunc<Set<double,Alloc>> :
-    public HashFuncBase<Set<double,Alloc>> {
-  public:
+  class HashFunc<Set<double, Alloc>> : public HashFuncBase<Set<double, Alloc>> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const Set<double,Alloc>& key ) const;
+    Size operator()( const Set<double, Alloc>& key ) const;
 
-  private:
+    private:
     /// used for casting floats to Size
     typename HashFuncCastKey<double>::type __casting;
   };

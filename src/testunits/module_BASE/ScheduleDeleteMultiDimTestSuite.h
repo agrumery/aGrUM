@@ -40,7 +40,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 2 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;

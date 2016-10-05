@@ -294,7 +294,8 @@ namespace gum {
                                    __RunningIntersect& infos_DFS ) const;
   };
 
-  /** @brief a junction tree is a clique graph satisfying the running intersection
+  /** @brief a junction tree is a clique graph satisfying the running
+   * intersection
    * property and such that no clique is included into another one. */
   typedef CliqueGraph JunctionTree;
 

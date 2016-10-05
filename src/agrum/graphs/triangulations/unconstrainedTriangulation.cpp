@@ -30,48 +30,44 @@
 
 namespace gum {
 
-  
   // default constructor
-  UnconstrainedTriangulation::UnconstrainedTriangulation
-  ( const UnconstrainedEliminationSequenceStrategy& elimSeq,
-    const JunctionTreeStrategy& JTStrategy,
-    bool minimality ) :
-    StaticTriangulation( elimSeq, JTStrategy, minimality ) {
+  UnconstrainedTriangulation::UnconstrainedTriangulation(
+      const UnconstrainedEliminationSequenceStrategy& elimSeq,
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality )
+      : StaticTriangulation( elimSeq, JTStrategy, minimality ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( UnconstrainedTriangulation );
   }
 
-  
   // constructor with a given graph
-  UnconstrainedTriangulation::UnconstrainedTriangulation
-  ( const UndiGraph* theGraph,
-    const NodeProperty<Size>* domsizes,
-    const UnconstrainedEliminationSequenceStrategy& elimSeq,
-    const JunctionTreeStrategy& JTStrategy,
-    bool minimality ) :
-    StaticTriangulation( theGraph, domsizes, elimSeq, JTStrategy, minimality ) {
+  UnconstrainedTriangulation::UnconstrainedTriangulation(
+      const UndiGraph* theGraph,
+      const NodeProperty<Size>* domsizes,
+      const UnconstrainedEliminationSequenceStrategy& elimSeq,
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality )
+      : StaticTriangulation(
+            theGraph, domsizes, elimSeq, JTStrategy, minimality ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( UnconstrainedTriangulation );
   }
 
-  
   /// copy constructor
-  UnconstrainedTriangulation::UnconstrainedTriangulation
-  ( const UnconstrainedTriangulation& from ) :
-    StaticTriangulation( from ) {
+  UnconstrainedTriangulation::UnconstrainedTriangulation(
+      const UnconstrainedTriangulation& from )
+      : StaticTriangulation( from ) {
     // for debugging purposes
     GUM_CONS_CPY( UnconstrainedTriangulation );
   }
 
-
   /// move constructor
-  UnconstrainedTriangulation::UnconstrainedTriangulation
-  ( UnconstrainedTriangulation&& from ) :
-    StaticTriangulation( std::move ( from ) ) {
+  UnconstrainedTriangulation::UnconstrainedTriangulation(
+      UnconstrainedTriangulation&& from )
+      : StaticTriangulation( std::move( from ) ) {
     // for debugging purposes
     GUM_CONS_MOV( UnconstrainedTriangulation );
   }
-
 
   /// destructor
   UnconstrainedTriangulation::~UnconstrainedTriangulation() {
@@ -79,5 +75,4 @@ namespace gum {
     GUM_DESTRUCTOR( UnconstrainedTriangulation );
   }
 
-  
 } /* namespace gum */

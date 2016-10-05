@@ -78,7 +78,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = src.__prm;
+        __prm    = src.__prm;
         __o3_prm = src.__o3_prm;
         __solver = src.__solver;
         __errors = src.__errors;
@@ -91,7 +91,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = std::move( src.__prm );
+        __prm    = std::move( src.__prm );
         __o3_prm = std::move( src.__o3_prm );
         __solver = std::move( src.__solver );
         __errors = std::move( src.__errors );
@@ -155,7 +155,7 @@ namespace gum {
 
         for ( auto& ass : sys.assignments() ) {
 
-          auto leftInstance = ass.leftInstance().label();
+          auto leftInstance  = ass.leftInstance().label();
           auto leftReference = ass.leftReference().label();
           auto rightInstance = ass.rightInstance().label();
 
@@ -186,7 +186,7 @@ namespace gum {
         const auto& real_sys = __prm->getSystem( sys.name().label() );
         for ( auto& inc : sys.increments() ) {
 
-          auto leftInstance = inc.leftInstance().label();
+          auto leftInstance  = inc.leftInstance().label();
           auto leftReference = inc.leftReference().label();
           auto rightInstance = inc.rightInstance().label();
 
@@ -310,9 +310,9 @@ namespace gum {
             return false;
           }
 
-          auto i = __nameMap[ass.leftInstance().label()];
+          auto i           = __nameMap[ass.leftInstance().label()];
           const auto& type = __prm->getClass( i->type().label() );
-          const auto& ref = ass.leftReference().label();
+          const auto& ref  = ass.leftReference().label();
 
           if ( !( type.exists( ass.leftReference().label() ) &&
                   PRMClassElement<GUM_SCALAR>::isReferenceSlot(
@@ -366,9 +366,9 @@ namespace gum {
             return false;
           }
 
-          auto i = __nameMap[inc.leftInstance().label()];
+          auto i           = __nameMap[inc.leftInstance().label()];
           const auto& type = __prm->getClass( i->type().label() );
-          const auto& ref = inc.leftReference().label();
+          const auto& ref  = inc.leftReference().label();
 
           if ( !( type.exists( inc.leftReference().label() ) &&
                   PRMClassElement<GUM_SCALAR>::isReferenceSlot(

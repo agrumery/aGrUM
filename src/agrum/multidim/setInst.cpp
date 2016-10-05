@@ -87,8 +87,8 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY( SetInst );
     // copy the content of aI
-    __vars = aI.__vars;
-    __vals = aI.__vals;
+    __vars     = aI.__vars;
+    __vals     = aI.__vals;
     __overflow = aI.__overflow;
 
     // if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
@@ -106,15 +106,14 @@ namespace gum {
     for ( const auto var : v ) {
       __add( *var );
       __vals[__vars.pos( var )] = ( 1 << ( aI.val( *var ) ) );
-
     }
   }
 
   // operator=
   SetInst& SetInst::operator=( const SetInst& aI ) {
     // copy the content of aI
-    __vars = aI.__vars;
-    __vals = aI.__vals;
+    __vars     = aI.__vars;
+    __vals     = aI.__vals;
     __overflow = aI.__overflow;
 
     return *this;
@@ -136,7 +135,7 @@ namespace gum {
     if ( iter != __vars.end() ) {
       std::stringstream sstr2;
       sstr2.str( "" );
-      Size si = variable( iter.pos() ).domainSize();
+      Size si   = variable( iter.pos() ).domainSize();
       Size valb = vals( iter.pos() );
 
       while ( si-- != 0 ) {

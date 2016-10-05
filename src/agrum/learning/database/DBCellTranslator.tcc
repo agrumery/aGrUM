@@ -75,7 +75,7 @@ namespace gum {
     DBCellTranslator<Nb_inputs, Nb_outputs>::
     operator=( const DBCellTranslator<Nb_inputs, Nb_outputs>& translator ) {
       if ( this != &translator ) {
-        _input_row = translator._input_row;
+        _input_row  = translator._input_row;
         _output_row = translator._output_row;
         memcpy(
             _input_cols, translator._input_cols, Nb_inputs * sizeof( Idx ) );
@@ -91,7 +91,7 @@ namespace gum {
     DBCellTranslator<Nb_inputs, Nb_outputs>::
     operator=( DBCellTranslator<Nb_inputs, Nb_outputs>&& translator ) {
       if ( this != &translator ) {
-        _input_row = translator._input_row;
+        _input_row  = translator._input_row;
         _output_row = translator._output_row;
         memcpy(
             _input_cols, translator._input_cols, Nb_inputs * sizeof( Idx ) );

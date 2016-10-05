@@ -155,7 +155,7 @@ namespace gum {
         if ( node->parent() ) {
           // rechain node's parent with its successor
           BinTreeDir par_dir = node->parentDir();
-          Node* parent = node->parent();
+          Node* parent       = node->parent();
           parent->eraseLink( par_dir );
           parent->insertChild( *successor, par_dir );
         }
@@ -186,7 +186,7 @@ namespace gum {
         if ( node->parent() ) {
           // rechain node's parent with its successor
           BinTreeDir par_dir = node->parentDir();
-          Node* the_parent = node->parent();
+          Node* the_parent   = node->parent();
           the_parent->eraseLink( par_dir );
           the_parent->insertChild( *successor, par_dir );
         }

@@ -438,7 +438,7 @@ class TiXmlBase
     char chr;
   };
   enum {
-    NUM_ENTITY = 5,
+    NUM_ENTITY        = 5,
     MAX_ENTITY_LENGTH = 6
 
   };
@@ -929,8 +929,8 @@ class TiXmlAttribute : public TiXmlBase {
 #ifdef TIXML_USE_STL
   /// std::string constructor.
   TiXmlAttribute( const std::string& _name, const std::string& _value ) {
-    name = _name;
-    value = _value;
+    name     = _name;
+    value    = _value;
     document = 0;
     prev = next = 0;
   }
@@ -938,8 +938,8 @@ class TiXmlAttribute : public TiXmlBase {
 
   /// Construct an attribute with a name and value.
   TiXmlAttribute( const char* _name, const char* _value ) {
-    name = _name;
-    value = _value;
+    name     = _name;
+    value    = _value;
     document = 0;
     prev = next = 0;
   }
@@ -1813,9 +1813,9 @@ class TiXmlDocument : public TiXmlNode {
     state is automatically cleared if you Parse a new XML block.
   */
   void ClearError() {
-    error = false;
-    errorId = 0;
-    errorDesc = "";
+    error             = false;
+    errorId           = 0;
+    errorDesc         = "";
     errorLocation.row = errorLocation.col = 0;
     // errorLocation.last = 0;
   }
@@ -2126,7 +2126,7 @@ class TiXmlPrinter : public TiXmlVisitor {
     linebreaks. Common when the XML is needed for network transmission.
   */
   void SetStreamPrinting() {
-    indent = "";
+    indent    = "";
     lineBreak = "";
   }
   /// Return the result.

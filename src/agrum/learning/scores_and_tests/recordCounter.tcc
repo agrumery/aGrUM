@@ -170,8 +170,8 @@ namespace gum {
           // fill the counts for the ith nodeset
           for ( Idx i = 0; i < size; ++i ) {
             const std::vector<Idx>& var_ids = *( this->_nodesets[i] );
-            Idx offset = 0;
-            Idx dim = 1;
+            Idx offset                      = 0;
+            Idx dim                         = 1;
 
             for ( Idx j = 0, vsize = Size( var_ids.size() ); j < vsize; ++j ) {
               offset += row[var_ids[j]] * dim;
@@ -410,7 +410,7 @@ namespace gum {
                                       __max_threads_number );
       Size max_size_per_thread;
       if ( max_nb_threads == 0 ) {
-        max_nb_threads = 1;
+        max_nb_threads      = 1;
         max_size_per_thread = parsed_db_size;
       } else {
         max_size_per_thread =
@@ -466,7 +466,7 @@ namespace gum {
 #pragma omp parallel num_threads( int( __nb_thread_counters ) )
       {
         const Size this_thread = getThreadNumber();
-        auto& counter = *( __thread_counters[this_thread] );
+        auto& counter          = *( __thread_counters[this_thread] );
         Size size_per_thread, min_range, max_range;
         Size size = Size( __countings.size() );
         for ( Idx i = 0; i < size; ++i ) {
@@ -512,9 +512,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     void RecordCounter<IdSetAlloc, CountAlloc>::__countOneSubset( Idx i ) {
       // get the subset and its superset
-      const auto& subset_ids = *( __nodesets[i] );
-      const auto& superset_ids = *( __nodesets[__set2thread_id[i].second] );
-      auto& subset_vect = __countings[i];
+      const auto& subset_ids    = *( __nodesets[i] );
+      const auto& superset_ids  = *( __nodesets[__set2thread_id[i].second] );
+      auto& subset_vect         = __countings[i];
       const auto& superset_vect = __countings[__set2thread_id[i].second];
 
       // Compute the variables that belong to both the (projection) subset
@@ -526,9 +526,9 @@ namespace gum {
       std::vector<Idx> before_incr( subset_ids.size() );
       {
         Size result_domain_size = 1;
-        Idx tmp_before_incr = 1;
-        bool has_before_incr = false;
-        Size subset_size = Size( subset_ids.size() );
+        Idx tmp_before_incr     = 1;
+        bool has_before_incr    = false;
+        Size subset_size        = Size( subset_ids.size() );
         std::vector<Idx> superset_order( subset_ids.size() );
 
         // put the subset ids into a Set in order to know quickly if a given
@@ -547,14 +547,14 @@ namespace gum {
           if ( j < subset_size ) {
             if ( subset.exists( superset_ids[h] ) ) {
               if ( has_before_incr ) {
-                before_incr[j] = tmp_before_incr - 1;
+                before_incr[j]  = tmp_before_incr - 1;
                 has_before_incr = false;
               } else {
                 before_incr[j] = 0;
               }
 
               superset_order[subset[superset_ids[h]]] = j;
-              tmp_before_incr = 1;
+              tmp_before_incr                         = 1;
               ++j;
             } else {
               Idx modality = __modalities->operator[]( superset_ids[h] );
@@ -566,8 +566,8 @@ namespace gum {
 
         // compute the offsets in the correct order
         for ( Idx i = 0; i < subset_ids.size(); ++i ) {
-          Idx modality = __modalities->operator[]( subset_ids[i] );
-          Idx j = superset_order[i];
+          Idx modality     = __modalities->operator[]( subset_ids[i] );
+          Idx j            = superset_order[i];
           result_domain[j] = modality;
           result_offset[j] = result_domain_size;
           result_domain_size *= modality;
@@ -576,7 +576,7 @@ namespace gum {
 
       std::vector<Idx> result_value = result_domain;
       std::vector<Idx> current_incr = before_incr;
-      std::vector<Idx> result_down = result_offset;
+      std::vector<Idx> result_down  = result_offset;
 
       for ( Idx j = 0; j < result_down.size(); ++j ) {
         result_down[j] = ( result_domain[j] - 1 ) * result_offset[j];
@@ -591,7 +591,7 @@ namespace gum {
       // loop, we shall always reset resul_offset to 0. For the inner loop,
       // result_offset should be incremented (++) only when t1
       // before_incr[xxx] steps in the loop have already been made.
-      Idx the_result_offset = 0;
+      Idx the_result_offset  = 0;
       Size table_domain_size = Size( superset_vect.size() );
 
       for ( Idx h = 0; h < table_domain_size; ++h ) {
@@ -731,7 +731,7 @@ namespace gum {
 
           // get the IdSet to determine
           const IdSet<IdSetAlloc>& ids = *( __set2thread_id[i].first );
-          const Size ids_size = Size( ids.ids().size() );
+          const Size ids_size          = Size( ids.ids().size() );
 
           // get all the sets that contain its first variable and parse them
           const std::vector<const IdSet<IdSetAlloc>*>& sets =
@@ -742,7 +742,7 @@ namespace gum {
           for ( const auto set : sets ) {
             if ( ( set->ids().size() > ids_size ) && ids.isSubset( *set ) ) {
               subset = true;
-              index = __idset2index[set];
+              index  = __idset2index[set];
               break;
             }
           }
@@ -750,7 +750,7 @@ namespace gum {
           if ( subset ) {
             // assign the superset to the subset and allocate the subset's
             // counting
-            __set_state[i] = SetState::STRICT_SUBSET;
+            __set_state[i]            = SetState::STRICT_SUBSET;
             __set2thread_id[i].second = NodeId( index );
             __subset_lattice.addArc( NodeId( index ), i );
           } else {

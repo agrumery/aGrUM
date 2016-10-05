@@ -145,7 +145,7 @@ namespace gum_tests {
       std::vector<double> evi0( 2, 0 );
       evi0[0] = 1;
       std::vector<double> evi1( 2, 0 );
-      evi1[1] = 1;
+      evi1[1]     = 1;
       eviMap["L"] = evi1;
       eviMap["G"] = evi0;
 

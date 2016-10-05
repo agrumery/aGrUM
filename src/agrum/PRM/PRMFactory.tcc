@@ -108,7 +108,7 @@ namespace gum {
         msg << "\"" << real_name << "\" is already used.";
         GUM_ERROR( DuplicateElement, msg.str() );
       }
-      PRMClass<GUM_SCALAR>* c = nullptr;
+      PRMClass<GUM_SCALAR>* c      = nullptr;
       PRMClass<GUM_SCALAR>* mother = nullptr;
       Set<PRMInterface<GUM_SCALAR>*> impl;
 
@@ -264,7 +264,7 @@ namespace gum {
         msg << "\"" << real_name << "\" is already used.";
         GUM_ERROR( DuplicateElement, msg.str() );
       }
-      PRMInterface<GUM_SCALAR>* i = nullptr;
+      PRMInterface<GUM_SCALAR>* i     = nullptr;
       PRMInterface<GUM_SCALAR>* super = nullptr;
 
       if ( extends != "" ) {
@@ -416,7 +416,7 @@ namespace gum {
     INLINE void PRMFactory<GUM_SCALAR>::setRawCPFByLines(
         const std::vector<GUM_SCALAR>& array ) {
       auto elt = __checkStack( 1, PRMClassElement<GUM_SCALAR>::prm_attribute );
-      auto a = static_cast<PRMAttribute<GUM_SCALAR>*>( elt );
+      auto a   = static_cast<PRMAttribute<GUM_SCALAR>*>( elt );
       __checkStack( 2, PRMObject::prm_type::CLASS );
 
       if ( a->cpf().domainSize() != array.size() ) {
@@ -732,7 +732,7 @@ namespace gum {
         case PRMAggregate<GUM_SCALAR>::AggregateType::FORALL: {
 
           if ( !agg->hasLabel() ) {
-            auto param = agg->labelValue();
+            auto param    = agg->labelValue();
             Idx label_idx = 0;
 
             while ( label_idx < inputs.front()->type()->domainSize() ) {
@@ -980,7 +980,7 @@ namespace gum {
                                                   Size size ) {
       PRMSystem<GUM_SCALAR>* model = static_cast<PRMSystem<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::prm_type::SYSTEM ) );
-      PRMClass<GUM_SCALAR>* c = __retrieveClass( type );
+      PRMClass<GUM_SCALAR>* c       = __retrieveClass( type );
       PRMInstance<GUM_SCALAR>* inst = 0;
 
       try {
@@ -1070,7 +1070,7 @@ namespace gum {
       std::vector<std::string> v;
       decomposePath( name, v );
       PRMClassElementContainer<GUM_SCALAR>* current = start;
-      PRMReferenceSlot<GUM_SCALAR>* ref = nullptr;
+      PRMReferenceSlot<GUM_SCALAR>* ref             = nullptr;
       Sequence<PRMClassElement<GUM_SCALAR>*> elts;
 
       for ( size_t i = 0; i < v.size(); ++i ) {
@@ -1215,7 +1215,7 @@ namespace gum {
 
           if ( current_depth > max_depth ) {
             max_depth = current_depth;
-            current = __retrieveType( elt.first );
+            current   = __retrieveType( elt.first );
           }
         }
       }
@@ -1306,7 +1306,7 @@ namespace gum {
 
       // Looking for the type using its name
       if ( __prm->__typeMap.exists( name ) ) {
-        type = __prm->__typeMap[name];
+        type      = __prm->__typeMap[name];
         full_name = name;
       }
 
@@ -1314,7 +1314,7 @@ namespace gum {
       std::string prefixed = __addPrefix( name );
       if ( __prm->__typeMap.exists( prefixed ) ) {
         if ( type == 0 ) {
-          type = __prm->__typeMap[prefixed];
+          type      = __prm->__typeMap[prefixed];
           full_name = prefixed;
         } else if ( full_name != prefixed ) {
           GUM_ERROR( DuplicateElement,
@@ -1325,12 +1325,12 @@ namespace gum {
 
       // Looking for the type relatively to current package
       std::string relatif_ns = currentPackage();
-      size_t last_dot = relatif_ns.find_last_of( '.' );
+      size_t last_dot        = relatif_ns.find_last_of( '.' );
       if ( last_dot != std::string::npos ) {
         relatif_ns = relatif_ns.substr( 0, last_dot ) + '.' + name;
         if ( __prm->__typeMap.exists( relatif_ns ) ) {
           if ( type == 0 ) {
-            type = __prm->__typeMap[relatif_ns];
+            type      = __prm->__typeMap[relatif_ns];
             full_name = relatif_ns;
           } else if ( full_name != relatif_ns ) {
             GUM_ERROR( DuplicateElement,
@@ -1345,11 +1345,11 @@ namespace gum {
       if ( !__namespaces.empty() ) {
         auto ns_list = __namespaces.back();
         for ( gum::Size i = 0; i < ns_list->size(); ++i ) {
-          std::string ns = ( *ns_list )[i];
+          std::string ns      = ( *ns_list )[i];
           std::string ns_name = ns + "." + name;
           if ( __prm->__typeMap.exists( ns_name ) ) {
             if ( type == 0 ) {
-              type = __prm->__typeMap[ns_name];
+              type      = __prm->__typeMap[ns_name];
               full_name = ns_name;
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
@@ -1378,7 +1378,7 @@ namespace gum {
 
       // Looking for the type using its name
       if ( __prm->__classMap.exists( name ) ) {
-        a_class = __prm->__classMap[name];
+        a_class   = __prm->__classMap[name];
         full_name = name;
       }
 
@@ -1386,7 +1386,7 @@ namespace gum {
       std::string prefixed = __addPrefix( name );
       if ( __prm->__classMap.exists( prefixed ) ) {
         if ( a_class == nullptr ) {
-          a_class = __prm->__classMap[prefixed];
+          a_class   = __prm->__classMap[prefixed];
           full_name = prefixed;
         } else if ( full_name != prefixed ) {
           GUM_ERROR( DuplicateElement,
@@ -1399,11 +1399,11 @@ namespace gum {
       if ( !__namespaces.empty() ) {
         auto ns_list = __namespaces.back();
         for ( gum::Size i = 0; i < ns_list->size(); ++i ) {
-          std::string ns = ( *ns_list )[i];
+          std::string ns      = ( *ns_list )[i];
           std::string ns_name = ns + "." + name;
           if ( __prm->__classMap.exists( ns_name ) ) {
             if ( a_class == 0 ) {
-              a_class = __prm->__classMap[ns_name];
+              a_class   = __prm->__classMap[ns_name];
               full_name = ns_name;
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
@@ -1455,7 +1455,7 @@ namespace gum {
         auto ns_list = __namespaces.back();
         // for( const auto & ns : *(__namespaces.top()) ) {
         for ( gum::Size i = 0; i < ns_list->size(); ++i ) {
-          std::string ns = ( *ns_list )[i];
+          std::string ns      = ( *ns_list )[i];
           std::string ns_name = ns + "." + name;
 
           if ( __prm->__interfaceMap.exists( ns_name ) ) {
@@ -1612,7 +1612,7 @@ namespace gum {
                                                         const std::string& name,
                                                         bool scalar_attr ) {
       PRMClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
-      PRMAttribute<GUM_SCALAR>* a = nullptr;
+      PRMAttribute<GUM_SCALAR>* a             = nullptr;
 
       if ( PRMObject::isClass( *c ) && ( !scalar_attr ) ) {
 
@@ -1880,7 +1880,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE int
     PRMFactory<GUM_SCALAR>::__typeDepth( const PRMType<GUM_SCALAR>* t ) {
-      int depth = 0;
+      int depth                          = 0;
       const PRMType<GUM_SCALAR>* current = t;
 
       while ( current->isSubType() ) {

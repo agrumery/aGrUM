@@ -74,7 +74,7 @@ namespace gum {
       Idx max = i.val( 1 );
 
       for ( Idx j = 2; j < this->nbrDim(); j++ ) {
-        Idx m = i.val( j );
+        Idx m              = i.val( j );
         if ( m < min ) min = m;
         if ( m > max ) max = m;
       }

@@ -228,8 +228,8 @@ namespace gum {
         __addCastDescendants( overloader, overloaded );
       } else {
         overloader->setId( overloaded->id() );
-        __nodeIdMap[overloader->id()] = overloader;
-        __nameMap[overloader->name()] = overloader;
+        __nodeIdMap[overloader->id()]     = overloader;
+        __nameMap[overloader->name()]     = overloader;
         __nameMap[overloader->safeName()] = overloader;
         __attributes.erase( overloaded );
         __attributes.insert( overloader );
@@ -261,7 +261,7 @@ namespace gum {
     void PRMInterface<GUM_SCALAR>::__addCastDescendants(
         PRMAttribute<GUM_SCALAR>* start, PRMAttribute<GUM_SCALAR>* end ) {
       PRMAttribute<GUM_SCALAR>* parent = start;
-      PRMAttribute<GUM_SCALAR>* child = 0;
+      PRMAttribute<GUM_SCALAR>* child  = 0;
 
       while ( parent->type().superType() != end->type() ) {
         child = parent->getCastDescendant();

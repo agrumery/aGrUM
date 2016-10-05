@@ -83,7 +83,7 @@ namespace gum {
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
       CellTranslatorUniversal( Sequence<double> values = Sequence<double>(),
-                               bool check_database = true );
+                               bool check_database     = true );
 
       /// default constructor
       /** @param values The user can specify the values which the cell

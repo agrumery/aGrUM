@@ -39,7 +39,7 @@ namespace gum {
    *
    */
   class DefaultJunctionTreeStrategy : public JunctionTreeStrategy {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -49,17 +49,16 @@ namespace gum {
     DefaultJunctionTreeStrategy();
 
     /// copy constructor
-    DefaultJunctionTreeStrategy ( const DefaultJunctionTreeStrategy& from );
+    DefaultJunctionTreeStrategy( const DefaultJunctionTreeStrategy& from );
 
     /// move constructor
-    DefaultJunctionTreeStrategy ( DefaultJunctionTreeStrategy&& from );
+    DefaultJunctionTreeStrategy( DefaultJunctionTreeStrategy&& from );
 
     /// destructor
     virtual ~DefaultJunctionTreeStrategy();
 
     /// create a clone not assigned to any triangulation algorithm
-    virtual DefaultJunctionTreeStrategy*
-    newFactory () const final;
+    virtual DefaultJunctionTreeStrategy* newFactory() const final;
 
     /// virtual copy constructor
     /** @param triangulation if triangulation is different from nullptr, this
@@ -69,7 +68,7 @@ namespace gum {
     copyFactory( StaticTriangulation* triangulation = nullptr ) const final;
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -123,9 +122,9 @@ namespace gum {
 
     /// @}
 
-  private:
+    private:
     /// a boolean indicating whether the junction tree has been constructed
-    bool __has_junction_tree { false };
+    bool __has_junction_tree{false};
 
     /// the junction tree computed by the algorithm
     CliqueGraph __junction_tree;

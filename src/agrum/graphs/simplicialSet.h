@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for fast retrieval of simplicial and quasi/almost simplicial nodes
+ * @brief Class for fast retrieval of simplicial and quasi/almost simplicial
+ * nodes
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -33,14 +34,17 @@
 #include <agrum/core/priorityQueue.h>
 #include <agrum/graphs/cliqueGraph.h>
 
-#define GUM_QUASI_RATIO      0.99
+#define GUM_QUASI_RATIO 0.99
 #define GUM_WEIGHT_THRESHOLD 0.0
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* ===  CLASS FOR RETRIEVING SIMPLICIAL, ALMOST AND QUASI SIMPLICIAL NODES === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===  CLASS FOR RETRIEVING SIMPLICIAL, ALMOST AND QUASI SIMPLICIAL NODES ===
+   */
+  /* ===========================================================================
+   */
   /** @class SimplicialSet
    * @brief Class enabling fast retrieval of simplicial, quasi and almost
    * simplicial nodes
@@ -48,9 +52,10 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   class SimplicialSet {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -60,7 +65,8 @@ namespace gum {
     /** creates a class for managing the simplicial sets of a given undirected
      * graph. When we add or remove nodes or edges within this undirected graph,
      * the simplicial set updates its list of simplicial, almost simplicial
-     * and quasi simplicial sets. Recall that a node is simplicial if, along with
+     * and quasi simplicial sets. Recall that a node is simplicial if, along
+     * with
      * its neighbors, it forms a clique. A node X is almost simplicial if it
      * has a neighbor, say Y, such that, after removing Y, X and its neighbors
      * form a clique.
@@ -96,7 +102,7 @@ namespace gum {
     explicit SimplicialSet( UndiGraph* graph,
                             const NodeProperty<double>* log_domain_sizes,
                             NodeProperty<double>* log_weights,
-                            double theRatio = GUM_QUASI_RATIO,
+                            double theRatio     = GUM_QUASI_RATIO,
                             double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
@@ -123,7 +129,8 @@ namespace gum {
      * @param log_weights The logarithm of the weights of the cliques.
      * @param avoid_check if this Boolean is set to true, the SimplicialSet will
      * not check whether the graph, the log_domain_sizes and the log_weights
-     * are OK. It will simply assume that everything is OK. Never use this unless
+     * are OK. It will simply assume that everything is OK. Never use this
+     * unless
      * you know what you do: setting avoid_check to true results in a faster
      * constructor but can also lead to a mess that is quite complicated to fix.
      * @warning Note that, by the aGrUM's constructor parameter's rule, the
@@ -134,7 +141,8 @@ namespace gum {
      * ignored. However, it is compulsory that all the nodes of graph belong to
      * log_domain_sizes.
      * @throws OperationNotAllowed exception is thrown if the graph, the
-     * log_domain_sizes or the log_weights are null pointers, or if these data are
+     * log_domain_sizes or the log_weights are null pointers, or if these data
+     * are
      * different from those stored into simplicial_from */
     SimplicialSet( const SimplicialSet& simplicial_from,
                    UndiGraph* graph,
@@ -273,20 +281,20 @@ namespace gum {
     void setGraph( UndiGraph* graph,
                    const NodeProperty<double>* log_domain_sizes,
                    NodeProperty<double>* log_weights,
-                   double theRatio = GUM_QUASI_RATIO,
+                   double theRatio     = GUM_QUASI_RATIO,
                    double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// reassigns a new set of cliques' log weights (with the same content)
     /** This method is useful for move constructors in elimination sequences.
      * @throws InvalidArgument is raised if the old_weights argument is
      * different from the current __log_weights pointer. */
-    void replaceLogWeights ( NodeProperty<double>* old_weigths,
-                             NodeProperty<double>* new_weights );
+    void replaceLogWeights( NodeProperty<double>* old_weigths,
+                            NodeProperty<double>* new_weights );
 
     /// @}
 
 
-  private:
+    private:
     /// the graph on which we perform the simplicial computations
     UndiGraph* __graph;
 
@@ -346,7 +354,7 @@ namespace gum {
 
     /** @brief a boolean indicating if we want fill-ins list with the standard
      * triangulation method */
-    bool __we_want_fill_ins { false };
+    bool __we_want_fill_ins{false};
 
     /// fill-ins list
     EdgeSet __fill_ins_list;

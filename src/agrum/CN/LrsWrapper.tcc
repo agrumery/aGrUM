@@ -11,13 +11,13 @@ namespace gum {
       __state = __states::none;
 
       __vertices = 0;
-      __card = 0;
+      __card     = 0;
 
       __volume = 0;
 
       __getVolume = false;
-      __hull = false;
-      __polytope = false;
+      __hull      = false;
+      __polytope  = false;
 
       GUM_CONSTRUCTOR( LRSWrapper );
     }
@@ -66,10 +66,10 @@ namespace gum {
       __input = std::vector<std::vector<GUM_SCALAR>>(
           card * 2 + 2, std::vector<GUM_SCALAR>( card + 1, 0 ) );
 
-      __input[card * 2] = std::vector<GUM_SCALAR>( card + 1, -1 );
+      __input[card * 2]    = std::vector<GUM_SCALAR>( card + 1, -1 );
       __input[card * 2][0] = 1;
 
-      __input[card * 2 + 1] = std::vector<GUM_SCALAR>( card + 1, 1 );
+      __input[card * 2 + 1]    = std::vector<GUM_SCALAR>( card + 1, 1 );
       __input[card * 2 + 1][0] = -1;
 
       __output = std::vector<std::vector<GUM_SCALAR>>();
@@ -103,7 +103,7 @@ namespace gum {
 
       __state = __states::Vup;
 
-      __card = card;
+      __card     = card;
       __vertices = vertices;
     }
 
@@ -120,11 +120,11 @@ namespace gum {
       __volume = 0;
 
       __state = __states::none;
-      __card = 0;
+      __card  = 0;
 
       __getVolume = false;
-      __hull = false;
-      __polytope = false;
+      __hull      = false;
+      __polytope  = false;
     }
 
     template <typename GUM_SCALAR>
@@ -135,12 +135,12 @@ namespace gum {
       __vertex.clear();
       __vertex.resize( __card, 0 );
 
-      __volume = 0;
+      __volume   = 0;
       __vertices = 0;
 
       __getVolume = false;
-      __hull = false;
-      __polytope = false;
+      __hull      = false;
+      __polytope  = false;
 
       if ( __state == __states::H2Vready )
         __state = __states::Hup;
@@ -154,7 +154,7 @@ namespace gum {
       } else {
         __input.clear();
         __state = __states::none;
-        __card = 0;
+        __card  = 0;
         __vertex.clear();
       }
     }
@@ -178,10 +178,10 @@ namespace gum {
                        << " >= "
                        << __card );
 
-      __input[modal * 2][0] = -min;
+      __input[modal * 2][0]         = -min;
       __input[modal * 2][modal + 1] = 1;
 
-      __input[modal * 2 + 1][0] = max;
+      __input[modal * 2 + 1][0]         = max;
       __input[modal * 2 + 1][modal + 1] = -1;
 
       __vertex[modal] = max;
@@ -258,7 +258,7 @@ namespace gum {
       auto row = __insertedVertices.size();
 
       for ( decltype( __card ) mod = 0; mod < __card; mod++ )
-        __input[row][mod + 1] = vertex[mod];
+        __input[row][mod + 1]      = vertex[mod];
 
       __insertedVertices.push_back( vertex );
 
@@ -424,7 +424,8 @@ namespace gum {
 
       __initLrs();
 
-      int64_t* redineq; /* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
+      int64_t*
+          redineq; /* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
 
       /*********************************************************************************/
       /* Test each row of the dictionary to see if it is redundant */
@@ -436,7 +437,7 @@ namespace gum {
       auto d = __dic->d;
       /* number of linearities in input */ /* should be 0 ! */
       auto nlinearity = __dat->nlinearity;
-      auto lastdv = __dat->lastdv;
+      auto lastdv     = __dat->lastdv;
 
       /* linearities are not considered for redundancy */
       redineq = (int64_t*)calloc( ( m + 1 ), sizeof( int64_t ) );
@@ -555,7 +556,7 @@ namespace gum {
 
       int64_t* num =
           new int64_t[cols];  // ISO C++ forbids variable length array,
-                               // we need to do this instead
+                              // we need to do this instead
       int64_t* den = new int64_t[cols];
 
       int64_t rows = int64_t( __input.size() );
@@ -623,8 +624,8 @@ namespace gum {
       __dat->m = Size( __input.size() );
 
       __dat->getvolume = ( __getVolume ) ? 1L : 0L;
-      __dat->hull = ( __hull ) ? 1L : 0L;
-      __dat->polytope = ( __polytope ) ? 1L : 0L;
+      __dat->hull      = ( __hull ) ? 1L : 0L;
+      __dat->polytope  = ( __polytope ) ? 1L : 0L;
 
       __lrsOutput = lrs_alloc_mp_vector( __dat->n );
 
@@ -719,9 +720,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__coutOff() const {
       fflush( stdout );
-#ifdef _MSC_VER 
-      freopen("NUL","w",stdout);
-#else // _MSC_VER
+#ifdef _MSC_VER
+      freopen( "NUL", "w", stdout );
+#else   // _MSC_VER
       __oldCout = dup( 1 );
 
       int new_cout = open( "/dev/null", O_WRONLY );
@@ -733,9 +734,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__coutOn() const {
       fflush( stdout );
-#ifdef _MSC_VER 
-      freopen("CON","w",stdout);
-#else // _MSC_VER
+#ifdef _MSC_VER
+      freopen( "CON", "w", stdout );
+#else   // _MSC_VER
       dup2( __oldCout, 1 );
       close( __oldCout );
 #endif  // _MSC_VER

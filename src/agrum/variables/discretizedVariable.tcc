@@ -49,7 +49,7 @@ namespace gum {
     if ( max - min < 2 )
       res = min;
     else {
-      mid = ( max + min ) / 2;
+      mid         = ( max + min ) / 2;
       T_TICKS val = __ticks[mid];
 
       if ( target == val )

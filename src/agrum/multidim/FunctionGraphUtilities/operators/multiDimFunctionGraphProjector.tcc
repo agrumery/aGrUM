@@ -105,7 +105,7 @@ namespace gum {
       if ( __rd->node( __rd->root() )->nodeVar() == curVar ) {
 
         const InternalNode* curVarNode = __rd->node( __rd->root() );
-        GUM_SCALAR newVal = __neutral;
+        GUM_SCALAR newVal              = __neutral;
         for ( Idx curVarModality = 0; curVarModality < curVar->domainSize();
               ++curVarModality )
           newVal = __function(
@@ -149,7 +149,7 @@ namespace gum {
               } else {
 
                 const InternalNode* curVarNode = __rd->node( oldSonId );
-                GUM_SCALAR newVal = __neutral;
+                GUM_SCALAR newVal              = __neutral;
                 for ( Idx curVarModality = 0;
                       curVarModality < curVar->domainSize();
                       ++curVarModality )

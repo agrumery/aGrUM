@@ -69,10 +69,10 @@ namespace gum {
     Idx nbVisits = __counter->get( state );
 
     NodeId parId = __counter->root();
-    Idx parModa = state.valFromPtr( __counter->node( parId )->nodeVar() );
+    Idx parModa  = state.valFromPtr( __counter->node( parId )->nodeVar() );
     while ( !__counter->isTerminalNode(
         __counter->node( parId )->son( parModa ) ) ) {
-      parId = __counter->node( parId )->son( parModa );
+      parId   = __counter->node( parId )->son( parModa );
       parModa = state.valFromPtr( __counter->node( parId )->nodeVar() );
     }
     __incState( state, parId, parModa, nbVisits );

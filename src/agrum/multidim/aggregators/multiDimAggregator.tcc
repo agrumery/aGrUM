@@ -82,7 +82,7 @@ namespace gum {
       }
 
       const DiscreteVariable& agg = this->variable( (Idx)0 );
-      auto current = _buildValue( i );
+      auto current                = _buildValue( i );
 
       // truncate to fit in aggreegator domain size
       if ( current >= agg.domainSize() ) current = agg.domainSize() - 1;

@@ -692,10 +692,10 @@ namespace gum_tests {
       gum::NodeId bf_0 = dbn.add( gum::LabelizedVariable( "bf_0", "bf_0", 4 ) );
       /*gum::NodeId bf_t =*/dbn.add(
           gum::LabelizedVariable( "bf_t", "bf_t", 4 ) );
-      gum::NodeId c_0 = dbn.add( gum::LabelizedVariable( "c_0", "c_0", 5 ) );
-      gum::NodeId c_t = dbn.add( gum::LabelizedVariable( "c_t", "c_t", 5 ) );
-      gum::NodeId h_0 = dbn.add( gum::LabelizedVariable( "h_0", "h_0", 5 ) );
-      gum::NodeId h_t = dbn.add( gum::LabelizedVariable( "h_t", "h_t", 5 ) );
+      gum::NodeId c_0  = dbn.add( gum::LabelizedVariable( "c_0", "c_0", 5 ) );
+      gum::NodeId c_t  = dbn.add( gum::LabelizedVariable( "c_t", "c_t", 5 ) );
+      gum::NodeId h_0  = dbn.add( gum::LabelizedVariable( "h_0", "h_0", 5 ) );
+      gum::NodeId h_t  = dbn.add( gum::LabelizedVariable( "h_t", "h_t", 5 ) );
       gum::NodeId tf_0 = dbn.add( gum::LabelizedVariable( "tf_0", "tf_0", 5 ) );
       /*gum::NodeId tf_t =*/dbn.add(
           gum::LabelizedVariable( "tf_t", "tf_t", 5 ) );

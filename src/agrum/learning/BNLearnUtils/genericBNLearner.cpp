@@ -59,7 +59,7 @@ namespace gum {
           make_DB_row_filter( __database, __raw_translators, __generators );
 
       __raw_translators = raw_filter.translatorSet();
-      __modalities = raw_filter.modalities();
+      __modalities      = raw_filter.modalities();
 
       // create the fast translators
       DBTransformCompactInt raw2fast_transfo;
@@ -79,7 +79,7 @@ namespace gum {
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames();
-      Idx id = 0;
+      Idx id                                    = 0;
 
       for ( const auto& name : var_names ) {
         __name2nodeId.insert( const_cast<std::string&>( name ), id );
@@ -145,7 +145,7 @@ namespace gum {
         {
           // use the ith handler
           const Size num_threads = getNumberOfRunningThreads();
-          const int this_thread = getThreadNumber();
+          const int this_thread  = getThreadNumber();
           DBHandler& the_handler = handlers[this_thread];
 
           // indicate to the filter which part of the database it must parse
@@ -176,9 +176,9 @@ namespace gum {
                           << "' which has not been specified by the user in "
                              "line "
                           << the_handler.numRow();
-                      errors[this_thread].first = i;
+                      errors[this_thread].first  = i;
                       errors[this_thread].second = str.str();
-                      has_errors = true;
+                      has_errors                 = true;
                     }
 
                     break;
@@ -197,9 +197,9 @@ namespace gum {
                            << "' which has not been specified by the user in "
                               "line "
                            << the_handler.numRow();
-                      errors[this_thread].first = i;
+                      errors[this_thread].first  = i;
                       errors[this_thread].second = str2.str();
-                      has_errors = true;
+                      has_errors                 = true;
                     } else {
                       row[i].setStringSafe( str.str() );
                     }
@@ -243,7 +243,7 @@ namespace gum {
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames();
-      Idx id = 0;
+      Idx id                                    = 0;
 
       for ( const auto& name : var_names ) {
         __name2nodeId.insert( const_cast<std::string&>( name ), id );
@@ -287,11 +287,11 @@ namespace gum {
       __raw_translators = score_database.__raw_translators;
       auto raw_filter =
           make_DB_row_filter( __database, __raw_translators, __generators );
-      __raw_translators = raw_filter.translatorSet();
+      __raw_translators                = raw_filter.translatorSet();
       score_database.__raw_translators = raw_filter.translatorSet();
 
       // update the modalities of the two databases
-      __modalities = raw_filter.modalities();
+      __modalities                = raw_filter.modalities();
       score_database.__modalities = __modalities;
 
       // create the fast translators
@@ -359,13 +359,13 @@ namespace gum {
     operator=( const Database& from ) {
       if ( this != &from ) {
         delete __row_filter;
-        __row_filter = nullptr;
-        __database = from.__database;
+        __row_filter      = nullptr;
+        __database        = from.__database;
         __raw_translators = from.__raw_translators;
-        __translators = from.__translators;
-        __generators = from.__generators;
-        __modalities = from.__modalities;
-        __name2nodeId = from.__name2nodeId;
+        __translators     = from.__translators;
+        __generators      = from.__generators;
+        __modalities      = from.__modalities;
+        __name2nodeId     = from.__name2nodeId;
 
         // create the row filter for the __database
         __row_filter = new DBRowFilter<
@@ -382,13 +382,13 @@ namespace gum {
     operator=( Database&& from ) {
       if ( this != &from ) {
         delete __row_filter;
-        __row_filter = nullptr;
-        __database = std::move( from.__database );
+        __row_filter      = nullptr;
+        __database        = std::move( from.__database );
         __raw_translators = std::move( from.__raw_translators );
-        __translators = std::move( from.__translators );
-        __generators = std::move( from.__generators );
-        __modalities = std::move( from.__modalities );
-        __name2nodeId = std::move( from.__name2nodeId );
+        __translators     = std::move( from.__translators );
+        __generators      = std::move( from.__generators );
+        __modalities      = std::move( from.__modalities );
+        __name2nodeId     = std::move( from.__name2nodeId );
 
         // create the row filter for the __database
         __row_filter = new DBRowFilter<
@@ -509,25 +509,25 @@ namespace gum {
           __apriori_database = nullptr;
         }
 
-        __score_type = from.__score_type;
-        __param_estimator_type = from.__param_estimator_type;
-        __apriori_type = from.__apriori_type;
-        __apriori_weight = from.__apriori_weight;
-        __constraint_SliceOrder = from.__constraint_SliceOrder;
-        __constraint_Indegree = from.__constraint_Indegree;
-        __constraint_TabuList = from.__constraint_TabuList;
-        __constraint_ForbiddenArcs = from.__constraint_ForbiddenArcs;
-        __constraint_MandatoryArcs = from.__constraint_MandatoryArcs;
-        __selected_algo = from.__selected_algo;
-        __K2 = from.__K2;
-        __greedy_hill_climbing = from.__greedy_hill_climbing;
+        __score_type                  = from.__score_type;
+        __param_estimator_type        = from.__param_estimator_type;
+        __apriori_type                = from.__apriori_type;
+        __apriori_weight              = from.__apriori_weight;
+        __constraint_SliceOrder       = from.__constraint_SliceOrder;
+        __constraint_Indegree         = from.__constraint_Indegree;
+        __constraint_TabuList         = from.__constraint_TabuList;
+        __constraint_ForbiddenArcs    = from.__constraint_ForbiddenArcs;
+        __constraint_MandatoryArcs    = from.__constraint_MandatoryArcs;
+        __selected_algo               = from.__selected_algo;
+        __K2                          = from.__K2;
+        __greedy_hill_climbing        = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
-        __score_database = from.__score_database;
-        __user_modalities = from.__user_modalities;
-        __modalities_parse_db = from.__modalities_parse_db;
-        __apriori_dbname = from.__apriori_dbname;
-        __initial_dag = from.__initial_dag;
-        __current_algorithm = nullptr;
+        __score_database              = from.__score_database;
+        __user_modalities             = from.__user_modalities;
+        __modalities_parse_db         = from.__modalities_parse_db;
+        __apriori_dbname              = from.__apriori_dbname;
+        __initial_dag                 = from.__initial_dag;
+        __current_algorithm           = nullptr;
       }
 
       return *this;
@@ -555,28 +555,28 @@ namespace gum {
           __apriori_database = nullptr;
         }
 
-        __score_type = from.__score_type;
-        __param_estimator_type = from.__param_estimator_type;
-        __apriori_type = from.__apriori_type;
-        __apriori_weight = from.__apriori_weight;
+        __score_type            = from.__score_type;
+        __param_estimator_type  = from.__param_estimator_type;
+        __apriori_type          = from.__apriori_type;
+        __apriori_weight        = from.__apriori_weight;
         __constraint_SliceOrder = std::move( from.__constraint_SliceOrder );
-        __constraint_Indegree = std::move( from.__constraint_Indegree );
-        __constraint_TabuList = std::move( from.__constraint_TabuList );
+        __constraint_Indegree   = std::move( from.__constraint_Indegree );
+        __constraint_TabuList   = std::move( from.__constraint_TabuList );
         __constraint_ForbiddenArcs =
             std::move( from.__constraint_ForbiddenArcs );
         __constraint_MandatoryArcs =
             std::move( from.__constraint_MandatoryArcs );
-        __selected_algo = from.__selected_algo;
-        __K2 = from.__K2;
+        __selected_algo        = from.__selected_algo;
+        __K2                   = from.__K2;
         __greedy_hill_climbing = std::move( from.__greedy_hill_climbing );
         __local_search_with_tabu_list =
             std::move( from.__local_search_with_tabu_list );
-        __score_database = std::move( from.__score_database );
-        __user_modalities = std::move( from.__user_modalities );
+        __score_database      = std::move( from.__score_database );
+        __user_modalities     = std::move( from.__user_modalities );
         __modalities_parse_db = from.__modalities_parse_db;
-        __apriori_dbname = std::move( from.__apriori_dbname );
-        __initial_dag = std::move( from.__initial_dag );
-        __current_algorithm = nullptr;
+        __apriori_dbname      = std::move( from.__apriori_dbname );
+        __initial_dag         = std::move( from.__initial_dag );
+        __current_algorithm   = nullptr;
       }
 
       return *this;
@@ -877,7 +877,7 @@ namespace gum {
               static_cast<StructuralConstraintMandatoryArcs&>( gen_constraint )
                   .arcs();
           const Sequence<NodeId>& order = __K2.order();
-          bool order_compatible = true;
+          bool order_compatible         = true;
 
           for ( const auto& arc : mandatory_arcs ) {
             if ( order.pos( arc.tail() ) >= order.pos( arc.head() ) ) {

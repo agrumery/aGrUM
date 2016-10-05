@@ -444,7 +444,7 @@ namespace gum {
 
       bool O3prmrInterpreter::checkObserve( ObserveCommand<double>* command ) {
         try {
-          std::string left_val = command->leftValue;
+          std::string left_val        = command->leftValue;
           const std::string right_val = command->rightValue;
 
           // Contruct the pair (instance,attribut)
@@ -457,7 +457,7 @@ namespace gum {
               std::make_pair( &instance, &attr );
 
           command->system = &sys;
-          command->chain = std::make_pair( &instance, &attr );
+          command->chain  = std::make_pair( &instance, &attr );
 
           // Check label exists for this type.
           // Potential<double> e;
@@ -506,7 +506,7 @@ namespace gum {
           // &attr);
 
           command->system = &sys;
-          command->chain = std::make_pair( &instance, &attr );
+          command->chain  = std::make_pair( &instance, &attr );
 
           return true;
 
@@ -533,7 +533,7 @@ namespace gum {
           // &attr);
 
           command->system = &sys;
-          command->chain = std::make_pair( &instance, &attr );
+          command->chain  = std::make_pair( &instance, &attr );
 
           return true;
 
@@ -558,7 +558,7 @@ namespace gum {
                   << std::flush;
           }
 
-          size_t last_dot = import_name.find_last_of( '.' );
+          size_t last_dot            = import_name.find_last_of( '.' );
           std::string import_package = import_name;
 
           std::replace( import_name.begin(), import_name.end(), '.', '/' );
@@ -579,7 +579,7 @@ namespace gum {
             size_t index = o3prmrFilename.find_last_of( '/' );
 
             if ( index != std::string::npos ) {
-              std::string dir = o3prmrFilename.substr( 0, index + 1 );
+              std::string dir     = o3prmrFilename.substr( 0, index + 1 );
               import_abs_filename = dir + import_name;
 
               if ( m_verbose ) {
@@ -682,7 +682,7 @@ namespace gum {
           }
 
           // May throw std::IOError if file does't exist
-          Size previousO3prmError = m_reader->errors();
+          Size previousO3prmError  = m_reader->errors();
           Size previousO3prmrError = errors();
 
           try {
@@ -725,7 +725,7 @@ namespace gum {
       }
 
       std::string O3prmrInterpreter::findSystemName( std::string& s ) {
-        size_t dot = s.find_first_of( '.' );
+        size_t dot       = s.find_first_of( '.' );
         std::string name = s.substr( 0, dot );
 
         // We look first for real system, next for alias.
@@ -745,7 +745,7 @@ namespace gum {
             return name;
           }
 
-          dot = s.find( '.', dot + 1 );
+          dot  = s.find( '.', dot + 1 );
           name = s.substr( 0, dot );
         }
 
@@ -756,7 +756,7 @@ namespace gum {
       O3prmrInterpreter::findInstanceName( std::string& s,
                                            const PRMSystem<double>& sys ) {
         // We have found system before, so 's' has been stripped.
-        size_t dot = s.find_first_of( '.' );
+        size_t dot       = s.find_first_of( '.' );
         std::string name = s.substr( 0, dot );
 
         if ( !sys.exists( name ) )
@@ -830,7 +830,7 @@ namespace gum {
 
       bool O3prmrInterpreter::unobserve(
           const UnobserveCommand<double>* command ) try {
-        std::string name = command->value;
+        std::string name                           = command->value;
         typename PRMInference<double>::Chain chain = command->chain;
 
         // Prevent from something
@@ -896,20 +896,20 @@ namespace gum {
 
         QueryResult result;
         result.command = query;
-        result.time = t;
+        result.time    = t;
 
         Instantiation j( m );
         const PRMAttribute<double>& attr = *( command->chain.second );
 
         for ( j.setFirst(); !j.end(); j.inc() ) {
           // auto label_value = j.val ( attr.type().variable() );
-          auto label_value = j.val( 0 );
+          auto label_value  = j.val( 0 );
           std::string label = attr.type().variable().label( label_value );
-          float value = float( m.get( j ) );
+          float value       = float( m.get( j ) );
 
           SingleResult singleResult;
           singleResult.label = label;
-          singleResult.p = value;
+          singleResult.p     = value;
 
           result.values.push_back( singleResult );
 

@@ -91,7 +91,7 @@ namespace gum {
       }
     }
 
-    _hellinger = std::sqrt( _hellinger );
+    _hellinger    = std::sqrt( _hellinger );
     _bhattacharya = -std::log( _bhattacharya );
   }
 

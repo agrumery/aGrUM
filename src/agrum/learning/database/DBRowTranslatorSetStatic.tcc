@@ -89,7 +89,7 @@ namespace gum {
                                                 OtherTranslators...>& from ) {
       if ( this != &from ) {
         NextTranslators::operator=( from );
-        __translator = from.__translator;
+        __translator             = from.__translator;
         __translator.setOutputCols( ColIdx );
       }
       return *this;
@@ -105,7 +105,7 @@ namespace gum {
                                                  OtherTranslators...>&& from ) {
       if ( this != &from ) {
         NextTranslators::operator=( std::move( from ) );
-        __translator = std::move( from.__translator );
+        __translator             = std::move( from.__translator );
         __translator.setOutputCols( ColIdx );
       }
       return *this;
@@ -294,7 +294,7 @@ namespace gum {
     operator=( DBRowTranslatorSetStatic<Translators...>&& from ) {
       if ( this != &from ) {
         TranslatorSetStatic::operator=( std::move( from ) );
-        __output_row = std::move( from.__output_row );
+        __output_row                 = std::move( from.__output_row );
         TranslatorSetStatic::setOutputRow( __output_row );
       }
       return *this;

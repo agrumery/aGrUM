@@ -86,8 +86,8 @@ namespace gum {
       estimator.clear();
       for ( const auto id : dag ) {
         // get the sequence of variables and make the targets be the last
-        const Potential<GUM_SCALAR>& pot = bn.cpt( id );
-        const DiscreteVariable& var = varmap.get( id );
+        const Potential<GUM_SCALAR>& pot       = bn.cpt( id );
+        const DiscreteVariable& var            = varmap.get( id );
         Sequence<const DiscreteVariable*> vars = pot.variablesSequence();
         if ( vars.pos( &var ) != vars.size() - 1 ) {
           vars.erase( &var );
@@ -112,7 +112,7 @@ namespace gum {
         // get the variables of the CPT of id in the correct order
         Potential<GUM_SCALAR>& pot =
             const_cast<Potential<GUM_SCALAR>&>( bn.cpt( id ) );
-        const DiscreteVariable& var = varmap.get( id );
+        const DiscreteVariable& var            = varmap.get( id );
         Sequence<const DiscreteVariable*> vars = pot.variablesSequence();
         if ( vars.pos( &var ) != vars.size() - 1 ) {
           vars.erase( &var );

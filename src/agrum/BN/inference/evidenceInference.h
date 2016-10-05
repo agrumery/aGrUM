@@ -28,13 +28,13 @@
 #ifndef GUM_BAYES_NET_EVIDENCE_INFERENCE_H
 #define GUM_BAYES_NET_EVIDENCE_INFERENCE_H
 
-#include <agrum/config.h>
 #include <agrum/BN/inference/inference.h>
+#include <agrum/config.h>
 
 
 namespace gum {
 
-  
+
   /**
    * @class EvidenceInference evidenceInference.h
    * <agrum/BN/inference/evidenceInference.h>
@@ -47,7 +47,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class EvidenceInference : public virtual Inference<GUM_SCALAR> {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -63,17 +63,16 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Probability computations
     // ############################################################################
     /// @{
 
     /// returns the probability P(e) of the evidence enterred into the BN
-    virtual GUM_SCALAR evidenceProbability () = 0;
+    virtual GUM_SCALAR evidenceProbability() = 0;
 
     /// @}
-
   };
 
 
@@ -83,4 +82,4 @@ namespace gum {
 #include <agrum/BN/inference/evidenceInference.tcc>
 
 
-#endif // GUM_BAYES_NET_EVIDENCE_INFERENCE_H
+#endif  // GUM_BAYES_NET_EVIDENCE_INFERENCE_H

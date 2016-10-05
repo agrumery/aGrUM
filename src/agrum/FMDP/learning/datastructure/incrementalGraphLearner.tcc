@@ -161,7 +161,7 @@ namespace gum {
   void IncrementalGraphLearner<AttributeSelection, isScalar>::updateVar(
       const DiscreteVariable* var ) {
     Link<NodeId>* nodIter = _var2Node[var]->list();
-    Link<NodeId>* nni = nullptr;
+    Link<NodeId>* nni     = nullptr;
     while ( nodIter ) {
       nni = nodIter->nextLink();
       _convertNode2Leaf( nodIter->element() );
@@ -198,7 +198,7 @@ namespace gum {
 
     // In any other case we have to install variable as best test
     Idx randy = ( Idx )( std::rand() / RAND_MAX ) * varsOfInterest.size(),
-        basc = 0;
+        basc  = 0;
     SetConstIteratorSafe<const DiscreteVariable*> varIter;
     for ( varIter = varsOfInterest.cbeginSafe(), basc = 0;
           varIter != varsOfInterest.cendSafe() && basc < randy;

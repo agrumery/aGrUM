@@ -254,7 +254,7 @@ namespace gum {
     operator=( const Create<Translator, Cols, nb_times, ColsIncr>& from ) {
       if ( this != &from ) {
         CurrentTranslator::operator=( from );
-        NextTranslators::operator=( from );
+        NextTranslators::operator  =( from );
       }
       return *this;
     }
@@ -269,7 +269,7 @@ namespace gum {
     operator=( Create<Translator, Cols, nb_times, ColsIncr>&& from ) {
       if ( this != &from ) {
         CurrentTranslator::operator=( std::move( from ) );
-        NextTranslators::operator=( std::move( from ) );
+        NextTranslators::operator  =( std::move( from ) );
       }
       return *this;
     }

@@ -86,13 +86,13 @@ namespace gum {
     void setDAG( const DAG* new_dag );
 
     /// sets the observed nodes in the DAG
-    void setEvidence ( const NodeSet* observed_nodes );
+    void setEvidence( const NodeSet* observed_nodes );
 
     /// sets the set of target nodes we are interested in
-    void setTargets ( const NodeSet* target_nodes );
+    void setTargets( const NodeSet* target_nodes );
 
     /// returns the set of barren nodes
-    NodeSet barrenNodes ();
+    NodeSet barrenNodes();
 
     /// returns the set of barren nodes in the messages sent in a junction tree
     ArcProperty<NodeSet> barrenNodes( const CliqueGraph& junction_tree );

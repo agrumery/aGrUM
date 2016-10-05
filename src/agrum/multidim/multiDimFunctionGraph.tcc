@@ -692,7 +692,7 @@ namespace gum {
   template <typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   INLINE GUM_SCALAR MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::get(
       const Instantiation& inst ) const {
-    NodeId currentNodeId = __root;
+    NodeId currentNodeId      = __root;
     InternalNode* currentNode = nullptr;
     while ( !isTerminalNode( currentNodeId ) ) {
       currentNode = __internalNodeMap[currentNodeId];

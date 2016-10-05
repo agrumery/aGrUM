@@ -32,7 +32,6 @@ namespace gum {
 
     namespace o3prmr {
 
-
       template class ObserveCommand<float>;
       template class UnobserveCommand<float>;
       template class QueryCommand<float>;

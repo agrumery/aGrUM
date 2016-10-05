@@ -124,7 +124,7 @@ namespace gum_tests {
 
     void testBayesNetFactory() {
       try {
-        auto asia = gum::BayesNet<double>();
+        auto asia    = gum::BayesNet<double>();
         auto factory = gum::BayesNetFactory<double>( &asia );
         // Visit to Asia
         factory.startVariableDeclaration();
@@ -219,7 +219,7 @@ namespace gum_tests {
         // CPT of Visit To Asia
         factory.startRawProbabilityDeclaration( "Visit To Asia" );
         auto variables = std::vector<std::string>{"Visit To Asia"};
-        auto values = std::vector<float>{0.01f, 0.99f};
+        auto values    = std::vector<float>{0.01f, 0.99f};
         factory.rawConditionalTable( variables, values );
         factory.endRawProbabilityDeclaration();
 
@@ -309,8 +309,8 @@ namespace gum_tests {
               {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f} );
         }
         // Choose one among available inference algorithms
-        auto inference = gum::ShaferShenoyInference<double>( asia );
-        auto id = asia.idFromName( "Has Lung Cancer" );
+        auto inference       = gum::ShaferShenoyInference<double>( asia );
+        auto id              = asia.idFromName( "Has Lung Cancer" );
         const auto& marginal = inference.posterior( id );
         // To prevent warning for unused variable
         TS_ASSERT_EQUALS( marginal.domainSize(), gum::Size( 2 ) );
@@ -331,7 +331,7 @@ namespace gum_tests {
         auto asia = gum::BayesNet<double>( "Asia" );
         // One implementation of the gum::BNReader class
         std::string file = GET_RESSOURCES_PATH( "asia.bif" );
-        auto reader = gum::BIFReader<double>( &asia, file );
+        auto reader      = gum::BIFReader<double>( &asia, file );
         try {
           reader.proceed();
         } catch ( gum::IOError& e ) {

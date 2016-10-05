@@ -27,55 +27,47 @@
 #include <agrum/config.h>
 #include <agrum/graphs/triangulations/triangulation.h>
 
-
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/triangulations/triangulation.inl>
-#endif // GUM_NO_INLINE
-
+#endif  // GUM_NO_INLINE
 
 namespace gum {
 
-  
   // constructor
-  Triangulation::Triangulation () {
+  Triangulation::Triangulation() {
     // for debugging purposes
     GUM_CONSTRUCTOR( Triangulation );
   }
 
-  
   // constructor with a domain size specified
-  Triangulation::Triangulation ( const NodeProperty<Size>* domsizes ) :
-    _domain_sizes ( domsizes ) {
+  Triangulation::Triangulation( const NodeProperty<Size>* domsizes )
+      : _domain_sizes( domsizes ) {
     GUM_CONSTRUCTOR( Triangulation );
   }
-    
-  
+
   // destructor
-  Triangulation::~Triangulation () {
+  Triangulation::~Triangulation() {
     // for debugging purposes
     GUM_DESTRUCTOR( Triangulation );
   }
 
-
   // copy constructor
-  Triangulation::Triangulation( const Triangulation& from ) :
-    _domain_sizes ( from._domain_sizes ) {
-    GUM_CONS_CPY ( Triangulation );
+  Triangulation::Triangulation( const Triangulation& from )
+      : _domain_sizes( from._domain_sizes ) {
+    GUM_CONS_CPY( Triangulation );
   }
-
 
   // move constructor
-  Triangulation::Triangulation( Triangulation&& from ) :
-    _domain_sizes ( from._domain_sizes ) {
-    GUM_CONS_MOV ( Triangulation );
+  Triangulation::Triangulation( Triangulation&& from )
+      : _domain_sizes( from._domain_sizes ) {
+    GUM_CONS_MOV( Triangulation );
   }
-
 
   // returns the max of log10DomainSize of cliques in the junction tree
   double Triangulation::maxLog10CliqueDomainSize() {
     double res = 0.0;
     double dSize;
-    const JunctionTree& jt = junctionTree(); // here, the fact that we get
+    const JunctionTree& jt = junctionTree();  // here, the fact that we get
     // a junction tree ensures that _domain_sizes is different from nullptr
 
     for ( const NodeId cl : jt ) {
@@ -89,6 +81,5 @@ namespace gum {
 
     return res;
   }
-  
 
 } /* namespace gum */

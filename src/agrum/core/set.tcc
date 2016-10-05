@@ -691,11 +691,11 @@ namespace gum {
   // Intersection operator
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
-  Set<Key, Alloc>
-  Set<Key, Alloc>::operator*( const Set<Key, OtherAlloc>& s2 ) const {
+  Set<Key, Alloc> Set<Key, Alloc>::
+  operator*( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r = res.__inside;
+    HashTable<Key, bool, Alloc>& h_r           = res.__inside;
 
     if ( size() < h2.size() ) {
       for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
@@ -714,40 +714,40 @@ namespace gum {
     return res;
   }
 
-  
+
   // Intersection update operator
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
-  const Set<Key, Alloc>&
-  Set<Key, Alloc>::operator*=( const Set<Key, OtherAlloc>& s2 ) {
+  const Set<Key, Alloc>& Set<Key, Alloc>::
+  operator*=( const Set<Key, OtherAlloc>& s2 ) {
     if ( &s2 != this ) {
       const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-      for ( auto iter = __inside.beginSafe ();
-            iter != __inside.endSafe (); ++iter ) {
-        if ( ! h2.exists( iter.key() ) ) __inside.erase ( iter );
+      for ( auto iter = __inside.beginSafe(); iter != __inside.endSafe();
+            ++iter ) {
+        if ( !h2.exists( iter.key() ) ) __inside.erase( iter );
       }
     }
 
     return *this;
   }
-  
+
 
   // Union update operator
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
-  const Set<Key, Alloc>&
-  Set<Key, Alloc>::operator+= ( const Set<Key, OtherAlloc>& s2 ) {
+  const Set<Key, Alloc>& Set<Key, Alloc>::
+  operator+=( const Set<Key, OtherAlloc>& s2 ) {
     if ( &s2 != this ) {
       for ( auto pair : s2.__inside ) {
-        if ( ! __inside.exists ( pair.first ) )
-          __inside.insert ( pair.first, true );
+        if ( !__inside.exists( pair.first ) )
+          __inside.insert( pair.first, true );
       }
     }
 
     return *this;
   }
-  
-  
+
+
   // Union operator
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
@@ -755,7 +755,7 @@ namespace gum {
   operator+( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res = *this;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r = res.__inside;
+    HashTable<Key, bool, Alloc>& h_r           = res.__inside;
 
     for ( HashTableConstIterator<Key, bool> iter = h2.cbegin();
           iter != h2.cend();
@@ -766,7 +766,7 @@ namespace gum {
     return res;
   }
 
-  
+
   // Disjunction operator
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
@@ -774,7 +774,7 @@ namespace gum {
   operator-( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r = res.__inside;
+    HashTable<Key, bool, Alloc>& h_r           = res.__inside;
 
     for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
           iter != __inside.cend();
@@ -881,84 +881,84 @@ namespace gum {
 
   /// the hash function for sets of int
   template <typename Alloc>
-  Size HashFunc<Set<int,Alloc>>::operator()
-    ( const Set<int,Alloc>& key ) const {
+  Size HashFunc<Set<int, Alloc>>::
+  operator()( const Set<int, Alloc>& key ) const {
     Size h = 0;
-    int  i = 0;
+    int i  = 0;
     for ( const auto& k : key ) {
       h += ++i * k;
     }
-    
+
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
   }
-  
+
 
   /// the hash function for sets of unsigned int
   template <typename Alloc>
-  Size HashFunc<Set<unsigned int,Alloc>>::operator()
-    ( const Set<unsigned int,Alloc>& key ) const {
-    Size h = 0;
+  Size HashFunc<Set<unsigned int, Alloc>>::
+  operator()( const Set<unsigned int, Alloc>& key ) const {
+    Size h         = 0;
     unsigned int i = 0;
     for ( const auto k : key ) {
       h += ++i * k;
     }
-    
+
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
   }
-  
+
 
   /// the hash function for sets of long
   template <typename Alloc>
-  Size HashFunc<Set<long,Alloc>>::operator()
-    ( const Set<long,Alloc>& key ) const {
+  Size HashFunc<Set<long, Alloc>>::
+  operator()( const Set<long, Alloc>& key ) const {
     Size h = 0;
     long i = 0;
     for ( const auto k : key ) {
       h += ++i * k;
     }
-    
+
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
   }
-  
+
 
   /// the hash function for sets of unsigned long
   template <typename Alloc>
-  Size HashFunc<Set<unsigned long,Alloc>>::operator()
-    ( const Set<unsigned long,Alloc>& key ) const {
-    Size h = 0;
+  Size HashFunc<Set<unsigned long, Alloc>>::
+  operator()( const Set<unsigned long, Alloc>& key ) const {
+    Size h          = 0;
     unsigned long i = 0;
     for ( const auto k : key ) {
       h += ++i * k;
     }
-    
+
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
   }
 
-  
+
   /// the hash function for sets of float
   template <typename Alloc>
-  Size HashFunc<Set<float,Alloc>>::operator()
-    ( const Set<float,Alloc>& key ) const {
+  Size HashFunc<Set<float, Alloc>>::
+  operator()( const Set<float, Alloc>& key ) const {
     Size h = 0, i = 0;
     for ( const auto k : key ) {
       h += ++i * __casting.castToSize( k );
     }
-    
+
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
   }
 
-  
+
   /// the hash function for sets of double
   template <typename Alloc>
-  Size HashFunc<Set<double,Alloc>>::operator()
-    ( const Set<double,Alloc>& key ) const {
+  Size HashFunc<Set<double, Alloc>>::
+  operator()( const Set<double, Alloc>& key ) const {
     Size h = 0, i = 0;
     for ( const auto k : key ) {
       h += ++i * __casting.castToSize( k );
     }
-    
+
     return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
   }
 
-  
+
 } /* namespace gum */

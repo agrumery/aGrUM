@@ -60,7 +60,6 @@ namespace gum {
       generatedFunctionGraph->add( **varIter );
     }
 
-
     HashTable<NodeId, Idx> node2MinVar;
     Idx nbIter = 0;
 
@@ -146,7 +145,6 @@ namespace gum {
 
     return generatedFunctionGraph;
   }
-
 
   bool MultiDimFunctionGraphGenerator::__createLeaf(
       NodeId currentNodeId, HashTable<NodeId, Idx>& node2MinVar ) {

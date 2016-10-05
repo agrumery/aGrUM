@@ -113,7 +113,7 @@ namespace gum {
         // We need to add each instance in __graph
         for ( auto iter = sys.begin(); iter != sys.end(); ++iter ) {
           NodeData<GUM_SCALAR>* node = new NodeData<GUM_SCALAR>();
-          node->n = iter.val();
+          node->n                    = iter.val();
           __label( node, label_map );
           __graph.addNode( iter.key() );
           __idMap.insert( node->n, iter.key() );
@@ -121,8 +121,8 @@ namespace gum {
         }
 
         NodeData<GUM_SCALAR>* data = nullptr;
-        NodeData<GUM_SCALAR>* u = nullptr;
-        NodeData<GUM_SCALAR>* v = nullptr;
+        NodeData<GUM_SCALAR>* u    = nullptr;
+        NodeData<GUM_SCALAR>* v    = nullptr;
 
         for ( const auto& elt : __nodes ) {
           data = elt.second;
@@ -136,10 +136,10 @@ namespace gum {
 
               if ( !__graph.existsEdge( __idMap[u->n], __idMap[v->n] ) ) {
                 EdgeData<GUM_SCALAR>* edge = new EdgeData<GUM_SCALAR>();
-                edge->u = u->n;
-                edge->l_u = u->l;
-                edge->v = v->n;
-                edge->l_v = v->l;
+                edge->u                    = u->n;
+                edge->l_u                  = u->l;
+                edge->v                    = v->n;
+                edge->l_v                  = v->l;
                 __label( edge, label_map );
                 __graph.addEdge( __idMap[u->n], __idMap[v->n] );
                 __edges.insert( Edge( __idMap[u->n], __idMap[v->n] ), edge );
@@ -233,9 +233,9 @@ namespace gum {
         if ( !label_map.exists( sBuff.str() ) ) {
           LabelData* label = new LabelData();
           label_map.insert( sBuff.str(), label );
-          label->id = ++__counter;
+          label->id         = ++__counter;
           label->tree_width = size;
-          label->l = sBuff.str();
+          label->l          = sBuff.str();
           __labels->insert( label->id, label );
           __nodeMap.insert( label, new Set<NodeData<GUM_SCALAR>*>() );
         }
@@ -273,8 +273,8 @@ namespace gum {
         if ( !label_map.exists( sBuff.str() ) ) {
           LabelData* label = new LabelData();
           label_map.insert( sBuff.str(), label );
-          label->id = ++__counter;
-          label->l = sBuff.str();
+          label->id         = ++__counter;
+          label->l          = sBuff.str();
           label->tree_width = size;
           __labels->insert( label->id, label );
           __edgeMap.insert( label, new Set<EdgeData<GUM_SCALAR>*>() );

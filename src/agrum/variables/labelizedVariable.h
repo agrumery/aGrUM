@@ -61,7 +61,7 @@ namespace gum {
 
     LabelizedVariable( const std::string& aName,
                        const std::string& aDesc = "",
-                       const int nbrLabel = 2 );
+                       const int nbrLabel       = 2 );
 
     /// Copy constructor
     /**

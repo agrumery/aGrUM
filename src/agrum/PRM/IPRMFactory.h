@@ -56,41 +56,41 @@ namespace gum {
 
       // virtual PRM<GUM_SCALAR>* prm() const=0;
       virtual PRMObject::prm_type currentType() const = 0;
-      virtual PRMObject* getCurrent() = 0;
-      virtual const PRMObject* getCurrent() const = 0;
-      virtual PRMObject* closeCurrent() = 0;
-      virtual std::string currentPackage() const = 0;
+      virtual PRMObject* getCurrent()                 = 0;
+      virtual const PRMObject* getCurrent() const     = 0;
+      virtual PRMObject* closeCurrent()               = 0;
+      virtual std::string currentPackage() const      = 0;
       // Class<GUM_SCALAR>& retrieveClass ( const std::string& name )=0;
       // PRMType<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
       // PRMType<GUM_SCALAR>& retrieveCommonType ( const
       // std::vector<PRMClassElement<GUM_SCALAR>*>& elts )=0;
       virtual void pushPackage( const std::string& name ) = 0;
-      virtual std::string popPackage() = 0;
-      virtual void addImport( const std::string& name ) = 0;
+      virtual std::string popPackage()                    = 0;
+      virtual void addImport( const std::string& name )   = 0;
       virtual void startDiscreteType( const std::string& name,
                                       std::string super = "" ) = 0;
       virtual void addLabel( const std::string& l,
                              std::string extends = "" ) = 0;
-      virtual void endDiscreteType() = 0;
+      virtual void endDiscreteType()                    = 0;
       virtual void startClass( const std::string& c,
-                               const std::string& extends = "",
+                               const std::string& extends         = "",
                                const Set<std::string>* implements = nullptr,
                                bool delayInheritance = false ) = 0;
-      virtual void continueClass( const std::string& c ) = 0;
+      virtual void continueClass( const std::string& c )       = 0;
       virtual void endClass( bool checkImplementations = true ) = 0;
       virtual void startInterface( const std::string& i,
                                    const std::string& extends = "",
                                    bool delayInheritance = false ) = 0;
-      virtual void continueInterface( const std::string& name ) = 0;
+      virtual void continueInterface( const std::string& name )    = 0;
       virtual void addAttribute( const std::string& type,
                                  const std::string& name ) = 0;
-      virtual void endInterface() = 0;
+      virtual void endInterface()                          = 0;
       // virtual void addAttribute ( PRMAttribute<GUM_SCALAR>* attr ) =0;
       virtual void startAttribute( const std::string& type,
                                    const std::string& name,
-                                   bool scalar_attr = false ) = 0;
-      virtual void continueAttribute( const std::string& name ) = 0;
-      virtual void addParent( const std::string& name ) = 0;
+                                   bool scalar_attr = false )               = 0;
+      virtual void continueAttribute( const std::string& name )             = 0;
+      virtual void addParent( const std::string& name )                     = 0;
       virtual void setRawCPFByFloatLines( const std::vector<float>& array ) = 0;
       virtual void
       setRawCPFByFloatColumns( const std::vector<float>& array ) = 0;
@@ -102,7 +102,7 @@ namespace gum {
       setRawCPFByColumns( const std::vector<std::string>& array ) = 0;
       virtual void
       setRawCPFByLines( const std::vector<std::string>& array ) = 0;
-      virtual void endAttribute() = 0;
+      virtual void endAttribute()                               = 0;
       virtual void addParameter( const std::string& type,
                                  const std::string& name,
                                  double value ) = 0;
@@ -119,9 +119,9 @@ namespace gum {
                           const std::vector<std::string>& label ) = 0;
       virtual void addReferenceSlot( const std::string& type,
                                      const std::string& name,
-                                     bool isArray ) = 0;
+                                     bool isArray )       = 0;
       virtual void startSystem( const std::string& name ) = 0;
-      virtual void endSystem() = 0;
+      virtual void endSystem()                            = 0;
       virtual void addInstance( const std::string& type,
                                 const std::string& name ) = 0;
       virtual void
@@ -139,7 +139,7 @@ namespace gum {
       virtual void setReferenceSlot( const std::string& l_i,
                                      const std::string& r_i ) = 0;
 
-      virtual bool isClassOrInterface( const std::string& type ) const = 0;
+      virtual bool isClassOrInterface( const std::string& type ) const     = 0;
       virtual bool isArrayInCurrentSystem( const std::string& name ) const = 0;
     };
   } /* namespace prm */

@@ -419,7 +419,7 @@ namespace gum {
       /** @param tabu_size indicate the size of the tabu list
        * @param nb_decrease indicate the max number of changes decreasing the
        * score consecutively that we allow to apply */
-      void useLocalSearchWithTabuList( Size tabu_size = 100,
+      void useLocalSearchWithTabuList( Size tabu_size   = 100,
                                        Size nb_decrease = 2 ) noexcept;
 
       /// indicate that we wish to use K2

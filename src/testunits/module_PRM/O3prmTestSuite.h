@@ -579,9 +579,9 @@ namespace gum_tests {
         gum::NodeId st_st =
             Printer["(fr.lip6.printers.t_state)equipState"].id();
         gum::NodeId bool_st = Printer["(boolean)equipState"].id();
-        gum::NodeId hp = Printer["hasPaper"].id();
+        gum::NodeId hp      = Printer["hasPaper"].id();
         gum::NodeId bool_hp = Printer["(boolean)hasPaper"].id();
-        gum::NodeId hi = Printer["hasInk"].id();
+        gum::NodeId hi      = Printer["hasInk"].id();
         gum::NodeId bool_hi = Printer["(boolean)hasInk"].id();
         TS_ASSERT_EQUALS( st, deg_st );
         TS_ASSERT_DIFFERS( st, st_st );
@@ -1086,7 +1086,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
         TS_ASSERT( SafeComputer.exists( "can_print" ) );
         const auto& cpf = SafeComputer.get( "can_print" ).cpf();
-        auto set = gum::Set<std::string>();
+        auto set        = gum::Set<std::string>();
         set.insert( "can_print" );
         set.insert( "working_printer" );
         set.insert( "equipState" );
@@ -1115,7 +1115,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
         TS_ASSERT( SafeComputer.exists( "equipState" ) );
         const auto& cpf = SafeComputer.get( "equipState" ).cpf();
-        auto set = gum::Set<std::string>();
+        auto set        = gum::Set<std::string>();
         set.insert( "equipState" );
         set.insert( "room.power.state" );
         for ( auto var : cpf.variablesSequence() ) {
@@ -1143,7 +1143,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( SafeComputer.attributes().size(), (gum::Size)4 );
         TS_ASSERT( SafeComputer.exists( "equipState" ) );
         const auto& cpf = SafeComputer.get( "equipState" ).cpf();
-        auto set = gum::Set<std::string>();
+        auto set        = gum::Set<std::string>();
         set.insert( "equipState" );
         set.insert( "room.power.(fr.lip6.printers.t_state)state" );
         for ( auto var : cpf.variablesSequence() ) {
@@ -1193,8 +1193,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
         gum::prm::PRMSystem<double>* sys = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->getSystem( "aSys" ) ) );
-        gum::prm::PRMClass<double>& Power = prm->getClass( "PowerSupply" );
-        gum::prm::PRMClass<double>& Room = prm->getClass( "Room" );
+        gum::prm::PRMClass<double>& Power     = prm->getClass( "PowerSupply" );
+        gum::prm::PRMClass<double>& Room      = prm->getClass( "Room" );
         gum::prm::PRMClass<double>& BWPrinter = prm->getClass( "BWPrinter" );
         gum::prm::PRMClass<double>& ColorPrinter =
             prm->getClass( "ColorPrinter" );
@@ -1356,7 +1356,7 @@ namespace gum_tests {
           for ( auto attr = i.val()->begin(); attr != i.val()->end(); ++attr ) {
             try {
               auto inst = gum::Instantiation( attr.val()->cpf() );
-              auto sum = 0.0;
+              auto sum  = 0.0;
               for ( inst.begin(); !inst.end(); inst.inc() ) {
                 sum += attr.val()->cpf()[inst];
               }
@@ -1435,7 +1435,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
 
-        auto prm = reader.prm();
+        auto prm         = reader.prm();
         auto& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
 
         const auto& hasInk = static_cast<gum::prm::PRMAttribute<double>&>(
@@ -1464,7 +1464,7 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
 
-        auto prm = reader.prm();
+        auto prm         = reader.prm();
         auto& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
 
         const auto& hasPaper = static_cast<gum::prm::PRMAttribute<double>&>(
@@ -1495,8 +1495,8 @@ namespace gum_tests {
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
 
-        auto prm = reader.prm();
-        auto& sys = prm->getSystem( "fr.lip6.printers.aSys" );
+        auto prm       = reader.prm();
+        auto& sys      = prm->getSystem( "fr.lip6.printers.aSys" );
         auto& paramBis = sys.get( "paramBis" );
 
         const auto& hasInk = paramBis.get( "hasInk" );
@@ -1521,10 +1521,10 @@ namespace gum_tests {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader<double> reader;
-        std::string file = GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" );
+        std::string file    = GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" );
         std::string package = "";
         reader.readFile( file, package );
-        auto prm = reader.prm();
+        auto prm                               = reader.prm();
         gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia" ) ) );
@@ -1541,10 +1541,10 @@ namespace gum_tests {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader<double> reader;
-        std::string file = GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" );
+        std::string file    = GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" );
         std::string package = "";
         reader.readFile( file, package );
-        auto prm = reader.prm();
+        auto prm   = reader.prm();
         auto& asia = prm->getClass( "Asia" );
         gum::prm::PRMSystem<double> sys( "Asia" );
         auto i = new gum::prm::PRMInstance<double>( "asia", asia );
@@ -1572,7 +1572,7 @@ namespace gum_tests {
             "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
         std::string package = "";
         reader.readFile( file, package );
-        auto prm = reader.prm();
+        auto prm                               = reader.prm();
         gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "VisitAsia" ) ) );
@@ -1593,7 +1593,7 @@ namespace gum_tests {
             "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
         std::string package = "";
         reader.readFile( file, package );
-        auto prm = reader.prm();
+        auto prm                               = reader.prm();
         gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia" ) ) );
@@ -1615,7 +1615,7 @@ namespace gum_tests {
             "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" );
         std::string package = "";
         reader.readFile( file, package );
-        auto prm = reader.prm();
+        auto prm  = reader.prm();
         auto& sys = prm->getSystem( "Asia" );
         // sys.instantiate();
         auto bn = new gum::BayesNet<double>( "Asia" );
@@ -1637,7 +1637,7 @@ namespace gum_tests {
     void testFileNotFound() {
       // Arrange
       gum::prm::o3prm::O3prmReader<double> reader;
-      std::string file = "ThisFileDoesNotExist.o3prm";
+      std::string file    = "ThisFileDoesNotExist.o3prm";
       std::string package = "";
       // Act & Assert
       TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
@@ -1684,7 +1684,7 @@ namespace gum_tests {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader<double> reader;
-        std::string file = GET_RESSOURCES_PATH( "o3prm/aggregates.o3prm" );
+        std::string file    = GET_RESSOURCES_PATH( "o3prm/aggregates.o3prm" );
         std::string package = "";
         // Act
         TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
@@ -1706,7 +1706,7 @@ namespace gum_tests {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader<double> reader;
-        std::string file = GET_RESSOURCES_PATH( "o3prm/acteurs.o3prm" );
+        std::string file    = GET_RESSOURCES_PATH( "o3prm/acteurs.o3prm" );
         std::string package = "";
         // Act
         TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
@@ -1861,7 +1861,7 @@ namespace gum_tests {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader<double> reader;
-        std::string file = GET_RESSOURCES_PATH( "o3prm/arrays.o3prm" );
+        std::string file    = GET_RESSOURCES_PATH( "o3prm/arrays.o3prm" );
         std::string package = "";
         // Act
         TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );

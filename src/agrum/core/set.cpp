@@ -34,7 +34,7 @@ namespace gum {
     static bool first_time = true;
 
     if ( first_time ) {
-      first_time = false;
+      first_time       = false;
       __SetIterEndSafe = new SetIteratorSafe<int>;
 #ifndef NDEBUG
       __debug__::__dec_creation( "SetIteratorSafe",
@@ -63,7 +63,7 @@ namespace gum {
     static bool first_time = true;
 
     if ( first_time ) {
-      first_time = false;
+      first_time   = false;
       __SetIterEnd = new SetIterator<int>;
 #ifndef NDEBUG
       __debug__::__dec_creation( "SetIterator",

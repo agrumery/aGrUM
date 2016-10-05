@@ -38,9 +38,9 @@ namespace gum {
 
     GUM_CONSTRUCTOR( FMDPDatReader );
 
-    __fmdp = fmdp;
+    __fmdp       = fmdp;
     __streamName = filename;
-    __parseDone = false;
+    __parseDone  = false;
     //    ddf->putOnNoVariableCheckMode();
     __factory = new FMDPFactory<GUM_SCALAR>( __fmdp );
     //~ __factory->setVerbose();
@@ -48,7 +48,7 @@ namespace gum {
 
     try {
       __scanner = new MDPDAT::Scanner( __streamName.c_str() );
-      __parser = new MDPDAT::Parser( __scanner );
+      __parser  = new MDPDAT::Parser( __scanner );
       __parser->setFactory( (AbstractFMDPFactory*)__factory );
     } catch ( IOError e ) {
       __ioerror = true;

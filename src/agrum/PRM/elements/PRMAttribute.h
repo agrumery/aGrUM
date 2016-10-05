@@ -174,7 +174,7 @@ namespace gum {
       protected:
       PRMAttribute( const PRMAttribute<GUM_SCALAR>& source );
 
-      virtual PRMType<GUM_SCALAR>* _type() = 0;
+      virtual PRMType<GUM_SCALAR>* _type()         = 0;
       virtual void _type( PRMType<GUM_SCALAR>* t ) = 0;
     };
 

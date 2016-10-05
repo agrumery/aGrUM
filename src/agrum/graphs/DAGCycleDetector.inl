@@ -285,8 +285,8 @@ namespace gum {
   INLINE DAGCycleDetector& DAGCycleDetector::
   operator=( const DAGCycleDetector& from ) {
     if ( this != &from ) {
-      __dag = from.__dag;
-      __ancestors = from.__ancestors;
+      __dag         = from.__dag;
+      __ancestors   = from.__ancestors;
       __descendants = from.__descendants;
     }
 
@@ -297,8 +297,8 @@ namespace gum {
   INLINE DAGCycleDetector& DAGCycleDetector::
   operator=( DAGCycleDetector&& from ) {
     if ( this != &from ) {
-      __dag = std::move( from.__dag );
-      __ancestors = std::move( from.__ancestors );
+      __dag         = std::move( from.__dag );
+      __ancestors   = std::move( from.__ancestors );
       __descendants = std::move( from.__descendants );
     }
 

@@ -76,7 +76,7 @@ namespace gum {
       // update the number of elements stored into the list and the end of the
       // list
       __nb_elements = from.__nb_elements;
-      __end_list = new_elt;
+      __end_list    = new_elt;
     } catch ( ... ) {
       // problem: we could not allocate an element in the list => we delete
       // the elements created so far and we throw an exception
@@ -87,7 +87,7 @@ namespace gum {
       }
 
       __nb_elements = 0;
-      __end_list = nullptr;
+      __end_list    = nullptr;
 
       throw;
     }
@@ -170,8 +170,8 @@ namespace gum {
     }
 
     __nb_elements = 0;
-    __deb_list = nullptr;
-    __end_list = nullptr;
+    __deb_list    = nullptr;
+    __end_list    = nullptr;
   }
 
   template <typename Key, typename Val, typename Alloc>
@@ -205,9 +205,9 @@ namespace gum {
   operator=( HashTableList<Key, Val, Alloc>&& from ) noexcept {
     // avoid self assignment
     if ( this != &from ) {
-      __deb_list = from.__deb_list;
-      __end_list = from.__end_list;
-      __nb_elements = from.__nb_elements;
+      __deb_list      = from.__deb_list;
+      __end_list      = from.__end_list;
+      __nb_elements   = from.__nb_elements;
       from.__deb_list = nullptr;
     }
 
@@ -526,9 +526,9 @@ namespace gum {
         __hash_func.resize( __size );
       }
 
-      __resize_policy = from.__resize_policy;
+      __resize_policy         = from.__resize_policy;
       __key_uniqueness_policy = from.__key_uniqueness_policy;
-      __begin_index = from.__begin_index;
+      __begin_index           = from.__begin_index;
 
       // perform the copy
       __copy( from );
@@ -568,9 +568,9 @@ namespace gum {
         __hash_func.resize( __size );
       }
 
-      __resize_policy = from.__resize_policy;
+      __resize_policy         = from.__resize_policy;
       __key_uniqueness_policy = from.__key_uniqueness_policy;
-      __begin_index = from.__begin_index;
+      __begin_index           = from.__begin_index;
 
       // perform the copy
       __copy( from );
@@ -591,15 +591,15 @@ namespace gum {
       // the iterators point to end
       clear();
 
-      __nodes = std::move( table.__nodes );
-      __safe_iterators = std::move( table.__safe_iterators );
-      __alloc = std::move( table.__alloc );
-      __size = table.__size;
-      __nb_elements = table.__nb_elements;
-      __hash_func = table.__hash_func;
-      __resize_policy = table.__resize_policy;
+      __nodes                 = std::move( table.__nodes );
+      __safe_iterators        = std::move( table.__safe_iterators );
+      __alloc                 = std::move( table.__alloc );
+      __size                  = table.__size;
+      __nb_elements           = table.__nb_elements;
+      __hash_func             = table.__hash_func;
+      __resize_policy         = table.__resize_policy;
       __key_uniqueness_policy = table.__key_uniqueness_policy;
-      __begin_index = table.__begin_index;
+      __begin_index           = table.__begin_index;
 
       table.__size =
           0;  // necessary if we wish to perform moves iteratively, i.e.
@@ -785,7 +785,7 @@ namespace gum {
     // find the real size for allocation (the smallest power of 2 greater
     // than or equal to new_size) and get its base-2 logarithm
     int log_size = __hashTableLog2( new_size );
-    new_size = Size( 1 ) << log_size;
+    new_size     = Size( 1 ) << log_size;
 
     // check if the new size is different from the actual size
     // if not, nothing else need be done
@@ -825,7 +825,7 @@ namespace gum {
         }
 
         // update the size of the hash table
-        __size = new_size;
+        __size        = new_size;
         __begin_index = std::numeric_limits<Size>::max();
 
         // substitute the current __nodes array by the new one
@@ -837,7 +837,7 @@ namespace gum {
             iter->__index = __hash_func( iter->__bucket->key() );
           else {
             iter->__next_bucket = nullptr;
-            iter->__index = 0;
+            iter->__index       = 0;
           }
         }
       }
@@ -1010,12 +1010,12 @@ namespace gum {
       if ( iter->__bucket == bucket ) {
         iter->operator++();
         iter->__next_bucket = iter->__bucket;
-        iter->__bucket = nullptr;
+        iter->__bucket      = nullptr;
       } else if ( iter->__next_bucket == bucket ) {
         iter->__bucket = bucket;
         iter->operator++();
         iter->__next_bucket = iter->__bucket;
-        iter->__bucket = nullptr;
+        iter->__bucket      = nullptr;
       }
     }
 
@@ -1350,7 +1350,7 @@ namespace gum {
 
     if ( __table->__nb_elements ) {
       if ( __table->__begin_index != std::numeric_limits<Size>::max() ) {
-        __index = __table->__begin_index;
+        __index  = __table->__begin_index;
         __bucket = __table->__nodes[__index].__end_list;
       } else {
         // find the element we shall point to from the start of the hashtable
@@ -1358,8 +1358,8 @@ namespace gum {
               --i ) {  // no test on i since
           // __nb_elements != 0
           if ( __table->__nodes[i].__nb_elements ) {
-            __index = i;
-            __bucket = __table->__nodes[__index].__end_list;
+            __index                = i;
+            __bucket               = __table->__nodes[__index].__end_list;
             __table->__begin_index = __index;
             break;
           }
@@ -1378,7 +1378,7 @@ namespace gum {
     // check if we are looking for a begin() and we know for sure its index
     if ( ( ind_elt == 0 ) &&
          ( __table->__begin_index != std::numeric_limits<Size>::max() ) ) {
-      __index = __table->__begin_index;
+      __index  = __table->__begin_index;
       __bucket = __table->__nodes[__index].__end_list;
     } else {
       // check if it is faster to find the ind_eltth element from the start or
@@ -1481,7 +1481,7 @@ namespace gum {
 
       for ( auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr ) {
         if ( *ptr == &from ) {
-          *ptr = this;
+          *ptr         = this;
           from.__table = nullptr;
           break;
         }
@@ -1522,8 +1522,8 @@ namespace gum {
       }
     }
 
-    __index = from.__index;
-    __bucket = from.__bucket;
+    __index       = from.__index;
+    __bucket      = from.__bucket;
     __next_bucket = from.__next_bucket;
 
     return *this;
@@ -1551,8 +1551,8 @@ namespace gum {
       }
     }
 
-    __index = from.__index;
-    __bucket = from.__bucket;
+    __index       = from.__index;
+    __bucket      = from.__bucket;
     __next_bucket = nullptr;
 
     return *this;
@@ -1586,12 +1586,12 @@ namespace gum {
         }
       }
 
-      __table = from.__table;
+      __table      = from.__table;
       from.__table = nullptr;
     }
 
-    __index = from.__index;
-    __bucket = from.__bucket;
+    __index       = from.__index;
+    __bucket      = from.__bucket;
     __next_bucket = from.__next_bucket;
 
     return *this;
@@ -1623,10 +1623,10 @@ namespace gum {
     __removeFromSafeList();
 
     // set its table as well as the element it points to to 0
-    __table = nullptr;
-    __bucket = nullptr;
+    __table       = nullptr;
+    __bucket      = nullptr;
     __next_bucket = nullptr;
-    __index = 0;
+    __index       = 0;
   }
 
   // WARNING: never inline this function: this result in g++4.3.3 producing a
@@ -1641,7 +1641,7 @@ namespace gum {
       // that has just been erased. Fortunately, in this case, the Hashtable's
       // erase functions update appropriately the __next_bucket and __index
       // fields.
-      __bucket = __next_bucket;
+      __bucket      = __next_bucket;
       __next_bucket = nullptr;
     } else {
       // ok, here we can use __bucket as a starting point
@@ -1672,7 +1672,7 @@ namespace gum {
           if ( __index > 0 ) {
             for ( Size i = __index - 1; i > 0; --i ) {
               if ( __table->__nodes[i].__nb_elements ) {
-                __index = i;
+                __index  = i;
                 __bucket = __table->__nodes[i].__end_list;
                 return *this;
               }
@@ -1704,7 +1704,7 @@ namespace gum {
       // that has just been erased. Fortunately, in this case, the Hashtable's
       // erase functions update appropriately the __next_bucket and __index
       // fields.
-      __bucket = __next_bucket;
+      __bucket      = __next_bucket;
       __next_bucket = nullptr;
       --nb;
     }
@@ -1930,7 +1930,7 @@ namespace gum {
 
     if ( __table->__nb_elements ) {
       if ( __table->__begin_index != std::numeric_limits<Size>::max() ) {
-        __index = __table->__begin_index;
+        __index  = __table->__begin_index;
         __bucket = __table->__nodes[__index].__end_list;
       } else {
         // find the element we shall point to from the start of the hashtable
@@ -1938,8 +1938,8 @@ namespace gum {
               --i ) {  // no test on i since
           // __nb_elements != 0
           if ( __table->__nodes[i].__nb_elements ) {
-            __index = i;
-            __bucket = __table->__nodes[__index].__end_list;
+            __index                = i;
+            __bucket               = __table->__nodes[__index].__end_list;
             __table->__begin_index = __index;
             break;
           }
@@ -1958,7 +1958,7 @@ namespace gum {
     // check if we are looking for a begin() and we know for sure its index
     if ( ( ind_elt == 0 ) &&
          ( __table->__begin_index != std::numeric_limits<Size>::max() ) ) {
-      __index = __table->__begin_index;
+      __index  = __table->__begin_index;
       __bucket = __table->__nodes[__index].__end_list;
     } else {
       // check if it is faster to find the ind_eltth element from the start or
@@ -2040,8 +2040,8 @@ namespace gum {
     // here, no need to avoid self assignment: this would slow down normal
     // assignments and, in any case, this would not result in an iterator in
     // an incoherent state
-    __table = from.__table;
-    __index = from.__index;
+    __table  = from.__table;
+    __index  = from.__index;
     __bucket = from.__bucket;
 
     return *this;
@@ -2053,8 +2053,8 @@ namespace gum {
     // here, no need to avoid self assignment: this would slow down normal
     // assignments and, in any case, this would not result in an iterator in
     // an incoherent state
-    __table = from.__table;
-    __index = from.__index;
+    __table  = from.__table;
+    __index  = from.__index;
     __bucket = from.__bucket;
 
     return *this;
@@ -2082,9 +2082,9 @@ namespace gum {
 
   template <typename Key, typename Val>
   INLINE void HashTableConstIterator<Key, Val>::clear() noexcept {
-    __table = nullptr;
+    __table  = nullptr;
     __bucket = nullptr;
-    __index = 0;
+    __index  = 0;
   }
 
   template <typename Key, typename Val>
@@ -2117,7 +2117,7 @@ namespace gum {
         // to the right of the current element
         for ( Size i = __index - 1UL; i; --i ) {
           if ( __table->__nodes[i].__nb_elements ) {
-            __index = i;
+            __index  = i;
             __bucket = __table->__nodes[i].__end_list;
             return *this;
           }

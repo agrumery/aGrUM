@@ -224,7 +224,7 @@ namespace {
   // Operates like strlen() on a character array.
   template <typename T, std::size_t N>
   inline std::size_t strarrlen( T ( &a )[N] ) {
-    const T* s = &a[0];
+    const T* s    = &a[0];
     std::size_t i = 0;
     while ( *s++ && i < N )
       i++;
@@ -312,7 +312,7 @@ namespace {
     } while ( rc != SQL_NO_DATA );
 
     convert( result, rvalue );
-    state = std::string( &sql_state[0], &sql_state[arrlen( sql_state ) - 1] );
+    state  = std::string( &sql_state[0], &sql_state[arrlen( sql_state ) - 1] );
     native = native_error;
     std::string status = state;
     status += ": ";
@@ -820,7 +820,6 @@ namespace nanodbc {
         NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
       return string_type( &name[0], &name[strarrlen( name )] );
     }
-
 
     std::size_t ref_transaction() { return --transactions_; }
 
@@ -1555,7 +1554,7 @@ namespace nanodbc {
                   parameter_size,
                   scale );
 
-    for ( std::size_t i = 0; i < elements; ++i )
+    for ( std::size_t i           = 0; i < elements; ++i )
       bind_len_or_null_[param][i] = parameter_size;
 
     bind_parameter(
@@ -1769,7 +1768,6 @@ namespace nanodbc {
         NANODBC_THROW_DATABASE_ERROR( stmt_.native_statement_handle(),
                                       SQL_HANDLE_STMT );
 
-
       // MSDN (https://msdn.microsoft.com/en-us/library/ms712631.aspx):
       // If the number of the current row cannot be determined or
       // there is no current row, the driver returns 0.
@@ -1840,7 +1838,7 @@ namespace nanodbc {
 
     int column_datatype( const string_type& column_name ) const {
       const short column = this->column( column_name );
-      bound_column& col = bound_columns_[column];
+      bound_column& col  = bound_columns_[column];
       return col.sqltype_;
     }
 
@@ -1852,7 +1850,7 @@ namespace nanodbc {
 
     int column_c_datatype( const string_type& column_name ) const {
       const short column = this->column( column_name );
-      bound_column& col = bound_columns_[column];
+      bound_column& col  = bound_columns_[column];
       return col.ctype_;
     }
 
@@ -1938,7 +1936,7 @@ namespace nanodbc {
     void before_move() NANODBC_NOEXCEPT {
       for ( short i = 0; i < bound_columns_size_; ++i ) {
         bound_column& col = bound_columns_[i];
-        for ( long j = 0; j < rowset_size_; ++j )
+        for ( long j     = 0; j < rowset_size_; ++j )
           col.cbdata_[j] = 0;
         if ( col.blob_ && col.pdata_ ) release_bound_resources( i );
       }
@@ -1949,13 +1947,13 @@ namespace nanodbc {
       bound_column& col = bound_columns_[column];
       delete[] col.pdata_;
       col.pdata_ = 0;
-      col.clen_ = 0;
+      col.clen_  = 0;
     }
 
     void cleanup_bound_columns() NANODBC_NOEXCEPT {
       before_move();
       delete[] bound_columns_;
-      bound_columns_ = NULL;
+      bound_columns_      = NULL;
       bound_columns_size_ = 0;
       bound_columns_by_name_.clear();
     }
@@ -1983,7 +1981,7 @@ namespace nanodbc {
 
       NANODBC_ASSERT( !bound_columns_ );
       NANODBC_ASSERT( !bound_columns_size_ );
-      bound_columns_ = new bound_column[n_columns];
+      bound_columns_      = new bound_column[n_columns];
       bound_columns_size_ = n_columns;
 
       RETCODE rc;
@@ -2024,11 +2022,11 @@ namespace nanodbc {
         }
 
         bound_column& col = bound_columns_[i];
-        col.name_ = reinterpret_cast<string_type::value_type*>( column_name );
+        col.name_   = reinterpret_cast<string_type::value_type*>( column_name );
         col.column_ = i;
-        col.sqltype_ = sqltype;
-        col.sqlsize_ = sqlsize;
-        col.scale_ = scale;
+        col.sqltype_                      = sqltype;
+        col.sqlsize_                      = sqlsize;
+        col.scale_                        = scale;
         bound_columns_by_name_[col.name_] = &col;
 
         using namespace std;  // if int64_t is in std namespace (in c++11)
@@ -2038,11 +2036,11 @@ namespace nanodbc {
           case SQL_SMALLINT:
           case SQL_INTEGER:
             col.ctype_ = SQL_C_LONG;
-            col.clen_ = sizeof( int32_t );
+            col.clen_  = sizeof( int32_t );
             break;
           case SQL_BIGINT:
             col.ctype_ = SQL_C_SBIGINT;
-            col.clen_ = sizeof( int64_t );
+            col.clen_  = sizeof( int64_t );
             break;
           case SQL_DOUBLE:
           case SQL_FLOAT:
@@ -2050,22 +2048,22 @@ namespace nanodbc {
           case SQL_REAL:
           case SQL_NUMERIC:
             col.ctype_ = SQL_C_DOUBLE;
-            col.clen_ = sizeof( double );
+            col.clen_  = sizeof( double );
             break;
           case SQL_DATE:
           case SQL_TYPE_DATE:
             col.ctype_ = SQL_C_DATE;
-            col.clen_ = sizeof( date );
+            col.clen_  = sizeof( date );
             break;
           case SQL_TIMESTAMP:
           case SQL_TYPE_TIMESTAMP:
             col.ctype_ = SQL_C_TIMESTAMP;
-            col.clen_ = sizeof( timestamp );
+            col.clen_  = sizeof( timestamp );
             break;
           case SQL_CHAR:
           case SQL_VARCHAR:
             col.ctype_ = SQL_C_CHAR;
-            col.clen_ = ( col.sqlsize_ + 1 ) * sizeof( SQLCHAR );
+            col.clen_  = ( col.sqlsize_ + 1 ) * sizeof( SQLCHAR );
             if ( is_blob ) {
               col.clen_ = 0;
               col.blob_ = true;
@@ -2074,7 +2072,7 @@ namespace nanodbc {
           case SQL_WCHAR:
           case SQL_WVARCHAR:
             col.ctype_ = SQL_C_WCHAR;
-            col.clen_ = ( col.sqlsize_ + 1 ) * sizeof( SQLWCHAR );
+            col.clen_  = ( col.sqlsize_ + 1 ) * sizeof( SQLWCHAR );
             if ( is_blob ) {
               col.clen_ = 0;
               col.blob_ = true;
@@ -2082,29 +2080,29 @@ namespace nanodbc {
             break;
           case SQL_LONGVARCHAR:
             col.ctype_ = SQL_C_CHAR;
-            col.blob_ = true;
-            col.clen_ = 0;
+            col.blob_  = true;
+            col.clen_  = 0;
             break;
           case SQL_BINARY:
           case SQL_VARBINARY:
             col.ctype_ = SQL_C_BINARY;
-            col.clen_ = col.sqlsize_ + sizeof( NANODBC_SQLCHAR );
+            col.clen_  = col.sqlsize_ + sizeof( NANODBC_SQLCHAR );
             break;
           case SQL_LONGVARBINARY:
             col.ctype_ = SQL_C_BINARY;
-            col.blob_ = true;
-            col.clen_ = 0;
+            col.blob_  = true;
+            col.clen_  = 0;
             break;
           default:
             col.ctype_ = sql_ctype<string_type>::value;
-            col.clen_ = 128;
+            col.clen_  = 128;
             break;
         }
       }
 
       for ( SQLSMALLINT i = 0; i < n_columns; ++i ) {
         bound_column& col = bound_columns_[i];
-        col.cbdata_ = new null_type[rowset_size_];
+        col.cbdata_       = new null_type[rowset_size_];
         if ( col.blob_ ) {
           NANODBC_CALL_RC( SQLBindCol,
                            rc,
@@ -2176,7 +2174,7 @@ namespace nanodbc {
       case SQL_C_DATE: {
         date d = *( (date*)( col.pdata_ + rowset_position_ * col.clen_ ) );
         timestamp stamp = {d.year, d.month, d.day, 0, 0, 0, 0};
-        result = stamp;
+        result          = stamp;
         return;
       }
       case SQL_C_TIMESTAMP:
@@ -2190,7 +2188,7 @@ namespace nanodbc {
   inline void
   result::result_impl::get_ref_impl<string_type>( short column,
                                                   string_type& result ) const {
-    bound_column& col = bound_columns_[column];
+    bound_column& col         = bound_columns_[column];
     const SQLULEN column_size = col.sqlsize_;
 
     switch ( col.ctype_ ) {
@@ -2199,7 +2197,7 @@ namespace nanodbc {
           // Input is always std::string, while output may be std::string or
           // std::wstring
           std::stringstream ss;
-          char buff[1024] = {0};
+          char buff[1024]       = {0};
           std::size_t buff_size = sizeof( buff );
           SQLLEN ValueLenOrInd;
           SQLRETURN rc;
@@ -2238,7 +2236,7 @@ namespace nanodbc {
           // std::wstring.
           // Use a string builder to build the output string.
           std::wstringstream ss;
-          wchar_t buffer[512] = {0};
+          wchar_t buffer[512]     = {0};
           std::size_t buffer_size = sizeof( buffer );
           SQLLEN ValueLenOrInd;
           SQLRETURN rc;
@@ -2341,10 +2339,10 @@ namespace nanodbc {
       }
 
       case SQL_C_DATE: {
-        date d = *( (date*)( col.pdata_ + rowset_position_ * col.clen_ ) );
+        date d     = *( (date*)( col.pdata_ + rowset_position_ * col.clen_ ) );
         std::tm st = {0};
         st.tm_year = d.year - 1900;
-        st.tm_mon = d.month - 1;
+        st.tm_mon  = d.month - 1;
         st.tm_mday = d.day;
         char* old_lc_time = std::setlocale( LC_TIME, NULL );
         std::setlocale( LC_TIME, "" );
@@ -2362,13 +2360,13 @@ namespace nanodbc {
       case SQL_C_TIMESTAMP: {
         timestamp stamp =
             *( (timestamp*)( col.pdata_ + rowset_position_ * col.clen_ ) );
-        std::tm st = {0};
-        st.tm_year = stamp.year - 1900;
-        st.tm_mon = stamp.month - 1;
-        st.tm_mday = stamp.day;
-        st.tm_hour = stamp.hour;
-        st.tm_min = stamp.min;
-        st.tm_sec = stamp.sec;
+        std::tm st        = {0};
+        st.tm_year        = stamp.year - 1900;
+        st.tm_mon         = stamp.month - 1;
+        st.tm_mday        = stamp.day;
+        st.tm_hour        = stamp.hour;
+        st.tm_min         = stamp.min;
+        st.tm_sec         = stamp.sec;
         char* old_lc_time = std::setlocale( LC_TIME, NULL );
         std::setlocale( LC_TIME, "" );
         string_type::value_type date_str[512];

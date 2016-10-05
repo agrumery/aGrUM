@@ -120,7 +120,7 @@ namespace gum {
         std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l,
         Size lvl,
         Set<std::string>& i ) {
-      Size size = 0;
+      Size size      = 0;
       GUM_SCALAR sum = 0.0;
       std::string first, second, third;
       std::vector<std::string>* v = 0;
@@ -178,7 +178,7 @@ namespace gum {
                 sum += val[idx];
               }
 
-              for ( size_t idx = 0; idx < getDomainSize(); ++idx )
+              for ( size_t idx   = 0; idx < getDomainSize(); ++idx )
                 cpf[norms + idx] = val[idx] / sum;
             }
 
@@ -244,7 +244,7 @@ namespace gum {
                   sum += val[idx];
                 }
 
-                for ( size_t idx = 0; idx < getDomainSize(); ++idx )
+                for ( size_t idx   = 0; idx < getDomainSize(); ++idx )
                   cpf[norms + idx] = val[idx] / sum;
               }
 
@@ -301,7 +301,7 @@ namespace gum {
                   sum += val[idx];
                 }
 
-                for ( size_t idx = 0; idx < getDomainSize(); ++idx )
+                for ( size_t idx   = 0; idx < getDomainSize(); ++idx )
                   cpf[norms + idx] = val[idx] / sum;
               }
 
@@ -327,7 +327,7 @@ namespace gum {
         std::vector<typename ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l,
         Size lvl,
         Set<std::string>& i ) {
-      Size size = 0;
+      Size size      = 0;
       GUM_SCALAR sum = 0.0;
       l[lvl].c.push_back(
           this->_name_gen.nextName( PRMObject::prm_type::CLASS ) );
@@ -373,7 +373,7 @@ namespace gum {
             sum += val[idx];
           }
 
-          for ( size_t idx = 0; idx < getDomainSize(); ++idx )
+          for ( size_t idx   = 0; idx < getDomainSize(); ++idx )
             cpf[norms + idx] = val[idx] / sum;
         }
 
@@ -449,7 +449,7 @@ namespace gum {
       std::vector<std::vector<std::string>> o( __layers.size() );
       std::string name, c, first, second, third;
       std::vector<std::string>* v = 0;
-      size_t idx = 0;
+      size_t idx                  = 0;
 
       for ( size_t lvl = 0; lvl < __layers.size(); ++lvl ) {
         float density = __layers[lvl].outter_density * RAND_MAX;
@@ -522,7 +522,7 @@ namespace gum {
                   chain.str(), o[lvl - 1][std::rand() % o[lvl - 1].size()] );
 
             while ( ref2add.size() > getMaxParents() ) {
-              idx = std::rand() % ref2add.size();
+              idx          = std::rand() % ref2add.size();
               ref2add[idx] = ref2add.back();
               ref2add.pop_back();
             }
@@ -572,7 +572,7 @@ namespace gum {
     INLINE ClusteredLayerGenerator<GUM_SCALAR>&
     ClusteredLayerGenerator<GUM_SCALAR>::
     operator=( const ClusteredLayerGenerator<GUM_SCALAR>& source ) {
-      __layers = source.__layers;
+      __layers      = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;
       return *this;

@@ -91,13 +91,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Val;
-    using reference = Val&;
+    using value_type      = Val;
+    using reference       = Val&;
     using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
+    using pointer         = Val*;
+    using const_pointer   = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
+    using allocator_type  = Alloc;
     /// @}
 
     // The allocator for the indices.
@@ -509,13 +509,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Val;
-    using reference = Val&;
+    using value_type      = Val;
+    using reference       = Val&;
     using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
+    using pointer         = Val*;
+    using const_pointer   = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
+    using allocator_type  = Alloc;
     /// @}
 
     // The allocator for the indices.
@@ -957,8 +957,8 @@ namespace gum {
    */
   template <typename Val,
             typename Priority = int,
-            typename Cmp = std::less<Priority>,
-            typename Alloc = std::allocator<Val>>
+            typename Cmp      = std::less<Priority>,
+            typename Alloc    = std::allocator<Val>>
   class PriorityQueue
       : public PriorityQueueImplementation<Val,
                                            Priority,
@@ -968,13 +968,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type = Val;
-    using reference = Val&;
+    using value_type      = Val;
+    using reference       = Val&;
     using const_reference = const Val&;
-    using pointer = Val*;
-    using const_pointer = const Val*;
+    using pointer         = Val*;
+    using const_pointer   = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
+    using allocator_type  = Alloc;
     /// @}
 
     using Implementation =
@@ -999,7 +999,7 @@ namespace gum {
      * elements (could be for instance vectors or hashtables).
      */
     explicit PriorityQueue(
-        Cmp compare = Cmp(),
+        Cmp compare   = Cmp(),
         Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY );
 
     /**

@@ -48,11 +48,11 @@ namespace gum_tests {
         size_t layer_count ) {
       for ( size_t lvl = 0; lvl < layer_count; ++lvl ) {
         v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
-        v[lvl].a = 30;
-        v[lvl].g = 2;
-        v[lvl].c = 1;
-        v[lvl].o = 10;
-        v[lvl].inner_density = 0.2f;
+        v[lvl].a              = 30;
+        v[lvl].g              = 2;
+        v[lvl].c              = 1;
+        v[lvl].o              = 10;
+        v[lvl].inner_density  = 0.2f;
         v[lvl].outter_density = 0.05f;
       }
     }
@@ -84,8 +84,8 @@ namespace gum_tests {
           TS_ASSERT_EQUALS( i.attributes().size(), (gum::Size)30 );
         }
 
-        gum::Size six = 0;
-        gum::Size two = 0;
+        gum::Size six                                         = 0;
+        gum::Size two                                         = 0;
         const gum::Set<gum::prm::PRMAttribute<double>*>& attr = i.attributes();
 
         for ( gum::Set<gum::prm::PRMAttribute<double>*>::const_iterator a =
@@ -167,8 +167,8 @@ namespace gum_tests {
           TS_ASSERT_EQUALS( i.attributes().size(), (gum::Size)30 );
         }
 
-        gum::Size six = 0;
-        gum::Size two = 0;
+        gum::Size six                                         = 0;
+        gum::Size two                                         = 0;
         const gum::Set<gum::prm::PRMAttribute<double>*>& attr = i.attributes();
 
         for ( gum::Set<gum::prm::PRMAttribute<double>*>::const_iterator a =

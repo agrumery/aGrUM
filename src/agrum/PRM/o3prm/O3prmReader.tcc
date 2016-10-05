@@ -37,9 +37,9 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__clean( std::string text ) const {
         auto match = std::regex( "Syntax error" );
         if ( std::regex_search( text, match ) ) {
-          text = std::regex_replace( text, match, "Error" );
+          text       = std::regex_replace( text, match, "Error" );
           auto regex = std::regex{"[A-Z_][A-Z_]+"};
-          text = std::regex_replace( text, regex, "declaration" );
+          text       = std::regex_replace( text, regex, "declaration" );
           return std::move( text );
         }
         return std::move( text );
@@ -74,7 +74,7 @@ namespace gum {
       }
 
       using o3prm_scanner = gum::prm::o3prm::Scanner;
-      using o3prm_parser = gum::prm::o3prm::Parser;
+      using o3prm_parser  = gum::prm::o3prm::Parser;
 
       template <typename GUM_SCALAR>
       INLINE O3prmReader<GUM_SCALAR>::O3prmReader()
@@ -121,11 +121,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = src.__prm;
-        __o3_prm = std::unique_ptr<O3PRM>( new O3PRM( *( src.__o3_prm ) ) );
+        __prm        = src.__prm;
+        __o3_prm     = std::unique_ptr<O3PRM>( new O3PRM( *( src.__o3_prm ) ) );
         __class_path = src.__class_path;
-        __imported = src.__imported;
-        __errors = src.__errors;
+        __imported   = src.__imported;
+        __errors     = src.__errors;
         return *this;
       }
 
@@ -135,11 +135,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = std::move( src.__prm );
-        __o3_prm = std::move( src.__o3_prm );
+        __prm        = std::move( src.__prm );
+        __o3_prm     = std::move( src.__o3_prm );
         __class_path = std::move( src.__class_path );
-        __imported = std::move( src.__imported );
-        __errors = std::move( src.__errors );
+        __imported   = std::move( src.__imported );
+        __errors     = std::move( src.__errors );
         return *this;
       }
 
@@ -147,8 +147,8 @@ namespace gum {
       void
       O3prmReader<GUM_SCALAR>::setClassPath( const std::string& class_path ) {
         __class_path = std::vector<std::string>();
-        size_t i = 0;
-        size_t j = class_path.find( ';' );
+        size_t i     = 0;
+        size_t j     = class_path.find( ';' );
 
         while ( j != std::string::npos ) {
           addClassPath( class_path.substr( i, j - i ) );
@@ -268,7 +268,7 @@ namespace gum {
             return __errors.count();
           }
 
-          auto basename = file.substr( lastSlashIndex + 1 );
+          auto basename    = file.substr( lastSlashIndex + 1 );
           auto absFilename = dir.absolutePath() + basename;
 
           auto input = std::ifstream( absFilename );
@@ -304,7 +304,7 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__parseStream( std::istream& input,
                                               const std::string& filename,
                                               const std::string& module ) {
-        auto sBuff = __readStream( input );
+        auto sBuff  = __readStream( input );
         auto buffer = std::unique_ptr<unsigned char[]>(
             new unsigned char[sBuff.length() + 1] );
         strcpy( (char*)buffer.get(), sBuff.c_str() );
@@ -335,7 +335,7 @@ namespace gum {
           for ( const auto& cp : __class_path ) {
 
             auto file_path = cp + path + ".o3prm";
-            auto file = std::ifstream( file_path );
+            auto file      = std::ifstream( file_path );
 
             if ( file.is_open() ) {
 
@@ -345,7 +345,7 @@ namespace gum {
             }
 
             file_path = cp + module + path + ".o3prm";
-            file = std::ifstream( file_path );
+            file      = std::ifstream( file_path );
 
             if ( file.is_open() ) {
 
@@ -358,7 +358,7 @@ namespace gum {
 
           if ( !imported ) {
             const auto& pos = i.import().position();
-            auto msg = std::stringstream();
+            auto msg        = std::stringstream();
             msg << "Import error: could not resolve import "
                 << i.import().label();
             __errors.addError(

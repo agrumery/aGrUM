@@ -58,7 +58,7 @@ namespace gum {
 
     std::stringstream strfile, strfile2;
 
-    Idx num = 0;
+    Idx num      = 0;
     Idx numparam = 0;
 
     for ( auto node : bn.nodes() )
@@ -164,7 +164,7 @@ namespace gum {
     if ( !outputvar.good() )
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
-    Idx num = 0;
+    Idx num      = 0;
     Idx numparam = 0;
 
     for ( auto node : bn.nodes() )

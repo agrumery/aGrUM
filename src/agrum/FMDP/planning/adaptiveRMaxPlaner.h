@@ -62,8 +62,8 @@ namespace gum {
     static AdaptiveRMaxPlaner*
     ReducedAndOrderedInstance( const ILearningStrategy* learner,
                                double discountFactor = 0.9,
-                               double epsilon = 0.00001,
-                               bool verbose = true ) {
+                               double epsilon        = 0.00001,
+                               bool verbose          = true ) {
       return new AdaptiveRMaxPlaner( new MDDOperatorStrategy<double>(),
                                      discountFactor,
                                      epsilon,
@@ -76,8 +76,8 @@ namespace gum {
     // ==========================================================================
     static AdaptiveRMaxPlaner* TreeInstance( const ILearningStrategy* learner,
                                              double discountFactor = 0.9,
-                                             double epsilon = 0.00001,
-                                             bool verbose = true ) {
+                                             double epsilon        = 0.00001,
+                                             bool verbose          = true ) {
       return new AdaptiveRMaxPlaner( new TreeOperatorStrategy<double>(),
                                      discountFactor,
                                      epsilon,

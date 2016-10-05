@@ -307,16 +307,16 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair<const Key, Val>;
-    using reference = value_type&;
+    using key_type        = Key;
+    using mapped_type     = Val;
+    using value_type      = std::pair<const Key, Val>;
+    using reference       = value_type&;
     using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using size_type = std::size_t;
-    using allocator_type = Alloc;
-    using Bucket = HashTableBucket<Key, Val>;
+    using pointer         = value_type*;
+    using const_pointer   = const value_type*;
+    using size_type       = std::size_t;
+    using allocator_type  = Alloc;
+    using Bucket          = HashTableBucket<Key, Val>;
     /// @}
 
     /// The Bucket allocator.
@@ -680,19 +680,19 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair<const Key, Val>;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using allocator_type = Alloc;
-    using iterator = HashTableIterator<Key, Val>;
-    using const_iterator = HashTableConstIterator<Key, Val>;
-    using iterator_safe = HashTableIteratorSafe<Key, Val>;
+    using key_type            = Key;
+    using mapped_type         = Val;
+    using value_type          = std::pair<const Key, Val>;
+    using reference           = value_type&;
+    using const_reference     = const value_type&;
+    using pointer             = value_type*;
+    using const_pointer       = const value_type*;
+    using size_type           = std::size_t;
+    using difference_type     = std::ptrdiff_t;
+    using allocator_type      = Alloc;
+    using iterator            = HashTableIterator<Key, Val>;
+    using const_iterator      = HashTableConstIterator<Key, Val>;
+    using iterator_safe       = HashTableIteratorSafe<Key, Val>;
     using const_iterator_safe = HashTableConstIteratorSafe<Key, Val>;
     /// @}
 
@@ -725,8 +725,8 @@ namespace gum {
      * the same key more than once in the table?
      */
     explicit HashTable(
-        Size size_param = HashTableConst::default_size,
-        bool resize_pol = HashTableConst::default_resize_policy,
+        Size size_param         = HashTableConst::default_size,
+        bool resize_pol         = HashTableConst::default_resize_policy,
         bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy );
 
     /**
@@ -1596,7 +1596,7 @@ namespace gum {
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
     map( Mount ( *f )( Val ),
-         Size size = 0,
+         Size size       = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1626,7 +1626,7 @@ namespace gum {
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
     map( Mount ( *f )( Val& ),
-         Size size = 0,
+         Size size       = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1656,7 +1656,7 @@ namespace gum {
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
     map( Mount ( *f )( const Val& ),
-         Size size = 0,
+         Size size       = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1688,7 +1688,7 @@ namespace gum {
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
     map( const Mount& val,
-         Size size = 0,
+         Size size       = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1923,14 +1923,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair<const Key, Val>;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using key_type          = Key;
+    using mapped_type       = Val;
+    using value_type        = std::pair<const Key, Val>;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2226,14 +2226,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair<const Key, Val>;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using key_type          = Key;
+    using mapped_type       = Val;
+    using value_type        = std::pair<const Key, Val>;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2474,14 +2474,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair<const Key, Val>;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using key_type          = Key;
+    using mapped_type       = Val;
+    using value_type        = std::pair<const Key, Val>;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2762,14 +2762,14 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type = Key;
-    using mapped_type = Val;
-    using value_type = std::pair<const Key, Val>;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using difference_type = std::ptrdiff_t;
+    using key_type          = Key;
+    using mapped_type       = Val;
+    using value_type        = std::pair<const Key, Val>;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
     /// @}
 
     // ############################################################################

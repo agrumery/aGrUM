@@ -26,5 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/independenceTest.h>
 
-
 template class gum::learning::IndependenceTest<>;

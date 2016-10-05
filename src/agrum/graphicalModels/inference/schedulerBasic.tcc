@@ -98,8 +98,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   float SchedulerBasic<GUM_SCALAR>::nbOperations(
       const Schedule<GUM_SCALAR>& schedule ) const {
-    NodeSet available = schedule.availableOperations();
-    DAG dag = schedule.dag();
+    NodeSet available   = schedule.availableOperations();
+    DAG dag             = schedule.dag();
     float nb_operations = 0;
 
     while ( !available.empty() ) {
@@ -132,8 +132,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   float SchedulerBasic<GUM_SCALAR>::nbOperations(
       const Schedule<GUM_SCALAR>& schedule, Size k ) const {
-    NodeSet available = schedule.availableOperations();
-    DAG dag = schedule.dag();
+    NodeSet available   = schedule.availableOperations();
+    DAG dag             = schedule.dag();
     float nb_operations = 0;
 
     while ( !available.empty() && k ) {
@@ -165,9 +165,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::pair<long, long> SchedulerBasic<GUM_SCALAR>::memoryUsage(
       const Schedule<GUM_SCALAR>& schedule ) const {
-    NodeSet available = schedule.availableOperations();
-    DAG dag = schedule.dag();
-    long max_memory = 0;
+    NodeSet available   = schedule.availableOperations();
+    DAG dag             = schedule.dag();
+    long max_memory     = 0;
     long current_memory = 0;
 
     while ( !available.empty() ) {
@@ -215,9 +215,9 @@ namespace gum {
   std::pair<long, long>
   SchedulerBasic<GUM_SCALAR>::memoryUsage( const Schedule<GUM_SCALAR>& schedule,
                                            Size k ) const {
-    NodeSet available = schedule.availableOperations();
-    DAG dag = schedule.dag();
-    long max_memory = 0;
+    NodeSet available   = schedule.availableOperations();
+    DAG dag             = schedule.dag();
+    long max_memory     = 0;
     long current_memory = 0;
 
     while ( !available.empty() && k ) {

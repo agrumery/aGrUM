@@ -99,10 +99,10 @@ namespace gum {
     // avoid self assignment
     if ( this != &from ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );
-      __table = from.__table;
-      __del_vars = from.__del_vars;
-      *__result = *( from.__result );
-      __project = from.__project;
+      __table                                = from.__table;
+      __del_vars                             = from.__del_vars;
+      *__result                              = *( from.__result );
+      __project                              = from.__project;
 
       // update __args and __results if they were already created
       if ( __args ) {
@@ -150,7 +150,7 @@ namespace gum {
   void ScheduleProject<GUM_SCALAR>::execute() {
     if ( __result->isAbstract() ) {
       const MultiDimImplementation<GUM_SCALAR>& t = __table.multiDim();
-      MultiDimImplementation<GUM_SCALAR>* res = __project( t, __del_vars );
+      MultiDimImplementation<GUM_SCALAR>* res     = __project( t, __del_vars );
       __result->setMultiDim( *res );
     }
   }
@@ -165,7 +165,7 @@ namespace gum {
   /// returns the memory consumption used during the operation
   template <typename GUM_SCALAR>
   std::pair<long, long> ScheduleProject<GUM_SCALAR>::memoryUsage() const {
-    long size = 1;
+    long size                                    = 1;
     const Sequence<const DiscreteVariable*>& seq = __table.variablesSequence();
 
     for ( const auto var : seq )

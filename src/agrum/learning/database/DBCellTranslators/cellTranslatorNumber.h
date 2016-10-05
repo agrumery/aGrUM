@@ -83,7 +83,7 @@ namespace gum {
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
       CellTranslatorNumber( Sequence<double> values = Sequence<double>(),
-                            bool check_database = true );
+                            bool check_database     = true );
 
       /// copy constructor
       CellTranslatorNumber( const CellTranslatorNumber& from );

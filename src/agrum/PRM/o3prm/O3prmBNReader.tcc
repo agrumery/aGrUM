@@ -60,10 +60,10 @@ namespace gum {
                                             const std::string& classpath )
       : BNReader<GUM_SCALAR>( bn, filename ) {
     GUM_CONSTRUCTOR( O3prmBNReader );
-    __bn = bn;
-    __filename = filename;
+    __bn         = bn;
+    __filename   = filename;
     __entityName = entityName == "" ? __getEntityName( filename ) : entityName;
-    __classpath = classpath;
+    __classpath  = classpath;
   }
 
   template <typename GUM_SCALAR>
@@ -82,7 +82,7 @@ namespace gum {
     }
     reader.readFile( __filename );
     gum::prm::PRM<GUM_SCALAR>* prm = reader.prm();
-    __errors = reader.errorsContainer();
+    __errors                       = reader.errorsContainer();
 
     if ( errors() == 0 ) {
       if ( prm->isSystem( __entityName ) ) {

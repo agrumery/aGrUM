@@ -74,9 +74,9 @@ namespace gum {
     GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>::operator=(
         const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from ) {
       if ( this != &from ) {
-        _graph = from._graph;
-        _constraint = from._constraint;
-        _legal_changes = from._legal_changes;
+        _graph               = from._graph;
+        _constraint          = from._constraint;
+        _legal_changes       = from._legal_changes;
         __max_threads_number = from.__max_threads_number;
       }
       return *this;
@@ -88,9 +88,9 @@ namespace gum {
     GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>::
     operator=( GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from ) {
       if ( this != &from ) {
-        _graph = std::move( from._graph );
-        _constraint = std::move( from._constraint );
-        _legal_changes = std::move( from._legal_changes );
+        _graph               = std::move( from._graph );
+        _constraint          = std::move( from._constraint );
+        _legal_changes       = std::move( from._legal_changes );
         __max_threads_number = from.__max_threads_number;
       }
       return *this;
@@ -210,7 +210,7 @@ namespace gum {
     GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>::setMaxNbThreads(
         Size nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
-      if ( nb == 0 ) nb = getMaxNumberOfThreads();
+      if ( nb == 0 ) nb    = getMaxNumberOfThreads();
       __max_threads_number = nb;
 #else
       __max_threads_number = 1;

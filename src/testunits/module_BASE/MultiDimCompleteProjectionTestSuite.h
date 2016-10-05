@@ -119,7 +119,7 @@ namespace gum_tests {
     float local_projmax( const gum::MultiDimArray<float>& table,
                          gum::Instantiation& instantiation ) {
       gum::Instantiation inst( table );
-      float result = table[inst];
+      float result     = table[inst];
       gum::Size offset = 0, i = 0;
 
       for ( inst.setFirst(); !inst.end(); ++inst, ++i ) {
@@ -146,7 +146,7 @@ namespace gum_tests {
     float* local_projmax( const gum::MultiDimArray<float*>& table,
                           gum::Instantiation& instantiation ) {
       gum::Instantiation inst( table );
-      float* result = table[inst];
+      float* result    = table[inst];
       gum::Size offset = 0, i = 0;
 
       for ( inst.setFirst(); !inst.end(); ++inst, ++i ) {
@@ -199,7 +199,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -234,7 +234,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> tt1;
@@ -274,7 +274,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* t1 = new gum::MultiDimArray<float*>;
@@ -309,7 +309,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* tt1 = new gum::MultiDimArray<float*>;
@@ -349,7 +349,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -380,7 +380,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::Potential<float> t1;
@@ -410,7 +410,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* t1 = new gum::MultiDimArray<float*>;
@@ -449,7 +449,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 3 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::Potential<float> t1;

@@ -54,10 +54,10 @@ namespace gum {
     GUM_CONSTRUCTOR( Regress );
     __rd = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::
         getReducedAndOrderedInstance();
-    __nbVar = 0;
-    __default = nullptr;
+    __nbVar      = 0;
+    __default    = nullptr;
     __primedVars = primedVars;
-    __targetVar = targetVar;
+    __targetVar  = targetVar;
   }
 
   template <typename GUM_SCALAR,
@@ -102,7 +102,7 @@ namespace gum {
     Idx* varInst = nullptr;
     if ( __nbVar != 0 ) {
       varInst = static_cast<Idx*>( ALLOCATE( sizeof( Idx ) * __nbVar ) );
-      for ( Idx i = 0; i < __nbVar; i++ )
+      for ( Idx i  = 0; i < __nbVar; i++ )
         varInst[i] = (Idx)0;
     }
 
@@ -204,7 +204,7 @@ namespace gum {
     if ( __nbVar != 0 ) {
       __default =
           static_cast<short int*>( ALLOCATE( sizeof( short int ) * __nbVar ) );
-      for ( Idx i = 0; i < __nbVar; i++ )
+      for ( Idx i    = 0; i < __nbVar; i++ )
         __default[i] = (short int)0;
     }
   }
@@ -241,7 +241,7 @@ namespace gum {
         nodesVarDescendant.insert( nodeIter->element(), varDescendant );
         for ( Idx j = 0; j < __nbVar; j++ ) {
           instantiationNeeded[j] = (short int)0;
-          varDescendant[j] = (short int)0;
+          varDescendant[j]       = (short int)0;
         }
 
 
@@ -390,7 +390,7 @@ namespace gum {
     const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* leaddg =
         nullptr;
     NodeId leadNodeId = 0;
-    Idx leadVarPos = __rd->variablesSequence().size();
+    Idx leadVarPos    = __rd->variablesSequence().size();
     typedef void ( O4DGContext::*SetNodeFunction )( const NodeId& );
     SetNodeFunction leadFunction = nullptr;
 
@@ -415,9 +415,9 @@ namespace gum {
         return newNode;
       }
 
-      leaddg = __DG1;
-      leadNodeId = currentSituation.DG1Node();
-      leadVarPos = dg1CurrentVarPos;
+      leaddg       = __DG1;
+      leadNodeId   = currentSituation.DG1Node();
+      leadVarPos   = dg1CurrentVarPos;
       leadFunction = &O4DGContext::setDG1Node;
     }
 
@@ -445,9 +445,9 @@ namespace gum {
       }
 
       if ( leadVarPos > dg2CurrentVarPos ) {
-        leaddg = __DG2;
-        leadNodeId = currentSituation.DG2Node();
-        leadVarPos = dg2CurrentVarPos;
+        leaddg       = __DG2;
+        leadNodeId   = currentSituation.DG2Node();
+        leadVarPos   = dg2CurrentVarPos;
         leadFunction = &O4DGContext::setDG2Node;
       }
     }
@@ -549,8 +549,8 @@ namespace gum {
       const InternalNode* dg2Node = __DG2->node( origDG2 );
 
       const DiscreteVariable* curVar = dg1Node->nodeVar();
-      Idx varPos = __rd->variablesSequence().pos( curVar );
-      NodeId* sonsIds = static_cast<NodeId*>(
+      Idx varPos                     = __rd->variablesSequence().pos( curVar );
+      NodeId* sonsIds                = static_cast<NodeId*>(
           ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
 
       for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
@@ -580,7 +580,7 @@ namespace gum {
       const InternalNode* leaddgNode = leaddg->node( leadNodeId );
 
       const DiscreteVariable* curVar = leaddgNode->nodeVar();
-      NodeId* sonsIds = static_cast<NodeId*>(
+      NodeId* sonsIds                = static_cast<NodeId*>(
           ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
 
       for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {

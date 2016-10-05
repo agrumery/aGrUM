@@ -33,7 +33,7 @@ namespace gum {
   InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator() {
     GUM_CONSTRUCTOR( InfluenceDiagramGenerator );
     __cptGenerator = new SimpleCPTGenerator<GUM_SCALAR>();
-    __utGenerator = new SimpleUTGenerator();
+    __utGenerator  = new SimpleUTGenerator();
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -45,7 +45,7 @@ namespace gum {
       ICPTGenerator<GUM_SCALAR>* cptGenerator ) {
     GUM_CONSTRUCTOR( InfluenceDiagramGenerator );
     __cptGenerator = cptGenerator;
-    __utGenerator = new SimpleUTGenerator();
+    __utGenerator  = new SimpleUTGenerator();
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -57,7 +57,7 @@ namespace gum {
       UTGenerator* utGenerator ) {
     GUM_CONSTRUCTOR( InfluenceDiagramGenerator );
     __cptGenerator = new SimpleCPTGenerator<GUM_SCALAR>();
-    __utGenerator = utGenerator;
+    __utGenerator  = utGenerator;
   }
 
   // Use this constructor if you want to use a different policy for generating
@@ -71,7 +71,7 @@ namespace gum {
       ICPTGenerator<GUM_SCALAR>* cptGenerator, UTGenerator* utGenerator ) {
     GUM_CONSTRUCTOR( InfluenceDiagramGenerator );
     __cptGenerator = cptGenerator;
-    __utGenerator = utGenerator;
+    __utGenerator  = utGenerator;
   }
 
   // Destructor.

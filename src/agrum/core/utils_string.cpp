@@ -32,7 +32,7 @@ namespace gum {
   std::string getUniqueFileName() {
 #ifdef HAVE_MKSTEMP
     char _tmpFileName[] = "fileXXXXXX";
-    int fd = mkstemp( _tmpFileName );
+    int fd              = mkstemp( _tmpFileName );
     close( fd );
 #else  // mainly Windows
     char _tmpFileName[] = "fileXXXXXX";

@@ -202,7 +202,7 @@ namespace gum {
       class O3Type {
         public:
         using LabelPair = std::pair<O3Label, O3Label>;
-        using LabelMap = std::vector<LabelPair>;
+        using LabelMap  = std::vector<LabelPair>;
 
         O3Type();
         O3Type( const O3Type& src );
@@ -531,10 +531,10 @@ namespace gum {
        */
       class O3RuleCPT : public O3Attribute {
         public:
-        using O3LabelList = std::vector<O3Label>;
+        using O3LabelList   = std::vector<O3Label>;
         using O3FormulaList = std::vector<O3Formula>;
-        using O3Rule = std::pair<O3LabelList, O3FormulaList>;
-        using O3RuleList = std::vector<O3Rule>;
+        using O3Rule        = std::pair<O3LabelList, O3FormulaList>;
+        using O3RuleList    = std::vector<O3Rule>;
 
         O3RuleCPT();
         O3RuleCPT( const O3Label& type,
@@ -608,11 +608,11 @@ namespace gum {
        */
       class O3Class {
         public:
-        using O3LabelList = std::vector<O3Label>;
-        using O3ParameterList = std::vector<O3Parameter>;
+        using O3LabelList         = std::vector<O3Label>;
+        using O3ParameterList     = std::vector<O3Parameter>;
         using O3ReferenceSlotList = std::vector<O3ReferenceSlot>;
-        using O3AttributeList = std::vector<std::unique_ptr<O3Attribute>>;
-        using O3AggregateList = std::vector<O3Aggregate>;
+        using O3AttributeList     = std::vector<std::unique_ptr<O3Attribute>>;
+        using O3AggregateList     = std::vector<O3Aggregate>;
 
         O3Class();
         O3Class( const O3Class& src );
@@ -817,9 +817,9 @@ namespace gum {
        */
       class O3System {
         public:
-        using O3InstanceList = std::vector<O3Instance>;
+        using O3InstanceList   = std::vector<O3Instance>;
         using O3AssignmentList = std::vector<O3Assignment>;
-        using O3IncrementList = std::vector<O3Increment>;
+        using O3IncrementList  = std::vector<O3Increment>;
 
         O3System();
         O3System( const O3System& src );
@@ -881,13 +881,13 @@ namespace gum {
        */
       class O3PRM {
         public:
-        using O3TypeList = std::vector<std::unique_ptr<O3Type>>;
-        using O3IntTypeList = std::vector<std::unique_ptr<O3IntType>>;
-        using O3RealTypeList = std::vector<std::unique_ptr<O3RealType>>;
+        using O3TypeList      = std::vector<std::unique_ptr<O3Type>>;
+        using O3IntTypeList   = std::vector<std::unique_ptr<O3IntType>>;
+        using O3RealTypeList  = std::vector<std::unique_ptr<O3RealType>>;
         using O3InterfaceList = std::vector<std::unique_ptr<O3Interface>>;
-        using O3ClassList = std::vector<std::unique_ptr<O3Class>>;
-        using O3SystemList = std::vector<std::unique_ptr<O3System>>;
-        using O3ImportList = std::vector<std::unique_ptr<O3Import>>;
+        using O3ClassList     = std::vector<std::unique_ptr<O3Class>>;
+        using O3SystemList    = std::vector<std::unique_ptr<O3System>>;
+        using O3ImportList    = std::vector<std::unique_ptr<O3Import>>;
 
         O3PRM();
         O3PRM( const O3PRM& src );

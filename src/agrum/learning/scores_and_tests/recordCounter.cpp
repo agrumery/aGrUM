@@ -26,5 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/recordCounter.h>
 
-
 template class gum::learning::RecordCounter<>;

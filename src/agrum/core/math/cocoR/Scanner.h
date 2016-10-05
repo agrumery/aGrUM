@@ -123,7 +123,7 @@ namespace gum {
         Elem( int key, int val ) {
           this->key = key;
           this->val = val;
-          next = NULL;
+          next      = NULL;
         }
       };
 
@@ -150,9 +150,9 @@ namespace gum {
 
       void set( int key, int val ) {
         Elem* e = new Elem( key, val );
-        int k = ( (unsigned int)key ) % 128;
+        int k   = ( (unsigned int)key ) % 128;
         e->next = tab[k];
-        tab[k] = e;
+        tab[k]  = e;
       }
 
       int state( int key ) {
@@ -178,7 +178,7 @@ namespace gum {
         Elem( const wchar_t* key, int val ) {
           this->key = coco_string_create( key );
           this->val = val;
-          next = NULL;
+          next      = NULL;
         }
         virtual ~Elem() { coco_string_delete( key ); }
       };
@@ -206,9 +206,9 @@ namespace gum {
 
       void set( const wchar_t* key, int val ) {
         Elem* e = new Elem( key, val );
-        int k = coco_string_hash( key ) % 128;
+        int k   = coco_string_hash( key ) % 128;
         e->next = tab[k];
-        tab[k] = e;
+        tab[k]  = e;
       }
 
       int get( const wchar_t* key, int defaultVal ) {
@@ -275,7 +275,7 @@ namespace gum {
       Scanner( const unsigned char* buf,
                int len,
                std::string filename = "anonymous buffer",
-               bool trace = false );
+               bool trace           = false );
       Scanner( const char* fileName, bool trace = false );
       Scanner( const wchar_t* fileName, bool trace = false );
       Scanner( FILE* s, bool trace = false );

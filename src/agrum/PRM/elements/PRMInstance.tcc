@@ -94,7 +94,7 @@ namespace gum {
           } catch ( NotFound& ) {
 
             auto elt = &( type().get( node ) );
-            auto sc = static_cast<PRMSlotChain<GUM_SCALAR>*>( elt );
+            auto sc  = static_cast<PRMSlotChain<GUM_SCALAR>*>( elt );
             const auto& instances = getInstances( sc->id() );
 
             for ( const auto inst : instances ) {
@@ -344,7 +344,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMInstance<GUM_SCALAR>::__addReferingInstance(
         PRMSlotChain<GUM_SCALAR>* sc, PRMInstance<GUM_SCALAR>* i ) {
-      NodeId id = i->get( sc->lastElt().safeName() ).id();
+      NodeId id        = i->get( sc->lastElt().safeName() ).id();
       std::string name = sc->lastElt().safeName();
 
       try {

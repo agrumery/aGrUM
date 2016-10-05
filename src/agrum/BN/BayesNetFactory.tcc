@@ -70,7 +70,7 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed, "Illegal state to proceed make a copy." );
     } else {
       __states = source.__states;
-      __bn = new BayesNet<GUM_SCALAR>( *( source.__bn ) );
+      __bn     = new BayesNet<GUM_SCALAR>( *( source.__bn ) );
     }
   }
 
@@ -83,7 +83,7 @@ namespace gum {
 
     if ( __impl != 0 ) {
       //@todo better than throwing an exception from inside a destructor but
-      //still ...
+      // still ...
       std::cerr
           << "[BN factory] Implementation defined for a variable but not used. "
              "You should call endVariableDeclaration() before "
@@ -221,7 +221,7 @@ namespace gum {
     if ( state() != factory_state::VARIABLE ) {
       __illegalStateError( "variableDescription" );
     } else {
-      __bar_flag = true;
+      __bar_flag     = true;
       __stringBag[1] = desc;
     }
   }
@@ -487,7 +487,7 @@ namespace gum {
     // the main loop is on the first variables. The others are in the right
     // order.
     const DiscreteVariable& first = table.variable( 0 );
-    Idx j = 0;
+    Idx j                         = 0;
 
     for ( cptInst.setFirstVar( first ); !cptInst.end();
           cptInst.incVar( first ) ) {
@@ -524,7 +524,7 @@ namespace gum {
     do {
       if ( modCounter[i] == ( varList[i]->domainSize() - 1 ) ) {
         modCounter[i] = 0;
-        add = true;
+        add           = true;
       } else {
         modCounter[i] += 1;
         add = false;
@@ -777,7 +777,7 @@ namespace gum {
     } else {
       __checkVariableName( varName );
       const DiscreteVariable& var = __bn->variable( __varNameMap[varName] );
-      NodeId varId = __varNameMap[varName];
+      NodeId varId                = __varNameMap[varName];
       // If we have to change the structure of the BayesNet, then we call a sub
       // method.
 

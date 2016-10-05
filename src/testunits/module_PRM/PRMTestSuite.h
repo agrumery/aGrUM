@@ -77,7 +77,7 @@ namespace gum_tests {
     }
 
     void testClassAccess() {
-      gum::prm::PRMClass<double>& c = prm->getClass( "SafeComputer" );
+      gum::prm::PRMClass<double>& c       = prm->getClass( "SafeComputer" );
       gum::prm::ClassBayesNet<double>* bn = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::ClassBayesNet<double>(
                                         prm->getClass( "SafeComputer" ) ) );
@@ -141,7 +141,7 @@ namespace gum_tests {
       for ( const auto node : bn.nodes() ) {
         wount++;
         std::string var = bn.variable( node ).name();
-        size_t pos = var.find_first_of( '.' );
+        size_t pos      = var.find_first_of( '.' );
         gum::prm::PRMInstance<double>& instance =
             sys.get( var.substr( 0, pos ) );
         gum::prm::PRMAttribute<double>& attr =

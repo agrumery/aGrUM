@@ -133,7 +133,7 @@ namespace gum_tests {
       const auto& state = bar.get( "state" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
       const auto& cpf = state.cpf();
-      auto i = gum::Instantiation( cpf );
+      auto i          = gum::Instantiation( cpf );
       i.setFirst();
       TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
       i.inc();
@@ -164,7 +164,7 @@ namespace gum_tests {
       const auto& state = bar.get( "state" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
       const auto& cpf = state.cpf();
-      auto i = gum::Instantiation( cpf );
+      auto i          = gum::Instantiation( cpf );
       i.setFirst();
       TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
       i.inc();
@@ -2283,8 +2283,8 @@ namespace gum_tests {
       // Arrange
       auto path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
       gum::prm::PRM<double> prm;
-      auto input = std::ifstream( path );
-      auto output = std::stringstream();
+      auto input   = std::ifstream( path );
+      auto output  = std::stringstream();
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );

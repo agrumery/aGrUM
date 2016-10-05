@@ -130,8 +130,8 @@ namespace gum_tests {
 
       if ( m1 > m2 ) {  // (ll,m2,m1,hh)
         tmp = m2;
-        m2 = m1;
-        m1 = tmp;
+        m2  = m1;
+        m1  = tmp;
       }
 
       // the order is now ll<=m1<=m2<=hh

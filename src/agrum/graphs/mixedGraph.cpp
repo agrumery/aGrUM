@@ -38,7 +38,7 @@ namespace gum {
                           Size edges_size,
                           bool edges_resize_policy )
       :  // Note that we need to initialize the NodeGraphPart by ourselves
-         // because
+      // because
       // it is a virtual inherited class (see C++ FAQ Lite #25.12 for details)
       NodeGraphPart( nodes_size, nodes_resize_policy )
       , UndiGraph( edges_size, edges_resize_policy )

@@ -87,7 +87,7 @@ namespace gum {
 
     if ( this != &from ) {
       if ( _content != nullptr ) delete ( _content );  // should be the case
-      _content = from._content;
+      _content      = from._content;
       from._content = nullptr;
     }
 
@@ -102,7 +102,7 @@ namespace gum {
             std::forward<MultiDimContainer<GUM_SCALAR>>( from ) ) {
     GUM_CONS_MOV( MultiDimDecorator );
 
-    _content = from._content;
+    _content      = from._content;
     from._content = nullptr;
   }
 
@@ -355,7 +355,7 @@ namespace gum {
       // TODO : frees all slave instantiations
       // TODO : control the dimensions ?
       MultiDimImplementation<GUM_SCALAR>* tmp = _content;
-      _content = aContent;
+      _content                                = aContent;
       // registers all instantiations
       delete ( tmp );
     }

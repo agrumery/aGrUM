@@ -85,7 +85,7 @@ namespace gum {
        * initialize the translator. */
       CellTranslatorString(
           Sequence<std::string> values = Sequence<std::string>(),
-          bool check_database = true );
+          bool check_database          = true );
 
       /// copy constructor
       CellTranslatorString( const CellTranslatorString& from );

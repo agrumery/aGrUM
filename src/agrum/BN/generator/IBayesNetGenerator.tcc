@@ -47,7 +47,7 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed,
                  " maxModality must be at least equal to two " );
 
-    _maxArcs = maxArcs;
+    _maxArcs     = maxArcs;
     _maxModality = maxModality;
   }
 

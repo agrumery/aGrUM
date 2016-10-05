@@ -100,7 +100,7 @@ namespace gum {
     INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::clear() {
       Counter<IdSetAlloc, CountAlloc>::clear();
       _is_normalized.clear();
-      __apriori_computed = false;
+      __apriori_computed       = false;
       __score_apriori_inserted = false;
     }
 

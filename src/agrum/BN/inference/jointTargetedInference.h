@@ -29,13 +29,13 @@
 #define GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
 
 
-#include <agrum/config.h>
 #include <agrum/BN/inference/marginalTargetedInference.h>
+#include <agrum/config.h>
 
 
 namespace gum {
 
-  
+
   /**
    * @class JointTargetedInference jointTargetedInference.h
    * <agrum/BN/inference/jointTargetedInference.h>
@@ -52,8 +52,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class JointTargetedInference : public MarginalTargetedInference<GUM_SCALAR> {
-  public:
-
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -69,7 +68,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Probability computations
     // ############################################################################
@@ -77,7 +76,8 @@ namespace gum {
 
     /// Compute the joint posterior of a set of nodes.
     /**
-     * @returns a const ref to the posterior joint probability of the set of nodes.
+     * @returns a const ref to the posterior joint probability of the set of
+     * nodes.
      * @param nodes the set of nodes whose posterior joint probability is wanted
      *
      * @warning for efficiency reasons, the potential is stored into the
@@ -90,11 +90,11 @@ namespace gum {
      * @throw UndefinedElement if nodes is not in the targets
      */
     virtual const Potential<GUM_SCALAR>&
-    jointPosterior ( const NodeSet& nodes ) final;
+    jointPosterior( const NodeSet& nodes ) final;
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Targets
     // ############################################################################
@@ -103,54 +103,55 @@ namespace gum {
     /// Clear all previously defined targets (marginal and joint targets)
     /**
      * Clear all previously defined targets. As a result, no posterior can be
-     * computed (since we can only compute the posteriors of the marginal or joint
+     * computed (since we can only compute the posteriors of the marginal or
+     * joint
      * targets that have been added by the user).
      */
-    virtual void eraseAllTargets ();
+    virtual void eraseAllTargets();
 
     /// Clear all previously defined joint targets
-    virtual void eraseAllJointTargets () final;
+    virtual void eraseAllJointTargets() final;
 
     /// Clear all the previously defined marginal targets
-    virtual void eraseAllMarginalTargets () final;
+    virtual void eraseAllMarginalTargets() final;
 
     /// Add a set of nodes as a new joint target
     /**
      * @throw UndefinedElement if some node(s) do not belong to the Bayes net
      */
-    virtual void addJointTarget ( const NodeSet& target ) final;
-    
+    virtual void addJointTarget( const NodeSet& target ) final;
+
     /// removes an existing joint target
     /** @warning If the joint target does not already exist, the method does
      * nothing. In particular, it does not raise any exception. */
-    virtual void eraseJointTarget ( const NodeSet& target ) final;
+    virtual void eraseJointTarget( const NodeSet& target ) final;
 
     /// return true if target is a joint target.
-    virtual bool isJointTarget ( const NodeSet& target ) const final;
+    virtual bool isJointTarget( const NodeSet& target ) const final;
 
     /// returns the list of joint targets
     virtual const Set<NodeSet>& jointTargets() const noexcept final;
 
     /// @}
 
-    
-  protected:
+
+    protected:
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged ( const IBayesNet<GUM_SCALAR>* bn );
+    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn );
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetAdded ( const NodeSet& set ) = 0;
+    virtual void _onJointTargetAdded( const NodeSet& set ) = 0;
 
     /// fired before a joint target is removed
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetErased ( const NodeSet& set ) = 0;
+    virtual void _onJointTargetErased( const NodeSet& set ) = 0;
 
     /// fired before a all the marginal and joint targets are removed
-    virtual void _onAllTargetsErased () = 0;
+    virtual void _onAllTargetsErased() = 0;
 
     ///  fired before a all the joint targets are removed
-    virtual void _onAllJointTargetsErased () = 0;
+    virtual void _onAllJointTargetsErased() = 0;
 
 
     /// asks derived classes for the joint posterior of a given set of variables
@@ -159,11 +160,10 @@ namespace gum {
     virtual const Potential<GUM_SCALAR>&
     _jointPosterior( const NodeSet& set ) = 0;
 
-    
-  private:
+
+    private:
     /// the set of joint targets
     Set<NodeSet> __joint_targets;
-    
   };
 
 

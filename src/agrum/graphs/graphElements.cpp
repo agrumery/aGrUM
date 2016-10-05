@@ -44,7 +44,7 @@ namespace gum {
   /// by a Edge
 
   Size HashFunc<Edge>::operator()( const Edge& key ) const {
-    pair.first = key.first();
+    pair.first  = key.first();
     pair.second = key.second();
     return HashFuncSmallKeyPair<NodeId, NodeId>::operator()( pair );
   }
@@ -53,7 +53,7 @@ namespace gum {
   /// by a Arc
 
   Size HashFunc<Arc>::operator()( const Arc& key ) const {
-    pair.first = key.first();
+    pair.first  = key.first();
     pair.second = key.second();
     return HashFuncSmallKeyPair<NodeId, NodeId>::operator()( pair );
   }

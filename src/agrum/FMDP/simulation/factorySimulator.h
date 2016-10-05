@@ -39,34 +39,34 @@ namespace gum {
 
 
   enum FactorySimulationLandmark : Idx {
-    HOME = 0,
-    WORK = 1,
+    HOME    = 0,
+    WORK    = 1,
     THEATER = 2,
-    CLUB = 3,
+    CLUB    = 3,
     Factory = 4
   };
   enum FactorySimulationLandmarkX : Idx {
-    HOMEX = 0,
-    WORKX = 0,
+    HOMEX    = 0,
+    WORKX    = 0,
     THEATERX = 3,
-    CLUBX = 4,
+    CLUBX    = 4,
     STATIONX = 2
   };
   enum FactorySimulationLandmarkY : Idx {
-    HOMEY = 0,
-    WORKY = 4,
+    HOMEY    = 0,
+    WORKY    = 4,
     THEATERY = 0,
-    CLUBY = 4,
+    CLUBY    = 4,
     STATIONY = 1
   };
   enum FactorySimulationAction : Idx {
     GoNorth = 0,
-    GoEast = 1,
+    GoEast  = 1,
     GoSouth = 2,
-    GoWest = 3,
-    PickUp = 4,
+    GoWest  = 3,
+    PickUp  = 4,
     PutDown = 5,
-    FillUp = 6
+    FillUp  = 6
   };
   /**
    * @class Factory factorySimulator.h

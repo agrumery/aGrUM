@@ -129,18 +129,18 @@ namespace gum {
                                            STRUCTURAL_CONSTRAINT,
                                            GRAPH_CHANGES_GENERATOR>& from ) {
       if ( this != &from ) {
-        __score = from.__score;
-        __constraint = from.__constraint;
-        __changes_generator = from.__changes_generator;
-        __changes = from.__changes;
-        __change_scores = from.__change_scores;
+        __score                 = from.__score;
+        __constraint            = from.__constraint;
+        __changes_generator     = from.__changes_generator;
+        __changes               = from.__changes;
+        __change_scores         = from.__change_scores;
         __change_queue_per_node = from.__change_queue_per_node;
-        __node_queue = from.__node_queue;
-        __illegal_changes = from.__illegal_changes;
-        __node_current_scores = from.__node_current_scores;
-        __parents = from.__parents;
-        __queues_valid = from.__queues_valid;
-        __queues_to_update = from.__queues_to_update;
+        __node_queue            = from.__node_queue;
+        __illegal_changes       = from.__illegal_changes;
+        __node_current_scores   = from.__node_current_scores;
+        __parents               = from.__parents;
+        __queues_valid          = from.__queues_valid;
+        __queues_to_update      = from.__queues_to_update;
       }
 
       return *this;
@@ -160,18 +160,18 @@ namespace gum {
                                             STRUCTURAL_CONSTRAINT,
                                             GRAPH_CHANGES_GENERATOR>&& from ) {
       if ( this != &from ) {
-        __score = std::move( from.__score );
-        __constraint = std::move( from.__constraint );
-        __changes_generator = std::move( from.__changes_generator );
-        __changes = std::move( from.__changes );
-        __change_scores = std::move( from.__change_scores );
+        __score                 = std::move( from.__score );
+        __constraint            = std::move( from.__constraint );
+        __changes_generator     = std::move( from.__changes_generator );
+        __changes               = std::move( from.__changes );
+        __change_scores         = std::move( from.__change_scores );
         __change_queue_per_node = std::move( from.__change_queue_per_node );
-        __node_queue = std::move( from.__node_queue );
-        __illegal_changes = std::move( from.__illegal_changes );
-        __node_current_scores = std::move( from.__node_current_scores );
-        __parents = std::move( from.__parents );
-        __queues_valid = std::move( from.__queues_valid );
-        __queues_to_update = std::move( from.__queues_to_update );
+        __node_queue            = std::move( from.__node_queue );
+        __illegal_changes       = std::move( from.__illegal_changes );
+        __node_current_scores   = std::move( from.__node_current_scores );
+        __parents               = std::move( from.__parents );
+        __queues_valid          = std::move( from.__queues_valid );
+        __queues_to_update      = std::move( from.__queues_to_update );
       }
 
       return *this;
@@ -365,8 +365,8 @@ namespace gum {
             ++j;
             double delta1 =
                 __score->score( j ) - __node_current_scores[change.node1()];
-            double delta = delta1 + delta2;
-            __change_scores[i].first = delta1;
+            double delta              = delta1 + delta2;
+            __change_scores[i].first  = delta1;
             __change_scores[i].second = delta2;
             __change_queue_per_node[change.node1()].insert( i, delta );
             __change_queue_per_node[change.node2()].insert( i, delta );
@@ -613,7 +613,7 @@ namespace gum {
           const double delta = delta1 + delta2;
 
           // update the scores
-          __change_scores[change_index].first = delta1;
+          __change_scores[change_index].first  = delta1;
           __change_scores[change_index].second = delta2;
 
           // update the queues
@@ -986,7 +986,7 @@ namespace gum {
         GRAPH_CHANGES_GENERATOR>::nodesSortedByBestScore() const {
       std::vector<std::pair<NodeId, double>> result( __node_queue.size() );
       for ( NodeId i = 0; i < __node_queue.size(); ++i ) {
-        result[i].first = __node_queue[i];
+        result[i].first  = __node_queue[i];
         result[i].second = __node_queue.priorityByPos( i );
       }
 
@@ -1010,7 +1010,7 @@ namespace gum {
         GRAPH_CHANGES_GENERATOR>::nodesUnsortedWithScore() const {
       std::vector<std::pair<Idx, double>> result( __node_queue.size() );
       for ( Idx i = 0; i < __node_queue.size(); ++i ) {
-        result[i].first = __node_queue[i];
+        result[i].first  = __node_queue[i];
         result[i].second = __node_queue.priorityByPos( i );
       }
 

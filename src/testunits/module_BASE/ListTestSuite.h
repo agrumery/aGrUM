@@ -50,8 +50,8 @@ namespace gum_tests {
       gum::List<int> liste3{1, 9, 10, 20, 30, 40};
 
       gum::List<int> liste4 = std::move( liste3 );
-      liste3 = std::move( liste2 );
-      liste2 = std::move( liste1 );
+      liste3                = std::move( liste2 );
+      liste2                = std::move( liste1 );
 
       TS_ASSERT( liste2.size() == 4 );
       TS_ASSERT( liste2.front() == 1 );
@@ -380,7 +380,7 @@ namespace gum_tests {
 
     void testPopBack() {
       gum::List<int> list = initializeList( 7 );
-      int last = list.back();
+      int last            = list.back();
       list.popBack();
 
       TS_ASSERT_DIFFERS( list.back(), last );
@@ -388,7 +388,7 @@ namespace gum_tests {
 
     void testPopFront() {
       gum::List<int> list = initializeList( 7 );
-      int first = list.front();
+      int first           = list.front();
       list.popFront();
 
       TS_ASSERT_DIFFERS( list.front(), first );
@@ -411,22 +411,22 @@ namespace gum_tests {
       gum::List<int> list3{2, 1, 8, 5, 3, 6, 4, 7};
       gum::List<int>::const_iterator iter1 = list3.cbegin();
       gum::List<int>::const_iterator iter2 = list3.cbegin() + 4;
-      int d1 = int( iter2 - iter1 );
+      int d1                               = int( iter2 - iter1 );
       TS_ASSERT_EQUALS( d1, 4 );
 
       gum::List<int>::iterator iter3 = list3.begin();
       gum::List<int>::iterator iter4 = list3.begin() + 4;
-      int d2 = int( iter4 - iter3 );
+      int d2                         = int( iter4 - iter3 );
       TS_ASSERT_EQUALS( d2, 4 );
 
       gum::List<int>::const_iterator iter11 = list3.cbegin();
       gum::List<int>::const_iterator iter12 = list3.cbegin() + 4;
-      int d11 = int( iter12 - iter11 );
+      int d11                               = int( iter12 - iter11 );
       TS_ASSERT_EQUALS( d11, 4 );
 
       gum::List<int>::iterator iter13 = list3.begin();
       gum::List<int>::iterator iter14 = list3.begin() + 4;
-      int d12 = int( iter14 - iter13 );
+      int d12                         = int( iter14 - iter13 );
       TS_ASSERT_EQUALS( d12, 4 );
     }
 

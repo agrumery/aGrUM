@@ -70,21 +70,21 @@ namespace gum {
 
   ParseError::ParseError( const ParseError& err ) {
     is_error = err.is_error;
-    line = err.line;
-    column = err.column;  // default 0
-    msg = err.msg;
+    line     = err.line;
+    column   = err.column;  // default 0
+    msg      = err.msg;
     filename = err.filename;  // default ""
-    code = err.code;          // default ""
+    code     = err.code;      // default ""
   }
 
   ParseError ParseError::operator=( const ParseError& err ) {
     if ( this != &err ) {
       is_error = err.is_error;
-      line = err.line;
-      column = err.column;  // default 0
-      msg = err.msg;
+      line     = err.line;
+      column   = err.column;  // default 0
+      msg      = err.msg;
       filename = err.filename;  // default ""
-      code = err.code;          // default ""
+      code     = err.code;      // default ""
     }
 
     return *this;
@@ -140,12 +140,12 @@ namespace gum {
   }
 
   ErrorsContainer::ErrorsContainer() {
-    error_count = 0;
+    error_count   = 0;
     warning_count = 0;
   }
 
   ErrorsContainer::ErrorsContainer( const ErrorsContainer& cont ) {
-    error_count = cont.error_count;
+    error_count   = cont.error_count;
     warning_count = cont.warning_count;
     errors.clear();
     errors = cont.errors;
@@ -155,7 +155,7 @@ namespace gum {
   operator+( const ErrorsContainer& cont ) const {
     ErrorsContainer newCont;
 
-    newCont.error_count = this->error_count + cont.error_count;
+    newCont.error_count   = this->error_count + cont.error_count;
     newCont.warning_count = this->warning_count + cont.warning_count;
     std::copy(
         this->errors.begin(), this->errors.end(), newCont.errors.begin() );
@@ -165,7 +165,7 @@ namespace gum {
   }
 
   ErrorsContainer ErrorsContainer::operator=( const ErrorsContainer& cont ) {
-    error_count = cont.error_count;
+    error_count   = cont.error_count;
     warning_count = cont.warning_count;
     errors.clear();
     errors = cont.errors;

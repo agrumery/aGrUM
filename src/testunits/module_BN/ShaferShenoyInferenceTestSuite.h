@@ -75,7 +75,8 @@ namespace gum_tests {
         fill( *bn );
         // Testing the inference
         gum::ShaferShenoyInference<float>* inf = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference<float>( *bn ) );
+        TS_GUM_ASSERT_THROWS_NOTHING(
+            inf = new gum::ShaferShenoyInference<float>( *bn ) );
         TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
         if ( inf != 0 ) {
@@ -121,7 +122,7 @@ namespace gum_tests {
 
     void testWithGenerator() {
       gum::Size density[] = {9, 18, 27, 36, 45};
-      int trial_nb = 5;
+      int trial_nb        = 5;
 
       for ( int i = 0; i < trial_nb; ++i ) {
         gum::SimpleBayesNetGenerator<float> bnGen( 10, density[i] );

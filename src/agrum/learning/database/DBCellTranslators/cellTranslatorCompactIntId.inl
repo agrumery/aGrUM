@@ -64,7 +64,7 @@ namespace gum {
     operator=( const CellTranslatorCompactIntId& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( from );
-        __values = from.__values;
+        __values         = from.__values;
         __check_database = from.__check_database;
       }
       return *this;
@@ -75,7 +75,7 @@ namespace gum {
     operator=( CellTranslatorCompactIntId&& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( std::move( from ) );
-        __values = std::move( from.__values );
+        __values         = std::move( from.__values );
         __check_database = std::move( from.__check_database );
       }
       return *this;

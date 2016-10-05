@@ -30,49 +30,43 @@
 
 namespace gum {
 
-
   /// default constructor
   UnconstrainedEliminationSequenceStrategy::
-  UnconstrainedEliminationSequenceStrategy () {
+      UnconstrainedEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_CONSTRUCTOR( UnconstrainedEliminationSequenceStrategy );
   }
 
-  
   /// constructor for an a priori non empty graph
   UnconstrainedEliminationSequenceStrategy::
-  UnconstrainedEliminationSequenceStrategy
-  ( UndiGraph* graph,
-    const NodeProperty<Size>* dom_sizes ) :
-    EliminationSequenceStrategy ( graph, dom_sizes ) {
+      UnconstrainedEliminationSequenceStrategy(
+          UndiGraph* graph, const NodeProperty<Size>* dom_sizes )
+      : EliminationSequenceStrategy( graph, dom_sizes ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( UnconstrainedEliminationSequenceStrategy );
   }
-  
 
   /// copy constructor
   UnconstrainedEliminationSequenceStrategy::
-  UnconstrainedEliminationSequenceStrategy
-  ( const UnconstrainedEliminationSequenceStrategy& from) :
-    EliminationSequenceStrategy ( from ) {
+      UnconstrainedEliminationSequenceStrategy(
+          const UnconstrainedEliminationSequenceStrategy& from )
+      : EliminationSequenceStrategy( from ) {
     // for debugging purposes
     GUM_CONS_CPY( UnconstrainedEliminationSequenceStrategy );
   }
 
-  
   /// move constructor
   UnconstrainedEliminationSequenceStrategy::
-  UnconstrainedEliminationSequenceStrategy
-  ( UnconstrainedEliminationSequenceStrategy&& from) :
-    EliminationSequenceStrategy ( std::move ( from ) ) {
+      UnconstrainedEliminationSequenceStrategy(
+          UnconstrainedEliminationSequenceStrategy&& from )
+      : EliminationSequenceStrategy( std::move( from ) ) {
     // for debugging purposes
     GUM_CONS_MOV( UnconstrainedEliminationSequenceStrategy );
   }
 
-
   /// destructor
   UnconstrainedEliminationSequenceStrategy::
-  ~UnconstrainedEliminationSequenceStrategy() {
+      ~UnconstrainedEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_DESTRUCTOR( UnconstrainedEliminationSequenceStrategy );
   }

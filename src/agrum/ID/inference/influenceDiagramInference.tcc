@@ -333,7 +333,7 @@ namespace gum {
       Sequence<NodeId> eliminationOrder =
           __cliquePropertiesMap[cli]->cliqueEliminationOrder();
       SequenceIterator<NodeId> cliqueNodesIter = eliminationOrder.begin();
-      bool validIndex = false;
+      bool validIndex                          = false;
 
       // On parcours chaque noeud de la clique par ordre d'élimination, ...
       while ( cliqueNodesIter != eliminationOrder.end() && !validIndex ) {
@@ -471,7 +471,7 @@ namespace gum {
     // absorbing one
     NodeSet separator = __getSeparator( absorbedCliqueId, absorbingCliqueId );
 
-    Potential<GUM_SCALAR>* potentialMarginal = 0;
+    Potential<GUM_SCALAR>* potentialMarginal  = 0;
     UtilityTable<GUM_SCALAR>* utilityMarginal = 0;
 
     // First  we reduce absorbed clique by eleminating clique variables which
@@ -540,7 +540,7 @@ namespace gum {
         // Initialisation Operations
 
         // First we create the tables that will result from variable elimination
-        Potential<GUM_SCALAR>* newPotential = new Potential<GUM_SCALAR>();
+        Potential<GUM_SCALAR>* newPotential  = new Potential<GUM_SCALAR>();
         UtilityTable<GUM_SCALAR>* newUtility = new UtilityTable<GUM_SCALAR>();
 
         // Then we need to add all not yet eliminated variables of the clique in
@@ -573,7 +573,7 @@ namespace gum {
 
           // Various initialization
           GUM_SCALAR potentialValue = (GUM_SCALAR)0;
-          GUM_SCALAR utilityValue = (GUM_SCALAR)0;
+          GUM_SCALAR utilityValue   = (GUM_SCALAR)0;
 
           if ( this->influenceDiagram().isDecisionNode( node ) )
             utilityValue = -1 * ( std::numeric_limits<GUM_SCALAR>::max() );

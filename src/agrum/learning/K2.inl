@@ -53,7 +53,7 @@ namespace gum {
     INLINE K2& K2::operator=( const K2& from ) {
       if ( this != &from ) {
         GreedyHillClimbing::operator=( from );
-        __order = from.__order;
+        __order                     = from.__order;
       }
       return *this;
     }
@@ -62,7 +62,7 @@ namespace gum {
     INLINE K2& K2::operator=( K2&& from ) {
       if ( this != &from ) {
         GreedyHillClimbing::operator=( std::move( from ) );
-        __order = std::move( from.__order );
+        __order                     = std::move( from.__order );
       }
       return *this;
     }

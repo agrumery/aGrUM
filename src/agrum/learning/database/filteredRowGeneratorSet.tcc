@@ -75,7 +75,7 @@ namespace gum {
         const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from ) {
       if ( this != &from ) {
         NextGenerators::operator=( from );
-        __first_generator = from.__first_generator;
+        __first_generator       = from.__first_generator;
       }
       return *this;
     }
@@ -87,7 +87,7 @@ namespace gum {
     operator=( FilteredRowGeneratorSet<Generator, OtherGenerators...>&& from ) {
       if ( this != &from ) {
         NextGenerators::operator=( std::move( from ) );
-        __first_generator = std::move( from.__first_generator );
+        __first_generator       = std::move( from.__first_generator );
       }
       return *this;
     }

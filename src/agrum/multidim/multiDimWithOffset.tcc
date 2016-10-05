@@ -231,7 +231,7 @@ namespace gum {
       Instantiation& result, Size indice ) const {
     for ( Idx i = 0; i < this->nbrDim(); ++i ) {
       const DiscreteVariable& var = this->variable( i );
-      Idx domainSize = var.domainSize();
+      Idx domainSize              = var.domainSize();
       result.chgVal( var, indice % domainSize );
       indice = indice / domainSize;
     }

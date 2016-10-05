@@ -103,10 +103,10 @@ namespace gum {
         __attachHandler();
       }
 
-      __row = h.__row;
-      __index = h.__index;
+      __row         = h.__row;
+      __index       = h.__index;
       __begin_index = h.__begin_index;
-      __end_index = h.__end_index;
+      __end_index   = h.__end_index;
       return *this;
     }
 
@@ -120,10 +120,10 @@ namespace gum {
         __attachHandler();
       }
 
-      __row = h.__row;
-      __index = h.__index;
+      __row         = h.__row;
+      __index       = h.__index;
       __begin_index = h.__begin_index;
-      __end_index = h.__end_index;
+      __end_index   = h.__end_index;
       return *this;
     }
 
@@ -195,8 +195,8 @@ namespace gum {
       }
 
       __begin_index = begin;
-      __end_index = end;
-      __index = begin;
+      __end_index   = end;
+      __index       = begin;
     }
 
     /// returns the current range of the handler
@@ -243,10 +243,10 @@ namespace gum {
     INLINE DatabaseVectInRAM::~DatabaseVectInRAM() {
       // indicate to all the handlers that we are destructing the database
       for ( auto handler : __list_of_handlers ) {
-        handler->__db = nullptr;
-        handler->__row = nullptr;
+        handler->__db        = nullptr;
+        handler->__row       = nullptr;
         handler->__end_index = 0;
-        handler->__index = 0;
+        handler->__index     = 0;
       }
 
       GUM_DESTRUCTOR( DatabaseVectInRAM );
@@ -258,13 +258,13 @@ namespace gum {
       if ( this != &from ) {
         // invalidate the current handlers
         for ( auto handler : __list_of_handlers ) {
-          handler->__db = nullptr;
-          handler->__row = nullptr;
+          handler->__db        = nullptr;
+          handler->__row       = nullptr;
           handler->__end_index = 0;
-          handler->__index = 0;
+          handler->__index     = 0;
         }
 
-        __data = from.__data;
+        __data           = from.__data;
         __variable_names = from.__variable_names;
       }
 
@@ -277,13 +277,13 @@ namespace gum {
       if ( this != &from ) {
         // invalidate the current handlers
         for ( auto handler : __list_of_handlers ) {
-          handler->__db = nullptr;
-          handler->__row = nullptr;
+          handler->__db        = nullptr;
+          handler->__row       = nullptr;
           handler->__end_index = 0;
-          handler->__index = 0;
+          handler->__index     = 0;
         }
 
-        __data = std::move( from.__data );
+        __data           = std::move( from.__data );
         __variable_names = std::move( from.__variable_names );
       }
 

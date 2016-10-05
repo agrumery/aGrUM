@@ -118,7 +118,7 @@ namespace gum {
   INLINE void MultiDimCombinationDefault<GUM_SCALAR, TABLE>::combine(
       TABLE<GUM_SCALAR>& container, const Set<const TABLE<GUM_SCALAR>*>& set ) {
     TABLE<GUM_SCALAR>* res = combine( set );
-    container = *res;
+    container              = *res;
     delete ( res );
   }
 
@@ -179,7 +179,7 @@ namespace gum {
     // available.
     for ( unsigned int k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
-      pair = queue.pop();
+      pair            = queue.pop();
       unsigned int ti = pair.first;
       unsigned int tj = pair.second;
 
@@ -304,7 +304,7 @@ namespace gum {
     // available.
     for ( unsigned int k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
-      pair = queue.pop();
+      pair            = queue.pop();
       unsigned int ti = pair.first;
       unsigned int tj = pair.second;
 
@@ -373,7 +373,7 @@ namespace gum {
         for ( unsigned int ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = _combinedSize( *new_seq, *( tables[ind] ) );
+            newsize    = _combinedSize( *new_seq, *( tables[ind] ) );
             queue.setPriority( pair, newsize );
           }
         }
@@ -383,7 +383,7 @@ namespace gum {
         for ( unsigned int ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
-            newsize = _combinedSize( *new_seq, *( tables[ind] ) );
+            newsize     = _combinedSize( *new_seq, *( tables[ind] ) );
             queue.setPriority( pair, newsize );
           }
         }
@@ -448,7 +448,7 @@ namespace gum {
             iter != set.endSafe();
             ++iter, ++i ) {
         const Sequence<const DiscreteVariable*>* vars = *iter;
-        tables[i] = vars;
+        tables[i]                                     = vars;
 
         Size size = 0;
 
@@ -492,7 +492,7 @@ namespace gum {
     // available.
     for ( unsigned int k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
-      pair = queue.pop();
+      pair            = queue.pop();
       unsigned int ti = pair.first;
       unsigned int tj = pair.second;
 
@@ -558,8 +558,8 @@ namespace gum {
       tables[ti] = new_seq;
 
       table_size[ti] = new_size;
-      is_t_new[ti] = true;
-      tables[tj] = 0;
+      is_t_new[ti]   = true;
+      tables[tj]     = 0;
 
       // remove all the pairs involving tj in the priority queue
 
@@ -587,7 +587,7 @@ namespace gum {
         for ( unsigned int ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = _combinedSize( *new_seq, *( tables[ind] ) );
+            newsize    = _combinedSize( *new_seq, *( tables[ind] ) );
             queue.setPriority( pair, newsize );
           }
         }
@@ -597,7 +597,7 @@ namespace gum {
         for ( unsigned int ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
-            newsize = _combinedSize( *new_seq, *( tables[ind] ) );
+            newsize     = _combinedSize( *new_seq, *( tables[ind] ) );
             queue.setPriority( pair, newsize );
           }
         }

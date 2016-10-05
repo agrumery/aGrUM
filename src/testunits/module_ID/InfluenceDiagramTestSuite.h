@@ -94,7 +94,7 @@ namespace gum_tests {
         {
           // FILLING PARAMS
           const float t[4] = {0.2f, 0.8f, 0.5f, 0.5f};
-          int n = 4;
+          int n            = 4;
           const std::vector<float> v( t, t + n );
           p1.populate( v );
         }
@@ -103,7 +103,7 @@ namespace gum_tests {
         {
           // FILLING PARAMS
           const float t[4] = {0.1f, 0.9f, 0.9f, 0.1f};
-          int n = 4;
+          int n            = 4;
           const std::vector<float> v( t, t + n );
           p2.populate( v );
         }
@@ -112,7 +112,7 @@ namespace gum_tests {
         {
           // FILLING PARAMS
           const float t[4] = {0.35f, 0.65f, 0.19f, 0.81f};
-          int n = 4;
+          int n            = 4;
           const std::vector<float> v( t, t + n );
           p3.populate( v );
         }
@@ -121,7 +121,7 @@ namespace gum_tests {
         {
           // FILLING PARAMS
           const float t[4] = {0.4f, 0.6f, 0.5f, 0.5f};
-          int n = 4;
+          int n            = 4;
           const std::vector<float> v( t, t + n );
           p4.populate( v );
         }
@@ -130,7 +130,7 @@ namespace gum_tests {
         {
           // FILLING PARAMS
           const float t[8] = {0.4f, 0.6f, 0.8f, 0.2f, 0.4f, 0.6f, 0.3f, 0.7f};
-          int n = 8;
+          int n            = 8;
           const std::vector<float> v( t, t + n );
           p5.populate( v );
         }
@@ -139,7 +139,7 @@ namespace gum_tests {
         {
           // FILLING PARAMS
           const float t[4] = {42.0f, 69.0f, 666.0f, 84.0f};
-          int n = 4;
+          int n            = 4;
           const std::vector<float> v( t, t + n );
           u1.populate( v );
         }
@@ -148,7 +148,7 @@ namespace gum_tests {
         {
           // FILLING PARAMS
           const float t[4] = {42.0f, -69.0f, 666.0f, 84.0f};
-          int n = 4;
+          int n            = 4;
           const std::vector<float> v( t, t + n );
           u2.populate( v );
         }
@@ -170,13 +170,13 @@ namespace gum_tests {
       decisionVar2 = new gum::LabelizedVariable( "decisionVar2", "D2", 2 );
       decisionVar3 = new gum::LabelizedVariable( "decisionVar3", "D3", 2 );
       decisionVar4 = new gum::LabelizedVariable( "decisionVar4", "D4", 2 );
-      chanceVar1 = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
-      chanceVar2 = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
-      chanceVar3 = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
-      chanceVar4 = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
-      chanceVar5 = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
-      utilityVar1 = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
-      utilityVar2 = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
+      chanceVar1   = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
+      chanceVar2   = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
+      chanceVar3   = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
+      chanceVar4   = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
+      chanceVar5   = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
+      utilityVar1  = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
+      utilityVar2  = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
     }
 
     void tearDown() {
@@ -293,7 +293,7 @@ namespace gum_tests {
         TS_ASSERT( copy->dag().exists( node ) );
 
         const gum::DiscreteVariable& srcVar = source.variable( node );
-        const gum::DiscreteVariable& cpVar = copy->variable( node );
+        const gum::DiscreteVariable& cpVar  = copy->variable( node );
         TS_ASSERT_EQUALS( srcVar.name(), cpVar.name() );
 
         if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -326,7 +326,7 @@ namespace gum_tests {
 
         } else if ( source.isUtilityNode( node ) ) {
           const gum::UtilityTable<float>& srcUT = source.utility( node );
-          const gum::UtilityTable<float>& cpUT = copy->utility( node );
+          const gum::UtilityTable<float>& cpUT  = copy->utility( node );
 
           gum::Instantiation srcInst( srcUT );
           gum::Instantiation cpInst( cpUT );
@@ -772,7 +772,7 @@ namespace gum_tests {
           id.getPartialTemporalOrder();
 
       gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
-      int i = 0;
+      int i                    = 0;
 
       for ( const auto nodeset : partialTemporalOrder ) {
         int j = 0;

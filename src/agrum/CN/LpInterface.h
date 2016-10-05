@@ -836,7 +836,7 @@ namespace gum {
        */
       template <typename T1,
                 forbidden_type<T1, LpExpr> = 0,
-                forbidden_type<T1, LpCol> = 0>
+                forbidden_type<T1, LpCol>  = 0>
       LpExpr operator+( const T1& lhs, const LpCol& rhs );
       /// @}
 
@@ -924,7 +924,7 @@ namespace gum {
        */
       template <typename T1,
                 forbidden_type<T1, LpExpr> = 0,
-                forbidden_type<T1, LpCol> = 0>
+                forbidden_type<T1, LpCol>  = 0>
       LpExpr operator-( const T1& lhs, const LpCol& rhs );
       /// @}
 
@@ -991,11 +991,11 @@ namespace gum {
       LpExpr operator<=( const LpCol& lhs, T2&& rhs );
       template <typename T1,
                 forbidden_type<T1, LpExpr&> = 0,
-                forbidden_type<T1, LpCol&> = 0>
+                forbidden_type<T1, LpCol&>  = 0>
       LpExpr operator<=( T1&& lhs, const LpExpr& rhs );
       template <typename T1,
                 forbidden_type<T1, LpExpr&> = 0,
-                forbidden_type<T1, LpCol&> = 0>
+                forbidden_type<T1, LpCol&>  = 0>
       LpExpr operator<=( T1&& lhs, const LpCol& rhs );
 
       template <typename T2>
@@ -1004,11 +1004,11 @@ namespace gum {
       LpExpr operator<=( LpCol&& lhs, T2&& rhs );
       template <typename T1,
                 forbidden_type<T1, LpExpr> = 0,
-                forbidden_type<T1, LpCol> = 0>
+                forbidden_type<T1, LpCol>  = 0>
       LpExpr operator<=( T1&& lhs, LpExpr&& rhs );
       template <typename T1,
                 forbidden_type<T1, LpExpr> = 0,
-                forbidden_type<T1, LpCol> = 0>
+                forbidden_type<T1, LpCol>  = 0>
       LpExpr operator<=( T1&& lhs, LpCol&& rhs );
 
       /// @}

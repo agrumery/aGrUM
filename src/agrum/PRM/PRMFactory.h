@@ -303,7 +303,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void startClass( const std::string& c,
-                               const std::string& ext = "",
+                               const std::string& ext             = "",
                                const Set<std::string>* implements = nullptr,
                                bool delayInheritance = false ) override;
 
@@ -343,7 +343,7 @@ namespace gum {
        */
       virtual void startInterface( const std::string& i,
                                    const std::string& ext = "",
-                                   bool delayInheritance = false ) override;
+                                   bool delayInheritance  = false ) override;
 
       /**
        * Continue the declaration of an interface.

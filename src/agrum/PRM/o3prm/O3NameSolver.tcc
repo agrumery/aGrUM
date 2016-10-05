@@ -81,14 +81,14 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = src.__prm;
-        __o3_prm = src.__o3_prm;
-        __errors = src.__errors;
-        __typeName = src.__typeName;
-        __eltName = src.__eltName;
-        __refName = src.__refName;
+        __prm           = src.__prm;
+        __o3_prm        = src.__o3_prm;
+        __errors        = src.__errors;
+        __typeName      = src.__typeName;
+        __eltName       = src.__eltName;
+        __refName       = src.__refName;
         __interfaceName = src.__interfaceName;
-        __className = src.__className;
+        __className     = src.__className;
         return *this;
       }
 
@@ -98,14 +98,14 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm = std::move( src.__prm );
-        __o3_prm = std::move( src.__o3_prm );
-        __errors = std::move( src.__errors );
-        __typeName = std::move( src.__typeName );
-        __eltName = std::move( src.__eltName );
-        __refName = std::move( src.__refName );
+        __prm           = std::move( src.__prm );
+        __o3_prm        = std::move( src.__o3_prm );
+        __errors        = std::move( src.__errors );
+        __typeName      = std::move( src.__typeName );
+        __eltName       = std::move( src.__eltName );
+        __refName       = std::move( src.__refName );
         __interfaceName = std::move( src.__interfaceName );
-        __className = std::move( src.__className );
+        __className     = std::move( src.__className );
         return *this;
       }
 
@@ -158,8 +158,8 @@ namespace gum {
           }
         }
 
-        auto lookup = "." + name.label();
-        auto found = Set<std::string>();
+        auto lookup  = "." + name.label();
+        auto found   = Set<std::string>();
         auto matches = std::vector<std::string>();
 
         // Trying with types
@@ -267,8 +267,8 @@ namespace gum {
 
         // If we didn't find it as is, then we must find a namespace
         // in which it was declared
-        auto lookup = "." + name.label();
-        auto found = Set<std::string>();
+        auto lookup  = "." + name.label();
+        auto found   = Set<std::string>();
         auto matches = std::vector<std::string>();
 
         // Trying with types
@@ -338,8 +338,8 @@ namespace gum {
 
         // If we didn't find it as is, then we must find a namespace
         // in which it was declared
-        auto lookup = "." + name.label();
-        auto found = Set<std::string>();
+        auto lookup  = "." + name.label();
+        auto found   = Set<std::string>();
         auto matches = std::vector<std::string>();
 
         // Trying with interfaces
@@ -411,9 +411,9 @@ namespace gum {
 
         // If we didn't find it as is, then we must find a namespace
         // in which it was declared
-        auto lookup = "." + name.label();
+        auto lookup  = "." + name.label();
         auto matches = std::vector<std::string>();
-        auto found = Set<std::string>();
+        auto found   = Set<std::string>();
 
         // Try to complete with Class
         for ( auto c : __prm->classes() ) {
@@ -491,8 +491,8 @@ namespace gum {
 
         // If we didn't find it as is, then we must find a namespace
         // in which it was declared
-        auto lookup = "." + name.label();
-        auto found = Set<std::string>();
+        auto lookup  = "." + name.label();
+        auto found   = Set<std::string>();
         auto matches = std::vector<std::string>();
 
         // Trying with interfaces

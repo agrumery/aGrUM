@@ -200,12 +200,12 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1( "OneMoreParent1", "", 2 );
       gum::LabelizedVariable oneMoreParent2( "OneMoreParent2", "", 2 );
 
-      gum::NodeId idCold = bn.add( cold );
-      gum::NodeId idFlu = bn.add( flu );
+      gum::NodeId idCold    = bn.add( cold );
+      gum::NodeId idFlu     = bn.add( flu );
       gum::NodeId idMalaria = bn.add( malaria );
-      gum::NodeId idFever = 0;
+      gum::NodeId idFever   = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( idFever = bn.addLogit( fever, 0.3f ) );
-      gum::NodeId idOneMore = bn.add( oneMore );
+      gum::NodeId idOneMore        = bn.add( oneMore );
       gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
       gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 

@@ -97,7 +97,7 @@ namespace gum {
     // Compute the offset of the variables. In addition, get the offset in
     // table induced by the instantiation inst_var
     Idx table_alone_offset = 0;
-    Idx offset = 1;
+    Idx offset             = 1;
     HashTable<const DiscreteVariable*, Idx> var1offset( table_vars.size() );
 
     for ( const auto var : table_vars ) {
@@ -119,8 +119,8 @@ namespace gum {
     std::vector<Idx> table_and_result_offset;
     std::vector<Idx> table_and_result_domain;
     Idx result_domain_size = 1;
-    bool has_before_incr = true;
-    bool found_inst_var = false;
+    bool has_before_incr   = true;
+    bool found_inst_var    = false;
 
     for ( const auto var : table_vars ) {
       if ( !inst_vars.exists( var ) ) {
@@ -145,7 +145,7 @@ namespace gum {
     // The value by which variables shall be decreased is indicated in
     // table_and_result_down
     std::vector<Idx> table_and_result_value = table_and_result_domain;
-    std::vector<Idx> table_and_result_down = table_and_result_offset;
+    std::vector<Idx> table_and_result_down  = table_and_result_offset;
 
     for ( unsigned int i = 0; i < table_and_result_down.size(); ++i ) {
       table_and_result_down[i] *= ( table_and_result_domain[i] - 1 );

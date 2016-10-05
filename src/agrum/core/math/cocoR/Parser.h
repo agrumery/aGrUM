@@ -60,13 +60,13 @@ namespace gum {
     class Parser {
       private:
       enum {
-        _EOF = 0,
-        _integer = 1,
-        _float = 2,
+        _EOF      = 0,
+        _integer  = 1,
+        _float    = 2,
         _scifloat = 3,
         _operator = 4,
-        _eol = 5,
-        _ident = 6
+        _eol      = 5,
+        _ident    = 6
       };
       int maxT;
 

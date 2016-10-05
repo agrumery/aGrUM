@@ -26,5 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/indepTestG2.h>
 
-
 template class gum::learning::IndepTestG2<>;

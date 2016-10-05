@@ -101,7 +101,7 @@ namespace gum {
     void CSVParser::__tokenize( const std::string& s ) {
       // looking for first commentMarker not in a string
       Size commentMarker = Size( s.find_first_of( __commentMarker, 0 ) );
-      Size quoteMarker = Size( s.find_first_of( __quoteMarker, 0 ) );
+      Size quoteMarker   = Size( s.find_first_of( __quoteMarker, 0 ) );
       Size quoteMarkerEnd;
 
       while ( quoteMarker < commentMarker ) {

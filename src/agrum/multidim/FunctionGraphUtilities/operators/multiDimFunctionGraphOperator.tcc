@@ -44,11 +44,11 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimFunctionGraphOperator );
     __rd = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::
         getReducedAndOrderedInstance();
-    __nbVar = 0;
+    __nbVar   = 0;
     __default = nullptr;
 
-    __nbCall = 0;
-    __nbVar = 0;
+    __nbCall       = 0;
+    __nbVar        = 0;
     __sizeVarRetro = 1;
   }
 
@@ -93,7 +93,7 @@ namespace gum {
     Idx* varInst = nullptr;
     if ( __nbVar != 0 ) {
       varInst = static_cast<Idx*>( SOA_ALLOCATE( sizeof( Idx ) * __nbVar ) );
-      for ( Idx i = 0; i < __nbVar; i++ )
+      for ( Idx i  = 0; i < __nbVar; i++ )
         varInst[i] = (Idx)0;
     }
 
@@ -202,7 +202,7 @@ namespace gum {
     if ( __nbVar != 0 ) {
       __default = static_cast<short int*>(
           SOA_ALLOCATE( sizeof( short int ) * __nbVar ) );
-      for ( Idx i = 0; i < __nbVar; i++ )
+      for ( Idx i    = 0; i < __nbVar; i++ )
         __default[i] = (short int)0;
     }
   }
@@ -249,7 +249,7 @@ namespace gum {
           varIter != dg->variablesSequence().rendSafe();
           --varIter ) {
 
-      Idx varPos = __rd->variablesSequence().pos( *varIter );
+      Idx varPos                   = __rd->variablesSequence().pos( *varIter );
       const Link<NodeId>* nodeIter = dg->varNodeListe( *varIter )->list();
       while ( nodeIter != nullptr ) {
 
@@ -262,7 +262,7 @@ namespace gum {
         nodesVarDescendant.insert( nodeIter->element(), varDescendant );
         for ( Idx j = 0; j < __nbVar; j++ ) {
           instantiationNeeded[j] = (short int)0;
-          varDescendant[j] = (short int)0;
+          varDescendant[j]       = (short int)0;
         }
 
         varDescendant[varPos] = (short int)1;
@@ -390,7 +390,7 @@ namespace gum {
 
     short int* instNeeded = static_cast<short int*>(
         SOA_ALLOCATE( sizeof( short int ) * __nbVar ) );
-    for ( Idx i = 0; i < __nbVar; i++ )
+    for ( Idx i     = 0; i < __nbVar; i++ )
       instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
 
     double curSitKey = currentSituation.key( instNeeded );
@@ -408,7 +408,7 @@ namespace gum {
     const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* leaddg =
         nullptr;
     NodeId leadNodeId = 0;
-    Idx leadVarPos = __rd->variablesSequence().size();
+    Idx leadVarPos    = __rd->variablesSequence().size();
     typedef void ( O4DGContext::*SetNodeFunction )( const NodeId& );
     SetNodeFunction leadFunction = nullptr;
 
@@ -431,9 +431,9 @@ namespace gum {
         return newNode;
       }
 
-      leaddg = __DG1;
-      leadNodeId = currentSituation.DG1Node();
-      leadVarPos = dg1CurrentVarPos;
+      leaddg       = __DG1;
+      leadNodeId   = currentSituation.DG1Node();
+      leadVarPos   = dg1CurrentVarPos;
       leadFunction = &O4DGContext::setDG1Node;
     }
 
@@ -459,9 +459,9 @@ namespace gum {
       }
 
       if ( leadVarPos > dg2CurrentVarPos ) {
-        leaddg = __DG2;
-        leadNodeId = currentSituation.DG2Node();
-        leadVarPos = dg2CurrentVarPos;
+        leaddg       = __DG2;
+        leadNodeId   = currentSituation.DG2Node();
+        leadVarPos   = dg2CurrentVarPos;
         leadFunction = &O4DGContext::setDG2Node;
       }
     }
@@ -511,7 +511,7 @@ namespace gum {
       const InternalNode* dg2Node = __DG2->node( origDG2 );
 
       const DiscreteVariable* curVar = dg1Node->nodeVar();
-      Idx varPos = __rd->variablesSequence().pos( curVar );
+      Idx varPos                     = __rd->variablesSequence().pos( curVar );
 
       NodeId* sonsIds = static_cast<NodeId*>(
           SOA_ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
@@ -543,7 +543,7 @@ namespace gum {
       const InternalNode* leaddgNode = leaddg->node( leadNodeId );
 
       const DiscreteVariable* curVar = leaddgNode->nodeVar();
-      NodeId* sonsIds = static_cast<NodeId*>(
+      NodeId* sonsIds                = static_cast<NodeId*>(
           SOA_ALLOCATE( sizeof( NodeId ) * curVar->domainSize() ) );
 
       for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {

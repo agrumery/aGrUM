@@ -277,7 +277,7 @@ namespace gum {
     INLINE void
     genericBNLearner::useAprioriDirichlet( const std::string& filename ) {
       __apriori_dbname = filename;
-      __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
+      __apriori_type   = AprioriType::DIRICHLET_FROM_DATABASE;
       __checkScoreAprioriCompatibility();
     }
 

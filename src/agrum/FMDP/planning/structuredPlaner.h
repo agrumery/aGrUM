@@ -77,8 +77,8 @@ namespace gum {
     // ==========================================================================
     static StructuredPlaner<GUM_SCALAR>*
     spumddInstance( GUM_SCALAR discountFactor = 0.9,
-                    GUM_SCALAR epsilon = 0.00001,
-                    bool verbose = true ) {
+                    GUM_SCALAR epsilon        = 0.00001,
+                    bool verbose              = true ) {
       return new StructuredPlaner<GUM_SCALAR>(
           new MDDOperatorStrategy<GUM_SCALAR>(),
           discountFactor,
@@ -91,8 +91,8 @@ namespace gum {
     // ==========================================================================
     static StructuredPlaner<GUM_SCALAR>*
     sviInstance( GUM_SCALAR discountFactor = 0.9,
-                 GUM_SCALAR epsilon = 0.00001,
-                 bool verbose = true ) {
+                 GUM_SCALAR epsilon        = 0.00001,
+                 bool verbose              = true ) {
       return new StructuredPlaner<GUM_SCALAR>(
           new TreeOperatorStrategy<GUM_SCALAR>(),
           discountFactor,

@@ -53,7 +53,7 @@ namespace gum_tests {
       public:
       CountListener() {
         __nbrNode = __nbrArcs = __nbrEdges = 0;
-        __isOn = false;
+        __isOn                             = false;
       }
 
       void whenNodeAdded( const void*, gum::NodeId ) { __nbrNode++; }

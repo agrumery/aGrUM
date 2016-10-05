@@ -38,7 +38,7 @@ namespace gum {
     static bool first_time = true;
 
     if ( first_time ) {
-      first_time = false;
+      first_time         = false;
       __HashTableIterEnd = new HashTableIterator<int, int>;
 #ifndef NDEBUG
       __debug__::__dec_creation( "HashTableIterator",
@@ -68,7 +68,7 @@ namespace gum {
     static bool first_time = true;
 
     if ( first_time ) {
-      first_time = false;
+      first_time             = false;
       __HashTableIterEndSafe = new HashTableIteratorSafe<int, int>;
 #ifndef NDEBUG
       __debug__::__dec_creation( "HashTableIteratorSafe",

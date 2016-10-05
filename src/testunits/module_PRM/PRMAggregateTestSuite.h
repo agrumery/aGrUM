@@ -51,7 +51,7 @@ namespace gum_tests {
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract;
-      __boolean = gum::prm::PRMType<double>::boolean();
+      __boolean           = gum::prm::PRMType<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );
       state.addLabel( "NOK" );

@@ -51,8 +51,8 @@ namespace gum {
       std::vector<bool> impacted_queues( dag.size(), false );
 
       // the best dag found so far with its score
-      DAG best_dag = dag;
-      double best_score = 0;
+      DAG best_dag         = dag;
+      double best_score    = 0;
       double current_score = 0;
 
       while ( current_N <= __MaxNbDecreasing ) {
@@ -60,7 +60,7 @@ namespace gum {
 
         do {
           nb_changes_applied = 0;
-          delta_score = 0;
+          delta_score        = 0;
 
           std::vector<std::pair<NodeId, double>> ordered_queues =
               selector.nodesSortedByBestScore();
@@ -86,7 +86,7 @@ namespace gum {
                       ++applied_change_with_positive_score;
                     } else if ( current_score > best_score ) {
                       best_score = current_score;
-                      best_dag = dag;
+                      best_dag   = dag;
                     }
 
                     delta_score += selector.bestScore( i );
@@ -106,7 +106,7 @@ namespace gum {
                       ++applied_change_with_positive_score;
                     } else if ( current_score > best_score ) {
                       best_score = current_score;
-                      best_dag = dag;
+                      best_dag   = dag;
                     }
 
                     delta_score += selector.bestScore( i );
@@ -127,7 +127,7 @@ namespace gum {
                       ++applied_change_with_positive_score;
                     } else if ( current_score > best_score ) {
                       best_score = current_score;
-                      best_dag = dag;
+                      best_dag   = dag;
                     }
 
                     delta_score += selector.bestScore( i );

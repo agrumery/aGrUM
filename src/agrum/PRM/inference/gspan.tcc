@@ -111,15 +111,15 @@ namespace gum {
       HashTable<std::string, gspan::EdgeGrowth<GUM_SCALAR>*>* edge_count =
           nullptr;
       gspan::EdgeGrowth<GUM_SCALAR>* edge_growth = nullptr;
-      Sequence<PRMInstance<GUM_SCALAR>*>* seq = nullptr;
-      PRMInstance<GUM_SCALAR>* current = nullptr;
-      PRMInstance<GUM_SCALAR>* neighbor = nullptr;
+      Sequence<PRMInstance<GUM_SCALAR>*>* seq    = nullptr;
+      PRMInstance<GUM_SCALAR>* current           = nullptr;
+      PRMInstance<GUM_SCALAR>* neighbor          = nullptr;
 
       // Neighbor_id is the neighbor's id in the interface graph and
       // neighbor_node
       // is its id in the rightmost path in the case of a backward edge growth
-      NodeId current_id = 0;
-      NodeId neighbor_node = 0;
+      NodeId current_id                = 0;
+      NodeId neighbor_node             = 0;
       gspan::LabelData* neighbor_label = 0;
 
       typename gspan::EdgeData<GUM_SCALAR>* edge_data = nullptr;
@@ -156,7 +156,7 @@ namespace gum {
             for ( const auto node : r_path ) {
               edge_count = count_vector[idx];
               // Retrieving the equivalent instance in the current match
-              current = seq->atPos( ( Idx )( node - 1 ) );
+              current    = seq->atPos( ( Idx )( node - 1 ) );
               current_id = ig.id( current );
               // Checking for edges not in p
 
@@ -172,7 +172,7 @@ namespace gum {
                   // Things we need to know: the LabelData data of the neighbour
                   // and,
                   // if it's a backward edge, its node id in the rightmost path
-                  edge_data = &( ig.edge( current_id, neighbor_id ) );
+                  edge_data      = &( ig.edge( current_id, neighbor_id ) );
                   neighbor_label = ( neighbor == edge_data->u )
                                        ? edge_data->l_u
                                        : edge_data->l_v;
@@ -236,7 +236,7 @@ namespace gum {
             ++root )
         stack.push_back( *root );
 
-      NodeId id = 0;
+      NodeId id                   = 0;
       std::list<NodeId>* children = nullptr;
 
       while ( !stack.empty() ) {

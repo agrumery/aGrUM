@@ -61,7 +61,7 @@ namespace gum {
 
     std::stringstream strfile, strfile2;
 
-    Idx num = 0;
+    Idx num    = 0;
     Idx numvar = 0;
     Idx clause = 0;
     std::stringstream clausstr, clausstr2;
@@ -318,7 +318,7 @@ namespace gum {
     if ( !outputvar.good() )
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
-    Idx num = 0;
+    Idx num    = 0;
     Idx numvar = 0;
     Idx clause = 0;
     std::stringstream clausstr, clausstr2;

@@ -51,7 +51,7 @@ namespace gum {
     if ( this != &g ) {
       DiGraph::clear();
       NodeGraphPart::operator=( g );
-      ArcGraphPart::operator=( g );
+      ArcGraphPart::operator =( g );
 
       if ( __mutableTopologicalOrder != nullptr ) {
         delete __mutableTopologicalOrder;

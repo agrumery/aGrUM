@@ -68,8 +68,8 @@ namespace gum {
 
       // NodeId varId =
       //     this->bn().nodeId( *( pot->variablesSequence().atPos( 0 ) ) );
-      //size_t count = 0;
-      //Instantiation i( *pot );
+      // size_t count = 0;
+      // Instantiation i( *pot );
 
       // for ( i.setFirst(); ! i.end(); i.inc() ) {
       //  if ( pot->get( i ) == (GUM_SCALAR)1 ) {
@@ -81,7 +81,7 @@ namespace gum {
       //  }
       //}
 
-      //if ( count == 1 ) {
+      // if ( count == 1 ) {
       // if ( __evidence.exists( varId ) ) {
       //   __evidence[varId] = pot;
       // } else {
@@ -91,12 +91,12 @@ namespace gum {
     }
 
     __ve.insertEvidence( pot_list );
-    
+
     for ( auto pot : pot_list ) {
-      const auto node = this->bn().nodeId ( *( pot->variablesSequence ()[0] ) );
-      __evidence.insert ( node, pot );
+      const auto node = this->bn().nodeId( *( pot->variablesSequence()[0] ) );
+      __evidence.insert( node, pot );
     }
-    
+
     this->_invalidatePosteriors();
   }
 
@@ -272,7 +272,7 @@ namespace gum {
         return new Potential<GUM_SCALAR>( t1 * t2 );
       } );
       auto tmp = Comb.combine( factors );
-      result = tmp->margSumOut( var_set );
+      result   = tmp->margSumOut( var_set );
       delete tmp;
     }
 

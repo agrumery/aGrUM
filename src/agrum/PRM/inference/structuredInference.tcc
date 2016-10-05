@@ -40,13 +40,13 @@ namespace gum {
         , __mining( false )
         , __dot( "." ) {
       GUM_CONSTRUCTOR( StructuredInference );
-      __gspan = new GSpan<GUM_SCALAR>( prm, system, strategy );
-      triang_time = 0.0;
-      mining_time = 0.0;
+      __gspan      = new GSpan<GUM_SCALAR>( prm, system, strategy );
+      triang_time  = 0.0;
+      mining_time  = 0.0;
       pattern_time = 0.0;
-      inner_time = 0.0;
-      obs_time = 0.0;
-      full_time = 0.0;
+      inner_time   = 0.0;
+      obs_time     = 0.0;
+      full_time    = 0.0;
     }
 
     template <typename GUM_SCALAR>
@@ -108,7 +108,7 @@ namespace gum {
         Potential<GUM_SCALAR>& m ) {
       timer.reset();
       __found_query = false;
-      __query = chain;
+      __query       = chain;
       typename StructuredInference<GUM_SCALAR>::RGData data;
 
       if ( !this->hasEvidence() && ( chain.second->cpf().nbrDim() == 1 ) ) {
@@ -417,7 +417,7 @@ namespace gum {
             data.outputs().erase( id );
             data.queries().insert( id );
             __found_query = true;
-            __query_data = std::make_pair( pos, __query.second->safeName() );
+            __query_data  = std::make_pair( pos, __query.second->safeName() );
             break;
           }
         }
@@ -461,7 +461,7 @@ namespace gum {
 
       NodeId node;
       Potential<GUM_SCALAR>* my_pot = nullptr;
-      short count = 0;
+      short count                   = 0;
 
       while ( candidates.size() ) {
         node = candidates.back();
@@ -642,8 +642,8 @@ namespace gum {
     void StructuredInference<GUM_SCALAR>::__reduceAloneInstances(
         typename StructuredInference<GUM_SCALAR>::RGData& rg_data ) {
       StructuredInference<GUM_SCALAR>::CData* data = 0;
-      Potential<GUM_SCALAR>* pot = nullptr;
-      PRMInstance<GUM_SCALAR>* inst = nullptr;
+      Potential<GUM_SCALAR>* pot                   = nullptr;
+      PRMInstance<GUM_SCALAR>* inst                = nullptr;
 
       for ( const auto& elt : *this->_sys ) {
         inst = elt.second;
@@ -1008,8 +1008,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     void StructuredInference<GUM_SCALAR>::searchPatterns() {
       const PRMInstance<GUM_SCALAR>* i = ( this->_sys->begin() ).val();
-      __query = std::make_pair( i, i->begin().val() );
-      __found_query = false;
+      __query                          = std::make_pair( i, i->begin().val() );
+      __found_query                    = false;
       typename StructuredInference<GUM_SCALAR>::RGData data;
       __buildReduceGraph( data );
     }

@@ -12,7 +12,7 @@ namespace gum {
       __infEs::_repetitiveInd = false;
       //__infEs::_iterStop = 1000;
       __infEs::_storeVertices = false;
-      __infEs::_storeBNOpt = false;
+      __infEs::_storeBNOpt    = false;
 
       this->setMaxTime( 60 );
       this->enableMaxTime();
@@ -229,11 +229,11 @@ namespace gum {
         }
         this->_workingSet[this_thread] = thread_bn;
 
-        this->_l_marginalMin[this_thread] = this->_marginalMin;
-        this->_l_marginalMax[this_thread] = this->_marginalMax;
+        this->_l_marginalMin[this_thread]    = this->_marginalMin;
+        this->_l_marginalMax[this_thread]    = this->_marginalMax;
         this->_l_expectationMin[this_thread] = this->_expectationMin;
         this->_l_expectationMax[this_thread] = this->_expectationMax;
-        this->_l_modal[this_thread] = this->_modal;
+        this->_l_modal[this_thread]          = this->_modal;
 
         __infEs::_l_clusters[this_thread].resize( 2 );
         __infEs::_l_clusters[this_thread][0] = __infEs::_t0;
@@ -249,10 +249,10 @@ namespace gum {
 
         // #TODO: the next instruction works only for lazy propagation.
         //        => find a way to remove the second argument
-        BNInferenceEngine* inference_engine =
-          new BNInferenceEngine( ( this->_workingSet[this_thread] ),
-                                 FindRelevantPotentialsType::FIND_RELEVANT_ALL );
-        
+        BNInferenceEngine* inference_engine = new BNInferenceEngine(
+            ( this->_workingSet[this_thread] ),
+            FindRelevantPotentialsType::FIND_RELEVANT_ALL );
+
         this->_l_inferenceEngine[this_thread] = inference_engine;
 
         if ( __infEs::_storeBNOpt ) {
@@ -267,7 +267,7 @@ namespace gum {
     inline void
     CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__binaryRep(
         std::vector<bool>& toFill, const Idx value ) const {
-      Idx n = value;
+      Idx n       = value;
       auto tfsize = toFill.size();
 
       // get bits of choosen_vertex
@@ -280,7 +280,7 @@ namespace gum {
     template <typename GUM_SCALAR, class BNInferenceEngine>
     inline void
     CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__verticesSampling() {
-      int this_thread = getThreadNumber();
+      int this_thread                   = getThreadNumber();
       IBayesNet<GUM_SCALAR>* working_bn = this->_workingSet[this_thread];
 
       const auto cpt = &this->_credalNet->credalNet_currentCpt();
@@ -383,7 +383,7 @@ namespace gum {
           auto pConfs = ( *cpt )[node].size();
 
           for ( decltype( pConfs ) pconf = 0; pconf < pConfs; pconf++ ) {
-            Size nVertices = Size( ( *cpt )[node][pconf].size() );
+            Size nVertices     = Size( ( *cpt )[node][pconf].size() );
             Idx choosen_vertex = Idx( rand() % nVertices );
 
             if ( __infEs::_storeBNOpt ) {

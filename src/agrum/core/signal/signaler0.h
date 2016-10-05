@@ -44,9 +44,9 @@ namespace gum {
       public:
       virtual ~IConnector0(){};
 
-      virtual Listener* target() const = 0;
-      virtual void notify( const void* ) = 0;
-      virtual IConnector0* clone() = 0;
+      virtual Listener* target() const                   = 0;
+      virtual void notify( const void* )                 = 0;
+      virtual IConnector0* clone()                       = 0;
       virtual IConnector0* duplicate( Listener* target ) = 0;
     };
 

@@ -47,7 +47,7 @@ namespace gum {
    * @brief Class that performs incremental triangulations
    */
   class IncrementalTriangulation : public Triangulation {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -73,7 +73,6 @@ namespace gum {
 
     /// @}
 
-    
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -154,7 +153,7 @@ namespace gum {
     const UnconstrainedTriangulation& triangulationAlgo() const;
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Operators
@@ -172,8 +171,8 @@ namespace gum {
 
     /// @}
 
-    
-  private:
+
+    private:
     /// the graph that needs be triangulated
     UndiGraph __graph;
 
@@ -202,10 +201,10 @@ namespace gum {
     UnconstrainedTriangulation* __triangulation;
 
     /// a Boolean indicating whether the triangulation need be updated
-    bool __require_update { false };
+    bool __require_update{false};
 
     /// a Boolean indicating wether we should update the elimination order
-    bool __require_elimination_order { false };
+    bool __require_elimination_order{false};
 
     /// the current elimination ordering
     std::vector<NodeId> __elimination_order;
@@ -214,7 +213,7 @@ namespace gum {
     NodeProperty<Idx> __reverse_elimination_order;
 
     /// a Boolean indicating whether we should compute the createdJTCliques
-    bool __require_created_JT_cliques { false };
+    bool __require_created_JT_cliques{false};
 
     /// For each node, a clique that contains it
     NodeProperty<NodeId> __created_JT_cliques;
@@ -247,11 +246,11 @@ namespace gum {
 
     /// used for computing the junction tree of the maximal prime subgraphs
     void __computeMaxPrimeMergings(
-                                   const NodeId node,
-                                   const NodeId from,
-                                   std::vector<std::pair<NodeId, NodeId>>& merged_cliques,
-                                   NodeProperty<bool>& mark,
-                                   const NodeSet& new_nodes_in_junction_tree ) const;
+        const NodeId node,
+        const NodeId from,
+        std::vector<std::pair<NodeId, NodeId>>& merged_cliques,
+        NodeProperty<bool>& mark,
+        const NodeSet& new_nodes_in_junction_tree ) const;
 
     /// update the junction tree
     void __updateJunctionTree( NodeProperty<bool>& all_cliques_affected,

@@ -46,7 +46,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 2 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -98,17 +98,17 @@ namespace gum_tests {
 
       gum::ScheduleDeleteMultiDim<float> del1( result1 );
       const gum::NodeSet& ops1 = schedule.operationsInvolving( result1 );
-      gum::NodeId del1_id = schedule.insert( del1 );
+      gum::NodeId del1_id      = schedule.insert( del1 );
       schedule.forceAfter( del1_id, ops1 );
 
       gum::ScheduleDeleteMultiDim<float> del2( result2 );
       const gum::NodeSet& ops2 = schedule.operationsInvolving( result2 );
-      gum::NodeId del2_id = schedule.insert( del2 );
+      gum::NodeId del2_id      = schedule.insert( del2 );
       schedule.forceAfter( del2_id, ops2 );
 
       gum::ScheduleDeleteMultiDim<float> del3( result3 );
       const gum::NodeSet& ops3 = schedule.operationsInvolving( result3 );
-      gum::NodeId del3_id = schedule.insert( del3 );
+      gum::NodeId del3_id      = schedule.insert( del3 );
       schedule.forceAfter( del3_id, ops3 );
 
       gum::SchedulerBasic<float> scheduler;
@@ -162,7 +162,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 2 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -214,17 +214,17 @@ namespace gum_tests {
 
       gum::ScheduleDeleteMultiDim<float> del1( result1 );
       const gum::NodeSet& ops1 = schedule.operationsInvolving( result1 );
-      gum::NodeId del1_id = schedule.insert( del1 );
+      gum::NodeId del1_id      = schedule.insert( del1 );
       schedule.forceAfter( del1_id, ops1 );
 
       gum::ScheduleDeleteMultiDim<float> del2( result2 );
       const gum::NodeSet& ops2 = schedule.operationsInvolving( result2 );
-      gum::NodeId del2_id = schedule.insert( del2 );
+      gum::NodeId del2_id      = schedule.insert( del2 );
       schedule.forceAfter( del2_id, ops2 );
 
       gum::ScheduleDeleteMultiDim<float> del3( result3 );
       const gum::NodeSet& ops3 = schedule.operationsInvolving( result3 );
-      gum::NodeId del3_id = schedule.insert( del3 );
+      gum::NodeId del3_id      = schedule.insert( del3 );
       schedule.forceAfter( del3_id, ops3 );
 
       gum::SchedulerBasic<float> scheduler;
@@ -273,7 +273,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 2 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -325,17 +325,17 @@ namespace gum_tests {
 
       gum::ScheduleDeleteMultiDim<float> del1( result1 );
       const gum::NodeSet& ops1 = schedule.operationsInvolving( result1 );
-      gum::NodeId del1_id = schedule.insert( del1 );
+      gum::NodeId del1_id      = schedule.insert( del1 );
       schedule.forceAfter( del1_id, ops1 );
 
       gum::ScheduleDeleteMultiDim<float> del2( result2 );
       const gum::NodeSet& ops2 = schedule.operationsInvolving( result2 );
-      gum::NodeId del2_id = schedule.insert( del2 );
+      gum::NodeId del2_id      = schedule.insert( del2 );
       schedule.forceAfter( del2_id, ops2 );
 
       gum::ScheduleDeleteMultiDim<float> del3( result3 );
       const gum::NodeSet& ops3 = schedule.operationsInvolving( result3 );
-      gum::NodeId del3_id = schedule.insert( del3 );
+      gum::NodeId del3_id      = schedule.insert( del3 );
       schedule.forceAfter( del3_id, ops3 );
 
       gum::SchedulerBasic<float> scheduler;
@@ -383,7 +383,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 2 );
+        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -426,12 +426,12 @@ namespace gum_tests {
 
       gum::ScheduleDeleteMultiDim<float> del2( result2 );
       const gum::NodeSet& ops2 = schedule.operationsInvolving( result2 );
-      gum::NodeId del2_id = schedule.insert( del2 );
+      gum::NodeId del2_id      = schedule.insert( del2 );
       schedule.forceAfter( del2_id, ops2 );
 
       gum::ScheduleDeleteMultiDim<float> del3( result3 );
       const gum::NodeSet& ops3 = schedule.operationsInvolving( result3 );
-      gum::NodeId del3_id = schedule.insert( del3 );
+      gum::NodeId del3_id      = schedule.insert( del3 );
       schedule.forceAfter( del3_id, ops3 );
 
       gum::SchedulerBasic<float> scheduler;

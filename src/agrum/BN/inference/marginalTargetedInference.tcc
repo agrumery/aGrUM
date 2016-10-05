@@ -26,41 +26,41 @@
 
 namespace gum {
 
-  
+
   // Default Constructor
   template <typename GUM_SCALAR>
-  MarginalTargetedInference<GUM_SCALAR>::MarginalTargetedInference
-  ( const IBayesNet<GUM_SCALAR>* bn ) :
-    Inference<GUM_SCALAR> ( bn ) {
+  MarginalTargetedInference<GUM_SCALAR>::MarginalTargetedInference(
+      const IBayesNet<GUM_SCALAR>* bn )
+      : Inference<GUM_SCALAR>( bn ) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if ( this->__bn == nullptr ) {
-      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction ( bn );
+      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction( bn );
     }
-    
+
     // sets all the nodes as targets
     if ( bn != nullptr ) {
-      __targets = bn->dag().asNodeSet ();
+      __targets = bn->dag().asNodeSet();
     }
-    
+
     GUM_CONSTRUCTOR( MarginalTargetedInference );
   }
 
-  
+
   // Destructor
   template <typename GUM_SCALAR>
-  MarginalTargetedInference<GUM_SCALAR>::~MarginalTargetedInference () {
+  MarginalTargetedInference<GUM_SCALAR>::~MarginalTargetedInference() {
     GUM_DESTRUCTOR( MarginalTargetedInference );
   }
-  
+
 
   // fired when a new BN is assigned to the inference engine
   template <typename GUM_SCALAR>
-  void MarginalTargetedInference<GUM_SCALAR>::_onBayesNetChanged
-  ( const IBayesNet<GUM_SCALAR>* bn ) {
-    __setAllMarginalTargets ();
+  void MarginalTargetedInference<GUM_SCALAR>::_onBayesNetChanged(
+      const IBayesNet<GUM_SCALAR>* bn ) {
+    __setAllMarginalTargets();
   }
- 
-  
+
+
   // ##############################################################################
   // Targets
   // ##############################################################################
@@ -71,106 +71,111 @@ namespace gum {
   MarginalTargetedInference<GUM_SCALAR>::isTarget( NodeId var ) const {
     // check that the variable belongs to the bn
     if ( this->__bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
-    if ( ! this->__bn->dag().exists ( var ) ) {
+      GUM_ERROR( NullElement,
+                 "No Bayes net has been assigned to the "
+                 "inference algorithm" );
+    if ( !this->__bn->dag().exists( var ) ) {
       GUM_ERROR( UndefinedElement, var << " is not a NodeId in the bn" );
     }
-    
+
     return __targets.contains( var );
   }
-  
+
 
   // Clear all previously defined targets (single targets and sets of targets)
   template <typename GUM_SCALAR>
-  INLINE void MarginalTargetedInference<GUM_SCALAR>::eraseAllTargets () {
-    _onAllMarginalTargetsErased ();
+  INLINE void MarginalTargetedInference<GUM_SCALAR>::eraseAllTargets() {
+    _onAllMarginalTargetsErased();
     __targets.clear();
-    this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    this->__state =
+        Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
-  
+
 
   // Add a single target to the list of targets
   template <typename GUM_SCALAR>
-  void MarginalTargetedInference<GUM_SCALAR>::addTarget ( NodeId target ) {
+  void MarginalTargetedInference<GUM_SCALAR>::addTarget( NodeId target ) {
     // check if the node belongs to the Bayesian network
     if ( this->__bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
+      GUM_ERROR( NullElement,
+                 "No Bayes net has been assigned to the "
+                 "inference algorithm" );
 
-    if ( ! this->__bn->dag().exists( target ) ) {
+    if ( !this->__bn->dag().exists( target ) ) {
       GUM_ERROR( UndefinedElement, target << " is not a NodeId in the bn" );
     }
 
     // add the new target
-    if ( ! __targets.contains ( target ) ) {
+    if ( !__targets.contains( target ) ) {
       __targets.insert( target );
-      _onMarginalTargetAdded ( target );
-      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      _onMarginalTargetAdded( target );
+      this->__state =
+          Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
 
   // removes an existing target
   template <typename GUM_SCALAR>
-  void MarginalTargetedInference<GUM_SCALAR>::eraseTarget ( const NodeId target ) {
+  void
+  MarginalTargetedInference<GUM_SCALAR>::eraseTarget( const NodeId target ) {
     // check if the node belongs to the Bayesian network
     if ( this->__bn == nullptr )
-      GUM_ERROR ( NullElement, "No Bayes net has been assigned to the "
-                  "inference algorithm" );
+      GUM_ERROR( NullElement,
+                 "No Bayes net has been assigned to the "
+                 "inference algorithm" );
 
-    if ( ! this->__bn->dag().exists( target ) ) {
+    if ( !this->__bn->dag().exists( target ) ) {
       GUM_ERROR( UndefinedElement, target << " is not a NodeId in the bn" );
     }
-    
-    if ( __targets.contains ( target ) ) {
-      _onMarginalTargetErased ( target );
-      __targets.erase ( target );
-      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+
+    if ( __targets.contains( target ) ) {
+      _onMarginalTargetErased( target );
+      __targets.erase( target );
+      this->__state =
+          Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
-  
+
   // returns the list of single targets
   template <typename GUM_SCALAR>
-  INLINE const NodeSet&
-  MarginalTargetedInference<GUM_SCALAR>::targets () const noexcept {
+  INLINE const NodeSet& MarginalTargetedInference<GUM_SCALAR>::targets() const
+      noexcept {
     return __targets;
   }
-  
-  
+
+
   /// sets all the nodes of the Bayes net as targets
   template <typename GUM_SCALAR>
-  void MarginalTargetedInference<GUM_SCALAR>::__setAllMarginalTargets () {
-    __targets.clear ();
+  void MarginalTargetedInference<GUM_SCALAR>::__setAllMarginalTargets() {
+    __targets.clear();
     if ( this->__bn != nullptr ) {
-      __targets = this->__bn->dag().asNodeSet ();
-      _onAllMarginalTargetsAdded ();
+      __targets = this->__bn->dag().asNodeSet();
+      _onAllMarginalTargetsAdded();
     }
   }
 
 
-  
   // ##############################################################################
   // Inference
   // ##############################################################################
-  
+
   // Compute the posterior of a node.
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
   MarginalTargetedInference<GUM_SCALAR>::posterior( const NodeId var ) {
-    if ( ! isTarget ( var ) ) {
+    if ( !isTarget( var ) ) {
       // throws UndefinedElement if var is not a target
       GUM_ERROR( UndefinedElement, var << " is not a target node" );
     }
-    
-    if ( ! this->isDone() ) {
+
+    if ( !this->isDone() ) {
       this->makeInference();
     }
 
-    return _posterior ( var );
+    return _posterior( var );
   }
 
 
 } /* namespace gum */
-

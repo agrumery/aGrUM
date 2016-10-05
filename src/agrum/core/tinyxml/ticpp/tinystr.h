@@ -193,8 +193,8 @@ class TiXmlString {
   TiXmlString& append( const char* str, size_type len );
 
   void swap( TiXmlString& other ) {
-    Rep* r = rep_;
-    rep_ = other.rep_;
+    Rep* r     = rep_;
+    rep_       = other.rep_;
     other.rep_ = r;
   }
 
@@ -222,7 +222,7 @@ class TiXmlString {
       rep_ = reinterpret_cast<Rep*>( new int[intsNeeded] );
 
       rep_->str[rep_->size = sz] = '\0';
-      rep_->capacity = cap;
+      rep_->capacity             = cap;
     } else {
       rep_ = &nullrep_;
     }

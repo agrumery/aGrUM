@@ -162,7 +162,7 @@ namespace gum {
     // Timer timer;
     for ( Idx k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
-      pair = queue.pop();
+      pair   = queue.pop();
       Idx ti = pair.first;
       Idx tj = pair.second;
 
@@ -177,14 +177,14 @@ namespace gum {
 
       if ( tables[ti] && is_t_new[ti] ) {
         ScheduleDeleteMultiDim<GUM_SCALAR> del( *( tables[ti] ) );
-        NodeId del_id = schedule.insert( del );
+        NodeId del_id        = schedule.insert( del );
         const NodeSet& set_i = schedule.operationsInvolving( *( tables[ti] ) );
         schedule.forceAfter( del_id, set_i );
       }
 
       if ( tables[tj] && is_t_new[tj] ) {
         ScheduleDeleteMultiDim<GUM_SCALAR> del( *( tables[tj] ) );
-        NodeId del_id = schedule.insert( del );
+        NodeId del_id        = schedule.insert( del );
         const NodeSet& set_j = schedule.operationsInvolving( *( tables[tj] ) );
         schedule.forceAfter( del_id, set_j );
       }
@@ -194,7 +194,7 @@ namespace gum {
                       ( schedule.operation( comb_id ) )
                           .result() );
       is_t_new[ti] = true;
-      tables[tj] = 0;
+      tables[tj]   = 0;
 
       // remove all the pairs involving tj in the priority queue
 
@@ -321,7 +321,7 @@ namespace gum {
     // available.
     for ( Idx k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
-      pair = queue.pop();
+      pair   = queue.pop();
       Idx ti = pair.first;
       Idx tj = pair.second;
 
@@ -383,7 +383,7 @@ namespace gum {
         for ( Idx ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = _combinedSize( *new_seq, *( tables[ind] ) );
+            newsize    = _combinedSize( *new_seq, *( tables[ind] ) );
             queue.setPriority( pair, newsize );
           }
         }
@@ -393,7 +393,7 @@ namespace gum {
         for ( Idx ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
-            newsize = _combinedSize( *new_seq, *( tables[ind] ) );
+            newsize     = _combinedSize( *new_seq, *( tables[ind] ) );
             queue.setPriority( pair, newsize );
           }
         }
@@ -437,7 +437,7 @@ namespace gum {
     // check if the set passed in argument is empty.
     if ( set.size() < 2 ) return std::pair<long, long>( 0, 0 );
 
-    long max_memory = 0;
+    long max_memory     = 0;
     long current_memory = 0;
 
     // create a vector with all the tables to combine
@@ -489,7 +489,7 @@ namespace gum {
     // available.
     for ( Idx k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
-      pair = queue.pop();
+      pair   = queue.pop();
       Idx ti = pair.first;
       Idx tj = pair.second;
 
@@ -545,8 +545,8 @@ namespace gum {
       tables[ti] = new_seq;
 
       table_size[ti] = new_size;
-      is_t_new[ti] = true;
-      tables[tj] = 0;
+      is_t_new[ti]   = true;
+      tables[tj]     = 0;
 
       // remove all the pairs involving tj in the priority queue
 
@@ -574,7 +574,7 @@ namespace gum {
         for ( Idx ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = _combinedSize( *new_seq, *( tables[ind] ) );
+            newsize    = _combinedSize( *new_seq, *( tables[ind] ) );
             queue.setPriority( pair, newsize );
           }
         }
@@ -584,7 +584,7 @@ namespace gum {
         for ( Idx ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
-            newsize = _combinedSize( *new_seq, *( tables[ind] ) );
+            newsize     = _combinedSize( *new_seq, *( tables[ind] ) );
             queue.setPriority( pair, newsize );
           }
         }

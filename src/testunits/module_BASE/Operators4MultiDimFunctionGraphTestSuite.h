@@ -186,7 +186,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     gum::MultiDimFunctionGraph<double>* __generateRandomFunctionGraph(
         const gum::Sequence<const gum::DiscreteVariable*>* varList,
-        double lowLimit = -100,
+        double lowLimit  = -100,
         double highLimit = 100 ) {
 
       gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList );
@@ -266,7 +266,7 @@ namespace gum_tests {
                           double& tempsEval,
                           double delta = 0.01 ) {
 
-      bool hasNoError = true;
+      bool hasNoError                        = true;
       gum::MultiDimFunctionGraph<double>* a3 = nullptr;
 
       gum::Timer timy;
@@ -378,9 +378,9 @@ namespace gum_tests {
     void test_Operators_Functions_on_MultiDimFunctionGraphs() {
 
       gum::Timer time;
-      double tempsGene = 0;
+      double tempsGene   = 0;
       double tempsCalcul = 0;
-      double tempsEval = 0;
+      double tempsEval   = 0;
 
 
       // First we try with a predefine structure

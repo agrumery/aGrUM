@@ -134,7 +134,7 @@ namespace gum {
                         Idx lastAction,
                         double reward ) {
     __lastAction = lastAction;
-    _lastState = prevState;
+    _lastState   = prevState;
     feedback( curState, reward );
   }
 

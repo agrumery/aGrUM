@@ -188,7 +188,7 @@ namespace gum {
     } else {
       // find the element we shall point to src the end of the list
       for ( __bucket = theList.__end_list,
-            ind_elt = theList.__nb_elements - ind_elt - 1;
+            ind_elt  = theList.__nb_elements - ind_elt - 1;
             ind_elt;
             --ind_elt, __bucket = __bucket->__prev ) {
       }
@@ -557,7 +557,7 @@ namespace gum {
     } else {
       // find the element we shall point to src the end of the list
       for ( __bucket = __list->__end_list,
-            ind_elt = __list->__nb_elements - ind_elt - 1;
+            ind_elt  = __list->__nb_elements - ind_elt - 1;
             ind_elt;
             --ind_elt, __bucket = __bucket->__prev ) {
       }
@@ -590,8 +590,8 @@ namespace gum {
         }
       }
 
-      src.__list = nullptr;
-      src.__bucket = nullptr;
+      src.__list          = nullptr;
+      src.__bucket        = nullptr;
       src.__null_pointing = false;
     }
   }
@@ -632,18 +632,18 @@ namespace gum {
         try {
           src.__list->__safe_iterators.push_back( this );
         } catch ( ... ) {
-          __list = nullptr;
-          __bucket = nullptr;
+          __list          = nullptr;
+          __bucket        = nullptr;
           __null_pointing = false;
           throw;
         }
       }
 
-      __list = src.__list;
-      __bucket = src.__bucket;
+      __list                = src.__list;
+      __bucket              = src.__bucket;
       __prev_current_bucket = src.__prev_current_bucket;
       __next_current_bucket = src.__next_current_bucket;
-      __null_pointing = src.__null_pointing;
+      __null_pointing       = src.__null_pointing;
     }
 
     return *this;
@@ -684,14 +684,14 @@ namespace gum {
         }
       }
 
-      __list = src.__list;
-      __bucket = src.__bucket;
+      __list                = src.__list;
+      __bucket              = src.__bucket;
       __prev_current_bucket = src.__prev_current_bucket;
       __next_current_bucket = src.__next_current_bucket;
-      __null_pointing = src.__null_pointing;
+      __null_pointing       = src.__null_pointing;
 
-      src.__list = nullptr;
-      src.__bucket = nullptr;
+      src.__list          = nullptr;
+      src.__bucket        = nullptr;
       src.__null_pointing = false;
     }
 
@@ -722,8 +722,8 @@ namespace gum {
     if ( __list ) __removeFromSafeList();
 
     // set its list as well as the element it points to to nullptr
-    __list = nullptr;
-    __bucket = nullptr;
+    __list          = nullptr;
+    __bucket        = nullptr;
     __null_pointing = false;
   }
 
@@ -1180,7 +1180,7 @@ namespace gum {
     }
 
     // update properly the end of the chained list and the number of elements
-    __end_list = old_ptr;
+    __end_list    = old_ptr;
     __nb_elements = src.__nb_elements;
   }
 
@@ -1203,8 +1203,8 @@ namespace gum {
     }
 
     __nb_elements = 0;
-    __deb_list = nullptr;
-    __end_list = nullptr;
+    __deb_list    = nullptr;
+    __end_list    = nullptr;
   }
 
   // A basic constructor that creates an empty list
@@ -1255,8 +1255,8 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_MOV( List );
 
-    src.__deb_list = nullptr;
-    src.__end_list = nullptr;
+    src.__deb_list    = nullptr;
+    src.__end_list    = nullptr;
     src.__nb_elements = 0;
     src.__safe_iterators.clear();
   }
@@ -1339,14 +1339,14 @@ namespace gum {
       clear();
 
       // perform the move
-      __deb_list = std::move( src.__deb_list );
-      __end_list = std::move( src.__end_list );
-      __nb_elements = std::move( src.__nb_elements );
+      __deb_list       = std::move( src.__deb_list );
+      __end_list       = std::move( src.__end_list );
+      __nb_elements    = std::move( src.__nb_elements );
       __safe_iterators = std::move( src.__safe_iterators );
-      __alloc_bucket = std::move( src.__alloc_bucket );
+      __alloc_bucket   = std::move( src.__alloc_bucket );
 
-      src.__deb_list = nullptr;
-      src.__end_list = nullptr;
+      src.__deb_list    = nullptr;
+      src.__end_list    = nullptr;
       src.__nb_elements = 0;
       src.__safe_iterators.clear();
     }
@@ -1665,7 +1665,7 @@ namespace gum {
       }
     } else {
       for ( ptr = __end_list, i = __nb_elements - i - 1; i;
-            --i, ptr = ptr->__prev ) {
+            --i, ptr            = ptr->__prev ) {
       }
     }
 
@@ -1676,8 +1676,8 @@ namespace gum {
   template <typename Val, typename Alloc>
   INLINE Val& List<Val, Alloc>::__insertBefore( ListBucket<Val>* new_elt,
                                                 ListBucket<Val>* current_elt ) {
-    new_elt->__next = current_elt;
-    new_elt->__prev = current_elt->__prev;
+    new_elt->__next     = current_elt;
+    new_elt->__prev     = current_elt->__prev;
     current_elt->__prev = new_elt;
 
     if ( new_elt->__prev == nullptr )
@@ -1696,8 +1696,8 @@ namespace gum {
   template <typename Val, typename Alloc>
   INLINE Val& List<Val, Alloc>::__insertAfter( ListBucket<Val>* new_elt,
                                                ListBucket<Val>* current_elt ) {
-    new_elt->__prev = current_elt;
-    new_elt->__next = current_elt->__next;
+    new_elt->__prev     = current_elt;
+    new_elt->__next     = current_elt->__next;
     current_elt->__next = new_elt;
 
     if ( new_elt->__next == nullptr )
@@ -1912,8 +1912,8 @@ namespace gum {
         if ( ptr_iter->__bucket == bucket ) {
           ptr_iter->__next_current_bucket = bucket->__prev;
           ptr_iter->__prev_current_bucket = bucket->__next;
-          ptr_iter->__bucket = nullptr;
-          ptr_iter->__null_pointing = true;
+          ptr_iter->__bucket              = nullptr;
+          ptr_iter->__null_pointing       = true;
         } else {
           if ( ptr_iter->__null_pointing ) {
             if ( ptr_iter->__next_current_bucket == bucket )

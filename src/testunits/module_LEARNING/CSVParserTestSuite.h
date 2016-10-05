@@ -40,7 +40,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( parser.noLine(), gum::NullElement )
 
       gum::Size count = 0;
-      res = "";
+      res             = "";
 
       while ( parser.next() ) {
         count++;
