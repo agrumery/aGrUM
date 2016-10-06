@@ -27,7 +27,7 @@ AlwaysBreakTemplateDeclarations: true
 BreakBeforeBinaryOperators: NonAssignment
 BreakConstructorInitializersBeforeComma: true
 BreakBeforeBinaryOperators: false
-BreakStringLiterals: true
+#BreakStringLiterals: true
 
 PointerAlignment: Left
 AlignAfterOpenBracket: Align
@@ -45,4 +45,4 @@ AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
 
-SortInclude: false
+#SortInclude: false
