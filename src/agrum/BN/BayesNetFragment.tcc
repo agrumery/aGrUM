@@ -30,7 +30,7 @@
 namespace gum {
   template <typename GUM_SCALAR>
   BayesNetFragment<GUM_SCALAR>::BayesNetFragment(
-      const BayesNet<GUM_SCALAR>& bn )
+      const IBayesNet<GUM_SCALAR>& bn )
       : DiGraphListener( &bn.dag() )
       , __bn( bn ) {
     GUM_CONSTRUCTOR( BayesNetFragment );

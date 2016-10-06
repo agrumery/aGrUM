@@ -131,6 +131,8 @@ namespace gum_tests {
       fill( bn );
 
       gum::BayesNetFragment<float> frag( bn );
+      gum::BayesNetFragment<float> frag2(
+          static_cast<const gum::IBayesNet<float>&>( frag ) );
     }
 
     void testInstallNodes() {
