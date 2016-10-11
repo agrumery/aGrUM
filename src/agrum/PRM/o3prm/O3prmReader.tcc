@@ -40,9 +40,9 @@ namespace gum {
           text = std::regex_replace( text, match, "Error" );
           auto regex = std::regex{"[A-Z_][A-Z_]+"};
           text = std::regex_replace( text, regex, "declaration" );
-          return std::move( text );
+          return text;
         }
-        return std::move( text );
+        return text;
       }
 
       template <typename GUM_SCALAR>
@@ -51,7 +51,7 @@ namespace gum {
         std::stringstream s;
         s << err.filename << "|" << err.line << " col " << err.column << "| "
           << __clean( err.msg );
-        return std::move( s.str() );
+        return s.str();
       }
 
       template <typename GUM_SCALAR>
@@ -68,7 +68,7 @@ namespace gum {
 
           inputstr.read( begin, length );
 
-          return std::move( str );
+          return str;
         }
         GUM_ERROR( OperationNotAllowed, "Could not open file" );
       }
@@ -376,7 +376,7 @@ namespace gum {
             copy.push_back( i.get() );
           }
         }
-        return std::move( copy );
+        return copy;
       }
 
       template <typename GUM_SCALAR>
