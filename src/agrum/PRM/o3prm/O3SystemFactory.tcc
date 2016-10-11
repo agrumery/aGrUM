@@ -162,7 +162,7 @@ namespace gum {
           if ( ass.leftIndex().value() > -1 &&
                real_sys.isArray( leftInstance ) ) {
 
-            auto sBuff = std::stringstream();
+            std::stringstream sBuff;
             sBuff << leftInstance << "[" << ass.leftIndex().value() << "]";
             leftInstance = sBuff.str();
           }
@@ -170,7 +170,7 @@ namespace gum {
           if ( ass.rightIndex().value() > -1 &&
                real_sys.isArray( rightInstance ) ) {
 
-            auto sBuff = std::stringstream();
+            std::stringstream sBuff;
             sBuff << rightInstance << "[" << ass.rightIndex().value() << "]";
             rightInstance = sBuff.str();
           }
@@ -193,7 +193,7 @@ namespace gum {
           if ( inc.leftIndex().value() > -1 &&
                real_sys.isArray( leftInstance ) ) {
 
-            auto sBuff = std::stringstream();
+            std::stringstream sBuff;
             sBuff << leftInstance << "[" << inc.leftIndex().value() << "]";
             leftInstance = sBuff.str();
           }
@@ -201,7 +201,7 @@ namespace gum {
           if ( inc.rightIndex().value() > -1 &&
                real_sys.isArray( rightInstance ) ) {
 
-            auto sBuff = std::stringstream();
+            std::stringstream sBuff;
             sBuff << rightInstance << "[" << inc.rightIndex().value() << "]";
             rightInstance = sBuff.str();
           }

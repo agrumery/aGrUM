@@ -480,7 +480,7 @@ namespace gum_tests {
       // Arrange
       auto f = gum::Formula( "2*5+6" );
       auto expected = std::to_string( 2 * 5 + 6 );
-      auto result = std::stringstream();
+      std::stringstream result;
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( result << f );
       // Assert

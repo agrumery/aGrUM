@@ -599,7 +599,7 @@ SYSTEM_DECLARATION<O3System& s> =
 
 //________________________
 SYSTEM_BODY<O3System& sys> =
-  (. auto left_value = std::stringstream(); .)
+  (. std::stringstream left_value; .)
   label
   (. left_value << narrow(t->val); .)
   (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
@@ -856,7 +856,7 @@ IDENTIFIER_LIST<O3LabelList& list> =
 //________________________
 IDENTIFIER<O3Label& ident> =
 
-  (. auto s = std::stringstream(); .)
+  (. std::stringstream s; .)
   [
     CAST<s>
   ]
@@ -895,7 +895,7 @@ LINK<std::stringstream& s> =
 
 //________________________
 CHAIN<O3Label& ident> =
-  (. auto s = std::stringstream(); .)
+  (. std::stringstream s; .)
   label
   (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
   (. s << narrow( t->val ); .)

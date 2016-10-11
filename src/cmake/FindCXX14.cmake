@@ -13,6 +13,7 @@ include(FindPackageHandleStandardArgs)
 set(CXX14_FLAG_CANDIDATES
         #GCC>=4.7.3
         "-std=c++14"
+        "-std=c++1y"
         #Microsoft Visual Studio, and everything that automatically accepts C++14
         " "
         #Intel windows

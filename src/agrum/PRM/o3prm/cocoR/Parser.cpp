@@ -210,7 +210,7 @@ void Parser::PREFIXED_LABEL(O3Label& l) {
 }
 
 void Parser::CHAIN(O3Label& ident) {
-		auto s = std::stringstream(); 
+		std::stringstream s; 
 		Expect(_label);
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 
 		s << narrow( t->val ); 
@@ -404,7 +404,7 @@ void Parser::LABEL_LIST(O3LabelList& list) {
 }
 
 void Parser::IDENTIFIER(O3Label& ident) {
-		auto s = std::stringstream(); 
+		std::stringstream s; 
 		if (la->kind == 27 /* "(" */) {
 			CAST(s);
 		}
@@ -647,7 +647,7 @@ void Parser::SYSTEM_DECLARATION(O3System& s) {
 }
 
 void Parser::SYSTEM_BODY(O3System& sys) {
-		auto left_value = std::stringstream(); 
+		std::stringstream left_value; 
 		Expect(_label);
 		left_value << narrow(t->val); 
 		auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); 

@@ -250,7 +250,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE Size
       O3prmReader<GUM_SCALAR>::readString( const std::string& str ) {
-        auto sBuff = std::stringstream( str );
+        std::stringstream sBuff( str );
         __readStream( sBuff, "" );
         return __errors.count();
       }
@@ -271,7 +271,7 @@ namespace gum {
           auto basename = file.substr( lastSlashIndex + 1 );
           auto absFilename = dir.absolutePath() + basename;
 
-          auto input = std::ifstream( absFilename );
+          std::ifstream input( absFilename );
           if ( input.is_open() ) {
             __readStream( input, file, module );
           } else {
@@ -335,7 +335,7 @@ namespace gum {
           for ( const auto& cp : __class_path ) {
 
             auto file_path = cp + path + ".o3prm";
-            auto file = std::ifstream( file_path );
+            std::ifstream file( file_path );
 
             if ( file.is_open() ) {
 
@@ -345,12 +345,12 @@ namespace gum {
             }
 
             file_path = cp + module + path + ".o3prm";
-            file = std::ifstream( file_path );
+            std::ifstream file2( file_path );
 
-            if ( file.is_open() ) {
+            if ( file2.is_open() ) {
 
               __parseStream(
-                  file, file_path, module + "." + i.import().label() );
+                  file2, file_path, module + "." + i.import().label() );
               imported = true;
               break;
             }
@@ -358,7 +358,7 @@ namespace gum {
 
           if ( !imported ) {
             const auto& pos = i.import().position();
-            auto msg = std::stringstream();
+            std::stringstream msg;
             msg << "Import error: could not resolve import "
                 << i.import().label();
             __errors.addError(
