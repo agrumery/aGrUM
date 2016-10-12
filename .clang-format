@@ -27,6 +27,7 @@ AlwaysBreakTemplateDeclarations: true
 BreakBeforeBinaryOperators: NonAssignment
 BreakConstructorInitializersBeforeComma: true
 BreakBeforeBinaryOperators: false
+#for clang-format-3.9
 #BreakStringLiterals: true
 
 PointerAlignment: Left
@@ -45,4 +46,3 @@ AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
 
-#SortInclude: false

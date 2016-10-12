@@ -21,7 +21,9 @@ Helping functions and consts for pyAgrum
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 from @PYAGRUM_MODULE@ import BayesNet
+from @PYAGRUM_MODULE@ import Potential
 from @PYAGRUM_MODULE@ import InfluenceDiagram
+from @PYAGRUM_MODULE@ import LazyPropagation
 
 def about():
   print("pyAgrum version {0}".format('@PYAGRUM_VERSION@'))
@@ -132,3 +134,13 @@ def fastBN(arcs,domainSize):
           bn.addArc(ia,ib)
   bn.generateCPTs()
   return bn
+
+def getPosterior(bn, evs, target):
+  """
+  Compute the posterior of a single target (variable) in a BN given evidence using Lazy Propagation (for now).
+  """
+  inf = LazyPropagation(bn)
+  inf.setEvidence(evs)
+  inf.makeInference()
+  return Potential(inf.posterior(bn.idFromName(target)))
+  # creating a new Potential from posterior (will disappear with ie)
