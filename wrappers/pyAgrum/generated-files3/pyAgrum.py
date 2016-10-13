@@ -37,12 +37,12 @@ elif _swig_python_version_info >= (2, 6, 0):
         except ImportError:
             import _pyAgrum
             return _pyAgrum
-        if fp is not None:
-            try:
-                _mod = imp.load_module('_pyAgrum', fp, pathname, description)
-            finally:
+        try:
+            _mod = imp.load_module('_pyAgrum', fp, pathname, description)
+        finally:
+            if fp is not None:
                 fp.close()
-            return _mod
+        return _mod
     _pyAgrum = swig_import_helper()
     del swig_import_helper
 else:
@@ -7894,6 +7894,18 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_newFactory(self)
 
 
+    def isNonZeroMap(self) -> "gum::Potential< double >":
+        """
+        isNonZeroMap(Potential_double self) -> Potential_double
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double_isNonZeroMap(self)
+
+
     def sum(self) -> "double":
         """
         sum(Potential_double self) -> double
@@ -7940,6 +7952,30 @@ class Potential_double(_object):
 
         """
         return _pyAgrum.Potential_double_min(self)
+
+
+    def maxNonOne(self) -> "double":
+        """
+        maxNonOne(Potential_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double_maxNonOne(self)
+
+
+    def minNonZero(self) -> "double":
+        """
+        minNonZero(Potential_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double_minNonZero(self)
 
 
     def entropy(self) -> "double":
@@ -9109,9 +9145,9 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double___ne__(self, src)
 
 
-    def dim(self) -> "gum::Idx":
+    def dim(self) -> "gum::Size":
         """
-        dim(IBayesNet_double self) -> gum::Idx
+        dim(IBayesNet_double self) -> gum::Size
 
         Parameters
         ----------
@@ -9119,6 +9155,66 @@ class IBayesNet_double(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_double_dim(self)
+
+
+    def maxVarDomainSize(self) -> "gum::Size":
+        """
+        maxVarDomainSize(IBayesNet_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_maxVarDomainSize(self)
+
+
+    def minParam(self) -> "double":
+        """
+        minParam(IBayesNet_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_minParam(self)
+
+
+    def maxParam(self) -> "double":
+        """
+        maxParam(IBayesNet_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_maxParam(self)
+
+
+    def minNonZeroParam(self) -> "double":
+        """
+        minNonZeroParam(IBayesNet_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_minNonZeroParam(self)
+
+
+    def maxNonOneParam(self) -> "double":
+        """
+        maxNonOneParam(IBayesNet_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_maxNonOneParam(self)
 
 
     def toDot(self) -> "std::string":

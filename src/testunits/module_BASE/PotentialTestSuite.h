@@ -183,6 +183,33 @@ namespace gum_tests {
       TS_ASSERT( p == u );
     }
 
+    void testMinMax() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<double> p;
+      p << a << b;
+      p.fillWith( {1, 9, 3, 0, 5, 0, 7, 8, 9} ).normalizeAsCPT();
+
+      TS_ASSERT_EQUALS( p.min(), 0.0 );
+      TS_ASSERT_EQUALS( p.max(), 1.0 );
+      TS_ASSERT_EQUALS( p.minNonZero(), 1.0 / 13.0 );
+      TS_ASSERT_EQUALS( p.maxNonOne(), 9.0 / 13.0 );
+    }
+
+    void testIsNonZeroMap() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<double> p, q;
+      p << a << b;
+      p.fillWith( {1, 9, 3, 0, 5, 0, 7, 8, 9} ).normalizeAsCPT();
+      q << a << b;
+      q.fillWith( {1, 1, 1, 0, 1, 0, 1, 1, 1} );
+
+      TS_ASSERT_EQUALS( p.isNonZeroMap(), q );
+    }
+
     void testOperators() {
       auto a = gum::LabelizedVariable( "a", "afoo" );
       auto b = gum::LabelizedVariable( "b", "bfoo" );
@@ -541,8 +568,8 @@ namespace gum_tests {
       gum::Potential<float> p1;
       p1 << a;
       p1.fillWith( {4, 7, 10} );
-      p.scale(3.0).translate(1.0);
-      //TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0));
+      p.scale( 3.0 ).translate( 1.0 );
+      // TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0));
       TS_ASSERT( p == p1 );
       TS_ASSERT_EQUALS( p, p1 );
     }

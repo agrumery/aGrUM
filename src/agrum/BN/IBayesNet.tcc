@@ -77,11 +77,11 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  Idx IBayesNet<GUM_SCALAR>::dim() const {
-    Idx dim = 0;
+  Size IBayesNet<GUM_SCALAR>::dim() const {
+    Size dim = 0;
 
     for ( auto node : nodes() ) {
-      Idx q = 1;
+      Size q = 1;
 
       for ( auto parent : dag().parents( node ) )
         q *= variable( parent ).domainSize();
@@ -93,8 +93,68 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
+  Size IBayesNet<GUM_SCALAR>::maxVarDomainSize() const {
+    Size res = 0;
+    for ( auto node : nodes() ) {
+      auto v = variable( node ).domainSize();
+      if ( v > res ) {
+        res = v;
+      }
+    }
+    return res;
+  }
+
+  template <typename GUM_SCALAR>
+  GUM_SCALAR IBayesNet<GUM_SCALAR>::minParam() const {
+    GUM_SCALAR res = 1.0;
+    for ( auto node : nodes() ) {
+      auto v = cpt( node ).min();
+      if ( v < res ) {
+        res = v;
+      }
+    }
+    return res;
+  }
+
+  template <typename GUM_SCALAR>
+  GUM_SCALAR IBayesNet<GUM_SCALAR>::maxParam() const {
+    GUM_SCALAR res = 1.0;
+    for ( auto node : nodes() ) {
+      auto v = cpt( node ).max();
+      if ( v > res ) {
+        res = v;
+      }
+    }
+    return res;
+  }
+
+  template <typename GUM_SCALAR>
+  GUM_SCALAR IBayesNet<GUM_SCALAR>::minNonZeroParam() const {
+    GUM_SCALAR res = 1.0;
+    for ( auto node : nodes() ) {
+      auto v = cpt( node ).minNonZero();
+      if ( v < res ) {
+        res = v;
+      }
+    }
+    return res;
+  }
+
+  template <typename GUM_SCALAR>
+  GUM_SCALAR IBayesNet<GUM_SCALAR>::maxNonOneParam() const {
+    GUM_SCALAR res = 0.0;
+    for ( auto node : nodes() ) {
+      auto v = cpt( node ).maxNonOne();
+      if ( v > res ) {
+        res = v;
+      }
+    }
+    return res;
+  }
+
+  template <typename GUM_SCALAR>
   INLINE std::string IBayesNet<GUM_SCALAR>::toString( void ) const {
-    Size param = 0;
+    Size param   = 0;
     double dSize = log10DomainSize();
 
     for ( auto node : nodes() )

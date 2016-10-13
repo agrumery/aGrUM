@@ -39,6 +39,7 @@
 //          5_/             2 -> 4
 //                          2 -> 5
 
+class Size;
 namespace gum_tests {
   int intest = 0;
   class BayesNetTestSuite : public CxxTest::TestSuite {
@@ -177,7 +178,7 @@ namespace gum_tests {
         TS_ASSERT( copy->dag().exists( node ) );
 
         const gum::DiscreteVariable& srcVar = source.variable( node );
-        const gum::DiscreteVariable& cpVar = copy->variable( node );
+        const gum::DiscreteVariable& cpVar  = copy->variable( node );
         TS_ASSERT_EQUALS( srcVar.name(), cpVar.name() );
 
         if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -194,7 +195,7 @@ namespace gum_tests {
         }
 
         const gum::Potential<float>& srcCPT = source.cpt( node );
-        const gum::Potential<float>& cpCPT = copy->cpt( node );
+        const gum::Potential<float>& cpCPT  = copy->cpt( node );
 
         gum::Instantiation srcInst( srcCPT );
         gum::Instantiation cpInst( cpCPT );
@@ -231,7 +232,7 @@ namespace gum_tests {
         TS_ASSERT( copy.dag().exists( node ) );
 
         const gum::DiscreteVariable& srcVar = source.variable( node );
-        const gum::DiscreteVariable& cpVar = copy.variable( node );
+        const gum::DiscreteVariable& cpVar  = copy.variable( node );
         TS_ASSERT_EQUALS( srcVar.name(), cpVar.name() );
 
         if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -248,7 +249,7 @@ namespace gum_tests {
         }
 
         const gum::Potential<float>& srcCPT = source.cpt( node );
-        const gum::Potential<float>& cpCPT = copy.cpt( node );
+        const gum::Potential<float>& cpCPT  = copy.cpt( node );
         gum::Instantiation srcInst( srcCPT );
         gum::Instantiation cpInst( cpCPT );
 
@@ -478,9 +479,10 @@ namespace gum_tests {
             {std::make_pair( "A", "C" ), std::make_pair( "B", "C" )} ) {
         bn.addArc( a.first, a.second );
       }
-      TS_ASSERT_EQUALS( bn.toString(), "BN{nodes: 3, arcs: 2, domainSize: 8, "
-                                       "parameters: 12, compression ratio: "
-                                       "-50% }" );
+      TS_ASSERT_EQUALS( bn.toString(),
+                        "BN{nodes: 3, arcs: 2, domainSize: 8, "
+                        "parameters: 12, compression ratio: "
+                        "-50% }" );
 
       bn.cpt( "A" ).fillWith( 1.0f ).normalize();
       bn.generateCPT( "B" );
@@ -488,25 +490,28 @@ namespace gum_tests {
       TS_ASSERT_THROWS( bn.cpt( "XXX" ), gum::NotFound );
 
       bn.reverseArc( "A", "C" );
-      TS_ASSERT_EQUALS( bn.toString(), "BN{nodes: 3, arcs: 3, domainSize: 8, "
-                                       "parameters: 14, compression ratio: "
-                                       "-75% }" );
+      TS_ASSERT_EQUALS( bn.toString(),
+                        "BN{nodes: 3, arcs: 3, domainSize: 8, "
+                        "parameters: 14, compression ratio: "
+                        "-75% }" );
 
       TS_ASSERT_THROWS( bn.reverseArc( "A", "C" ), gum::InvalidArc );
       TS_ASSERT_THROWS( bn.reverseArc( "A", "C" ), gum::GraphError );
       TS_ASSERT_THROWS( bn.reverseArc( "A", "X" ), gum::NotFound );
 
       bn.erase( "A" );
-      TS_ASSERT_EQUALS( bn.toString(), "BN{nodes: 2, arcs: 1, domainSize: 4, "
-                                       "parameters: 6, compression ratio: -50% "
-                                       "}" );
+      TS_ASSERT_EQUALS( bn.toString(),
+                        "BN{nodes: 2, arcs: 1, domainSize: 4, "
+                        "parameters: 6, compression ratio: -50% "
+                        "}" );
 
       TS_ASSERT_THROWS( bn.erase( "A" ), gum::NotFound );
 
       bn.eraseArc( "B", "C" );
-      TS_ASSERT_EQUALS( bn.toString(), "BN{nodes: 2, arcs: 0, domainSize: 4, "
-                                       "parameters: 4, compression ratio: 0% "
-                                       "}" );
+      TS_ASSERT_EQUALS( bn.toString(),
+                        "BN{nodes: 2, arcs: 0, domainSize: 4, "
+                        "parameters: 4, compression ratio: 0% "
+                        "}" );
 
       TS_ASSERT_THROWS( bn.eraseArc( "B", "C" ), gum::NotFound );
     }
@@ -830,6 +835,18 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS_NOTHING( bn.addArc( i1, i2 ) );
       TS_ASSERT_EQUALS( bn.log10DomainSize(), std::log10( 2.0 * 3.0 ) );
+    }
+
+    void testSomeFunctions() {
+      gum::BayesNet<float> bn;
+      gum::List<gum::NodeId> idList;
+      TS_GUM_ASSERT_THROWS_NOTHING( fill( bn, idList ) );
+
+      TS_ASSERT_EQUALS( bn.maxVarDomainSize(), (gum::Size)3 );
+      TS_ASSERT_EQUALS( bn.minParam(), 0.0f );
+      TS_ASSERT_EQUALS( bn.maxParam(), 1.0f );
+      TS_ASSERT_EQUALS( bn.minNonZeroParam(), 0.1f );
+      TS_ASSERT_EQUALS( bn.maxNonOneParam(), 0.9f );
     }
   };
 

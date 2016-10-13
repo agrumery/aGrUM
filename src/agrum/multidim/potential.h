@@ -185,6 +185,11 @@ namespace gum {
     Potential<GUM_SCALAR>
     margMaxIn( const Set<const DiscreteVariable*>& kept_vars ) const;
 
+    /**
+     * create a boolean-like potential using the predicate isNonZero
+     */
+    Potential<GUM_SCALAR> isNonZeroMap() const;
+
     /// sum of all elements in the Potential
     GUM_SCALAR sum() const;
     /// product of all elements in the Potential
@@ -193,6 +198,11 @@ namespace gum {
     GUM_SCALAR max() const;
     /// min of all elements in the Potential
     GUM_SCALAR min() const;
+    /// max of all non one elements in the Potential
+    GUM_SCALAR maxNonOne() const;
+    /// min of all non zero elements in the Potential
+    GUM_SCALAR minNonZero() const;
+
     /// entropy of the Potential
     GUM_SCALAR entropy() const;
 
@@ -263,15 +273,15 @@ namespace gum {
      */
     void normalizeAsCPT() const;
 
-      /**
-       * @brief create a new potential multiplied by v from *this
-       */
-      const Potential<GUM_SCALAR>& scale( GUM_SCALAR v ) const;
+    /**
+     * @brief create a new potential multiplied by v from *this
+     */
+    const Potential<GUM_SCALAR>& scale( GUM_SCALAR v ) const;
 
-      /**
-      * @brief create a new potential added with v from *this
-      */
-      const Potential<GUM_SCALAR>& translate( GUM_SCALAR v ) const;
+    /**
+    * @brief create a new potential added with v from *this
+    */
+    const Potential<GUM_SCALAR>& translate( GUM_SCALAR v ) const;
 
     ///@}
 
@@ -279,7 +289,6 @@ namespace gum {
     /// @name Potential algebra operators
     // ========================================================================
     ///@{
-
 
 
     /// the function to be used to add two Potentials

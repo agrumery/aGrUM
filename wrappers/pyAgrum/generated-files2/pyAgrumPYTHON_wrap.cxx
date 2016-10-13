@@ -979,6 +979,7 @@ typedef destructor freefunc;
 #if PY_VERSION_HEX < 0x03020000
 #define PyDescr_TYPE(x) (((PyDescrObject *)(x))->d_type)
 #define PyDescr_NAME(x) (((PyDescrObject *)(x))->d_name)
+#define Py_hash_t long
 #endif
 
 /* -----------------------------------------------------------------------------
@@ -3718,6 +3719,7 @@ namespace swig {
 #endif
 
 
+#include <typeinfo>
 #include <stdexcept>
 
 
@@ -3870,7 +3872,7 @@ SWIG_AsVal_double (PyObject *obj, double *val)
     return SWIG_OK;
 #if PY_VERSION_HEX < 0x03000000
   } else if (PyInt_Check(obj)) {
-    if (val) *val = PyInt_AsLong(obj);
+    if (val) *val = (double) PyInt_AsLong(obj);
     return SWIG_OK;
 #endif
   } else if (PyLong_Check(obj)) {
@@ -5069,7 +5071,7 @@ namespace swig {
     if (step == 0) {
       throw std::invalid_argument("slice step cannot be zero");
     } else if (step > 0) {
-      // Required range: 0 <= i < size, 0 <= j < size
+      // Required range: 0 <= i < size, 0 <= j < size, i <= j
       if (i < 0) {
         ii = 0;
       } else if (i < (Difference)size) {
@@ -5077,13 +5079,15 @@ namespace swig {
       } else if (insert && (i >= (Difference)size)) {
         ii = (Difference)size;
       }
-      if ( j < 0 ) {
+      if (j < 0) {
         jj = 0;
       } else {
         jj = (j < (Difference)size) ? j : (Difference)size;
       }
+      if (jj < ii)
+        jj = ii;
     } else {
-      // Required range: -1 <= i < size-1, -1 <= j < size-1
+      // Required range: -1 <= i < size-1, -1 <= j < size-1, i >= j
       if (i < -1) {
         ii = -1;
       } else if (i < (Difference) size) {
@@ -5096,6 +5100,8 @@ namespace swig {
       } else {
         jj = (j < (Difference)size ) ? j : (Difference)(size-1);
       }
+      if (ii < jj)
+        ii = jj;
     }
   }
 
@@ -5121,6 +5127,13 @@ namespace swig {
     seq->erase(position);
   }
 
+  template <class Sequence>
+  struct traits_reserve {
+    static void reserve(Sequence & /*seq*/, typename Sequence::size_type /*n*/) {
+      // This should be specialized for types that support reserve
+    }
+  };
+
   template <class Sequence, class Difference>
   inline Sequence*
   getslice(const Sequence* self, Difference i, Difference j, Py_ssize_t step) {
@@ -5138,6 +5151,7 @@ namespace swig {
         return new Sequence(sb, se);
       } else {
         Sequence *sequence = new Sequence();
+        swig::traits_reserve<Sequence>::reserve(*sequence, (jj - ii + step - 1) / step);
         typename Sequence::const_iterator it = sb;
         while (it!=se) {
           sequence->push_back(*it);
@@ -5148,17 +5162,16 @@ namespace swig {
       } 
     } else {
       Sequence *sequence = new Sequence();
-      if (ii > jj) {
-        typename Sequence::const_reverse_iterator sb = self->rbegin();
-        typename Sequence::const_reverse_iterator se = self->rbegin();
-        std::advance(sb,size-ii-1);
-        std::advance(se,size-jj-1);
-        typename Sequence::const_reverse_iterator it = sb;
-        while (it!=se) {
-          sequence->push_back(*it);
-          for (Py_ssize_t c=0; c<-step && it!=se; ++c)
-            it++;
-        }
+      swig::traits_reserve<Sequence>::reserve(*sequence, (ii - jj - step - 1) / -step);
+      typename Sequence::const_reverse_iterator sb = self->rbegin();
+      typename Sequence::const_reverse_iterator se = self->rbegin();
+      std::advance(sb,size-ii-1);
+      std::advance(se,size-jj-1);
+      typename Sequence::const_reverse_iterator it = sb;
+      while (it!=se) {
+        sequence->push_back(*it);
+        for (Py_ssize_t c=0; c<-step && it!=se; ++c)
+          it++;
       }
       return sequence;
     }
@@ -5172,12 +5185,11 @@ namespace swig {
     Difference jj = 0;
     swig::slice_adjust(i, j, step, size, ii, jj, true);
     if (step > 0) {
-      if (jj < ii)
-        jj = ii;
       if (step == 1) {
         size_t ssize = jj - ii;
         if (ssize <= is.size()) {
           // expanding/staying the same size
+          swig::traits_reserve<Sequence>::reserve(*self, self->size() - ssize + is.size());
           typename Sequence::iterator sb = self->begin();
           typename InputSeq::const_iterator isit = is.begin();
           std::advance(sb,ii);
@@ -5211,8 +5223,6 @@ namespace swig {
         }
       }
     } else {
-      if (jj > ii)
-        jj = ii;
       size_t replacecount = (ii - jj - step - 1) / -step;
       if (is.size() != replacecount) {
         char msg[1024];
@@ -5238,36 +5248,32 @@ namespace swig {
     Difference jj = 0;
     swig::slice_adjust(i, j, step, size, ii, jj, true);
     if (step > 0) {
-      if (jj > ii) {
-        typename Sequence::iterator sb = self->begin();
-        std::advance(sb,ii);
-        if (step == 1) {
-          typename Sequence::iterator se = self->begin();
-          std::advance(se,jj);
-          self->erase(sb,se);
-        } else {
-          typename Sequence::iterator it = sb;
-          size_t delcount = (jj - ii + step - 1) / step;
-          while (delcount) {
-            it = self->erase(it);
-            for (Py_ssize_t c=0; c<(step-1) && it != self->end(); ++c)
-              it++;
-            delcount--;
-          }
-        }
-      }
-    } else {
-      if (ii > jj) {
-        typename Sequence::reverse_iterator sb = self->rbegin();
-        std::advance(sb,size-ii-1);
-        typename Sequence::reverse_iterator it = sb;
-        size_t delcount = (ii - jj - step - 1) / -step;
+      typename Sequence::iterator sb = self->begin();
+      std::advance(sb,ii);
+      if (step == 1) {
+        typename Sequence::iterator se = self->begin();
+        std::advance(se,jj);
+        self->erase(sb,se);
+      } else {
+        typename Sequence::iterator it = sb;
+        size_t delcount = (jj - ii + step - 1) / step;
         while (delcount) {
-          it = typename Sequence::reverse_iterator(self->erase((++it).base()));
-          for (Py_ssize_t c=0; c<(-step-1) && it != self->rend(); ++c)
+          it = self->erase(it);
+          for (Py_ssize_t c=0; c<(step-1) && it != self->end(); ++c)
             it++;
           delcount--;
         }
+      }
+    } else {
+      typename Sequence::reverse_iterator sb = self->rbegin();
+      std::advance(sb,size-ii-1);
+      typename Sequence::reverse_iterator it = sb;
+      size_t delcount = (ii - jj - step - 1) / -step;
+      while (delcount) {
+        it = typename Sequence::reverse_iterator(self->erase((++it).base()));
+        for (Py_ssize_t c=0; c<(-step-1) && it != self->rend(); ++c)
+          it++;
+        delcount--;
       }
     }
   }
@@ -5828,6 +5834,13 @@ namespace swig {
 
 
   namespace swig {
+    template <class T>
+    struct traits_reserve<std::vector<T> > {
+      static void reserve(std::vector<T> &seq, typename std::vector<T>::size_type n) {
+        seq.reserve(n);
+      }
+    };
+
     template <class T>
     struct traits_asptr<std::vector<T> >  {
       static int asptr(PyObject *obj, std::vector<T> **vec) {
@@ -38422,6 +38435,35 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Potential_double_isNonZeroMap(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double_isNonZeroMap",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double_isNonZeroMap" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  {
+    try {
+      result = ((gum::Potential< double > const *)arg1)->isNonZeroMap();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Potential_double_sum(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
@@ -38526,6 +38568,64 @@ SWIGINTERN PyObject *_wrap_Potential_double_min(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (double)((gum::Potential< double > const *)arg1)->min();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Potential_double_maxNonOne(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double_maxNonOne",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double_maxNonOne" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  {
+    try {
+      result = (double)((gum::Potential< double > const *)arg1)->maxNonOne();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Potential_double_minNonZero(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double_minNonZero",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double_minNonZero" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  {
+    try {
+      result = (double)((gum::Potential< double > const *)arg1)->minNonZero();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -42201,7 +42301,7 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double_dim(PyObject *SWIGUNUSEDPARM(self), 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
-  gum::Idx result;
+  gum::Size result;
   
   if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_dim",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
@@ -42211,13 +42311,158 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double_dim(PyObject *SWIGUNUSEDPARM(self), 
   arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
   {
     try {
-      result = (gum::Idx)((gum::IBayesNet< double > const *)arg1)->dim();
+      result = (gum::Size)((gum::IBayesNet< double > const *)arg1)->dim();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
   resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_maxVarDomainSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_maxVarDomainSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_maxVarDomainSize" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::IBayesNet< double > const *)arg1)->maxVarDomainSize();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_minParam(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_minParam",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_minParam" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (double)((gum::IBayesNet< double > const *)arg1)->minParam();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_maxParam(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_maxParam",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_maxParam" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (double)((gum::IBayesNet< double > const *)arg1)->maxParam();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_minNonZeroParam(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_minNonZeroParam",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_minNonZeroParam" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (double)((gum::IBayesNet< double > const *)arg1)->minNonZeroParam();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_maxNonOneParam(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_maxNonOneParam",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_maxNonOneParam" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (double)((gum::IBayesNet< double > const *)arg1)->maxNonOneParam();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
   return resultobj;
 fail:
   return NULL;
@@ -66855,6 +67100,14 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::Potential< double > const *\n"
 		"\n"
 		""},
+	 { (char *)"Potential_double_isNonZeroMap", _wrap_Potential_double_isNonZeroMap, METH_VARARGS, (char *)"\n"
+		"Potential_double_isNonZeroMap(Potential_double self) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
+		"\n"
+		""},
 	 { (char *)"Potential_double_sum", _wrap_Potential_double_sum, METH_VARARGS, (char *)"\n"
 		"Potential_double_sum(Potential_double self) -> double\n"
 		"\n"
@@ -66881,6 +67134,22 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { (char *)"Potential_double_min", _wrap_Potential_double_min, METH_VARARGS, (char *)"\n"
 		"Potential_double_min(Potential_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"Potential_double_maxNonOne", _wrap_Potential_double_maxNonOne, METH_VARARGS, (char *)"\n"
+		"Potential_double_maxNonOne(Potential_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"Potential_double_minNonZero", _wrap_Potential_double_minNonZero, METH_VARARGS, (char *)"\n"
+		"Potential_double_minNonZero(Potential_double self) -> double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -67668,7 +67937,47 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"IBayesNet_double_dim", _wrap_IBayesNet_double_dim, METH_VARARGS, (char *)"\n"
-		"IBayesNet_double_dim(IBayesNet_double self) -> gum::Idx\n"
+		"IBayesNet_double_dim(IBayesNet_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_maxVarDomainSize", _wrap_IBayesNet_double_maxVarDomainSize, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_maxVarDomainSize(IBayesNet_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_minParam", _wrap_IBayesNet_double_minParam, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_minParam(IBayesNet_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_maxParam", _wrap_IBayesNet_double_maxParam, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_maxParam(IBayesNet_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_minNonZeroParam", _wrap_IBayesNet_double_minNonZeroParam, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_minNonZeroParam(IBayesNet_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_maxNonOneParam", _wrap_IBayesNet_double_maxNonOneParam, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_maxNonOneParam(IBayesNet_double self) -> double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"

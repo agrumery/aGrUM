@@ -32,7 +32,28 @@ class BayesNetTestCase(pyAgrumTestCase):
         bn.addArc(idList[3], idList[4]);
         bn.addArc(idList[1], idList[4]);
 
+    def fill(self,bn,idList):
+        self.fillTopo(bn,idList)
 
+        bn.cpt( idList[0] ).fillWith( [0.2, 0.8] )
+
+        bn.cpt( idList[1] ).fillWith( [0.3, 0.7] )
+
+        bn.cpt( idList[2] ).fillWith( [0.1, 0.9, 0.9, 0.1] )
+
+        bn.cpt( idList[3] ).fillWith( [0.4, 0.6,
+                                       0.5, 0.5,
+                                       0.5, 0.5,
+                                       1.0, 0.0])
+
+        bn.cpt( idList[4] ).fillWith([0.3,0.6,0.1,
+                                      0.5,0.5,0.0,
+                                      0.5,0.5,0.0,
+                                      1.0,0.0,0.0,
+                                      0.4,0.6,0.0,
+                                      0.5,0.5,0.0,
+                                      0.5,0.5,0.0,
+                                      0.0,0.0,1.0])
 
 class TestConstructors(BayesNetTestCase):
 
@@ -201,6 +222,18 @@ class TestFeatures(BayesNetTestCase):
         self.assertEqual(bn.dim(),5)
 
 
+    def testSomeFunctions(self):
+      bn=gum.BayesNet()
+      idList=[]
+      self.fill(bn,idList)
+
+      self.assertEquals(bn.maxVarDomainSize(),3)
+      self.assertEquals(bn.minParam(),0.0)
+      self.assertEquals(bn.maxParam(),1.0)
+      self.assertEquals(bn.minNonZeroParam(),0.1)
+      self.assertEquals(bn.maxNonOneParam(),0.9)
+
+
 class TestLoadBN(BayesNetTestCase):
 
     def listen(self, percent):
@@ -333,7 +366,6 @@ class TestLoadBN(BayesNetTestCase):
         self.assertEqual(bn.size(),5)
 
 
-
 ts = unittest.TestSuite()
 ts.addTest(TestConstructors('testConstructor'))
 ts.addTest(TestConstructors('testCopyConstructor'))
@@ -345,6 +377,8 @@ ts.addTest(TestFeatures('testTopologicalOrder'))
 ts.addTest(TestFeatures('testChangeLabel'))
 ts.addTest(TestFeatures('testStringAccessors'))
 ts.addTest(TestFeatures('testShortcutAdd'))
+ts.addTest(TestFeatures('testSomeFunctions'))
+
 ts.addTest(TestLoadBN('testSimpleBIFLoad'))
 ts.addTest(TestLoadBN('testSimpleBIFLoadWithoutListener'))
 ts.addTest(TestLoadBN('testListBIFLoad'))
