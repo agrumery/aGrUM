@@ -8077,7 +8077,13 @@ class Potential_double(_object):
         self: gum::Potential< double > const *
 
         """
-        return _pyAgrum.Potential_double_normalizeAsCPT(self)
+        val = _pyAgrum.Potential_double_normalizeAsCPT(self)
+
+        self._notSync=True
+        return self
+
+
+        return val
 
 
     def scale(self, v):
@@ -8089,7 +8095,13 @@ class Potential_double(_object):
         v: double
 
         """
-        return _pyAgrum.Potential_double_scale(self, v)
+        val = _pyAgrum.Potential_double_scale(self, v)
+
+        self._notSync=True
+        return self
+
+
+        return val
 
 
     def translate(self, v):
@@ -8101,7 +8113,13 @@ class Potential_double(_object):
         v: double
 
         """
-        return _pyAgrum.Potential_double_translate(self, v)
+        val = _pyAgrum.Potential_double_translate(self, v)
+
+        self._notSync=True
+        return self
+
+
+        return val
 
 
     def __add__(self, p2):

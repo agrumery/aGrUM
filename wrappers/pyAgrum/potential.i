@@ -16,27 +16,21 @@
         self._notSync=True
 %}
 
+%define CHANGE_THEN_RETURN_SELF(methodname)
+%pythonappend gum::Potential<double>::methodname %{
+        self._notSync=True
+        return self
+%}
+%enddef
 
-%pythonappend gum::Potential<double>::add %{
-        self._notSync=True
-        return self
-%}
-%pythonappend gum::Potential<double>::abs %{
-        self._notSync=True
-        return self
-%}
-%pythonappend gum::Potential<double>::normalize %{
-        self._notSync=True
-        return self
-%}
-%pythonappend gum::Potential<double>::fillWith %{
-        self._notSync=True
-        return self
-%}
-%pythonappend gum::Potential<double>::sq %{
-        self._notSync=True
-        return self
-%}
+CHANGE_THEN_RETURN_SELF(add)
+CHANGE_THEN_RETURN_SELF(abs)
+CHANGE_THEN_RETURN_SELF(normalize)
+CHANGE_THEN_RETURN_SELF(fillWith)
+CHANGE_THEN_RETURN_SELF(sq)
+CHANGE_THEN_RETURN_SELF(scale)
+CHANGE_THEN_RETURN_SELF(translate)
+CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
@@ -281,4 +275,3 @@
     void var_names() {}
     void var_dims() {}
 }
-
