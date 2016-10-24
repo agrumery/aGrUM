@@ -14,7 +14,11 @@ if (NOT DEFINED GUM_RANDOMSEED)
   set(GUM_RANDOMSEED 0)
 endif()
 
+#workaround : cmake force the value of CMAKE_INSTALL_PREFIX
+set(BACKUP_CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
 project (agrum)
+set(CMAKE_INSTALL_PREFIX ${BACKUP_CMAKE_INSTALL_PREFIX})
+
 cmake_minimum_required (VERSION 3.1)
 
 include("VERSION.txt")
