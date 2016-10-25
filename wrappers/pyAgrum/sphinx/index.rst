@@ -3,16 +3,28 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pyAgrum's documentation!
-===================================
-
-Contents:
+pyAgrum library
+===============
 
 .. toctree::
-   :maxdepth: 4
+  :maxdepth: 2
+  :titlesonly:
 
-   pyAgrum
-   pyAgrum.lib
+  intro
+  graphModule
+  pyAgrum
+
+Python helpers : pyAgrum.lib
+============================
+
+pyAgrum.lib is a set of python tools.
+
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  notebook
+  pyAgrum.lib
 
 
 Indices and tables
@@ -21,4 +33,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
