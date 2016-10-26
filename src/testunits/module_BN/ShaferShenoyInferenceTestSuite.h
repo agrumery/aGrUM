@@ -76,7 +76,7 @@ namespace gum_tests {
         // Testing the inference
         gum::ShaferShenoyInference<float>* inf = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(
-            inf = new gum::ShaferShenoyInference<float>( *bn ) );
+            inf = new gum::ShaferShenoyInference<float>( bn ) );
         TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
         if ( inf != 0 ) {
@@ -91,7 +91,7 @@ namespace gum_tests {
 
     void testMarginal() {
       fill( *bn );
-      gum::ShaferShenoyInference<float> inf( *bn );
+      gum::ShaferShenoyInference<float> inf( bn );
 
       TS_GUM_ASSERT_THROWS_NOTHING( inf.makeInference() );
       TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
@@ -103,13 +103,13 @@ namespace gum_tests {
 
     void testMarginalWithEvidence() {
       fill( *bn );
-      gum::List<const gum::Potential<float>*> e_list;
-      e_list.insert( &( bn->cpt( i1 ) ) );
-      e_list.insert( &( bn->cpt( i2 ) ) );
+      gum::List<gum::Potential<float>*> e_list;
+      e_list.insert( const_cast<gum::Potential<float>*> ( &( bn->cpt( i1 ) ) ) );
+      e_list.insert( const_cast<gum::Potential<float>*> ( &( bn->cpt( i2 ) ) ) );
 
-      gum::ShaferShenoyInference<float> inf( *bn );
+      gum::ShaferShenoyInference<float> inf( bn );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.addListOfEvidence( e_list ) );
 
       TS_GUM_ASSERT_THROWS_NOTHING( inf.makeInference() );
 
@@ -132,7 +132,7 @@ namespace gum_tests {
 
         gum::ShaferShenoyInference<float>* inf = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(
-            inf = new gum::ShaferShenoyInference<float>( *bayesNet ) );
+            inf = new gum::ShaferShenoyInference<float>( bayesNet ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING( if ( inf ) inf->makeInference() );
 

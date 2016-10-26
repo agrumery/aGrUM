@@ -35,6 +35,23 @@
 
 namespace gum {
 
+  
+  /** @brief type of algorithm to determine barren nodes
+   *
+   * When constructing messages from one clique to its neighbor, we can
+   * determine that some nodes are barren, i.e., they are the only one
+   * at the left hand side of a conditioning bar and they appear in only one
+   * potential. In such case, in a classical BN inference, there is no need
+   * to take them into account since their removal will necessarily create
+   * a constant potential. So, we can discard their potential from the
+   * computation. However, when computing p(evidence), we should not do that
+   * because the constant is important and need be computed.
+   */
+  enum FindBarrenNodesType {
+    FIND_NO_BARREN_NODES,  // do not try to find barren nodes
+    FIND_BARREN_NODES      // use a bottom-up algorithm to detect barren nodes
+  };
+
 
   // JointTargetedInference, the class for computing joint posteriors, should
   // have access to the states of Inference and change them when needed: this

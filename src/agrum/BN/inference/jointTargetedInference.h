@@ -135,6 +135,38 @@ namespace gum {
     /// @}
 
 
+    // ############################################################################
+    /// @name Information Theory related functions
+    // ############################################################################
+    /// @{
+
+    /** Entropy
+     * Compute Shanon's entropy of a node given the observation
+     * @see http://en.wikipedia.org/wiki/Information_entropy
+     */
+    GUM_SCALAR H( const NodeId X );
+
+    /** Mutual information between X and Y
+     * @see http://en.wikipedia.org/wiki/Mutual_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute
+     * this value
+     * @throw OperationNotAllowed in these cases
+     */
+    GUM_SCALAR I( const NodeId X, const NodeId Y );
+
+    /** Variation of information between X and Y
+     * @see http://en.wikipedia.org/wiki/Variation_of_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute
+     * this value
+     * @throw OperationNotAllowed in these cases
+     */
+    GUM_SCALAR VI( const NodeId X, const NodeId Y );
+
+    /// @}
+
+    
     protected:
     /// fired after a new Bayes net has been assigned to the engine
     virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn );
@@ -160,8 +192,19 @@ namespace gum {
     virtual const Potential<GUM_SCALAR>&
     _jointPosterior( const NodeSet& set ) = 0;
 
+    /** @brief returns a fresh unnormalized joint posterior of
+     * a given set of variables
+     * @param set The set of ids of the variables whose joint posterior is
+     * looked for. */
+    virtual Potential<GUM_SCALAR>*
+    _unnormalizedJointPosterior( const NodeSet& set ) = 0;
 
-    private:
+    /// returns a fresh potential equal to P(argument,evidence)
+    virtual Potential<GUM_SCALAR>*
+    _unnormalizedJointPosterior( const NodeId id ) = 0;
+
+    
+  private:
     /// the set of joint targets
     Set<NodeSet> __joint_targets;
   };

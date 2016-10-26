@@ -128,7 +128,7 @@ namespace gum_tests {
     void testMarginal() {
       fill( *bn );
       gum::LazyPropagation<float> inf( bn );
-      gum::ShaferShenoyInference<float> inf2( *bn );
+      gum::ShaferShenoyInference<float> inf2( bn );
 
       TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
@@ -154,12 +154,13 @@ namespace gum_tests {
       e_list.insert( e_i4 );
 
       gum::LazyPropagation<float> inf( bn );
-      gum::ShaferShenoyInference<float> infX( *bn );
+      gum::ShaferShenoyInference<float> infX( bn );
 
-      for ( auto pot : e_list )
+      for ( auto pot : e_list ) {
         TS_ASSERT_THROWS_NOTHING( inf.addEvidence( *pot ) );
-      TS_ASSERT_THROWS_NOTHING( infX.insertEvidence( e_list ) );
-
+        TS_ASSERT_THROWS_NOTHING( infX.addEvidence( *pot ) );
+      }
+      
       TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
       TS_ASSERT_THROWS_NOTHING( infX.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
@@ -176,12 +177,12 @@ namespace gum_tests {
       TS_ASSERT( equalPotentials( inf.posterior( i5 ), infX.posterior( i5 ) ) );
 
       gum::LazyPropagation<float> inf2( bn );
-      gum::ShaferShenoyInference<float> inf2X( *bn );
+      gum::ShaferShenoyInference<float> inf2X( bn );
 
       TS_ASSERT_THROWS_NOTHING( inf2.addEvidence( i1, 0 ) );
       TS_ASSERT_THROWS_NOTHING( inf2.addEvidence( i4, 1 ) );
-      TS_ASSERT_THROWS_NOTHING( inf2X.addHardEvidence( i1, 0 ) );
-      TS_ASSERT_THROWS_NOTHING( inf2X.addHardEvidence( i4, 1 ) );
+      TS_ASSERT_THROWS_NOTHING( inf2X.addEvidence( i1, 0 ) );
+      TS_ASSERT_THROWS_NOTHING( inf2X.addEvidence( i4, 1 ) );
 
       TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf2X.makeInference() );
@@ -198,15 +199,15 @@ namespace gum_tests {
       TS_ASSERT( inf.posterior( i5 ) == inf2.posterior( i5 ) );
 
       TS_ASSERT(
-          equalPotentials( inf2.posterior( i1 ), inf2X.posterior( i1 ) ) );
+                equalPotentials( inf2.posterior( i1 ), inf2X.posterior( i1 ) ) );
       TS_ASSERT(
-          equalPotentials( inf2.posterior( i2 ), inf2X.posterior( i2 ) ) );
+                equalPotentials( inf2.posterior( i2 ), inf2X.posterior( i2 ) ) );
       TS_ASSERT(
-          equalPotentials( inf2.posterior( i3 ), inf2X.posterior( i3 ) ) );
+                equalPotentials( inf2.posterior( i3 ), inf2X.posterior( i3 ) ) );
       TS_ASSERT(
-          equalPotentials( inf2.posterior( i4 ), inf2X.posterior( i4 ) ) );
+                equalPotentials( inf2.posterior( i4 ), inf2X.posterior( i4 ) ) );
       TS_ASSERT(
-          equalPotentials( inf2.posterior( i5 ), inf2X.posterior( i5 ) ) );
+                equalPotentials( inf2.posterior( i5 ), inf2X.posterior( i5 ) ) );
     }
 
     // Testing when there is no evidence
@@ -250,7 +251,7 @@ namespace gum_tests {
       fill( *bn );
       gum::LazyPropagation<float> inf( bn );
       inf.setFindRelevantPotentialsType(
-          gum::FindRelevantPotentialsType::FIND_RELEVANT_ALL );
+                                        gum::FindRelevantPotentialsType::FIND_RELEVANT_ALL );
       inf.makeInference();
       auto p     = inf.posterior( 0 );
       auto I     = gum::Instantiation( p );
@@ -276,7 +277,7 @@ namespace gum_tests {
 
       gum::LazyPropagation<float> inf( &bn );
       inf.setFindRelevantPotentialsType(
-          gum::FindRelevantPotentialsType::FIND_RELEVANT_ALL );
+                                        gum::FindRelevantPotentialsType::FIND_RELEVANT_ALL );
       inf.makeInference();
       auto p     = inf.posterior( id );
       auto I     = gum::Instantiation( p );
@@ -310,10 +311,11 @@ namespace gum_tests {
         for ( inst.setFirst(); !inst.end(); ++inst ) {
           ev_pot.set( inst, 1.0f );
           gum::LazyPropagation<float> inf1( &bn );
-          gum::ShaferShenoyInference<float> inf2( bn );
-          for ( auto pot : evidences )
+          gum::ShaferShenoyInference<float> inf2( &bn );
+          for ( auto pot : evidences ) {
             TS_ASSERT_THROWS_NOTHING( inf1.addEvidence( *pot ) );
-          TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
+            TS_ASSERT_THROWS_NOTHING( inf2.addEvidence( *pot ) );
+          }
           TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
           TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
           for ( auto node : bn.dag() ) {
@@ -367,13 +369,13 @@ namespace gum_tests {
       }
 
       gum::LazyPropagation<float> inf3( &bn );
-      gum::ShaferShenoyInference<float> inf4( bn );
+      gum::ShaferShenoyInference<float> inf4( &bn );
       for ( auto pot : evidences ) {
         TS_ASSERT_THROWS_NOTHING( inf1.addEvidence( *pot ) );
         TS_ASSERT_THROWS_NOTHING( inf3.addEvidence( *pot ) );
+        TS_ASSERT_THROWS_NOTHING( inf4.addEvidence( *pot ) );
       }
       TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
-      TS_ASSERT_THROWS_NOTHING( inf4.insertEvidence( evidences ) );
 
       TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
@@ -446,10 +448,11 @@ namespace gum_tests {
                 ev_pot2.set( inst2, 1.0f );
 
                 gum::LazyPropagation<float> inf1( &bn );
-                gum::ShaferShenoyInference<float> inf2( bn );
-                for ( auto pot : evidences )
+                gum::ShaferShenoyInference<float> inf2( &bn );
+                for ( auto pot : evidences ) {
                   TS_ASSERT_THROWS_NOTHING( inf1.addEvidence( *pot ) );
-                TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
+                  TS_ASSERT_THROWS_NOTHING( inf2.addEvidence( *pot ) );
+                }
                 TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
                 TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
 
@@ -510,10 +513,11 @@ namespace gum_tests {
                 inf1.setFindRelevantPotentialsType(
                     gum::FindRelevantPotentialsType::
                         FIND_RELEVANT_D_SEPARATION );
-                gum::ShaferShenoyInference<float> inf2( bn );
-                for ( auto pot : evidences )
+                gum::ShaferShenoyInference<float> inf2( &bn );
+                for ( auto pot : evidences ) {
                   TS_ASSERT_THROWS_NOTHING( inf1.addEvidence( *pot ) );
-                TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
+                  TS_ASSERT_THROWS_NOTHING( inf2.addEvidence( *pot ) );
+                }
                 TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
                 TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
 

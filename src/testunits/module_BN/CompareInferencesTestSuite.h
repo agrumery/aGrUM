@@ -100,7 +100,7 @@ namespace gum_tests {
       try {
         begin_test_waiting();
 
-        gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
+        gum::ShaferShenoyInference<double> inf_ShaShe( bn );
         test_waiting();
         inf_ShaShe.makeInference();
 
@@ -167,8 +167,9 @@ namespace gum_tests {
       list_pot.insert( &e_i1 );
       list_pot.insert( &e_i4 );
 
-      gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
-      inf_ShaShe.insertEvidence( list_pot );
+      gum::ShaferShenoyInference<double> inf_ShaShe( bn );
+      for ( auto pot : list_pot )
+        inf_ShaShe.addEvidence( *pot );
       test_waiting();
       inf_ShaShe.makeInference();
 
@@ -237,8 +238,9 @@ namespace gum_tests {
       list_pot.insert( &e_i1 );
       list_pot.insert( &e_i4 );
 
-      gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
-      inf_ShaShe.insertEvidence( list_pot );
+      gum::ShaferShenoyInference<double> inf_ShaShe( bn );
+      for ( auto pot : list_pot )
+        inf_ShaShe.addEvidence( *pot );
       test_waiting();
       inf_ShaShe.makeInference();
 
@@ -377,7 +379,7 @@ namespace gum_tests {
       }
 
       {
-        gum::ShaferShenoyInference<float> inf( bn );
+        gum::ShaferShenoyInference<float> inf( &bn );
         inf.makeInference();
         {
           const gum::Potential<float>& p = inf.posterior( w );
@@ -388,7 +390,8 @@ namespace gum_tests {
         }
 
         inf.eraseAllEvidence();
-        inf.insertEvidence( list_pot );
+        for ( auto pot : list_pot )
+          inf.addEvidence( *pot );
         inf.makeInference();
         {
           const gum::Potential<float>& p = inf.posterior( w );
@@ -431,7 +434,7 @@ namespace gum_tests {
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
       gum::VariableElimination<double> ve( bn );
-      gum::ShaferShenoyInference<double> ss( bn );
+      gum::ShaferShenoyInference<double> ss( &bn );
       gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
       gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
@@ -460,16 +463,17 @@ namespace gum_tests {
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
       gum::VariableElimination<double> ve( bn );
-      gum::ShaferShenoyInference<double> ss( bn );
+      gum::ShaferShenoyInference<double> ss( &bn );
       gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
       gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
       auto e_id = bn.idFromName( "CATECHOL" );
-      std::vector<gum::BayesNetInference<double>*> inf_list{&ve, &ss, &vebb};
+      std::vector<gum::BayesNetInference<double>*> inf_list{&ve, &vebb};
       for ( auto inf : inf_list ) {
         inf->addHardEvidence( e_id, 0 );
       }
       lazy.addEvidence( e_id, 0 );
+      ss.addEvidence ( e_id, 0 );
       for ( auto var_id : bn.nodes() ) {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( p_ve = ve.posterior( var_id ) );
@@ -495,7 +499,7 @@ namespace gum_tests {
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
       gum::VariableElimination<double> ve( bn );
-      gum::ShaferShenoyInference<double> ss( bn );
+      gum::ShaferShenoyInference<double> ss( &bn );
       gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
       gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
@@ -506,12 +510,14 @@ namespace gum_tests {
       gum::List<const gum::Potential<double>*> list;
       list.insert( &e_p );
       auto inf_list =
-          std::vector<gum::BayesNetInference<double>*>{&ve, &ss, &vebb};
+          std::vector<gum::BayesNetInference<double>*>{&ve, &vebb};
       for ( auto inf : inf_list ) {
         inf->insertEvidence( list );
       }
-      for ( auto ev : list )
+      for ( auto ev : list ) {
         lazy.addEvidence( *ev );
+        ss.addEvidence ( *ev );
+      }
 
       for ( auto var_id : bn.nodes() ) {
         // Act
@@ -540,7 +546,7 @@ namespace gum_tests {
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
       gum::VariableElimination<double> ve( bn );
-      gum::ShaferShenoyInference<double> ss( bn );
+      gum::ShaferShenoyInference<double> ss( &bn );
       gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
       gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
@@ -571,17 +577,18 @@ namespace gum_tests {
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
       gum::VariableElimination<double> ve( bn );
-      gum::ShaferShenoyInference<double> ss( bn );
+      gum::ShaferShenoyInference<double> ss( &bn );
       gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
       gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
       auto e_id = bn.idFromName( "bronchitis?" );
       auto inf_list =
-          std::vector<gum::BayesNetInference<double>*>{&ve, &ss, &vebb};
+          std::vector<gum::BayesNetInference<double>*>{&ve, &vebb};
       for ( auto inf : inf_list ) {
         inf->addHardEvidence( e_id, 0 );
       }
       lazy.addEvidence( e_id, 0 );
+      ss.addEvidence ( e_id, 0 );
       for ( auto var_id : bn.nodes() ) {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( p_ve = ve.posterior( var_id ) );
@@ -609,7 +616,7 @@ namespace gum_tests {
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
       gum::VariableElimination<double> ve( bn );
-      gum::ShaferShenoyInference<double> ss( bn );
+      gum::ShaferShenoyInference<double> ss( &bn );
       gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
       gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
@@ -620,12 +627,14 @@ namespace gum_tests {
       gum::List<const gum::Potential<double>*> list;
       list.insert( &e_p );
       auto inf_list =
-          std::vector<gum::BayesNetInference<double>*>{&ve, &ss, &vebb};
+          std::vector<gum::BayesNetInference<double>*>{&ve, &vebb};
       for ( auto inf : inf_list ) {
         inf->insertEvidence( list );
       }
-      for ( auto ev : list )
+      for ( auto ev : list ) {
         lazy.addEvidence( *ev );
+        ss.addEvidence ( *ev );
+      }
 
       for ( auto var_id : bn.nodes() ) {
         // Act

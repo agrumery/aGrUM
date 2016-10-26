@@ -88,7 +88,7 @@ namespace gum_tests {
       gum::BayesNet<float>* bn = new gum::BayesNet<float>();
       gen.generateBN( *bn );
       // Test for inference
-      gum::ShaferShenoyInference<float> ssInf( *bn );
+      gum::ShaferShenoyInference<float> ssInf( bn );
       TS_GUM_ASSERT_THROWS_NOTHING( ssInf.makeInference() );
 
       if ( bn != 0 ) delete bn;
@@ -159,7 +159,7 @@ namespace gum_tests {
       gum::BayesNet<double>* bn = new gum::BayesNet<double>();
       gen.generateBN( *bn );
       // Test for inference
-      gum::ShaferShenoyInference<double> ssInf( *bn );
+      gum::ShaferShenoyInference<double> ssInf( bn );
       TS_GUM_ASSERT_THROWS_NOTHING( ssInf.makeInference() );
 
       if ( bn != 0 ) delete bn;

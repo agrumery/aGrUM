@@ -69,23 +69,6 @@ namespace gum {
   };
 
 
-  /** @brief type of algorithm to determine barren nodes
-   *
-   * When constructing messages from one clique to its neighbor, we can
-   * determine that some nodes are barren, i.e., they are the only one
-   * at the left hand side of a conditioning bar and they appear in only one
-   * potential. In such case, in a classical BN inference, there is no need
-   * to take them into account since their removal will necessarily create
-   * a constant potential. So, we can discard their potential from the
-   * computation. However, when computing p(evidence), we should not do that
-   * because the constant is important and need be computed.
-   */
-  enum FindBarrenNodesType {
-    FIND_NO_BARREN_NODES,  // do not try to find barren nodes
-    FIND_BARREN_NODES      // use a bottom-up algorithm to detect barren nodes
-  };
-
-
   /**
    * @class LazyPropagation lazyPropagation.h
    * <agrum/BN/inference/lazyPropagation.h>
@@ -163,38 +146,6 @@ namespace gum {
     /// @}
 
 
-    // ############################################################################
-    /// @name Information Theory related functions
-    // ############################################################################
-    /// @{
-
-    /** Entropy
-     * Compute Shanon's entropy of a node given the observation
-     * @see http://en.wikipedia.org/wiki/Information_entropy
-     */
-    GUM_SCALAR H( NodeId X );
-
-    /** Mutual information between X and Y
-     * @see http://en.wikipedia.org/wiki/Mutual_information
-     *
-     * @warning Due to limitation of @ref joint, may not be able to compute
-     * this value
-     * @throw OperationNotAllowed in these cases
-     */
-    GUM_SCALAR I( NodeId X, NodeId Y );
-
-    /** Variation of information between X and Y
-     * @see http://en.wikipedia.org/wiki/Variation_of_information
-     *
-     * @warning Due to limitation of @ref joint, may not be able to compute
-     * this value
-     * @throw OperationNotAllowed in these cases
-     */
-    GUM_SCALAR VI( NodeId X, NodeId Y );
-
-    /// @}
-
-
     protected:
     /// fired after a new evidence is inserted
     virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence );
@@ -257,7 +208,7 @@ namespace gum {
     /// called when the inference has to be performed effectively
     /** Once the inference is done, _fillPosterior can be called. */
     virtual void _makeInference();
-
+    
 
     /// returns the posterior of a given variable
     /** @param id The variable's id. */
@@ -268,6 +219,16 @@ namespace gum {
      * looked for. */
     virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set );
 
+    /// returns a fresh potential equal to P(argument,evidence)
+    virtual Potential<GUM_SCALAR>*
+    _unnormalizedJointPosterior( const NodeId id );
+
+    /// returns a fresh potential equal to P(argument,evidence)
+    virtual Potential<GUM_SCALAR>*
+    _unnormalizedJointPosterior( const NodeSet& set );
+
+
+    
 
     private:
     typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
@@ -378,13 +339,10 @@ namespace gum {
      * were not computed */
     ArcProperty<bool> __messages_computed;
 
-    /// the soft evidence stored in the cliques per their assigned node in the
-    /// BN
+    /// the soft evidence stored in the cliques per their assigned node in the BN
     /** This variable is useful for method _updateInferencePotentials: it
-     * enables
-     * to know which soft evidence should be removed/added into the cliques of
-     * the
-     * join tree.
+     * enables to know which soft evidence should be removed/added into the
+     * cliques of the join tree.
      * @warning These potentials are not owned by LazyPropagation, they are only
      * referenced by it. Only the cliques that contain evidence are
      * filled in this structure. */
@@ -479,12 +437,6 @@ namespace gum {
 
     /// actually perform the collect phase
     void __collectMessage( const NodeId id, const NodeId from );
-
-    /// returns a fresh potential equal to P(1st arg,evidence)
-    Potential<GUM_SCALAR>* __computeJointPosterior( const NodeId id );
-
-    /// returns a fresh potential equal to P(1st arg,evidence)
-    Potential<GUM_SCALAR>* __computeJointPosterior( const NodeSet& set );
 
     /// avoid copy constructors
     LazyPropagation( const LazyPropagation<GUM_SCALAR>& );

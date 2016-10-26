@@ -236,16 +236,17 @@ namespace gum_tests {
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-      gum::ShaferShenoyInference<double> ss( bn );
+      gum::ShaferShenoyInference<double> ss( &bn );
       gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
       gum::Potential<double> p_vebb, p_ss, p_lazy;
       auto e_id     = bn.idFromName( "bronchitis?" );
-      auto inf_list = std::vector<gum::BayesNetInference<double>*>{&ss, &vebb};
+      auto inf_list = std::vector<gum::BayesNetInference<double>*>{&vebb};
       for ( auto inf : inf_list ) {
         inf->addHardEvidence( e_id, 0 );
       }
       lazy.addEvidence( e_id, 0 );
+      ss.addEvidence ( e_id, 0 );
       auto var_id = bn.idFromName( "tuberculos_or_cancer?" );
 
       // Act

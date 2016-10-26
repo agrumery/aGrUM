@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/ShaferShenoyInferenceOld.h>
 
-template class gum::ShaferShenoyInference<float>;
-template class gum::ShaferShenoyInference<double>;
+template class gum::ShaferShenoyInferenceOld<float>;
+template class gum::ShaferShenoyInferenceOld<double>;

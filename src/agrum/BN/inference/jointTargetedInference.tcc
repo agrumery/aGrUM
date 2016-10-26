@@ -192,4 +192,92 @@ namespace gum {
   }
 
 
+  // ##############################################################################
+  // Entropy
+  // ##############################################################################
+  
+  /** Entropy
+   * Compute Shanon's entropy of a node given the observation
+   */
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR
+  JointTargetedInference<GUM_SCALAR>::H( const NodeId X ) {
+    Potential<GUM_SCALAR>* posteriorX = this->_unnormalizedJointPosterior ( X );
+    GUM_SCALAR res = posteriorX->entropy();
+    delete posteriorX;
+    return res;
+  }
+
+
+  /** Mutual information between X and Y
+   * @see http://en.wikipedia.org/wiki/Mutual_information
+   *
+   * @warning Due to limitation of @joint, may not be able to compute this value
+   * @throw OperationNotAllowed in these cases
+   */
+  template <typename GUM_SCALAR>
+  GUM_SCALAR
+  JointTargetedInference<GUM_SCALAR>::I( const NodeId X,
+                                         const NodeId Y ) {
+    Potential<GUM_SCALAR> *pX = nullptr, *pY = nullptr, *pXY = nullptr;
+
+    try {
+      pX = this->_unnormalizedJointPosterior( X );
+      pY = this->_unnormalizedJointPosterior( Y );
+      if ( X != Y ) {
+        NodeSet XY;
+        XY << X << Y;
+        pXY = this->_unnormalizedJointPosterior( XY );
+      }
+      else {
+        pXY = new Potential<GUM_SCALAR>( *pX );
+      }
+    }
+    catch ( ... ) {
+      if ( pX != nullptr )  delete pX;
+      if ( pY != nullptr )  delete pY;
+      if ( pXY != nullptr ) delete pXY;
+      throw;
+    }
+
+    Instantiation i( *pXY );
+    GUM_SCALAR res = (GUM_SCALAR)0;
+
+    for ( i.setFirst(); !i.end(); ++i ) {
+      GUM_SCALAR vXY = ( *pXY )[i];
+      GUM_SCALAR vX  = ( *pX )[i];
+      GUM_SCALAR vY  = ( *pY )[i];
+
+      if ( vXY > (GUM_SCALAR)0 ) {
+        if ( vX == (GUM_SCALAR)0 || vY == (GUM_SCALAR)0 ) {
+          GUM_ERROR( OperationNotAllowed,
+                     "Mutual Information (X,Y) with P(X)=0 or P(Y)=0 "
+                     "and P(X,Y)>0" );
+        }
+
+        res += vXY * ( log2( vXY ) - log2( vX ) - log2( vY ) );
+      }
+    }
+
+    delete pX;
+    delete pY;
+    delete pXY;
+
+    return res;
+  }
+
+
+  /** Variation of information between X and Y
+   * @see http://en.wikipedia.org/wiki/Variation_of_information
+   *
+   * @warning Due to limitation of @joint, may not be able to compute this value
+   * @throw OperationNotAllowed in these cases
+   */
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR
+  JointTargetedInference<GUM_SCALAR>::VI( const NodeId X, const NodeId Y ) {
+    return H( X ) + H( Y ) - 2 * I( X, Y );
+  }
+
+  
 } /* namespace gum */

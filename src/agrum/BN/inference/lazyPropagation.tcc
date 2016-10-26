@@ -25,7 +25,6 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <utility>
 
 #include <agrum/BN/inference/BayesBall.h>
@@ -1339,7 +1338,7 @@ namespace gum {
   /// returns a fresh potential equal to P(1st arg,evidence)
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>*
-  LazyPropagation<GUM_SCALAR>::__computeJointPosterior( const NodeId id ) {
+  LazyPropagation<GUM_SCALAR>::_unnormalizedJointPosterior( const NodeId id ) {
     const auto& bn = this->BayesNet();
 
     // hard evidence do not belong to the join tree
@@ -1428,7 +1427,7 @@ namespace gum {
     }
 
     // compute the joint posterior and normalize
-    auto joint = __computeJointPosterior( id );
+    auto joint = _unnormalizedJointPosterior( id );
     joint->normalize();
     __target_posteriors.insert( id, joint );
 
@@ -1439,7 +1438,7 @@ namespace gum {
   // returns the marginal a posteriori proba of a given node
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>*
-  LazyPropagation<GUM_SCALAR>::__computeJointPosterior( const NodeSet& set ) {
+  LazyPropagation<GUM_SCALAR>::_unnormalizedJointPosterior( const NodeSet& set ) {
     // hard evidence do not belong to the join tree, so extract the nodes
     // from targets that are not hard evidence
     NodeSet targets = set, hard_ev_nodes;
@@ -1554,7 +1553,7 @@ namespace gum {
     }
 
     // compute the joint posterior and normalize
-    auto joint = __computeJointPosterior( set );
+    auto joint = _unnormalizedJointPosterior( set );
     joint->normalize();
     __joint_target_posteriors.insert( set, joint );
 
@@ -1587,7 +1586,7 @@ namespace gum {
     for ( const auto root : __roots ) {
       // get a node in the clique
       const NodeId node          = *( __JT->clique( root ).begin() );
-      Potential<GUM_SCALAR>* tmp = __computeJointPosterior( node );
+      Potential<GUM_SCALAR>* tmp = _unnormalizedJointPosterior( node );
       GUM_SCALAR sum             = 0;
       for ( Instantiation iter( *tmp ); !iter.end(); ++iter )
         sum += tmp->get( iter );
@@ -1602,82 +1601,6 @@ namespace gum {
   }
 
 
-  /** Entropy
-   * Compute Shanon's entropy of a node given the observation
-   */
-  template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR LazyPropagation<GUM_SCALAR>::H( NodeId X ) {
-    Potential<GUM_SCALAR>* posteriorX = __computeJointPosterior( X );
-    GUM_SCALAR res                    = posteriorX->entropy();
-    delete posteriorX;
-    return res;
-  }
-
-
-  /** Mutual information between X and Y
-   * @see http://en.wikipedia.org/wiki/Mutual_information
-   *
-   * @warning Due to limitation of @joint, may not be able to compute this value
-   * @throw OperationNotAllowed in these cases
-   */
-  template <typename GUM_SCALAR>
-  GUM_SCALAR LazyPropagation<GUM_SCALAR>::I( NodeId X, NodeId Y ) {
-    Potential<GUM_SCALAR> *pX = nullptr, *pY = nullptr, *pXY = nullptr;
-
-    try {
-      pX = __computeJointPosterior( X );
-      pY = __computeJointPosterior( Y );
-      if ( X != Y ) {
-        NodeSet XY;
-        XY << X << Y;
-        pXY = __computeJointPosterior( XY );
-      } else {
-        pXY = new Potential<GUM_SCALAR>( *pX );
-      }
-    } catch ( ... ) {
-      if ( pX != nullptr ) delete pX;
-      if ( pY != nullptr ) delete pY;
-      if ( pXY != nullptr ) delete pXY;
-      throw;
-    }
-
-    Instantiation i( *pXY );
-    GUM_SCALAR res = (GUM_SCALAR)0;
-
-    for ( i.setFirst(); !i.end(); ++i ) {
-      GUM_SCALAR vXY = ( *pXY )[i];
-      GUM_SCALAR vX  = ( *pX )[i];
-      GUM_SCALAR vY  = ( *pY )[i];
-
-      if ( vXY > (GUM_SCALAR)0 ) {
-        if ( vX == (GUM_SCALAR)0 || vY == (GUM_SCALAR)0 ) {
-          GUM_ERROR( OperationNotAllowed,
-                     "Mutual Information (X,Y) with P(X)=0 or P(Y)=0 "
-                     "and P(X,Y)>0" );
-        }
-
-        res += vXY * ( log2( vXY ) - log2( vX ) - log2( vY ) );
-      }
-    }
-
-    delete pX;
-    delete pY;
-    delete pXY;
-
-    return res;
-  }
-
-
-  /** Variation of information between X and Y
-   * @see http://en.wikipedia.org/wiki/Variation_of_information
-   *
-   * @warning Due to limitation of @joint, may not be able to compute this value
-   * @throw OperationNotAllowed in these cases
-   */
-  template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR LazyPropagation<GUM_SCALAR>::VI( NodeId X, NodeId Y ) {
-    return H( X ) + H( Y ) - 2 * I( X, Y );
-  }
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

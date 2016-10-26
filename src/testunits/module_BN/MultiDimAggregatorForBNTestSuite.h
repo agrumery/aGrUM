@@ -92,7 +92,7 @@ namespace gum_tests {
       }
 
       {
-        gum::ShaferShenoyInference<double> inf( bn );
+        gum::ShaferShenoyInference<double> inf( &bn );
 
         try {
           // Testing the inference

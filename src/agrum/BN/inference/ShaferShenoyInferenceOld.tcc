@@ -20,23 +20,23 @@
 /**
  * @file
  * @brief Implementations of the classes defined in
- * bns/inference/ShaferShenoyInference.h.
+ * bns/inference/ShaferShenoyInferenceOld.h.
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing by IDE
-#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/ShaferShenoyInferenceOld.h>
 
 namespace gum {
 
   // Default constructor
   template <typename GUM_SCALAR>
-  ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference(
+  ShaferShenoyInferenceOld<GUM_SCALAR>::ShaferShenoyInferenceOld(
       const IBayesNet<GUM_SCALAR>& bayesNet )
       : BayesNetInference<GUM_SCALAR>( bayesNet )
       , __triangulation( nullptr ) {
-    GUM_CONSTRUCTOR( ShaferShenoyInference );
+    GUM_CONSTRUCTOR( ShaferShenoyInferenceOld );
 
     NodeProperty<Size> __modalitiesMap;
 
@@ -51,8 +51,8 @@ namespace gum {
 
   // Destructor
   template <typename GUM_SCALAR>
-  ShaferShenoyInference<GUM_SCALAR>::~ShaferShenoyInference() {
-    GUM_DESTRUCTOR( ShaferShenoyInference );
+  ShaferShenoyInferenceOld<GUM_SCALAR>::~ShaferShenoyInferenceOld() {
+    GUM_DESTRUCTOR( ShaferShenoyInferenceOld );
 
     delete __triangulation;
 
@@ -71,13 +71,13 @@ namespace gum {
 
   // Returns the Triangulation used by this class.
   template <typename GUM_SCALAR>
-  INLINE Triangulation& ShaferShenoyInference<GUM_SCALAR>::triangulation() {
+  INLINE Triangulation& ShaferShenoyInferenceOld<GUM_SCALAR>::triangulation() {
     return *__triangulation;
   }
 
   // Makes the inference
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::makeInference() {
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::makeInference() {
     this->_invalidatePosteriors();
 
     // Setting all collect flags at false
@@ -98,7 +98,7 @@ namespace gum {
   // @throw NotFound Raised if no variable matches id.
   // @throw OperationNotAllowed Raised if the inference haven't be done.
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::_fillPosterior(
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::_fillPosterior(
       NodeId id, Potential<GUM_SCALAR>& posterior ) {
     NodeId cliqueId = __triangulation->createdJunctionTreeClique( id );
     // First we find the smallest clique containing id
@@ -139,7 +139,7 @@ namespace gum {
 
   // insert new evidence in the graph
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::insertEvidence(
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::insertEvidence(
       const List<const Potential<GUM_SCALAR>*>& pot_list ) {
     for ( const auto& pot : pot_list ) {
       __clique_prop[__node2CliqueMap[this->bn().nodeId( pot->variable( 0 ) )]]
@@ -153,7 +153,7 @@ namespace gum {
 
   // remove a given evidence from the graph
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::eraseEvidence(
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::eraseEvidence(
       const Potential<GUM_SCALAR>* e ) {
     if ( !( e->variablesSequence().size() != 1 ) ) {
       __clique_prop[__node2CliqueMap[this->bn().nodeId( e->variable( 0 ) )]]
@@ -165,7 +165,7 @@ namespace gum {
 
   // remove all evidence from the graph
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::eraseAllEvidence() {
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::eraseAllEvidence() {
     for ( const auto& elt : __clique_prop ) {
       __removeDiffusedMessages( elt.first );
       elt.second->removeAllEvidence();
@@ -175,21 +175,21 @@ namespace gum {
   // @return Returns the list of neighbours of a given clique
   template <typename GUM_SCALAR>
   INLINE const NodeSet&
-  ShaferShenoyInference<GUM_SCALAR>::__getNeighbours( NodeId cliqueId ) {
+  ShaferShenoyInferenceOld<GUM_SCALAR>::__getNeighbours( NodeId cliqueId ) {
     return __triangulation->junctionTree().neighbours( cliqueId );
   }
 
   // @return Returns a separator given two adjacent cliques
   template <typename GUM_SCALAR>
   INLINE const NodeSet&
-  ShaferShenoyInference<GUM_SCALAR>::__getSeparator( NodeId clique_1,
+  ShaferShenoyInferenceOld<GUM_SCALAR>::__getSeparator( NodeId clique_1,
                                                      NodeId clique_2 ) {
     return __triangulation->junctionTree().separator( clique_1, clique_2 );
   }
 
   // @return Returns the clique in which the node's cpt must be stored
   template <typename GUM_SCALAR>
-  NodeId ShaferShenoyInference<GUM_SCALAR>::__getClique(
+  NodeId ShaferShenoyInferenceOld<GUM_SCALAR>::__getClique(
       const std::vector<NodeId>& eliminationOrder, NodeId id ) {
     Set<NodeId> idSet;
     idSet.insert( id );
@@ -209,7 +209,7 @@ namespace gum {
 
   // Builds the cliques tables
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::__buildCliquesTables() {
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::__buildCliquesTables() {
     const std::vector<NodeId>& elim = __triangulation->eliminationOrder();
 
     NodeSet cliquesSet;
@@ -238,7 +238,7 @@ namespace gum {
 
   // Calls a collect with a node as source
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::__collectFromClique( NodeId source ) {
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::__collectFromClique( NodeId source ) {
     __clique_prop[source]->isCollected = true;
 
     try {
@@ -251,7 +251,7 @@ namespace gum {
 
   // Collecting phase of the inference
   template <typename GUM_SCALAR>
-  bool ShaferShenoyInference<GUM_SCALAR>::__collect( NodeId source,
+  bool ShaferShenoyInferenceOld<GUM_SCALAR>::__collect( NodeId source,
                                                      NodeId current ) {
     __clique_prop[current]->isCollected = true;
     bool newMsg = false;  // Flag used to know if we must recompute the message
@@ -279,7 +279,7 @@ namespace gum {
 
   // Diffusing phase of the inference
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::__diffuseFromClique( NodeId source ) {
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::__diffuseFromClique( NodeId source ) {
     try {
       for ( const auto nei : __getNeighbours( source ) )
         if ( __messageExists( source, nei ) ) {
@@ -297,7 +297,7 @@ namespace gum {
 
   // Diffusing phase of the inference
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::__diffuse( NodeId source,
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::__diffuse( NodeId source,
                                                      NodeId current,
                                                      bool recompute ) {
     for ( const auto nei : __getNeighbours( current ) )
@@ -316,7 +316,7 @@ namespace gum {
   // Create and saves the message from key.first to key.second in the
   // __messagesMap.
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::__sendMessage( NodeId tail,
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::__sendMessage( NodeId tail,
                                                          NodeId head ) {
     // Building the message's table held by the separator
     MultiDimBucket<GUM_SCALAR>* message = new MultiDimBucket<GUM_SCALAR>();
@@ -358,13 +358,13 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE bool
-  ShaferShenoyInference<GUM_SCALAR>::__messageExists( NodeId source,
+  ShaferShenoyInferenceOld<GUM_SCALAR>::__messageExists( NodeId source,
                                                       NodeId dest ) {
     return __messagesMap.exists( Arc( source, dest ) );
   }
 
   template <typename GUM_SCALAR>
-  void ShaferShenoyInference<GUM_SCALAR>::__removeDiffusedMessages(
+  void ShaferShenoyInferenceOld<GUM_SCALAR>::__removeDiffusedMessages(
       NodeId cliqueId ) {
     for ( const auto nei : __getNeighbours( cliqueId ) ) {
       if ( __messagesMap.exists( Arc( cliqueId, nei ) ) ) {
@@ -378,7 +378,7 @@ namespace gum {
   // @return A pointer over the dummy bucket.
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR>*
-  ShaferShenoyInference<GUM_SCALAR>::__makeDummyPotential( NodeId cliqueId ) {
+  ShaferShenoyInferenceOld<GUM_SCALAR>::__makeDummyPotential( NodeId cliqueId ) {
     Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR>(
         new MultiDimSparse<GUM_SCALAR>( (GUM_SCALAR)1 ) );
     __dummies.insert( pot );

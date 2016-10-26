@@ -24,8 +24,8 @@
  * gum::IBayesNet.
  */
 
-#ifndef GUM_SHAFER_SHENOY_INFERENCE_H
-#define GUM_SHAFER_SHENOY_INFERENCE_H
+#ifndef GUM_SHAFER_SHENOY_INFERENCE_OLD_H
+#define GUM_SHAFER_SHENOY_INFERENCE_OLD_H
 
 #include <iostream>
 #include <string>
@@ -47,8 +47,8 @@ namespace gum {
   class CliqueProp;
 
   /**
-   * @class ShaferShenoyInference ShaferShenoyInference.h
-   * <agrum/BN/inference/ShaferShenoyInference.h>
+   * @class ShaferShenoyInferenceOld ShaferShenoyInferenceOld.h
+   * <agrum/BN/inference/ShaferShenoyInferenceOld.h>
    * @brief This class implements the Shafer-Shenoy alogorithm for inference
    * in Bayesian Networks.
    * @ingroup bn_inference
@@ -62,7 +62,7 @@ namespace gum {
    *           connected components
    */
   template <typename GUM_SCALAR>
-  class ShaferShenoyInference : public BayesNetInference<GUM_SCALAR> {
+  class ShaferShenoyInferenceOld : public BayesNetInference<GUM_SCALAR> {
 
     public:
     // ====================================================================
@@ -74,12 +74,12 @@ namespace gum {
      * Default constructor.
      * @param bayesNet The Bayesian Network used for the inference.
      */
-    ShaferShenoyInference( const IBayesNet<GUM_SCALAR>& bayesNet );
+    ShaferShenoyInferenceOld( const IBayesNet<GUM_SCALAR>& bayesNet );
 
     /**
      * Destructor.
      */
-    virtual ~ShaferShenoyInference();
+    virtual ~ShaferShenoyInferenceOld();
 
     /// @}
     // ====================================================================
@@ -203,8 +203,8 @@ namespace gum {
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  /// @class CliqueProp ShaferShenoyInference.h
-  /// <agrum/BN/inference/ShaferShenoyInference.h>
+  /// @class CliqueProp ShaferShenoyInferenceOld.h
+  /// <agrum/BN/inference/ShaferShenoyInferenceOld.h>
   /// @ingroup bn_inference
   /// Private class to keep clique's properties.
   /// It used MultiDimBucket to compute the cliques potentials.
@@ -275,11 +275,11 @@ namespace gum {
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 
-  extern template class ShaferShenoyInference<float>;
-  extern template class ShaferShenoyInference<double>;
+  extern template class ShaferShenoyInferenceOld<float>;
+  extern template class ShaferShenoyInferenceOld<double>;
 
 } /* namespace gum */
 
-#include <agrum/BN/inference/ShaferShenoyInference.tcc>
+#include <agrum/BN/inference/ShaferShenoyInferenceOld.tcc>
 
 #endif /* GUM_SHAFER_SHENOY_INFERENCE_H */

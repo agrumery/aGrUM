@@ -309,19 +309,20 @@ namespace gum_tests {
               {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f} );
         }
         // Choose one among available inference algorithms
-        auto inference       = gum::ShaferShenoyInference<double>( asia );
+        gum::ShaferShenoyInference<double> inference ( &asia );
         auto id              = asia.idFromName( "Has Lung Cancer" );
         const auto& marginal = inference.posterior( id );
         // To prevent warning for unused variable
         TS_ASSERT_EQUALS( marginal.domainSize(), gum::Size( 2 ) );
         // We can add some evidence
         // Index 0 is False, 1 True
-        inference.addHardEvidence( asia.idFromName( "Visit to Asia" ), 0 );
-        inference.addHardEvidence( asia.idFromName( "Dyspnea" ), 0 );
+        inference.addEvidence( asia.idFromName( "Visit to Asia" ), 0 );
+        inference.addEvidence( asia.idFromName( "Dyspnea" ), 0 );
         const auto& updated_marginal = inference.posterior( id );
         // To prevent warning for unused variable
         TS_ASSERT_EQUALS( updated_marginal.domainSize(), gum::Size( 2 ) );
-      } catch ( gum::Exception& e ) {
+      }
+      catch ( gum::Exception& e ) {
         TS_FAIL( e.errorContent() );
       }
     }
