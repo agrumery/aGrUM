@@ -8,6 +8,7 @@ notebook
     :members:
     :undoc-members:
     :show-inheritance:
+    :noindex:
 
 dynamicBN
 ----------------------------
@@ -16,6 +17,7 @@ dynamicBN
     :members:
     :undoc-members:
     :show-inheritance:
+    :noindex:
 
 bn2roc
 -------------------------
@@ -24,6 +26,7 @@ bn2roc
     :members:
     :undoc-members:
     :show-inheritance:
+    :noindex:
 
 bn2csv
 -------------
@@ -32,6 +35,7 @@ bn2csv
     :members:
     :undoc-members:
     :show-inheritance:
+    :noindex:
 
 bn2graph
 ---------------------------
@@ -40,6 +44,7 @@ bn2graph
     :members:
     :undoc-members:
     :show-inheritance:
+    :noindex:
 
 
 bn2scores
@@ -49,6 +54,7 @@ bn2scores
     :members:
     :undoc-members:
     :show-inheritance:
+    :noindex:
 
 bn_vs_bn
 ---------------------------
@@ -57,6 +63,7 @@ bn_vs_bn
     :members:
     :undoc-members:
     :show-inheritance:
+    :noindex:
 
 
 
@@ -67,3 +74,4 @@ pretty_print
     :members:
     :undoc-members:
     :show-inheritance:
+    :noindex:

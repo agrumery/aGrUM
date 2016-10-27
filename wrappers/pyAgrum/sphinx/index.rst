@@ -7,12 +7,14 @@ pyAgrum library
 ===============
 
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: 3
   :titlesonly:
 
   intro
+  functions
   graphModule
-  pyAgrum
+  randomVariablesAndPotentials
+  bayesianNetwork
 
 Python helpers : pyAgrum.lib
 ============================
@@ -23,8 +25,8 @@ pyAgrum.lib is a set of python tools.
   :maxdepth: 2
   :titlesonly:
 
-  notebook
-  pyAgrum.lib
+  lib.notebook
+  lib.dBN
 
 
 Indices and tables
@@ -33,3 +35,9 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. Exhaustif but not usable
+.. =====================
+.. .. toctree::
+..     pyAgrum
+..     pyAgrum.lib

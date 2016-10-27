@@ -72,9 +72,9 @@ def _reprGraph(gr, size, format, asString):
   """
   repr a pydot graph in a notebook
   
-  @param string format : render as png or create_svg
-  @param string size : size of the rendered graph
-  @param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+  :param string format : render as png or create_svg
+  :param string size : size of the rendered graph
+  :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
   """
   gr.set_size(size)
   if format == "svg":
@@ -201,7 +201,10 @@ def getInfluenceDiagram(diag, size="4", format="png"):
 
 def getFigProbaV(p):
   """
-  Show a matplotlib bar (vertical histogram) for a Potential p.
+  compute the representation of an histogram for a mono-dim Potential
+
+  :param p: the mono-dim Potential
+  :return: a matplotlib bar (vertical histogram) for a Potential p.
 
   """
   var = p.variable(0)
@@ -225,8 +228,10 @@ def getFigProbaV(p):
 
 def getFigProbaH(p):
   """
-  Show a matplotlib barh (horizontal histogram) for a Potential p.
+  compute the representation of an histogram for a mono-dim Potential
 
+  :param p: the mono-dim Potential
+  :return: a matplotlib barh (horizontal histogram) for a Potential p.
   """
   var = p.variable(0)
   ra = np.arange(var.domainSize())
@@ -254,8 +259,10 @@ def getFigProbaH(p):
 
 def getFigProba(p):
   """
-  Show a matplotlib histogram for a Potential p.
+  compute the representation of an histogram for a mono-dim Potential
 
+  :param p: the mono-dim Potential
+  :return: a matplotlib histogram for a Potential p.
   """
   if p.variable(0).domainSize() > 8:
     return getFigProbaV(p)
@@ -264,26 +271,50 @@ def getFigProba(p):
 
 
 def showProba(p):
+  """
+  Show a mono-dim Potential
+  
+  :param p: the mono-dim Potential
+  :return: 
+  """
   fig = getFigProba(p)
   plt.show()
 
 
-def saveFigProba(p, filename, format="svg"):
+def _saveFigProba(p, filename, format="svg"):
   fig = getFigProba(p)
   fig.savefig(filename, bbox_inches='tight', transparent=True, pad_inches=0, dpi=fig.dpi, format=format)
   plt.close(fig)
 
 
+def getPosterior(bn, evs, target):
+  """
+  shortcut for getProba(gum.getPosterior(bn,evs,target))
+  :param bn: the BayesNet
+  :param evs: map of evidence
+  :param target: name of target variable
+  :return: the matplotlib graph
+  """
+  return getFigProba(gum.getPosterior(bn, evs, target))
+
+
 def showPosterior(bn, evs, target):
   """
   shortcut for showProba(gum.getPosterior(bn,evs,target))
+
+  :param bn: the BayesNet
+  :param evs: map of evidence
+  :param target: name of target variable
   """
   showProba(gum.getPosterior(bn, evs, target))
 
 
 def animApproximationScheme(apsc, scale=np.log10):
   """
-  show an animated version of an approximation scheme
+  show an animated version of an approximation algorithm
+
+  :param apsc: the approximation algorithm
+  :param scale: a function to apply to the figure
   """
   from IPython.display import clear_output, display
   f = plt.gcf()
@@ -527,7 +558,7 @@ def _reprInference(bn, engine, evs, targets, size, format, asString):
     name = bn.variable(i).name()
     if len(targets) == 0 or name in targets:
       filename = temp_dir + name + "." + format
-      saveFigProba(ie.posterior(i), filename, format=format)
+      _saveFigProba(ie.posterior(i), filename, format=format)
       fill = ", fillcolor=sandybrown" if name in evs else ""
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name, filename, fill)
     else:
@@ -677,8 +708,8 @@ def getPotential(pot, digits=4, varnames=None):
 def sideBySide(*args, titles=None):
   """
   display side by side args as HMTL fragment as string
-  @param args : HMTL fragments as string
-  @param list titles : list of string (titles, optional)
+  :param args: HMTL fragments as string
+  :param titles: list of string (titles, optional)
   """
   s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%">'
 

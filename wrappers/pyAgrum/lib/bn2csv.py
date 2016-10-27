@@ -74,8 +74,6 @@ class CSVGenerator:
     """
     Compute a list of parents for node n in BN bn
     return name of n,list of parents names
-
-    (clearly not optimal)
     """
     l = bn.cpt(n).var_names
     node = l.pop()

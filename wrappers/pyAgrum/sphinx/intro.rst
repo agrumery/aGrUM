@@ -12,3 +12,4 @@ pyAgrum contains
   * a `comprehensive API documentation <http://www-desir.lip6.fr/~phw/aGrUM/dev/pdoc/>`_,
   * `examples as notebooks <http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/>`_,
   * and a `website <https://forge.lip6.fr/projects/pyagrum/wiki>`_.
+
