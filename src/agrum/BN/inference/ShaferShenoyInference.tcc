@@ -1203,10 +1203,8 @@ namespace gum {
     __PotentialSet new_pot_list =
       __marginalizeOut( pot_list, del_vars, kept_vars );
 
-    // keep track of the newly created potentials but remove first all the
-    // potentials that are equal to ones (as probability matrix multiplications
-    // are tensorial, such potentials are useless)
-    const Arc arc( from_id, to_id );
+    // remove all the potentials that are equal to ones (as probability
+    // matrix multiplications are tensorial, such potentials are useless)
     for ( auto iter = new_pot_list.beginSafe(); iter != new_pot_list.endSafe();
           ++iter ) {
       const auto pot = *iter;
@@ -1224,16 +1222,43 @@ namespace gum {
           continue;
         }
       }
+    }
 
-      if ( !pot_list.exists( pot ) ) {
-        if ( !__created_potentials.exists( arc ) )
+    // if there are still potentials in new_pot_list, combine them to
+    // produce the message on the separator
+    const Arc arc( from_id, to_id );
+    if ( ! new_pot_list.empty () ) {
+      if ( new_pot_list.size () == 1 ) { // there is only one potential
+        // in new_pot_list, so this corresponds to our message on
+        // the separator
+        auto pot = *( new_pot_list.begin () );
+        __separator_potentials[arc] = std::move( new_pot_list );
+        if ( ! pot_list.exists( pot ) ) {
+          if ( ! __created_potentials.exists( arc ) )
+            __created_potentials.insert( arc, __PotentialSet() );
+          __created_potentials[arc].insert( pot );
+        }
+      }
+      else {
+        // create the message in the separator
+        MultiDimCombinationDefault<GUM_SCALAR, Potential>
+          fast_combination ( __combination_op );
+        auto joint = fast_combination.combine( new_pot_list );
+        __separator_potentials[arc].insert ( joint );
+        if ( ! __created_potentials.exists( arc ) )
           __created_potentials.insert( arc, __PotentialSet() );
-        __created_potentials[arc].insert( pot );
+        __created_potentials[arc].insert( joint );
+
+        // remove the temporary messages created in new_pot_list
+        for ( const auto pot : new_pot_list ) {
+          if ( ! pot_list.exists( pot ) ) {
+            delete pot;
+          }
+        }
       }
     }
 
-    __separator_potentials[arc] = std::move( new_pot_list );
-    __messages_computed[arc]    = true;
+    __messages_computed[arc] = true;
   }
 
 
