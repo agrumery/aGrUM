@@ -263,8 +263,17 @@ namespace gum {
      * a clique did not received any potential, then its list is empty but
      * the entry for the clique does exist. Note that clique potentials
      * contain also soft evidence and the CPTs that were projected to
-     * remove their variables that received hard evidence. */
+     * remove their variables that received hard evidence. The product of all
+     * these potentials is precisely the potential stored into
+     * __clique_ss_potential */
     NodeProperty<__PotentialSet> __clique_potentials;
+
+    /// the potentials stored into the cliques by Shafer-Shenoy
+    /** For a given clique, there is an entry in __clique_ss_potential if and
+     * only if the clique received some potential(s). In this case, the
+     * potential stored is the combination of all the corresponding list of
+     * potentials in __clique_potentials. */
+    NodeProperty<const Potential<GUM_SCALAR>*> __clique_ss_potential;
 
     /// the list of all potentials stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
