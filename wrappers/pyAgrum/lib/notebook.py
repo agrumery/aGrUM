@@ -72,9 +72,9 @@ def _reprGraph(gr, size, format, asString):
   """
   repr a pydot graph in a notebook
   
-  @param string format : render as png or create_svg
-  @param string size : size of the rendered graph
-  @param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+  :param string format : render as png or create_svg
+  :param string size : size of the rendered graph
+  :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
   """
   gr.set_size(size)
   if format == "svg":
@@ -199,9 +199,12 @@ def getInfluenceDiagram(diag, size="4", format="png"):
   return getDot(diag.toDot(), size, format)
 
 
-def getFigProbaV(p):
+def _getProbaV(p):
   """
-  Show a matplotlib bar (vertical histogram) for a Potential p.
+  compute the representation of an histogram for a mono-dim Potential
+
+  :param p: the mono-dim Potential
+  :return: a matplotlib bar (vertical histogram) for a Potential p.
 
   """
   var = p.variable(0)
@@ -223,10 +226,12 @@ def getFigProbaV(p):
   return fig
 
 
-def getFigProbaH(p):
+def _getProbaH(p):
   """
-  Show a matplotlib barh (horizontal histogram) for a Potential p.
+  compute the representation of an histogram for a mono-dim Potential
 
+  :param p: the mono-dim Potential
+  :return: a matplotlib barh (horizontal histogram) for a Potential p.
   """
   var = p.variable(0)
   ra = np.arange(var.domainSize())
@@ -252,38 +257,68 @@ def getFigProbaH(p):
   return fig
 
 
-def getFigProba(p):
+def getProba(p):
   """
-  Show a matplotlib histogram for a Potential p.
+  compute the representation of an histogram for a mono-dim Potential
 
+  :param p: the mono-dim Potential
+  :return: a matplotlib histogram for a Potential p.
   """
   if p.variable(0).domainSize() > 8:
-    return getFigProbaV(p)
+    return _getProbaV(p)
   else:
-    return getFigProbaH(p)
+    return _getProbaH(p)
 
 
 def showProba(p):
-  fig = getFigProba(p)
+  """
+  Show a mono-dim Potential
+  
+  :param p: the mono-dim Potential
+  :return: 
+  """
+  fig = getProba(p)
   plt.show()
 
 
-def saveFigProba(p, filename, format="svg"):
-  fig = getFigProba(p)
+def _saveFigProba(p, filename, format="svg"):
+  fig = getProba(p)
   fig.savefig(filename, bbox_inches='tight', transparent=True, pad_inches=0, dpi=fig.dpi, format=format)
   plt.close(fig)
+
+
+def getPosterior(bn, evs, target):
+  """
+  shortcut for getProba(gum.getPosterior(bn,evs,target))
+
+  :param bn: the BayesNet
+  :type bn: gum.BayesNet
+  :param evs: map of evidence
+  :type evs: dict(str->int)
+  :param target: name of target variable
+  :type target: str
+  :return: the matplotlib graph
+  """
+  return getProba(gum.getPosterior(bn, evs, target))
 
 
 def showPosterior(bn, evs, target):
   """
   shortcut for showProba(gum.getPosterior(bn,evs,target))
+
+  :param bn: the BayesNet
+  :param evs: map of evidence
+  :param target: name of target variable
   """
   showProba(gum.getPosterior(bn, evs, target))
 
 
 def animApproximationScheme(apsc, scale=np.log10):
   """
-  show an animated version of an approximation scheme
+  show an animated version of an approximation algorithm
+
+  :param apsc: the approximation algorithm
+  :param scale: a function to apply to the figure
   """
   from IPython.display import clear_output, display
   f = plt.gcf()
@@ -527,7 +562,7 @@ def _reprInference(bn, engine, evs, targets, size, format, asString):
     name = bn.variable(i).name()
     if len(targets) == 0 or name in targets:
       filename = temp_dir + name + "." + format
-      saveFigProba(ie.posterior(i), filename, format=format)
+      _saveFigProba(ie.posterior(i), filename, format=format)
       fill = ", fillcolor=sandybrown" if name in evs else ""
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name, filename, fill)
     else:
@@ -666,9 +701,12 @@ def getPotential(pot, digits=4, varnames=None):
   return a HTML string of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param gum.Potential pot:
-  :param int digits: number of digits to show
-  :param list varnames: the aliases for variables name in the table
+  :param pot: the potential to get
+  :type pot: gum.Potential
+  :param digits: number of digits to show
+  :type digits: int
+  :param varnames: the aliases for variables name in the table
+  :type varnames: list of strings
   :return: the HTML string
   """
   return _reprPotential(pot, digits, varnames, asString=True)
@@ -676,14 +714,24 @@ def getPotential(pot, digits=4, varnames=None):
 
 def sideBySide(*args, titles=None):
   """
-  display side by side args as HMTL fragment as string
-  @param args : HMTL fragments as string
-  @param list titles : list of string (titles, optional)
+  display side by side args as HMTL fragment (using string, _repr_html_() or str())
+
+  :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
+  :param titles: list of strings (titles)
   """
   s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%">'
 
+  def reprHTML(s):
+    if isinstance(s, str):
+      return s
+    elif hasattr(s, '_repr_html_'):
+      return s._repr_html_()
+    else:
+      return str(s)
+
   s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'
-  s += '</div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'.join(args)
+  s += '</div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'.join([reprHTML(arg)
+                                                                                                   for arg in args])
   s += '</div></td></tr>'
 
   if titles is not None:
@@ -694,3 +742,9 @@ def sideBySide(*args, titles=None):
   s += '</table>'
 
   display(HTML(s))
+
+
+# adding _repr_html_ to some pyAgrum classes !
+gum.BayesNet._repr_html_ = lambda self: getBN(self)
+gum.Potential._repr_html_ = lambda self: getPotential(self)
+gum.DAG._repr_html_ = lambda self: getDot(self.toDot())

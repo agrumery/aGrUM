@@ -26,6 +26,10 @@ from @PYAGRUM_MODULE@ import InfluenceDiagram
 from @PYAGRUM_MODULE@ import LazyPropagation
 
 def about():
+  """
+  about() for pyAgrum
+  
+  """
   print("pyAgrum version {0}".format('@PYAGRUM_VERSION@'))
   print("(c) Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti")
   print("    UPMC 2015")
@@ -37,82 +41,88 @@ def about():
 
 def availableBNExts():
     """
-    return the list of suffix for supported BN file formats.
+    :return: a string which lists all suffixes for supported BN file formats.
     """
     return "bif|dsl|net|bifxml|o3prm|uai"
 
-def loadBN(s,listeners=None,verbose=True,**opts):
+def loadBN(filename,listeners=None,verbose=True,**opts):
     """
-    returns a BN from a file using one of the availableBNExts() suffixes.
+    :param filename: the name of file
+    :return: a BN from a file using one of the availableBNExts() suffixes.
     """
     bn=BayesNet()
 
-    extension=s.split('.')[-1].upper()
+    extension=filename.split('.')[-1].upper()
     if extension=="BIF":
-        warns=bn.loadBIF(s,listeners)
+        warns=bn.loadBIF(filename,listeners)
     elif extension=="BIFXML":
-        warns=bn.loadBIFXML(s,listeners)
+        warns=bn.loadBIFXML(filename,listeners)
     elif extension=="DSL":
-        warns=bn.loadDSL(s,listeners)
+        warns=bn.loadDSL(filename,listeners)
     elif extension=="NET":
-        warns=bn.loadNET(s,listeners)
+        warns=bn.loadNET(filename,listeners)
     elif extension=="O3PRM":
-        warns=bn.loadPRM(s,opts.get('system',''),opts.get('classpath',''),listeners)
+        warns=bn.loadPRM(filename,opts.get('system',''),opts.get('classpath',''),listeners)
     elif extension=="UAI":
-        warns=bn.loadUAI(s,listeners)
+        warns=bn.loadUAI(filename,listeners)
     else:
-        raise Exception("extension "+s.split('.')[-1]+" unknown. Please use among "+availableBNExts())
+        raise Exception("extension "+filename.split('.')[-1]+" unknown. Please use among "+availableBNExts())
 
     if verbose:
       print(warns)
 
-    bn.setProperty("name",s)
+    bn.setProperty("name",filename)
     return bn
 
-def saveBN(bn,s):
+def saveBN(bn,filename):
     """
     save a BN into a file using the format corresponding to one of the availableBNExts() suffixes.
     """
-    extension=s.split('.')[-1].upper()
+    extension=filename.split('.')[-1].upper()
     if extension=="BIF":
-        bn.saveBIF(s)
+        bn.saveBIF(filename)
     elif extension=="BIFXML":
-        bn.saveBIFXML(s)
+        bn.saveBIFXML(filename)
     elif extension=="DSL":
-        bn.saveDSL(s)
+        bn.saveDSL(filename)
     elif extension=="NET":
-        bn.saveNET(s)
+        bn.saveNET(filename)
     elif extension=="UAI":
-        bn.saveUAI(s)
+        bn.saveUAI(filename)
     else:
-        raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
+        raise Exception("extension "+filename.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
 
 
-def loadID(s):
+def loadID(filename):
   """
-  return an InfluenceDiagram from a bifxml file.
+  read a gum.InfluenceDiagram from a bifxml file
+  
+  :param filename: the name of file
+  :return: an InfluenceDiagram 
   """
 
-  extension=s.split('.')[-1].upper()
+  extension=filename.split('.')[-1].upper()
   if extension!="BIFXML":
     raise Exception("extension "+extension+" unknown. Please use bifxml.")
 
   diag=InfluenceDiagram()
-  res=diag.loadBIFXML(s)
+  res=diag.loadBIFXML(filename)
 
   if not res:
-    raise Exception("Error(s) in "+s)
+    raise Exception("Error(s) in "+filename)
 
-  diag.setProperty("name",s)
+  diag.setProperty("name",filename)
   return diag
 
 
 def fastBN(arcs,domainSize):
   """ 
-  rapid prototyping of BN
-  @param string arcs : dot-like simple list of arcs ("a->b->c;a->c->d" for instance)
-  @oaram int domainSize : number of modalities for each created variables
+  rapid prototyping of BN.
+  
+  :param arcs: dot-like simple list of arcs ("a->b->c;a->c->d" for instance)
+  :param domainSize: number of modalities for each created variables
+  :return: the created gum.BayesNet
   """
   def getId(bn,a):
     try:
