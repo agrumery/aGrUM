@@ -1,4 +1,4 @@
-%ignore gum::BayesNet<double>::add(const gum::DiscreteVariable& variable, gum::MultiDimImplementation<double> * aContent);
+%ignore gum::BayesNet<GUM_SCALAR>::add(const gum::DiscreteVariable& variable, gum::MultiDimImplementation<GUM_SCALAR> * aContent);
 
 %ignore *::beginNodes;
 %ignore *::endNodes;

@@ -116,7 +116,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
 #
-# show_authors = False
+show_authors = True
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -459,10 +459,12 @@ import re
 gumReplaceList = [
   ('gum::Idx', 'int'),
   ('gum::Size', 'int'),
-  ('NodeId', 'int'),
-  ('std::string', 'string'),
+  ('gum::NodeId', 'int'),
+  ('std::string', 'str'),
+  ('gum::', 'pyAgrum.'),
   ('_double ', ' '),
-  ('gum::', ''),
+  ('< double > *', ' '),
+  ('< double >', ' '),
   (' const ', ' '),
   ('std::', '')
 ]

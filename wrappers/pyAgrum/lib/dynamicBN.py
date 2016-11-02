@@ -31,7 +31,7 @@ import pyAgrum as gum
 import pydotplus as dot
 from matplotlib.patches import Rectangle
 
-from .notebook import showGraph
+from .notebook import showGraph,getGraph
 
 noTimeCluster = "void"
 
@@ -85,8 +85,11 @@ def realNameFrom2TBNname(name, ts):
   return "{0}{1}".format(name[:-1], ts) if not _isInNoTimeSlice(name) else name
 
 
-def getTimeSlices(dbn):
+def getTimeSlicesRange(dbn):
   """
+  get the range and (name,radical) of each variables
+  
+  :param dbn: a 2TBN or an unrolled BN
   :return: all the timeslice of a dbn
 
   e.g.
@@ -105,16 +108,31 @@ def getTimeSlices(dbn):
 
   return timeslices
 
+def is2TBN(bn):
+  ts=getTimeSlicesRange(bn)
+  if not ( set(ts.keys()) <= set([noTimeCluster,"0","t"])):
+      return False,"Some variables are not correctly suffixed."
+    
+  domainSizes=dict()
+  for name,radical in ts['t']:
+    domainSizes[radical]=bn.variable(name).domainSize()
+    
+  res=""
+  for name,radical in ts['0']:
+    if radical in domainSizes:
+      if domainSizes[radical]!=bn.variable(name).domainSize():
+        res="\n - for variables {}/{}t".format(name,radical)
+              
+  if res!="":
+    return False,"Domain size mismatch : "+res
+  else:
+    return True,""
 
-def showTimeSlices(dbn, size="6", format="png"):
+def _TimeSlicesToDot(dbn):
   """
-  Try to correctly represent dBN and 2TBN in dot format
-
-  :param dbn: the dynamic BN
-  :param size: size of the figue
-  :param format: png/svg
+  Try to correctly represent dBN and 2TBN in dot format 
   """
-  timeslices = getTimeSlices(dbn)
+  timeslices = getTimeSlicesRange(dbn)
 
   g = dot.Dot(graph_type='digraph')
   g.set_rankdir("TD")
@@ -144,7 +162,29 @@ def showTimeSlices(dbn, size="6", format="png"):
                               style="invis"))
         prec = n
 
-  showGraph(g, size, format)
+  return g
+  
+def showTimeSlices(dbn, size="6", format="png"):
+  """
+  Try to correctly display dBN and 2TBN 
+
+  :param dbn: the dynamic BN
+  :param size: size of the figue
+  :param format: png/svg
+  """
+  
+  showGraph(_TimeSlicesToDot(dbn), size, format)
+  
+def getTimeSlices(dbn, size="6", format="png"):
+  """
+  Try to correctly represent dBN and 2TBN as an HTML string
+
+  :param dbn: the dynamic BN
+  :param size: size of the figue
+  :param format: png/svg
+  """
+  
+  return getGraph(_TimeSlicesToDot(dbn), size, format)
 
 
 def unroll2TBN(dbn, nbr):
@@ -156,7 +196,7 @@ def unroll2TBN(dbn, nbr):
 
   :return: unrolled BN from a 2TBN and the nbr of timeslices
   """
-  ts = getTimeSlices(dbn)
+  ts = getTimeSlicesRange(dbn)
   if not (set([noTimeCluster, "0", "t"]).issuperset(ts.keys())
           and set(["0", "t"]).issubset(ts.keys())):
     raise TypeError("unroll2TBN needs a 2-TimeSlice BN")

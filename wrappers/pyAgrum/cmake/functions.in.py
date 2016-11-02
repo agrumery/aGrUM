@@ -121,8 +121,8 @@ def fastBN(arcs,domainSize):
   rapid prototyping of BN.
   
   :param arcs: dot-like simple list of arcs ("a->b->c;a->c->d" for instance)
-  :param domainSize: number of modalities for each created variables
-  :return: the created gum.BayesNet
+  :param domainSize: number of modalities for each created variable.
+  :return: the created pyAgrum.BayesNet
   """
   def getId(bn,a):
     try:
@@ -148,6 +148,14 @@ def fastBN(arcs,domainSize):
 def getPosterior(bn, evs, target):
   """
   Compute the posterior of a single target (variable) in a BN given evidence using Lazy Propagation (for now).
+
+  :param bn:
+  :type bn: pyAgrum.BayesNet
+  :param evs: events map {name;val,name:[val1,val2],...}
+  :type evs: dictionary
+  :param target: variable name
+  :type target: str
+  :return: posterior Potential
   """
   inf = LazyPropagation(bn)
   inf.setEvidence(evs)

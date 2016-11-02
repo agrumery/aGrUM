@@ -1,7 +1,7 @@
 Functions from pyAgrum
 ======================
 
-Cool functions in pyAgrum
+Useful functions in pyAgrum
 
 .. autofunction:: pyAgrum.about
 

@@ -20,9 +20,7 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 """
-tools for BN analysis in ipython qtconsole and notebook
-
-(but can be used every where)
+tools for BN analysis in jupyter notebook (but can be used everywhere)
 """
 from __future__ import print_function
 

@@ -3,6 +3,8 @@ Module notebook
 
 .. automodule:: pyAgrum.lib.notebook
 
+.. image:: _static/pyAgrum_all.png
+
 Helpers
 -------
 
