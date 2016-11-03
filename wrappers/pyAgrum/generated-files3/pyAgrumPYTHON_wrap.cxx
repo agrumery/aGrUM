@@ -25847,35 +25847,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Edge_isDirected(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Edge *arg1 = (gum::Edge *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Edge_isDirected",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__Edge, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Edge_isDirected" "', argument " "1"" of type '" "gum::Edge const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Edge * >(argp1);
-  {
-    try {
-      result = (bool)((gum::Edge const *)arg1)->isDirected();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_Edge_other(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Edge *arg1 = (gum::Edge *) 0 ;
@@ -26257,35 +26228,6 @@ SWIGINTERN PyObject *_wrap_Arc_head(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
     }
   }
   resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Arc_isDirected(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Arc *arg1 = (gum::Arc *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Arc_isDirected",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__Arc, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Arc_isDirected" "', argument " "1"" of type '" "gum::Arc const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Arc * >(argp1);
-  {
-    try {
-      result = (bool)((gum::Arc const *)arg1)->isDirected();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
   return NULL;
@@ -64854,14 +64796,6 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::Edge *\n"
 		"\n"
 		""},
-	 { (char *)"Edge_isDirected", _wrap_Edge_isDirected, METH_VARARGS, (char *)"\n"
-		"Edge_isDirected(Edge self) -> bool\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"self: gum::Edge const *\n"
-		"\n"
-		""},
 	 { (char *)"Edge_other", _wrap_Edge_other, METH_VARARGS, (char *)"\n"
 		"Edge_other(Edge self, gum::NodeId id) -> gum::NodeId\n"
 		"\n"
@@ -64939,14 +64873,6 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { (char *)"Arc_head", _wrap_Arc_head, METH_VARARGS, (char *)"\n"
 		"Arc_head(Arc self) -> gum::NodeId\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"self: gum::Arc const *\n"
-		"\n"
-		""},
-	 { (char *)"Arc_isDirected", _wrap_Arc_isDirected, METH_VARARGS, (char *)"\n"
-		"Arc_isDirected(Arc self) -> bool\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"

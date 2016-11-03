@@ -17,7 +17,10 @@ Random Variables
 .. autoclass:: pyAgrum.RangeVariable
   :members:
 
-Potentials
-----------
+Instantiation and Potential
+---------------------------
+.. autoclass:: pyAgrum.Instantiation
+  :members:
+
 .. autoclass:: pyAgrum.Potential
   :members:

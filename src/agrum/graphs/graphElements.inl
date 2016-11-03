@@ -80,10 +80,6 @@ namespace gum {
     GUM_DESTRUCTOR( Edge );
   }
 
-  /// returns a boolean indicating whether the edge is directed
-
-  INLINE bool Edge::isDirected() const { return false; }
-
   /// returns an extremal node of an edge given the ID of the other one
 
   INLINE NodeId Edge::other( NodeId id ) const {
@@ -177,10 +173,6 @@ namespace gum {
   /// modifies the head of the arc
 
   INLINE void Arc::__setHead( NodeId id ) { n2 = id; }
-
-  /// returns a boolean indicating whether the arc is directed
-
-  INLINE bool Arc::isDirected() const { return true; }
 
   /// returns an extremal node of an edge given the ID of the other one
 

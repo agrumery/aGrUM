@@ -4809,18 +4809,6 @@ class Edge(_object):
     __swig_destroy__ = _pyAgrum.delete_Edge
     __del__ = lambda self: None
 
-    def isDirected(self):
-        """
-        isDirected(Edge self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Edge const *
-
-        """
-        return _pyAgrum.Edge_isDirected(self)
-
-
     def other(self, id):
         """
         other(Edge self, gum::NodeId id) -> gum::NodeId
@@ -4938,18 +4926,6 @@ class Arc(_object):
 
         """
         return _pyAgrum.Arc_head(self)
-
-
-    def isDirected(self):
-        """
-        isDirected(Arc self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Arc const *
-
-        """
-        return _pyAgrum.Arc_isDirected(self)
 
 
     def other(self, id):

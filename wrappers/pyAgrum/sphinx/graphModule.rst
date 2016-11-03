@@ -22,3 +22,6 @@ Graphs
 
 .. autoclass:: pyAgrum.DAG
   :members:
+
+.. autoclass:: pyAgrum.CliqueGraph
+  :members:
