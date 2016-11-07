@@ -193,17 +193,17 @@ namespace gum {
     /// fired before a all single and joint_targets are removed
     virtual void _onAllTargetsErased();
 
-    /// prepares inference when the latter is in UnpreparedStructure state
+    /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _prepareInferenceStructure and
+     * known and can be changed between _updateOutdatedBNStructure and
      * _makeInference. */
-    virtual void _prepareInferenceStructure();
+    virtual void _updateOutdatedBNStructure();
 
-    /// prepares inference when the latter is in OutdatedPotentials state
+    /// prepares inference when the latter is in OutdatedBNPotentials state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _prepareInferenceStructure and
+     * known and can be changed between _updateOutdatedBNPotentials and
      * _makeInference. */
-    virtual void _updateInferencePotentials();
+    virtual void _updateOutdatedBNPotentials();
 
     /// called when the inference has to be performed effectively
     /** Once the inference is done, _fillPosterior can be called. */
@@ -340,7 +340,7 @@ namespace gum {
     ArcProperty<bool> __messages_computed;
 
     /// the soft evidence stored in the cliques per their assigned node in the BN
-    /** This variable is useful for method _updateInferencePotentials: it
+    /** This variable is useful for method _updateOutdatedBNPotentials: it
      * enables to know which soft evidence should be removed/added into the
      * cliques of the join tree.
      * @warning These potentials are not owned by LazyPropagation, they are only

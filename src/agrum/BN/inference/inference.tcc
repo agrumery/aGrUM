@@ -579,9 +579,9 @@ namespace gum {
                  "inference algorithm" );
 
     if ( __state == StateOfInference::OutdatedBNStructure )
-      _prepareInferenceStructure();
+      _updateOutdatedBNStructure ();
     else
-      _updateInferencePotentials();
+      _updateOutdatedBNPotentials ();
 
     __state = StateOfInference::Ready4Inference;
   }

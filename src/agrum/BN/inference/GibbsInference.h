@@ -73,8 +73,8 @@ namespace gum {
     virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard );
     virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn );
 
-    virtual void _prepareInferenceStructure(){};
-    virtual void _updateInferencePotentials(){};
+    virtual void _updateOutdatedBNStructure(){};
+    virtual void _updateOutdatedBNPotentials(){};
     virtual void _makeInference();
 
     virtual void _onMarginalTargetAdded( const NodeId id ){};

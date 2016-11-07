@@ -721,7 +721,7 @@ namespace gum {
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::_prepareInferenceStructure() {
+  void LazyPropagation<GUM_SCALAR>::_updateOutdatedBNStructure() {
     // check if a new JT is really needed. If so, create it
     if ( __isNewJTNeeded() ) {
       __createNewJT();
@@ -729,7 +729,7 @@ namespace gum {
       // here, we can answer the next queries without reconstructing all the
       // junction tree. All we need to do is to indicate that we should
       // update the potentials and messages for these queries
-      _updateInferencePotentials();
+      _updateOutdatedBNPotentials ();
     }
   }
 
@@ -766,7 +766,7 @@ namespace gum {
   /// update the potentials stored in the cliques and invalidate outdated
   /// messages
   template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::_updateInferencePotentials() {
+  void LazyPropagation<GUM_SCALAR>::_updateOutdatedBNPotentials () {
     // compute the set of CPTs that were projected due to hard evidence and
     // whose hard evidence have changed, so that they need a new projection.
     // By the way, remove these CPTs since they are no more needed
@@ -869,7 +869,7 @@ namespace gum {
 
 
     // Now add the projections of the CPTs due to newly changed hard evidence:
-    // if we are performing _updateInferencePotentials, this means that the
+    // if we are performing _updateOutdatedBNPotentials, this means that the
     // set of nodes that received hard evidence has not been changed, only
     // their instantiations can have been changed. So, if there is an entry
     // for node in __constants, there will still be such an entry after

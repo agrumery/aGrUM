@@ -102,7 +102,7 @@ namespace gum {
    *   BN: for instance a node received a hard evidence, which implies that
    *   its outgoing arcs can be removed from the BN, hence involving a
    *   structural change in the BN. As a consequence, the (incremental)
-   * inference
+   *   inference
    *   (probably) needs a significant amount of preparation to be ready for the
    *   next inference. In a Lazy propagation, for instance, this step amounts to
    *   compute a new join tree, hence a new structure in which inference
@@ -135,7 +135,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   class Inference {
-    public:
+  public:
     /**
      * current state of the inference
      * Outdated [addEvidence] --(prepareInference)--> Ready
@@ -144,32 +144,24 @@ namespace gum {
      * Inference can be in one of 4 different states:
      * - OutdatedBNStructure: in this state, the inference is fully unprepared
      *   to be applied because some events changed the "logical" structure of
-     * the
-     *   BN: for instance a node received a hard evidence, which implies that
-     *   its outgoing arcs can be removed from the BN, hence involving a
+     *   the BN: for instance a node received a hard evidence, which implies
+     *   that its outgoing arcs can be removed from the BN, hence involving a
      *   structural change in the BN. As a consequence, the (incremental)
-     * inference
-     *   (probably) needs a significant amount of preparation to be ready for
-     * the
-     *   next inference. In a Lazy propagation, for instance, this step amounts
-     * to
-     *   compute a new join tree, hence a new structure in which inference
-     *   will be applied. Note that classes that inherit from Inference may be
-     *   smarter than Inference and may, in some situations, find out that their
-     *   data structures are still ok for inference and, therefore, only resort
-     * to
-     *   perform the actions related to the OutdatedBNPotentials state. As an
-     *   example, consider a LazyPropagation inference in Bayes Net
-     * A->B->C->D->E
+     *   inference (probably) needs a significant amount of preparation to be
+     *   ready for the next inference. In a Lazy propagation, for instance,
+     *   this step amounts to compute a new join tree, hence a new structure
+     *   in which inference will be applied. Note that classes that inherit
+     *   from Inference may be smarter than Inference and may, in some
+     *   situations, find out that their data structures are still ok for
+     *   inference and, therefore, only resort to perform the actions related
+     *   to the OutdatedBNPotentials state. As an example, consider a
+     *   LazyPropagation inference in Bayes Net A->B->C->D->E
      *   in which C has received hard evidence e_C and E is the only target. In
      *   this case, A and B are not needed for inference, the only potentials
-     * that
-     *   matter are P(D|e_C) and P(E|D). So the smallest join tree needed for
-     *   inference contains only one clique DE. Now, adding new evidence e_A on
-     * A
-     *   has no impact on E given hard evidence e_C. In this case,
-     * LazyPropagation
-     *   can be smart and not update its join tree.
+     *   that matter are P(D|e_C) and P(E|D). So the smallest join tree needed
+     *   for inference contains only one clique DE. Now, adding new evidence
+     *   e_A on A has no impact on E given hard evidence e_C. In this case,
+     *   LazyPropagation can be smart and not update its join tree.
      * - OutdatedBNPotentials: in this state, the structure of the BN remains
      *   unchanged, only some potentials stored in it have changed. Therefore,
      *   the inference probably just needs to invalidate some already computed
@@ -414,7 +406,7 @@ namespace gum {
     /// @}
 
 
-    protected:
+  protected:
     /// fired after a new evidence is inserted
     virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence ) = 0;
 
@@ -440,15 +432,15 @@ namespace gum {
 
     /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _prepareInferenceStructure and
+     * known and can be changed between _updateOutdatedBNStructure and
      * _makeInference. */
-    virtual void _prepareInferenceStructure() = 0;
+    virtual void _updateOutdatedBNStructure() = 0;
 
     /// prepares inference when the latter is in OutdatedBNPotentials state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between _prepareInferenceStructure and
+     * known and can be changed between _updateOutdatedBNPotentials and
      * _makeInference. */
-    virtual void _updateInferencePotentials() = 0;
+    virtual void _updateOutdatedBNPotentials() = 0;
 
     /// called when the inference has to be performed effectively
     /** Once the inference is done, _fillPosterior can be called. */
@@ -489,7 +481,7 @@ namespace gum {
     void _setOutdatedBNPotentialsState();
 
 
-    private:
+  private:
     /// the current state of the inference (outdated/ready/done)
     StateOfInference __state{StateOfInference::OutdatedBNStructure};
 
