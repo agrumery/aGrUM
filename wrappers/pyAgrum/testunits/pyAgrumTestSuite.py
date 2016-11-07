@@ -7,7 +7,8 @@ import os
 
 class pyAgrumTestCase(unittest.TestCase):
     def agrumSrcDir(self,s):
-      return __file__.split('wrappers')[0]+"/"+s
+      t=s.split("ressources/")
+      return "resources/"+t[1]
     
       
     def assertListsAlmostEqual(self, seq1, seq2, places=7):

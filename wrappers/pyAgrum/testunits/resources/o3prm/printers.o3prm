@@ -1,0 +1,72 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+// ============================================================================
+// Tis file contains basic PRM classes for testing purpose.
+// Author: Lionel Torti.
+// ============================================================================
+
+type t_state OK, NOK;
+
+class PowerSupply {
+    t_state powState { [ 0.99, 0.01 ] };
+}
+
+class Room {
+    PowerSupply power;
+}
+
+class Equipment {
+
+    Room room;
+
+    t_state equipState dependson room.power.powState {
+      [ 0.80, 0,
+      0.20, 1 ]
+    };
+
+}
+
+class Printer extends Equipment {
+
+    boolean hasPaper { [ 0.1, 0.9 ] };
+
+    boolean hasInk   { [ 0.3, 0.7 ] };
+
+    t_state equipState dependson room.power.powState, hasPaper, hasInk {
+      *, *, *:          0.00, 1.00;
+      OK, true, true:   0.80, 0.20;
+    };
+}
+
+class Computer extends Equipment {
+
+    Printer[] printers;
+
+    boolean exists_printer = exists ( [printers.equipState], OK );
+
+    boolean can_print dependson equipState, exists_printer {
+      // exists_printer |   false  | |   true   |
+      // state          | OK | NOK | | OK | NOK |
+      /* false */       [1.00, 0.00,  0.00, 1.00,
+      /* true  */        0.00, 1.00,  1.00, 0.00]
+    };
+
+}
+
