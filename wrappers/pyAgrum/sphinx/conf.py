@@ -68,7 +68,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2016, Pierre-henri Wuillemin'
+copyright = '2016, aGrUM/pyAgrum Team'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -468,7 +468,10 @@ gumReplaceList = [
   ('< double > *', ' '),
   ('< double >', ' '),
   (' const ', ' '),
-  ('std::', '')
+  ('std::', ''),
+  ('const &', ' '),
+  ('const *', ' '),
+  ('\w+ self,','')
 ]
 dico = {re.escape(x): y for x, y in gumReplaceList}
 pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
@@ -477,7 +480,13 @@ pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
 def substitution4swigautodoc(l):
   if l is None:
     return None
-  return pattern.sub(lambda m: dico[re.escape(m.group(0))], l)
+  l1=l
+  l2=""
+  while l1!=l2:
+    l2=l1
+    l1=pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
+
+  return l1
 
 
 def process_docstring(app, what, name, obj, options, lines):
