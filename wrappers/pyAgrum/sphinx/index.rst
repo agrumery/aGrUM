@@ -34,7 +34,7 @@ pyAgrum library
   :maxdepth: 5
 
   functions
-  graphModule
+  graph
   randomVariablesAndPotentials
   bayesianNetwork
   PRM
