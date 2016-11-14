@@ -27,6 +27,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -264,65 +265,82 @@ namespace gum_tests {
     }
 
     void testInference() {
-      try {
-        auto asia = gum::BayesNet<double>( "Asia" );
-        // Constructing the BayesNet...
-        {
-          auto var = gum::LabelizedVariable(
-              "template", "A variable of the Asia Bayesian Network", 0 );
-          var.addLabel( "True" );
-          var.addLabel( "False" );
+      auto asia = gum::BayesNet<double>( "Asia" );
+      // Constructing the BayesNet...
+      {
+        auto var = gum::LabelizedVariable(
+            "template", "A variable of the Asia Bayesian Network", 0 );
+        var.addLabel( "True" );
+        var.addLabel( "False" );
 
-          var.setName( "Visit to Asia" );
-          auto visitToAsia = asia.add( var );
-          var.setName( "Smoker" );
-          auto smoker = asia.add( var );
-          var.setName( "Has Tuberculosis" );
-          auto hasTuberculosis = asia.add( var );
-          var.setName( "Has Lung Cancer" );
-          auto hasLungCancer = asia.add( var );
-          var.setName( "Has Bronchitis" );
-          auto hasBronchitis = asia.add( var );
-          var.setName( "Tuberculosis or Cancer" );
-          auto tubOrCancer = asia.add( var );
-          var.setName( "XRay Result" );
-          auto xray = asia.add( var );
-          var.setName( "Dyspnea" );
-          auto dyspnea = asia.add( var );
-          asia.addArc( visitToAsia, hasTuberculosis );
-          asia.addArc( hasTuberculosis, tubOrCancer );
-          asia.addArc( smoker, hasLungCancer );
-          asia.addArc( smoker, hasBronchitis );
-          asia.addArc( hasLungCancer, tubOrCancer );
-          asia.addArc( tubOrCancer, xray );
-          asia.addArc( tubOrCancer, dyspnea );
-          asia.addArc( hasBronchitis, dyspnea );
-          asia.cpt( visitToAsia ).fillWith( {0.1f, 0.9f} );
-          asia.cpt( smoker ).fillWith( {0.7f, 0.3f} );
-          asia.cpt( hasTuberculosis ).fillWith( {0.05f, 0.01f, 0.95f, 0.99f} );
-          asia.cpt( hasLungCancer ).fillWith( {0.10f, 0.90f, 0.01f, 0.99f} );
-          asia.cpt( tubOrCancer )
-              .fillWith(
-                  {1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f} );
-          asia.cpt( xray ).fillWith( {0.98f, 0.02f, 0.05f, 0.95f} );
-          asia.cpt( dyspnea ).fillWith(
-              {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f} );
-        }
-        // Choose one among available inference algorithms
-        gum::ShaferShenoyInference<double> inference ( &asia );
+        var.setName( "Visit to Asia" );
+        auto visitToAsia = asia.add( var );
+        var.setName( "Smoker" );
+        auto smoker = asia.add( var );
+        var.setName( "Has Tuberculosis" );
+        auto hasTuberculosis = asia.add( var );
+        var.setName( "Has Lung Cancer" );
+        auto hasLungCancer = asia.add( var );
+        var.setName( "Has Bronchitis" );
+        auto hasBronchitis = asia.add( var );
+        var.setName( "Tuberculosis or Cancer" );
+        auto tubOrCancer = asia.add( var );
+        var.setName( "XRay Result" );
+        auto xray = asia.add( var );
+        var.setName( "Dyspnea" );
+        auto dyspnea = asia.add( var );
+        asia.addArc( visitToAsia, hasTuberculosis );
+        asia.addArc( hasTuberculosis, tubOrCancer );
+        asia.addArc( smoker, hasLungCancer );
+        asia.addArc( smoker, hasBronchitis );
+        asia.addArc( hasLungCancer, tubOrCancer );
+        asia.addArc( tubOrCancer, xray );
+        asia.addArc( tubOrCancer, dyspnea );
+        asia.addArc( hasBronchitis, dyspnea );
+        asia.cpt( visitToAsia ).fillWith( {0.1f, 0.9f} );
+        asia.cpt( smoker ).fillWith( {0.7f, 0.3f} );
+        asia.cpt( hasTuberculosis ).fillWith( {0.05f, 0.01f, 0.95f, 0.99f} );
+        asia.cpt( hasLungCancer ).fillWith( {0.10f, 0.90f, 0.01f, 0.99f} );
+        asia.cpt( tubOrCancer )
+            .fillWith(
+                {1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f} )
+            .translate( 1e-5 )
+            .normalizeAsCPT();
+        asia.cpt( xray ).fillWith( {0.98f, 0.02f, 0.05f, 0.95f} );
+        asia.cpt( dyspnea ).fillWith(
+            {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f} );
+      }
+
+      try {
+        gum::LazyPropagation<double> inference( &asia );
         auto id              = asia.idFromName( "Has Lung Cancer" );
         const auto& marginal = inference.posterior( id );
+        TS_FAIL( "Inference should not be correct with a undefined CPT" );
+      } catch ( gum::IncompatibleEvidence& e ) {
+        // OK to be here : CPT of Has Bronchitis has not been defined.
+      } catch ( gum::Exception& e ) {
+        TS_FAIL( e.errorContent() );
+      }
+
+      asia.cpt( "Has Bronchitis" ).fillWith( {0.7f, 0.3f, 0.85f, 0.15f} );
+
+      try {
         // To prevent warning for unused variable
+        gum::LazyPropagation<double> inference( &asia );
+        auto id              = asia.idFromName( "Has Lung Cancer" );
+        const auto& marginal = inference.posterior( "Has Lung Cancer" );
         TS_ASSERT_EQUALS( marginal.domainSize(), gum::Size( 2 ) );
+
+
         // We can add some evidence
         // Index 0 is False, 1 True
         inference.addEvidence( asia.idFromName( "Visit to Asia" ), 0 );
         inference.addEvidence( asia.idFromName( "Dyspnea" ), 0 );
         const auto& updated_marginal = inference.posterior( id );
+
         // To prevent warning for unused variable
         TS_ASSERT_EQUALS( updated_marginal.domainSize(), gum::Size( 2 ) );
-      }
-      catch ( gum::Exception& e ) {
+      } catch ( gum::Exception& e ) {
         TS_FAIL( e.errorContent() );
       }
     }

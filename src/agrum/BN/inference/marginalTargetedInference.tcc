@@ -178,4 +178,10 @@ namespace gum {
   }
 
 
+  // Compute the posterior of a node.
+  template <typename GUM_SCALAR>
+  const Potential<GUM_SCALAR>& MarginalTargetedInference<GUM_SCALAR>::posterior(
+      const std::string& nodeName ) {
+    return posterior( this->BayesNet().idFromName( nodeName ) );
+  }
 } /* namespace gum */

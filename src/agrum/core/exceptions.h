@@ -486,7 +486,7 @@ namespace gum {
   GUM_MAKE_ERROR( CPTNoSumTo1, CPTError, "CPT does not sum to 1" )
   GUM_MAKE_ERROR( IncompatibleEvidence,
                   Exception,
-                  "several evidence are incompatible together (proba=0)" )
+                  "several evidence/CPT are incompatible together (proba=0)" )
   GUM_MAKE_ERROR( FactoryError, Exception, "factory error" )
   GUM_MAKE_ERROR( FactoryInvalidState, FactoryError, "invalid state error" )
   GUM_MAKE_ERROR( WrongType, FactoryError, "wrong type for this operation" )
