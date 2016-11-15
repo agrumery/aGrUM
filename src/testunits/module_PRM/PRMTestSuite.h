@@ -21,7 +21,6 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
 

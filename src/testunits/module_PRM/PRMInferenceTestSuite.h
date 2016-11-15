@@ -21,7 +21,6 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
 
@@ -338,10 +337,8 @@ namespace gum_tests {
       // GUM_TRACE_VAR(UINT_MAX);
       gum::prm::GroundedInference<double>* g_ve   = 0;
       gum::prm::GroundedInference<double>* g_ss   = 0;
-      gum::prm::GroundedInference<double>* g_vebb = 0;
       gum::VariableElimination<double>* ve        = 0;
       gum::ShaferShenoyInference<double>* ss      = 0;
-      gum::VEWithBB<double>* vebb                 = 0;
       gum::BayesNet<double> bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -350,7 +347,6 @@ namespace gum_tests {
           ve = new gum::VariableElimination<double>( bn ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
           ss = new gum::ShaferShenoyInference<double>( bn ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( vebb = new gum::VEWithBB<double>( bn ) );
       TS_GUM_ASSERT_THROWS_NOTHING( g_ve =
                                         new gum::prm::GroundedInference<double>(
                                             *prm, prm->getSystem( "aSys" ) ) );
@@ -359,13 +355,9 @@ namespace gum_tests {
                                         new gum::prm::GroundedInference<double>(
                                             *prm, prm->getSystem( "aSys" ) ) );
       TS_GUM_ASSERT_THROWS_NOTHING( g_ss->setBNInference( ss ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( g_vebb =
-                                        new gum::prm::GroundedInference<double>(
-                                            *prm, prm->getSystem( "aSys" ) ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( g_vebb->setBNInference( vebb ) );
 
       for ( const auto node : bn.nodes() ) {
-        gum::Potential<double> m_ve, m_ss, m_sve, m_sved, m_vebb, m_struct;
+        gum::Potential<double> m_ve, m_ss, m_sve, m_sved, m_struct;
 
         try {
           size_t pos = bn.variableNodeMap().name( node ).find_first_of( '.' );
@@ -381,8 +373,6 @@ namespace gum_tests {
           // GUM_TRACE("VE done");
           g_ss->marginal( chain, m_ss );
           // GUM_TRACE("SS done");
-          g_vebb->marginal( chain, m_vebb );
-          // GUM_TRACE("gum::VEWithBB done");
           gum::prm::SVE<double> sve( *prm, prm->getSystem( "aSys" ) );
           sve.marginal( chain, m_sve );
           // GUM_TRACE("SVE<double> done");
@@ -403,16 +393,13 @@ namespace gum_tests {
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_ss.nbrDim() );
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_sve.nbrDim() );
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_sved.nbrDim() );
-            TS_ASSERT_EQUALS( m_ve.nbrDim(), m_vebb.nbrDim() );
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_struct.nbrDim() );
             TS_ASSERT_EQUALS( m_ve.domainSize(), m_ss.domainSize() );
             TS_ASSERT_EQUALS( m_ve.domainSize(), m_sve.domainSize() );
             TS_ASSERT_EQUALS( m_ve.domainSize(), m_sved.domainSize() );
-            TS_ASSERT_EQUALS( m_ve.domainSize(), m_vebb.domainSize() );
             TS_ASSERT_EQUALS( m_ve.domainSize(), m_struct.domainSize() );
             TS_ASSERT_DELTA( m_ve.get( inst ), m_ss.get( inst ), 1.0e-3 );
             TS_ASSERT_DELTA( m_sve.get( jnst ), m_ss.get( inst ), 1.0e-3 );
-            TS_ASSERT_DELTA( m_vebb.get( inst ), m_ss.get( inst ), 1.0e-3 );
             TS_ASSERT_DELTA( m_sved.get( jnst ), m_sve.get( jnst ), 1.0e-3 );
             TS_ASSERT_DELTA( m_sved.get( jnst ), m_struct.get( jnst ), 1.0e-3 );
           }
@@ -443,7 +430,6 @@ namespace gum_tests {
 
       delete g_ve;
       delete g_ss;
-      delete g_vebb;
     }
 
     void testStructuredBB() {

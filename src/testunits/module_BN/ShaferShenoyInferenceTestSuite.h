@@ -103,7 +103,7 @@ namespace gum_tests {
 
     void testMarginalWithEvidence() {
       fill( *bn );
-      gum::List<gum::Potential<float>*> e_list;
+      gum::List<const gum::Potential<float>*> e_list;
       e_list.insert( const_cast<gum::Potential<float>*> ( &( bn->cpt( i1 ) ) ) );
       e_list.insert( const_cast<gum::Potential<float>*> ( &( bn->cpt( i2 ) ) ) );
 

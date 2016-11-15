@@ -67,6 +67,7 @@ namespace gum {
     // remove the junction tree and the triangulation algorithm
     if ( __JT != nullptr ) delete __JT;
     delete __triangulation;
+    if ( __target_posterior != nullptr ) delete __target_posterior;
 
     // for debugging purposes
     GUM_DESTRUCTOR( VariableElimination );
@@ -272,7 +273,7 @@ namespace gum {
 
     // 3/ if we wish to exploit d-separation, remove all the nodes that are
     // d-separated from our targets
-    {
+    if ( false ) {
       NodeSet requisite_nodes;
       bool dsep_analysis = false;
       switch ( __find_relevant_potential_type ) {
@@ -761,68 +762,74 @@ namespace gum {
       pot_list.second += new_pots.second;
     }
 
-    // get the set of variables that need be removed from the potentials
-    const NodeSet& from_clique = __JT->clique( from_id );
-    const NodeSet& separator = __JT->separator( from_id, to_id );
-    Set<const DiscreteVariable*> del_vars( from_clique.size() );
-    Set<const DiscreteVariable*> kept_vars( separator.size() );
-    const auto& bn = this->BayesNet();
-
-    for ( const auto node : from_clique ) {
-      if ( !separator.contains( node ) ) {
-        del_vars.insert( &( bn.variable( node ) ) );
-      }
-      else {
-        kept_vars.insert( &( bn.variable( node ) ) );
-      }
+    // if from_id = to_id: this is the endpoint of a collect
+    if ( ! __JT->existsEdge ( from_id, to_id ) ) {
+      return pot_list;
     }
+    else {
+      // get the set of variables that need be removed from the potentials
+      const NodeSet& from_clique = __JT->clique( from_id );
+      const NodeSet& separator = __JT->separator( from_id, to_id );
+      Set<const DiscreteVariable*> del_vars( from_clique.size() );
+      Set<const DiscreteVariable*> kept_vars( separator.size() );
+      const auto& bn = this->BayesNet();
 
-    // pot_list now contains all the potentials to multiply and marginalize
-    // => combine the messages
-    __PotentialSet new_pot_list =
-      __marginalizeOut( pot_list.first, del_vars, kept_vars );
+      for ( const auto node : from_clique ) {
+        if ( !separator.contains( node ) ) {
+          del_vars.insert( &( bn.variable( node ) ) );
+        }
+        else {
+          kept_vars.insert( &( bn.variable( node ) ) );
+        }
+      }
 
-    // remove all the potentials that are equal to ones (as probability
-    // matrix multiplications are tensorial, such potentials are useless)
-    for ( auto iter = new_pot_list.beginSafe(); iter != new_pot_list.endSafe();
-          ++iter ) {
-      const auto pot = *iter;
-      if ( pot->variablesSequence().size() == 1 ) {
-        bool is_all_ones = true;
-        for ( Instantiation inst( *pot ); !inst.end(); ++inst ) {
-          if ( ( *pot )[inst] < __1_minus_epsilon ) {
-            is_all_ones = false;
-            break;
+      // pot_list now contains all the potentials to multiply and marginalize
+      // => combine the messages
+      __PotentialSet new_pot_list =
+        __marginalizeOut( pot_list.first, del_vars, kept_vars );
+
+      // remove all the potentials that are equal to ones (as probability
+      // matrix multiplications are tensorial, such potentials are useless)
+      for ( auto iter = new_pot_list.beginSafe(); iter != new_pot_list.endSafe();
+            ++iter ) {
+        const auto pot = *iter;
+        if ( pot->variablesSequence().size() == 1 ) {
+          bool is_all_ones = true;
+          for ( Instantiation inst( *pot ); !inst.end(); ++inst ) {
+            if ( ( *pot )[inst] < __1_minus_epsilon ) {
+              is_all_ones = false;
+              break;
+            }
+          }
+          if ( is_all_ones ) {
+            if ( ! pot_list.first.exists( pot ) ) delete pot;
+            new_pot_list.erase( iter );
+            continue;
           }
         }
-        if ( is_all_ones ) {
-          if ( ! pot_list.first.exists( pot ) ) delete pot;
-          new_pot_list.erase( iter );
-          continue;
+      }
+
+      // remove the unnecessary temporary messages
+      for ( auto iter = pot_list.second.beginSafe ();
+            iter != pot_list.second.endSafe (); ++iter ) {
+        if ( ! new_pot_list.contains ( *iter ) ) {
+          delete *iter;
+          pot_list.second.erase ( iter );
         }
       }
-    }
 
-    // remove the unnecessary temporary messages
-    for ( auto iter = pot_list.second.beginSafe ();
-          iter != pot_list.second.endSafe (); ++iter ) {
-      if ( ! new_pot_list.contains ( *iter ) ) {
-        delete *iter;
-        pot_list.second.erase ( iter );
+      // keep track of all the newly created potentials
+      for ( const auto pot : new_pot_list ) {
+        if ( ! pot_list.first.contains ( pot ) ) {
+          pot_list.second.insert ( pot );
+        }
       }
-    }
 
-    // keep track of all the newly created potentials
-    for ( const auto pot : new_pot_list ) {
-      if ( ! pot_list.first.contains ( pot ) ) {
-        pot_list.second.insert ( pot );
-      }
+      // return the new set of potentials
+      return std::pair<__PotentialSet,
+                       __PotentialSet> ( std::move ( new_pot_list ),
+                                         std::move ( pot_list.second ) );
     }
-
-    // return the new set of potentials
-    return std::pair<__PotentialSet,
-                     __PotentialSet> ( std::move ( new_pot_list ),
-                                       std::move ( pot_list.second ) );
   }
 
 

@@ -93,7 +93,7 @@ namespace gum_tests {
       // Testing the inference
       gum::VariableElimination<float>* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          inf = new gum::VariableElimination<float>( *bn ) );
+          inf = new gum::VariableElimination<float>( bn ) );
 
       if ( inf != 0 ) {
         TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
@@ -105,14 +105,14 @@ namespace gum_tests {
       fill( *bn );
       gum::VariableElimination<float>* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          inf = new gum::VariableElimination<float>( *bn ) );
+          inf = new gum::VariableElimination<float>( bn ) );
 
       if ( inf != 0 ) {
         TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
         const gum::Potential<float>* posterior_1 = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) ) );
-
+        
         if ( posterior_1 != 0 ) printProba( *posterior_1 );
 
         const gum::Potential<float>* posterior_2 = 0;
@@ -151,10 +151,10 @@ namespace gum_tests {
 
       gum::VariableElimination<float>* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          inf = new gum::VariableElimination<float>( *bn ) );
+          inf = new gum::VariableElimination<float>( bn ) );
 
       if ( inf != 0 ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( inf->insertEvidence( e_list ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( inf->addListOfEvidence( e_list ) );
 
         const gum::Potential<float>* posterior_1 = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) ) );

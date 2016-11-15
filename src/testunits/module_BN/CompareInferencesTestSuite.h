@@ -27,7 +27,6 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
@@ -108,7 +107,7 @@ namespace gum_tests {
         test_waiting();
         inf_LazyProp.makeInference();
 
-        gum::VariableElimination<double> inf_ValElim( *bn );
+        gum::VariableElimination<double> inf_ValElim( bn );
         test_waiting();
         inf_ValElim.makeInference();
 
@@ -179,8 +178,9 @@ namespace gum_tests {
       test_waiting();
       inf_LazyProp.makeInference();
 
-      gum::VariableElimination<double> inf_VarElim( *bn );
-      inf_VarElim.insertEvidence( list_pot );
+      gum::VariableElimination<double> inf_VarElim( bn );
+      for ( auto pot : list_pot )
+        inf_VarElim.addEvidence( *pot );
       test_waiting();
       inf_VarElim.makeInference();
 
@@ -250,8 +250,9 @@ namespace gum_tests {
       test_waiting();
       inf_LazyProp.makeInference();
 
-      gum::VariableElimination<double> inf_VarElim( *bn );
-      inf_VarElim.insertEvidence( list_pot );
+      gum::VariableElimination<double> inf_VarElim( bn );
+      for ( auto pot : list_pot )
+        inf_VarElim.addEvidence( *pot );
       test_waiting();
       inf_VarElim.makeInference();
 
@@ -403,7 +404,7 @@ namespace gum_tests {
       }
 
       {
-        gum::VariableElimination<float> inf( bn );
+        gum::VariableElimination<float> inf( &bn );
         inf.makeInference();
         {
           const gum::Potential<float>& p = inf.posterior( w );
@@ -414,7 +415,8 @@ namespace gum_tests {
         }
 
         inf.eraseAllEvidence();
-        inf.insertEvidence( list_pot );
+        for ( auto pot : list_pot )
+          inf.addEvidence( *pot );
         inf.makeInference();
         {
           const gum::Potential<float>& p = inf.posterior( w );
@@ -433,24 +435,20 @@ namespace gum_tests {
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-      gum::VariableElimination<double> ve( bn );
+      gum::VariableElimination<double> ve( &bn );
       gum::ShaferShenoyInference<double> ss( &bn );
-      gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
-      gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
+      gum::Potential<double> p_ve, p_ss, p_lazy;
       for ( auto var_id : bn.nodes() ) {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( p_ve = ve.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_ss = ss.posterior( var_id ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( p_vebb = vebb.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_lazy = lazy.posterior( var_id ) );
         // Assert
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_ss.domainSize() );
-        TS_ASSERT_EQUALS( p_ve.domainSize(), p_vebb.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
         for ( gum::Instantiation i( p_ve ); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }
@@ -462,31 +460,25 @@ namespace gum_tests {
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-      gum::VariableElimination<double> ve( bn );
+      gum::VariableElimination<double> ve( &bn );
       gum::ShaferShenoyInference<double> ss( &bn );
-      gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
-      gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
+      gum::Potential<double> p_ve, p_ss, p_lazy;
       auto e_id = bn.idFromName( "CATECHOL" );
-      std::vector<gum::BayesNetInference<double>*> inf_list{&ve, &vebb};
+      std::vector<gum::Inference<double>*> inf_list{&ve, &lazy, &ss};
       for ( auto inf : inf_list ) {
-        inf->addHardEvidence( e_id, 0 );
+        inf->addEvidence( e_id, 0 );
       }
-      lazy.addEvidence( e_id, 0 );
-      ss.addEvidence ( e_id, 0 );
       for ( auto var_id : bn.nodes() ) {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( p_ve = ve.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_ss = ss.posterior( var_id ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( p_vebb = vebb.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_lazy = lazy.posterior( var_id ) );
         // Assert
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_ss.domainSize() );
-        TS_ASSERT_EQUALS( p_ve.domainSize(), p_vebb.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
         for ( gum::Instantiation i( p_ve ); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }
@@ -498,11 +490,10 @@ namespace gum_tests {
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-      gum::VariableElimination<double> ve( bn );
+      gum::VariableElimination<double> ve( &bn );
       gum::ShaferShenoyInference<double> ss( &bn );
-      gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
-      gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
+      gum::Potential<double> p_ve, p_ss, p_lazy;
       auto e_id = bn.idFromName( "CATECHOL" );
       auto e_p  = gum::Potential<double>();
       e_p.add( bn.variable( e_id ) );
@@ -510,30 +501,25 @@ namespace gum_tests {
       gum::List<const gum::Potential<double>*> list;
       list.insert( &e_p );
       auto inf_list =
-          std::vector<gum::BayesNetInference<double>*>{&ve, &vebb};
+        std::vector<gum::Inference<double>*>{&ve, &lazy, &ss };
       for ( auto inf : inf_list ) {
-        inf->insertEvidence( list );
-      }
-      for ( auto ev : list ) {
-        lazy.addEvidence( *ev );
-        ss.addEvidence ( *ev );
+       for ( auto ev : list ) {
+         inf->addEvidence( *ev );
+       }
       }
 
       for ( auto var_id : bn.nodes() ) {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( p_ve = ve.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_ss = ss.posterior( var_id ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( p_vebb = vebb.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_lazy = lazy.posterior( var_id ) );
         // Assert
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_ss.domainSize() );
-        TS_ASSERT_EQUALS( p_ve.domainSize(), p_vebb.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
 
         gum::Instantiation i_ve( p_ve );
         for ( gum::Instantiation i( p_ve ); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }
@@ -545,26 +531,22 @@ namespace gum_tests {
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-      gum::VariableElimination<double> ve( bn );
+      gum::VariableElimination<double> ve( &bn );
       gum::ShaferShenoyInference<double> ss( &bn );
-      gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
-      gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
+      gum::Potential<double> p_ve, p_ss, p_lazy;
       for ( auto var_id : bn.nodes() ) {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( p_ve = ve.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_ss = ss.posterior( var_id ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( p_vebb = vebb.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_lazy = lazy.posterior( var_id ) );
         // Assert
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_ss.domainSize() );
-        TS_ASSERT_EQUALS( p_ve.domainSize(), p_vebb.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
 
         gum::Instantiation i_ve( p_ve );
         for ( gum::Instantiation i( p_ve ); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }
@@ -576,34 +558,28 @@ namespace gum_tests {
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-      gum::VariableElimination<double> ve( bn );
+      gum::VariableElimination<double> ve( &bn );
       gum::ShaferShenoyInference<double> ss( &bn );
-      gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
-      gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
+      gum::Potential<double> p_ve, p_ss, p_lazy;
       auto e_id = bn.idFromName( "bronchitis?" );
       auto inf_list =
-          std::vector<gum::BayesNetInference<double>*>{&ve, &vebb};
+        std::vector<gum::Inference<double>*>{&ve, &lazy, &ss};
       for ( auto inf : inf_list ) {
-        inf->addHardEvidence( e_id, 0 );
+        inf->addEvidence( e_id, 0 );
       }
-      lazy.addEvidence( e_id, 0 );
-      ss.addEvidence ( e_id, 0 );
       for ( auto var_id : bn.nodes() ) {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( p_ve = ve.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_ss = ss.posterior( var_id ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( p_vebb = vebb.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_lazy = lazy.posterior( var_id ) );
         // Assert
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_ss.domainSize() );
-        TS_ASSERT_EQUALS( p_ve.domainSize(), p_vebb.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
 
         gum::Instantiation i_ve( p_ve );
         for ( gum::Instantiation i( p_ve ); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }
@@ -615,11 +591,10 @@ namespace gum_tests {
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader( &bn, file );
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-      gum::VariableElimination<double> ve( bn );
+      gum::VariableElimination<double> ve( &bn );
       gum::ShaferShenoyInference<double> ss( &bn );
-      gum::VEWithBB<double> vebb( bn );
       gum::LazyPropagation<double> lazy( &bn );
-      gum::Potential<double> p_ve, p_ss, p_vebb, p_lazy;
+      gum::Potential<double> p_ve, p_ss, p_lazy;
       auto e_id = bn.idFromName( "bronchitis?" );
       auto e_p  = gum::Potential<double>();
       e_p.add( bn.variable( e_id ) );
@@ -627,30 +602,25 @@ namespace gum_tests {
       gum::List<const gum::Potential<double>*> list;
       list.insert( &e_p );
       auto inf_list =
-          std::vector<gum::BayesNetInference<double>*>{&ve, &vebb};
+        std::vector<gum::Inference<double>*>{&ve, &lazy, &ss};
       for ( auto inf : inf_list ) {
-        inf->insertEvidence( list );
-      }
-      for ( auto ev : list ) {
-        lazy.addEvidence( *ev );
-        ss.addEvidence ( *ev );
+        for ( auto ev : list ) {
+          inf->addEvidence( *ev );
+        }
       }
 
       for ( auto var_id : bn.nodes() ) {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( p_ve = ve.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_ss = ss.posterior( var_id ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( p_vebb = vebb.posterior( var_id ) );
         TS_GUM_ASSERT_THROWS_NOTHING( p_lazy = lazy.posterior( var_id ) );
         // Assert
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_ss.domainSize() );
-        TS_ASSERT_EQUALS( p_ve.domainSize(), p_vebb.domainSize() );
         TS_ASSERT_EQUALS( p_ve.domainSize(), p_lazy.domainSize() );
 
         gum::Instantiation i_ve( p_ve );
         for ( gum::Instantiation i( p_ve ); !i.end(); i.inc() ) {
           TS_ASSERT_DELTA( p_ve[i], p_ss[i], 1e-6 );
-          TS_ASSERT_DELTA( p_ve[i], p_vebb[i], 1e-6 );
           TS_ASSERT_DELTA( p_ve[i], p_lazy[i], 1e-6 );
         }
       }

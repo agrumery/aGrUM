@@ -21,8 +21,6 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/BN/inference/VEWithBB.h>
-
 #include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/structuredInference.h>
 

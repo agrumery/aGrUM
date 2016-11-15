@@ -337,7 +337,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
 
       gum::LazyPropagation<float> inf1( &bn );
-      gum::VariableElimination<float> inf2( bn );
+      gum::VariableElimination<float> inf2( &bn );
 
       TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
@@ -372,10 +372,10 @@ namespace gum_tests {
       gum::ShaferShenoyInference<float> inf4( &bn );
       for ( auto pot : evidences ) {
         TS_ASSERT_THROWS_NOTHING( inf1.addEvidence( *pot ) );
+        TS_ASSERT_THROWS_NOTHING( inf2.addEvidence( *pot ) );
         TS_ASSERT_THROWS_NOTHING( inf3.addEvidence( *pot ) );
         TS_ASSERT_THROWS_NOTHING( inf4.addEvidence( *pot ) );
       }
-      TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
 
       TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
