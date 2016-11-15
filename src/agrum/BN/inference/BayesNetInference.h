@@ -138,8 +138,7 @@ namespace gum {
      * @param posterior The completely empty potential to fill.
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior( NodeId id,
-                                 Potential<GUM_SCALAR>& posterior ) = 0;
+    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& posterior ) = 0;
 
     /**
      * Invalidate the set of posterior kept here.

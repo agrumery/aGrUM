@@ -184,9 +184,8 @@ namespace gum {
 
   // checks wether a potential corresponds to a hard evidence
   template <typename GUM_SCALAR>
-  bool
-  Inference<GUM_SCALAR>::__isHardEvidence( const Potential<GUM_SCALAR>& pot,
-                                           Idx& val ) const {
+  bool Inference<GUM_SCALAR>::__isHardEvidence( const Potential<GUM_SCALAR>& pot,
+                                                Idx& val ) const {
     // checking if pot is determininstic
     bool notZero = false;
     Instantiation I( pot );
@@ -196,7 +195,7 @@ namespace gum {
         if ( notZero ) {  // we already met a non-zero value
           return false;
         } else {
-          val     = I.val( 0 );
+          val = I.val( 0 );
           notZero = true;  // this is the first met non-zero value
         }
       }
@@ -220,9 +219,8 @@ namespace gum {
 
   // adds a new evidence on node id (might be soft or hard)
   template <typename GUM_SCALAR>
-  void
-  Inference<GUM_SCALAR>::addEvidence( const NodeId id,
-                                      const std::vector<GUM_SCALAR>& vals ) {
+  void Inference<GUM_SCALAR>::addEvidence( const NodeId id,
+                                           const std::vector<GUM_SCALAR>& vals ) {
     // checks that the evidence is meaningful
     if ( __bn == nullptr )
       GUM_ERROR( NullElement,
@@ -274,9 +272,9 @@ namespace gum {
     bool is_hard_evidence = __isHardEvidence( pot, val );
 
     // insert the evidence
-    __evidence.insert( id,
-                       new Potential<GUM_SCALAR>(
-                           std::forward<Potential<GUM_SCALAR>>( pot ) ) );
+    __evidence.insert(
+        id,
+        new Potential<GUM_SCALAR>( std::forward<Potential<GUM_SCALAR>>( pot ) ) );
     if ( is_hard_evidence ) {  // pot is deterministic
       __hard_evidence.insert( id, val );
       __hard_evidence_nodes.insert( id );
@@ -386,8 +384,7 @@ namespace gum {
   void Inference<GUM_SCALAR>::chgEvidence( const Potential<GUM_SCALAR>& pot ) {
     // check if the potential corresponds to an evidence
     if ( pot.nbrDim() != 1 ) {
-      GUM_ERROR( InvalidArgument,
-                 pot << " is not a mono-dimensional potential." );
+      GUM_ERROR( InvalidArgument, pot << " is not a mono-dimensional potential." );
     }
     if ( __bn == nullptr )
       GUM_ERROR( NullElement,
@@ -471,8 +468,7 @@ namespace gum {
   }
   // removed the evidence, if any, corresponding to node of name nodeName
   template <typename GUM_SCALAR>
-  INLINE void
-  Inference<GUM_SCALAR>::eraseEvidence( const std::string& nodeName ) {
+  INLINE void Inference<GUM_SCALAR>::eraseEvidence( const std::string& nodeName ) {
     eraseEvidence( this->BayesNet().idFromName( nodeName ) );
   }
 

@@ -79,8 +79,7 @@ namespace gum {
     const DiscreteVariable& v = __bayesNet.variable( id );
 
     if ( pos >= v.domainSize() )
-      GUM_ERROR( OutOfBounds,
-                 "Indice for variable " << id << " out of bounds." );
+      GUM_ERROR( OutOfBounds, "Indice for variable " << id << " out of bounds." );
 
     Potential<GUM_SCALAR>* po = new Potential<GUM_SCALAR>();
     ( *po ) << v;

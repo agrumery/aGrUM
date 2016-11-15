@@ -28,12 +28,11 @@ namespace gum {
   // update a set of potentials, keeping only those d-connected with
   // query variables
   template <typename GUM_SCALAR, template <typename> class TABLE>
-  void
-  BayesBall::relevantPotentials( const IBayesNet<GUM_SCALAR>& bn,
-                                 const NodeSet& query,
-                                 const NodeSet& hardEvidence,
-                                 const NodeSet& softEvidence,
-                                 Set<const TABLE<GUM_SCALAR>*>& potentials ) {
+  void BayesBall::relevantPotentials( const IBayesNet<GUM_SCALAR>& bn,
+                                      const NodeSet& query,
+                                      const NodeSet& hardEvidence,
+                                      const NodeSet& softEvidence,
+                                      Set<const TABLE<GUM_SCALAR>*>& potentials ) {
     const DAG& dag = bn.dag();
 
     // create the marks (top = first and bottom = second)
@@ -124,8 +123,7 @@ namespace gum {
         nodes_to_visit.popFront();
 
         const bool is_hard_evidence = hardEvidence.exists( node );
-        const bool is_evidence =
-            is_hard_evidence || softEvidence.exists( node );
+        const bool is_evidence = is_hard_evidence || softEvidence.exists( node );
 
         if ( is_evidence && !marks[node].first ) {
           marks[node].first = true;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   Copyright (C) 2005 by Christophe GONZALES et Pierre-Henri WUILLEMIN   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,180 +19,343 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Header of the VariableElimination class.
+ * @brief Implementation of a variable elimination algorithm
+ * for inference in Bayesian Networks.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+#ifndef GUM_VARIABLE_ELIMINATION_H
+#define GUM_VARIABLE_ELIMINATION_H
 
-#ifndef GUM_VALUE_ELIMINATION_H
-#define GUM_VALUE_ELIMINATION_H
+#include <cmath>
 
-#include <vector>
-
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/barrenNodesFinder.h>
+#include <agrum/BN/inference/jointTargetedInference.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
-#include <agrum/multidim/multiDimBucket.h>
-//#include <agrum/PRM/utils_prm.h>
 
 namespace gum {
 
+
+  // the function used to combine two tables
+  template <typename GUM_SCALAR>
+  INLINE static Potential<GUM_SCALAR>*
+  VENewmultiPotential( const Potential<GUM_SCALAR>& t1,
+                       const Potential<GUM_SCALAR>& t2 ) {
+    return new Potential<GUM_SCALAR>( t1 * t2 );
+  }
+
+  // the function used to combine two tables
+  template <typename GUM_SCALAR>
+  INLINE static Potential<GUM_SCALAR>*
+  VENewprojPotential( const Potential<GUM_SCALAR>& t1,
+                      const Set<const DiscreteVariable*>& del_vars ) {
+    return new Potential<GUM_SCALAR>( t1.margSumOut( del_vars ) );
+  }
+
+
   /**
-   * @class VariableElimination variableElimination.h
-   *<agrum/BN/inference/variableElimination.h>
-   * @brief Implementation of the state of the art Value Elimination algorithm.
-   *
-   * The elimination order used by this algorithm is computed with the
-   * gum::DefaultTriangulation class. However the order is computed only
-   * when the makeInference() or marginal() method is called, so you can
-   * give an other order without any unnecessary computation.
-   *
+   * @class VariableElimination VariableElimination.h
+   * <agrum/BN/inference/variableElimination.h>
+   * @brief Implementation of a Shafer-Shenoy's-like version of lazy
+   * propagation for inference in Bayesian Networks
    * @ingroup bn_inference
-   *
    */
   template <typename GUM_SCALAR>
-  class VariableElimination : public BayesNetInference<GUM_SCALAR> {
-    public:
-    /// @name Constructor & destructor
+  class VariableElimination : public JointTargetedInference<GUM_SCALAR> {
+  public:
+    /** @brief type of algorithm for determining the relevant potentials for
+     * combinations using some d-separation analysis
+     *
+     * When constructing messages from one clique to its neighbor, we can
+     * exploit d-separation to determine that some potentials are irrelevant for
+     * the message computation. So we can discard them and, thereby, speed-up
+     * the computations.
+     */
+    enum FindRelevantPotentialsType {
+      FIND_RELEVANT_ALL,            // do not perform d-separation analysis
+      FIND_RELEVANT_D_SEPARATION,   // BayesBall requisite nodes -> potentials
+      FIND_RELEVANT_D_SEPARATION2,  // BayesBall requisite potentials (directly)
+      FIND_RELEVANT_D_SEPARATION3   // Koller & Friedman 2009 requisite
+                                    // potentials
+    };
 
+
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
     /// @{
 
-    /**
-     * Default constructor.
-     */
-    VariableElimination( const IBayesNet<GUM_SCALAR>& bn );
+    /// default constructor
+    VariableElimination(
+        const IBayesNet<GUM_SCALAR>* BN,
+        VariableElimination<GUM_SCALAR>::FindRelevantPotentialsType =
+            VariableElimination<GUM_SCALAR>::FindRelevantPotentialsType::
+                FIND_RELEVANT_D_SEPARATION2,
+        FindBarrenNodesType = FIND_BARREN_NODES );
 
-    VariableElimination( const VariableElimination<GUM_SCALAR>& source ) =
-        delete;
-    VariableElimination&
-    operator=( const VariableElimination<GUM_SCALAR>& source ) = delete;
-
-    /**
-     * Destructor.
-     */
+    /// destructor
     virtual ~VariableElimination();
 
     /// @}
 
-    /// @name BayesNetInference's methods
 
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
     /// @{
 
-    /**
-     * @brief Makes the inference
-     *
-     * This method only computes the elimination order if needed, and proceed to
-     * some basic initialization.
-     *
-     * If the current elimination order is smaller than the number of nodes in
-     *the
-     * IBayesNet, then this method will eliminate all nodes present in the
-     *elimination
-     * order. Thus computing a joint probability over a set of variables.
-     *
-     * Use the VariableElimination::pool() method to access the set of created
-     *potentials.
-     */
-    virtual void makeInference();
+    /// use a new triangulation algorithm
+    void setTriangulation( const Triangulation& new_triangulation );
 
-    /**
-     * @brief Insert new evidence in the graph.
-     * If an evidence already exists over one of the variable in pot_list, then
-     * it is replaced by the new evidence in pot_list.
-     */
-    virtual void
-    insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
+    /// sets how we determine the relevant potentials to combine
+    /** When a clique sends a message to a separator, it first constitute the
+     * set of the potentials it contains and of the potentials contained in the
+     * messages it received. If FindRelevantPotentialsType = FIND_RELEVANT_ALL,
+     * all these potentials are combined and projected to produce the message
+     * sent to the separator.
+     * If FindRelevantPotentialsType = FIND_RELEVANT_D_SEPARATION, then only the
+     * set of potentials d-connected to the variables of the separator are kept
+     * for combination and projection. */
+    void setFindRelevantPotentialsType(
+        VariableElimination<GUM_SCALAR>::FindRelevantPotentialsType type );
 
-    /**
-     * Remove a given evidence from the graph.
-     */
-    virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
+    /// sets how we determine barren nodes
+    /** Barren nodes are unnecessary for probability inference, so they can
+     * be safely discarded in this case (type = FIND_BARREN_NODES). This
+     * speeds-up inference. However, there are some cases in which we do not
+     * want to remove barren nodes, typically when we want to answer queries
+     * such as Most Probable Explanations (MPE). */
+    void setFindBarrenNodesType( FindBarrenNodesType type );
 
-    /**
-     * Remove all evidence from the graph.
-     */
-    virtual void eraseAllEvidence();
+    /// sets the operator for performing the projections
+    void setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
+        const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
+
+    /// sets the operator for performing the combinations
+    void setCombinationFunction( Potential<GUM_SCALAR>* ( *comb )(
+        const Potential<GUM_SCALAR>&, const Potential<GUM_SCALAR>&));
+
+    /// returns the join tree used for the last inference
+    const JoinTree* joinTree() const;
 
     /// @}
 
-    /// @name Specific VariableElimination's methods
-
-    /// @{
-
-    /**
-     * Returns a constant reference over the sequence used as order elimination.
-     * @throw OperationNotAllowed Raised if the elimination order has not been
-     *        computed yet.
-     */
-    const std::vector<NodeId>& eliminationOrder() const;
-
-    /**
-     * @brief Getter on the elimination order used.
-     *
-     * This method checks that all nodes present in the BN are in elim.
-     */
-    void setEliminiationOrder( const std::vector<NodeId>& elim );
-
-    /**
-     * @brief Eliminate nodes in elim_order using pool as initial potential
-     * pool.
-     * potentials.
-     * @param elim_order An elimination order, which must be a subset of nodes
-     * in
-     *                   the class IBayesNet.
-     * @param pool Set of Potential used as initial pool for the elimination.
-     *             Results are stored in it also.
-     * @param trash The Set of Potential to delete after use of those in pool.
-     */
-    void eliminateNodes( const std::vector<NodeId>& elim_order,
-                         Set<Potential<GUM_SCALAR>*>& pool,
-                         Set<Potential<GUM_SCALAR>*>& trash );
-
-    /// @}
 
     protected:
-    /**
-     * Returns the probability of the variable.
+    /// fired after a new evidence is inserted
+    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence );
+
+    /// fired before an evidence is removed
+    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence );
+
+    /// fired before all the evidence are erased
+    virtual void _onAllEvidenceErased( bool contains_hard_evidence );
+
+    /** @brief fired after an evidence is changed, in particular when its status
+     * (soft/hard) changes
      *
-     * @param id The variable's id.
-     * @param marginal the potential to fill
-     * @throw ElementNotFound Raised if no variable matches id.
+     * @param nodeId the node of the changed evidence
+     * @param hasChangedSoftHard true if the evidence has changed from Soft to
+     * Hard or from Hard to Soft
      */
-    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& marginal );
+    virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard );
+
+    /// fired after a new single target is inserted
+    /** @param id The target variable's id. */
+    virtual void _onMarginalTargetAdded( const NodeId id );
+
+    /// fired before a single target is removed
+    /** @param id The target variable's id. */
+    virtual void _onMarginalTargetErased( const NodeId id );
+
+    /// fired after a new joint target is inserted
+    /** @param set The set of target variable's ids. */
+    virtual void _onJointTargetAdded( const NodeSet& set );
+
+    /// fired before a joint target is removed
+    /** @param set The set of target variable's ids. */
+    virtual void _onJointTargetErased( const NodeSet& set );
+
+    /// fired after all the nodes of the BN are added as single targets
+    virtual void _onAllMarginalTargetsAdded();
+
+    /// fired before a all the single targets are removed
+    virtual void _onAllMarginalTargetsErased();
+
+    /// fired before a all the joint targets are removed
+    virtual void _onAllJointTargetsErased();
+
+    /// fired before a all single and joint_targets are removed
+    virtual void _onAllTargetsErased();
+
+    /// prepares inference when the latter is in OutdatedBNStructure state
+    /** Note that the values of evidence are not necessarily
+     * known and can be changed between _updateOutdatedBNStructure and
+     * _makeInference. */
+    virtual void _updateOutdatedBNStructure();
+
+    /// prepares inference when the latter is in OutdatedBNPotentials state
+    /** Note that the values of evidence are not necessarily
+     * known and can be changed between _updateOutdatedBNPotentials and
+     * _makeInference. */
+    virtual void _updateOutdatedBNPotentials();
+
+    /// called when the inference has to be performed effectively
+    /** Once the inference is done, _fillPosterior can be called. */
+    virtual void _makeInference();
+
+
+    /// returns the posterior of a given variable
+    /** @param id The variable's id. */
+    virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id );
+
+    /// returns the posterior of a given set of variables
+    /** @param set The set of ids of the variables whose joint posterior is
+     * looked for. */
+    virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set );
+
+    /// returns a fresh potential equal to P(argument,evidence)
+    virtual Potential<GUM_SCALAR>* _unnormalizedJointPosterior( const NodeId id );
+
+    /// returns a fresh potential equal to P(argument,evidence)
+    virtual Potential<GUM_SCALAR>*
+    _unnormalizedJointPosterior( const NodeSet& set );
+
 
     private:
-    /// Mapping between nodes and their evidences.
-    NodeProperty<const Potential<GUM_SCALAR>*> __evidences;
+    typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
+    typedef SetIteratorSafe<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
 
-    /// The elimination order used by this algorithm.
-    std::vector<NodeId> __eliminationOrder;
 
-    /// The initial pool of potentials.
-    Set<Potential<GUM_SCALAR>*> __pool;
+    /// the type of relevant potential finding algorithm to be used
+    FindRelevantPotentialsType __find_relevant_potential_type;
 
-    /// Garbage collector over the buckets created during inference
-    Set<Potential<GUM_SCALAR>*> __trash;
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined to produce a message on a separator */
+    void ( VariableElimination<GUM_SCALAR>::*__findRelevantPotentials )(
+        Set<const Potential<GUM_SCALAR>*>& pot_list,
+        Set<const DiscreteVariable*>& kept_vars );
 
-    /// Compute the elimination order if __eliminationOrder is empty.
-    void __computeEliminationOrder();
+    /// the type of barren nodes computation we wish
+    FindBarrenNodesType __barren_nodes_type;
 
-    /// Fills the pool with all the potentials in __bayesNet.
-    void __createInitialPool();
+    /// the operator for performing the projections
+    Potential<GUM_SCALAR>* ( *__projection_op )(
+        const Potential<GUM_SCALAR>&,
+        const Set<const DiscreteVariable*>& ){VENewprojPotential};
 
-    /// Fills the bucket with all the potentials in pool containing id and
-    /// insert it in pool as a Potential after removing all the potentials
-    /// already in it. If you don't understand, read the code...
-    void __eliminateNode( NodeId id,
-                          Set<Potential<GUM_SCALAR>*>& pool,
-                          Set<Potential<GUM_SCALAR>*>& trash );
+    /// the operator for performing the combinations
+    Potential<GUM_SCALAR>* ( *__combination_op )( const Potential<GUM_SCALAR>&,
+                                                  const Potential<GUM_SCALAR>& ){
+        VENewmultiPotential};
+
+    /// the triangulation class creating the junction tree used for inference
+    Triangulation* __triangulation;
+
+    /// the undigraph extracted from the BN and used to construct the join tree
+    /** If all nodes are targets, this graph corresponds to the moral graph
+     * of the BN. Otherwise, it may be a subgraph of this moral graph. For
+     * instance if the BN is A->B->C and only B is a target, __graph will be
+     * equal to A-B if we exploit barren nodes (C is a barren node and,
+     * therefore, can be removed for inference). */
+    UndiGraph __graph;
+
+    /// the junction tree used to answer the last inference query
+    JoinTree* __JT { nullptr };
+
+    /// for each node of __graph (~ in the Bayes net), associate an ID in the JT
+    HashTable<NodeId, NodeId> __node_to_clique;
+
+    /// for each BN node, indicate in which clique its CPT will be stored
+    HashTable<NodeId, NodeSet> __clique_potentials;
+
+    /// indicate a clique that contains all the nodes of the target
+    NodeId __targets2clique;
+
+    /// the posterior computed during the last inference
+    /** the posterior is owned by VariableElimination. */
+    Potential<GUM_SCALAR>* __target_posterior {nullptr};
+
+    /// for comparisons with 1 - epsilon
+    const GUM_SCALAR __1_minus_epsilon{GUM_SCALAR( 1.0 - 1e-6 )};
+
+
+    /// create a new junction tree as well as its related data structures
+    void __createNewJT( const NodeSet& joint_target );
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsWithdSeparation(
+        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsWithdSeparation2(
+        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsWithdSeparation3(
+        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsGetAll( __PotentialSet& pot_list,
+                                         Set<const DiscreteVariable*>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsXX( __PotentialSet& pot_list,
+                                     Set<const DiscreteVariable*>& kept_vars );
+
+    // remove barren variables and return the newly created projected potentials
+    __PotentialSet
+    __removeBarrenVariables( __PotentialSet& pot_list,
+                             Set<const DiscreteVariable*>& del_vars );
+
+    /// actually perform the collect phase
+    std::pair<__PotentialSet,__PotentialSet>
+    __collectMessage( const NodeId id, const NodeId from );
+
+    /// returns the CPT + evidence of a node projected w.r.t. hard evidence
+    std::pair<__PotentialSet,__PotentialSet>
+    __NodePotentials ( const NodeId node );
+
+    /// creates the message sent by clique from_id to clique to_id
+    std::pair<__PotentialSet,__PotentialSet>
+    __produceMessage( const NodeId from_id,
+                      const NodeId to_id,
+                      std::pair<__PotentialSet,__PotentialSet>&& in_mess );    
+
+    /** @brief removes variables del_vars from a list of potentials and
+     * returns the resulting list */
+    __PotentialSet __marginalizeOut( __PotentialSet pot_list,
+                                     Set<const DiscreteVariable*>& del_vars,
+                                     Set<const DiscreteVariable*>& kept_vars );
+
+    /// avoid copy constructors
+    VariableElimination( const VariableElimination<GUM_SCALAR>& );
+
+    /// avoid copy operators
+    VariableElimination<GUM_SCALAR>&
+    operator=( const VariableElimination<GUM_SCALAR>& );
   };
 
 
   extern template class VariableElimination<float>;
   extern template class VariableElimination<double>;
 
+
 } /* namespace gum */
+
 
 #include <agrum/BN/inference/variableElimination.tcc>
 
-#endif /* GUM_VALUE_ELIMINATION_H */
+
+#endif /* GUM_VARIABLE_ELIMINATION_ */
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

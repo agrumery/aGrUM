@@ -166,7 +166,7 @@ namespace gum {
 
     /// @}
 
-    
+
     protected:
     /// fired after a new Bayes net has been assigned to the engine
     virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn );
@@ -189,8 +189,7 @@ namespace gum {
     /// asks derived classes for the joint posterior of a given set of variables
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    virtual const Potential<GUM_SCALAR>&
-    _jointPosterior( const NodeSet& set ) = 0;
+    virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set ) = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of
      * a given set of variables
@@ -203,8 +202,8 @@ namespace gum {
     virtual Potential<GUM_SCALAR>*
     _unnormalizedJointPosterior( const NodeId id ) = 0;
 
-    
-  private:
+
+    private:
     /// the set of joint targets
     Set<NodeSet> __joint_targets;
   };

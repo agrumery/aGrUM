@@ -153,8 +153,7 @@ namespace gum {
     const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );
 
     /// @return Returns the clique in which the node's cpt must be stored
-    NodeId __getClique( const std::vector<NodeId>& eliminationOrder,
-                        NodeId id );
+    NodeId __getClique( const std::vector<NodeId>& eliminationOrder, NodeId id );
 
     /// @}
     // ====================================================================
@@ -260,8 +259,7 @@ namespace gum {
 
     private:
     /// Evidences on the variables in this clique
-    HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>*>
-        __evidences;
+    HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>*> __evidences;
 
     /// The bucket of this clique with evidences
     MultiDimBucket<GUM_SCALAR>* __potential;

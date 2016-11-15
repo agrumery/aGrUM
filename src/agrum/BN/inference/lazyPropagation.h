@@ -21,6 +21,8 @@
  * @file
  * @brief Implementation of a Shafer-Shenoy's-like version of lazy propagation
  * for inference in Bayesian Networks.
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LAZY_PROPAGATION_H
 #define GUM_LAZY_PROPAGATION_H
@@ -86,12 +88,11 @@ namespace gum {
     /// @{
 
     /// default constructor
-    LazyPropagation(
-        const IBayesNet<GUM_SCALAR>* BN,
-        FindRelevantPotentialsType =
-            FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
-        FindBarrenNodesType       = FIND_BARREN_NODES,
-        bool use_binary_join_tree = true );
+    LazyPropagation( const IBayesNet<GUM_SCALAR>* BN,
+                     FindRelevantPotentialsType =
+                         FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
+                     FindBarrenNodesType = FIND_BARREN_NODES,
+                     bool use_binary_join_tree = true );
 
     /// destructor
     virtual ~LazyPropagation();
@@ -208,7 +209,7 @@ namespace gum {
     /// called when the inference has to be performed effectively
     /** Once the inference is done, _fillPosterior can be called. */
     virtual void _makeInference();
-    
+
 
     /// returns the posterior of a given variable
     /** @param id The variable's id. */
@@ -220,20 +221,16 @@ namespace gum {
     virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set );
 
     /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential<GUM_SCALAR>*
-    _unnormalizedJointPosterior( const NodeId id );
+    virtual Potential<GUM_SCALAR>* _unnormalizedJointPosterior( const NodeId id );
 
     /// returns a fresh potential equal to P(argument,evidence)
     virtual Potential<GUM_SCALAR>*
     _unnormalizedJointPosterior( const NodeSet& set );
 
 
-    
-
     private:
     typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
-    typedef SetIteratorSafe<const Potential<GUM_SCALAR>*>
-        __PotentialSetIterator;
+    typedef SetIteratorSafe<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
 
 
     /// the type of relevant potential finding algorithm to be used
@@ -254,9 +251,9 @@ namespace gum {
         const Set<const DiscreteVariable*>& ){LPNewprojPotential};
 
     /// the operator for performing the combinations
-    Potential<GUM_SCALAR>* ( *__combination_op )(
-        const Potential<GUM_SCALAR>&,
-        const Potential<GUM_SCALAR>& ){LPNewmultiPotential};
+    Potential<GUM_SCALAR>* ( *__combination_op )( const Potential<GUM_SCALAR>&,
+                                                  const Potential<GUM_SCALAR>& ){
+        LPNewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* __triangulation;
@@ -359,11 +356,7 @@ namespace gum {
     NodeSet __hard_ev_nodes;
 
     /// the possible types of evidence changes
-    enum EvidenceChangeType {
-      EVIDENCE_ADDED,
-      EVIDENCE_ERASED,
-      EVIDENCE_MODIFIED
-    };
+    enum EvidenceChangeType { EVIDENCE_ADDED, EVIDENCE_ERASED, EVIDENCE_MODIFIED };
 
     /** @brief indicates which nodes of the BN have evidence that changed
      * since the last inference */
@@ -411,9 +404,8 @@ namespace gum {
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void
-    __findRelevantPotentialsGetAll( __PotentialSet& pot_list,
-                                    Set<const DiscreteVariable*>& kept_vars );
+    void __findRelevantPotentialsGetAll( __PotentialSet& pot_list,
+                                         Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
@@ -442,8 +434,7 @@ namespace gum {
     LazyPropagation( const LazyPropagation<GUM_SCALAR>& );
 
     /// avoid copy operators
-    LazyPropagation<GUM_SCALAR>&
-    operator=( const LazyPropagation<GUM_SCALAR>& );
+    LazyPropagation<GUM_SCALAR>& operator=( const LazyPropagation<GUM_SCALAR>& );
   };
 
 

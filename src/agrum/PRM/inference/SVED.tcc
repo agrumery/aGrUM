@@ -70,7 +70,7 @@ namespace gum {
       InstanceBayesNet<GUM_SCALAR> bn( *query );
       DefaultTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ) );
       std::vector<NodeId> elim_order;
-      VariableElimination<GUM_SCALAR> inf( bn );
+      VariableElimination<GUM_SCALAR> inf( &bn );
 
       if ( this->hasEvidence( query ) ) __insertEvidence( query, pool );
 

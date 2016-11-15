@@ -22,8 +22,7 @@ namespace gum {
 
 
   /// default constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder( const DAG* dag )
-      : __dag( dag ) {
+  INLINE BarrenNodesFinder::BarrenNodesFinder( const DAG* dag ) : __dag( dag ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( BarrenNodesFinder );
   }
@@ -31,9 +30,8 @@ namespace gum {
 
   /// copy constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder( const BarrenNodesFinder& from )
-      : __dag( from.__dag )
-      , __observed_nodes( from.__observed_nodes )
-      , __target_nodes( from.__target_nodes ) {
+      : __dag( from.__dag ), __observed_nodes( from.__observed_nodes ),
+        __target_nodes( from.__target_nodes ) {
     // for debugging purposes
     GUM_CONS_CPY( BarrenNodesFinder );
   }
@@ -41,9 +39,8 @@ namespace gum {
 
   /// move constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder( BarrenNodesFinder&& from )
-      : __dag( from.__dag )
-      , __observed_nodes( from.__observed_nodes )
-      , __target_nodes( from.__target_nodes ) {
+      : __dag( from.__dag ), __observed_nodes( from.__observed_nodes ),
+        __target_nodes( from.__target_nodes ) {
     // for debugging purposes
     GUM_CONS_MOV( BarrenNodesFinder );
   }
@@ -60,9 +57,9 @@ namespace gum {
   INLINE BarrenNodesFinder& BarrenNodesFinder::
   operator=( const BarrenNodesFinder& from ) {
     if ( this != &from ) {
-      __dag            = from.__dag;
+      __dag = from.__dag;
       __observed_nodes = from.__observed_nodes;
-      __target_nodes   = from.__target_nodes;
+      __target_nodes = from.__target_nodes;
     }
     return *this;
   }
@@ -72,18 +69,16 @@ namespace gum {
   INLINE BarrenNodesFinder& BarrenNodesFinder::
   operator=( BarrenNodesFinder&& from ) {
     if ( this != &from ) {
-      __dag            = from.__dag;
+      __dag = from.__dag;
       __observed_nodes = from.__observed_nodes;
-      __target_nodes   = from.__target_nodes;
+      __target_nodes = from.__target_nodes;
     }
     return *this;
   }
 
 
   /// sets a new DAG
-  INLINE void BarrenNodesFinder::setDAG( const DAG* new_dag ) {
-    __dag = new_dag;
-  }
+  INLINE void BarrenNodesFinder::setDAG( const DAG* new_dag ) { __dag = new_dag; }
 
 
   /// sets the observed nodes in the DAG

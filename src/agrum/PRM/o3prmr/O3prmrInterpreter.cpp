@@ -29,7 +29,6 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/BayesNetInference.h>
-#include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
 
@@ -964,7 +963,7 @@ namespace gum {
             addWarning( "unkown engine '" + m_engine + "', use GRD insteed." );
           }
 
-          BayesNetInference<double>* bn_inf = nullptr;
+          MarginalTargetedInference<double>* bn_inf = nullptr;
           if ( m_bn ) {
             delete m_bn;
           }
@@ -978,7 +977,7 @@ namespace gum {
           if ( m_verbose ) m_log << "Finished)" << std::flush;
 
           // bn_inf = new LazyPropagation<double>( *m_bn );
-          bn_inf = new VariableElimination<double>( *m_bn );
+          bn_inf = new VariableElimination<double>( m_bn );
 
           auto grd_inf = new GroundedInference<double>( *( prm() ), sys );
           grd_inf->setBNInference( bn_inf );

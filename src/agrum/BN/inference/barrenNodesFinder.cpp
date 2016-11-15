@@ -162,7 +162,7 @@ namespace gum {
         nodes_to_mark.popFront();
 
         if ( !mark[node] ) {  // mark the node and all its ancestors
-          mark[node]  = 1;
+          mark[node] = 1;
           Size nb_par = 0;
           for ( auto par : __dag->parents( node ) ) {
             Size parent_mark = mark[par];
@@ -189,7 +189,7 @@ namespace gum {
       }
     }
     for ( const auto node : sweep_dag ) {
-      const Size nb_parents  = sweep_dag.parents( node ).size();
+      const Size nb_parents = sweep_dag.parents( node ).size();
       const Size nb_children = sweep_dag.children( node ).size();
       if ( ( nb_parents > 1 ) || ( nb_children > 1 ) ) {
         // perform the matching
@@ -203,14 +203,14 @@ namespace gum {
           }
         } else {
           // find the child with the smallest number of parents
-          const auto& children  = sweep_dag.children( node );
+          const auto& children = sweep_dag.children( node );
           NodeId smallest_child = 0;
-          Size smallest_nb_par  = std::numeric_limits<Size>::max();
+          Size smallest_nb_par = std::numeric_limits<Size>::max();
           for ( const auto child : children ) {
             const auto new_nb = sweep_dag.parents( child ).size();
             if ( new_nb < smallest_nb_par ) {
               smallest_nb_par = new_nb;
-              smallest_child  = child;
+              smallest_child = child;
             }
           }
 
@@ -227,8 +227,7 @@ namespace gum {
               }
             }
           } else {
-            const Size nb_match =
-                Size( std::min( nb_parents, nb_children ) - 1 );
+            const Size nb_match = Size( std::min( nb_parents, nb_children ) - 1 );
             auto iter_par = parents.beginSafe();
             ++iter_par;  // skip the first parent, whose arc with node will
                          // remain

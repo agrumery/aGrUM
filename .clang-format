@@ -5,7 +5,7 @@
 BasedOnStyle: LLVM
 
 Standard: Cpp11
-ColumnLimit: 80
+ColumnLimit: 83
 
 MaxEmptyLinesToKeep: 2
 
@@ -25,14 +25,14 @@ SpaceInEmptyParentheses: false
 
 AlwaysBreakTemplateDeclarations: true
 BreakBeforeBinaryOperators: NonAssignment
-BreakConstructorInitializersBeforeComma: true
+BreakConstructorInitializersBeforeComma: false
 BreakBeforeBinaryOperators: false
 #clang-format-4.0
 #BreakStringLiterals: true
 
 PointerAlignment: Left
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: true
+AlignConsecutiveAssignments: false
 AlignOperands: true
 AlignEscapedNewlinesLeft: true
 AlignTrailingComments: true

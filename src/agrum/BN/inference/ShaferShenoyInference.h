@@ -52,7 +52,6 @@ namespace gum {
   }
 
 
-
   /**
    * @class ShaferShenoyInference ShaferShenoyInference.h
    * <agrum/BN/inference/ShaferShenoyInference.h>
@@ -63,7 +62,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   class ShaferShenoyInference : public JointTargetedInference<GUM_SCALAR>,
                                 public EvidenceInference<GUM_SCALAR> {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -97,13 +96,13 @@ namespace gum {
     void setFindBarrenNodesType( FindBarrenNodesType type );
 
     /// sets the operator for performing the projections
-    void setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )
-      ( const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
+    void setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
+        const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
 
     /// sets the operator for performing the combinations
-    void setCombinationFunction( Potential<GUM_SCALAR>* ( *comb )
-      ( const Potential<GUM_SCALAR>&, const Potential<GUM_SCALAR>&));
-    
+    void setCombinationFunction( Potential<GUM_SCALAR>* ( *comb )(
+        const Potential<GUM_SCALAR>&, const Potential<GUM_SCALAR>&));
+
     /// returns the current join tree used
     /** Lazy Propagation does not use a junction tree but a binary join tree
      * because this may enable faster inferences. So do not be surprised to
@@ -116,8 +115,7 @@ namespace gum {
     /// @}
 
 
-
-  protected:
+    protected:
     /// fired after a new evidence is inserted
     virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence );
 
@@ -191,40 +189,37 @@ namespace gum {
     virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set );
 
     /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential<GUM_SCALAR>*
-    _unnormalizedJointPosterior( const NodeId id );
+    virtual Potential<GUM_SCALAR>* _unnormalizedJointPosterior( const NodeId id );
 
     /// returns a fresh potential equal to P(argument,evidence)
     virtual Potential<GUM_SCALAR>*
     _unnormalizedJointPosterior( const NodeSet& set );
 
 
-    
-  private:
+    private:
     typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
-    typedef SetIteratorSafe<const Potential<GUM_SCALAR>*>
-    __PotentialSetIterator;
+    typedef SetIteratorSafe<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
 
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType __barren_nodes_type;
 
     /// the operator for performing the projections
-    Potential<GUM_SCALAR>* ( *__projection_op )
-      ( const Potential<GUM_SCALAR>&,
-        const Set<const DiscreteVariable*>& ) { SSNewprojPotential };
+    Potential<GUM_SCALAR>* ( *__projection_op )(
+        const Potential<GUM_SCALAR>&,
+        const Set<const DiscreteVariable*>& ){SSNewprojPotential};
 
     /// the operator for performing the combinations
-    Potential<GUM_SCALAR>* ( *__combination_op )
-      ( const Potential<GUM_SCALAR>&,
-        const Potential<GUM_SCALAR>& ) { SSNewmultiPotential };
+    Potential<GUM_SCALAR>* ( *__combination_op )( const Potential<GUM_SCALAR>&,
+                                                  const Potential<GUM_SCALAR>& ){
+        SSNewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* __triangulation;
 
     /** @brief indicates whether we should transform junction trees into
      * binary join trees */
-    bool __use_binary_join_tree { true };
+    bool __use_binary_join_tree{true};
 
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
@@ -235,13 +230,13 @@ namespace gum {
     UndiGraph __graph;
 
     /// the junction tree used to answer the last inference query
-    JoinTree* __JT { nullptr };
+    JoinTree* __JT{nullptr};
 
     /// indicates whether a new join tree is needed for the next inference
     /** when modifying the set of hard evidence, we can determine that
      * the current JT is no more appropriate for inference. This variable
      * enables us to keep track of this. */
-    bool __is_new_jt_needed { true };
+    bool __is_new_jt_needed{true};
 
     /// a clique node used as a root in each connected component of __JT
     /** For usual probabilistic inference, roots is useless. This is useful
@@ -329,11 +324,7 @@ namespace gum {
     NodeSet __hard_ev_nodes;
 
     /// the possible types of evidence changes
-    enum EvidenceChangeType {
-      EVIDENCE_ADDED,
-      EVIDENCE_ERASED,
-      EVIDENCE_MODIFIED
-    };
+    enum EvidenceChangeType { EVIDENCE_ADDED, EVIDENCE_ERASED, EVIDENCE_MODIFIED };
 
     /** @brief indicates which nodes of the BN have evidence that changed
      * since the last inference */

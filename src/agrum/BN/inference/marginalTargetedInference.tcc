@@ -67,8 +67,7 @@ namespace gum {
 
   // return true if variable is a target
   template <typename GUM_SCALAR>
-  INLINE bool
-  MarginalTargetedInference<GUM_SCALAR>::isTarget( NodeId var ) const {
+  INLINE bool MarginalTargetedInference<GUM_SCALAR>::isTarget( NodeId var ) const {
     // check that the variable belongs to the bn
     if ( this->__bn == nullptr )
       GUM_ERROR( NullElement,
@@ -87,8 +86,7 @@ namespace gum {
   INLINE void MarginalTargetedInference<GUM_SCALAR>::eraseAllTargets() {
     _onAllMarginalTargetsErased();
     __targets.clear();
-    this->__state =
-        Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
 
 
@@ -109,16 +107,14 @@ namespace gum {
     if ( !__targets.contains( target ) ) {
       __targets.insert( target );
       _onMarginalTargetAdded( target );
-      this->__state =
-          Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
 
   // removes an existing target
   template <typename GUM_SCALAR>
-  void
-  MarginalTargetedInference<GUM_SCALAR>::eraseTarget( const NodeId target ) {
+  void MarginalTargetedInference<GUM_SCALAR>::eraseTarget( const NodeId target ) {
     // check if the node belongs to the Bayesian network
     if ( this->__bn == nullptr )
       GUM_ERROR( NullElement,
@@ -132,8 +128,7 @@ namespace gum {
     if ( __targets.contains( target ) ) {
       _onMarginalTargetErased( target );
       __targets.erase( target );
-      this->__state =
-          Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
@@ -180,8 +175,8 @@ namespace gum {
 
   // Compute the posterior of a node.
   template <typename GUM_SCALAR>
-  const Potential<GUM_SCALAR>& MarginalTargetedInference<GUM_SCALAR>::posterior(
-      const std::string& nodeName ) {
+  const Potential<GUM_SCALAR>&
+  MarginalTargetedInference<GUM_SCALAR>::posterior( const std::string& nodeName ) {
     return posterior( this->BayesNet().idFromName( nodeName ) );
   }
 } /* namespace gum */

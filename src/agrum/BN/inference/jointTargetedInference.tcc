@@ -63,8 +63,8 @@ namespace gum {
 
   // return true if target is a nodeset target.
   template <typename GUM_SCALAR>
-  INLINE bool JointTargetedInference<GUM_SCALAR>::isJointTarget(
-      const NodeSet& vars ) const {
+  INLINE bool
+  JointTargetedInference<GUM_SCALAR>::isJointTarget( const NodeSet& vars ) const {
     if ( this->__bn == nullptr )
       GUM_ERROR( NullElement,
                  "No Bayes net has been assigned to the "
@@ -93,8 +93,7 @@ namespace gum {
   INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllJointTargets() {
     _onAllJointTargetsErased();
     __joint_targets.clear();
-    this->__state =
-        Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
 
 
@@ -129,8 +128,7 @@ namespace gum {
     if ( !__joint_targets.contains( joint_target ) ) {
       __joint_targets.insert( joint_target );
       _onJointTargetAdded( joint_target );
-      this->__state =
-          Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
@@ -158,8 +156,7 @@ namespace gum {
     if ( __joint_targets.contains( joint_target ) ) {
       _onJointTargetErased( joint_target );
       __joint_targets.erase( joint_target );
-      this->__state =
-          Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
@@ -195,14 +192,13 @@ namespace gum {
   // ##############################################################################
   // Entropy
   // ##############################################################################
-  
+
   /** Entropy
    * Compute Shanon's entropy of a node given the observation
    */
   template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR
-  JointTargetedInference<GUM_SCALAR>::H( const NodeId X ) {
-    Potential<GUM_SCALAR>* posteriorX = this->_unnormalizedJointPosterior ( X );
+  INLINE GUM_SCALAR JointTargetedInference<GUM_SCALAR>::H( const NodeId X ) {
+    Potential<GUM_SCALAR>* posteriorX = this->_unnormalizedJointPosterior( X );
     GUM_SCALAR res = posteriorX->entropy();
     delete posteriorX;
     return res;
@@ -216,9 +212,8 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template <typename GUM_SCALAR>
-  GUM_SCALAR
-  JointTargetedInference<GUM_SCALAR>::I( const NodeId X,
-                                         const NodeId Y ) {
+  GUM_SCALAR JointTargetedInference<GUM_SCALAR>::I( const NodeId X,
+                                                    const NodeId Y ) {
     Potential<GUM_SCALAR> *pX = nullptr, *pY = nullptr, *pXY = nullptr;
 
     try {
@@ -228,14 +223,12 @@ namespace gum {
         NodeSet XY;
         XY << X << Y;
         pXY = this->_unnormalizedJointPosterior( XY );
-      }
-      else {
+      } else {
         pXY = new Potential<GUM_SCALAR>( *pX );
       }
-    }
-    catch ( ... ) {
-      if ( pX != nullptr )  delete pX;
-      if ( pY != nullptr )  delete pY;
+    } catch ( ... ) {
+      if ( pX != nullptr ) delete pX;
+      if ( pY != nullptr ) delete pY;
       if ( pXY != nullptr ) delete pXY;
       throw;
     }
@@ -245,8 +238,8 @@ namespace gum {
 
     for ( i.setFirst(); !i.end(); ++i ) {
       GUM_SCALAR vXY = ( *pXY )[i];
-      GUM_SCALAR vX  = ( *pX )[i];
-      GUM_SCALAR vY  = ( *pY )[i];
+      GUM_SCALAR vX = ( *pX )[i];
+      GUM_SCALAR vY = ( *pY )[i];
 
       if ( vXY > (GUM_SCALAR)0 ) {
         if ( vX == (GUM_SCALAR)0 || vY == (GUM_SCALAR)0 ) {
@@ -274,10 +267,10 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR
-  JointTargetedInference<GUM_SCALAR>::VI( const NodeId X, const NodeId Y ) {
+  INLINE GUM_SCALAR JointTargetedInference<GUM_SCALAR>::VI( const NodeId X,
+                                                            const NodeId Y ) {
     return H( X ) + H( Y ) - 2 * I( X, Y );
   }
 
-  
+
 } /* namespace gum */

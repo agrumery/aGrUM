@@ -19,24 +19,25 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of lazy propagation for inference
+ * @brief Implementation of lazy propagation for inference in
  * Bayesian Networks.
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #include <utility>
 
+#include <agrum/config.h>
 #include <agrum/BN/inference/BayesBall.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
-#include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/dSeparation.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/config.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
 #include <agrum/multidim/operators/multiDimProjection.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 
 
 namespace gum {
@@ -49,9 +50,9 @@ namespace gum {
       FindRelevantPotentialsType relevant_type,
       FindBarrenNodesType barren_type,
       bool use_binary_join_tree )
-      : JointTargetedInference<GUM_SCALAR>( BN )
-      , EvidenceInference<GUM_SCALAR>( BN )
-      , __use_binary_join_tree( use_binary_join_tree ) {
+      : JointTargetedInference<GUM_SCALAR>( BN ),
+        EvidenceInference<GUM_SCALAR>( BN ),
+        __use_binary_join_tree( use_binary_join_tree ) {
     // sets the relevant potential and the barren nodes finding algorithm
     setFindRelevantPotentialsType( relevant_type );
     setFindBarrenNodesType( barren_type );
@@ -97,7 +98,7 @@ namespace gum {
   void LazyPropagation<GUM_SCALAR>::setTriangulation(
       const Triangulation& new_triangulation ) {
     delete __triangulation;
-    __triangulation    = new_triangulation.newFactory();
+    __triangulation = new_triangulation.newFactory();
     __is_new_jt_needed = true;
     this->_setOutdatedBNStructureState();
   }
@@ -180,8 +181,8 @@ namespace gum {
 
   /// sets how we determine barren nodes
   template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::setFindBarrenNodesType(
-      FindBarrenNodesType type ) {
+  void
+  LazyPropagation<GUM_SCALAR>::setFindBarrenNodesType( FindBarrenNodesType type ) {
     if ( type != __barren_nodes_type ) {
       // WARNING: if a new type is added here, method __createJT should
       // certainly
@@ -266,8 +267,7 @@ namespace gum {
     else {
       for ( const auto node : this->softEvidenceNodes() ) {
         try {
-          __evidence_changes.insert( node,
-                                     EvidenceChangeType::EVIDENCE_ERASED );
+          __evidence_changes.insert( node, EvidenceChangeType::EVIDENCE_ERASED );
         } catch ( DuplicateElement& ) {
           // here, the evidence change already existed and it is necessarily an
           // EVIDENCE_ADDED or an EVIDENCE_MODIFIED. So, if the evidence has
@@ -362,14 +362,13 @@ namespace gum {
     // the graph and, therefore, should not be taken into account
     const auto& hard_ev_nodes = this->hardEvidenceNodes();
     for ( const auto node : this->targets() ) {
-      if ( !__graph.exists( node ) && !hard_ev_nodes.exists( node ) )
-        return true;
+      if ( !__graph.exists( node ) && !hard_ev_nodes.exists( node ) ) return true;
     }
     for ( const auto& nodes : this->jointTargets() ) {
       // here, we need to check that at least one clique contains all the nodes.
       bool containing_clique_found = false;
       for ( const auto node : nodes ) {
-        bool found            = true;
+        bool found = true;
         const NodeSet& clique = __JT->clique( __node_to_clique[node] );
         for ( const auto xnode : nodes ) {
           if ( !clique.contains( xnode ) && !hard_ev_nodes.exists( xnode ) ) {
@@ -505,23 +504,21 @@ namespace gum {
     // indicate, for each node of the moral graph a clique in __JT that can
     // contain its conditional probability table
     __node_to_clique.clear();
-    const std::vector<NodeId>& JT_elim_order =
-        __triangulation->eliminationOrder();
+    const std::vector<NodeId>& JT_elim_order = __triangulation->eliminationOrder();
     NodeProperty<int> elim_order( Size( JT_elim_order.size() ) );
-    for ( NodeId i = NodeId( 0 ), size = NodeId( JT_elim_order.size() );
-          i < size;
+    for ( NodeId i = NodeId( 0 ), size = NodeId( JT_elim_order.size() ); i < size;
           ++i )
       elim_order.insert( JT_elim_order[i], i );
     const DAG& dag = bn.dag();
     for ( const auto node : __graph ) {
       // get the variables in the potential of node (and its parents)
       NodeId first_eliminated_node = node;
-      int elim_number              = elim_order[first_eliminated_node];
+      int elim_number = elim_order[first_eliminated_node];
 
       for ( const auto parent : dag.parents( node ) ) {
         if ( __graph.existsNode( parent ) &&
              ( elim_order[parent] < elim_number ) ) {
-          elim_number           = elim_order[parent];
+          elim_number = elim_order[parent];
           first_eliminated_node = parent;
         }
       }
@@ -546,11 +543,11 @@ namespace gum {
 
       if ( !pars.empty() ) {
         NodeId first_eliminated_node = *( pars.begin() );
-        int elim_number              = elim_order[first_eliminated_node];
+        int elim_number = elim_order[first_eliminated_node];
 
         for ( const auto parent : pars ) {
           if ( elim_order[parent] < elim_number ) {
-            elim_number           = elim_order[parent];
+            elim_number = elim_order[parent];
             first_eliminated_node = parent;
           }
         }
@@ -559,9 +556,9 @@ namespace gum {
         // parents) eliminated => the clique created during its elimination
         // contains node and all of its parents => it can contain the potential
         // assigned to the node in the BN
-        __node_to_clique.insert( node,
-                                 __triangulation->createdJunctionTreeClique(
-                                     first_eliminated_node ) );
+        __node_to_clique.insert(
+            node,
+            __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
       }
     }
 
@@ -576,15 +573,15 @@ namespace gum {
 
       if ( !nodeset.empty() ) {
         NodeId first_eliminated_node = *( nodeset.begin() );
-        int elim_number              = elim_order[first_eliminated_node];
+        int elim_number = elim_order[first_eliminated_node];
         for ( const auto node : nodeset ) {
           if ( elim_order[node] < elim_number ) {
-            elim_number           = elim_order[node];
+            elim_number = elim_order[node];
             first_eliminated_node = node;
           }
         }
-        __joint_target_to_clique.insert(
-            set, __node_to_clique[first_eliminated_node] );
+        __joint_target_to_clique.insert( set,
+                                         __node_to_clique[first_eliminated_node] );
       }
     }
 
@@ -644,7 +641,7 @@ namespace gum {
     // including
     // hard evidence must be projected so that these nodes are removed from the
     // potential
-    const auto& evidence      = this->evidence();
+    const auto& evidence = this->evidence();
     const auto& hard_evidence = this->hardEvidence();
     for ( const auto node : dag ) {
       if ( __graph.exists( node ) || __hard_ev_nodes.contains( node ) ) {
@@ -698,8 +695,7 @@ namespace gum {
                          "the projection of a potential containing "
                              << "hard evidence is empty!" );
             }
-            const Potential<GUM_SCALAR>* projected_cpt =
-                *( new_cpt_list.begin() );
+            const Potential<GUM_SCALAR>* projected_cpt = *( new_cpt_list.begin() );
             __clique_potentials[__node_to_clique[node]].insert( projected_cpt );
             __hard_ev_projected_CPTs.insert( node, projected_cpt );
           }
@@ -729,7 +725,7 @@ namespace gum {
       // here, we can answer the next queries without reconstructing all the
       // junction tree. All we need to do is to indicate that we should
       // update the potentials and messages for these queries
-      _updateOutdatedBNPotentials ();
+      _updateOutdatedBNPotentials();
     }
   }
 
@@ -766,7 +762,7 @@ namespace gum {
   /// update the potentials stored in the cliques and invalidate outdated
   /// messages
   template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::_updateOutdatedBNPotentials () {
+  void LazyPropagation<GUM_SCALAR>::_updateOutdatedBNPotentials() {
     // compute the set of CPTs that were projected due to hard evidence and
     // whose hard evidence have changed, so that they need a new projection.
     // By the way, remove these CPTs since they are no more needed
@@ -776,15 +772,14 @@ namespace gum {
     // the projection (else they should be constants)
     NodeSet hard_nodes_changed( __hard_ev_nodes.size() );
     for ( const auto node : __hard_ev_nodes )
-      if ( __evidence_changes.exists( node ) )
-        hard_nodes_changed.insert( node );
+      if ( __evidence_changes.exists( node ) ) hard_nodes_changed.insert( node );
 
     NodeSet nodes_with_projected_CPTs_changed;
     const auto& bn = this->BayesNet();
     for ( auto pot_iter = __hard_ev_projected_CPTs.beginSafe();
           pot_iter != __hard_ev_projected_CPTs.endSafe();
           ++pot_iter ) {
-      const auto pot        = pot_iter.val();
+      const auto pot = pot_iter.val();
       const auto& variables = pot->variablesSequence();
       for ( const auto var : variables ) {
         if ( hard_nodes_changed.contains( bn.nodeId( *var ) ) ) {
@@ -810,8 +805,7 @@ namespace gum {
       if ( __node_to_clique.exists( pair.first ) ) {
         const auto clique = __node_to_clique[pair.first];
         for ( const auto neighbor : __JT->neighbours( clique ) ) {
-          __diffuseMessageInvalidations(
-              clique, neighbor, invalidated_cliques );
+          __diffuseMessageInvalidations( clique, neighbor, invalidated_cliques );
         }
       }
     }
@@ -845,8 +839,7 @@ namespace gum {
     for ( auto iter = __joint_target_posteriors.beginSafe();
           iter != __joint_target_posteriors.endSafe();
           ++iter ) {
-      if ( invalidated_cliques.exists(
-               __joint_target_to_clique[iter.key()] ) ) {
+      if ( invalidated_cliques.exists( __joint_target_to_clique[iter.key()] ) ) {
         delete iter.val();
         __joint_target_posteriors.erase( iter );
       }
@@ -877,7 +870,7 @@ namespace gum {
     for ( const auto node : nodes_with_projected_CPTs_changed ) {
       // perform the projection with a combine and project instance
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
-      const auto& variables            = cpt.variablesSequence();
+      const auto& variables = cpt.variablesSequence();
       Set<const DiscreteVariable*> hard_variables;
       __PotentialSet marg_cpt_set{&cpt};
       for ( const auto var : variables ) {
@@ -889,8 +882,8 @@ namespace gum {
       }
 
       // perform the combination of those potentials and their projection
-      MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
-          combine_and_project( __combination_op, LPNewprojPotential );
+      MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential> combine_and_project(
+          __combination_op, LPNewprojPotential );
       __PotentialSet new_cpt_list =
           combine_and_project.combineAndProject( marg_cpt_set, hard_variables );
 
@@ -913,7 +906,7 @@ namespace gum {
     const auto& hard_evidence = this->hardEvidence();
     for ( auto& node_cst : __constants ) {
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node_cst.first );
-      const auto& variables            = cpt.variablesSequence();
+      const auto& variables = cpt.variablesSequence();
       Instantiation inst( cpt );
       for ( const auto var : variables ) {
         inst.chgVal( var, hard_evidence[bn.nodeId( *var )] );
@@ -945,13 +938,12 @@ namespace gum {
     }
 
     // put in a vector these cliques and their size
-    std::vector<std::pair<NodeId, Size>> possible_roots(
-        clique_targets.size() );
+    std::vector<std::pair<NodeId, Size>> possible_roots( clique_targets.size() );
     const auto& bn = this->BayesNet();
-    std::size_t i  = 0;
+    std::size_t i = 0;
     for ( const auto clique_id : clique_targets ) {
       const auto& clique = __JT->clique( clique_id );
-      Size dom_size      = 1;
+      Size dom_size = 1;
       for ( const auto node : clique ) {
         dom_size *= bn.variable( node ).domainSize();
       }
@@ -991,9 +983,8 @@ namespace gum {
 
   // performs the collect phase of Lazy Propagation
   template <typename GUM_SCALAR>
-  INLINE void
-  LazyPropagation<GUM_SCALAR>::__collectMessage( const NodeId id,
-                                                 const NodeId from ) {
+  INLINE void LazyPropagation<GUM_SCALAR>::__collectMessage( const NodeId id,
+                                                             const NodeId from ) {
     for ( const auto other : __JT->neighbours( id ) ) {
       if ( ( other != from ) && !__messages_computed[Arc( other, id )] )
         __collectMessage( other, id );
@@ -1032,8 +1023,7 @@ namespace gum {
                        this->hardEvidenceNodes(),
                        this->softEvidenceNodes(),
                        requisite_nodes );
-    for ( auto iter = pot_list.beginSafe(); iter != pot_list.endSafe();
-          ++iter ) {
+    for ( auto iter = pot_list.beginSafe(); iter != pot_list.endSafe(); ++iter ) {
       const Sequence<const DiscreteVariable*>& vars =
           ( **iter ).variablesSequence();
       bool found = false;
@@ -1196,8 +1186,7 @@ namespace gum {
 
   // remove variables del_vars from the list of potentials pot_list
   template <typename GUM_SCALAR>
-  Set<const Potential<GUM_SCALAR>*>
-  LazyPropagation<GUM_SCALAR>::__marginalizeOut(
+  Set<const Potential<GUM_SCALAR>*> LazyPropagation<GUM_SCALAR>::__marginalizeOut(
       Set<const Potential<GUM_SCALAR>*> pot_list,
       Set<const DiscreteVariable*>& del_vars,
       Set<const DiscreteVariable*>& kept_vars ) {
@@ -1208,8 +1197,7 @@ namespace gum {
     // to exploit barren nodes
     __PotentialSet barren_projected_potentials;
     if ( __barren_nodes_type == FindBarrenNodesType::FIND_BARREN_NODES ) {
-      barren_projected_potentials =
-          __removeBarrenVariables( pot_list, del_vars );
+      barren_projected_potentials = __removeBarrenVariables( pot_list, del_vars );
     }
 
     // create a combine and project operator that will perform the
@@ -1261,7 +1249,7 @@ namespace gum {
 
     // get the set of variables that need be removed from the potentials
     const NodeSet& from_clique = __JT->clique( from_id );
-    const NodeSet& separator   = __JT->separator( from_id, to_id );
+    const NodeSet& separator = __JT->separator( from_id, to_id );
     Set<const DiscreteVariable*> del_vars( from_clique.size() );
     Set<const DiscreteVariable*> kept_vars( separator.size() );
     const auto& bn = this->BayesNet();
@@ -1309,7 +1297,7 @@ namespace gum {
     }
 
     __separator_potentials[arc] = std::move( new_pot_list );
-    __messages_computed[arc]    = true;
+    __messages_computed[arc] = true;
   }
 
 
@@ -1585,9 +1573,9 @@ namespace gum {
     GUM_SCALAR prob_ev = 1;
     for ( const auto root : __roots ) {
       // get a node in the clique
-      const NodeId node          = *( __JT->clique( root ).begin() );
+      const NodeId node = *( __JT->clique( root ).begin() );
       Potential<GUM_SCALAR>* tmp = _unnormalizedJointPosterior( node );
-      GUM_SCALAR sum             = 0;
+      GUM_SCALAR sum = 0;
       for ( Instantiation iter( *tmp ); !iter.end(); ++iter )
         sum += tmp->get( iter );
       prob_ev *= sum;

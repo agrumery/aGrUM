@@ -91,7 +91,7 @@ namespace gum {
     // the ball to
     while ( !nodes_to_visit.empty() && !node2potentials.empty() ) {
       // get the next node to visit
-      const NodeId node    = nodes_to_visit.front().first;
+      const NodeId node = nodes_to_visit.front().first;
       const bool direction = nodes_to_visit.front().second;
       nodes_to_visit.popFront();
 
