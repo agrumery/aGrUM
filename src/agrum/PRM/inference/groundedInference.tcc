@@ -37,7 +37,8 @@ namespace gum {
 
       if ( !__obs.empty() )
         for ( const auto pot : __obs )
-          // We used const ptrs only because of BayesNetInference::addEvidence()
+          // We used const ptrs only because of
+          // MarginalTargetedInference::addEvidence()
           // requires it
           delete const_cast<Potential<GUM_SCALAR>*>( pot );
     }
@@ -49,7 +50,7 @@ namespace gum {
       // Retrieving the BN's variable
       std::stringstream var_name;
       var_name << chain.first->name() << "." << chain.second->safeName();
-      bn_obs->add( __inf->bn().variableFromName( var_name.str() ) );
+      bn_obs->add( __inf->BayesNet().variableFromName( var_name.str() ) );
       // Retrievin the PRM<GUM_SCALAR>'s evidence and copying it in bn_obs
       const Potential<GUM_SCALAR>* prm_obs =
           this->evidence( chain.first )[chain.second->id()];
@@ -68,12 +69,12 @@ namespace gum {
       std::stringstream var_name;
       var_name << chain.first->name() << "." << chain.second->safeName();
       const DiscreteVariable& var =
-          __inf->bn().variableFromName( var_name.str() );
+          __inf->BayesNet().variableFromName( var_name.str() );
 
       for ( auto iter = __obs.beginSafe(); iter != __obs.endSafe();
             ++iter ) {  // safe iterator needed here
         if ( ( **iter ).contains( var ) ) {
-          __inf->eraseEvidence( *iter );
+          __inf->eraseEvidence( var_name.str() );
           const Potential<GUM_SCALAR>* e = *iter;
           __obs.erase( iter );
           delete e;
@@ -106,7 +107,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE BayesNetInference<GUM_SCALAR>&
+    INLINE MarginalTargetedInference<GUM_SCALAR>&
     GroundedInference<GUM_SCALAR>::getBNInference() {
       if ( __inf != 0 ) {
         return *__inf;
@@ -117,7 +118,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void GroundedInference<GUM_SCALAR>::setBNInference(
-        BayesNetInference<GUM_SCALAR>* bn_inf ) {
+        MarginalTargetedInference<GUM_SCALAR>* bn_inf ) {
       if ( __inf != 0 ) {
         delete __inf;
       }
@@ -136,11 +137,11 @@ namespace gum {
       std::stringstream sBuff;
 
       if ( !__obs.empty() ) {
-        __inf->insertEvidence( __obs );
+        __inf->addListOfEvidence( __obs );
       }
 
       sBuff << chain.first->name() << "." << chain.second->safeName();
-      m = __inf->posterior( __inf->bn().idFromName( sBuff.str() ) );
+      m = __inf->posterior( __inf->BayesNet().idFromName( sBuff.str() ) );
     }
 
     template <typename GUM_SCALAR>

@@ -26,7 +26,7 @@
 #ifndef GUM_GROUNDED_INFERENCE_H
 #define GUM_GROUNDED_INFERENCE_H
 
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/marginalTargetedInference.h>
 #include <agrum/PRM/inference/PRMInference.h>
 
 namespace gum {
@@ -68,7 +68,7 @@ namespace gum {
        * @throw NotFound Raised if no inference engine have been defined for
        *                 this class.
        */
-      BayesNetInference<GUM_SCALAR>& getBNInference();
+      MarginalTargetedInference<GUM_SCALAR>& getBNInference();
 
       /**
        * @brief Defines the bayesnet inference engine used by this class.
@@ -78,9 +78,9 @@ namespace gum {
        *
        * @throw OperationNotAllowed If bn_inf does not inference over the
        *                            SystemBayesNet of this class.
-       * @todo BayesNetInference should have copy constructors.
+       * @todo MarginalTargetedInference should have copy constructors.
        */
-      void setBNInference( BayesNetInference<GUM_SCALAR>* bn_inf );
+      void setBNInference( MarginalTargetedInference<GUM_SCALAR>* bn_inf );
 
       virtual std::string name() const;
 
@@ -126,7 +126,7 @@ namespace gum {
       GroundedInference& operator=( const GroundedInference& source );
 
       /// The bayesnet inference engine used by this class.
-      BayesNetInference<GUM_SCALAR>* __inf;
+      MarginalTargetedInference<GUM_SCALAR>* __inf;
 
       List<const Potential<GUM_SCALAR>*> __obs;
     };

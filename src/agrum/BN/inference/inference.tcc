@@ -301,7 +301,7 @@ namespace gum {
   /// adds a new list of evidence
   template <typename GUM_SCALAR>
   INLINE void Inference<GUM_SCALAR>::addListOfEvidence(
-      const List<Potential<GUM_SCALAR>*>& potlist ) {
+      const List<const Potential<GUM_SCALAR>*>& potlist ) {
     for ( const auto pot : potlist )
       addEvidence( *pot );
   }
@@ -310,7 +310,7 @@ namespace gum {
   /// adds a new set of evidence
   template <typename GUM_SCALAR>
   INLINE void Inference<GUM_SCALAR>::addSetOfEvidence(
-      const Set<Potential<GUM_SCALAR>*>& potset ) {
+      const Set<const Potential<GUM_SCALAR>*>& potset ) {
     for ( const auto pot : potset )
       addEvidence( *pot );
   }
@@ -469,6 +469,12 @@ namespace gum {
       __evidence.erase( id );
     }
   }
+  // removed the evidence, if any, corresponding to node of name nodeName
+  template <typename GUM_SCALAR>
+  INLINE void
+  Inference<GUM_SCALAR>::eraseEvidence( const std::string& nodeName ) {
+    eraseEvidence( this->BayesNet().idFromName( nodeName ) );
+  }
 
 
   // removes all the evidence entered into the network
@@ -579,9 +585,9 @@ namespace gum {
                  "inference algorithm" );
 
     if ( __state == StateOfInference::OutdatedBNStructure )
-      _updateOutdatedBNStructure ();
+      _updateOutdatedBNStructure();
     else
-      _updateOutdatedBNPotentials ();
+      _updateOutdatedBNPotentials();
 
     __state = StateOfInference::Ready4Inference;
   }

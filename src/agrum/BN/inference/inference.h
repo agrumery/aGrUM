@@ -35,7 +35,7 @@
 
 namespace gum {
 
-  
+
   /** @brief type of algorithm to determine barren nodes
    *
    * When constructing messages from one clique to its neighbor, we can
@@ -135,7 +135,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   class Inference {
-  public:
+    public:
     /**
      * current state of the inference
      * Outdated [addEvidence] --(prepareInference)--> Ready
@@ -320,7 +320,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void
-    addSetOfEvidence( const Set<Potential<GUM_SCALAR>*>& potlist ) final;
+    addSetOfEvidence( const Set<const Potential<GUM_SCALAR>*>& potlist ) final;
 
     /// adds a new list of evidence
     /**
@@ -332,7 +332,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void
-    addListOfEvidence( const List<Potential<GUM_SCALAR>*>& potlist ) final;
+    addListOfEvidence( const List<const Potential<GUM_SCALAR>*>& potlist ) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -370,6 +370,9 @@ namespace gum {
     /// removed the evidence, if any, corresponding to node id
     virtual void eraseEvidence( const NodeId id ) final;
 
+    /// removed the evidence, if any, corresponding to node of name nodeName
+    virtual void eraseEvidence( const std::string& nodeName ) final;
+
     /// indicates whether some node(s) have received evidence
     virtual bool hasEvidence() const final;
 
@@ -406,7 +409,7 @@ namespace gum {
     /// @}
 
 
-  protected:
+    protected:
     /// fired after a new evidence is inserted
     virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence ) = 0;
 
@@ -481,7 +484,7 @@ namespace gum {
     void _setOutdatedBNPotentialsState();
 
 
-  private:
+    private:
     /// the current state of the inference (outdated/ready/done)
     StateOfInference __state{StateOfInference::OutdatedBNStructure};
 
