@@ -25,7 +25,7 @@ SpaceInEmptyParentheses: false
 
 AlwaysBreakTemplateDeclarations: true
 BreakBeforeBinaryOperators: NonAssignment
-BreakConstructorInitializersBeforeComma: false
+BreakConstructorInitializersBeforeComma: true
 BreakBeforeBinaryOperators: false
 #clang-format-4.0
 #BreakStringLiterals: true

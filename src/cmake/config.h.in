@@ -51,6 +51,8 @@
 #cmakedefine HAVE_DIRENT_H 1
 #cmakedefine HAVE_UNISTD_H 1
 #cmakedefine HAVE_SYS_TIME_H 1
+#cmakedefine HAVE_EXECINFO_H 1
+
 
 #define GUM_AT_LEAST(x,y,z) (GUM_MAJOR_VERSION>x || (GUM_MAJOR_VERSION>=x && \
                              (GUM_MINOR_VERSION>y || (GUM_MINOR_VERSION>=y && \
@@ -79,7 +81,7 @@
 
 #define GUM_UNUSED(expr) do { (void)(expr); } while (0)
 
-#ifdef _MSC_VER  
+#ifdef _MSC_VER
 
 #pragma warning(disable : 4503) // removing warning about the truncated names of type (>4096)... stupid compiler
 
