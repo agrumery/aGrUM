@@ -22,13 +22,14 @@
 #include <sstream>
 #include <string.h>
 
+#include <agrum/config.h>
+
 #ifndef NDEBUG
 #ifdef HAVE_EXECINFO_H
 #include <execinfo.h>
 #endif  // HAVE_EXECINFO_H
 #endif  // NDEBUG
 
-#include <agrum/config.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
