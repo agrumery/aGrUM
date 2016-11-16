@@ -145,7 +145,7 @@ namespace gum {
         default:
           GUM_ERROR( InvalidArgument,
                      "setFindBarrenNodesType for type "
-                         << type << " is not implemented yet" );
+                     << type << " is not implemented yet" );
       }
 
       __barren_nodes_type = type;
@@ -273,7 +273,7 @@ namespace gum {
 
     // 3/ if we wish to exploit d-separation, remove all the nodes that are
     // d-separated from our targets
-    if ( false ) {
+    {
       NodeSet requisite_nodes;
       bool dsep_analysis = false;
       switch ( __find_relevant_potential_type ) {
@@ -313,8 +313,10 @@ namespace gum {
       if ( dsep_analysis ) {
         for ( auto iter = __graph.beginSafe ();
               iter != __graph.endSafe (); ++iter ) {
-          if ( ! requisite_nodes.contains ( *iter ) )
+          if ( ! requisite_nodes.contains ( *iter ) &&
+               ! this->hardEvidenceNodes().contains ( *iter ) ) {
             __graph.eraseNode( *iter );
+          }
         }
       }
     }
@@ -323,10 +325,21 @@ namespace gum {
     for ( const auto node : __graph ) {
       const NodeSet& parents = bn.dag().parents( node );
       for ( auto iter1 = parents.cbegin(); iter1 != parents.cend(); ++iter1 ) {
-        __graph.addEdge( *iter1, node );
+        // before adding an edge between node and its parent, check that the
+        // parent belong to the graph. Actually, when d-separated nodes are
+        // removed, it may be the case that the parents of hard evidence nodes
+        // are removed. But the latter still exist in the graph.
+        if ( __graph.existsNode ( *iter1 ) )
+          __graph.addEdge( *iter1, node );
+        
         auto iter2 = iter1;
         for ( ++iter2; iter2 != parents.cend(); ++iter2 ) {
-          __graph.addEdge( *iter1, *iter2 );
+          // before adding an edge, check that both extremities belong to
+          // the graph. Actually, when d-separated nodes are removed, it may
+          // be the case that the parents of hard evidence nodes are removed.
+          // But the latter still exist in the graph.
+          if ( __graph.existsNode ( *iter1 ) && __graph.existsNode ( *iter2 ) )
+            __graph.addEdge( *iter1, *iter2 );
         }
       }
     }
@@ -352,7 +365,6 @@ namespace gum {
     __triangulation->setGraph( &__graph, &( this->domainSizes() ) );
     const JunctionTree& triang_jt = __triangulation->junctionTree();
     __JT = new CliqueGraph( triang_jt );
-
 
     // indicate, for each node of the moral graph a clique in __JT that can
     // contain its conditional probability table
@@ -419,6 +431,7 @@ namespace gum {
         __clique_potentials[clique].insert ( node );
       }
     }
+
 
     // indicate a clique that contains all the nodes of targets
     __targets2clique = std::numeric_limits<NodeId>::max ();
@@ -677,14 +690,31 @@ namespace gum {
     // beware: all the potentials that are defined over some nodes
     // including hard evidence must be projected so that these nodes are
     // removed from the potential
+    // also beware that the CPT of a hard evidence node may be defined over
+    // parents that do not belong to __graph and that are not hard evidence.
+    // In this case, those parents have been removed by d-separation and it is
+    // easy to show that, in this case all the parents have been removed, so
+    // that the CPT does not need to be taken into account
     const auto& evidence = this->evidence();
     const auto& hard_evidence = this->hardEvidence();
     if ( __graph.exists( node ) || this->hardEvidenceNodes().contains( node ) ) {
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
+      const auto& variables = cpt.variablesSequence();
+
+      // check if the parents of a hard evidence node do not belong to __graph
+      // and are not themselves hard evidence, discard the CPT, it is useless
+      // for inference
+      if ( this->hardEvidenceNodes().contains( node ) ) {
+        for ( const auto var : variables ) {
+          const NodeId xnode = bn.nodeId( *var );
+          if ( ! this->hardEvidenceNodes().contains( xnode ) &&
+               ! __graph.existsNode ( xnode ) )
+            return res;
+        }
+      }
 
       // get the list of nodes with hard evidence in cpt
       NodeSet hard_nodes;
-      const auto& variables = cpt.variablesSequence();
       for ( const auto var : variables ) {
         const NodeId xnode = bn.nodeId( *var );
         if ( this->hardEvidenceNodes().contains( xnode ) )
