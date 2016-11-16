@@ -137,7 +137,13 @@ namespace gum {
       std::stringstream sBuff;
 
       if ( !__obs.empty() ) {
-        __inf->addListOfEvidence( __obs );
+        for ( auto e : __obs ) {
+          try {
+            __inf->addEvidence( *e );
+          } catch ( InvalidArgument& ) {
+            __inf->chgEvidence( *e );
+          }
+        }
       }
 
       sBuff << chain.first->name() << "." << chain.second->safeName();
