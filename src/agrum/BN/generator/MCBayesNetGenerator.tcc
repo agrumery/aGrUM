@@ -90,9 +90,8 @@ namespace gum {
     _p          = p;
     _q          = q;
     _disturbing = false;
-
-    GUM_CONSTRUCTOR( MCBayesNetGenerator );
   }
+  
   // Destructor.
   template <typename GUM_SCALAR,
             template <typename> class ICPTGenerator,

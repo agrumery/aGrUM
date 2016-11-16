@@ -96,8 +96,7 @@ namespace gum_tests {
       gum::BayesNet<float>* bn = new gum::BayesNet<float>();
       gen.generateBN( *bn );
       TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::MCBayesNetGenerator<float> gen2( *bn, 30, 40, 50 ) );
-
+          gum::MCBayesNetGenerator<float> gen2 ( *bn, 30, 40, 50 ) );
       if ( bn != 0 ) delete bn;
     }
 
