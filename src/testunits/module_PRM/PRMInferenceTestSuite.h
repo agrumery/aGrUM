@@ -77,7 +77,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           prm->getSystem( "aSys" ).groundedBN( bn_factory ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
-          ve = new gum::VariableElimination<double>( bn ) );
+          ve = new gum::VariableElimination<double>( &bn ) );
       TS_GUM_ASSERT_THROWS_NOTHING( g_ve =
                                         new gum::prm::GroundedInference<double>(
                                             *prm, prm->getSystem( "aSys" ) ) );
@@ -108,7 +108,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           small->getSystem( "microSys" ).groundedBN( bn_factory ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
-          ve = new gum::VariableElimination<double>( bn ) );
+          ve = new gum::VariableElimination<double>( &bn ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
           g_ve = new gum::prm::GroundedInference<double>(
               *small, small->getSystem( "microSys" ) ) );
@@ -171,7 +171,7 @@ namespace gum_tests {
         gum::BayesNet<double> bn;
         gum::BayesNetFactory<double> bn_factory( &bn );
         small->getSystem( "microSys" ).groundedBN( bn_factory );
-        auto ve = new gum::VariableElimination<double>( bn );
+        auto ve = new gum::VariableElimination<double>( &bn );
         gum::prm::GroundedInference<double> g_ve(
             *small, small->getSystem( "microSys" ) );
         g_ve.setBNInference( ve );
@@ -344,9 +344,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           prm->getSystem( "aSys" ).groundedBN( bn_factory ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
-          ve = new gum::VariableElimination<double>( bn ) );
+          ve = new gum::VariableElimination<double>( &bn ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
-          ss = new gum::ShaferShenoyInference<double>( bn ) );
+          ss = new gum::ShaferShenoyInference<double>( &bn ) );
       TS_GUM_ASSERT_THROWS_NOTHING( g_ve =
                                         new gum::prm::GroundedInference<double>(
                                             *prm, prm->getSystem( "aSys" ) ) );
@@ -451,7 +451,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           prm->getSystem( "aSys" ).groundedBN( bn_factory ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
-          ve = new gum::VariableElimination<double>( bn ) );
+          ve = new gum::VariableElimination<double>( &bn ) );
       TS_GUM_ASSERT_THROWS_NOTHING( g_ve =
                                         new gum::prm::GroundedInference<double>(
                                             *prm, prm->getSystem( "aSys" ) ) );

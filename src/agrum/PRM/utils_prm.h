@@ -89,6 +89,10 @@ namespace gum {
                         Set<Potential<GUM_SCALAR>*>& pool,
                         Set<Potential<GUM_SCALAR>*>& trash );
 
+    template <typename GUM_SCALAR>
+    void eliminateNodes( const std::vector<const DiscreteVariable*>& elim_order,
+                         Set<Potential<GUM_SCALAR>*>& pool,
+                         Set<Potential<GUM_SCALAR>*>& trash );
 
     /**
      * @brief Returns the next value of an unique counter for PRM's node id.

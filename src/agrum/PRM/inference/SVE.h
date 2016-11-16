@@ -41,6 +41,8 @@
 #include <agrum/multidim/multiDimSparse.h>
 #include <agrum/multidim/potential.h>
 
+#include <agrum/PRM/utils_prm.h>
+
 #include <agrum/PRM/inference/PRMInference.h>
 
 #include <agrum/PRM/classBayesNet.h>

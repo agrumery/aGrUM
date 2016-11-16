@@ -69,8 +69,7 @@ namespace gum {
       // Eliminating all nodes in query instance, except query
       InstanceBayesNet<GUM_SCALAR> bn( *query );
       DefaultTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ) );
-      std::vector<NodeId> elim_order;
-      VariableElimination<GUM_SCALAR> inf( &bn );
+      std::vector<const DiscreteVariable*> elim_order;
 
       if ( this->hasEvidence( query ) ) __insertEvidence( query, pool );
 
@@ -78,11 +77,15 @@ namespace gum {
         pool.insert( &(
             const_cast<Potential<GUM_SCALAR>&>( query->get( attr ).cpf() ) ) );
 
-      for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx )
-        if ( t.eliminationOrder()[idx] != node )
-          elim_order.push_back( t.eliminationOrder()[idx] );
+      for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx ) {
+        if ( t.eliminationOrder()[idx] != node ) {
+          auto var_id = t.eliminationOrder()[idx];
+          const auto& var = bn.variable(var_id);
+          elim_order.push_back( &var );
+        }
+      }
 
-      inf.eliminateNodes( elim_order, pool, trash );
+      eliminateNodes( elim_order, pool, trash );
       // Eliminating instance in elim_list
       List<const PRMInstance<GUM_SCALAR>*> tmp_list;
       __reduceElimList( query, elim_list, tmp_list, ignore, pool, trash );
@@ -148,8 +151,14 @@ namespace gum {
 
         try {
           InstanceBayesNet<GUM_SCALAR> bn( *i );
-          VariableElimination<GUM_SCALAR> inf( bn );
-          inf.eliminateNodes( __getElimOrder( i->type() ), pool, trash );
+          std::vector<const DiscreteVariable*> elim_order;
+
+          for( auto node: __getElimOrder( i->type() ) ) {
+            const auto& var = bn.variable(node);
+            elim_order.push_back( &var );
+          }
+
+          eliminateNodes( elim_order, pool, trash );
         } catch ( NotFound& ) {
           // Raised if there is no inner nodes to eliminate
         }
@@ -216,8 +225,13 @@ namespace gum {
 
         try {
           InstanceBayesNet<GUM_SCALAR> bn( *i );
-          VariableElimination<GUM_SCALAR> inf( bn );
-          inf.eliminateNodes( __getElimOrder( i->type() ), pool, trash );
+          std::vector<const DiscreteVariable*> elim_order;
+
+          for ( auto node : __getElimOrder( i->type() ) ) {
+            const auto& var = bn.variable(node);
+            elim_order.push_back(&var);
+          }
+          eliminateNodes( elim_order, pool, trash );
         } catch ( NotFound& ) {
           // Raised if there is no inner nodes to eliminate
         }

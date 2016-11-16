@@ -151,5 +151,14 @@ namespace gum {
       trash.insert( pot );
     }
 
+    template <typename GUM_SCALAR>
+    void eliminateNodes ( const std::vector<const DiscreteVariable*>& elim_order,
+                        Set<Potential<GUM_SCALAR>*>& pool,
+                        Set<Potential<GUM_SCALAR>*>& trash ) {
+      for (auto var: elim_order) {
+        eliminateNode(var, pool, trash);
+      }
+    }
+
   } /* namespace prm */
 }

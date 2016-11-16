@@ -155,8 +155,7 @@ namespace gum {
       // Eliminating all nodes in query instance, except query
       InstanceBayesNet<GUM_SCALAR> bn( *query );
       DefaultTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ) );
-      std::vector<NodeId> elim_order;
-      VariableElimination<GUM_SCALAR> inf( bn );
+      std::vector<const DiscreteVariable*> elim_order;
 
       if ( this->hasEvidence( query ) ) {
         __insertEvidence( query, pool );
@@ -170,11 +169,13 @@ namespace gum {
       for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx ) {
         if ( ( t.eliminationOrder()[idx] != node ) &&
              ( !delayedVars.exists( t.eliminationOrder()[idx] ) ) ) {
-          elim_order.push_back( t.eliminationOrder()[idx] );
+          auto var_id = t.eliminationOrder()[idx];
+          const auto& var = bn.variable(var_id);
+          elim_order.push_back( &var );
         }
       }
 
-      inf.eliminateNodes( elim_order, pool, trash );
+      eliminateNodes( elim_order, pool, trash );
 
       // Eliminating delayed variables, if any
       if ( __delayedVariables.exists( query ) ) {
@@ -309,18 +310,22 @@ namespace gum {
 
         try {
           InstanceBayesNet<GUM_SCALAR> bn( *i );
-          VariableElimination<GUM_SCALAR> inf( bn );
 
-          if ( delayedVars ) {
-            std::vector<NodeId> elim;
+          std::vector<const DiscreteVariable*> elim;
 
-            for ( const auto node : __getElimOrder( i->type() ) )
-              if ( !delayedVars->exists( node ) ) elim.push_back( node );
-
-            inf.eliminateNodes( elim, pool, trash );
-          } else {
-            inf.eliminateNodes( __getElimOrder( i->type() ), pool, trash );
+          for ( const auto node : __getElimOrder( i->type() ) ) {
+            const auto& var = bn.variable(node);
+            if ( delayedVars != nullptr) {
+              if ( !delayedVars->exists( node ) ) {
+                const auto& var = bn.variable( node );
+                elim.push_back( &var );
+              }
+            } else {
+              elim.push_back( &var );
+            }
           }
+
+          eliminateNodes( elim, pool, trash );
         } catch ( NotFound& ) {
           // Raised if there is no inner nodes to eliminate
         }
@@ -423,36 +428,36 @@ namespace gum {
         InstanceBayesNet<GUM_SCALAR> bn( *i );
         DefaultTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ) );
         const std::vector<NodeId>& full_elim_order = t.eliminationOrder();
-        VariableElimination<GUM_SCALAR> inf( bn );
         // Removing Output nodes of elimination order
-        std::vector<NodeId> inner_elim_order;
-        std::vector<NodeId> output_elim_order;
+        std::vector<const DiscreteVariable*> inner_elim_order;
+        std::vector<const DiscreteVariable*> output_elim_order;
 
-        if ( delayedVars ) {
-          for ( size_t idx = 0; idx < full_elim_order.size(); ++idx )
-            if ( !i->type().isOutputNode( i->get( full_elim_order[idx] ) ) )
-              inner_elim_order.push_back( full_elim_order[idx] );
-            else if ( !delayedVars->exists( full_elim_order[idx] ) )
-              output_elim_order.push_back( full_elim_order[idx] );
-        } else {
-          for ( size_t idx = 0; idx < full_elim_order.size(); ++idx )
-            if ( !i->type().isOutputNode( i->get( full_elim_order[idx] ) ) )
-              inner_elim_order.push_back( full_elim_order[idx] );
-            else
-              output_elim_order.push_back( full_elim_order[idx] );
+        for ( size_t idx = 0; idx < full_elim_order.size(); ++idx ) {
+          auto var_id = full_elim_order[idx];
+          const auto& var = bn.variable( var_id );
+
+          if ( !i->type().isOutputNode( i->get( full_elim_order[idx] ) ) ) {
+            inner_elim_order.push_back( &var );
+          } else if ( delayedVars != nullptr ) {
+            if ( !delayedVars->exists( full_elim_order[idx] ) ) {
+              output_elim_order.push_back( &var );
+            }
+          } else {
+            output_elim_order.push_back( &var );
+          }
         }
 
-        inf.eliminateNodes( inner_elim_order, tmp_pool, trash );
+        eliminateNodes( inner_elim_order, tmp_pool, trash );
 
         // Now we add the new potentials in pool and eliminate output nodes
         for ( const auto pot : tmp_pool )
           pool.insert( pot );
 
         if ( !output_elim_order.empty() )
-          inf.eliminateNodes( output_elim_order, pool, trash );
+          eliminateNodes( output_elim_order, pool, trash );
+
       } else {
         InstanceBayesNet<GUM_SCALAR> bn( *i );
-        VariableElimination<GUM_SCALAR> inf( bn );
         __insertEvidence( i, pool );
         __insertLiftedNodes( i, pool, trash );
 
@@ -460,21 +465,22 @@ namespace gum {
           pool.insert( __getAggPotential( i, agg ) );
 
         try {
-          if ( delayedVars ) {
-            std::vector<NodeId> elim;
+          std::vector<const DiscreteVariable*> elim;
 
-            for ( auto iter = __getElimOrder( i->type() ).begin();
-                  iter != __getElimOrder( i->type() ).end();
-                  ++iter ) {
+          for ( auto iter = __getElimOrder( i->type() ).begin();
+                iter != __getElimOrder( i->type() ).end();
+                ++iter ) {
+            const auto& var = bn.variable( *iter );
+            if ( delayedVars != nullptr ) {
               if ( !delayedVars->exists( *iter ) ) {
-                elim.push_back( *iter );
+                elim.push_back( &var );
               }
+            } else {
+              elim.push_back( &var );
             }
-
-            inf.eliminateNodes( elim, pool, trash );
-          } else {
-            inf.eliminateNodes( __getElimOrder( i->type() ), pool, trash );
           }
+
+          eliminateNodes( elim, pool, trash );
         } catch ( NotFound& ) {
           GUM_ERROR( FatalError, "there should be at least one node here." );
         }
