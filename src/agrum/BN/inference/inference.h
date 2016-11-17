@@ -29,8 +29,8 @@
 #define GUM_BAYES_NET_INFERENCE_H
 
 
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/config.h>
+#include <agrum/BN/IBayesNet.h>
 
 
 namespace gum {

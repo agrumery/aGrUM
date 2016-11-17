@@ -28,7 +28,9 @@
 #define GUM_VARIABLE_ELIMINATION_H
 
 #include <cmath>
+#include <utility>
 
+#include <agrum/config.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/jointTargetedInference.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>

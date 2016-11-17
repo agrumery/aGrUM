@@ -28,8 +28,8 @@
 #ifndef GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
 #define GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
 
-#include <agrum/BN/inference/inference.h>
 #include <agrum/config.h>
+#include <agrum/BN/inference/inference.h>
 
 
 namespace gum {

@@ -27,16 +27,13 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <utility>
 
-#include <agrum/config.h>
 #include <agrum/BN/inference/BayesBall.h>
 #include <agrum/BN/inference/dSeparation.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
 #include <agrum/multidim/operators/multiDimProjection.h>
-#include <agrum/BN/inference/variableElimination.h>
 
 
 namespace gum {

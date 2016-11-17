@@ -28,7 +28,9 @@
 #define GUM_LAZY_PROPAGATION_H
 
 #include <cmath>
+#include <utility>
 
+#include <agrum/config.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/evidenceInference.h>
 #include <agrum/BN/inference/jointTargetedInference.h>
