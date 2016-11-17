@@ -43,7 +43,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE VariableElimination<GUM_SCALAR>::VariableElimination(
       const IBayesNet<GUM_SCALAR>* BN,
-      VariableElimination<GUM_SCALAR>::FindRelevantPotentialsType relevant_type,
+      FindRelevantPotentialsType relevant_type,
       FindBarrenNodesType barren_type )
       : JointTargetedInference<GUM_SCALAR>( BN ) {
     // sets the relevant potential and the barren nodes finding algorithm
@@ -89,8 +89,7 @@ namespace gum {
 
   /// sets how we determine the relevant potentials to combine
   template <typename GUM_SCALAR>
-  void VariableElimination<GUM_SCALAR>::setFindRelevantPotentialsType(
-      VariableElimination<GUM_SCALAR>::FindRelevantPotentialsType type ) {
+  void VariableElimination<GUM_SCALAR>::setFindRelevantPotentialsType(FindRelevantPotentialsType type ) {
     if ( type != __find_relevant_potential_type ) {
       switch ( type ) {
         case VariableElimination<GUM_SCALAR>::FIND_RELEVANT_D_SEPARATION2:

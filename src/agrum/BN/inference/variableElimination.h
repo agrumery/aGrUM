@@ -90,9 +90,7 @@ namespace gum {
     /// default constructor
     VariableElimination(
         const IBayesNet<GUM_SCALAR>* BN,
-        VariableElimination<GUM_SCALAR>::FindRelevantPotentialsType =
-            VariableElimination<GUM_SCALAR>::FindRelevantPotentialsType::
-                FIND_RELEVANT_D_SEPARATION2,
+        FindRelevantPotentialsType relevant_type =FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
         FindBarrenNodesType = FIND_BARREN_NODES );
 
     /// destructor
@@ -118,8 +116,7 @@ namespace gum {
      * If FindRelevantPotentialsType = FIND_RELEVANT_D_SEPARATION, then only the
      * set of potentials d-connected to the variables of the separator are kept
      * for combination and projection. */
-    void setFindRelevantPotentialsType(
-        VariableElimination<GUM_SCALAR>::FindRelevantPotentialsType type );
+    void setFindRelevantPotentialsType(FindRelevantPotentialsType type );
 
     /// sets how we determine barren nodes
     /** Barren nodes are unnecessary for probability inference, so they can
