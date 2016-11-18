@@ -342,6 +342,29 @@ namespace gum {
   }
 
 
+  // indicates whether node id has received an evidence
+  template <typename GUM_SCALAR>
+  INLINE bool
+  Inference<GUM_SCALAR>::hasEvidence( const std::string& nodeName ) const {
+    return hasEvidence( this->BayesNet().idFromName( nodeName ) );
+  }
+
+
+  // indicates whether node id has received a hard evidence
+  template <typename GUM_SCALAR>
+  INLINE bool
+  Inference<GUM_SCALAR>::hasHardEvidence( const std::string& nodeName ) const {
+    return hasHardEvidence( this->BayesNet().idFromName( nodeName ) );
+  }
+
+
+  // indicates whether node id has received a soft evidence
+  template <typename GUM_SCALAR>
+  INLINE bool
+  Inference<GUM_SCALAR>::hasSoftEvidence( const std::string& nodeName ) const {
+    return hasSoftEvidence( this->BayesNet().idFromName( nodeName ) );
+  }
+
   // change the value of an already existing hard evidence
   template <typename GUM_SCALAR>
   INLINE void Inference<GUM_SCALAR>::chgEvidence( const NodeId id,
@@ -349,6 +372,12 @@ namespace gum {
     chgEvidence( __createHardEvidence( id, val ) );
   }
 
+  // change the value of an already existing hard evidence
+  template <typename GUM_SCALAR>
+  INLINE void Inference<GUM_SCALAR>::chgEvidence( const std::string& nodeName,
+                                                  const Idx val ) {
+    chgEvidence( this->BayesNet().idFromName( nodeName ), val );
+  }
 
   // change the value of an already existing evidence (might be soft or hard)
   template <typename GUM_SCALAR>
@@ -376,6 +405,14 @@ namespace gum {
     pot.add( __bn->variable( id ) );
     pot.fillWith( vals );
     chgEvidence( pot );
+  }
+
+  // change the value of an already existing evidence (might be soft or hard)
+  template <typename GUM_SCALAR>
+  INLINE void
+  Inference<GUM_SCALAR>::chgEvidence( const std::string& nodeName,
+                                      const std::vector<GUM_SCALAR>& vals ) {
+    chgEvidence( this->BayesNet().idFromName( nodeName ), vals );
   }
 
 

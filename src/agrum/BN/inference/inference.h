@@ -29,8 +29,8 @@
 #define GUM_BAYES_NET_INFERENCE_H
 
 
-#include <agrum/config.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/config.h>
 
 
 namespace gum {
@@ -138,8 +138,6 @@ namespace gum {
     public:
     /**
      * current state of the inference
-     * Outdated [addEvidence] --(prepareInference)--> Ready
-     * [changeEvidence]--(makeInference)--> Done
      *
      * Inference can be in one of 4 different states:
      * - OutdatedBNStructure: in this state, the inference is fully unprepared
@@ -342,15 +340,34 @@ namespace gum {
      */
     virtual void chgEvidence( const NodeId id, const Idx val ) final;
 
+    /// change the value of an already existing hard evidence
+    /**
+     * @throw UndefinedElement if nodeName does not belong to the Bayesian network
+     * @throw InvalidArgument if val is not a value for id
+     * @throw InvalidArgument if id does not already have an evidence
+     */
+    virtual void chgEvidence( const std::string& nodeName, const Idx val ) final;
+
     /// change the value of an already existing evidence (might be soft or hard)
     /**
      * @throw UndefinedElement if id does not belong to the Bayesian network
-     * @throw InvalidArgument if id does not already have an evidence
+     * @throw InvalidArgument if the node does not already have an evidence
      * @throw FatalError if vals=[0,0,...,0]
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
     virtual void chgEvidence( const NodeId id,
+                              const std::vector<GUM_SCALAR>& vals ) final;
+
+    /// change the value of an already existing evidence (might be soft or hard)
+    /**
+     * @throw UndefinedElement if nodeName does not belong to the Bayesian network
+     * @throw InvalidArgument if the node does not already have an evidence
+     * @throw FatalError if vals=[0,0,...,0]
+     * @throw InvalidArgument if the size of vals is different from the domain
+     *        size of node id
+     */
+    virtual void chgEvidence( const std::string& nodeName,
                               const std::vector<GUM_SCALAR>& vals ) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
@@ -384,6 +401,15 @@ namespace gum {
 
     /// indicates whether node id has received a soft evidence
     virtual bool hasSoftEvidence( const NodeId id ) const final;
+    /// indicates whether node id has received an evidence
+
+    virtual bool hasEvidence( const std::string& nodeName ) const final;
+
+    /// indicates whether node id has received a hard evidence
+    virtual bool hasHardEvidence( const std::string& nodeName ) const final;
+
+    /// indicates whether node id has received a soft evidence
+    virtual bool hasSoftEvidence( const std::string& nodeName ) const final;
 
     /// returns the number of evidence entered into the Bayesian network
     virtual Size nbrEvidence() const final;

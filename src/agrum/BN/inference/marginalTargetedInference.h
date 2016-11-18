@@ -28,8 +28,8 @@
 #ifndef GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
 #define GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
 
-#include <agrum/config.h>
 #include <agrum/BN/inference/inference.h>
+#include <agrum/config.h>
 
 
 namespace gum {
@@ -134,6 +134,19 @@ namespace gum {
     /// return true if variable is a (marginal) target
     virtual bool isTarget( const NodeId variable ) const final;
 
+    /// Add a marginal target to the list of targets
+    /**
+     * @throw UndefinedElement if target is not a NodeId in the Bayes net
+     */
+    virtual void addTarget( const std::string& nodeName ) final;
+
+    /// removes an existing (marginal) target
+    /** @warning If the target does not already exist, the method does nothing.
+     * In particular, it does not raise any exception. */
+    virtual void eraseTarget( const std::string& nodeName ) final;
+
+    /// return true if variable is a (marginal) target
+    virtual bool isTarget( const std::string& nodeName ) const final;
     /// returns the list of marginal targets
     virtual const NodeSet& targets() const noexcept final;
 

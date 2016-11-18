@@ -151,6 +151,9 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
     ARGS -i 's/\\bSet\\b/gum::Set/g'
     ${swig_generated_file_fullname}
     COMMAND sed
+    ARGS -i 's/\\bFindBarrenNodesType\\b/gum::FindBarrenNodesType/g'
+    ${swig_generated_file_fullname}
+    COMMAND sed
     ARGS -i 's/\\bTriangulation\\b/gum::Triangulation/g'
     ${swig_generated_file_fullname}
     COMMAND sed
