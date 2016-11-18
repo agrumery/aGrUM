@@ -29,8 +29,8 @@
 #define GUM_BAYES_NET_INFERENCE_H
 
 
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/config.h>
+#include <agrum/BN/IBayesNet.h>
 
 
 namespace gum {
@@ -47,7 +47,7 @@ namespace gum {
    * computation. However, when computing p(evidence), we should not do that
    * because the constant is important and need be computed.
    */
-  enum FindBarrenNodesType {
+  enum class FindBarrenNodesType {
     FIND_NO_BARREN_NODES,  // do not try to find barren nodes
     FIND_BARREN_NODES      // use a bottom-up algorithm to detect barren nodes
   };
@@ -73,19 +73,20 @@ namespace gum {
 
 
   /**
-   * @class Inference inference.h
-   * <agrum/BN/inference/Inference.h>
+   * @class BayesNetInference inference.h
+   * <agrum/BN/inference/BayesNetInference.h>
    * @brief A generic class for Bayes net inference: handles evidence and the
    * current state of the (incremental) inference
    * @ingroup bn_group
    *
-   * The goal of the Inference class is twofold:
+   * The goal of the BayesNetInference class is twofold:
    * i) handling the common resources of BN inference (bn, soft/hard evidence);
    * ii) propose a general high-level scheme for all the inference methods.
    *
    * A specialized inference just has to specify how to prepare inference, how
    * to make inference and how to get the posteriors for nodes and set of nodes.
-   * The scheme for every inference derived from Inference will be the same:
+   * The scheme for every inference derived from BayesNetInference will be
+   * the same:
    *
    * 1- ie=SpecificInference(bn);              // state <- OutdatedBNStructure
    * 2- set targets and evidence in ie
@@ -96,7 +97,7 @@ namespace gum {
    * 6- get posteriors
    * 7- goto 2 or 4
    *
-   * Inference can be in one of 4 different states:
+   * BayesNetInference can be in one of 4 different states:
    * - OutdatedBNStructure: in this state, the inference is fully unprepared
    *   to be applied because some events changed the "logical" structure of the
    *   BN: for instance a node received a hard evidence, which implies that
@@ -106,8 +107,9 @@ namespace gum {
    *   (probably) needs a significant amount of preparation to be ready for the
    *   next inference. In a Lazy propagation, for instance, this step amounts to
    *   compute a new join tree, hence a new structure in which inference
-   *   will be applied. Note that classes that inherit from Inference may be
-   *   smarter than Inference and may, in some situations, find out that their
+   *   will be applied. Note that classes that inherit from BayesNetInference
+   *   may be smarter than BayesNetInference and may, in some situations,
+   *   find out that their
    *   data structures are still ok for inference and, therefore, only resort to
    *   perform the actions related to the OutdatedBNPotentials state. As an
    *   example, consider a LazyPropagation inference in Bayes Net A->B->C->D->E
@@ -134,12 +136,12 @@ namespace gum {
    */
 
   template <typename GUM_SCALAR>
-  class Inference {
+  class BayesNetInference {
     public:
     /**
      * current state of the inference
      *
-     * Inference can be in one of 4 different states:
+     * BayesNetInference can be in one of 4 different states:
      * - OutdatedBNStructure: in this state, the inference is fully unprepared
      *   to be applied because some events changed the "logical" structure of
      *   the BN: for instance a node received a hard evidence, which implies
@@ -149,8 +151,8 @@ namespace gum {
      *   ready for the next inference. In a Lazy propagation, for instance,
      *   this step amounts to compute a new join tree, hence a new structure
      *   in which inference will be applied. Note that classes that inherit
-     *   from Inference may be smarter than Inference and may, in some
-     *   situations, find out that their data structures are still ok for
+     *   from BayesNetInference may be smarter than BayesNetInference and may,
+     *   in some situations, find out that their data structures are still ok for
      *   inference and, therefore, only resort to perform the actions related
      *   to the OutdatedBNPotentials state. As an example, consider a
      *   LazyPropagation inference in Bayes Net A->B->C->D->E
@@ -191,21 +193,21 @@ namespace gum {
     /// default constructor
     /** @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    Inference( const IBayesNet<GUM_SCALAR>* bn );
+    BayesNetInference( const IBayesNet<GUM_SCALAR>* bn );
 
     /// default constructor with a null BN (useful for virtual inheritance)
-    /** @warning Inference is virtually inherited by MarginalTargetedInference.
-     * As a result, the lowest descendant of Inference will create the latter.
-     * To
-     * avoid requiring developpers to add in the constructors of their inference
-     * algorithms a call to Inference( bn ), we added constructor Inference(),
+    /** @warning BayesNetInference is virtually inherited by
+     * MarginalTargetedInference. As a result, the lowest descendant of
+     * BayesNetInference will create the latter. To avoid requiring developpers
+     * to add in the constructors of their inference algorithms a call to
+     * BayesNetInference( bn ), we added constructor BayesNetInference(),
      * which will be called automatically by the lowest descendant.
      * Then, MarginalTargetedInference and JointTargetedInference will take care
-     * of setting the appropriate bn into Inference. */
-    Inference();
+     * of setting the appropriate bn into BayesNetInference. */
+    BayesNetInference();
 
     /// destructor
-    virtual ~Inference();
+    virtual ~BayesNetInference();
 
     /// @}
 
@@ -216,8 +218,8 @@ namespace gum {
     /// @{
 
     /// assigns a new BN to the inference engine
-    /** Assigns a new BN to the Inference engine and sends messages to the
-     * descendants of Inference to inform them that the BN has changed.
+    /** Assigns a new BN to the BayesNetInference engine and sends messages to the
+     * descendants of BayesNetInference to inform them that the BN has changed.
      * @warning By default, all the nodes of the Bayes net are targets.
      * @warning note that, by aGrUM's rule, the bn is not copied into the
      * inference engine but only referenced. */
@@ -481,12 +483,12 @@ namespace gum {
      * BN: for instance a node received a hard evidence, which implies that
      * its outgoing arcs can be removed from the BN, hence involving a
      * structural change in the BN. As a consequence, the (incremental)
-     * inference
-     * (probably) needs a significant amount of preparation to be ready for the
-     * next inference. In a Lazy propagation, for instance, this step amounts to
-     * compute a new join tree, hence a new structure in which inference
-     * will be applied. Note that classes that inherit from Inference may be
-     * smarter than Inference and may, in some situations, find out that their
+     * inference (probably) needs a significant amount of preparation to be
+     * ready for the next inference. In a Lazy propagation, for instance, this
+     * step amounts to compute a new join tree, hence a new structure in which
+     * inference will be applied. Note that classes that inherit from
+     * BayesNetInference may be smarter than BayesNetInference and may, in some
+     * situations, find out that their
      * data structures are still ok for inference and, therefore, only resort to
      * perform the actions related to the OutdatedBNPotentials state. As an
      * example, consider a LazyPropagation inference in Bayes Net A->B->C->D->E
@@ -556,7 +558,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/inference.tcc>
+#include <agrum/BN/inference/BayesNetInference.tcc>
 
 
 #endif  // GUM_BAYES_NET_INFERENCE_H

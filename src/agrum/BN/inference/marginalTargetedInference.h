@@ -31,7 +31,7 @@
 #include <string>
 
 #include <agrum/config.h>
-#include <agrum/BN/inference/inference.h>
+#include <agrum/BN/inference/BayesNetInference.h>
 
 
 namespace gum {
@@ -51,7 +51,7 @@ namespace gum {
    * is designed to be used in incremental inference engines.
    */
   template <typename GUM_SCALAR>
-  class MarginalTargetedInference : public virtual Inference<GUM_SCALAR> {
+  class MarginalTargetedInference : public virtual BayesNetInference<GUM_SCALAR> {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -76,7 +76,7 @@ namespace gum {
         const IBayesNet<GUM_SCALAR>* BN,
         RelevantPotentialsFinderType relevant_type =
         RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
-        FindBarrenNodesType = FIND_BARREN_NODES );
+        FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES );
 
     /// destructor
     virtual ~VariableElimination();

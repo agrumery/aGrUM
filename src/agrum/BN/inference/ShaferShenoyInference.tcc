@@ -148,15 +148,15 @@ namespace gum {
       // WARNING: if a new type is added here, method __createJT should
       // certainly be updated as well, in particular its step 2.
       switch ( type ) {
-        case FIND_BARREN_NODES:
-        case FIND_NO_BARREN_NODES:
+        case FindBarrenNodesType::FIND_BARREN_NODES:
+        case FindBarrenNodesType::FIND_NO_BARREN_NODES:
           break;
 
         default:
           GUM_ERROR( InvalidArgument,
                      "setFindBarrenNodesType for type "
-                         << type
-                         << " is not implemented yet" );
+                     << (unsigned int) type
+                     << " is not implemented yet" );
       }
 
       __barren_nodes_type = type;

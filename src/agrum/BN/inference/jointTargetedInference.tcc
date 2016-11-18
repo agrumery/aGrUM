@@ -34,7 +34,7 @@ namespace gum {
       : MarginalTargetedInference<GUM_SCALAR>( bn ) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if ( this->__bn == nullptr ) {
-      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction( bn );
+      BayesNetInference<GUM_SCALAR>::__setBayesNetDuringConstruction( bn );
     }
     GUM_CONSTRUCTOR( JointTargetedInference );
   }
@@ -93,7 +93,7 @@ namespace gum {
   INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllJointTargets() {
     _onAllJointTargetsErased();
     __joint_targets.clear();
-    this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    this->__state = BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
 
 
@@ -128,7 +128,7 @@ namespace gum {
     if ( !__joint_targets.contains( joint_target ) ) {
       __joint_targets.insert( joint_target );
       _onJointTargetAdded( joint_target );
-      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__state = BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
@@ -156,7 +156,7 @@ namespace gum {
     if ( __joint_targets.contains( joint_target ) ) {
       _onJointTargetErased( joint_target );
       __joint_targets.erase( joint_target );
-      this->__state = Inference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__state = BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 

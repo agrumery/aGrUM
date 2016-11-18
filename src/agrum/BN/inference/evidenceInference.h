@@ -29,7 +29,7 @@
 #define GUM_BAYES_NET_EVIDENCE_INFERENCE_H
 
 #include <agrum/config.h>
-#include <agrum/BN/inference/inference.h>
+#include <agrum/BN/inference/BayesNetInference.h>
 
 
 namespace gum {
@@ -46,7 +46,7 @@ namespace gum {
    * of the probability of evidence entered in Bayesian networks
    */
   template <typename GUM_SCALAR>
-  class EvidenceInference : public virtual Inference<GUM_SCALAR> {
+  class EvidenceInference : public virtual BayesNetInference<GUM_SCALAR> {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

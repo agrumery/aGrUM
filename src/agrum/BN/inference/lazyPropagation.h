@@ -77,7 +77,7 @@ namespace gum {
     LazyPropagation( const IBayesNet<GUM_SCALAR>* BN,
                      RelevantPotentialsFinderType =
                      RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
-                     FindBarrenNodesType = FIND_BARREN_NODES,
+                     FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES,
                      bool use_binary_join_tree = true );
 
     /// destructor

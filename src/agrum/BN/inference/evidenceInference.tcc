@@ -31,10 +31,10 @@ namespace gum {
   template <typename GUM_SCALAR>
   EvidenceInference<GUM_SCALAR>::EvidenceInference(
       const IBayesNet<GUM_SCALAR>* bn )
-      : Inference<GUM_SCALAR>( bn ) {
+      : BayesNetInference<GUM_SCALAR>( bn ) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if ( this->__bn == nullptr ) {
-      Inference<GUM_SCALAR>::__setBayesNetDuringConstruction( bn );
+      BayesNetInference<GUM_SCALAR>::__setBayesNetDuringConstruction( bn );
     }
 
     GUM_CONSTRUCTOR( EvidenceInference );

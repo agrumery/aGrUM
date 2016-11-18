@@ -72,7 +72,8 @@ namespace gum {
 
     /// default constructor
     ShaferShenoyInference( const IBayesNet<GUM_SCALAR>* BN,
-                           FindBarrenNodesType barren_type = FIND_BARREN_NODES,
+                           FindBarrenNodesType barren_type =
+                           FindBarrenNodesType::FIND_BARREN_NODES,
                            bool use_binary_join_tree = true );
 
     /// destructor

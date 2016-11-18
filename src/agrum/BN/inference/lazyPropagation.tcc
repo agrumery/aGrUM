@@ -184,8 +184,8 @@ namespace gum {
       // certainly
       // be updated as well, in particular its step 2.
       switch ( type ) {
-        case FIND_BARREN_NODES:
-        case FIND_NO_BARREN_NODES:
+      case FindBarrenNodesType::FIND_BARREN_NODES:
+      case FindBarrenNodesType::FIND_NO_BARREN_NODES:
           break;
 
         default:

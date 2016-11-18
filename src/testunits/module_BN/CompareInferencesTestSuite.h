@@ -465,7 +465,7 @@ namespace gum_tests {
       gum::LazyPropagation<double> lazy( &bn );
       gum::Potential<double> p_ve, p_ss, p_lazy;
       auto e_id = bn.idFromName( "CATECHOL" );
-      std::vector<gum::Inference<double>*> inf_list{&ve, &lazy, &ss};
+      std::vector<gum::BayesNetInference<double>*> inf_list{&ve, &lazy, &ss};
       for ( auto inf : inf_list ) {
         inf->addEvidence( e_id, 0 );
       }
@@ -501,7 +501,7 @@ namespace gum_tests {
       gum::List<const gum::Potential<double>*> list;
       list.insert( &e_p );
       auto inf_list =
-        std::vector<gum::Inference<double>*>{&ve, &lazy, &ss };
+        std::vector<gum::BayesNetInference<double>*>{&ve, &lazy, &ss };
       for ( auto inf : inf_list ) {
        for ( auto ev : list ) {
          inf->addEvidence( *ev );
@@ -564,7 +564,7 @@ namespace gum_tests {
       gum::Potential<double> p_ve, p_ss, p_lazy;
       auto e_id = bn.idFromName( "bronchitis?" );
       auto inf_list =
-        std::vector<gum::Inference<double>*>{&ve, &lazy, &ss};
+        std::vector<gum::BayesNetInference<double>*>{&ve, &lazy, &ss};
       for ( auto inf : inf_list ) {
         inf->addEvidence( e_id, 0 );
       }
@@ -602,7 +602,7 @@ namespace gum_tests {
       gum::List<const gum::Potential<double>*> list;
       list.insert( &e_p );
       auto inf_list =
-        std::vector<gum::Inference<double>*>{&ve, &lazy, &ss};
+        std::vector<gum::BayesNetInference<double>*>{&ve, &lazy, &ss};
       for ( auto inf : inf_list ) {
         for ( auto ev : list ) {
           inf->addEvidence( *ev );

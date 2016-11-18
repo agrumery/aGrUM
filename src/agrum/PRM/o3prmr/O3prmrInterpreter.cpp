@@ -27,7 +27,7 @@
 #include <agrum/config.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/inference.h>
+#include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
 
