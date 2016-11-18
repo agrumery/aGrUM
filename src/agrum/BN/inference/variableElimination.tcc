@@ -43,11 +43,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE VariableElimination<GUM_SCALAR>::VariableElimination(
       const IBayesNet<GUM_SCALAR>* BN,
-      FindRelevantPotentialsType relevant_type,
+      RelevantPotentialsFinderType relevant_type,
       FindBarrenNodesType barren_type )
       : JointTargetedInference<GUM_SCALAR>( BN ) {
     // sets the relevant potential and the barren nodes finding algorithm
-    setFindRelevantPotentialsType( relevant_type );
+    setRelevantPotentialsFinderType( relevant_type );
     setFindBarrenNodesType( barren_type );
 
     // create a default triangulation (the user can change it afterwards)
@@ -89,33 +89,33 @@ namespace gum {
 
   /// sets how we determine the relevant potentials to combine
   template <typename GUM_SCALAR>
-  void VariableElimination<GUM_SCALAR>::setFindRelevantPotentialsType(FindRelevantPotentialsType type ) {
+  void VariableElimination<GUM_SCALAR>::setRelevantPotentialsFinderType(RelevantPotentialsFinderType type ) {
     if ( type != __find_relevant_potential_type ) {
       switch ( type ) {
-        case VariableElimination<GUM_SCALAR>::FIND_RELEVANT_D_SEPARATION2:
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
           __findRelevantPotentials = &VariableElimination<
               GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
           break;
 
-        case VariableElimination<GUM_SCALAR>::FIND_RELEVANT_D_SEPARATION:
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
           __findRelevantPotentials = &VariableElimination<
               GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
           break;
 
-        case VariableElimination<GUM_SCALAR>::FIND_RELEVANT_D_SEPARATION3:
+        case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
           __findRelevantPotentials = &VariableElimination<
               GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
           break;
 
-        case VariableElimination<GUM_SCALAR>::FIND_RELEVANT_ALL:
+        case RelevantPotentialsFinderType::FIND_ALL:
           __findRelevantPotentials =
               &VariableElimination<GUM_SCALAR>::__findRelevantPotentialsGetAll;
           break;
 
         default:
           GUM_ERROR( InvalidArgument,
-                     "setFindRelevantPotentialsType for type "
-                     << type
+                     "setRelevantPotentialsFinderType for type "
+                     << (unsigned int) type
                      << " is not implemented yet" );
       }
 
@@ -273,8 +273,8 @@ namespace gum {
       NodeSet requisite_nodes;
       bool dsep_analysis = false;
       switch ( __find_relevant_potential_type ) {
-      case FIND_RELEVANT_D_SEPARATION2:
-      case FIND_RELEVANT_D_SEPARATION:
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
         {
           BayesBall bb;
           bb.requisiteNodes( bn.dag(),
@@ -286,7 +286,7 @@ namespace gum {
         }
         break;
 
-      case FIND_RELEVANT_D_SEPARATION3:
+      case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
         {
           dSeparation dsep;
           dsep.requisiteNodes( bn.dag(),
@@ -298,7 +298,7 @@ namespace gum {
         }
         break;
 
-      case FIND_RELEVANT_ALL:
+      case RelevantPotentialsFinderType::FIND_ALL:
         break;
 
       default:
@@ -559,19 +559,19 @@ namespace gum {
       Set<const Potential<GUM_SCALAR>*>& pot_list,
       Set<const DiscreteVariable*>& kept_vars ) {
     switch ( __find_relevant_potential_type ) {
-      case FIND_RELEVANT_D_SEPARATION2:
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
         __findRelevantPotentialsWithdSeparation2( pot_list, kept_vars );
         break;
 
-      case FIND_RELEVANT_D_SEPARATION:
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
         __findRelevantPotentialsWithdSeparation( pot_list, kept_vars );
         break;
 
-      case FIND_RELEVANT_D_SEPARATION3:
+      case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
         __findRelevantPotentialsWithdSeparation3( pot_list, kept_vars );
         break;
 
-      case FIND_RELEVANT_ALL:
+      case RelevantPotentialsFinderType::FIND_ALL:
         __findRelevantPotentialsGetAll( pot_list, kept_vars );
         break;
 

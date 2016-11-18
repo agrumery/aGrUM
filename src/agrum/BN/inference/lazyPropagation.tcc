@@ -43,14 +43,14 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE LazyPropagation<GUM_SCALAR>::LazyPropagation(
       const IBayesNet<GUM_SCALAR>* BN,
-      FindRelevantPotentialsType relevant_type,
+      RelevantPotentialsFinderType relevant_type,
       FindBarrenNodesType barren_type,
       bool use_binary_join_tree )
       : JointTargetedInference<GUM_SCALAR>( BN ),
         EvidenceInference<GUM_SCALAR>( BN ),
         __use_binary_join_tree( use_binary_join_tree ) {
     // sets the relevant potential and the barren nodes finding algorithm
-    setFindRelevantPotentialsType( relevant_type );
+    setRelevantPotentialsFinderType( relevant_type );
     setFindBarrenNodesType( barren_type );
 
     // create a default triangulation (the user can change it afterwards)
@@ -109,35 +109,35 @@ namespace gum {
 
   /// sets how we determine the relevant potentials to combine
   template <typename GUM_SCALAR>
-  void LazyPropagation<GUM_SCALAR>::setFindRelevantPotentialsType(
-      FindRelevantPotentialsType type ) {
+  void LazyPropagation<GUM_SCALAR>::setRelevantPotentialsFinderType(
+      RelevantPotentialsFinderType type ) {
     if ( type != __find_relevant_potential_type ) {
       switch ( type ) {
-        case FIND_RELEVANT_D_SEPARATION2:
-          __findRelevantPotentials = &LazyPropagation<
-              GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
-          break;
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
+        __findRelevantPotentials = &LazyPropagation<
+          GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
+        break;
 
-        case FIND_RELEVANT_D_SEPARATION:
-          __findRelevantPotentials = &LazyPropagation<
-              GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
-          break;
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
+        __findRelevantPotentials = &LazyPropagation<
+          GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
+        break;
 
-        case FIND_RELEVANT_D_SEPARATION3:
-          __findRelevantPotentials = &LazyPropagation<
-              GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
-          break;
+      case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
+        __findRelevantPotentials = &LazyPropagation<
+          GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
+        break;
 
-        case FIND_RELEVANT_ALL:
-          __findRelevantPotentials =
-              &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll;
-          break;
+      case RelevantPotentialsFinderType::FIND_ALL:
+        __findRelevantPotentials =
+          &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll;
+        break;
 
-        default:
-          GUM_ERROR( InvalidArgument,
-                     "setFindRelevantPotentialsType for type "
-                         << type
-                         << " is not implemented yet" );
+      default:
+        GUM_ERROR( InvalidArgument,
+                   "setRelevantPotentialsFinderType for type "
+                   << (unsigned int) type
+                   << " is not implemented yet" );
       }
 
       __find_relevant_potential_type = type;
@@ -191,8 +191,8 @@ namespace gum {
         default:
           GUM_ERROR( InvalidArgument,
                      "setFindBarrenNodesType for type "
-                         << type
-                         << " is not implemented yet" );
+                     << (unsigned int) type
+                     << " is not implemented yet" );
       }
 
       __barren_nodes_type = type;
@@ -1087,24 +1087,24 @@ namespace gum {
       Set<const Potential<GUM_SCALAR>*>& pot_list,
       Set<const DiscreteVariable*>& kept_vars ) {
     switch ( __find_relevant_potential_type ) {
-      case FIND_RELEVANT_D_SEPARATION2:
-        __findRelevantPotentialsWithdSeparation2( pot_list, kept_vars );
-        break;
+    case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
+      __findRelevantPotentialsWithdSeparation2( pot_list, kept_vars );
+      break;
 
-      case FIND_RELEVANT_D_SEPARATION:
-        __findRelevantPotentialsWithdSeparation( pot_list, kept_vars );
-        break;
+    case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
+      __findRelevantPotentialsWithdSeparation( pot_list, kept_vars );
+      break;
 
-      case FIND_RELEVANT_D_SEPARATION3:
-        __findRelevantPotentialsWithdSeparation3( pot_list, kept_vars );
-        break;
+    case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
+      __findRelevantPotentialsWithdSeparation3( pot_list, kept_vars );
+      break;
 
-      case FIND_RELEVANT_ALL:
-        __findRelevantPotentialsGetAll( pot_list, kept_vars );
-        break;
+    case RelevantPotentialsFinderType::FIND_ALL:
+      __findRelevantPotentialsGetAll( pot_list, kept_vars );
+      break;
 
-      default:
-        GUM_ERROR( FatalError, "not implemented yet" );
+    default:
+      GUM_ERROR( FatalError, "not implemented yet" );
     }
   }
 
@@ -1548,13 +1548,13 @@ namespace gum {
   template <typename GUM_SCALAR>
   GUM_SCALAR LazyPropagation<GUM_SCALAR>::evidenceProbability() {
     // here, we should check that __find_relevant_potential_type is equal to
-    // FIND_RELEVANT_ALL. Otherwise, the computations could be wrong.
+    // FIND_ALL. Otherwise, the computations could be wrong.
     if ( __find_relevant_potential_type !=
-         FindRelevantPotentialsType::FIND_RELEVANT_ALL ) {
+         RelevantPotentialsFinderType::FIND_ALL ) {
       GUM_ERROR( FatalError,
                  "To compute the probability of evidence, use "
-                 "setFindRelevantPotentialsType(FindRelevantPotentialsType::"
-                 "FIND_RELEVANT_ALL )" );
+                 "setRelevantPotentialsFinderType(RelevantPotentialsFinderType::"
+                 "FIND_ALL )" );
     }
 
     // perform inference in each connected component

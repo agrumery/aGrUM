@@ -35,7 +35,7 @@
 #define INFERENCE_DEFAULT_BURNIN 3000
 
 // to ease parsing for IDE
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/inference.h>
 #include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/samplers/GibbsSampler.h>
 

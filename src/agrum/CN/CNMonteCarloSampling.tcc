@@ -251,7 +251,7 @@ namespace gum {
         //        => find a way to remove the second argument
         BNInferenceEngine* inference_engine = new BNInferenceEngine(
             ( this->_workingSet[this_thread] ),
-            FindRelevantPotentialsType::FIND_RELEVANT_ALL );
+            RelevantPotentialsFinderType::FIND_ALL );
 
         this->_l_inferenceEngine[this_thread] = inference_engine;
 

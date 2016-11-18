@@ -24,14 +24,14 @@
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
-#include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 #include <agrum/config.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/inference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
 
+#include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 #include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/inference/SVED.h>
 #include <agrum/PRM/inference/groundedInference.h>

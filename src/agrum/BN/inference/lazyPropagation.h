@@ -31,6 +31,7 @@
 #include <utility>
 
 #include <agrum/config.h>
+#include <agrum/BN/inference/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/evidenceInference.h>
 #include <agrum/BN/inference/jointTargetedInference.h>
@@ -56,23 +57,6 @@ namespace gum {
   }
 
 
-  /** @brief type of algorithm for determining the relevant potentials for
-   * combinations using some d-separation analysis
-   *
-   * When constructing messages from one clique to its neighbor, we can
-   * exploit d-separation to determine that some potentials are irrelevant for
-   * the message computation. So we can discard them and, thereby, speed-up
-   * the computations.
-   */
-  enum FindRelevantPotentialsType {
-    FIND_RELEVANT_ALL,            // do not perform d-separation analysis
-    FIND_RELEVANT_D_SEPARATION,   // BayesBall requisite nodes -> potentials
-    FIND_RELEVANT_D_SEPARATION2,  // BayesBall requisite potentials (directly)
-    FIND_RELEVANT_D_SEPARATION3   // Koller & Friedman 2009 requisite
-                                  // potentials
-  };
-
-
   /**
    * @class LazyPropagation lazyPropagation.h
    * <agrum/BN/inference/lazyPropagation.h>
@@ -91,8 +75,8 @@ namespace gum {
 
     /// default constructor
     LazyPropagation( const IBayesNet<GUM_SCALAR>* BN,
-                     FindRelevantPotentialsType =
-                         FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2,
+                     RelevantPotentialsFinderType =
+                     RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
                      FindBarrenNodesType = FIND_BARREN_NODES,
                      bool use_binary_join_tree = true );
 
@@ -113,13 +97,13 @@ namespace gum {
     /// sets how we determine the relevant potentials to combine
     /** When a clique sends a message to a separator, it first constitute the
      * set of the potentials it contains and of the potentials contained in the
-     * messages it received. If FindRelevantPotentialsType = FIND_RELEVANT_ALL,
+     * messages it received. If RelevantPotentialsFinderType = FIND_ALL,
      * all these potentials are combined and projected to produce the message
      * sent to the separator.
-     * If FindRelevantPotentialsType = FIND_RELEVANT_D_SEPARATION, then only the
+     * If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the
      * set of potentials d-connected to the variables of the separator are kept
      * for combination and projection. */
-    void setFindRelevantPotentialsType( FindRelevantPotentialsType type );
+    void setRelevantPotentialsFinderType( RelevantPotentialsFinderType type );
 
     /// sets how we determine barren nodes
     /** Barren nodes are unnecessary for probability inference, so they can
@@ -236,7 +220,7 @@ namespace gum {
 
 
     /// the type of relevant potential finding algorithm to be used
-    FindRelevantPotentialsType __find_relevant_potential_type;
+    RelevantPotentialsFinderType __find_relevant_potential_type;
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */

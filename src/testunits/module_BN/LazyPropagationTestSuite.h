@@ -24,9 +24,11 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
+#include <agrum/BN/inference/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
@@ -250,8 +252,8 @@ namespace gum_tests {
     void testEvidenceProbability() {
       fill( *bn );
       gum::LazyPropagation<float> inf( bn );
-      inf.setFindRelevantPotentialsType(
-                                        gum::FindRelevantPotentialsType::FIND_RELEVANT_ALL );
+      inf.setRelevantPotentialsFinderType(
+           gum::RelevantPotentialsFinderType::FIND_ALL );
       inf.makeInference();
       auto p     = inf.posterior( 0 );
       auto I     = gum::Instantiation( p );
@@ -276,8 +278,8 @@ namespace gum_tests {
       auto id = bn.idFromName( "lung_cancer?" );
 
       gum::LazyPropagation<float> inf( &bn );
-      inf.setFindRelevantPotentialsType(
-                                        gum::FindRelevantPotentialsType::FIND_RELEVANT_ALL );
+      inf.setRelevantPotentialsFinderType(
+         gum::RelevantPotentialsFinderType::FIND_ALL );
       inf.makeInference();
       auto p     = inf.posterior( id );
       auto I     = gum::Instantiation( p );
@@ -396,8 +398,8 @@ namespace gum_tests {
       }
 
       gum::LazyPropagation<float> inf5( &bn );
-      inf5.setFindRelevantPotentialsType(
-          gum::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION );
+      inf5.setRelevantPotentialsFinderType(
+          gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES );
       for ( auto pot : evidences ) {
         TS_ASSERT_THROWS_NOTHING( inf5.addEvidence( *pot ) );
       }
@@ -510,9 +512,9 @@ namespace gum_tests {
                 ev_pot2.set( inst2, 1.0f );
 
                 gum::LazyPropagation<float> inf1( &bn );
-                inf1.setFindRelevantPotentialsType(
-                    gum::FindRelevantPotentialsType::
-                        FIND_RELEVANT_D_SEPARATION );
+                inf1.setRelevantPotentialsFinderType(
+                    gum::RelevantPotentialsFinderType::
+                        DSEP_BAYESBALL_NODES );
                 gum::ShaferShenoyInference<float> inf2( &bn );
                 for ( auto pot : evidences ) {
                   TS_ASSERT_THROWS_NOTHING( inf1.addEvidence( *pot ) );
@@ -577,9 +579,9 @@ namespace gum_tests {
                 ev_pot2.set( inst2, 1.0f );
 
                 gum::LazyPropagation<float> inf1( &bn );
-                inf1.setFindRelevantPotentialsType(
-                    gum::FindRelevantPotentialsType::
-                        FIND_RELEVANT_D_SEPARATION2 );
+                inf1.setRelevantPotentialsFinderType(
+                    gum::RelevantPotentialsFinderType::
+                        DSEP_BAYESBALL_POTENTIALS );
                 gum::LazyPropagation<float> inf2( &bn );
                 for ( auto pot : evidences ) {
                   TS_ASSERT_THROWS_NOTHING( inf1.addEvidence( *pot ) );
