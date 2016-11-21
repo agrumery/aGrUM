@@ -140,12 +140,6 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /** Entropy
-     * Compute Shanon's entropy of a node given the observation
-     * @see http://en.wikipedia.org/wiki/Information_entropy
-     */
-    GUM_SCALAR H( const NodeId X );
-
     /** Mutual information between X and Y
      * @see http://en.wikipedia.org/wiki/Mutual_information
      *

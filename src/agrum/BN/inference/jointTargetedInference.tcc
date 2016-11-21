@@ -193,19 +193,8 @@ namespace gum {
   // Entropy
   // ##############################################################################
 
-  /** Entropy
-   * Compute Shanon's entropy of a node given the observation
-   */
-  template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR JointTargetedInference<GUM_SCALAR>::H( const NodeId X ) {
-    Potential<GUM_SCALAR>* posteriorX = this->_unnormalizedJointPosterior( X );
-    GUM_SCALAR res = posteriorX->entropy();
-    delete posteriorX;
-    return res;
-  }
 
-
-  /** Mutual information between X and Y
+  /* Mutual information between X and Y
    * @see http://en.wikipedia.org/wiki/Mutual_information
    *
    * @warning Due to limitation of @joint, may not be able to compute this value
@@ -269,7 +258,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR JointTargetedInference<GUM_SCALAR>::VI( const NodeId X,
                                                             const NodeId Y ) {
-    return H( X ) + H( Y ) - 2 * I( X, Y );
+    return this->H( X ) + this->H( Y ) - 2 * I( X, Y );
   }
 
 

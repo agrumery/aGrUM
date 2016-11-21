@@ -30,8 +30,8 @@
 
 #include <string>
 
-#include <agrum/config.h>
 #include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/config.h>
 
 
 namespace gum {
@@ -158,6 +158,17 @@ namespace gum {
 
     /// @}
 
+    // ############################################################################
+    /// @name Information Theory related functions
+    // ############################################################################
+    /// @{
+
+    /** Entropy
+     * Compute Shanon's entropy of a node given the observation
+     * @see http://en.wikipedia.org/wiki/Information_entropy
+     */
+    virtual GUM_SCALAR H( const NodeId X ) final;
+    ///@}
 
     protected:
     /// fired after a new marginal target is inserted

@@ -94,7 +94,8 @@ namespace gum {
   INLINE void MarginalTargetedInference<GUM_SCALAR>::eraseAllTargets() {
     _onAllMarginalTargetsErased();
     __targets.clear();
-    this->__state = BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    this->__state =
+        BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
 
 
@@ -115,14 +116,15 @@ namespace gum {
     if ( !__targets.contains( target ) ) {
       __targets.insert( target );
       _onMarginalTargetAdded( target );
-      this->__state = BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__state =
+          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
-  
+
   // Add all nodes as targets
   template <typename GUM_SCALAR>
-  void MarginalTargetedInference<GUM_SCALAR>::addAllTargets () {
+  void MarginalTargetedInference<GUM_SCALAR>::addAllTargets() {
     // check if the node belongs to the Bayesian network
     if ( this->__bn == nullptr )
       GUM_ERROR( NullElement,
@@ -134,7 +136,7 @@ namespace gum {
         __targets.insert( target );
         _onMarginalTargetAdded( target );
         this->__state =
-          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+            BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
       }
     }
   }
@@ -170,7 +172,8 @@ namespace gum {
     if ( __targets.contains( target ) ) {
       _onMarginalTargetErased( target );
       __targets.erase( target );
-      this->__state = BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__state =
+          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
@@ -228,11 +231,18 @@ namespace gum {
     return _posterior( var );
   }
 
-
   // Compute the posterior of a node.
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
   MarginalTargetedInference<GUM_SCALAR>::posterior( const std::string& nodeName ) {
     return posterior( this->BayesNet().idFromName( nodeName ) );
+  }
+
+  /* Entropy
+   * Compute Shanon's entropy of a node given the observation
+   */
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR MarginalTargetedInference<GUM_SCALAR>::H( const NodeId X ) {
+    return posterior( X ).entropy();
   }
 } /* namespace gum */
