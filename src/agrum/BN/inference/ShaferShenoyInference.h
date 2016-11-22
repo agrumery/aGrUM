@@ -98,14 +98,6 @@ namespace gum {
      * such as Most Probable Explanations (MPE). */
     void setFindBarrenNodesType( FindBarrenNodesType type );
 
-    /// sets the operator for performing the projections
-    void setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
-        const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
-
-    /// sets the operator for performing the combinations
-    void setCombinationFunction( Potential<GUM_SCALAR>* ( *comb )(
-        const Potential<GUM_SCALAR>&, const Potential<GUM_SCALAR>&));
-
     /// returns the current join tree used
     /** Lazy Propagation does not use a junction tree but a binary join tree
      * because this may enable faster inferences. So do not be surprised to
@@ -342,6 +334,14 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void __createNewJT();
+
+    /// sets the operator for performing the projections
+    void __setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
+        const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
+
+    /// sets the operator for performing the combinations
+    void __setCombinationFunction( Potential<GUM_SCALAR>* ( *comb )(
+        const Potential<GUM_SCALAR>&, const Potential<GUM_SCALAR>&));
 
     /// invalidate all the messages sent from a given clique
     void __diffuseMessageInvalidations( const NodeId from,

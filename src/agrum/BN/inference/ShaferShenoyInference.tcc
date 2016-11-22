@@ -116,7 +116,7 @@ namespace gum {
 
   /// sets the operator for performing the projections
   template <typename GUM_SCALAR>
-  INLINE void ShaferShenoyInference<GUM_SCALAR>::setProjectionFunction(
+  INLINE void ShaferShenoyInference<GUM_SCALAR>::__setProjectionFunction(
       Potential<GUM_SCALAR>* ( *proj )( const Potential<GUM_SCALAR>&,
                                         const Set<const DiscreteVariable*>&)) {
     __projection_op = proj;
@@ -125,7 +125,7 @@ namespace gum {
   
   /// sets the operator for performing the combinations
   template <typename GUM_SCALAR>
-  INLINE void ShaferShenoyInference<GUM_SCALAR>::setCombinationFunction(
+  INLINE void ShaferShenoyInference<GUM_SCALAR>::__setCombinationFunction(
       Potential<GUM_SCALAR>* ( *comb )( const Potential<GUM_SCALAR>&,
                                         const Potential<GUM_SCALAR>&)) {
     __combination_op = comb;

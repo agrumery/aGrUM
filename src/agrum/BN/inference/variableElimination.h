@@ -111,14 +111,6 @@ namespace gum {
      * such as Most Probable Explanations (MPE). */
     void setFindBarrenNodesType( FindBarrenNodesType type );
 
-    /// sets the operator for performing the projections
-    void setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
-        const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
-
-    /// sets the operator for performing the combinations
-    void setCombinationFunction( Potential<GUM_SCALAR>* ( *comb )(
-        const Potential<GUM_SCALAR>&, const Potential<GUM_SCALAR>&));
-
     /// returns the join tree used for the last inference
     const JoinTree* joinTree() const;
 
@@ -266,6 +258,14 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void __createNewJT( const NodeSet& joint_target );
+
+    /// sets the operator for performing the projections
+    void __setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
+        const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
+
+    /// sets the operator for performing the combinations
+    void __setCombinationFunction( Potential<GUM_SCALAR>* ( *comb )(
+        const Potential<GUM_SCALAR>&, const Potential<GUM_SCALAR>&));
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
