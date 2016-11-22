@@ -37,12 +37,12 @@ elif _swig_python_version_info >= (2, 6, 0):
         except ImportError:
             import _pyAgrum
             return _pyAgrum
-        if fp is not None:
-            try:
-                _mod = imp.load_module('_pyAgrum', fp, pathname, description)
-            finally:
+        try:
+            _mod = imp.load_module('_pyAgrum', fp, pathname, description)
+        finally:
+            if fp is not None:
                 fp.close()
-            return _mod
+        return _mod
     _pyAgrum = swig_import_helper()
     del swig_import_helper
 else:
@@ -839,11 +839,8 @@ class PRMexplorer(_object):
         filename: std::string
 
         """
-        this = _pyAgrum.new_PRMexplorer(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        return _pyAgrum.PRMexplorer_load(self, *args)
+
 
     def isType(self, name):
         """
@@ -2475,45 +2472,6 @@ class UndefinedElement(GumException):
     __del__ = lambda self: None
 UndefinedElement_swigregister = _pyAgrum.UndefinedElement_swigregister
 UndefinedElement_swigregister(UndefinedElement)
-
-class HashSize(GumException):
-    """Proxy of C++ gum::HashSize class."""
-
-    __swig_setmethods__ = {}
-    for _s in [GumException]:
-        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, HashSize, name, value)
-    __swig_getmethods__ = {}
-    for _s in [GumException]:
-        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
-    __getattr__ = lambda self, name: _swig_getattr(self, HashSize, name)
-    __repr__ = _swig_repr
-
-    def __init__(self, *args):
-        """
-        __init__(gum::HashSize self, std::string aMsg, std::string aType) -> HashSize
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::HashSize self, std::string aMsg) -> HashSize
-
-        Parameters
-        ----------
-        aMsg: std::string
-
-        """
-        this = _pyAgrum.new_HashSize(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
-    __swig_destroy__ = _pyAgrum.delete_HashSize
-    __del__ = lambda self: None
-HashSize_swigregister = _pyAgrum.HashSize_swigregister
-HashSize_swigregister(HashSize)
 
 class SizeError(GumException):
     """Proxy of C++ gum::SizeError class."""
@@ -7479,12 +7437,8 @@ cvar = _pyAgrum.cvar
 __list_end_safe = cvar.__list_end_safe
 __list_end = cvar.__list_end
 
-FIND_RELEVANT_ALL = _pyAgrum.FIND_RELEVANT_ALL
-FIND_RELEVANT_D_SEPARATION = _pyAgrum.FIND_RELEVANT_D_SEPARATION
-FIND_RELEVANT_D_SEPARATION2 = _pyAgrum.FIND_RELEVANT_D_SEPARATION2
-FIND_RELEVANT_D_SEPARATION3 = _pyAgrum.FIND_RELEVANT_D_SEPARATION3
-FIND_NO_BARREN_NODES = _pyAgrum.FIND_NO_BARREN_NODES
-FIND_BARREN_NODES = _pyAgrum.FIND_BARREN_NODES
+FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_BARREN_NODES
+FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
 def randomDistribution_double(n):
     """
@@ -10139,8 +10093,84 @@ class BayesNetInference_double(_object):
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
+    StateOfInference_OutdatedBNStructure = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNStructure
+    StateOfInference_OutdatedBNPotentials = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNPotentials
+    StateOfInference_Ready4Inference = _pyAgrum.BayesNetInference_double_StateOfInference_Ready4Inference
+    StateOfInference_Done = _pyAgrum.BayesNetInference_double_StateOfInference_Done
     __swig_destroy__ = _pyAgrum.delete_BayesNetInference_double
     __del__ = lambda self: None
+
+    def setBayesNet(self, bn):
+        """
+        setBayesNet(BayesNetInference_double self, IBayesNet_double bn)
+
+        Parameters
+        ----------
+        bn: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_setBayesNet(self, bn)
+
+
+    def BayesNet(self):
+        """
+        BayesNet(BayesNetInference_double self) -> IBayesNet_double
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_BayesNet(self)
+
+
+    def domainSizes(self):
+        """
+        domainSizes(BayesNetInference_double self) -> NodeProperty< gum::Size > const &
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_domainSizes(self)
+
+
+    def isReady4Inference(self):
+        """
+        isReady4Inference(BayesNetInference_double self) -> bool
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_isReady4Inference(self)
+
+
+    def isDone(self):
+        """
+        isDone(BayesNetInference_double self) -> bool
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_isDone(self)
+
+
+    def prepareInference(self):
+        """
+        prepareInference(BayesNetInference_double self)
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > *
+
+        """
+        return _pyAgrum.BayesNetInference_double_prepareInference(self)
+
 
     def makeInference(self):
         """
@@ -10154,33 +10184,124 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_makeInference(self)
 
 
-    def posterior(self, id):
+    def clear(self):
         """
-        posterior(BayesNetInference_double self, gum::NodeId id) -> Potential_double
+        clear(BayesNetInference_double self)
 
         Parameters
         ----------
-        id: gum::NodeId
+        self: gum::BayesNetInference< double > *
 
         """
-        val = _pyAgrum.BayesNetInference_double_posterior(self, id)
-
-        val.__fill_distrib__()
+        return _pyAgrum.BayesNetInference_double_clear(self)
 
 
-        return val
-
-
-    def eraseEvidence(self, e):
+    def state(self):
         """
-        eraseEvidence(BayesNetInference_double self, Potential_double e)
+        state(BayesNetInference_double self) -> gum::BayesNetInference< double >::StateOfInference
 
         Parameters
         ----------
-        e: gum::Potential< double > const *
+        self: gum::BayesNetInference< double > const *
 
         """
-        return _pyAgrum.BayesNetInference_double_eraseEvidence(self, e)
+        return _pyAgrum.BayesNetInference_double_state(self)
+
+
+    def addEvidence(self, *args):
+        """
+        addEvidence(BayesNetInference_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        addEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(BayesNetInference_double self, Potential_double pot)
+
+        Parameters
+        ----------
+        pot: gum::Potential< double > const &
+
+        addEvidence(BayesNetInference_double self, Potential_double pot)
+
+        Parameters
+        ----------
+        pot: gum::Potential< double > &&
+
+        """
+        return _pyAgrum.BayesNetInference_double_addEvidence(self, *args)
+
+
+    def addSetOfEvidence(self, potlist):
+        """
+        addSetOfEvidence(BayesNetInference_double self, Set< gum::Potential< double > const * > const & potlist)
+
+        Parameters
+        ----------
+        potlist: Set< gum::Potential< double > const * > const &
+
+        """
+        return _pyAgrum.BayesNetInference_double_addSetOfEvidence(self, potlist)
+
+
+    def addListOfEvidence(self, potlist):
+        """
+        addListOfEvidence(BayesNetInference_double self, gum::List< gum::Potential< double > const * > const & potlist)
+
+        Parameters
+        ----------
+        potlist: gum::List< gum::Potential< double > const * > const &
+
+        """
+        return _pyAgrum.BayesNetInference_double_addListOfEvidence(self, potlist)
+
+
+    def chgEvidence(self, *args):
+        """
+        chgEvidence(BayesNetInference_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        chgEvidence(BayesNetInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        chgEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(BayesNetInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(BayesNetInference_double self, Potential_double pot)
+
+        Parameters
+        ----------
+        pot: gum::Potential< double > const &
+
+        """
+        return _pyAgrum.BayesNetInference_double_chgEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
@@ -10195,101 +10316,161 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_eraseAllEvidence(self)
 
 
-    def bn(self):
+    def eraseEvidence(self, *args):
         """
-        bn(BayesNetInference_double self) -> IBayesNet_double
+        eraseEvidence(BayesNetInference_double self, gum::NodeId const id)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        eraseEvidence(BayesNetInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.BayesNetInference_double_eraseEvidence(self, *args)
+
+
+    def hasEvidence(self, *args):
+        """
+        hasEvidence(BayesNetInference_double self) -> bool
+        hasEvidence(BayesNetInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasEvidence(BayesNetInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.BayesNetInference_double_hasEvidence(self, *args)
+
+
+    def hasHardEvidence(self, *args):
+        """
+        hasHardEvidence(BayesNetInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasHardEvidence(BayesNetInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.BayesNetInference_double_hasHardEvidence(self, *args)
+
+
+    def hasSoftEvidence(self, *args):
+        """
+        hasSoftEvidence(BayesNetInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasSoftEvidence(BayesNetInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.BayesNetInference_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self):
+        """
+        nbrEvidence(BayesNetInference_double self) -> gum::Size
 
         Parameters
         ----------
         self: gum::BayesNetInference< double > const *
 
         """
-        return _pyAgrum.BayesNetInference_double_bn(self)
+        return _pyAgrum.BayesNetInference_double_nbrEvidence(self)
 
 
-    def setEvidence(self, evidces):
-        import numpy as np
-
-        bn = self.bn()
-        if isinstance(evidces, dict):
-    # set evidences
-            self.list_pot = []
-            try:
-              items=evidces.iteritems()
-            except AttributeError:
-              items=evidces.items()
-
-            for var_name, evidce in items:
-                pot = Potential_double()
-
-                if isinstance(var_name, int):
-                    var = bn.variable(var_name)
-                elif isinstance(var_name, str):
-                    var = bn.variableFromName(var_name)
-                else:
-                    raise TypeError('values of the dict must be int or string')
-
-                pot.add(var)
-                if isinstance(evidce, (int, float, str,np.int64)):
-                    pot[:] = 0
-    # determine the var type
-                    try:
-                        cast_var = var.toLabelizedVar()
-                        if isinstance(evidce, (int,np.int64)):
-                            index = int(evidce)
-                        elif isinstance(evidce, (str)):
-                            index = cast_var[evidce]
-                        else:
-                            raise TypeError('values of the dict must be integer or string')
-                    except RuntimeError:
-                        try:
-                            cast_var = var.toRangeVar()
-                            if isinstance(evidce, (int,np.int64)):
-                                index = cast_var[str(int(evidce))]
-                            elif isinstance(evidce, str):
-                                index = cast_var[evidce]
-                            else:
-                                raise TypeError('values of the dict must be integer or string')
-                        except RuntimeError:
-                            cast_var = var.toDiscretizedVar()
-                            if isinstance(evidce, float):
-                                index = cast_var.index(evidce)
-                            elif isinstance(evidce, str):
-                                index = cast_var.index(float(evidce))
-                            else:
-                                raise TypeError('values of the dict must be float or string')
-                    pot[index] = 1
-                elif isinstance(evidce, (list, tuple)):
-                    pot[:] = evidce
-                else:
-                    raise TypeError('dict values must be number, string or sequence')
-                self.list_pot.append(pot)
-        else:
-            try:
-                l=list()
-                for p in evidces:
-                    if not isinstance(p,Potential):
-                        raise TypeError('setEvidence parameter must be an iterable of Potentials')
-                    l.append(p)
-                self.list_pot=l
-            except TypeError:
-                raise TypeError("setEvidence parameter must be a dict or an iterable of Potentials, not %s"%(type(evidces)))
-
-        self.eraseAllEvidence()
-        self._setEvidence(self.list_pot)
-
-
-
-    def _setEvidence(self, evidences):
+    def nbrHardEvidence(self):
         """
-        _setEvidence(BayesNetInference_double self, PyObject * evidences)
+        nbrHardEvidence(BayesNetInference_double self) -> gum::Size
 
         Parameters
         ----------
-        evidences: PyObject *
+        self: gum::BayesNetInference< double > const *
 
         """
-        return _pyAgrum.BayesNetInference_double__setEvidence(self, evidences)
+        return _pyAgrum.BayesNetInference_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self):
+        """
+        nbrSoftEvidence(BayesNetInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_nbrSoftEvidence(self)
+
+
+    def evidence(self):
+        """
+        evidence(BayesNetInference_double self) -> NodeProperty< gum::Potential< double > const * > const &
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_evidence(self)
+
+
+    def softEvidenceNodes(self):
+        """
+        softEvidenceNodes(BayesNetInference_double self) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_softEvidenceNodes(self)
+
+
+    def hardEvidenceNodes(self):
+        """
+        hardEvidenceNodes(BayesNetInference_double self) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_hardEvidenceNodes(self)
+
+
+    def hardEvidence(self):
+        """
+        hardEvidence(BayesNetInference_double self) -> NodeProperty< gum::Idx > const &
+
+        Parameters
+        ----------
+        self: gum::BayesNetInference< double > const *
+
+        """
+        return _pyAgrum.BayesNetInference_double_hardEvidence(self)
 
 BayesNetInference_double_swigregister = _pyAgrum.BayesNetInference_double_swigregister
 BayesNetInference_double_swigregister(BayesNetInference_double)
@@ -10305,29 +10486,29 @@ class LazyPropagation_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::FindRelevantPotentialsType arg3, gum::FindBarrenNodesType arg4, bool use_binary_join_tree=True) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4, bool use_binary_join_tree=True) -> LazyPropagation_double
 
         Parameters
         ----------
         BN: gum::IBayesNet< double > const *
-        arg3: enum gum::FindRelevantPotentialsType
+        arg3: RelevantPotentialsFinderType
         arg4: enum gum::FindBarrenNodesType
         use_binary_join_tree: bool
 
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::FindRelevantPotentialsType arg3, gum::FindBarrenNodesType arg4) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4) -> LazyPropagation_double
 
         Parameters
         ----------
         BN: gum::IBayesNet< double > const *
-        arg3: enum gum::FindRelevantPotentialsType
+        arg3: RelevantPotentialsFinderType
         arg4: enum gum::FindBarrenNodesType
 
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::FindRelevantPotentialsType arg3) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, RelevantPotentialsFinderType arg3) -> LazyPropagation_double
 
         Parameters
         ----------
         BN: gum::IBayesNet< double > const *
-        arg3: enum gum::FindRelevantPotentialsType
+        arg3: RelevantPotentialsFinderType
 
         __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN) -> LazyPropagation_double
 
@@ -10356,16 +10537,16 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_setTriangulation(self, new_triangulation)
 
 
-    def setFindRelevantPotentialsType(self, type):
+    def setRelevantPotentialsFinderType(self, type):
         """
-        setFindRelevantPotentialsType(LazyPropagation_double self, gum::FindRelevantPotentialsType type)
+        setRelevantPotentialsFinderType(LazyPropagation_double self, RelevantPotentialsFinderType type)
 
         Parameters
         ----------
-        type: enum gum::FindRelevantPotentialsType
+        type: RelevantPotentialsFinderType
 
         """
-        return _pyAgrum.LazyPropagation_double_setFindRelevantPotentialsType(self, type)
+        return _pyAgrum.LazyPropagation_double_setRelevantPotentialsFinderType(self, type)
 
 
     def setFindBarrenNodesType(self, type):
@@ -10380,30 +10561,6 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_setFindBarrenNodesType(self, type)
 
 
-    def setProjectionFunction(self, proj):
-        """
-        setProjectionFunction(LazyPropagation_double self, gum::Potential< double > *(*)(gum::Potential< double > const &,Set< gum::DiscreteVariable const * > const &) proj)
-
-        Parameters
-        ----------
-        proj: gum::Potential< double > *(*)(gum::Potential< double > const &,Set< gum::DiscreteVariable const * > const &)
-
-        """
-        return _pyAgrum.LazyPropagation_double_setProjectionFunction(self, proj)
-
-
-    def setCombinationFunction(self, comb):
-        """
-        setCombinationFunction(LazyPropagation_double self, gum::Potential< double > *(*)(gum::Potential< double > const &,gum::Potential< double > const &) comb)
-
-        Parameters
-        ----------
-        comb: gum::Potential< double > *(*)(gum::Potential< double > const &,gum::Potential< double > const &)
-
-        """
-        return _pyAgrum.LazyPropagation_double_setCombinationFunction(self, comb)
-
-
     def joinTree(self):
         """
         joinTree(LazyPropagation_double self) -> CliqueGraph
@@ -10414,6 +10571,18 @@ class LazyPropagation_double(_object):
 
         """
         return _pyAgrum.LazyPropagation_double_joinTree(self)
+
+
+    def junctionTree(self):
+        """
+        junctionTree(LazyPropagation_double self) -> CliqueGraph
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_junctionTree(self)
 
 
     def evidenceProbability(self):
@@ -10428,44 +10597,6 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_evidenceProbability(self)
 
 
-    def H(self, X):
-        """
-        H(LazyPropagation_double self, gum::NodeId X) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId
-
-        """
-        return _pyAgrum.LazyPropagation_double_H(self, X)
-
-
-    def I(self, X, Y):
-        """
-        I(LazyPropagation_double self, gum::NodeId X, gum::NodeId Y) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId
-        Y: gum::NodeId
-
-        """
-        return _pyAgrum.LazyPropagation_double_I(self, X, Y)
-
-
-    def VI(self, X, Y):
-        """
-        VI(LazyPropagation_double self, gum::NodeId X, gum::NodeId Y) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId
-        Y: gum::NodeId
-
-        """
-        return _pyAgrum.LazyPropagation_double_VI(self, X, Y)
-
-
     def junctionTreeToDot(self):
         """
         junctionTreeToDot(LazyPropagation_double self) -> std::string const
@@ -10478,30 +10609,143 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_junctionTreeToDot(self)
 
 
-    def posterior(self, seq_of_ids):
+    def jointPosterior(self, seq_of_ids):
         """
-        posterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
+        jointPosterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
 
         Parameters
         ----------
         seq_of_ids: PyObject *
 
         """
-        return _pyAgrum.LazyPropagation_double_posterior(self, seq_of_ids)
+        return _pyAgrum.LazyPropagation_double_jointPosterior(self, seq_of_ids)
+
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
+        bn = self.BayesNet()
+
+    #set evidences
+        self.list_pot = []
+
+        try:
+          items=evidces.iteritems()
+        except AttributeError:
+          items=evidces.items()
+
+        for var_name, evidce in items:
+            pot = Potential_double()
+
+            if isinstance(var_name, int):
+                var = bn.variable(var_name)
+            elif isinstance(var_name, str):
+                var = bn.variableFromName(var_name)
+            else:
+                raise TypeError('values of the dict must be int or string')
+
+            pot.add(var)
+            if isinstance(evidce, (int, float, str)):
+                pot[:] = 0
+    #determine the var type
+                try:
+                    cast_var = var.toLabelizedVar()
+                    if isinstance(evidce, int):
+                        index = evidce
+                    elif isinstance(evidce, str):
+                        index = cast_var[evidce]
+                    else:
+                        raise TypeError('values of the dict must be int or string')
+                except RuntimeError:
+                    try:
+                        cast_var = var.toRangeVar()
+                        if isinstance(evidce, int):
+                            index = cast_var[str(evidce)]
+                        elif isinstance(evidce, str):
+                            index = cast_var[evidce]
+                        else:
+                            raise TypeError('values of the dict must be int or string')
+                    except RuntimeError:
+                        cast_var = var.toDiscretizedVar()
+                        if isinstance(evidce, float):
+                            index = cast_var.index(evidce)
+                        elif isinstance(evidce, str):
+                            index = cast_var.index(float(evidce))
+                        else:
+                            raise TypeError('values of the dict must be float or string')
+                pot[index] = 1
+            elif isinstance(evidce, (list, tuple)):
+                pot[:] = evidce
+            else:
+                raise TypeError('dict values must be number, string or sequence')
+            self.list_pot.append(pot)
+
+        self._setEvidence(self.list_pot)
+
+
+
+    def _setEvidence(self, evidences):
+        """
+        _setEvidence(LazyPropagation_double self, PyObject * evidences)
+
+        Parameters
+        ----------
+        evidences: PyObject *
+
+        """
+        return _pyAgrum.LazyPropagation_double__setEvidence(self, evidences)
+
+
+    def makeInference(self):
+        """
+        makeInference(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_makeInference(self)
+
+
+    def posterior(self, *args):
+        """
+        posterior(LazyPropagation_double self, gum::NodeId const var) -> Potential_double
+
+        Parameters
+        ----------
+        var: gum::NodeId const
+
+        posterior(LazyPropagation_double self, std::string const nodeName) -> Potential_double
+
+        Parameters
+        ----------
+        nodeName: std::string const
+
+        """
+        return _pyAgrum.LazyPropagation_double_posterior(self, *args)
+
+
+    def BayesNet(self):
+        """
+        BayesNet(LazyPropagation_double self) -> IBayesNet_double
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_BayesNet(self)
 
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
-class GibbsInference_double(BayesNetInference_double):
+class GibbsInference_double(_object):
     """Proxy of C++ gum::GibbsInference<(double)> class."""
 
     __swig_setmethods__ = {}
-    for _s in [BayesNetInference_double]:
-        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, GibbsInference_double, name, value)
     __swig_getmethods__ = {}
-    for _s in [BayesNetInference_double]:
-        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, GibbsInference_double, name)
     __repr__ = _swig_repr
 
@@ -10511,7 +10755,7 @@ class GibbsInference_double(BayesNetInference_double):
 
         Parameters
         ----------
-        BN: gum::IBayesNet< double > const &
+        BN: gum::IBayesNet< double > const *
 
         """
         this = _pyAgrum.new_GibbsInference_double(BN)
@@ -10522,64 +10766,79 @@ class GibbsInference_double(BayesNetInference_double):
     __swig_destroy__ = _pyAgrum.delete_GibbsInference_double
     __del__ = lambda self: None
 
-    def makeInference(self):
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
+        bn = self.BayesNet()
+
+    #set evidences
+        self.list_pot = []
+
+        try:
+          items=evidces.iteritems()
+        except AttributeError:
+          items=evidces.items()
+
+        for var_name, evidce in items:
+            pot = Potential_double()
+
+            if isinstance(var_name, int):
+                var = bn.variable(var_name)
+            elif isinstance(var_name, str):
+                var = bn.variableFromName(var_name)
+            else:
+                raise TypeError('values of the dict must be int or string')
+
+            pot.add(var)
+            if isinstance(evidce, (int, float, str)):
+                pot[:] = 0
+    #determine the var type
+                try:
+                    cast_var = var.toLabelizedVar()
+                    if isinstance(evidce, int):
+                        index = evidce
+                    elif isinstance(evidce, str):
+                        index = cast_var[evidce]
+                    else:
+                        raise TypeError('values of the dict must be int or string')
+                except RuntimeError:
+                    try:
+                        cast_var = var.toRangeVar()
+                        if isinstance(evidce, int):
+                            index = cast_var[str(evidce)]
+                        elif isinstance(evidce, str):
+                            index = cast_var[evidce]
+                        else:
+                            raise TypeError('values of the dict must be int or string')
+                    except RuntimeError:
+                        cast_var = var.toDiscretizedVar()
+                        if isinstance(evidce, float):
+                            index = cast_var.index(evidce)
+                        elif isinstance(evidce, str):
+                            index = cast_var.index(float(evidce))
+                        else:
+                            raise TypeError('values of the dict must be float or string')
+                pot[index] = 1
+            elif isinstance(evidce, (list, tuple)):
+                pot[:] = evidce
+            else:
+                raise TypeError('dict values must be number, string or sequence')
+            self.list_pot.append(pot)
+
+        self._setEvidence(self.list_pot)
+
+
+
+    def _setEvidence(self, evidences):
         """
-        makeInference(GibbsInference_double self)
+        _setEvidence(GibbsInference_double self, PyObject * evidences)
 
         Parameters
         ----------
-        self: gum::GibbsInference< double > *
+        evidences: PyObject *
 
         """
-        return _pyAgrum.GibbsInference_double_makeInference(self)
-
-
-    def eraseEvidence(self, e):
-        """
-        eraseEvidence(GibbsInference_double self, Potential_double e)
-
-        Parameters
-        ----------
-        e: gum::Potential< double > const *
-
-        """
-        return _pyAgrum.GibbsInference_double_eraseEvidence(self, e)
-
-
-    def eraseAllEvidence(self):
-        """
-        eraseAllEvidence(GibbsInference_double self)
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
-        return _pyAgrum.GibbsInference_double_eraseAllEvidence(self)
-
-
-    def setRequiredInference(self):
-        """
-        setRequiredInference(GibbsInference_double self)
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
-        return _pyAgrum.GibbsInference_double_setRequiredInference(self)
-
-
-    def isInferenceRequired(self):
-        """
-        isInferenceRequired(GibbsInference_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
-        return _pyAgrum.GibbsInference_double_isInferenceRequired(self)
+        return _pyAgrum.GibbsInference_double__setEvidence(self, evidences)
 
 
     def setVerbosity(self, v):
@@ -10796,6 +11055,48 @@ class GibbsInference_double(BayesNetInference_double):
 
         """
         return _pyAgrum.GibbsInference_double_history(self)
+
+
+    def makeInference(self):
+        """
+        makeInference(GibbsInference_double self)
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_makeInference(self)
+
+
+    def posterior(self, *args):
+        """
+        posterior(GibbsInference_double self, gum::NodeId const var) -> Potential_double
+
+        Parameters
+        ----------
+        var: gum::NodeId const
+
+        posterior(GibbsInference_double self, std::string const nodeName) -> Potential_double
+
+        Parameters
+        ----------
+        nodeName: std::string const
+
+        """
+        return _pyAgrum.GibbsInference_double_posterior(self, *args)
+
+
+    def BayesNet(self):
+        """
+        BayesNet(GibbsInference_double self) -> IBayesNet_double
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_BayesNet(self)
 
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)
@@ -12914,6 +13215,18 @@ class InfluenceDiagramInference_double(_object):
 
         """
         return _pyAgrum.InfluenceDiagramInference_double_displayResult(self)
+
+
+    def insertEvidence(self, evidenceList):
+        """
+        insertEvidence(InfluenceDiagramInference_double self, gum::List< gum::Potential< double > const * > const & evidenceList)
+
+        Parameters
+        ----------
+        evidenceList: gum::List< gum::Potential< double > const * > const &
+
+        """
+        return _pyAgrum.InfluenceDiagramInference_double_insertEvidence(self, evidenceList)
 
 
     def eraseEvidence(self, evidence):
