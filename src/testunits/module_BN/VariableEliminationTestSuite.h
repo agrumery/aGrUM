@@ -189,6 +189,38 @@ namespace gum_tests {
       }
     }
 
+    
+    // testing information methods
+    void testInformationMethods() {
+      fill( *bn );
+
+      gum::VariableElimination<float> inf( bn );
+      gum::NodeSet nodeset;
+      nodeset.insert( 0 );
+      nodeset.insert( 4 );
+      inf.addJointTarget( nodeset );
+      nodeset.clear();
+      nodeset.insert( 2 );
+      nodeset.insert( 4 );
+      inf.addJointTarget( nodeset );
+      inf.makeInference();
+
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.H( (gum::NodeId)2 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)2, (gum::NodeId)4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)2, (gum::NodeId)2 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.VI( (gum::NodeId)2, (gum::NodeId)4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)0, (gum::NodeId)4 ) );
+      
+      for ( const auto node : bn->dag() ) {
+        for ( const auto par : bn->dag().parents ( node ) ) {
+          TS_GUM_ASSERT_THROWS_NOTHING( inf.I( node, par ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( inf.I( par, node ) );
+        }
+      }
+
+      //@TODO : test computations and not only good behaviour
+    }
+
     // void testAlarm() {
     //   std::string file_name = "/ressources/alarm.bif";
     //   std::string file_path = base_dir + file_name;

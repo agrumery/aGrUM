@@ -203,22 +203,22 @@ namespace gum {
   template <typename GUM_SCALAR>
   GUM_SCALAR JointTargetedInference<GUM_SCALAR>::I( const NodeId X,
                                                     const NodeId Y ) {
-    Potential<GUM_SCALAR> *pX = nullptr, *pY = nullptr, *pXY = nullptr;
+    Potential<GUM_SCALAR> pX, pY, *pXY = nullptr;
 
     try {
-      pX = this->_unnormalizedJointPosterior( X );
-      pY = this->_unnormalizedJointPosterior( Y );
+      pXY = this->_unnormalizedJointPosterior( { X, Y } );
+      pX  = *pXY;
+      pY  = *pXY;
       if ( X != Y ) {
-        NodeSet XY;
-        XY << X << Y;
-        pXY = this->_unnormalizedJointPosterior( XY );
-      } else {
-        pXY = new Potential<GUM_SCALAR>( *pX );
+        pX.margSumOut ( { &( this->BayesNet().variable ( Y ) ) } );
+        pY.margSumOut ( { &( this->BayesNet().variable ( X ) ) } );
       }
-    } catch ( ... ) {
-      if ( pX != nullptr ) delete pX;
-      if ( pY != nullptr ) delete pY;
-      if ( pXY != nullptr ) delete pXY;
+    }
+    catch ( ... ) {
+      if ( pXY != nullptr ) {
+        delete pXY;
+        pXY = nullptr;
+      }
       throw;
     }
 
@@ -227,8 +227,8 @@ namespace gum {
 
     for ( i.setFirst(); !i.end(); ++i ) {
       GUM_SCALAR vXY = ( *pXY )[i];
-      GUM_SCALAR vX = ( *pX )[i];
-      GUM_SCALAR vY = ( *pY )[i];
+      GUM_SCALAR vX = pX[i];
+      GUM_SCALAR vY = pY[i];
 
       if ( vXY > (GUM_SCALAR)0 ) {
         if ( vX == (GUM_SCALAR)0 || vY == (GUM_SCALAR)0 ) {
@@ -241,10 +241,8 @@ namespace gum {
       }
     }
 
-    delete pX;
-    delete pY;
     delete pXY;
-
+    
     return res;
   }
 

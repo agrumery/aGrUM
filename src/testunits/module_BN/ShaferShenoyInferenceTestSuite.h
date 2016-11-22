@@ -120,6 +120,38 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i5 ) );
     }
 
+    // testing information methods
+    void testInformationMethods() {
+      fill( *bn );
+
+      gum::ShaferShenoyInference<float> inf( bn );
+      gum::NodeSet nodeset;
+      nodeset.insert( 0 );
+      nodeset.insert( 4 );
+      inf.addJointTarget( nodeset );
+      nodeset.clear();
+      nodeset.insert( 2 );
+      nodeset.insert( 4 );
+      inf.addJointTarget( nodeset );
+      inf.makeInference();
+
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.H( (gum::NodeId)2 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)2, (gum::NodeId)4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)2, (gum::NodeId)2 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.VI( (gum::NodeId)2, (gum::NodeId)4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)0, (gum::NodeId)4 ) );
+
+      for ( const auto node : bn->dag() ) {
+        for ( const auto par : bn->dag().parents ( node ) ) {
+          TS_GUM_ASSERT_THROWS_NOTHING( inf.I( node, par ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( inf.I( par, node ) );
+        }
+      }
+
+      //@TODO : test computations and not only good behaviour
+    }
+
+
     void testWithGenerator() {
       gum::Size density[] = {9, 18, 27, 36, 45};
       int trial_nb        = 5;

@@ -520,9 +520,9 @@ namespace gum {
     __node_to_clique.clear();
     const std::vector<NodeId>& JT_elim_order = __triangulation->eliminationOrder();
     NodeProperty<int> elim_order( Size( JT_elim_order.size() ) );
-    for ( NodeId i = NodeId( 0 ), size = NodeId( JT_elim_order.size() ); i < size;
-          ++i )
-      elim_order.insert( JT_elim_order[i], i );
+    for ( std::size_t i = std::size_t( 0 ), size = JT_elim_order.size();
+          i < size; ++i )
+      elim_order.insert( JT_elim_order[i], (int) i );
     const DAG& dag = bn.dag();
     for ( const auto node : __graph ) {
       // get the variables in the potential of node (and its parents)
@@ -1465,8 +1465,53 @@ namespace gum {
     }
 
 
-    // if we still need to perform some inference task, do it
-    const NodeId clique_of_set = __joint_target_to_clique[set];
+    // if we still need to perform some inference task, do it: so, first,
+    // determine the clique on which we should perform collect to compute
+    // the unnormalized joint posterior of a set of nodes containing "set"
+    NodeId clique_of_set;
+    try {
+      clique_of_set = __joint_target_to_clique[targets];
+    }
+    catch ( NotFound& ) {
+      // here, the precise set of targets does not belong to the set of targets
+      // defined by the user. So we will try to find a clique in the junction
+      // tree that contains "targets":
+
+      // 1/ we should check that all the nodes belong to the join tree
+      for ( const auto node : targets ) {
+        if ( ! __graph.exists ( node ) ) {
+           GUM_ERROR( UndefinedElement, node << " is not a target node" );
+        }
+      }
+      
+      // 2/ the clique created by the first eliminated node among target is the
+      // one we are looking for
+      const std::vector<NodeId>& JT_elim_order =
+        __triangulation->eliminationOrder ();
+      NodeProperty<int> elim_order( Size( JT_elim_order.size() ) );
+      for ( std::size_t i = std::size_t( 0 ), size = JT_elim_order.size();
+            i < size; ++i )
+        elim_order.insert( JT_elim_order[i], (int) i );
+      NodeId first_eliminated_node = *( targets.begin() );
+      int elim_number = elim_order[first_eliminated_node];
+      for ( const auto node : targets ) {
+        if ( elim_order[node] < elim_number ) {
+          elim_number = elim_order[node];
+          first_eliminated_node = node;
+        }
+      }
+      clique_of_set = __node_to_clique[first_eliminated_node];
+
+      // 3/ check that cliquee_of_set contains the all the nodes in the target
+      const NodeSet& clique_nodes = __JT->clique ( clique_of_set );
+      for ( const auto node : targets ) {
+        if ( ! clique_nodes.contains ( node ) ) {
+           GUM_ERROR( UndefinedElement, set << " is not a joint target" );
+        }
+      }
+    }
+
+    // now perform a collect on the clique
     __collectMessage( clique_of_set, clique_of_set );
 
     // now we just need to create the product of the potentials of the clique

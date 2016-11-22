@@ -1035,8 +1035,11 @@ namespace gum {
   Potential<GUM_SCALAR>*
   VariableElimination<GUM_SCALAR>::_unnormalizedJointPosterior(
       const NodeSet& set ) {
-    if ( __target_posterior != nullptr ) delete __target_posterior;
-    
+    if ( __target_posterior != nullptr ) {
+      delete __target_posterior;
+      __target_posterior = nullptr;
+    }
+      
     // hard evidence do not belong to the join tree, so extract the nodes
     // from targets that are not hard evidence
     NodeSet targets = set, hard_ev_nodes;
@@ -1060,7 +1063,6 @@ namespace gum {
       __target_posterior = fast_combination.combine( pot_list );
       return __target_posterior;
     }
-
 
     // if we still need to perform some inference task, do it
     __createNewJT ( set );
@@ -1132,8 +1134,7 @@ namespace gum {
                  "some evidence entered into the Bayes "
                  "net are incompatible (their joint proba = 0)" );
     }
-    
-    __target_posterior = joint;
+     
     return joint;
   }
 
