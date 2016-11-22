@@ -103,13 +103,17 @@ namespace gum {
 
   /// returns the current join (or junction) tree used
   template <typename GUM_SCALAR>
-  INLINE const JoinTree* LazyPropagation<GUM_SCALAR>::joinTree() const {
+  INLINE const JoinTree* LazyPropagation<GUM_SCALAR>::joinTree() {
+    __createNewJT();
+
     return __JT;
   }
 
   /// returns the current junction tree
   template <typename GUM_SCALAR>
-  INLINE const JunctionTree* LazyPropagation<GUM_SCALAR>::junctionTree() const {
+  INLINE const JunctionTree* LazyPropagation<GUM_SCALAR>::junctionTree() {
+    __createNewJT();
+
     return __junctionTree;
   }
 
@@ -155,21 +159,21 @@ namespace gum {
     }
   }
 
-  
+
   /// sets the operator for performing the projections
   template <typename GUM_SCALAR>
   INLINE void LazyPropagation<GUM_SCALAR>::__setProjectionFunction(
-      Potential<GUM_SCALAR>* ( *proj )( const Potential<GUM_SCALAR>&,
-                                        const Set<const DiscreteVariable*>&)) {
+      Potential<GUM_SCALAR>* ( *proj )(const Potential<GUM_SCALAR>&,
+                                       const Set<const DiscreteVariable*>&)) {
     __projection_op = proj;
   }
 
-  
+
   /// sets the operator for performing the combinations
   template <typename GUM_SCALAR>
   INLINE void LazyPropagation<GUM_SCALAR>::__setCombinationFunction(
-      Potential<GUM_SCALAR>* ( *comb )( const Potential<GUM_SCALAR>&,
-                                        const Potential<GUM_SCALAR>&)) {
+      Potential<GUM_SCALAR>* ( *comb )(const Potential<GUM_SCALAR>&,
+                                       const Potential<GUM_SCALAR>&)) {
     __combination_op = comb;
   }
 
@@ -530,9 +534,9 @@ namespace gum {
     __node_to_clique.clear();
     const std::vector<NodeId>& JT_elim_order = __triangulation->eliminationOrder();
     NodeProperty<int> elim_order( Size( JT_elim_order.size() ) );
-    for ( std::size_t i = std::size_t( 0 ), size = JT_elim_order.size();
-          i < size; ++i )
-      elim_order.insert( JT_elim_order[i], (int) i );
+    for ( std::size_t i = std::size_t( 0 ), size = JT_elim_order.size(); i < size;
+          ++i )
+      elim_order.insert( JT_elim_order[i], (int)i );
     const DAG& dag = bn.dag();
     for ( const auto node : __graph ) {
       // get the variables in the potential of node (and its parents)
@@ -1481,27 +1485,27 @@ namespace gum {
     NodeId clique_of_set;
     try {
       clique_of_set = __joint_target_to_clique[targets];
-    }
-    catch ( NotFound& ) {
+    } catch ( NotFound& ) {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
       // tree that contains "targets":
 
       // 1/ we should check that all the nodes belong to the join tree
       for ( const auto node : targets ) {
-        if ( ! __graph.exists ( node ) ) {
-           GUM_ERROR( UndefinedElement, node << " is not a target node" );
+        if ( !__graph.exists( node ) ) {
+          GUM_ERROR( UndefinedElement, node << " is not a target node" );
         }
       }
-      
+
       // 2/ the clique created by the first eliminated node among target is the
       // one we are looking for
       const std::vector<NodeId>& JT_elim_order =
-        __triangulation->eliminationOrder ();
+          __triangulation->eliminationOrder();
       NodeProperty<int> elim_order( Size( JT_elim_order.size() ) );
       for ( std::size_t i = std::size_t( 0 ), size = JT_elim_order.size();
-            i < size; ++i )
-        elim_order.insert( JT_elim_order[i], (int) i );
+            i < size;
+            ++i )
+        elim_order.insert( JT_elim_order[i], (int)i );
       NodeId first_eliminated_node = *( targets.begin() );
       int elim_number = elim_order[first_eliminated_node];
       for ( const auto node : targets ) {
@@ -1513,10 +1517,10 @@ namespace gum {
       clique_of_set = __node_to_clique[first_eliminated_node];
 
       // 3/ check that cliquee_of_set contains the all the nodes in the target
-      const NodeSet& clique_nodes = __JT->clique ( clique_of_set );
+      const NodeSet& clique_nodes = __JT->clique( clique_of_set );
       for ( const auto node : targets ) {
-        if ( ! clique_nodes.contains ( node ) ) {
-           GUM_ERROR( UndefinedElement, set << " is not a joint target" );
+        if ( !clique_nodes.contains( node ) ) {
+          GUM_ERROR( UndefinedElement, set << " is not a joint target" );
         }
       }
     }

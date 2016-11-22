@@ -19,7 +19,8 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of the non pure virtual methods of class BayesNetInference.
+ * @brief Implementation of the non pure virtual methods of class
+ * BayesNetInference.
  */
 
 
@@ -28,7 +29,8 @@ namespace gum {
 
   // Default Constructor
   template <typename GUM_SCALAR>
-  BayesNetInference<GUM_SCALAR>::BayesNetInference( const IBayesNet<GUM_SCALAR>* bn )
+  BayesNetInference<GUM_SCALAR>::BayesNetInference(
+      const IBayesNet<GUM_SCALAR>* bn )
       : __bn( bn ) {
     __computeDomainSizes();
 
@@ -49,7 +51,8 @@ namespace gum {
     // clear all evidence.
     // Warning: Do not use method eraseAllEvidence () because it contains a call
     // to pure virtual method _onAllEvidenceErased which belongs to an inherited
-    // instance and, therefore, does not exist anymore when ~BayesNetInference () is
+    // instance and, therefore, does not exist anymore when ~BayesNetInference ()
+    // is
     // called
     for ( const auto& pair : __evidence ) {
       if ( pair.second != nullptr ) {
@@ -85,7 +88,8 @@ namespace gum {
 
   // Returns a constant reference over the IBayesNet referenced by this class
   template <typename GUM_SCALAR>
-  INLINE const IBayesNet<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::BayesNet() const {
+  INLINE const IBayesNet<GUM_SCALAR>&
+  BayesNetInference<GUM_SCALAR>::BayesNet() const {
     if ( __bn == nullptr )
       GUM_ERROR( UndefinedElement,
                  "No Bayes net has been assigned to "
@@ -96,7 +100,8 @@ namespace gum {
 
   // assigns a new BN to the inference engine
   template <typename GUM_SCALAR>
-  void BayesNetInference<GUM_SCALAR>::setBayesNet( const IBayesNet<GUM_SCALAR>* bn ) {
+  void
+  BayesNetInference<GUM_SCALAR>::setBayesNet( const IBayesNet<GUM_SCALAR>* bn ) {
     clear();
     __bn = bn;
     __computeDomainSizes();
@@ -137,7 +142,8 @@ namespace gum {
 
   // get the domain sizes of the random variables of the BN
   template <typename GUM_SCALAR>
-  INLINE const NodeProperty<Size>& BayesNetInference<GUM_SCALAR>::domainSizes() const {
+  INLINE const NodeProperty<Size>&
+  BayesNetInference<GUM_SCALAR>::domainSizes() const {
     return __domain_sizes;
   }
 
@@ -150,7 +156,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>
   BayesNetInference<GUM_SCALAR>::__createHardEvidence( const NodeId id,
-                                               const Idx val ) const {
+                                                       const Idx val ) const {
     // check that it is possible to create the evidence
     if ( __bn == nullptr )
       GUM_ERROR( NullElement,
@@ -184,8 +190,8 @@ namespace gum {
 
   // checks wether a potential corresponds to a hard evidence
   template <typename GUM_SCALAR>
-  bool BayesNetInference<GUM_SCALAR>::__isHardEvidence( const Potential<GUM_SCALAR>& pot,
-                                                Idx& val ) const {
+  bool BayesNetInference<GUM_SCALAR>::__isHardEvidence(
+      const Potential<GUM_SCALAR>& pot, Idx& val ) const {
     // checking if pot is determininstic
     bool notZero = false;
     Instantiation I( pot );
@@ -212,15 +218,23 @@ namespace gum {
   // adds a new hard evidence on node id
   template <typename GUM_SCALAR>
   INLINE void BayesNetInference<GUM_SCALAR>::addEvidence( const NodeId id,
-                                                  const Idx val ) {
+                                                          const Idx val ) {
     addEvidence( __createHardEvidence( id, val ) );
+  }
+
+  // adds a new hard evidence on node id
+  template <typename GUM_SCALAR>
+  INLINE void
+  BayesNetInference<GUM_SCALAR>::addEvidence( const std::string& nodeName,
+                                              const Idx val ) {
+    addEvidence( this->BayesNet().idFromName( nodeName ), val );
   }
 
 
   // adds a new evidence on node id (might be soft or hard)
   template <typename GUM_SCALAR>
-  void BayesNetInference<GUM_SCALAR>::addEvidence( const NodeId id,
-                                           const std::vector<GUM_SCALAR>& vals ) {
+  void BayesNetInference<GUM_SCALAR>::addEvidence(
+      const NodeId id, const std::vector<GUM_SCALAR>& vals ) {
     // checks that the evidence is meaningful
     if ( __bn == nullptr )
       GUM_ERROR( NullElement,
@@ -243,6 +257,12 @@ namespace gum {
     addEvidence( std::move( pot ) );
   }
 
+  // adds a new evidence on node id (might be soft or hard)
+  template <typename GUM_SCALAR>
+  void BayesNetInference<GUM_SCALAR>::addEvidence(
+      const std::string& nodeName, const std::vector<GUM_SCALAR>& vals ) {
+    addEvidence( this->BayesNet().idFromName( nodeName ), vals );
+  }
 
   // adds a new evidence on node id (might be soft or hard)
   template <typename GUM_SCALAR>
@@ -330,14 +350,16 @@ namespace gum {
 
   // indicates whether node id has received a hard evidence
   template <typename GUM_SCALAR>
-  INLINE bool BayesNetInference<GUM_SCALAR>::hasHardEvidence( const NodeId id ) const {
+  INLINE bool
+  BayesNetInference<GUM_SCALAR>::hasHardEvidence( const NodeId id ) const {
     return __hard_evidence_nodes.exists( id );
   }
 
 
   // indicates whether node id has received a soft evidence
   template <typename GUM_SCALAR>
-  INLINE bool BayesNetInference<GUM_SCALAR>::hasSoftEvidence( const NodeId id ) const {
+  INLINE bool
+  BayesNetInference<GUM_SCALAR>::hasSoftEvidence( const NodeId id ) const {
     return __soft_evidence_nodes.exists( id );
   }
 
@@ -352,38 +374,38 @@ namespace gum {
 
   // indicates whether node id has received a hard evidence
   template <typename GUM_SCALAR>
-  INLINE bool
-  BayesNetInference<GUM_SCALAR>::hasHardEvidence( const std::string& nodeName ) const {
+  INLINE bool BayesNetInference<GUM_SCALAR>::hasHardEvidence(
+      const std::string& nodeName ) const {
     return hasHardEvidence( this->BayesNet().idFromName( nodeName ) );
   }
 
 
   // indicates whether node id has received a soft evidence
   template <typename GUM_SCALAR>
-  INLINE bool
-  BayesNetInference<GUM_SCALAR>::hasSoftEvidence( const std::string& nodeName ) const {
+  INLINE bool BayesNetInference<GUM_SCALAR>::hasSoftEvidence(
+      const std::string& nodeName ) const {
     return hasSoftEvidence( this->BayesNet().idFromName( nodeName ) );
   }
 
   // change the value of an already existing hard evidence
   template <typename GUM_SCALAR>
   INLINE void BayesNetInference<GUM_SCALAR>::chgEvidence( const NodeId id,
-                                                  const Idx val ) {
+                                                          const Idx val ) {
     chgEvidence( __createHardEvidence( id, val ) );
   }
 
   // change the value of an already existing hard evidence
   template <typename GUM_SCALAR>
-  INLINE void BayesNetInference<GUM_SCALAR>::chgEvidence( const std::string& nodeName,
-                                                  const Idx val ) {
+  INLINE void
+  BayesNetInference<GUM_SCALAR>::chgEvidence( const std::string& nodeName,
+                                              const Idx val ) {
     chgEvidence( this->BayesNet().idFromName( nodeName ), val );
   }
 
   // change the value of an already existing evidence (might be soft or hard)
   template <typename GUM_SCALAR>
-  INLINE void
-  BayesNetInference<GUM_SCALAR>::chgEvidence( const NodeId id,
-                                      const std::vector<GUM_SCALAR>& vals ) {
+  INLINE void BayesNetInference<GUM_SCALAR>::chgEvidence(
+      const NodeId id, const std::vector<GUM_SCALAR>& vals ) {
     // check whether this corresponds to an evidence
     if ( __bn == nullptr )
       GUM_ERROR( NullElement,
@@ -409,16 +431,16 @@ namespace gum {
 
   // change the value of an already existing evidence (might be soft or hard)
   template <typename GUM_SCALAR>
-  INLINE void
-  BayesNetInference<GUM_SCALAR>::chgEvidence( const std::string& nodeName,
-                                      const std::vector<GUM_SCALAR>& vals ) {
+  INLINE void BayesNetInference<GUM_SCALAR>::chgEvidence(
+      const std::string& nodeName, const std::vector<GUM_SCALAR>& vals ) {
     chgEvidence( this->BayesNet().idFromName( nodeName ), vals );
   }
 
 
   // change the value of an already existing evidence (might be soft or hard)
   template <typename GUM_SCALAR>
-  void BayesNetInference<GUM_SCALAR>::chgEvidence( const Potential<GUM_SCALAR>& pot ) {
+  void
+  BayesNetInference<GUM_SCALAR>::chgEvidence( const Potential<GUM_SCALAR>& pot ) {
     // check if the potential corresponds to an evidence
     if ( pot.nbrDim() != 1 ) {
       GUM_ERROR( InvalidArgument, pot << " is not a mono-dimensional potential." );
@@ -505,7 +527,8 @@ namespace gum {
   }
   // removed the evidence, if any, corresponding to node of name nodeName
   template <typename GUM_SCALAR>
-  INLINE void BayesNetInference<GUM_SCALAR>::eraseEvidence( const std::string& nodeName ) {
+  INLINE void
+  BayesNetInference<GUM_SCALAR>::eraseEvidence( const std::string& nodeName ) {
     eraseEvidence( this->BayesNet().idFromName( nodeName ) );
   }
 
@@ -558,7 +581,8 @@ namespace gum {
 
   // indicate for each node with hard evidence which value it took
   template <typename GUM_SCALAR>
-  INLINE const NodeProperty<Idx>& BayesNetInference<GUM_SCALAR>::hardEvidence() const {
+  INLINE const NodeProperty<Idx>&
+  BayesNetInference<GUM_SCALAR>::hardEvidence() const {
     return __hard_evidence;
   }
 

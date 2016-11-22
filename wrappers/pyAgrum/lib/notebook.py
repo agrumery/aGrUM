@@ -42,7 +42,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 
 def configuration():
   """
-  Display the collection of dependance and versions 
+  Display the collection of dependance and versions
   """
   from collections import OrderedDict
   import sys, os
@@ -69,7 +69,7 @@ def configuration():
 def _reprGraph(gr, size, format, asString):
   """
   repr a pydot graph in a notebook
-  
+
   :param string format : render as png or create_svg
   :param string size : size of the rendered graph
   :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
@@ -271,9 +271,9 @@ def getProba(p):
 def showProba(p):
   """
   Show a mono-dim Potential
-  
+
   :param p: the mono-dim Potential
-  :return: 
+  :return:
   """
   fig = getProba(p)
   plt.show()
@@ -746,3 +746,4 @@ def sideBySide(*args, titles=None):
 gum.BayesNet._repr_html_ = lambda self: getBN(self)
 gum.Potential._repr_html_ = lambda self: getPotential(self)
 gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
+gum.CliqueGraph._repr_html_ = lambda self: getDot(self.toDot())

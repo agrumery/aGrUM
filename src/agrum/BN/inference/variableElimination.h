@@ -111,8 +111,8 @@ namespace gum {
      * such as Most Probable Explanations (MPE). */
     void setFindBarrenNodesType( FindBarrenNodesType type );
 
-    /// returns the join tree used for the last inference
-    const JunctionTree* junctionTree() const;
+    /// returns the join tree used for compute the posterior of node id
+    const JunctionTree* junctionTree(const NodeId id);
 
     /// @}
 
@@ -258,6 +258,7 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void __createNewJT( const NodeSet& joint_target );
+
     /// sets the operator for performing the projections
     void __setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
         const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
@@ -313,7 +314,7 @@ namespace gum {
     std::pair<__PotentialSet,__PotentialSet>
     __produceMessage( const NodeId from_id,
                       const NodeId to_id,
-                      std::pair<__PotentialSet,__PotentialSet>&& in_mess );    
+                      std::pair<__PotentialSet,__PotentialSet>&& in_mess );
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */

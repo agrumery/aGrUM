@@ -105,6 +105,16 @@
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
 %}
 
+
+%include "typemaps.i"
+%include "std_vector.i"
+%include "std_string.i"
+
+namespace std {
+    %template ( Vector_double) vector<double>;
+    %template ( Vector_string) vector<string>;
+}
+
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
   gum::LabelizedVariable & toLabelizedVar() {
@@ -227,15 +237,8 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 }
 
 
+
 %include "forUsing.i"
-
-%include "std_vector.i"
-%include "std_string.i"
-
-namespace std {
-  %template ( Vector_double) vector<double>;
-  %template ( Vector_string) vector<string>;
-}
 
 
 /* EXCEPTION HANDLING */

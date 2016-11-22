@@ -153,6 +153,9 @@ namespace gum {
     /// return true if variable is a (marginal) target
     virtual bool isTarget( const std::string& nodeName ) const final;
 
+    /// returns the number of marginal targets
+    virtual const Size nbrTargets() const noexcept final;
+
     /// returns the list of marginal targets
     virtual const NodeSet& targets() const noexcept final;
 
@@ -168,6 +171,13 @@ namespace gum {
      * @see http://en.wikipedia.org/wiki/Information_entropy
      */
     virtual GUM_SCALAR H( const NodeId X ) final;
+
+    /** Entropy
+     * Compute Shanon's entropy of a node given the observation
+     * @see http://en.wikipedia.org/wiki/Information_entropy
+     */
+    virtual GUM_SCALAR H( const std::string& nodeName ) final;
+
     ///@}
 
     protected:

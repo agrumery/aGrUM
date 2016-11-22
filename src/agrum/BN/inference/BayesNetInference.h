@@ -288,6 +288,25 @@ namespace gum {
     virtual void addEvidence( const NodeId id,
                               const std::vector<GUM_SCALAR>& vals ) final;
 
+      /// adds a new hard evidence on node named nodeName
+      /**
+       * @throw UndefinedElement if nodeName does not belong to the Bayesian network
+       * @throw InvalidArgument if val is not a value for id
+       * @throw InvalidArgument if nodeName already has an evidence
+       */
+      virtual void addEvidence( const std::string& nodeName, const Idx val ) final;
+
+      /// adds a new evidence on node named nodeName (might be soft or hard)
+      /**
+       * @throw UndefinedElement if id does not belong to the Bayesian network
+       * @throw InvalidArgument if nodeName already has an evidence
+       * @throw FatalError if vals=[0,0,...,0]
+       * @throw InvalidArgument if the size of vals is different from the domain
+       *        size of node nodeName
+       */
+      virtual void addEvidence( const std::string& nodeName,
+                                const std::vector<GUM_SCALAR>& vals ) final;
+
     /// adds a new evidence on node id (might be soft or hard)
     /**
      * @throw UndefinedElement if the potential is defined over several nodes

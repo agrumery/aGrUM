@@ -199,6 +199,13 @@ namespace gum {
     return __targets;
   }
 
+  // returns the list of single targets
+  template <typename GUM_SCALAR>
+  INLINE const Size MarginalTargetedInference<GUM_SCALAR>::nbrTargets() const
+      noexcept {
+    return __targets.size();
+  }
+
 
   /// sets all the nodes of the Bayes net as targets
   template <typename GUM_SCALAR>
@@ -244,5 +251,14 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR MarginalTargetedInference<GUM_SCALAR>::H( const NodeId X ) {
     return posterior( X ).entropy();
+  }
+
+  /* Entropy
+   * Compute Shanon's entropy of a node given the observation
+   */
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR
+  MarginalTargetedInference<GUM_SCALAR>::H( const std::string& nodeName ) {
+    return H( this->BayesNet().idFromName( nodeName ) );
   }
 } /* namespace gum */

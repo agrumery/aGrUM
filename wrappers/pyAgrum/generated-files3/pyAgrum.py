@@ -10314,6 +10314,20 @@ class BayesNetInference_double(_object):
         id: gum::NodeId const
         vals: std::vector< double,std::allocator< double > > const &
 
+        addEvidence(BayesNetInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(BayesNetInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
         addEvidence(BayesNetInference_double self, Potential_double pot)
 
         Parameters
@@ -10657,7 +10671,7 @@ class LazyPropagation_double(_object):
 
         Parameters
         ----------
-        self: gum::LazyPropagation< double > const *
+        self: gum::LazyPropagation< double > *
 
         """
         return _pyAgrum.LazyPropagation_double_joinTree(self)
@@ -10669,7 +10683,7 @@ class LazyPropagation_double(_object):
 
         Parameters
         ----------
-        self: gum::LazyPropagation< double > const *
+        self: gum::LazyPropagation< double > *
 
         """
         return _pyAgrum.LazyPropagation_double_junctionTree(self)
@@ -10687,18 +10701,6 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_evidenceProbability(self)
 
 
-    def junctionTreeToDot(self) -> "std::string const":
-        """
-        junctionTreeToDot(LazyPropagation_double self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
-        return _pyAgrum.LazyPropagation_double_junctionTreeToDot(self)
-
-
     def jointPosterior(self, seq_of_ids: 'PyObject *') -> "gum::Potential< double >":
         """
         jointPosterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
@@ -10713,77 +10715,33 @@ class LazyPropagation_double(_object):
 
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
-        bn = self.BayesNet()
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
 
-    #set evidences
-        self.list_pot = []
 
-        try:
-          items=evidces.iteritems()
-        except AttributeError:
-          items=evidces.items()
 
-        for var_name, evidce in items:
-            pot = Potential_double()
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
-            if isinstance(var_name, int):
-                var = bn.variable(var_name)
-            elif isinstance(var_name, str):
-                var = bn.variableFromName(var_name)
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
             else:
-                raise TypeError('values of the dict must be int or string')
-
-            pot.add(var)
-            if isinstance(evidce, (int, float, str)):
-                pot[:] = 0
-    #determine the var type
-                try:
-                    cast_var = var.toLabelizedVar()
-                    if isinstance(evidce, int):
-                        index = evidce
-                    elif isinstance(evidce, str):
-                        index = cast_var[evidce]
-                    else:
-                        raise TypeError('values of the dict must be int or string')
-                except RuntimeError:
-                    try:
-                        cast_var = var.toRangeVar()
-                        if isinstance(evidce, int):
-                            index = cast_var[str(evidce)]
-                        elif isinstance(evidce, str):
-                            index = cast_var[evidce]
-                        else:
-                            raise TypeError('values of the dict must be int or string')
-                    except RuntimeError:
-                        cast_var = var.toDiscretizedVar()
-                        if isinstance(evidce, float):
-                            index = cast_var.index(evidce)
-                        elif isinstance(evidce, str):
-                            index = cast_var.index(float(evidce))
-                        else:
-                            raise TypeError('values of the dict must be float or string')
-                pot[index] = 1
-            elif isinstance(evidce, (list, tuple)):
-                pot[:] = evidce
-            else:
-                raise TypeError('dict values must be number, string or sequence')
-            self.list_pot.append(pot)
-
-        self._setEvidence(self.list_pot)
+                self.addEvidence(k,v)
 
 
 
-    def _setEvidence(self, evidences: 'PyObject *') -> "void":
-        """
-        _setEvidence(LazyPropagation_double self, PyObject * evidences)
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
-        Parameters
-        ----------
-        evidences: PyObject *
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
 
-        """
-        return _pyAgrum.LazyPropagation_double__setEvidence(self, evidences)
 
 
     def makeInference(self) -> "void":
@@ -10827,6 +10785,284 @@ class LazyPropagation_double(_object):
         """
         return _pyAgrum.LazyPropagation_double_BayesNet(self)
 
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        addEvidence(LazyPropagation_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(LazyPropagation_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(LazyPropagation_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        chgEvidence(LazyPropagation_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        chgEvidence(LazyPropagation_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(LazyPropagation_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """
+        eraseAllEvidence(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseAllEvidence(self)
+
+
+    def hasHardEvidence(self, *args) -> "bool":
+        """
+        hasHardEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasHardEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_hasHardEvidence(self, *args)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasSoftEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """
+        nbrEvidence(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """
+        nbrHardEvidence(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """
+        nbrSoftEvidence(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """
+        eraseAllTargets(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """
+        addAllTargets(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(LazyPropagation_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        addTarget(LazyPropagation_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(LazyPropagation_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        eraseTarget(LazyPropagation_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(LazyPropagation_double self, gum::NodeId const variable) -> bool
+
+        Parameters
+        ----------
+        variable: gum::NodeId const
+
+        isTarget(LazyPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """
+        nbrTargets(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(LazyPropagation_double self, gum::NodeId const X) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+
+        H(LazyPropagation_double self, std::string const & nodeName) -> double
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_H(self, *args)
+
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
@@ -10858,77 +11094,33 @@ class GibbsInference_double(_object):
 
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
-        bn = self.BayesNet()
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
 
-    #set evidences
-        self.list_pot = []
 
-        try:
-          items=evidces.iteritems()
-        except AttributeError:
-          items=evidces.items()
 
-        for var_name, evidce in items:
-            pot = Potential_double()
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
-            if isinstance(var_name, int):
-                var = bn.variable(var_name)
-            elif isinstance(var_name, str):
-                var = bn.variableFromName(var_name)
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
             else:
-                raise TypeError('values of the dict must be int or string')
-
-            pot.add(var)
-            if isinstance(evidce, (int, float, str)):
-                pot[:] = 0
-    #determine the var type
-                try:
-                    cast_var = var.toLabelizedVar()
-                    if isinstance(evidce, int):
-                        index = evidce
-                    elif isinstance(evidce, str):
-                        index = cast_var[evidce]
-                    else:
-                        raise TypeError('values of the dict must be int or string')
-                except RuntimeError:
-                    try:
-                        cast_var = var.toRangeVar()
-                        if isinstance(evidce, int):
-                            index = cast_var[str(evidce)]
-                        elif isinstance(evidce, str):
-                            index = cast_var[evidce]
-                        else:
-                            raise TypeError('values of the dict must be int or string')
-                    except RuntimeError:
-                        cast_var = var.toDiscretizedVar()
-                        if isinstance(evidce, float):
-                            index = cast_var.index(evidce)
-                        elif isinstance(evidce, str):
-                            index = cast_var.index(float(evidce))
-                        else:
-                            raise TypeError('values of the dict must be float or string')
-                pot[index] = 1
-            elif isinstance(evidce, (list, tuple)):
-                pot[:] = evidce
-            else:
-                raise TypeError('dict values must be number, string or sequence')
-            self.list_pot.append(pot)
-
-        self._setEvidence(self.list_pot)
+                self.addEvidence(k,v)
 
 
 
-    def _setEvidence(self, evidences: 'PyObject *') -> "void":
-        """
-        _setEvidence(GibbsInference_double self, PyObject * evidences)
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
-        Parameters
-        ----------
-        evidences: PyObject *
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
 
-        """
-        return _pyAgrum.GibbsInference_double__setEvidence(self, evidences)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
@@ -11187,6 +11379,284 @@ class GibbsInference_double(_object):
 
         """
         return _pyAgrum.GibbsInference_double_BayesNet(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        addEvidence(GibbsInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(GibbsInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(GibbsInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.GibbsInference_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        chgEvidence(GibbsInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        chgEvidence(GibbsInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(GibbsInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.GibbsInference_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """
+        eraseAllEvidence(GibbsInference_double self)
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_eraseAllEvidence(self)
+
+
+    def hasHardEvidence(self, *args) -> "bool":
+        """
+        hasHardEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasHardEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_hasHardEvidence(self, *args)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasSoftEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """
+        nbrEvidence(GibbsInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """
+        nbrHardEvidence(GibbsInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """
+        nbrSoftEvidence(GibbsInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """
+        eraseAllTargets(GibbsInference_double self)
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """
+        addAllTargets(GibbsInference_double self)
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(GibbsInference_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        addTarget(GibbsInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(GibbsInference_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        eraseTarget(GibbsInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(GibbsInference_double self, gum::NodeId const variable) -> bool
+
+        Parameters
+        ----------
+        variable: gum::NodeId const
+
+        isTarget(GibbsInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """
+        nbrTargets(GibbsInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(GibbsInference_double self, gum::NodeId const X) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+
+        H(GibbsInference_double self, std::string const & nodeName) -> double
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_H(self, *args)
 
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)

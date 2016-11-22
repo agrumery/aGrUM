@@ -1,8 +1,5 @@
-%extend gum::LazyPropagation<double> {
-    const std::string junctionTreeToDot() {
-      return self->joinTree()->toDot();
-    }
 
+%extend gum::LazyPropagation<double> {
     Potential<double> jointPosterior(PyObject *seq_of_ids) {
       if (PySequence_Check(seq_of_ids)==0) {
         PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
@@ -28,95 +25,40 @@
 %feature("shadow") classname::setEvidence %{
 def setEvidence(self, evidces):
     if not isinstance(evidces, dict):
-        raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
-    bn = self.BayesNet()
+        raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+    self.eraseAllEvidence()
+    for k,v in evidces.items():
+        self.addEvidence(k,v)
+%}
 
-    # set evidences
-    self.list_pot = []
+%feature("shadow") classname::updateEvidence %{
+def updateEvidence(self, evidces):
+    if not isinstance(evidces, dict):
+        raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
-    try:
-      items=evidces.iteritems()
-    except AttributeError:
-      items=evidces.items()
-
-    for var_name, evidce in items:
-        pot = Potential_double()
-
-        if isinstance(var_name, int):
-            var = bn.variable(var_name)
-        elif isinstance(var_name, str):
-            var = bn.variableFromName(var_name)
+    for k,v in evidces.items():
+        if self.hasEvidence(k):
+            self.chgEvidence(k,v)
         else:
-            raise TypeError('values of the dict must be int or string')
+            self.addEvidence(k,v)
+%}
 
-        pot.add(var)
-        if isinstance(evidce, (int, float, str)):
-            pot[:] = 0
-            # determine the var type
-            try:
-                cast_var = var.toLabelizedVar()
-                if isinstance(evidce, int):
-                    index = evidce
-                elif isinstance(evidce, str):
-                    index = cast_var[evidce]
-                else:
-                    raise TypeError('values of the dict must be int or string')
-            except RuntimeError:
-                try:
-                    cast_var = var.toRangeVar()
-                    if isinstance(evidce, int):
-                        index = cast_var[str(evidce)]
-                    elif isinstance(evidce, str):
-                        index = cast_var[evidce]
-                    else:
-                        raise TypeError('values of the dict must be int or string')
-                except RuntimeError:
-                    cast_var = var.toDiscretizedVar()
-                    if isinstance(evidce, float):
-                        index = cast_var.index(evidce)
-                    elif isinstance(evidce, str):
-                        index = cast_var.index(float(evidce))
-                    else:
-                        raise TypeError('values of the dict must be float or string')
-            pot[index] = 1
-        elif isinstance(evidce, (list, tuple)):
-            pot[:] = evidce
-        else:
-            raise TypeError('dict values must be number, string or sequence')
-        self.list_pot.append(pot)
+%feature("shadow") classname::setTargets %{
+def setTargets(self, targets):
+    if not isinstance(targets, set):
+        raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
-    self._setEvidence(self.list_pot)
+    self.eraseAllTargets()
+    for k in targets:
+        self.addTarget(k)
 %}
 
 
 // these void class extensions are rewritten by "shadow" declarations
 %extend classname {
     void setEvidence(PyObject *evidces) {}
-
-    // evidences is a python list of potentials*
-    void _setEvidence(PyObject *evidences) {
-      if (PySequence_Check(evidences)==0) {
-        PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
-        return;
-      }
-      gum::List<const gum::Potential<double>* > l;
-
-      for(Py_ssize_t i=0;i<PySequence_Size(evidences);i++) {
-        PyObject* pot=PyList_GetItem(evidences, i);
-
-        void *argp1 = 0 ;
-        int res1 = 0 ;
-        res1 = SWIG_ConvertPtr(pot, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
-        if (!SWIG_IsOK(res1)) {
-          PyErr_SetString(PyExc_TypeError,"Elements of arg must be Potentials");
-          return;
-        }
-        gum::Potential< double > *arg1 =  reinterpret_cast< gum::Potential< double > * >(argp1);
-        l.push_front(arg1);
-      }
-      self->eraseAllEvidence();
-      self->addListOfEvidence(l);
-    }
+    void updateEvidence(PyObject *evidces) {}
+    void setTargets(PyObject* targets) {}
 }
 %enddef
 IMPROVE_INFERENCE_API(gum::LazyPropagation<double>)

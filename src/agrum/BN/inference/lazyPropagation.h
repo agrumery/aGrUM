@@ -118,14 +118,14 @@ namespace gum {
     /** Lazy Propagation does not use a junction tree but a binary join tree
      * because this may enable faster inferences. So do not be surprised to
      * see that somes cliques are contained into others in this tree. */
-    const JoinTree* joinTree() const;
+    const JoinTree* joinTree();
 
     /// returns the current junction tree
     /** Lazy Propagation does not use a junction tree but a binary join tree
      * because this may enable faster inferences. This method return the junction
      * tree, before optimizations
      **/
-    const JunctionTree* junctionTree() const;
+    const JunctionTree* junctionTree();
     /// returns the probability of evidence
     GUM_SCALAR evidenceProbability();
 
