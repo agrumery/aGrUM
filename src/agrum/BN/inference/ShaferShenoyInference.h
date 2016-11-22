@@ -104,6 +104,13 @@ namespace gum {
      * see that somes cliques are contained into others in this tree. */
     const JoinTree* joinTree() const;
 
+    /// returns the current junction tree
+    /** Lazy Propagation does not use a junction tree but a binary join tree
+     * because this may enable faster inferences. This method return the junction
+     * tree, before optimizations
+     **/
+    const JunctionTree* junctionTree() const;
+
     /// returns the probability of evidence
     GUM_SCALAR evidenceProbability();
 
@@ -224,8 +231,10 @@ namespace gum {
      * therefore, can be removed for inference). */
     UndiGraph __graph;
 
-    /// the junction tree used to answer the last inference query
+    /// the join (or junction) tree used to answer the last inference query
     JoinTree* __JT{nullptr};
+    /// the junction tree to answer the last inference query
+    JunctionTree* __junctionTree{nullptr};
 
     /// indicates whether a new join tree is needed for the next inference
     /** when modifying the set of hard evidence, we can determine that
@@ -334,7 +343,6 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void __createNewJT();
-
     /// sets the operator for performing the projections
     void __setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
         const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));

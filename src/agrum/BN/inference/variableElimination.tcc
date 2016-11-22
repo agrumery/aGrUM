@@ -82,7 +82,7 @@ namespace gum {
 
   /// returns the current join tree used
   template <typename GUM_SCALAR>
-  INLINE const JoinTree* VariableElimination<GUM_SCALAR>::joinTree() const {
+  INLINE const JunctionTree* VariableElimination<GUM_SCALAR>::junctionTree() const {
     return __JT;
   }
 
@@ -1039,7 +1039,7 @@ namespace gum {
       delete __target_posterior;
       __target_posterior = nullptr;
     }
-      
+    
     // hard evidence do not belong to the join tree, so extract the nodes
     // from targets that are not hard evidence
     NodeSet targets = set, hard_ev_nodes;
@@ -1063,6 +1063,7 @@ namespace gum {
       __target_posterior = fast_combination.combine( pot_list );
       return __target_posterior;
     }
+
 
     // if we still need to perform some inference task, do it
     __createNewJT ( set );
@@ -1134,7 +1135,7 @@ namespace gum {
                  "some evidence entered into the Bayes "
                  "net are incompatible (their joint proba = 0)" );
     }
-     
+
     return joint;
   }
 

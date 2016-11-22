@@ -120,19 +120,6 @@
   }
 }
 
-%extend gum::LazyPropagation<double> {
-  void addHardEvidence(const gum::NodeId id,gum::Idx val) {
-    return self->gum::BayesNetInference<double>::addHardEvidence(id,val);
-  }
-}
-
-%extend gum::GibbsInference<double> {
-  void addHardEvidence(const gum::NodeId id,gum::Idx val) {
-    return self->gum::BayesNetInference<double>::addHardEvidence(id,val);
-  }
-}
-
-
 %define ADD_NODEGRAPHPART_API(classname)
 %extend classname {
   using gum::NodeGraphPart::addNode;

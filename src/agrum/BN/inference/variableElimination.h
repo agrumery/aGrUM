@@ -112,7 +112,7 @@ namespace gum {
     void setFindBarrenNodesType( FindBarrenNodesType type );
 
     /// returns the join tree used for the last inference
-    const JoinTree* joinTree() const;
+    const JunctionTree* junctionTree() const;
 
     /// @}
 
@@ -237,7 +237,7 @@ namespace gum {
     UndiGraph __graph;
 
     /// the junction tree used to answer the last inference query
-    JoinTree* __JT { nullptr };
+    JunctionTree* __JT { nullptr };
 
     /// for each node of __graph (~ in the Bayes net), associate an ID in the JT
     HashTable<NodeId, NodeId> __node_to_clique;
@@ -258,7 +258,6 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void __createNewJT( const NodeSet& joint_target );
-
     /// sets the operator for performing the projections
     void __setProjectionFunction( Potential<GUM_SCALAR>* ( *proj )(
         const Potential<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));

@@ -10472,91 +10472,6 @@ class BayesNetInference_double(_object):
         """
         return _pyAgrum.BayesNetInference_double_hardEvidence(self)
 
-
-    def setEvidence(self, evidces):
-        import numpy as np
-
-        bn = self.bn()
-        if isinstance(evidces, dict):
-    # set evidences
-            self.list_pot = []
-            try:
-              items=evidces.iteritems()
-            except AttributeError:
-              items=evidces.items()
-
-            for var_name, evidce in items:
-                pot = Potential_double()
-
-                if isinstance(var_name, int):
-                    var = bn.variable(var_name)
-                elif isinstance(var_name, str):
-                    var = bn.variableFromName(var_name)
-                else:
-                    raise TypeError('values of the dict must be int or string')
-
-                pot.add(var)
-                if isinstance(evidce, (int, float, str,np.int64)):
-                    pot[:] = 0
-    # determine the var type
-                    try:
-                        cast_var = var.toLabelizedVar()
-                        if isinstance(evidce, (int,np.int64)):
-                            index = int(evidce)
-                        elif isinstance(evidce, (str)):
-                            index = cast_var[evidce]
-                        else:
-                            raise TypeError('values of the dict must be integer or string')
-                    except RuntimeError:
-                        try:
-                            cast_var = var.toRangeVar()
-                            if isinstance(evidce, (int,np.int64)):
-                                index = cast_var[str(int(evidce))]
-                            elif isinstance(evidce, str):
-                                index = cast_var[evidce]
-                            else:
-                                raise TypeError('values of the dict must be integer or string')
-                        except RuntimeError:
-                            cast_var = var.toDiscretizedVar()
-                            if isinstance(evidce, float):
-                                index = cast_var.index(evidce)
-                            elif isinstance(evidce, str):
-                                index = cast_var.index(float(evidce))
-                            else:
-                                raise TypeError('values of the dict must be float or string')
-                    pot[index] = 1
-                elif isinstance(evidce, (list, tuple)):
-                    pot[:] = evidce
-                else:
-                    raise TypeError('dict values must be number, string or sequence')
-                self.list_pot.append(pot)
-        else:
-            try:
-                l=list()
-                for p in evidces:
-                    if not isinstance(p,Potential):
-                        raise TypeError('setEvidence parameter must be an iterable of Potentials')
-                    l.append(p)
-                self.list_pot=l
-            except TypeError:
-                raise TypeError("setEvidence parameter must be a dict or an iterable of Potentials, not %s"%(type(evidces)))
-
-        self.eraseAllEvidence()
-        self._setEvidence(self.list_pot)
-
-
-
-    def _setEvidence(self, evidences: 'PyObject *') -> "void":
-        """
-        _setEvidence(BayesNetInference_double self, PyObject * evidences)
-
-        Parameters
-        ----------
-        evidences: PyObject *
-
-        """
-        return _pyAgrum.BayesNetInference_double__setEvidence(self, evidences)
-
 BayesNetInference_double_swigregister = _pyAgrum.BayesNetInference_double_swigregister
 BayesNetInference_double_swigregister(BayesNetInference_double)
 
@@ -10646,30 +10561,6 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_setFindBarrenNodesType(self, type)
 
 
-    def setProjectionFunction(self, proj: 'gum::Potential< double > *(*)(gum::Potential< double > const &,Set< gum::DiscreteVariable const * > const &)') -> "void":
-        """
-        setProjectionFunction(LazyPropagation_double self, gum::Potential< double > *(*)(gum::Potential< double > const &,Set< gum::DiscreteVariable const * > const &) proj)
-
-        Parameters
-        ----------
-        proj: gum::Potential< double > *(*)(gum::Potential< double > const &,Set< gum::DiscreteVariable const * > const &)
-
-        """
-        return _pyAgrum.LazyPropagation_double_setProjectionFunction(self, proj)
-
-
-    def setCombinationFunction(self, comb: 'gum::Potential< double > *(*)(gum::Potential< double > const &,gum::Potential< double > const &)') -> "void":
-        """
-        setCombinationFunction(LazyPropagation_double self, gum::Potential< double > *(*)(gum::Potential< double > const &,gum::Potential< double > const &) comb)
-
-        Parameters
-        ----------
-        comb: gum::Potential< double > *(*)(gum::Potential< double > const &,gum::Potential< double > const &)
-
-        """
-        return _pyAgrum.LazyPropagation_double_setCombinationFunction(self, comb)
-
-
     def joinTree(self) -> "gum::JoinTree const *":
         """
         joinTree(LazyPropagation_double self) -> CliqueGraph
@@ -10680,6 +10571,18 @@ class LazyPropagation_double(_object):
 
         """
         return _pyAgrum.LazyPropagation_double_joinTree(self)
+
+
+    def junctionTree(self) -> "gum::JunctionTree const *":
+        """
+        junctionTree(LazyPropagation_double self) -> CliqueGraph
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_junctionTree(self)
 
 
     def evidenceProbability(self) -> "double":
@@ -10706,16 +10609,133 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_junctionTreeToDot(self)
 
 
-    def posterior(self, seq_of_ids: 'PyObject *') -> "gum::Potential< double > *":
+    def jointPosterior(self, seq_of_ids: 'PyObject *') -> "gum::Potential< double >":
         """
-        posterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
+        jointPosterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
 
         Parameters
         ----------
         seq_of_ids: PyObject *
 
         """
-        return _pyAgrum.LazyPropagation_double_posterior(self, seq_of_ids)
+        return _pyAgrum.LazyPropagation_double_jointPosterior(self, seq_of_ids)
+
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
+        bn = self.BayesNet()
+
+    #set evidences
+        self.list_pot = []
+
+        try:
+          items=evidces.iteritems()
+        except AttributeError:
+          items=evidces.items()
+
+        for var_name, evidce in items:
+            pot = Potential_double()
+
+            if isinstance(var_name, int):
+                var = bn.variable(var_name)
+            elif isinstance(var_name, str):
+                var = bn.variableFromName(var_name)
+            else:
+                raise TypeError('values of the dict must be int or string')
+
+            pot.add(var)
+            if isinstance(evidce, (int, float, str)):
+                pot[:] = 0
+    #determine the var type
+                try:
+                    cast_var = var.toLabelizedVar()
+                    if isinstance(evidce, int):
+                        index = evidce
+                    elif isinstance(evidce, str):
+                        index = cast_var[evidce]
+                    else:
+                        raise TypeError('values of the dict must be int or string')
+                except RuntimeError:
+                    try:
+                        cast_var = var.toRangeVar()
+                        if isinstance(evidce, int):
+                            index = cast_var[str(evidce)]
+                        elif isinstance(evidce, str):
+                            index = cast_var[evidce]
+                        else:
+                            raise TypeError('values of the dict must be int or string')
+                    except RuntimeError:
+                        cast_var = var.toDiscretizedVar()
+                        if isinstance(evidce, float):
+                            index = cast_var.index(evidce)
+                        elif isinstance(evidce, str):
+                            index = cast_var.index(float(evidce))
+                        else:
+                            raise TypeError('values of the dict must be float or string')
+                pot[index] = 1
+            elif isinstance(evidce, (list, tuple)):
+                pot[:] = evidce
+            else:
+                raise TypeError('dict values must be number, string or sequence')
+            self.list_pot.append(pot)
+
+        self._setEvidence(self.list_pot)
+
+
+
+    def _setEvidence(self, evidences: 'PyObject *') -> "void":
+        """
+        _setEvidence(LazyPropagation_double self, PyObject * evidences)
+
+        Parameters
+        ----------
+        evidences: PyObject *
+
+        """
+        return _pyAgrum.LazyPropagation_double__setEvidence(self, evidences)
+
+
+    def makeInference(self) -> "void":
+        """
+        makeInference(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        posterior(LazyPropagation_double self, gum::NodeId const var) -> Potential_double
+
+        Parameters
+        ----------
+        var: gum::NodeId const
+
+        posterior(LazyPropagation_double self, std::string const nodeName) -> Potential_double
+
+        Parameters
+        ----------
+        nodeName: std::string const
+
+        """
+        return _pyAgrum.LazyPropagation_double_posterior(self, *args)
+
+
+    def BayesNet(self) -> "gum::IBayesNet< double > const &":
+        """
+        BayesNet(LazyPropagation_double self) -> IBayesNet_double
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_BayesNet(self)
 
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
@@ -10745,6 +10765,81 @@ class GibbsInference_double(_object):
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_GibbsInference_double
     __del__ = lambda self: None
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
+        bn = self.BayesNet()
+
+    #set evidences
+        self.list_pot = []
+
+        try:
+          items=evidces.iteritems()
+        except AttributeError:
+          items=evidces.items()
+
+        for var_name, evidce in items:
+            pot = Potential_double()
+
+            if isinstance(var_name, int):
+                var = bn.variable(var_name)
+            elif isinstance(var_name, str):
+                var = bn.variableFromName(var_name)
+            else:
+                raise TypeError('values of the dict must be int or string')
+
+            pot.add(var)
+            if isinstance(evidce, (int, float, str)):
+                pot[:] = 0
+    #determine the var type
+                try:
+                    cast_var = var.toLabelizedVar()
+                    if isinstance(evidce, int):
+                        index = evidce
+                    elif isinstance(evidce, str):
+                        index = cast_var[evidce]
+                    else:
+                        raise TypeError('values of the dict must be int or string')
+                except RuntimeError:
+                    try:
+                        cast_var = var.toRangeVar()
+                        if isinstance(evidce, int):
+                            index = cast_var[str(evidce)]
+                        elif isinstance(evidce, str):
+                            index = cast_var[evidce]
+                        else:
+                            raise TypeError('values of the dict must be int or string')
+                    except RuntimeError:
+                        cast_var = var.toDiscretizedVar()
+                        if isinstance(evidce, float):
+                            index = cast_var.index(evidce)
+                        elif isinstance(evidce, str):
+                            index = cast_var.index(float(evidce))
+                        else:
+                            raise TypeError('values of the dict must be float or string')
+                pot[index] = 1
+            elif isinstance(evidce, (list, tuple)):
+                pot[:] = evidce
+            else:
+                raise TypeError('dict values must be number, string or sequence')
+            self.list_pot.append(pot)
+
+        self._setEvidence(self.list_pot)
+
+
+
+    def _setEvidence(self, evidences: 'PyObject *') -> "void":
+        """
+        _setEvidence(GibbsInference_double self, PyObject * evidences)
+
+        Parameters
+        ----------
+        evidences: PyObject *
+
+        """
+        return _pyAgrum.GibbsInference_double__setEvidence(self, evidences)
+
 
     def setVerbosity(self, v: 'bool') -> "void":
         """
@@ -10960,6 +11055,48 @@ class GibbsInference_double(_object):
 
         """
         return _pyAgrum.GibbsInference_double_history(self)
+
+
+    def makeInference(self) -> "void":
+        """
+        makeInference(GibbsInference_double self)
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        posterior(GibbsInference_double self, gum::NodeId const var) -> Potential_double
+
+        Parameters
+        ----------
+        var: gum::NodeId const
+
+        posterior(GibbsInference_double self, std::string const nodeName) -> Potential_double
+
+        Parameters
+        ----------
+        nodeName: std::string const
+
+        """
+        return _pyAgrum.GibbsInference_double_posterior(self, *args)
+
+
+    def BayesNet(self) -> "gum::IBayesNet< double > const &":
+        """
+        BayesNet(GibbsInference_double self) -> IBayesNet_double
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_BayesNet(self)
 
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)
@@ -13078,6 +13215,18 @@ class InfluenceDiagramInference_double(_object):
 
         """
         return _pyAgrum.InfluenceDiagramInference_double_displayResult(self)
+
+
+    def insertEvidence(self, evidenceList: 'gum::List< gum::Potential< double > const * > const &') -> "void":
+        """
+        insertEvidence(InfluenceDiagramInference_double self, gum::List< gum::Potential< double > const * > const & evidenceList)
+
+        Parameters
+        ----------
+        evidenceList: gum::List< gum::Potential< double > const * > const &
+
+        """
+        return _pyAgrum.InfluenceDiagramInference_double_insertEvidence(self, evidenceList)
 
 
     def eraseEvidence(self, evidence: 'Potential_double') -> "void":

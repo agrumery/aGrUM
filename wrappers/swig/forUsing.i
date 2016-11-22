@@ -1,6 +1,9 @@
 // this file is for giving access to methods defined in template ancestror.
 // SWIG does not allow to use "using" for this kind of methods.
 
+#####################################
+
+#####################################
 %define ADD_MULTIDIMDECORATOR_API(classname)
 %extend classname {
 /* wrapping the minimal interface from MultiDimDecorator */
@@ -54,6 +57,8 @@ ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
 ADD_MULTIDIMDECORATOR_API(gum::UtilityTable<double>)
 
 
+#####################################
+#####################################
 %define ADD_CREDALINFERENCEENGINCE_API(classname)
 %extend classname  {
   void setRepetitiveInd(const bool flag) {
@@ -86,8 +91,33 @@ ADD_CREDALINFERENCEENGINCE_API(%arg(gum::credal::CNMonteCarloSampling<double, gu
 ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
 
 
+#####################################
+#####################################
 %extend gum::learning::BNLearner<double> {
   void setInitialDAG( const gum::DAG& g) {
     self->gum::learning::genericBNLearner::setInitialDAG(g);
   }
 }
+
+
+
+#####################################
+#####################################
+%define ADD_INFERENCE_API(classname)
+%extend classname  {
+  void makeInference(void) {
+    self->gum::BayesNetInference<double>::makeInference();
+  }
+  const Potential<double>& posterior( const NodeId var ) {
+    return self->MarginalTargetedInference<double>::posterior(var);
+  }
+  const Potential<double>& posterior( const std::string nodeName ) {
+    return self->MarginalTargetedInference<double>::posterior(nodeName);
+  }
+  const IBayesNet<double>& BayesNet() const {
+    return self->BayesNetInference<double>::BayesNet();
+  }
+}
+%enddef
+ADD_INFERENCE_API(gum::LazyPropagation<double>)
+ADD_INFERENCE_API(gum::GibbsInference<double>)

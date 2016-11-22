@@ -46,9 +46,9 @@ namespace gum {
       RelevantPotentialsFinderType relevant_type,
       FindBarrenNodesType barren_type,
       bool use_binary_join_tree )
-      : JointTargetedInference<GUM_SCALAR>( BN ),
-        EvidenceInference<GUM_SCALAR>( BN ),
-        __use_binary_join_tree( use_binary_join_tree ) {
+      : JointTargetedInference<GUM_SCALAR>( BN )
+      , EvidenceInference<GUM_SCALAR>( BN )
+      , __use_binary_join_tree( use_binary_join_tree ) {
     // sets the relevant potential and the barren nodes finding algorithm
     setRelevantPotentialsFinderType( relevant_type );
     setFindBarrenNodesType( barren_type );
@@ -82,6 +82,7 @@ namespace gum {
 
     // remove the junction tree and the triangulation algorithm
     if ( __JT != nullptr ) delete __JT;
+    if ( __junctionTree != nullptr ) delete __junctionTree;
     delete __triangulation;
 
     // for debugging purposes
@@ -100,10 +101,16 @@ namespace gum {
   }
 
 
-  /// returns the current join tree used
+  /// returns the current join (or junction) tree used
   template <typename GUM_SCALAR>
   INLINE const JoinTree* LazyPropagation<GUM_SCALAR>::joinTree() const {
     return __JT;
+  }
+
+  /// returns the current junction tree
+  template <typename GUM_SCALAR>
+  INLINE const JunctionTree* LazyPropagation<GUM_SCALAR>::junctionTree() const {
+    return __junctionTree;
   }
 
 
@@ -113,31 +120,31 @@ namespace gum {
       RelevantPotentialsFinderType type ) {
     if ( type != __find_relevant_potential_type ) {
       switch ( type ) {
-      case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
-        __findRelevantPotentials = &LazyPropagation<
-          GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
-        break;
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
+          __findRelevantPotentials = &LazyPropagation<
+              GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
+          break;
 
-      case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
-        __findRelevantPotentials = &LazyPropagation<
-          GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
-        break;
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
+          __findRelevantPotentials = &LazyPropagation<
+              GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
+          break;
 
-      case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
-        __findRelevantPotentials = &LazyPropagation<
-          GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
-        break;
+        case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
+          __findRelevantPotentials = &LazyPropagation<
+              GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
+          break;
 
-      case RelevantPotentialsFinderType::FIND_ALL:
-        __findRelevantPotentials =
-          &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll;
-        break;
+        case RelevantPotentialsFinderType::FIND_ALL:
+          __findRelevantPotentials =
+              &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll;
+          break;
 
-      default:
-        GUM_ERROR( InvalidArgument,
-                   "setRelevantPotentialsFinderType for type "
-                   << (unsigned int) type
-                   << " is not implemented yet" );
+        default:
+          GUM_ERROR( InvalidArgument,
+                     "setRelevantPotentialsFinderType for type "
+                         << (unsigned int)type
+                         << " is not implemented yet" );
       }
 
       __find_relevant_potential_type = type;
@@ -202,15 +209,15 @@ namespace gum {
       // certainly
       // be updated as well, in particular its step 2.
       switch ( type ) {
-      case FindBarrenNodesType::FIND_BARREN_NODES:
-      case FindBarrenNodesType::FIND_NO_BARREN_NODES:
+        case FindBarrenNodesType::FIND_BARREN_NODES:
+        case FindBarrenNodesType::FIND_NO_BARREN_NODES:
           break;
 
         default:
           GUM_ERROR( InvalidArgument,
                      "setFindBarrenNodesType for type "
-                     << (unsigned int) type
-                     << " is not implemented yet" );
+                         << (unsigned int)type
+                         << " is not implemented yet" );
       }
 
       __barren_nodes_type = type;
@@ -503,6 +510,8 @@ namespace gum {
     // (essentially, those of a distribution phase), we construct from this
     // junction tree a binary join tree
     if ( __JT != nullptr ) delete __JT;
+    if ( __junctionTree != nullptr ) delete __junctionTree;
+
     __triangulation->setGraph( &__graph, &( this->domainSizes() ) );
     const JunctionTree& triang_jt = __triangulation->junctionTree();
     if ( __use_binary_join_tree ) {
@@ -513,6 +522,7 @@ namespace gum {
     } else {
       __JT = new CliqueGraph( triang_jt );
     }
+    __junctionTree = new CliqueGraph( triang_jt );
 
 
     // indicate, for each node of the moral graph a clique in __JT that can
@@ -1105,24 +1115,24 @@ namespace gum {
       Set<const Potential<GUM_SCALAR>*>& pot_list,
       Set<const DiscreteVariable*>& kept_vars ) {
     switch ( __find_relevant_potential_type ) {
-    case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
-      __findRelevantPotentialsWithdSeparation2( pot_list, kept_vars );
-      break;
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
+        __findRelevantPotentialsWithdSeparation2( pot_list, kept_vars );
+        break;
 
-    case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
-      __findRelevantPotentialsWithdSeparation( pot_list, kept_vars );
-      break;
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
+        __findRelevantPotentialsWithdSeparation( pot_list, kept_vars );
+        break;
 
-    case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
-      __findRelevantPotentialsWithdSeparation3( pot_list, kept_vars );
-      break;
+      case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
+        __findRelevantPotentialsWithdSeparation3( pot_list, kept_vars );
+        break;
 
-    case RelevantPotentialsFinderType::FIND_ALL:
-      __findRelevantPotentialsGetAll( pot_list, kept_vars );
-      break;
+      case RelevantPotentialsFinderType::FIND_ALL:
+        __findRelevantPotentialsGetAll( pot_list, kept_vars );
+        break;
 
-    default:
-      GUM_ERROR( FatalError, "not implemented yet" );
+      default:
+        GUM_ERROR( FatalError, "not implemented yet" );
     }
   }
 

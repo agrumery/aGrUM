@@ -45,9 +45,9 @@ namespace gum {
       const IBayesNet<GUM_SCALAR>* BN,
       FindBarrenNodesType barren_type,
       bool use_binary_join_tree )
-      : JointTargetedInference<GUM_SCALAR>( BN ),
-        EvidenceInference<GUM_SCALAR>( BN ),
-        __use_binary_join_tree( use_binary_join_tree ) {
+      : JointTargetedInference<GUM_SCALAR>( BN )
+      , EvidenceInference<GUM_SCALAR>( BN )
+      , __use_binary_join_tree( use_binary_join_tree ) {
     // sets the barren nodes finding algorithm
     setFindBarrenNodesType( barren_type );
 
@@ -89,6 +89,7 @@ namespace gum {
 
     // remove the junction tree and the triangulation algorithm
     if ( __JT != nullptr ) delete __JT;
+    if ( __junctionTree != nullptr ) delete __junctionTree;
     delete __triangulation;
 
     // for debugging purposes
@@ -111,6 +112,13 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE const JoinTree* ShaferShenoyInference<GUM_SCALAR>::joinTree() const {
     return __JT;
+  }
+
+  /// returns the current junction tree
+  template <typename GUM_SCALAR>
+  INLINE const JunctionTree*
+  ShaferShenoyInference<GUM_SCALAR>::junctionTree() const {
+    return __junctionTree;
   }
 
 
@@ -173,8 +181,8 @@ namespace gum {
         default:
           GUM_ERROR( InvalidArgument,
                      "setFindBarrenNodesType for type "
-                     << (unsigned int) type
-                     << " is not implemented yet" );
+                         << (unsigned int)type
+                         << " is not implemented yet" );
       }
 
       __barren_nodes_type = type;
@@ -465,6 +473,8 @@ namespace gum {
     // (essentially, those of a distribution phase), we construct from this
     // junction tree a binary join tree
     if ( __JT != nullptr ) delete __JT;
+    if ( __junctionTree != nullptr ) delete __junctionTree;
+
     __triangulation->setGraph( &__graph, &( this->domainSizes() ) );
     const JunctionTree& triang_jt = __triangulation->junctionTree();
     if ( __use_binary_join_tree ) {
@@ -475,6 +485,7 @@ namespace gum {
     } else {
       __JT = new CliqueGraph( triang_jt );
     }
+    __junctionTree=new CliqueGraph(triang_jt);
 
 
     // indicate, for each node of the moral graph a clique in __JT that can
