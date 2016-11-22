@@ -150,6 +150,27 @@ namespace gum {
   INLINE GUM_SCALAR Potential<GUM_SCALAR>::min() const {
     return gum::projectMin( *this->content() );
   }
+
+  // max of all non one elements in this
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR Potential<GUM_SCALAR>::maxNonOne() const {
+    return this->reduce(
+        []( GUM_SCALAR z, GUM_SCALAR p ) {
+          return ( p == 1.0 ) ? z : ( z > p ? z : p );
+        },
+        0.0 );
+  }
+
+  // min of all non zero elements in this
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR Potential<GUM_SCALAR>::minNonZero() const {
+    return this->reduce(
+        []( GUM_SCALAR z, GUM_SCALAR p ) {
+          return ( p == 0.0 ) ? z : ( z < p ? z : p );
+        },
+        1.0 );
+  }
+
   // entropy of this
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR Potential<GUM_SCALAR>::entropy() const {
@@ -306,6 +327,18 @@ namespace gum {
       const Set<const DiscreteVariable*>& kept_vars ) const {
     return Potential<GUM_SCALAR>(
         gum::projectMax( *this->content(), _complementVars( kept_vars ) ) );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::isNonZeroMap() const {
+    auto p = Potential<GUM_SCALAR>( *this );
+    p.apply( []( GUM_SCALAR x ) {
+      if ( x > 0 )
+        return (GUM_SCALAR)1;
+      else
+        return (GUM_SCALAR)0;
+    } );
+    return p;
   }
 
   template <typename GUM_SCALAR>

@@ -40,7 +40,7 @@ namespace gum_tests {
       try {
         {
           // printers.o3prm
-          auto path       = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
+          auto path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
           simple_printers = new gum::prm::PRM<double>();
           auto factory =
               gum::prm::o3prm::O3prmReader<double>( *simple_printers );
@@ -77,9 +77,9 @@ namespace gum_tests {
 
     void testSimpleSystem() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system Foo { }";
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -93,7 +93,7 @@ namespace gum_tests {
 
     void testMicroSystem() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system microSys {" << std::endl
             << "PowerSupply pow;" << std::endl
             << "Room r;" << std::endl
@@ -106,7 +106,7 @@ namespace gum_tests {
             << "Equipment e;" << std::endl
             << "e.room = r;" << std::endl
             << "}" << std::endl;
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -120,18 +120,18 @@ namespace gum_tests {
 
     void testMicroSystemWithError1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system microSys {" << std::endl
             << "PowerSupply;" << std::endl
             << "}" << std::endl;
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|2 col 12| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
@@ -139,18 +139,18 @@ namespace gum_tests {
 
     void testMicroSystemWithError2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system microSys {" << std::endl
             << "FOO bar;" << std::endl
             << "}" << std::endl;
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|2 col 1| Error : Unknown class FOO";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
@@ -158,18 +158,18 @@ namespace gum_tests {
 
     void testMicroSystemWithError3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system {" << std::endl
             << "PowerSupply pow;" << std::endl
             << "}" << std::endl;
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|1 col 8| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
@@ -177,19 +177,19 @@ namespace gum_tests {
 
     void testMicroSystemWithError4() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system microSys {" << std::endl
             << "PowerSupply pow" << std::endl
             << "Room r;" << std::endl
             << "}" << std::endl;
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|3 col 1| Error : semicolon expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
@@ -197,7 +197,7 @@ namespace gum_tests {
 
     void testMicroSystemWithError5() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system microSys {" << std::endl
             << "PowerSupply pow;" << std::endl
             << "Room r;" << std::endl
@@ -205,14 +205,14 @@ namespace gum_tests {
             << "Computer c;" << std::endl
             << "r.power   pow;" << std::endl
             << "}" << std::endl;
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|6 col 1| Error : Unknown class r.power";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
@@ -220,7 +220,7 @@ namespace gum_tests {
 
     void testMicroSystemWithError6() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system microSys {" << std::endl
             << "PowerSupply pow;" << std::endl
             << "Room r;" << std::endl
@@ -231,14 +231,14 @@ namespace gum_tests {
             << "//c.room = r;" << std::endl
             << "c.printers += p;" << std::endl
             << "}" << std::endl;
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|1 col 8| Error : Could not instantiate the system, some "
              "reference slots must be unassigned";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -247,7 +247,7 @@ namespace gum_tests {
 
     void testMicroSystemWithError7() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system microSys {" << std::endl
             << "PowerSupply pow;" << std::endl
             << "Room r;" << std::endl
@@ -259,14 +259,14 @@ namespace gum_tests {
             << "//c.room = r;" << std::endl
             << "c.printers = p;" << std::endl
             << "}" << std::endl;
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|5 col 1| Error : Instance p already exists";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( simple_printers->systems().size(), (gum::Size)0 );
@@ -274,7 +274,7 @@ namespace gum_tests {
 
     void testSmallSystem() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system smallSys {" << std::endl
             << "  PowerSupply pow;" << std::endl
             << "  Room r;" << std::endl
@@ -302,7 +302,7 @@ namespace gum_tests {
             << "  another_computer.printers = printers;" << std::endl
             << "  another_computer.printers += another_printer;" << std::endl
             << "}";
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -316,7 +316,7 @@ namespace gum_tests {
 
     void testComplexSystem() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "system aSys {" << std::endl
             << "  PowerSupply pow;" << std::endl
             << "  Room r;" << std::endl
@@ -338,7 +338,7 @@ namespace gum_tests {
             << "  ParamClass paramBis(lambda=0.001);" << std::endl
             << "  paramBis.room = r;" << std::endl
             << "}";
-      auto output  = std::stringstream();
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( *complex_printers );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );

@@ -51,8 +51,6 @@
  * // creation of an edge between nodes whose IDs are 3 and 4
  * Edge edge1 (3,4);
  *
- * // print that the edge is "undirected"
- * if (!edge1.isDirected ()) cerr << "undirected edge" << endl;
  *
  * // copy the edge into another edge
  * Edge edge2 (edge1), edge3 = edge4;
@@ -70,10 +68,7 @@
  *
  * // creation of an arc (directed edge) from 3 to 4
  * Arc arc1 (3,4);
- *
- * // print that this edge is "directed"
- * if (arc1.isDirected ()) cerr << "directed edge" << endl;
- *
+ * *
  * // compare two arcs
  * if (Arc(3,4) != Arc(4,3)) cerr << "ok, this is asymmetric" << endl;
  *
@@ -127,10 +122,7 @@ namespace gum {
    * @code
    * // creation of an edge between nodes whose IDs are 3 and 4
    * Edge edge1 (3,4);
-   *
-   * // print that the edge is "undirected"
-   * if (!edge1.isDirected ()) cerr << "undirected edge" << endl;
-   *
+   *   *
    * // copy the edge into another edge
    * Edge edge2 (edge1), edge3 = edge4;
    *
@@ -173,9 +165,6 @@ namespace gum {
     /// @name Accessors
     // ############################################################################
     /// @{
-
-    /// returns a Boolean (false) indicating that the edge is undirected
-    bool isDirected() const;
 
     /// returns an extremal node of an edge given the ID of the other one
     NodeId other( NodeId id ) const;
@@ -243,10 +232,7 @@ namespace gum {
    * @code
    * // creation of an arc (directed edge) from 3 to 4
    * Arc arc1 (3,4);
-   *
-   * // print that this edge is "directed"
-   * if (arc1.isDirected ()) cerr << "directed edge" << endl;
-   *
+   *   *
    * // compare two arcs
    * if (Arc(3,4) != Arc(4,3)) cerr << "ok, this is asymmetric" << endl;
    *
@@ -290,9 +276,6 @@ namespace gum {
 
     /// returns the head of the arc
     NodeId head() const;
-
-    /// returns a Boolean (true) indicating that the arc is directed
-    bool isDirected() const;
 
     /// returns an extremal node of an edge given the ID of the other one
     NodeId other( NodeId id ) const;

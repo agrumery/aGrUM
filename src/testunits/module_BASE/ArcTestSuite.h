@@ -85,11 +85,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( arc1.head(), (gum::NodeId)2 );
     }
 
-    void testIsDirected() {
-      gum::Arc arc( (gum::NodeId)1, (gum::NodeId)2 );
-      TS_ASSERT( arc.isDirected() );
-    }
-
     void testHash() {
       gum::HashTable<gum::Arc, gum::NodeId> hash;
 

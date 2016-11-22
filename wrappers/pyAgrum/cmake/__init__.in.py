@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-[pyAgrum](https://forge.lip6.fr/projects/pyagrum/wiki)  is a Python wrapper for the C++ [aGrUM](https://agrum.lip6.fr) library.
+`pyAgrum <https://forge.lip6.fr/projects/pyagrum/wiki>`_ is a Python wrapper for the C++ `aGrUM <https://agrum.lip6.fr>`_ library.
 It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
 
-The module is generated using the [SWIG](https://www.swig.org) interface generator. Custom-written code was added to make the interface more friendly.
+The module is generated using the `SWIG <https://www.swig.org>`_ interface generator. Custom-written code was added to make the interface more friendly.
 
-pyAgrum has [comprehensive API documentation](http://www-desir.lip6.fr/~phw/aGrUM/dev/pdoc/),
-[examples as notebooks](http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/) and a [website](https://forge.lip6.fr/projects/pyagrum/wiki).
+pyAgrum includes :
+  * API documentation, 
+  * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/>`_,
+  * a `website <https://forge.lip6.fr/projects/pyagrum/wiki>`_.
 """
 
 # aGrum Licence (GPL)
@@ -56,7 +58,7 @@ from @PYAGRUM_MODULE@ import DefaultInLabel, DuplicateElement, DuplicateLabel, E
 # selection of imports extracted from dir(pyAgrum)
 __all__=[
   '__version__','__license__','__project_url__',        # here
-  'about','availableBNExts','loadBN','saveBN','loadID', # in fuctions.py
+  'about','availableBNExts','loadBN','saveBN','loadID','getPosterior' # in fuctions.py
   
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
   'BayesNet',

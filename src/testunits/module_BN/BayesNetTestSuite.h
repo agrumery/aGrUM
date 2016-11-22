@@ -39,6 +39,7 @@
 //          5_/             2 -> 4
 //                          2 -> 5
 
+class Size;
 namespace gum_tests {
   int intest = 0;
   class BayesNetTestSuite : public CxxTest::TestSuite {
@@ -834,6 +835,18 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS_NOTHING( bn.addArc( i1, i2 ) );
       TS_ASSERT_EQUALS( bn.log10DomainSize(), std::log10( 2.0 * 3.0 ) );
+    }
+
+    void testSomeFunctions() {
+      gum::BayesNet<float> bn;
+      gum::List<gum::NodeId> idList;
+      TS_GUM_ASSERT_THROWS_NOTHING( fill( bn, idList ) );
+
+      TS_ASSERT_EQUALS( bn.maxVarDomainSize(), (gum::Size)3 );
+      TS_ASSERT_EQUALS( bn.minParam(), 0.0f );
+      TS_ASSERT_EQUALS( bn.maxParam(), 1.0f );
+      TS_ASSERT_EQUALS( bn.minNonZeroParam(), 0.1f );
+      TS_ASSERT_EQUALS( bn.maxNonOneParam(), 0.9f );
     }
   };
 

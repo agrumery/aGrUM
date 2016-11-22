@@ -1,8 +1,4 @@
-%ignore gum::BayesNet::addVariable;
-%ignore gum::BayesNet::eraseVariable;
-%ignore gum::BayesNet::insertArc;
-%ignore gum::BayesNet::insertWeightedArc;
-%ignore *::nbrArcs;
+%ignore gum::BayesNet<GUM_SCALAR>::add(const gum::DiscreteVariable& variable, gum::MultiDimImplementation<GUM_SCALAR> * aContent);
 
 %ignore *::beginNodes;
 %ignore *::endNodes;

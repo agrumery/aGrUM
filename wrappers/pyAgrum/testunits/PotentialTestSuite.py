@@ -281,6 +281,25 @@ class TestOperators(pyAgrumTestCase):
     self.assertTrue(p!=t)
     self.assertFalse(p!=u)
 
+  def testMinMax(self):
+    a,b=[gum.LabelizedVariable(s,s,3) for s in "ab"]
+    p=gum.Potential()
+    p.add(a).add(b).fillWith([1, 9, 3, 0, 5, 0, 7, 8, 9]).normalizeAsCPT()
+
+    self.assertTrue(p.min()==0.0)
+    self.assertTrue(p.max()==1.0)
+    self.assertTrue(p.minNonZero()==1.0/13.0)
+    self.assertTrue(p.maxNonOne()==9.0/13.0)
+
+  def testIsNonZeroMap(self):
+    a,b=[gum.LabelizedVariable(s,s,3) for s in "ab"]
+    p=gum.Potential()
+    p.add(a).add(b).fillWith([1, 9, 3, 0, 5, 0, 7, 8, 9]).normalizeAsCPT()
+
+    q=gum.Potential()
+    q.add(a).add(b).fillWith([1, 1, 1, 0, 1, 0, 1, 1, 1])
+
+    self.assertTrue(p.isNonZeroMap()==q)
 
   def testSimpleInPLaceOperators(self):
     a,b,c=[gum.LabelizedVariable(s,s,3) for s in "abc"]
@@ -590,6 +609,8 @@ ts.addTest(TestIndexs('testDictIndex'))
 ts.addTest(TestIndexs('testDictIndex'))
 ts.addTest(TestOperators('testSimpleOperators'))
 ts.addTest(TestOperators('testEquality'))
+ts.addTest(TestOperators('testMinMax'))
+ts.addTest(TestOperators('testIsNonZeroMap'))
 ts.addTest(TestOperators('testSimpleInPLaceOperators'))
 ts.addTest(TestOperators('testMargOutOperators'))
 ts.addTest(TestOperators('testMargInOperators'))

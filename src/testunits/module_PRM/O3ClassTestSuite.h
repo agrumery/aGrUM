@@ -38,9 +38,9 @@ namespace gum_tests {
 
     void testEmptyClass() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Bar { }";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -57,9 +57,9 @@ namespace gum_tests {
 
     void testEmptyClassError1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "clas Bar { }";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -67,7 +67,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|1 col 1| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
@@ -76,9 +76,9 @@ namespace gum_tests {
 
     void testEmptyClassError2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class { }";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -86,7 +86,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|1 col 7| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
@@ -95,9 +95,9 @@ namespace gum_tests {
 
     void testEmptyClassError3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class ++++/ze { }";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -105,7 +105,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|1 col 7| Error : label expected";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
@@ -114,11 +114,11 @@ namespace gum_tests {
 
     void testSimpleClass1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Bar { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -133,7 +133,7 @@ namespace gum_tests {
       const auto& state = bar.get( "state" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
       const auto& cpf = state.cpf();
-      auto i          = gum::Instantiation( cpf );
+      auto i = gum::Instantiation( cpf );
       i.setFirst();
       TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
       i.inc();
@@ -144,12 +144,12 @@ namespace gum_tests {
 
     void testSimpleClass2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -164,7 +164,7 @@ namespace gum_tests {
       const auto& state = bar.get( "state" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
       const auto& cpf = state.cpf();
-      auto i          = gum::Instantiation( cpf );
+      auto i = gum::Instantiation( cpf );
       i.setFirst();
       TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
       i.inc();
@@ -175,7 +175,7 @@ namespace gum_tests {
 
     void testSimpleClass3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -184,7 +184,7 @@ namespace gum_tests {
             << "  {[0.2, 0.4,  // false" << std::endl
             << "   0.8, 0.6]}; // true" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -220,7 +220,7 @@ namespace gum_tests {
 
     void testSimpleClassError1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -229,7 +229,7 @@ namespace gum_tests {
             << "  {[0.2, 0.4,  // false" << std::endl
             << "    0.2, 0.6]}; // true" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -237,7 +237,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|4 col 9| Error : PRMAttribute Bar.isWorking CPT does not sum to "
              "1, "
              "found 0.4";
@@ -247,7 +247,7 @@ namespace gum_tests {
 
     void testSimpleClassError2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -256,7 +256,7 @@ namespace gum_tests {
             << "  {[0.2, 0.4,  // false" << std::endl
             << "    0.2, 0.6]}; // true" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -264,7 +264,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|4 col 29| Error : Parent stat not found";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
@@ -272,7 +272,7 @@ namespace gum_tests {
 
     void testSimpleClassError3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -282,7 +282,7 @@ namespace gum_tests {
             << "    0.2, 0.4,   // true" << std::endl
             << "    0.6, 0.2]}; // oops" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -290,7 +290,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|4 col 9| Error : Illegal CPT size, expected 4 found 6 for "
              "attribute Bar.isWorking";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -299,7 +299,7 @@ namespace gum_tests {
 
     void testSimpleRules1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -308,7 +308,7 @@ namespace gum_tests {
             << "NOK: 0.8, 0.2;" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -344,7 +344,7 @@ namespace gum_tests {
 
     void testSimpleRules2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -353,7 +353,7 @@ namespace gum_tests {
             << "*: 0.8, 0.2;" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -389,7 +389,7 @@ namespace gum_tests {
 
     void testSimpleRules3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -398,7 +398,7 @@ namespace gum_tests {
             << "NOK: \"80/100\", \"20/100\";" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -434,7 +434,7 @@ namespace gum_tests {
 
     void testSimpleRules4() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -443,7 +443,7 @@ namespace gum_tests {
             << "NOK: '80/100', '20/100';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -479,7 +479,7 @@ namespace gum_tests {
 
     void testSimpleRulesError1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -488,7 +488,7 @@ namespace gum_tests {
             << "NOK: '80/100', '20/100';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -496,7 +496,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|5 col 15| Error : Illegal CPT value \"110/100\" in attribute "
              "Bar.isWorking, formula resolve to 1.1";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -505,7 +505,7 @@ namespace gum_tests {
 
     void testSimpleRulesError2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -514,7 +514,7 @@ namespace gum_tests {
             << "NOK, BAR: '80/100', '20/100';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -522,7 +522,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|5 col 1| Error : Expected 1 value(s), found 2";
       TS_ASSERT_EQUALS( line, msg.str() );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
@@ -530,7 +530,7 @@ namespace gum_tests {
 
     void testSimpleRulesError3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
@@ -539,7 +539,7 @@ namespace gum_tests {
             << "NOK: 'FOO', '20/100';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -547,7 +547,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|6 col 6| Error : Illegal CPT value \"FOO\" in attribute "
              "Bar.isWorking, could not resolve the following formula: \"FOO\"";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -556,7 +556,7 @@ namespace gum_tests {
 
     void testSimpleParameter1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Bar { " << std::endl
             << "real lambda default 0.003;" << std::endl
             << "int t default 8760;" << std::endl
@@ -564,7 +564,7 @@ namespace gum_tests {
             << "[ 'exp(-lambda*t)', '1-exp(-lambda*t)' ]" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -592,7 +592,7 @@ namespace gum_tests {
 
     void testSimpleParameter2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type t_state OK, NOK;" << std::endl;
       input << "class Bar { " << std::endl
             << "real lambda default 0.003;" << std::endl
@@ -603,7 +603,7 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -638,12 +638,12 @@ namespace gum_tests {
 
     void testClassWithReference1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
       input << "class Bar { " << std::endl << "Foo myFoo;" << std::endl << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -674,14 +674,14 @@ namespace gum_tests {
 
     void testClassWithReference2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
       input << "class Bar { " << std::endl
             << "Foo[] myFoo;" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -712,7 +712,7 @@ namespace gum_tests {
 
     void testClassWithReference3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -726,7 +726,7 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -777,7 +777,7 @@ namespace gum_tests {
 
     void testClassWithReference4() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "class Foo { " << std::endl
             << "int t default 8760;" << std::endl
@@ -792,7 +792,7 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -843,7 +843,7 @@ namespace gum_tests {
 
     void testClassWithReferenceError1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -857,7 +857,7 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -865,7 +865,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|9 col 29| Error : Link myfoo in chain myfoo.state "
              "not found";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -874,7 +874,7 @@ namespace gum_tests {
 
     void testClassWithReferenceError2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -888,7 +888,7 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -896,7 +896,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|9 col 29| Error : Link stat in chain myFoo.stat not "
              "found";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -905,7 +905,7 @@ namespace gum_tests {
 
     void testClassWithReferenceError3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -918,7 +918,7 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -926,7 +926,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|8 col 29| Error : Link myFoo in chain myFoo.state "
              "not found";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -935,7 +935,7 @@ namespace gum_tests {
 
     void testClassWithReferenceError4() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Bar extends Foo { " << std::endl
             << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
             << std::endl
@@ -950,7 +950,7 @@ namespace gum_tests {
             << "Bar myBar;" << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -958,7 +958,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|6 col 1| Error : Class Foo cannot reference "
              "subclass Bar";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -967,7 +967,7 @@ namespace gum_tests {
 
     void testClassWithReferenceError6() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Bar extends Foo { " << std::endl
             << "Bar myBar;" << std::endl
             << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
@@ -983,7 +983,7 @@ namespace gum_tests {
             << "Bar myBar;" << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -991,7 +991,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|7 col 1| Error : Class Foo cannot reference "
              "subclass Bar";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -999,7 +999,7 @@ namespace gum_tests {
 
     void testOrAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -1007,7 +1007,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = or(myFoos.state);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1045,7 +1045,7 @@ namespace gum_tests {
 
     void testOrAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -1055,7 +1055,7 @@ namespace gum_tests {
             << "boolean isWorking = or([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1093,7 +1093,7 @@ namespace gum_tests {
 
     void testAndAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -1101,7 +1101,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = and(myFoos.state);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1139,7 +1139,7 @@ namespace gum_tests {
 
     void testAndAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -1149,7 +1149,7 @@ namespace gum_tests {
             << "boolean isWorking = and([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1187,7 +1187,7 @@ namespace gum_tests {
 
     void testForAllAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1196,7 +1196,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = forall(myFoos.state, OK);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1234,7 +1234,7 @@ namespace gum_tests {
 
     void testForAllAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1245,7 +1245,7 @@ namespace gum_tests {
             << "boolean isWorking = forall([myFoos.state, myBoos.state], OK);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1283,7 +1283,7 @@ namespace gum_tests {
 
     void testExistsAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1292,7 +1292,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = exists(myFoos.state, OK);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1330,7 +1330,7 @@ namespace gum_tests {
 
     void testExistsAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state OK, NOK;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1341,7 +1341,7 @@ namespace gum_tests {
             << "boolean isWorking = exists([myFoos.state, myBoos.state], OK);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1379,7 +1379,7 @@ namespace gum_tests {
 
     void testMinAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1388,7 +1388,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = min(myFoos.state);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1426,7 +1426,7 @@ namespace gum_tests {
 
     void testMinAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1437,7 +1437,7 @@ namespace gum_tests {
             << "state isWorking = min([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1475,7 +1475,7 @@ namespace gum_tests {
 
     void testMaxAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1484,7 +1484,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = max(myFoos.state);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1522,7 +1522,7 @@ namespace gum_tests {
 
     void testMaxAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1533,7 +1533,7 @@ namespace gum_tests {
             << "state isWorking = max([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1571,7 +1571,7 @@ namespace gum_tests {
 
     void testMedianAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1580,7 +1580,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = median(myFoos.state);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1618,7 +1618,7 @@ namespace gum_tests {
 
     void testMedianAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1629,7 +1629,7 @@ namespace gum_tests {
             << "state isWorking = median([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1667,7 +1667,7 @@ namespace gum_tests {
 
     void testAmplitudeAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1676,7 +1676,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = amplitude(myFoos.state);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1715,7 +1715,7 @@ namespace gum_tests {
 
     void testAmplitudeAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1726,7 +1726,7 @@ namespace gum_tests {
             << "state isWorking = amplitude([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1765,7 +1765,7 @@ namespace gum_tests {
 
     void testCountAggregate() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1774,7 +1774,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = count(myFoos.state, 5);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1812,7 +1812,7 @@ namespace gum_tests {
 
     void testCountAggregateArray() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1823,7 +1823,7 @@ namespace gum_tests {
             << "state isWorking = count([myFoos.state, myBoos.state], 5);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1861,7 +1861,7 @@ namespace gum_tests {
 
     void testOrAggregateWithErrors1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -1869,7 +1869,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = or(myBoos.state);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1877,7 +1877,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|6 col 24| Error : Link myBoos in chain myBoos.state "
              "not found";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -1885,7 +1885,7 @@ namespace gum_tests {
 
     void testOrAggregateWithErrors2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -1893,7 +1893,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = or(myFoos.st);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1901,7 +1901,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|6 col 24| Error : Link st in chain myFoos.st not "
              "found";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -1909,7 +1909,7 @@ namespace gum_tests {
 
     void testOrAggregateWithErrors3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -1917,7 +1917,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = or();" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1925,14 +1925,14 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|6 col 24| Error : invalid declaration";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
     void testOrAggregateWithErrors4() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -1946,7 +1946,7 @@ namespace gum_tests {
             << "boolean isWorking = or([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1954,7 +1954,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|11 col 39| Error : Expected type boolean for parent "
              "myBoos.state, found state";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -1962,7 +1962,7 @@ namespace gum_tests {
 
     void testCountAggregateWithErrors5() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -1971,7 +1971,7 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = count(myFoos.state, foobar);" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -1979,7 +1979,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|7 col 39| Error : Parameter foobar in aggregate "
              "isWorking does not match any expected values";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -1987,14 +1987,14 @@ namespace gum_tests {
 
     void testInheritance1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
       input << "class Bar implements Foo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2018,14 +2018,14 @@ namespace gum_tests {
 
     void testInheritance2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
       input << "class Bar implements Foo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2049,7 +2049,7 @@ namespace gum_tests {
 
     void testInheritance3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -2062,7 +2062,7 @@ namespace gum_tests {
             << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2088,14 +2088,14 @@ namespace gum_tests {
 
     void testInheritanceError1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
       input << "class Foo implements Bar { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2103,21 +2103,21 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|4 col 22| Error : Interface Bar not found";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
     void testInheritanceError2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
       input << "class Foo implements iFoo { " << std::endl
             << "boolean stat {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2125,7 +2125,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|4 col 7| Error : Class Foo does not implement all of "
              "interface iFoo attributes";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -2133,7 +2133,7 @@ namespace gum_tests {
 
     void testInheritanceError3() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -2141,7 +2141,7 @@ namespace gum_tests {
       input << "class Foo implements iFoo { " << std::endl
             << "state state {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2149,7 +2149,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|6 col 7| Error : Class Foo attribute state does not "
              "respect interface iFoo";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -2157,14 +2157,14 @@ namespace gum_tests {
 
     void testInheritanceError4() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Foo { " << std::endl
             << "boolean state {[0.3, 0.7]};" << std::endl
             << "}" << std::endl;
       input << "class Bar extends oo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2172,14 +2172,14 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|4 col 19| Error : Unknown class oo";
       TS_ASSERT_EQUALS( line, msg.str() );
     }
 
     void testInheritanceError5() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Foo { " << std::endl
             << "boolean state {[0.3, 0.7]};" << std::endl
             << "}" << std::endl;
@@ -2187,7 +2187,7 @@ namespace gum_tests {
       input << "class Bar extends Foo { " << std::endl
             << "state state {[0.2, 0.8]};" << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2195,7 +2195,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|6 col 7| Error : Illegal overload of element state from "
              "class Foo";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -2203,7 +2203,7 @@ namespace gum_tests {
 
     void testOrderDoesNotMatter1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Bar extends Foo { " << std::endl
             << "state state {[0.5, 0.5]};" << std::endl
             << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
@@ -2216,7 +2216,7 @@ namespace gum_tests {
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2242,7 +2242,7 @@ namespace gum_tests {
 
     void testOrderDoesNotMatter2() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "class Bar extends Foo { " << std::endl
             << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
             << std::endl
@@ -2255,7 +2255,7 @@ namespace gum_tests {
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2283,8 +2283,8 @@ namespace gum_tests {
       // Arrange
       auto path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
       gum::prm::PRM<double> prm;
-      auto input   = std::ifstream( path );
-      auto output  = std::stringstream();
+      auto input = std::ifstream( path );
+      std::stringstream output;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
@@ -2294,7 +2294,7 @@ namespace gum_tests {
 
     void testClassWithOverloading() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state extends boolean OK: true, NOK: false;";
       input << std::endl;
       input << "interface Plop { "
@@ -2315,7 +2315,7 @@ namespace gum_tests {
                "state state {[ 0.1, 0.9 ]};"
                "}";
       input << std::endl;
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2383,7 +2383,7 @@ namespace gum_tests {
 
     void testClassWithOverloadingError1() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "type state extends boolean OK: true, NOK: false;";
       input << std::endl;
       input << "interface Plop { "
@@ -2404,7 +2404,7 @@ namespace gum_tests {
                "state state {[ 0.1, 0.9 ]};"
                "}";
       input << std::endl;
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2412,7 +2412,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|5 col 33| Error : Illegal overload of element plop from class "
              "Bar";
       TS_ASSERT_EQUALS( line, msg.str() );
@@ -2420,7 +2420,7 @@ namespace gum_tests {
 
     void testAggregateWithError() {
       // Arrange
-      auto input = std::stringstream();
+      std::stringstream input;
       input << "int(0,10) state;" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
@@ -2431,7 +2431,7 @@ namespace gum_tests {
             << "state isWorking = count([myFoos, myBoos.state], 5);"
             << std::endl
             << "}";
-      auto output = std::stringstream();
+      std::stringstream output;
       gum::prm::PRM<double> prm;
       auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2439,7 +2439,7 @@ namespace gum_tests {
       // Assert
       std::string line;
       std::getline( output, line );
-      auto msg = std::stringstream();
+      std::stringstream msg;
       msg << "|8 col 26| Error : Illegal parent myFoos";
       TS_ASSERT_EQUALS( line, msg.str() );
     }

@@ -80,11 +80,6 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING( copy.other( (gum::NodeId)42 ) );
     }
 
-    void testIsDirected() {
-      gum::Edge edge( (gum::NodeId)1, (gum::NodeId)2 );
-      TS_ASSERT( !edge.isDirected() );
-    }
-
     void testHash() {
       gum::HashTable<gum::Edge, gum::NodeId> hash;
 

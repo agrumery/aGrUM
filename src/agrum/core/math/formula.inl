@@ -487,32 +487,32 @@ namespace gum {
 
   INLINE
   Formula operator-( const Formula& a ) {
-    return std::move( Formula( std::to_string( -1 * a.result() ) ) );
+    return Formula( std::to_string( -1 * a.result() ) );
   }
 
   INLINE
   Formula operator+( const Formula& a, const Formula& b ) {
-    return std::move( Formula( std::to_string( a.result() + b.result() ) ) );
+    return Formula( std::to_string( a.result() + b.result() ) );
   }
 
   INLINE
   Formula operator-( const Formula& a, const Formula& b ) {
-    return std::move( Formula( std::to_string( a.result() - b.result() ) ) );
+    return Formula( std::to_string( a.result() - b.result() ) );
   }
 
   INLINE
   Formula operator*( const Formula& a, const Formula& b ) {
-    return std::move( Formula( std::to_string( a.result() * b.result() ) ) );
+    return Formula( std::to_string( a.result() * b.result() ) );
   }
 
   INLINE
   Formula operator/( const Formula& a, const Formula& b ) {
-    return std::move( Formula( std::to_string( a.result() / b.result() ) ) );
+    return Formula( std::to_string( a.result() / b.result() ) );
   }
 
   INLINE
   std::string to_string( const Formula& f ) {
-    return std::move( std::to_string( f.result() ) );
+    return std::to_string( f.result() );
   }
 
   INLINE

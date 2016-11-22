@@ -51,7 +51,7 @@ auto options() {
                       "output file type (txt or csv)" );
   desc.add_options()(
       "input-file", po::value<std::vector<std::string>>(), "input files" );
-  return std::move( desc );
+  return desc;
 }
 
 /**
@@ -60,7 +60,7 @@ auto options() {
 auto positional_options() {
   auto p = po::positional_options_description{};
   p.add( "input-file", -1 );
-  return std::move( p );
+  return p;
 }
 
 /**

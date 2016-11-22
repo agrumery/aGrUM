@@ -70,23 +70,25 @@ namespace gum {
                            public gum::DiGraphListener {
     private:
     /// The referred BayesNet
-    const BayesNet<GUM_SCALAR>& __bn;
+    const IBayesNet<GUM_SCALAR>& __bn;
 
     /// Mapping between the variable's id and their CPT specific to this
     /// Fragment.
     NodeProperty<const Potential<GUM_SCALAR>*> __localCPTs;
 
     public:
-    // ===========================================================================
     /// @name Constructors / Destructors
-    // ===========================================================================
     /// @{
-    BayesNetFragment( const BayesNet<GUM_SCALAR>& bn );
+    BayesNetFragment()                                               = delete;
+    BayesNetFragment( const BayesNetFragment<GUM_SCALAR>& fragment ) = delete;
+    BayesNetFragment( BayesNetFragment<GUM_SCALAR>&& fragment )      = delete;
+
+    BayesNetFragment( const IBayesNet<GUM_SCALAR>& bn );
 
     virtual ~BayesNetFragment();
     /// @}
 
-    /// @name signals to listen to
+    /// @name signals
     /// @{
 
     /// the action to take when a new node is inserted into the graph
@@ -216,7 +218,7 @@ namespace gum {
      *to be
      * consistent with the new local potential.
      * @param id the nodeId
-     * @param pot the potential
+     * @param pot the potential<
      *
      * @throw NotFound if the id is not in the fragment
      * @throw OperationNotAllowed if the potential is not compliant with the
@@ -271,7 +273,6 @@ namespace gum {
      */
     void _uninstallCPT( NodeId id ) noexcept;
   };
-
 
   extern template class BayesNetFragment<float>;
   extern template class BayesNetFragment<double>;

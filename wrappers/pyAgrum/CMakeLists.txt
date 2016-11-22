@@ -47,11 +47,13 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
-  OUTPUT_VARIABLE PYTHON_INSTALL
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+if (NOT DEFINED PYTHON_INSTALL)
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
+    OUTPUT_VARIABLE PYTHON_INSTALL
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+endif ()
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_config_vars('VERSION')[0])"
@@ -212,11 +214,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/functions.py DESTINATION ${PYTHON_INST
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE} DESTINATION ${PYTHON_INSTALL})
 install(FILES ${GENERATED_PYTHON}/pyAgrum.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 
-if (WIN32)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/Release/${_PYAGRUMLIB}.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
-else (WIN32)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUMLIB}.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
-endif (WIN32)
+install(TARGETS ${_PYAGRUMLIB} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 
 install(FILES ${GUMLIB_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib)
 install(FILES ${GUMLIB_UTILS_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib/_utils)

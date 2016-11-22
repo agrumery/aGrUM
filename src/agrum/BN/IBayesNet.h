@@ -175,7 +175,37 @@ namespace gum {
      *instantiations of
      * its parents.
      */
-    Idx dim() const;
+    Size dim() const;
+
+    /**
+     *
+     * @return the biggest domainSize among the variables of *this
+     */
+    Size maxVarDomainSize() const;
+
+    /**
+     *
+     * @return the smallest value in the CPTs of *this
+     */
+    GUM_SCALAR minParam() const;
+
+    /**
+     *
+     * @return the biggest value in the CPTs of *this
+     */
+    GUM_SCALAR maxParam() const;
+
+    /**
+     *
+     * @return the smallest value (not equal to 0) in the CPTs of *this
+     */
+    GUM_SCALAR minNonZeroParam() const;
+
+    /**
+     *
+     * @return the biggest value (not equal to 1) in the CPTs of *this
+     */
+    GUM_SCALAR maxNonOneParam() const;
 
     /// @return Returns a dot representation of this IBayesNet.
     virtual std::string toDot( void ) const;

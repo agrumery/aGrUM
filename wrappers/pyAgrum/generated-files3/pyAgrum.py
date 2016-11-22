@@ -4848,18 +4848,6 @@ class Edge(_object):
     __swig_destroy__ = _pyAgrum.delete_Edge
     __del__ = lambda self: None
 
-    def isDirected(self) -> "bool":
-        """
-        isDirected(Edge self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Edge const *
-
-        """
-        return _pyAgrum.Edge_isDirected(self)
-
-
     def other(self, id: 'gum::NodeId') -> "gum::NodeId":
         """
         other(Edge self, gum::NodeId id) -> gum::NodeId
@@ -4977,18 +4965,6 @@ class Arc(_object):
 
         """
         return _pyAgrum.Arc_head(self)
-
-
-    def isDirected(self) -> "bool":
-        """
-        isDirected(Arc self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Arc const *
-
-        """
-        return _pyAgrum.Arc_isDirected(self)
 
 
     def other(self, id: 'gum::NodeId') -> "gum::NodeId":
@@ -7935,6 +7911,18 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_newFactory(self)
 
 
+    def isNonZeroMap(self) -> "gum::Potential< double >":
+        """
+        isNonZeroMap(Potential_double self) -> Potential_double
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double_isNonZeroMap(self)
+
+
     def sum(self) -> "double":
         """
         sum(Potential_double self) -> double
@@ -7981,6 +7969,30 @@ class Potential_double(_object):
 
         """
         return _pyAgrum.Potential_double_min(self)
+
+
+    def maxNonOne(self) -> "double":
+        """
+        maxNonOne(Potential_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double_maxNonOne(self)
+
+
+    def minNonZero(self) -> "double":
+        """
+        minNonZero(Potential_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double_minNonZero(self)
 
 
     def entropy(self) -> "double":
@@ -8082,7 +8094,13 @@ class Potential_double(_object):
         self: gum::Potential< double > const *
 
         """
-        return _pyAgrum.Potential_double_normalizeAsCPT(self)
+        val = _pyAgrum.Potential_double_normalizeAsCPT(self)
+
+        self._notSync=True
+        return self
+
+
+        return val
 
 
     def scale(self, v: 'double') -> "gum::Potential< double > const &":
@@ -8094,7 +8112,13 @@ class Potential_double(_object):
         v: double
 
         """
-        return _pyAgrum.Potential_double_scale(self, v)
+        val = _pyAgrum.Potential_double_scale(self, v)
+
+        self._notSync=True
+        return self
+
+
+        return val
 
 
     def translate(self, v: 'double') -> "gum::Potential< double > const &":
@@ -8106,7 +8130,13 @@ class Potential_double(_object):
         v: double
 
         """
-        return _pyAgrum.Potential_double_translate(self, v)
+        val = _pyAgrum.Potential_double_translate(self, v)
+
+        self._notSync=True
+        return self
+
+
+        return val
 
 
     def __add__(self, p2: 'Potential_double') -> "gum::Potential< double >":
@@ -9150,9 +9180,9 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double___ne__(self, src)
 
 
-    def dim(self) -> "gum::Idx":
+    def dim(self) -> "gum::Size":
         """
-        dim(IBayesNet_double self) -> gum::Idx
+        dim(IBayesNet_double self) -> gum::Size
 
         Parameters
         ----------
@@ -9160,6 +9190,66 @@ class IBayesNet_double(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_double_dim(self)
+
+
+    def maxVarDomainSize(self) -> "gum::Size":
+        """
+        maxVarDomainSize(IBayesNet_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_maxVarDomainSize(self)
+
+
+    def minParam(self) -> "double":
+        """
+        minParam(IBayesNet_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_minParam(self)
+
+
+    def maxParam(self) -> "double":
+        """
+        maxParam(IBayesNet_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_maxParam(self)
+
+
+    def minNonZeroParam(self) -> "double":
+        """
+        minNonZeroParam(IBayesNet_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_minNonZeroParam(self)
+
+
+    def maxNonOneParam(self) -> "double":
+        """
+        maxNonOneParam(IBayesNet_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_maxNonOneParam(self)
 
 
     def toDot(self) -> "std::string":

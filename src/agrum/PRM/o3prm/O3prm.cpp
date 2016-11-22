@@ -816,7 +816,7 @@ namespace gum {
 
       std::unique_ptr<O3Attribute> O3RawCPT::copy() const {
         auto copy = new O3RawCPT( *this );
-        return std::move( std::unique_ptr<O3Attribute>( copy ) );
+        return std::unique_ptr<O3Attribute>( copy );
       }
 
       O3RuleCPT::O3RuleCPT()
@@ -874,7 +874,7 @@ namespace gum {
 
       std::unique_ptr<O3Attribute> O3RuleCPT::copy() const {
         auto copy = new O3RuleCPT( *this );
-        return std::move( std::unique_ptr<O3Attribute>( copy ) );
+        return std::unique_ptr<O3Attribute>( copy );
       }
 
       O3Class::O3Class() {
