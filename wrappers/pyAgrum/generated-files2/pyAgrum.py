@@ -9269,6 +9269,66 @@ class IBayesNet_double(DAGmodel):
         """
         return _pyAgrum.IBayesNet_double___str__(self)
 
+
+    def names(self):
+        """
+        names(IBayesNet_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_names(self)
+
+
+    def ids(self):
+        """
+        ids(IBayesNet_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > *
+
+        """
+        return _pyAgrum.IBayesNet_double_ids(self)
+
+
+    def arcs(self):
+        """
+        arcs(IBayesNet_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > *
+
+        """
+        return _pyAgrum.IBayesNet_double_arcs(self)
+
+
+    def parents(self, id):
+        """
+        parents(IBayesNet_double self, gum::NodeId const id) -> PyObject *
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.IBayesNet_double_parents(self, id)
+
+
+    def children(self, id):
+        """
+        children(IBayesNet_double self, gum::NodeId const id) -> PyObject *
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.IBayesNet_double_children(self, id)
+
 IBayesNet_double_swigregister = _pyAgrum.IBayesNet_double_swigregister
 IBayesNet_double_swigregister(IBayesNet_double)
 
@@ -10723,18 +10783,6 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_evidenceProbability(self)
 
 
-    def jointPosterior(self, seq_of_ids):
-        """
-        jointPosterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
-
-        Parameters
-        ----------
-        seq_of_ids: PyObject *
-
-        """
-        return _pyAgrum.LazyPropagation_double_jointPosterior(self, seq_of_ids)
-
-
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
@@ -10764,6 +10812,102 @@ class LazyPropagation_double(_object):
         for k in targets:
             self.addTarget(k)
 
+
+
+    def hardEvidenceList(self):
+        """
+        hardEvidenceList(LazyPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_hardEvidenceList(self)
+
+
+    def softEvidenceList(self):
+        """
+        softEvidenceList(LazyPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_softEvidenceList(self)
+
+
+    def targetList(self):
+        """
+        targetList(LazyPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_targetList(self)
+
+
+    def jointPosterior(self, list):
+        """
+        jointPosterior(LazyPropagation_double self, PyObject * list) -> Potential_double
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.LazyPropagation_double_jointPosterior(self, list)
+
+
+    def addJointTarget(self, list):
+        """
+        addJointTarget(LazyPropagation_double self, PyObject * list)
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.LazyPropagation_double_addJointTarget(self, list)
+
+
+    def eraseJointTarget(self, list):
+        """
+        eraseJointTarget(LazyPropagation_double self, PyObject * list)
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseJointTarget(self, list)
+
+
+    def isJointTarget(self, list):
+        """
+        isJointTarget(LazyPropagation_double self, PyObject * list) -> bool
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.LazyPropagation_double_isJointTarget(self, list)
+
+
+    def jointTargets(self):
+        """
+        jointTargets(LazyPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_jointTargets(self)
 
 
     def makeInference(self):
@@ -11113,6 +11257,68 @@ class LazyPropagation_double(_object):
         """
         return _pyAgrum.LazyPropagation_double_H(self, *args)
 
+
+    def eraseAllJointTargets(self):
+        """
+        eraseAllJointTargets(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseAllJointTargets(self)
+
+
+    def eraseAllMarginalTargets(self):
+        """
+        eraseAllMarginalTargets(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseAllMarginalTargets(self)
+
+
+    def nbrJointTargets(self):
+        """
+        nbrJointTargets(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrJointTargets(self)
+
+
+    def I(self, X, Y):
+        """
+        I(LazyPropagation_double self, gum::NodeId const X, gum::NodeId const Y) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+        Y: gum::NodeId const
+
+        """
+        return _pyAgrum.LazyPropagation_double_I(self, X, Y)
+
+
+    def VI(self, X, Y):
+        """
+        VI(LazyPropagation_double self, gum::NodeId const X, gum::NodeId const Y) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+        Y: gum::NodeId const
+
+        """
+        return _pyAgrum.LazyPropagation_double_VI(self, X, Y)
+
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
@@ -11171,6 +11377,42 @@ class GibbsInference_double(_object):
         for k in targets:
             self.addTarget(k)
 
+
+
+    def hardEvidenceList(self):
+        """
+        hardEvidenceList(GibbsInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_hardEvidenceList(self)
+
+
+    def softEvidenceList(self):
+        """
+        softEvidenceList(GibbsInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_softEvidenceList(self)
+
+
+    def targetList(self):
+        """
+        targetList(GibbsInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_targetList(self)
 
 
     def setVerbosity(self, v):
