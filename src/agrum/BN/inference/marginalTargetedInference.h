@@ -90,7 +90,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential<GUM_SCALAR>& posterior( const NodeId node ) final;
+    virtual const Potential<GUM_SCALAR>& posterior( const NodeId node );
 
     /// Computes and returns the posterior of a node.
     /**

@@ -92,6 +92,23 @@ namespace gum {
     virtual const Potential<GUM_SCALAR>&
     jointPosterior( const NodeSet& nodes ) final;
 
+    /// Computes and returns the posterior of a node.
+    /**
+     * @returns a const ref to the posterior probability of the node.
+     * @param node the node for which we need a posterior probability
+     *
+     * @warning for efficiency reasons, the potential is stored into the
+     * inference engine and is returned by reference. In order to ensure
+     * that the potential may still exist even if the Inference object is
+     * destroyed, the user has to copy it explicitly.
+     *
+     * @warning prepareInference and makeInference may be applied if needed by
+     * the posterior method.
+     *
+     * @throw UndefinedElement if node is not in the set of targets
+     */
+    virtual const Potential<GUM_SCALAR>& posterior( const NodeId node ) final;
+
     /// @}
 
 

@@ -217,8 +217,18 @@ namespace gum {
     else
       return _jointPosterior ( vars, set );
   }
-
   
+
+  // Compute the posterior of a node
+  template <typename GUM_SCALAR>
+  const Potential<GUM_SCALAR>&
+  JointTargetedInference<GUM_SCALAR>::posterior( const NodeId node ) {
+    if ( this->targets().contains ( node ) )
+      return MarginalTargetedInference<GUM_SCALAR>::posterior( node );
+    else
+      return jointPosterior ( NodeSet { node } );
+  }
+ 
 
   // ##############################################################################
   // Entropy

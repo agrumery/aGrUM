@@ -235,6 +235,7 @@ namespace gum_tests {
       nodeset.insert( 2 );
       nodeset.insert( 3 );
       nodeset.insert( 4 );
+      inf.eraseAllTargets();
       inf.addJointTarget( nodeset );
 
       gum::NodeSet nodeset2;
@@ -242,6 +243,7 @@ namespace gum_tests {
       nodeset2.insert( 4 );
 
       TS_ASSERT_THROWS_NOTHING( inf.jointPosterior( nodeset2 ) );
+      TS_ASSERT_THROWS_NOTHING( inf.posterior( 3 ) );
     }
 
     // testing information methods
