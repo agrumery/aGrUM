@@ -221,6 +221,39 @@ namespace gum_tests {
       //@TODO : test computations and not only good behaviour
     }
 
+    
+    // Testing when there is no evidence
+    void testJoint() {
+      fill( *bn );
+      // Testing the inference
+      gum::VariableElimination<float> inf( bn );
+      gum::NodeSet nodeset;
+      nodeset.insert( 2 );
+      nodeset.insert( 4 );
+      inf.addJointTarget( nodeset );
+
+      TS_ASSERT_THROWS_NOTHING( inf.jointPosterior( nodeset ) );
+    }
+
+    // Testing when there is no evidence
+    void testJoint2() {
+      fill( *bn );
+      // Testing the inference
+      gum::VariableElimination<float> inf( bn );
+      gum::NodeSet nodeset;
+      nodeset.insert( 1 );
+      nodeset.insert( 2 );
+      nodeset.insert( 3 );
+      nodeset.insert( 4 );
+      inf.addJointTarget( nodeset );
+
+      gum::NodeSet nodeset2;
+      nodeset2.insert( 2 );
+      nodeset2.insert( 4 );
+
+      TS_ASSERT_THROWS_NOTHING( inf.jointPosterior( nodeset2 ) );
+    }
+
     // void testAlarm() {
     //   std::string file_name = "/ressources/alarm.bif";
     //   std::string file_path = base_dir + file_name;
