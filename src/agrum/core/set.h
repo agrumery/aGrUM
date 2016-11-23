@@ -161,17 +161,17 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type          = Key;
-    using reference           = Key&;
-    using const_reference     = const Key&;
-    using pointer             = Key*;
-    using const_pointer       = const Key*;
-    using size_type           = std::size_t;
-    using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
-    using iterator            = SetIterator<Key>;
-    using const_iterator      = SetIterator<Key>;
-    using iterator_safe       = SetIteratorSafe<Key>;
+    using value_type = Key;
+    using reference = Key&;
+    using const_reference = const Key&;
+    using pointer = Key*;
+    using const_pointer = const Key*;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using allocator_type = Alloc;
+    using iterator = SetIterator<Key>;
+    using const_iterator = SetIterator<Key>;
+    using iterator_safe = SetIteratorSafe<Key>;
     using const_iterator_safe = SetIteratorSafe<Key>;
     /// @}
 
@@ -192,7 +192,7 @@ namespace gum {
      * automatically when its number of elements is sufficiently high that it
      * induces slow retrievals of elements.
      */
-    explicit Set( Size capacity      = HashTableConst::default_size,
+    explicit Set( Size capacity = HashTableConst::default_size,
                   bool resize_policy = true );
 
     /**
@@ -413,6 +413,18 @@ namespace gum {
      * @return Returns true if a given elements belong to the set.
      */
     bool contains( const Key& k ) const;
+
+    /**
+     * @return Returns true if *this is a strict subset of s
+     */
+    template <typename OtherAlloc>
+    bool isSubsetOf( const Set<Key, OtherAlloc>& s ) const;
+
+    /**
+     * @return Returns true if *this is a strict superset of s
+     */
+    template <typename OtherAlloc>
+    bool isSupersetOf( const Set<Key, OtherAlloc>& s ) const;
 
     /**
      * @brief Indicates whether a given elements belong to the set.
@@ -697,9 +709,8 @@ namespace gum {
      * default size is computed that is a good trade-off between space
      * consumption and efficiency of new elements insertions.
      */
-    template <
-        typename NewKey,
-        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+    template <typename NewKey,
+              typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     HashTable<Key, NewKey, NewAlloc> hashMap( NewKey ( *f )( const Key& ),
                                               Size capacity = 0 ) const;
 
@@ -716,9 +727,8 @@ namespace gum {
      * default size is computed that is a good trade-off between space
      * consumption and efficiency of new elements insertions.
      */
-    template <
-        typename NewKey,
-        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+    template <typename NewKey,
+              typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     HashTable<Key, NewKey, NewAlloc> hashMap( const NewKey& val,
                                               Size size = 0 ) const;
 
@@ -730,9 +740,8 @@ namespace gum {
      *
      * @param f A function that maps a Key into a NewKey
      */
-    template <
-        typename NewKey,
-        typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
+    template <typename NewKey,
+              typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     List<NewKey, NewAlloc> listMap( NewKey ( *f )( const Key& ) ) const;
 
     /// @}
@@ -795,12 +804,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = Key;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Key;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     /**
@@ -1008,12 +1017,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = Key;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Key;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     /**

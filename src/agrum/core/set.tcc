@@ -43,16 +43,14 @@ namespace gum {
   template <typename Alloc>
   INLINE SetIteratorSafe<Key>::SetIteratorSafe( const Set<Key, Alloc>& set,
                                                 Position pos )
-      : __ht_iter{pos == SetIteratorSafe<Key>::END
-                      ? set.__inside.cendSafe()
-                      : set.__inside.cbeginSafe()} {
+      : __ht_iter{pos == SetIteratorSafe<Key>::END ? set.__inside.cendSafe()
+                                                   : set.__inside.cbeginSafe()} {
     GUM_CONSTRUCTOR( SetIteratorSafe );
   }
 
   // copy constructor
   template <typename Key>
-  INLINE
-  SetIteratorSafe<Key>::SetIteratorSafe( const SetIteratorSafe<Key>& iter )
+  INLINE SetIteratorSafe<Key>::SetIteratorSafe( const SetIteratorSafe<Key>& iter )
       : __ht_iter{iter.__ht_iter} {
     GUM_CONS_CPY( SetIteratorSafe );
   }
@@ -177,8 +175,7 @@ namespace gum {
   // creates an iterator for a given set
   template <typename Key>
   template <typename Alloc>
-  INLINE SetIterator<Key>::SetIterator( const Set<Key, Alloc>& set,
-                                        Position pos )
+  INLINE SetIterator<Key>::SetIterator( const Set<Key, Alloc>& set, Position pos )
       : __ht_iter{pos == SetIterator<Key>::END ? set.__inside.cend()
                                                : set.__inside.cbegin()} {
     GUM_CONSTRUCTOR( SetIterator );
@@ -477,8 +474,7 @@ namespace gum {
   // mathematical inequality between two sets
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
-  INLINE bool Set<Key, Alloc>::
-  operator!=( const Set<Key, OtherAlloc>& s2 ) const {
+  INLINE bool Set<Key, Alloc>::operator!=( const Set<Key, OtherAlloc>& s2 ) const {
     return !( operator==( s2 ) );
   }
 
@@ -520,8 +516,7 @@ namespace gum {
 
   // the usual begin iterator to parse the set
   template <typename Key, typename Alloc>
-  INLINE typename Set<Key, Alloc>::const_iterator
-  Set<Key, Alloc>::cbegin() const {
+  INLINE typename Set<Key, Alloc>::const_iterator Set<Key, Alloc>::cbegin() const {
     return SetIterator<Key>{*this};
   }
 
@@ -580,6 +575,29 @@ namespace gum {
   template <typename Key, typename Alloc>
   INLINE bool Set<Key, Alloc>::contains( const Key& k ) const {
     return __inside.exists( k );
+  }
+
+
+  template <typename Key, typename Alloc>
+  template <typename OtherAlloc>
+  INLINE bool Set<Key, Alloc>::isSubsetOf( const Set<Key, OtherAlloc>& s ) const {
+    if (this->size()>=s.size()) {
+      return false;
+    }
+
+    for ( const auto& elt : *this ) {
+      if ( !s.contains( elt ) ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  template <typename Key, typename Alloc>
+  template <typename OtherAlloc>
+  INLINE bool
+  Set<Key, Alloc>::isSupersetOf( const Set<Key, OtherAlloc>& s ) const {
+    return s.isSubsetOf( *this );
   }
 
   // indicates whether a given elements belong to the set
@@ -695,7 +713,7 @@ namespace gum {
   operator*( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r           = res.__inside;
+    HashTable<Key, bool, Alloc>& h_r = res.__inside;
 
     if ( size() < h2.size() ) {
       for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
@@ -739,8 +757,7 @@ namespace gum {
   operator+=( const Set<Key, OtherAlloc>& s2 ) {
     if ( &s2 != this ) {
       for ( auto pair : s2.__inside ) {
-        if ( !__inside.exists( pair.first ) )
-          __inside.insert( pair.first, true );
+        if ( !__inside.exists( pair.first ) ) __inside.insert( pair.first, true );
       }
     }
 
@@ -755,10 +772,9 @@ namespace gum {
   operator+( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res = *this;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r           = res.__inside;
+    HashTable<Key, bool, Alloc>& h_r = res.__inside;
 
-    for ( HashTableConstIterator<Key, bool> iter = h2.cbegin();
-          iter != h2.cend();
+    for ( HashTableConstIterator<Key, bool> iter = h2.cbegin(); iter != h2.cend();
           ++iter ) {
       if ( !h_r.exists( iter.key() ) ) h_r.insert( iter.key(), true );
     }
@@ -774,7 +790,7 @@ namespace gum {
   operator-( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r           = res.__inside;
+    HashTable<Key, bool, Alloc>& h_r = res.__inside;
 
     for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
           iter != __inside.cend();
@@ -881,10 +897,9 @@ namespace gum {
 
   /// the hash function for sets of int
   template <typename Alloc>
-  Size HashFunc<Set<int, Alloc>>::
-  operator()( const Set<int, Alloc>& key ) const {
+  Size HashFunc<Set<int, Alloc>>::operator()( const Set<int, Alloc>& key ) const {
     Size h = 0;
-    int i  = 0;
+    int i = 0;
     for ( const auto& k : key ) {
       h += ++i * k;
     }
@@ -897,7 +912,7 @@ namespace gum {
   template <typename Alloc>
   Size HashFunc<Set<unsigned int, Alloc>>::
   operator()( const Set<unsigned int, Alloc>& key ) const {
-    Size h         = 0;
+    Size h = 0;
     unsigned int i = 0;
     for ( const auto k : key ) {
       h += ++i * k;
@@ -925,7 +940,7 @@ namespace gum {
   template <typename Alloc>
   Size HashFunc<Set<unsigned long, Alloc>>::
   operator()( const Set<unsigned long, Alloc>& key ) const {
-    Size h          = 0;
+    Size h = 0;
     unsigned long i = 0;
     for ( const auto k : key ) {
       h += ++i * k;

@@ -71,9 +71,9 @@ namespace gum_tests {
       gum::Set<int> set4{20, 50};
 
       gum::Set<int> set5 = std::move( set4 );
-      set4               = std::move( set3 );
-      set3               = std::move( set2 );
-      set2               = std::move( set1 );
+      set4 = std::move( set3 );
+      set3 = std::move( set2 );
+      set2 = std::move( set1 );
 
       TS_ASSERT( set2.size() == 3 );
     }
@@ -442,8 +442,7 @@ namespace gum_tests {
 
       gum::Set<int> obtained;
 
-      for ( gum::Set<int>::iterator iter = t1.begin(); iter != t1.end();
-            ++iter ) {
+      for ( gum::Set<int>::iterator iter = t1.begin(); iter != t1.end(); ++iter ) {
         obtained.insert( *iter );
       }
 
@@ -451,8 +450,7 @@ namespace gum_tests {
 
       gum::Set<int> obtained2;
 
-      for ( gum::Set<int>::iterator iter = t1.begin(); iter != t1.end();
-            ++iter ) {
+      for ( gum::Set<int>::iterator iter = t1.begin(); iter != t1.end(); ++iter ) {
         obtained2.insert( *iter );
       }
 
@@ -515,8 +513,7 @@ namespace gum_tests {
       TS_ASSERT( t1 == obtained );
       obtained.clear();
 
-      for ( gum::Set<int>::iterator iter = t1.begin(); iter != t1.end();
-            ++iter ) {
+      for ( gum::Set<int>::iterator iter = t1.begin(); iter != t1.end(); ++iter ) {
         obtained.insert( *iter );
       }
 
@@ -563,6 +560,36 @@ namespace gum_tests {
       gum::Set<int> t{1};
       TS_ASSERT_EQUALS( t.size(), 1u );
       TS_ASSERT_EQUALS( t.toString(), "{1}" );
+    }
+
+    void testSubsetSuperset() {
+      gum::Set<int> t1{1, 2, 3};
+      gum::Set<int> t2{1, 3};
+      gum::Set<int> t3{4};
+
+      TS_ASSERT( !t1.isSubsetOf( t1 ) );
+      TS_ASSERT( !t1.isSubsetOf( t2 ) );
+      TS_ASSERT( !t1.isSubsetOf( t3 ) );
+
+      TS_ASSERT( t2.isSubsetOf( t1 ) );
+      TS_ASSERT( !t2.isSubsetOf( t2 ) )
+      TS_ASSERT( !t2.isSubsetOf( t3 ) );
+
+      TS_ASSERT( !t3.isSubsetOf( t1 ) );
+      TS_ASSERT( !t3.isSubsetOf( t2 ) );
+      TS_ASSERT( !t3.isSubsetOf( t3 ) );
+
+      TS_ASSERT( !t1.isSupersetOf( t1 ) );
+      TS_ASSERT( t1.isSupersetOf( t2 ) );
+      TS_ASSERT( !t1.isSupersetOf( t3 ) );
+
+      TS_ASSERT( !t2.isSupersetOf( t1 ) );
+      TS_ASSERT( !t2.isSupersetOf( t2 ) );
+      TS_ASSERT( !t2.isSupersetOf( t3 ) );
+
+      TS_ASSERT( !t3.isSupersetOf( t1 ) );
+      TS_ASSERT( !t3.isSupersetOf( t2 ) );
+      TS_ASSERT( !t3.isSupersetOf( t3 ) );
     }
 
     private:
@@ -620,9 +647,7 @@ namespace gum_tests {
       return s + ".foo";
     }
 
-    static std::string mappingTestFunc_2( std::string& s ) {
-      return s + ".bar";
-    }
+    static std::string mappingTestFunc_2( std::string& s ) { return s + ".bar"; }
 
     static std::string mappingTestFunc_3( std::string s ) { return s + ".42"; }
   };
