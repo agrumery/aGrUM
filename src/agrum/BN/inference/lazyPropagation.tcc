@@ -1659,12 +1659,16 @@ namespace gum {
   GUM_SCALAR LazyPropagation<GUM_SCALAR>::evidenceProbability() {
     // here, we should check that __find_relevant_potential_type is equal to
     // FIND_ALL. Otherwise, the computations could be wrong.
-    if ( __find_relevant_potential_type !=
-         RelevantPotentialsFinderType::FIND_ALL ) {
-      GUM_ERROR( FatalError,
-                 "To compute the probability of evidence, use "
-                 "setRelevantPotentialsFinderType(RelevantPotentialsFinderType::"
-                 "FIND_ALL )" );
+    RelevantPotentialsFinderType old_relevant_type =
+      __find_relevant_potential_type;
+
+    // if the relevant potentials finder is not equal to FIND_ALL, all the
+    // current computations may lead to incorrect results, so we shall
+    // discard them
+    if ( old_relevant_type != RelevantPotentialsFinderType::FIND_ALL ) {
+      __find_relevant_potential_type = RelevantPotentialsFinderType::FIND_ALL;
+      __is_new_jt_needed = true;
+      this->_setOutdatedBNStructureState();
     }
 
     // perform inference in each connected component
@@ -1690,6 +1694,9 @@ namespace gum {
 
     for ( const auto& projected_cpt : __constants )
       prob_ev *= projected_cpt.second;
+
+    // put back the relevant potential type selected by the user
+    __find_relevant_potential_type = old_relevant_type;
 
     return prob_ev;
   }

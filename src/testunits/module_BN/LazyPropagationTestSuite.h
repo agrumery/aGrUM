@@ -292,6 +292,21 @@ namespace gum_tests {
       TS_ASSERT_DELTA( proba, proba2, 1e-5 );
     }
 
+    void testEvidenceProbability2() {
+      fill( *bn );
+      gum::LazyPropagation<float> inf( bn );
+      inf.makeInference();
+      auto p     = inf.posterior( 0 );
+      auto I     = gum::Instantiation( p );
+      auto proba = p.get( I );
+
+      inf.addEvidence( 0, 0 );
+      inf.makeInference();
+      auto proba2 = inf.evidenceProbability();
+
+      TS_ASSERT_DELTA( proba, proba2, 1e-5 );
+    }
+
     void testEvidenceProbabilityAsia() {
       std::string file = GET_RESSOURCES_PATH( "asia.bif" );
       gum::BayesNet<float> bn;
