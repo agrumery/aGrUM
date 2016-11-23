@@ -180,10 +180,21 @@ namespace gum {
     virtual void _onAllJointTargetsErased() = 0;
 
 
-    /// asks derived classes for the joint posterior of a given set of variables
+    /// asks derived classes for the joint posterior of a declared target set
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
     virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set ) = 0;
+
+    /** @brief asks derived classes for the joint posterior of a set of
+     * variables not declared as a joint target
+     *
+     * @param wanted_target The set of ids of the variables whose joint
+     * posterior is looked for.
+     * @param declared_target the joint target declared by the user that
+     * contains set */
+    virtual const Potential<GUM_SCALAR>&
+    _jointPosterior( const NodeSet& wanted_target,
+                     const NodeSet& declared_target ) = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of
      * a given set of variables

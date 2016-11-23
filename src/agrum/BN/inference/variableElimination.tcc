@@ -932,13 +932,10 @@ namespace gum {
   VariableElimination<GUM_SCALAR>::_unnormalizedJointPosterior( const NodeId id ) {
     const auto& bn = this->BayesNet();
 
-    if ( __target_posterior != nullptr ) delete __target_posterior;
-
     // hard evidence do not belong to the join tree
     // # TODO: check for sets of inconsistent hard evidence
     if ( this->hardEvidenceNodes().contains( id ) ) {
-      __target_posterior = new Potential<GUM_SCALAR>( *( this->evidence()[id] ) );
-      return __target_posterior;
+      return new Potential<GUM_SCALAR>( *( this->evidence()[id] ) );
     }
 
     // if we still need to perform some inference task, do it
@@ -1003,7 +1000,6 @@ namespace gum {
                  "net are incompatible (their joint proba = 0)" );
     }
 
-    __target_posterior = joint;
     return joint;
   }
 
@@ -1015,6 +1011,8 @@ namespace gum {
     // compute the joint posterior and normalize
     auto joint = _unnormalizedJointPosterior( id );
     joint->normalize();
+
+    if ( __target_posterior != nullptr ) delete __target_posterior;
     __target_posterior = joint;
 
     return *joint;
@@ -1026,11 +1024,6 @@ namespace gum {
   Potential<GUM_SCALAR>*
   VariableElimination<GUM_SCALAR>::_unnormalizedJointPosterior(
       const NodeSet& set ) {
-    if ( __target_posterior != nullptr ) {
-      delete __target_posterior;
-      __target_posterior = nullptr;
-    }
-
     // hard evidence do not belong to the join tree, so extract the nodes
     // from targets that are not hard evidence
     NodeSet targets = set, hard_ev_nodes;
@@ -1051,8 +1044,7 @@ namespace gum {
       }
       MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
           __combination_op );
-      __target_posterior = fast_combination.combine( pot_list );
-      return __target_posterior;
+      return fast_combination.combine( pot_list );
     }
 
 
@@ -1138,11 +1130,23 @@ namespace gum {
     // compute the joint posterior and normalize
     auto joint = _unnormalizedJointPosterior( set );
     joint->normalize();
+
+    if ( __target_posterior != nullptr ) delete __target_posterior;
     __target_posterior = joint;
 
     return *joint;
   }
 
+  
+  /// returns the posterior of a given set of variables
+  template <typename GUM_SCALAR>
+  const Potential<GUM_SCALAR>&
+  VariableElimination<GUM_SCALAR>::_jointPosterior(
+      const NodeSet& wanted_target,
+      const NodeSet& declared_target ) {
+    return _jointPosterior( wanted_target );
+  }
+  
 
 } /* namespace gum */
 

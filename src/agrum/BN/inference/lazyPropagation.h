@@ -200,10 +200,21 @@ namespace gum {
     /** @param id The variable's id. */
     virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id );
 
-    /// returns the posterior of a given set of variables
+    /// returns the posterior of a declared target set
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
     virtual const Potential<GUM_SCALAR>& _jointPosterior( const NodeSet& set );
+
+    /** @brief asks derived classes for the joint posterior of a set of
+     * variables not declared as a joint target
+     *
+     * @param wanted_target The set of ids of the variables whose joint
+     * posterior is looked for.
+     * @param declared_target the joint target declared by the user that contains
+     * set */
+    virtual const Potential<GUM_SCALAR>&
+    _jointPosterior( const NodeSet& wanted_target,
+                     const NodeSet& declared_target );
 
     /// returns a fresh potential equal to P(argument,evidence)
     virtual Potential<GUM_SCALAR>* _unnormalizedJointPosterior( const NodeId id );

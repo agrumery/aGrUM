@@ -1620,6 +1620,39 @@ namespace gum {
 
     return *joint;
   }
+  
+
+  /// returns the posterior of a given set of variables
+  template <typename GUM_SCALAR>
+  const Potential<GUM_SCALAR>&
+  LazyPropagation<GUM_SCALAR>::_jointPosterior( const NodeSet& wanted_target,
+                                                const NodeSet& declared_target ) {
+    // check if we have already computed the posterior of wanted_target
+    if ( __joint_target_posteriors.exists( wanted_target ) )
+      return *( __joint_target_posteriors[wanted_target] );
+
+    // here, we will have to compute the posterior of declared_target and
+    // marginalize out all the variables that do not belong to wanted_target
+    
+    // check if we have already computed the posterior of declared_target
+    if ( ! __joint_target_posteriors.exists( declared_target ) ) {
+      _jointPosterior( declared_target );
+    }
+
+    // marginalize out all the variables that do not belong to wanted_target
+    const auto& bn = this->BayesNet ();
+    Set<const DiscreteVariable*> del_vars;
+    for ( const auto node : declared_target )
+      if ( ! wanted_target.contains ( node ) )
+        del_vars.insert ( & ( bn.variable ( node ) ) );
+    Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR> (
+      __joint_target_posteriors[declared_target]->margSumOut ( del_vars ) );
+
+    // save the result into the cache
+    __joint_target_posteriors.insert( wanted_target, pot );
+
+    return *pot;
+  }
 
 
   template <typename GUM_SCALAR>
