@@ -742,8 +742,33 @@ def sideBySide(*args, titles=None):
   display(HTML(s))
 
 
+def getInferenceEngine(ie, inferenceName):
+  """
+  display an inference as a BN+ lists of hard/soft evidence and list of targets
+
+  :param ie:
+  """
+  t = '<div align=\"left"><ul>'
+  if ie.nbrHardEvidence() > 0:
+    t += "<li><b>hard evidence</b><br/>"
+    t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.hardEvidenceList()])
+    t += "</li>"
+  if ie.nbrSoftEvidence() > 0:
+    t += "<li><b>soft evidence</b><br/>"
+    t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.softEvidenceList()])
+    t += "</li>"
+  if ie.nbrTargets() > 0:
+    t += "<li><b>target(s)</b><br/>"
+    t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.targetList()])
+    t += "</li>"
+  t += '</ul></div>'
+  sideBySide(getBN(ie.BayesNet()), t,titles=[inferenceName,""])
+
+
 # adding _repr_html_ to some pyAgrum classes !
 gum.BayesNet._repr_html_ = lambda self: getBN(self)
 gum.Potential._repr_html_ = lambda self: getPotential(self)
 gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
 gum.CliqueGraph._repr_html_ = lambda self: getDot(self.toDot())
+gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self,"Lazy Propagation on this BN")
+

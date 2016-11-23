@@ -9269,6 +9269,66 @@ class IBayesNet_double(DAGmodel):
         """
         return _pyAgrum.IBayesNet_double___str__(self)
 
+
+    def names(self) -> "PyObject *":
+        """
+        names(IBayesNet_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_names(self)
+
+
+    def ids(self) -> "PyObject *":
+        """
+        ids(IBayesNet_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > *
+
+        """
+        return _pyAgrum.IBayesNet_double_ids(self)
+
+
+    def arcs(self) -> "PyObject *":
+        """
+        arcs(IBayesNet_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > *
+
+        """
+        return _pyAgrum.IBayesNet_double_arcs(self)
+
+
+    def parents(self, id: 'gum::NodeId const') -> "PyObject *":
+        """
+        parents(IBayesNet_double self, gum::NodeId const id) -> PyObject *
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.IBayesNet_double_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId const') -> "PyObject *":
+        """
+        children(IBayesNet_double self, gum::NodeId const id) -> PyObject *
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.IBayesNet_double_children(self, id)
+
 IBayesNet_double_swigregister = _pyAgrum.IBayesNet_double_swigregister
 IBayesNet_double_swigregister(IBayesNet_double)
 
@@ -10766,6 +10826,42 @@ class LazyPropagation_double(_object):
 
 
 
+    def hardEvidenceList(self) -> "PyObject *":
+        """
+        hardEvidenceList(LazyPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_hardEvidenceList(self)
+
+
+    def softEvidenceList(self) -> "PyObject *":
+        """
+        softEvidenceList(LazyPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_softEvidenceList(self)
+
+
+    def targetList(self) -> "PyObject *":
+        """
+        targetList(LazyPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_targetList(self)
+
+
     def makeInference(self) -> "void":
         """
         makeInference(LazyPropagation_double self)
@@ -11171,6 +11267,42 @@ class GibbsInference_double(_object):
         for k in targets:
             self.addTarget(k)
 
+
+
+    def hardEvidenceList(self) -> "PyObject *":
+        """
+        hardEvidenceList(GibbsInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_hardEvidenceList(self)
+
+
+    def softEvidenceList(self) -> "PyObject *":
+        """
+        softEvidenceList(GibbsInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_softEvidenceList(self)
+
+
+    def targetList(self) -> "PyObject *":
+        """
+        targetList(GibbsInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_targetList(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":

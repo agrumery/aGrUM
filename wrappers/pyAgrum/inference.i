@@ -9,14 +9,12 @@
       gum::NodeSet s;
       for(Py_ssize_t i=0;i<PySequence_Size(seq_of_ids);i++) {
         PyObject* o=PyList_GetItem(seq_of_ids, i);
-        /*if (PyNumber_Check(o)==0) {
+        if (PyNumber_Check(o)==0) {
           PyErr_SetString(PyExc_TypeError, "arg must be a sequence of ids");
           return 0;
-        }*/
-        std::cout<<"   "<<i<<" : "<<PyInt_AsLong(o)<<std::endl;
+        }
         s<<gum::NodeId( PyInt_AsLong(o));
       }
-      std::cout<<s<<std::endl;
       return self->jointPosterior(s);
     };
 }
@@ -59,6 +57,34 @@ def setTargets(self, targets):
     void setEvidence(PyObject *evidces) {}
     void updateEvidence(PyObject *evidces) {}
     void setTargets(PyObject* targets) {}
+
+    PyObject* hardEvidenceList() {
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->hardEvidenceNodes() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
+    PyObject* softEvidenceList() {
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->softEvidenceNodes() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
+    PyObject* targetList() {
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->targets() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
 }
 %enddef
 IMPROVE_INFERENCE_API(gum::LazyPropagation<double>)

@@ -123,8 +123,9 @@ public:
       
       PyObject* q = PyList_New( 0 );
 
-      for ( auto c : __prm->classes() )
-      PyList_Append( q, PyString_FromString( c->name().c_str() ) );
+      for ( auto c : __prm->classes() ) {
+        PyList_Append( q, PyString_FromString( c->name().c_str() ) );
+      }
 
       return q;
     }

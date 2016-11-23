@@ -28,6 +28,67 @@
 %}
 
 
+%extend gum::IBayesNet {
+    PyObject *names() const {
+      PyObject* q=PyList_New(0);
+
+      const gum::DAG& dag=self->dag();
+      for ( gum::NodeGraphPartIterator node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
+        PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
+      }
+      return q;
+    };
+
+    PyObject *ids() {
+      PyObject* q=PyList_New(0);
+
+      const gum::DAG& dag=self->dag();
+      for ( gum::NodeGraphPartIterator  node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
+        PyList_Append(q,PyInt_FromLong(*node_iter));
+      }
+
+      return q;
+    };
+
+    PyObject *nodes() {
+      return ids();
+    }
+
+    PyObject *arcs() {
+      PyObject* q=PyList_New(0);
+
+      const gum::DAG& dag=self->dag();
+      for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
+        PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
+      }
+
+      return q;
+    };
+
+
+    PyObject *parents(const NodeId id) const {
+    PyObject* q=PyList_New(0);
+
+    const gum::NodeSet& p=self->dag().parents(id);
+    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+      PyList_Append(q,PyInt_FromLong(*it));
+    }
+
+    return q;
+  };
+
+  PyObject *children(const NodeId id) const {
+    PyObject* q=PyList_New(0);
+
+    const gum::NodeSet& p=self->dag().children(id);
+    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+      PyList_Append(q,PyInt_FromLong(*it));
+    }
+
+    return q;
+  };
+}
+
 %extend gum::BayesNet {
     PyObject *names() const {
       PyObject* q=PyList_New(0);

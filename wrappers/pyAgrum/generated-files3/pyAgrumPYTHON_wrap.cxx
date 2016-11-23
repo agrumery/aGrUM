@@ -6462,6 +6462,55 @@ SWIGINTERN void gum_UtilityTable_Sl_double_Sg__remove(gum::UtilityTable< double 
 SWIGINTERN void gum_UtilityTable_Sl_double_Sg__add(gum::UtilityTable< double > *self,gum::DiscreteVariable const &v){
     self->gum::MultiDimDecorator<double>::add(v);
   }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__names(gum::IBayesNet< double > const *self){
+      PyObject* q=PyList_New(0);
+
+      const gum::DAG& dag=self->dag();
+      for ( gum::NodeGraphPartIterator node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
+        PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
+      }
+      return q;
+    }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__ids(gum::IBayesNet< double > *self){
+      PyObject* q=PyList_New(0);
+
+      const gum::DAG& dag=self->dag();
+      for ( gum::NodeGraphPartIterator  node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
+        PyList_Append(q,PyInt_FromLong(*node_iter));
+      }
+
+      return q;
+    }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__arcs(gum::IBayesNet< double > *self){
+      PyObject* q=PyList_New(0);
+
+      const gum::DAG& dag=self->dag();
+      for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
+        PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
+      }
+
+      return q;
+    }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__parents(gum::IBayesNet< double > const *self,gum::NodeId const id){
+    PyObject* q=PyList_New(0);
+
+    const gum::NodeSet& p=self->dag().parents(id);
+    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+      PyList_Append(q,PyInt_FromLong(*it));
+    }
+
+    return q;
+  }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__children(gum::IBayesNet< double > const *self,gum::NodeId const id){
+    PyObject* q=PyList_New(0);
+
+    const gum::NodeSet& p=self->dag().children(id);
+    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+      PyList_Append(q,PyInt_FromLong(*it));
+    }
+
+    return q;
+  }
 SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__names(gum::BayesNet< double > const *self){
       PyObject* q=PyList_New(0);
 
@@ -6674,19 +6723,44 @@ SWIGINTERN gum::Potential< double > gum_LazyPropagation_Sl_double_Sg__jointPoste
       gum::NodeSet s;
       for(Py_ssize_t i=0;i<PySequence_Size(seq_of_ids);i++) {
         PyObject* o=PyList_GetItem(seq_of_ids, i);
-        /*if (PyNumber_Check(o)==0) {
+        if (PyNumber_Check(o)==0) {
           PyErr_SetString(PyExc_TypeError, "arg must be a sequence of ids");
           return 0;
-        }*/
-        std::cout<<"   "<<i<<" : "<<PyInt_AsLong(o)<<std::endl;
+        }
         s<<gum::NodeId( PyInt_AsLong(o));
       }
-      std::cout<<s<<std::endl;
       return self->jointPosterior(s);
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__setEvidence(gum::LazyPropagation< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__updateEvidence(gum::LazyPropagation< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__setTargets(gum::LazyPropagation< double > *self,PyObject *targets){}
+SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__hardEvidenceList(gum::LazyPropagation< double > *self){
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->hardEvidenceNodes() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
+SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__softEvidenceList(gum::LazyPropagation< double > *self){
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->softEvidenceNodes() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
+SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__targetList(gum::LazyPropagation< double > *self){
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->targets() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__makeInference(gum::LazyPropagation< double > *self){
     self->gum::BayesNetInference<double>::makeInference();
   }
@@ -6801,6 +6875,33 @@ SWIGINTERN double gum_LazyPropagation_Sl_double_Sg__H__SWIG_1(gum::LazyPropagati
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setEvidence(gum::GibbsInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__updateEvidence(gum::GibbsInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setTargets(gum::GibbsInference< double > *self,PyObject *targets){}
+SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__hardEvidenceList(gum::GibbsInference< double > *self){
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->hardEvidenceNodes() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
+SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__softEvidenceList(gum::GibbsInference< double > *self){
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->softEvidenceNodes() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
+SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__targetList(gum::GibbsInference< double > *self){
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : self->targets() ) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setVerbosity(gum::GibbsInference< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setEpsilon(gum::GibbsInference< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setMinEpsilonRate(gum::GibbsInference< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
@@ -42741,6 +42842,169 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_IBayesNet_double_names(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_names",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_names" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__names((gum::IBayesNet< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_ids(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_ids",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_ids" "', argument " "1"" of type '" "gum::IBayesNet< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__ids(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_arcs(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_arcs",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_arcs" "', argument " "1"" of type '" "gum::IBayesNet< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__arcs(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_parents(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:IBayesNet_double_parents",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_parents" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IBayesNet_double_parents" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__parents((gum::IBayesNet< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_children(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:IBayesNet_double_children",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_children" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IBayesNet_double_children" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__children((gum::IBayesNet< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *IBayesNet_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
@@ -51001,6 +51265,93 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_hardEvidenceList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_hardEvidenceList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_hardEvidenceList" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_LazyPropagation_Sl_double_Sg__hardEvidenceList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_softEvidenceList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_softEvidenceList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_softEvidenceList" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_LazyPropagation_Sl_double_Sg__softEvidenceList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_targetList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_targetList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_targetList" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_LazyPropagation_Sl_double_Sg__targetList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LazyPropagation_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
@@ -53390,6 +53741,93 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_setTargets(PyObject *SWIGUNUSED
     }
   }
   resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsInference_double_hardEvidenceList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_hardEvidenceList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_hardEvidenceList" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_GibbsInference_Sl_double_Sg__hardEvidenceList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsInference_double_softEvidenceList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_softEvidenceList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_softEvidenceList" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_GibbsInference_Sl_double_Sg__softEvidenceList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsInference_double_targetList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_targetList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_targetList" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_GibbsInference_Sl_double_Sg__targetList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
   return resultobj;
 fail:
   return NULL;
@@ -74323,6 +74761,48 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::IBayesNet< double > const *\n"
 		"\n"
 		""},
+	 { (char *)"IBayesNet_double_names", _wrap_IBayesNet_double_names, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_names(IBayesNet_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_ids", _wrap_IBayesNet_double_ids, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_ids(IBayesNet_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_arcs", _wrap_IBayesNet_double_arcs, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_arcs(IBayesNet_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_parents", _wrap_IBayesNet_double_parents, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_parents(IBayesNet_double self, gum::NodeId const id) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_children", _wrap_IBayesNet_double_children, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_children(IBayesNet_double self, gum::NodeId const id) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		""},
 	 { (char *)"IBayesNet_double_swigregister", IBayesNet_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"delete_BayesNet_double", _wrap_delete_BayesNet_double, METH_VARARGS, (char *)"\n"
 		"delete_BayesNet_double(BayesNet_double self)\n"
@@ -75495,6 +75975,30 @@ static PyMethodDef SwigMethods[] = {
 		"targets: PyObject *\n"
 		"\n"
 		""},
+	 { (char *)"LazyPropagation_double_hardEvidenceList", _wrap_LazyPropagation_double_hardEvidenceList, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_hardEvidenceList(LazyPropagation_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_softEvidenceList", _wrap_LazyPropagation_double_softEvidenceList, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_softEvidenceList(LazyPropagation_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_targetList", _wrap_LazyPropagation_double_targetList, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_targetList(LazyPropagation_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"\n"
+		""},
 	 { (char *)"LazyPropagation_double_makeInference", _wrap_LazyPropagation_double_makeInference, METH_VARARGS, (char *)"\n"
 		"LazyPropagation_double_makeInference(LazyPropagation_double self)\n"
 		"\n"
@@ -75819,6 +76323,30 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"self: gum::GibbsInference< double > *\n"
 		"targets: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"GibbsInference_double_hardEvidenceList", _wrap_GibbsInference_double_hardEvidenceList, METH_VARARGS, (char *)"\n"
+		"GibbsInference_double_hardEvidenceList(GibbsInference_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::GibbsInference< double > *\n"
+		"\n"
+		""},
+	 { (char *)"GibbsInference_double_softEvidenceList", _wrap_GibbsInference_double_softEvidenceList, METH_VARARGS, (char *)"\n"
+		"GibbsInference_double_softEvidenceList(GibbsInference_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::GibbsInference< double > *\n"
+		"\n"
+		""},
+	 { (char *)"GibbsInference_double_targetList", _wrap_GibbsInference_double_targetList, METH_VARARGS, (char *)"\n"
+		"GibbsInference_double_targetList(GibbsInference_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::GibbsInference< double > *\n"
 		"\n"
 		""},
 	 { (char *)"GibbsInference_double_setVerbosity", _wrap_GibbsInference_double_setVerbosity, METH_VARARGS, (char *)"\n"
