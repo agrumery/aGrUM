@@ -29,8 +29,8 @@
 #define GUM_BAYES_NET_INFERENCE_H
 
 
-#include <agrum/config.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/config.h>
 
 
 namespace gum {
@@ -277,6 +277,31 @@ namespace gum {
      */
     virtual void addEvidence( const NodeId id, const Idx val ) final;
 
+    /// adds a new hard evidence on node named nodeName
+    /**
+     * @throw UndefinedElement if nodeName does not belong to the Bayesian network
+     * @throw InvalidArgument if val is not a value for id
+     * @throw InvalidArgument if nodeName already has an evidence
+     */
+    virtual void addEvidence( const std::string& nodeName, const Idx val ) final;
+
+    /// adds a new hard evidence on node id
+    /**
+     * @throw UndefinedElement if id does not belong to the Bayesian network
+     * @throw InvalidArgument if val is not a value for id
+     * @throw InvalidArgument if id already has an evidence
+     */
+    virtual void addEvidence( const NodeId id, const std::string& label ) final;
+
+    /// adds a new hard evidence on node named nodeName
+    /**
+     * @throw UndefinedElement if nodeName does not belong to the Bayesian network
+     * @throw InvalidArgument if val is not a value for id
+     * @throw InvalidArgument if nodeName already has an evidence
+     */
+    virtual void addEvidence( const std::string& nodeName,
+                              const std::string& label ) final;
+
     /// adds a new evidence on node id (might be soft or hard)
     /**
      * @throw UndefinedElement if id does not belong to the Bayesian network
@@ -288,24 +313,16 @@ namespace gum {
     virtual void addEvidence( const NodeId id,
                               const std::vector<GUM_SCALAR>& vals ) final;
 
-      /// adds a new hard evidence on node named nodeName
-      /**
-       * @throw UndefinedElement if nodeName does not belong to the Bayesian network
-       * @throw InvalidArgument if val is not a value for id
-       * @throw InvalidArgument if nodeName already has an evidence
-       */
-      virtual void addEvidence( const std::string& nodeName, const Idx val ) final;
-
-      /// adds a new evidence on node named nodeName (might be soft or hard)
-      /**
-       * @throw UndefinedElement if id does not belong to the Bayesian network
-       * @throw InvalidArgument if nodeName already has an evidence
-       * @throw FatalError if vals=[0,0,...,0]
-       * @throw InvalidArgument if the size of vals is different from the domain
-       *        size of node nodeName
-       */
-      virtual void addEvidence( const std::string& nodeName,
-                                const std::vector<GUM_SCALAR>& vals ) final;
+    /// adds a new evidence on node named nodeName (might be soft or hard)
+    /**
+     * @throw UndefinedElement if id does not belong to the Bayesian network
+     * @throw InvalidArgument if nodeName already has an evidence
+     * @throw FatalError if vals=[0,0,...,0]
+     * @throw InvalidArgument if the size of vals is different from the domain
+     *        size of node nodeName
+     */
+    virtual void addEvidence( const std::string& nodeName,
+                              const std::vector<GUM_SCALAR>& vals ) final;
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
@@ -368,6 +385,23 @@ namespace gum {
      * @throw InvalidArgument if id does not already have an evidence
      */
     virtual void chgEvidence( const std::string& nodeName, const Idx val ) final;
+
+    /// change the value of an already existing hard evidence
+    /**
+     * @throw UndefinedElement if id does not belong to the Bayesian network
+     * @throw InvalidArgument if val is not a value for id
+     * @throw InvalidArgument if id does not already have an evidence
+     */
+    virtual void chgEvidence( const NodeId id, const std::string& label ) final;
+
+    /// change the value of an already existing hard evidence
+    /**
+     * @throw UndefinedElement if nodeName does not belong to the Bayesian network
+     * @throw InvalidArgument if val is not a value for id
+     * @throw InvalidArgument if id does not already have an evidence
+     */
+    virtual void chgEvidence( const std::string& nodeName,
+                              const std::string& label ) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**

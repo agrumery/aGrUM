@@ -249,7 +249,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( j << d, gum::OperationNotAllowed );
       j.forgetMaster();
       TS_GUM_ASSERT_THROWS_NOTHING( j << d );
-      j.chgVal( d, d[2.5] );
+      j.chgVal( d, d["2.5"] );
       TS_ASSERT( !j.actAsSlave( t ) );
     }
 

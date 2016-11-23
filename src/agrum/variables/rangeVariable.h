@@ -57,8 +57,8 @@ namespace gum {
     /// Default constructor
     RangeVariable( const std::string& aName,
                    const std::string& aDesc,
-                   Idx minVal = 0,
-                   Idx maxVal = 1 );
+                   long minVal = 0,
+                   long maxVal = 1 );
 
     /** Copy Constructor.
      *
@@ -93,7 +93,7 @@ namespace gum {
      * @param indice the index of the label we wish to return
      * @throw OutOfBound
      */
-    virtual const std::string label( Idx indice ) const;
+    virtual std::string label( Idx indice ) const;
 
     /// get a numerical representation of he indice-the value.
     virtual double numerical( Idx indice ) const;
@@ -101,33 +101,32 @@ namespace gum {
     /**
      * Returns the lower bound.
      */
-    Idx minVal() const;
+    long minVal() const;
 
     /**
      * Set a new value for the lower bound.
      */
-    void setMinVal( Idx minVal );
+    void setMinVal( long minVal );
 
     /**
      * Returns the upper bound.
      */
-    Idx maxVal() const;
+    long maxVal() const;
 
     /**
      * Set a new value of the upper bound.
      */
-    void setMaxVal( Idx maxVal );
+    void setMaxVal( long maxVal );
 
     /**
      * Returns true if the param belongs to the variable's interval.
      */
-    bool belongs( Idx indice ) const;
+    bool belongs( long val ) const;
 
     /**
      * @return the modality index from the label
      * @throw NotFound
      */
-    virtual Idx operator[]( const std::string& ) const;
     virtual Idx index( const std::string& ) const;
 
     /// @}
@@ -149,10 +148,10 @@ namespace gum {
 
     /// @{
     /// The lower bound.
-    Idx __minBound;
+    long __minBound;
 
     /// The upper bound.
-    Idx __maxBound;
+    long __maxBound;
 
     /// @}
   };

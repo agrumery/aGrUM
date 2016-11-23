@@ -4272,18 +4272,6 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_domainSize(self)
 
 
-    def label(self, indice):
-        """
-        label(DiscreteVariable self, gum::Idx indice) -> std::string const
-
-        Parameters
-        ----------
-        indice: gum::Idx
-
-        """
-        return _pyAgrum.DiscreteVariable_label(self, indice)
-
-
     def labels(self):
         """
         labels(DiscreteVariable self) -> Vector_string
@@ -4354,6 +4342,18 @@ class DiscreteVariable(Variable):
 
         """
         return _pyAgrum.DiscreteVariable_index(self, label)
+
+
+    def label(self, i):
+        """
+        label(DiscreteVariable self, gum::Idx i) -> std::string
+
+        Parameters
+        ----------
+        i: gum::Idx
+
+        """
+        return _pyAgrum.DiscreteVariable_label(self, i)
 
 
     def __str__(self):
@@ -4554,7 +4554,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def label(self, i):
         """
-        label(LabelizedVariable self, gum::Idx i) -> std::string const
+        label(LabelizedVariable self, gum::Idx i) -> std::string
 
         Parameters
         ----------
@@ -4629,22 +4629,22 @@ class RangeVariable(DiscreteVariable):
 
     def __init__(self, *args):
         """
-        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, gum::Idx minVal=0, gum::Idx maxVal=1) -> RangeVariable
+        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0, long maxVal=1) -> RangeVariable
 
         Parameters
         ----------
         aName: std::string const &
         aDesc: std::string const &
-        minVal: gum::Idx
-        maxVal: gum::Idx
+        minVal: long
+        maxVal: long
 
-        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, gum::Idx minVal=0) -> RangeVariable
+        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0) -> RangeVariable
 
         Parameters
         ----------
         aName: std::string const &
         aDesc: std::string const &
-        minVal: gum::Idx
+        minVal: long
 
         __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc) -> RangeVariable
 
@@ -4706,7 +4706,7 @@ class RangeVariable(DiscreteVariable):
 
     def label(self, indice):
         """
-        label(RangeVariable self, gum::Idx indice) -> std::string const
+        label(RangeVariable self, gum::Idx indice) -> std::string
 
         Parameters
         ----------
@@ -4730,7 +4730,7 @@ class RangeVariable(DiscreteVariable):
 
     def minVal(self):
         """
-        minVal(RangeVariable self) -> gum::Idx
+        minVal(RangeVariable self) -> long
 
         Parameters
         ----------
@@ -4742,11 +4742,11 @@ class RangeVariable(DiscreteVariable):
 
     def setMinVal(self, minVal):
         """
-        setMinVal(RangeVariable self, gum::Idx minVal)
+        setMinVal(RangeVariable self, long minVal)
 
         Parameters
         ----------
-        minVal: gum::Idx
+        minVal: long
 
         """
         return _pyAgrum.RangeVariable_setMinVal(self, minVal)
@@ -4754,7 +4754,7 @@ class RangeVariable(DiscreteVariable):
 
     def maxVal(self):
         """
-        maxVal(RangeVariable self) -> gum::Idx
+        maxVal(RangeVariable self) -> long
 
         Parameters
         ----------
@@ -4766,26 +4766,26 @@ class RangeVariable(DiscreteVariable):
 
     def setMaxVal(self, maxVal):
         """
-        setMaxVal(RangeVariable self, gum::Idx maxVal)
+        setMaxVal(RangeVariable self, long maxVal)
 
         Parameters
         ----------
-        maxVal: gum::Idx
+        maxVal: long
 
         """
         return _pyAgrum.RangeVariable_setMaxVal(self, maxVal)
 
 
-    def belongs(self, indice):
+    def belongs(self, val):
         """
-        belongs(RangeVariable self, gum::Idx indice) -> bool
+        belongs(RangeVariable self, long val) -> bool
 
         Parameters
         ----------
-        indice: gum::Idx
+        val: long
 
         """
-        return _pyAgrum.RangeVariable_belongs(self, indice)
+        return _pyAgrum.RangeVariable_belongs(self, val)
 
 
     def index(self, arg2):
@@ -7519,7 +7519,7 @@ class DiscretizedVariable_double(DiscreteVariable):
 
     def label(self, i):
         """
-        label(DiscretizedVariable_double self, gum::Idx i) -> std::string const
+        label(DiscretizedVariable_double self, gum::Idx i) -> std::string
 
         Parameters
         ----------
@@ -7541,7 +7541,7 @@ class DiscretizedVariable_double(DiscreteVariable):
         return _pyAgrum.DiscretizedVariable_double_numerical(self, indice)
 
 
-    def index(self, *args):
+    def index(self, label):
         """
         index(DiscretizedVariable_double self, std::string const & label) -> gum::Idx
 
@@ -7549,14 +7549,8 @@ class DiscretizedVariable_double(DiscreteVariable):
         ----------
         label: std::string const &
 
-        index(DiscretizedVariable_double self, double const & aTarget) -> gum::Idx
-
-        Parameters
-        ----------
-        aTarget: double const &
-
         """
-        return _pyAgrum.DiscretizedVariable_double_index(self, *args)
+        return _pyAgrum.DiscretizedVariable_double_index(self, label)
 
 
     def domainSize(self):
@@ -10307,11 +10301,39 @@ class BayesNetInference_double(_object):
         id: gum::NodeId const
         val: gum::Idx const
 
+        addEvidence(BayesNetInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(BayesNetInference_double self, gum::NodeId const id, std::string const & label)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        label: std::string const &
+
+        addEvidence(BayesNetInference_double self, std::string const & nodeName, std::string const & label)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        label: std::string const &
+
         addEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
 
         Parameters
         ----------
         id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(BayesNetInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
         vals: std::vector< double,std::allocator< double > > const &
 
         addEvidence(BayesNetInference_double self, Potential_double pot)
@@ -10369,6 +10391,20 @@ class BayesNetInference_double(_object):
         ----------
         nodeName: std::string const &
         val: gum::Idx const
+
+        chgEvidence(BayesNetInference_double self, gum::NodeId const id, std::string const & label)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        label: std::string const &
+
+        chgEvidence(BayesNetInference_double self, std::string const & nodeName, std::string const & label)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        label: std::string const &
 
         chgEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
 
@@ -10657,7 +10693,7 @@ class LazyPropagation_double(_object):
 
         Parameters
         ----------
-        self: gum::LazyPropagation< double > const *
+        self: gum::LazyPropagation< double > *
 
         """
         return _pyAgrum.LazyPropagation_double_joinTree(self)
@@ -10669,7 +10705,7 @@ class LazyPropagation_double(_object):
 
         Parameters
         ----------
-        self: gum::LazyPropagation< double > const *
+        self: gum::LazyPropagation< double > *
 
         """
         return _pyAgrum.LazyPropagation_double_junctionTree(self)
@@ -10687,18 +10723,6 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_evidenceProbability(self)
 
 
-    def junctionTreeToDot(self):
-        """
-        junctionTreeToDot(LazyPropagation_double self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
-        return _pyAgrum.LazyPropagation_double_junctionTreeToDot(self)
-
-
     def jointPosterior(self, seq_of_ids):
         """
         jointPosterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
@@ -10713,77 +10737,33 @@ class LazyPropagation_double(_object):
 
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
-        bn = self.BayesNet()
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
 
-    #set evidences
-        self.list_pot = []
 
-        try:
-          items=evidces.iteritems()
-        except AttributeError:
-          items=evidces.items()
 
-        for var_name, evidce in items:
-            pot = Potential_double()
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
-            if isinstance(var_name, int):
-                var = bn.variable(var_name)
-            elif isinstance(var_name, str):
-                var = bn.variableFromName(var_name)
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
             else:
-                raise TypeError('values of the dict must be int or string')
-
-            pot.add(var)
-            if isinstance(evidce, (int, float, str)):
-                pot[:] = 0
-    #determine the var type
-                try:
-                    cast_var = var.toLabelizedVar()
-                    if isinstance(evidce, int):
-                        index = evidce
-                    elif isinstance(evidce, str):
-                        index = cast_var[evidce]
-                    else:
-                        raise TypeError('values of the dict must be int or string')
-                except RuntimeError:
-                    try:
-                        cast_var = var.toRangeVar()
-                        if isinstance(evidce, int):
-                            index = cast_var[str(evidce)]
-                        elif isinstance(evidce, str):
-                            index = cast_var[evidce]
-                        else:
-                            raise TypeError('values of the dict must be int or string')
-                    except RuntimeError:
-                        cast_var = var.toDiscretizedVar()
-                        if isinstance(evidce, float):
-                            index = cast_var.index(evidce)
-                        elif isinstance(evidce, str):
-                            index = cast_var.index(float(evidce))
-                        else:
-                            raise TypeError('values of the dict must be float or string')
-                pot[index] = 1
-            elif isinstance(evidce, (list, tuple)):
-                pot[:] = evidce
-            else:
-                raise TypeError('dict values must be number, string or sequence')
-            self.list_pot.append(pot)
-
-        self._setEvidence(self.list_pot)
+                self.addEvidence(k,v)
 
 
 
-    def _setEvidence(self, evidences):
-        """
-        _setEvidence(LazyPropagation_double self, PyObject * evidences)
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
-        Parameters
-        ----------
-        evidences: PyObject *
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
 
-        """
-        return _pyAgrum.LazyPropagation_double__setEvidence(self, evidences)
 
 
     def makeInference(self):
@@ -10827,6 +10807,312 @@ class LazyPropagation_double(_object):
         """
         return _pyAgrum.LazyPropagation_double_BayesNet(self)
 
+
+    def addEvidence(self, *args):
+        """
+        addEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        addEvidence(LazyPropagation_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(LazyPropagation_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        addEvidence(LazyPropagation_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        addEvidence(LazyPropagation_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(LazyPropagation_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args):
+        """
+        chgEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        chgEvidence(LazyPropagation_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        chgEvidence(LazyPropagation_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        chgEvidence(LazyPropagation_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        chgEvidence(LazyPropagation_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(LazyPropagation_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args):
+        """
+        hasEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self):
+        """
+        eraseAllEvidence(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseAllEvidence(self)
+
+
+    def hasHardEvidence(self, *args):
+        """
+        hasHardEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasHardEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_hasHardEvidence(self, *args)
+
+
+    def hasSoftEvidence(self, *args):
+        """
+        hasSoftEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasSoftEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self):
+        """
+        nbrEvidence(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self):
+        """
+        nbrHardEvidence(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self):
+        """
+        nbrSoftEvidence(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self):
+        """
+        eraseAllTargets(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self):
+        """
+        addAllTargets(LazyPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_addAllTargets(self)
+
+
+    def addTarget(self, *args):
+        """
+        addTarget(LazyPropagation_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        addTarget(LazyPropagation_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args):
+        """
+        eraseTarget(LazyPropagation_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        eraseTarget(LazyPropagation_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args):
+        """
+        isTarget(LazyPropagation_double self, gum::NodeId const variable) -> bool
+
+        Parameters
+        ----------
+        variable: gum::NodeId const
+
+        isTarget(LazyPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_isTarget(self, *args)
+
+
+    def nbrTargets(self):
+        """
+        nbrTargets(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > const *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrTargets(self)
+
+
+    def H(self, *args):
+        """
+        H(LazyPropagation_double self, gum::NodeId const X) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+
+        H(LazyPropagation_double self, std::string const & nodeName) -> double
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_H(self, *args)
+
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
@@ -10858,77 +11144,33 @@ class GibbsInference_double(_object):
 
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
-        bn = self.BayesNet()
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
 
-    #set evidences
-        self.list_pot = []
 
-        try:
-          items=evidces.iteritems()
-        except AttributeError:
-          items=evidces.items()
 
-        for var_name, evidce in items:
-            pot = Potential_double()
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
-            if isinstance(var_name, int):
-                var = bn.variable(var_name)
-            elif isinstance(var_name, str):
-                var = bn.variableFromName(var_name)
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
             else:
-                raise TypeError('values of the dict must be int or string')
-
-            pot.add(var)
-            if isinstance(evidce, (int, float, str)):
-                pot[:] = 0
-    #determine the var type
-                try:
-                    cast_var = var.toLabelizedVar()
-                    if isinstance(evidce, int):
-                        index = evidce
-                    elif isinstance(evidce, str):
-                        index = cast_var[evidce]
-                    else:
-                        raise TypeError('values of the dict must be int or string')
-                except RuntimeError:
-                    try:
-                        cast_var = var.toRangeVar()
-                        if isinstance(evidce, int):
-                            index = cast_var[str(evidce)]
-                        elif isinstance(evidce, str):
-                            index = cast_var[evidce]
-                        else:
-                            raise TypeError('values of the dict must be int or string')
-                    except RuntimeError:
-                        cast_var = var.toDiscretizedVar()
-                        if isinstance(evidce, float):
-                            index = cast_var.index(evidce)
-                        elif isinstance(evidce, str):
-                            index = cast_var.index(float(evidce))
-                        else:
-                            raise TypeError('values of the dict must be float or string')
-                pot[index] = 1
-            elif isinstance(evidce, (list, tuple)):
-                pot[:] = evidce
-            else:
-                raise TypeError('dict values must be number, string or sequence')
-            self.list_pot.append(pot)
-
-        self._setEvidence(self.list_pot)
+                self.addEvidence(k,v)
 
 
 
-    def _setEvidence(self, evidences):
-        """
-        _setEvidence(GibbsInference_double self, PyObject * evidences)
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
-        Parameters
-        ----------
-        evidences: PyObject *
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
 
-        """
-        return _pyAgrum.GibbsInference_double__setEvidence(self, evidences)
 
 
     def setVerbosity(self, v):
@@ -11187,6 +11429,312 @@ class GibbsInference_double(_object):
 
         """
         return _pyAgrum.GibbsInference_double_BayesNet(self)
+
+
+    def addEvidence(self, *args):
+        """
+        addEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        addEvidence(GibbsInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(GibbsInference_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        addEvidence(GibbsInference_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        addEvidence(GibbsInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(GibbsInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.GibbsInference_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args):
+        """
+        chgEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        chgEvidence(GibbsInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        chgEvidence(GibbsInference_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        chgEvidence(GibbsInference_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        chgEvidence(GibbsInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(GibbsInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.GibbsInference_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args):
+        """
+        hasEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self):
+        """
+        eraseAllEvidence(GibbsInference_double self)
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_eraseAllEvidence(self)
+
+
+    def hasHardEvidence(self, *args):
+        """
+        hasHardEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasHardEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_hasHardEvidence(self, *args)
+
+
+    def hasSoftEvidence(self, *args):
+        """
+        hasSoftEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasSoftEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self):
+        """
+        nbrEvidence(GibbsInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self):
+        """
+        nbrHardEvidence(GibbsInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self):
+        """
+        nbrSoftEvidence(GibbsInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self):
+        """
+        eraseAllTargets(GibbsInference_double self)
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self):
+        """
+        addAllTargets(GibbsInference_double self)
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > *
+
+        """
+        return _pyAgrum.GibbsInference_double_addAllTargets(self)
+
+
+    def addTarget(self, *args):
+        """
+        addTarget(GibbsInference_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        addTarget(GibbsInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args):
+        """
+        eraseTarget(GibbsInference_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        eraseTarget(GibbsInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args):
+        """
+        isTarget(GibbsInference_double self, gum::NodeId const variable) -> bool
+
+        Parameters
+        ----------
+        variable: gum::NodeId const
+
+        isTarget(GibbsInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_isTarget(self, *args)
+
+
+    def nbrTargets(self):
+        """
+        nbrTargets(GibbsInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_nbrTargets(self)
+
+
+    def H(self, *args):
+        """
+        H(GibbsInference_double self, gum::NodeId const X) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+
+        H(GibbsInference_double self, std::string const & nodeName) -> double
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_H(self, *args)
 
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)

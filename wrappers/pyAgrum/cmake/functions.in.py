@@ -1,24 +1,24 @@
-# -*- coding: utf-8 -*-
+#- * - coding : utf - 8 - * -
 """
 Helping functions and consts for pyAgrum
 """
 
-# aGrum Licence (GPL)
-# -------------------
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License as published by  *
-#*   the Free Software Foundation; either version 2 of the License, or     *
-#*   (at your option) any later version.                                   *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU General Public License for more details.                          *
-#*                                                                         *
-#*   You should have received a copy of the GNU General Public License     *
-#*   along with this program; if not, write to the                         *
-#*   Free Software Foundation, Inc.,                                       *
-#*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#aGrum Licence( GPL )
+#-- -- -- -- -- -- -- -- -- -
+#* This program is free software; you can redistribute it and / or modify *
+#* it under the terms of the GNU General Public License as published by *
+#* the Free Software Foundation; either version 2 of the License, or *
+#*( at your option ) any later version.*
+#* *
+#* This program is distributed in the hope that it will be useful, *
+#* but WITHOUT ANY WARRANTY; without even the implied warranty of *
+#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the *
+#* GNU General Public License for more details.*
+#* *
+#* You should have received a copy of the GNU General Public License *
+#* along with this program; if not, write to the *
+#* Free Software Foundation, Inc., *
+#* 59 Temple Place - Suite 330, Boston, MA 02111 - 1307, USA.
 
 from @PYAGRUM_MODULE@ import BayesNet
 from @PYAGRUM_MODULE@ import Potential
@@ -28,7 +28,7 @@ from @PYAGRUM_MODULE@ import LazyPropagation
 def about():
   """
   about() for pyAgrum
-  
+
   """
   print("pyAgrum version {0}".format('@PYAGRUM_VERSION@'))
   print("(c) Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti")
@@ -97,9 +97,9 @@ def saveBN(bn,filename):
 def loadID(filename):
   """
   read a gum.InfluenceDiagram from a bifxml file
-  
+
   :param filename: the name of file
-  :return: an InfluenceDiagram 
+  :return: an InfluenceDiagram
   """
 
   extension=filename.split('.')[-1].upper()
@@ -116,31 +116,31 @@ def loadID(filename):
   return diag
 
 
-def fastBN(arcs,domainSize):
-  """ 
+def fastBN(arcs,domain_size=2):
+  """
   rapid prototyping of BN.
-  
+
   :param arcs: dot-like simple list of arcs ("a->b->c;a->c->d" for instance)
-  :param domainSize: number of modalities for each created variable.
+  :param domain_size: number of modalities for each created variable.
   :return: the created pyAgrum.BayesNet
   """
-  def getId(bn,a):
+  def _getId(bn,a):
     try:
       ia=bn.idFromName(a)
     except IndexError:
-      ia=bn.add(a,domainSize)
+      ia=bn.add(a,domain_size)
     return ia
-    
+
   bn=BayesNet()
   for arc in arcs.split(";"):
     if arc!="":
       l=arc.split("->")
       if len(l)==1: # cannot be 0
-        getId(bn,l[0])
+        _getId(bn,l[0])
       else:
         for a, b in zip(l[:-1], l[1:]):
-          ia=getId(bn,a)
-          ib=getId(bn,b)
+          ia=_getId(bn,a)
+          ib=_getId(bn,b)
           bn.addArc(ia,ib)
   bn.generateCPTs()
   return bn
@@ -151,7 +151,9 @@ def getPosterior(bn, evs, target):
 
   :param bn:
   :type bn: pyAgrum.BayesNet
-  :param evs: events map {name;val,name:[val1,val2],...}
+  :param evs: events map {
+  name;
+  val, name : [ val1, val2 ], ...}
   :type evs: dictionary
   :param target: variable name
   :type target: str
@@ -161,4 +163,4 @@ def getPosterior(bn, evs, target):
   inf.setEvidence(evs)
   inf.makeInference()
   return Potential(inf.posterior(bn.idFromName(target)))
-  # creating a new Potential from posterior (will disappear with ie)
+#creating a new Potential from posterior( will disappear with ie )

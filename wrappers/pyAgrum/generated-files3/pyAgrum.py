@@ -4272,18 +4272,6 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_domainSize(self)
 
 
-    def label(self, indice: 'gum::Idx') -> "std::string const":
-        """
-        label(DiscreteVariable self, gum::Idx indice) -> std::string const
-
-        Parameters
-        ----------
-        indice: gum::Idx
-
-        """
-        return _pyAgrum.DiscreteVariable_label(self, indice)
-
-
     def labels(self) -> "std::vector< std::string,std::allocator< std::string > >":
         """
         labels(DiscreteVariable self) -> Vector_string
@@ -4354,6 +4342,18 @@ class DiscreteVariable(Variable):
 
         """
         return _pyAgrum.DiscreteVariable_index(self, label)
+
+
+    def label(self, i: 'gum::Idx') -> "std::string":
+        """
+        label(DiscreteVariable self, gum::Idx i) -> std::string
+
+        Parameters
+        ----------
+        i: gum::Idx
+
+        """
+        return _pyAgrum.DiscreteVariable_label(self, i)
 
 
     def __str__(self) -> "std::string const":
@@ -4552,9 +4552,9 @@ class LabelizedVariable(DiscreteVariable):
         return _pyAgrum.LabelizedVariable_eraseLabels(self)
 
 
-    def label(self, i: 'gum::Idx') -> "std::string const":
+    def label(self, i: 'gum::Idx') -> "std::string":
         """
-        label(LabelizedVariable self, gum::Idx i) -> std::string const
+        label(LabelizedVariable self, gum::Idx i) -> std::string
 
         Parameters
         ----------
@@ -4629,22 +4629,22 @@ class RangeVariable(DiscreteVariable):
 
     def __init__(self, *args):
         """
-        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, gum::Idx minVal=0, gum::Idx maxVal=1) -> RangeVariable
+        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0, long maxVal=1) -> RangeVariable
 
         Parameters
         ----------
         aName: std::string const &
         aDesc: std::string const &
-        minVal: gum::Idx
-        maxVal: gum::Idx
+        minVal: long
+        maxVal: long
 
-        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, gum::Idx minVal=0) -> RangeVariable
+        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0) -> RangeVariable
 
         Parameters
         ----------
         aName: std::string const &
         aDesc: std::string const &
-        minVal: gum::Idx
+        minVal: long
 
         __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc) -> RangeVariable
 
@@ -4704,9 +4704,9 @@ class RangeVariable(DiscreteVariable):
         return _pyAgrum.RangeVariable_varType(self)
 
 
-    def label(self, indice: 'gum::Idx') -> "std::string const":
+    def label(self, indice: 'gum::Idx') -> "std::string":
         """
-        label(RangeVariable self, gum::Idx indice) -> std::string const
+        label(RangeVariable self, gum::Idx indice) -> std::string
 
         Parameters
         ----------
@@ -4728,9 +4728,9 @@ class RangeVariable(DiscreteVariable):
         return _pyAgrum.RangeVariable_numerical(self, indice)
 
 
-    def minVal(self) -> "gum::Idx":
+    def minVal(self) -> "long":
         """
-        minVal(RangeVariable self) -> gum::Idx
+        minVal(RangeVariable self) -> long
 
         Parameters
         ----------
@@ -4740,21 +4740,21 @@ class RangeVariable(DiscreteVariable):
         return _pyAgrum.RangeVariable_minVal(self)
 
 
-    def setMinVal(self, minVal: 'gum::Idx') -> "void":
+    def setMinVal(self, minVal: 'long') -> "void":
         """
-        setMinVal(RangeVariable self, gum::Idx minVal)
+        setMinVal(RangeVariable self, long minVal)
 
         Parameters
         ----------
-        minVal: gum::Idx
+        minVal: long
 
         """
         return _pyAgrum.RangeVariable_setMinVal(self, minVal)
 
 
-    def maxVal(self) -> "gum::Idx":
+    def maxVal(self) -> "long":
         """
-        maxVal(RangeVariable self) -> gum::Idx
+        maxVal(RangeVariable self) -> long
 
         Parameters
         ----------
@@ -4764,28 +4764,28 @@ class RangeVariable(DiscreteVariable):
         return _pyAgrum.RangeVariable_maxVal(self)
 
 
-    def setMaxVal(self, maxVal: 'gum::Idx') -> "void":
+    def setMaxVal(self, maxVal: 'long') -> "void":
         """
-        setMaxVal(RangeVariable self, gum::Idx maxVal)
+        setMaxVal(RangeVariable self, long maxVal)
 
         Parameters
         ----------
-        maxVal: gum::Idx
+        maxVal: long
 
         """
         return _pyAgrum.RangeVariable_setMaxVal(self, maxVal)
 
 
-    def belongs(self, indice: 'gum::Idx') -> "bool":
+    def belongs(self, val: 'long') -> "bool":
         """
-        belongs(RangeVariable self, gum::Idx indice) -> bool
+        belongs(RangeVariable self, long val) -> bool
 
         Parameters
         ----------
-        indice: gum::Idx
+        val: long
 
         """
-        return _pyAgrum.RangeVariable_belongs(self, indice)
+        return _pyAgrum.RangeVariable_belongs(self, val)
 
 
     def index(self, arg2: 'std::string const &') -> "gum::Idx":
@@ -7517,9 +7517,9 @@ class DiscretizedVariable_double(DiscreteVariable):
         return _pyAgrum.DiscretizedVariable_double_eraseTicks(self)
 
 
-    def label(self, i: 'gum::Idx') -> "std::string const":
+    def label(self, i: 'gum::Idx') -> "std::string":
         """
-        label(DiscretizedVariable_double self, gum::Idx i) -> std::string const
+        label(DiscretizedVariable_double self, gum::Idx i) -> std::string
 
         Parameters
         ----------
@@ -7541,7 +7541,7 @@ class DiscretizedVariable_double(DiscreteVariable):
         return _pyAgrum.DiscretizedVariable_double_numerical(self, indice)
 
 
-    def index(self, *args) -> "gum::Idx":
+    def index(self, label: 'std::string const &') -> "gum::Idx":
         """
         index(DiscretizedVariable_double self, std::string const & label) -> gum::Idx
 
@@ -7549,14 +7549,8 @@ class DiscretizedVariable_double(DiscreteVariable):
         ----------
         label: std::string const &
 
-        index(DiscretizedVariable_double self, double const & aTarget) -> gum::Idx
-
-        Parameters
-        ----------
-        aTarget: double const &
-
         """
-        return _pyAgrum.DiscretizedVariable_double_index(self, *args)
+        return _pyAgrum.DiscretizedVariable_double_index(self, label)
 
 
     def domainSize(self) -> "gum::Size":
@@ -10307,19 +10301,33 @@ class BayesNetInference_double(_object):
         id: gum::NodeId const
         val: gum::Idx const
 
-        addEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
         addEvidence(BayesNetInference_double self, std::string const & nodeName, gum::Idx const val)
 
         Parameters
         ----------
         nodeName: std::string const &
         val: gum::Idx const
+
+        addEvidence(BayesNetInference_double self, gum::NodeId const id, std::string const & label)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        label: std::string const &
+
+        addEvidence(BayesNetInference_double self, std::string const & nodeName, std::string const & label)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        label: std::string const &
+
+        addEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
 
         addEvidence(BayesNetInference_double self, std::string const & nodeName, Vector_double vals)
 
@@ -10383,6 +10391,20 @@ class BayesNetInference_double(_object):
         ----------
         nodeName: std::string const &
         val: gum::Idx const
+
+        chgEvidence(BayesNetInference_double self, gum::NodeId const id, std::string const & label)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        label: std::string const &
+
+        chgEvidence(BayesNetInference_double self, std::string const & nodeName, std::string const & label)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        label: std::string const &
 
         chgEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
 
@@ -10802,6 +10824,20 @@ class LazyPropagation_double(_object):
         nodeName: std::string const &
         val: gum::Idx const
 
+        addEvidence(LazyPropagation_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        addEvidence(LazyPropagation_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
         addEvidence(LazyPropagation_double self, gum::NodeId const id, Vector_double vals)
 
         Parameters
@@ -10835,6 +10871,20 @@ class LazyPropagation_double(_object):
         ----------
         nodeName: std::string const &
         val: gum::Idx const
+
+        chgEvidence(LazyPropagation_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        chgEvidence(LazyPropagation_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
 
         chgEvidence(LazyPropagation_double self, gum::NodeId const id, Vector_double vals)
 
@@ -11397,6 +11447,20 @@ class GibbsInference_double(_object):
         nodeName: std::string const &
         val: gum::Idx const
 
+        addEvidence(GibbsInference_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        addEvidence(GibbsInference_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
         addEvidence(GibbsInference_double self, gum::NodeId const id, Vector_double vals)
 
         Parameters
@@ -11430,6 +11494,20 @@ class GibbsInference_double(_object):
         ----------
         nodeName: std::string const &
         val: gum::Idx const
+
+        chgEvidence(GibbsInference_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        chgEvidence(GibbsInference_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
 
         chgEvidence(GibbsInference_double self, gum::NodeId const id, Vector_double vals)
 

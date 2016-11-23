@@ -101,12 +101,6 @@ namespace gum {
 
     virtual Size domainSize() const = 0;
 
-    /// get the indice-th label. This method is pure virtual.
-    /** @param indice the index of the label we wish to return
-     * @throw OutOfBound
-     */
-    virtual const std::string label( Idx indice ) const = 0;
-
     /// vector of labels
     std::vector<std::string> labels() const;
 
@@ -142,8 +136,14 @@ namespace gum {
     ///  @warning This operation may have different complexity in different
     /// subclasses.
     /// @throws NotFound
-    virtual Idx operator[]( const std::string& label ) const = 0;
-    virtual Idx index( const std::string& label ) const      = 0;
+    Idx operator[]( const std::string& label ) const { return index( label ); };
+    virtual Idx index( const std::string& label ) const = 0;
+
+    /// get the indice-th label. This method is pure virtual.
+    /** @param indice the index of the label we wish to return
+     * @throw OutOfBound
+     */
+    virtual std::string label( Idx i ) const = 0;
 
     /// string version of *this
     const std::string toString() const;

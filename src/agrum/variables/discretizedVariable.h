@@ -54,7 +54,6 @@ namespace gum {
    * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
    */
   template <typename T_TICKS>
-
   class DiscretizedVariable : public DiscreteVariable {
     private:
     std::vector<T_TICKS> __ticks;  // Array from 0 to domainSize-2
@@ -151,26 +150,16 @@ namespace gum {
      * @return the ith label
      * @throw OutOfBound
      */
-    virtual const std::string label( Idx i ) const;
+    virtual std::string label( Idx i ) const;
 
     /// get a numerical representation of he indice-the value.
     virtual double numerical( Idx indice ) const;
 
     /// from the label to its index in var.
     /// @throws NotFound
-    virtual Idx operator[]( const std::string& label ) const;
     virtual Idx index( const std::string& label ) const;
 
-    /**
-     *
-     * @param aTarget searched label
-     * @return index of this labelized
-     * @throw OutOfBound, OutOfLowerBound, OutOfUpperBound
-     */
-    Idx operator[]( const T_TICKS& aTarget ) const;
-    Idx index( const T_TICKS& aTarget ) const;
-
-    /**
+     /**
      *
      * @return the size of the random discrete variable domain
      */

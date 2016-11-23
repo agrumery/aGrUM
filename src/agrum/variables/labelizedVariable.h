@@ -88,11 +88,6 @@ namespace gum {
     /** @param aLDRV the labelized discrete random variable we copy */
     const LabelizedVariable& operator=( const LabelizedVariable& aLDRV );
 
-    /// returns the index of a given label
-    /** @param aLabel searched label
-     * @return the index of this label
-     * @throw NotFound */
-    Idx operator[]( const std::string& aLabel ) const;
 
     /// returns the index of a given label
     /** @param label searched label
@@ -141,7 +136,7 @@ namespace gum {
     /// returns the ith label
     /** @param i
      * @return the ith label */
-    virtual const std::string label( Idx i ) const;
+    virtual std::string label( Idx i ) const;
 
     /// get a numerical representation of he indice-the value.
     virtual double numerical( Idx indice ) const;

@@ -230,6 +230,22 @@ namespace gum {
     addEvidence( this->BayesNet().idFromName( nodeName ), val );
   }
 
+  // adds a new hard evidence on node id
+  template <typename GUM_SCALAR>
+  INLINE void
+  BayesNetInference<GUM_SCALAR>::addEvidence( const NodeId id,
+                                              const std::string& label ) {
+    addEvidence( id, this->BayesNet().variable( id )[label] );
+  }
+
+  // adds a new hard evidence on node id
+  template <typename GUM_SCALAR>
+  INLINE void
+  BayesNetInference<GUM_SCALAR>::addEvidence( const std::string& nodeName,
+                                              const std::string& label ) {
+    Idx id = this->BayesNet().idFromName( nodeName );
+    addEvidence( id, this->BayesNet().variable( id )[label] );
+  }
 
   // adds a new evidence on node id (might be soft or hard)
   template <typename GUM_SCALAR>
@@ -400,6 +416,23 @@ namespace gum {
   BayesNetInference<GUM_SCALAR>::chgEvidence( const std::string& nodeName,
                                               const Idx val ) {
     chgEvidence( this->BayesNet().idFromName( nodeName ), val );
+  }
+
+  // change the value of an already existing hard evidence
+  template <typename GUM_SCALAR>
+  INLINE void
+  BayesNetInference<GUM_SCALAR>::chgEvidence( const NodeId id,
+                                              const std::string& label ) {
+    chgEvidence( id, this->BayesNet().variable( id )[label] );
+  }
+
+  // change the value of an already existing hard evidence
+  template <typename GUM_SCALAR>
+  INLINE void
+  BayesNetInference<GUM_SCALAR>::chgEvidence( const std::string& nodeName,
+                                              const std::string& label ) {
+    Idx id = this->BayesNet().idFromName( nodeName );
+    chgEvidence( id, this->BayesNet().variable( id )[label] );
   }
 
   // change the value of an already existing evidence (might be soft or hard)

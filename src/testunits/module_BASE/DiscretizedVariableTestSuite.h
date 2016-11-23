@@ -48,12 +48,10 @@ namespace gum_tests {
       v.setDescription( "toto" );
       TS_ASSERT_EQUALS( v.description(), "toto" );
 
-      TS_ASSERT_EQUALS( v.varType(),
-                        gum::DiscreteVariable::VarType::Discretized );
+      TS_ASSERT_EQUALS( v.varType(), gum::DiscreteVariable::VarType::Discretized );
 
       const gum::DiscretizedVariable<int>& w = v;
-      w.setDescription(
-          "Lol" );  // change description does not change a variable
+      w.setDescription( "Lol" );  // change description does not change a variable
     }
 
     void testAddTicks() {
@@ -95,32 +93,32 @@ namespace gum_tests {
 
       unsigned int vv = (unsigned int)0;
 
-      TS_ASSERT_THROWS( v[0], gum::OutOfBounds );
-      TS_ASSERT_THROWS( v[0], gum::OutOfLowerBound );
+      TS_ASSERT_THROWS( v["0"], gum::OutOfBounds );
+      TS_ASSERT_THROWS( v["0"], gum::OutOfLowerBound );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( vv = v[1] );
+      TS_GUM_ASSERT_THROWS_NOTHING( vv = v["1"] );
       TS_ASSERT_EQUALS( vv, (unsigned int)0 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( vv = v[2] );
+      TS_GUM_ASSERT_THROWS_NOTHING( vv = v["2"] );
       TS_ASSERT_EQUALS( vv, (unsigned int)0 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( vv = v[3] );
+      TS_GUM_ASSERT_THROWS_NOTHING( vv = v["3"] );
       TS_ASSERT_EQUALS( vv, (unsigned int)1 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( vv = v[4] );
+      TS_GUM_ASSERT_THROWS_NOTHING( vv = v["4"] );
       TS_ASSERT_EQUALS( vv, (unsigned int)1 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( vv = v[5] );
+      TS_GUM_ASSERT_THROWS_NOTHING( vv = v["5"] );
       TS_ASSERT_EQUALS( vv, (unsigned int)2 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( vv = v[6] );
+      TS_GUM_ASSERT_THROWS_NOTHING( vv = v["6"] );
       TS_ASSERT_EQUALS( vv, (unsigned int)2 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( vv = v[7] );
+      TS_GUM_ASSERT_THROWS_NOTHING( vv = v["7"] );
       TS_ASSERT_EQUALS( vv, (unsigned int)2 );
 
-      TS_ASSERT_THROWS( v[8], gum::OutOfBounds );
-      TS_ASSERT_THROWS( v[8], gum::OutOfUpperBound );
+      TS_ASSERT_THROWS( v["8"], gum::OutOfBounds );
+      TS_ASSERT_THROWS( v["8"], gum::OutOfUpperBound );
     }
 
     void testOrderTicks() {
@@ -132,8 +130,7 @@ namespace gum_tests {
                 for ( int n = 1; n < 7; n++ ) {
                   if ( ( i + j + k + l + m + n == 21 ) &&
                        ( i * j * k * l * m * n == 720 ) ) {
-                    gum::DiscretizedVariable<int> d( "d",
-                                                     "Discretized variable" );
+                    gum::DiscretizedVariable<int> d( "d", "Discretized variable" );
                     d.addTick( i )
                         .addTick( j )
                         .addTick( k )
@@ -152,9 +149,9 @@ namespace gum_tests {
       ;
       d.addTick( 3.1 ).addTick( 2.0 ).addTick( 4.0 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( d[2.5] );
-      TS_ASSERT_THROWS( d[0.5], gum::OutOfLowerBound );
-      TS_ASSERT_THROWS( d[4.5], gum::OutOfUpperBound );
+      TS_GUM_ASSERT_THROWS_NOTHING( d["2.5"] );
+      TS_ASSERT_THROWS( d["0.5"], gum::OutOfLowerBound );
+      TS_ASSERT_THROWS( d["4.5"], gum::OutOfUpperBound );
 
       TS_ASSERT_EQUALS( d.numerical( 0 ), ( 2.0 + 3.1 ) / 2 );
       TS_ASSERT_EQUALS( d.numerical( 1 ), ( 4.0 + 3.1 ) / 2 );
@@ -162,9 +159,9 @@ namespace gum_tests {
       d.addTick( -std::numeric_limits<double>::infinity() );
       d.addTick( std::numeric_limits<double>::infinity() );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( d[2.5] );
-      TS_GUM_ASSERT_THROWS_NOTHING( d[0.5] );
-      TS_GUM_ASSERT_THROWS_NOTHING( d[4.5] );
+      TS_GUM_ASSERT_THROWS_NOTHING( d["2.5"] );
+      TS_GUM_ASSERT_THROWS_NOTHING( d["0.5"] );
+      TS_GUM_ASSERT_THROWS_NOTHING( d["4.5"] );
     }
 
     void testNumerical() {

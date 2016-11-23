@@ -126,6 +126,14 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void addEvidence( const std::string& nodeName, const Idx val ) {
     self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
   }
+  void addEvidence( const NodeId id, const std::string& val ) {
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+  
+  void addEvidence( const std::string& nodeName, const std::string& val ) {
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+  
   void addEvidence( const NodeId id,const std::vector<double>& vals ) {
    self->gum::BayesNetInference<double>::addEvidence(id,vals);
   }
@@ -141,6 +149,15 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void chgEvidence( const std::string& nodeName, const Idx val ) {
     self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
   }
+  
+  void chgEvidence( const NodeId id, const std::string& val ) {
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+  void chgEvidence( const std::string& nodeName, const std::string& val ) {
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+  
+  
   void chgEvidence( const NodeId id,const std::vector<double>& vals ) {
    self->gum::BayesNetInference<double>::chgEvidence(id,vals);
   }

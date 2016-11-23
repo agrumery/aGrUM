@@ -23,6 +23,7 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+#include <sstream>
 
 // to ease IDE parsing
 #include <agrum/variables/rangeVariable.h>
@@ -43,10 +44,11 @@ namespace gum {
   // Get the indice-th label. This method is pure virtual.
   // @param indice the index of the label we wish to return
   // @throw OutOfBound
-  INLINE const std::string RangeVariable::label( Idx indice ) const {
-    if ( belongs( indice + __minBound ) ) {
+  INLINE std::string RangeVariable::label( Idx indice ) const {
+    long target = static_cast<long>( indice ) + __minBound;
+    if ( belongs( target ) ) {
       std::stringstream strBuff;
-      strBuff << indice + __minBound;
+      strBuff << target;
       return strBuff.str();
     } else {
       GUM_ERROR( OutOfBounds, "Indice out of bounds." );
@@ -55,43 +57,40 @@ namespace gum {
 
   INLINE
   double RangeVariable::numerical( Idx indice ) const {
-    return double( __minBound + indice );
+    return double( __minBound + static_cast<long>( indice ) );
   }
 
-  INLINE Idx RangeVariable::operator[]( const std::string& aLabel ) const {
-    return index( aLabel );
-  }
 
-  INLINE Idx RangeVariable::index( const std::string& aLabel ) const {
-    std::istringstream i( aLabel );
-    Idx res;
+  INLINE Idx RangeVariable::index( const std::string& label ) const {
+    std::istringstream i( label );
+    long target;
 
-    if ( !( i >> res ) ) {
-      GUM_ERROR( NotFound, "Bad label : " << aLabel << " for " << *this );
+    if ( !( i >> target ) ) {
+      GUM_ERROR( NotFound, "Bad label : " << label << " for " << *this );
     }
 
-    if ( !belongs( res ) ) {
-      GUM_ERROR( NotFound, "Bad label : " << aLabel << " for " << *this );
+    if ( !belongs( target ) ) {
+      GUM_ERROR( NotFound, "Bad label : " << label << " for " << *this );
     }
 
-    return res - __minBound;
+    return static_cast<Idx>( target - __minBound );
   }
 
   // Returns the lower bound.
-  INLINE Idx RangeVariable::minVal() const { return __minBound; }
+  INLINE long RangeVariable::minVal() const { return __minBound; }
 
   // Set a new value for the lower bound.
-  INLINE void RangeVariable::setMinVal( Idx minVal ) { __minBound = minVal; }
+  INLINE void RangeVariable::setMinVal( long minVal ) { __minBound = minVal; }
 
   // Returns the upper bound.
-  INLINE Idx RangeVariable::maxVal() const { return __maxBound; }
+  INLINE long RangeVariable::maxVal() const { return __maxBound; }
 
   // Set a new value of the upper bound.
-  INLINE void RangeVariable::setMaxVal( Idx maxVal ) { __maxBound = maxVal; }
+  INLINE void RangeVariable::setMaxVal( long maxVal ) { __maxBound = maxVal; }
 
   // Returns true if the param belongs to the variable's interval.
-  INLINE bool RangeVariable::belongs( Idx indice ) const {
-    return ( ( __minBound <= indice ) && ( indice <= __maxBound ) );
+  INLINE bool RangeVariable::belongs( long val ) const {
+    return ( ( __minBound <= val ) && ( val <= __maxBound ) );
   }
 
   // Copy operator

@@ -124,7 +124,7 @@ namespace gum {
   }
 
   // returns the ith label
-  INLINE const std::string LabelizedVariable::label( Idx i ) const {
+  INLINE std::string LabelizedVariable::label( Idx i ) const {
     return __labels.atPos( i );
   }
 
@@ -133,10 +133,6 @@ namespace gum {
     return double( indice );
   }
 
-  // returns the index of a given label
-  INLINE Idx LabelizedVariable::operator[]( const std::string& aLabel ) const {
-    return index( aLabel );
-  }
 
   INLINE Idx LabelizedVariable::index( const std::string& aLabel ) const {
     try {
