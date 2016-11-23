@@ -149,6 +149,8 @@ namespace gum {
     /// returns the list of joint targets
     virtual const Set<NodeSet>& jointTargets() const noexcept final;
 
+    /// returns the number of joint targets
+    virtual Size nbrJointTargets() const noexcept final;
     /// @}
 
 

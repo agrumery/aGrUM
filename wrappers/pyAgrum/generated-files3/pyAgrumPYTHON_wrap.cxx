@@ -6757,10 +6757,10 @@ SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__jointTargets(gum::LazyPro
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__makeInference(gum::LazyPropagation< double > *self){
     self->gum::BayesNetInference<double>::makeInference();
   }
-SWIGINTERN gum::Potential< double > const &gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_0(gum::LazyPropagation< double > *self,gum::NodeId const var){
+SWIGINTERN gum::Potential< double > const gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_0(gum::LazyPropagation< double > *self,gum::NodeId const var){
     return self->MarginalTargetedInference<double>::posterior(var);
   }
-SWIGINTERN gum::Potential< double > const &gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_1(gum::LazyPropagation< double > *self,std::string const nodeName){
+SWIGINTERN gum::Potential< double > const gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_1(gum::LazyPropagation< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
 SWIGINTERN gum::IBayesNet< double > const &gum_LazyPropagation_Sl_double_Sg__BayesNet(gum::LazyPropagation< double > const *self){
@@ -6871,6 +6871,9 @@ SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseAllJointTargets(gum::Lazy
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseAllMarginalTargets(gum::LazyPropagation< double > *self){
     self->gum::JointTargetedInference<double>::eraseAllMarginalTargets();
   }
+SWIGINTERN gum::Size gum_LazyPropagation_Sl_double_Sg__nbrJointTargets(gum::LazyPropagation< double > *self){
+    return self->gum::JointTargetedInference<double>::nbrJointTargets();
+  }
 SWIGINTERN double gum_LazyPropagation_Sl_double_Sg__I(gum::LazyPropagation< double > *self,gum::NodeId const X,gum::NodeId const Y){
     return self->gum::JointTargetedInference<double>::I(X,Y);
   }
@@ -6910,10 +6913,10 @@ SWIGINTERN std::vector< double,std::allocator< double > > const &gum_GibbsInfere
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__makeInference(gum::GibbsInference< double > *self){
     self->gum::BayesNetInference<double>::makeInference();
   }
-SWIGINTERN gum::Potential< double > const &gum_GibbsInference_Sl_double_Sg__posterior__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const var){
+SWIGINTERN gum::Potential< double > const gum_GibbsInference_Sl_double_Sg__posterior__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const var){
     return self->MarginalTargetedInference<double>::posterior(var);
   }
-SWIGINTERN gum::Potential< double > const &gum_GibbsInference_Sl_double_Sg__posterior__SWIG_1(gum::GibbsInference< double > *self,std::string const nodeName){
+SWIGINTERN gum::Potential< double > const gum_GibbsInference_Sl_double_Sg__posterior__SWIG_1(gum::GibbsInference< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
 SWIGINTERN gum::IBayesNet< double > const &gum_GibbsInference_Sl_double_Sg__BayesNet(gum::GibbsInference< double > const *self){
@@ -51500,7 +51503,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_posterior__SWIG_0(PyObject *SW
   int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Potential< double > result;
   
   if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_posterior",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
@@ -51515,13 +51518,13 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_posterior__SWIG_0(PyObject *SW
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (gum::Potential< double > *) &gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
+      result = gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -51536,7 +51539,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_posterior__SWIG_1(PyObject *SW
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Potential< double > result;
   
   if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_posterior",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
@@ -51555,13 +51558,13 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_posterior__SWIG_1(PyObject *SW
   }
   {
     try {
-      result = (gum::Potential< double > *) &gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
+      result = gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -53756,6 +53759,35 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_nbrJointTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_nbrJointTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_nbrJointTargets" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LazyPropagation_Sl_double_Sg__nbrJointTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LazyPropagation_double_I(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
@@ -54710,7 +54742,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior__SWIG_0(PyObject *SWI
   int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Potential< double > result;
   
   if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_posterior",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
@@ -54725,13 +54757,13 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior__SWIG_0(PyObject *SWI
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (gum::Potential< double > *) &gum_GibbsInference_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
+      result = gum_GibbsInference_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -54746,7 +54778,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior__SWIG_1(PyObject *SWI
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Potential< double > result;
   
   if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_posterior",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
@@ -54765,13 +54797,13 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior__SWIG_1(PyObject *SWI
   }
   {
     try {
-      result = (gum::Potential< double > *) &gum_GibbsInference_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
+      result = gum_GibbsInference_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -76586,6 +76618,14 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { (char *)"LazyPropagation_double_eraseAllMarginalTargets", _wrap_LazyPropagation_double_eraseAllMarginalTargets, METH_VARARGS, (char *)"\n"
 		"LazyPropagation_double_eraseAllMarginalTargets(LazyPropagation_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_nbrJointTargets", _wrap_LazyPropagation_double_nbrJointTargets, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_nbrJointTargets(LazyPropagation_double self) -> gum::Size\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"

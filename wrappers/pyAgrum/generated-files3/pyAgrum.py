@@ -10922,7 +10922,7 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_makeInference(self)
 
 
-    def posterior(self, *args) -> "gum::Potential< double > const &":
+    def posterior(self, *args) -> "gum::Potential< double > const":
         """
         posterior(LazyPropagation_double self, gum::NodeId const var) -> Potential_double
 
@@ -11282,6 +11282,18 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_eraseAllMarginalTargets(self)
 
 
+    def nbrJointTargets(self) -> "gum::Size":
+        """
+        nbrJointTargets(LazyPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LazyPropagation< double > *
+
+        """
+        return _pyAgrum.LazyPropagation_double_nbrJointTargets(self)
+
+
     def I(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
         """
         I(LazyPropagation_double self, gum::NodeId const X, gum::NodeId const Y) -> double
@@ -11631,7 +11643,7 @@ class GibbsInference_double(_object):
         return _pyAgrum.GibbsInference_double_makeInference(self)
 
 
-    def posterior(self, *args) -> "gum::Potential< double > const &":
+    def posterior(self, *args) -> "gum::Potential< double > const":
         """
         posterior(GibbsInference_double self, gum::NodeId const var) -> Potential_double
 

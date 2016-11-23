@@ -108,10 +108,10 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void makeInference(void) {
     self->gum::BayesNetInference<double>::makeInference();
   }
-  const Potential<double>& posterior( const NodeId var ) {
+  const Potential<double> posterior( const NodeId var ) {
     return self->MarginalTargetedInference<double>::posterior(var);
   }
-  const Potential<double>& posterior( const std::string nodeName ) {
+  const Potential<double> posterior( const std::string nodeName ) {
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
   const IBayesNet<double>& BayesNet() const {
@@ -256,10 +256,10 @@ ADD_INFERENCE_API(gum::GibbsInference<double>)
 
 %define ADD_JOINT_INFERENCE_API(classname)
 %extend classname {
-  const Potential<double>& posterior( const NodeId var ) {
+  const Potential<double> posterior( const NodeId var ) {
     return self->JointTargetedInference<double>::posterior(var);
   }
-  const Potential<double>& posterior( const std::string nodeName ) {
+  const Potential<double> posterior( const std::string nodeName ) {
     return self->JointTargetedInference<double>::posterior(nodeName);
   }
   void eraseAllTargets() {
@@ -271,6 +271,11 @@ ADD_INFERENCE_API(gum::GibbsInference<double>)
   void eraseAllMarginalTargets() {
     self->gum::JointTargetedInference<double>::eraseAllMarginalTargets();
   }
+  
+  gum::Size nbrJointTargets() {
+    return self->gum::JointTargetedInference<double>::nbrJointTargets();
+  }
+  
   double I( const NodeId X, const NodeId Y ) {
     return self->gum::JointTargetedInference<double>::I(X,Y);
   }

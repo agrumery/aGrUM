@@ -93,8 +93,8 @@ namespace gum {
   INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllJointTargets() {
     _onAllJointTargetsErased();
     __joint_targets.clear();
-    this->__state = BayesNetInference<GUM_SCALAR>::
-      StateOfInference::OutdatedBNStructure;
+    this->__state =
+        BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
 
 
@@ -129,8 +129,8 @@ namespace gum {
     if ( !__joint_targets.contains( joint_target ) ) {
       __joint_targets.insert( joint_target );
       _onJointTargetAdded( joint_target );
-      this->__state = BayesNetInference<GUM_SCALAR>::
-        StateOfInference::OutdatedBNStructure;
+      this->__state =
+          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
@@ -158,8 +158,8 @@ namespace gum {
     if ( __joint_targets.contains( joint_target ) ) {
       _onJointTargetErased( joint_target );
       __joint_targets.erase( joint_target );
-      this->__state = BayesNetInference<GUM_SCALAR>::
-        StateOfInference::OutdatedBNStructure;
+      this->__state =
+          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
     }
   }
 
@@ -169,6 +169,13 @@ namespace gum {
   INLINE const Set<NodeSet>&
   JointTargetedInference<GUM_SCALAR>::jointTargets() const noexcept {
     return __joint_targets;
+  }
+
+  /// returns the number of target sets
+  template <typename GUM_SCALAR>
+  INLINE Size JointTargetedInference<GUM_SCALAR>::nbrJointTargets() const
+      noexcept {
+    return __joint_targets.size();
   }
 
 
@@ -186,24 +193,23 @@ namespace gum {
     if ( __joint_targets.contains( vars ) ) {
       set = vars;
       found_exact_target = true;
-    }
-    else {
+    } else {
       for ( const auto& target : __joint_targets ) {
         bool found = true;
         for ( const auto var : vars ) {
-          if ( ! target.contains ( var ) ) {
+          if ( !target.contains( var ) ) {
             found = false;
             break;
           }
         }
-        if ( found && ( set.empty () || ( target.size () < set.size () ) ) ) {
+        if ( found && ( set.empty() || ( target.size() < set.size() ) ) ) {
           set = target;
           found_exact_target = false;
         }
       }
     }
-    
-    if ( set.empty () ) {
+
+    if ( set.empty() ) {
       GUM_ERROR( UndefinedElement,
                  " no joint target containing " << vars << "could be found" );
     }
@@ -215,20 +221,20 @@ namespace gum {
     if ( found_exact_target )
       return _jointPosterior( vars );
     else
-      return _jointPosterior ( vars, set );
+      return _jointPosterior( vars, set );
   }
-  
+
 
   // Compute the posterior of a node
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
   JointTargetedInference<GUM_SCALAR>::posterior( const NodeId node ) {
-    if ( this->targets().contains ( node ) )
+    if ( this->targets().contains( node ) )
       return MarginalTargetedInference<GUM_SCALAR>::posterior( node );
     else
-      return jointPosterior ( NodeSet { node } );
+      return jointPosterior( NodeSet{node} );
   }
- 
+
 
   // ##############################################################################
   // Entropy
@@ -250,18 +256,16 @@ namespace gum {
       // here use unnormalized joint posterior rather than just posterior
       // to avoid saving the posterior in the cache of the inference engines
       // like LazyPropagation or SahferShenoy.
-      pXY = this->_unnormalizedJointPosterior( { X, Y } );
+      pXY = this->_unnormalizedJointPosterior( {X, Y} );
       pXY->normalize();
       if ( X != Y ) {
-        pX = pXY->margSumOut ( { &( this->BayesNet().variable ( Y ) ) } );
-        pY = pXY->margSumOut ( { &( this->BayesNet().variable ( X ) ) } );
+        pX = pXY->margSumOut( {&( this->BayesNet().variable( Y ) )} );
+        pY = pXY->margSumOut( {&( this->BayesNet().variable( X ) )} );
+      } else {
+        pX = *pXY;
+        pY = *pXY;
       }
-      else {
-        pX  = *pXY;
-        pY  = *pXY;
-      }
-    }
-    catch ( ... ) {
+    } catch ( ... ) {
       if ( pXY != nullptr ) {
         delete pXY;
         pXY = nullptr;
@@ -289,7 +293,7 @@ namespace gum {
     }
 
     delete pXY;
-    
+
     return res;
   }
 

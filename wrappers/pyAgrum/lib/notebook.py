@@ -710,12 +710,12 @@ def getPotential(pot, digits=4, varnames=None):
   return _reprPotential(pot, digits, varnames, asString=True)
 
 
-def getSideBySide(*args, titles=None):
+def getSideBySide(*args, captions=None):
   """
   create an HTML table for args as string (using string, _repr_html_() or str())
 
   :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
-  :param titles: list of strings (titles)
+  :param captions: list of strings (captions)
   :return: a string representing the table
   """
   s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%">'
@@ -733,23 +733,23 @@ def getSideBySide(*args, titles=None):
                                                                                                    for arg in args])
   s += '</div></td></tr>'
 
-  if titles is not None:
-    s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'
-    s += '</div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'.join(titles)
-    s += '</div></td></tr>'
+  if captions is not None:
+    s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'
+    s += '</small></div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'.join(captions)
+    s += '</small></div></td></tr>'
 
   s += '</table>'
   return s
 
 
-def sideBySide(*args, titles=None):
+def sideBySide(*args, captions=None):
   """
   display side by side args as HMTL fragment (using string, _repr_html_() or str())
 
   :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
-  :param titles: list of strings (titles)
+  :param captions: list of strings (captions)
   """
-  display(HTML(getSideBySide(*args, titles=titles)))
+  display(HTML(getSideBySide(*args, captions=captions)))
 
 
 def getInferenceEngine(ie, inferenceName):
@@ -771,8 +771,16 @@ def getInferenceEngine(ie, inferenceName):
     t += "<li><b>target(s)</b><br/>"
     t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.targetList()])
     t += "</li>"
+
+  if hasattr(ie,'nbrJointTargets'):
+    if ie.nbrJointTargets() > 0:
+      t += "<li><b>Joint target(s)</b><br/>"
+      t += ", ".join(['['
+                      + (", ".join([ie.BayesNet().variable(n).name() for n in ns]))
+                      + ']' for ns in ie.jointTargets()])
+      t += "</li>"
   t += '</ul></div>'
-  return getSideBySide(getBN(ie.BayesNet()), t, titles=[inferenceName, "Evidence and targets"])
+  return getSideBySide(getBN(ie.BayesNet()), t, captions=[inferenceName, "Evidence and targets"])
 
 
 # adding _repr_html_ to some pyAgrum classes !
