@@ -126,12 +126,25 @@ namespace gum {
     }
 
     // check that the joint_target set does not contain the new target
-    if ( !__joint_targets.contains( joint_target ) ) {
-      __joint_targets.insert( joint_target );
-      _onJointTargetAdded( joint_target );
-      this->__state =
-          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    if ( __joint_targets.contains( joint_target ) ) return;
+
+    // check if joint_target is a subset of an already existing target
+    for ( const auto& target : __joint_targets ) {
+      if ( target.isSupersetOf( joint_target ) ) return;
     }
+
+    // check if joint_target is not a superset of an already existing target
+    // in this case, we need to remove old existing target
+    for ( auto iter = __joint_targets.beginSafe();
+          iter != __joint_targets.endSafe();
+          ++iter ) {
+      if ( iter->isSubsetOf( joint_target ) ) eraseJointTarget( *iter );
+    }
+
+    __joint_targets.insert( joint_target );
+    _onJointTargetAdded( joint_target );
+    this->__state =
+        BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
   }
 
 
@@ -190,21 +203,16 @@ namespace gum {
     // try to get the smallest set of targets that contains "vars"
     NodeSet set;
     bool found_exact_target;
+
     if ( __joint_targets.contains( vars ) ) {
       set = vars;
       found_exact_target = true;
     } else {
       for ( const auto& target : __joint_targets ) {
-        bool found = true;
-        for ( const auto var : vars ) {
-          if ( !target.contains( var ) ) {
-            found = false;
-            break;
-          }
-        }
-        if ( found && ( set.empty() || ( target.size() < set.size() ) ) ) {
+        if ( vars.isSubsetOf( target ) ) {
           set = target;
           found_exact_target = false;
+          break;
         }
       }
     }
@@ -235,6 +243,12 @@ namespace gum {
       return jointPosterior( NodeSet{node} );
   }
 
+  // Compute the posterior of a node
+  template <typename GUM_SCALAR>
+  const Potential<GUM_SCALAR>&
+  JointTargetedInference<GUM_SCALAR>::posterior( const std::string& nodeName ) {
+    return posterior( this->BayesNet().idFromName( nodeName ) );
+  }
 
   // ##############################################################################
   // Entropy

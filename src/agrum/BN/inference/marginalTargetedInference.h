@@ -109,7 +109,7 @@ namespace gum {
      * @throw UndefinedElement if node is not in the set of targets
      */
     virtual const Potential<GUM_SCALAR>&
-    posterior( const std::string& nodeName ) final;
+    posterior( const std::string& nodeName );
 
     /// @}
 

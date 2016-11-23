@@ -735,7 +735,8 @@ def getSideBySide(*args, captions=None):
 
   if captions is not None:
     s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'
-    s += '</small></div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'.join(captions)
+    s += '</small></div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'.join(
+        captions)
     s += '</small></div></td></tr>'
 
   s += '</table>'
@@ -752,13 +753,13 @@ def sideBySide(*args, captions=None):
   display(HTML(getSideBySide(*args, captions=captions)))
 
 
-def getInferenceEngine(ie, inferenceName):
+def getInferenceEngine(ie, inferenceCaption):
   """
   display an inference as a BN+ lists of hard/soft evidence and list of targets
 
   :param ie:
   """
-  t = '<div align=\"left"><ul>'
+  t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:
     t += "<li><b>hard evidence</b><br/>"
     t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.hardEvidenceList()])
@@ -769,10 +770,13 @@ def getInferenceEngine(ie, inferenceName):
     t += "</li>"
   if ie.nbrTargets() > 0:
     t += "<li><b>target(s)</b><br/>"
-    t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.targetList()])
+    if ie.nbrTargets() == ie.BayesNet().size():
+      t += " all"
+    else:
+      t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.targetList()])
     t += "</li>"
 
-  if hasattr(ie,'nbrJointTargets'):
+  if hasattr(ie, 'nbrJointTargets'):
     if ie.nbrJointTargets() > 0:
       t += "<li><b>Joint target(s)</b><br/>"
       t += ", ".join(['['
@@ -780,7 +784,7 @@ def getInferenceEngine(ie, inferenceName):
                       + ']' for ns in ie.jointTargets()])
       t += "</li>"
   t += '</ul></div>'
-  return getSideBySide(getBN(ie.BayesNet()), t, captions=[inferenceName, "Evidence and targets"])
+  return getSideBySide(getBN(ie.BayesNet()), t, captions=[inferenceCaption, "Evidence and targets"])
 
 
 # adding _repr_html_ to some pyAgrum classes !
