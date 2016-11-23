@@ -357,7 +357,7 @@ namespace gum_tests {
       __Potential evp0( create_evidence( 0, {1, 0} ) );
       inf.chgEvidence( 0, 0 );
       __Potential evp1( create_evidence( 1, {0.8, 0.4, 0.1} ) );
-      inf.chgEvidence( 1, {0.8, 0.4, 0.1} );
+      inf.chgEvidence( 1, std::vector<double>{0.8, 0.4, 0.1} );
       __Potential evp7( create_evidence( 7, {0.2, 0.3, 0.6} ) );
       inf.chgEvidence( *evp7 );
 

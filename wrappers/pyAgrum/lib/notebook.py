@@ -710,12 +710,13 @@ def getPotential(pot, digits=4, varnames=None):
   return _reprPotential(pot, digits, varnames, asString=True)
 
 
-def sideBySide(*args, titles=None):
+def getSideBySide(*args, titles=None):
   """
-  display side by side args as HMTL fragment (using string, _repr_html_() or str())
+  create an HTML table for args as string (using string, _repr_html_() or str())
 
   :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
   :param titles: list of strings (titles)
+  :return: a string representing the table
   """
   s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%">'
 
@@ -738,8 +739,17 @@ def sideBySide(*args, titles=None):
     s += '</div></td></tr>'
 
   s += '</table>'
+  return s
 
-  display(HTML(s))
+
+def sideBySide(*args, titles=None):
+  """
+  display side by side args as HMTL fragment (using string, _repr_html_() or str())
+
+  :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
+  :param titles: list of strings (titles)
+  """
+  display(HTML(getSideBySide(*args, titles=titles)))
 
 
 def getInferenceEngine(ie, inferenceName):
@@ -762,7 +772,7 @@ def getInferenceEngine(ie, inferenceName):
     t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.targetList()])
     t += "</li>"
   t += '</ul></div>'
-  sideBySide(getBN(ie.BayesNet()), t,titles=[inferenceName,""])
+  return getSideBySide(getBN(ie.BayesNet()), t, titles=[inferenceName, "Evidence and targets"])
 
 
 # adding _repr_html_ to some pyAgrum classes !
@@ -770,5 +780,4 @@ gum.BayesNet._repr_html_ = lambda self: getBN(self)
 gum.Potential._repr_html_ = lambda self: getPotential(self)
 gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
 gum.CliqueGraph._repr_html_ = lambda self: getDot(self.toDot())
-gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self,"Lazy Propagation on this BN")
-
+gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self, "Lazy Propagation on this BN")

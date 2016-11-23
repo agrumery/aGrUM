@@ -254,4 +254,31 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
 ADD_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_INFERENCE_API(gum::GibbsInference<double>)
 
+%define ADD_JOINT_INFERENCE_API(classname)
+%extend classname {
+  const Potential<double>& posterior( const NodeId var ) {
+    return self->JointTargetedInference<double>::posterior(var);
+  }
+  const Potential<double>& posterior( const std::string nodeName ) {
+    return self->JointTargetedInference<double>::posterior(nodeName);
+  }
+  void eraseAllTargets() {
+    self->gum::JointTargetedInference<double>::eraseAllTargets();
+  }
+  void eraseAllJointTargets() {
+    self->gum::JointTargetedInference<double>::eraseAllJointTargets();
+  }
+  void eraseAllMarginalTargets() {
+    self->gum::JointTargetedInference<double>::eraseAllMarginalTargets();
+  }
+  double I( const NodeId X, const NodeId Y ) {
+    return self->gum::JointTargetedInference<double>::I(X,Y);
+  }
+  double VI( const NodeId X, const NodeId Y ) {
+    return self->gum::JointTargetedInference<double>::VI(X,Y);
+  }
+}
+%enddef
+ADD_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
+
 

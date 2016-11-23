@@ -6714,51 +6714,44 @@ SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveUAI(gum::BayesNet< double > *self
       gum::UAIWriter<double> writer;
       writer.write( name, *self );
   }
-SWIGINTERN gum::Potential< double > gum_LazyPropagation_Sl_double_Sg__jointPosterior(gum::LazyPropagation< double > *self,PyObject *seq_of_ids){
-      if (PySequence_Check(seq_of_ids)==0) {
-        PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
-        return 0;
-      }
-
-      gum::NodeSet s;
-      for(Py_ssize_t i=0;i<PySequence_Size(seq_of_ids);i++) {
-        PyObject* o=PyList_GetItem(seq_of_ids, i);
-        if (PyNumber_Check(o)==0) {
-          PyErr_SetString(PyExc_TypeError, "arg must be a sequence of ids");
-          return 0;
-        }
-        s<<gum::NodeId( PyInt_AsLong(o));
-      }
-      return self->jointPosterior(s);
-    }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__setEvidence(gum::LazyPropagation< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__updateEvidence(gum::LazyPropagation< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__setTargets(gum::LazyPropagation< double > *self,PyObject *targets){}
 SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__hardEvidenceList(gum::LazyPropagation< double > *self){
-      PyObject* q = PyList_New( 0 );
-
-      for ( auto node : self->hardEvidenceNodes() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
-      }
-
-      return q;
+      return PyAgrumHelper::PyListFromNodeSet(self->hardEvidenceNodes() ) ;
     }
 SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__softEvidenceList(gum::LazyPropagation< double > *self){
-      PyObject* q = PyList_New( 0 );
-
-      for ( auto node : self->softEvidenceNodes() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
-      }
-
-      return q;
+      return PyAgrumHelper::PyListFromNodeSet(self->softEvidenceNodes() ) ;
     }
 SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__targetList(gum::LazyPropagation< double > *self){
+      return PyAgrumHelper::PyListFromNodeSet(self->targets() );
+    }
+SWIGINTERN gum::Potential< double > gum_LazyPropagation_Sl_double_Sg__jointPosterior(gum::LazyPropagation< double > *self,PyObject *list){
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      return self->jointPosterior(nodeset);
+    }
+SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__addJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
+    }
+SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
+    }
+SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__isJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
+    }
+SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__jointTargets(gum::LazyPropagation< double > const *self){
       PyObject* q = PyList_New( 0 );
 
-      for ( auto node : self->targets() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      for ( auto ns : self->JointTargetedInference<double>::jointTargets()) {
+        PyList_Append( q,PyAgrumHelper::PyListFromNodeSet(ns));
       }
-
       return q;
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__makeInference(gum::LazyPropagation< double > *self){
@@ -6872,35 +6865,29 @@ SWIGINTERN double gum_LazyPropagation_Sl_double_Sg__H__SWIG_0(gum::LazyPropagati
 SWIGINTERN double gum_LazyPropagation_Sl_double_Sg__H__SWIG_1(gum::LazyPropagation< double > *self,std::string const &nodeName){
      return self->gum::MarginalTargetedInference<double>::H(nodeName);
    }
+SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseAllJointTargets(gum::LazyPropagation< double > *self){
+    self->gum::JointTargetedInference<double>::eraseAllJointTargets();
+  }
+SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseAllMarginalTargets(gum::LazyPropagation< double > *self){
+    self->gum::JointTargetedInference<double>::eraseAllMarginalTargets();
+  }
+SWIGINTERN double gum_LazyPropagation_Sl_double_Sg__I(gum::LazyPropagation< double > *self,gum::NodeId const X,gum::NodeId const Y){
+    return self->gum::JointTargetedInference<double>::I(X,Y);
+  }
+SWIGINTERN double gum_LazyPropagation_Sl_double_Sg__VI(gum::LazyPropagation< double > *self,gum::NodeId const X,gum::NodeId const Y){
+    return self->gum::JointTargetedInference<double>::VI(X,Y);
+  }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setEvidence(gum::GibbsInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__updateEvidence(gum::GibbsInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setTargets(gum::GibbsInference< double > *self,PyObject *targets){}
 SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__hardEvidenceList(gum::GibbsInference< double > *self){
-      PyObject* q = PyList_New( 0 );
-
-      for ( auto node : self->hardEvidenceNodes() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
-      }
-
-      return q;
+      return PyAgrumHelper::PyListFromNodeSet(self->hardEvidenceNodes() ) ;
     }
 SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__softEvidenceList(gum::GibbsInference< double > *self){
-      PyObject* q = PyList_New( 0 );
-
-      for ( auto node : self->softEvidenceNodes() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
-      }
-
-      return q;
+      return PyAgrumHelper::PyListFromNodeSet(self->softEvidenceNodes() ) ;
     }
 SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__targetList(gum::GibbsInference< double > *self){
-      PyObject* q = PyList_New( 0 );
-
-      for ( auto node : self->targets() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
-      }
-
-      return q;
+      return PyAgrumHelper::PyListFromNodeSet(self->targets() );
     }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setVerbosity(gum::GibbsInference< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setEpsilon(gum::GibbsInference< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
@@ -51140,38 +51127,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LazyPropagation_double_jointPosterior(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
-  PyObject *arg2 = (PyObject *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  gum::Potential< double > result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_jointPosterior",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_jointPosterior" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
-  arg2 = obj1;
-  {
-    try {
-      result = gum_LazyPropagation_Sl_double_Sg__jointPosterior(arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_LazyPropagation_double_setEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
@@ -51340,6 +51295,161 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_targetList(PyObject *SWIGUNUSE
   {
     try {
       result = (PyObject *)gum_LazyPropagation_Sl_double_Sg__targetList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_jointPosterior(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_jointPosterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_jointPosterior" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      result = gum_LazyPropagation_Sl_double_Sg__jointPosterior(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_addJointTarget(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_addJointTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_addJointTarget" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_LazyPropagation_Sl_double_Sg__addJointTarget(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_eraseJointTarget(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_eraseJointTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_eraseJointTarget" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_LazyPropagation_Sl_double_Sg__eraseJointTarget(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_isJointTarget(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_isJointTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_isJointTarget" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      result = (bool)gum_LazyPropagation_Sl_double_Sg__isJointTarget(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_jointTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_jointTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_jointTargets" "', argument " "1"" of type '" "gum::LazyPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_LazyPropagation_Sl_double_Sg__jointTargets((gum::LazyPropagation< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -53587,6 +53697,156 @@ fail:
     "    gum::LazyPropagation< double >::H(gum::NodeId const)\n"
     "    gum::LazyPropagation< double >::H(std::string const &)\n");
   return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_eraseAllJointTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_eraseAllJointTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_eraseAllJointTargets" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LazyPropagation_Sl_double_Sg__eraseAllJointTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_eraseAllMarginalTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_eraseAllMarginalTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_eraseAllMarginalTargets" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LazyPropagation_Sl_double_Sg__eraseAllMarginalTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_I(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LazyPropagation_double_I",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_I" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LazyPropagation_double_I" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LazyPropagation_double_I" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = (double)gum_LazyPropagation_Sl_double_Sg__I(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_VI(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LazyPropagation_double_VI",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_VI" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LazyPropagation_double_VI" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LazyPropagation_double_VI" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = (double)gum_LazyPropagation_Sl_double_Sg__VI(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
 }
 
 
@@ -75939,15 +76199,6 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::LazyPropagation< double > *\n"
 		"\n"
 		""},
-	 { (char *)"LazyPropagation_double_jointPosterior", _wrap_LazyPropagation_double_jointPosterior, METH_VARARGS, (char *)"\n"
-		"LazyPropagation_double_jointPosterior(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"self: gum::LazyPropagation< double > *\n"
-		"seq_of_ids: PyObject *\n"
-		"\n"
-		""},
 	 { (char *)"LazyPropagation_double_setEvidence", _wrap_LazyPropagation_double_setEvidence, METH_VARARGS, (char *)"\n"
 		"LazyPropagation_double_setEvidence(LazyPropagation_double self, PyObject * evidces)\n"
 		"\n"
@@ -75997,6 +76248,50 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"self: gum::LazyPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_jointPosterior", _wrap_LazyPropagation_double_jointPosterior, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_jointPosterior(LazyPropagation_double self, PyObject * list) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"list: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_addJointTarget", _wrap_LazyPropagation_double_addJointTarget, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_addJointTarget(LazyPropagation_double self, PyObject * list)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"list: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_eraseJointTarget", _wrap_LazyPropagation_double_eraseJointTarget, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_eraseJointTarget(LazyPropagation_double self, PyObject * list)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"list: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_isJointTarget", _wrap_LazyPropagation_double_isJointTarget, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_isJointTarget(LazyPropagation_double self, PyObject * list) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"list: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_jointTargets", _wrap_LazyPropagation_double_jointTargets, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_jointTargets(LazyPropagation_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"LazyPropagation_double_makeInference", _wrap_LazyPropagation_double_makeInference, METH_VARARGS, (char *)"\n"
@@ -76279,6 +76574,42 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"self: gum::LazyPropagation< double > *\n"
 		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_eraseAllJointTargets", _wrap_LazyPropagation_double_eraseAllJointTargets, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_eraseAllJointTargets(LazyPropagation_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_eraseAllMarginalTargets", _wrap_LazyPropagation_double_eraseAllMarginalTargets, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_eraseAllMarginalTargets(LazyPropagation_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_I", _wrap_LazyPropagation_double_I, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_I(LazyPropagation_double self, gum::NodeId const X, gum::NodeId const Y) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"X: gum::NodeId const\n"
+		"Y: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_VI", _wrap_LazyPropagation_double_VI, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_VI(LazyPropagation_double self, gum::NodeId const X, gum::NodeId const Y) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"X: gum::NodeId const\n"
+		"Y: gum::NodeId const\n"
 		"\n"
 		""},
 	 { (char *)"LazyPropagation_double_swigregister", LazyPropagation_double_swigregister, METH_VARARGS, NULL},

@@ -1,24 +1,4 @@
 
-%extend gum::LazyPropagation<double> {
-    Potential<double> jointPosterior(PyObject *seq_of_ids) {
-      if (PySequence_Check(seq_of_ids)==0) {
-        PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
-        return 0;
-      }
-
-      gum::NodeSet s;
-      for(Py_ssize_t i=0;i<PySequence_Size(seq_of_ids);i++) {
-        PyObject* o=PyList_GetItem(seq_of_ids, i);
-        if (PyNumber_Check(o)==0) {
-          PyErr_SetString(PyExc_TypeError, "arg must be a sequence of ids");
-          return 0;
-        }
-        s<<gum::NodeId( PyInt_AsLong(o));
-      }
-      return self->jointPosterior(s);
-    };
-}
-
 %define IMPROVE_INFERENCE_API(classname)
 %feature("shadow") classname::setEvidence %{
 def setEvidence(self, evidces):
@@ -59,33 +39,54 @@ def setTargets(self, targets):
     void setTargets(PyObject* targets) {}
 
     PyObject* hardEvidenceList() {
-      PyObject* q = PyList_New( 0 );
-
-      for ( auto node : self->hardEvidenceNodes() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
-      }
-
-      return q;
+      return PyAgrumHelper::PyListFromNodeSet(self->hardEvidenceNodes() ) ;
     }
     PyObject* softEvidenceList() {
-      PyObject* q = PyList_New( 0 );
-
-      for ( auto node : self->softEvidenceNodes() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
-      }
-
-      return q;
+      return PyAgrumHelper::PyListFromNodeSet(self->softEvidenceNodes() ) ;
     }
     PyObject* targetList() {
-      PyObject* q = PyList_New( 0 );
-
-      for ( auto node : self->targets() ) {
-        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
-      }
-
-      return q;
+      return PyAgrumHelper::PyListFromNodeSet(self->targets() );
     }
 }
 %enddef
 IMPROVE_INFERENCE_API(gum::LazyPropagation<double>)
 IMPROVE_INFERENCE_API(gum::GibbsInference<double>)
+
+
+%define IMPROVE_JOINT_INFERENCE_API(classname)
+%extend classname {
+    Potential<double> jointPosterior(PyObject *list) {
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      return self->jointPosterior(nodeset);
+    };
+
+    void addJointTarget( PyObject* list ) {
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
+    }
+
+    void eraseJointTarget( PyObject* list ) {
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
+    }
+
+    bool isJointTarget( PyObject* list ) {
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
+    }
+
+    PyObject* jointTargets() const {
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto ns : self->JointTargetedInference<double>::jointTargets()) {
+        PyList_Append( q,PyAgrumHelper::PyListFromNodeSet(ns));
+      }
+      return q;
+    }
+}
+%enddef
+IMPROVE_JOINT_INFERENCE_API(gum::LazyPropagation<double>)

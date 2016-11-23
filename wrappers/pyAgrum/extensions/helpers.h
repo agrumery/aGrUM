@@ -25,6 +25,8 @@
  */
 #include <agrum/core/set.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/BN/IBayesNet.h>
+#include <agrum/graphs/graphElements.h>
 
 class PyAgrumHelper {
   public:
@@ -48,9 +50,7 @@ class PyAgrumHelper {
     if (PyList_Check(varnames)) {
       gum::Set<std::string> names;
       auto siz=PyList_Size(varnames);
-      for (int i=0 ;
-            i<siz ;
-            i++) {
+      for (int i=0 ;i<siz ;i++) {
         std::string name=stringFromPyObject(PyList_GetItem(varnames,i));
 
         if (name=="")
@@ -79,9 +79,7 @@ class PyAgrumHelper {
         auto siz=PyList_Size(varnames);
         s.clear();
 
-        for (int i=0 ;
-             i<siz ;
-             i++) {
+        for (int i=0 ;i<siz ;i++) {
           std::string name=stringFromPyObject(PyList_GetItem(varnames,i));
           if (name=="") {
             GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string");
@@ -149,4 +147,37 @@ class PyAgrumHelper {
       }
     }
 
+    static void populateNodeSetFromPySequenceOfIntOrString(gum::NodeSet& nodeset,PyObject* list,const gum::IBayesNet<double>& bn) {
+      if (! PySequence_Check(list)) {
+        GUM_ERROR(gum::InvalidArgument,"Argument is not a sequence");
+        return;
+      }
+
+      auto siz=PySequence_Size(list);
+      for (int i=0 ;i<siz ;i++) {
+            gum::NodeId nid;
+            PyObject* n=PySequence_GetItem(list,i);
+            std::string name= PyAgrumHelper::stringFromPyObject(n);
+            if (name!=""){
+              nid=bn.idFromName(name);
+            } else {
+              if (!PyInt_Check(n)) {
+                GUM_ERROR(gum::InvalidArgument, "A value in the list argument is neither a node name nor an node id");
+                return;
+              }
+              nid=gum::NodeId(PyInt_AsLong(n));
+            }
+            nodeset.insert(nid);
+      }
+    }
+
+    static PyObject* PyListFromNodeSet(const gum::NodeSet& nodeset) {
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto node : nodeset) {
+        PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
 };
