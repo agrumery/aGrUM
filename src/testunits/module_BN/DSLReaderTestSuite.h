@@ -97,9 +97,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( proba_1.domainSize(), (gum::Size)2 );
         gum::Instantiation inst_1( proba_1 );
         inst_1.setFirst();
-        TS_ASSERT( abs( ( proba_1[inst_1] - 0.2f ) ) < 0.001f );
+        TS_ASSERT( std::abs( ( proba_1[inst_1] - 0.2f ) ) < 0.001f );
         inst_1.setLast();
-        TS_ASSERT( abs( ( proba_1[inst_1] - 0.8f ) ) < 0.001f );
+        TS_ASSERT( std::abs( ( proba_1[inst_1] - 0.8f ) ) < 0.001f );
 
         const gum::DiscreteVariable& var_2 = net->variable( node_2 );
         TS_ASSERT_EQUALS( var_2.name(), "n2" );
@@ -108,9 +108,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( proba_2.domainSize(), (gum::Size)2 );
         gum::Instantiation inst_2( proba_2 );
         inst_2.setFirst();
-        TS_ASSERT( abs( ( proba_2[inst_2] - 0.3f ) ) < 0.001f );
+        TS_ASSERT( std::abs( ( proba_2[inst_2] - 0.3f ) ) < 0.001f );
         inst_2.setLast();
-        TS_ASSERT( abs( ( proba_2[inst_2] - 0.7f ) ) < 0.001f );
+        TS_ASSERT( std::abs( ( proba_2[inst_2] - 0.7f ) ) < 0.001f );
 
         delete net;
       }
@@ -146,9 +146,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( proba_1.domainSize(), (gum::Size)2 );
         gum::Instantiation inst_1( proba_1 );
         inst_1.setFirst();
-        TS_ASSERT( abs( ( proba_1[inst_1] - 0.2 ) ) < 0.001 );
+        TS_ASSERT( std::abs( ( proba_1[inst_1] - 0.2 ) ) < 0.001 );
         inst_1.setLast();
-        TS_ASSERT( abs( ( proba_1[inst_1] - 0.8 ) ) < 0.001 );
+        TS_ASSERT( std::abs( ( proba_1[inst_1] - 0.8 ) ) < 0.001 );
 
         const gum::DiscreteVariable& var_2 = net->variable( node_2 );
         TS_ASSERT_EQUALS( var_2.name(), "n2" );
@@ -157,9 +157,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( proba_2.domainSize(), (gum::Size)2 );
         gum::Instantiation inst_2( proba_2 );
         inst_2.setFirst();
-        TS_ASSERT( abs( ( proba_2[inst_2] - 0.3 ) ) < 0.001 );
+        TS_ASSERT( std::abs( ( proba_2[inst_2] - 0.3 ) ) < 0.001 );
         inst_2.setLast();
-        TS_ASSERT( abs( ( proba_2[inst_2] - 0.7 ) ) < 0.001 );
+        TS_ASSERT( std::abs( ( proba_2[inst_2] - 0.7 ) ) < 0.001 );
 
         delete net;
       }
@@ -238,19 +238,19 @@ namespace gum_tests {
         // (TRUE | TRUE)
         historyInst.chgVal( history, 0 );
         historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 0 );
-        TS_ASSERT( abs( historyCPT[historyInst] - 0.9f ) < 0.0001f );
+        TS_ASSERT( std::abs( historyCPT[historyInst] - 0.9f ) < 0.0001f );
         // (FALSE | TRUE)
         historyInst.chgVal( history, 1 );
         historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 0 );
-        TS_ASSERT( abs( historyCPT[historyInst] - 0.1f ) < 0.0001f );
+        TS_ASSERT( std::abs( historyCPT[historyInst] - 0.1f ) < 0.0001f );
         // (TRUE | FALSE)
         historyInst.chgVal( history, 0 );
         historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 1 );
-        TS_ASSERT( abs( historyCPT[historyInst] - 0.01f ) < 0.0001f );
+        TS_ASSERT( std::abs( historyCPT[historyInst] - 0.01f ) < 0.0001f );
         // (FALSE | FALSE)
         historyInst.chgVal( history, 1 );
         historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 1 );
-        TS_ASSERT( abs( historyCPT[historyInst] - 0.99f ) < 0.0001f );
+        TS_ASSERT( std::abs( historyCPT[historyInst] - 0.99f ) < 0.0001f );
       }
 
       // The node wich we'll test
@@ -272,9 +272,9 @@ namespace gum_tests {
         TS_ASSERT( errlowoutputCPT.contains( errlowoutput ) );
         gum::Instantiation errlowoutputInst( errlowoutputCPT );
         errlowoutputInst.chgVal( errlowoutput, 0 );
-        TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.05f ) < 0.001f );
+        TS_ASSERT( std::abs( errlowoutputCPT[errlowoutputInst] - 0.05f ) < 0.001f );
         errlowoutputInst.chgVal( errlowoutput, 1 );
-        TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.95f ) < 0.001f );
+        TS_ASSERT( std::abs( errlowoutputCPT[errlowoutputInst] - 0.95f ) < 0.001f );
       }
 
       // The nide wich we'll test
