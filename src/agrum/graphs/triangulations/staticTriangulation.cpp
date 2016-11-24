@@ -210,10 +210,11 @@ namespace gum {
 
     // the FMINT loop
     if ( __added_fill_ins.size() > 0 ) {
-      for ( auto i = __added_fill_ins.size() - 1; i >= 0; --i ) {
-        if ( __added_fill_ins[i].size() ) {
+      for ( auto iter = __added_fill_ins.rbegin ();
+            iter != __added_fill_ins.rend (); ++iter ) {
+        if ( iter->size() ) {
           // here apply MINT to T_i = __added_fill_ins[i]
-          EdgeSet& T = __added_fill_ins[i];
+          EdgeSet& T = *iter;
 
           // compute R: by default, R is equal to all the nodes in the graph
           // when R[...] >= j (see the j in the loop below), this means that the
