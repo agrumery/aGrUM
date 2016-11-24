@@ -388,6 +388,8 @@ namespace gum {
 
 } /* namespace gum */
 
+extern template class gum::HashFunc<gum::NodeSet>;
+
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/graphElements.inl>
 #endif /* GUM_NO_INLINE */

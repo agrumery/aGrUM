@@ -72,4 +72,6 @@ namespace gum {
 
 } /* namespace gum */
 
+template class gum::HashFunc<gum::NodeSet>;
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
