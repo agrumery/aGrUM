@@ -94,7 +94,7 @@ namespace gum {
     /// @{
 
     public:
-    const std::string toString( void ) const;
+    const std::string toString( void ) const override;
 
     // @todo : optimisation with a always up-to-date value associated to each
     // instantiation
@@ -103,17 +103,17 @@ namespace gum {
                                      const gum::Idx&,
                                      const gum::Idx& ) override{};
 
-    virtual void setFirstNotification( gum::Instantiation& ){};
+    virtual void setFirstNotification( gum::Instantiation& ) override {};
 
-    virtual void setLastNotification( gum::Instantiation& ){};
+    virtual void setLastNotification( gum::Instantiation& ) override {};
 
-    virtual void setIncNotification( gum::Instantiation& ){};
+    virtual void setIncNotification( gum::Instantiation& ) override {};
 
-    virtual void setDecNotification( gum::Instantiation& ){};
+    virtual void setDecNotification( gum::Instantiation& ) override {};
 
-    virtual void setChangeNotification( gum::Instantiation& ){};
+    virtual void setChangeNotification( gum::Instantiation& ) override {};
 
-    const std::string toString( const gum::Instantiation* i ) const {
+    const std::string toString( const gum::Instantiation* i ) const override {
       return i->toString();
     };
 
@@ -121,7 +121,7 @@ namespace gum {
      * @return the real number of parameters used for this table. This function
      * is used for compute @see compressionRatio()
      */
-    virtual Size realSize() const { return this->nbrDim(); };
+    virtual Size realSize() const override { return this->nbrDim(); };
 
     GUM_SCALAR causalWeight( const DiscreteVariable& v ) const;
 
@@ -142,7 +142,7 @@ namespace gum {
      * which is the best functions to use, say, when we wish to use operators
      * such as operator+ on two MultiDimImplementations.
      */
-    virtual const std::string& name() const;
+    virtual const std::string& name() const override;
 
     /// @}
     protected:
@@ -160,7 +160,8 @@ namespace gum {
     mutable HashTable<const DiscreteVariable*, GUM_SCALAR> __causal_weights;
     /// @}
 
-    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+    virtual void _swap( const DiscreteVariable* x,
+                        const DiscreteVariable* y ) override;
   };
 
 

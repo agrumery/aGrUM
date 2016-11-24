@@ -99,7 +99,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const override = 0;
 
       // =======================================================================
       /// @name Accessors / Modifiers
@@ -107,27 +107,27 @@ namespace gum {
       /// @{
 
       public:
-      virtual GUM_SCALAR get( const Instantiation& i ) const;
+      virtual GUM_SCALAR get( const Instantiation& i ) const override;
 
       virtual std::string aggregatorName( void ) const = 0;
-      const std::string toString( void ) const;
+      const std::string toString( void ) const override;
 
       virtual void changeNotification( gum::Instantiation&,
                                        const gum::DiscreteVariable* const,
                                        const gum::Idx&,
                                        const gum::Idx& ) override{};
 
-      virtual void setFirstNotification( gum::Instantiation& ){};
+      virtual void setFirstNotification( gum::Instantiation& ) override {};
 
-      virtual void setLastNotification( gum::Instantiation& ){};
+      virtual void setLastNotification( gum::Instantiation& ) override {};
 
-      virtual void setIncNotification( gum::Instantiation& ){};
+      virtual void setIncNotification( gum::Instantiation& ) override {};
 
-      virtual void setDecNotification( gum::Instantiation& ){};
+      virtual void setDecNotification( gum::Instantiation& ) override {};
 
-      virtual void setChangeNotification( gum::Instantiation& ){};
+      virtual void setChangeNotification( gum::Instantiation& ) override {};
 
-      const std::string toString( const gum::Instantiation* i ) const {
+      const std::string toString( const gum::Instantiation* i ) const override {
         return i->toString();
       };
 
@@ -136,7 +136,7 @@ namespace gum {
        *
        * This function is used for compute @see compressionRatio()
        */
-      virtual Size realSize() const { return 0; };
+      virtual Size realSize() const override { return 0; };
 
       /**
        * @brief Returns the real name of the multiDimArray.
@@ -149,7 +149,7 @@ namespace gum {
        * determine which is the best functions to use, say, when we wish to use
        * operators such as operator+ on two MultiDimImplementations.
        */
-      virtual const std::string& name() const;
+      virtual const std::string& name() const override;
 
       /// @}
       protected:
@@ -172,7 +172,7 @@ namespace gum {
                          bool& stop_iteration ) const = 0;
 
       virtual void _swap( const DiscreteVariable* x,
-                          const DiscreteVariable* y );
+                          const DiscreteVariable* y ) override;
     };
 
 
