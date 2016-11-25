@@ -13,7 +13,7 @@
 #include <agrum/variables/labelizedVariable.h>
 
 
-// The graph used for the tests and the domain sizes:
+// The graph used for the tests, the ids and the domain sizes:
 /*
     A             0             2
      \             \             \

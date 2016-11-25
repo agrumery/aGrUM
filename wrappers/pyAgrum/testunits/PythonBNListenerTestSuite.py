@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
 
-import pyAgrum as gum 
+import pyAgrum as gum
 
 import unittest
-from pyAgrumTestSuite import pyAgrumTestCase
+from pyAgrumTestSuite import pyAgrumTestCase,addTests
 
 
 class PythonBNListenerTestCase(pyAgrumTestCase):
@@ -104,8 +104,6 @@ class TestListeners(PythonBNListenerTestCase):
 
 
 ts = unittest.TestSuite()
-ts.addTest(TestConstructors('testConstructor'))
-ts.addTest(TestMessagesSetting('testMessagesInsertion'))
-ts.addTest(TestMessagesSetting('testMessagesChange'))
-ts.addTest(TestListeners('test1Listener'))
-ts.addTest(TestListeners('test2Listeners'))
+addTests(ts,TestConstructors)
+addTests(ts,TestMessagesSetting)
+addTests(ts,TestListeners)

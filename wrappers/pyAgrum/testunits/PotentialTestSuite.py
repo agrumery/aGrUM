@@ -4,7 +4,7 @@ import pyAgrum as gum
 
 import unittest
 import numpy as np
-from pyAgrumTestSuite import pyAgrumTestCase
+from pyAgrumTestSuite import pyAgrumTestCase,addTests
 
 
 class PotentialTestCase(pyAgrumTestCase):
@@ -599,28 +599,6 @@ class TestOperators(pyAgrumTestCase):
 
 
 ts = unittest.TestSuite()
-ts.addTest(TestInsertions('testVariableInsertion'))
-ts.addTest(TestInsertions('testVariableDeletion'))
-ts.addTest(TestInsertions('testDimensionIncreasing'))
-ts.addTest(TestInsertions('testWithInstantiation'))
-ts.addTest(TestInsertions('testCopyConstructor'))
-ts.addTest(TestIndexs('testNumpyIndex'))
-ts.addTest(TestIndexs('testDictIndex'))
-ts.addTest(TestIndexs('testDictIndex'))
-ts.addTest(TestOperators('testSimpleOperators'))
-ts.addTest(TestOperators('testEquality'))
-ts.addTest(TestOperators('testMinMax'))
-ts.addTest(TestOperators('testIsNonZeroMap'))
-ts.addTest(TestOperators('testSimpleInPLaceOperators'))
-ts.addTest(TestOperators('testMargOutOperators'))
-ts.addTest(TestOperators('testMargInOperators'))
-ts.addTest(TestOperators('testAbsPotential'))
-ts.addTest(TestOperators('testSqPotential'))
-ts.addTest(TestOperators('testEntropyPotential'))
-ts.addTest(TestOperators('testReorganizePotential'))
-ts.addTest(TestOperators('testPutFirstPotential'))
-ts.addTest(TestOperators('testExtraction'))
-ts.addTest(TestOperators('testExtractionWithDict'))
-ts.addTest(TestOperators('testOperatorEqual'))
-ts.addTest(TestOperators('testScaleAndTranslate'))
-ts.addTest(TestOperators('testNormalizeAsCPT'))
+addTests(ts,TestInsertions)
+addTests(ts,TestIndexs)
+addTests(ts,TestOperators)

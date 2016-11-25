@@ -3,7 +3,7 @@ import pyAgrum as gum
 import scipy
 
 import unittest
-from pyAgrumTestSuite import pyAgrumTestCase
+from pyAgrumTestSuite import pyAgrumTestCase,addTests
 
 
 class BayesNetTestCase(pyAgrumTestCase):
@@ -367,27 +367,5 @@ class TestLoadBN(BayesNetTestCase):
 
 
 ts = unittest.TestSuite()
-ts.addTest(TestConstructors('testConstructor'))
-ts.addTest(TestConstructors('testCopyConstructor'))
-ts.addTest(TestInsertions('testVariables'))
-ts.addTest(TestInsertions('testArcs'))
-ts.addTest(TestInsertions('testEraseArcs'))
-ts.addTest(TestFeatures('testMoralGraph'))
-ts.addTest(TestFeatures('testTopologicalOrder'))
-ts.addTest(TestFeatures('testChangeLabel'))
-ts.addTest(TestFeatures('testStringAccessors'))
-ts.addTest(TestFeatures('testShortcutAdd'))
-ts.addTest(TestFeatures('testSomeFunctions'))
-
-ts.addTest(TestLoadBN('testSimpleBIFLoad'))
-ts.addTest(TestLoadBN('testSimpleBIFLoadWithoutListener'))
-ts.addTest(TestLoadBN('testListBIFLoad'))
-ts.addTest(TestLoadBN('testTupleBIFLoad'))
-ts.addTest(TestLoadBN('testSimpleDSLLoad'))
-ts.addTest(TestLoadBN('testSimpleDSLLoadWithoutListener'))
-ts.addTest(TestLoadBN('testListDSLLoad'))
-ts.addTest(TestLoadBN('testTupleDSLLoad'))
-ts.addTest(TestLoadBN('testTupleDSLLoad'))
-ts.addTest(TestLoadBN('testO3PRMLoad'))
-ts.addTest(TestLoadBN('testUAILoad'))
-ts.addTest(TestLoadBN('testBIFXMLLoad'))
+addTests(ts,TestConstructors)
+addTests(ts,TestLoadBN)

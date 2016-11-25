@@ -3,7 +3,7 @@
 import unittest
 
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase
+from pyAgrumTestSuite import pyAgrumTestCase,addTests
 
 
 class GibbsTestCase(pyAgrumTestCase):
@@ -196,9 +196,5 @@ class TestInferenceResults(GibbsTestCase):
 
 
 ts = unittest.TestSuite()
-ts.addTest(TestDictFeature('testDictOfSequences'))
-ts.addTest(TestDictFeature('testDictOfLabels'))
-ts.addTest(TestDictFeature('testDictOfLabelsWithId'))
-ts.addTest(TestDictFeature('testWithDifferentVariables'))
-ts.addTest(TestInferenceResults('testOpenBayesSiteExamples'))
-ts.addTest(TestInferenceResults('testWikipediaExample'))
+addTests(ts,TestDictFeature)
+addTests(ts,TestInferenceResults)

@@ -2,7 +2,7 @@
 import pyAgrum as gum
 
 import unittest
-from pyAgrumTestSuite import pyAgrumTestCase
+from pyAgrumTestSuite import pyAgrumTestCase,addTests
 
 
 class BNLearnerCSVTestCase(pyAgrumTestCase):
@@ -138,9 +138,4 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
         I2.inc()
 
 ts = unittest.TestSuite()
-ts.addTest(BNLearnerCSVTestCase('testHillClimbing'))
-ts.addTest(BNLearnerCSVTestCase('testHillClimbingAccurate'))
-ts.addTest(BNLearnerCSVTestCase('testLocalSearchWithTabu'))
-ts.addTest(BNLearnerCSVTestCase('testLocalSearchWithTabuAccurate'))
-ts.addTest(BNLearnerCSVTestCase('testParameterLearning'))
-ts.addTest(BNLearnerCSVTestCase('testDBNTonda'))
+addTests(ts,BNLearnerCSVTestCase)

@@ -3,7 +3,7 @@
 import unittest
 
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase
+from pyAgrumTestSuite import pyAgrumTestCase,addTests
 
 
 class VariablesTestCase(pyAgrumTestCase):
@@ -144,13 +144,14 @@ class TestDiscretizedVariable(VariablesTestCase):
     with self.assertRaises(gum.OutOfUpperBound):
       x = var.index("8")
 
-  def toto(self, i, j, k, l, m, n):
-    var = gum.DiscretizedVariable("var", "test var")
-    var.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n)
-    self.assertEqual(var.domainSize(), 5);
-    self.assertEqual(str(var), "var<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>")
-
   def testOrderTicks(self):
+
+    def _testOrderTicks(i, j, k, l, m, n):
+      var = gum.DiscretizedVariable("var", "test var")
+      var.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n)
+      self.assertEqual(var.domainSize(), 5);
+      self.assertEqual(str(var), "var<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>")
+
     for i in range(1, 7):
       for j in range(1, 7):
         for k in range(1, 7):
@@ -158,19 +159,11 @@ class TestDiscretizedVariable(VariablesTestCase):
             for m in range(1, 7):
               for n in range(1, 7):
                 if (i + j + k + l + m + n == 21) & (i * j * k * l * m * n == 720):
-                  self.toto(i, j, k, l, m, n)
+                  _testOrderTicks(i, j, k, l, m, n)
 
 
 ts = unittest.TestSuite()
-ts.addTest(TestDiscreteVariable('testLabelizedVarCopy'))
-ts.addTest(TestDiscreteVariable('testLabelsOfVars'))
-ts.addTest(TestLabelizedVariable('testCopyConstructor'))
-ts.addTest(TestLabelizedVariable('testPythonListComprehension'))
-ts.addTest(TestLabelizedVariable('testLabels'))
-ts.addTest(TestLabelizedVariable('testEraseLabels'))
-ts.addTest(TestRangeVariable('testCopyConstructor'))
-ts.addTest(TestRangeVariable('testLabels'))
-ts.addTest(TestRangeVariable('testEraseLabels'))
-ts.addTest(TestDiscretizedVariable('testAddTicks'))
-ts.addTest(TestDiscretizedVariable('testNormalLimits'))
-ts.addTest(TestDiscretizedVariable('testOrderTicks'))
+addTests(ts,TestDiscreteVariable)
+addTests(ts,TestLabelizedVariable)
+addTests(ts,TestRangeVariable)
+addTests(ts,TestDiscretizedVariable)

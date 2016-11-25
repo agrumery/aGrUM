@@ -2,15 +2,26 @@
 
 import unittest
 from numpy import ndarray
+import inspect
 
 import os
+
+def addTests(ts,cl):
+    """
+    adding test methods (which names begin by 'test')of class cl in testsuite ts
+
+    :param ts: test suite
+    :param cl: class
+    """
+    for met,_ in inspect.getmembers(cl):
+        if met[0:4]=='test':
+            ts.addTest(cl(met))
 
 class pyAgrumTestCase(unittest.TestCase):
     def agrumSrcDir(self,s):
       t=s.split("ressources/")
       return os.path.dirname(__file__)+"/resources/"+t[1]
-    
-      
+
     def assertListsAlmostEqual(self, seq1, seq2, places=7):
         sequence = (tuple, list, ndarray)
         if len(seq1) != len(seq2):

@@ -2,7 +2,7 @@
 import pyAgrum as gum
 
 import unittest
-from pyAgrumTestSuite import pyAgrumTestCase
+from pyAgrumTestSuite import pyAgrumTestCase,addTests
 
 
 class JunctionTreeTestCase(pyAgrumTestCase):
@@ -87,6 +87,5 @@ class JTGeneratorTestCase(pyAgrumTestCase):
     self.assertEqual(bjt.clique(0),{0,1})
 
 ts = unittest.TestSuite()
-ts.addTest(TopologyFeatureTestCase('testSimple'))
-ts.addTest(JTGeneratorTestCase('testSimpleGraph'))
-ts.addTest(JTGeneratorTestCase('testSimpleBN'))
+addTests(ts,TopologyFeatureTestCase)
+addTests(ts,JTGeneratorTestCase)
