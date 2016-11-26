@@ -129,11 +129,11 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void addEvidence( const NodeId id, const std::string& val ) {
     self->gum::BayesNetInference<double>::addEvidence(id,val);
   }
-  
+
   void addEvidence( const std::string& nodeName, const std::string& val ) {
     self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
   }
-  
+
   void addEvidence( const NodeId id,const std::vector<double>& vals ) {
    self->gum::BayesNetInference<double>::addEvidence(id,vals);
   }
@@ -149,15 +149,15 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void chgEvidence( const std::string& nodeName, const Idx val ) {
     self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
   }
-  
+
   void chgEvidence( const NodeId id, const std::string& val ) {
     self->gum::BayesNetInference<double>::chgEvidence(id,val);
   }
   void chgEvidence( const std::string& nodeName, const std::string& val ) {
     self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
   }
-  
-  
+
+
   void chgEvidence( const NodeId id,const std::vector<double>& vals ) {
    self->gum::BayesNetInference<double>::chgEvidence(id,vals);
   }
@@ -176,8 +176,12 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void eraseAllEvidence() {
     self->gum::BayesNetInference<double>::eraseAllEvidence();
   }
-  bool hasHardEvidence( const NodeId id ) const {
-    return self->gum::BayesNetInference<double>::hasHardEvidence(id);
+
+  void eraseEvidence( const NodeId id ) {
+    self->gum::BayesNetInference<double>::eraseEvidence(id);
+  }
+  void eraseEvidence( const std::string& nodeName  ) {
+    self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
   }
 
   bool hasSoftEvidence( const NodeId id ) const {
@@ -271,11 +275,11 @@ ADD_INFERENCE_API(gum::GibbsInference<double>)
   void eraseAllMarginalTargets() {
     self->gum::JointTargetedInference<double>::eraseAllMarginalTargets();
   }
-  
+
   gum::Size nbrJointTargets() {
     return self->gum::JointTargetedInference<double>::nbrJointTargets();
   }
-  
+
   double I( const NodeId X, const NodeId Y ) {
     return self->gum::JointTargetedInference<double>::I(X,Y);
   }
