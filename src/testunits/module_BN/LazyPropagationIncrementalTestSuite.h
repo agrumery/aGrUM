@@ -394,8 +394,6 @@ namespace gum_tests {
 
         TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
 
-        return;
-
         // get the marginals of A, D
         std::unique_ptr<gum::Potential<double>> pa(
             get_marginal( posterior.get(), BN_node_index[0] ) ),
@@ -418,8 +416,6 @@ namespace gum_tests {
 
         TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
 
-        return;
-
         // get the marginals of A, D
         std::unique_ptr<gum::Potential<double>> pa(
             get_marginal( posterior.get(), BN_node_index[0] ) ),
@@ -439,8 +435,6 @@ namespace gum_tests {
 
         TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
 
-        return;
-
         // get the marginals of A, D
         std::unique_ptr<gum::Potential<double>> pa(
             get_marginal( posterior.get(), BN_node_index[0] ) ),
@@ -459,8 +453,6 @@ namespace gum_tests {
         __Potential posterior( posterior_joint( joint, evset ) );
 
         TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
-
-        return;
 
         // get the marginals of A, D
         std::unique_ptr<gum::Potential<double>> pa(
