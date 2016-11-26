@@ -106,12 +106,12 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
 
     self.ie.makeInference()
 
-    locpot = self.joint * \
-             gum.Potential().add(self.bn.variable("B")).fillWith([0, 0, 1]) * \
-             gum.Potential().add(self.bn.variable("D")).fillWith([0.2, 0.6, 0.6])
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 0, 1]) * \
+                      gum.Potential().add(self.bn.variable("D")).fillWith([0.2, 0.6, 0.6])
 
-    self.assertEqual(self.ie.posterior("A"), locpot.margSumIn(["A"]).normalize())
-    self.assertEqual(self.ie.posterior("F"), locpot.margSumIn(["F"]).normalize())
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("F"), posterior_joint.margSumIn(["F"]).normalize())
 
   def testPriorWithTargetsOutsideEvidence(self):
     self.ie.eraseAllTargets()
@@ -122,64 +122,109 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.addEvidence("B", [0.3, 0.1, 0.8])
     self.ie.addEvidence("H", [0.4, 0.2, 0.3])
 
-    self.ie.makeInference()
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
 
-    locpot = self.joint * \
-             gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
-             gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
-             gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
-
-    self.assertEqual(self.ie.posterior("A"), locpot.margSumIn(["A"]).normalize())
-    self.assertEqual(self.ie.posterior("D"), locpot.margSumIn(["D"]).normalize())
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
     self.ie.chgEvidence("A", 0)
     self.ie.chgEvidence("B", [0.8, 0.4, 0.1])
     self.ie.chgEvidence("H", [0.2, 0.3, 0.6])
 
-    locpot = self.joint * \
-             gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-             gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
-             gum.Potential().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
+                      gum.Potential().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
 
-    self.assertEqual(self.ie.posterior("A"), locpot.margSumIn(["A"]).normalize())
-    self.assertEqual(self.ie.posterior("D"), locpot.margSumIn(["D"]).normalize())
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
-    # error here !
     self.ie.chgEvidence("H", [0.9, 0.1, 0.3])
 
-    locpot = self.joint * \
-             gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-             gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
-             gum.Potential().add(self.bn.variable("H")).fillWith([0.9, 0.1, 0.3])
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
+                      gum.Potential().add(self.bn.variable("H")).fillWith([0.9, 0.1, 0.3])
 
-    self.assertEqual(self.ie.posterior("A"), locpot.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    print('\n ERROR WHEN chgEvidence("H")')
     print(self.ie.posterior("D"))
-    print( locpot.margSumIn(["D"]).normalize())
-    #self.assertEqual(self.ie.posterior("D"), locpot.margSumIn(["D"]).normalize())
+    print(posterior_joint.margSumIn(["D"]).normalize())
+    # self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
     self.ie.chgEvidence("A", 0)
-    self.ie.chgEvidence("H", [0.9, 0.1, 0.3])
+    self.ie.chgEvidence("H", [0.8, 0.2, 0.3])
 
-    locpot = self.joint * \
-             gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-             gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
-             gum.Potential().add(self.bn.variable("H")).fillWith([0.9, 0.1, 0.3])
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
+                      gum.Potential().add(self.bn.variable("H")).fillWith([0.8, 0.2, 0.3])
 
-    self.assertEqual(self.ie.posterior("A"), locpot.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    print('\n ERROR WHEN chgEvidence("H")+chgEvidence("A")')
     print(self.ie.posterior("D"))
-    print( locpot.margSumIn(["D"]).normalize())
-    #self.assertEqual(self.ie.posterior("D"), locpot.margSumIn(["D"]).normalize())
+    print(posterior_joint.margSumIn(["D"]).normalize())
+    # self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
     self.ie.eraseEvidence("A")
 
-    locpot = self.joint * \
-             gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
-             gum.Potential().add(self.bn.variable("H")).fillWith([0.9, 0.1, 0.3])
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
+                      gum.Potential().add(self.bn.variable("H")).fillWith([0.8, 0.2, 0.3])
 
-    self.assertEqual(self.ie.posterior("A"), locpot.margSumIn(["A"]).normalize())
-    print(self.ie.posterior("D"))
-    print( locpot.margSumIn(["D"]).normalize())
-    self.assertEqual(self.ie.posterior("D"), locpot.margSumIn(["D"]).normalize())
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
+
+    self.ie.addEvidence("A", 0)
+    self.ie.makeInference()
+    self.ie.eraseEvidence("A")
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
+
+  def testPriorWithTargetsWithEvidenceChanged(self):
+    self.ie.eraseAllTargets()
+    self.ie.addTarget("A")
+    self.ie.addTarget("D")
+
+    self.ie.addEvidence("A", [0.3, 0.7])
+    self.ie.addEvidence("B", [0.3, 0.1, 0.8])
+    self.ie.addEvidence("H", [0.4, 0.2, 0.3])
+
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
+
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
+
+    self.ie.eraseEvidence(0)  # "A"
+    self.ie.addEvidence("E", [1, 0])
+    self.ie.chgEvidence("H", [0.2, 0.3, 0.6])
+
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("E")).fillWith([1, 0]) * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Potential().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
+
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
+
+    self.ie.addEvidence('A', 0)
+    self.ie.chgEvidence("E", [0.7, 0.7])
+    self.ie.chgEvidence("H", 1)
+
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Potential().add(self.bn.variable("E")).fillWith([0.7, 0.7]) * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Potential().add(self.bn.variable("H")).fillWith([0, 1, 0])
+
+    self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
 
 ts = unittest.TestSuite()
