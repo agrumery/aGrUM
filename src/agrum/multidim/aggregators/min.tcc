@@ -54,8 +54,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Min<GUM_SCALAR>::_neutralElt() const {
-      return (Idx)100000;
-    }  // clearly arbitrary choosen
+      return std::numeric_limits<Idx>::max();
+    }
 
     template <typename GUM_SCALAR>
     INLINE Idx Min<GUM_SCALAR>::_fold( const DiscreteVariable& v,
