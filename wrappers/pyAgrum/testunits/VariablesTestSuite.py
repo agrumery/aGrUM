@@ -3,7 +3,7 @@
 import unittest
 
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase,addTests
+from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class VariablesTestCase(pyAgrumTestCase):
@@ -163,7 +163,7 @@ class TestDiscretizedVariable(VariablesTestCase):
 
 
 ts = unittest.TestSuite()
-addTests(ts,TestDiscreteVariable)
-addTests(ts,TestLabelizedVariable)
-addTests(ts,TestRangeVariable)
-addTests(ts,TestDiscretizedVariable)
+addTests(ts, TestDiscreteVariable)
+addTests(ts, TestLabelizedVariable)
+addTests(ts, TestRangeVariable)
+addTests(ts, TestDiscretizedVariable)

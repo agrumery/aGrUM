@@ -3,7 +3,7 @@
 import unittest
 
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase,addTests
+from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class GibbsTestCase(pyAgrumTestCase):
@@ -196,5 +196,5 @@ class TestInferenceResults(GibbsTestCase):
 
 
 ts = unittest.TestSuite()
-addTests(ts,TestDictFeature)
-addTests(ts,TestInferenceResults)
+addTests(ts, TestDictFeature)
+addTests(ts, TestInferenceResults)
