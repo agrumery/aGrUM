@@ -256,42 +256,38 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING( inf.posterior( 3 ) );
     }
 
-    // void testAlarm() {
-    //   std::string file_name = "/ressources/alarm.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> alarm;
-    //   gum::BIFReader<float> reader(&alarm, file_path);
-    //   reader.proceed();
-    //   gum::VariableElimination<float> ve(alarm);
-    //   gum::ShaferShenoyInference<float> shafer(alarm);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = alarm.dag().beginNodes(); iter !=
-    //   alarm.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+    void testAlarm() {
+      std::string file = GET_RESSOURCES_PATH( "alarm.bif" );
+      gum::BayesNet<float> alarm;
+      gum::BIFReader<float> reader(&alarm, file );
+      reader.proceed();
+      gum::VariableElimination<float> ve(&alarm);
+      gum::ShaferShenoyInference<float> shafer(&alarm);
+      TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+      for ( const auto node : alarm.dag() ) {
+        const gum::Potential<float>* pot_1 = nullptr;
+        TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(node)));
+        const gum::Potential<float>* pot_2 = nullptr;
+        TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(node)));
+        if ((*pot_1) != (*pot_2)) {
+          TS_ASSERT(false);
+        }
+      }
+    }
 
     // void testDiabetes() {
-    //   std::string file_name = "src/testunits/ressources/Diabetes.bif";
-    //   std::string file_path = base_dir + file_name;
+    //   std::string file = GET_RESSOURCES_PATH( "Diabetes.bif" );
     //   gum::BayesNet<float> diabetes;
-    //   gum::BIFReader<float> reader(&diabetes, file_path);
+    //   gum::BIFReader<float> reader(&diabetes, file );
     //   reader.proceed();
-    //   gum::VariableElimination<float> ve(diabetes);
-    //   gum::ShaferShenoyInference<float> shafer(diabetes);
+    //   gum::VariableElimination<float> ve(&diabetes);
+    //   gum::ShaferShenoyInference<float> shafer(&diabetes);
     //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = diabetes.dag().beginNodes(); iter !=
-    //   diabetes.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
+    //   for ( const auto node : diabetes.dag() ) {
+    //     const gum::Potential<float>* pot_1 = nullptr;
+    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(node)));
+    //     const gum::Potential<float>* pot_2 = nullptr;
+    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(node)));
     //     if ((*pot_1) != (*pot_2)) {
     //       TS_ASSERT(false);
     //     }

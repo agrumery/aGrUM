@@ -763,7 +763,7 @@ namespace gum {
   void LazyPropagation<GUM_SCALAR>::__diffuseMessageInvalidations(
       const NodeId from_id, const NodeId to_id, NodeSet& invalidated_cliques ) {
     // invalidate the current clique
-    invalidated_cliques.insert( from_id );
+    invalidated_cliques.insert( to_id );
 
     // invalidate the current arc
     const Arc arc( from_id, to_id );
@@ -795,7 +795,7 @@ namespace gum {
     // whose hard evidence have changed, so that they need a new projection.
     // By the way, remove these CPTs since they are no more needed
     // Here only the values of the hard evidence can have changed (else a
-    // fully new join tree has been computed).
+    // fully new join tree would have been computed).
     // Note also that we know that the CPTs still contain some variable(s) after
     // the projection (else they should be constants)
     NodeSet hard_nodes_changed( __hard_ev_nodes.size() );
@@ -818,13 +818,12 @@ namespace gum {
         }
       }
     }
-
+    
 
     // invalidate all the messages that are no more correct: start from each of
     // the nodes whose soft evidence has changed and perform a diffusion from
-    // the
-    // clique into which the soft evidence has been entered, indicating that the
-    // messages spreading from this clique are now invalid. At the same time,
+    // the clique into which the soft evidence has been entered, indicating that
+    // the messages spreading from this clique are now invalid. At the same time,
     // if there were potentials created on the arcs over wich the messages were
     // sent, remove them from memory. For all the cliques that received some
     // projected CPT that should now be changed, do the same.
@@ -832,6 +831,7 @@ namespace gum {
     for ( const auto& pair : __evidence_changes ) {
       if ( __node_to_clique.exists( pair.first ) ) {
         const auto clique = __node_to_clique[pair.first];
+        invalidated_cliques.insert ( clique );
         for ( const auto neighbor : __JT->neighbours( clique ) ) {
           __diffuseMessageInvalidations( clique, neighbor, invalidated_cliques );
         }
@@ -853,7 +853,7 @@ namespace gum {
       }
     }
 
-    // now cope with the nodes that receviedhard
+    // now cope with the nodes that recevied hard evidence
     for ( auto iter = __target_posteriors.beginSafe();
           iter != __target_posteriors.endSafe();
           ++iter ) {

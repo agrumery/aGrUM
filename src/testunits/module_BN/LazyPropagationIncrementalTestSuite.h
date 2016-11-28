@@ -345,9 +345,9 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
 
         // get the marginals of A, D
-        std::unique_ptr<gum::Potential<double>> pa(
-            get_marginal( posterior.get(), BN_node_index[0] ) ),
-            pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+        std::unique_ptr<gum::Potential<double>>
+          pa( get_marginal( posterior.get(), BN_node_index[0] ) ),
+          pd( get_marginal( posterior.get(), BN_node_index[3] ) );
 
         TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
         TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
@@ -372,9 +372,9 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
 
         // get the marginals of A, D
-        std::unique_ptr<gum::Potential<double>> pa(
-            get_marginal( posterior.get(), BN_node_index[0] ) ),
-            pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+        std::unique_ptr<gum::Potential<double>>
+          pa( get_marginal( posterior.get(), BN_node_index[0] ) ),
+          pd( get_marginal( posterior.get(), BN_node_index[3] ) );
 
         TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
         TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
@@ -391,13 +391,13 @@ namespace gum_tests {
 
       {
         __Potential posterior( posterior_joint( joint, evset ) );
-
+        
         TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
-
+        
         // get the marginals of A, D
-        std::unique_ptr<gum::Potential<double>> pa(
-            get_marginal( posterior.get(), BN_node_index[0] ) ),
-            pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+        std::unique_ptr<gum::Potential<double>>
+          pa( get_marginal( posterior.get(), BN_node_index[0] ) ),
+          pd( get_marginal( posterior.get(), BN_node_index[3] ) );
 
         TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
         TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );

@@ -754,7 +754,7 @@ namespace gum {
   void ShaferShenoyInference<GUM_SCALAR>::__diffuseMessageInvalidations(
       const NodeId from_id, const NodeId to_id, NodeSet& invalidated_cliques ) {
     // invalidate the current clique
-    invalidated_cliques.insert( from_id );
+    invalidated_cliques.insert( to_id );
 
     // invalidate the current arc
     const Arc arc( from_id, to_id );
@@ -822,6 +822,7 @@ namespace gum {
     for ( const auto& pair : __evidence_changes ) {
       if ( __node_to_clique.exists( pair.first ) ) {
         const auto clique = __node_to_clique[pair.first];
+        invalidated_cliques.insert ( clique );
         for ( const auto neighbor : __JT->neighbours( clique ) ) {
           __diffuseMessageInvalidations( clique, neighbor, invalidated_cliques );
         }
