@@ -11078,14 +11078,26 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_eraseAllEvidence(self)
 
 
-    def hasHardEvidence(self, *args):
+    def eraseEvidence(self, *args):
         """
-        hasHardEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
+        eraseEvidence(LazyPropagation_double self, gum::NodeId const id)
 
         Parameters
         ----------
         id: gum::NodeId const
 
+        eraseEvidence(LazyPropagation_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName):
+        """
         hasHardEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
 
         Parameters
@@ -11093,7 +11105,7 @@ class LazyPropagation_double(_object):
         nodeName: std::string const &
 
         """
-        return _pyAgrum.LazyPropagation_double_hasHardEvidence(self, *args)
+        return _pyAgrum.LazyPropagation_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args):
@@ -11799,14 +11811,26 @@ class GibbsInference_double(_object):
         return _pyAgrum.GibbsInference_double_eraseAllEvidence(self)
 
 
-    def hasHardEvidence(self, *args):
+    def eraseEvidence(self, *args):
         """
-        hasHardEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
+        eraseEvidence(GibbsInference_double self, gum::NodeId const id)
 
         Parameters
         ----------
         id: gum::NodeId const
 
+        eraseEvidence(GibbsInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.GibbsInference_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName):
+        """
         hasHardEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
 
         Parameters
@@ -11814,7 +11838,7 @@ class GibbsInference_double(_object):
         nodeName: std::string const &
 
         """
-        return _pyAgrum.GibbsInference_double_hasHardEvidence(self, *args)
+        return _pyAgrum.GibbsInference_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args):

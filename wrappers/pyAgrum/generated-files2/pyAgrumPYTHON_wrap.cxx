@@ -6811,13 +6811,16 @@ SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasEvidence__SWIG_1(gum::LazyP
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseAllEvidence(gum::LazyPropagation< double > *self){
     self->gum::BayesNetInference<double>::eraseAllEvidence();
   }
-SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::LazyPropagation< double > const *self,gum::NodeId const id){
-    return self->gum::BayesNetInference<double>::hasHardEvidence(id);
+SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseEvidence__SWIG_0(gum::LazyPropagation< double > *self,gum::NodeId const id){
+    self->gum::BayesNetInference<double>::eraseEvidence(id);
+  }
+SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseEvidence__SWIG_1(gum::LazyPropagation< double > *self,std::string const &nodeName){
+    self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
   }
 SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::LazyPropagation< double > const *self,gum::NodeId const id){
     return self->gum::BayesNetInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::LazyPropagation< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasHardEvidence(gum::LazyPropagation< double > const *self,std::string const &nodeName){
     return self->gum::BayesNetInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::LazyPropagation< double > const *self,std::string const &nodeName){
@@ -6967,13 +6970,16 @@ SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasEvidence__SWIG_1(gum::GibbsI
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseAllEvidence(gum::GibbsInference< double > *self){
     self->gum::BayesNetInference<double>::eraseAllEvidence();
   }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::GibbsInference< double > const *self,gum::NodeId const id){
-    return self->gum::BayesNetInference<double>::hasHardEvidence(id);
+SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseEvidence__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const id){
+    self->gum::BayesNetInference<double>::eraseEvidence(id);
+  }
+SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseEvidence__SWIG_1(gum::GibbsInference< double > *self,std::string const &nodeName){
+    self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
   }
 SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::GibbsInference< double > const *self,gum::NodeId const id){
     return self->gum::BayesNetInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::GibbsInference< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasHardEvidence(gum::GibbsInference< double > const *self,std::string const &nodeName){
     return self->gum::BayesNetInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::GibbsInference< double > const *self,std::string const &nodeName){
@@ -52734,7 +52740,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LazyPropagation_double_hasHardEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
   gum::NodeId arg2 ;
@@ -52744,31 +52750,124 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_hasHardEvidence__SWIG_0(PyObje
   int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_hasHardEvidence" "', argument " "1"" of type '" "gum::LazyPropagation< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_eraseEvidence" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LazyPropagation_double_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LazyPropagation_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (bool)gum_LazyPropagation_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::LazyPropagation< double > const *)arg1,arg2);
+      gum_LazyPropagation_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LazyPropagation_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_eraseEvidence" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LazyPropagation_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LazyPropagation_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_LazyPropagation_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_eraseEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LazyPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LazyPropagation_double_eraseEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LazyPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LazyPropagation_double_eraseEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LazyPropagation_double_eraseEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LazyPropagation< double >::eraseEvidence(gum::NodeId const)\n"
+    "    gum::LazyPropagation< double >::eraseEvidence(std::string const &)\n");
+  return 0;
 }
 
 
@@ -52810,7 +52909,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LazyPropagation_double_hasHardEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
   std::string *arg2 = 0 ;
@@ -52840,7 +52939,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_hasHardEvidence__SWIG_1(PyObje
   }
   {
     try {
-      result = (bool)gum_LazyPropagation_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::LazyPropagation< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_LazyPropagation_Sl_double_Sg__hasHardEvidence((gum::LazyPropagation< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -52852,56 +52951,6 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_hasHardEvidence__SWIG_1(PyObje
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_LazyPropagation_double_hasHardEvidence(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LazyPropagationT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_LazyPropagation_double_hasHardEvidence__SWIG_0(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LazyPropagationT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_LazyPropagation_double_hasHardEvidence__SWIG_1(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LazyPropagation_double_hasHardEvidence'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::LazyPropagation< double >::hasHardEvidence(gum::NodeId const) const\n"
-    "    gum::LazyPropagation< double >::hasHardEvidence(std::string const &) const\n");
-  return 0;
 }
 
 
@@ -55973,7 +56022,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
   gum::NodeId arg2 ;
@@ -55983,31 +56032,124 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence__SWIG_0(PyObjec
   int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_hasHardEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_eraseEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::GibbsInference< double > const *)arg1,arg2);
+      gum_GibbsInference_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_eraseEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_GibbsInference_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_GibbsInference_double_eraseEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_GibbsInference_double_eraseEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_eraseEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::GibbsInference< double >::eraseEvidence(gum::NodeId const)\n"
+    "    gum::GibbsInference< double >::eraseEvidence(std::string const &)\n");
+  return 0;
 }
 
 
@@ -56049,7 +56191,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
   std::string *arg2 = 0 ;
@@ -56079,7 +56221,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence__SWIG_1(PyObjec
   }
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::GibbsInference< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_GibbsInference_Sl_double_Sg__hasHardEvidence((gum::GibbsInference< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -56091,56 +56233,6 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence__SWIG_1(PyObjec
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_GibbsInference_double_hasHardEvidence__SWIG_0(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_GibbsInference_double_hasHardEvidence__SWIG_1(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_hasHardEvidence'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::hasHardEvidence(gum::NodeId const) const\n"
-    "    gum::GibbsInference< double >::hasHardEvidence(std::string const &) const\n");
-  return 0;
 }
 
 
@@ -76467,13 +76559,22 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::LazyPropagation< double > *\n"
 		"\n"
 		""},
-	 { (char *)"LazyPropagation_double_hasHardEvidence", _wrap_LazyPropagation_double_hasHardEvidence, METH_VARARGS, (char *)"\n"
-		"hasHardEvidence(gum::NodeId const id) -> bool\n"
+	 { (char *)"LazyPropagation_double_eraseEvidence", _wrap_LazyPropagation_double_eraseEvidence, METH_VARARGS, (char *)"\n"
+		"eraseEvidence(gum::NodeId const id)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"id: gum::NodeId const\n"
 		"\n"
+		"LazyPropagation_double_eraseEvidence(LazyPropagation_double self, std::string const & nodeName)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LazyPropagation_double_hasHardEvidence", _wrap_LazyPropagation_double_hasHardEvidence, METH_VARARGS, (char *)"\n"
 		"LazyPropagation_double_hasHardEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool\n"
 		"\n"
 		"Parameters\n"
@@ -77012,13 +77113,22 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::GibbsInference< double > *\n"
 		"\n"
 		""},
-	 { (char *)"GibbsInference_double_hasHardEvidence", _wrap_GibbsInference_double_hasHardEvidence, METH_VARARGS, (char *)"\n"
-		"hasHardEvidence(gum::NodeId const id) -> bool\n"
+	 { (char *)"GibbsInference_double_eraseEvidence", _wrap_GibbsInference_double_eraseEvidence, METH_VARARGS, (char *)"\n"
+		"eraseEvidence(gum::NodeId const id)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"id: gum::NodeId const\n"
 		"\n"
+		"GibbsInference_double_eraseEvidence(GibbsInference_double self, std::string const & nodeName)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::GibbsInference< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"GibbsInference_double_hasHardEvidence", _wrap_GibbsInference_double_hasHardEvidence, METH_VARARGS, (char *)"\n"
 		"GibbsInference_double_hasHardEvidence(GibbsInference_double self, std::string const & nodeName) -> bool\n"
 		"\n"
 		"Parameters\n"

@@ -150,10 +150,7 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
                       gum.Potential().add(self.bn.variable("H")).fillWith([0.9, 0.1, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
-    print('\n ERROR WHEN chgEvidence("H")')
-    print(self.ie.posterior("D"))
-    print(posterior_joint.margSumIn(["D"]).normalize())
-    # self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
     self.ie.chgEvidence("A", 0)
     self.ie.chgEvidence("H", [0.8, 0.2, 0.3])
@@ -164,10 +161,7 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
                       gum.Potential().add(self.bn.variable("H")).fillWith([0.8, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
-    print('\n ERROR WHEN chgEvidence("H")+chgEvidence("A")')
-    print(self.ie.posterior("D"))
-    print(posterior_joint.margSumIn(["D"]).normalize())
-    # self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
+    self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
     self.ie.eraseEvidence("A")
 
