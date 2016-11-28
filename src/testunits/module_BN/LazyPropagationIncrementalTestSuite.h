@@ -467,6 +467,151 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
+    void test_prior_with_targets_hard_evidence_values_changed() {
+      gum::LazyPropagation<double> inf( bn );
+      inf.eraseAllTargets();
+      inf.addTarget( 0 );  // A
+      inf.addTarget( 3 );  // D
+
+      __Potential ev0( create_evidence( 0, {0.3, 0.7} ) );
+      inf.addEvidence( *ev0 );
+      __Potential ev1( create_evidence( 1, {0, 1, 0} ) );
+      inf.addEvidence( *ev1 );
+      __Potential ev7( create_evidence( 7, {0.4, 0.2, 0.3} ) );
+      inf.addEvidence( *ev7 );
+
+
+      __PotentialSet evset;
+      evset.insert( ev0.get() );
+      evset.insert( ev1.get() );
+      evset.insert( ev7.get() );
+
+      {
+        __Potential posterior( posterior_joint( joint, evset ) );
+
+        TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+
+        // get the marginals of A, D
+        std::unique_ptr<gum::Potential<double>>
+          pa( get_marginal( posterior.get(), BN_node_index[0] ) ),
+          pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
+      }
+
+
+      __Potential evp0( create_evidence( 0, {1, 0} ) );
+      inf.chgEvidence( 0, 0 );
+      __Potential evp7( create_evidence( 7, {0.2, 0.3, 0.6} ) );
+      inf.chgEvidence( *evp7 );
+
+      evset.clear();
+      evset.insert( evp0.get() );
+      evset.insert( ev1.get() );
+      evset.insert( evp7.get() );
+
+      {
+        __Potential posterior( posterior_joint( joint, evset ) );
+
+        TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+
+        // get the marginals of A, D
+        std::unique_ptr<gum::Potential<double>>
+          pa( get_marginal( posterior.get(), BN_node_index[0] ) ),
+          pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
+      }
+
+
+      __Potential evpp0( create_evidence( 0, {0, 1} ) );
+      inf.chgEvidence( *evpp0 );
+
+      evset.clear();
+      evset.insert( evpp0.get() );
+      evset.insert( ev1.get() );
+      evset.insert( evp7.get() );
+
+      {
+        __Potential posterior( posterior_joint( joint, evset ) );
+        
+        TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+        
+        // get the marginals of A, D
+        std::unique_ptr<gum::Potential<double>>
+          pa( get_marginal( posterior.get(), BN_node_index[0] ) ),
+          pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
+      }
+
+
+      inf.chgEvidence( *ev0 );
+      inf.chgEvidence( *evp7 );
+      evset.clear();
+      evset.insert( ev0.get() );
+      evset.insert( ev1.get() );
+      evset.insert( evp7.get() );
+
+      {
+        __Potential posterior( posterior_joint( joint, evset ) );
+
+        TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+
+        // get the marginals of A, D
+        std::unique_ptr<gum::Potential<double>> pa(
+            get_marginal( posterior.get(), BN_node_index[0] ) ),
+            pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
+      }
+
+      inf.eraseEvidence( 0 );
+      evset.clear();
+      evset.insert( ev1.get() );
+      evset.insert( evp7.get() );
+
+      {
+        __Potential posterior( posterior_joint( joint, evset ) );
+
+        TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+
+        // get the marginals of A, D
+        std::unique_ptr<gum::Potential<double>> pa(
+            get_marginal( posterior.get(), BN_node_index[0] ) ),
+            pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
+      }
+
+
+      inf.addEvidence( *evp0 );
+      TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+      inf.eraseEvidence( 0 );
+
+      {
+        __Potential posterior( posterior_joint( joint, evset ) );
+
+        TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+
+        // get the marginals of A, D
+        std::unique_ptr<gum::Potential<double>> pa(
+            get_marginal( posterior.get(), BN_node_index[0] ) ),
+            pd( get_marginal( posterior.get(), BN_node_index[3] ) );
+
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[0] ), *pa ) );
+        TS_ASSERT( equalPotentials( inf.posterior( BN_node_index[3] ), *pd ) );
+      }
+    }
+    
+
+    // ============================================================================
+    // ============================================================================
     void test_prior_with_targets_evidence_changed() {
       gum::LazyPropagation<double> inf( bn );
       inf.eraseAllTargets();
